@@ -1,0 +1,242 @@
+[
+  {
+    "name": "9/11 Memorial and Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "visitors descend down, down, down into this underground museum",
+    "confidence": "high",
+    "reasoning": "A discrete museum and memorial you enter and stand within, with interior exhibit cues."
+  },
+  {
+    "name": "African Burial Ground National Monument",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The symbol-laden National Monument memorial",
+    "confidence": "high",
+    "reasoning": "A single dedicated memorial site you stand before, small radius and 'here' cues."
+  },
+  {
+    "name": "Brooklyn Bridge",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Walking the span of the Brooklyn Bridge lets you see this marvel up close",
+    "confidence": "high",
+    "reasoning": "Large 120m radius and cues describe walking across/along the span rather than standing at one point."
+  },
+  {
+    "name": "Ellis Island National Museum of Immigration",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Begin on the awe-inspiring second-floor Grand Hall",
+    "confidence": "high",
+    "reasoning": "A discrete museum building entered and toured, with interior establishing cues."
+  },
+  {
+    "name": "Federal Reserve Bank of New York",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Descend eighty feet to the basement of this financial fortress",
+    "confidence": "high",
+    "reasoning": "A single building you visit and stand within; small radius, interior vault cue."
+  },
+  {
+    "name": "Hall des Lumières",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The historic former bank building housing the show",
+    "confidence": "high",
+    "reasoning": "A discrete ticketed venue in a single building; small radius."
+  },
+  {
+    "name": "Museum of Jewish Heritage",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The six-sided building symbolizing the Star of David",
+    "confidence": "high",
+    "reasoning": "A discrete museum building you stand before and enter; small radius, building/interior cues."
+  },
+  {
+    "name": "National Museum of the American Indian",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The building in front of you, designed by Cass Gilbert",
+    "confidence": "high",
+    "reasoning": "A single landmark building you stand before ('in front of you'); small radius."
+  },
+  {
+    "name": "One World Observatory",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the rough-hewn bedrock tunnel in the lobby",
+    "confidence": "high",
+    "reasoning": "A discrete observation-deck attraction inside one tower; interior cues, stand-and-listen destination."
+  },
+  {
+    "name": "Skyscraper Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Don't dismiss this small museum",
+    "confidence": "high",
+    "reasoning": "A small discrete museum entered and viewed; tiny radius and interior cues."
+  },
+  {
+    "name": "South Street Seaport Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the historic sailing vessels the museum keeps moored off Pier 16",
+    "confidence": "medium",
+    "reasoning": "A single museum/pier destination you stand at to view the vessels; low tier but a named venue."
+  },
+  {
+    "name": "Staten Island Ferry",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The right side at the back of the ferry for the Manhattan skyline view",
+    "confidence": "medium",
+    "reasoning": "Geocoded to the Whitehall terminal you board at; a discrete embarkation point rather than an area you walk through."
+  },
+  {
+    "name": "Statue of Liberty",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the pedestal designed by Richard Morris Hunt beneath the statue",
+    "confidence": "high",
+    "reasoning": "A single monument you stand before and climb; cues focus on one object."
+  },
+  {
+    "name": "St. Paul's Chapel",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The Ionic columns and huge pediment of the facade",
+    "confidence": "high",
+    "reasoning": "A discrete church building you stand before and enter; small radius."
+  },
+  {
+    "name": "Trinity Church",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The 280-foot Gothic spire",
+    "confidence": "high",
+    "reasoning": "A single church and its adjacent graveyard you stand at; small radius, object-focused cues."
+  },
+  {
+    "name": "New York Stock Exchange",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "You are now gazing at the most famous financial institution in the world",
+    "confidence": "high",
+    "reasoning": "A single facade you stand before and gaze at; small radius, building cues."
+  },
+  {
+    "name": "The Woolworth Building",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The neo-Gothic spires, gargoyles, flying buttresses and turrets of the facade",
+    "confidence": "high",
+    "reasoning": "A single skyscraper you stand before and look up at; small radius, facade cues."
+  },
+  {
+    "name": "International Center of Photography",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The multi-floor museum space across from the Essex Street Market",
+    "confidence": "high",
+    "reasoning": "A discrete museum building you enter; small radius."
+  },
+  {
+    "name": "Museum at Eldridge Street",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The grand 1887 synagogue interior",
+    "confidence": "high",
+    "reasoning": "A single synagogue-museum building you enter; tiny radius, interior cues."
+  },
+  {
+    "name": "New Museum of Contemporary Art",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The massive steel-and-glass tower rising over the Bowery",
+    "confidence": "high",
+    "reasoning": "A single landmark museum building you stand before; small radius, building cues."
+  },
+  {
+    "name": "The Tenement Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The brownstone tenement facade at 97 Orchard Street",
+    "confidence": "high",
+    "reasoning": "A discrete museum at a specific address you tour; small radius, facade/interior cues."
+  },
+  {
+    "name": "Jackie Robinson Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "this two-room museum takes a detailed, clear-eyed look at the life",
+    "confidence": "high",
+    "reasoning": "A small discrete museum you enter; small radius, interior cue."
+  },
+  {
+    "name": "Leslie-Lohman Museum of Art",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The first LGBTQ art museum in the world",
+    "confidence": "high",
+    "reasoning": "A discrete museum venue you enter; tiny radius."
+  },
+  {
+    "name": "Merchant's House Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The Greek Revival town house facade on East 4th Street",
+    "confidence": "high",
+    "reasoning": "A single preserved house you stand before and tour; tiny radius, facade/interior cues."
+  },
+  {
+    "name": "Mmuseumm",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The 60-square-foot freight elevator shaft housing the collection, off Cortlandt Alley",
+    "confidence": "high",
+    "reasoning": "A tiny single-point novelty gallery you stand at; smallest radius, single interior cue."
+  },
+  {
+    "name": "Museum of Chinese in America",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Museum entrance at 215 Centre St, between Grand and Howard Sts",
+    "confidence": "high",
+    "reasoning": "A discrete museum at a specific address you enter; small radius."
+  },
+  {
+    "name": "Old St. Patrick's Cathedral",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The historic graveyard surrounding the church",
+    "confidence": "high",
+    "reasoning": "A single cathedral and its grounds you stand at; small radius, object-focused cues."
+  },
+  {
+    "name": "Whitney Museum of American Art",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The Renzo Piano building next to the High Line park",
+    "confidence": "high",
+    "reasoning": "A single landmark museum building you stand before and enter; small radius, building cues."
+  },
+  {
+    "name": "Battery Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Two standout corners reward a walk through Battery Park",
+    "confidence": "high",
+    "reasoning": "A 25-acre waterfront park you walk through with movement-based cues and a large 60m radius; itself a candidate_parent."
+  },
+  {
+    "name": "Castle Clinton",
+    "poi_role": "stop",
+    "parent_poi": "Battery Park",
+    "source_passage": "The circular stone building you can go inside if it is open",
+    "confidence": "high",
+    "reasoning": "A discrete circular fort building inside Battery Park; small radius and 'go inside' building cue make it a sub-feature stop."
+  }
+]

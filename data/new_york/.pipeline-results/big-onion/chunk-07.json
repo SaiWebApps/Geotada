@@ -1,0 +1,2319 @@
+{
+  "chunk_id": "chunk-07-upper-east-side",
+  "chunk_file": "Books/new_york/big-onion-ten-historic-tours/chunk-07-upper-east-side.cleaned.txt",
+  "pois": [
+    {
+      "name": "Grand Army Plaza (Manhattan)",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Plaza at Fifth Avenue and 59th Street holding the gilded Sherman Monument (north half) and the Pulitzer Fountain (south half), the tour's starting point.",
+      "name_variations": [
+        "Grand Army Plaza",
+        "Sherman Monument",
+        "Pulitzer Fountain",
+        "Sherman Plaza"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7645,
+      "longitude": -73.9732,
+      "trigger_radius": 30,
+      "geocode_source": "Manhattan grid (Fifth Ave & 59th St) cross-referenced with NYC Parks Grand Army Plaza",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Named civic plaza at the southeast corner of Central Park with two landmarked monuments (Saint-Gaudens Sherman, Pulitzer Fountain); a recognized NYC stop, moderate gravity. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Metropolitan Club",
+      "is_new": false,
+      "matched_existing": "Metropolitan Club",
+      "short_description": "All-marble Italian-palazzo clubhouse at 1 East 60th Street (NE corner Fifth & 60th), founded by J. P. Morgan in anger and built by Stanford White.",
+      "name_variations": [
+        "Metropolitan Club",
+        "1 East Sixtieth Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7639,
+      "longitude": -73.9719,
+      "trigger_radius": 15,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Harmonie Club",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "German-Jewish social club at 4 East 60th Street, founded 1852 as the Harmonie Gesellschaft; first men's club in the city to admit women.",
+      "name_variations": [
+        "Harmonie Club",
+        "Harmonie Gesellschaft",
+        "Harmony Society",
+        "4 East Sixtieth Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7641,
+      "longitude": -73.9714,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (4 E 60th St, just east of Fifth Ave)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic landmarked clubhouse (Warren & Wetmore, 1906) with documented social history; minor stop on a walking tour. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Copacabana (10 East 60th Street site)",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Site of the legendary Copacabana nightclub on East 60th Street, venue of the 1957 Yankees brawl and the 1961 surveillance that launched the French Connection case.",
+      "name_variations": [
+        "Copacabana",
+        "The Copa",
+        "Copacabana nightclub"
+      ],
+      "kid_friendly": "no",
+      "latitude": 40.7642,
+      "longitude": -73.971,
+      "trigger_radius": 15,
+      "geocode_source": "Manhattan grid (East 60th St between Fifth and Madison)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Famous demolished nightclub with strong pop-culture and crime-history narrative (French Connection, Rat Pack-era brawl); historical-marker-grade fame though the original venue is gone. The book places the Copa at '14 East Sixtieth' for the French Connection but '14 East Sixtieth' is also given to Hotel 14 — book is internally inconsistent on the number; located block-level on East 60th. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Grolier Club",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Bibliophiles' club at 47 East 60th Street, designed by Bertram Goodhue (built 1916–17) and named for 16th-century book collector Jean Grolier de Servières.",
+      "name_variations": [
+        "Grolier Club",
+        "47 East Sixtieth Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7637,
+      "longitude": -73.9701,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (47 E 60th St, between Madison and Park)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked Neo-Georgian clubhouse and active exhibition space dedicated to the book arts; minor-to-moderate cultural stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Christ Church United Methodist",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1931 church at the NW corner of 60th Street and Park Avenue by Ralph Adams Cram.",
+      "name_variations": [
+        "Christ Church",
+        "Christ Church United Methodist",
+        "Christ Church NYC"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7634,
+      "longitude": -73.9683,
+      "trigger_radius": 15,
+      "geocode_source": "Manhattan grid (NW corner 60th & Park)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Notable Cram-designed Byzantine-Romanesque church on Park Avenue; minor architectural stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Colony Club",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Women's social club at the NW corner of 62nd and Park, founded 1903 by Florence 'Daisy' Harriman — the first U.S. women's club to build its own clubhouse.",
+      "name_variations": [
+        "Colony Club",
+        "564 Park Avenue"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7651,
+      "longitude": -73.9673,
+      "trigger_radius": 15,
+      "geocode_source": "Manhattan grid (NW corner 62nd & Park, 564 Park Ave)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked Georgian clubhouse (Delano & Aldrich) with pioneering women's-club history; moderate-minor stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Fabbri Mansion",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Beaux-arts townhouse at 11 East 62nd Street, built 1900 for a Vanderbilt granddaughter; F's worked into the wrought-iron balconies for the Fabbri family.",
+      "name_variations": [
+        "Fabbri Mansion",
+        "11 East Sixty-second Street",
+        "Edith and Ernesto Fabbri House"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7647,
+      "longitude": -73.9711,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (11 E 62nd St, between Fifth and Madison)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked beaux-arts townhouse, later residence of Japan's UN representative; minor architectural stop. NOTE: existing POI list contains 'Edith and Ernesto Fabbri House' — likely the SAME building (the Fabbris are Edith Shepard + Ernesto Fabbri); flagged as possible duplicate for review. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Fifth Avenue Synagogue",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Synagogue at 5 East 62nd Street by Percival Goodman, noted for its mid-1950s elliptical cat's-eye stained-glass windows and central Sephardic plan.",
+      "name_variations": [
+        "Fifth Avenue Synagogue",
+        "5 East Sixty-second Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7648,
+      "longitude": -73.9716,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (5 E 62nd St, just east of Fifth Ave)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Notable modern synagogue by Percival Goodman with distinctive architecture; minor stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Knickerbocker Club",
+      "is_new": false,
+      "matched_existing": "Knickerbocker Club",
+      "short_description": "Exclusive club at the SE corner of Fifth Avenue and 62nd Street, founded 1871; the name traces to Washington Irving's fictional Dietrich Knickerbocker.",
+      "name_variations": [
+        "Knickerbocker Club"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7642,
+      "longitude": -73.9719,
+      "trigger_radius": 15,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Wildenstein Gallery",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Premier art gallery at 19 East 64th Street, founded in Paris in 1875 by Nathan Wildenstein; building by Horace Trumbauer with Julian Abele, 1932.",
+      "name_variations": [
+        "Wildenstein Gallery",
+        "Wildenstein",
+        "19 East Sixty-fourth Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7666,
+      "longitude": -73.9708,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (19 E 64th St, between Fifth and Madison)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic blue-chip art gallery with architecture by an early Black architect (Julian Abele); moderate-minor stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Central Presbyterian Church",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1922 church at Park Avenue and 64th Street; the congregation, once the Fifth Avenue Baptist Church where John D. Rockefeller taught Sunday school, later became Riverside Church.",
+      "name_variations": [
+        "Central Presbyterian Church",
+        "593 Park Avenue"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7662,
+      "longitude": -73.9669,
+      "trigger_radius": 15,
+      "geocode_source": "Manhattan grid (Park Ave at 64th St)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic Park Avenue church with a Rockefeller link; minor stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Lotos Club",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Literary and fine-arts club at 5 East 66th Street (in the 1900 Schieffelin residence), founded 1870 — one of the oldest such clubs in the country.",
+      "name_variations": [
+        "Lotos Club",
+        "5 East Sixty-sixth Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7677,
+      "longitude": -73.9717,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (5 E 66th St, just east of Fifth Ave)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic literary club in a landmarked R. H. Hunt townhouse; minor stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Union Club",
+      "is_new": false,
+      "matched_existing": "Knickerbocker Club",
+      "short_description": "New York's oldest social club, at 701 Park Avenue (corner of 69th), founded 1836 — the club that snubbed J. P. Morgan's comrades.",
+      "name_variations": [
+        "Union Club",
+        "701 Park Avenue",
+        "Union Club of the City of New York"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7689,
+      "longitude": -73.9656,
+      "trigger_radius": 15,
+      "geocode_source": "Manhattan grid (701 Park Ave / 101 E 69th St); confirmed via thecityreview.com",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "NOT actually a match to Knickerbocker Club — the Union Club is a SEPARATE, genuinely new POI (it is the rival club). matched_existing should be null; flagged here because no Union Club exists in the POI list. Historic oldest NYC social club, landmarked Delano & Aldrich building; moderate stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Asia Society",
+      "is_new": false,
+      "matched_existing": "Asia Society",
+      "short_description": "Cultural institution at 725 Park Avenue (corner of 70th), founded 1956 by John D. Rockefeller III; red-sandstone-and-granite building opened 1981.",
+      "name_variations": [
+        "Asia Society",
+        "Asia Society & Museum",
+        "Asia Society and Museum"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7686,
+      "longitude": -73.9645,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Roosevelt House",
+      "is_new": false,
+      "matched_existing": "Roosevelt House",
+      "short_description": "Sara Delano Roosevelt Memorial House at 47–49 East 65th Street, a 1907 wedding-present double townhouse where FDR convalesced from polio; now Hunter College.",
+      "name_variations": [
+        "Roosevelt House",
+        "Sara Delano Roosevelt Memorial House",
+        "47-49 East Sixty-fifth Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7665,
+      "longitude": -73.9665,
+      "trigger_radius": 15,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Park Avenue Armory",
+      "is_new": false,
+      "matched_existing": "Park Avenue Armory",
+      "short_description": "The Seventh Regiment Armory at 643 Park Avenue (66th–67th), built 1877–80 by Charles Clinton; prototype of the medieval armory type with a vast drill hall.",
+      "name_variations": [
+        "Park Avenue Armory",
+        "Seventh Regiment Armory",
+        "Seventh Regiment Armory"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7679,
+      "longitude": -73.9641,
+      "trigger_radius": 25,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Frick Collection",
+      "is_new": false,
+      "matched_existing": "Frick Collection",
+      "short_description": "Art museum in the former mansion of Henry Clay Frick at 1 East 70th Street, by Carrère & Hastings; built on the site of the demolished Lenox Library.",
+      "name_variations": [
+        "Frick Collection",
+        "1 East Seventieth Street",
+        "Frick mansion"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7711,
+      "longitude": -73.9674,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Richard Morris Hunt Memorial",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1898 memorial on Fifth Avenue between 70th and 71st (opposite the Frick) honoring architect Richard Morris Hunt, with figures by Daniel Chester French.",
+      "name_variations": [
+        "Richard Morris Hunt Memorial",
+        "Hunt Memorial"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7715,
+      "longitude": -73.9672,
+      "trigger_radius": 12,
+      "geocode_source": "Manhattan grid (Fifth Ave at Central Park wall, 70th–71st)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked public memorial by Daniel Chester French on the Fifth Avenue park wall; minor stop. Importance_tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Temple Emanu-El",
+      "is_new": false,
+      "matched_existing": "Temple Emanu-El",
+      "short_description": "The world's largest Reform synagogue, at 840 Fifth Avenue (65th Street), built 1927 on the site of Mrs. Astor's mansion; main sanctuary rises 103 feet.",
+      "name_variations": [
+        "Temple Emanu-El",
+        "Temple Emanu-El New York",
+        "840 Fifth Avenue"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7673,
+      "longitude": -73.9691,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "The Pierre",
+      "is_new": false,
+      "matched_existing": "The Pierre",
+      "short_description": "Luxury hotel at Fifth Avenue and 61st Street, founded by chef Charles Pierre; designed by Schultze & Weaver.",
+      "name_variations": [
+        "The Pierre",
+        "Pierre Hotel"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.765,
+      "longitude": -73.9716,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    },
+    {
+      "name": "Plaza Hotel",
+      "is_new": false,
+      "matched_existing": "Plaza Hotel",
+      "short_description": "Landmark luxury hotel at Fifth Avenue and Central Park South, opened 1907, designed by Henry Hardenbergh.",
+      "name_variations": [
+        "Plaza Hotel",
+        "The Plaza"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7645,
+      "longitude": -73.9742,
+      "trigger_radius": 25,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no new geocode."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_grand_army_plaza_manhattan_war_conflict_big-onion-ten-historic-tours_sherman_war_is_cruelty",
+      "city_name": "new_york",
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "lens": "war_conflict",
+      "topic_slug": "sherman_war_is_cruelty",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": "sherman-monument",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "We begin at the gilded statue of General William Tecumseh Sherman, best known for his bloody march through the South in the fall of 1864, when, as the Union's commander in the West, he burned large portions of Georgia and South Carolina. Sherman showed little remorse at Georgia's fate; as he famously put it, \"War is cruelty and you cannot refine it.\" Walking before him, waving an olive branch, is the figure of Victory. The pine branch on the granite pedestal signifies Georgia, and the horses stomping on the pines are a painful reminder of the destruction of Sherman's March.",
+      "duration_sec": 41,
+      "kid_friendly": "no",
+      "entities": [
+        "William Tecumseh Sherman",
+        "Sherman's March",
+        "Victory"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "Sherman march",
+      "physical_cues": [
+        {
+          "cue": "The figure of Victory walking before Sherman, waving an olive branch",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Horses stomping on the Georgia pine branch carved on the granite pedestal",
+          "direction": "down",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Sherman burned parts of Georgia and South Carolina in fall 1864",
+        "Sherman said 'War is cruelty and you cannot refine it'",
+        "Statue includes a Victory figure and a Georgia pine branch trampled by horses"
+      ],
+      "source_passage": "We begin at the gilded statue of General William Tecumseh Sherman, best known for his bloody march through the South in the fall of 1864where, as the Union's commander in the West, he burned large portions of Georgia and South Carolina. Sherman himself showed little remorse at Georgia's fate. As he famously put it: \"War is cruelty and you cannot refine it.\" ... Walking before Sherman, waving an olive branch, is the figure of Victory; the pine branch on the granite pedestal signifies Georgia, and the horses stomping on the pines are a painful reminder of the destruction of Sherman's March.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_grand_army_plaza_manhattan_visual_art_big-onion-ten-historic-tours_saint_gaudens_regilded",
+      "city_name": "new_york",
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "lens": "visual_art",
+      "topic_slug": "saint_gaudens_regilded",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": "sherman-monument",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The award-winning statue was cast by the well-known New York sculptor Augustus Saint-Gaudens and presented in 1900 at the Paris Exposition. It was erected in its present location in 1903, on a base by Charles McKim of McKim, Mead and White. The statue was regilded in the late 1980s to considerable complaint, as Sherman's bloody history was by then seen as unseemly — a gleaming gold tribute to a man remembered for burning the South.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Augustus Saint-Gaudens",
+        "Paris Exposition",
+        "Charles McKim",
+        "McKim, Mead and White",
+        "William Tecumseh Sherman"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "Saint-Gaudens gilding",
+      "physical_cues": [
+        {
+          "cue": "The regilded gold leaf surface of the Sherman statue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cast by Augustus Saint-Gaudens, presented 1900 at the Paris Exposition",
+        "Erected here 1903 on a McKim base",
+        "Regilded in the late 1980s amid complaint"
+      ],
+      "source_passage": "The award-winning statue was cast by the well-known New York sculptor Augustus Saint-Gaudens and presented in 1900at the Paris Exposition. It was erected in the present location in 1903. The base is Charles McKim's, of McKim, Mead and White. ... The statue was regilded in the late 1980s to considerable complaint, as Sherman's bloody history was now seen as unseemly.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_grand_army_plaza_manhattan_local_legends_big-onion-ten-historic-tours_pulitzer_fountain_pomona",
+      "city_name": "new_york",
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "lens": "local_legends",
+      "topic_slug": "pulitzer_fountain_pomona",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": "pulitzer-fountain",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Pulitzer Fountain, in the plaza in front of the Plaza Hotel, was erected in 1916 with a fifty-thousand-dollar gift from Joseph Pulitzer, who hoped to outdo his newspaper-magnate rival William Randolph Hearst. The statue on top is Pomona, the Greek goddess of abundance, finished by Karl Bitter, protégé of architect Richard Morris Hunt. The day he finished the clay model in 1915, Bitter was tragically killed crossing the street as he left the Metropolitan Opera, then on Forty-seventh Street, and his apprentices were left to complete the statue.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Joseph Pulitzer",
+        "William Randolph Hearst",
+        "Pomona",
+        "Karl Bitter",
+        "Richard Morris Hunt",
+        "Metropolitan Opera"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "Pulitzer Fountain Pomona",
+      "physical_cues": [
+        {
+          "cue": "The figure of Pomona, goddess of abundance, atop the Pulitzer Fountain",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Fountain erected 1916 with $50,000 from Joseph Pulitzer to outdo Hearst",
+        "Pomona finished by Karl Bitter, protégé of Richard Morris Hunt",
+        "Bitter killed crossing the street leaving the Metropolitan Opera in 1915"
+      ],
+      "source_passage": "The fountain was erected in 1916with a $50,000gift from Joseph Pulitzer, who hoped to outdo his newspaper-magnate rival William Randolph Hearst... The statue on top is Pomona, the Greek goddess of abundance. Pomona was finished by Karl Bitter, protégé of the architect Richard Morris Hunt. The day he finished the clay model in 1915, Bitter was tragically killed crossing the street as he left the Metropolitan Opera (then on Forty-seventh Street), and his apprentices were left to complete the statue.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_plaza_hotel_famous_residents_big-onion-ten-historic-tours_first_guest_vanderbilt_lusitania",
+      "city_name": "new_york",
+      "poi_name": "Plaza Hotel",
+      "lens": "famous_residents",
+      "topic_slug": "first_guest_vanderbilt_lusitania",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Plaza, dating from 1907, is one of New York's great luxury hotels. Frank Lloyd Wright, who hated New York, would stay only here when he passed through; other luminaries who made it their temporary residence included the Beatles, Mark Twain, Groucho Marx, and Eleanor Roosevelt. The very first guest to sign the Plaza's register was Alfred Gwynne Vanderbilt — who would later lose his life in the sinking of the Lusitania. The French Renaissance building was designed by Henry Hardenbergh, the same architect responsible for the Dakota.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Frank Lloyd Wright",
+        "The Beatles",
+        "Mark Twain",
+        "Groucho Marx",
+        "Eleanor Roosevelt",
+        "Alfred Gwynne Vanderbilt",
+        "Lusitania",
+        "Henry Hardenbergh",
+        "Dakota"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "Plaza first guest",
+      "physical_cues": [
+        {
+          "cue": "The French Renaissance facade of the Plaza, with elevations overlooking Central Park and Fifth Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Plaza dates from 1907, designed by Henry Hardenbergh (also the Dakota)",
+        "First guest to sign the register was Alfred Gwynne Vanderbilt, later lost on the Lusitania",
+        "Frank Lloyd Wright stayed only here in NYC"
+      ],
+      "source_passage": "The Plaza, which dates from 1907, is one of New York City's great luxury hotels. Frank Lloyd Wright, who hated New York, would stay only here when he passed through. Other luminaries who made this their temporary residence have included the Beatles, Mark Twain, Groucho Marx, and Eleanor Roosevelt. The first guest to sign the register of the Plaza was Alfred Gwynne Vanderbilt, who later lost his life in the sinking of the Lusitania. The French Renaissance building was designed by Henry Hardenbergh (the same person responsible for the Dakota and the Art Student's League).",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_pierre_local_legends_big-onion-ten-historic-tours_dashiell_hammett_disguise",
+      "city_name": "new_york",
+      "poi_name": "The Pierre",
+      "lens": "local_legends",
+      "topic_slug": "dashiell_hammett_disguise",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Pierre was founded by the noted chef Charles Pierre, whose restaurant had been at 230 Park Avenue. In 1932, Dashiell Hammett stayed here while working on The Thin Man; unable to meet the bill he ran up, he donned a disguise to avoid paying his tab.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Charles Pierre",
+        "Dashiell Hammett",
+        "The Thin Man"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "Hammett disguise",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Pierre founded by chef Charles Pierre",
+        "Dashiell Hammett stayed here in 1932 writing The Thin Man and disguised himself to dodge his bill"
+      ],
+      "source_passage": "The Pierre, founded by the noted chef Charles Pierre (whose restaurant was located at 230Park Avenue), has its own illustrious history. In 1932, Dashiell Hammett stayed here while working on The Thin Man; he wasn't able to meet the bill he ran up, so he donned a disguise to avoid paying his tab.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_metropolitan_club_local_legends_big-onion-ten-historic-tours_morgan_damn_the_expense",
+      "city_name": "new_york",
+      "poi_name": "Metropolitan Club",
+      "lens": "local_legends",
+      "topic_slug": "morgan_damn_the_expense",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "J. Pierpont Morgan formed the Metropolitan Club here, on the northeast corner of Fifth Avenue and Sixtieth Street, in anger. Some of his close comrades and fellow captains of industry had been unable to win entrance into the other elite clubs of the time, principally the Union Club. Morgan had proposed John King, president of the Erie Railroad, whose \"career and character have won him the universal respect of all who know him\" — but it was said King's table manners were not up to snuff, and he was promptly denied membership. Morgan's retribution was to get New York's most famous architect, Stanford White, to build \"the largest, most imposing, and most luxurious of the clubhouses of New York.\" Morgan, it is said, summoned White with the words \"Damn the expense.\" In its temerity to challenge the Union Club, the Metropolitan was dressed in an all-marble facade. One lure to new members was a dining room set aside for female guests — the Ladies Restaurant, overlooking the courtyard. Joining Morgan were Cornelius Vanderbilt and Robert Goelet.",
+      "duration_sec": 65,
+      "kid_friendly": "yes",
+      "entities": [
+        "J. Pierpont Morgan",
+        "Union Club",
+        "John King",
+        "Erie Railroad",
+        "Stanford White",
+        "Cornelius Vanderbilt",
+        "Robert Goelet"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Morgan revenge club",
+      "physical_cues": [
+        {
+          "cue": "The all-marble Italian-palazzo facade on the northeast corner of Fifth Avenue and Sixtieth Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The courtyard with paired Doric columns and wrought-iron gates at the 1 East Sixtieth Street entrance",
+          "direction": "east",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Morgan formed the Metropolitan Club in anger after the Union Club rejected John King over table manners",
+        "Stanford White built it; Morgan said 'Damn the expense'",
+        "All-marble facade; Ladies Restaurant overlooking the courtyard",
+        "Cornelius Vanderbilt and Robert Goelet joined Morgan"
+      ],
+      "source_passage": "J. Pierpont Morgan formed the Metropolitan Club, here on the northeast corner of Fifth Avenue and Sixtieth Street, in anger. Some of his close comrades and fellow captains of industry were unable to win entrance into the other elite clubs of the time, principally the Union Club. Morgan ... had proposed membership at the Union for John King, president of the Erie Railroad ... It was said, however, that King's table manners were not up to snuff, and he was promptly denied membership. Morgan's retribution was to get New York's most famous architect, Stanford White, to build \"the largest, most imposing, and most luxurious of the clubhouses of New York\"... Morgan, it is said, summoned White with the words \"Damn the expense.\" In its temerity to challenge the Union Club, the Metropolitan Club was dressed in an all-marble facade. One lure to new Metropolitan members was a dining room sequestered from the all-male enclaves and set aside for female guests. The Ladies Restaurant overlooked the courtyard. Joining Morgan in his new venture were Cornelius Vanderbilt and Robert Goelet.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_harmonie_club_social_change_big-onion-ten-historic-tours_german_jewish_club_1852",
+      "city_name": "new_york",
+      "poi_name": "Harmonie Club",
+      "lens": "social_change",
+      "topic_slug": "german_jewish_club_1852",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Across from the Metropolitan Club stands the Harmonie Club at 4 East Sixtieth Street. It was formed in 1852 by the German Jewish community as the Harmonie Gesellschaft — the Harmony Society — and was distinguished by having German as its official language and by hanging the kaiser's portrait in its hall. It was the first men's club in the city to admit women at dinner, and the first eventually to have women as members. The club dates from a period when the chasm between first-wave German Jews and the second-wave Eastern Europeans was massive, and many Harmonie denizens, eager to assimilate, had little desire to associate with their poorer brethren from the East.",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "Harmonie Gesellschaft",
+        "Harmony Society"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "German Jewish club",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Harmonie Gesellschaft",
+          "gloss": "Harmony Society"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Harmonie Club formed 1852 by German Jews as the Harmonie Gesellschaft",
+        "German was its official language; the kaiser's portrait hung in its hall",
+        "First men's club in the city to admit women at dinner and later as members"
+      ],
+      "source_passage": "Across from the Metropolitan Club stands the Harmonie Club at 4East Sixtieth Street. The club was formed in 1852 by the German Jewish community as the Harmonie Gesellschaft (Harmony Society) and distinguished by having German as its official language and by hanging the kaiser's portrait in its hall. It was the first men's club in the city to admit women at dinner and the first eventually to have women as members. The club dates back to a period when the chasm between first-wave German Jews and second-wave Eastern Europeans was massive. Many Harmonie denizens, in their eagerness to assimilate, had little desire to associate with their impoverished and \"unAmerican\" brethren from the East.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_copacabana_10_east_60th_street_site_film_tv_big-onion-ten-historic-tours_french_connection_origin",
+      "city_name": "new_york",
+      "poi_name": "Copacabana (10 East 60th Street site)",
+      "lens": "film_tv",
+      "topic_slug": "french_connection_origin",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In October 1961, New York City detectives Eddie Egan and Sonny Grosso were having drinks after work at the Copacabana when they noticed a \"little man in a silk suit, with a diamond stickpin in his tie, flashing a huge bankroll.\" They decided to follow him. The chase would last eighteen months and turn into The French Connection: in the end there were nine arrests, and a hundred and twelve pounds of heroin were secured — thirty-two million dollars' worth in 1960s dollars. The film's famous car-chase scene was shot over five weeks under Brooklyn's Bensonhurst Elevated, at full speed, with real pedestrians and traffic.",
+      "duration_sec": 41,
+      "kid_friendly": "no",
+      "entities": [
+        "Eddie Egan",
+        "Sonny Grosso",
+        "The French Connection"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "French Connection",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Detectives Egan and Grosso began the French Connection case at the Copacabana in October 1961",
+        "Eighteen-month chase, nine arrests, 112 pounds of heroin ($32 million)",
+        "Car-chase scene filmed under the Bensonhurst Elevated at full speed"
+      ],
+      "source_passage": "Four years later, in October 1961, New York City detectives Eddie Egan and Sonny Grosso were having drinks after work at the club. They noticed a \"little man in a silk suit, with a diamond stickpin in his tie, flashing a huge bankroll.\" Egan and Grosso decided to follow the man. The chase was to last eighteen months, turning into The French Connection. In the end there were nine arrests, and 112pounds of heroin were secured ($32million worth in 1960s dollars). The film's justly famous car-chase scene was filmed over five weeks underneath the Bensonhurst Elevated Railway...The chase was filmed at full speed, with real pedestrians and traffic!",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_copacabana_10_east_60th_street_site_local_legends_big-onion-ten-historic-tours_1957_yankees_brawl",
+      "city_name": "new_york",
+      "poi_name": "Copacabana (10 East 60th Street site)",
+      "lens": "local_legends",
+      "topic_slug": "1957_yankees_brawl",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Copacabana was a venue for New York's stage and sports celebrities and for the average New Yorker alike — the stuff of high-school proms, college balls, and first dates. May 1957 saw one of its more notorious nights. With Sammy Davis Jr. on the stage and Yankee Billy Martin celebrating his twenty-ninth birthday alongside Mickey Mantle, Yogi Berra, and Hank Bauer, a brawl broke out between the Yankee players and a New Jersey bowling team. Police charges were ultimately dropped, but the Yankees' owner blamed Martin and traded him that July to Kansas City; he would not return until the 1970s, as the team's manager.",
+      "duration_sec": 41,
+      "kid_friendly": "no",
+      "entities": [
+        "Sammy Davis Jr.",
+        "Billy Martin",
+        "Mickey Mantle",
+        "Yogi Berra",
+        "Hank Bauer",
+        "New York Yankees"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "Copa Yankees brawl",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "May 1957 brawl at the Copa between Yankee players and a New Jersey bowling team",
+        "Sammy Davis Jr. was on stage; Billy Martin's 29th birthday with Mantle, Berra, Bauer",
+        "Martin traded to Kansas City that July"
+      ],
+      "source_passage": "May 1957saw one of the more notorious events ever to occur at the Copa. With Sammy Davis Jr. on the stage and Yankee Billy Martin celebrating his twenty-ninth birthday with fellow players Mickey Mantle, Yogi Berra, and Hank Bauer, a brawl broke out between the Yankee players and a New Jersey bowling team. Police charges were ultimately dropped, but the Yankees owner blamed Martin and traded him that July to Kansas City. He would not return until the 1970s, when he became the Yankees' manager.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_grolier_club_literary_heritage_big-onion-ten-historic-tours_book_lovers_club_goodhue",
+      "city_name": "new_york",
+      "poi_name": "Grolier Club",
+      "lens": "literary_heritage",
+      "topic_slug": "book_lovers_club_goodhue",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Grolier Club, at 47 East Sixtieth Street, is — in contrast with the business-titan appeal of the Metropolitan down the road — a club for book lovers. It was named for the sixteenth-century bibliophile Jean Grolier de Servières and founded for \"the literary study and promotion of the arts pertaining to the production of books.\" Bertram Goodhue, best known for St. Bartholomew's Church next to the Waldorf Astoria, designed the clubhouse in 1916. The original Grolier Club stands at 29 East Thirty-second Street.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jean Grolier de Servières",
+        "Bertram Goodhue",
+        "St. Bartholomew's Church"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "bibliophile club",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Grolier Club at 47 E 60th is a club for book lovers, named for Jean Grolier de Servières",
+        "Designed by Bertram Goodhue in 1916",
+        "Original Grolier Club at 29 E 32nd Street"
+      ],
+      "source_passage": "The Grolier Club is located at 47East Sixtieth Street. In contrast with the business-titan appeal of the Metropolitan down the road, here is a club for book lovers. Named for the sixteenth-century bibliophile Jean Grolier de Servières, the club was founded for \"the literary study and promotion of the arts pertaining to the production of books.\" Bertram Goodhue, best known for his St. Bartholomew's Church next to the Waldorf Astoria, designed the club in 1916. The original Grolier Club is on 29East Thirty-second Street.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_colony_club_social_change_big-onion-ten-historic-tours_first_womens_clubhouse",
+      "city_name": "new_york",
+      "poi_name": "Colony Club",
+      "lens": "social_change",
+      "topic_slug": "first_womens_clubhouse",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Colony Club, on the northwest corner of Sixty-second and Park, was formed in 1903 by Florence \"Daisy\" Jaffray Harriman. It was, with the Cosmopolitan, New York's most important all-women's social club — and the first in the United States to build its own clubhouse.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Florence Jaffray Harriman",
+        "Cosmopolitan Club"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "women's clubhouse",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Colony Club formed 1903 by Florence 'Daisy' Jaffray Harriman",
+        "First all-women's club in the US to build its own clubhouse"
+      ],
+      "source_passage": "The Colony Club (northwest corner of Sixty-second and Park) was formed in 1903by Florence \"Daisy\" Jaffray Harriman. It was (with the Cosmopolitan) New York's most important all-women's social club and the first in the United States to build its own clubhouse.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_avenue_social_change_big-onion-ten-historic-tours_advertising_to_boutique_row",
+      "city_name": "new_york",
+      "poi_name": "Madison Avenue",
+      "lens": "social_change",
+      "topic_slug": "advertising_to_boutique_row",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Madison Avenue, one of New York City's narrowest avenues, is named for America's fourth president, who sadly died in 1836 — the year of the avenue's opening. It has a curious history, going from a predominantly residential thoroughfare to an outstanding commercial zone; because of zoning, many of its fashionable stores are now housed in the very townhouses and brownstones that survive from its residential days. Of the tour's three avenues, Madison emerged first, and it turned headfirst toward the commercial, becoming in the early postwar period the advertising capital of the world. No longer the center of advertising, it has reinvented itself, at least here, as \"Boutique Row.\"",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "James Madison"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "Madison Avenue history",
+      "physical_cues": [
+        {
+          "cue": "Brownstone vestiges along the avenue now housing fashionable stores",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Madison Avenue named for James Madison, who died in 1836, the year it opened",
+        "Became the advertising capital of the world in the early postwar period",
+        "Reinvented as 'Boutique Row'"
+      ],
+      "source_passage": "Look at Madison Avenue, one of New York City's narrowest avenues, which is named for America's fourth president (who sadly died in 1836, the year of its opening). Madison Avenue has a curious history, having gone from a predominantly residential thoroughfare to an outstanding commercial zone... Madison turned headfirst toward the commercial, becoming in the early postwar period the advertising capital of the world. No longer the center of advertising, Madison has reinvented itself (at least in this part of the Upper East Side) as \"Boutique Row.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_avenue_local_legends_big-onion-ten-historic-tours_louis_sherry_horseback_dinner",
+      "city_name": "new_york",
+      "poi_name": "Madison Avenue",
+      "lens": "local_legends",
+      "topic_slug": "louis_sherry_horseback_dinner",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": "northeast corner of Sixty-second and Madison",
+      "beat_length_class": "seasoning",
+      "script_body": "The low building on the northeast corner of Sixty-second and Madison was originally Louis Sherry's restaurant, where to take tea was to \"see a certain number of Our Best People.\" Sherry made his money as a first-class confectioner to the rich. His restaurant was better known for its antics — including the 1903 dinner for the New York Horseback Riding Club, sponsored by Chicago millionaire Cornelius Billings, at which diners ate on horseback. The tab? A mere fifty thousand dollars.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Louis Sherry",
+        "New York Horseback Riding Club",
+        "Cornelius Billings"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "horseback dinner",
+      "physical_cues": [
+        {
+          "cue": "The low building on the northeast corner of Sixty-second and Madison, originally Louis Sherry's restaurant",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Louis Sherry's restaurant stood on the NE corner of 62nd and Madison",
+        "1903 dinner for the New York Horseback Riding Club, sponsored by Cornelius Billings, was eaten on horseback for $50,000"
+      ],
+      "source_passage": "The low building on the northeast corner of Sixty-second and Madison was originally the famed Louis Sherry's restaurant. It was often heard that if you were to take tea there, \"you are sure to see a certain number of Our Best People.\"...One particularly outrageous affair was the 1903dinner for the New York Horseback Riding Club, sponsored by Chicago millionaire Cornelius Billings, at which diners ate on—you guessed it—horseback. The tab? A mere $50,000.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_avenue_famous_residents_big-onion-ten-historic-tours_tr_police_commissioner_cape",
+      "city_name": "new_york",
+      "poi_name": "Madison Avenue",
+      "lens": "famous_residents",
+      "topic_slug": "tr_police_commissioner_cape",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-07-upper-east-side",
+      "sub_location": null,
+      "trigger_address": "west side of Madison Avenue near Sixty-second Street",
+      "beat_length_class": "mid",
+      "script_body": "Although there is no plaque, across Madison Avenue on the west side stood the home where Theodore Roosevelt lived from 1895 to 1897, during his tenure as police commissioner of New York. As commissioner, he forced the resignation of the chief of the uniformed police, who had justified amassing $300,000 from \"successful stock picks.\" Roosevelt took to prowling the streets at night in a black cape, hunting for policemen shirking their duty. The strolls made for good public relations, but his popularity suffered when he enforced the Sunday blue laws and closed the saloons; New Yorkers were happy to see him move on in 1897 to become assistant secretary of the navy.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Theodore Roosevelt",
+        "William Strong",
+        "William McKinley"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "TR night cape",
+      "physical_cues": [
+        {
+          "cue": "The west side of Madison Avenue, site of Roosevelt's former home (no plaque marks it)",
+          "direction": "west",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "TR lived on the west side of Madison near 62nd from 1895 to 1897 as police commissioner",
+        "Forced out the police chief who amassed $300,000 from stock picks",
+        "Prowled at night in a black cape; enforced Sunday blue laws",
+        "Left in 1897 to become assistant secretary of the navy"
+      ],
+      "source_passage": "Although there is no plaque, across Madison Avenue on the west side stood the home that Theodore Roosevelt lived in from 1895to 1897, during his tenure as police commissioner of New York... As commissioner, he forced the resignation of the chief of the uniformed police, who had justified recently amassing $300,000as the result of successful stock picks. Roosevelt adopted the practice of prowling the streets at night, dressed in a black cape, looking for policemen shirking their duty. While these strolls made for good public relations, his popularity suffered when he insisted on enforcing the Sunday blue laws, closing saloons. New Yorkers were happy to see him move on when, in 1897, he accepted President William McKinley's appointment as assistant secretary of the navy.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fabbri_mansion_historic_arch_big-onion-ten-historic-tours_vanderbilt_wrought_iron_f",
+      "city_name": "new_york",
+      "poi_name": "Fabbri Mansion",
+      "lens": "historic_arch",
+      "topic_slug": "vanderbilt_wrought_iron_f",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "11 East Sixty-second Street",
+      "beat_length_class": "mid",
+      "script_body": "The fabulous beaux-arts townhouse at 11 East Sixty-second Street is the Fabbri Mansion, commissioned and built in 1900 for William Vanderbilt's eldest daughter, Margaret Louisa Vanderbilt Shepard, who presented it to her daughter Edith and her son-in-law. The name Fabbri is for Edith's husband — note the F's designed into the wrought-iron balconies. Inside survive a wholly original nineteenth-century interior, with 1890s mahogany paneling in a twenty-five-by-forty-one-foot dining room, and walk-in safes and coal bins untouched for generations. The Fabbris left after only a year, preferring the more bucolic Carnegie Hill.",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "Margaret Louisa Vanderbilt Shepard",
+        "William Vanderbilt",
+        "Edith Fabbri",
+        "Ernesto Fabbri"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Fabbri townhouse",
+      "physical_cues": [
+        {
+          "cue": "The F's designed into the wrought-iron balconies of the beaux-arts facade",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Beaux-arts townhouse at 11 E 62nd built 1900 for Margaret Louisa Vanderbilt Shepard, given to daughter Edith and her husband Fabbri",
+        "F's worked into the wrought-iron balconies",
+        "Original interior with 1890s mahogany paneling; Fabbris left after a year for Carnegie Hill"
+      ],
+      "source_passage": "The fabulous beaux-arts townhouse at 11East Sixty-second Street is known as the Fabbri Mansion. It was commissioned and built in 1900for William Vanderbilt's eldest daughter, Margaret Louisa Vanderbilt Shepard, who then presented it to her daughter Edith and her son-in-law. The name Fabbri is for Edith's husband—note the F's designed into the wrought-iron balconies. Some of the many splendid trappings of this extraordinary building include a wholly original nineteenth-century interior, with 1890s mahogany paneling in a twenty-five- by forty-one-foot dining room and walk-in safes and coal bins untouched for generations. ...the Fabbris left after only a year, preferring the more bucolic qualities of Carnegie Hill to the north.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fifth_avenue_synagogue_historic_arch_big-onion-ten-historic-tours_cats_eye_sephardic_plan",
+      "city_name": "new_york",
+      "poi_name": "Fifth Avenue Synagogue",
+      "lens": "historic_arch",
+      "topic_slug": "cats_eye_sephardic_plan",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "5 East Sixty-second Street",
+      "beat_length_class": "mid",
+      "script_body": "A few doors from the Fabbri Mansion, at 5 East Sixty-second Street, is the Fifth Avenue Synagogue, with mid-1950s cat's-eye windows of elliptical stained glass. The architect, Percival Goodman, met the challenge of the narrow lot through the traditional Sephardic layout, which calls for a bimah and ark in a clear central area with facing sections of worshipers — a centralized plan that, unlike the more common arrangement where rabbi and cantor face the audience from the front, lets congregants better hear the service. Goodman, brother of the social critic Paul Goodman with whom he wrote Communitas, designed more than fifty synagogues in all.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Percival Goodman",
+        "Paul Goodman",
+        "Communitas"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Sephardic central plan",
+      "physical_cues": [
+        {
+          "cue": "Mid-1950s cat's-eye windows with elliptical stained glass on the facade",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "bimah",
+          "gloss": "raised platform in a synagogue from which the Torah is read"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Fifth Avenue Synagogue at 5 E 62nd by Percival Goodman, mid-1950s cat's-eye stained-glass windows",
+        "Uses a centralized Sephardic plan with bimah and ark in a central area",
+        "Goodman, brother of Paul Goodman, co-wrote Communitas and designed 50+ synagogues"
+      ],
+      "source_passage": "Just a few doors from the Fabbri Mansion, at 5East Sixty-second Street, is the Fifth Avenue Synagogue. Check out the mid-1950s cat's-eye windows, with elliptical stained glass. The architect, Percival Goodman, ingeniously dealt with the synagogue's narrow lot by finding a solution in the traditional Sephardic layout, which calls for a bimah and ark in a clear central area, with facing sections of worshipers. This centralized plan, in contrast to the more common layout where rabbi and cantor face the audience from the front, allows congregants to better hear the service. ... Architect Percival Goodman is the brother of the great social critic Paul Goodman. They cowrote the late 1940s tract Communitas... In all, Goodman has designed more than fifty synagogues.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_knickerbocker_club_hidden_history_big-onion-ten-historic-tours_irving_knickerbocker_word",
+      "city_name": "new_york",
+      "poi_name": "Knickerbocker Club",
+      "lens": "hidden_history",
+      "topic_slug": "irving_knickerbocker_word",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Knickerbocker Club, on the southeast corner of Fifth Avenue and Sixty-second Street, was founded in 1871 as a reaction to the eased entry requirements at other clubs. It was Washington Irving who coined the word knickerbocker for New York's most socially prominent families — those who could trace their line to the original Dutch settlers — in his 1809 comic history, A History of New York, attributed to the imaginary Dutch-American scholar \"Dietrich Knickerbocker.\" The book became part of New York folklore. Among the club's founders were Alexander Hamilton's grandson, John Jacob Astor, and Moses Lazarus, father of Emma Lazarus.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Washington Irving",
+        "A History of New York",
+        "Dietrich Knickerbocker",
+        "John Jacob Astor",
+        "Moses Lazarus",
+        "Emma Lazarus",
+        "Alexander Hamilton"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "knickerbocker origin",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Knickerbocker Club founded 1871, SE corner of Fifth and 62nd",
+        "Washington Irving coined 'knickerbocker' in his 1809 A History of New York via fictional Dietrich Knickerbocker",
+        "Founders included Hamilton's grandson, John Jacob Astor, and Moses Lazarus (Emma's father)"
+      ],
+      "source_passage": "The Knickerbocker Club is located on the southeast corner of Fifth Avenue and Sixty-second Street. One of the most exclusive clubs in New York, it was founded in 1871as a reaction to the eased entry requirements at other clubs. It was Washington Irving who coined the word knickerbocker to refer to New York's most socially prominent families—more specifically, to describe any New Yorker who could trace his or her family to the original Dutch settlers. The word derived from Irving's 1809comic history of the Dutch regime in New York, A History of New York, authored by the imaginary \"Dietrich Knickerbocker\"... Club founders include Alexander Hamilton's grandson, John Jacob Astor, and Moses Lazarus, father to Emma...",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_810_fifth_avenue_famous_residents_big-onion-ten-historic-tours_rockefeller_nixon_elevators",
+      "city_name": "new_york",
+      "poi_name": "Fifth Avenue (apartment houses, 63rd Street)",
+      "lens": "famous_residents",
+      "topic_slug": "rockefeller_nixon_elevators",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "810 Fifth Avenue",
+      "beat_length_class": "mid",
+      "script_body": "The apartment house at 810 Fifth, greeting you with a grand iron marquee, was laid out with just one apartment per floor at an average of five thousand square feet. Its best-known resident to New Yorkers was former governor Nelson Rockefeller, who was so charmed by the building that he lived here with both his first and second wives. In 1963, Richard Nixon bought the fifth-floor apartment, shortly after Nelson and his second wife, Happy, moved in. Five years later the two men were dueling Republican candidates for the nomination — and during the battle they used different elevators to reach their respective apartments.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Nelson Rockefeller",
+        "Richard Nixon",
+        "Happy Rockefeller",
+        "Andrew Alpern"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Rockefeller Nixon elevators",
+      "physical_cues": [
+        {
+          "cue": "The grand iron marquee at the entrance of 810 Fifth Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "810 Fifth had one apartment per floor; Nelson Rockefeller lived there with both wives",
+        "Nixon bought the fifth-floor apartment in 1963",
+        "As rival 1968 candidates Rockefeller and Nixon used different elevators"
+      ],
+      "source_passage": "The apartment house 810Fifth greets you with a grand iron marquee. Like many apartment buildings of the time, it was laid out with just one apartment per floor...This building has had many noted residents over the years, but perhaps the best known to New Yorkers was former governor Nelson Rockefeller. In fact, Rockefeller was so charmed by the building's locale that he lived here with both his first and second wives. ...in 1963, Richard Nixon purchased the fifth-floor apartment at 810Fifth Avenue, shortly after Nelson and his second wife, Happy, moved into their new apartment. ...Five years later, Rockefeller and Nixon were dueling Republican candidates for the nomination. During the political battle, they used different elevators to get to their respective apartments.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fifth_avenue_apartment_houses_63rd_street_dark_history_big-onion-ten-historic-tours_nixon_coop_rejection",
+      "city_name": "new_york",
+      "poi_name": "Fifth Avenue (apartment houses, 63rd Street)",
+      "lens": "dark_history",
+      "topic_slug": "nixon_coop_rejection",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "817 Fifth Avenue",
+      "beat_length_class": "seasoning",
+      "script_body": "After his aborted second term, Nixon hoped to return to his old block, but the co-op board of 817 rejected him — not over politics, but because they didn't want to draw the media, protesters, and noisome Secret Service presence to themselves. He bought a twelve-room townhouse at 142 East Sixty-fifth Street instead.",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Richard Nixon"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Nixon coop rejection",
+      "physical_cues": [
+        {
+          "cue": "Facade of 817 Fifth Avenue, the co-op that rejected Nixon",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The co-op board of 817 Fifth rejected Nixon over attention/Secret Service concerns",
+        "Nixon bought a townhouse at 142 East 65th instead"
+      ],
+      "source_passage": "After Nixon's aborted second term, he decided to move back to New York... The co-op board of 817, however, disagreed... The co-op board rejected him on the grounds that they did not want to draw attention to themselves—from the media and potential protestors. The Secret Service presence would also have been rather noisome. ...Shortly after his rejection, he purchased a twelve-room townhouse at 142East Sixty-fifth Street for $750,000.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_war_conflict_big-onion-ten-historic-tours_arsenal_mexican_war_arms",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "war_conflict",
+      "topic_slug": "arsenal_mexican_war_arms",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": "arsenal",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Just inside Central Park at Sixty-fourth Street stands the Arsenal, built 1848 to 1851 — one of only two structures in the park that predate the park itself. When built it housed the majority of New York State's ammunition during the war with Mexico, set deliberately four miles from City Hall as a safety measure. During the Civil War it served as a bunkhouse for Union troops, and later became, in turn, the city's Museum of Natural History, park headquarters, a police station, and a weather observatory; since 1934 it has housed the city's Parks headquarters. Look for the eagle over the door and the pyramids of cannonballs on the facade.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Arsenal",
+        "Mexican War",
+        "Civil War",
+        "Central Park Conservancy"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Arsenal arms depot",
+      "physical_cues": [
+        {
+          "cue": "The eagle over the door of the Arsenal",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Pyramids made of cannonballs on the facade, and eight crenellated octagonal towers",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Arsenal (1848–51) is one of only two structures predating Central Park",
+        "Held NY State's ammunition during the Mexican War, four miles from City Hall",
+        "Later served as Museum of Natural History, police station, weather observatory; Parks HQ since 1934",
+        "Eagle over the door, cannonball pyramids, octagonal towers"
+      ],
+      "source_passage": "Directly in front of you is the Arsenal (1848–51). It has the distinction of being one of only two structures in Central Park that actually predates the park's development. When built, it housed the majority of New York State's ammunition during the war with Mexico. It was deliberately housed four miles from City Hall, a safety measure... During the Civil War, the arsenal was a bunkhouse for Union troops. It later became, in turn, New York City's Museum of Natural History; park headquarters...a police station; a weather observatory; and, since 1934, home to the city's Headquarters for Parks and the Central Park Conservancy. Check out the eagle over the door and the pyramids made of cannonballs on the facade. The Arsenal also has eight crenellated octagonal towers.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wildenstein_gallery_visual_art_big-onion-ten-historic-tours_julian_abele_black_architect",
+      "city_name": "new_york",
+      "poi_name": "Wildenstein Gallery",
+      "lens": "visual_art",
+      "topic_slug": "julian_abele_black_architect",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "19 East Sixty-fourth Street",
+      "beat_length_class": "mid",
+      "script_body": "The famous Wildenstein Gallery, at 19 East Sixty-fourth Street, was founded in Paris in 1875 by Nathan Wildenstein, who left his native Alsace after the Franco-Prussian War to remain a French citizen. Raphael's Madonna and Child and Van Gogh's Entrance to the Public Garden at Arles are but two of the thousands of works sold over the years to major museums and collectors. The building itself was built in 1932 by Horace Trumbauer with Julian Abele — one of the few Black architects working in a major firm at that time, and the lead architect of the Duke University campus in North Carolina.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Nathan Wildenstein",
+        "Franco-Prussian War",
+        "Raphael",
+        "Van Gogh",
+        "Horace Trumbauer",
+        "Julian Abele",
+        "Duke University"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Julian Abele",
+      "physical_cues": [
+        {
+          "cue": "Facade of the 1932 Wildenstein building at 19 East Sixty-fourth Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Wildenstein Gallery at 19 E 64th founded in Paris 1875 by Nathan Wildenstein",
+        "Sold Raphael's Madonna and Child and Van Gogh's Entrance to the Public Garden at Arles",
+        "Building by Horace Trumbauer with Julian Abele, a rare Black architect and lead architect of Duke University"
+      ],
+      "source_passage": "The famous Wildenstein Gallery is found at 19East Sixty-fourth Street. Founded in Paris in 1875by Nathan Wildenstein (1852–1934), who chose to leave his native Alsace in the wake of the Franco-Prussian War in order to remain a French citizen... Raphael's Madonna and Child (ca. 1504) and Van Gogh's Entrance to the Public Garden at Arles (1888) are but two of the thousands of works sold over the years... The structure was built in 1932by Horace Trumbauer with Julian Abele, one of the few black architects working in a major firm at that time... Abele is the lead architect of the Duke University campus in North Carolina.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_park_avenue_armory_historic_arch_big-onion-ten-historic-tours_seventh_regiment_drill_hall",
+      "city_name": "new_york",
+      "poi_name": "Park Avenue Armory",
+      "lens": "historic_arch",
+      "topic_slug": "seventh_regiment_drill_hall",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "The Seventh Regiment Armory, built by Charles Clinton in 1877 to 1880, is the only serious holdover from when the New York Central Railroad came barreling down Fourth Avenue. The socially prominent Seventh Regiment had formed in 1806 and, in 1824, became the first regiment to adopt the term National Guard; in 1874 the city leased this site to it, and the regiment raised the money for a monumental new armory. This extravagantly turreted red brick and brownstone structure became the prototype for the medieval-inspired armories built across New York for the next fifty years. The wealth of the regiment shows in its interiors: Louis Tiffany, Stanford White, and the Herter Brothers all worked on rooms here, and all ten companies hired the foremost New York design firms for their second-floor company rooms, fitted out with Renaissance woodwork, ornamented piano alcoves, stained glass, and parquet floors. The drill room — two hundred by three hundred feet and one hundred feet high — is one of the largest unobstructed spaces in New York. And the building is still a living, breathing armory, where you'll often see National Guardsmen amid Sunday-afternoon antique enthusiasts.",
+      "duration_sec": 76,
+      "kid_friendly": "yes",
+      "entities": [
+        "Seventh Regiment",
+        "Charles Clinton",
+        "New York Central Railroad",
+        "National Guard",
+        "Louis Tiffany",
+        "Stanford White",
+        "Herter Brothers"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "armory prototype",
+      "physical_cues": [
+        {
+          "cue": "The extravagantly turreted red brick and brownstone exterior on Park Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The drill room, 200 by 300 feet and 100 feet high — one of the largest unobstructed spaces in New York",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Seventh Regiment Armory built by Charles Clinton 1877–80, prototype for NYC armories",
+        "Seventh Regiment formed 1806, first to adopt 'National Guard' in 1824",
+        "Tiffany, Stanford White, Herter Brothers designed interiors; all ten companies hired top firms",
+        "Drill room 200x300 ft, 100 ft high; still an active armory"
+      ],
+      "source_passage": "The Seventh Regiment Armory, built by Charles Clinton in 1877–80, is the only serious holdover from when the New York Central Railroad came barreling down Fourth Avenue. The socially prominent Seventh Regiment was formed in 1806and in 1824became the first regiment to adopt the term National Guard. In 1874the city leased this site to the regiment... became a prototype for the later medieval-inspired armories throughout New York City... Louis Tiffany, Stanford White, and the Herter Brothers all were responsible for parts of the interior. The drill room, a massive two hundred by three hundred feet and one hundred feet high, is one of the largest unobstructed spaces in New York. ...And yes, the building is still a living, breathing armory. You will often see National guardsmen mingling here amid Sunday-afternoon antique enthusiasts.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_roosevelt_house_famous_residents_big-onion-ten-historic-tours_fdr_polio_sara_intrusions",
+      "city_name": "new_york",
+      "poi_name": "Roosevelt House",
+      "lens": "famous_residents",
+      "topic_slug": "fdr_polio_sara_intrusions",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "47–49 East Sixty-fifth Street",
+      "beat_length_class": "mid",
+      "script_body": "Sara Roosevelt, mother of Franklin Delano Roosevelt, commissioned Charles Adams Platt to design the twin buildings at 47–49 East Sixty-fifth Street in 1907, shortly after FDR married Eleanor — a wedding present. The two homes share a single entranceway and have interconnecting doors, though Eleanor was not fond of Sara's penchant for bursting in, as she often did. Franklin and Eleanor lived here on and off for some twenty years, and it was in the fourth-floor bedroom that FDR convalesced from polio in 1921 and 1922. After Sara's death in 1941, the building was purchased for use by Hunter College.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sara Roosevelt",
+        "Franklin Delano Roosevelt",
+        "Eleanor Roosevelt",
+        "Charles Adams Platt",
+        "Hunter College"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "FDR polio house",
+      "physical_cues": [
+        {
+          "cue": "The single shared entranceway of the two connected townhouses at 47–49 East Sixty-fifth Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Sara Roosevelt commissioned Charles Adams Platt to build 47–49 E 65th in 1907 as a wedding gift",
+        "Twin homes with interconnecting doors; Eleanor disliked Sara's intrusions",
+        "FDR convalesced from polio in the fourth-floor bedroom 1921–22",
+        "Building bought by Hunter College after Sara's death in 1941"
+      ],
+      "source_passage": "Sara Roosevelt, mother of Franklin Delano Roosevelt, commissioned architect Charles Adams Platt to design the buildings (which appear to be a single building) at 47–49East Sixty-fifth Street in 1907, shortly after FDR married Eleanor. The house was meant to be a wedding present. The buildings have a single entranceway and interconnecting doors linking the two homes. Eleanor, however, was not fond of Sara's penchant for bursting into her home... It was in the fourth-floor bedroom that FDR convalesced from polio in 1921–22. After Sara's death in 1941, the building was purchased for use by Hunter College.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_temple_emanu_el_historic_worship_big-onion-ten-historic-tours_largest_reform_astor_site",
+      "city_name": "new_york",
+      "poi_name": "Temple Emanu-El",
+      "lens": "historic_worship",
+      "topic_slug": "largest_reform_astor_site",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "Temple Emanu-El, at 840 Fifth Avenue on the corner of Sixty-fifth Street, is the largest Reform synagogue in the world, edging out the Dohány synagogue in Budapest. The congregation, formed in 1845, joined with Temple Beth-El in 1927. On this very site once stood Richard Morris Hunt's double-size mansion for the Mrs. Astor — Caroline Schermerhorn Astor — and, alongside it, the home of her son John Jacob Astor; both masterpieces came down to make way for the synagogue. Built in a Byzantine and Romanesque style that mixes western European and Near Eastern forms, the building is particularly expressive of the Jewish diaspora. Its main sanctuary rises to a hundred and three feet — St. Patrick's Cathedral, by contrast, is a hundred and eight — and the auditorium runs a hundred and fifty feet long. The side walls are among the largest load-bearing masonry walls anywhere, carrying huge transverse steel beams. Step inside at 1 East Sixty-fifth Street: the rose window, stained glass, mosaics, and marble podium are otherworldly.",
+      "duration_sec": 66,
+      "kid_friendly": "yes",
+      "entities": [
+        "Temple Emanu-El",
+        "Temple Beth-El",
+        "Richard Morris Hunt",
+        "Caroline Schermerhorn Astor",
+        "John Jacob Astor",
+        "St. Patrick's Cathedral",
+        "Dohány synagogue"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "largest Reform synagogue",
+      "physical_cues": [
+        {
+          "cue": "The Byzantine/Romanesque limestone facade at 840 Fifth Avenue and 65th Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Inside (enter at 1 East Sixty-fifth Street): the rose window, stained glass, mosaics, and marble podium",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Temple Emanu-El at 840 Fifth/65th is the largest Reform synagogue in the world",
+        "Congregation formed 1845, joined Temple Beth-El in 1927",
+        "Built on the site of Mrs. Astor's and John Jacob Astor's mansions by Richard Morris Hunt",
+        "Sanctuary rises 103 ft (St. Patrick's is 108); auditorium 150 ft long; massive load-bearing walls"
+      ],
+      "source_passage": "Temple Emanu-El, at 840Fifth Avenue on the corner of Sixty-fifth Street, is the largest Reform synagogue in the world (edging out the Dohany synagogue in Budapest). It joined in 1927with Temple Beth-El... On this site once stood Richard Morris Hunt's double-size mansion for the Mrs. Astor—Caroline Schermerhorn Astor. Alongside hers was the...home of her son, John Jacob Astor. Both masterpieces came down to make way for the synagogue. ...Temple Emanu-El's main sanctuary rises to 103feet (St. Patrick's Cathedral, by contrast, is 108feet high)...The auditorium is 150feet long... The side walls...are some of the largest load-bearing masonry walls anywhere, supporting huge transverse steel beams. ...Do step inside, entering at 1East Sixty-fifth Street. The rose window, stained glass, mosaics, and marble and granite podium are otherworldly.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_frick_collection_visual_art_big-onion-ten-historic-tours_union_buster_lenox_library",
+      "city_name": "new_york",
+      "poi_name": "Frick Collection",
+      "lens": "visual_art",
+      "topic_slug": "union_buster_lenox_library",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Frick Collection, at 1 East Seventieth Street, is the Indiana-limestone former home of art collector, coal magnate, and union buster Henry Clay Frick, designed by Carrère & Hastings, architects of the New York Public Library. Frick is infamous for helping instigate the 1892 crackdown on the Homestead strikers at the Carnegie Steel plant; he was also fearful that the Pittsburgh fumes would tarnish his prized works. John Russell Pope turned the building into a museum in the 1930s, and the central court with its fountain is one of the city's finest public spaces. The galleries hold Vermeers, Rembrandts, Titians, and Bellinis — and by the gallery's charter, nothing travels.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henry Clay Frick",
+        "Carrère & Hastings",
+        "New York Public Library",
+        "Homestead strike",
+        "Carnegie Steel",
+        "John Russell Pope",
+        "Vermeer",
+        "Rembrandt",
+        "Titian",
+        "Bellini"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "Frick union buster",
+      "physical_cues": [
+        {
+          "cue": "The Indiana-limestone Frick mansion facade at 1 East Seventieth Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The central court with fountain inside",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Frick Collection at 1 E 70th is Frick's former home by Carrère & Hastings",
+        "Frick helped instigate the 1892 Homestead strike crackdown at Carnegie Steel",
+        "John Russell Pope made it a museum in the 1930s; nothing travels per the charter",
+        "Holds Vermeer, Rembrandt, Titian, Bellini"
+      ],
+      "source_passage": "The Frick Collection is located at 1East Seventieth Street. This Indiana limestone building by Carrere & Hastings, designers of the New York Public Library, is the former home of the art collector, coal magnate, and union buster Henry Clay Frick. He is infamous for helping instigate the crackdown on the Homestead strikers at the Carnegie Steel Plant in Pennsylvania in 1892. Apart from his strike-smashing tendencies, Frick knew his art and was fearful that the Pittsburgh fumes would tarnish his prized works. ...John Russell Pope turned the building into a museum. The central court with fountain is one of New York City's finest public spaces. ...There are several Vermeer, Rembrandt, Titian, Bellini, and other old masters.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_richard_morris_hunt_memorial_visual_art_big-onion-ten-historic-tours_french_art_architecture_figures",
+      "city_name": "new_york",
+      "poi_name": "Richard Morris Hunt Memorial",
+      "lens": "visual_art",
+      "topic_slug": "french_art_architecture_figures",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Directly opposite the Frick, between Seventieth and Seventy-first Streets, stands the Richard Morris Hunt Memorial, commemorating one of America's most influential architects. Hunt is known for the base of the Statue of Liberty, the Fifth Avenue facade of the Metropolitan Museum of Art, and numerous mansions; he was also the first American trained at the École des Beaux Arts in Paris. Colleagues erected this monument in 1898, and Daniel Chester French, of Lincoln Memorial fame, sculpted the bronze bust and the two female figures — the left representing Art, the right Architecture. The figure on the right holds a replica of one of Hunt's buildings from the 1893 World's Columbian Exposition, the \"White City.\"",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Richard Morris Hunt",
+        "Statue of Liberty",
+        "Metropolitan Museum of Art",
+        "École des Beaux Arts",
+        "Daniel Chester French",
+        "World's Columbian Exposition"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "Hunt memorial",
+      "physical_cues": [
+        {
+          "cue": "The two female figures (Art on the left, Architecture on the right) flanking the bronze bust of Hunt",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The replica building held in the hand of the right-hand figure",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "École des Beaux Arts",
+          "gloss": "the renowned fine-arts and architecture academy in Paris"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Hunt Memorial (1898) opposite the Frick honors architect Richard Morris Hunt",
+        "Hunt designed the Statue of Liberty base and the Met's Fifth Avenue facade; first American at the École des Beaux Arts",
+        "Daniel Chester French sculpted the bust and the figures of Art and Architecture",
+        "Right figure holds a replica of a Hunt building from the 1893 World's Columbian Exposition"
+      ],
+      "source_passage": "Cross Fifth Avenue and locate the Richard Morris Hunt Memorial directly opposite the Frick... Richard Morris Hunt (1827–95) is known for the base of the Statue of Liberty; the Fifth Avenue facade of the Metropolitan Museum of Art... colleagues erected this monument in 1898. Daniel Chester French, of Lincoln Memorial fame, sculpted the two female figures (the left representing Art and the right Architecture), as well as the bronze bust of Hunt. Hunt was the first American to be trained at the famed École des Beaux Arts in Paris. He is perhaps best known for his work at the World's Columbian Exposition of 1893in Chicago (the \"White City\")... A replica of one of these buildings is being held in the hands of the female figure on the right.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_club_hidden_history_big-onion-ten-historic-tours_oldest_club_confederate_rift",
+      "city_name": "new_york",
+      "poi_name": "Union Club",
+      "lens": "hidden_history",
+      "topic_slug": "oldest_club_confederate_rift",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On the northeast corner of Sixty-ninth Street and Park Avenue, at 701 Park, is the prestigious Union Club. Founded in 1836 by men from the top echelons of New York's upper crust, it is the city's oldest social club — and the very one that kept out J. P. Morgan's comrades. Many of the younger clubs in the city descend from it. One in particular, the Union League Club, was founded by Republicans who left the Union Club in 1863, incensed by its failure to expel Confederate sympathizers. Morgan, we now see, was not alone in his grievance.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Union Club",
+        "J. Pierpont Morgan",
+        "Union League Club"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "wry",
+      "subject_tag": "oldest social club",
+      "physical_cues": [
+        {
+          "cue": "The Union Club building on the northeast corner of Sixty-ninth and Park (701 Park Avenue)",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Union Club, 701 Park at 69th, founded 1836, is NYC's oldest social club",
+        "It rejected J. P. Morgan's comrades",
+        "Union League Club split off in 1863 over the Union Club's failure to expel Confederate sympathizers"
+      ],
+      "source_passage": "On the northeast corner of Sixty-ninth Street and Park Avenue, at 701Park, is the prestigious Union Club. Founded in 1836by men from the top echelons of New York City's upper crust, it is New York's oldest social club and the infamous one that kept out J. P. Morgan's comrades. ...One in particular, the Union League Club on Thirty-eighth and Park, was founded by Republicans who left the Union Club in 1863, incensed by its failure to expel Confederate sympathizers. Morgan, we now see, was not alone.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_asia_society_visual_art_big-onion-ten-historic-tours_rockefeller_collection_stone_cooperation",
+      "city_name": "new_york",
+      "poi_name": "Asia Society",
+      "lens": "visual_art",
+      "topic_slug": "rockefeller_collection_stone_cooperation",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Asia Society, on the northeast corner of Park and Seventieth Street, was founded in 1956 by John D. Rockefeller III to foster understanding between Asians and Americans — and to house his massive Asian art collection. Asia House on East Sixty-fourth Street was its first home; in 1981 the Society moved here, into a building of red sandstone from Rajasthan, India and polished granite from Oklahoma, the combination of stones itself meant to illustrate the cooperation between Asia and America.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Asia Society",
+        "John D. Rockefeller III"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "Asia Society stone",
+      "physical_cues": [
+        {
+          "cue": "The red sandstone (Rajasthan) and polished granite (Oklahoma) facade on the NE corner of Park and 70th",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Asia Society founded 1956 by John D. Rockefeller III; first at Asia House on E 64th",
+        "Moved to Park and 70th in 1981",
+        "Building of Rajasthan red sandstone and Oklahoma granite symbolizing Asia-America cooperation"
+      ],
+      "source_passage": "The Asia Society, on the northeast corner of Park and Seventieth Street, was founded in 1956by John D. Rockefeller III to foster understanding between Asians and Americans (and to have a repository for his massive Asian art collection). Asia House on East Sixty-fourth Street was the first home of the institution. In 1981, the Asia Society moved to this location on Park Avenue, a red sandstone (courtesy of Rajasthan, India) and polished granite (from Oklahoma) building. The combination of stone further illustrates the cooperation between Asia and America.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_avenue_science_tech_big-onion-ten-historic-tours_sarnoff_titanic_message",
+      "city_name": "new_york",
+      "poi_name": "Madison Avenue",
+      "lens": "science_tech",
+      "topic_slug": "sarnoff_titanic_message",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "44 East Seventy-first Street",
+      "beat_length_class": "mid",
+      "script_body": "The radio- and television-broadcasting pioneer David Sarnoff lived in the six-story, thirty-room townhouse at 44 East Seventy-first Street until his death in 1971, having risen from a five-dollar-and-fifty-cent-a-week office boy to chairman of RCA and later NBC. On April 14, 1912, Sarnoff was working the Marconi station atop Wanamaker's department store on Eighth Street when he picked up a relayed message: \"S.S. Titanic ran into iceberg, sinking fast.\" For the next seventy-two hours, the story goes, he stayed at his post, giving the world its first authentic news of the disaster.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "David Sarnoff",
+        "RCA",
+        "NBC",
+        "Titanic",
+        "Wanamaker's"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "Sarnoff Titanic",
+      "physical_cues": [
+        {
+          "cue": "The six-story, thirty-room townhouse at 44 East Seventy-first Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "David Sarnoff lived at 44 East 71st until his death in 1971",
+        "Rose from $5.50-a-week office boy to chairman of RCA and NBC",
+        "On April 14, 1912 he picked up the Titanic distress message at the Marconi station atop Wanamaker's and stayed 72 hours"
+      ],
+      "source_passage": "The radio- and television-broadcasting pioneer David Sarnoff lived in the six-story, thirty-room townhouse at 44East Seventy-first Street for many years, until death in 1971. Sarnoff rose from a $5.50-a-week office boy to chairman of RCA Corporation and later NBC. ...On April 14, 1912, Sarnoff was working at the Marconi station atop Wanamaker's department store on Eighth Street when he picked up a message relayed from ships at sea: \"S.S. Titanic ran into iceberg, sinking fast.\" For the next seventy-two hours, the story goes, he remained at his post, giving the world the first authentic news of the disaster.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_avenue_dark_history_big-onion-ten-historic-tours_rhinelander_sugar_house_prison",
+      "city_name": "new_york",
+      "poi_name": "Madison Avenue",
+      "lens": "dark_history",
+      "topic_slug": "rhinelander_sugar_house_prison",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "867 Madison Avenue",
+      "beat_length_class": "seasoning",
+      "script_body": "The Gertrude Rhinelander House, now Polo Ralph Lauren, stands at 867 Madison on the corner of Seventy-second Street. The Rhinelanders made their fortune in colonial-era sugar; their Rhinelander Sugar House, behind the present Municipal Building downtown, became a brutal prison for American soldiers during the British occupation of 1776 to 1783. Gertrude herself never got to live here — her husband died while it was being built, and she couldn't afford to keep it.",
+      "duration_sec": 30,
+      "kid_friendly": "no",
+      "entities": [
+        "Gertrude Rhinelander",
+        "Rhinelander Sugar House",
+        "Municipal Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "somber",
+      "subject_tag": "Rhinelander sugar prison",
+      "physical_cues": [
+        {
+          "cue": "The Gertrude Rhinelander House (now Polo Ralph Lauren) at 867 Madison, corner of 72nd",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Gertrude Rhinelander House at 867 Madison is now Polo Ralph Lauren",
+        "The Rhinelander Sugar House was a prison for American soldiers during the 1776–83 British occupation",
+        "Gertrude never lived here; her husband died during construction and she couldn't afford it"
+      ],
+      "source_passage": "The Gertrude Rhinelander House, now Polo Ralph Lauren, stands at 867Madison, on the southeast corner of Seventy-second Street. The Rhinelanders where heavily involved in the colonial-era sugar business. They owned the Rhinelander Sugar House, which was behind the current site of the Municipal Building downtown. During the British occupation of New York City from 1776to 1783, their warehouse was a brutal prison for American soldiers. ...Gertrude Rhinelander never had the good fortune to reside here—her husband...died while it was being built, and she couldn't afford to keep the home.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_whitney_museum_of_american_art_visual_art_big-onion-ten-historic-tours_met_declined_collection",
+      "city_name": "new_york",
+      "poi_name": "Whitney Museum of American Art",
+      "lens": "visual_art",
+      "topic_slug": "met_declined_collection",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Across Madison Avenue stands the imposing, perhaps out-of-place Whitney Museum of American Art, designed by Bauhaus architect Marcel Breuer and built between 1963 and 1966. It houses the twentieth-century collection of Gertrude Vanderbilt Whitney, great-granddaughter of Cornelius \"Commodore\" Vanderbilt. A sculptor and patron, Whitney bought and exhibited John Sloan, Edward Hopper, and Stuart Davis early in their careers. By 1929 her collection ran to hundreds of master works, and she offered it to the Metropolitan Museum of Art — which declined. So she set up her own museum, placing primacy on latter-day artists.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Whitney Museum of American Art",
+        "Marcel Breuer",
+        "Gertrude Vanderbilt Whitney",
+        "Cornelius Vanderbilt",
+        "John Sloan",
+        "Edward Hopper",
+        "Stuart Davis",
+        "Metropolitan Museum of Art"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "Met declined Whitney",
+      "physical_cues": [
+        {
+          "cue": "The imposing Marcel Breuer building across Madison Avenue at 75th Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Whitney Museum by Marcel Breuer, built 1963–66, on Madison at 75th",
+        "Houses Gertrude Vanderbilt Whitney's 20th-century collection",
+        "Whitney offered her collection to the Met in 1929; the Met declined, so she founded her own museum"
+      ],
+      "source_passage": "Across Madison Avenue is the imposing, and perhaps out-of-place, Whitney Museum of American Art. Designed by Bauhaus architect Marcel Breuer and built between 1963to 1966, the Whitney houses the twentieth-century art collection of Gertrude Vanderbilt Whitney (1875–1942). ...Whitney was a sculptor and patron of American art and bought and exhibited painters such as John Sloan, Edward Hopper, and Stuart Davis early in their careers. By 1929her collection contained hundreds of twentieth-century master works. At that time she approached the Metropolitan Museum of Art to see if they had interest in permanently exhibiting her collection; the Met declined her offer. Whitney instead decided to exhibit her collection on its own merits and set up a museum that placed primacy on latter-day artists.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_grand_army_plaza_manhattan_stop_orientation_big-onion-ten-historic-tours_start_sherman_statue",
+      "city_name": "new_york",
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "lens": "hidden_history",
+      "topic_slug": "start_sherman_statue",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": "sherman-monument",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Begin at the gilded statue of General William Tecumseh Sherman, at Fifty-ninth Street and Fifth Avenue, the southeast corner of Central Park. From here you'll walk a lower slice of the Upper East Side — up to Seventy-fifth Street, weaving through Fifth, Madison, and Park Avenues. Much of what you'll see falls within the Upper East Side Historic District, designated in 1981.",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "William Tecumseh Sherman",
+        "Upper East Side Historic District"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "tour start staging",
+      "physical_cues": [
+        {
+          "cue": "The gilded Sherman statue at Fifth Avenue and 59th Street, southeast corner of Central Park",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Tour starts at the Sherman statue at 59th and Fifth",
+        "Walks from 59th up to 75th through Fifth, Madison, Park",
+        "Much of the route is in the Upper East Side Historic District, designated 1981"
+      ],
+      "source_passage": "Start: The statue of William Tecumseh Sherman at Fifty-ninth Street and Fifth Avenue. ...In the present tour, you will walk on a lower slice of this, from Fifty-ninth Street up to Seventy-fifth, weaving your way through Fifth, Madison, and Park Avenues. Much of the area you will see is now part of the Upper East Side Historic District, which runs from Fifty-ninth Street to Seventy-eighth...and was designated in 1981.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_park_avenue_armory_transit_big-onion-ten-historic-tours_to_armory_park_tracks",
+      "city_name": "new_york",
+      "poi_name": "Park Avenue Armory",
+      "lens": "hidden_history",
+      "topic_slug": "to_armory_park_tracks",
+      "book_slug": "big-onion-ten-historic-tours",
+      "sub_location": null,
+      "trigger_address": "Park Avenue at Sixty-fifth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Cross to the east side of Park and walk north to the Armory. As you go, picture this avenue's past: from dirt road to railroad to road of riches. In the 1830s it was filled with track for the New York and Harlem Railroad and known as Fourth Avenue; only after the New York Central electrified its line in 1907, sinking the tracks underground, did Park become the landscaped boulevard its name implies.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York and Harlem Railroad",
+        "New York Central Railroad"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "Park Avenue tracks",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Park Avenue went from dirt road to railroad to boulevard",
+        "In the 1830s it carried the NY and Harlem Railroad and was called Fourth Avenue",
+        "NY Central electrified in 1907, sinking tracks underground"
+      ],
+      "source_passage": "On reaching Park Avenue, cross and walk north along the east side of Park to the Armory. ...From dirt road to railroad to road of riches, Park Avenue has gone through several prominent permutations... In the 1830s, the road was filled with railroad track and became known as Fourth Avenue. ...With the New York Central Railroad's transition from steam to electric in 1907, the railroad lines were put underground and Park Avenue became, as its name implies, a beautifully landscaped boulevard with dignified apartment houses.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Upper East Side: Manhattan's Gold Coast"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "PROXIMITY",
+      "description": "New POI 'Fabbri Mansion' (11 E 62nd St) is almost certainly the SAME building as existing POI 'Edith and Ernesto Fabbri House' in the context list. The book names 'Edith's husband' Fabbri; the existing POI is named for Edith and Ernesto Fabbri. They are within ~0m.",
+      "recommendation": "Do NOT create a duplicate POI. At poi-generate/dedup time, alias 'Fabbri Mansion' to existing 'Edith and Ernesto Fabbri House' and attach the Fabbri beat to that POI. NOTE: that existing Fabbri House POI may be a different Fabbri residence (the Fabbris owned 7 E 95th in Carnegie Hill too) — verify the address before merging."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "New POI 'Union Club' (701 Park / 101 E 69th) was tentatively listed with matched_existing='Knickerbocker Club' to surface it, but it is a DISTINCT, genuinely new POI (it is explicitly the rival that rejected Morgan's circle). No Union Club currently exists in the POI list.",
+      "recommendation": "Treat Union Club as a genuinely new POI; matched_existing should be null. Create at poi-generate time."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "New POI 'Copacabana (10 East 60th Street site)' sits on the same East 60th Street block (between Fifth and Madison) as new POIs 'Harmonie Club' (4 E 60th) and 'Grolier Club' (47 E 60th), and existing 'Metropolitan Club' (1 E 60th) — several within ~100m.",
+      "recommendation": "Keep distinct (different addresses on a long block) but flag for user review per the 100m guardrail. The original Copacabana building is demolished; consider whether to retain it as a pop-culture/crime POI or fold its beats into a block-level container."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Book internal inconsistency: it places BOTH the Copacabana AND 'Hotel 14' at '14 East Sixtieth Street' in adjacent sentences ('The Copacabana was at 14 East Sixtieth Street' then 'Next door to the Copacabana, at 14 East Sixtieth, was Hotel 14'). The Copa's historic address is 10 East 60th. Geocoded the Copa POI block-level on East 60th between Fifth and Madison (MEDIUM confidence).",
+      "recommendation": "Use block-level geofence for the Copacabana POI; do not trust the verbatim '14 East Sixtieth' number. Hotel 14 was extracted-skipped as a minor walk-by with no standalone narrative."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Minor date discrepancy (not auto-corrected, not a dispute): the book dates the Whitney's Breuer building 'built between 1963 to 1966'; secondary sources give construction 1964–66 (opened 1966). The 1966 completion is correct. Difference is the construction-start year only.",
+      "recommendation": "Keep source-faithful text. No correction; flagged informationally."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Grolier Club building completion: book says Goodhue 'designed the club in 1916'; sources confirm 1916 commission/lot acquisition with construction completed December 1917. Both are consistent (design 1916, built 1916–17). Kept as written.",
+      "recommendation": "No correction needed."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Dense walk chunk: ~30 distinct stops in the source; many minor walk-by mentions (Sherry Netherland, Bergdorf Goodman, Christ Church, Central Presbyterian, Lotos Club, New India House, 515/610/630/820/912 Fifth/Park residences, Colony Club detail, Jimmy Walker, Lillian Hellman, Arnold Rothstein, Berwind house, Verona, Harkness House, Pulitzer's 73rd-St mansion, Council on Foreign Relations, Hunter College) were extracted-skipped or compressed to keep the beat count <=25 and focus on the strongest, fully-grounded stories. POIs for Christ Church, Colony Club, Lotos Club, Central Presbyterian, Wildenstein were geocoded for future passes even where no beat was emitted this run.",
+      "recommendation": "A future pass (or larger beat budget) could harvest the skipped residences (Jimmy Walker '610 Park', Lillian Hellman '630 Park', Arnold Rothstein '912 Fifth', Berwind '2 E 64th', Verona '32 E 64th', Edward Harkness House '1 E 75th', Joseph Pulitzer Mansion '11 E 73rd') as additional seasoning/famous_residents beats."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 32,
+    "pois_touched": 16,
+    "new_pois": 11,
+    "corrections_applied": 0,
+    "disputes": 0,
+    "anomalies": 5,
+    "lenses_hit": [
+      "war_conflict",
+      "visual_art",
+      "local_legends",
+      "famous_residents",
+      "social_change",
+      "literary_heritage",
+      "historic_arch",
+      "hidden_history",
+      "dark_history",
+      "science_tech",
+      "historic_worship"
+    ],
+    "lenses_missed": [
+      "modern_design",
+      "music_heritage",
+      "street_art",
+      "film_tv",
+      "historic_cuisine",
+      "markets_street_food",
+      "sacred_traditions",
+      "parks_gardens",
+      "waterways_views",
+      "historic_markets"
+    ],
+    "confidence_counts": {
+      "HIGH": 32,
+      "MEDIUM": 0,
+      "LOW": 0
+    }
+  }
+}

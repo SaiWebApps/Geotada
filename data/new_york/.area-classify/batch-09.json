@@ -1,0 +1,355 @@
+[
+  {
+    "name": "Red Hook Winery",
+    "short_description": "A waterside Red Hook tasting room at Pier 41 producing wine on-site from Finger Lakes and Long Island grapes, with cabernet sauvignon and riesling sipped over the water.",
+    "trigger_radius": 10,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The barrel-lined tasting room looking out over the water at Pier 41",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In this stripped-bare Red Hook tasting room, lined with barrels and crowded with chardonnay-sipping locals each weekend, you can sip wines from across New York. Though the grapes are plucked from Finger Lakes and Long Island vineyards, ever"
+      }
+    ]
+  },
+  {
+    "name": "Invisible Dog",
+    "short_description": "An interdisciplinary arts center in a converted 1863 factory in Boerum Hill, with an airy three-story space and frequent free ground-floor exhibitions.",
+    "trigger_radius": 10,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The airy three-story converted-factory space with its unadorned warehouse backdrop",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In a converted factory dating to 1863, the Invisible Dog is an interdisciplinary arts center that embodies the spirit of Brooklyn's creativity. There are frequent free exhibitions on the ground floor of this airy, three-story space, where t"
+      }
+    ]
+  },
+  {
+    "name": "Bushwick Collective",
+    "short_description": "An outdoor street-art gallery in Bushwick, with regularly changing murals by top NYC and international street artists along Jefferson and Troutman Sts.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Murals along Jefferson and Troutman Sts between Cypress and Knickerbocker Aves",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Further cementing Bushwick's status as Brooklyn's coolest neighborhood is the Bushwick Collective, an outdoor gallery of murals by some of the most talented street artists in NYC and beyond. The works change regularly, found mainly along Je"
+      }
+    ]
+  },
+  {
+    "name": "Fulton Ferry Landing",
+    "short_description": "A historic landing under the Brooklyn Bridge in Dumbo where George Washington made a hasty retreat during the 1776 Battle of Long Island.",
+    "trigger_radius": 10,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "At Fulton Ferry Landing, George Washington made an important hasty retreat during the Battle of Long Island in 1776."
+      }
+    ]
+  },
+  {
+    "name": "Gantry Plaza State Park",
+    "short_description": "12-acre riverside park in Long Island City with uninterrupted Manhattan skyline views, restored industrial gantries, and the iconic 1936 Pepsi-Cola sign.",
+    "trigger_radius": 10,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Restored industrial gantries along the riverside, last in service until 1967",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Uninterrupted Manhattan skyline view across the East River",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This 12-acre riverside park sits directly across the water from the United Nations, offering gorgeous uninterrupted views of the Manhattan skyline. The restored gantries \u2014 in service until 1967 \u2014 are testament to the area's past as a loadin"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Giant Pepsi-Cola sign at the park's northern end, dating to 1936",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Dating back to 1936, the giant Pepsi-Cola sign at the park's northern end is an icon of Long Island City. It once topped a nearby Pepsi bottling plant, which has since been demolished."
+      }
+    ]
+  },
+  {
+    "name": "Socrates Sculpture Park",
+    "short_description": "Open-air sculpture park in Astoria carved from an abandoned dump by sculptor Mark di Suvero, with rotating installations and river views.",
+    "trigger_radius": 10,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Rotating outdoor sculpture installations along the river's edge",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "First carved out of an abandoned dump by sculptor Mark di Suvero, Socrates is now a city park on the river's edge with beautiful views and a rotating series of installations."
+      }
+    ]
+  },
+  {
+    "name": "SculptureCenter",
+    "short_description": "Gallery in a former trolley repair shop in Long Island City, showing emerging and established artists in industrial gallery and underground space.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Hangar-like main gallery and cavernous underground space in a former trolley repair shop",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Down a dead-end street, in a former trolley repair shop, SculptureCenter pages Berlin with its edgy art and industrial backdrop. Its hangar-like main gallery and cavernous underground space show both emerging and established artists."
+      }
+    ]
+  },
+  {
+    "name": "Flushing Meadows Corona Park",
+    "short_description": "1225-acre park in central Queens, built for the 1939 World's Fair and home to the Unisphere, Queens Museum, and USTA Billie Jean King National Tennis Center.",
+    "trigger_radius": 30,
+    "importance_tier": 4,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Stainless-steel Unisphere, 120 feet high, the world's biggest globe",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Central Queens' biggest attraction is this 1225-acre park, built for the 1939 World's Fair and dominated by Queens' most famous landmark, the stainless-steel Unisphere \u2014 the world's biggest globe: 120 feet high and weighing 380 tons."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Three weather-worn New York State Pavilion Towers visible south of the Unisphere",
+            "direction": "south",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Just south of the Unisphere are three weather-worn, Cold War-era New York State Pavilion Towers, part of the New York State Pavilion for the 1964 World's Fair. You may recognize them as alien spaceships from the film Men in Black."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "1964 World's Fair mosaics by Salvador Dal\u00ed and Andy Warhol near the north entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "If entering the park from the north via the 7 train, look for the 1964 World's Fair mosaics by Salvador Dal\u00ed and Andy Warhol."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The intersection of Main St and Roosevelt Ave in downtown Flushing can feel like the Times Square of a city a world away from NYC. Immigrants from all over Asia, primarily China and Korea, populate this exuberant neighborhood, and its marke"
+      }
+    ]
+  },
+  {
+    "name": "Rockaway Beach",
+    "short_description": "America's largest urban beach in Queens, immortalized by the Ramones, with a wild coastal feel, surfing beaches, Jacob Riis Park, and the Jamaica Bay Wildlife Refuge.",
+    "trigger_radius": 30,
+    "importance_tier": 4,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Immortalized by the Ramones' 1977 song 'Rockaway Beach,' this is America's largest urban beach \u2014 and one of the city's best. Less crowded than Coney Island and with a wilder feel, it's just a $3 trip on the A train from Manhattan."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Cool green ruins of Fort Tilden, decommissioned coastal artillery installation from WWI",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The west end of the Rockaways is home to the cool green ruins of Fort Tilden, a decommissioned coastal artillery installation from WWI, within the 26,000-acre Gateway National Recreation Area."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Extending from near JFK International Airport, the salty, marshy Jamaica Bay Wildlife Refuge covers the water north of the Rockaways' barrier island. As one of the most important migratory bird and wetland habitats along the eastern seaboar"
+      }
+    ]
+  },
+  {
+    "name": "Queens County Farm Museum",
+    "short_description": "The last working farmland within New York City limits in Floral Park, hosting livestock, seasonal events, and an annual powwow.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Queens County Farm Museum is the last patch of farmland within the city limits \u2014 where you can frolic with cows, sheep and goats. It hosts an annual powwow for tribes from all over America, plus many seasonal events including a haunted hous"
+      }
+    ]
+  },
+  {
+    "name": "Junior's Restaurant",
+    "short_description": "Legendary Brooklyn restaurant and cheesecake institution at Flatbush and DeKalb Avenues, open since 1950 and famed for its New York-style cheesecake.",
+    "trigger_radius": 10,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Junior's restaurant at 386 Flatbush Ave, at DeKalb Ave",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The key ingredient in New York\u2013style cheesecake \u2014 cream cheese \u2014 came from a mistake. A botched attempt at making French Neufch\u00e2tel cheese by a 19th-century New York farmer resulted in a curious product. Enter James Kraft, founder of Kraft "
+      }
+    ]
+  },
+  {
+    "name": "Village Vanguard",
+    "short_description": "Legendary jazz club in the West Village, one of the premier venues for jazz in New York City.",
+    "trigger_radius": 10,
+    "importance_tier": 4,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Village Vanguard jazz club, West Village",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Jazz remains a juggernaut in New York \u2014 from the traditional to the experimental. The Village Vanguard in the West Village is one of the best bets in the city for catching live jazz."
+      }
+    ]
+  },
+  {
+    "name": "Kaufman Astoria Studios",
+    "short_description": "Historic Queens film studio complex founded in 1920 as Famous Players-Lasky, home to Sesame Street and landmark productions across a century of NYC filmmaking.",
+    "trigger_radius": 40,
+    "importance_tier": 3,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The heart of New York's local film scene was Queens' still-kicking Kaufman Astoria Studios. Founded by Jesse Lasky and Adolph Zukor in 1916 as a one-stop-shop for their Famous Players\u2013Lasky Corporation, the complex produced a string of sile"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Despite Paramount moving all of its feature film shoots to Hollywood in 1932, the complex \u2014 renamed Eastern Services Studio \u2014 remained the home of Paramount's newsreel division. Throughout the 1930s it was also known for its 'shorts,' which"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Combined, New York City's TV and film industries spend more than $8.7 billion on production annually and support 130,000 jobs. More than a third of professional actors in the US are based here."
+      }
+    ]
+  },
+  {
+    "name": "Steiner Studios",
+    "short_description": "Massive film and TV studio complex in the Brooklyn Navy Yard, the largest studio east of Los Angeles.",
+    "trigger_radius": 40,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Slap-bang in the historic Brooklyn Navy Yard, the 760,000-sq-ft Steiner Studios is the largest studio complex east of LA. Its film credits to date include The Producers (2005), Revolutionary Road (2008), Sex & the City 1 and 2 (2008, 2010),"
+      }
+    ]
+  },
+  {
+    "name": "Silvercup Studios",
+    "short_description": "Queens-based film and TV studio known for The Sopranos, 30 Rock, and major Woody Allen films.",
+    "trigger_radius": 40,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Back in Queens you'll find the city's other big gun, Silvercup Studios. Its list of features includes NYC classics such as Francis Ford Coppola's The Godfather: Part III (1990) and Woody Allen's Broadway Danny Rose (1984) and The Purple Ros"
+      }
+    ]
+  },
+  {
+    "name": "Tom's Restaurant",
+    "short_description": "Upper West Side diner whose facade served as the exterior of Monk's Diner in Seinfeld.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The blue-and-red exterior sign of Tom's Restaurant, the real-world Monk's Diner from Seinfeld",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "factoid",
+        "script_excerpt": "In Morningside Heights, Tom's Restaurant is the diner whose facade was used regularly in Seinfeld as the exterior of the fictional Monk's Diner."
+      }
+    ]
+  }
+]

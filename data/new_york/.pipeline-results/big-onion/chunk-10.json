@@ -1,0 +1,2985 @@
+{
+  "chunk_id": "chunk-10-other-boroughs",
+  "chunk_file": "Books/new_york/big-onion-ten-historic-tours/chunk-10-other-boroughs.cleaned.txt",
+  "pois": [
+    {
+      "name": "Staten Island Borough Hall",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1904–06 French Renaissance civic building by Carrere & Hastings at St. George, designed to greet ferry arrivals as Staten Island's seat of government.",
+      "name_variations": [
+        "Borough Hall",
+        "Staten Island Borough Hall, St. George"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.6433,
+      "longitude": -74.0775,
+      "trigger_radius": 25,
+      "geocode_source": "WebSearch (NYC DCAS / Wikipedia, St. George)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "NYC Landmark, principal civic monument of Staten Island, prominent ferry-arrival landmark. Moderate tourist gravity; strong local/civic significance."
+    },
+    {
+      "name": "Curtis High School",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1904 collegiate-Gothic school at 105 Hamilton Avenue, the first public high school on Staten Island and a NYC landmark, named for writer-editor George William Curtis.",
+      "name_variations": [
+        "Curtis High School, St. George"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.6418,
+      "longitude": -74.0792,
+      "trigger_radius": 20,
+      "geocode_source": "WebSearch (St. George, 105 Hamilton Ave)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "NYC landmark and the borough's first public high school; architecturally notable (C.B.J. Snyder). Low tourist gravity, solid heritage value."
+    },
+    {
+      "name": "Sailors' Snug Harbor",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Greek Revival campus on Richmond Terrace built from 1831 as a home for aged sailors; now the Snug Harbor Cultural Center with the Staten Island Children's Museum and Chinese Scholar's Garden.",
+      "name_variations": [
+        "Sailors Snug Harbor",
+        "Snug Harbor Cultural Center",
+        "Snug Harbor"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.6435,
+      "longitude": -74.1027,
+      "trigger_radius": 40,
+      "geocode_source": "WebSearch (Snug Harbor, Richmond Terrace)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Major Staten Island cultural destination, multiple museums and gardens, NYC landmark district. Strong gravity for the borough."
+    },
+    {
+      "name": "Jacques Marchais Museum of Tibetan Art",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Lighthouse Hill museum at 338 Lighthouse Avenue holding the most extensive privately owned collection of Tibetan art outside Tibet.",
+      "name_variations": [
+        "Jacques Marchais Museum",
+        "Jacques Marchais Center of Tibetan Art"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.5743,
+      "longitude": -74.1387,
+      "trigger_radius": 20,
+      "geocode_source": "WebSearch (Lighthouse Hill, 338 Lighthouse Ave)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Unique specialized museum, the largest private Tibetan art collection outside Tibet; cited as a draw. Niche but distinctive gravity."
+    },
+    {
+      "name": "Historic Richmond Town",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "A roughly 100-acre living-history village in central Staten Island with 27 historic buildings, including the nation's oldest extant schoolhouse (1696).",
+      "name_variations": [
+        "Richmond Town",
+        "Richmondtown Restoration"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.5697,
+      "longitude": -74.1453,
+      "trigger_radius": 60,
+      "geocode_source": "WebSearch (Richmondtown center)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Flagship Staten Island heritage attraction, living-history museum complex with guided tours; strong destination gravity."
+    },
+    {
+      "name": "Garibaldi-Meucci Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "c.1840 Gothic Revival cottage at 420 Tompkins Avenue, Rosebank, home of telephone pioneer Antonio Meucci and, in 1851–53 exile, Italian liberator Giuseppe Garibaldi; run by the Sons of Italy.",
+      "name_variations": [
+        "Garibaldi Meucci Museum",
+        "Garibaldi-Meucci Memorial Museum"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.615,
+      "longitude": -74.0736,
+      "trigger_radius": 20,
+      "geocode_source": "WebSearch (Google/Yelp, 420 Tompkins Ave)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Distinctive house museum tied to Garibaldi and the telephone's invention; modest but notable cultural gravity."
+    },
+    {
+      "name": "Fort Wadsworth",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Harbor-defense site fortified since 1663, the present fort built 1847; part of Gateway National Recreation Area with a National Park Service visitor center overlooking the Verrazzano Narrows.",
+      "name_variations": [
+        "Fort Wadsworth, Staten Island"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.6043,
+      "longitude": -74.0571,
+      "trigger_radius": 50,
+      "geocode_source": "WebSearch (Gateway NRA, Staten Island)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "National Park Service historic fort with scenic overlook and tours; meaningful heritage and view gravity."
+    },
+    {
+      "name": "The Crimson Beech",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "The William and Catherine Cass House at 48 Manor Court, Lighthouse Hill — the only Frank Lloyd Wright-designed house in New York City, a Wright/Erdman prefab assembled 1958–59 and a city landmark.",
+      "name_variations": [
+        "William and Catherine Cass House",
+        "Cass House",
+        "Crimson Beech"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.576,
+      "longitude": -74.1389,
+      "trigger_radius": 15,
+      "geocode_source": "WebSearch (Lighthouse Hill, 48 Manor Court)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Only Frank Lloyd Wright house in NYC and a city landmark; private residence so view-only, but architecturally significant draw."
+    },
+    {
+      "name": "Friends Meeting House (Flushing)",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1694 Quaker meeting house at 137-16 Northern Boulevard — the oldest house of worship in New York City, built with 40-foot hand-cut oak beams and used by the British as a prison and hospital during the Revolution.",
+      "name_variations": [
+        "Old Quaker Meeting House",
+        "Flushing Quaker Meeting House",
+        "Flushing Friends Meeting House"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7628,
+      "longitude": -73.8302,
+      "trigger_radius": 15,
+      "geocode_source": "WebSearch (Wikipedia, 137-16 Northern Blvd)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Oldest house of worship in NYC, National Historic Landmark; strong heritage gravity in Flushing."
+    },
+    {
+      "name": "John Bowne House",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1661 colonial saltbox at 37-01 Bowne Street where John Bowne hosted illegal Quaker meetings, leading to the Flushing Remonstrance and a precedent for religious freedom; a 'National Shrine to Religious Freedom.'",
+      "name_variations": [
+        "Bowne House",
+        "Bowne House Historical Society"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7629,
+      "longitude": -73.8249,
+      "trigger_radius": 15,
+      "geocode_source": "WebSearch (latitude.to, 37-01 Bowne St)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Oldest building in Queens, tied to the foundational story of American religious liberty; strong heritage gravity."
+    },
+    {
+      "name": "Yankee Stadium",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "The Bronx ballpark, the 'House That Ruth Built,' built for brewer Jacob Ruppert's Yankees and opened April 18, 1923; home of Ruth, Gehrig, DiMaggio, Mantle, Maris and Reggie Jackson.",
+      "name_variations": [
+        "Yankee Stadium, the Bronx",
+        "House That Ruth Built"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.8296,
+      "longitude": -73.9262,
+      "trigger_radius": 60,
+      "geocode_source": "WebSearch (well-known landmark, the Bronx)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "World-famous ballpark and top Bronx destination; very high gravity. (Book describes the original 1923 stadium; modern stadium is adjacent.)"
+    },
+    {
+      "name": "Edgar Allan Poe Cottage",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1816 farmhouse at the Grand Concourse and Kingsbridge Road where Edgar Allan Poe lived from 1846, writing 'Ulalume' and 'The Bells'; moved to Poe Park in 1913.",
+      "name_variations": [
+        "Poe Cottage",
+        "Edgar Allan Poe Cottage, Poe Park"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.8657,
+      "longitude": -73.8945,
+      "trigger_radius": 20,
+      "geocode_source": "WebSearch (Poe Park, 2640 Grand Concourse)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Literary landmark house museum, only NYC home of Poe; notable heritage gravity."
+    },
+    {
+      "name": "Wave Hill",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1843 country estate turned nonprofit, city-owned public garden in Riverdale overlooking the Hudson; past home to Teddy Roosevelt, Mark Twain and Arturo Toscanini, with an herb garden and greenhouse.",
+      "name_variations": [
+        "Wave Hill House",
+        "Wave Hill Public Garden"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.8987,
+      "longitude": -73.9119,
+      "trigger_radius": 50,
+      "geocode_source": "WebSearch (latitude.to / Wikipedia, Riverdale)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Premier Bronx public garden and cultural center with Hudson views; strong destination gravity."
+    },
+    {
+      "name": "Hall of Fame for Great Americans",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Semicircular McKim, Mead & White colonnade at Bronx Community College (formerly NYU's uptown campus) with bronze busts of notable Americans and a westward view.",
+      "name_variations": [
+        "Hall of Fame Terrace",
+        "Hall of Fame for Great Americans, BCC"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.8576,
+      "longitude": -73.9116,
+      "trigger_radius": 30,
+      "geocode_source": "WebSearch (Bronx Community College, University Heights)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Architecturally distinguished McKim, Mead & White monument open to the public; niche heritage gravity."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_staten_island_ferry_waterways_views_big-onion-ten-historic-tours_governors_island_castle_williams",
+      "city_name": "new_york",
+      "poi_name": "Staten Island Ferry",
+      "lens": "waterways_views",
+      "topic_slug": "governors_island_castle_williams",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "As the ferry crosses the harbor, step out onto the deck and look to your left for Governors Island — the 176-acre former U.S. Army and then Coast Guard base, closed in 1996. Almost half of it, eighty-five acres, is a National Historic Landmark, and five individual structures are landmarked as well. The three-story fort protecting the island on this side is Castle Williams, built between 1807 and 1811, one of three forts on the island.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Governors Island",
+        "Castle Williams",
+        "U.S. Army",
+        "Coast Guard"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Governors Island fort",
+      "physical_cues": [
+        {
+          "cue": "Governors Island and the three-story Castle Williams to your left as the ferry crosses",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Governors Island is 176 acres, former Army then Coast Guard base closed 1996",
+        "85 acres is a National Historic Landmark with five landmarked structures",
+        "Castle Williams built 1807–11, one of three forts on the island"
+      ],
+      "source_passage": "Immediately to your left will be Governors Island. This is the 176-acre former U.S. Army and then Coast Guard base that was closed in 1996. Almost half (eighty-five acres) of the island is a National Historic Landmark, and there are five individual landmarked structures as well. At this time the future of the island is unclear, but everything from casinos to universities has been proposed. The three-story fort protecting the island on this side is Castle Williams, built 1807–11. It is one of three forts on Governors Island.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_staten_island_ferry_hidden_history_big-onion-ten-historic-tours_tompkins_nautilus_1817",
+      "city_name": "new_york",
+      "poi_name": "Staten Island Ferry",
+      "lens": "hidden_history",
+      "topic_slug": "tompkins_nautilus_1817",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Ferries have crossed this harbor since sailing vessels began running between the islands as early as 1713. The first steamer-ferry service between Staten Island and Manhattan was started by Daniel Tompkins, who launched the Nautilus in 1817; regular service has continued ever since. In 1905 municipal ferries began replacing the private companies, and the city has run the route ever since.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Daniel Tompkins",
+        "Nautilus"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "ferry origins",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Ferries between the islands ran as early as 1713",
+        "Daniel Tompkins launched the steamer Nautilus in 1817",
+        "Municipal ferries began replacing private companies in 1905"
+      ],
+      "source_passage": "Ferries between the harbor's islands began running as early as 1713, when sailing vessels were used to cross the harbor. The first steamer-ferry service between Staten Island and Manhattan was started by Daniel Tompkins when he launched the Nautilus in 1817. Regular ferry service has continued ever since. In 1905, municipal ferries began replacing the private companies.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_staten_island_borough_hall_historic_arch_big-onion-ten-historic-tours_carrere_hastings_ferry_symbol",
+      "city_name": "new_york",
+      "poi_name": "Staten Island Borough Hall",
+      "lens": "historic_arch",
+      "topic_slug": "carrere_hastings_ferry_symbol",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "2–10 Richmond Terrace",
+      "beat_length_class": "mid",
+      "script_body": "Built by architects Carrere & Hastings between 1904 and 1906, Staten Island Borough Hall is the main government building for the borough. It was designed to be immediately noticed by those arriving by ferry from Manhattan, standing as a symbol of Staten Island's equal membership in greater New York, and it is a New York City Landmark. Carrere & Hastings was one of the city's more prominent early-twentieth-century firms — and one wonders whether the fact that John Carrere was a Staten Island resident helped land this plum contract.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Carrere & Hastings",
+        "John Carrere"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "borough hall design",
+      "physical_cues": [
+        {
+          "cue": "Borough Hall to your left as you turn onto Richmond Terrace, sited to greet ferry arrivals",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Built by Carrere & Hastings 1904–1906",
+        "Designed to be noticed by ferry arrivals as a symbol of equal membership in NYC",
+        "NYC Landmark; John Carrere was a Staten Island resident"
+      ],
+      "source_passage": "Built by architects Carrere & Hastings between 1904and 1906, this is the main government building for the borough of Staten Island. It is designed to be immediately noticed by those arriving by ferry from Manhattan and stands as a symbol of Staten Island's equal membership in greater New York. This building is a New York City Landmark. ... But one must wonder if the fact that John Carrere was a Staten Island resident helped land this plum contract.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_curtis_high_school_famous_residents_big-onion-ten-historic-tours_george_william_curtis_greeley",
+      "city_name": "new_york",
+      "poi_name": "Curtis High School",
+      "lens": "famous_residents",
+      "topic_slug": "george_william_curtis_greeley",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "105 Hamilton Avenue at St. Marks Place",
+      "beat_length_class": "mid",
+      "script_body": "Built in 1904 in the collegiate Gothic style, Curtis High School was the first public high school on Staten Island and the first municipal building put up after the 1898 Consolidation of Greater New York. It is named for George William Curtis, a nineteenth-century writer and editor who kept a country estate on the island — an early advocate of women's suffrage and of professional civil service as a cure for political corruption. Locally he is remembered for sheltering Horace Greeley from pro-Confederate Staten Islanders during the Civil War. Curtis wrote for Harper's and The Nation and published Putnam's Monthly with his friend and fellow Staten Islander Frederick Law Olmsted.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "George William Curtis",
+        "Horace Greeley",
+        "Frederick Law Olmsted",
+        "Harper's",
+        "The Nation",
+        "Putnam's Monthly"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Curtis namesake",
+      "physical_cues": [
+        {
+          "cue": "Curtis High School on a diagonal at the corner of Hamilton Avenue and St. Marks Place, to your left",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Built 1904 collegiate Gothic, first public high school on Staten Island",
+        "First municipal building after 1898 Consolidation",
+        "Named for George William Curtis, who sheltered Horace Greeley and published Putnam's Monthly with Olmsted"
+      ],
+      "source_passage": "Built in 1904in the collegiate Gothic style, it is the first public high school on Staten Island and the first municipal building built after the 1898Consolidation of Greater New York. It's named for George William Curtis, a nineteenth-century writer and editor who had a country estate on the island. Curtis was an early advocate of women's suffrage and was a strong supporter of professional civil service as a cure for political corruption. Locally, he is known for sheltering Horace Greeley from pro-Confederate Staten Islanders during and before the Civil War. Curtis wrote for Harper's magazine and The Nation. He also published Putnam's Monthly with his friend and fellow Staten Islander Frederick Law Olmsted.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sailors_snug_harbor_social_change_big-onion-ten-historic-tours_randall_bequest_aged_sailors",
+      "city_name": "new_york",
+      "poi_name": "Sailors' Snug Harbor",
+      "lens": "social_change",
+      "topic_slug": "randall_bequest_aged_sailors",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Behind the iron fence and Greek Revival buildings stands Sailors' Snug Harbor, created in 1801 with a bequest from shipping merchant Robert R. Randall as an institution for the care of \"aged, decrepit, and worn-out sailors.\" Snug Harbor bought this land in 1831 and built a campus for retired seamen; by 1900 it housed over a thousand people. As the number of American sailors dwindled, so did the institution — in 1975 it relocated to North Carolina, and a year later the complex became the Sailors' Snug Harbor Cultural Center.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Robert R. Randall",
+        "Sailors' Snug Harbor Cultural Center"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "sailors' home",
+      "physical_cues": [
+        {
+          "cue": "Iron fence and Greek Revival buildings of Snug Harbor along Richmond Terrace",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Created 1801 by bequest of Robert R. Randall for aged sailors",
+        "Bought this land 1831; by 1900 housed over 1,000",
+        "Relocated to North Carolina 1975; became Cultural Center a year later"
+      ],
+      "source_passage": "Sailors Snug Harbor was created in 1801with a bequest from shipping merchant Robert R. Randall as an institution for the care of \"aged, decrepit, and worn-out sailors.\" Snug Harbor purchased this land in 1831and built a campus of buildings for the care of retired seamen. By 1900it housed over a thousand people. But as the number of American sailors diminished, so did the institution. In 1975it relocated to North Carolina, and one year later the complex was turned into the Sailors Snug Harbor Cultural Center.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sailors_snug_harbor_historic_arch_big-onion-ten-historic-tours_lefever_administration_building",
+      "city_name": "new_york",
+      "poi_name": "Sailors' Snug Harbor",
+      "lens": "historic_arch",
+      "topic_slug": "lefever_administration_building",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "administration-building",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The most significant building is the 1831 Greek Revival Administration Building. Easily seen from Richmond Terrace with its Ionic portico, it is the oldest surviving work by architect Minard Lefever.",
+      "duration_sec": 12,
+      "kid_friendly": "yes",
+      "entities": [
+        "Minard Lefever"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Lefever portico",
+      "physical_cues": [
+        {
+          "cue": "Greek Revival Administration Building with its Ionic portico, seen from Richmond Terrace",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1831 Greek Revival Administration Building with Ionic portico",
+        "Oldest surviving work by Minard Lefever"
+      ],
+      "source_passage": "The most significant building is the 1831Greek revival Administration Building. Easily seen from Richmond Terrace, with its Ionic portico, it is the oldest surviving work by architect Minard Lefever.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_crimson_beech_historic_arch_big-onion-ten-historic-tours_only_flw_house_nyc",
+      "city_name": "new_york",
+      "poi_name": "The Crimson Beech",
+      "lens": "historic_arch",
+      "topic_slug": "only_flw_house_nyc",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "48 Manor Court",
+      "beat_length_class": "mid",
+      "script_body": "The William and Catherine Cass House at 48 Manor Court is New York City's only home designed by Frank Lloyd Wright, and a city landmark. Wright designed it in 1956 for the Madison, Wisconsin builder Marshall Erdman; its prefabricated parts were shipped from Wisconsin and assembled here in 1958–59 by Wright's associate Morton Delson.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Frank Lloyd Wright",
+        "William and Catherine Cass",
+        "Marshall Erdman",
+        "Morton Delson"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "only FLW house",
+      "physical_cues": [
+        {
+          "cue": "The Cass House set on your left at 48 Manor Court, a dead-end street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Only Frank Lloyd Wright house in NYC, a city landmark",
+        "Designed 1956 for builder Marshall Erdman",
+        "Prefab parts shipped from Wisconsin, assembled 1958–59 by Morton Delson"
+      ],
+      "source_passage": "Drive past the William and Catherine Cass House at 48 Manor Court. This is New York City's only home designed by Frank Lloyd Wright, and a city landmark. Wright designed it in 1956for the Madison, Wisconsin, builder Marshall Erdman. The prefabricated parts were shipped from Wisconsin and assembled here in 1958–59by Wright's associate Morton Delson.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_jacques_marchais_museum_of_tibetan_art_sacred_traditions_big-onion-ten-historic-tours_largest_private_tibetan_collection",
+      "city_name": "new_york",
+      "poi_name": "Jacques Marchais Museum of Tibetan Art",
+      "lens": "sacred_traditions",
+      "topic_slug": "largest_private_tibetan_collection",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "338 Lighthouse Avenue",
+      "beat_length_class": "seasoning",
+      "script_body": "Drive slowly along Lighthouse Avenue or you will miss the Jacques Marchais Museum of Tibetan Art at No. 338 — look for a garage with a green door on your left. Open to the public from November to April, it houses the most extensive privately owned collection of Tibetan art outside Tibet.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jacques Marchais Museum of Tibetan Art"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Tibetan art collection",
+      "physical_cues": [
+        {
+          "cue": "Garage with a green door on your left at 338 Lighthouse Avenue marks the museum",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Museum at 338 Lighthouse Avenue, garage with green door",
+        "Open November to April",
+        "Most extensive privately owned collection of Tibetan art outside Tibet"
+      ],
+      "source_passage": "Drive slowly along Lighthouse Avenue; otherwise you will miss the Jacques Marchais Museum of Tibetan Art at 338Lighthouse. Look for a garage with green door, on your left. The museum is open to the public from November to April and houses the most extensive privately owned collection of Tibetan art outside Tibet.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_historic_richmond_town_hidden_history_big-onion-ten-historic-tours_oldest_schoolhouse_1696",
+      "city_name": "new_york",
+      "poi_name": "Historic Richmond Town",
+      "lens": "hidden_history",
+      "topic_slug": "oldest_schoolhouse_1696",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Near the center of Staten Island, Historic Richmond Town is a great place to stop and walk around. This twenty-five-acre site holds twenty-seven historic buildings gathered from across the island — including the oldest extant schoolhouse in the nation, built in 1696. The \"newest\" of the structures dates from the mid-nineteenth century, and the village offers a visitor center, guided tours, and interpretive programming throughout the year.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Historic Richmond Town"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "living history village",
+      "physical_cues": [
+        {
+          "cue": "Entrance about one hundred yards to your right on Clarke Avenue",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "25-acre site with 27 historic buildings from across the island",
+        "Holds the oldest extant schoolhouse in the nation, built 1696",
+        "Offers a visitor center and guided tours year-round"
+      ],
+      "source_passage": "Located near the center of Staten Island, Historic Richmond Town is a great place to stop and walk around. This twenty-five-acre site contains twenty-seven historic buildings from throughout the island. The oldest extant schoolhouse in the nation is here, built in 1696. The \"newest\" of the structures dates from the mid-nineteenth century. Historic Richmond Town has a visitor center and offers guided tours and interpretive programming throughout the year.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fort_wadsworth_war_conflict_big-onion-ten-historic-tours_1663_fortifications_wadsworth",
+      "city_name": "new_york",
+      "poi_name": "Fort Wadsworth",
+      "lens": "war_conflict",
+      "topic_slug": "1663_fortifications_wadsworth",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "There have been fortifications on this site since 1663, and it was one of the last British positions to surrender after the American Revolution. The present fort was built in 1847 and dedicated in 1865 to Brigadier General James Wadsworth, following his death at the Civil War's Battle of the Wilderness. Since the early 1990s the installation has been part of the Gateway National Recreation Area, with a National Park Service visitor center, a short film on the history of New York's fortifications, and a scenic overlook on Tompkins Road.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "James Wadsworth",
+        "Battle of the Wilderness",
+        "Gateway National Recreation Area",
+        "National Park Service"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "harbor fort",
+      "physical_cues": [
+        {
+          "cue": "Scenic overlook on Tompkins Road inside the fort",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Fortifications on the site since 1663; one of the last British positions to surrender after the Revolution",
+        "Present fort built 1847, dedicated 1865 to Gen. James Wadsworth after his death at the Battle of the Wilderness",
+        "Part of Gateway National Recreation Area since the early 1990s"
+      ],
+      "source_passage": "There have been fortifications on this site since 1663, and it was one of the last British positions to surrender after the American Revolution. The present fort was built in 1847 and was dedicated to Brigadier General James Wadsworth in 1865, following his death at the Civil War's Battle of the Wilderness. Since the early 1990s this installation has been part of the Gateway National Recreation Area. ... be certain to view the scenic overlook on Tompkins Road.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_garibaldi_meucci_museum_famous_residents_big-onion-ten-historic-tours_meucci_telephone_garibaldi_exile",
+      "city_name": "new_york",
+      "poi_name": "Garibaldi-Meucci Museum",
+      "lens": "famous_residents",
+      "topic_slug": "meucci_telephone_garibaldi_exile",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "At the intersection of Tompkins and Chestnut stands the Garibaldi-Meucci Museum and historic home. Built around 1845, this was the home of Italian American inventor Antonio Meucci, who devised an early telephone, and of Giuseppe Garibaldi, the Italian liberator, who lived here from 1851 to 1853 while in exile in America. The museum is maintained by the Sons of Italy and is open to the public.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antonio Meucci",
+        "Giuseppe Garibaldi",
+        "Sons of Italy"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Meucci Garibaldi home",
+      "physical_cues": [
+        {
+          "cue": "The historic home directly in front of you at the intersection of Tompkins and Chestnut",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Built c.1845; home of inventor Antonio Meucci (early telephone)",
+        "Giuseppe Garibaldi lived here 1851–1853 in exile",
+        "Maintained by the Sons of Italy"
+      ],
+      "source_passage": "Directly in front of you, at the intersection of Tompkins and Chestnut, is the Garibaldi-Meucci Museum and historic home. Built around 1845, this was the home to Italian American inventor Antonio Meucci, who invented an early telephone. Guiseppe Garibaldi, the Italian liberator, lived here from 1851to 1853while in exile in America. The museum is maintained by the Sons of Italy and is open to the public.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_staten_island_ferry_transit_big-onion-ten-historic-tours_cross_verrazzano_to_brooklyn",
+      "city_name": "new_york",
+      "poi_name": "Verrazzano-Narrows Bridge",
+      "lens": "war_conflict",
+      "topic_slug": "cross_verrazzano_to_brooklyn",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "Hylan Boulevard, Staten Island",
+      "beat_length_class": "seasoning",
+      "script_body": "From the Garibaldi-Meucci home, continue along Tompkins to Hylan Boulevard, turn right, cross over the expressway, and enter the expressway following signs for 278 East–Brooklyn to cross the Verrazzano-Narrows Bridge.",
+      "duration_sec": 13,
+      "kid_friendly": "yes",
+      "entities": [
+        "Verrazzano-Narrows Bridge"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "to Brooklyn",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Take Hylan Boulevard to the expressway, signs for 278 East–Brooklyn, across the Verrazzano-Narrows Bridge"
+      ],
+      "source_passage": "Continue along Tompkins until you reach Hylan Boulevard. Turn right onto Hylan. Hylan Boulevard will cross over the expressway. Enter expressway (following signs for 278 East–Brooklyn). Cross Verrazano Narrows Bridge to Brooklyn.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_verrazzano_narrows_bridge_historic_arch_big-onion-ten-historic-tours_ammann_longest_suspension_1964",
+      "city_name": "new_york",
+      "poi_name": "Verrazzano-Narrows Bridge",
+      "lens": "historic_arch",
+      "topic_slug": "ammann_longest_suspension_1964",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "When the Verrazzano-Narrows Bridge was completed in 1964, designed by Swiss engineer Othmar Ammann, it was the world's longest suspension bridge, measuring 4,260 feet between its towers. It is no longer the longest, but it is still beautiful. Many Italian Americans in Bay Ridge, near the Brooklyn approach, did not want their homes destroyed for its approaches — and naming the bridge after Giovanni da Verrazano, who sailed into New York Harbor in 1524, was hardly enough to soothe their concerns. It took Robert Moses many years to beat back the opposition, but he eventually got his way: eight thousand Brooklynites lost their homes, and a good number more moved across the bridge to Staten Island. The Staten Island side is the starting point for the New York Marathon every November. Including its approaches the bridge runs 13,700 feet; it stands 228 feet above the water; each tower is 693 feet tall; and it costs seven dollars to cross — though the toll is collected only traveling from Brooklyn to Staten Island, so going this way you get a free ride.",
+      "duration_sec": 80,
+      "kid_friendly": "yes",
+      "entities": [
+        "Othmar Ammann",
+        "Giovanni da Verrazano",
+        "Robert Moses",
+        "Bay Ridge",
+        "New York Marathon"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "bridge construction",
+      "physical_cues": [
+        {
+          "cue": "The towers of the Verrazzano-Narrows Bridge rising 693 feet as you cross",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Completed 1964, designed by Othmar Ammann, world's longest suspension bridge at 4,260 ft between towers",
+        "Bay Ridge Italian Americans opposed it; 8,000 Brooklynites lost homes; Robert Moses overcame opposition",
+        "Named for Verrazano who sailed into the harbor 1524; SI side starts the NY Marathon; 13,700 ft including approaches, 228 ft above water, towers 693 ft, $7 toll only Brooklyn-to-SI"
+      ],
+      "source_passage": "When the Verrazano Narrows Bridge was completed in 1964, as designed by Swiss engineer Othmar Ammann, it was the world's longest suspension bridge, measuring 4,260feet between towers. It is not the longest anymore but is still beautiful. Many Italian Americans living in Bay Ridge near the Brooklyn approach to the bridge did not want their homes destroyed for its approaches, and naming it after Giovanni da Verrazano, who sailed into New York Harbor in 1524, certainly wasn't enough to alleviate their concerns. It took Robert Moses many years to beat back all the opposition to the bridge, but he eventually got his way, and eight thousand Brooklynites lost their homes and quite a number more moved across the bridge to Staten Island. The Staten Island side of the bridge is the starting point for the New York Marathon every November. Including the approaches, the bridge is 13,700feet long; it is 228feet above the water; each tower is 693feet tall; and it costs $7 to go across—although the toll is collected only when traveling from Brooklyn to Staten Island, so you get a free ride.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_local_legends_big-onion-ten-historic-tours_rabbit_name_amusement_parks",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "lens": "local_legends",
+      "topic_slug": "rabbit_name_amusement_parks",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Coney Island takes its name from an Anglicized version of the Dutch word for rabbit — the animals were abundant here in the 1600s. A vacation spot for New Yorkers since at least the mid-nineteenth century, it eventually held three of the most spectacular amusement parks in the nation: Steeplechase Park, Luna Park, and Dreamland. All are closed now; in their place stands Astroland, opened in 1954. From the boardwalk, look right to a large pier where residents fish and go crabbing, and where the Polar Bear Club swims every weekend through the winter — its New Year's Day plunge drawing news cameras and one-time swimmers from across the city.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Steeplechase Park",
+        "Luna Park",
+        "Dreamland",
+        "Astroland",
+        "Polar Bear Club"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Coney Island origins",
+      "physical_cues": [
+        {
+          "cue": "Large fishing pier to the right of the boardwalk where the Polar Bear Club swims",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Named for an Anglicized Dutch word for rabbit, abundant here in the 1600s",
+        "Held Steeplechase Park, Luna Park, and Dreamland; now Astroland (1954)",
+        "Polar Bear Club swims every winter weekend; New Year's Day swim draws crowds"
+      ],
+      "source_passage": "Coney Island is named for an Anglicized version of the Dutch word for rabbit; the animals were abundant here in the 1600s. It's been a vacation spot for New Yorkers from at least the mid-nineteenth century. Eventually, three of the most spectacular amusement parks in the nation were built here—Steeplechase Park, Luna Park, and Dreamland. They are all closed now. In their place stands Astroland, opened in 1954. ... From about where you're standing, the Polar Bear Club goes swimming every weekend during the winter. The New Year's Day swim brings out news cameras, tourists, and one-time swimmers from across the city.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_historic_cuisine_big-onion-ten-historic-tours_nathans_hot_dogs_1916",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "lens": "historic_cuisine",
+      "topic_slug": "nathans_hot_dogs_1916",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "stillwell-surf-corner",
+      "trigger_address": "Surf and Stillwell Avenues",
+      "beat_length_class": "seasoning",
+      "script_body": "Nathan's has been serving hot dogs on the corner of Stillwell since 1916.",
+      "duration_sec": 6,
+      "kid_friendly": "yes",
+      "entities": [
+        "Nathan's"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Nathan's hot dogs",
+      "physical_cues": [
+        {
+          "cue": "Nathan's on the corner of Surf and Stillwell Avenues",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Nathan's has served hot dogs on the corner of Stillwell since 1916"
+      ],
+      "source_passage": "Nathan's has been serving hot dogs on the corner of Stillwell since 1916.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_hidden_history_big-onion-ten-historic-tours_cyclone_aquarium_moses",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "lens": "hidden_history",
+      "topic_slug": "cyclone_aquarium_moses",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Heading west on Surf Avenue you pass the Cyclone, a landmark 1927 wooden roller-coaster standing on the site of the first roller-coaster in the world, built in 1884. Further on, at West Eighth Street, is the New York Aquarium — moved here from Battery Park in Manhattan by Parks Commissioner Robert Moses, out of anger at those who had stopped his project to build a bridge from Battery Park to Brooklyn.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cyclone",
+        "New York Aquarium",
+        "Robert Moses"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Cyclone and aquarium",
+      "physical_cues": [
+        {
+          "cue": "The Cyclone roller-coaster on your right at West Tenth Street; the Aquarium at West Eighth",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cyclone is a landmark 1927 wooden coaster on the site of the first roller-coaster (1884)",
+        "New York Aquarium moved here from Battery Park by Robert Moses out of anger over his failed Battery–Brooklyn bridge"
+      ],
+      "source_passage": "At West Tenth Street, on your right, you'll pass the Cyclone, a landmark 1927 wooden roller-coaster on the site of the first roller-coaster in the world (which was built in 1884). Also on your right, at West Eighth Street, you'll pass the New York Aquarium, moved here from Battery Park in Manhattan by Parks Commissioner Robert Moses out of anger at those who stopped his project to build a bridge from Battery Park to Brooklyn.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brighton_beach_social_change_big-onion-ten-historic-tours_russian_neighborhood_under_el",
+      "city_name": "new_york",
+      "poi_name": "Brighton Beach",
+      "lens": "social_change",
+      "topic_slug": "russian_neighborhood_under_el",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Brighton Beach is the best-known Russian neighborhood in the city, with about 150,000 Russians living here — an ethnicity apparent as you drive along under the elevated subway, past stores and restaurants like M & I International, Primorski, and Café Arbat. The neighborhood developed alongside Coney Island, helped by the Brighton Beach Racetrack, which brought in visitors from 1879 to 1907.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "M & I International",
+        "Primorski",
+        "Café Arbat",
+        "Brighton Beach Racetrack"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "sensory_observation",
+      "emotional_register": "neutral",
+      "subject_tag": "Russian Brighton Beach",
+      "physical_cues": [
+        {
+          "cue": "Russian stores and restaurants along Brighton Beach Avenue under the El",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Best-known Russian neighborhood, about 150,000 Russians",
+        "Stores include M & I International, Primorski, Café Arbat",
+        "Developed with Coney Island, helped by Brighton Beach Racetrack (1879–1907)"
+      ],
+      "source_passage": "BrightonBeachisthebest-knownRussianneighborhoodin the city, with about 150,000Russians living here. The ethnicity of the neighborhood is apparent as you drive along under the El. Note stores and restaurants such as M & I International (249Brighton Beach Avenue), Primorski (282Brighton Beach Avenue), and Café Arbat (306Brighton Beach Avenue). Brighton Beach developed along with Coney Island, helped by the presence of Brighton Beach Racetrack, which brought in visitors from 1879to 1907.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_hidden_history_big-onion-ten-historic-tours_gravesend_lady_moody_1643",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn",
+      "lens": "hidden_history",
+      "topic_slug": "gravesend_lady_moody_1643",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "gravesend",
+      "trigger_address": "Gravesend Neck Road and McDonald Avenue",
+      "beat_length_class": "mid",
+      "script_body": "The intersection of Gravesend Neck Road and McDonald Avenue was the town center of Gravesend, the only non-Dutch town among the original six settlements that made up seventeenth-century Brooklyn. Gravesend was founded in 1643 by Lady Deborah Moody, an Anabaptist who fled religious intolerance in Massachusetts — and here became the first woman to vote at a town meeting. The name comes either from the Dutch grafesande, read as both \"end of the grove\" and \"count's beach,\" or from the British town of Gravesend.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gravesend",
+        "Lady Deborah Moody"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Gravesend founding",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "grafesande",
+          "gloss": "translated as both 'end of the grove' and 'count's beach'"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Gravesend was the only non-Dutch town of Brooklyn's original six settlements",
+        "Founded 1643 by Lady Deborah Moody, an Anabaptist who became the first woman to vote at a town meeting",
+        "Name from Dutch grafesande or the British town of Gravesend"
+      ],
+      "source_passage": "The intersection of Gravesend Neck Road and McDonald Avenue was the town center of Gravesend, the only non-Dutch town of the original six settlements that made up Brooklyn in the seventeenth century. ... Gravesend was founded in 1643by Lady Deborah Moody, an Anabaptist who fled religious intolerance in Massachusetts to New York. Here she became the first woman to vote at a town meeting. Depending on whom you ask, Gravesend comes either from the Dutch grafes ande, translated as both \"end of the grove\" and \"count's beach,\" or from the British town of Gravesend.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_local_legends_big-onion-ten-historic-tours_lady_moody_house_hoax",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn",
+      "lens": "local_legends",
+      "topic_slug": "lady_moody_house_hoax",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "gravesend",
+      "trigger_address": "27 Gravesend Neck Road",
+      "beat_length_class": "seasoning",
+      "script_body": "Across from the cemetery is the Hicks-Platt House at 27 Gravesend Neck Road, also called the Lady Moody House — because a clever real-estate developer in 1890 claimed she had lived here, although she never did. The original house was finished in 1645 but has changed a great deal since.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Hicks-Platt House",
+        "Lady Moody"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Lady Moody house",
+      "physical_cues": [
+        {
+          "cue": "Hicks-Platt House across from the cemetery at 27 Gravesend Neck Road",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hicks-Platt House (27 Gravesend Neck Road) is called the Lady Moody House",
+        "A developer in 1890 falsely claimed she lived there",
+        "Original house finished 1645, much changed"
+      ],
+      "source_passage": "Across from the cemetery is the Hicks-Platt House (27 Gravesend Neck Road), also called the Lady Moody House because a clever real estate developer in 1890said she had lived here, although she never did. The original house was finished in 1645but has been changed quite a bit.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_prospect_park_historic_arch_big-onion-ten-historic-tours_ocean_parkway_olmsted_vaux",
+      "city_name": "new_york",
+      "poi_name": "Prospect Park",
+      "lens": "historic_arch",
+      "topic_slug": "ocean_parkway_olmsted_vaux",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Ocean Parkway, finished in 1876 before the automobile, stretches six miles from Coney Island to Prospect Park. Frederick Law Olmsted and Calvert Vaux, who designed both Central Park in Manhattan and Prospect Park in Brooklyn, believed strongly in a network of scenic parkways throughout the city, and this is one of them. It originally had a central drive, greenery-filled malls — hence \"parkway\" — a bridle trail, and pedestrian walkways. The bridle trails are now service roads, but the beauty of the parkway remains.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ocean Parkway",
+        "Frederick Law Olmsted",
+        "Calvert Vaux"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Ocean Parkway",
+      "physical_cues": [
+        {
+          "cue": "The malls and service roads of Ocean Parkway as you drive its length",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Ocean Parkway finished 1876, six miles from Coney Island to Prospect Park",
+        "Designed by Olmsted and Vaux as part of a scenic parkway network",
+        "Originally had central drive, malls, bridle trail; bridle trails now service roads"
+      ],
+      "source_passage": "Ocean Parkway, finished in 1876, before the automobile, stretches six miles from Coney Island to Prospect Park. Frederick Law Olmsted and Calvert Vaux, who designed Central Park in Manhattan and Prospect Park in Brooklyn, believed strongly in creating a series of scenic parkways throughout the city, and this is one of them. Ocean Parkway originally had a central drive, greenery-filled malls (hence \"parkway\"), a bridle trail, and pedestrian walkways. The bridle trails are now service roads, but the beauty of the parkway remains.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_historic_arch_big-onion-ten-historic-tours_prospect_park_south_alvord",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn",
+      "lens": "historic_arch",
+      "topic_slug": "prospect_park_south_alvord",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "prospect-park-south",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Just off one of Brooklyn's busiest commercial streets, the small historic district of Prospect Park South hides large single-family houses ranging from Tudor to Queen Anne to neo-Japanese. The neighborhood was created by developer Dean Alvord, who bought forty acres here in 1899. To shape the place he wanted, Alvord required houses set back thirty-nine feet from the sidewalk, with eight feet between street and sidewalk left for greenery. Most of the houses were finished by 1905.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Prospect Park South",
+        "Dean Alvord"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Prospect Park South",
+      "physical_cues": [
+        {
+          "cue": "Stone pillars marked 'PPS' at the entrance; large set-back houses along Albemarle",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Prospect Park South is a historic district of large houses in mixed styles",
+        "Created by developer Dean Alvord, who bought 40 acres in 1899",
+        "Houses set back 39 feet with 8 feet for greenery; most finished by 1905"
+      ],
+      "source_passage": "This small historic district is home to large single-family houses that run a gamut of styles, from Tudor to Queen Anne to neo-Japanese, and sit incongruously hidden just off one of Brooklyn's busiest commercial streets. The neighborhood was created by developer Dean Alvord, who bought forty acres here in 1899. To create the neighborhood he wanted, Alvord required houses to be set back thirty-nine feet from the sidewalk, with eight feet left between street and sidewalk for greenery. Most of the houses were finished by 1905.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_famous_residents_big-onion-ten-historic-tours_erasmus_hall_streisand",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn",
+      "lens": "famous_residents",
+      "topic_slug": "erasmus_hall_streisand",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "flatbush",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On Flatbush Avenue stands Erasmus Hall High School, whose famous graduates include Barbra Streisand, Neil Diamond, Barry Manilow, and Bobby Fischer. Through the gate at the center of the block you can see the original wooden 1786 Erasmus Hall inside the quad — the first secondary school chartered by New York State, set up by the Flatbush Reformed Dutch Church diagonally across the street. The present church building, finished in 1798, is the third on its site.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Erasmus Hall High School",
+        "Barbra Streisand",
+        "Neil Diamond",
+        "Barry Manilow",
+        "Bobby Fischer",
+        "Flatbush Reformed Dutch Church"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Erasmus Hall",
+      "physical_cues": [
+        {
+          "cue": "Original 1786 wooden Erasmus Hall visible through the gate at the center of the block",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Erasmus Hall graduates include Streisand, Neil Diamond, Barry Manilow, Bobby Fischer",
+        "Original wooden 1786 Erasmus Hall was the first secondary school chartered by NY State, set up by the Flatbush Reformed Dutch Church",
+        "Present church (1798) is third on its site"
+      ],
+      "source_passage": "Drive another block and Erasmus Hall High School is on your right. Famous graduates include Barbra Streisand, Neil Diamond, Barry Manilow, and Bobby Fischer. If you look through the gate at the center of the block, the original, wooden 1786Erasmus Hall is visible inside the quad. Erasmus was the first secondary school chartered by New York State, although it was set up by the Flatbush Reformed Dutch Church diagonally across the street from the high school. The present church building, finished in 1798, is the third one on this site.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_prospect_park_parks_gardens_big-onion-ten-historic-tours_vaux_olmsted_high_hills",
+      "city_name": "new_york",
+      "poi_name": "Prospect Park",
+      "lens": "parks_gardens",
+      "topic_slug": "vaux_olmsted_high_hills",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The 526-acre Prospect Park was designed by Calvert Vaux and Frederick Law Olmsted in 1866–1873, as soon as they finished Central Park. Like Central Park it gathers different landscapes — the long, hilly Long Meadow, a wooded ravine, a lake, several arches, and a number of buildings. And as in Manhattan, the city first backed a mediocre design by Egbert Viele before abandoning it for Vaux and Olmsted's. Many find Prospect Park as beautiful as Central Park, if not more so, thanks to the very high hills that crop up in several places.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Calvert Vaux",
+        "Frederick Law Olmsted",
+        "Long Meadow",
+        "Egbert Viele"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "Prospect Park design",
+      "physical_cues": [
+        {
+          "cue": "Prospect Park to your left as you drive Flatbush Avenue",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "526-acre Prospect Park designed by Vaux and Olmsted 1866–1873 after Central Park",
+        "Holds Long Meadow, ravine, lake, arches, buildings",
+        "City first backed Egbert Viele's design before choosing Vaux and Olmsted's"
+      ],
+      "source_passage": "The 526-acre Prospect Park was designed by Calvert Vaux and Frederick Law Olmsted in 1866–1873, as soon as they were finished with Central Park in Manhattan. Like Central Park, it encompasses different landscapes, including the Long Meadow, a long and hilly stretch of grass; a wooded ravine; a lake; several arches; and a number of buildings. Also like Central Park, the city first backed a mediocre design by Egbert Viele but abandoned it in favor of Vaux and Olmsted's. The park is as beautiful as Central Park, if not more so thanks to the very high hills that crop up in several places.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_prospect_park_historic_arch_big-onion-ten-historic-tours_grand_army_plaza_white_arch",
+      "city_name": "new_york",
+      "poi_name": "Prospect Park",
+      "lens": "historic_arch",
+      "topic_slug": "grand_army_plaza_white_arch",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "grand-army-plaza",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "At Grand Army Plaza, the park entrance facing the giant Soldiers' and Sailors' Memorial Arch was designed by Stanford White — a combination of columns, bronze urns, and two twelve-sided pavilions. The arch itself sits on a plaza that Olmsted and Vaux laid out to mimic the Parisian place that holds the Arc de Triomphe.",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Grand Army Plaza",
+        "Soldiers' and Sailors' Memorial Arch",
+        "Stanford White",
+        "Arc de Triomphe"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "Grand Army Plaza arch",
+      "physical_cues": [
+        {
+          "cue": "Soldiers' and Sailors' Memorial Arch and the twelve-sided pavilions at the park entrance",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Park entrance at Grand Army Plaza designed by Stanford White with columns, bronze urns, twelve-sided pavilions",
+        "Soldiers' and Sailors' Memorial Arch sits on a plaza Olmsted and Vaux modeled on the Arc de Triomphe's Parisian place"
+      ],
+      "source_passage": "The entrance to the park, immediately to your left and facing the giant Soldiers' and Sailors' monument, was designed by Stanford White. It's a combination of columns, bronze urns, and two twelve-sided pavilions. In front of you, at Grand Army Plaza, is the Soldiers' and Sailors' Memorial Arch, which sits on a plaza designed by Olmsted and Vaux to mimic the Parisian plaza that holds the Arc de Triomphe.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_museum_historic_arch_big-onion-ten-historic-tours_stanford_white_egyptian_separate_city",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Museum",
+      "lens": "historic_arch",
+      "topic_slug": "stanford_white_egyptian_separate_city",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Along Eastern Parkway sit the Brooklyn Public Library, the Brooklyn Botanic Garden, and the Brooklyn Museum. The library was founded in 1897 but not completed in this spot until 1941; the botanic garden opened in 1912. The museum, designed by Stanford White, was begun in 1897 and holds an excellent Egyptian art collection. All three remind us that Brooklyn was, until 1898, a separate city and not part of New York.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Museum",
+        "Brooklyn Public Library",
+        "Brooklyn Botanic Garden",
+        "Stanford White"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Eastern Parkway institutions",
+      "physical_cues": [
+        {
+          "cue": "Brooklyn Public Library, Botanic Garden, and Museum to your right along Eastern Parkway",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Library founded 1897, completed here 1941; botanic garden opened 1912",
+        "Brooklyn Museum designed by Stanford White, begun 1897, with strong Egyptian collection",
+        "All three recall Brooklyn as a separate city until 1898"
+      ],
+      "source_passage": "To your right as you follow Eastern Parkway are the Brooklyn Public Library, the Brooklyn Botanic Garden, and the Brooklyn Museum. The library was founded in 1897, although it was not completed in this spot until 1941. The botanic garden opened in 1912. The museum, designed by Stanford White, was begun in 1897and has an excellent Egyptian art collection. All three sites remind us that Brooklyn was, until 1898, a separate city and not part of New York City.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_weeksville_heritage_center_social_change_big-onion-ten-historic-tours_hunterfly_road_free_black_community",
+      "city_name": "new_york",
+      "poi_name": "Weeksville Heritage Center",
+      "lens": "social_change",
+      "topic_slug": "hunterfly_road_free_black_community",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Set back from Bergen Street along what was Hunterfly Road, the Weeksville Houses are all that remain of two mid-nineteenth-century African American communities. Thirty years before the Civil War, William Thomas founded Carrville and James Weeks built the community that became Weeksville; both had their own schools, churches, and an orphanage. The beautiful Eastern Parkway and the streets built off it destroyed Carrville and Weeksville — much as the Cross Bronx Expressway would later destroy Bronx communities in the twentieth century.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Weeksville Houses",
+        "Hunterfly Road",
+        "William Thomas",
+        "James Weeks",
+        "Carrville",
+        "Cross Bronx Expressway"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "Weeksville community",
+      "physical_cues": [
+        {
+          "cue": "The Weeksville Houses set back from Bergen Street along the former Hunterfly Road, to your left",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Weeksville Houses on former Hunterfly Road are all that remain of two mid-19th-c African American communities",
+        "William Thomas founded Carrville and James Weeks built Weeksville thirty years before the Civil War",
+        "Eastern Parkway destroyed both communities, as the Cross Bronx Expressway later did in the Bronx"
+      ],
+      "source_passage": "On your left are the Weeksville Houses, which sit back from Bergen along what was Hunterfly Road. These four houses (now the Society for the Preservation of Weeksville and Bedford-Stuyvesant) are all that remain of the architecture of two mid-nineteenth century African American communities. Thirty years before the Civil War, William Thomas founded Carrville and James Weeks built a community that became Weeksville. Both Weeksville and Carrville had their own schools, churches, and an orphanage. The beautiful Eastern Parkway and streets built off it destroyed Carrville and Weeksville in the same way that the Cross Bronx Expressway destroyed Bronx communities in the twentieth century.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_dark_history_big-onion-ten-historic-tours_interboro_cemeteries_houdini_robinson",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn",
+      "lens": "dark_history",
+      "topic_slug": "interboro_cemeteries_houdini_robinson",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "jackie-robinson-parkway",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Along the Jackie Robinson Parkway between Brooklyn and Queens, the route appears lined by one giant cemetery — and that is nearly true: eighteen different cemeteries crowd the road, holding a combined twenty thousand veterans and untold others. The largest is Cypress Hills, where Jackie Robinson is buried — the first African American to break the color line in Major League Baseball, on April 9, 1947, for the Brooklyn Dodgers. Adjacent Machpelah Cemetery holds the magician Harry Houdini, and nearby graves include Yiddish writer Sholom Aleichem, actor Edward G. Robinson, World Series fixer Arnold Rothstein, and jurist Benjamin Cardozo.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jackie Robinson Parkway",
+        "Cypress Hills",
+        "Jackie Robinson",
+        "Brooklyn Dodgers",
+        "Machpelah Cemetery",
+        "Harry Houdini",
+        "Sholom Aleichem",
+        "Edward G. Robinson",
+        "Arnold Rothstein",
+        "Benjamin Cardozo"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Interboro cemeteries",
+      "physical_cues": [
+        {
+          "cue": "Cemeteries lining both sides of the Jackie Robinson Parkway",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Eighteen cemeteries line the Interboro/Jackie Robinson Parkway, holding ~20,000 veterans",
+        "Cypress Hills holds Jackie Robinson, who broke MLB's color line April 9, 1947 for the Dodgers",
+        "Machpelah holds Houdini; nearby graves include Sholom Aleichem, Edward G. Robinson, Arnold Rothstein, Benjamin Cardozo"
+      ],
+      "source_passage": "there are actually eighteen different cemeteries along the Interboro. ... They hold a combined twenty thousand veterans of American wars and untold numbers of others. The largest of the cemeteries is Cypress Hill. Buried here is Jackie Robinson, the first African American baseball player to break the color line in Major League Baseball on April 9, 1947, while playing for the Brooklyn Dodgers. ... Adjacent to Cypress Hills is Machpelah Cemetery. This is the resting place of the great magician Harry Houdini. In neighboring cemeteries are the graves of Yiddish writer Sholom Aleichem, actor Edward G. Robinson, gangster and World Series fixer Arnold Rothstein, and jurist Benjamin Cardozo.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_social_change_big-onion-ten-historic-tours_flushing_religious_liberty_1645",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "social_change",
+      "topic_slug": "flushing_religious_liberty_1645",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "flushing",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Flushing was established in 1645 under Dutch governor William Kieft, who assured the eighteen original freeholders the right to religious freedom — making the town one of the cornerstones of religious liberty in colonial America. Begun as a predominantly English community within a Dutch colony, Flushing was a haven for free blacks in the early nineteenth century and today may host more immigrants from different countries than anywhere else in New York City.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Flushing",
+        "William Kieft"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "Flushing religious liberty",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Flushing established 1645 under Dutch governor William Kieft, who promised the 18 freeholders religious freedom",
+        "A cornerstone of colonial religious liberty; haven for free blacks in the early 19th century",
+        "Today may host more immigrant nationalities than anywhere in NYC"
+      ],
+      "source_passage": "Flushing was established in 1645under the auspices of Dutch governor William Kieft. The eighteen original freeholders were assured by Kieft of the right to religious freedom. With this promise, Flushing became one of the cornerstones of religious liberty in colonial America. Flushing also has a long history of ethnic diversity and tolerance. When it was first established, it was a predominantly English community within a Dutch colony. It was a haven for free blacks in the early nineteenth century and today may host more immigrants from different countries than any place in New York City.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_hidden_history_big-onion-ten-historic-tours_prince_nursery_washington_1789",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "hidden_history",
+      "topic_slug": "prince_nursery_washington_1789",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "flushing",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "On the corner of Prince Street, the site now holding Chin Fook Funeral Home was once the Prince House and Nursery, established in 1737 as the first tree nursery in America. The newly inaugurated President George Washington visited the nursery and the town of Flushing in 1789. Prince House was destroyed in the 1950s.",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Prince House and Nursery",
+        "George Washington"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Prince Nursery",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Site of Chin Fook Funeral Home was the Prince House and Nursery, established 1737 as the first tree nursery in America",
+        "George Washington visited the nursery and Flushing in 1789",
+        "Prince House destroyed in the 1950s"
+      ],
+      "source_passage": "On this site stood the Prince House and Nursery, established in 1737as the first tree nursery in America. The newly inaugurated president, George Washington, visited the nursery and the town of Flushing in 1789. Prince House was destroyed in the 1950s.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_friends_meeting_house_flushing_historic_worship_big-onion-ten-historic-tours_oldest_worship_1694",
+      "city_name": "new_york",
+      "poi_name": "Friends Meeting House (Flushing)",
+      "lens": "historic_worship",
+      "topic_slug": "oldest_worship_1694",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Built in 1694, the Friends Meeting House on Northern Boulevard is the oldest house of worship in New York City. It keeps the traditional Quaker spirit — without decoration or art, to allow undistracted worship — and during the Revolutionary War the British converted it into a prison and hospital. Step inside if you can: the second story rests on massive forty-foot hand-cut oak beams, and the original handmade ironwork is still in use. The Meeting House is on the National Register of Historic Places, and visitors are welcome.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Friends Meeting House",
+        "National Register of Historic Places"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "oldest house of worship",
+      "physical_cues": [
+        {
+          "cue": "The Meeting House on the south side of Northern Boulevard, opposite Linden Place",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Forty-foot hand-cut oak beams supporting the second story inside",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Built 1694, oldest house of worship in NYC",
+        "British converted it to a prison and hospital during the Revolution",
+        "Second story rests on 40-foot hand-cut oak beams; original ironwork still in use; on the National Register"
+      ],
+      "source_passage": "Built in 1694, this is the oldest house of worship in New York City. It stands in the traditional Quaker spirit of worship, without decoration or art, to allow undistracted worship. During the Revolutionary War it was converted into a prison and hospital by the British. ... The second story is supported by massive forty-foot hand-cut oak beams, and the original handmade ironwork is still in use. The Meeting House is on the National Register of Historic Places, and visitors are welcome.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_hidden_history_big-onion-ten-historic-tours_flushing_town_hall_pre_consolidation_names",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "hidden_history",
+      "topic_slug": "flushing_town_hall_pre_consolidation_names",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "flushing",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Behind the small park stands the old Flushing Town Hall, now the Flushing Council on Culture and the Arts, built in 1862 in the early Romanesque style. Queens is the only borough that keeps its pre-Consolidation town names: you address a letter to \"Flushing, New York,\" not \"Queens, New York.\"",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "Flushing Town Hall",
+        "Flushing Council on Culture and the Arts"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Flushing Town Hall",
+      "physical_cues": [
+        {
+          "cue": "Old Flushing Town Hall behind the small park to your left",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Old Flushing Town Hall (now Flushing Council on Culture and the Arts) built 1862, early Romanesque",
+        "Queens is the only borough retaining pre-Consolidation town names in addresses"
+      ],
+      "source_passage": "Behind the small park, also to your left, stands the old Flushing Town Hall, now the Flushing Council on Culture and the Arts. Built in 1862in the early Romanesque style, this was the center of town \"business\" before the 1898 Consolidation of Greater New York It is interesting to note that Queens is the only borough that retains its pre-Consolidation town names. In fact, when writing letters to people in Queens, you write, for example, \"Flushing, New York,\" not \"Queens, New York.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_john_bowne_house_social_change_big-onion-ten-historic-tours_flushing_remonstrance_religious_freedom",
+      "city_name": "new_york",
+      "poi_name": "John Bowne House",
+      "lens": "social_change",
+      "topic_slug": "flushing_remonstrance_religious_freedom",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "37-01 Bowne Street",
+      "beat_length_class": "anchor",
+      "script_body": "Built in the colonial saltbox style in 1661 by John Bowne — an Englishman who reached Flushing by way of Boston — the Bowne House became a flashpoint for religious freedom. After converting to the Quaker faith, Bowne invited Quakers to meet in his kitchen, defying New Amsterdam governor Peter Stuyvesant, who had declared the Dutch Reformed Church the only acceptable order. When Stuyvesant moved against the Quakers, thirty townspeople signed the \"Flushing Remonstrance,\" protesting that they could not \"stretch our hands against them, to punish, banish or persecute them.\" Stuyvesant responded by arresting and fining the signers, and in 1662 he arrested Bowne himself, sentencing him to prison and banishment. After seven months in jail, Bowne sailed to the Netherlands and argued before the Dutch West India Company for religious tolerance; they freed him and rebuked Stuyvesant with a letter upholding the principle. Many historians regard this community resistance as a foundation of the First Amendment's freedom of religion. Nine generations of Bownes lived here, the last leaving in 1945; the house is now called \"A National Shrine to Religious Freedom.\"",
+      "duration_sec": 84,
+      "kid_friendly": "yes",
+      "entities": [
+        "John Bowne",
+        "Peter Stuyvesant",
+        "Flushing Remonstrance",
+        "Dutch West India Company",
+        "First Amendment"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Flushing Remonstrance",
+      "physical_cues": [
+        {
+          "cue": "The colonial saltbox Bowne House at 37-01 Bowne Street, on your left after the first light",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bowne House built 1661 by John Bowne; he invited Quakers to meet in his kitchen against Stuyvesant",
+        "Thirty townspeople signed the Flushing Remonstrance; Stuyvesant arrested Bowne in 1662, jailing and banishing him",
+        "Bowne won religious tolerance from the Dutch West India Company; regarded as a foundation of the First Amendment; nine Bowne generations lived here, last leaving 1945; now 'A National Shrine to Religious Freedom'"
+      ],
+      "source_passage": "John Bowne House, at 37–01Bowne Street ... was built in the colonial saltbox style in 1661by John Bowne, a native of England who migrated to Flushing by way of Boston, Massachusetts, in the 1650s. ... New Amsterdam Governor Peter Stuyvesant quickly disregarded his predecessor governor Kieft and declared the Dutch Reformed Church the only acceptable religious order. In response, thirty townspeople signed the \"Flushing Remonstrance,\" a document protesting Stuyvesant's actions. ... [We] shall be glad to see anything of God in any of them ... Styuvesant responded by sending troops to arrest and fine all those who signed the Remonstrance. ... when John Bowne finished building his home in 1661, he invited the Quakers to meet in his kitchen. Governor Stuyvesant heard about these illegal meetings and, in 1662, arrested Bowne and sentenced him to prison and banishment. After seven months in jail, Bowne traveled to the Netherlands and argued before the Dutch West India Company for religious tolerance. They agreed with his principles, set him free, and rebuked Stuyvesant ... This community resistance to state authority over religious worship is regarded by many historians to be the foundation of the First Amendment to the Constitution of the United States—freedom of religion. Nine generations of the Bowne family lived in this house, the last one moving out in 1945. ... It is now called \"A National Shrine to Religious Freedom\".",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_louis_armstrong_house_museum_music_heritage_big-onion-ten-historic-tours_satchmo_corona_home_1942_1971",
+      "city_name": "new_york",
+      "poi_name": "Louis Armstrong House Museum",
+      "lens": "music_heritage",
+      "topic_slug": "satchmo_corona_home_1942_1971",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": "34-56 107th Street",
+      "beat_length_class": "anchor",
+      "script_body": "The modern red-brick house at 34-56 107th Street is the Louis Armstrong House, a National Historic Landmark and the home of jazz great Louis Armstrong for twenty-nine years, from 1942 until his death in 1971. Born in the Storyville neighborhood of New Orleans, Armstrong grew up amid the ragtime and blues that shaped his life; his musical career began in the marching band of the Colored Waifs' Home, where he was sent in 1912. His professional career got a boost when King Oliver made him second cornetist in 1922, bringing him to Chicago, and he reached New York as a trumpeter, joining Fats Waller and Edith Wilson's Broadway revue Hot Chocolate in 1929. He performed in numerous shows and films, returning to the stage in 1947; among his greatest hits are \"Blueberry Hill\" of 1949, \"Mack the Knife\" of 1955, and \"Hello Dolly\" of 1962.",
+      "duration_sec": 60,
+      "kid_friendly": "yes",
+      "entities": [
+        "Louis Armstrong",
+        "Colored Waifs' Home",
+        "King Oliver",
+        "Fats Waller",
+        "Edith Wilson",
+        "Hot Chocolate"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Armstrong home",
+      "physical_cues": [
+        {
+          "cue": "Modern red-brick house and garage on your left at 34-56 107th Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Louis Armstrong House at 34-56 107th Street, a National Historic Landmark; Armstrong's home 1942 until his death 1971",
+        "Born in Storyville, New Orleans; career began in the Colored Waifs' Home band (1912); King Oliver made him second cornetist 1922",
+        "Joined Hot Chocolate in 1929; hits include 'Blueberry Hill' (1949), 'Mack the Knife' (1955), 'Hello Dolly' (1962)"
+      ],
+      "source_passage": "This is the Louis Armstrong House, located at 34–56107th Street. This National Historic Landmark was the home of jazz great Louis Armstrong for twenty-nine years, from 1942until his death in 1971. Born in the Storyville neighborhood of New Orleans, Armstrong was surrounded by the ragtime and blues music that would influence the rest of his life. His musical career got started in the marching band of the Colored Waifs Home, to which he had been sent in 1912. His professional career got a boost when jazz man King Oliver made Armstrong second cornetist in 1922. This brought Armstrong to Chicago. He came to New York as a trumpeter and joined Fats Waller and Edith Wilson's Broadway revue Hot Chocolate in 1929. ... Some of his greatest hits include \"Blueberry Hill\" (1949), \"Mack the Knife\" (1955), and \"Hello Dolly\" (1962).",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_county_farm_museum_parks_gardens_big-onion-ten-historic-tours_forest_hills_gardens_olmsted_jr",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "historic_arch",
+      "topic_slug": "forest_hills_gardens_olmsted_jr",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "forest-hills-gardens",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Past the train tracks lies Forest Hills Gardens, a 142-acre community planned by Frederick Law Olmsted Jr. — son of the Central Park Olmsted — in the style of an English Tudor village. Construction began around 1910, but two world wars and the 1929 crash meant most houses weren't built until the 1940s and 1950s. Olmsted, with his colleague Grosvenor Atterbury, designed the railroad station, the greens, and nearby houses. The community was originally envisioned by Margaret Olivia Slocum Sage, wife of financier-philanthropist Russell Sage and founder of the Russell Sage Foundation.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Forest Hills Gardens",
+        "Frederick Law Olmsted Jr.",
+        "Grosvenor Atterbury",
+        "Margaret Olivia Slocum Sage",
+        "Russell Sage",
+        "Russell Sage Foundation"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Forest Hills Gardens",
+      "physical_cues": [
+        {
+          "cue": "Tudor-style houses and greens of Forest Hills Gardens as you pass under the train tracks",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Forest Hills Gardens is a 142-acre community planned by Frederick Law Olmsted Jr. as an English Tudor village",
+        "Construction began c.1910; most houses built in the 1940s-50s after two wars and the 1929 crash",
+        "Olmsted and Grosvenor Atterbury designed station and greens; envisioned by Margaret Olivia Slocum Sage"
+      ],
+      "source_passage": "As you pass under the train tracks, you enter Forest Hills Gardens. This 142-acre community was planned by Frederick Law Olmsted Jr. (son of the Olmsted of Central Park fame) in the style of an English Tudor village. Construction began around 1910, but with two world wars and the financial crash of 1929, the majority of the houses weren't built until the 1940s and 1950s. Olmsted, with his colleague Grosvenor Atterbury, designed the railroad station, the greens, and nearby houses. Forest Hills Gardens was originally envisioned by Margaret Olivia Slocum Sage, wife of financier/philanthropist Russell Sage and founder of the Russell Sage Foundation.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_historic_cuisine_big-onion-ten-historic-tours_lemon_ice_king_corona",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "historic_cuisine",
+      "topic_slug": "lemon_ice_king_corona",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "corona",
+      "trigger_address": "108th Street and Corona Avenue",
+      "beat_length_class": "seasoning",
+      "script_body": "At the corner of 108th Street and Fifty-second Avenue in Corona, be certain to stop at the Lemon Ice King of Corona — by the book's reckoning the best ices in the city — beside the long-standing Italian shops and the bocce court in the small park.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lemon Ice King of Corona"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Lemon Ice King",
+      "physical_cues": [
+        {
+          "cue": "Lemon Ice King of Corona on the corner of Fifty-second Avenue",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Lemon Ice King of Corona at 108th Street and Fifty-second Avenue, beside Italian shops and a bocce court"
+      ],
+      "source_passage": "If you park and walk around, you will see the long-term Italian shops and even a bocce ball court in the small park. Be certain to go to the Lemon Ice King of Corona, right on the corner of Fifty-second Avenue—the best ices in the city!",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_social_change_big-onion-ten-historic-tours_jackson_heights_garden_apartments_redlining",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "social_change",
+      "topic_slug": "jackson_heights_garden_apartments_redlining",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "jackson-heights",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Farmland in the early twentieth century, the Jackson Heights Historic District was ripe for speculative building just before the Queensboro Bridge opened in 1909. The Queensboro Realty Company bought up 350 acres and built the neighborhood over two decades. Its innovation lay in the blocks themselves — five- and six-story cooperative apartment houses with large rear gardens along the avenues, smaller attached single-family houses on the side streets. But in the 1920s the company tolerated \"red-lining,\" an exclusionary policy directed against Jews, Catholics, and African Americans that blocked them from mortgages. Today Jackson Heights is a thriving, ethnically diverse community, home in the early 1990s to the largest Argentinean community in the city.",
+      "duration_sec": 50,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jackson Heights Historic District",
+        "Queensboro Realty Company",
+        "Queensboro Bridge"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "Jackson Heights",
+      "physical_cues": [
+        {
+          "cue": "Garden-apartment houses along Thirty-fourth Avenue, especially between Eighty-first and Eightieth Streets",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jackson Heights was farmland before the 1909 Queensboro Bridge; Queensboro Realty Company built it on 350 acres",
+        "Innovation: garden apartments on avenues, attached houses on side streets",
+        "In the 1920s the company tolerated red-lining against Jews, Catholics, African Americans; later home to the largest Argentinean community in the city"
+      ],
+      "source_passage": "This area was farmland in the early twentieth century. Just prior to the Queensboro Bridge opening in 1909, this district had been ripe for speculative building. A group of investors called the Queensboro Realty Company bought up 350acres and, over the next two decades, built this neighborhood. ... Along the avenues, builders created five- and six-story cooperative apartment houses with large rear gardens. ... On the side streets they built smaller single-family attached houses. ... In the 1920s the Queensboro Realty Company tolerated the suburban practice of \"red-lining,\" an exclusionary policy directed against unwanted buyers—here meaning Jews, Catholics, and African Americans ... In the early 1990s it was home to the largest Argentinean community in New York City.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_science_tech_big-onion-ten-historic-tours_triboro_three_bridges_1936",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "science_tech",
+      "topic_slug": "triboro_three_bridges_1936",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "triboro-bridge",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Triboro is actually three interconnected steel bridges linking the Bronx, Manhattan, and Queens. Its designers, Othmar Ammann and Aymar Embury II, had the misfortune to begin construction on October 25, 1929 — the same day the stock market collapsed. Work halted until 1933, and the bridge finally opened in July 1936.",
+      "duration_sec": 21,
+      "kid_friendly": "yes",
+      "entities": [
+        "Triboro Bridge",
+        "Othmar Ammann",
+        "Aymar Embury II"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "wry",
+      "subject_tag": "Triboro Bridge",
+      "physical_cues": [
+        {
+          "cue": "The three interconnected spans of the Triboro Bridge as you drive across toward the Bronx",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Triboro is three interconnected steel bridges linking the Bronx, Manhattan, and Queens",
+        "Designers Ammann and Aymar Embury II began construction October 25, 1929, the day the market crashed",
+        "Work halted until 1933; opened July 1936"
+      ],
+      "source_passage": "The Triboro is actually three interconnected steel bridges that connect the Bronx, Manhattan, and Queens. Designers Othmar Ammann and Aymar Embury II, had the misfortune to begin construction on October 25, 1929, the same day the stock market collapsed. Work was then halted until 1933. The bridge finally opened in July 1936.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_science_tech_big-onion-ten-historic-tours_hell_gate_longest_steel_arch_1917",
+      "city_name": "new_york",
+      "poi_name": "Queens",
+      "lens": "science_tech",
+      "topic_slug": "hell_gate_longest_steel_arch_1917",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "hell-gate-bridge",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Paralleling the Triboro to the right is the New York Connecting Railroad Bridge — the Hell Gate Bridge. When it was completed in 1917 it was the longest steel-arch bridge in the world, two and a half miles long with a 1,017-foot steel arch carrying four sets of rail lines. Gustav Lindenthal built it for the Pennsylvania Railroad to give direct train access between Manhattan, Queens, the Bronx, and points north.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Hell Gate Bridge",
+        "Gustav Lindenthal",
+        "Pennsylvania Railroad"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Hell Gate Bridge",
+      "physical_cues": [
+        {
+          "cue": "The Hell Gate Bridge's steel arch paralleling the Triboro to your right",
+          "direction": "right",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hell Gate (New York Connecting Railroad) Bridge completed 1917, then longest steel-arch bridge in the world",
+        "Two and a half miles long, 1,017-foot steel arch, four rail lines",
+        "Built by Gustav Lindenthal for the Pennsylvania Railroad"
+      ],
+      "source_passage": "Paralleling the Triboro Bridge to the right is the New York Connecting Railroad Bridge, known to most New Yorkers as the Hell Gate Bridge. When this bridge was completed in 1917, it was the longest steel-arch bridge in the world. The bridge is two and a half miles in length and holds four sets of rail lines. The steel arch is a tremendous 1,017feet. It was built for the Pennsylvania Railroad by Gustav Lindenthal (who also designed the Williamsburg and Queensboro Bridges) to provide direct train access between Manhattan, Queens, the Bronx, and points north.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bronx_hidden_history_big-onion-ten-historic-tours_jonas_bronck_mainland_borough",
+      "city_name": "new_york",
+      "poi_name": "The Bronx",
+      "lens": "hidden_history",
+      "topic_slug": "jonas_bronck_mainland_borough",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Bronx is New York's northernmost borough and the only one wholly on the mainland of the United States. It is named for Jonas Bronck, an early settler. Parts of the western Bronx were annexed by New York in 1875, and the eastern parts joined the city at the 1898 Consolidation. The borough became a destination for millions leaving Manhattan's tenements in the nineteenth and twentieth centuries, who then moved on to the suburbs in the 1960s and 1970s. Over twenty percent of the Bronx is parkland.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Bronx",
+        "Jonas Bronck"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "Bronx identity",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Bronx is the only borough wholly on the U.S. mainland, named for early settler Jonas Bronck",
+        "Western Bronx annexed 1875, eastern parts joined at 1898 Consolidation",
+        "Over 20 percent of the Bronx is parkland"
+      ],
+      "source_passage": "The Bronx is New York's northernmost borough and the only one wholly on the mainland of the United States. The borough is named for Jonas Bronck, an early settler. Parts of the western Bronx were annexed by New York in 1875, and the eastern parts joined the city at the 1898Consolidation. The Bronx was the destination for millions of people moving out of Manhattan tenements in the nineteenth and twentieth centuries, who then moved on to the suburbs in the 1960s and 1970s. Over 20percent of the Bronx is made up of parks ...",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bronx_visual_art_big-onion-ten-historic-tours_piccirilli_lincoln_statue",
+      "city_name": "new_york",
+      "poi_name": "The Bronx",
+      "lens": "visual_art",
+      "topic_slug": "piccirilli_lincoln_statue",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "mott-haven",
+      "trigger_address": "142d Street, Mott Haven",
+      "beat_length_class": "seasoning",
+      "script_body": "A few blocks along 142d Street stood the stone-carving studio of the Piccirilli brothers, who carved Daniel Chester French's design for the Abraham Lincoln statue that sits inside the Lincoln Memorial in Washington, D.C.",
+      "duration_sec": 14,
+      "kid_friendly": "yes",
+      "entities": [
+        "Piccirilli brothers",
+        "Daniel Chester French",
+        "Abraham Lincoln",
+        "Lincoln Memorial"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Piccirilli studio",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Piccirilli brothers' stone-carving studio was along 142d Street",
+        "They carved Daniel Chester French's Lincoln statue for the Lincoln Memorial"
+      ],
+      "source_passage": "a few blocks to your right, along 142d, was the stone-carving studio of the Piccirilli brothers, who carved Daniel Chester French's design for the Abraham Lincoln statue that sits inside the Lincoln Memorial in Washington, D.C.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bronx_historic_arch_big-onion-ten-historic-tours_grand_concourse_art_deco_apartments",
+      "city_name": "new_york",
+      "poi_name": "The Bronx",
+      "lens": "historic_arch",
+      "topic_slug": "grand_concourse_art_deco_apartments",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "grand-concourse",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Grand Concourse stretches four and a half miles from the South Bronx northward and is 180 feet wide at its broadest. Completed south to 161st Street between 1902 and 1909 and extended later in the 1930s, the concourse became home to some of the Bronx's most elegant apartment buildings, especially in the 1920s and 1930s. At first only the service roads carried cars, with the larger center stretch reserved for horses and carriages; now everything is a car lane.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Grand Concourse"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Grand Concourse",
+      "physical_cues": [
+        {
+          "cue": "The wide center lanes and service roads of the Grand Concourse, lined with Art Deco apartment buildings",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Grand Concourse runs 4.5 miles, 180 feet wide at its broadest",
+        "Completed south to 161st Street 1902-1909, extended in the 1930s",
+        "Center stretch first reserved for horses and carriages, now all car lanes"
+      ],
+      "source_passage": "Turn right on the Grand Concourse, which stretches four and a half miles from the South Bronx northward and is 180 feet wide at its broadest. The concourse was completed south to 161st Street between 1902and 1909and extended farther south in the 1930s. Especially in the 1920s and 1930s, the concourse became home to some of the Bronx's most elegant apartment buildings. Only the service roads were used for cars in the beginning, with the larger center stretch for horses and carriages. Now, of course, everything is a car lane.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bronx_historic_arch_big-onion-ten-historic-tours_bronx_flatiron_mount_hope_court",
+      "city_name": "new_york",
+      "poi_name": "The Bronx",
+      "lens": "historic_arch",
+      "topic_slug": "bronx_flatiron_mount_hope_court",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "grand-concourse",
+      "trigger_address": "1882 Grand Concourse",
+      "beat_length_class": "seasoning",
+      "script_body": "At East Tremont and the Grand Concourse stands the 1914 Mount Hope Court Apartments at 1882 Grand Concourse, also called the Bronx Flatiron Building. Park safely and look back the way you came: the \"point\" of the iron is what you see as you look south, and the building reads just like Manhattan's Flatiron from that angle.",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Mount Hope Court Apartments",
+        "Bronx Flatiron Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Bronx Flatiron",
+      "physical_cues": [
+        {
+          "cue": "Mount Hope Court at 1882 Grand Concourse, its 'point' visible when you look south",
+          "direction": "south",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1914 Mount Hope Court Apartments (1882 Grand Concourse) is also called the Bronx Flatiron Building",
+        "Looking south, its point reads like Manhattan's Flatiron"
+      ],
+      "source_passage": "at the intersection of East Tremont and Grand Concourse, on your right, is the 1914 Mount Hope Court Apartments (1882Grand Concourse), also known as the Bronx Flatiron Building. Park safely on your right and look behind you: Mount Hope Court looks like Manhattan's Flatiron Building when you look back at it. The \"point\" of the iron is what you're seeing as you look south, back the way you came.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_yankee_stadium_local_legends_big-onion-ten-historic-tours_house_that_ruth_built_1923",
+      "city_name": "new_york",
+      "poi_name": "Yankee Stadium",
+      "lens": "local_legends",
+      "topic_slug": "house_that_ruth_built_1923",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Turn at 158th Street and Yankee Stadium — the \"House That Ruth Built\" — rises up ahead. The brewer Jacob Ruppert had the stadium built for his team in 1923, with opening day on April 18; it was redone in 1976. Over the years famous Yankees have included Babe Ruth, Lou Gehrig, Joe DiMaggio, Mickey Mantle, Roger Maris, and Reggie Jackson. River Avenue, alongside, is lined with sporting-goods stores, most prominently the baseball shops owned by \"Stan.\"",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Yankee Stadium",
+        "Jacob Ruppert",
+        "Babe Ruth",
+        "Lou Gehrig",
+        "Joe DiMaggio",
+        "Mickey Mantle",
+        "Roger Maris",
+        "Reggie Jackson"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "establishing",
+      "emotional_register": "dramatic",
+      "subject_tag": "Yankee Stadium",
+      "physical_cues": [
+        {
+          "cue": "Yankee Stadium rising straight ahead as you turn at 158th Street",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Yankee Stadium, the 'House That Ruth Built,' built by brewer Jacob Ruppert in 1923, opening day April 18; redone 1976",
+        "Famous Yankees include Ruth, Gehrig, DiMaggio, Mantle, Maris, Reggie Jackson",
+        "River Avenue lined with sporting-goods stores"
+      ],
+      "source_passage": "straight ahead you'll see Yankee Stadium, the \"House That Ruth Built,\" rising up ahead. Jacob Ruppert, a brewer, had the stadium built for his team in 1923, and opening day was April 18. It was redone in 1976. Over the years, famous Yankees have included Babe Ruth, Lou Gehrig, Joe DiMaggio, Mickey Mantle, Roger Maris, and Reggie Jackson. ... This street is lined with sporting-goods stores. Most prominent are the series of baseball-related shops owned by \"Stan.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hall_of_fame_for_great_americans_historic_arch_big-onion-ten-historic-tours_mckim_mead_white_busts",
+      "city_name": "new_york",
+      "poi_name": "Hall of Fame for Great Americans",
+      "lens": "historic_arch",
+      "topic_slug": "mckim_mead_white_busts",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Bronx Community College began in 1894 as the uptown campus of Greenwich Village's New York University; in 1973 NYU sold the grounds to the city, which turned them into BCC. The Hall of Fame Terrace, open to the public, was designed by McKim, Mead and White — a semicircular arcade with bronze busts of educators, lawyers, scientists, and others, giving a great westward view. Cleverly, the Hall of Fame was designed to hide the giant foundation walls of buildings Stanford White designed for the campus.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bronx Community College",
+        "New York University",
+        "Hall of Fame Terrace",
+        "McKim, Mead and White",
+        "Stanford White"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Hall of Fame Terrace",
+      "physical_cues": [
+        {
+          "cue": "Semicircular arcade of bronze busts on the terrace, with a westward view",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "BCC began 1894 as NYU's uptown campus; NYU sold the grounds to the city in 1973",
+        "Hall of Fame Terrace designed by McKim, Mead and White with bronze busts and a westward view",
+        "Designed to hide foundation walls of buildings Stanford White designed"
+      ],
+      "source_passage": "Bronx Community College (BCC) was begun in 1894as the uptown campus of Greenwich Village's New York University (NYU). In 1973, NYU sold the grounds to the city, which turned the buildings into BCC. ... The Hall of Fame (and much of the campus) was designed by McKim, Mead and White. It's a semicircular arcade with bronze busts of educators, lawyers, scientists, and others and gives visitors a great view westward. Although it isn't apparent from where you stand, the Hall of Fame was designed to hide the giant foundation walls of some of the buildings Stanford White designed for the campus.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_edgar_allan_poe_cottage_literary_heritage_big-onion-ten-historic-tours_poe_fordham_ulalume_bells",
+      "city_name": "new_york",
+      "poi_name": "Edgar Allan Poe Cottage",
+      "lens": "literary_heritage",
+      "topic_slug": "poe_fordham_ulalume_bells",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On the corner stands Poe Cottage, built in 1816. The American author Edgar Allan Poe moved here in 1846, hoping the then-country air would cure his wife's tuberculosis. She died soon after they moved, but Poe stayed on until just before his own death in 1849, writing \"Ulalume\" and \"The Bells\" here. The cottage originally stood across the street and was moved to its current location in 1913.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Edgar Allan Poe",
+        "Ulalume",
+        "The Bells"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "Poe Cottage",
+      "physical_cues": [
+        {
+          "cue": "Poe Cottage on the corner at the Grand Concourse near Kingsbridge",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Poe Cottage built 1816; Poe moved here 1846 hoping to cure his wife's tuberculosis",
+        "His wife died soon after; Poe stayed until just before his death in 1849, writing 'Ulalume' and 'The Bells'",
+        "Cottage moved to its current location in 1913"
+      ],
+      "source_passage": "On the corner is Poe Cottage, built in 1816. American author Edgar Allan Poe moved here in 1846, hoping the then-country air would cure his wife's tuberculosis. She died soon after they moved, but Poe stayed on until just before he died in 1849. He wrote \"Ulalume\" and \"The Bells\" here. The cottage was actually originally across the street but was moved to its current location in 1913.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bronx_hidden_history_big-onion-ten-historic-tours_jerome_reservoir_churchill_grandfather",
+      "city_name": "new_york",
+      "poi_name": "The Bronx",
+      "lens": "hidden_history",
+      "topic_slug": "jerome_reservoir_churchill_grandfather",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": "kingsbridge-heights",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Sedgwick Avenue runs along the western edge of the Jerome Park Reservoir, filled in 1905 and named for Leonard Jerome — Winston Churchill's grandfather — who had a racetrack named after him nearby. Jerome sponsored the American Jockey Club to lift horse racing's image in the United States toward the aristocratic status it held in England.",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jerome Park Reservoir",
+        "Leonard Jerome",
+        "Winston Churchill",
+        "American Jockey Club"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Jerome Reservoir",
+      "physical_cues": [
+        {
+          "cue": "Jerome Park Reservoir along the west side of Sedgwick Avenue",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jerome Park Reservoir filled 1905, named for Leonard Jerome, Winston Churchill's grandfather",
+        "Jerome had a nearby racetrack and sponsored the American Jockey Club"
+      ],
+      "source_passage": "Sedgewick runs along the west border of Jerome Park Reservoir. The reservoir, filled in 1905, is named for Leonard Jerome, Winston Churchill's grandfather, who had a racetrack also named after him nearby. Jerome sponsored the American Jockey Club in an attempt to raise the image of horse racing in the United States to something closer to the aristocratic status it held in England.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wave_hill_famous_residents_big-onion-ten-historic-tours_roosevelt_twain_toscanini",
+      "city_name": "new_york",
+      "poi_name": "Wave Hill",
+      "lens": "famous_residents",
+      "topic_slug": "roosevelt_twain_toscanini",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Wave Hill is a nonprofit, city-owned park in Riverdale, its beautiful grounds holding an excellent herb garden and a small greenhouse. Wave Hill House, on the grounds, was a country home built in 1843, and over the years it has sheltered Teddy Roosevelt in the summers of 1870 and 1871, Mark Twain from 1901 to 1903, and Arturo Toscanini from 1942 to 1945. Bashford Dean, zoologist and curator of arms and armor for the Metropolitan Museum, lived in Glyndor House, another building on the grounds.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Wave Hill",
+        "Wave Hill House",
+        "Teddy Roosevelt",
+        "Mark Twain",
+        "Arturo Toscanini",
+        "Bashford Dean",
+        "Glyndor House",
+        "Metropolitan Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Wave Hill residents",
+      "physical_cues": [
+        {
+          "cue": "Wave Hill's grounds, herb garden, and greenhouse, the entrance on your right off Independence Avenue",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Wave Hill is a nonprofit, city-owned park in Riverdale with herb garden and greenhouse",
+        "Wave Hill House (1843) hosted Teddy Roosevelt (1870-71), Mark Twain (1901-03), Arturo Toscanini (1942-45)",
+        "Bashford Dean, Met curator of arms and armor, lived in Glyndor House"
+      ],
+      "source_passage": "Turn left and you will be following Wave Hill, on your right, a nonprofit, city-owned park. ... The grounds are beautiful, and it has an excellent herb garden and small greenhouse. Wave Hill House, on the grounds, was a country home built in 1843and over the years has been home to Teddy Roosevelt (summers of 1870and 1871), Mark Twain (1901–3), and Arturo Toscanini (1942–45). Bashford Dean, zoologist and curator of arms and armor for the Metropolitan Museum, lived in Glyndor House, another building on the grounds.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_ellis_island_national_museum_of_immigration_social_change_big-onion-ten-historic-tours_sandbar_to_landfill_16_million",
+      "city_name": "new_york",
+      "poi_name": "Ellis Island National Museum of Immigration",
+      "lens": "social_change",
+      "topic_slug": "sandbar_to_landfill_16_million",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Further into the harbor, to your right, are Ellis Island and the Statue of Liberty. Ellis Island first opened as New York's immigration reception center in 1892, and its main building — now a museum — opened in 1900. Between its opening and 1924, some sixteen million immigrants entered America through this building. The island itself began as a 3.3-acre sandbar; to meet the demand for space, landfill grew it to its current 27.5 acres.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ellis Island",
+        "Statue of Liberty"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Ellis Island landfill",
+      "physical_cues": [
+        {
+          "cue": "Ellis Island and the Statue of Liberty to your right in the harbor",
+          "direction": "right",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Ellis Island opened as immigration center 1892; main building (museum) opened 1900",
+        "Some 16 million immigrants entered through the building between opening and 1924",
+        "Began as a 3.3-acre sandbar, grown by landfill to 27.5 acres"
+      ],
+      "source_passage": "Ellis Island first opened as New York's immigration reception center in 1892. The main building, which is now a museum, opened in 1900. Between first opening and 1924, some 16million immigrants entered America through this building. One interesting note about the island itself: Ellis Island began as a 3.3-acre sandbar. To accommodate the buildings and increased demand for space, landfill was added to grow the island to its current 27.5acres.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_statue_of_liberty_science_tech_big-onion-ten-historic-tours_bartholdi_eiffel_hunt_1886",
+      "city_name": "new_york",
+      "poi_name": "Statue of Liberty",
+      "lens": "science_tech",
+      "topic_slug": "bartholdi_eiffel_hunt_1886",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-10-other-boroughs",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Statue of Liberty, one of the best-known landmarks in the world, was a gift from France, dedicated on October 28, 1886. Designed by sculptor Frédéric-Auguste Bartholdi, its copper \"skin\" is supported by a metal structure built by Gustave Eiffel, and its stone base was designed by American architect Richard Morris Hunt.",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Statue of Liberty",
+        "Frédéric-Auguste Bartholdi",
+        "Gustave Eiffel",
+        "Richard Morris Hunt"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "Liberty construction",
+      "physical_cues": [
+        {
+          "cue": "The Statue of Liberty across the harbor to your right",
+          "direction": "right",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Statue of Liberty was a gift from France, dedicated October 28, 1886",
+        "Designed by Bartholdi; copper skin on a metal structure by Gustave Eiffel; stone base by Richard Morris Hunt"
+      ],
+      "source_passage": "The Statue of Liberty, one of the best-known landmarks in the world, was a gift from France, dedicated on October 28, 1886. Designed by sculptor Frédéric-Auguste Bartholdi, its copper \"skin\" is supported by a metal structure built by Gustave Eiffel. The stone base was designed by American architect Richard Morris Hunt.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Other Boroughs: A Driving Tour"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "ANOMALY",
+      "description": "53 beats extracted — well above the >25 anomaly threshold. This is legitimate: the chunk is a ~1,800-line driving tour spanning four boroughs (Staten Island, Brooklyn, Queens, the Bronx) with dozens of distinct landmarks. Beat count tracks the geographic spread, not over-extraction.",
+      "recommendation": "Accept. No action needed; the density is inherent to a four-borough driving tour."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Beat count above lists 53 narrative/structural beats but the JSON 'beats' array intentionally covers the substantive narrative anchors plus representative transit. Many pure turn-by-turn ➢ direction sequences (Staten Island St. George loop, Ocean Parkway navigation, Bronx service-road sequence) were NOT emitted as individual transit beats to avoid low-value navigation spam; they are origin context folded into the nearest narrative beat.",
+      "recommendation": "Accept. If a fuller turn-by-turn transit layer is desired for in-car routing, a dedicated transit-beat pass can be run later."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "The Crimson Beech / Cass House (40.5760, -74.1389) and Jacques Marchais Museum of Tibetan Art (40.5743, -74.1387) are both on Lighthouse Hill, roughly 190m apart — outside the 100m flag but close. No existing-POI proximity conflict.",
+      "recommendation": "No action; both are distinct landmarks comfortably outside 100m."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "John Bowne House (40.7629, -73.8249) and Friends Meeting House Flushing (40.7628, -73.8302) are ~450m apart in Flushing; Staten Island Borough Hall (40.6433, -74.0775) and Curtis High School (40.6418, -74.0792) are ~210m apart in St. George. All outside the 100m threshold.",
+      "recommendation": "No action; distinct POIs, separations exceed 100m."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Several large secondary landmarks in the chunk were intentionally NOT promoted to new POIs to limit corpus sprawl: Tysen-Neville House, Julia Gardiner Tyler House, John King Vanderbilt House, New Brighton Village Hall, Staten Island Lighthouse, St. Patrick's Church (SI), Moravian Cemetery, Flagg Estate, Alice Austen House, Cyclone/Astroland, Gravesend Cemetery, Flatbush Town Hall, Lefferts Homestead, Kingsbridge Armory, Poe Park context, plus FMCP institutions (USTA, Unisphere) and Shea Stadium. Most appear in the chunk only as brief drive-by callouts.",
+      "recommendation": "Optional follow-up: Alice Austen House and the Staten Island Lighthouse are notable enough to warrant their own POIs if the partner wants deeper Staten Island coverage; flag for /poi-generate triage."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 53,
+    "pois_touched": 27,
+    "new_pois": 14,
+    "corrections_applied": 0,
+    "disputes": 0,
+    "anomalies": 4,
+    "lenses_hit": [
+      "waterways_views",
+      "hidden_history",
+      "historic_arch",
+      "famous_residents",
+      "social_change",
+      "sacred_traditions",
+      "war_conflict",
+      "local_legends",
+      "historic_cuisine",
+      "dark_history",
+      "parks_gardens",
+      "science_tech",
+      "visual_art",
+      "literary_heritage",
+      "music_heritage",
+      "historic_worship",
+      "sensory_observation"
+    ],
+    "lenses_missed": [
+      "modern_design",
+      "street_art",
+      "film_tv",
+      "markets_street_food",
+      "historic_markets"
+    ],
+    "confidence_counts": {
+      "HIGH": 53,
+      "MEDIUM": 0,
+      "LOW": 0
+    }
+  }
+}

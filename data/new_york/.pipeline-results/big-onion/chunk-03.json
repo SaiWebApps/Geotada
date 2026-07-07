@@ -1,0 +1,2155 @@
+{
+  "chunk_id": "chunk-03-greenwich-village",
+  "chunk_file": "Books/new_york/big-onion-ten-historic-tours/chunk-03-greenwich-village.cleaned.txt",
+  "pois": [
+    {
+      "name": "Sheridan Square",
+      "is_new": false,
+      "matched_existing": "Sheridan Square",
+      "short_description": "Greenwich Village triangle and surrounding streets near Christopher Street; longtime center of gay and lesbian Village life.",
+      "name_variations": [
+        "Sheridan Sq",
+        "1 Sheridan Square"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7322,
+      "longitude": -74.0019,
+      "trigger_radius": 30,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; central Village square anchoring multiple historic stops."
+    },
+    {
+      "name": "Bleecker Street",
+      "is_new": false,
+      "matched_existing": "Bleecker Street",
+      "short_description": "Major Greenwich Village street; nineteenth-century red-light reputation and site of historic drag clubs.",
+      "name_variations": [
+        "Bleecker St"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7295,
+      "longitude": -74.0027,
+      "trigger_radius": 25,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; long Village thoroughfare carrying multiple address-level seasoning beats."
+    },
+    {
+      "name": "Minetta Street",
+      "is_new": false,
+      "matched_existing": "Minetta Street",
+      "short_description": "Curving Village lane preserving buildings from the 'Little Africa' African American community of the mid-1800s.",
+      "name_variations": [
+        "Minetta Lane",
+        "Minetta St"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7295,
+      "longitude": -74.0003,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; historic lane anchoring the Little Africa / Addie Brown material."
+    },
+    {
+      "name": "130 MacDougal Street",
+      "is_new": false,
+      "matched_existing": "130 MacDougal Street",
+      "short_description": "MacDougal Street address; main drag of New Bohemia and early center of Village gay and lesbian businesses.",
+      "name_variations": [
+        "MacDougal Street",
+        "129 MacDougal Street",
+        "146 MacDougal Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7299,
+      "longitude": -74.0003,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI representing the MacDougal Street strip; carries Eve Addams, Calypso Restaurant seasoning beats."
+    },
+    {
+      "name": "Washington Square Park",
+      "is_new": false,
+      "matched_existing": "Washington Square Park",
+      "short_description": "Central Greenwich Village park; former potter's field, with cruising history along its west side and the Stanford White Arch.",
+      "name_variations": [
+        "Washington Square"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7308,
+      "longitude": -73.9973,
+      "trigger_radius": 60,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing tier-high Village anchor; park history plus the Arch."
+    },
+    {
+      "name": "Patchin Place",
+      "is_new": false,
+      "matched_existing": "Patchin Place",
+      "short_description": "Gated Village mews where Marlon Brando lived while a student at the New School.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7338,
+      "longitude": -73.9999,
+      "trigger_radius": 15,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; minor walk-by reference (Brando residence)."
+    },
+    {
+      "name": "Stonewall Inn",
+      "is_new": false,
+      "matched_existing": "Stonewall Inn",
+      "short_description": "51-53 Christopher Street bar; site of the June 1969 Stonewall riots that launched the modern gay liberation movement.",
+      "name_variations": [
+        "Stonewall",
+        "Stonewall National Monument",
+        "Stonewall National Historic District"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7338,
+      "longitude": -74.0021,
+      "trigger_radius": 20,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing flagship POI; the movement's most sacred site."
+    },
+    {
+      "name": "Julius'",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Bar at 159 West 10th Street, one of the oldest in the Village, site of the 1966 Mattachine Society 'sip-in' that secured the right of gay people to be served.",
+      "name_variations": [
+        "Julius",
+        "Julius' Bar",
+        "Julius Bar"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7335,
+      "longitude": -74.0026,
+      "trigger_radius": 12,
+      "geocode_source": "known street address (Nominatim blocked in sandbox)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "NYC's oldest gay bar, National Register-listed (2016), nationally significant sip-in site; strong standalone gravity. Coordinates from well-established 159 W 10th St address; live geocoder unavailable in sandbox."
+    },
+    {
+      "name": "Lesbian and Gay Community Services Center",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "LGBT community center at 208 West 13th Street, home base of New York's gay and lesbian community since 1984 and birthplace of ACT UP in 1987.",
+      "name_variations": [
+        "The Center",
+        "LGBT Community Center",
+        "Lesbian and Gay Community Services Center",
+        "LGBT Center"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7381,
+      "longitude": -73.9999,
+      "trigger_radius": 15,
+      "geocode_source": "known street address (Nominatim blocked in sandbox)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Largest LGBT multi-service organization on the East Coast, NYC landmark, ACT UP founding site; solid standalone gravity. Coordinates from established 208 W 13th St address; live geocoder unavailable in sandbox."
+    },
+    {
+      "name": "23 Fifth Avenue",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Former apartment of Mabel Dodge, whose 1910s salon became a center for Village artists and intellectuals.",
+      "name_variations": [
+        "Mabel Dodge salon"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7339,
+      "longitude": -73.9947,
+      "trigger_radius": 12,
+      "geocode_source": "known street address (Nominatim blocked in sandbox)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Historic salon address; modest standalone gravity but a discrete walk-stop in the tour. The original building was demolished; coordinates reflect the 23 Fifth Avenue location."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_greenwich_village_social_change_big-onion-ten-historic-tours_stonewall_movement_spark",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "social_change",
+      "topic_slug": "stonewall_movement_spark",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "For many years, Greenwich Village was the center of New York City's lesbian and gay community, and it remains the focus of legend and history. A walk through its streets passes landmarks from more than one hundred years of the lesbian and gay past. The Village is also home to the movement's most sacred site: the building that once housed the Stonewall Inn, where three days of unrest in June 1969 are widely considered the spark that launched the modern lesbian-and-gay liberation movement.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stonewall Inn",
+        "Stonewall riots"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "village gay history",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Greenwich Village was for many years the center of NYC's lesbian and gay community",
+        "The Village contains landmarks from over 100 years of lesbian and gay history",
+        "The Stonewall Inn building is the movement's most sacred site",
+        "Three days of unrest in June 1969 launched the modern liberation movement"
+      ],
+      "source_passage": "While the geographic center of gay and lesbian life in the city has been shifting in recent years (for men, up to Chelsea, and for women, out to Brooklyn), Greenwich Village remains the focus of legend and history, and a walk through the streets of the Village will take you past landmarks from more than one hundred years of the lesbian and gay past. Greenwich Village is also home to the gay-and-lesbian rights movement's most sacred site: the building that once housed the Stonewall Inn, site of the legendary Stonewall riots. The three days of unrest that took place there in June 1969 are widely considered the spark that launched the modern lesbian-and-gay liberation movement.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_hidden_history_big-onion-ten-historic-tours_refuge_anonymity_subway",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "hidden_history",
+      "topic_slug": "refuge_anonymity_subway",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "With its mix of immigrant, elite, and artistic populations, the Village was a refuge for lesbians and gay men for nearly a century before the Stonewall riots. They prized the anonymity and freedom of its streets, tenements, and boarding houses, and the relative openness of its bohemian society. Once the subway was extended down Seventh Avenue South, the Village became accessible from all parts of the city and gained a reputation as 'the place where the Bronx meets Brooklyn' for a taste of wild nightlife.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Seventh Avenue South"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "village refuge",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Village was a refuge for lesbians and gay men for nearly a century before the riots",
+        "Patrons prized the anonymity and freedom of its streets and boarding houses",
+        "Once the subway reached Seventh Avenue South it became known as 'where the Bronx meets Brooklyn'"
+      ],
+      "source_passage": "With its mix of immigrant, elite, and artistic populations, the Village was a refuge for lesbians and gay men from all walks of life for nearly a century before the riots. They prized the anonymity and freedom of its streets, tenements, and boarding houses and the relative openness of its bohemian society. Once the subway was extended down Seventh Avenue South, the Village was accessible from all parts of the city and became known as \"the place where the Bronx meets Brooklyn\" for a taste of wild nightlife.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_dark_history_big-onion-ten-historic-tours_dutch_sodomy_executions",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "dark_history",
+      "topic_slug": "dutch_sodomy_executions",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The earliest evidence of gay life in New York is also the most macabre: criminal statutes against 'sodomy,' which in New York and New Amsterdam was narrowly defined as sex between men. In 1613, under Dutch rule, such activity was punishable by death, and it remained among New York's eleven capital crimes after the English duke of York established his laws in 1665. The executions were gruesome. On June 25, 1646, a black man named Jan Creoli was sentenced to be 'choked to death and then burnt to ashes,' and on June 17, 1660, Jan Quisthout pleaded guilty to the same charge and was condemned to be 'tied in a sack and cast into the river and drowned until dead.'",
+      "duration_sec": 50,
+      "kid_friendly": "no",
+      "entities": [
+        "New Amsterdam",
+        "Duke of York",
+        "Jan Creoli",
+        "Jan Quisthout"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "sodomy law executions",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In New York and New Amsterdam sodomy was defined as sex between men",
+        "In 1613 under Dutch rule it was punishable by death",
+        "It remained among New York's eleven capital crimes after 1665",
+        "Jan Creoli was sentenced June 25, 1646 to be choked and burnt to ashes",
+        "Jan Quisthout on June 17, 1660 was condemned to be sacked and drowned"
+      ],
+      "source_passage": "In New York and New Amsterdam, sodomy was narrowly defined to cover only sex between men. In 1613, when the Dutch established their rule over New Amsterdam, sexual activity between men was punishable by death. In 1665, when the English duke of York established his laws for the colony, sodomy remained among New York's eleven capital crimes. Executions for sodomy in New York City were gruesome: on June 25, 1646, a black man named Jan Creoli was sentenced to be \"choked to death and then burnt to ashes\" for having sex with another man, and on June 17, 1660, Jan Quisthout pleaded guilty to the same charge and was condemned to be \"tied in a sack and cast into the river and drowned until dead.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_hidden_history_big-onion-ten-historic-tours_drag_waiters_tourist_draw",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "hidden_history",
+      "topic_slug": "drag_waiters_tourist_draw",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "By the late 1800s, New Yorkers were well aware of gay men and lesbians in their midst. In 1889 the American Observer wrote that 'there is in every community of any size a colony of male sexual perverts who are usually known to each other and are likely to congregate together.' In Greenwich Village at the time, clubs featuring waiters in drag had become a top tourist attraction.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "American Observer"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "drag club tourism",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1889 the American Observer described colonies of 'male sexual perverts' in every community",
+        "Clubs with waiters in drag were a top Village tourist attraction by the late 1800s"
+      ],
+      "source_passage": "In 1889, the American Observer wrote: \"There is in every community of any size a colony of male sexual perverts who are usually known to each other and are likely to congregate together.\" In Greenwich Village at the time, clubs featuring waiters in drag had become a top tourist attraction.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_social_change_big-onion-ten-historic-tours_willard_women_loves",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "social_change",
+      "topic_slug": "willard_women_loves",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Lesbian lives were far less visible on the streets, but awareness of women's relationships grew in certain circles. Temperance leader Frances Willard, who herself had several romances with other women, observed in the late nineteenth century: 'The loves of women for each other grow more numerous each day. That so little is said about them surprises me, for they are everywhere.'",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Frances Willard"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "women's romantic friendships",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Lesbian lives were far less visible than gay men's on the streets",
+        "Frances Willard, a temperance leader, had several romances with women",
+        "Willard observed the loves of women for each other were 'everywhere'"
+      ],
+      "source_passage": "In the late nineteenth century, relationships between women were common within communities of educated women of some financial means. Temperance leader Frances Willard, who herself had several romances with other women, observed, \"The loves of women for each other grow more numerous each day. That so little is said about them surprises me, for they are everywhere.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sheridan_square_stop_orientation_big-onion-ten-historic-tours_seahorse_building_orient",
+      "city_name": "new_york",
+      "poi_name": "Sheridan Square",
+      "lens": "local_legends",
+      "topic_slug": "seahorse_building_orient",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "This intersection is famously confusing. With your back to the newsstand atop the uptown 1/9 subway stop, look for the very tall brick building with a bas-relief of a seahorse just above the ground-floor door facing you. That's Sheridan Square — the street, not the square itself. Keep the seahorse building on your left and you're heading the right way.",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "seahorse orientation",
+      "physical_cues": [
+        {
+          "cue": "Tall brick building with a bas-relief of a seahorse above the ground-floor door",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Newsstand atop the uptown 1/9 subway stop",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "A bas-relief seahorse sits above a ground-floor door on Sheridan Square",
+        "The uptown 1/9 stop has a newsstand on top of it"
+      ],
+      "source_passage": "With your back to the newsstand that sits on top of the uptown 1/9 stop, look for the very tall brick building with the bas-relief of a seahorse just above the ground-floor door that is facing you. That's Sheridan Square, and if you keep the seahorse building on your left, you're heading in the right direction.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sheridan_square_local_legends_big-onion-ten-historic-tours_cafe_society_wrong_place",
+      "city_name": "new_york",
+      "poi_name": "Sheridan Square",
+      "lens": "local_legends",
+      "topic_slug": "cafe_society_wrong_place",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "1 Sheridan Square",
+      "beat_length_class": "mid",
+      "script_body": "Café Society, an integrated club known as 'the wrong place for the right people,' filled the basement of the two buildings — one is 1 Sheridan Square — that meet where Barrow Street and Washington Place cross. From 1938 to 1950 the owner ran a club where, he said, 'black and white worked together behind the footlights and sat together out front.' New York Confidential called it one of the most famed cabarets in the Village, New York's neighborhood for 'long-haired men, short-haired women, and those not sure exactly what they are' — and noted with alarm that the club's patrons 'hopped across the race fence.'",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Café Society",
+        "New York Confidential"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "cafe society club",
+      "physical_cues": [
+        {
+          "cue": "Two buildings meeting at the corner of Barrow Street and Washington Place, one of them 1 Sheridan Square",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Café Society was an integrated club called 'the wrong place for the right people'",
+        "It occupied the basement of two buildings including 1 Sheridan Square",
+        "It operated from 1938 to 1950",
+        "New York Confidential called it one of the most famed cabarets in the Village"
+      ],
+      "source_passage": "Café Society, an integrated club known as \"the wrong place for the right people,\" was in the basement of the two buildings (one is 1 Sheridan Square) that meet at the corner of Barrow Street and Washington Place across from the end of Sheridan Square. From 1938 to 1950 the owner ran a club where, he said, \"black and white worked together behind the footlights and sat together out front.\" In the late 1940s, New York Confidential referred to Café Society as \"one of the most famed cabarets\" in the Village, New York's neighborhood for \"long-haired men, short-haired women, and those not sure exactly what they are.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "Café Society operated 'from 1938 to 1950'",
+          "book_value": "1938 to 1950",
+          "external_finding": "Most sources (Wikipedia, Village Preservation) give the downtown Sheridan Square Café Society as open 1938–1948, with both Café Society clubs sold at a loss by 1950. The book's '1938 to 1950' may conflate the closing with the final sale.",
+          "resolution": "DISPUTE — not auto-corrected; book gives a defensible date range tied to the sale. Sources: en.wikipedia.org/wiki/Café_Society ; villagepreservation.org/2015/12/30/cafe-society-the-wrong-place-for-the-right-people/"
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sheridan_square_music_heritage_big-onion-ten-historic-tours_cafe_society_jazz_greats",
+      "city_name": "new_york",
+      "poi_name": "Sheridan Square",
+      "lens": "music_heritage",
+      "topic_slug": "cafe_society_jazz_greats",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "1 Sheridan Square",
+      "beat_length_class": "seasoning",
+      "script_body": "Over the years Café Society hosted jazz greats including Billie Holiday, Lena Horne, Sarah Vaughan, and Art Tatum. Its patrons included prominent figures in lesbian and gay history and in the history of the American left, among them Eleanor Roosevelt; Lillian Hellman, sometime Village resident and author of the lesbian-themed drama The Children's Hour; and Paul Robeson.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Billie Holiday",
+        "Lena Horne",
+        "Sarah Vaughan",
+        "Art Tatum",
+        "Eleanor Roosevelt",
+        "Lillian Hellman",
+        "Paul Robeson",
+        "The Children's Hour"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "cafe society performers",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Café Society hosted Billie Holiday, Lena Horne, Sarah Vaughan, and Art Tatum",
+        "Its patrons included Eleanor Roosevelt, Lillian Hellman, and Paul Robeson",
+        "Lillian Hellman wrote the lesbian-themed drama The Children's Hour"
+      ],
+      "source_passage": "Over the years, Café Society hosted performances by such jazz greats as Billie Holiday, Lena Horne, Sarah Vaughan, and Art Tatum. Its patrons included a number of prominent figures in lesbian and gay history and the history of the American left, including Eleanor Roosevelt (see page 103); Lillian Hellman, sometime Village resident and the author of the lesbian-themed drama The Children's Hour; and Paul Robeson.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sheridan_square_famous_residents_big-onion-ten-historic-tours_bayard_rustin_mr_march",
+      "city_name": "new_york",
+      "poi_name": "Sheridan Square",
+      "lens": "famous_residents",
+      "topic_slug": "bayard_rustin_mr_march",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "1 Sheridan Square",
+      "beat_length_class": "anchor",
+      "script_body": "In the late 1930s a young man named Bayard Rustin frequented Café Society as both patron and performer — an aspiring singer attending City College who would become a key figure in the Civil Rights movement. A committed disciple of nonviolence, Rustin went to prison as a conscientious objector during World War II and served as an important lieutenant of A. Philip Randolph in the 1940s, until an arrest in California for soliciting another man for sex forced him to take a lower profile. During the Montgomery bus boycott he went south and worked with King behind the scenes, helping make nonviolence King's strategic focus, and remained one of King's closest advisers until the early 1960s — when a rival civil rights leader threatened to spread the false rumor that King and Rustin were having an affair, and King distanced himself to avert a scandal. In 1963 Randolph brought Rustin back as his deputy for planning the March on Washington. Despite Strom Thurmond denouncing him from the Senate floor as a pervert and a Communist, the march was a triumph. Those in the know called Rustin 'Mr. March,' but he never received the public credit he deserved before his death in 1987.",
+      "duration_sec": 88,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bayard Rustin",
+        "City College",
+        "A. Philip Randolph",
+        "Martin Luther King Jr.",
+        "Montgomery bus boycott",
+        "Strom Thurmond",
+        "March on Washington"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "Rustin mr march",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bayard Rustin frequented Café Society as patron and performer while at City College",
+        "He was a conscientious objector imprisoned in WWII and a lieutenant of A. Philip Randolph",
+        "A California arrest for soliciting another man forced him to a lower profile",
+        "He advised King on nonviolence and was distanced after a rival threatened a false affair rumor",
+        "Randolph made him deputy for the 1963 March on Washington",
+        "Strom Thurmond denounced him from the Senate floor",
+        "He was called 'Mr. March' and died in 1987"
+      ],
+      "source_passage": "In the late 1930s, a young man named Bayard Rustin frequented Café Society both as patron and performer. An aspiring singer who was attending City College at the time, Rustin would go on to become a key figure in the Civil Rights movement. Rustin was a committed disciple of nonviolence who went to prison as a conscientious objector during World War II. He was an important lieutenant of A. Philip Randolph during the 1940s, before an arrest in California for soliciting another man for sex forced him to take a lower profile in organizing efforts. During the Montgomery bus boycott, Rustin went south and worked with King behind the scenes, helping him make nonviolence his strategic focus. Rustin was one of King's closest advisers until the early 1960s, when a rival civil rights leader threatened to spread the false rumor that King and Rustin were having an affair. To avert a scandal, King distanced himself from Rustin. In 1963, A. Philip Randolph brought Rustin back into the fold, making him his deputy for the planning of the March on Washington. Despite attacks by Strom Thurmond, who denounced Rustin from the floor of the Senate as a pervert and a Communist, the march was a success. Those in the know called Rustin \"Mr. March,\" but he never received the public credit he deserved before his death in 1987.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bleecker_street_famous_residents_big-onion-ten-historic-tours_hansberry_337_bleecker",
+      "city_name": "new_york",
+      "poi_name": "Bleecker Street",
+      "lens": "famous_residents",
+      "topic_slug": "hansberry_337_bleecker",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "No. 337 Bleecker Street",
+      "beat_length_class": "mid",
+      "script_body": "No. 337 Bleecker Street was the former home of Lorraine Hansberry, the African American playwright whose A Raisin in the Sun brought a groundbreaking portrayal of black family life to Broadway when it opened in 1959. The play ran for two years, and Hansberry became the first black playwright to win the New York Drama Critics Circle Award for Best Play of the Year. Married to Robert Nemiroff, she wrote anonymous letters during the 1950s to One magazine and The Ladder, early gay-rights publications; Nemiroff was aware of her lesbianism, and the couple divorced in 1964 but remained close.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lorraine Hansberry",
+        "A Raisin in the Sun",
+        "Robert Nemiroff",
+        "One magazine",
+        "The Ladder",
+        "New York Drama Critics Circle Award"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Hansberry residence",
+      "physical_cues": [
+        {
+          "cue": "Façade of No. 337 Bleecker Street, former home of Lorraine Hansberry",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "No. 337 Bleecker Street was Lorraine Hansberry's former home",
+        "A Raisin in the Sun opened on Broadway in 1959 and ran two years",
+        "Hansberry was the first black playwright to win the NY Drama Critics Circle Award for Best Play",
+        "She wrote anonymous letters to One magazine and The Ladder in the 1950s",
+        "She was married to Robert Nemiroff and divorced in 1964"
+      ],
+      "source_passage": "Return to Seventh Avenue South and, crossing the avenue, walk west on Christopher Street one block and then turn right on Bleecker, going a few buildings to No. 337, the former home of Lorraine Hansberry. Lorraine Hansberry was an African American playwright whose A Raisin in the Sun brought a groundbreaking portrayal of black family life to Broadway when it opened in 1959. The play ran for two years, and Hansberry became the first black playwright to win the New York Drama Critics Circle Award for Best Play of the Year. Hansberry was married to Robert Nemiroff, but during the 1950s, she wrote a number of anonymous letters to One magazine and The Ladder, publications of \"homophile organizations\" that were just beginning to campaign for gay rights. Nemiroff was aware of her lesbianism. The couple divorced in 1964 but remained close.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bleecker_street_dark_history_big-onion-ten-historic-tours_the_slide_drag_club",
+      "city_name": "new_york",
+      "poi_name": "Bleecker Street",
+      "lens": "dark_history",
+      "topic_slug": "the_slide_drag_club",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "157 Bleecker Street",
+      "beat_length_class": "anchor",
+      "script_body": "Bleecker Street was notorious in the mid- to late nineteenth century, second only to the Bowery for its rough and racy reputation, and Greene and Mercer Streets were among the busiest red-light districts in the city. In the early 1890s, in the building that now houses Kenny's Castaways at 157 Bleecker Street, an entrepreneur opened a drag club called the Slide. Such clubs — the most famous being Columbia Hall, a.k.a. 'Paresis Hall,' at 392 Bowery — were places where straight patrons came to gape, but also centers of gay male social life and relatively safe gathering places. The Slide quickly became infamous: in 1892 the New York Herald reported that out-of-towners seeking 'the low life' were directed there first by detectives. A vice cop described the waiters as 'men of degenerate type,' some 'rouging their necks,' who in falsetto voices 'sang filthy ditties' and dropped into a chair at any visitor's table. The police closed the Slide in 1892. Down the block at 183 Bleecker Street, a sex club called the Black Rabbit featuring gay-themed acts managed to stay open until a police raid in 1900.",
+      "duration_sec": 72,
+      "kid_friendly": "no",
+      "entities": [
+        "The Slide",
+        "Kenny's Castaways",
+        "Columbia Hall",
+        "Paresis Hall",
+        "New York Herald",
+        "Black Rabbit"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "the slide club",
+      "physical_cues": [
+        {
+          "cue": "Building now housing Kenny's Castaways at 157 Bleecker Street, the former site of the Slide",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bleecker Street was second only to the Bowery for its rough reputation",
+        "Greene and Mercer Streets were busy red-light districts",
+        "The Slide drag club opened early 1890s at what is now 157 Bleecker Street",
+        "Columbia Hall, a.k.a. Paresis Hall, stood at 392 Bowery",
+        "The New York Herald reported on the Slide in 1892 and police closed it that year",
+        "The Black Rabbit at 183 Bleecker Street stayed open until a 1900 raid"
+      ],
+      "source_passage": "Bleecker Street was notorious in the mid– to late nineteenth century, second only to the Bowery in its reputation as a rough and racy part of town. Greene and Mercer Streets were among the busiest red-light districts in the city. In the early 1890s, in the building that now houses Kenny's Castaways, an entrepreneur started a drag club called the Slide. The most famous was Columbia Hall (a.k.a. \"Paresis Hall,\" after a kind of madness that comes from syphilis) at 392 Bowery. The Slide quickly became infamous. In 1892, the New York Herald reported that the Slide was becoming a tourist attraction for out-of-towners seeking a glimpse of the low life in the city. The Slide was closed by the police in 1892. (Down the block at 183 Bleecker Street, a sex club called the Black Rabbit, featuring gay-themed acts, managed to stay open until 1900, when it, too, was raided by the police.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bleecker_street_hidden_history_big-onion-ten-historic-tours_mills_house_no_1",
+      "city_name": "new_york",
+      "poi_name": "Bleecker Street",
+      "lens": "hidden_history",
+      "topic_slug": "mills_house_no_1",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "160 Bleecker Street",
+      "beat_length_class": "mid",
+      "script_body": "Across the street from the Slide is an apartment building now called the Atrium. Above the modern lettering you can still see the shadow of its old name, 'Mills House No. 1.' The Mills Houses were male residence halls created by philanthropist Darius O. Mills to provide sanitary and moral accommodation for unmarried working men; this one was built in 1896. As historian George Chauncey notes, these inexpensive rooms were home to a number of working-class gay men, including a few who ended up in court for homosexual activity.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Mills House No. 1",
+        "Atrium",
+        "Darius O. Mills",
+        "George Chauncey"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "mills house residence",
+      "physical_cues": [
+        {
+          "cue": "Shadow of the old name 'Mills House No. 1' above the modern lettering on the building now called the Atrium",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The building across from the Slide is now called the Atrium",
+        "Its old name 'Mills House No. 1' is still faintly visible",
+        "The Mills Houses were male residence halls by Darius O. Mills",
+        "This one was built in 1896",
+        "George Chauncey notes it housed working-class gay men"
+      ],
+      "source_passage": "Across the street from the Slide is an apartment building now called the Atrium. Above the modern lettering one can still see the shadow of its old name, \"Mills House No. 1.\" The Mills Houses were male residence halls created by the philanthropist Darius O. Mills. This one was built in 1896. Mills intended to provide sanitary and moral accommodation for unmarried working men. As historian George Chauncey notes, these inexpensive rooms were home to a number of working-class gay men, including a few who ended up in court for homosexual activity.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_house_social_change_big-onion-ten-historic-tours_settlement_house_immigrants",
+      "city_name": "new_york",
+      "poi_name": "Bleecker Street",
+      "lens": "social_change",
+      "topic_slug": "greenwich_house_settlement",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "27 Barrow Street",
+      "beat_length_class": "mid",
+      "script_body": "By the late 1800s, the streets of the Village south of West Fourth Street and Washington Square Park had become the city's second most important Little Italy. Greenwich House at 27 Barrow Street, a settlement house founded by Mary Simkovitch in 1904, is a reminder of that past. It offered English classes, cooking lessons for immigrant women coping with unfamiliar American ingredients, and activities for neighborhood children. Further evidence of the former Italian presence survives along Bleecker and Cornelia Streets, where Italian businesses and restaurants remain.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Greenwich House",
+        "Mary Simkovitch",
+        "Little Italy"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "greenwich house settlement",
+      "physical_cues": [
+        {
+          "cue": "Greenwich House building at 27 Barrow Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Surviving Italian businesses and restaurants along Bleecker and Cornelia Streets",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Village south of West Fourth Street was the city's second most important Little Italy",
+        "Greenwich House at 27 Barrow Street was a settlement house founded by Mary Simkovitch in 1904",
+        "It provided English classes, cooking lessons, and children's activities",
+        "Italian businesses survive along Bleecker and Cornelia Streets"
+      ],
+      "source_passage": "By the late 1800s, the streets of the Village south of West Fourth Street and Washington Square Park had become the city's second most important Little Italy. Greenwich House (27 Barrow Street), a settlement house founded by Mary Simkovitch in 1904, is a reminder of that aspect of the neighborhood's past. The settlement house provided classes in English for members of the community, cooking lessons for immigrant women dealing with unfamiliar American ingredients, and activities for the neighborhood's children when they weren't in school. Further evidence of the former Italian presence is visible along Bleecker and Cornelia Streets, where Italian businesses and restaurants survive.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "Greenwich House was 'founded by Mary Simkovitch in 1904'",
+          "book_value": "founded in 1904; spelled 'Simkovitch'",
+          "external_finding": "Greenwich House (Wikipedia, greenwichhouse.org) was founded/incorporated in 1902 by Mary Kingsbury Simkhovitch; the 27 Barrow Street building opened in 1917. The book's '1904' founding date and 'Simkovitch' spelling both differ from the consensus (1902; 'Simkhovitch').",
+          "resolution": "DISPUTE — not auto-corrected per living/historical-figure and founding-date nuance. The book may date a later milestone. Sources: en.wikipedia.org/wiki/Greenwich_House ; greenwichhouse.org/about/history-of-greenwich-house/"
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_minetta_street_hidden_history_big-onion-ten-historic-tours_little_africa_addie_brown",
+      "city_name": "new_york",
+      "poi_name": "Minetta Street",
+      "lens": "hidden_history",
+      "topic_slug": "little_africa_addie_brown",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "Until the Civil War, the southeastern section of Greenwich Village was home to one of New York's largest African American communities, an area known as 'Little Africa,' and many buildings along Minetta Lane and Minetta Street survive from that period. Among Little Africa's residents in the 1860s was Addie Brown, a young black woman from Connecticut who worked as a domestic servant. From her room in the Sullivan Street house of her employer, a prosperous African American man named John H. Jackson, Brown wrote letters to her dearest love, Rebecca Primus, a black woman from Hartford with whom she had an intimate 'romantic friendship.' Their correspondence is one of the most remarkable surviving documents of romantic friendship between women from the nineteenth century — and one of the few examples of black women's writing from the mid-1800s. The record is uneven: 120 of Brown's letters survive, but none of Primus's replies. In 1859 Brown wrote, 'How did I miss you last night. I did not have anyone to hug me up and to kiss. No kisses is like yours.' Primus's family knew of the bond; in 1866, after a gentleman caller disparaged their affection, Mrs. Primus said that if either woman were a gentleman they would marry. Both women eventually married men, though their letters reveal ambivalence and tension about those decisions.",
+      "duration_sec": 96,
+      "kid_friendly": "yes",
+      "entities": [
+        "Little Africa",
+        "Addie Brown",
+        "John H. Jackson",
+        "Rebecca Primus"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Brown Primus letters",
+      "physical_cues": [
+        {
+          "cue": "Buildings along Minetta Lane and Minetta Street surviving from the Little Africa period",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Until the Civil War the southeastern Village was 'Little Africa,' a large African American community",
+        "Buildings on Minetta Lane and Minetta Street survive from that period",
+        "Addie Brown, a domestic servant, lived in John H. Jackson's Sullivan Street house in the 1860s",
+        "She wrote love letters to Rebecca Primus of Hartford",
+        "120 of Brown's letters survive but none of Primus's replies",
+        "In 1866 Mrs. Primus said if either were a gentleman they would marry",
+        "Both women eventually married men"
+      ],
+      "source_passage": "Until the time of the Civil War, the southeastern section of Greenwich Village was home to one of New York City's largest African American communities, in an area known as \"Little Africa.\" Many of the buildings along Minetta Lane and Minetta Street survive from that period. Among Little Africa's many residents in the 1860s was a young black woman from Connecticut named Addie Brown, who worked as a domestic servant. One of her employers, a prosperous African American man named John H. Jackson, had a house on Sullivan Street and ran a hotel on Broadway. From her room in Jackson's house, Brown wrote letters to her dearest love, Rebecca Primus, a black woman from Hartford with whom she had an intimate and passionate \"romantic friendship.\" 120 of Brown's letters to Primus have survived, but none of Primus's replies. In 1859, Brown wrote to Primus: \"How did I miss you last night. I did not have anyone to hug me up and to kiss. No kisses is like yours.\" In 1866, Brown visited Primus's family... Mrs. Primus defended them... \"She also said if either one of us was a gent we would marry.\" Both Primus and Brown eventually married men, though the letters reveal ambivalence and tension about their decisions.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_130_macdougal_street_social_change_big-onion-ten-historic-tours_meat_rack_new_bohemia",
+      "city_name": "new_york",
+      "poi_name": "130 MacDougal Street",
+      "lens": "social_change",
+      "topic_slug": "meat_rack_new_bohemia",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "MacDougal Street was the main drag of New Bohemia — the Village's first Christopher Street, the center of lesbian and gay life and the place where the city's first gay and lesbian businesses outside the seediest neighborhoods were established in the 1910s and 1920s. By the 1930s, the west side of Washington Square Park had become a major cruising area known as the 'meat rack' or the 'auction block.'",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "New Bohemia",
+        "Washington Square Park"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "macdougal gay life",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "MacDougal Street was the main drag of New Bohemia and the Village's first Christopher Street",
+        "The city's first gay and lesbian businesses outside seedy areas were established here in the 1910s-1920s",
+        "By the 1930s the west side of Washington Square Park was a cruising area called the 'meat rack'"
+      ],
+      "source_passage": "MacDougal Street was the main drag of New Bohemia and the Village's first Christopher Street. This was the center of lesbian and gay life and the place where the city's first gay and lesbian businesses outside of the seediest neighborhoods, were established in the 1910s and 1920s. By the 1930s, the west side of Washington Square Park was a major cruising area known as the \"meat rack\" or the \"auction block.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_130_macdougal_street_local_legends_big-onion-ten-historic-tours_eve_addams_tea_room",
+      "city_name": "new_york",
+      "poi_name": "130 MacDougal Street",
+      "lens": "local_legends",
+      "topic_slug": "eve_addams_tea_room",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "129 MacDougal Street",
+      "beat_length_class": "mid",
+      "script_body": "Eve Addams's Tea Room at 129 MacDougal Street was New York City's first lesbian bar. 'Eve Addams' was Eva Kochever, a Polish Jewish immigrant who opened her business here in 1925, hanging a sign outside the door that read 'Men admitted but not welcome.' In 1926 police raided the bar and charged Kochever with writing an obscene book and with disorderly conduct. After serving a one-year sentence in a New York prison, she was deported to Paris in December 1927.",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Eve Addams's Tea Room",
+        "Eva Kochever"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "eve addams tearoom",
+      "physical_cues": [
+        {
+          "cue": "Façade of 129 MacDougal Street, former Eve Addams's Tea Room",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Eve Addams's Tea Room at 129 MacDougal Street was NYC's first lesbian bar",
+        "'Eve Addams' was Eva Kochever, a Polish Jewish immigrant, who opened it in 1925",
+        "A sign read 'Men admitted but not welcome'",
+        "Police raided in 1926; Kochever was charged with writing an obscene book and disorderly conduct",
+        "After a one-year sentence she was deported to Paris in December 1927"
+      ],
+      "source_passage": "Eve Addams's Tea Room, located at 129 MacDougal Street, was New York City's first lesbian bar. \"Eve Addams\" was Eva Kochever, a Polish Jewish immigrant who started her business here in 1925. Outside the door hung a sign that read \"Men admitted but not welcome.\" In 1926 police raided the bar. Kochever was charged with writing an obscene book and with disorderly conduct. After serving a one-year sentence in a New York prison, she was deported to Paris in December 1927.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_130_macdougal_street_literary_heritage_big-onion-ten-historic-tours_baldwin_calypso_restaurant",
+      "city_name": "new_york",
+      "poi_name": "130 MacDougal Street",
+      "lens": "literary_heritage",
+      "topic_slug": "baldwin_calypso_restaurant",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "146 MacDougal Street",
+      "beat_length_class": "mid",
+      "script_body": "At 146 MacDougal stood the Calypso Restaurant, where James Baldwin worked as a waiter in the early 1940s. The gay African American writer befriended many locals who came to see him there, including Henry Miller, Paul Robeson, Marlon Brando, and Eartha Kitt. Baldwin met Brando — who lived nearby on Patchin Place and never tried to hide his own homosexual impulses — when the two were students at the New School. In 1956 Baldwin would publish Giovanni's Room, his second novel and one of the first to deal openly and centrally with homosexuality.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Calypso Restaurant",
+        "James Baldwin",
+        "Henry Miller",
+        "Paul Robeson",
+        "Marlon Brando",
+        "Eartha Kitt",
+        "Giovanni's Room",
+        "New School",
+        "Patchin Place"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Baldwin calypso",
+      "physical_cues": [
+        {
+          "cue": "Façade of 146 MacDougal Street, former Calypso Restaurant",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Calypso Restaurant was at 146 MacDougal Street",
+        "James Baldwin worked there as a waiter in the early 1940s",
+        "His friends there included Henry Miller, Paul Robeson, Marlon Brando, and Eartha Kitt",
+        "Baldwin met Brando as students at the New School; Brando lived on Patchin Place",
+        "Baldwin published Giovanni's Room in 1956"
+      ],
+      "source_passage": "At 146 MacDougal was the Calypso Restaurant, where James Baldwin worked as a waiter in the early 1940s. The gay African American writer became friends with many locals who would come to see him at the restaurant, including Henry Miller, Paul Robeson, Marlon Brando, and Eartha Kitt. Baldwin met Brando when the two were students at the New School. Brando, who lived on nearby Patchin Place at the time, never tried to hide his own homosexual impulses. In 1956, Baldwin would publish Giovanni's Room, his second novel and one of the first to deal openly and centrally with homosexuality.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_130_macdougal_street_local_legends_big-onion-ten-historic-tours_millay_headache_homosexual",
+      "city_name": "new_york",
+      "poi_name": "130 MacDougal Street",
+      "lens": "local_legends",
+      "topic_slug": "millay_headache_homosexual",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "New Bohemia's artists even witnessed periods of 'lesbian chic.' In a famous tale from the 1920s, poet Edna St. Vincent Millay, seeking relief from persistent headaches, asked an analyst's advice at a party. The analyst, not wanting to shock her, gently suggested she might have 'an occasional impulse towards a person of your own sex.' Millay shot back: 'Oh, you mean I'm a homosexual! Of course I am, and heterosexual too, but what's that got to do with my headache?'",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Edna St. Vincent Millay"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "Millay headache quip",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "New Bohemia witnessed periods of 'lesbian chic'",
+        "Edna St. Vincent Millay asked an analyst about her headaches at a 1920s party",
+        "The analyst suggested she might have impulses toward her own sex",
+        "Millay replied she was homosexual and heterosexual but asked what that had to do with her headache"
+      ],
+      "source_passage": "This community was tolerant of homosexuality in its ranks and even witnessed periods of what might be termed \"lesbian chic.\" In a famous tale from the 1920s, poet Edna St. Vincent Millay conveys the spirit of the times in her exchange with an analyst. Seeking relief from persistent headaches, Millay asked an analyst's advice at a party. The analyst, not wanting to shock this lovely woman, said: \"I wonder if it has ever occurred to you that you might perhaps... have an occasional impulse towards a person of your own sex?\" Millay responded: \"Oh, you mean I'm a homosexual! Of course I am, and heterosexual too, but what's that got to do with my headache?\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_famous_residents_big-onion-ten-historic-tours_willa_cather_82_washington",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "famous_residents",
+      "topic_slug": "willa_cather_82_washington",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "82 Washington Place",
+      "beat_length_class": "mid",
+      "script_body": "From about 1908 to 1913, 82 Washington Place was home to novelist Willa Cather and her partner Edith Lewis. Cather — author of My Ántonia and Death Comes for the Archbishop — had two central relationships with other women and referred to herself as 'William' in letters to a woman she admired as an undergraduate at the University of Nebraska. Cather and Lewis lived together at various Greenwich Village addresses for nearly forty years, until Cather's death in 1947. She took great care to destroy most of her personal correspondence before she died, and in one surviving college letter she laments her 'unnatural' attraction to another woman.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Willa Cather",
+        "Edith Lewis",
+        "My Ántonia",
+        "Death Comes for the Archbishop",
+        "University of Nebraska"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Cather Lewis home",
+      "physical_cues": [
+        {
+          "cue": "Façade of 82 Washington Place, former home of Willa Cather and Edith Lewis",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "82 Washington Place was home to Willa Cather and Edith Lewis from about 1908 to 1913",
+        "Cather wrote My Ántonia and Death Comes for the Archbishop",
+        "She referred to herself as 'William' in college letters",
+        "Cather and Lewis lived together in the Village for nearly forty years until her death in 1947",
+        "She destroyed most of her correspondence before death"
+      ],
+      "source_passage": "From about 1908 to 1913, 82 Washington Place was home to novelist Willa Cather and her partner Edith Lewis. Cather, author of such works as My Antonia and Death Comes for the Archbishop, had two central relationships with other women and referred to herself as \"William\" in letters that she wrote to a woman whom she admired while an undergraduate at the University of Nebraska. Cather and Lewis lived together at various addresses in Greenwich Village for nearly forty years, until Cather's death in 1947. She took great care to destroy most of her personal correspondence before her death. In one surviving letter that she wrote in college, Cather laments her \"unnatural\" attraction to another woman.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_hidden_history_big-onion-ten-historic-tours_potters_field_arch",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "hidden_history",
+      "topic_slug": "potters_field_arch",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "As you walk through Washington Square Park, you're passing over the remains of probably thousands of bodies interred here during its years as a potter's field in the eighteenth century. A yellow fever epidemic in 1822 forced many to flee downtown for the 'village,' and many stayed as the area developed; luxury townhouses appeared on the park's northern edge in the 1830s. The Arch itself was designed by Stanford White in 1892 to replace a papier-mâché antecedent erected in 1889 to celebrate the centennial of George Washington's return to the city after the Revolutionary War.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Washington Square Arch",
+        "Stanford White",
+        "George Washington"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "somber",
+      "subject_tag": "potters field arch",
+      "physical_cues": [
+        {
+          "cue": "Washington Square Arch at the foot of Fifth Avenue",
+          "direction": "north",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "papier-mâché",
+          "gloss": "molded paper-pulp material"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "The park was a potter's field in the eighteenth century holding thousands of bodies",
+        "A yellow fever epidemic in 1822 drove people to the village",
+        "Luxury townhouses appeared on the north edge in the 1830s",
+        "Stanford White designed the Arch in 1892",
+        "It replaced a papier-mâché antecedent from 1889 marking Washington's return centennial"
+      ],
+      "source_passage": "As you walk through the park, you're passing over the remains of probably thousands of bodies interred here in its years as a potter's field in the eighteenth century. A yellow fever epidemic in 1822 forced many to flee downtown New York City for the \"village.\" In the 1830s, luxury townhouses appeared on the northern edge of the park and some still remain. The Arch itself was designed by Stanford White (see our Four Squares Tour in chapter 4) in 1892 to replace a papier-mâché antecedent erected in 1889 to celebrate the centennial of George Washington's return to the city after the Revolutionary War.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_23_fifth_avenue_famous_residents_big-onion-ten-historic-tours_mabel_dodge_salon",
+      "city_name": "new_york",
+      "poi_name": "23 Fifth Avenue",
+      "lens": "famous_residents",
+      "topic_slug": "mabel_dodge_salon",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "23 Fifth Avenue",
+      "beat_length_class": "mid",
+      "script_body": "In her apartment at 23 Fifth Avenue, Mabel Dodge ran a weekly salon that became a center for Village artists and intellectuals. Openly bisexual, Dodge opened her doors to many unconventional women, including Emma Goldman, Margaret Sanger, and Gertrude Stein — whose work A Portrait of Mabel Dodge was named in the hostess's honor. Dodge was also one of the people who made possible the Armory Art Show, which opened in February 1913, bringing Marcel Duchamp's Nude Descending a Staircase and works by Picasso and Cézanne to the protesting masses.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Mabel Dodge",
+        "Emma Goldman",
+        "Margaret Sanger",
+        "Gertrude Stein",
+        "Armory Art Show",
+        "Marcel Duchamp",
+        "Picasso",
+        "Cézanne"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Mabel Dodge salon",
+      "physical_cues": [
+        {
+          "cue": "Building at 23 Fifth Avenue, former site of Mabel Dodge's salon",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Mabel Dodge ran a weekly salon at 23 Fifth Avenue",
+        "Openly bisexual, she hosted Emma Goldman, Margaret Sanger, and Gertrude Stein",
+        "Stein's A Portrait of Mabel Dodge was named for her",
+        "Dodge helped make the Armory Art Show possible, opening February 1913",
+        "It brought Duchamp's Nude Descending a Staircase and works by Picasso and Cézanne"
+      ],
+      "source_passage": "In her apartment at 23 Fifth Avenue, Mabel Dodge ran a weekly salon that became a center for Village artists and intellectuals. Openly bisexual herself, Dodge opened her doors to many unconventional women, including Emma Goldman, Margaret Sanger, and Gertrude Stein. (Stein's work A Portrait of Mabel Dodge was named in the hostess's honor.) Dodge was also one of the people who made possible the Armory Art Show, which opened in February 1913, bringing Marcel Duchamp's Nude Descending a Staircase and works by Picasso, Cézanne, and others to the protesting masses.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_local_legends_big-onion-ten-historic-tours_bagatelle_audre_lorde",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "local_legends",
+      "topic_slug": "bagatelle_audre_lorde",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "86 University Place",
+      "beat_length_class": "mid",
+      "script_body": "86 University Place was the former site of the Bagatelle, one of the few lesbian bars in the city in the 1950s, alongside the more working-class Sea Colony and the Swing Rendezvous. Black poet and essayist Audre Lorde wrote about the Bagatelle in her autobiography Zami: A New Spelling of My Name. There was a tiny dance floor in back, and the front room 'smelled like plastic and blue glass and beer and lots of good-looking young women.' Lorde recalled that she and the other 'out' black lesbians rarely acknowledged one another, and that 'the Bag was always The Club.'",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Bagatelle",
+        "Sea Colony",
+        "Swing Rendezvous",
+        "Audre Lorde",
+        "Zami: A New Spelling of My Name"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Bagatelle lesbian bar",
+      "physical_cues": [
+        {
+          "cue": "Building at 86 University Place, former site of the Bagatelle",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "86 University Place was the former site of the Bagatelle",
+        "It was one of few lesbian bars in 1950s NYC, with the Sea Colony and Swing Rendezvous",
+        "Audre Lorde wrote about it in Zami: A New Spelling of My Name",
+        "She recalled 'the Bag was always The Club'"
+      ],
+      "source_passage": "Walk east to University Place and then north to 86 University Place, the former site of the Bagatelle. The Bagatelle was one of the few lesbian bars in the city in the 1950s. The other popular ones were the Sea Colony (a more working-class bar on Eighth Avenue) and the Swing Rendezvous (on MacDougal Street). Audre Lorde, black poet and essayist, wrote about spending time at the Bagatelle in her autobiography Zami: A New Spelling of My Name. There was a tiny dance floor in the back, and the front room \"smelled like plastic and blue glass and beer and lots of good-looking young women.\" While there were other places for women to go at the time, she said that \"the Bag was always The Club.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_local_legends_big-onion-ten-historic-tours_webster_hall_village_ball",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "local_legends",
+      "topic_slug": "webster_hall_village_ball",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "125 East Eleventh Street",
+      "beat_length_class": "mid",
+      "script_body": "From 1913 through the 1930s, Webster Hall at 125 East Eleventh Street hosted the annual Greenwich Village Ball — masquerade balls patronized by the Village's bohemian society, including many gay men in drag. By the early 1920s, gay men and lesbians held events of their own there. In 1934 the New York Herald Tribune described the scene: 'Men danced with women in men's clothes. Women danced with men in women's clothes. And strange androgynous couples careened about the floor, oblivious to the workings of society and nature.' Today Webster Hall is a popular, mostly straight nightclub.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Webster Hall",
+        "Greenwich Village Ball",
+        "New York Herald Tribune"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "playful",
+      "subject_tag": "greenwich village ball",
+      "physical_cues": [
+        {
+          "cue": "Webster Hall building at 125 East Eleventh Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Webster Hall at 125 East Eleventh Street hosted the annual Greenwich Village Ball from 1913 through the 1930s",
+        "By the early 1920s gay men and lesbians held their own events there",
+        "The 1934 New York Herald Tribune described androgynous, cross-dressing dancers",
+        "Today Webster Hall is a mostly straight nightclub"
+      ],
+      "source_passage": "Detour: From 1913 through the 1930s, Webster Hall was the site of the annual Greenwich Village Ball. (Today Webster Hall is a popular and mostly straight nightclub.) The masquerade balls were sponsored by various organizations and patronized by the Village's bohemian society, including many gay men in drag. By the early 1920s, gay men and lesbians were holding events of their own at Webster Hall. In 1934, the New York Herald Tribune described the mixing, role-playing, and inversion... \"Men danced with women in men's clothes. Women danced with men in women's clothes. And strange androgynous couples careened about the floor, oblivious to the workings of society and nature.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_hidden_history_big-onion-ten-historic-tours_coming_out_debutantes",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "hidden_history",
+      "topic_slug": "coming_out_debutantes",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The drag balls gave rise to one of gay life's most familiar terms: coming out. Today it suggests emerging from the closet, but its earlier ball-scene origins were lighter — participants used 'coming out' with a wink toward straight debutantes. As the Baltimore Afro-American put it in 1931, the 'coming out of new debutantes into homosexual society' was the outstanding feature of Baltimore's eighth annual 'pansy' ball.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Baltimore Afro-American"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "coming out origin",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The drag balls gave rise to the term 'coming out'",
+        "Its origins were a wink toward straight debutantes, not the closet",
+        "The Baltimore Afro-American in 1931 described debutantes 'coming out' into homosexual society"
+      ],
+      "source_passage": "The drag balls gave rise to the use of one of contemporary gay life's most familiar terms: coming out. Today, coming out is generally thought of as \"coming out of the closet,\" emerging from terrified secrecy. Earlier origins of the phrase in the ball scene, however, were much less dark and sad. Participants in the balls used the term coming out with a wink and a nod to straight debutantes. As the Baltimore Afro-American put it in 1931: \"Debutantes Bow at Local 'Pansy' Ball: The coming out of new debutantes into homosexual society was the outstanding feature of Baltimore's eighth annual frolic of the pansies...\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_local_legends_big-onion-ten-historic-tours_murray_hall_passing_woman",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "local_legends",
+      "topic_slug": "murray_hall_passing_woman",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "457 Sixth Avenue",
+      "beat_length_class": "mid",
+      "script_body": "The house at 457 Sixth Avenue was the former home of Murray Hall, a 'ward heeler' for Tammany Hall who organized the vote in this district. Married twice and known as a heavy drinker, a brawler, and 'sweet on women,' Hall died in 1901 leaving a wife and an adopted daughter — and the revelation that Hall had died of breast cancer and had been a woman who passed as a man for all of her adult life. The New York Times covered the story for days. One lawyer friend insisted, 'I saw him play poker like a veteran... I just can't believe he was a woman, that's all,' still referring to Hall as 'he.'",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Murray Hall",
+        "Tammany Hall",
+        "New York Times"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "Murray Hall passing",
+      "physical_cues": [
+        {
+          "cue": "Façade of 457 Sixth Avenue, former home of Murray Hall",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "457 Sixth Avenue was the home of Murray Hall, a Tammany Hall ward heeler",
+        "Hall was married twice, a heavy drinker and brawler, 'sweet on women'",
+        "Hall died in 1901 of breast cancer, revealed to be a woman who passed as a man",
+        "The New York Times covered it for days",
+        "A lawyer friend kept referring to Hall as 'he'"
+      ],
+      "source_passage": "The house at 457 Sixth Avenue was the former home of Murray Hall, a \"ward heeler\" for Tammany Hall... Hall was married twice and was known for being a heavy drinker and a brawler and for being \"sweet on women.\" In 1901, Hall died, leaving a wife and an adopted daughter, and it was revealed that Hall had died of breast cancer. Hall was a woman who had passed as a man for all of her adult life. The New York Times gave the revelation extensive coverage over a number of days... A lawyer friend quoted in the Times recalled: \"I've known him for a number of years... I saw him play poker with a party of the Jefferson Market clique one night, and he played the game like a veteran. And for nerve, well, I just can't believe he was a woman, that's all.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_famous_residents_big-onion-ten-historic-tours_eleanor_roosevelt_circle_171_west_12th",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "famous_residents",
+      "topic_slug": "eleanor_roosevelt_circle_171_west_12th",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "171 West Twelfth Street",
+      "beat_length_class": "anchor",
+      "script_body": "From the 1920s through the 1950s, 171 West Twelfth Street was home to a network of lesbian couples and comrades-in-arms: artist Nancy Cook and educator Marion Dickerman; activist Polly Porter and Democratic official Molly Dewson; and Grace Hutchins and Anna Rochester, both Communist Party leaders. Many — especially Dickerman and Cook — were good friends with Eleanor Roosevelt, who kept her own apartments at 20 East Eleventh Street and later at 29 Washington Square West. When Franklin D. Roosevelt became president, Eleanor became a fierce champion for women in government, and many of her friends gained New Deal posts: Molly Dewson directed the Women's Division of the Democratic National Committee, and among the president's appointees were Frances Perkins, the first woman cabinet member, and Grace Abbott of the Children's Bureau. Roosevelt herself had an intimate relationship with Associated Press reporter Lorena Hickok, assigned in 1932 to cover the new first lady; their letters reveal a passionate intimacy, though many biographers strenuously insist Roosevelt was not a lesbian.",
+      "duration_sec": 86,
+      "kid_friendly": "yes",
+      "entities": [
+        "Nancy Cook",
+        "Marion Dickerman",
+        "Polly Porter",
+        "Molly Dewson",
+        "Grace Hutchins",
+        "Anna Rochester",
+        "Eleanor Roosevelt",
+        "Franklin D. Roosevelt",
+        "Frances Perkins",
+        "Grace Abbott",
+        "Lorena Hickok"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Roosevelt women network",
+      "physical_cues": [
+        {
+          "cue": "Building at 171 West Twelfth Street, home to a network of lesbian couples",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "171 West Twelfth Street housed a network of lesbian couples from the 1920s-1950s including Cook/Dickerman, Porter/Dewson, Hutchins/Rochester",
+        "Many were friends with Eleanor Roosevelt, who lived at 20 East Eleventh Street and 29 Washington Square West",
+        "Molly Dewson directed the DNC Women's Division",
+        "Frances Perkins was the first woman cabinet member; Grace Abbott led the Children's Bureau",
+        "Roosevelt had an intimate relationship with reporter Lorena Hickok, assigned in 1932",
+        "Many biographers insist Roosevelt was not a lesbian"
+      ],
+      "source_passage": "From the 1920s through the 1950s, the building at 171 West Twelfth Street was home to a number of lesbian couples... including artist Nancy Cook and educator Marion Dickerman; activist Polly Porter and Democratic Party official Molly Dewson; and Grace Hutchins and her partner Anna Rochester, both leaders in the Communist Party. Many of these women, particularly Dickerman and Cook, were good friends with Eleanor Roosevelt, who had apartments of her own at 20 East Eleventh Street from 1933 to 1942 and at 29 Washington Square West from 1942 to 1949. Molly Dewson served as director of the Women's Division of the Democratic National Committee... Among President Roosevelt's other appointees were Frances Perkins, the secretary of labor... and the first woman cabinet member, and Grace Abbot, who was chief of the Children's Bureau. In 1932, an Associated Press reporter named Lorena Hickok was assigned to file stories on the new first lady... Despite such effusive letters, many biographers strenuously insist that Roosevelt herself was not a lesbian.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lesbian_and_gay_community_services_center_social_change_big-onion-ten-historic-tours_act_up_kramer_1987",
+      "city_name": "new_york",
+      "poi_name": "Lesbian and Gay Community Services Center",
+      "lens": "social_change",
+      "topic_slug": "act_up_kramer_1987",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "208 West Thirteenth Street",
+      "beat_length_class": "mid",
+      "script_body": "Since 1984, 208 West Thirteenth Street has been the home base for New York's gay and lesbian community. The Lesbian and Gay Community Services Center hosts dozens of meetings and events on any given day, with rooms for numerous LGBT organizations. On March 14, 1987, novelist and activist Larry Kramer — scheduled to read from one of his novels — instead rose and delivered an impassioned plea for action on AIDS. Within a week, the AIDS Coalition to Unleash Power, or ACT UP, was founded, rejuvenating gay and lesbian activism in the Reagan era and forcing action on AIDS by pharmaceutical companies and governments.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lesbian and Gay Community Services Center",
+        "Larry Kramer",
+        "ACT UP",
+        "AIDS Coalition to Unleash Power"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "ACT UP founding",
+      "physical_cues": [
+        {
+          "cue": "The Center building at 208 West Thirteenth Street, open to the public",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "208 West Thirteenth Street has been NYC's gay and lesbian community home base since 1984",
+        "On March 14, 1987 Larry Kramer delivered a plea for action on AIDS at a center event",
+        "Within a week ACT UP (AIDS Coalition to Unleash Power) was founded"
+      ],
+      "source_passage": "Since 1984, 208 West Thirteenth Street has been the home base for New York's gay and lesbian community. On any given day, the Lesbian and Gay Community Services Center, which is open to the public, will host dozens of meetings and events. On March 14, 1987, for example, novelist and activist Larry Kramer rose at a center event—he had been scheduled to read from one of his novels—and delivered an impassioned plea for action on AIDS. Within a week the AIDS Coalition to Unleash Power, or ACT UP, was founded and rejuvenated lesbian and gay activism in the Reagan era.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_julius_social_change_big-onion-ten-historic-tours_mattachine_sip_in_1966",
+      "city_name": "new_york",
+      "poi_name": "Julius'",
+      "lens": "social_change",
+      "topic_slug": "mattachine_sip_in_1966",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "159 West Tenth Street",
+      "beat_length_class": "anchor",
+      "script_body": "Julius', at 159 West Tenth Street, dates back to before Prohibition and is one of the oldest bars still open in the Village — and the site of an important early gay rights victory in New York State. In 1966 the Mattachine Society of New York staged what it called a 'sip-in,' consciously borrowing from the civil rights movement. At the time, if a bartender knowingly served alcohol to a homosexual, the State Liquor Authority could rescind the bar's license, and bars around the Village posted signs reading 'If you're gay, go away.' Members went from bar to bar, sat down, announced they were homosexual, and ordered drinks. In most places they were served — but at Julius' they were refused. Working with the City Human Rights Commission, the Mattachine Society sued, and in 1967 the New York State Supreme Court ruled that the liquor authority needed substantial evidence of indecent behavior — not just same-sex kissing or touching — to close a bar. That precedent would matter just two years later and two blocks away.",
+      "duration_sec": 76,
+      "kid_friendly": "yes",
+      "entities": [
+        "Julius'",
+        "Mattachine Society",
+        "State Liquor Authority",
+        "City Human Rights Commission",
+        "New York State Supreme Court"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "Julius sip-in",
+      "physical_cues": [
+        {
+          "cue": "Nondescript stucco building housing Julius' at the corner of West Tenth Street and Waverly Place",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Julius' at 159 West Tenth Street predates Prohibition and is one of the oldest Village bars",
+        "In 1966 the Mattachine Society of New York staged a 'sip-in'",
+        "The State Liquor Authority could revoke licenses for serving homosexuals",
+        "At Julius' the members were refused service",
+        "In 1967 the NY State Supreme Court ruled substantial evidence of indecent behavior was needed to close a bar"
+      ],
+      "source_passage": "Julius', at 159 West Tenth Street, dates back to before Prohibition and is one of the oldest bars still open in the Village... it was the site of an important early gay rights victory in New York State. In 1966, the Mattachine Society of New York staged what it called a \"sip-in\" in the bars of the Village, consciously linking their action to the tactics of the civil rights movement. At the time, if a bartender knowingly sold alcohol to a homosexual, the New York State Liquor Licensing Authority (SLA) could rescind the establishment's liquor license. Bars around the Village had signs in the windows that read \"If you're gay, go away.\" For the \"sip-in,\" members of the Mattachine Society went from bar to bar, sat down, announced that they were homosexual, and ordered drinks. In most places, they were served. However, when they got to Julius', they were refused. Working with the City Human Rights Commission, the Mattachine Society brought suit, and in 1967 the New York State Supreme Court ruled that the liquor authority needed substantial evidence of indecent behavior (not just same-sex kissing or touching) to close a bar.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stonewall_inn_social_change_big-onion-ten-historic-tours_1969_riots_fought_back",
+      "city_name": "new_york",
+      "poi_name": "Stonewall Inn",
+      "lens": "social_change",
+      "topic_slug": "1969_riots_fought_back",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "51-53 Christopher Street",
+      "beat_length_class": "anchor",
+      "script_body": "This stretch of Christopher Street is widely considered the birthplace of the modern lesbian and gay rights movement. The bar that once stood here at No. 53, the Stonewall Inn, was an unprepossessing place — crowded and popular on weekends but nothing fancy. Like most bars serving a gay clientele, it was owned by the Mob, which paid off the local police; raids and shakedowns were the norm, and many such bars had a light over the door that flashed when the police were coming. In the early morning hours of June 28, 1969, the patrons fought back. When the cops singled out several drag queens for arrest and pushed the rest into the street, refusing to disperse, one butch lesbian struck the officer who had hit her, and the crowd unleashed a hail of coins and invective. The police were forced back into the bar; the crowd attacked the building and tried to set it on fire, leading the cops to draw their guns. Riot police averted a possible shooting, but the crowd would not back down. Those actions sparked several nights of unrest and launched a new phase of activism — 'gay liberation.'",
+      "duration_sec": 90,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stonewall Inn",
+        "Christopher Street",
+        "gay liberation"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "stonewall riots",
+      "physical_cues": [
+        {
+          "cue": "Building at No. 53 Christopher Street where the original Stonewall Inn stood (the current bar called Stonewall is not the original)",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "This stretch of Christopher Street is the birthplace of the modern gay rights movement",
+        "The Stonewall Inn stood at No. 53 and was Mob-owned, paying off police",
+        "Bars used a warning light over the door",
+        "On June 28, 1969 patrons fought back when cops arrested drag queens",
+        "A butch lesbian struck a cop; the crowd threw coins and tried to set fire to the bar",
+        "Riot police averted a shooting; the unrest launched 'gay liberation'"
+      ],
+      "source_passage": "This stretch of Christopher Street is widely considered the birthplace of the modern lesbian and gay rights movement... The bar that once stood here at No. 53, the Stonewall Inn, was an unprepossessing place, crowded and popular on weekends but nothing fancy... the Stonewall Inn was owned by the Mob, which paid off the local police in order to stay in business. Police raids and shakedowns... were the norm, and many bars had a light over the front door that would go on when the police were coming... In the early morning hours of June 28, 1969, the patrons of the Stonewall Inn fought back against such routine police harassment, refusing to disperse quietly when the cops singled out several drag queens for arrest and sent the rest of the crowd into the streets. When one butch lesbian struck the cop who had hit her, the crowd unleashed a hail of coins and a flood of invective. The police were forced back into the bar, and the crowd attacked the building, trying to set fire to the bar and leading the cops to draw their guns. When riot police arrived they averted a possible shooting... The actions of that night sparked several nights of unrest and launched a new phase of gay and lesbian activism, \"gay liberation.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stonewall_inn_hidden_history_big-onion-ten-historic-tours_1999_national_landmark_first",
+      "city_name": "new_york",
+      "poi_name": "Stonewall Inn",
+      "lens": "hidden_history",
+      "topic_slug": "1999_national_landmark_first",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "51-53 Christopher Street",
+      "beat_length_class": "seasoning",
+      "script_body": "In 1999 the blocks around the former Stonewall Inn were designated a National Historic Landmark — the Stonewall National Historic District — the first recognition of lesbian and gay history by the federal government. The bar that now stands here, called Stonewall, is not the original.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stonewall National Historic District"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "stonewall landmark",
+      "physical_cues": [
+        {
+          "cue": "The blocks around the former Stonewall Inn, designated a National Historic District",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1999 the blocks around the former Stonewall Inn were designated a National Historic Landmark",
+        "It was the Stonewall National Historic District, the first federal recognition of lesbian and gay history",
+        "The current bar named Stonewall is not the original"
+      ],
+      "source_passage": "In 1999 the blocks around the site of the former Stonewall Inn were designated a National Historic Landmark: the Stonewall National Historic District, the first recognition of lesbian and gay history by the federal government... (The bar that now stands here, called Stonewall, is not the original.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "In 1999 the blocks were designated 'a National Historic Landmark'",
+          "book_value": "1999 National Historic Landmark",
+          "external_finding": "Sources (Wikipedia, Village Preservation) state Stonewall was listed on the National Register of Historic Places on June 28, 1999, and elevated to National Historic Landmark status the following year (2000, late Clinton administration). The book conflates the 1999 NRHP listing with NHL status. Both agree 1999 was the first federal LGBT-history recognition.",
+          "resolution": "DISPUTE — not auto-corrected; the book's core claim (1999, first federal recognition) is correct, only the NRHP-vs-NHL label differs by one year. Sources: en.wikipedia.org/wiki/Stonewall_National_Monument ; villagepreservation.org/2019/06/28/the-long-road-to-landmark"
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stonewall_inn_social_change_big-onion-ten-historic-tours_first_pride_march_glf_gaa",
+      "city_name": "new_york",
+      "poi_name": "Stonewall Inn",
+      "lens": "social_change",
+      "topic_slug": "first_pride_march_glf_gaa",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": "51-53 Christopher Street",
+      "beat_length_class": "anchor",
+      "script_body": "On the first anniversary of the riots, New York witnessed its first Gay Pride march, up Sixth Avenue from Christopher Street to Central Park; every year since, the riots have been remembered worldwide with June parades. As one activist quipped, 'I am probably one of six people who lived in the Village at the time who does not claim to have been at the Stonewall riots.' The riots spurred two organizations: the Gay Liberation Front, launched immediately after, and the Gay Activists Alliance, which split off in December 1969 after infighting over the scope of the work. The GLF saw itself as part of the New Left and pushed coalition politics; the GAA had a constitution barring alliance with any organization not directly related to the homosexual cause. Together they answered homophobia with 'zap' actions and created new visibility. The first GLF meetings were held at an organization called Alternate U at 534 Sixth Avenue, and from 1971 to 1974 the GAA was headquartered in a renovated firehouse at 99 Wooster Street — the GAA Firehouse, a center of gay life until it was firebombed in October 1974 amid a rash of arson attacks on gay bars, homes, and offices.",
+      "duration_sec": 96,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gay Pride march",
+        "Gay Liberation Front",
+        "Gay Activists Alliance",
+        "Alternate U",
+        "GAA Firehouse"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "pride march GLF GAA",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The first Gay Pride march ran up Sixth Avenue from Christopher Street to Central Park on the riots' first anniversary",
+        "The Gay Liberation Front launched immediately after the riots",
+        "The Gay Activists Alliance split off in December 1969",
+        "First GLF meetings were at Alternate U, 534 Sixth Avenue",
+        "The GAA was headquartered at a firehouse at 99 Wooster Street from 1971-1974",
+        "The GAA Firehouse was firebombed in October 1974"
+      ],
+      "source_passage": "On the first anniversary of the Stonewall riots, New York City witnessed its first Gay Pride march, up Sixth Avenue from Christopher Street to Central Park... One activist once remarked, \"I am probably one of six people who lived in the Village at the time who does not claim to have been at the Stonewall riots.\" This effort was spearheaded by two organizations: the Gay Liberation Front (GLF), launched immediately after the riots, and the Gay Activists Alliance (GAA), which split off from the GLF... In December 1969, a group of GLF members broke off to form the Gay Activists Alliance... the first GLF meetings were held in the space of an organization called Alternate U, at 534 Sixth Avenue at Fourteenth Street; and from 1971 to 1974, the GAA had its headquarters in a renovated firehouse at 99 Wooster Street. The GAA Firehouse became a center of gay life and activism until it was firebombed in October 1974.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_social_change_big-onion-ten-historic-tours_uranian_to_queer_names",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "social_change",
+      "topic_slug": "uranian_to_queer_names",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The 'love that dare not speak its name' has in fact had many names. In the 1860s a gay German writer and activist, Karl Heinrich Ulrichs, coined 'Uranians' — people physically male or female but with the spirit of the opposite sex — drawing the term from Plato's Symposium to create a respectable label, rejecting 'pervert' and 'sodomite.' The word homosexual first appeared in an 1868 letter to Ulrichs. On the New York streets, 'fairy' was the common word for an effeminate gay man, with 'queer' as the more universal term; black gay men and lesbians spoke of being 'in the life.' The word gay itself first meant prostitutes — 'gay women' — and was adopted as a code word that police did not crack until the late 1940s.",
+      "duration_sec": 54,
+      "kid_friendly": "yes",
+      "entities": [
+        "Karl Heinrich Ulrichs",
+        "Plato",
+        "Symposium"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "names for homosexuality",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Uranians",
+          "gloss": "people who were physically male or female but had spirits of the opposite sex"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Karl Heinrich Ulrichs coined 'Uranians' in the 1860s, from Plato's Symposium",
+        "The word homosexual first appeared in an 1868 letter to Ulrichs",
+        "'Fairy' meant an effeminate gay man; 'queer' was the universal term",
+        "Black gay men and lesbians spoke of being 'in the life'",
+        "The word gay first meant prostitutes and became a code word police didn't crack until the late 1940s"
+      ],
+      "source_passage": "In the 1860s, a gay German writer and activist named Karl Heinrich Ulrichs wrote a series of articles about his theory of \"Uranians\"—people who were physically male or female but had spirits of the opposite sex. Ulrichs derived his new term from Plato's Symposium and wanted to create a respectable label... The first known use of the word homosexual was in a letter to Ulrichs written by a friend in 1868. Fairy was the most common word for a homosexual man in the early years of the twentieth century... using queer as the more universal term. Black gay men and lesbians would refer to being \"in the life\"... The word gay itself was originally used in the nineteenth century to refer to prostitutes (\"gay women\")... the cops didn't crack the code until the late 1940s.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_social_change_big-onion-ten-historic-tours_daughters_of_bilitis_homophile",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "social_change",
+      "topic_slug": "daughters_of_bilitis_homophile",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Daughters of Bilitis, founded in San Francisco in 1955, was part of the first wave of the organized gay rights movement and published a magazine called The Ladder from 1956 to 1970. Its first New York chapter was organized in 1958 by activist Barbara Gittings and from 1963 ran out of a basement office at 26-32 Charlton Street. The chapter was at the forefront of public actions, including the 'Annual Reminder' marches at Independence Hall in Philadelphia from 1963 to 1969 and a 1965 picket at the White House protesting the ban on gay federal employees. The DOB was one of the 'homophile' organizations of the 1950s — alongside the Mattachine Society (1950) and ONE (1954) — which took a conservative approach, asking members to 'dress appropriately,' men in suits and women in skirts.",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "Daughters of Bilitis",
+        "The Ladder",
+        "Barbara Gittings",
+        "Mattachine Society",
+        "ONE",
+        "Independence Hall"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "homophile movement",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Daughters of Bilitis was founded in San Francisco in 1955",
+        "It published The Ladder from 1956 to 1970",
+        "Its first NY chapter was organized in 1958 by Barbara Gittings, with a basement office at 26-32 Charlton Street from 1963",
+        "It led the 'Annual Reminder' marches at Independence Hall 1963-1969 and a 1965 White House picket",
+        "Homophile organizations included the Mattachine Society (1950) and ONE (1954)"
+      ],
+      "source_passage": "The Daughters of Bilitis (DOB), founded in San Francisco in 1955, was part of the first wave of the organized gay rights movement. From 1956 to 1970, the DOB published a magazine called The Ladder... The first New York chapter of the Daughters of Bilitis was organized in 1958 by activist Barbara Gittings and, from 1963 on, had its headquarters nearby in a basement office at 26–32 Charlton Street... including the \"Annual Reminder\" marches in front of Independence Hall in Philadelphia from 1963–1969 and the 1965 picket in front of the White House... The other homophile organizations were the Mattachine Society (founded in 1950) and ONE (founded in 1954).",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_hidden_history_big-onion-ten-historic-tours_hamilton_laurens_romantic_friendship",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "hidden_history",
+      "topic_slug": "hamilton_laurens_romantic_friendship",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-03-greenwich-village",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In 1777 a man wrote to another man: 'I wish, my dear Laurens, it might be in my power, by action rather than words, to convince you that I love you.' The writer was Alexander Hamilton, addressing a fellow soldier in the Continental Army. Historians have long debated such effusive correspondence between people of the same sex from the eighteenth and nineteenth centuries — what they call 'romantic friendships' in an intensely homosocial age. Among those whose letters reveal such attachments are Ralph Waldo Emerson, Margaret Fuller, and Susan B. Anthony. By the late 1800s, women's long-term partnerships came to be known as 'Boston marriages,' a term drawn from Henry James's novel The Bostonians.",
+      "duration_sec": 54,
+      "kid_friendly": "yes",
+      "entities": [
+        "Alexander Hamilton",
+        "John Laurens",
+        "Ralph Waldo Emerson",
+        "Margaret Fuller",
+        "Susan B. Anthony",
+        "Henry James",
+        "The Bostonians"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "romantic friendship",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1777 Alexander Hamilton wrote a love-laden letter to John Laurens in the Continental Army",
+        "Historians debate eighteenth-nineteenth century 'romantic friendships'",
+        "Emerson, Margaret Fuller, and Susan B. Anthony wrote such letters",
+        "'Boston marriages' described women's long-term partnerships, a term from Henry James's The Bostonians"
+      ],
+      "source_passage": "What would you make of this excerpt from a letter written by a man to another man in 1777: \"I wish, my dear Laurens, it might be in my power, by action rather than words, to convince you that I love you.\" What would you make of the fact that this letter was written by Alexander Hamilton to a fellow soldier in the Continental Army? ... Among those whose letters reveal such attachments are Ralph Waldo Emerson, Margaret Fuller, and Susan B. Anthony... arrangements that came to be known as \"Boston marriages\"... (The term Boston marriage derives from... the novel The Bostonians, by Henry James, which depicts such a relationship.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Greenwich Village: A Gay and Lesbian History"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "DISPUTE",
+      "description": "Greenwich House: book says 'founded by Mary Simkovitch in 1904'; consensus sources say Greenwich House was founded/incorporated in 1902 by Mary Kingsbury Simkhovitch, with the 27 Barrow Street building opening in 1917. Book's date (1904) and name spelling ('Simkovitch') both differ.",
+      "recommendation": "Keep the beat with fact_check_status='disputed'. Do NOT auto-correct — founding-date nuance; the book may mark a later milestone. Consider footnoting the 1902 founding / 1917 building dates at upload."
+    },
+    {
+      "type": "DISPUTE",
+      "description": "Café Society: book says it ran '1938 to 1950'; most sources give the downtown Sheridan Square club as 1938–1948, with final sale of both clubs by 1950.",
+      "recommendation": "Leave book value; the 1950 endpoint is defensible (sale). Not auto-corrected."
+    },
+    {
+      "type": "DISPUTE",
+      "description": "Stonewall: book says the blocks were 'designated a National Historic Landmark' in 1999; sources show 1999 = National Register listing, with NHL status in 2000. The book's headline claim (1999, first federal LGBT-history recognition) is accurate; only the NRHP-vs-NHL label is off by a year.",
+      "recommendation": "Leave as a minor dispute note; core fact verified. Not auto-corrected."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "Julius' (40.7335, -74.0026) is ~120-150m from the existing Stonewall Inn POI (the book itself notes Julius' is 'just two blocks away' from Stonewall). 23 Fifth Avenue (40.7339, -73.9947) is ~250m+ from Washington Square Park POI. Both are outside 100m of any existing POI by my estimated coordinates, but Julius' is close to the Stonewall cluster.",
+      "recommendation": "Treat Julius', the LGBT Center, and 23 Fifth Avenue as genuinely new, independent POIs (distinct addresses, distinct gravity). Confirm Julius'-to-Stonewall distance at /poi-geocode; both are >100m and historically distinct so no merge."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Geocoding for the 3 new POIs (Julius', Lesbian and Gay Community Services Center, 23 Fifth Avenue) and the new trigger_addresses could not be confirmed via live Nominatim/curl — both WebFetch and Bash network calls were denied in this sandbox. Coordinates were set from well-established public street-address knowledge and marked geocode_confidence='MEDIUM'.",
+      "recommendation": "Run /poi-geocode new_york --missing-only to resolve/confirm coordinates for the 3 new POIs against OSM with the NORTHSTAR >=70% threshold before upload."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Several walking-direction (turn-by-turn ➢) passages were intentionally NOT extracted as standalone transit beats because each is a pure connector with no narrative payload (e.g., 'Return to Seventh Avenue South and walk west on Christopher Street one block'). Per Fix 1 / beat-type mutual exclusion, navigation-only sentences without a destination anecdote were folded into the destination beat's source_passage rather than emitted as empty transit beats. Zero transit beats emitted.",
+      "recommendation": "Acceptable for this chunk; the book's directions are bare connectors, not seasoning-carrying transits. If the pipeline wants explicit transit scaffolding, generate it at tour-build time."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 33,
+    "pois_touched": 8,
+    "new_pois": 3,
+    "corrections_applied": 0,
+    "disputes": 3,
+    "anomalies": 2,
+    "lenses_hit": [
+      "social_change",
+      "hidden_history",
+      "dark_history",
+      "local_legends",
+      "music_heritage",
+      "famous_residents",
+      "literary_heritage"
+    ],
+    "lenses_missed": [
+      "modern_design",
+      "historic_arch",
+      "war_conflict",
+      "parks_gardens",
+      "waterways_views",
+      "science_tech",
+      "sacred_traditions",
+      "markets_street_food",
+      "historic_cuisine",
+      "film_tv",
+      "visual_art",
+      "street_art",
+      "literary_legends_misc"
+    ],
+    "confidence_counts": {
+      "HIGH": 33,
+      "MEDIUM": 0,
+      "LOW": 0
+    }
+  }
+}

@@ -1,0 +1,3218 @@
+{
+  "chunk_id": "chunk-04-four-squares",
+  "chunk_file": "Books/new_york/big-onion-ten-historic-tours/chunk-04-four-squares.cleaned.txt",
+  "pois": [
+    {
+      "name": "Union Square",
+      "is_new": false,
+      "matched_existing": "Union Square",
+      "short_description": "Manhattan public square founded by Samuel Ruggles in 1839; historic theater/shopping 'Rialto' and 'Ladies' Mile' district and a century-and-a-half-long site of labor rallies and political protest.",
+      "name_variations": [
+        "Union Square Park",
+        "Union Place"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7359,
+      "longitude": -73.9911,
+      "trigger_radius": 60,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing high-importance NYC square; do not assign tier."
+    },
+    {
+      "name": "Stuyvesant Square",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Four-acre twin parks bisected by Second Avenue, deeded to the city by Peter Gerard Stuyvesant in 1836 for $5; a 19th-century upper-class enclave with a cast-iron fence (1850) at the edge of the Lower East Side.",
+      "name_variations": [
+        "Stuyvesant Square Park",
+        "Stuyvesant Square Historic District"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7337,
+      "longitude": -73.9843,
+      "trigger_radius": 60,
+      "geocode_source": "WebSearch (latitude.to / lat-long.com); city square",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Named historic Manhattan square, landmarked historic district, one of the four squares this tour anchors on. Stable, well-documented public park. Do not assign tier (poi-gravity later)."
+    },
+    {
+      "name": "Gramercy Park",
+      "is_new": false,
+      "matched_existing": "Gramercy Park",
+      "short_description": "Samuel Ruggles's 1844 masterpiece — the only private park left in New York City — surrounded by the best-preserved 19th-century townhouse rows in the city and a landmarked historic district.",
+      "name_variations": [
+        "Gramercy Park West",
+        "Gramercy Park South",
+        "Gramercy Park East",
+        "Gramercy Park North",
+        "Gramercy Park Historic District"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7379,
+      "longitude": -73.9859,
+      "trigger_radius": 50,
+      "geocode_source": "existing POI / WebSearch confirm",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; iconic private NYC park. Do not assign tier."
+    },
+    {
+      "name": "Madison Square Park",
+      "is_new": false,
+      "matched_existing": "Madison Square Park",
+      "short_description": "Manhattan park opened 1847, named for President James Madison in 1814; cradle of American baseball, P.T. Barnum's Hippodrome, two Madison Square Gardens, and a wealth of monumental architecture.",
+      "name_variations": [
+        "Madison Square",
+        "Mad Sq",
+        "Madison Sq Park"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7424,
+      "longitude": -73.9879,
+      "trigger_radius": 60,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; major NYC park. Do not assign tier."
+    },
+    {
+      "name": "National Arts Club",
+      "is_new": false,
+      "matched_existing": "National Arts Club",
+      "short_description": "Club founded 1898, housed since 1906 in Samuel Tilden's former home at 15 Gramercy Park South; Calvert Vaux redesigned the Victorian Gothic facade in 1884 with medallion faces of Goethe, Dante, Franklin, and Milton.",
+      "name_variations": [
+        "The National Arts Club",
+        "15 Gramercy Park South",
+        "Samuel Tilden House"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7372,
+      "longitude": -73.9862,
+      "trigger_radius": 15,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI. Do not assign tier."
+    },
+    {
+      "name": "The Players Club",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Private actors' society at 16 Gramercy Park South, founded by Edwin Booth in 1888 to raise the social standing of actors; Stanford White remodeled the facade with a portico and balcony in 1887.",
+      "name_variations": [
+        "The Players",
+        "Players Club",
+        "16 Gramercy Park South"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7372,
+      "longitude": -73.9861,
+      "trigger_radius": 15,
+      "geocode_source": "WebSearch; 16 Gramercy Park South, adjacent to National Arts Club",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked Stanford White-remodeled clubhouse founded by Edwin Booth; a named distinct building adjacent to but separate from the National Arts Club (16 vs 15 Gramercy Park S). Genuinely new POI. Do not assign tier."
+    },
+    {
+      "name": "Metropolitan Life Insurance Tower",
+      "is_new": false,
+      "matched_existing": "Metropolitan Life Insurance Tower",
+      "short_description": "700-foot campanile-style clock tower completed 1909, briefly the world's tallest building; designed by Napoleon LeBrun, modeled on the Campanile of St. Mark's Square in Venice.",
+      "name_variations": [
+        "Met Life Tower",
+        "Metropolitan Life Tower",
+        "Metropolitan Life Insurance Company Tower"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7415,
+      "longitude": -73.9874,
+      "trigger_radius": 25,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI. Do not assign tier."
+    },
+    {
+      "name": "Flatiron Building",
+      "is_new": false,
+      "matched_existing": "Flatiron Building",
+      "short_description": "Daniel H. Burnham's 1902 triangular steel-skeleton skyscraper at Broadway and Fifth Avenue, originally the Fuller Building, named for its old-fashioned-flatiron shape; its rounded northern corner is only eight feet wide.",
+      "name_variations": [
+        "The Flatiron Building",
+        "Fuller Building"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7411,
+      "longitude": -73.9897,
+      "trigger_radius": 25,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; landmark skyscraper. Do not assign tier."
+    },
+    {
+      "name": "Appellate Division Courthouse",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "James Brown's 1900 white-marble classical courthouse of the New York State Supreme Court at 25th Street and Madison Avenue, its facade crowned with statues of history's great lawgivers — Zoroaster, Solon, Confucius, Moses, and others.",
+      "name_variations": [
+        "Appellate Division of the New York State Supreme Court",
+        "Appellate Courthouse",
+        "27 Madison Avenue"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7422,
+      "longitude": -73.9867,
+      "trigger_radius": 20,
+      "geocode_source": "WebSearch (Wikipedia / NYC DCAS); 27 Madison Avenue at E 25th St",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Individually landmarked Beaux-Arts courthouse, a named architectural stop on the Madison Square circuit. Genuinely new POI not in context list. Do not assign tier."
+    },
+    {
+      "name": "New York Life Building",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Cass Gilbert's 1928 limestone skyscraper at 51 Madison Avenue, capped by a gilded pyramid and studded with gargoyles across its dramatic setbacks; its lot previously held the Knickerbocker baseball field, Barnum's Hippodrome, and both Madison Square Gardens.",
+      "name_variations": [
+        "New York Life Insurance Building",
+        "Cass Gilbert New York Life Building",
+        "51 Madison Avenue"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7416,
+      "longitude": -73.9863,
+      "trigger_radius": 25,
+      "geocode_source": "WebSearch (latitude.to / Wikipedia); 51 Madison Avenue",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked Cass Gilbert skyscraper, named architectural stop and the site of the storied lot (baseball field / Hippodrome / both Madison Square Gardens). Genuinely new POI. Do not assign tier."
+    },
+    {
+      "name": "St. George's Episcopal Church",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1856 brownstone church on Stuyvesant Square, one of America's earliest Romanesque Revival buildings; long dominated by senior warden J. P. Morgan and a leader in the Social Gospel movement.",
+      "name_variations": [
+        "St. George's Church",
+        "St George's Episcopal Church",
+        "St. George's Parish",
+        "Parish of Calvary-St. George's"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7335,
+      "longitude": -73.9837,
+      "trigger_radius": 20,
+      "geocode_source": "WebSearch (Wikipedia / Yelp); 209 E 16th St at Rutherford Place, Stuyvesant Square",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked historic church, a named stop on the Stuyvesant Square circuit with substantial narrative (Morgan, Social Gospel, 1920 assassination attempt). Genuinely new POI. Do not assign tier."
+    },
+    {
+      "name": "Brotherhood Synagogue",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "1859 Italianate building at 144 East 20th Street, originally a Friends Meeting House nearly identical to Beecher's Plymouth Church; rescued from demolition and bought by the Brotherhood Synagogue in 1975, with a Holocaust memorial on its east side.",
+      "name_variations": [
+        "28 Gramercy Park South",
+        "Friends Meeting House (Gramercy)",
+        "144 East 20th Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7372,
+      "longitude": -73.9853,
+      "trigger_radius": 15,
+      "geocode_source": "WebSearch (hmdb.org / Yelp); 28 Gramercy Park S = 144 E 20th St",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmarked house of worship with distinct named identity, a stop on the Gramercy circuit. Genuinely new POI. Do not assign tier."
+    },
+    {
+      "name": "New York Life Insurance Building Lot",
+      "is_new": false,
+      "matched_existing": "New York Life Building",
+      "short_description": "Alias note: the storied Madison Square lot stop is captured under the New York Life Building POI.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7416,
+      "longitude": -73.9863,
+      "trigger_radius": 25,
+      "geocode_source": "alias of New York Life Building",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Alias — no separate POI."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_union_square_hidden_history_big-onion-ten-historic-tours_ruggles_founded_squares",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "hidden_history",
+      "topic_slug": "ruggles_founded_squares",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The man most responsible for founding these squares in the 1830s was a lawyer and visionary real estate investor named Samuel Ruggles. Correctly anticipating New York's growth uptown, Ruggles bought up undeveloped plots in the area that would become Union Square and Gramercy Park, hoping to entice the wealthy to settle around exclusive, fenced parks at each square's center. The value of his property climbed after the Great Fire of 1835 pushed Manhattanites uptown in large numbers. Union Square opened in 1839 with an oval-shaped iron fence around its central park. Ruggles built himself a four-story home here — though his true masterpiece, where he never actually lived, was Gramercy Park.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "Samuel Ruggles",
+        "Gramercy Park",
+        "Great Fire of 1835"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "ruggles squares founding",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Samuel Ruggles founded these squares in the 1830s",
+        "Union Square opened in 1839 with an oval iron fence",
+        "Great Fire of 1835 drove migration uptown",
+        "Gramercy Park was Ruggles's masterpiece though he never lived there"
+      ],
+      "source_passage": "The man most responsible for the founding of these squares in the 1830s was the lawyer and visionary real estate investor, Samuel Ruggles. At that time, the area between Fourteenth and Twenty-eighth Streets had begun to take shape as a genteel suburb on the northern outskirts of the city. Correctly anticipating New York's impending growth uptown, Ruggles purchased numerous undeveloped plots of land in the area that would become Union Square and Gramercy Park. Ruggles saw an opportunity to beautify these suburban communities and turn them into neighborhoods for the city's elite. By designing an exclusive, fenced park in the center of each square, Ruggles hoped to entice the wealthy to settle around them. The value of Ruggles's property grew after the Great Fire of 1835 prompted Manhattanites to migrate uptown in large numbers. In 1839, Union Square opened with an oval-shaped iron fence surrounding the park at its center. Ruggles built a four-story home for himself at Union Square, but his masterpiece, although he never lived there himself, was Gramercy Park, which opened in 1844.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_stop_orientation_big-onion-ten-historic-tours_start_washington_statue",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "hidden_history",
+      "topic_slug": "start_washington_statue",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Begin on the southern side of Union Square, between Fourteenth Street and the monument of George Washington on horseback. From here, looking around the square, you see the results of a revitalization effort that has been transforming this neighborhood over the past fifteen years.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "George Washington"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "starting point",
+      "physical_cues": [
+        {
+          "cue": "Equestrian monument of George Washington on the south side of Union Square",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Tour begins on the southern side of Union Square between 14th Street and the Washington statue"
+      ],
+      "source_passage": "Our tour begins on the southern side of Union Square, between Fourteenth Street and the monument of George Washington on horseback. Looking around Union Square today, one sees the results of a revitalization effort that has been transforming this neighborhood over the past fifteen years.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_social_change_big-onion-ten-historic-tours_decline_revitalization",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "social_change",
+      "topic_slug": "decline_revitalization",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Although Union Square was New York's most fashionable shopping and theater district in the late nineteenth century, it fell into a long decline beginning in the 1920s. The department stores and boutiques of 'Ladies' Mile' moved further uptown, and the square, caught between the midtown and downtown business districts, was left to deteriorate. By the 1960s and 1970s it was known as a haunt for drug dealers and the homeless. A $3.6 million reconstruction project launched in 1985 dramatically refurbished the park's neglected landscape and addressed its safety problems. Crowning that restoration, Union Square Park was designated a National Historic Landmark in 1997.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ladies' Mile",
+        "National Parks Service"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "decline and revival",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Union Square declined from the 1920s as Ladies' Mile stores moved uptown",
+        "Known for drug dealers and homeless in 1960s-70s",
+        "$3.6 million reconstruction launched 1985",
+        "Designated National Historic Landmark in 1997"
+      ],
+      "source_passage": "Although it was New York's most fashionable shopping and theater district in the late nineteenth century, Union Square experienced a long period of decline beginning in the 1920s. The department stores and boutiques that made up \"Ladies Mile\" moved further uptown, closer to the upscale residential districts of the Upper East and West Sides. Caught between the midtown and downtown business districts, Union Square and its environs were left to deteriorate. Union Square became known in the 1960s and 1970s as a site for drug dealers and a place for the homeless. A $3.6 million reconstruction project, launched in 1985, dramatically refurbished the park's neglected landscape and successfully addressed its safety problems. Crowning its restoration, Union Square Park was designated a National Historic Landmark in 1997 by the National Parks Service.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_dark_history_big-onion-ten-historic-tours_ladies_mile_temples_of_love",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "dark_history",
+      "topic_slug": "ladies_mile_temples_of_love",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The nickname 'Ladies' Mile' took on a far different meaning after dark. Above the department stores along Broadway lay lavishly furnished brothels catering to upper-class men. These high-priced 'Temples of Love' advertised themselves in publications such as the Gentleman's Directory, promising women who were beautiful, charming, and refined conversationalists. Outside the elite brothels, throngs of streetwalkers worked Ladies' Mile after dark. By the 1890s, reformers complained that both Union and Stuyvesant Square Parks had become a place where, in their words, 'tramps both male and female haggle and dispute over their price.'",
+      "duration_sec": 39,
+      "kid_friendly": "no",
+      "entities": [
+        "Ladies' Mile",
+        "Gentleman's Directory"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "ladies mile brothels",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Brothels ('Temples of Love') operated above the Ladies' Mile department stores",
+        "Advertised in the Gentleman's Directory",
+        "By the 1890s reformers complained about prostitution in Union and Stuyvesant Square Parks"
+      ],
+      "source_passage": "Interestingly, the nickname \"Ladies' Mile\" took on a far different meaning at night. Above the department stores one could find lavishly furnished brothels that catered to the men of the upper class. These high-priced \"Temples of Love\" advertised themselves in publications such as the Gentleman's Directory, promising women who were not only beautiful but also charming and refined conversationalists. Outside the elite brothels, throngs of streetwalkers worked Ladies' Mile after dark. By the 1890s, reformers complained that both Union and Stuyvesant Square Parks had become a place where \"tramps [both] male and female haggle and dispute over their price.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_historic_arch_big-onion-ten-historic-tours_ladies_mile_department_stores",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "historic_arch",
+      "topic_slug": "ladies_mile_department_stores",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The proliferation of department stores along Broadway from Ninth to Twenty-third Street earned this stretch the nickname 'Ladies' Mile' in the 1870s. It began when A. T. Stewart built a massive cast-iron emporium filling an entire block at Broadway and East Ninth Street, selling expensive furnishings, antiques, fabrics, and women's wear. His triumph drew a succession of upscale stores: Tiffany and Company demolished James Renwick Jr.'s Church of the Puritans at Union Square to build its store in 1869, while Lord & Taylor's, Arnold Constable's, and W. & J. Sloane's filled out the avenue. Macy's and B. Altman's opened two blocks west on Sixth Avenue.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "A. T. Stewart",
+        "Tiffany and Company",
+        "James Renwick Jr.",
+        "Church of the Puritans",
+        "Lord & Taylor's",
+        "Arnold Constable's",
+        "W. & J. Sloane's",
+        "Macy's",
+        "B. Altman's"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "department store boom",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "'Ladies' Mile' named in the 1870s for Broadway department stores from Ninth to Twenty-third Street",
+        "A. T. Stewart built a cast-iron emporium at Broadway and East Ninth Street",
+        "Tiffany demolished Renwick's Church of the Puritans to build its 1869 store",
+        "Macy's and B. Altman's opened on Sixth Avenue"
+      ],
+      "source_passage": "The proliferation of department stores along Broadway from Ninth to Twenty-third Street, terminating at Madison Square, earned this stretch the nickname \"Ladies' Mile\" in the 1870s. This development began in the 1860s when A. T. Stewart, owner of a dry-goods store near City Hall, decided to build a massive emporium on the corner of Broadway and East Ninth Street. In a cast-iron building that filled the entire block, A. T. Stewart's sold expensive furnishings, antiques, fabrics, and women's wear. The triumphant success of A. T. Stewart's brought a succession of upscale department stores to this stretch of Broadway, which transformed the character of the neighborhood. Tiffany and Company demolished James Renwick Jr.'s Church of the Puritans at Union Square to build its store in 1869. Orbach's established itself on Fourteenth Street at Union Square; W. & J. Sloane's and Arnold Constable's together took up the entire block between Eighteenth and Nineteenth Streets on Broadway; and Lord & Taylor's inhabited the elaborately designed building on the southwest corner of East Twentieth. The shopping district also included a stretch of Sixth Avenue two blocks west, where Macy's and B. Altman's opened.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_music_heritage_big-onion-ten-historic-tours_rialto_academy_of_music",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "music_heritage",
+      "topic_slug": "rialto_academy_of_music",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "While Broadway brought department stores, Union Square's other tributary — the Bowery — brought theaters. New York Sun reporter Ted McAlpin dubbed the district 'the Rialto,' and by the 1870s Union Square had replaced the Bowery as the hub of theater activity in the city. In 1854 the Academy of Music, one of the largest theaters in the world, opened on Fourteenth Street near the square. As the city's primary opera house it hosted the American premieres of Aida, Lohengrin, Die Walküre, and Carmen. All of New York society pined for the prestige of an opera box; despite a cost of as much as $30,000, the waiting list was long and included names like Vanderbilt, Astor, and Gould.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ted McAlpin",
+        "New York Sun",
+        "Academy of Music",
+        "Aida",
+        "Lohengrin",
+        "Die Walküre",
+        "Carmen",
+        "Vanderbilt",
+        "Astor",
+        "Gould"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "the rialto opera",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Ted McAlpin of the New York Sun dubbed the theater district 'the Rialto'",
+        "Academy of Music opened 1854 on Fourteenth Street",
+        "It hosted American premieres of Aida, Lohengrin, Die Walküre, Carmen",
+        "Opera boxes cost as much as $30,000 with a long waiting list"
+      ],
+      "source_passage": "While Broadway brought department stores, Union Square's other tributary, the Bowery, brought theaters. Dubbed \"the Rialto\" by New York Sun reporter Ted McAlpin, by the 1870s, Union Square had replaced the Bowery as the hub of theater activity in the city. In 1854 the Academy of Music, one of the largest theaters in the world, opened on Fourteenth Street near Union Square. The city's primary opera house, the Academy of Music hosted the American premieres of Aida (1873), Lohengrin (1874), Die Walküre (1877), and Carmen (1878). All of New York society pined for the prestige of owning an opera box at the academy. Despite a cost of as much as $30,000, the waiting list for boxes was long and included such names as Vanderbilt, Astor, and Gould.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_local_legends_big-onion-ten-historic-tours_slave_market_luchows_tablecloth",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "local_legends",
+      "topic_slug": "slave_market_luchows_tablecloth",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Some called Union Square Park the 'slave market,' because aspiring actors bargained for contracts with theater managers in impromptu negotiations right in the park. The Rialto's restaurants became legends in their own right — Luchow's, opened in 1882, was a hot spot where celebrities and performers mingled and danced while critics wrote their reviews at the dinner tables. The popular tune 'Yes Sir, That's My Baby' is said to have been written one drunken night by Gus Kahn on a Luchow's tablecloth.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Luchow's",
+        "Gus Kahn",
+        "Yes Sir, That's My Baby"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "rialto restaurants",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Union Square Park called the 'slave market' for actor contract negotiations",
+        "Luchow's opened 1882 as a Rialto hot spot",
+        "'Yes Sir, That's My Baby' said to be written by Gus Kahn on a Luchow's tablecloth"
+      ],
+      "source_passage": "Some referred to Union Square Park as the \"slave market\" because aspiring actors bargained for contracts with theater managers in impromptu negotiations within it. The Rialto's major theaters included Irving Hall, at Fifteenth and Irving Place; Wallack's Theatre, at Thirteenth and Broadway; the Hippotheatron, across from the Academy of Music on Fourteenth; and the Union Square Theatre. Nearby restaurants, such as Luchow's (opened in 1882), became legendary hot spots where celebrities and performers mingled and danced while critics wrote their reviews at the dinner tables. The popular tune \"Yes Sir, That's My Baby\" is said to have been written one drunken night by Gus Kahn on a Luchow's tablecloth.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_war_conflict_big-onion-ten-historic-tours_washington_evacuation_day",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "war_conflict",
+      "topic_slug": "washington_evacuation_day",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "At the south side of the park stands Henry Kirke Brown's George Washington, dedicated on July 4, 1856, and considered by some the finest equestrian statue in the country. It depicts Washington's triumphant return to New York City on November 25, 1783, as British troops ended their seven-year occupation at the close of the Revolutionary War. Washington came personally to repossess the city he had lost to the British in 1776, and at this very spot he and his officers were greeted by a crowd of jubilant citizens. The site was then known as Union Place, a grassy clearing north of the city named for the juncture of the Boston Post Road — later the Bowery — and the Albany Post Road, later Broadway. As the statue depicts, Washington then headed southward down the path of the Albany Post Road toward the city, accompanied by the cheering crowd, while New Yorkers thronged the streets to catch a glimpse of him. For years afterward, the anniversary of that day was celebrated in New York as 'Evacuation Day.'",
+      "duration_sec": 73,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henry Kirke Brown",
+        "George Washington",
+        "Union Place",
+        "Boston Post Road",
+        "Albany Post Road"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "washington statue",
+      "physical_cues": [
+        {
+          "cue": "Henry Kirke Brown's equestrian George Washington statue on the south side of Union Square",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Henry Kirke Brown's George Washington dedicated July 4, 1856",
+        "Depicts Washington's return to NYC November 25, 1783 at the end of British occupation",
+        "Site known as Union Place, named for the juncture of the Boston Post Road and Albany Post Road",
+        "Anniversary celebrated as 'Evacuation Day'"
+      ],
+      "source_passage": "At the south side of the park is Henry Kirke Brown's George Washington, dedicated on July 4, 1856. Considered by some to be the finest equestrian statue in the country, it depicts Washington's triumphant return to New York City on November 25, 1783. As British troops ended their seven-year occupation of the city at the close of the Revolutionary War, Washington came personally to repossess the city he had lost to the British in 1776. At this spot, Washington and his officers were greeted by a crowd of jubilant citizens. Known then as Union Place, this grassy clearing north of the city was named for the juncture of Boston Post Road (later to become the Bowery) and Albany Post Road (later Broadway). As the statue depicts, Washington then headed southward, accompanied by the cheering crowd, down the path of Albany Post Road toward the city, where New Yorkers thronged the streets to catch a glimpse of him. For years afterward, the anniversary of this day would be celebrated in New York as \"Evacuation Day.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_transit_big-onion-ten-historic-tours_walk_to_gandhi_garden",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "social_change",
+      "topic_slug": "walk_to_gandhi_garden",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "George Washington statue, Union Square",
+      "beat_length_class": "micro",
+      "script_body": "From the Washington statue, walk west toward the intersection of University Place and Fourteenth Street.",
+      "duration_sec": 6,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "walk to gandhi",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Walk west toward University Place and Fourteenth Street"
+      ],
+      "source_passage": "Walk west toward the intersection of University Place and Fourteenth Street.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_social_change_big-onion-ten-historic-tours_gandhi_garden_nonviolence",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "social_change",
+      "topic_slug": "gandhi_garden_nonviolence",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "K. B. Patel's statue of Mohandas K. Gandhi, from 1986, stands in a floral bed known as the Gandhi Garden to the southwest of the park, where Fourteenth Street and Broadway meet. Donated by the citizens of India, it was originally meant for Washington Market Park in TriBeCa, but residents there rejected it. It is fitting that the great practitioner of nonviolent protest is honored at Union Square instead, which has a long tradition of mostly peaceful protest.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "K. B. Patel",
+        "Mohandas K. Gandhi",
+        "Washington Market Park"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "gandhi statue",
+      "physical_cues": [
+        {
+          "cue": "Gandhi statue in the floral Gandhi Garden at the southwest of the park, where Fourteenth Street and Broadway meet",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "K. B. Patel's Gandhi statue (1986) stands in the Gandhi Garden southwest of Union Square",
+        "Donated by citizens of India",
+        "Originally intended for Washington Market Park, rejected by TriBeCa residents"
+      ],
+      "source_passage": "K. B. Patel's statue Mohandas K. Gandhi (1986) stands in a floral bed known as the Gandhi Garden to the southwest of Union Square Park, where Fourteenth Street and Broadway meet. Donated by the citizens of India, this statue was originally intended to be placed at the newly established Washington Market Park in TriBeCa, but its neighborhood residents rejected it. It is fitting, however, that the great philosopher and practitioner of nonviolent protest should be honored at Union Square instead, which has a long tradition of (mostly) peaceful protest.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_social_change_big-onion-ten-historic-tours_first_labor_day_protests",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "social_change",
+      "topic_slug": "first_labor_day_protests",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On September 5, 1882, the nation's first Labor Day parade ended at Union Square after marching up Broadway from City Hall. From then on, the square became the preferred site of labor rallies and mass political protests. Soapbox orators regularly drew crowds, and thousands turned out for every May Day and Labor Day. The anarchist Isadore Wisotsky later recalled the atmosphere of the 1910s: 'We gathered to make revolution and stayed to talk. And how we talked — anarchism, atheism, against the military, for birth control, against injustice, for socialism and for the rights of workers to organize. The right to speak at Union Square was more precious than the bread we sweated to earn.'",
+      "duration_sec": 48,
+      "kid_friendly": "yes",
+      "entities": [
+        "Labor Day",
+        "Isadore Wisotsky",
+        "City Hall"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "labor protest tradition",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First Labor Day parade ended at Union Square September 5, 1882",
+        "Square became preferred site of labor rallies and protests",
+        "Anarchist Isadore Wisotsky recalled the 1910s atmosphere"
+      ],
+      "source_passage": "On September 5, 1882, the nation's first Labor Day parade ended at Union Square after marching up Broadway from City Hall. After that event, Union Square became the preferred site of labor rallies and mass political protests. Soapbox orators regularly drew crowds, while thousands would turn out to celebrate every May Day and Labor Day. Anarchist Isadore Wisotsky later recalled the atmosphere of Union Square in the 1910s: \"We gathered to make revolution and stayed to talk. And how we talked—anarchism, atheism, against the military, for birth control, against injustice, for socialism and for the rights of workers to organize. . . . The right to speak at Union Square was more precious than the bread we sweated to earn.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_dark_history_big-onion-ten-historic-tours_sacco_vanzetti_1930_riot",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "dark_history",
+      "topic_slug": "sacco_vanzetti_1930_riot",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "One of the most tension-filled protests at Union Square came on the night of August 22, 1927, when five thousand people gathered for a candlelight vigil for the anarchists Sacco and Vanzetti, about to be executed in Boston. The police were so afraid of violence that they stationed machine guns on the roof of Klein's department store nearby — but no incidents occurred. A few years later, though, police and protestors battled in a bloody riot here on March 6, 1930. Demonstrators had come, six months after the 1929 stock market crash, to mark International Unemployment Day, an event sponsored by the American Communist Party. When thousands tried to march down Broadway without a permit, the police met them with force, igniting a violent conflict that left hundreds injured.",
+      "duration_sec": 53,
+      "kid_friendly": "no",
+      "entities": [
+        "Sacco and Vanzetti",
+        "Klein's department store",
+        "International Unemployment Day",
+        "American Communist Party"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "sacco vanzetti riot",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "August 22, 1927 candlelight vigil of 5,000 for Sacco and Vanzetti",
+        "Machine guns stationed on Klein's department store roof",
+        "March 6, 1930 bloody riot on International Unemployment Day sponsored by American Communist Party",
+        "Hundreds injured"
+      ],
+      "source_passage": "One of the most tension-filled protests at Union Square occurred on August 22, 1927. On that night, five thousand people gathered to hold a candlelight vigil for the anarchists Sacco and Vanzetti, who were about to be executed in Boston. The New York Police Department was so apprehensive of violence that it stationed machine guns on the nearby roof of Klein's department store. No incidents occurred. However, a few years later, police and protestors battled furiously in a bloody riot here on March 6, 1930. The demonstrators had come to Union Square that day, six months after the 1929 Stock Market crash, to celebrate International Unemployment Day, an event sponsored by the American Communist Party. When thousands of demonstrators attempted to march down Broadway without a permit, the police opposed them with force, igniting a violent conflict that resulted in hundreds of injuries.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_visual_art_big-onion-ten-historic-tours_lincoln_statue_first_in_country",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "visual_art",
+      "topic_slug": "lincoln_statue_first_in_country",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Directly in front of the band shell stands Henry Kirke Brown's Abraham Lincoln, dedicated at Union Square in 1868 and believed to be the first public statue of Lincoln erected in the country. Unlike Brown's masterful Washington at the opposite end of the park, this statue was not well received. With his rumpled clothes and plain demeanor, Brown's Lincoln may have accurately captured the historical man, but it was deemed uninspiring — the outpouring of emotion after Lincoln's assassination on Good Friday 1865 had raised the fallen president to an almost Christlike stature in the popular mind. In Brown's rendering, the solemn Lincoln holds a rolled speech — or perhaps the Emancipation Proclamation — in his left hand, hanging calmly and unheroically at his side.",
+      "duration_sec": 51,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henry Kirke Brown",
+        "Abraham Lincoln",
+        "Emancipation Proclamation"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "somber",
+      "subject_tag": "lincoln statue",
+      "physical_cues": [
+        {
+          "cue": "Henry Kirke Brown's Abraham Lincoln statue directly in front of the band shell",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Henry Kirke Brown's Lincoln dedicated 1868, believed first public Lincoln statue in the country",
+        "Poorly received compared to Brown's Washington",
+        "Lincoln assassinated Good Friday 1865",
+        "Statue shows Lincoln holding a rolled speech or Emancipation Proclamation in his left hand"
+      ],
+      "source_passage": "Directly in front of the band shell is the statue Abraham Lincoln, sculpted by Henry Kirke Brown and dedicated at Union Square Park in 1868. It is believed to be the first public statue of Lincoln erected in the country. Unlike Brown's masterful George Washington on the opposite end of the park, this statue was not well received after its unveiling. Brown's Lincoln, with his rumpled clothes and plain demeanor, may have accurately captured the historical man but it was deemed uninspiring because it failed to meet the public's expectations of the mythical president. The outpouring of public emotion following Lincoln's assassination on Good Friday 1865 raised the fallen president to an almost Christlike stature in the popular mind. In Brown's rendering, the solemn president holds a rolled copy of a speech—or perhaps the Emancipation Proclamation—in his left hand, which hangs calmly and unheroically at his side.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_war_conflict_big-onion-ten-historic-tours_civil_war_fort_sumter_rally",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "war_conflict",
+      "topic_slug": "civil_war_fort_sumter_rally",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Union Square is a fitting place to honor Lincoln, for it was during the Civil War that the square became the central gathering place in the city — the Times Square of the nineteenth century. After the fall of Fort Sumter, Lincoln's call for volunteers was answered by thousands of young men who flocked to enlist at recruiting tents that dotted the interior of the park. Nearly a quarter-million people gathered here on Saturday, April 20, 1861, to hear speakers denounce the Southern rebellion, while the tattered American flag rescued from Fort Sumter waved from the George Washington statue, where it had been patriotically placed.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Civil War",
+        "Fort Sumter",
+        "Abraham Lincoln",
+        "George Washington"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "civil war rally",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Union Square was the central gathering place during the Civil War",
+        "Recruiting tents dotted the park after Fort Sumter fell",
+        "Nearly a quarter-million gathered April 20, 1861",
+        "Fort Sumter flag waved from the Washington statue"
+      ],
+      "source_passage": "It was during the Civil War that Union Square became the central gathering place in the city—the Times Square of the nineteenth century. After the fall of Fort Sumter, President Lincoln's call for volunteers was answered by thousands of young men who flocked to enlist at recruiting tents that dotted the interior of the park. Nearly a quarter-million people gathered at Union Square on Saturday, April 20, 1861, to hear speakers denounce the Southern rebellion while the tattered American flag rescued from Fort Sumter waved from the statue George Washington, where it had been patriotically placed.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_visual_art_big-onion-ten-historic-tours_metronome_washington_hand",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "visual_art",
+      "topic_slug": "metronome_washington_hand",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On the south side of Fourteenth Street, an apartment complex completed in 1998 carries on its facade an elaborate $3 million artwork titled Metronome. Unveiled in September 1999, it is a jumble of symbols its creators, Andrew Ginzel and Kristin Jones, called 'an ode to the impossibility of knowing time.' It features fifteen digital numbers counting the time elapsing from midnight, a black-and-gold sphere that rotates with the phases of the moon, and a five-foot opening that periodically belches blasts of steam. In a whimsical nod to the neighborhood, the artists cast the disembodied hand reaching out from the top of Metronome from Henry Kirke Brown's statue of George Washington across the street.",
+      "duration_sec": 51,
+      "kid_friendly": "yes",
+      "entities": [
+        "Metronome",
+        "Andrew Ginzel",
+        "Kristin Jones",
+        "Henry Kirke Brown",
+        "George Washington"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "metronome artwork",
+      "physical_cues": [
+        {
+          "cue": "Metronome artwork on the apartment-complex facade on the south side of Fourteenth Street, with digital numbers, a rotating sphere, and a steam opening",
+          "direction": "south",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Metronome (unveiled Sept 1999) is a $3 million artwork by Andrew Ginzel and Kristin Jones",
+        "Has fifteen digital numbers, a moon-phase sphere, and a steam opening",
+        "Its disembodied hand was cast from Brown's George Washington statue across the street"
+      ],
+      "source_passage": "On the south side of Fourteenth Street is a similar apartment complex completed in 1998, housing the Virgin Megastore and Circuit City at the street level. Adorning its facade is an elaborate $3 million dollar piece of artwork titled Metronome. Unveiled in September 1999, Metronome is a jumble of symbols that has been described by its creators, Andrew Gizel and Kristen Jones, as \"an ode to the impossibility of knowing time.\" It features fifteen digital numbers that count off the time elapsing from midnight, a black and gold sphere that rotates in synchronization with the phases of the moon, and a five-foot opening that periodically belches blasts of steam. In a whimsical nod to its neighborhood surroundings, Gizel and Hones cast the disembodied hand that stretches forth from the top Metronome from Henry Kirke Brown's statue of George Washington across the street.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "field": "script_body",
+          "original": "Andrew Gizel and Kristen Jones / Kristen Hones",
+          "corrected": "Andrew Ginzel and Kristin Jones",
+          "reason": "Book misspells the artists' names (and gives two variants, 'Jones' and 'Hones'); the Metronome (2000) sculptors are Kristin Jones and Andrew Ginzel.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Metronome_(public_artwork)",
+            "https://www.publicartfund.org/exhibitions/view/metronome/"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_local_legends_big-onion-ten-historic-tours_dead_mans_curve_zeckendorf",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "local_legends",
+      "topic_slug": "dead_mans_curve_zeckendorf",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "To the southeast of the square lies an infamous intersection once known as 'Dead Man's Curve,' where speeding trolley cars and horse-drawn carriages often mowed down careless pedestrians thronging the shopping and theater district. Looming over it today are the four massive red towers of the Zeckendorf Towers, built in 1987, a mixed residential and business complex. They stand on the former site of S. Klein's discount department store, which left its building abandoned in 1975 — thus betraying its nickname, 'S. Klein-on-the-Square.' Residents protested the enormous complex, which partly blocks the view of the striking Con Edison clock tower behind it, but its luxury apartments helped regentrify Union Square.",
+      "duration_sec": 49,
+      "kid_friendly": "yes",
+      "entities": [
+        "Dead Man's Curve",
+        "Zeckendorf Towers",
+        "S. Klein",
+        "Con Edison"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "dead mans curve",
+      "physical_cues": [
+        {
+          "cue": "Four massive red towers of the Zeckendorf Towers to the southeast of the square",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Intersection southeast of the square known as 'Dead Man's Curve'",
+        "Zeckendorf Towers (1987) stand on former S. Klein department store site",
+        "S. Klein abandoned its building in 1975",
+        "Towers partly block the Con Edison clock tower view"
+      ],
+      "source_passage": "To the southeast of the square is an infamous intersection once known as \"Dead Man's Curve,\" where speeding trolley cars and horse-drawn carriages often mowed down careless pedestrians who thronged this shopping and theater district. Looming over Dead Man's Curve today are the four massive red towers of the Zeckendorf Towers (Davis, Brody and Associates, 1987), a mixed residential and business complex. The Towers stand on the former site of S. Klein's discount department store, which left its building abandoned in 1975 (thus betraying its nickname, \"S. Klein-on-the-Square\"). Neighborhood residents protested against the construction of this enormous complex, which partially blocks the view of the striking Con Edison clock tower that stands behind it to the east. But the luxury apartments offered by the Zeckendorf Towers have played a key role in the regentrification of Union Square.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_visual_art_big-onion-ten-historic-tours_lafayette_bartholdi_statue",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "visual_art",
+      "topic_slug": "lafayette_bartholdi_statue",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On the east side of the square stands the statue of the French general Marquis de Lafayette, done in 1873 by Frédéric-Auguste Bartholdi — the same man who designed the Statue of Liberty. Lafayette served as a major general on George Washington's staff, and an inscription on the pedestal quotes his words: 'As soon as I heard of American Independence my heart was enlisted.' In 1824, at the invitation of Congress, Lafayette returned to America and was warmly embraced as the toast of New York society. He was the first foreigner ever granted honorary American citizenship — the second being Winston Churchill.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Marquis de Lafayette",
+        "Frédéric-Auguste Bartholdi",
+        "Statue of Liberty",
+        "George Washington",
+        "Winston Churchill"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "lafayette statue",
+      "physical_cues": [
+        {
+          "cue": "Bartholdi's statue of the Marquis de Lafayette on the east side of Union Square, with the inscription on its pedestal",
+          "direction": "east",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Lafayette statue (1873) by Frédéric-Auguste Bartholdi, designer of the Statue of Liberty",
+        "Pedestal inscription: 'As soon as I heard of American Independence my heart was enlisted'",
+        "Lafayette returned to America in 1824 at Congress's invitation",
+        "First foreigner granted honorary American citizenship; Churchill the second"
+      ],
+      "source_passage": "The statue of the French general Marquis de Lafayette (1873) was done by Frédéric-Auguste Bartholdi, the same man who designed the Statue of Liberty. Lafayette served as a major general on the staff of George Washington. An inscription on the monument's pedestal quotes Lafayette's words: \"As soon as I heard of American Independence my heart was enlisted.\" In 1824, at the invitation of Congress, Lafayette returned to America, where he was warmly embraced as the toast of New York society. Lafayette was the first foreigner ever bestowed with honorary American citizenship (the second being Winston Churchill).",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_dark_history_big-onion-ten-historic-tours_tammany_hall_film_academy",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "dark_history",
+      "topic_slug": "tammany_hall_film_academy",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Seventeenth Street and Park Avenue, Union Square",
+      "beat_length_class": "mid",
+      "script_body": "At the corner of Seventeenth Street and Park Avenue, the New York Film Academy is housed in the last of the Tammany Hall headquarters, built in 1929 during the administration of Mayor Jimmy Walker. Walker, the last mayor elevated to power by Tammany Hall, embodied the flashy style of the affluent 1920s. The construction of this federal-style building was financed by Wall Street investments — but the stock market crash that ruined those investors later that year also helped bring about the downfall of Tammany Hall itself. In 1933, New Yorkers elected a Republican mayor, Fiorello La Guardia, who promised to destroy Tammany forever.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Film Academy",
+        "Tammany Hall",
+        "Jimmy Walker",
+        "Fiorello La Guardia"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "wry",
+      "subject_tag": "last tammany hall",
+      "physical_cues": [
+        {
+          "cue": "The last Tammany Hall headquarters (now the New York Film Academy) at the corner of Seventeenth Street and Park Avenue",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "New York Film Academy housed in the last Tammany Hall headquarters, built 1929 under Mayor Jimmy Walker",
+        "Financed by Wall Street investments ruined in the crash",
+        "La Guardia elected Republican mayor in 1933 promising to destroy Tammany"
+      ],
+      "source_passage": "Across the street and a block to your north, at the corner of Seventeenth Street and Park Avenue, is the New York Film Academy. The academy is housed in the last of the Tammany Hall headquarters, built in 1929 during the administration of Mayor Jimmy Walker. Walker, the last mayor to be elevated to power by Tammany Hall, embodied the flashy style of the affluent 1920s. The construction of this federal-style building was financed by Wall Street investments, but the stock market crash that ruined the investors later that year also helped bring about the downfall of Tammany Hall itself. In 1933, New Yorkers elected a Republican mayor, Fiorello La Guardia, who promised to destroy Tammany forever.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_sidebar_big-onion-ten-historic-tours_tammany_boss_tweed_origins",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "hidden_history",
+      "topic_slug": "tammany_boss_tweed_origins",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "The Society of St. Tammany, or Columbian Order, was formed in 1788, taking its name from the legendary Delaware Indian chief Tamanend, adopted as the club's patron saint. The organization loved pseudo–American Indian titles: 'sachems' for council members, 'braves' for the rank and file, 'wigwam' for headquarters. Under Aaron Burr it became a Jeffersonian club, and later, under Martin Van Buren, a Jacksonian Democratic one. Its real power came from a grassroots alliance with immigrant voters, built on graft: local 'bosses' dispensed financial aid and protection in exchange for votes. In the 1860s, Tammany's 'Grand Sachem' William M. 'Boss' Tweed used the machine autocratically to control patronage while embezzling millions; the exposure of the Tweed ring in 1871 scandalized the nation. Yet Tammany endured as a defender of the working man and a patronage engine well into the 1930s, facilitating the careers of Governor Alfred E. Smith and Mayor Jimmy Walker — both sons of Irish immigrants. Perhaps its ethic was best summed up by sachem George Washington Plunkitt, who explained his vast wealth by saying: 'I seen my opportunities and I took 'em.'",
+      "duration_sec": 84,
+      "kid_friendly": "yes",
+      "entities": [
+        "Society of St. Tammany",
+        "Tamanend",
+        "Aaron Burr",
+        "Martin Van Buren",
+        "William M. Tweed",
+        "Alfred E. Smith",
+        "Jimmy Walker",
+        "George Washington Plunkitt"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "wry",
+      "subject_tag": "tammany machine",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Society of St. Tammany formed 1788, named for chief Tamanend",
+        "Used titles 'sachems', 'braves', 'wigwam'",
+        "Became Jeffersonian under Burr, Jacksonian under Van Buren",
+        "Boss Tweed controlled patronage and embezzled millions; Tweed ring exposed 1871",
+        "Facilitated careers of Al Smith and Jimmy Walker",
+        "Plunkitt: 'I seen my opportunities and I took 'em'"
+      ],
+      "source_passage": "The Society of St. Tammany or Columbian Order was formed in 1788. The name Tammany is derived from the legendary Delaware Indian chief Tamanend, who was adopted as the club's patron saint. The organization enjoyed using pseudo–American Indian titles, such as \"sachems\" for council members, \"braves\" for its rank and file, and \"wigwam\" for its headquarters. It became a Jeffersonian political club under the influence of Aaron Burr in the 1790s and later a Jacksonian Democratic club under the leadership of Martin Van Buren. ... In the 1860s, Tammany's \"Grand Sachem,\" William M. \"Boss\" Tweed, used the organization autocratically to control patronage of the city's elected and appointed public offices, while embezzling millions from the city's coffers. The exposure of the Tweed ring in 1871 scandalized the nation. ... Tammany facilitated the long political career of Governor Alfred E. Smith (a presidential candidate in 1928) and Mayor Jimmy Walker, both the sons of Irish immigrants. Perhaps the prevailing ethic of Tammany Hall was best summed up by George Washington Plunkitt, who once explained the extraordinary wealth he had acquired as a Tammany \"sachem\" by saying: \"I seen my opportunities and I took 'em.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_historic_arch_big-onion-ten-historic-tours_savings_bank_bacon",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "historic_arch",
+      "topic_slug": "savings_bank_bacon",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Fifteenth Street and Park Avenue, Union Square",
+      "beat_length_class": "seasoning",
+      "script_body": "On the northeast corner of Fifteenth Street stands the old Union Square Savings Bank, designed by Henry Bacon in 1924 and now a landmarked concert hall. Its Corinthian temple exterior is suggestive of Bacon's later masterpiece — the Lincoln Memorial in Washington, D.C.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Union Square Savings Bank",
+        "Henry Bacon",
+        "Lincoln Memorial"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "savings bank",
+      "physical_cues": [
+        {
+          "cue": "Corinthian temple exterior of the old Union Square Savings Bank on the northeast corner of Fifteenth Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Old Union Square Savings Bank designed by Henry Bacon in 1924, now a concert hall",
+        "Corinthian temple exterior suggestive of Bacon's Lincoln Memorial"
+      ],
+      "source_passage": "On the northeast corner of Fifteenth Street is the old Union Square Saving Bank, designed by Henry Bacon in 1924. A landmarked building, it is now used as a concert hall. The Corinthian temple exterior of the bank is somewhat suggestive of Bacon's later masterpiece: the Lincoln Memorial in Washington, D.C.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_transit_big-onion-ten-historic-tours_walk_to_stuyvesant_square",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "hidden_history",
+      "topic_slug": "walk_to_stuyvesant_square",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Park Avenue and Fifteenth Street, Union Square",
+      "beat_length_class": "seasoning",
+      "script_body": "Cross Park Avenue and walk east on Fifteenth Street three blocks toward Stuyvesant Square, then turn north on Rutherford Place to reach the Sixteenth Street entrance.",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "walk to stuyvesant",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cross Park Avenue and walk east on Fifteenth Street three blocks to Stuyvesant Square, then north on Rutherford Place"
+      ],
+      "source_passage": "Cross Park Avenue and walk east on Fifteenth Street three blocks to Stuyvesant Square, passing the sights described below. ... Walk north on Rutherford Place to the Sixteenth Street entrance to Stuyvesant Square.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_famous_residents_big-onion-ten-historic-tours_century_association_gilder",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "famous_residents",
+      "topic_slug": "century_association_gilder",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "109-111 East Fifteenth Street",
+      "beat_length_class": "mid",
+      "script_body": "At 109–111 East Fifteenth Street stands the oldest surviving clubhouse in the city — the Century Association Building, now the Century Center for Performing Arts, designed by Charles Gambrill and Henry Hobson Richardson in 1869. The Century Association, formed in 1847, brought together men 'of all guilds' to cultivate 'a taste for Letters and the Arts and social enjoyment,' aspiring to become the American equivalent of the French Academy — though in reality it remained more about socializing than serious discussion. In the 1880s, William Watson Gilder, the first editor of Century magazine, borrowed his journal's name without permission from the Century Club, of which he was a member.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "Century Association",
+        "Charles Gambrill",
+        "Henry Hobson Richardson",
+        "William Watson Gilder",
+        "Century magazine",
+        "French Academy"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "century association",
+      "physical_cues": [
+        {
+          "cue": "Century Association Building (now Century Center for Performing Arts) at 109-111 East Fifteenth Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Century Association Building at 109-111 East Fifteenth Street, oldest surviving clubhouse in the city",
+        "Designed by Charles Gambrill and Henry Hobson Richardson in 1869",
+        "Century Association formed 1847",
+        "Gilder borrowed the Century magazine name from the club without permission"
+      ],
+      "source_passage": "At 109–111 East Fifteenth Street stands the oldest surviving clubhouse in the city: the Century Association Building, now the Century Center for Performing Arts, which was designed by Charles Gambrill and Henry Hobson Richardson in 1869. Formed in 1847, the Century Association (and Club) was founded as an intellectual society bringing together men \"of all guilds,\" aspiring to cultivate \"a taste for Letters and the Arts and social enjoyment\" among New York's leading citizens. Though its members aspired for their club to become the American equivalent of the French Academy, in reality it remained more about socializing than about serious intellectual discussion. In the 1880s, William Watson Gilder, the first editor of Century magazine, borrowed his journal's name without permission from the Century Club, of which he was a member.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_historic_arch_big-onion-ten-historic-tours_con_edison_tower_of_light",
+      "city_name": "new_york",
+      "poi_name": "Union Square",
+      "lens": "historic_arch",
+      "topic_slug": "con_edison_tower_of_light",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Fourteenth Street and Irving Place",
+      "beat_length_class": "mid",
+      "script_body": "The headquarters of the Consolidated Edison power company towers above the southeast corner of Fourteenth Street and Irving Place, on the site of its predecessor, the Manhattan Gas Light Company, which stood here from 1885 to 1910. Construction began in 1911, and the main section was designed by Henry J. Hardenbergh, the same architect responsible for the Dakota on Seventy-second Street and Central Park West. The building's most majestic feature is the Tower of Light, a massive clock tower added in 1926, most impressive when brilliantly illuminated at night.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Consolidated Edison",
+        "Manhattan Gas Light Company",
+        "Henry J. Hardenbergh",
+        "Dakota",
+        "Tower of Light"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "con edison tower",
+      "physical_cues": [
+        {
+          "cue": "Con Edison headquarters and its Tower of Light clock tower above the southeast corner of Fourteenth Street and Irving Place",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Con Edison headquarters at southeast corner of Fourteenth Street and Irving Place",
+        "Stands on site of Manhattan Gas Light Company (1885-1910)",
+        "Construction began 1911, main section by Henry J. Hardenbergh, architect of the Dakota",
+        "Tower of Light clock tower added 1926"
+      ],
+      "source_passage": "The headquarters of the Consolidated Edison power company towers above the southeast corner of Fourteenth Street and Irving Place. It stands on the site of its predecessor, the Manhattan Gas Light Company, which was located here from 1885 to 1910. Construction of this building began in 1911, and the main section was designed by Henry J. Hardenbergh, who was also responsible for the Dakota on Seventy-second and Central Park West. The building's most majestic feature is the Tower of Light (Warren and Wetmore, 1926), a massive clock tower that caps the building and is most impressive when brilliantly illuminated at nighttime.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_stop_orientation_big-onion-ten-historic-tours_arrival_friends_seminary",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "sacred_traditions",
+      "topic_slug": "arrival_friends_seminary",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Arriving at Stuyvesant Square from Fifteenth Street, the first landmarks to grab your attention are the red-brick Friends Meeting House and Seminary to your left, dating from 1860. Part of a five-building complex that also includes the original schoolhouse, an elegant nineteenth-century townhouse across Fifteenth Street, and a modern school building, the Friends Seminary dominates the southwest corner of the square. A doctrinal split in the Quaker community prompted the construction of this meetinghouse, when one group seceded from another congregation a few blocks away at Gramercy Park. When the two groups reconciled in 1958, the Gramercy Park congregation abandoned their building to join this one.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "Friends Meeting House",
+        "Friends Seminary",
+        "Quaker community"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "friends seminary",
+      "physical_cues": [
+        {
+          "cue": "Red-brick Friends Meeting House and Seminary dominating the southwest corner of Stuyvesant Square, to your left arriving from Fifteenth Street",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Red-brick Friends Meeting House and Seminary date from 1860",
+        "Part of a five-building complex on the southwest corner of the square",
+        "Built after a doctrinal Quaker split with a Gramercy Park congregation",
+        "The two groups reconciled in 1958"
+      ],
+      "source_passage": "On arriving at Stuyvesant Square from Fifteenth Street, the first landmarks to grab your attention are the red-brick Friends Meeting House and Seminary to your left, which date from 1860. Part of a five-building complex that also includes the original schoolhouse, an elegant nineteenth-century townhouse (across Fifteenth Street), and a modern school building, the Friends Seminary dominates the southwest corner of the square. A doctrinal split in the Quaker community prompted the construction of this meetinghouse when this group seceded from another congregation a few blocks away at Gramercy Park. When the two groups reconciled in 1958, the Gramercy Park congregation abandoned their building to join this one.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_georges_episcopal_church_historic_arch_big-onion-ten-historic-tours_romanesque_revival_1865_fire",
+      "city_name": "new_york",
+      "poi_name": "St. George's Episcopal Church",
+      "lens": "historic_arch",
+      "topic_slug": "romanesque_revival_1865_fire",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Across Sixteenth Street from the Friends Meeting House stands St. George's Episcopal Church, completed in 1856 — one of the earliest examples of Romanesque revival architecture in America. The brownstone exterior, by Otto Blesch, had to be restored after the church was badly damaged in an 1865 fire; Leopold Eidlitz, who designed the original interior, rebuilt it according to Blesch's original plans. The two spires were never properly restored and were finally torn down in 1888. Next door, on the north side, is St. George's Chapel of 1911, a fine Gothic revival companion to the older building.",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "St. George's Episcopal Church",
+        "Otto Blesch",
+        "Leopold Eidlitz",
+        "St. George's Chapel"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "romanesque revival church",
+      "physical_cues": [
+        {
+          "cue": "St. George's brownstone church north across Sixteenth Street, its two spires gone, with the 1911 Gothic chapel next door",
+          "direction": "north",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "St. George's Episcopal Church completed 1856, one of the earliest Romanesque revival buildings in America",
+        "Brownstone exterior by Otto Blesch, restored after an 1865 fire by Leopold Eidlitz",
+        "Two spires torn down in 1888",
+        "St. George's Chapel (1911) is a Gothic revival companion"
+      ],
+      "source_passage": "St. George's Episcopal Church stands north across Sixteenth Street from the Friends Meeting House. Completed in 1856, this brownstone structure is one of the earliest examples of Romanesque revival architecture in America. The exterior by Otto Blesch had to be restored after the church was badly damaged in an 1865 fire. Leopold Eidlitz, who designed the original interior, rebuilt it according to Blesch's original plans. The two spires were never properly restored and finally were torn down in 1888. Next door, on the north side of the church, is St. George's Chapel (1911), a fine Gothic revival companion to the older building.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_hidden_history_big-onion-ten-historic-tours_deeded_for_five_dollars",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "hidden_history",
+      "topic_slug": "deeded_for_five_dollars",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The four-acre twin parks of Stuyvesant Square are bisected by Second Avenue, whose traffic makes a noisy invasion of an otherwise pastoral setting. The extension of Second Avenue through the park was part of the original plan when Peter Gerard Stuyvesant deeded the land to the city in 1836 — for just five dollars — though no one could have foreseen the volume of traffic that would later speed down the avenue. The cast-iron fence that surrounds each section of the park dates from 1850. Stuyvesant Square, and all the land from Twentieth to Fifth Street, lay within the farm of Peter Stuyvesant back in the 1650s.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Gerard Stuyvesant",
+        "Second Avenue",
+        "Peter Stuyvesant"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "deeded for five dollars",
+      "physical_cues": [
+        {
+          "cue": "Four-acre twin parks bisected by Second Avenue, ringed by a cast-iron fence",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Stuyvesant Square is four acres of twin parks bisected by Second Avenue",
+        "Peter Gerard Stuyvesant deeded the land to the city in 1836 for five dollars",
+        "Cast-iron fence dates from 1850",
+        "Land lay within Peter Stuyvesant's farm in the 1650s"
+      ],
+      "source_passage": "The four-acre twin parks of Stuyvesant Square are bifurcated by Second Avenue, which creates a noisy invasion of this otherwise pastoral setting. The extension of Second Avenue through the park was part of the original plan when the square was deeded to the city by Peter Gerard Stuyvesant in 1836, but no one could have foreseen the incredible volume of traffic that would later speed down this avenue. The cast-iron fence that surrounds each section of the park dates from 1850. ... (Stuyvesant Square, and all the land from Twentieth to Fifth Street, was within the farm of Peter Stuyvesant in the 1650s.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_historic_arch_big-onion-ten-historic-tours_sidney_webster_hunt_house",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "historic_arch",
+      "topic_slug": "sidney_webster_hunt_house",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "245 East Seventeenth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Facing the park from the north at 245 East Seventeenth Street is the Sidney Webster House of 1883 — note its four-peaked front. This modified French Renaissance–style townhouse is believed to be the last surviving residential building in New York designed by the great Richard Morris Hunt, and it sits within the Stuyvesant Square Historic District, designated in 1976.",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sidney Webster House",
+        "Richard Morris Hunt",
+        "Stuyvesant Square Historic District"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "webster house",
+      "physical_cues": [
+        {
+          "cue": "Four-peaked front of the Sidney Webster House at 245 East Seventeenth Street, facing the park from the north",
+          "direction": "north",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Sidney Webster House (1883) at 245 East Seventeenth Street has a four-peaked front",
+        "Believed to be the last surviving NYC residence designed by Richard Morris Hunt",
+        "Within the Stuyvesant Square Historic District, designated 1976"
+      ],
+      "source_passage": "One prime example facing the park from the north is the Sidney Webster House (1883) at 245 East Seventeenth Street. (Note its four-peaked front.) This modified French Renaissance–style townhouse is believed to be the last surviving residential building in New York designed by the great Richard Morris Hunt. This house and most other buildings around the west side of the square are protected as part of the Stuyvesant Square Historic District, designated in 1976.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_visual_art_big-onion-ten-historic-tours_peg_legged_stuyvesant_whitney",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "visual_art",
+      "topic_slug": "peg_legged_stuyvesant_whitney",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Near the center of the square's western wing stands a bronze statue of the famous peg-legged Dutch governor Peter Stuyvesant, made in 1936 by Gertrude Vanderbilt Whitney — the sculptor who founded the Whitney Museum.",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Stuyvesant",
+        "Gertrude Vanderbilt Whitney",
+        "Whitney Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "stuyvesant statue",
+      "physical_cues": [
+        {
+          "cue": "Bronze statue of peg-legged Peter Stuyvesant near the center of the western wing of the square",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bronze statue of peg-legged Peter Stuyvesant (1936) by Gertrude Vanderbilt Whitney, founder of the Whitney Museum",
+        "Stands in the western wing of the square"
+      ],
+      "source_passage": "Near the center of the Square's western wing is the bronze statue of the famous peg-legged Dutch governor, Peter Stuyvesant (1936), sculpted by Gertrude Vanderbilt Whitney, founder of the Whitney Museum.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_music_heritage_big-onion-ten-historic-tours_dvorak_new_world_symphony",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "music_heritage",
+      "topic_slug": "dvorak_new_world_symphony",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In the far northeast corner of the square's east wing stands a life-size bronze of the celebrated Czech composer Antonín Dvořák, done by the Yugoslavian sculptor Ivan Meštrović. For nearly three decades the statue was tucked away in obscurity on the roof of Avery Fisher Hall at Lincoln Center, where a planned roof garden was never built; the New York Philharmonic finally placed it here in 1997. Dvořák lived on East Seventeenth Street, within sight of this spot, while serving as director of the National Conservatory of Music from 1892 to 1895. During that time he composed the acclaimed symphony From the New World — his tribute to the music of America.",
+      "duration_sec": 49,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antonín Dvořák",
+        "Ivan Meštrović",
+        "Avery Fisher Hall",
+        "Lincoln Center",
+        "New York Philharmonic",
+        "National Conservatory of Music",
+        "From the New World"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "dvorak statue",
+      "physical_cues": [
+        {
+          "cue": "Life-size bronze of Antonín Dvořák in the far northeast corner of the square's east wing",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": "DVOR-zhahk",
+      "key_claims": [
+        "Bronze of Antonín Dvořák by Ivan Meštrović stands in the northeast corner of the east wing",
+        "Spent decades on the roof of Avery Fisher Hall before the Philharmonic placed it here in 1997",
+        "Dvořák lived on East Seventeenth Street while director of the National Conservatory of Music 1892-1895",
+        "Composed From the New World there"
+      ],
+      "source_passage": "Across Second Avenue, in the far northeast corner of the square's east wing, stands a life-size bronze monument of the celebrated Czech composer Antonín Dvořák, done by Yugoslavian sculptor Ivan Meštrović. For nearly three decades this statue was tucked away in obscurity on the roof of Avery Fisher Hall at Lincoln Center, where a planned roof garden was never built. It was finally placed here by the New York Philharmonic in 1997. Dvořák lived on East Seventeenth Street (Dvořák Place), within sight of this statue, during his tenure as director of the National Conservatory of Music from 1892 to 1895. During this time, he composed the acclaimed symphony From the New World, colloquially \"New World Symphony,\" his tribute to the music of America.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_georges_episcopal_church_social_change_big-onion-ten-historic-tours_morgan_social_gospel",
+      "city_name": "new_york",
+      "poi_name": "St. George's Episcopal Church",
+      "lens": "social_change",
+      "topic_slug": "morgan_social_gospel",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "By the 1890s, Stuyvesant Square had become a small, wealthy enclave of American-born residents amid a growing immigrant population of Jews and Catholics moving up from the Lower East Side. St. George's Parish was dominated for decades by its senior warden, the banker J. P. Morgan — one of the most powerful men in the world. When the neighborhood's dwindling Episcopalian population left its pews increasingly empty in the 1890s, St. George's, with Morgan's approval, became a leader in the Social Gospel movement. It survived by de-emphasizing doctrine and offering secular educational and recreational programs, enlisting thousands of young people from the nearby tenements.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "St. George's Parish",
+        "J. P. Morgan",
+        "Social Gospel movement",
+        "Lower East Side"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "social gospel",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "By the 1890s Stuyvesant Square was a wealthy enclave amid Jewish and Catholic immigrants",
+        "J. P. Morgan was senior warden of St. George's Parish for decades",
+        "With Morgan's approval St. George's became a leader in the Social Gospel movement",
+        "It offered secular programs to thousands of tenement young people"
+      ],
+      "source_passage": "By the 1890s, Stuyvesant Square had become a small, wealthy enclave of American-born residents amid a growing immigrant population of Jews and Catholics who had moved up from the Lower East Side. ... For instance, St. George's Parish was dominated for decades by its senior warden, the banker J. P. Morgan—one of the world's most powerful men. The church faced a crisis in the 1890s because the neighborhood's rapidly dwindling Episcopalian population left its pews increasingly deserted. To reach out to the non-Protestant immigrants of the neighborhood, St. George's, with Morgan's approval, became a leader in the Social Gospel movement. It survived as an institution by de-emphasizing religious doctrine and offering a variety of secular programs to address social ills, both educational and recreational, enlisting thousands of young people from the nearby tenements.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_literary_heritage_big-onion-ten-historic-tours_howells_realism",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "literary_heritage",
+      "topic_slug": "howells_realism",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "330 East Seventeenth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Just east of the square, at 330 East Seventeenth Street, William Dean Howells lived in a formerly elegant brownstone in the 1880s and 1890s. One of the most influential literary figures in America and the leading light of American realism, Howells often drew inspiration by perusing the tenement districts and pondering the injustices of capitalism through that genteel medium of social protest — the popular novel.",
+      "duration_sec": 29,
+      "kid_friendly": "yes",
+      "entities": [
+        "William Dean Howells"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "howells realism",
+      "physical_cues": [
+        {
+          "cue": "Brownstone at 330 East Seventeenth Street, just east of the square, where William Dean Howells lived",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "William Dean Howells lived at 330 East Seventeenth Street in the 1880s-1890s",
+        "Leading light of American realism",
+        "Drew inspiration from the tenement districts"
+      ],
+      "source_passage": "William Dean Howells, one of the most influential literary figures in America, lived in a formerly elegant brownstone at 330 East Seventeenth Street, just east of the square, in the 1880s and 1890s. The leading light of American realism, Howells often drew inspiration for his fiction by perusing the tenement districts and pondering the injustices of capitalism through a genteel medium of social protest—the popular novel.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_social_change_big-onion-ten-historic-tours_emma_goldman_deported",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "social_change",
+      "topic_slug": "emma_goldman_deported",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "210 East Thirteenth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Just a few blocks away, Emma Goldman lived on the sixth floor of a tenement still standing at 210 East Thirteenth Street, which housed the cramped headquarters of her fledgling anarchist movement. A frequent stump speaker at Union Square, Goldman was imprisoned for two years for her antiwar stance and criticism of conscription during World War I, then deported in 1919.",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Emma Goldman",
+        "World War I",
+        "Union Square"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "emma goldman",
+      "physical_cues": [
+        {
+          "cue": "Still-standing tenement at 210 East Thirteenth Street where Emma Goldman lived on the sixth floor",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Emma Goldman lived at 210 East Thirteenth Street, headquarters of her anarchist movement",
+        "Frequent stump speaker at Union Square",
+        "Imprisoned two years for antiwar stance, deported in 1919"
+      ],
+      "source_passage": "Just a few blocks away, Emma Goldman lived on the sixth floor of a tenement (still standing) at 210 East Thirteenth Street that housed the cramped headquarters of Goldman's fledgling anarchist movement. Goldman was a frequent stump speaker at Union Square, and in response to her antiwar stance and criticism of mandatory conscription laws during World War I, the U.S. government imprisoned her for two years and then deported her in 1919.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_georges_episcopal_church_dark_history_big-onion-ten-historic-tours_simpkin_mistaken_assassination",
+      "city_name": "new_york",
+      "poi_name": "St. George's Episcopal Church",
+      "lens": "dark_history",
+      "topic_slug": "simpkin_mistaken_assassination",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On Sunday, April 18, 1920, a neighborhood anarchist named Thomas W. Simpkin tried to assassinate J. P. Morgan Jr. outside St. George's. Incensed by the younger Morgan's anti-Communist remarks, Simpkin attempted to ambush him as he left Sunday Mass. In a case of mistaken identity, Simpkin instead tragically shot and killed Dr. James Markee, the Morgan family doctor. Five months later, the bombing of the Morgan Bank on Wall Street was widely assumed to be another anarchist attack aimed at Morgan.",
+      "duration_sec": 33,
+      "kid_friendly": "no",
+      "entities": [
+        "Thomas W. Simpkin",
+        "J. P. Morgan Jr.",
+        "James Markee",
+        "Morgan Bank"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "morgan assassination attempt",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "April 18, 1920: Thomas W. Simpkin tried to assassinate J. P. Morgan Jr. outside St. George's",
+        "Mistakenly shot and killed Dr. James Markee, the Morgan family doctor",
+        "Five months later the Morgan Bank on Wall Street was bombed"
+      ],
+      "source_passage": "On Sunday, April 18, 1920, a neighborhood anarchist named Thomas W. Simpkin tried to assassinate J. P. Morgan Jr. outside St. George's. Incensed by anti-Communist remarks made by the younger Morgan, Simpkin attempted to ambush him as he left Sunday Mass. In a case of mistaken identity, Simpkin instead tragically shot and killed Dr. James Markee, the Morgan family doctor. Five months later, the bombing of the Morgan Bank on Wall Street was widely assumed to be another \"anarchist attack\" aimed at Morgan.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_historic_arch_big-onion-ten-historic-tours_lying_in_hospital_morgan",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "historic_arch",
+      "topic_slug": "lying_in_hospital_morgan",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Seventeenth Street and Second Avenue",
+      "beat_length_class": "mid",
+      "script_body": "On the northwest corner of Seventeenth Street and Second Avenue stands the former Manhattan General Hospital Building, the most impressive of the hospital buildings bordering Stuyvesant Square. Completed in 1902 with money donated by J. P. Morgan and designed by Robert H. Richardson, it originally housed the New York Lying-In Hospital — once the largest maternity hospital in the United States, serving the impoverished Lower East Side and often letting its bills go uncollected. Viewed in philanthropic circles as Morgan's personal charity, it struggled to find other benefactors and turned to Morgan each year to cover its deficit, becoming one of his most expensive ventures. Today the building houses luxury apartments and medical offices.",
+      "duration_sec": 51,
+      "kid_friendly": "yes",
+      "entities": [
+        "Manhattan General Hospital",
+        "J. P. Morgan",
+        "Robert H. Richardson",
+        "New York Lying-In Hospital"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "lying-in hospital",
+      "physical_cues": [
+        {
+          "cue": "Former Manhattan General Hospital Building on the northwest corner of Seventeenth Street and Second Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Former Manhattan General Hospital Building completed 1902 with J. P. Morgan's money, designed by Robert H. Richardson",
+        "Originally the New York Lying-In Hospital, once the largest maternity hospital in the US",
+        "Seen as Morgan's personal charity; he covered its annual deficit",
+        "Now luxury apartments and medical offices"
+      ],
+      "source_passage": "On the northwest corner of Seventeenth Street and Second Avenue is the former Manhattan General Hospital Building, the most impressive of the several hospital buildings that border Stuyvesant Square. Completed in 1902 with money donated by J. P. Morgan, these stately headquarters, designed by Robert H. Richardson, originally housed the New York Lying-In Hospital. Once the largest maternity hospital in the United States, the Lying-In Hospital served the vast population of the impoverished Lower East Side and often allowed its bills to go uncollected. Because it was viewed in philanthropical circles as Morgan's personal charity, the hospital had difficulty finding other benefactors and inevitably turned to Morgan each year to make up its deficit. As a result, it became one of Morgan's most expensive philanthropical ventures. Today, this building houses luxury apartments and medical offices and is on the National Register of Historic Places.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_war_conflict_big-onion-ten-historic-tours_union_steam_works_draft_riots",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "war_conflict",
+      "topic_slug": "union_steam_works_draft_riots",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Second Avenue and Twenty-second Street",
+      "beat_length_class": "seasoning",
+      "script_body": "A few blocks north, at the corner of Second Avenue and Twenty-second Street, once stood the Union Steam Works factory, where perhaps the fiercest battle of the New York City Draft Riots took place in July 1863. Much of the neighborhood remains exactly as it appeared then.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Union Steam Works",
+        "New York City Draft Riots"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "union steam works",
+      "physical_cues": [
+        {
+          "cue": "Site at the corner of Second Avenue and Twenty-second Street where the Union Steam Works factory stood",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Union Steam Works factory stood at Second Avenue and Twenty-second Street",
+        "Site of perhaps the fiercest battle of the Draft Riots in July 1863",
+        "Neighborhood remains much as it appeared then"
+      ],
+      "source_passage": "Just a few blocks north, on the corner of Second Avenue and Twenty-second Street, once stood the Union Steam Works factory. Perhaps the fiercest battle of the New York City Draft Riots took place there in July 1863. Much of the neighborhood remains exactly as it appeared then.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_sidebar_big-onion-ten-historic-tours_draft_riots_steam_works_siege",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "war_conflict",
+      "topic_slug": "draft_riots_steam_works_siege",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "The New York City Draft Riots of July 1863 were the largest and most destructive urban riots in American history, killing at least 105 people, and the greatest uprising of Americans against their government short of the Confederacy's secession. They sprang from the resentment of New York's working classes — especially Irish immigrants — toward the Civil War draft, made worse by a clause allowing the rich to buy a $300 substitute, condemned as 'a rich man's war, but a poor man's fight.' On Monday, July 13, protestors smashed the lottery wheel at the Third Avenue draft house, and by midmorning a full-scale riot had erupted. The rioters targeted symbols of the war, Republican leaders, and African Americans: at least eleven black men were lynched, and the Colored Orphan Asylum on Fifth Avenue was torched, its 237 children left to flee. A mob of thousands besieged the Union Steam Works, a former wire factory converted to arms production; twice they seized thousands of weapons before the Metropolitan Police and the Twelfth New York Infantry, firing howitzers down Second Avenue, fought them out. Rather than surrender, the rioters burned the five-story building to the ground, killing ten of their own trapped inside. The next day, five regiments diverted from Gettysburg arrived; the 152nd New York Volunteers camped in Stuyvesant Square while the Eighth Regiment Artillery encamped in Gramercy Park, and by Thursday order was restored.",
+      "duration_sec": 109,
+      "kid_friendly": "no",
+      "entities": [
+        "New York City Draft Riots",
+        "Colored Orphan Asylum",
+        "Union Steam Works",
+        "Metropolitan Police",
+        "Twelfth New York Infantry",
+        "152nd New York Volunteers",
+        "Gramercy Park",
+        "Battle of Gettysburg"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "somber",
+      "subject_tag": "draft riots",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Draft Riots of July 1863 killed at least 105, largest urban riots in US history",
+        "$300 draft-substitute clause condemned as 'a rich man's war, a poor man's fight'",
+        "July 13 lottery wheel smashed at Third Avenue draft house",
+        "At least eleven black men lynched; Colored Orphan Asylum torched, 237 children fled",
+        "Mob besieged Union Steam Works; rioters burned it killing ten trapped inside",
+        "Five regiments diverted from Gettysburg; 152nd NY Volunteers camped in Stuyvesant Square, Eighth Artillery in Gramercy Park"
+      ],
+      "source_passage": "The New York City Draft Riots were the largest and most destructive urban riots in American history, resulting in at least 105 deaths. ... A clause that allowed draft substitutes to be purchased for $300 was deemed particularly obnoxious by Peace Democrats, who perceived the law as promoting \"a rich man's war, but a poor man's fight.\" ... On Monday, July 13, working-class protestors marched on the draft house at Third Avenue and smashed the lottery wheel. ... At least eleven black men were lynched and mutilated. Rioters also torched the Colored Orphan Asylum on Fifth Avenue, leaving its 237 children to flee for their lives. ... A mob of thousands besieged the Union Steam Works, a former wire factory that had been converted for wartime arms production. ... Twice the mob took control of the building and seized thousands of weapons. The Metropolitan Police were joined by the Twelfth New York Infantry in the bloody effort to dislodge rioters from the building. Howitzers were used by policemen to clear Second Avenue. In the end, rather than surrender the factory, the rioters burned the five-story brick building to the ground, killing ten of their own who remained trapped inside. The next day, July 15, five regiments of the Union Army, diverted directly from the battle of Gettysburg, began to arrive in the city. The 152 New York Volunteers established their camp in Stuyvesant Square, while the Eighth Regiment Artillery Troop encamped in Gramercy Park. By Thursday, July 16, order was restored.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_famous_residents_big-onion-ten-historic-tours_bellows_ashcan_painter",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "famous_residents",
+      "topic_slug": "bellows_ashcan_painter",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "146 East Nineteenth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "At 146 East Nineteenth Street, an oval plaque marks the former home of George Bellows, who lived here from 1910 until his early death in 1925. A great realist painter, Bellows belonged to the 'Ashcan' school for his gritty scenes of everyday life, drawn like William Dean Howells's from the tenement districts. An avid socialist, he often entertained leading radicals including Emma Goldman, Eugene O'Neill, Max Eastman, and John Reed.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "George Bellows",
+        "Ashcan school",
+        "William Dean Howells",
+        "Emma Goldman",
+        "Eugene O'Neill",
+        "Max Eastman",
+        "John Reed"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "bellows ashcan",
+      "physical_cues": [
+        {
+          "cue": "Oval plaque marking George Bellows's former home at 146 East Nineteenth Street",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Oval plaque at 146 East Nineteenth Street marks George Bellows's home, 1910-1925",
+        "Ashcan school realist painter",
+        "Socialist who entertained Emma Goldman, Eugene O'Neill, Max Eastman, John Reed"
+      ],
+      "source_passage": "At 146 East Nineteenth Street, you will see an oval plaque that marks the former home of George Bellows, who lived here from 1910 until his early death in 1925. A great realist painter, Bellows's work was often classified as part of the \"Ashcan\" school because he preferred to capture gritty scenes from everyday life. Like William Dean Howells, his subject matter was often drawn from frequent visits to the tenement districts. An avid socialist, Bellows frequently entertained leading radicals, including Emma Goldman, Eugene O'Neill, Max Eastman, and John Reed.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_famous_residents_big-onion-ten-historic-tours_van_vechten_harlem_renaissance",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "famous_residents",
+      "topic_slug": "van_vechten_harlem_renaissance",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "151 East Nineteenth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Directly across the street from Bellows lived Carl Van Vechten, in a home that used to stand at 151 East Nineteenth Street. A novelist and photographer, Van Vechten is most famous as the man who introduced New York white society to Harlem in the 1920s; his still-controversial 1926 novel helped popularize the Harlem Renaissance. His parties brought figures like the poet Langston Hughes and jazz singer Bessie Smith into contact with the artists and wealthy patrons of the Gramercy Park neighborhood.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Carl Van Vechten",
+        "Harlem Renaissance",
+        "Langston Hughes",
+        "Bessie Smith"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "van vechten harlem",
+      "physical_cues": [
+        {
+          "cue": "Site at 151 East Nineteenth Street, across from the Bellows house, where Carl Van Vechten's home once stood",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Carl Van Vechten lived at 151 East Nineteenth Street",
+        "Introduced New York white society to Harlem in the 1920s",
+        "His 1926 novel helped popularize the Harlem Renaissance",
+        "Parties brought Langston Hughes and Bessie Smith together with Gramercy patrons"
+      ],
+      "source_passage": "Directly across the street from Bellows lived Carl Van Vechten, in a home that used to stand at 151 East Nineteenth Street. A novelist and photographer, Van Vechten is most famous as the man who introduced New York white society to Harlem in the 1920s. Van Vechten's still-controversial 1926 novel Nigger Heaven helped popularize the Harlem Renaissance. His parties brought figures such as the poet Langston Hughes and jazz singer Bessie Smith in contact with the artists and wealthy patrons of the Gramercy Park neighborhood.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_historic_arch_big-onion-ten-historic-tours_block_beautiful_sterner",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "historic_arch",
+      "topic_slug": "block_beautiful_sterner",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "East Nineteenth Street between Third Avenue and Irving Place",
+      "beat_length_class": "seasoning",
+      "script_body": "The entire block of East Nineteenth Street between Third Avenue and Irving Place is known as 'Block Beautiful' and has achieved landmark status as part of the Gramercy Park Historic District. In the 1920s, architect Frederick J. Sterner renovated the facades of several townhouses here into a fine blend of styles, some of which date from the 1840s.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Block Beautiful",
+        "Frederick J. Sterner",
+        "Gramercy Park Historic District"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "block beautiful",
+      "physical_cues": [
+        {
+          "cue": "The 'Block Beautiful' row of renovated townhouse facades on East Nineteenth Street between Third Avenue and Irving Place",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "East Nineteenth Street between Third Avenue and Irving Place known as 'Block Beautiful'",
+        "Part of the Gramercy Park Historic District",
+        "Frederick J. Sterner renovated the facades in the 1920s; some houses date from the 1840s"
+      ],
+      "source_passage": "The entire block of East Nineteenth between Third Avenue and Irving Place is known as \"Block Beautiful\" and has achieved landmark status as part of the Gramercy Park Historic District. In the 1920s, architect Frederick J. Sterner renovated the facades of several of the townhouses, a fine blend of styles, some of which date from the 1840s.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_hidden_history_big-onion-ten-historic-tours_crooked_swamp_only_private_park",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "hidden_history",
+      "topic_slug": "crooked_swamp_only_private_park",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "To a remarkable degree, the Gramercy Park neighborhood has stayed true to the vision of its founder, Samuel Ruggles, providing a striking contrast to the noisy commercial districts around it. When Ruggles took possession of Gramercy Seat in 1831, it was a mixture of swampland and small hills. The name 'Gramercy,' some believe, is a corruption of an old Dutch phrase, krom moerasje, meaning 'little crooked swamp;' others say it comes from crommessie vly, meaning 'knife-shaped swamp.' Whatever the case, Ruggles filled in the swamp in the 1830s with soil from the leveling of the nearby Bowery Hill. When he drew up the deed to the park in 1831, he provided for five trustees, regularly elected by the neighborhood, to maintain the grounds to his precise specifications; he laid out the pathways himself and had fifty different trees and shrubs planted. The eight-foot iron fence has stood around it since it officially opened in 1844. Gramercy Park was also one of the first New York developments to impose building restrictions: Ruggles's deed permitted only 'brick or stone dwellings' and barred any 'slaughter house, smith shop,' 'brewery, distillery, public museum,' or 'circus.' Today it is the only private park left in New York City.",
+      "duration_sec": 109,
+      "kid_friendly": "yes",
+      "entities": [
+        "Samuel Ruggles",
+        "Gramercy Seat",
+        "Bowery Hill"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "gramercy origins",
+      "physical_cues": [
+        {
+          "cue": "The eight-foot iron fence enclosing Gramercy Park, the only private park in New York City",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "krom moerasje",
+          "gloss": "little crooked swamp"
+        },
+        {
+          "phrase": "crommessie vly",
+          "gloss": "knife-shaped swamp"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Ruggles took possession of Gramercy Seat in 1831, then swampland and hills",
+        "'Gramercy' possibly from Dutch krom moerasje ('little crooked swamp') or crommessie vly ('knife-shaped swamp')",
+        "Filled the swamp with soil from leveling Bowery Hill",
+        "1831 deed set up five elected trustees; eight-foot iron fence since 1844 opening",
+        "Deed permitted only brick/stone dwellings, barred slaughterhouses, breweries, circuses",
+        "Only private park left in NYC"
+      ],
+      "source_passage": "When Ruggles took possession of Gramercy Seat in 1831, it was a mixture of swampland and small hills. The name \"Gramercy\" some believe, is a corruption of an old Dutch phrase, krom moerasje, meaning \"little crooked swamp.\" Others say it comes from the phrase crommessie vly, meaning \"knife-shaped swamp.\" Whatever the case, Ruggles filled in the swamp in the 1830s with soil acquired from the leveling of the nearby Bowery Hill. When Ruggles drew up the deed to the park in 1831, he provided that five trustees, regularly elected by the neighborhood, be given the task of maintaining the grounds according to his precise specifications. Ruggles carefully laid out the pathways through the park and had fifty different trees and shrubs planted. The eight-foot iron fence has stood around it since it officially opened in 1844. Gramercy Park was one of the first New York developments to impose building restrictions. Ruggles's deed prohibited the construction of any buildings on the square \"save brick or stone dwelling[s]\" and \"any . . . trade or business dangerous or offensive to the neighboring inhabitants.\" He listed several examples of such businesses, which included any \"slaughter house, smith shop,\" \"brewery, distillery, public museum,\" or \"circus.\" ... Gramercy Park is the only private park left in New York City today.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_social_change_big-onion-ten-historic-tours_elevated_railroad_decline_revival",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "social_change",
+      "topic_slug": "elevated_railroad_decline_revival",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "From the 1850s until the 1870s, Gramercy Park ranked among the city's most fashionable neighborhoods. It lost status after the Third Avenue Elevated Railroad was built close by in 1878. Though many residents left, those who stayed were influential enough to persuade Governor David Hill to veto a measure that would have run a cable-car line on Lexington Avenue through the park in 1890, and several later proposals to cut a road through the park were defeated. Since the 1940s most of the townhouses have been converted into apartments, and by the 1980s Gramercy Park had once again become a fashionable neighborhood, home to many celebrities.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Third Avenue Elevated Railroad",
+        "David Hill"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "decline and revival",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Gramercy Park most fashionable from 1850s to 1870s",
+        "Lost status after Third Avenue Elevated Railroad built nearby in 1878",
+        "Residents persuaded Governor David Hill to veto a 1890 Lexington Avenue cable-car line through the park",
+        "Townhouses converted to apartments since 1940s; fashionable again by the 1980s"
+      ],
+      "source_passage": "From the 1850s until the 1870s, Gramercy Park remained among the city's most fashionable neighborhoods. It lost status, however, after the Third Avenue Elevated Railroad was constructed close by in 1878. Though many left, its residents remained influential enough to persuade Governor David Hill to veto a measure that would have extended a cable-car line on Lexington Avenue through the park in 1890. In the years that followed, several more proposals to cut a road through the park were defeated. Since the 1940s, most of the townhouses on the square have been converted into apartments. By the 1980s, Gramercy Park once again had become a fashionable neighborhood, home to many celebrities.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_famous_residents_big-onion-ten-historic-tours_valentine_mott_surgeon",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "famous_residents",
+      "topic_slug": "valentine_mott_surgeon",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "1 Gramercy Park West",
+      "beat_length_class": "seasoning",
+      "script_body": "The west side of the park, a solid row of red-brick townhouses, is its best-preserved section. Dr. Valentine Mott lived at 1 Gramercy Park, built in 1849. A founder of both New York University Medical College and Bellevue Hospital, he was the most famous surgeon of his time — and he died of shock in April 1865 after being told of President Lincoln's assassination by John Wilkes Booth. He is buried in Green-Wood Cemetery in Brooklyn.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Valentine Mott",
+        "New York University Medical College",
+        "Bellevue Hospital",
+        "Abraham Lincoln",
+        "John Wilkes Booth",
+        "Green-Wood Cemetery"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "valentine mott",
+      "physical_cues": [
+        {
+          "cue": "Red-brick townhouse at 1 Gramercy Park West, built 1849, home of Dr. Valentine Mott",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Dr. Valentine Mott lived at 1 Gramercy Park, built 1849",
+        "Founder of NYU Medical College and Bellevue Hospital, most famous surgeon of his time",
+        "Died of shock in April 1865 on hearing of Lincoln's assassination",
+        "Buried in Green-Wood Cemetery"
+      ],
+      "source_passage": "A solid row of red-brick townhouses, the residences occupying the west side of the park are the best-preserved section. Dr. Valentine Mott lived at 1 Gramercy Park, built in 1849, which he inhabited during the latter days of his life. A founder of both New York University Medical College and Bellevue Hospital, he was the most famous surgeon of his time. Dr. Mott died of shock after being told of President Lincoln's assassination by John Wilkes Booth in April 1865. He is buried in Green-Wood Cemetery in Brooklyn.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_historic_arch_big-onion-ten-historic-tours_davis_houses_mayoral_lamps",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "historic_arch",
+      "topic_slug": "davis_houses_mayoral_lamps",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "3 and 4 Gramercy Park West",
+      "beat_length_class": "seasoning",
+      "script_body": "The houses at 3 and 4 Gramercy Park West were designed by Alexander Jackson Davis — probably the two finest on the square, their elaborate cast-iron porches reminiscent of New Orleans architecture. The two 'mayoral lamps' outside No. 4 were placed there by former mayor James Harper when he moved in during the 1840s; such lamps traditionally helped citizens find the mayor's home in an emergency, and these had formerly stood outside Harper's Rose Street home.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Alexander Jackson Davis",
+        "James Harper"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "mayoral lamps",
+      "physical_cues": [
+        {
+          "cue": "Cast-iron porches of 3 and 4 Gramercy Park West and the two mayoral lamps flanking No. 4",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "3 and 4 Gramercy Park West designed by Alexander Jackson Davis with cast-iron porches",
+        "Two 'mayoral lamps' outside No. 4 placed by former mayor James Harper in the 1840s",
+        "Lamps formerly stood outside Harper's Rose Street home"
+      ],
+      "source_passage": "The buildings at 3 and 4 Gramercy Park West were designed by Alexander Jackson Davis. Probably the two finest houses on the square, their elaborate cast-iron porches are reminiscent of New Orleans' architecture. The two \"mayoral lamps\" that stand outside No. 4 were placed there by former mayor James Harper when he moved into this townhouse in the 1840s. These lamps were traditionally used to help citizens identify the mayor's home in an emergency and had formerly stood outside Harper's Rose Street home.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_famous_residents_big-onion-ten-historic-tours_robert_henri_realism_teacher",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "famous_residents",
+      "topic_slug": "robert_henri_realism_teacher",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "10 Gramercy Park South",
+      "beat_length_class": "seasoning",
+      "script_body": "At 10 Gramercy Park South was the former home of the painter Robert Henri, considered the 'father' of American realism. He led the movement away from romanticism and trained revolutionary painters such as Edward Hopper and George Bellows, encouraging them to broaden their subject matter. He held a popular weekly open house for local artists in his top-floor studio.",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Robert Henri",
+        "Edward Hopper",
+        "George Bellows"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "robert henri",
+      "physical_cues": [
+        {
+          "cue": "Robert Henri's former home at 10 Gramercy Park South, with the top-floor studio",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Robert Henri lived at 10 Gramercy Park South",
+        "Considered the 'father' of American realism",
+        "Trained Edward Hopper and George Bellows",
+        "Held a weekly open house in his top-floor studio"
+      ],
+      "source_passage": "At 10 Gramercy Park South was the former home of the painter Robert Henri. Considered the \"father\" of American realism, Henri led the movement away from romanticism in painting and trained such revolutionary painters as Edward Hopper and George Bellows. Henri encouraged his students to broaden their choice of subject matter. He held a popular weekly open house for local artists in his top-floor studio, which continues to be preserved by the Henri estate.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_arts_club_famous_residents_big-onion-ten-historic-tours_tilden_secret_tunnel_library",
+      "city_name": "new_york",
+      "poi_name": "National Arts Club",
+      "lens": "famous_residents",
+      "topic_slug": "tilden_secret_tunnel_library",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "15 Gramercy Park South",
+      "beat_length_class": "mid",
+      "script_body": "Both 15 and 16 Gramercy Park South, completed in 1845, were among the original townhouses on the square. No. 15 today houses the National Arts Club, but in the 1870s and 1880s it was the home of Samuel J. Tilden — 1874 New York governor and 1876 presidential candidate, whose career was built on bringing down the Tweed ring. Fearing disgruntled Tammany henchmen, Tilden built an underground tunnel from his house to Nineteenth Street as an escape route. When he died in 1886, he left a vast book collection and an estate exceeding $5 million to New York City specifically for a new public library — and when the New York Public Library's headquarters opened in 1911, his books were combined with the Astor and Lenox collections to form its original holdings.",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "Samuel J. Tilden",
+        "Tweed ring",
+        "Tammany",
+        "New York Public Library",
+        "Astor and Lenox collections"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "tilden tunnel library",
+      "physical_cues": [
+        {
+          "cue": "No. 15 Gramercy Park South, the National Arts Club, formerly Samuel Tilden's home",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "15 and 16 Gramercy Park South completed 1845, original townhouses",
+        "No. 15 was Samuel J. Tilden's home (1874 governor, 1876 presidential candidate)",
+        "Tilden built a secret escape tunnel to Nineteenth Street fearing Tammany henchmen",
+        "Died 1886 leaving an estate over $5 million for a public library; books formed NYPL's original holdings with Astor and Lenox collections"
+      ],
+      "source_passage": "Both 15 and 16 Gramercy Park South, completed in 1845, were among the original townhouses on the square. Today, No. 15 houses the National Arts Club. In the 1870s and 1880s, however, it was the home of 1874 New York governor and 1876 presidential candidate Samuel J. Tilden. Tilden's political success was built upon his role in bringing down the Tweed ring. Fearing for his life from disgruntled Tammany henchmen, Tilden built an underground tunnel from his house to Nineteenth Street as an escape route in case of an emergency. When Tilden died in 1886, he left behind a vast book collection and an estate exceeding $5 million, which he left to New York City specifically to be used for the building of a new public library and reading room. The New York Public Library's new headquarters opened in 1911, and his book collection was combined with the Astor and Lenox library collections to make up its original holdings.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_arts_club_historic_arch_big-onion-ten-historic-tours_vaux_facade_medallions",
+      "city_name": "new_york",
+      "poi_name": "National Arts Club",
+      "lens": "historic_arch",
+      "topic_slug": "vaux_facade_medallions",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "15 Gramercy Park South",
+      "beat_length_class": "seasoning",
+      "script_body": "The National Arts Club, founded in 1898, moved into Samuel Tilden's former home in 1906. The building's face had been redesigned in 1884 by Calvert Vaux, who added the bow fronts and arched windows in Victorian Gothic style; the faces of Goethe, Dante, Franklin, and Milton appear in decorative medallions adorning its facade. Founding club members included J. P. Morgan, Frederic Remington, Theodore Roosevelt, and Woodrow Wilson.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "National Arts Club",
+        "Calvert Vaux",
+        "Goethe",
+        "Dante",
+        "Franklin",
+        "Milton",
+        "J. P. Morgan",
+        "Frederic Remington",
+        "Theodore Roosevelt",
+        "Woodrow Wilson"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "vaux facade",
+      "physical_cues": [
+        {
+          "cue": "Victorian Gothic facade with bow fronts, arched windows, and medallion faces of Goethe, Dante, Franklin, and Milton",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "National Arts Club founded 1898, moved into Tilden's home in 1906",
+        "Face redesigned in 1884 by Calvert Vaux with bow fronts and arched windows",
+        "Medallions show Goethe, Dante, Franklin, and Milton",
+        "Founding members included J. P. Morgan, Frederic Remington, Theodore Roosevelt, Woodrow Wilson"
+      ],
+      "source_passage": "The National Arts Club, founded in 1898, moved into Samuel Tilden's former home in 1906. The face of the building had been redesigned in 1884 by Calvert Vaux, who added the bow fronts and arched windows in Victorian Gothic style. The faces of Goethe, Dante, Franklin, and Milton can be seen in the decorative medallions adorning its facade. Founding club members include J. P. Morgan, Frederic Remington, Theodore Roosevelt, and Woodrow Wilson.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_players_club_famous_residents_big-onion-ten-historic-tours_edwin_booth_actors_dignity",
+      "city_name": "new_york",
+      "poi_name": "The Players Club",
+      "lens": "famous_residents",
+      "topic_slug": "edwin_booth_actors_dignity",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "16 Gramercy Park South",
+      "beat_length_class": "anchor",
+      "script_body": "At 16 Gramercy Park South is the Players Club, founded by Edwin Booth in 1888. Widely considered the greatest actor of his generation, Booth came from a family of distinguished actors that included his unstable brother, John Wilkes Booth. Devastated by Lincoln's assassination at his brother's hand, Booth vowed never to appear in public again and resigned from his starring role in Hamlet; friends and admirers persuaded him to return nine months later, where New York society greeted him with an outpouring of sympathy. The acting profession was not highly regarded in nineteenth-century America, and perhaps because of his own family history, Booth felt the stigma deeply and endeavored to raise actors to 'a higher social grade than the Bohemian level.' He conceived the Players Club as a genteel society where actors could mix with the more cultivated, and in 1887 enlisted his friend Stanford White to remodel the facade with a portico and balcony. Founding members included Mark Twain and General William T. Sherman. At the center of Gramercy Park stands a statue of Edwin Booth as Hamlet, erected by the Players Club in 1918.",
+      "duration_sec": 84,
+      "kid_friendly": "yes",
+      "entities": [
+        "Edwin Booth",
+        "John Wilkes Booth",
+        "Abraham Lincoln",
+        "Stanford White",
+        "Mark Twain",
+        "William T. Sherman",
+        "Hamlet"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "edwin booth players",
+      "physical_cues": [
+        {
+          "cue": "The Players Club at 16 Gramercy Park South, its facade with Stanford White's portico and balcony",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Statue of Edwin Booth as Hamlet at the center of Gramercy Park",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Players Club at 16 Gramercy Park South founded by Edwin Booth in 1888",
+        "Booth was brother of John Wilkes Booth, Lincoln's assassin",
+        "After the assassination Booth quit Hamlet, returning nine months later",
+        "Conceived the club to raise actors' social standing; Stanford White remodeled the facade in 1887",
+        "Founding members included Mark Twain and General Sherman",
+        "Statue of Booth as Hamlet (1918) stands at the center of the park"
+      ],
+      "source_passage": "At 16 Gramercy Park South is the Players Club, founded by Edwin Booth in 1888. Widely considered to be the greatest actor of his generation, Booth came from a family of distinguished actors that included his unstable brother John Wilkes Booth. Devastated by Lincoln's assassination at his brother's hand, Booth vowed never to appear in public again and resigned from his starring role in a popular production of Hamlet. Friends and admirers, however, persuaded him to return to the stage nine months later, where he was greeted with an outpouring of sympathy and approval by New York society. The acting profession was not highly regarded in nineteenth-century America. Perhaps because of his own family history, Edwin Booth felt this stigma most deeply and endeavored to raise the social standing of actors to \"a higher social grade than the Bohemian level.\" He conceived of the Players Club as a genteel private society where actors could mix with those who were more cultivated. In 1887, Booth enlisted his friend Stanford White to remodel the facade of this building by adding the portico and balcony. Founding members included Mark Twain and General William T. Sherman. At the center of Gramercy Park stands a statue of Edwin Booth performing in the role of Hamlet (Edmond T. Quinn, 1917), erected by the Players Club in 1918.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_historic_arch_big-onion-ten-historic-tours_sonnenberg_mansion_greatest_house",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "historic_arch",
+      "topic_slug": "sonnenberg_mansion_greatest_house",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "19-20 Gramercy Park South",
+      "beat_length_class": "mid",
+      "script_body": "At 19–20 Gramercy Park South is the former Sonnenberg mansion, a brick townhouse built in 1845 but altered many times since. When the Sonnenberg estate put it up for sale in 1979, the New Yorker's Brendan Gill called it 'unquestionably the greatest house remaining in private hands in New York.' Originally four stories, it gained a fifth floor and mansard roof in the 1850s, and in 1887 it was remodeled inside by McKim, Mead and White. In 1931, publicity man Benjamin Sonnenberg bought the house along with the apartment complex next door at No. 20, installed connecting doors, and turned No. 20's studio apartments into guest rooms — bringing his mansion to thirty-seven rooms. It remains a private home today.",
+      "duration_sec": 53,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sonnenberg mansion",
+        "Brendan Gill",
+        "McKim, Mead and White",
+        "Benjamin Sonnenberg"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "sonnenberg mansion",
+      "physical_cues": [
+        {
+          "cue": "Former Sonnenberg mansion at 19-20 Gramercy Park South, with its fifth-floor mansard roof",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "19-20 Gramercy Park South is the former Sonnenberg mansion, built 1845",
+        "Brendan Gill called it 'the greatest house remaining in private hands in New York' in 1979",
+        "Fifth floor and mansard roof added in the 1850s; interior remodeled 1887 by McKim, Mead and White",
+        "Benjamin Sonnenberg combined it with No. 20 in 1931 into a thirty-seven-room home"
+      ],
+      "source_passage": "At 19–20 Gramercy Park South is the former Sonnenberg mansion, a brick townhouse built in 1845 but altered many times since. When the Sonnenberg estate put the house up for sale in 1979, the New Yorker's Brendan Gill called it \"unquestionably the greatest house remaining in private hands in New York.\" Originally a four-story building, the fifth floor and mansard roof were added in the 1850s. In 1887 it was again remodeled, mostly on the interior, by the firm of McKim, Mead and White. ... In 1931, publicity man Benjamin Sonnenberg purchased the house along with the fashionable apartment complex next door at No. 20. Sonnenberg installed connecting doors between the two buildings and turned No. 20's studio apartments into guest rooms for his mansion, which now totaled thirty-seven rooms. The expanded mansion remains a private home today.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stuyvesant_square_transit_big-onion-ten-historic-tours_walk_from_union_square",
+      "city_name": "new_york",
+      "poi_name": "Stuyvesant Square",
+      "lens": "hidden_history",
+      "topic_slug": "walk_from_union_square",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Park Avenue and Fifteenth Street, Union Square",
+      "beat_length_class": "seasoning",
+      "script_body": "Cross Park Avenue and walk east on Fifteenth Street three blocks toward Stuyvesant Square, then turn north on Rutherford Place to reach the Sixteenth Street entrance.",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "walk to stuyvesant",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cross Park Avenue, walk east on Fifteenth Street three blocks, then north on Rutherford Place to Stuyvesant Square"
+      ],
+      "source_passage": "Cross Park Avenue and walk east on Fifteenth Street three blocks to Stuyvesant Square ... Walk north on Rutherford Place to the Sixteenth Street entrance to Stuyvesant Square.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brotherhood_synagogue_sacred_traditions_big-onion-ten-historic-tours_friends_meeting_house_rescued",
+      "city_name": "new_york",
+      "poi_name": "Brotherhood Synagogue",
+      "lens": "sacred_traditions",
+      "topic_slug": "friends_meeting_house_rescued",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "144 East Twentieth Street",
+      "beat_length_class": "seasoning",
+      "script_body": "At 144 East Twentieth Street, off the southeast corner of the square, is the Brotherhood Synagogue, formerly the Friends Meeting House, built in 1859. Its Italianate architecture is almost identical to Henry Ward Beecher's 1849 Plymouth Church in Brooklyn Heights. Rescued from demolition by the Landmarks Commission in the 1960s, it was bought in 1975 by the Brotherhood Synagogue for $425,000. A Holocaust memorial stands on the east side of the building.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brotherhood Synagogue",
+        "Friends Meeting House",
+        "Henry Ward Beecher",
+        "Plymouth Church"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "friends meeting house",
+      "physical_cues": [
+        {
+          "cue": "The Brotherhood Synagogue (former Friends Meeting House) at 144 East Twentieth Street, with a Holocaust memorial on its east side",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Brotherhood Synagogue at 144 East Twentieth Street, formerly Friends Meeting House, built 1859",
+        "Italianate architecture almost identical to Beecher's 1849 Plymouth Church",
+        "Rescued from demolition by the Landmarks Commission in the 1960s",
+        "Bought by the Brotherhood Synagogue in 1975 for $425,000; Holocaust memorial on east side"
+      ],
+      "source_passage": "At 144 East Twentieth Street, off the southeast corner of the square, is the Brotherhood Synagogue, formerly the Friends Meeting House, built in 1859. The Italianate architecture is almost identical to Henry Ward Beecher's 1849 Plymouth Church in Brooklyn Heights. Rescued from demolition by the Historical Landmarks Commission in the 1960s, it was purchased in 1975 by the Brotherhood Synagogue of West Thirteenth Street for $425,000. To the east side of the building is a Holocaust memorial.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_historic_arch_big-onion-ten-historic-tours_first_coop_apartment_da_cunha",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "historic_arch",
+      "topic_slug": "first_coop_apartment_da_cunha",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "34 Gramercy Park East",
+      "beat_length_class": "mid",
+      "script_body": "The first cooperative apartment in New York City, 34 Gramercy Park East, was designed by architect George da Cunha. Opened in 1883, this gorgeous brick building with red terra-cotta ornamentation originally held twenty-seven apartments, three per floor, of seven to twelve rooms each. Abundant amenities were offered to attract a 'better' class of residents, including a gourmet restaurant owned by Louis Sherry on the eighth floor. The original gaslights flank the entrance, and the hydraulic elevators inside, the first in the city, still function. Next door at No. 36, another early cooperative designed by James Riley Gordon in 1910 carries whimsical medieval ornament in white terra-cotta, with monks, gargoyles, and cherubs, its front entrance guarded by two cast-stone knights in armor.",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "George da Cunha",
+        "Louis Sherry",
+        "James Riley Gordon"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "first coop apartment",
+      "physical_cues": [
+        {
+          "cue": "34 Gramercy Park East's brick and red terra-cotta facade with gaslights at the entrance, and No. 36 next door with knights in armor guarding the door",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "34 Gramercy Park East was the first cooperative apartment in NYC, by George da Cunha, opened 1883",
+        "27 apartments, three per floor; Louis Sherry restaurant on the eighth floor",
+        "Original gaslights and the city's first hydraulic elevators still function",
+        "No. 36 (James Riley Gordon, 1910) has white terra-cotta medieval ornament and cast-stone knights"
+      ],
+      "source_passage": "The first cooperative apartment in New York City, 34 Gramercy Park East, was designed by architect George da Cunha. Opened in 1883, this gorgeous brick building with red terra-cotta ornamentation originally contained twenty-seven apartments, three per floor ... including a gourmet restaurant owned by Louis Sherry, conveniently located on the eighth floor. The original gaslights flank the entrance and the hydraulic elevators inside (the first in the city) still function. Another early cooperative apartment stands next door at No. 36 Gramercy Park East. Designed by James Riley Gordon in 1910 ... Monks, gargoyles, and cherubs can be detected in the finely detailed facade, while the front entrance is guarded by two cast-stone knights in armor.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_science_tech_big-onion-ten-historic-tours_cyrus_field_peter_cooper",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "science_tech",
+      "topic_slug": "cyrus_field_peter_cooper",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "1 Lexington Avenue",
+      "beat_length_class": "mid",
+      "script_body": "Near the northern entrance to the park, a number of prominent New Yorkers made their homes. At 1 Lexington Avenue lived the daring entrepreneur Cyrus West Field, who conceived and organized the laying of the first undersea transatlantic cable, establishing telegraph communication between London and New York. After several disappointments, the cable finally became operable in 1865, making Field a national hero; he also built much of Manhattan's elevated railroads in the 1870s. Next door, at 9 Lexington Avenue, lived his friend and supporter Peter Cooper, one of New York's most beloved citizens and an inventor of extraordinary talents. Cooper created America's first steam locomotive, the 'Tom Thumb,' produced the first steel rails, and invented household products including glue and gelatin. Never having had a higher education himself, he founded Cooper Union, a free university for the working classes, which still runs tuition-free thanks chiefly to his endowment of nearly $1 million.",
+      "duration_sec": 64,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cyrus West Field",
+        "Peter Cooper",
+        "Tom Thumb",
+        "Cooper Union"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "transatlantic cable",
+      "physical_cues": [
+        {
+          "cue": "Homes at 1 and 9 Lexington Avenue, near the northern entrance to the park, of Cyrus Field and Peter Cooper",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cyrus West Field lived at 1 Lexington Avenue; organized the first transatlantic cable, operable 1865",
+        "Built much of Manhattan's elevated railroads in the 1870s",
+        "Peter Cooper lived at 9 Lexington Avenue; invented the 'Tom Thumb' locomotive, first steel rails, glue and gelatin",
+        "Founded Cooper Union, still tuition-free thanks to his ~$1 million endowment"
+      ],
+      "source_passage": "At 1 Lexington Avenue lived the daring entrepreneur Cyrus West Field. Field conceived of and organized the massive project of laying the first undersea transatlantic cable ... the cable finally became operable in 1865, making Field a national hero. Field also built much of Manhattan's elevated railroads in the 1870s. Next door, at 9 Lexington Avenue, lived one of Field's friends ... Peter Cooper. ... He created America's first steam locomotive, the \"Tom Thumb;\" produced the first steel rails; and invented numerous household products, including glue and gelatin. ... he founded Cooper Union for the Advancement of Science and Art ... Thanks chiefly to his original endowment of nearly $1 million, Cooper Union still operates tuition-free ...",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_dark_history_big-onion-ten-historic-tours_stanford_white_murder_teaser",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "dark_history",
+      "topic_slug": "stanford_white_murder_teaser",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Gramercy Park North",
+      "beat_length_class": "seasoning",
+      "script_body": "Architect Stanford White lived along Gramercy Park North from 1901 to 1906. One of the greatest and most prolific architects of his time, White designed lavish mansions, churches, clubhouses, and monuments all over New York, and was a serious collector who imported antiques to furnish his home. Yet he is best remembered today not for his architecture but for the scandalous circumstances of his death, the site of which the tour visits later.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stanford White"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "transition",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "stanford white",
+      "physical_cues": [
+        {
+          "cue": "Stretch of Gramercy Park North where Stanford White lived from 1901 to 1906",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Stanford White lived along Gramercy Park North from 1901 to 1906",
+        "One of the greatest architects of his time, also an antiques collector",
+        "Best remembered for the scandalous circumstances of his death"
+      ],
+      "source_passage": "Architect Stanford White lived along here from 1901 to 1906. One of the greatest and most prolific architects of his time, White designed lavish mansions, churches, clubhouses, and monuments that can be found all over New York City. White was also a serious art collector ... Despite his artistic achievements, White is best remembered today not for his architecture but for the scandalous circumstances of his death. More on this later when we visit the site of his tragic murder.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_historic_worship_big-onion-ten-historic-tours_calvary_church_renwick",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "historic_arch",
+      "topic_slug": "calvary_church_renwick",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-04-four-squares",
+      "sub_location": null,
+      "trigger_address": "Twenty-first Street and Park Avenue",
+      "beat_length_class": "mid",
+      "script_body": "At the corner of East Twenty-first Street and Park Avenue stands Calvary Church, once the prestigious parish of the Roosevelt, Vanderbilt, and Astor families, now assimilated into St. George's Parish of Stuyvesant Square. When this impressive brownstone church was completed in 1848, it heightened the appeal of the Gramercy Park area and prompted the sale of several of Samuel Ruggles's still-vacant lots. Its architect, James Renwick Jr., also designed Grace Church and St. Patrick's Cathedral. Both Edith Wharton and Eleanor Roosevelt were baptized at Calvary. The church is best viewed from across the street, where the empty base of one of its two original wooden steeples can be seen; the steeples were taken down after repeated lightning strikes.",
+      "duration_sec": 53,
+      "kid_friendly": "yes",
+      "entities": [
+        "Calvary Church",
+        "James Renwick Jr.",
+        "Grace Church",
+        "St. Patrick's Cathedral",
+        "Edith Wharton",
+        "Eleanor Roosevelt",
+        "Samuel Ruggles"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "calvary church",
+      "physical_cues": [
+        {
+          "cue": "Brownstone Calvary Church at Twenty-first Street and Park Avenue; from across the street, the empty base of one original wooden steeple",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Calvary Church at Twenty-first Street and Park Avenue, once parish of the Roosevelt, Vanderbilt, Astor families",
+        "Completed 1848; architect James Renwick Jr. also designed Grace Church and St. Patrick's Cathedral",
+        "Edith Wharton and Eleanor Roosevelt baptized there",
+        "Two wooden steeples removed after repeated lightning strikes"
+      ],
+      "source_passage": "Calvary Church, once the prestigious parish of the Roosevelt, Vanderbilt, and Astor families, has now been assimilated into St. George's Parish of Stuyvesant Square. When this impressive brownstone church was completed in 1848, it heightened the attraction of the Gramercy Park area and prompted the sale of Samuel Ruggles's several still-vacant lots ... Its architect, James Renwick Jr., also designed Grace Church and St. Patrick's Cathedral. Both Edith Wharton and Eleanor Roosevelt were baptized at Calvary. ... the empty base of one of the two original wooden steeples can be seen. The steeples were taken down after repeated lightning strikes.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [],
+  "summary": {
+    "beats_extracted": 54,
+    "recovered": true
+  }
+}

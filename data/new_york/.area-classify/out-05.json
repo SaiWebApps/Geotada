@@ -1,0 +1,242 @@
+[
+  {
+    "name": "New York Transit Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "this underground museum — yes, it's in a former subway station",
+    "confidence": "high",
+    "reasoning": "A discrete museum housed in a former subway station; you stand and listen at one destination."
+  },
+  {
+    "name": "Isamu Noguchi Garden Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the only museum in the nation founded by an artist in his lifetime",
+    "confidence": "high",
+    "reasoning": "A discrete museum with on-site galleries and garden; larger radius reflects grounds but it is a single named venue."
+  },
+  {
+    "name": "Louis Armstrong House Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the preserved two-story home as Armstrong left it",
+    "confidence": "high",
+    "reasoning": "A preserved house museum you tour as a single destination."
+  },
+  {
+    "name": "Museum of the Moving Image",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the core exhibit, Behind the Screen, which explores the technical issues behind moving images",
+    "confidence": "high",
+    "reasoning": "A discrete museum building with interior exhibits."
+  },
+  {
+    "name": "P.S. 1 Contemporary Art Center",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "That 'crazy building' in Long Island City was once a public school",
+    "confidence": "high",
+    "reasoning": "A single art-center building with interior galleries; a discrete destination despite the 60m radius."
+  },
+  {
+    "name": "Queens Museum",
+    "poi_role": "stop",
+    "parent_poi": "Flushing Meadows Corona Park",
+    "source_passage": "housed in a historic building constructed for the 1939 World's Fair",
+    "confidence": "medium",
+    "reasoning": "A discrete museum building (the 1939 World's Fair pavilion) located inside Flushing Meadows Corona Park."
+  },
+  {
+    "name": "Brooklyn Children's Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "A bright-yellow, L-shaped structure houses this hands-on kids' favorite",
+    "confidence": "high",
+    "reasoning": "A discrete museum building with interior play areas."
+  },
+  {
+    "name": "Children's Museum of Manhattan",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "this small museum features interactive exhibits scaled down for the 0-to-10-year-old set",
+    "confidence": "high",
+    "reasoning": "A discrete small museum with interior exhibits."
+  },
+  {
+    "name": "National Museum of Mathematics",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the little museum has two flo[ors]",
+    "confidence": "high",
+    "reasoning": "A discrete interactive museum building you enter."
+  },
+  {
+    "name": "New York City Fire Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "In a grand old firehouse dating from 1904, this ode to firefighters",
+    "confidence": "high",
+    "reasoning": "A discrete firehouse-museum building."
+  },
+  {
+    "name": "New York Hall of Science",
+    "poi_role": "stop",
+    "parent_poi": "Flushing Meadows Corona Park",
+    "source_passage": "Set in one of the few remaining buildings from the 1964 World's Fair",
+    "confidence": "medium",
+    "reasoning": "A discrete science-museum building located within Flushing Meadows Corona Park."
+  },
+  {
+    "name": "Belvedere Castle",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "This turreted castle is Olmsted and Vaux’s “folly” ... it sits atop the second-highest elevation in the park",
+    "confidence": "high",
+    "reasoning": "A discrete castle/lookout building, a named feature inside Central Park."
+  },
+  {
+    "name": "The Carousel",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "This Victorian spinner is most children’s favorite stop in the park",
+    "confidence": "high",
+    "reasoning": "A discrete carousel attraction, a named feature inside Central Park."
+  },
+  {
+    "name": "Central Park Zoo",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "The indoor, multilevel Tropic Zone is a real highlight",
+    "confidence": "medium",
+    "reasoning": "A discrete zoo with indoor exhibits inside Central Park; large radius reflects grounds but it is a single named venue."
+  },
+  {
+    "name": "Cleopatra's Needle",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "The obelisk and the plaque at its base translating the hieroglyphics",
+    "confidence": "high",
+    "reasoning": "A discrete obelisk/monument you stand before, located inside Central Park."
+  },
+  {
+    "name": "Conservatory Garden",
+    "poi_role": "setting",
+    "parent_poi": "Central Park",
+    "source_passage": "Walk around and you’ll notice that each of the garden’s three sections has a different ambience",
+    "confidence": "medium",
+    "reasoning": "A 6-acre formal garden with 120m radius and 'walk around' framing; an area-style sub-feature inside Central Park."
+  },
+  {
+    "name": "Conservatory Water",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "This is the model boat pond where Stuart Little had his fabled race",
+    "confidence": "medium",
+    "reasoning": "A discrete model-boat pond with adjacent statues, 20m radius; a named point-feature inside Central Park."
+  },
+  {
+    "name": "The Dairy",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "this frou-frou–laden Gothic structure ... Today it serves as the park’s visitor center",
+    "confidence": "high",
+    "reasoning": "A discrete Gothic building (visitor center) inside Central Park."
+  },
+  {
+    "name": "Bethesda Terrace",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "Bethesda Terrace is, without a doubt, the architectural heart of the park",
+    "confidence": "high",
+    "reasoning": "A discrete architectural terrace and fountain you stand before, a named feature inside Central Park."
+  },
+  {
+    "name": "Sheep Meadow",
+    "poi_role": "setting",
+    "parent_poi": "Central Park",
+    "source_passage": "this expanse of grass is the premier see-and-be-seen spot",
+    "confidence": "high",
+    "reasoning": "An open grassy meadow with 120m radius; an area sub-feature inside Central Park."
+  },
+  {
+    "name": "Strawberry Fields",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "A mosaic on the ground spells out “Imagine”",
+    "confidence": "medium",
+    "reasoning": "A small tear-shaped memorial garden centered on the Imagine mosaic, 20m radius; a discrete named feature inside Central Park."
+  },
+  {
+    "name": "Wollman Rink",
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "source_passage": "This is a wonderfully scenic place to skate",
+    "confidence": "high",
+    "reasoning": "A discrete ice-skating rink, 20m radius, a named feature inside Central Park."
+  },
+  {
+    "name": "Brooklyn Bridge Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "this 85-acre, multi-use waterfront park skirts the East River for 1.3 miles",
+    "confidence": "high",
+    "reasoning": "An 85-acre waterfront park you move through; 120m radius and 'skirts the river for 1.3 miles' framing make it a setting, and it is itself a candidate parent."
+  },
+  {
+    "name": "Bryant Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "a 4-acre lawn surrounded by benches, statuary, and London planetree–shaded promenades",
+    "confidence": "high",
+    "reasoning": "A 4-acre park with 120m radius and promenade framing; a contextual area you walk through, and itself a candidate parent."
+  },
+  {
+    "name": "Governors Island",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "the 172-acre Governors Island ... Four man-made hills with stellar Manhattan views",
+    "confidence": "high",
+    "reasoning": "A 172-acre island with 150m radius you explore through; a setting, and itself a candidate parent."
+  },
+  {
+    "name": "Little Island",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Hills, amphitheaters and winding paths atop the structure",
+    "confidence": "medium",
+    "reasoning": "An elevated park-island with hills and winding paths, 150m radius; an area you move through, and itself a candidate parent."
+  },
+  {
+    "name": "Hudson River Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "This 500-acre park runs for four miles ... a string of parks and playspaces",
+    "confidence": "high",
+    "reasoning": "A 500-acre, four-mile-long waterfront park you move along; a setting, and itself a candidate parent."
+  },
+  {
+    "name": "Riverside Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "this waterside spot runs north on the Upper West Side, banked by the Hudson River from W 59th to 155th Sts",
+    "confidence": "high",
+    "reasoning": "A long linear waterfront park with 120m radius you move along; a setting, and itself a candidate parent."
+  },
+  {
+    "name": "Tompkins Square Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "The 10.5-acre Tompkins Square Park ... is like a friendly town square",
+    "confidence": "high",
+    "reasoning": "A 10.5-acre neighborhood park with 120m radius you cross/linger in; a contextual setting."
+  },
+  {
+    "name": "The Little Red Lighthouse",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "this historic beauty sits under the George Washington Bridge in Fort Washington Park",
+    "confidence": "high",
+    "reasoning": "A discrete lighthouse landmark with 25m radius you stand before; Fort Washington Park is not a candidate parent so parent is null."
+  }
+]

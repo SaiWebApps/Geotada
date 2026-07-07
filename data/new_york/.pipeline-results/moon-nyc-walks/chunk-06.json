@@ -1,0 +1,903 @@
+{
+ "chunk_id": "chunk-06-walk6-williamsburg",
+ "chunk_file": "/Users/adamserblowski/Geotada/Books/new_york/moon-nyc-walks/chunk-06-walk6-williamsburg.txt",
+ "pois": [
+  {
+   "name": "Williamsburg Art & Historical Center",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Williamsburg's best-known art gallery, housed in the former Kings County Savings Bank building at 135 Broadway; shows American and international painting, sculpture, installation, and modern art.",
+   "name_variations": [
+    "WAH Center",
+    "Williamsburg Art and Historical Center",
+    "Williamsburgh Art & Historical Center"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.7106,
+   "longitude": -73.9668,
+   "trigger_radius": 25,
+   "geocode_source": "book address line (135 Broadway, Brooklyn) — Nominatim not reached in this read-only run",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Neighborhood-scale art gallery in a NYC-landmarked Second Empire bank building; modest tourism gravity, anchored by architecture and the WAH Center's role as the area's best-known gallery."
+  },
+  {
+   "name": "Republic of Booza",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Williamsburg ice cream shop billed as the first in the United States to sell booza, an elastic, creamier Levantine ice cream whose recipe dates back roughly 500 years.",
+   "name_variations": [
+    "Booza",
+    "Republic of Booza ice cream"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.7178,
+   "longitude": -73.9617,
+   "trigger_radius": 15,
+   "geocode_source": "book address line (76 N 4th St, Brooklyn) — Nominatim not reached in this read-only run",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Single specialty food shop; low standalone gravity but carries a genuine culinary-history hook (first US booza shop, 500-year-old recipe) that warrants a seasoning beat."
+  },
+  {
+   "name": "The Knitting Factory",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "A well-known name on the New York music scene; like The Bitter End and Arlene's Grocery, it has given a stage to then-unknown punk, pop, rock, and funk acts. Williamsburg location at 361 Metropolitan Ave.",
+   "name_variations": [
+    "Knitting Factory",
+    "Knitting Factory Brooklyn"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.7137,
+   "longitude": -73.9514,
+   "trigger_radius": 20,
+   "geocode_source": "book address line (361 Metropolitan Ave, Brooklyn) — Nominatim not reached in this read-only run",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Established NYC music-scene venue with a launch-platform reputation; modest gravity as a culture stop on a music-heavy Williamsburg walk."
+  },
+  {
+   "name": "Partners Coffee",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Williamsburg coffeehouse on North 6th Street that began as Toby's Estate, specializing in Australian-style coffee; still serves 'short blacks' and 'flat whites' alongside small-batch roasted beans.",
+   "name_variations": [
+    "Toby's Estate",
+    "Toby's Estate Brooklyn",
+    "Partners Coffee Williamsburg"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.7186,
+   "longitude": -73.9577,
+   "trigger_radius": 15,
+   "geocode_source": "book address line (125 N 6th St, Brooklyn) — Nominatim not reached in this read-only run",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Single café; low standalone gravity but carries a named-origin hook (Toby's Estate, Australian coffee culture) worth a seasoning beat."
+  },
+  {
+   "name": "Filthy Rich Barbershop",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Williamsburg barbershop on Havemeyer Street, an institution since 2006 known for trendy cuts and for styling well-known rappers.",
+   "name_variations": [
+    "Filthy Rich",
+    "Filthy Rich Barber Shop"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.7148,
+   "longitude": -73.956,
+   "trigger_radius": 15,
+   "geocode_source": "book address line (148 Havemeyer St, Brooklyn) — Nominatim not reached in this read-only run",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Neighborhood business with a 'since 2006' hook and celebrity-clientele angle; low gravity, single seasoning beat (celebrity names omitted per living-people guardrail)."
+  },
+  {
+   "name": "The Gutter",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "One of Williamsburg's three bowling alleys, on North 14th Street; opened in 2007 with a 1950s-throwback interior and old-fashioned board games for waiting bowlers.",
+   "name_variations": [
+    "The Gutter Bar",
+    "The Gutter Brooklyn",
+    "Gutter Bowling"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.7222,
+   "longitude": -73.9568,
+   "trigger_radius": 15,
+   "geocode_source": "book address line (200 N 14th St, Brooklyn) — Nominatim not reached in this read-only run",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Single entertainment venue; low gravity but carries a datable hook (opened 2007, 1950s-themed) suitable for one seasoning beat."
+  }
+ ],
+ "beats": [
+  {
+   "beat_id": "newyork_williamsburg_social_change_moon-nyc-walks_1898_borough_1903_bridge",
+   "city_name": "new_york",
+   "poi_name": "Williamsburg",
+   "parent_poi": null,
+   "lens": "social_change",
+   "topic_slug": "1898_borough_1903_bridge",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "Until the late 19th century, Williamsburg was mainly where Manhattan's elite came for a weekend away from the city. It didn't officially become part of New York City until 1898, when Brooklyn became a borough. Then the Williamsburg Bridge was completed in 1903, putting a crossing of the East River within reach of the average person. Newly arrived immigrants and people fleeing the packed tenements of the Lower East Side flooded into Brooklyn, and Williamsburg became one of the most densely populated neighborhoods in the city.",
+   "duration_sec": 35,
+   "kid_friendly": "yes",
+   "entities": [
+    "Williamsburg Bridge",
+    "Lower East Side",
+    "Brooklyn"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "establishing",
+   "beat_type": "event",
+   "emotional_register": "neutral",
+   "subject_tag": "borough and bridge",
+   "physical_cues": [],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Williamsburg became part of NYC in 1898 when Brooklyn became a borough",
+    "Williamsburg Bridge completed 1903",
+    "Immigrants from the Lower East Side made it one of the most densely populated neighborhoods"
+   ],
+   "source_passage": "Until the late 19th century, Williamsburg, in Brooklyn, was primarily a place where the Manhattan elite came for a weekend away from the big city. It didn't officially become part of New York City until 1898, when Brooklyn became a borough of New York City. The completion of the Williamsburg Bridge in 1903 made it possible for the average person to travel across the East River. Newly arrived immigrants and those escaping the packed tenement buildings of the Lower East Side soon flooded into Brooklyn, and Williamsburg became one of the most densely populated neighborhoods in the city.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_williamsburg_social_change_moon-nyc-walks_melting_pot_communities",
+   "city_name": "new_york",
+   "poi_name": "Williamsburg",
+   "parent_poi": null,
+   "lens": "social_change",
+   "topic_slug": "melting_pot_communities",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "Brooklyn has always been a melting pot, and that's still visible in Williamsburg. The neighborhood originated in what is now South Williamsburg, where there are significant populations of Hasidic Jews, Puerto Ricans, and Dominicans. The northern part, known as the North Side, is home to large Polish and Italian communities. In recent years many young Manhattanites have made the move across the water, and Williamsburg has become one of Brooklyn's hippest, most popular neighborhoods — artists and creative types were the trailblazers, but a growing influx of young professionals now lives in luxury waterfront apartments with a view of the city.",
+   "duration_sec": 39,
+   "kid_friendly": "yes",
+   "entities": [
+    "South Williamsburg",
+    "North Side",
+    "Hasidic Jews",
+    "Puerto Ricans",
+    "Dominicans"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "deepen",
+   "beat_type": "factoid",
+   "emotional_register": "neutral",
+   "subject_tag": "ethnic communities",
+   "physical_cues": [],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "South Williamsburg has Hasidic Jewish, Puerto Rican, and Dominican populations",
+    "The North Side has large Polish and Italian communities",
+    "Young Manhattanites moved in; artists were trailblazers, then young professionals"
+   ],
+   "source_passage": "Brooklyn has always been a melting pot of cultures, and this is still very visible in Williamsburg today. Williamsburg originated in what is now South Williamsburg. Here there are significant populations of Hasidic Jews, Puerto Ricans, and Dominicans. The north of Williamsburg, known as the North Side, is home to large Polish and Italian communities. Recent years have seen many young Manhattanites making the move across the water, and Williamsburg has become one of Brooklyn's hippest, most popular neighborhoods.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_williamsburg_street_art_moon-nyc-walks_murals_way_of_life",
+   "city_name": "new_york",
+   "poi_name": "Williamsburg",
+   "parent_poi": null,
+   "lens": "visual_art",
+   "topic_slug": "street_art_way_of_life",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "In creative Williamsburg, street art is a way of life. Nowhere else in New York City will you find so many murals, stickers, and stencils on walls, facades, lampposts, doors, mailboxes, curbs, or just about anywhere. Pay attention and you'll start to notice the recurring work of certain artists throughout the neighborhood.",
+   "duration_sec": 22,
+   "kid_friendly": "yes",
+   "entities": [],
+   "sensory_anchor": true,
+   "narrative_function": "scene_setter",
+   "beat_type": "sensory_observation",
+   "emotional_register": "playful",
+   "subject_tag": "street art",
+   "physical_cues": [
+    {
+     "cue": "Murals, stickers, and stencils on walls, facades, lampposts, doors, mailboxes, and curbs throughout the neighborhood",
+     "direction": "here",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Williamsburg has more street art (murals, stickers, stencils) than anywhere else in NYC",
+    "Certain artists' work recurs throughout the neighborhood"
+   ],
+   "source_passage": "In creative Williamsburg, street art is a way of life. Nowhere else in New York City will you find so many murals, stickers, and stencils on walls, building facades, lampposts, doors, mailboxes, curbs, or just about anywhere. Those who pay attention will notice the recurring work of certain artists throughout the neighborhood.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_williamsburg_bridge_waterways_views_moon-nyc-walks_pedestrian_crossing_view",
+   "city_name": "new_york",
+   "poi_name": "Williamsburg Bridge",
+   "parent_poi": null,
+   "lens": "waterways_views",
+   "topic_slug": "pedestrian_crossing_view",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "The Williamsburg Bridge connects Manhattan and Williamsburg, carrying cars and trucks but also a separated path for cyclists and pedestrians. The view of eastern Manhattan from the Williamsburg side is amazing, and because foot and bike traffic is kept apart from vehicles, crossing is both safe and pleasant.",
+   "duration_sec": 21,
+   "kid_friendly": "yes",
+   "entities": [
+    "Williamsburg Bridge",
+    "Manhattan"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "architectural_detail",
+   "emotional_register": "neutral",
+   "subject_tag": "bridge crossing",
+   "physical_cues": [
+    {
+     "cue": "View of eastern Manhattan from the Williamsburg side of the bridge",
+     "direction": "west",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "The Williamsburg Bridge connects Manhattan and Williamsburg",
+    "It carries cars, trucks, cyclists, and pedestrians on separated paths",
+    "The view of eastern Manhattan from the Williamsburg side is notable"
+   ],
+   "source_passage": "The Williamsburg Bridge connects Manhattan and Williamsburg. It is used by cars and trucks, but you can also cross by bicycle or on foot. The view of eastern Manhattan from the Williamsburg side is amazing, and since cyclists and pedestrians are separated from the rest of traffic, getting to the other side is both safe and pleasant.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_williamsburg_art_historical_center_visual_art_moon-nyc-walks_savings_bank_best_known_gallery",
+   "city_name": "new_york",
+   "poi_name": "Williamsburg Art & Historical Center",
+   "parent_poi": null,
+   "lens": "visual_art",
+   "topic_slug": "savings_bank_best_known_gallery",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "The Williamsburg Art & Historical Center occupies the site of the old Kings County Savings Bank and is the best-known gallery in the neighborhood. Exhibits change regularly and run the gamut from paintings and sculptures to installations and modern art, showing the work of both American and international artists.",
+   "duration_sec": 20,
+   "kid_friendly": "yes",
+   "entities": [
+    "Kings County Savings Bank"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "neutral",
+   "subject_tag": "neighborhood gallery",
+   "physical_cues": [
+    {
+     "cue": "The former Kings County Savings Bank building housing the gallery at 135 Broadway",
+     "direction": "here",
+     "feature_type": "architectural_detail"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "The WAH Center is the best-known gallery in Williamsburg",
+    "It occupies the site of the Kings County Savings Bank",
+    "It shows American and international artists across painting, sculpture, installation, and modern art"
+   ],
+   "source_passage": "Kings County Savings Bank previously stood on the spot where the Williamsburg Art & Historical Center is now located. This is the best-known gallery in the neighborhood. Exhibits here change regularly and include everything from paintings and sculptures to installations and modern art. The center exhibits the work of both American and international artists.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "disputed",
+   "corrections": [],
+   "disputes": [
+    {
+     "claim": "Kings County Savings Bank previously stood on the spot (implying it was demolished and replaced)",
+     "issue": "The WAH Center does not occupy a replacement building; it occupies the original 1860-1867 Kings County Savings Bank building itself (a NYC landmark since 1966, NRHP 1980). The bank building was not demolished — the gallery has operated inside it since 1996.",
+     "sources": [
+      "https://en.wikipedia.org/wiki/Kings_County_Savings_Bank",
+      "https://theclio.com/entry/19546"
+     ]
+    }
+   ],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_city_reliquary_local_legends_moon-nyc-walks_barbershop_replica_worlds_fair",
+   "city_name": "new_york",
+   "poi_name": "City Reliquary",
+   "parent_poi": null,
+   "lens": "local_legends",
+   "topic_slug": "barbershop_replica_worlds_fair",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "The tiny City Reliquary Museum is definitely not your average museum — it's packed with rare artifacts tied to the history of New York City. There's a replica of the Bay Ridge Barbershop, which operated in Brooklyn for 50 years, along with a collection of items from the 1964 World's Fair held in New York. The gift shop carries fun, interesting pieces by local artists.",
+   "duration_sec": 27,
+   "kid_friendly": "yes",
+   "entities": [
+    "Bay Ridge Barbershop",
+    "1964 World's Fair"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "cabinet of curiosities",
+   "physical_cues": [
+    {
+     "cue": "Replica of the Bay Ridge Barbershop inside the museum",
+     "direction": "here",
+     "feature_type": "interior"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "City Reliquary holds rare NYC-history artifacts",
+    "It has a replica of the Bay Ridge Barbershop, which ran in Brooklyn for 50 years",
+    "It holds a collection of items from the 1964 World's Fair"
+   ],
+   "source_passage": "The tiny City Reliquary Museum is definitely not your average museum. It is packed with rare artifacts that relate to the history of New York City. There is a replica of the Bay Ridge Barbershop, which operated in Brooklyn for 50 years, as well as a collection of items from the 1964 World's Fair held in New York.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_republic_of_booza_markets_street_food_moon-nyc-walks_first_us_booza_500_years",
+   "city_name": "new_york",
+   "poi_name": "Republic of Booza",
+   "parent_poi": null,
+   "lens": "markets_street_food",
+   "topic_slug": "first_us_booza_500_years",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "Republic of Booza was the first shop in the United States to sell booza, an ice cream invented about 500 years ago in the eastern Mediterranean. Ice cream as we know it descends from booza, but booza is more elastic and creamier, with a richer taste. The ancient recipe arrives here in a hypermodern, almost Japanese interior, alongside experimental flavors like Chinese pepper with Oreo cookies.",
+   "duration_sec": 28,
+   "kid_friendly": "yes",
+   "entities": [
+    "booza"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "hook",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "booza origin",
+   "physical_cues": [
+    {
+     "cue": "The shop's hypermodern, almost Japanese interior",
+     "direction": "here",
+     "feature_type": "interior"
+    }
+   ],
+   "inline_foreign_phrases": [
+    {
+     "phrase": "booza",
+     "gloss": "an elastic, creamier Eastern Mediterranean ice cream that predates and gave rise to modern ice cream"
+    }
+   ],
+   "pronunciation": null,
+   "key_claims": [
+    "Republic of Booza is the first shop in the US to sell booza",
+    "Booza was invented about 500 years ago in the eastern Mediterranean",
+    "Booza is more elastic and creamier than modern ice cream"
+   ],
+   "source_passage": "Republic of Booza is the first shop in the United States to sell booza, and it's definitely worth a visit. Booza ice cream was invented about 500 years ago in the eastern Mediterranean. Ice cream as we know it, is based on booza, but booza is more elastic and creamier and has a richer taste.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_the_knitting_factory_music_heritage_moon-nyc-walks_launchpad_unknown_bands",
+   "city_name": "new_york",
+   "poi_name": "The Knitting Factory",
+   "parent_poi": null,
+   "lens": "music_heritage",
+   "topic_slug": "launchpad_unknown_bands",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "The Knitting Factory is a well-known name on the New York music scene. Like The Bitter End and Arlene's Grocery, it has given a stage to then-unknown punk, pop, rock, and funk acts that went on to become legends. Maybe the next Nirvana will be on stage during your visit.",
+   "duration_sec": 21,
+   "kid_friendly": "yes",
+   "entities": [
+    "The Bitter End",
+    "Arlene's Grocery",
+    "Nirvana"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "establishing",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "music launchpad",
+   "physical_cues": [],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "The Knitting Factory is a well-known NYC music venue",
+    "Like The Bitter End and Arlene's Grocery, it gave a stage to then-unknown punk, pop, rock, and funk acts"
+   ],
+   "source_passage": "The Knitting Factory is a well-known name on the New York music scene. Just like The Bitter End and Arlene's Grocery, this place has given a podium to (then) unknown punk, pop, rock, and funk legends. Maybe the next Nirvana will be on stage during your visit!",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_partners_coffee_markets_street_food_moon-nyc-walks_tobys_estate_australian_origin",
+   "city_name": "new_york",
+   "poi_name": "Partners Coffee",
+   "parent_poi": null,
+   "lens": "markets_street_food",
+   "topic_slug": "tobys_estate_australian_origin",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "Partners Coffee began life as Toby's Estate, which specialized in Australian coffees. The company had its roots in Australia, where owner Toby Smith started roasting his own coffee, and years later it opened its first American location here in Williamsburg. Partners still pours \"short blacks\" and \"flat whites\" alongside small-batch roasted beans.",
+   "duration_sec": 22,
+   "kid_friendly": "yes",
+   "entities": [
+    "Toby's Estate",
+    "Toby Smith"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "establishing",
+   "beat_type": "character_story",
+   "emotional_register": "neutral",
+   "subject_tag": "Australian coffee roots",
+   "physical_cues": [],
+   "inline_foreign_phrases": [
+    {
+     "phrase": "short blacks",
+     "gloss": "Australian term for a single shot of espresso"
+    },
+    {
+     "phrase": "flat whites",
+     "gloss": "Australian-style espresso drink with steamed milk"
+    }
+   ],
+   "pronunciation": null,
+   "key_claims": [
+    "Partners Coffee began as Toby's Estate",
+    "Toby's Estate specialized in Australian coffees",
+    "Owner Toby Smith started roasting his own coffee in Australia",
+    "Its first US location opened in Williamsburg"
+   ],
+   "source_passage": "Partners Coffee began as Toby's Estate, which specialized in Australian coffees. The successful café originated in Australia years ago when owner, Toby Smith, started roasting his own coffee. Years later, the company opened its first American location in Williamsburg.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_filthy_rich_barbershop_local_legends_moon-nyc-walks_institution_since_2006",
+   "city_name": "new_york",
+   "poi_name": "Filthy Rich Barbershop",
+   "parent_poi": null,
+   "lens": "local_legends",
+   "topic_slug": "institution_since_2006",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "Williamsburg is a hipster mecca, often pictured as the land of beards and man buns, so a great barber is essential. Filthy Rich Barbershop has been an institution here since 2006, giving trendy cuts and even styling famous rappers.",
+   "duration_sec": 16,
+   "kid_friendly": "yes",
+   "entities": [
+    "Filthy Rich Barbershop"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "scene_setter",
+   "beat_type": "factoid",
+   "emotional_register": "wry",
+   "subject_tag": "hipster barbershop",
+   "physical_cues": [],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Filthy Rich Barbershop has been an institution in Williamsburg since 2006",
+    "It styles famous rappers"
+   ],
+   "source_passage": "At Filthy Rich Barbershop they not only give you a trendy haircut, they also style famous rappers like Big Sean and Flo Rida. It's been an institution since 2006.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_the_gutter_local_legends_moon-nyc-walks_1950s_throwback_bowling_2007",
+   "city_name": "new_york",
+   "poi_name": "The Gutter",
+   "parent_poi": null,
+   "lens": "local_legends",
+   "topic_slug": "1950s_throwback_bowling_2007",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "In Williamsburg people appreciate a beer and a good game of bowling — the neighborhood has three bowling alleys, and The Gutter is one of them. Although it only opened in 2007, once you step inside you'll feel you're back in the 1950s. If you have to wait for a lane, you can pass the time over an old-fashioned board game.",
+   "duration_sec": 25,
+   "kid_friendly": "yes",
+   "entities": [
+    "The Gutter"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "throwback bowling",
+   "physical_cues": [
+    {
+     "cue": "The 1950s-style interior of the bowling alley",
+     "direction": "here",
+     "feature_type": "interior"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Williamsburg has three bowling alleys; The Gutter is one",
+    "The Gutter opened in 2007",
+    "Its interior evokes the 1950s"
+   ],
+   "source_passage": "The neighborhood has three bowling alleys, and The Gutter is one of them. Although it only opened in 2007, once you step inside, you'll feel you're back in the 1950s. If you have to wait for a lane here, pass the time while playing an old-fashioned boardgame.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_brooklyn_brewery_markets_street_food_moon-nyc-walks_friday_tasting_room_line",
+   "city_name": "new_york",
+   "poi_name": "Brooklyn Brewery",
+   "parent_poi": null,
+   "lens": "markets_street_food",
+   "topic_slug": "friday_tasting_room_line",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "During the week, Brooklyn Brewery is open only for tours. But starting Friday afternoon at 5pm a line begins to form at the door as people wait for the tasting room to open. The beers are inexpensive by NYC standards, and though there isn't much in the way of food, the brewery doesn't mind if patrons have a pizza delivered.",
+   "duration_sec": 24,
+   "kid_friendly": "yes",
+   "entities": [
+    "Brooklyn Brewery"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "establishing",
+   "beat_type": "factoid",
+   "emotional_register": "wry",
+   "subject_tag": "tasting room",
+   "physical_cues": [],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Brooklyn Brewery is open only for tours during the week",
+    "Its tasting room opens Friday at 5pm",
+    "Beers are inexpensive by NYC standards; patrons may have pizza delivered"
+   ],
+   "source_passage": "During the week, Brooklyn Brewery is only open for tours. However, starting Friday afternoon at 5pm a line begins to form in front of the door as people wait for the tasting room to open. The fantastic beers are inexpensive by NYC standards, and though they don't offer much in terms of food here, they don't mind if patrons have a pizza delivered.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_east_river_state_park_waterways_views_moon-nyc-walks_smorgasburg_river_view",
+   "city_name": "new_york",
+   "poi_name": "East River State Park",
+   "parent_poi": null,
+   "lens": "waterways_views",
+   "topic_slug": "smorgasburg_river_view",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-06-walk6-williamsburg",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "With its spectacular view across the river to Manhattan, East River State Park is a fine place to relax and take a few photos. On Saturdays, when the Smorgasburg market sets up here, the park doubles as a great spot for fresh, tasty snacks and treats.",
+   "duration_sec": 19,
+   "kid_friendly": "yes",
+   "entities": [
+    "Smorgasburg",
+    "Manhattan"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "sensory_observation",
+   "emotional_register": "neutral",
+   "subject_tag": "riverfront park",
+   "physical_cues": [
+    {
+     "cue": "View across the East River to Manhattan",
+     "direction": "west",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "East River State Park has a view across the river to Manhattan",
+    "The Smorgasburg market takes place here on Saturdays"
+   ],
+   "source_passage": "With its spectacular view looking out over the river onto Manhattan, the East River State Park is the perfect place to come to relax and maybe take a few photos. On Saturdays, when the Smorgasburg market takes place here, the park is also a great place to come for fresh, tasty snacks and treats.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "Walk 6: Williamsburg"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  }
+ ],
+ "review_queue": [
+  {
+   "type": "new_poi",
+   "name": "Williamsburg Art & Historical Center",
+   "source_passage": "Kings County Savings Bank previously stood on the spot where the Williamsburg Art & Historical Center is now located.",
+   "beats_attached": 1,
+   "relationship": "independent",
+   "geocode": "135 Broadway, Brooklyn (~40.7106, -73.9668, MEDIUM)",
+   "note": "Best-known Williamsburg gallery. Do not auto-create — user decides at poi-generate."
+  },
+  {
+   "type": "new_poi",
+   "name": "Republic of Booza",
+   "source_passage": "Republic of Booza is the first shop in the United States to sell booza",
+   "beats_attached": 1,
+   "relationship": "independent",
+   "geocode": "76 N 4th St, Brooklyn (~40.7178, -73.9617, MEDIUM)",
+   "note": "Specialty food shop with genuine culinary-history hook."
+  },
+  {
+   "type": "new_poi",
+   "name": "The Knitting Factory",
+   "source_passage": "The Knitting Factory is a well-known name on the New York music scene.",
+   "beats_attached": 1,
+   "relationship": "independent",
+   "geocode": "361 Metropolitan Ave, Brooklyn (~40.7137, -73.9514, MEDIUM)",
+   "note": "Music venue; Williamsburg/Brooklyn location."
+  },
+  {
+   "type": "new_poi",
+   "name": "Partners Coffee",
+   "source_passage": "Partners Coffee began as Toby's Estate, which specialized in Australian coffees.",
+   "beats_attached": 1,
+   "relationship": "independent",
+   "geocode": "125 N 6th St, Brooklyn (~40.7186, -73.9577, MEDIUM)",
+   "note": "Café with named-origin hook (Toby's Estate / Toby Smith)."
+  },
+  {
+   "type": "new_poi",
+   "name": "Filthy Rich Barbershop",
+   "source_passage": "It's been an institution since 2006.",
+   "beats_attached": 1,
+   "relationship": "independent",
+   "geocode": "148 Havemeyer St, Brooklyn (~40.7148, -73.9560, MEDIUM)",
+   "note": "Barbershop with 'since 2006' hook; celebrity-client names (living people) deliberately omitted from beat per guardrail."
+  },
+  {
+   "type": "new_poi",
+   "name": "The Gutter",
+   "source_passage": "Although it only opened in 2007, once you step inside, you'll feel you're back in the 1950s.",
+   "beats_attached": 1,
+   "relationship": "independent",
+   "geocode": "200 N 14th St, Brooklyn (~40.7222, -73.9568, MEDIUM)",
+   "note": "Bowling alley with datable hook (opened 2007)."
+  },
+  {
+   "type": "dispute",
+   "beat_id": "newyork_williamsburg_art_historical_center_visual_art_moon-nyc-walks_savings_bank_best_known_gallery",
+   "claim": "Kings County Savings Bank 'previously stood' on the WAH Center's site (implies demolition/replacement)",
+   "issue": "WAH Center occupies the original 1860-1867 Kings County Savings Bank building itself — a NYC landmark (1966) and NRHP (1980), not demolished. Book wording is misleading; NOT auto-corrected (would alter the story). Flagged for user.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kings_County_Savings_Bank",
+    "https://theclio.com/entry/19546"
+   ]
+  },
+  {
+   "type": "living_people_skipped",
+   "poi": "Filthy Rich Barbershop",
+   "note": "Book names rappers Big Sean and Flo Rida (living people). Per guardrail, not used as a beat claim; beat says 'famous rappers' without naming them. No auto-correction attempted."
+  },
+  {
+   "type": "geocode_network_note",
+   "note": "Read-only run — Nominatim not queried. All 6 new-POI coords derived from the book's address/subway metadata lines; geocode_confidence=MEDIUM. Run /poi-geocode new_york --missing-only after triage to resolve precise coords."
+  },
+  {
+   "type": "skipped_logistics",
+   "note": "Pure promotional shop/restaurant/bar entries with no datable or named historical hook were skipped per SOURCE NOTE: Fanaberie, Rabbithole Restaurant, Fette Sau, Radegast Hall & Biergarten, Juliette, Sweetwater, Bakeri, The Bedford, Spritzenhaus 33, Kinfolk, Bird, Mociun, Berlyn 65, Pilgrim Surf, Baggu, Mast Brothers Chocolate, Bedford Cheese Shop, Catbird, Awoke Vintage, Heatonist, Artists & Fleas, Smorgasburg (food-market promo only), Music Hall of Williamsburg (promo only), East River Ferry. Numbered route-direction paragraphs treated as orientation, not beats (no transit beats emitted — directions are pure logistics with no narrative hook)."
+  },
+  {
+   "type": "proximity_note",
+   "note": "All 6 new POIs are clustered within Williamsburg near existing POIs (Williamsburg, Williamsburg Bridge, City Reliquary, East River State Park, Brooklyn Brewery). City Reliquary (370 Metropolitan Ave) and the new Knitting Factory (361 Metropolitan Ave) and Republic of Booza (76 N 4th St) fall within ~100m of each other / existing POIs — none are aliases (distinct businesses), but verify at poi-dedup time."
+  }
+ ],
+ "summary": {
+  "beats_extracted": 13,
+  "pois_touched": 10,
+  "new_pois": 6,
+  "corrections_applied": 0,
+  "disputes": 1,
+  "anomalies": 1,
+  "lenses_hit": [
+   "social_change",
+   "visual_art",
+   "waterways_views",
+   "local_legends",
+   "markets_street_food",
+   "music_heritage"
+  ],
+  "lenses_missed": [
+   "dark_history",
+   "hidden_history",
+   "historic_arch",
+   "historic_worship",
+   "sacred_traditions",
+   "famous_residents",
+   "literary_heritage",
+   "film_tv",
+   "modern_design",
+   "science_tech",
+   "war_conflict",
+   "parks_gardens",
+   "transit",
+   "historic_cuisine"
+  ],
+  "confidence_counts": {
+   "HIGH": 5,
+   "MEDIUM": 8,
+   "LOW": 0
+  }
+ }
+}

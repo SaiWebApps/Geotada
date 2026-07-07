@@ -1,0 +1,1085 @@
+{
+  "chunk_id": "chunk-06-central-park",
+  "chunk_file": "Books/new_york/national-geographic-walking-nyc/chunk-06-central-park.cleaned.txt",
+  "pois": [
+    {
+      "name": "Central Park",
+      "is_new": false,
+      "matched_existing": "Central Park",
+      "short_description": "843-acre landscaped park designed by Olmsted and Vaux (1858), spanning 59th to 110th St between Fifth Ave and Central Park West; contains the Mall, Loeb Boathouse, Shakespeare Garden and many sub-features.",
+      "name_variations": [
+        "Central Park NYC"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7829,
+      "longitude": -73.9654,
+      "trigger_radius": 400,
+      "importance_tier": 5,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Tier-5 flagship NYC landmark; sub-locations The Mall, Loeb Boathouse, Shakespeare Garden modeled as sub_location rather than new top-level POIs per task guidance."
+    },
+    {
+      "name": "Central Park Zoo",
+      "is_new": false,
+      "matched_existing": "Central Park Zoo",
+      "short_description": "5-acre zoo at Fifth Ave and 64th St with sea lion pool, Tisch Children's Zoo, and the Delacorte musical clock.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7678,
+      "longitude": -73.9718,
+      "trigger_radius": 60,
+      "importance_tier": 4,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; popular family attraction inside Central Park."
+    },
+    {
+      "name": "Bethesda Terrace",
+      "is_new": false,
+      "matched_existing": "Bethesda Terrace",
+      "short_description": "Ornately carved overlook at the north end of the Mall with views of the lake and the Ramble.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.774,
+      "longitude": -73.9709,
+      "trigger_radius": 40,
+      "importance_tier": 4,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI referenced as the Mall's northern terminus."
+    },
+    {
+      "name": "Strawberry Fields",
+      "is_new": false,
+      "matched_existing": "Strawberry Fields",
+      "short_description": "2.5-acre tear-shaped John Lennon memorial garden with the 'Imagine' mosaic, across from the Dakota.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7758,
+      "longitude": -73.9749,
+      "trigger_radius": 40,
+      "importance_tier": 4,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; Lennon memorial."
+    },
+    {
+      "name": "Belvedere Castle",
+      "is_new": false,
+      "matched_existing": "Belvedere Castle",
+      "short_description": "Victorian folly at the park's highest point (built 1869), housing the National Weather Service station since 1919.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7794,
+      "longitude": -73.9692,
+      "trigger_radius": 40,
+      "importance_tier": 4,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; lookout castle."
+    },
+    {
+      "name": "Conservatory Garden",
+      "is_new": false,
+      "matched_existing": "Conservatory Garden",
+      "short_description": "6-acre formal garden (Italian, French, English sections) at the park's northeast corner; a popular wedding spot.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7937,
+      "longitude": -73.952,
+      "trigger_radius": 60,
+      "importance_tier": 3,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; formal garden."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_central_park_parks_gardens_national-geographic-walking-nyc_olmsted_vaux_first_landscaped_park",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "parks_gardens",
+      "topic_slug": "olmsted_vaux_first_landscaped_park",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Journalist Frederick Law Olmsted and architect Calvert Vaux designed the country's first landscaped park here in 1858 to meet a need for urban greenery. As ordinary New Yorkers searched for respite from the nineteenth-century city, members of high society pressed for a dedicated public space in which to socialize, and where the lower classes would benefit from fresh air. After a lengthy debate, an area of Manhattan unsuitable for commercial buildings was chosen as the site. Twenty thousand workers spent twenty years turning swamps into lakes, redesigning the rocky landscape, planting more than 270,000 trees and shrubs, and transforming the whole area into an idyllic pastoral oasis.",
+      "duration_sec": 43,
+      "kid_friendly": "yes",
+      "entities": [
+        "Frederick Law Olmsted",
+        "Calvert Vaux"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "park origin",
+      "physical_cues": [
+        {
+          "cue": "The lawns, lakes and planted landscape around you, engineered from former swamp and rocky ground",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Olmsted and Vaux designed the country's first landscaped park in 1858",
+        "20,000 workers spent 20 years building it",
+        "more than 270,000 trees and shrubs were planted"
+      ],
+      "source_passage": "Journalist Frederick Law Olmsted and architect Calvert Vaux designed the country's first landscaped park in 1858 to meet a need for urban greenery. In the 19th century, as ordinary New Yorkers searched for respite from the city, members of high society began pressing for a dedicated public space in which to socialize, and where the lower classes would benefit from fresh air. After a lengthy debate, an area of Manhattan unsuitable for commercial buildings was chosen as the site of the new park. Twenty thousand workers spent 20 years turning swamps into lakes, redesigning the rocky landscape, planting more than 270,000 trees and shrubs, and transforming the whole area into an idyllic pastoral oasis.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_parks_gardens_national-geographic-walking-nyc_843_acres_skyscraper_contrast",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "parks_gardens",
+      "topic_slug": "843_acres_skyscraper_contrast",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Central Park stretches south to north from 59th Street to 110th Street, and across from Fifth Avenue to Central Park West. Seen from above, the park's 843 acres form a vast green rectangle — a stark contrast to the density of the skyscrapers that surround it. Inside, you can swim, ice skate, go boating, cycle, walk, or just enjoy the many gardens.",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "park extent",
+      "physical_cues": [
+        {
+          "cue": "The wall of skyscrapers rising at the park's edges, framing the open green expanse",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Park runs from 59th to 110th St and Fifth Ave to Central Park West",
+        "843 acres",
+        "contrasts with surrounding skyscraper density"
+      ],
+      "source_passage": "Central Park (centralparknyc.org) stretches south to north from 59th Street to 110th Street and across from Fifth Avenue to Central Park West. Seen from above, the park's 843 acres (341 ha) form a vast — a stark contrast to the density of the skyscrapers that surround it. Inside the park you can swim, ice skate, go boating, cycle, walk, or just enjoy the many lovely gardens.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_zoo_local_legends_national-geographic-walking-nyc_sea_lion_pool_tisch_childrens_zoo",
+      "city_name": "new_york",
+      "poi_name": "Central Park Zoo",
+      "lens": "local_legends",
+      "topic_slug": "sea_lion_pool_tisch_childrens_zoo",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "More than 150 species from around the world live in the Central Park Zoo, including red pandas, grizzly bears, and rare snow leopards. The modern five-acre facility was first established as a makeshift menagerie in 1860, expanded in the 1930s, and refurbished in 1984. Among its highlights are the octagonal sea lion pool in the central courtyard, where daily feedings take place, and the Tisch Children's Zoo, which opened in 1997, where kids get the chance to pet and feed goats, alpacas, Vietnamese pot-bellied pigs, and more.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Tisch Children's Zoo"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "zoo highlights",
+      "physical_cues": [
+        {
+          "cue": "The octagonal sea lion pool in the central courtyard where daily feedings take place",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "over 150 species incl red pandas, grizzly bears, snow leopards",
+        "menagerie established 1860, refurbished 1984",
+        "Tisch Children's Zoo opened 1997"
+      ],
+      "source_passage": "More than 150 species from around the world live in the Central Park Zoo, including red pandas, grizzly bears, and rare snow leopards. The modern S-acre (2 ha) facility was first established as a makeshift menagerie in 1860, expanded in the 1930s, and refurbished in 1984. Among its highlights are the octagonal sea lion pool in the central courtyard, where daily feedings take place, and the Tisch Children's Zoo, which opened in 1997, and where kids get the chance to pet and feed goats, alpacas, Vietnamese pot-bellied pigs, and more.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "menagerie established 1860 and refurbished 1984",
+          "book_says": "established as a makeshift menagerie in 1860 ... refurbished in 1984",
+          "sources_say": "Wikipedia/NYC Parks date the menagerie to 1864 and the modern zoo reopening to 1934 (Robert Moses) with a major rebuild reopening in 1988",
+          "urls": [
+            "https://en.wikipedia.org/wiki/Central_Park_Zoo"
+          ],
+          "recommendation": "Do not auto-correct: single-source disagreement and the 1980s rebuild (book's '1984' = construction start of the renovation that reopened 1988) is plausibly reconcilable. Flag for human review."
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_zoo_visual_art_national-geographic-walking-nyc_limestone_friezes_delacorte_clock",
+      "city_name": "new_york",
+      "poi_name": "Central Park Zoo",
+      "lens": "visual_art",
+      "topic_slug": "limestone_friezes_delacorte_clock",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Preservationists delight at the zoo's limestone friezes of birds, monkeys, and lions — vestiges of the 1930s-era zoo built to replace the original menagerie. Nearby, the Delacorte Clock enchants visitors with its parade of brass animals, which circle to the tunes of nursery rhymes every half-hour.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Delacorte Clock"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "friezes clock",
+      "physical_cues": [
+        {
+          "cue": "Limestone friezes of birds, monkeys, and lions on the 1930s-era zoo buildings",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The Delacorte Clock with its parade of brass animals",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "limestone friezes are vestiges of the 1930s zoo",
+        "Delacorte Clock's brass animals circle to nursery rhymes every half-hour"
+      ],
+      "source_passage": "Preservationists will delight at seeing the limestone friezes of birds, monkeys, and lions— vestiges of the 1930s-era zoo that was built to replace the menagerie. The Delacorte Clock will enchant all with its parade of brass animals circling to the tunes of nursery rhymes every half-hour.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_parks_gardens_national-geographic-walking-nyc_mall_american_elms_dutch_disease",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "parks_gardens",
+      "topic_slug": "mall_american_elms_dutch_disease",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": "the-mall",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Mall is a long, tree-lined pedestrian walkway where New Yorkers once came to stroll in their Sunday best, and it remains a great place for people-watching. It is flanked by benches and rows of giant American elms forming a leafy canopy that entices photographers to attempt the perfect Central Park shot. The Mall's majestic trees form one of the largest remaining collections of American elms in the country — the rest of the population having been largely wiped out by Dutch elm disease.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "mall elms",
+      "physical_cues": [
+        {
+          "cue": "Rows of giant American elms arching over the Mall to form a leafy canopy",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Mall is lined with giant American elms",
+        "one of the largest remaining American elm collections in the country",
+        "rest of the elm population wiped out by Dutch elm disease"
+      ],
+      "source_passage": "This long, tree-lined pedestrian walkway is the spot where New Yorkers used to come to stroll in their Sunday best, and it is still a great place for people-watching. It is flanked by benches and rows of giant American elms forming a leafy canopy, enticing many photographers into trying to capture the perfect Central Park shot. Not only visually stunning, the Mall's majestic trees also form one of the largest remaining collections of American elms in the country; the rest of the population has been tlearly wiped out by Dutch elm disease.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_visual_art_national-geographic-walking-nyc_literary_walk_bronze_statues",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "visual_art",
+      "topic_slug": "literary_walk_bronze_statues",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": "the-mall",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "At the southern end of the Mall's promenade, Literary Walk displays five bronze statues of famous writers, including William Shakespeare and the Scottish poet Robert Burns. The opposite end of the walkway culminates at Bethesda Terrace, an ornately carved overlook with views of the lake and the wooded Ramble beyond.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Literary Walk",
+        "William Shakespeare",
+        "Robert Burns",
+        "Bethesda Terrace",
+        "The Ramble"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "literary walk statues",
+      "physical_cues": [
+        {
+          "cue": "Five bronze statues of writers, including Shakespeare and Robert Burns, at the south end of the Mall",
+          "direction": "south",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Literary Walk has five bronze statues of writers incl Shakespeare and Robert Burns",
+        "the Mall culminates at Bethesda Terrace"
+      ],
+      "source_passage": "Literary Walk, at the southern end of the promenade, displays five bronze statues of famous writers, including William Shakespeare and Scottish poet Robert Burns; the other end of the walkway culminates at Bethesda Terrace, an ornately carved overlook with views of the lake and the wooded Ramble beyond.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_local_legends_national-geographic-walking-nyc_loeb_boathouse_gondolas",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "local_legends",
+      "topic_slug": "loeb_boathouse_gondolas",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": "loeb-boathouse",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The lake's eastern tip is graced by the elegant Loeb Boathouse, a large, copper-roofed redbrick building that opened in 1954, replacing a Victorian boathouse designed in 1874 by Calvert Vaux. From here you can rent bicycles to tour the park, and rowboats and Venetian gondolas — complete with singing gondoliers — to glide across the eighteen-acre lake, under the gaze of diners on the deck of the Boathouse Restaurant.",
+      "duration_sec": 32,
+      "kid_friendly": "yes",
+      "entities": [
+        "Loeb Boathouse",
+        "Calvert Vaux",
+        "Boathouse Restaurant"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "loeb boathouse",
+      "physical_cues": [
+        {
+          "cue": "The copper-roofed redbrick Loeb Boathouse at the eastern tip of the lake, with gondolas and rowboats on the water",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Venetian gondolas",
+          "gloss": "traditional Venetian rowing boats, here complete with singing gondoliers"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Loeb Boathouse opened 1954, replacing an 1874 Victorian boathouse by Calvert Vaux",
+        "rents bikes, rowboats and Venetian gondolas",
+        "the lake is 18 acres"
+      ],
+      "source_passage": "The lake's eastern tip is graced by the elegant Loeb Boathouse. The large, copper-roofed, redbrick building opened in 1954, replacing a Victorian boathouse designed in 1874 by Calvert Vaux. You can rent bicycles to tour the park from here, and rowboats and Venetian gondolas (complete with singing gondoliers) to glide across the 18-acre (7.2 ha) lake, under the gaze of diners on the deck at the Boathouse Restaurant (see p. 126).",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_parks_gardens_national-geographic-walking-nyc_boathouse_birdwatcher_notebook",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "parks_gardens",
+      "topic_slug": "boathouse_birdwatcher_notebook",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": "loeb-boathouse",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "For the city's birdwatchers, the Loeb Boathouse holds a different significance: a communally written notebook detailing all bird sightings in the park, updated by enthusiasts almost every day. Avid ornithologists are invited to peruse the notebook and record their own observations.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "birding notebook",
+      "physical_cues": [
+        {
+          "cue": "The communal bird-sightings notebook kept inside the Loeb Boathouse",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "the boathouse keeps a communal bird-sightings notebook updated almost daily"
+      ],
+      "source_passage": "For the city's birdwatchers, the boathouse is significant for a different reason, namely a communally written notebook detailing all bird sightings in the park, updated by enthusiasts almost every day. If you're an avid ornithologist, peruse the notebook and record your observations.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_strawberry_fields_music_heritage_national-geographic-walking-nyc_lennon_memorial_imagine_mosaic",
+      "city_name": "new_york",
+      "poi_name": "Strawberry Fields",
+      "lens": "music_heritage",
+      "topic_slug": "lennon_memorial_imagine_mosaic",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The memorial to musician and songwriter John Lennon is a 2.5-acre, tear-shaped garden across the street from the Dakota building, where Lennon and his wife, Yoko Ono, lived at the time of his murder in 1980. The couple often visited this peaceful stretch of the park, which today draws thousands of fans on the anniversaries of Lennon's birth, October 9, and death, December 8 — many staying late into the night singing his favorite songs. A black-and-white mosaic on the ground bearing the word 'Imagine' marks the heart of the memorial, and a nearby bronze plaque lists the 121 countries that donated trees, plants, and stones to endorse the site as a garden of peace.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "John Lennon",
+        "Yoko Ono",
+        "Dakota Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "lennon memorial",
+      "physical_cues": [
+        {
+          "cue": "The black-and-white 'Imagine' mosaic set into the ground at the heart of the garden",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Bronze plaque listing the 121 donor countries",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "2.5-acre tear-shaped Lennon memorial across from the Dakota",
+        "Lennon murdered 1980; fans gather Oct 9 and Dec 8",
+        "Imagine mosaic; plaque lists 121 donor countries"
+      ],
+      "source_passage": "The memorial to musician and songwriter John Lennon is a 2.5-acre (1 ha), tear-shaped garden across the street from The Dakota building (see pp. 136-137), where Lennon and his wife, Yoko Ono, lived at the time of his murder in 1980. The couple often visited this peaceful stretch of the park, which today attracts thousands of fans on the anniversaries of Lennon's birth (October 9) and death (December 8), with many staying late into the night singing their favorite songs. A black and white mosaic on the ground with the word \"Imagine\" marks the heart of the memorial, and a nearby bronze plaque lists the 121 countries that have donated trees, plants, and stones to endorse the site as a garden of peace.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_belvedere_castle_historic_arch_national-geographic-walking-nyc_highest_point_weather_station_1869",
+      "city_name": "new_york",
+      "poi_name": "Belvedere Castle",
+      "lens": "historic_arch",
+      "topic_slug": "highest_point_weather_station_1869",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Standing at the highest point in the park, Belvedere Castle offers panoramic views of both greenery and cityscape from its granite towers. When it was built in 1869, it was intended as a whimsical lookout. The National Weather Service has been taking the city's temperature from here every day since 1919. The castle also draws nature enthusiasts: visitors can borrow a free Discovery Kit backpack — containing binoculars, a guidebook, a map, and sketching materials — or join events such as the 'On A Wing' series, which explores the park's many winged creatures.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "National Weather Service"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "lookout weather station",
+      "physical_cues": [
+        {
+          "cue": "The granite towers of Belvedere Castle and the panoramic view from the park's highest point",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Belvedere Castle is at the park's highest point",
+        "built 1869 as a whimsical lookout",
+        "National Weather Service has taken readings here since 1919"
+      ],
+      "source_passage": "Standing at the highest point in the park, Belvedere Castle offers panoramic views of both greenery and cityscapes from its granite towers. When it was built in 1869, it was intended as a whimsical lookout. The National Weather Service has been taking the city's temperature from here every day since 1919. The castle also attracts nature enthusiasts: Borrow a Discovery Kit backpack containing binoculars, a guidebook, a map, and sketching materials for free, or enjoy events, including the \"On A Wing\" series, which explores Central Park's many winged creatures.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_parks_gardens_national-geographic-walking-nyc_shakespeare_garden_elizabethan_plants",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "parks_gardens",
+      "topic_slug": "shakespeare_garden_elizabethan_plants",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": "shakespeare-garden",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Literature lovers should not miss the Shakespeare Garden, a quiet, four-acre spread that abounds with many of the plants mentioned in Shakespeare's poems and plays, including the distinctly Elizabethan-sounding flax and cowslip, primrose, wormwood, quince, and lark's heel. Beautifully landscaped and secluded, it has a twisting, ascending path dotted with rustic wooden benches and bronze plaques inscribed with quotations from the Bard. The garden is especially spectacular in spring, when crocuses, hyacinths, and roses bloom.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "William Shakespeare"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "shakespeare garden",
+      "physical_cues": [
+        {
+          "cue": "Twisting path with rustic wooden benches and bronze plaques quoting Shakespeare",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "4-acre garden of plants from Shakespeare's works",
+        "twisting path with benches and bronze quotation plaques"
+      ],
+      "source_passage": "Literature lovers should not miss Shakespeare Garden. The quiet, 4-acre (1.6 ha) spread abounds with many of the plants mentioned in Shakespeare's poems and plays, including the distinctly Elizabethan-sounding flax and cowslip, primrose, wormwood, quince, and lark's heel. Beautifully landscaped and secluded, with a twisting, ascending path dotted with rustic wooden benches and bronze plaques inscribed with quotations from the Bard, the garden is a hidden gem. The garden is especially spectacular in spring, when crocuses, hyacinths, and roses are in bloom.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_hidden_history_national-geographic-walking-nyc_swedish_cottage_stratford_mulberry",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "hidden_history",
+      "topic_slug": "swedish_cottage_stratford_mulberry",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": "shakespeare-garden",
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Two highlights sit beside the Shakespeare Garden: the Swedish Cottage, literally transported from Sweden in 1877 and now home to a marionette theater, and a mulberry tree that some believe was grown from a cutting taken in Shakespeare's mother's garden in Stratford-upon-Avon, England.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Swedish Cottage",
+        "William Shakespeare",
+        "Stratford-upon-Avon"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "swedish cottage mulberry",
+      "physical_cues": [
+        {
+          "cue": "The Swedish Cottage marionette theater and the mulberry tree beside the garden",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Swedish Cottage transported from Sweden in 1877, now a marionette theater",
+        "a mulberry tree said to be grown from a Stratford-upon-Avon cutting"
+      ],
+      "source_passage": "Highlights include an enchanting stone staircase built into a steep slope, the Swedish Cottage— literally transported from Sweden in 1877 and now home to a marionette theater—and a mulberry tree that some believe was grown from a cutting taken in Shakespeare's mother's garden in Stratford-upon-Avon, England.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_conservatory_garden_parks_gardens_national-geographic-walking-nyc_three_styles_wedding_spot",
+      "city_name": "new_york",
+      "poi_name": "Conservatory Garden",
+      "lens": "parks_gardens",
+      "topic_slug": "three_styles_wedding_spot",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "This six-acre garden is a popular spot for weddings, thanks to its fairy-tale-like setting, and is composed of three distinct sections: Italian, French, and English. The central, Italian-style garden is a large lawn bordered by two pink-and-white crabapple allées. The French-inspired garden bursts with color when tulips bloom in spring and when chrysanthemums put on their annual show in fall. Circular pathways meander around the English-style garden, where magnolias and Japanese lilac trees perfume the air in spring and summer.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Untermyer Fountain"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "three-style garden",
+      "physical_cues": [
+        {
+          "cue": "The central Italian lawn with its two pink-and-white crabapple allées",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "allées",
+          "gloss": "tree-lined walkways"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "6-acre garden in Italian, French and English sections",
+        "popular wedding spot",
+        "tulips and chrysanthemums in the French garden; magnolias and Japanese lilac in the English garden"
+      ],
+      "source_passage": "This 6-acre (2.4 ha) garden is a popular spot for weddings, thanks to its fairy-tale-like setting. It is composed of three distinct sections: Italian, French, and English. The central, Italian-style garden is a large lawn, bordered by two pink-and-white crabtree allées. The French-inspired garden is bursting with color when tulips bloom in spring and in fall when chrysanthemums put on their annual show. Circular pathways meander around the English-style garden, as magnolias and Japanese lilac trees perfume the air in spring and summer.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_film_tv_national-geographic-walking-nyc_200_films_marathon_man_madagascar",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "film_tv",
+      "topic_slug": "200_films_marathon_man_madagascar",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "New York's towering buildings and colorful characters have inspired filmmakers since the 1890s, and more than 200 films feature scenes set in Central Park alone — from the sinister assault on Dustin Hoffman and his girlfriend in 'Marathon Man' to the task-force penguins digging a tunnel to escape the Central Park Zoo in 'Madagascar.' New York was first captured on the silver screen in William Heise's 1896 motion picture 'Herald Square,' but many early Manhattan-set movies were actually shot on California sets — a habit that changed with the 1960s 'New Hollywood' era, when Martin Scorsese, Francis Ford Coppola, and Woody Allen found success with stories shot in the city itself.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "Marathon Man",
+        "Dustin Hoffman",
+        "Madagascar",
+        "Herald Square",
+        "William Heise",
+        "Martin Scorsese",
+        "Francis Ford Coppola",
+        "Woody Allen"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "playful",
+      "subject_tag": "central park on film",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "over 200 films set in Central Park, incl Marathon Man and Madagascar",
+        "NY first filmed in Heise's Herald Square (1896)",
+        "1960s New Hollywood: Scorsese, Coppola, Allen shot in NY"
+      ],
+      "source_passage": "More than 200 films feature scenes that have been set in Central Park alone, from the sinister assault on Dustin Hoffman and his girlfriend in Marathon Man to the task-force-type penguins digging a tunnel to escape from the Central Park Zoo in Madagascar. Although New York was first captured on the silver screen in William Heise's motion picture Herald Square (1896), many subsequent movies set in Manhattan were shot on California sets— such as Alfred Hitchcock's Rear Window in 1954. This changed with the 1960s \"New Hollywood\" film era, when filmmakers such as Martin Scorsese, Francis Ford Coppola, and Woody Allen created commercial and critical success with stories revolving around, and shot in, New York.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_local_legends_national-geographic-walking-nyc_biking_loop_first_bike_path",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "local_legends",
+      "topic_slug": "biking_loop_first_bike_path",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "New York City opened the country's first bike path in 1894 and now has more than 250 miles of cycling paths, many of them in Central Park. The Manhattan Waterfront Greenway, which circumnavigates the island, is a 32-mile traffic-free path for runners and cyclists; to reach it from Central Park, you ride west directly to the Hudson River.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Manhattan Waterfront Greenway"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "cycling paths",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "NYC opened the country's first bike path in 1894",
+        "now 250+ miles of cycling paths",
+        "Manhattan Waterfront Greenway is a 32-mile traffic-free loop"
+      ],
+      "source_passage": "New York City opened the country's first bike path in 1894 and now has more than 250 miles (402 km) of cycling paths, many of them in Central Park. The Manhattan Waterfront Greenway, which circumnavigates the island, is a 32-mile (51.5 km) traffic-free path for runners and cyclists. (To get there, ride west from Central Park directly to the Hudson River.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_local_legends_national-geographic-walking-nyc_loop_lamp_post_navigation",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "local_legends",
+      "topic_slug": "loop_lamp_post_navigation",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Central Park has lanes dedicated to running as well as biking. Every lamp post on the Central Park Loop — the six-mile interior road that encircles the park — is marked with a street number and a 'W' for west or 'E' for east, so you cannot easily get lost. It is considered polite to run counterclockwise around the park's lake.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Central Park Loop"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "loop navigation",
+      "physical_cues": [
+        {
+          "cue": "Lamp posts along the Loop marked with a number and a W or E",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "the Central Park Loop is a 6-mile interior road",
+        "lamp posts are numbered with W or E to aid navigation",
+        "polite to run counterclockwise around the lake"
+      ],
+      "source_passage": "Central Park has lanes dedicated to running as well as biking. Every lamp post on the Central Park Loop—the 6-mile (9.6 km) interior road that encircles the park—is marked with a street number and a W (west) or E (east), so you cannot get lost easily. It's polite to run counterclockwise around Central Park's lake.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_parks_gardens_national-geographic-walking-nyc_lasker_pool_skyline_swim",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "lens": "parks_gardens",
+      "topic_slug": "lasker_pool_skyline_swim",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-06-central-park",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Central Park's Lasker Pool, in the northeast corner at 106th Street, is a free outdoor public pool that lets swimmers enjoy views of Manhattan's skyscrapers. To avoid the crowds of splashing children, swimmers can aim for the weekday lap swim, held Monday through Friday in the early morning and evening.",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lasker Pool"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "lasker pool",
+      "physical_cues": [
+        {
+          "cue": "Lasker Pool in the northeast corner of the park at 106th Street, with skyline views",
+          "direction": "north",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Lasker Pool is a free outdoor pool at 106th St in the NE corner",
+        "skyline views",
+        "weekday lap swim mornings and evenings"
+      ],
+      "source_passage": "Central Park's Lasker Pool, in the northeast corner at 106th Street, is free and lets you enjoy views of Manhattan's skyscrapers. If you don't want to go when the city's children are splashing around, aim for the lap swim Monday through Friday from 7 a.m to 8:30 a.m. and 7 p.m. to 8:30 p.m.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Central Park (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "DISPUTE",
+      "description": "Central Park Zoo beat states the menagerie was 'established in 1860' and 'refurbished in 1984.' Wikipedia/NYC Parks date the informal menagerie to ~1864 and the modern Robert Moses zoo to 1934, with the major rebuild reopening in 1988 (construction begun mid-1980s).",
+      "recommendation": "Do NOT auto-correct (single-source disagreement; '1984' plausibly = start of the renovation that reopened 1988). Leave fact_check_status=disputed; human to decide whether to keep the book's figures or amend. Living-people/superlative rules not implicated."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Geocoding via Nominatim and WebFetch was blocked by the sandbox (network egress denied). Three sub-locations (The Mall, Loeb Boathouse, Shakespeare Garden) were modeled as sub_location values on the existing Central Park POI rather than minted as new top-level POIs, per task guidance, so no new geocodes were strictly required. Coordinates listed in pois[] for context POIs are reference values, not freshly geocoded.",
+      "recommendation": "If precise sub-location pins are later wanted, run /poi-geocode new_york --missing-only on a network-enabled host. Approx pins: The Mall/Literary Walk ~40.7716,-73.9716; Loeb Boathouse ~40.7757,-73.9701; Shakespeare Garden ~40.7794,-73.9697."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Chunk is OCR from a PDF with a large block of interleaved map-label garbage (approx lines 74-565) and scattered short noise lines. All extracted beats derive only from the clean prose sections; the noise was ignored. Every source_passage was re-verified as findable (approximate match OK) against the clean prose.",
+      "recommendation": "No action; noted for transparency. The 'City's the Star' film section and 'Outdoor Activities' Best-Of section are legitimately part of this chunk and were extracted."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Several Best-Of 'Outdoor Activities' details (Hudson kayaking at Downtown/Manhattan Community Boathouse piers, Hamilton Fish Park and Riverbank Park pools on the LES / W. 140th St) describe locations OUTSIDE Central Park and were intentionally NOT extracted as Central Park beats to honor the location-anchored poi_name rule (B9). They are out-of-area for this chunk's POI.",
+      "recommendation": "No action. If those venues warrant coverage, handle via their own POIs in a future run; do not attach to Central Park."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 17,
+    "pois_touched": 4,
+    "new_pois": 0,
+    "corrections_applied": 0,
+    "disputes": 1,
+    "anomalies": 3,
+    "lenses_hit": [
+      "parks_gardens",
+      "local_legends",
+      "visual_art",
+      "music_heritage",
+      "historic_arch",
+      "hidden_history",
+      "film_tv"
+    ],
+    "lenses_missed": [
+      "dark_history",
+      "social_change",
+      "science_tech",
+      "historic_cuisine",
+      "markets_street_food",
+      "literary_heritage",
+      "sacred_traditions",
+      "historic_worship",
+      "famous_residents",
+      "modern_design",
+      "waterways_views",
+      "street_art",
+      "war_conflict",
+      "music_heritage"
+    ],
+    "confidence_counts": {
+      "HIGH": 15,
+      "MEDIUM": 2,
+      "LOW": 0
+    }
+  }
+}

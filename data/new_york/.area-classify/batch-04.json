@@ -1,0 +1,1155 @@
+[
+  {
+    "name": "The Morgan Library & Museum",
+    "short_description": "J.P. Morgan's library; Gutenberg Bibles, rare manuscripts.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "One of the three Gutenberg Bibles usually on display when you visit",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Morgan contains examples of the written word from the beginning of recorded time \u2014 from pictorial Mesopotamian cylinder seals of the 4th millennium B.C., to papyrus rolls from ancient Egypt, Greece, and Rome, to brilliantly colorful med"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The original marble villa in High Renaissance style alongside Renzo Piano's steel-and-glass pavilions",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Morgan in the library's name is 19th-century billionaire J. Pierpont Morgan, who collected more than just books; after his death, many of his greatest artistic acquisitions were donated to the Wadsworth Atheneum in Hartford and the Metr"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The East Room's three stories of walnut bookcases and zodiac-themed ceiling",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Incorporating the mansion once owned by financier JP Morgan, this sumptuous cultural center houses a phenomenal array of manuscripts, tapestries and books \u2014 with no fewer than three Gutenberg Bibles. Adorned with Italian and Dutch Renaissan"
+      }
+    ]
+  },
+  {
+    "name": "Museum of Sex",
+    "short_description": "Adults-only themed museum, Flatiron area.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Though it tries hard to avoid a carnival atmosphere, with voluminous and often soporific wall text, the Museum of Sex still has a major \u201cwink, wink, giggle, giggle\u201d quotient. If you're interested in the subject from an anthropological persp"
+      }
+    ]
+  },
+  {
+    "name": "Museum of the Dog",
+    "short_description": "AKC museum of canine art and interactive exhibits.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The collection of canine portraiture from the Victorian era through today",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Founded by the American Kennel Club, the Museum of the Dog welcomes four-legged museumgoers as well as their two-legged companions. All get to experience the fun interactive exhibits on service dogs and the differences breed-to-breed, and a"
+      }
+    ]
+  },
+  {
+    "name": "New York Public Library",
+    "short_description": "Beaux Arts main branch (Stephen A. Schwarzman Building) with lion statues.",
+    "trigger_radius": 25,
+    "importance_tier": 4,
+    "n_beats": 8,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The famous stone lions guarding the entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Many art historians consider this the finest Beaux Arts building in the United States, and one of the grandest, completed in 1911 at a cost of over $9 million by the famous firm of Carr\u00e8re and Hastings. The exterior takes its inspiration fr"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The library holds thousands of volumes, many of them housed underground below what is now Bryant Park. A \u201cnon-browsing\u201d facility, it uses an ancient dumbwaiter system to retrieve books for readers \u2014 tomes are stacked into a small elevator a"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Dickens pen knife made from a deceased pet's paw, in the Polonsky Exhibition",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The Lionel Pincus and Princess Firyal map room",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The permanent Polonsky Exhibition of the library's Treasures showcases astonishing manuscripts, recordings, letters, and images from the massive collection. These include cuneiform tablets from the 3rd century B.C., a pen knife morbidly fas"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The marble lions Patience and Fortitude on the Fifth Ave steps",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Loyally guarded by 'Patience' and 'Fortitude,' the marble lions overlooking Fifth Ave, this beaux-arts show-off is one of NYC's best free attractions. When dedicated in 1911, New York's flagship library ranked as the largest marble structur"
+      }
+    ]
+  },
+  {
+    "name": "St. Patrick's Cathedral",
+    "short_description": "Largest Roman Catholic cathedral in the US; distinct from existing 'Old St. Patrick's Cathedral' in SoHo.",
+    "trigger_radius": 25,
+    "importance_tier": 5,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The St. Michael and St. Louis altar, made by Tiffany & Co.",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The largest Roman Catholic cathedral in the United States, St. Pat's is also the seat of the Archdiocese of New York. Designed by James Renwick, begun in 1859, and consecrated in 1879, St. Patrick's wasn't completed until 1906. The vast cat"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The two front spires, the Tiffany altar and Connick's Rose Window above the Fifth Ave entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "America's largest Catholic cathedral graces Fifth Ave with Gothic Revival splendor. Built at a cost of nearly $2 million during the Civil War, and spruced up with a $200 million restoration in 2015, the building did not originally include t"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The cathedral filling an entire city block at Fifth Ave and 51st St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "By the 1860s, places of worship were growing in size and scale. Among the most resplendent is St Patrick's Cathedral, built between 1858 and 1879, which took over an entire city block at Fifth Ave and 51st St."
+      }
+    ]
+  },
+  {
+    "name": "Summit One Vanderbilt",
+    "short_description": "Mirrored immersive observation deck atop One Vanderbilt.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The mirrored walls and floors covering most of the space",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Three transparent sky boxes jutting from the building's side, 1,063 feet up",
+            "direction": "down",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Can an observation deck be a work of art? That's the provocative question developer SL Green Realty posed when it hired artist Kenzo Digital to create an immersive experience atop its newest skyscraper. Set right on 42nd Street, Summit One "
+      }
+    ]
+  },
+  {
+    "name": "United Nations",
+    "short_description": "UN Headquarters; tourable General Assembly, Security Council, Chagall window.",
+    "trigger_radius": 50,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "It's this seven-block stretch of international territory that makes New York City the capital of the world. The United Nations was founded with the express purpose of ensuring there would never be another world war \u2014 and it has accomplished"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 2001 Nobel Peace Prize displayed outside the council room",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Marc Chagall's 1964 memorial stained-glass window to the right of the entrance",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Those who take the hour-long tour visit the General Assembly \u2014 where Khrushchev once famously pounded his shoe in anger \u2014 and the Security Council, as well as the less well-known Economic and Social Council Room that oversees UNICEF, the Wo"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Le Corbusier\u2013designed Secretariat building and the sculpture park to the north",
+            "direction": "north",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "New York is the home of the UN, a worldwide organization overseeing international law, security and human rights. The Le Corbusier\u2013designed Secretariat building is off-limits, but guided tours cover the restored General Assembly Hall, Secur"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Secretariat's glass curtain wall looming over the ski-slope curve of the General Assembly",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "After WWII, displaced European architects fostered a lively dialogue with their American counterparts, and designers grew obsessed with the clean, unadorned lines of the International style. One of the earliest projects in this vein was the"
+      }
+    ]
+  },
+  {
+    "name": "Metropolitan Museum of Art",
+    "short_description": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+    "trigger_radius": 25,
+    "importance_tier": 5,
+    "n_beats": 15,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Calvert Vaux's original red-brick facade, now the side wall of the European Sculpture Court",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Richard Morris Hunt's limestone edifice, its mountain of steps and redwood-height pillars",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Met was founded fairly late, conceived in 1870 by a group of wealthy businessmen and artists. A decade later Calvert Vaux, one of the architects of Central Park, was brought in to create the first red-brick building on this site \u2014 you c"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "The Met is the giant among New York museums, figuratively and literally: at 1.6 million square feet it is not just the biggest museum in the city but the largest in the hemisphere \u2014 Frommer's argues it competes in stature with the Louvre, t"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "European paintings collection on the second floor",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On the second floor, the European paintings collection encompasses some 700 works. Its jewels include Velazquez's truer-than-life portrait of Juan de Pareja \u2014 the enslaved man whom the painter respected enough, as you can see in the paintin"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Temple of Dendur, an actual ancient temple installed in the museum",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Egyptian Collection includes pieces discovered by the Met's own teams of archaeologists, such as miniature figures from a tomb in Thebes that show in intricate detail what daily life was like for a wealthy Egyptian. Its centerpiece is t"
+      }
+    ]
+  },
+  {
+    "name": "American Museum of Natural History",
+    "short_description": "Tier-5: preeminent natural-history museum since 1869; $431M Gilder Center (2023).",
+    "trigger_radius": 25,
+    "importance_tier": 5,
+    "n_beats": 8,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Dino skeletons reassembled with tails erect, one set atop a Texas riverbed section with fossil footprints",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Since 1869 this institution has been both the country's preeminent private scientific research facility and its top museum for paleontology, zoology, anthropology, and now astronomy \u2014 and the flow between its research and curatorial sides k"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Gilder Center lobby, its canyon-like walls of sprayed structural concrete",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Insectarium, butterfly vivarium, and Invisible Worlds Theater inside the Gilder Center",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In 2023 the $431-million Richard Gilder Center for Science, Education and Innovation opened, transforming the museum-going experience. Its new 230,000-square-foot structure houses 12% of the museum's collections, including an insectarium, a"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Discovery Room, where kids dig up dinosaur bones and peer through microscopes",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Families with children will want to visit the Discovery Room, an educational center where kids can pretend to dig up dinosaur bones, do a scavenger hunt, peer through microscopes, and more. Timed free tickets are given for admission here, s"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "First-time visitors should consider taking one of the guided introductory tours that begin at 15 minutes past the hour until 4:15pm. They're led by highly knowledgeable volunteer guides \u2014 who take classes for 6 months \u2014 and the tours vary b"
+      }
+    ]
+  },
+  {
+    "name": "Solomon R. Guggenheim Museum",
+    "short_description": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Frank Lloyd Wright's windowless spiral facade among the Fifth Avenue towers",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The ramps of curving halls that spiral toward the center",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "New York is the city of the rectangle and the sharp right angle \u2014 our streets a grid, our buildings boxy and regular \u2014 until you get to the Guggenheim. Frank Lloyd Wright's delirious spiral of a museum sits among the towers of Fifth Avenue "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The low-slung rails along the spiral ramp",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Early critics dismissed the Guggenheim \u2014 Newsweek's insipid review was headlined \"Museum or Cupcake?\" \u2014 yet Frommer's argues even the most jaded visitor today feels the power of the place, the symbolic weight of infinite circle upon circle."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Permanent gallery space showing modernist works by Kandinsky and others",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Beyond its architecture, the Guggenheim is popular for its curators' skill at mounting blockbuster retrospectives on top contemporary artists like Robert Mapplethorpe, Cecilia Vicu\u00f1a, and Gillian Wearing, and shows that combine art with his"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Guggenheim came out of the collection of Solomon R. Guggenheim, a New York mining magnate who began acquiring abstract art in his 60s at the behest of his art adviser, an eccentric German baroness named Hilla Rebay. In 1939, with Rebay "
+      }
+    ]
+  },
+  {
+    "name": "Cooper Hewitt National Design Museum",
+    "short_description": "Tier-4: Smithsonian design museum in Carnegie mansion; interactive renovation.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Electronic stylus/pen loaned at entry; press the X-marked end to the wall text",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Large electronic drafting tables throughout the museum",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "After a full renovation, the Cooper Hewitt turned the museumgoer from simple viewer into on-the-spot designer. When you enter this handsome museum, you're loaned a whiz-bang electronic stylus and pen. Press the \"X\"-marked end of the tool to"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 1902 Carnegie mansion housing the museum",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Cooper Hewitt is set in a 1902 mansion built for tycoon Andrew Carnegie. As the design division of the Smithsonian, it has been a forward-thinking institution since its founding in 1897, dedicated to exploring the impact of design on ev"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Objects on display ranging from a Bob Dylan poster to a snowflake-like shoulder implant",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The renovation added 60% more exhibition space, filled with wondrous objects from the collection \u2014 everything from a psychedelic Bob Dylan poster to a contemporary shoulder implant that looks like a crocheted snowflake, which moves inside t"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "64-room Beaux-Arts Carnegie mansion on Fifth Avenue housing the museum",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Part of the Smithsonian Institution in Washington DC, this is the only US museum dedicated to both historic and contemporary design. Housed in the 64-room mansion built by billionaire Andrew Carnegie in 1901, the 210,000-piece collection of"
+      }
+    ]
+  },
+  {
+    "name": "The Jewish Museum",
+    "short_description": "Tier-4: 4,000 years of Jewish culture through art; ~800 artifacts.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Two-story permanent exhibition beginning on the fourth floor",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The museum's modest goal is to explore 4,000 years of Jewish culture through art. Its two-story permanent exhibition, starting on the fourth floor, gently guides viewers from the biblical era \u2014 with its clashes over animal sacrifice and the"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "First- and second-floor galleries with changing exhibits",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The story is told through nearly 800 exquisite artifacts and works of art, with the second half of the exhibit playing almost like a survey of world art styles seen through Jewish eyes. The first- and second-floor galleries host changing bl"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "French-Gothic mansion exterior of the Jewish Museum on Fifth Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This gem occupies a French-Gothic mansion from 1908, housing 30,000 items of Judaica including torah shields and hanukah lamps, as well as sculpture, painting and decorative arts. Temporary exhibits are often excellent, featuring retrospect"
+      }
+    ]
+  },
+  {
+    "name": "Frick Madison",
+    "short_description": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
+    "trigger_radius": 35,
+    "importance_tier": 3,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "For decades the beloved Frick Collection has been housed in the ornate neoclassical mansion of Henry Clay Frick, the union-busting industrialist whose sins include partial responsibility for the deadly Johnstown Flood of 1889. Frommer's cas"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "A long-overdue renovation begun in late 2020 shuttered the Frick mansion for at least three years, moving the collection temporarily a few blocks north to the original building of the Whitney Museum of American Art. With the relocation, the"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Rooms devoted to one or two works each, including three Vermeers",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Because there is more interior room at the Madison building than at the original mansion, the curators have done something rare in museum land \u2014 surfaced the entire collection and devoted entire rooms to just one or two works of art, unders"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Beaux-arts mansion exterior on Fifth Avenue, part of the former Millionaires' Row",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Indoor courtyard fountain inside the mansion",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This spectacular art collection sits in a mansion built by steel magnate Henry Clay Frick, one of the many such residences lining the section of Fifth Avenue that was once called 'Millionaires' Row.' The building is a lovely, rambling beaux"
+      }
+    ]
+  },
+  {
+    "name": "Museum of the City of New York",
+    "short_description": "Tier-3: founded 1923; 2016 overhaul; NYC history galleries, Future City Lab.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Basement film narrated by Stanley Tucci; ground-floor history gallery with electronic panels",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Thanks to a 2016 overhaul, this century-old museum, founded in 1923, finally makes good on the promise of its name. It offers a textured, dramatic look at the improbable tale of a tiny, obscure Dutch colony that blossomed \u2014 and burned, and "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Future City Lab tablets on the ground floor; activism exhibition and dollhouse upstairs",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On the ground floor, the Future City Lab lets visitors try to solve the city's problems \u2014 sustainability, population density and the rest \u2014 on individual tablets that are later screened for all to see. Upstairs are changing exhibits, a fame"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Georgian Colonial Revival-style building at the top of Museum Mile on Fifth Ave",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Situated in a Georgian Colonial Revival\u2013style building at the top end of Museum Mile, this local museum focuses solely on New York City's past, present and future. Don't miss the 28-minute film Timescapes on the ground floor, which charts N"
+      }
+    ]
+  },
+  {
+    "name": "Neue Galerie New York",
+    "short_description": "Tier-3: German/Austrian art; Klimt's Woman in Gold; Viennese cafe.",
+    "trigger_radius": 35,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Gustav Klimt's jewel-toned paintings, including Woman in Gold",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Neue Galerie offers a swift but effective overview of German and Austrian arts and design. It is most notable for its jewel-toned paintings by Gustav Klimt \u2014 including the famed Woman in Gold \u2014 its \"Didn't I sit on that in the '70s?\" Ba"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Klimt's golden Portrait of Adele Bloch-Bauer I on the 2nd floor of the Neue Galerie",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This restored Carr\u00e8re and Hastings mansion from 1914 is a resplendent showcase for Austrian and German art, featuring works by Paul Klee and Ernst Ludwig Kirchner, and incredible collections of Gustav Klimt and Egon Schiele. In pride of pla"
+      }
+    ]
+  },
+  {
+    "name": "American Folk Art Museum",
+    "short_description": "Tier-3: small museum of self-taught artists; quilts, sculpture.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Quilts and sculptures by self-taught artists, with detailed wall text",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Self-taught artists are the focus of this small museum, and their stories, told in wonderful detail by the wall text, illuminate the art in invigorating ways. You'll see works from the 18th century to the present, with a breadth and variety"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "This small institution offers rotating exhibitions in three small galleries. Past exhibits have included quilts made by 19th-century soldiers and sculptures by a celebrated Ghanaian coffin-maker of forts through which slaves were trafficked"
+      }
+    ]
+  },
+  {
+    "name": "Museum of Arts and Design",
+    "short_description": "",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Top-floor studios where artists in residence work at furniture, textiles, and other crafts",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "It's not easy to get a New Yorker's attention, but this museum does it consistently \u2014 it's one of the few museums in town where you'll see more locals than visitors, drawn in by creative, sometimes wacky, exhibitions on design. One highligh"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 6th-floor resident artists' studios and the 9th-floor restaurant-bar Robert",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "MAD offers four floors of superlative design and handicrafts, from blown glass and carved wood to elaborate metal jewelry. Temporary exhibitions are innovative \u2014 one past show rendered fake news into art. The 6th floor houses resident artis"
+      }
+    ]
+  },
+  {
+    "name": "New-York Historical Society",
+    "short_description": "",
+    "trigger_radius": 40,
+    "importance_tier": 2,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "When you're NYC's oldest museum, founded in 1804, your attic gets mighty full. In past years that fourth-floor \"attic\" felt like a treasure hunt, its open storage units overflowing with telling artifacts \u2014 a Tiffany lamp here, a pair of his"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Lower-floor galleries of Hudson Valley School paintings and Audubon drawings",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On the lower floors, permanent displays include paintings from the Hudson Valley School and Audubon drawings, making the museum feel more dedicated to art than to history. The powers-that-be had the wisdom to keep the superb 18-minute film "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "As the antiquated hyphenated name implies, the Historical Society is the city's oldest museum, founded in 1804 to preserve historical and cultural artifacts. Its collection of more than 60,000 objects is quirky and fascinating, including ev"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Redesigned with a sleek modern aesthetic, the building houses several museums in one. Its 4th floor is now occupied by the immersive Center for Women's History, the only one of its kind in a major American museum, part of the revamped Henry"
+      }
+    ]
+  },
+  {
+    "name": "The Cloisters",
+    "short_description": "",
+    "trigger_radius": 50,
+    "importance_tier": 3,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The four cloisters \u2014 garden areas centered on a fountain, ringed by covered walkways",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The undeveloped land across the river, bought by Rockefeller to preserve the medieval view",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "An offshoot of the Metropolitan Museum, the Cloisters is the only museum in the United States devoted wholly to medieval art, and it shows its masterworks in a setting that seems airlifted intact from some remote corner of the Pyrenees, or "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Unicorn Tapestries, including the final panel of the unicorn inside a wedding-ring-like fence",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The long narwhal tooth displayed in the same room",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "Pay special attention to the Unicorn Tapestries, one of only two full sets with a unicorn theme in the world \u2014 the other is in Paris. These richly detailed tapestries can be read on many levels: many scholars see the unicorn as a symbol of "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Merode altarpiece in the climate-controlled Campin Room",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The Cloisters Cross, carved with over 90 figures in walrus-tusk ivory, displayed nearby",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The other must-see items are kept in the climate-controlled Campin Room \u2014 bring a sweater. There you'll find Robert de Campin's breakthrough Merode altarpiece, from around 1425, which placed the Annunciation \u2014 the moment an angel tells the "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Cloisters building on its hilltop with Moorish terra-cotta roofs and courtyard archways",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Views over the Hudson River from the museum's elevated site in Fort Tryon Park",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "On a hilltop overlooking the Hudson River, the Cloisters is a curious architectural jigsaw, its many parts made up of various European monasteries and other historic buildings. Built in the 1930s to house the Metropolitan Museum's medieval "
+      }
+    ]
+  },
+  {
+    "name": "El Museo del Barrio",
+    "short_description": "",
+    "trigger_radius": 40,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 500 Santos de Palo \u2014 hand-carved wooden saints, mostly from Puerto Rico",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This showplace for the art of Latin America and the Caribbean owns hundreds of pre-Columbian pieces, plus contemporary and modern paintings and sculptures, and \u2014 most significantly \u2014 500 Santos de Palo, mostly from Puerto Rico. These hand-c"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "One of New York's premier Latino cultural institutions, El Museo del Barrio presents thoughtful rotating exhibitions spanning all media, from painting and photography to video and site-specific installations. The shows often highlight the m"
+      }
+    ]
+  },
+  {
+    "name": "Morris-Jumel Mansion",
+    "short_description": "",
+    "trigger_radius": 40,
+    "importance_tier": 1,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The mansion itself \u2014 the oldest house in Manhattan, erected in 1765",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The oldest house in Manhattan, erected in 1765, this mansion was the site of two marquee historic events. General George Washington requisitioned the house after the disastrous Battle of Brooklyn and made it his campaign HQ for four weeks \u2014"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The parlor where Eliza Jumel married Aaron Burr",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "Eliza Jumel, a later owner, married the disgraced former Vice President Aaron Burr in the parlor here. Their marriage was a disaster, ending a year later \u2014 and Burr passed away on the very day the divorce was issued."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The columned facade of the Morris-Jumel Mansion at 65 Jumel Terrace, 160th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Built in 1765 as a country retreat for Roger and Mary Morris, this columned mansion is the oldest house in Manhattan. It is also famous for having briefly served as George Washington's headquarters after it was seized by the Continental Arm"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 19th-century neoclassical facade Stephen Jumel added to the 1765 Georgian house",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "After New Amsterdam became the British colony of New York in 1664, architecture moved to the Georgian style \u2014 boxy brick and stone structures with hipped roofs. The Morris-Jumel Mansion, dating from 1765, is an altered example: built in the"
+      }
+    ]
+  },
+  {
+    "name": "Bronx Zoo",
+    "short_description": "World-famous, largest US zoo by acreage/animals; tier-5-scale tourist anchor. Quick gravity: very high.",
+    "trigger_radius": 60,
+    "importance_tier": 5,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "If you count number of animals as well as acreage, the Bronx Zoo is the largest zoo in the United States. With over 4,000 animals and 24 exhibits, it requires strategy to see what you want without meltdowns from the younger set. Expect to s"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Floor-to-ceiling windows revealed when the curtains part after the short film in the Congo Gorilla Forest",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Make a direct path first to the Congo Gorilla Forest, a remarkable exhibit of silverback gorillas that begins with a short film. Once the film is over, curtains dramatically part to reveal floor-to-ceiling windows, with cavorting gorillas g"
+      }
+    ]
+  },
+  {
+    "name": "New York Botanical Garden",
+    "short_description": "Major Bronx attraction; world's largest Victorian greenhouse. Quick gravity: high.",
+    "trigger_radius": 150,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The world's largest Victorian-era greenhouse at the heart of the garden",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The New York Botanical Garden boasts the world's largest Victorian greenhouse, along with a 'home gardening' section offering classes and demonstrations, a children's garden and play center, and a 50-acre native forest. An equal to the Broo"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Botanic Garden",
+    "short_description": "Prospect Park-adjacent garden, famous cherry blossoms. Quick gravity: high.",
+    "trigger_radius": 150,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The fragrance garden where visitors are encouraged to sniff and touch the plants",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The Japanese garden with its large pond and pagodas",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Brooklyn Botanic Garden was the first in the world to have a 'children's garden,' letting local kids develop green thumbs \u2014 and it's still here, along with a fun play area for youngsters. There's also a 'fragrance garden' for sight-impa"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The garden's many cherry trees in bloom in spring",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "The best time of year to visit is spring, when the gardens' many cherry trees are in bloom \u2014 though seasonal displays, both outdoors and in the on-site greenhouses, run year-round."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Japanese garden with a Shinto shrine and the cherry trees",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Opened in 1911 and now one of Brooklyn's most picturesque sights, this 52-acre garden is home to thousands of plants and trees and a Japanese garden where river turtles swim alongside a Shinto shrine. The best times to visit are late April "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The eco-designed visitor center with a 'living roof' at the Washington Ave entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "A network of trails connects sections devoted to native flora, bonsai trees, a wood covered in bluebells and a rose garden, while the hands-on Discovery Garden is an immersive space for kids. The Washington Ave entrance leads to a striking "
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Museum",
+    "short_description": "Major encyclopedic art museum; world-class Egyptian collection. Quick gravity: high.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 10,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 'Birdwoman' terra cotta sculpture and the brightly-colored Cartonnage of Nespanetjerenpere in the Egyptian galleries",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Brooklyn Museum's Egyptian Collection, while not as extensive as the Met's, arguably has more masterpieces. When an ancient Egyptian piece comes up at auction, dealers often ask, 'Is it Brooklyn quality?' \u2014 the museum's collection being"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Rockefeller's carved and gilded 'Moorish Smoking Room' in the fourth-floor Decorative Arts Galleries",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Decorative Arts Galleries on the fourth floor re-create important rooms from different eras of American history, including John D. Rockefeller's 'Moorish Smoking Room' \u2014 an over-the-top Victorian version of the Middle East, every bit of"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Judy Chicago's The Dinner Party in the Elizabeth A. Sackler Center for Feminist Art",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Elizabeth A. Sackler Center for Feminist Art holds permanent and rotating exhibitions of art made by women, including Judy Chicago's The Dinner Party. The museum's American Collection meanwhile gathers works by masters such as Albert Bi"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "One thing the Brooklyn does better than the Met: party. On the first Saturday of each month, the museum hires DJs and performers of all sorts and throws a 'First Saturday' fiesta, free to the public from 5 to 11pm."
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Navy Yard",
+    "short_description": "Historic 300-acre industrial complex with free museum. Quick gravity: medium-high.",
+    "trigger_radius": 60,
+    "importance_tier": 3,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "At its peak during World War II, when it employed some 70,000 men and women, the Brooklyn Navy Yard was the biggest industrial complex in U.S. history \u2014 no other site has yet topped that employment figure. The oral histories of the women wh"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "climax",
+        "script_excerpt": "The Yard's importance to America began far earlier, during the American Revolution, when the British docked their infamous prison ships here. Conditions aboard them were so atrocious that more than 11,500 Americans perished \u2014 more than the "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Today this 300-acre property is owned by the city of New York, which rents out space to dozens of manufacturers and artisans \u2014 including the company that builds the sets for Saturday Night Live, the soundstage where The Marvelous Mrs. Maise"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Inside an 1899 brick building in the Brooklyn Navy Yard, Kings County Distillery makes craft spirits from New York grain. Its tour touches on a bit of history \u2014 the 19th-century Whiskey Wars, which erupted in nearby Vinegar Hill and devasta"
+      }
+    ]
+  },
+  {
+    "name": "City Reliquary",
+    "short_description": "Tiny niche neighborhood museum. Quick gravity: low.",
+    "trigger_radius": 30,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Flea-market-style displays of seltzer bottles, Statue of Liberty figurines, and Jackie Robinson paintings",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "A tiny museum that seems to take its aesthetic from flea markets, the City Reliquary tells strands of New York's tale through oddball collections of seltzer bottles, Statue of Liberty figurines, and paintings of Jackie Robinson, among other"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The antique subway turnstile and peep-show-style booth about 'Little Egypt'",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "This repository for New York-related ephemera tenderly curates objects from the recent past \u2014 seltzer bottles, postcards of Lady Liberty, decaying confetti. Push through the antique subway turnstile to learn about local character 'Little Eg"
+      }
+    ]
+  },
+  {
+    "name": "Green-Wood Cemetery",
+    "short_description": "Historic 1837 arboretum-cemetery; notable interments. Quick gravity: medium-high.",
+    "trigger_radius": 120,
+    "importance_tier": 2,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "As you wander New York, you'll notice streets named for important Gothamites you'll also encounter at Green-Wood. The city's 'first families' were all interred here, along with such notables as DeWitt Clinton \u2014 a presidential candidate and "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Even pets were buried here \u2014 until the funeral of a devoted horse convinced the cemetery's staff to stop the practice in 1870. The cemetery itself was founded in 1837."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Hand-carved monuments, from Tiffany-glass mausoleums to bronze and marble statuary, set among 7,000 trees on Brooklyn's highest point",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "It's not hard to understand why New Yorkers would pick Green-Wood for their eternal rest. Set on the highest point of Brooklyn, it's a stunning place, considered an arboretum as well as a cemetery for the 7,000 or so trees that grow here. T"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The staff here, determined to prove that cemeteries can be fun, host a myriad of events \u2014 from trolley and walking tours to nighttime concerts in the catacombs, lectures, 'death cafes' (free-form guided discussions about what happens after "
+      }
+    ]
+  },
+  {
+    "name": "Industry City",
+    "short_description": "Rehabbed warehouse entertainment/shopping complex. Quick gravity: medium.",
+    "trigger_radius": 90,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The 16-building complex was first developed by Irving T. Bush in the 1890s as a multi-use manufacturing and warehouse site. By the 1970s much of it had become derelict, but then, as happened in the SoHo and Dumbo areas, it was rehabbed by a"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Among the offerings are two food halls \u2014 one entirely devoted to Japanese fare, the other holding Brooklyn's much-snarked-about 'all avocado' restaurant \u2014 plus a beer brewery, the city's first sake brewery, and a distillery for ginger lique"
+      }
+    ]
+  },
+  {
+    "name": "New York Aquarium",
+    "short_description": "Coney Island aquarium; post-Sandy Ocean Wonders shark center. Quick gravity: medium-high.",
+    "trigger_radius": 50,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "In 2012, the surge from Hurricane Sandy effectively swamped the New York Aquarium. Its sea lions and most of the other aquatic critters surfed the storm unhurt, but the buildings were heavily damaged, new construction was put on hold, and v"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Massive walk-through tanks with great whites, leopard sharks, giant rays, and Atlantic sturgeons in the Ocean Wonders center",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Ocean Wonders center is dedicated to sharks and the Grand-Canyon-deep underwater 'Hudson Canyon,' which lies just 40 miles off the city's coastline. It doubled what there is to see at the aquarium, with great whites, leopard sharks, gia"
+      }
+    ]
+  }
+]

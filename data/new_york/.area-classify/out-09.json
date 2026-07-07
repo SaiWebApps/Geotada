@@ -1,0 +1,130 @@
+[
+  {
+    "name": "Red Hook Winery",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The barrel-lined tasting room looking out over the water at Pier 41",
+    "confidence": "high",
+    "reasoning": "A discrete named tasting-room venue you stand inside, small radius, single interior cue."
+  },
+  {
+    "name": "Invisible Dog",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The airy three-story converted-factory space with its unadorned warehouse backdrop",
+    "confidence": "high",
+    "reasoning": "A discrete named arts-center building with a single interior space, classic stop."
+  },
+  {
+    "name": "Bushwick Collective",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Murals along Jefferson and Troutman Sts between Cypress and Knickerbocker Aves",
+    "confidence": "medium",
+    "reasoning": "An outdoor gallery spread along several streets you walk through rather than a single point."
+  },
+  {
+    "name": "Fulton Ferry Landing",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "At Fulton Ferry Landing, George Washington made an important hasty retreat",
+    "confidence": "medium",
+    "reasoning": "A discrete historic landing point with small radius described as a single location."
+  },
+  {
+    "name": "Gantry Plaza State Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "This 12-acre riverside park sits directly across the water from the United Nations",
+    "confidence": "high",
+    "reasoning": "A 12-acre riverside park with multiple spread-out features (gantries, Pepsi sign at northern end), traversed."
+  },
+  {
+    "name": "Socrates Sculpture Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "now a city park on the river's edge with beautiful views and a rotating series of installations",
+    "confidence": "high",
+    "reasoning": "An open-air sculpture park you move through past rotating installations along the river's edge."
+  },
+  {
+    "name": "SculptureCenter",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "in a former trolley repair shop, SculptureCenter pages Berlin with its edgy art",
+    "confidence": "high",
+    "reasoning": "A discrete gallery building with a single interior space you stand in."
+  },
+  {
+    "name": "Flushing Meadows Corona Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "this 1225-acre park, built for the 1939 World's Fair and dominated by ... the Unisphere",
+    "confidence": "high",
+    "reasoning": "A 1225-acre park with multiple landmarks across it, entered from different ends and walked through."
+  },
+  {
+    "name": "Rockaway Beach",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "this is America's largest urban beach ... with a wilder feel",
+    "confidence": "high",
+    "reasoning": "A large beach/coastal area spanning Fort Tilden and Jamaica Bay, moved through not stood at."
+  },
+  {
+    "name": "Queens County Farm Museum",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the last patch of farmland within the city limits — where you can frolic with cows, sheep and goats",
+    "confidence": "medium",
+    "reasoning": "A discrete named museum/farm destination, small radius, single establishing beat."
+  },
+  {
+    "name": "Junior's Restaurant",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Junior's restaurant at 386 Flatbush Ave, at DeKalb Ave",
+    "confidence": "high",
+    "reasoning": "A discrete named restaurant at a specific address, small radius, single stop."
+  },
+  {
+    "name": "Village Vanguard",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The Village Vanguard in the West Village is one of the best bets ... for catching live jazz",
+    "confidence": "high",
+    "reasoning": "A discrete named jazz-club venue you stand before, small radius."
+  },
+  {
+    "name": "Kaufman Astoria Studios",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Queens' still-kicking Kaufman Astoria Studios ... a one-stop-shop for their Famous Players–Lasky Corporation",
+    "confidence": "medium",
+    "reasoning": "A named studio complex described as a single landmark building/destination despite the 40m radius."
+  },
+  {
+    "name": "Steiner Studios",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "the 760,000-sq-ft Steiner Studios is the largest studio complex east of LA",
+    "confidence": "medium",
+    "reasoning": "A named studio complex referenced as a single destination landmark within the Navy Yard."
+  },
+  {
+    "name": "Silvercup Studios",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Back in Queens you'll find the city's other big gun, Silvercup Studios",
+    "confidence": "medium",
+    "reasoning": "A named studio complex framed as a single destination landmark, establishing beat."
+  },
+  {
+    "name": "Tom's Restaurant",
+    "poi_role": "walk_by_only",
+    "parent_poi": null,
+    "source_passage": "the diner whose facade was used regularly in Seinfeld as the exterior of ... Monk's Diner",
+    "confidence": "medium",
+    "reasoning": "A minor diner noted only as a factoid about its facade, single passing beat."
+  }
+]

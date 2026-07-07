@@ -1,0 +1,2934 @@
+{
+  "chunk_id": "chunk-01-wall-street",
+  "chunk_file": "Books/new_york/big-onion-ten-historic-tours/chunk-01-wall-street.cleaned.txt",
+  "pois": [
+    {
+      "name": "Delmonico's",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Venerable Financial District restaurant established 1827 by the Delmonico brothers; the 1891 building at 56 Beaver Street has a white marble portico reputedly from Pompeii.",
+      "name_variations": [
+        "Delmonico's Restaurant",
+        "56 Beaver Street",
+        "Delmonicos"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.70502,
+      "longitude": -74.01035,
+      "trigger_radius": 15,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Delmonico's is a landmark of American dining history (first U.S. fine-dining restaurant, claims to first à la carte menu), has a substantial Wikipedia article plus a dedicated 56 Beaver Street article, appears in Frommer's/Moon/most NYC walking guides, and draws steady Financial District visitor traffic. Likely tier-3. >100m from existing POIs (Fraunces Tavern at Pearl/Broad ~180m; Stone Street adjacent but distinct address). Awaiting /poi-gravity for tier."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_bowling_green_park_stop_orientation_big-onion-ten-historic-tours_face_north_bull",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "lens": "hidden_history",
+      "topic_slug": "face_north_bull",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Take the 4 or 5 train to Bowling Green, or the N/R to Whitehall Street. Begin from inside Bowling Green Park, standing at the bottom of Broadway and facing north — toward the bull. From here, it is remarkable to imagine that over the next twelve miles lies the longest avenue in America. But until the second quarter of the nineteenth century, New York City went no farther than City Hall, a fifteen-minute walk to the north.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Broadway",
+        "City Hall"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "tour start",
+      "physical_cues": [
+        {
+          "cue": "Facing north up Broadway toward the Charging Bull from inside Bowling Green Park",
+          "direction": "north",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Start: 4/5 to Bowling Green or N/R to Whitehall, face north facing the bull",
+        "Broadway runs twelve miles, longest avenue in America",
+        "Until the second quarter of the 19th century the city went no farther than City Hall"
+      ],
+      "source_passage": "Start: Trains 4 and 5 to Bowling Green or the N/R to Whitehall Street. Begin facing north on Broadway (facing the bull) from the inside of Bowling Green Park. Standing here at the bottom of Broadway, it is remarkable to imagine that over the next twelve miles lies the longest avenue in America. But until the second quarter of the nineteenth century, New York City went no farther than City Hall, a fifteen-minute walk to the north.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_hidden_history_big-onion-ten-historic-tours_taxation_recreation_first_park",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "lens": "hidden_history",
+      "topic_slug": "taxation_recreation_first_park",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "At Broadway's base lies Bowling Green Park, New York City's first official park, established in 1733. Its history runs to the business and leisure of the Dutch and English: it has been pasture for cows, parade ground for soldiers, and, true to its name, a bowling field for colonists. \"Taxation and recreation,\" one might say, illustrates the park's varied history.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bowling Green Park"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "first park 1733",
+      "physical_cues": [
+        {
+          "cue": "The green at the foot of Broadway, the city's first official park",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bowling Green was NYC's first official park (1733)",
+        "Used as cow pasture, parade ground, and bowling field for colonists"
+      ],
+      "source_passage": "At Broadway's base you find Bowling Green Park, New York City's first official park (1733), which possesses a rich history due to the business and leisure activities of the Dutch and English. It has been pasture for cows, parade ground for soldiers, and, yes, a bowling field for colonists. \"Taxation and recreation,\" one might say, illustrates the park's varied history.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_war_conflict_big-onion-ten-historic-tours_george_statue_musket_balls",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "lens": "war_conflict",
+      "topic_slug": "george_statue_musket_balls",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "By 1770, King George III was rewarded by the colonists with a gilded statue in the center of the park for his alleged efforts in repealing the Stamp Act; a year later the fence was added. In 1776, hours after the Declaration of Independence was read in what is now City Hall Park, enraged colonists and members of the Sons of Liberty beheaded the statue. Supposedly George's molten lead was then cast into musket balls later used to shoot Tory soldiers. The fence around Bowling Green is one of the oldest in the city; iron crowns adorned the gateposts until American revolutionaries sheared them off. Touch history — you can actually feel where this happened.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "King George III",
+        "Stamp Act",
+        "Declaration of Independence",
+        "Sons of Liberty",
+        "City Hall Park"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "statue beheaded",
+      "physical_cues": [
+        {
+          "cue": "Gateposts of the colonial-era fence where iron crowns were sheared off — you can feel where it happened",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1770 gilded statue of George III erected for repealing the Stamp Act",
+        "Fence added a year later (1771)",
+        "1776 statue beheaded by Sons of Liberty after Declaration read at City Hall Park",
+        "Lead supposedly cast into musket balls",
+        "Iron crowns sheared off the gateposts"
+      ],
+      "source_passage": "By 1770, King George III was rewarded by the colonists with a gilded statue in the center of the park for his alleged efforts in repealing the Stamp Act; a year later the fence was added, one of Lower Manhattan's few colonial-era remnants. It was here that, in 1776, George's statue was beheaded by enraged colonists and members of the Sons of Liberty, hours after they read the Declaration of Independence in what is now City Hall Park. Supposedly, George's molten lead was then cast into musket balls later used to shoot Tory soldiers. The fence around Bowling Green is one of the oldest—if not the oldest—in the city. Iron crowns adorned the gateposts until American revolutionaries sheared them off. Touch history; you can actually feel where this happened.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_social_change_big-onion-ten-historic-tours_chester_arthur_customs",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "lens": "social_change",
+      "topic_slug": "chester_arthur_customs",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Now home to the Museum of the American Indian and the U.S. Bankruptcy Court, this building was once the primary point for revenue collection in the United States. Before the income tax arrived in 1913, this was where the government made its money — and since New York was by far the leading port city in America, there was a huge amount of money to be made. As historian Henry Hope Reed once noted, if City Hall was run by the Democratic machine, the Custom House was certainly Republican. In fact it was Republican Chester Arthur who, as collector of customs of the Port of New York before becoming president on the death of James Garfield, set the wheels in motion for the building's construction.",
+      "duration_sec": 48,
+      "kid_friendly": "yes",
+      "entities": [
+        "U.S. Bankruptcy Court",
+        "Henry Hope Reed",
+        "Chester Arthur",
+        "James Garfield",
+        "Port of New York"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "customs revenue politics",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Building now houses Museum of the American Indian and U.S. Bankruptcy Court",
+        "Before the 1913 income tax this was the primary U.S. revenue collection point",
+        "Chester Arthur, as collector of customs, set construction in motion before becoming president on Garfield's death"
+      ],
+      "source_passage": "While the Custom House is now the site of both the Museum of the American Indian and the U.S. Bankruptcy Court, at one time it was the primary point for revenue collection in the United States. Before the advent of the income tax in 1913, this was where the government made its money. And since New York was by far the leading port city in America, there was a huge amount of money to be made. As historian Henry Hope Reed once noted: If City Hall was run by the Democratic machine, the Custom House was certainly Republican. In fact, it was Republican Chester Arthur who, before becoming president on the death of James Garfield, as collector of customs of the Port of New York, set the wheels in motion for the construction of this building.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_historic_arch_big-onion-ten-historic-tours_beaux_arts_civic_pride",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "lens": "historic_arch",
+      "topic_slug": "beaux_arts_civic_pride",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The 1907 Cass Gilbert masterpiece is a great example of New York City's beaux arts heritage. Beaux arts translates literally as \"fine arts\" and derives from the great French school, the École des Beaux Arts. But in the New York context the term takes on a larger meaning: it refers to buildings that evince civic pride, that express a grandeur and stateliness to match their civic function — whether that function be to house trains, books, or tax collectors.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cass Gilbert",
+        "École des Beaux Arts"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "beaux arts heritage",
+      "physical_cues": [
+        {
+          "cue": "The grand 1907 Cass Gilbert Custom House facade before you",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "École des Beaux Arts",
+          "gloss": "the great French fine-arts school from which the beaux arts style derives"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "1907 Cass Gilbert building",
+        "Beaux arts means 'fine arts', from the École des Beaux Arts",
+        "In NYC the term refers to buildings expressing civic pride and grandeur matched to civic function"
+      ],
+      "source_passage": "The 1907Cass Gilbert masterpiece is a great example of New York City's beaux arts heritage. Beaux arts translates literally as \"fine arts\" and derives from the great French school, the École des Beaux Arts. But in the New York urban context, the term takes on a larger meaning. Here \"beaux arts\" refers to those buildings that evince civic pride, that express a grandeur and stateliness to match their civic function, whether that function be to house trains, books, or tax collectors.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_visual_art_big-onion-ten-historic-tours_french_continents_mercury_marsh",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "lens": "visual_art",
+      "topic_slug": "french_continents_mercury_marsh",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In front of the Custom House stand Daniel Chester French's limestone statues representing Asia, America, Europe, and Africa, from left to right — by the sculptor of the Lincoln Memorial. On the facade, Gilbert illustrates commerce: atop the cornice are twelve marble statues of history's most successful commercial states. Although you can't see it, the name Germany was effaced during World War I and replaced with Belgium. And gazing ahead from within every capital is Mercury, Roman god of commerce. Step into the museum to view the oval rotunda, decorated with a series of 1930s Works Progress Administration murals by Reginald Marsh.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Daniel Chester French",
+        "Lincoln Memorial",
+        "Cass Gilbert",
+        "Germany",
+        "Belgium",
+        "Mercury",
+        "Works Progress Administration",
+        "Reginald Marsh"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "continents statues",
+      "physical_cues": [
+        {
+          "cue": "Daniel Chester French's Four Continents statues at the entrance — Asia, America, Europe, Africa, left to right",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Twelve marble statues of commercial states atop the cornice; Mercury within each capital",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Reginald Marsh's 1930s WPA murals in the oval rotunda inside",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Daniel Chester French (Lincoln Memorial sculptor) made the Asia/America/Europe/Africa statues, left to right",
+        "Twelve marble statues of commercial states atop the cornice",
+        "Germany effaced in WWI and replaced with Belgium",
+        "Mercury gazes from within every capital",
+        "Oval rotunda has 1930s WPA murals by Reginald Marsh"
+      ],
+      "source_passage": "In front of the Custom House are Lincoln Memorial sculptor Daniel Chester French's limestone statues representing Asia, America, Europe, and Africa, from left to right. Notice on the facade of the building how Gilbert skillfully illustrates various symbolic examples of commerce: atop the building's cornice are twelve marble statues of history's most successful commercial states. Although you can't see it, the name Germany was effaced during World War I and replaced with Belgium! And look who's gazing ahead from within every capital: none other than Mercury, Roman god of commerce... Stroll into the museum to view the oval rotunda which is decorated with a series of 1930s Works Progress Administration (WPA) murals by Reginald Marsh.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_hidden_history_big-onion-ten-historic-tours_standard_oil_26_broadway",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "hidden_history",
+      "topic_slug": "standard_oil_26_broadway",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "no. 26 Broadway",
+      "beat_length_class": "mid",
+      "script_body": "Look up Broadway at No. 26, on the corner of Broadway and Beaver, at the building topped with a cast-iron oil burner. The lantern expresses the building's function: it housed Standard Oil, John D. Rockefeller's monopolistic firm. But by the time this tower was built in 1924, the flame had long been extinguished — in 1911 the U.S. Supreme Court required the Standard Oil Holding Company to be dissolved and its directors to relinquish control of its subsidiaries. Standard Oil's offices remained here until the 1930s, when Rockefeller Center was constructed. And in 1796, the town residence of another financial giant, Alexander Hamilton, stood on this very site.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "Standard Oil",
+        "John D. Rockefeller",
+        "U.S. Supreme Court",
+        "Rockefeller Center",
+        "Alexander Hamilton"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "standard oil lantern",
+      "physical_cues": [
+        {
+          "cue": "The cast-iron oil-burner lantern atop No. 26 Broadway, on the corner of Broadway and Beaver",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "No. 26 Broadway housed Standard Oil, topped by a cast-iron oil-burner lantern",
+        "Tower built 1924; trust dissolved by Supreme Court in 1911",
+        "Offices remained until 1930s and move to Rockefeller Center",
+        "In 1796 Alexander Hamilton's town residence stood on the site"
+      ],
+      "source_passage": "From the steps of the old Custom House, have a look up Broadway at No. 26on the east side of the street, on the corner of Broadway and Beaver, at the building with the cast-iron oil burner on the top. The lantern is expressive of the building's function: it housed Standard Oil, John D. Rockefeller's monopolistic firm. However, by the time this tower was built in 1924, the flame had long been extinguished—Standard Oil Trust was broken up a decade earlier. It was in 1911that the U.S. Supreme Court required the Standard Oil Holding Company to be dissolved and its directors to relinquish their control over its numerous subsidiaries... Standard Oil's offices remained here until the 1930s, when Rockefeller Center was constructed. In 1796, the town residence of another financial giant, Alexander Hamilton, stood on this site.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_hidden_history_big-onion-ten-historic-tours_cunard_steamship_row",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "hidden_history",
+      "topic_slug": "cunard_steamship_row",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "no. 25 Broadway",
+      "beat_length_class": "mid",
+      "script_body": "Across the way, on the west side, 25 Broadway was the former central ticket office of the Cunard Shipping Line. Cunard, leader of the pack among the era's many steamship companies, put up this building in 1921 to house the firm that ran the fastest and most luxurious liners in the world. In the age of expensive cruises and mass immigration, this was big business — so much so that in the late nineteenth and early twentieth centuries, this bottom stretch of Broadway was known as Steamship Row. Step inside (but not on Sunday) to see spectacular wall frescoes and maps outlining the old Cunard routes.",
+      "duration_sec": 43,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cunard Shipping Line",
+        "Cunard Building",
+        "Steamship Row"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "cunard steamship row",
+      "physical_cues": [
+        {
+          "cue": "The former Cunard ticket office at 25 Broadway, west side of the street",
+          "direction": "west",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Wall frescoes and route maps inside the Cunard Building (closed Sundays)",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "25 Broadway was Cunard's central ticket office",
+        "Cunard Building put up 1921",
+        "This stretch of Broadway was known as Steamship Row",
+        "Interior has wall frescoes and maps of Cunard routes"
+      ],
+      "source_passage": "Across from Rockefeller's building stands 25Broadway, the former central ticket office of the Cunard Shipping Line. Cunard, one of many steamship companies in that once hugely profitable industry, was the leader of the pack. The Cunard Building was put up in 1921to house the company that ran the fastest and most luxurious liners in the world. In the age of expensive cruises and mass immigration, this was big business. In fact, in the late nineteenth- and early twentieth-centuries, this bottom stretch of Broadway was known as Steamship Row. Step inside (but not on Sunday) to see some spectacular wall frescoes and maps outlining some of the old Cunard routes.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_social_change_big-onion-ten-historic-tours_whitehall_draft_ginsberg_spock",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "social_change",
+      "topic_slug": "whitehall_draft_ginsberg_spock",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "33 Whitehall Street",
+      "beat_length_class": "mid",
+      "script_body": "On the corner of Pearl and Whitehall, 33 Whitehall houses the National Association of Securities Dealers — NASDAQ — though unlike the Stock Exchange, its visitor center sits in Times Square, not here. Across the street to the south stood the Whitehall Induction Center, immortalized in Arlo Guthrie's classic \"Alice's Restaurant\" as the place where Guthrie was \"injected, inspected, detected, infected, neglected, and selected.\" It was here that Benjamin Spock, the famed baby specialist turned antiwar leader, and the poet Allen Ginsberg were arrested in 1967 as part of Stop the Draft Week.",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "NASDAQ",
+        "Whitehall Induction Center",
+        "Arlo Guthrie",
+        "Alice's Restaurant",
+        "Benjamin Spock",
+        "Allen Ginsberg",
+        "Stop the Draft Week"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "wry",
+      "subject_tag": "whitehall draft protest",
+      "physical_cues": [
+        {
+          "cue": "33 Whitehall (NASDAQ) on the corner of Pearl and Whitehall; the induction-center site across the street to the south",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "33 Whitehall houses NASDAQ; its visitor center is in Times Square",
+        "Across the street stood the Whitehall Induction Center, in Arlo Guthrie's 'Alice's Restaurant'",
+        "Benjamin Spock and Allen Ginsberg arrested there in 1967 during Stop the Draft Week"
+      ],
+      "source_passage": "On the corner of Pearl and Whitehall Streets, at 33White-hall, is the National Association for Securities Dealers, better known by its acronynm—NASDAQ... Across the street to the south was the site of the Whitehall Induction Center, now immortalized in Arlo Guthrie's classic Alice's Restaurant, and the site where Guthrie was \"injected, inspected, detected, infected, neglected, and selected.\" It was here that Benjamin Spock, the famed baby specialist turned antiwar leader, and poet Allan Ginsberg were arrested in 1967as part of Stop the Draft week.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "field": "script_body",
+          "original": "poet Allan Ginsberg",
+          "corrected": "poet Allen Ginsberg",
+          "reason": "Source misspells the poet's first name; corrected spelling is 'Allen Ginsberg'.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Allen_Ginsberg"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_goldman_sachs_building_hidden_history_big-onion-ten-historic-tours_octagon_stone_street",
+      "city_name": "new_york",
+      "poi_name": "Goldman Sachs Building",
+      "lens": "hidden_history",
+      "topic_slug": "octagon_stone_street_partnership",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "85 Broad Street",
+      "beat_length_class": "mid",
+      "script_body": "Goldman Sachs, the notoriously secretive investment-banking concern, is housed in this creatively built octagonal structure at 85 Broad Street, which slices through Stone Street. The building was designed to conform to the irregular street pattern, and paving stones representing Stone Street actually cut right through Goldman Sachs's lobby. The partnership between Marcus Goldman and Samuel Sachs dates from 1882, when they joined forces to further the commercial-paper business Goldman had begun thirteen years earlier.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Goldman Sachs",
+        "Stone Street",
+        "Marcus Goldman",
+        "Samuel Sachs"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "octagonal building",
+      "physical_cues": [
+        {
+          "cue": "The octagonal 85 Broad Street; paving stones marking Stone Street's old path cut through the lobby",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Goldman Sachs at 85 Broad Street is octagonal, conforming to the irregular street pattern",
+        "Paving stones of Stone Street run through the lobby",
+        "Goldman-Sachs partnership dates from 1882; Goldman began the commercial-paper business 13 years earlier"
+      ],
+      "source_passage": "Goldman Sachs, the notoriously secretive investment-banking concern, is housed in this creatively built octagonal structure that slices through Stone Street. The building was designed to conform to the irregular street pattern, and paving stones representing Stone Street actually cut right through Goldman Sachs's lobby. The partnership between Marcus Goldman and Samuel Sachs dates from 1882, when they joined forces to further the commercial paper business that Goldman began thirteen years prior.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_goldman_sachs_building_hidden_history_big-onion-ten-historic-tours_lovelace_tavern_stadt_huys",
+      "city_name": "new_york",
+      "poi_name": "Goldman Sachs Building",
+      "lens": "hidden_history",
+      "topic_slug": "lovelace_tavern_stadt_huys",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "85 Broad Street",
+      "beat_length_class": "seasoning",
+      "script_body": "During the building's construction from 1979 to 1982, excavatory digs uncovered three-century-old fragments of Lovelace Tavern, once housed nearby. It was here that colonists gathered to deliberate municipal issues — a predecessor to the city's first Stadt Huys, or City Hall, a block away on Coenties Alley and Pearl Street.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lovelace Tavern",
+        "Stadt Huys",
+        "Coenties Alley"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "lovelace tavern dig",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Stadt Huys",
+          "gloss": "the city's first City Hall (Dutch)"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "1979-1982 digs found fragments of Lovelace Tavern",
+        "Colonists deliberated municipal issues there, a predecessor to the first Stadt Huys (City Hall) on Coenties Alley and Pearl"
+      ],
+      "source_passage": "During the construction of the site, from 1979to 1982, a number of excavatory digs identified three-century-old fragments from Lovelace Tavern, once housed nearby. It was here that colonists gathered to deliberate municipal issues—a predecessor locale to the eventual first Stadt Huys, or City Hall, a block away on Coenties Alley and Pearl Street.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fraunces_tavern_hidden_history_big-onion-ten-historic-tours_delancey_mansion_van_cortlandt",
+      "city_name": "new_york",
+      "poi_name": "Fraunces Tavern",
+      "lens": "hidden_history",
+      "topic_slug": "delancey_mansion_van_cortlandt",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Before its revolutionary history, the building was the mansion of Stephen Delancey — as in Delancey Street — a French immigrant who received it as a wedding present from his father-in-law, Colonel Stephanus Van Cortlandt, New York City's tenth mayor. The tavern itself was run by an immigrant from the West Indies, Samuel Fraunces, who would soon become Washington's steward, and it was a popular watering hole of the day. It was also the site where the Committee of Correspondence — later the Continental Congress — held its first meeting.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stephen Delancey",
+        "Delancey Street",
+        "Stephanus Van Cortlandt",
+        "Samuel Fraunces",
+        "George Washington",
+        "Committee of Correspondence",
+        "Continental Congress"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "delancey mansion origin",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Building was the mansion of Stephen Delancey (namesake of Delancey Street), a wedding gift from Colonel Stephanus Van Cortlandt, NYC's tenth mayor",
+        "Run by West Indies immigrant Samuel Fraunces, Washington's future steward",
+        "Site of the Committee of Correspondence's first meeting"
+      ],
+      "source_passage": "Prior to its revolutionary history, the building was the mansion of Stephen Delancey (as in Delancey Street), a French immigrant who received it as a wedding present from his father-in-law Colonel Stephanus Van Cortlant, New York City's tenth mayor. The tavern, which was run at the time by an immigrant from the West Indies who would soon become Washington's steward, Samuel Fraunces, was a popular watering hole of the day. It was also the site where the Committee of Correspondence (later the Continental Congress) held its first meeting.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fraunces_tavern_historic_arch_big-onion-ten-historic-tours_georgian_reproduction_great_fire_block",
+      "city_name": "new_york",
+      "poi_name": "Fraunces Tavern",
+      "lens": "historic_arch",
+      "topic_slug": "georgian_reproduction_great_fire_block",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The building is a conjectural reproduction — no original bits survive save a few bricks — financed by the Sons of the Revolution in 1907. Its style is Georgian, named for those British kings and soon renamed \"colonial\" or \"federal\" in keeping with the antiroyalist mood of the new states. The block of Pearl Street just east represents one of the city's few remaining block-long groups of late eighteenth- and early nineteenth-century shipping offices and warehouses; they were among the few that survived the Great Fire of 1835 unscathed. Thanks to the New York Landmarks Conservancy for saving them, the area is now the Fraunces Tavern Block Historic District.",
+      "duration_sec": 45,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sons of the Revolution",
+        "Great Fire of 1835",
+        "New York Landmarks Conservancy",
+        "Fraunces Tavern Block Historic District"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "georgian reproduction",
+      "physical_cues": [
+        {
+          "cue": "The block of shipping offices and warehouses on Pearl Street just east, the Fraunces Tavern Block Historic District",
+          "direction": "east",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Conjectural reproduction financed by the Sons of the Revolution in 1907; only a few original bricks remain",
+        "Georgian style, later renamed 'colonial'/'federal'",
+        "Adjacent Pearl Street block survived the Great Fire of 1835",
+        "Saved by the NY Landmarks Conservancy; now the Fraunces Tavern Block Historic District"
+      ],
+      "source_passage": "The building, a conjectural reproduction—no original bits save a few bricks remain—was financed by the Sons of the Revolution in 1907. Its style is Georgian, named for those nefarious British kings and soon renamed \"colonial\" or \"federal,\" in keeping with the antiroyalist mood of the newly independent states... Have a look at the block east of Fraunces Tavern on Pearl: this represents one of New York City's few remaining block-long groups of late eighteenth- and early nineteenth-century shipping offices and warehouses. Fortunately, these buildings were among the few that survived the Great Fire of 1835unscathed... The area is now part of the Fraunces Tavern Block Historic District.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hanover_square_famous_residents_big-onion-ten-historic-tours_depeyster_bradford_kidd",
+      "city_name": "new_york",
+      "poi_name": "Hanover Square",
+      "lens": "famous_residents",
+      "topic_slug": "depeyster_bradford_kidd",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Here in Hanover Square sits lonely Abraham DePeyster — former mayor of New York City, colonial chief justice in the late seventeenth century, and prominent merchant — who once had a more princely view up Broadway when he stood in Bowling Green Park. The square was once the center of the city's publishing industry: William Bradford's New York Gazette, the city's first newspaper of 1725, had its printing offices here. It was also the home base of Captain Kidd, the privateer turned pirate. Tellingly, Hanover Square keeps the family name of the English kings — in sharp contrast to much of New York that changed its nomenclature after the Revolution.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Abraham DePeyster",
+        "William Bradford",
+        "New York Gazette",
+        "Captain Kidd"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "publishing and pirates",
+      "physical_cues": [
+        {
+          "cue": "The statue of Abraham DePeyster seated in Hanover Square",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Abraham DePeyster statue, former mayor and colonial chief justice, once stood in Bowling Green",
+        "William Bradford's New York Gazette (1725, city's first newspaper) had offices here",
+        "Home base of Captain Kidd",
+        "Hanover Square retains the English kings' family name"
+      ],
+      "source_passage": "Here in Hanover Square sits lonely Abraham DePeyster, former mayor of New York City, colonial chief justice in the late seventeenth century, and prominent merchant, who once had a more princely view up Broadway, when he was planted in Bowling Green Park... The area around Hanover Square was once the center of New York City's publishing industry. William Bradford's New York Gazette, the city's first newspaper (1725), had its printing offices here. It was also the home base of Captain Kidd, the privateer turned pirate. Interestingly, Hanover Square retains the family name of the English kings.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hanover_square_historic_markets_big-onion-ten-historic-tours_india_house_cotton_exchange",
+      "city_name": "new_york",
+      "poi_name": "Hanover Square",
+      "lens": "historic_markets",
+      "topic_slug": "india_house_cotton_exchange",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "One Hanover Square",
+      "beat_length_class": "mid",
+      "script_body": "On the west side of the square is India House at One Hanover Square, built in the early 1850s. It was originally the Hanover Bank and later the New York Cotton Exchange, when cotton was king. Brownstone was once seen as unseemly for a proper home, but this building — like Trinity Church — helped change that, and in the later nineteenth century brownstone became a mark of dignity for New York's landed gentry. Today India House is one of Lower Manhattan's most exclusive business clubs; it takes its name from nautical trips to, and Orientalist fantasies of, the East, its original members more concerned with maritime issues than with banking.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "India House",
+        "Hanover Bank",
+        "New York Cotton Exchange",
+        "Trinity Church"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "india house cotton",
+      "physical_cues": [
+        {
+          "cue": "India House at One Hanover Square, on the west side of the square",
+          "direction": "west",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "India House at One Hanover Square, built early 1850s",
+        "Originally Hanover Bank, later New York Cotton Exchange",
+        "Helped make brownstone respectable, alongside Trinity Church",
+        "Now an exclusive business club named for nautical/Orientalist East"
+      ],
+      "source_passage": "On the west side of the square is India House at One Hanover Square. Built in the early 1850s, India House has had various incarnations. It was originally the Hanover Bank and later the New York Cotton Exchange, when cotton was king. Brownstone was once seen as unseemly for a proper home, but this building, as well as Trinity Church, helped change that. In the latter half of the nineteenth century, brownstone became a mark of dignity for New York's landed gentry. Today, India House is one of Lower Manhattan's most exclusive business clubs. It takes its name from nautical trips to (and Orientalist fantasies of) the East.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hanover_square_historic_arch_big-onion-ten-historic-tours_old_slip_first_precinct",
+      "city_name": "new_york",
+      "poi_name": "Hanover Square",
+      "lens": "historic_arch",
+      "topic_slug": "old_slip_first_precinct",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "Old Slip",
+      "beat_length_class": "seasoning",
+      "script_body": "Look eastward toward Old Slip by the river, which until 1973 housed the First Precinct Police. Finished in 1911 and considered New York City's first modern police station, it was designed in the form of a Renaissance palazzo, and later served as headquarters to the Landmarks Preservation Commission — without which this and a thousand other structures could have met the fate of Pennsylvania Station.",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "First Precinct Police",
+        "Landmarks Preservation Commission",
+        "Pennsylvania Station"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "old slip station",
+      "physical_cues": [
+        {
+          "cue": "The Renaissance-palazzo former First Precinct station at Old Slip, eastward toward the river",
+          "direction": "east",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Old Slip housed the First Precinct Police until 1973",
+        "Finished 1911, NYC's first modern police station, in Renaissance-palazzo form",
+        "Later HQ of the Landmarks Preservation Commission"
+      ],
+      "source_passage": "Take a look eastward toward Old Slip by the river, which until 1973housed the First Precinct Police (South Street at Old Slip). Finished in 1911and considered to be New York City's first modern police station, it is designed in the form of a Renaissance palazzo. Formerly, it was headquarters to the Landmarks Preservation Commission. Irony aside, without the latter institution, this and over a thousand other structures in New York City could have met the fate of Pennsylvania Station—destruction.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_delmonicos_historic_cuisine_big-onion-ten-historic-tours_brothers_1827_pompeii_portico",
+      "city_name": "new_york",
+      "poi_name": "Delmonico's",
+      "lens": "historic_cuisine",
+      "topic_slug": "brothers_1827_pompeii_portico",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "56 Beaver Street",
+      "beat_length_class": "seasoning",
+      "script_body": "At 56 Beaver, on the southwest corner of South William Street, is Delmonico's. This venerable New York restaurant was established in 1827 by the brothers Delmonico. The building, with a white marble portico reputedly from Pompeii, dates from 1891. Go inside to experience the haute-bourgeois flavor of nineteenth-century New York.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Delmonico's",
+        "Delmonico brothers"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "delmonico's portico",
+      "physical_cues": [
+        {
+          "cue": "The white marble portico at the entrance to Delmonico's, reputedly from Pompeii",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "haute-bourgeois",
+          "gloss": "of the upper middle class; refined and well-to-do"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Delmonico's at 56 Beaver, corner of South William Street",
+        "Established 1827 by the Delmonico brothers",
+        "1891 building with a white marble portico reputedly from Pompeii"
+      ],
+      "source_passage": "Along the way, at 56Beaver, on the southwest corner of South William Street, is Delmonico's. This venerable New York City restaurant was established in 1827by the brothers Delmonico. The building, with a white marble portico reputedly from Pompeii, dates from 1891. Go inside to experience the haute-bourgeois flavor of nineteenth-century New York.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_historic_arch_big-onion-ten-historic-tours_city_bank_farmers_trust_marble",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "historic_arch",
+      "topic_slug": "city_bank_farmers_trust_marble",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "22 William Street",
+      "beat_length_class": "seasoning",
+      "script_body": "At 22 William, between Beaver and Exchange Place, is the City Bank Farmers' Trust Company Building of 1931. It has always been a curiosity in the canyons of Wall Street: it departs from the rectilinear and pivots as if ready to blast off, the irregular site pushing its architects to experiment. The bronze doors are its pièces de résistance, filled with trains, boats, and airplanes, and the interior uses over forty kinds of marble laced with nickel and copper.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "City Bank Farmers' Trust Company Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "farmers trust doors",
+      "physical_cues": [
+        {
+          "cue": "The bronze doors of 22 William Street, decorated with trains, boats, and airplanes",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "pièces de résistance",
+          "gloss": "the most outstanding features"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "22 William Street is the 1931 City Bank Farmers' Trust Building",
+        "Pivots off the rectilinear due to its irregular site",
+        "Bronze doors depict trains, boats, airplanes; interior uses 40+ kinds of marble with nickel and copper"
+      ],
+      "source_passage": "At 22William, between Beaver and Exchange Place, is the City Bank Farmers' Trust Company Building, built in 1931. This building has always been a curiosity in the canyons of Wall Street; it departs from the rectilinear and pivots as if ready to blast off. The irregular site that it inhabits helped the architects push the envelope in their design. The bronze doors are the building's pièces de résistance; enjoy its sumptuous decoration filled with trains, boats, and airplanes. The interior uses over forty different kinds of marble and is laced with nickel and copper.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_hidden_history_big-onion-ten-historic-tours_de_wal_stuyvesant_planks",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "hidden_history",
+      "topic_slug": "de_wal_stuyvesant_planks",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The \"Wall\" in the name comes from an actual wall built by the Dutch. Governor Peter Stuyvesant had it erected in 1653, and it lasted until the latter seventeenth century, when colonists under British rule finally undermined it. Known in Dutch as De Wal, it was made of wooden planks stacked roughly nine feet high and was manned to keep both the British (until 1664) and the Indians away from New Amsterdam.",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Stuyvesant",
+        "New Amsterdam",
+        "Dutch West India Company"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "wall street name",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "De Wal",
+          "gloss": "the wall (Dutch) — origin of the name Wall Street"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Wall Street is named for an actual Dutch wall",
+        "Stuyvesant had it erected in 1653; it lasted into the late 17th century",
+        "Known as De Wal, wooden planks ~nine feet high, manned to keep out the British (until 1664) and Indians"
+      ],
+      "source_passage": "The \"Wall\" in the name indeed comes from an actual wall built by the Dutch that lasted from Governor Peter Stuyvesant, who had it erected in 1653, through the latter part of the seventeenth century, when colonists under British rule finally undermined it. The wall (known in Dutch as De Wal) was made of wooden planks stacked roughly nine feet high and was manned to keep both the British (until 1664) and the Indians away from New Amsterdam.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_social_change_big-onion-ten-historic-tours_asser_levy_jewish_guard",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "social_change",
+      "topic_slug": "asser_levy_jewish_guard",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Jews were at first banned from standing guard at the wall, and were taxed instead. Asser Levy, a prominent Jewish resident, brought suit against the Dutch West India Company, which eventually overturned Stuyvesant's ruling and allowed Jews to stand watch. Levy is memorialized a little further uptown, on Twenty-third Street, by Asser Levy Place.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Asser Levy",
+        "Dutch West India Company",
+        "Peter Stuyvesant",
+        "Asser Levy Place"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "asser levy suit",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jews were banned from guarding the wall and taxed instead",
+        "Asser Levy sued the Dutch West India Company and overturned Stuyvesant's ruling",
+        "Memorialized by Asser Levy Place on Twenty-third Street"
+      ],
+      "source_passage": "Jews were at first banned from standing guard at the wall and were taxed instead. Asser Levy, a prominent Jewish resident, brought a suit against the Dutch West India Company, which eventually overturned Stuyvesant's ruling and allowed Jews to stand watch. Levy is now memorialized a little bit further uptown, on Twenty-third Street, by Asser Levy Place.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_dark_history_big-onion-ten-historic-tours_slave_markets_charleston_second",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "dark_history",
+      "topic_slug": "slave_markets_charleston_second",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "At the eastern end of Wall Street stood a number of slave markets. On the eve of the American Revolution, New York City was an ignominious second to Charleston, South Carolina, among urban slaveholding cities. It was not until July 4, 1827 — with the approval of Governor Daniel D. Tompkins and the state legislature — that slavery was officially laid to rest in New York.",
+      "duration_sec": 26,
+      "kid_friendly": "no",
+      "entities": [
+        "Charleston",
+        "Daniel D. Tompkins"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "somber",
+      "subject_tag": "slave markets",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Slave markets stood at the eastern end of Wall Street",
+        "On the eve of the Revolution NYC was second to Charleston among urban slaveholding cities",
+        "Slavery officially ended July 4, 1827 under Governor Daniel D. Tompkins and the legislature"
+      ],
+      "source_passage": "At the eastern end of Wall Street stood a number of slave markets; in fact, on the eve of the American Revolution, New York City was an ignominious second to Charleston, South Carolina, among urban slaveholding cities. It was not until July 4, 1827, with the approval of Governor Daniel D. Tompkins and the New York state legislature, that slavery was officially laid to rest.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_historic_arch_big-onion-ten-historic-tours_55_wall_double_colonnade",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "historic_arch",
+      "topic_slug": "55_wall_double_colonnade",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "55 Wall Street",
+      "beat_length_class": "mid",
+      "script_body": "At 55 Wall Street stands a building designed by Isaiah Rogers in 1842 to replace the Merchants Exchange, which had burned with seven hundred other buildings in the Great Fire of 1835. It served as the U.S. Custom House from 1863 to 1899 and later as a branch of Citibank. It's notable for a seamless arrangement of structure: the lower Ionic colonnade of 1842 — each column a single block of stone — works hand in glove with an upper Corinthian colonnade added seventy years later. The mammoth lobby measures 198 feet long and 132 feet high, and houses the largest display of Wedgewood china in the world around its central chandelier.",
+      "duration_sec": 49,
+      "kid_friendly": "yes",
+      "entities": [
+        "55 Wall Street",
+        "Isaiah Rogers",
+        "Merchants Exchange",
+        "Great Fire of 1835",
+        "Citibank"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "double colonnade",
+      "physical_cues": [
+        {
+          "cue": "The lower Ionic colonnade (1842) and upper Corinthian colonnade at 55 Wall Street, to your right",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The 198-foot-long, 132-foot-high lobby with the largest Wedgewood china display in the world",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "55 Wall Street designed by Isaiah Rogers in 1842 to replace the Merchants Exchange lost in the Great Fire of 1835",
+        "Served as U.S. Custom House 1863-1899; later a Citibank branch",
+        "Lower Ionic (1842, single-block columns) and upper Corinthian colonnade added 70 years later",
+        "Lobby 198 ft long, 132 ft high, largest Wedgewood china display in the world"
+      ],
+      "source_passage": "The building immediately to your right, at 55Wall Street, was designed by Isaiah Rogers in 1842to replace the Merchants Exchange, which, with seven hundred other buildings, was lost in the Great Fire of 1835. It functioned as the U.S. Custom House during 1863–99. In its most recent incarnation, it was a branch office of Citibank... The building is notable for the amazingly seamless arrangement of its structure, where the bottom Ionic colonnade put up in 1842(and each a single block of stone!) works hand in glove with the upper Corinthian colonnade built seventy years later. The mammoth lobby measures 198feet long and is 132feet in height, and it houses the largest display of Wedgewood china in the world around its central chandelier.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_modern_design_big-onion-ten-historic-tours_60_wall_roche_air_rights",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "modern_design",
+      "topic_slug": "60_wall_roche_air_rights",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "60 Wall Street",
+      "beat_length_class": "mid",
+      "script_body": "Across from 55 Wall stands the J. P. Morgan Building at 60 Wall, Kevin Roche's rich postmodern monolith — praised even by critic Ada Louise Huxtable, no friend of recent New York architecture. By the 1970s the modern movement had grown so moribund, producing a surfeit of flat-topped knockoffs, that it seemed the grace of earlier eras was lost. Roche's tower holds its own among Wall Street's pantheon and, unusually for a tall building, blends in rather than dominates — its faux colonnade answering 55 Wall's real one across the street. In a quirk, it was 55 Wall that sold its air rights to allow the J. P. Morgan Building's fifty-five stories.",
+      "duration_sec": 49,
+      "kid_friendly": "yes",
+      "entities": [
+        "J. P. Morgan Building",
+        "Kevin Roche",
+        "Ada Louise Huxtable"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "60 wall postmodern",
+      "physical_cues": [
+        {
+          "cue": "Kevin Roche's J. P. Morgan Building at 60 Wall, its faux colonnade facing 55 Wall across the street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The vast public interior atrium of 60 Wall",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "60 Wall is the J. P. Morgan Building, Kevin Roche's postmodern tower, praised by Ada Louise Huxtable",
+        "Blends in via a faux colonnade answering 55 Wall's colonnade",
+        "55 Wall sold its air rights to allow 60 Wall's 55-story height",
+        "Has a public interior atrium"
+      ],
+      "source_passage": "Across from 55Wall Street we come to the J. P. Morgan Building. The Pulitzer Prize–winning architectural critic Ada Louise Huxtable, not known for her appreciation of the last several decades of New York City architecture, has sung the praises of Kevin Roche's rich postmodern monolith here at 60Wall... it blends in quite nicely (enacting one of postmodernism's great critiques of modernism) as its own faux colonnade speaks convincingly to 55Wall's colonnade across the street. In an interesting quirk, it was 55Wall that sold its air rights to allow for the 55-story height of the J. P. Morgan Building. The vast interior atrium open to the public is lovely as well.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_40_wall_st_modern_design_big-onion-ten-historic-tours_severance_van_alen_spire",
+      "city_name": "new_york",
+      "poi_name": "40 Wall Street",
+      "lens": "modern_design",
+      "topic_slug": "severance_van_alen_secret_spire",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "At 40 Wall Street — originally the Bank of Manhattan — sits one of the great stories in American skyscraper construction. In the summer of 1929, longtime professional rivals and former partners William Van Alen and Craig Severance were hard at work trying to outdo each other in the battle for dominant skyscraper height. The Woolworth Tower still held sway as the city's tallest, but Severance was convinced to the last moment that his Bank of Manhattan would outdo Van Alen's automotive giant, the Chrysler Building, and dethrone Frank Woolworth. Hidden from view, and unveiled only at the final moment of the competition, was Chrysler's razor-sharp spire — its additional 125 feet outdid 40 Wall and brought the Chrysler Building the fame of being the tallest. Severance's consolation prize? 40 Wall broke all records for speed, finished in eleven months with over a million square feet of floor space. For Van Alen, success was short-lived: the Empire State unseated the Chrysler after only eighteen months. As for the Bank of Manhattan, in five years it dropped to fifth-tallest in the country — today it's at number 30 and counting.",
+      "duration_sec": 86,
+      "kid_friendly": "yes",
+      "entities": [
+        "40 Wall Street",
+        "Bank of Manhattan",
+        "William Van Alen",
+        "Craig Severance",
+        "Woolworth Tower",
+        "Chrysler Building",
+        "Frank Woolworth",
+        "Empire State Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "race to the top",
+      "physical_cues": [
+        {
+          "cue": "40 Wall Street rising to your left",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "40 Wall was originally the Bank of Manhattan",
+        "Summer 1929 race between former partners Van Alen (Chrysler) and Severance (40 Wall)",
+        "Chrysler's hidden 125-foot spire won the title of tallest",
+        "40 Wall finished in eleven months, over a million sq ft",
+        "Empire State unseated Chrysler after 18 months; Bank of Manhattan dropped to fifth then to number 30"
+      ],
+      "source_passage": "To your left, at 40Wall Street, was originally the Bank of Manhattan... Longtime professional rivals, former partners William Van Alen and Craig Severance were hard at work trying to outdo each other in the battle for dominant skyscraper height... The Woolworth Tower held sway as New York City's tallest building, but Severance was convinced until the very last moment that his Bank of Manhattan would outdo Van Alen's automotive giant and dethrone Frank Woolworth. But hidden from view, and unveiled only at the final moment of the competition, was Chrysler's razor-sharp spire, which because of its additional 125feet outdid 40Wall and brought the Chrysler Building the fame of being the tallest. Severance's consolation prize? 40Wall broke all records for speed; it was finished in eleven months, with over a million square feet of floor space. For Van Alen's Chrysler building, success was short-lived. The Empire State unseated the Chrysler after only eighteen months. As for the Bank of Manhattan, in only five years it would drop to being the fifth tallest building in the United States. Today it's at number 30and counting.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_40_wall_st_local_legends_big-onion-ten-historic-tours_trump_marker_manny_hanny",
+      "city_name": "new_york",
+      "poi_name": "40 Wall Street",
+      "lens": "local_legends",
+      "topic_slug": "trump_marker_manny_hanny",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Notice the modest, self-effacing marker announcing \"The Trump Building\" along the Pine Street facade of 40 Wall — polished and stylized by New York's own Donald Trump. Somehow, we don't think Craig Severance ever had this in mind. For many years the tower was headquarters of the late Manufacturer's Hanover Trust, known by its avuncular nickname \"Manny Hanny.\" The original Bank of Manhattan building stood on the site in 1799.",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Trump Building",
+        "Donald Trump",
+        "Craig Severance",
+        "Manufacturer's Hanover Trust",
+        "Bank of Manhattan"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "callback",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "trump building marker",
+      "physical_cues": [
+        {
+          "cue": "The marker reading 'The Trump Building' along the Pine Street facade of 40 Wall",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "A marker reads 'The Trump Building' on the Pine Street facade of 40 Wall",
+        "Long the HQ of Manufacturer's Hanover Trust ('Manny Hanny')",
+        "Original Bank of Manhattan building stood on the site in 1799"
+      ],
+      "source_passage": "Notice the modest, self-effacing marker announcing \"The Trump Building\" alongside the Pine Street facade of 40Wall. Somehow, we don't think Craig Severance ever had this in mind... For many years, 40Wall Street was the headquarters of the late Manufacturer's Hanover Trust (known by its avuncular nickname \"Manny Hanny\"). The site was home to the original Bank of Manhattan building in 1799.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_modern_design_big-onion-ten-historic-tours_chase_plaza_transparent_bank",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "modern_design",
+      "topic_slug": "chase_plaza_transparent_bank",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "Chase Manhattan Plaza",
+      "beat_length_class": "mid",
+      "script_body": "Finished in 1960, David Rockefeller's Chase Manhattan Bank Building is a shining example of sleek postwar modernism. It helped usher in a new \"democratic\" era of bank building, where banks became transparent structures that could be \"seen through\" rather than maintaining the impenetrable fortress facades of tradition. For the sharpest contrast, look through the Chase building at the Federal Reserve behind it — an impenetrable fortress, as well it should be, to hold all the gold inside.",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Chase Manhattan Bank Building",
+        "David Rockefeller",
+        "Federal Reserve Bank of New York"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "transparent bank",
+      "physical_cues": [
+        {
+          "cue": "Look through the glass Chase building toward the fortress-like Federal Reserve behind it",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Chase Manhattan Bank Building finished 1960, David Rockefeller's postwar modernism",
+        "Ushered in transparent 'democratic' bank architecture vs. fortress facades",
+        "Contrasts with the fortress-like Federal Reserve behind it"
+      ],
+      "source_passage": "Finished in 1960, David Rockefeller's Chase Manhattan Bank Building is a shining example of sleek postwar modernism in action. The Chase building also helped usher in a new \"democratic\" era of bank building, where banks became transparent structures that could be \"seen through\" rather than maintaining the impenetrable fortress facades of tradition. As the best example of the contrast, take a look through the Chase building and have a peek at the Federal Reserve, an impenetrable fortress—as well it should be, to hold all the gold inside.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_visual_art_big-onion-ten-historic-tours_dubuffet_noguchi_nevelson",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "visual_art",
+      "topic_slug": "dubuffet_noguchi_nevelson_plaza",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "Chase Manhattan Plaza",
+      "beat_length_class": "mid",
+      "script_body": "Standing on Chase Manhattan Plaza, check out Jean Dubuffet's Group of 4 Trees — the AIA guide cleverly remarks that Dubuffet's white-painted concrete work has the effect of papier-mâché. David Rockefeller's commitment to modernist art also shows in the sunken fountain below, by the Japanese American sculptor Isamu Noguchi. And look north for a moment at Louise Nevelson Plaza, where seven black sculpted objects by the noted American sit in a small plaza.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jean Dubuffet",
+        "Group of 4 Trees",
+        "David Rockefeller",
+        "Isamu Noguchi",
+        "Louise Nevelson",
+        "Louise Nevelson Plaza"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "plaza sculptures",
+      "physical_cues": [
+        {
+          "cue": "Jean Dubuffet's white 'Group of 4 Trees' on Chase Manhattan Plaza",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Isamu Noguchi's sunken fountain below the plaza",
+          "direction": "down",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Louise Nevelson Plaza with seven black sculptures, to the north",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jean Dubuffet's 'Group of 4 Trees' stands on Chase Plaza (AIA likens it to papier-mâché)",
+        "Isamu Noguchi designed the sunken fountain below",
+        "Louise Nevelson Plaza to the north holds seven black sculptures"
+      ],
+      "source_passage": "Standing on the plaza check out Jean Dubuffet's Group of 4Trees sculpture; the AIA guide makes the clever remark that Dubuffet's white-painted concrete work has the effect of papier-mâché. David Rockefeller's commitment to modernist art and architecture is also seen in the sunken fountain below, courtesy of the fine Japanese American sculptor Isamu Noguchi... For an additional taste of the fine arts, look north for a moment at Louise Nevelson Plaza. It is here that seven black sculpted objects by the noted American sit in a small plaza.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_reserve_bank_of_new_york_historic_arch_big-onion-ten-historic-tours_fortress_yellin_lanterns",
+      "city_name": "new_york",
+      "poi_name": "Federal Reserve Bank of New York",
+      "lens": "historic_arch",
+      "topic_slug": "fortress_yellin_lanterns",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Built like a fortress in 1924, the Federal Reserve Bank was made to resist the elements. It is not New York snobbery to call it the most significant of the thirteen Federal Reserve sites. Its limestone facade is noted for weathering in different tones — notice how they change from light to dark — and the magnificent wrought-iron lanterns were designed by the Philadelphian Samuel Yellin. The Federal Reserve itself was set up in 1914 to have a central bank, rather than one person, make policy: in 1907, for example, J. P. Morgan personally mobilized enough banking support to stave off a collapse that could have rivaled the Great Depression.",
+      "duration_sec": 45,
+      "kid_friendly": "yes",
+      "entities": [
+        "Federal Reserve Bank of New York",
+        "Samuel Yellin",
+        "J. P. Morgan"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "fortress facade",
+      "physical_cues": [
+        {
+          "cue": "The limestone facade weathering from light to dark tones",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Samuel Yellin's wrought-iron lanterns on the Federal Reserve",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Federal Reserve Bank built like a fortress in 1924, the most significant of thirteen Fed sites",
+        "Limestone facade weathers in different tones; wrought-iron lanterns by Samuel Yellin",
+        "Fed set up 1914 for a central bank; in 1907 J. P. Morgan mobilized support to stave off a collapse"
+      ],
+      "source_passage": "Walk north to the other side of the plaza to the Federal Reserve Bank. Built like a fortress in 1924, this structure was made to resist the elements. It is not New York snobbery to recognize this as the most significant of the thirteen Federal Reserve sites. The limestone facade of the bank is noted for its capacity to weather in different tones. (Notice how they change from light to dark.) Take a closer look as well at the magnificent wrought-iron lanterns designed by the Philadelphian Samuel Yellin. The Federal Reserve Bank was set up in 1914in order to have a central bank, rather than one person, make decisions on policy. In 1907, for example, J. P. Morgan was responsible for mobilizing enough banking support to help stave off a collapse that could have rivaled the Great Depression.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_reserve_bank_of_new_york_factoid_big-onion-ten-historic-tours_gold_bullion_wheelbarrows",
+      "city_name": "new_york",
+      "poi_name": "Federal Reserve Bank of New York",
+      "lens": "hidden_history",
+      "topic_slug": "gold_bullion_wheelbarrows",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Federal Reserve currently holds upward of $110 billion in gold bullion, mostly in foreign holdings — about a quarter of the official monetary gold of eighty countries, more than Fort Knox. Wheelbarrows are still in use transporting the gold from one country's room to the next.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Federal Reserve Bank of New York",
+        "Fort Knox"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "gold vault wheelbarrows",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Fed holds upward of $110 billion in gold bullion, mostly foreign holdings",
+        "About a quarter of the monetary gold of eighty countries, more than Fort Knox",
+        "Wheelbarrows move gold between countries' rooms"
+      ],
+      "source_passage": "The Federal Reserve currently holds upward of $110bil-lion in gold bullion, mostly in foreign holdings (in other terms, one-quarter of the official monetary gold of eighty countries—more than Fort Knox!). Wheelbarrows are still in use transporting the gold bullion from one country's room to the next.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_historic_arch_big-onion-ten-historic-tours_bankers_trust_pyramid_halicarnassus",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "historic_arch",
+      "topic_slug": "bankers_trust_pyramid_halicarnassus",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "14 Wall Street",
+      "beat_length_class": "mid",
+      "script_body": "Westward at 14 Wall stands the Bankers Trust Building. Bankers Trust is no more, but Trowbridge and Livingston's pyramidal top — modeled on antiquity's mausoleum at Halicarnassus — remains one of the great pinnacles in a city bathed in sumptuous finishing touches. J. P. Morgan even shacked up beneath the pyramid to have a bird's-eye view of the construction of his own building across the street. The pyramid became the logo of Bankers Trust for years, though, in a testimony to the downtown canyons, you cannot see it from Wall Street itself. Inside, peek at the bronze lobby gates representing the enterprises of capitalism — metallurgy, shipping, mining, agriculture, and power.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bankers Trust Building",
+        "Trowbridge and Livingston",
+        "Mausoleum at Halicarnassus",
+        "J. P. Morgan"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "pyramid pinnacle",
+      "physical_cues": [
+        {
+          "cue": "The pyramidal top of 14 Wall (not visible from Wall Street itself), modeled on Halicarnassus",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Bronze lobby gates depicting metallurgy, shipping, mining, agriculture, and power",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "14 Wall is the Bankers Trust Building; Trowbridge and Livingston's pyramidal top modeled on the Mausoleum at Halicarnassus",
+        "J. P. Morgan stayed beneath the pyramid to watch construction of his building across the street",
+        "The pyramid was the Bankers Trust logo; not visible from Wall Street itself",
+        "Bronze lobby gates depict enterprises of capitalism"
+      ],
+      "source_passage": "Westward, at 14Wall, stands the Bankers Trust Building. Bankers Trust is no more (see Deutsche Bank for details), but Trowbridge and Livingston's pyramidal top, taken from antiquity's well-known mausoleum at Halicarnassus (fourth century b.c.), remains... J. P. Morgan shacked up beneath the pyramid to have a bird's-eye view of the construction of his own building across the street. The pyramid became for years the logo of Bankers Trust (although, in a testimony to the effect of downtown canyons, you cannot see the pyramid from Wall Street itself). Take a walk inside to have a peek at the bronze gates in the lobby. Exquisitely finished, they represent the various enterprises of capitalism, including metallurgy, shipping, mining, agriculture, and power.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_hall_historic_arch_big-onion-ten-historic-tours_parthenon_lenfant_demolished",
+      "city_name": "new_york",
+      "poi_name": "Federal Hall",
+      "lens": "historic_arch",
+      "topic_slug": "parthenon_lenfant_demolished",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On the northeast corner of Nassau and Wall stands Federal Hall National Memorial, dubbed the \"Parthenon of Wall Street.\" The site has a vigorous past as the city's second city hall, later the Custom House and subtreasury, and now a federal museum. The current Greek-revival structure dates from 1842; the earlier building on the site, where Washington took his oath and the new government operated for its first eighteen months, was designed by Pierre L'Enfant — the master planner of Washington, D.C. — and was demolished in 1790 when the capital moved to Philadelphia. The Greek-revival style suited an age when Athenian democracy and the Greek independence movement produced a bumper crop of Doric-templed civic buildings; later, as abolitionism gained steam, Greece became associated with slavery rather than the demos, and those classical buildings lost their place in the sun.",
+      "duration_sec": 58,
+      "kid_friendly": "yes",
+      "entities": [
+        "Federal Hall National Memorial",
+        "George Washington",
+        "Pierre L'Enfant"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "greek revival hall",
+      "physical_cues": [
+        {
+          "cue": "Federal Hall, the 'Parthenon of Wall Street', on the northeast corner of Nassau and Wall",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "demos",
+          "gloss": "the common people; the citizenry of a democracy (Greek)"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Federal Hall, 'Parthenon of Wall Street', on NE corner of Nassau and Wall",
+        "Was the city's second city hall, later Custom House and subtreasury, now a museum",
+        "Current Greek-revival structure dates 1842",
+        "Earlier building (Washington's oath) designed by Pierre L'Enfant, demolished 1790 when capital moved to Philadelphia"
+      ],
+      "source_passage": "On the northeast corner of Nassau and Wall stands Federal Hall National Memorial, the \"Parthenon of Wall Street\" as some have dubbed it. The site has a vigorous and significant past as New York City's second city hall, formerly the Custom House and subtreasury in the nineteenth century and currently a federal museum... The current structure dates from 1842... In 1790, with the move of the federal capital to Philadelphia, the building on this site, designed by Washington, D.C.'s great master planner Pierre L'Enfant, was demolished. Federal Hall's Greek-revival style was typical for the earlier nineteenth-century period, when Athenian democracy and the Greek independence movement led to a bumper crop of Doric-templed civic buildings throughout the nation. Only a short while later, when abolitionism gained steam in the North, Greece became associated with slavery rather than the demos, and those lovely classical buildings lost their place in the sun.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_hall_war_conflict_big-onion-ten-historic-tools_british_hq_declaration_read",
+      "city_name": "new_york",
+      "poi_name": "Federal Hall",
+      "lens": "war_conflict",
+      "topic_slug": "british_hq_declaration_stamp_act_congress",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Before its federal function, the building on this site teemed with the birth pangs of the republic. The famed Stamp Act Congress met here in 1765 to draft the Declaration of Grievances against \"taxation without representation.\" The Declaration of Independence was read here on July 9 — it took some days to travel from Philadelphia to New York. And the site even served as the British headquarters during the Revolutionary War.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stamp Act Congress",
+        "Declaration of Independence",
+        "Declaration of Grievances"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "stamp act congress",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Stamp Act Congress met here in 1765 to draft the Declaration of Grievances",
+        "The Declaration of Independence was read here on July 9",
+        "The site served as British headquarters during the Revolutionary War"
+      ],
+      "source_passage": "The famed Stamp Act Congress met here in 1765to draft the Declaration of Grievances against \"taxation without representation.\" And the Declaration of Independence was read here on July 9. (It took some days to travel from Philly to New York; no e-mail access then.) The site even served as the British headquarters during the Revolutionary War!",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_stock_exchange_dark_history_big-onion-ten-historic-tours_morgan_bombing_pockmarks",
+      "city_name": "new_york",
+      "poi_name": "New York Stock Exchange",
+      "lens": "dark_history",
+      "topic_slug": "morgan_bombing_pockmarks_invincibility",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "23 Wall Street",
+      "beat_length_class": "mid",
+      "script_body": "On the southeast corner of Broad and Wall stands a plain, unornamented, unsigned building — J. P. Morgan's bank. As Morgan wanted all to realize, if you didn't know what this building was, you had no business being there. The only decoration on the facade are the pockmarks that dot the Wall Street side: remnants of a bomb, blamed on anarchists, that killed thirty-eight people and wounded hundreds in 1920. The scars remain because Morgan felt they were a testament to his invincibility.",
+      "duration_sec": 35,
+      "kid_friendly": "no",
+      "entities": [
+        "J. P. Morgan",
+        "Wall Street bombing"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "morgan bombing scars",
+      "physical_cues": [
+        {
+          "cue": "Pockmarks from the 1920 bomb still scarring the Wall Street side of the plain Morgan building, on the SE corner of Broad and Wall",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "J. P. Morgan's plain, unsigned bank building stands on the SE corner of Broad and Wall",
+        "Facade is scarred by pockmarks from a 1920 bomb blamed on anarchists",
+        "The bomb killed thirty-eight and wounded hundreds",
+        "Scars left as a testament to Morgan's invincibility"
+      ],
+      "source_passage": "Well, this is J. P. Morgan's bank building, and as Morgan wanted all to realize, if you didn't know what this building was, you had no business (literally and figuratively) being there. The only decoration on the facade of the building are the pockmarks that dot the Wall Street side, remnants of a bomb (blamed on anarchists) that killed thirty-one people and wounded hundreds in 1920. The scars remain because Morgan felt they were a testament to his invincibility.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "field": "script_body",
+          "original": "killed thirty-one people",
+          "corrected": "killed thirty-eight people",
+          "reason": "The 1920 Wall Street bombing killed 38 people (30 died at the scene, 38 total); Wikipedia, FBI, and Britannica all give 38. The book's 'thirty-one' is a numeric error.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Wall_Street_bombing",
+            "https://www.fbi.gov/history/famous-cases/wall-street-bombing-1920",
+            "https://www.britannica.com/event/Wall-Street-bombing-of-1920"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_stock_exchange_historic_markets_big-onion-ten-historic-tours_buttonwood_tontine_royal_african",
+      "city_name": "new_york",
+      "poi_name": "New York Stock Exchange",
+      "lens": "historic_markets",
+      "topic_slug": "buttonwood_tontine_royal_african",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The forlorn little tree out front on Broad Street isn't any old tree but a buttonwood, or sycamore. In 1792, twenty-four brokers met under a buttonwood — in actuality further east on Wall Street — and began trading the massive debt from the Revolutionary War. The so-called Buttonwood Agreement, as Edwin Burrows and Michael Wallace tell us in Gotham, \"laid the foundations for a structured securities market.\" Early the next year the traders moved into the Tontine Coffee House on the northwest corner of Water and Wall — a site that had been the locale for the infamous Royal African Trading Company, where the English bought and sold enslaved Africans.",
+      "duration_sec": 47,
+      "kid_friendly": "no",
+      "entities": [
+        "Buttonwood Agreement",
+        "Edwin Burrows",
+        "Michael Wallace",
+        "Gotham",
+        "Tontine Coffee House",
+        "Royal African Trading Company"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "buttonwood origin",
+      "physical_cues": [
+        {
+          "cue": "The buttonwood (sycamore) tree out front on Broad Street",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The tree out front is a buttonwood (sycamore)",
+        "In 1792 twenty-four brokers met under a buttonwood (further east on Wall) and traded Revolutionary War debt",
+        "The Buttonwood Agreement laid foundations for a structured securities market (per Burrows & Wallace's Gotham)",
+        "Traders moved to the Tontine Coffee House at Water and Wall, formerly site of the Royal African Trading Company slave market"
+      ],
+      "source_passage": "This isn't any old tree but a buttonwood (or sycamore). Its symbolism? Well, in 1792, twenty-four brokers met under a buttonwood (in actuality further east on Wall Street) and began trading the massive debt from the Revolutionary War. The so-called Buttonwood Agreement, Gotham's Edwin Burrows and Michael Wallace tell us, \"laid the foundations for a structured securities market without the now discredited auctions.\" Early the next year the traders moved into the Tontine Coffee House, which was located on the northwest corner of Water and Wall Streets. This site had been the locale for the infamous Royal African Trading Company, where the English bought and sold enslaved Africans.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_stock_exchange_historic_arch_big-onion-ten-historic-tours_roman_temple_black_thursday",
+      "city_name": "new_york",
+      "poi_name": "New York Stock Exchange",
+      "lens": "historic_arch",
+      "topic_slug": "roman_temple_black_thursday_volume",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Directly across Broad Street from Morgan's building is the sine qua non of capitalist institutions, the New York Stock Exchange — even if its address is on Broad Street, it's the best known of Wall Street's buildings. In contrast to Federal Hall's severe Grecian temple across the way, the NYSE's Roman trappings are all pomp and circumstance. The market has seen a multitude of changes since the crash of 1929: it took a full twenty-five years before the Dow surpassed that summer's highs, and not until 1968 did daily volume surpass the 16 million shares traded on Black Thursday. Today the NYSE trades 16 million in each day's first few minutes.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Stock Exchange",
+        "Federal Hall",
+        "Dow Jones Industrial Average",
+        "Black Thursday"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "roman facade volume",
+      "physical_cues": [
+        {
+          "cue": "The NYSE's Roman-temple facade, across Broad Street from Morgan's building",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "sine qua non",
+          "gloss": "the indispensable thing; that without which there is nothing"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "NYSE's address is on Broad Street; Roman-temple trappings contrast with Federal Hall's Grecian temple",
+        "It took 25 years for the Dow to surpass the summer 1929 highs",
+        "Not until 1968 did daily volume surpass the 16 million shares of Black Thursday",
+        "Today the NYSE trades 16 million in the first few minutes"
+      ],
+      "source_passage": "Directly across Broad Street from Morgan's building is the sine qua non of capitalist institutions: the New York Stock Exchange (NYSE). Even if its address is, after all, on Broad Street, this is the best known of Wall Street's buildings... In contrast to the severe Grecian temple of Federal Hall across the way, the NYSE's Roman trappings are all pomp and circumstance... But it was a full twenty-five years before the Dow Jones Industrial Average surpassed the summer highs of that fateful year... it wasn't until 1968that the daily volume on the floor of the exchange surpassed the 16million shares traded on Black Thursday... the NYSE trades 16 million in each day's first few minutes.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_hidden_history_big-onion-ten-historic-tours_broad_street_dutch_canal",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "hidden_history",
+      "topic_slug": "broad_street_dutch_canal",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "micro",
+      "script_body": "Broad Street runs from Wall down to the tip of Manhattan. It was originally a canal dug by the Dutch in 1660 and filled in by their British successors in 1676.",
+      "duration_sec": 12,
+      "kid_friendly": "yes",
+      "entities": [
+        "Broad Street"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "broad street canal",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Broad Street was originally a Dutch canal dug in 1660",
+        "Filled in by the British in 1676"
+      ],
+      "source_passage": "Take a peek down Broad Street. It runs from Wall down to the tip of Manhattan. It was originally a canal dug by the Dutch in 1660and filled in by their British successors in 1676.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_dark_history_big-onion-ten-historic-tours_witte_paert_slavery_sidebar",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "dark_history",
+      "topic_slug": "witte_paert_slavery_sidebar",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "New York City was no stranger to slavery: it was the largest slaveholding city in all the colonies until 1750, and the number-one place for slave importation and auctions. Slaves arrived as early as 1626 from the Dutch West Indies, but on September 15, 1655, the Witte Paert docked with three hundred African slaves, signaling the city's beginning as a large-scale port for the transatlantic slave trade. By 1664 the city was 20 to 25 percent black. Under the Dutch, some were given \"half freedom\" — a degree of freedom in housing and employment, though even half-free blacks had to work for the Dutch West India Company when needed, and their children were company property. When the British conquered in 1664 they recognized all slave property, eliminated half-free status, and made freedom harder each year; in 1706 a law decreed that conversion to Christianity did not affect a slave's status. New York City held 3,137 slaves by 1771. The institution was dismantled only gradually: the Manumission Society began work in 1785, the Gradual Manumission Act of 1799 freed males born after that year at twenty-eight and females at twenty-five, and full emancipation finally took effect in 1827.",
+      "duration_sec": 85,
+      "kid_friendly": "no",
+      "entities": [
+        "Witte Paert",
+        "Dutch West India Company",
+        "New York Manumission Society",
+        "Gradual Manumission Act of 1799"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "somber",
+      "subject_tag": "slavery sidebar",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Witte Paert",
+          "gloss": "the Dutch ship that docked September 15, 1655 with three hundred African slaves"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "NYC was the largest slaveholding city in the colonies until 1750",
+        "Slaves arrived from 1626; the Witte Paert docked Sept 15, 1655 with 300 African slaves",
+        "By 1664 the city was 20-25 percent black",
+        "Dutch 'half freedom'; British recognized slave property in 1664 and eliminated half-free status",
+        "1706 law: Christian conversion did not affect status",
+        "3,137 slaves by 1771",
+        "Manumission Society 1785; Gradual Manumission Act 1799; full emancipation 1827"
+      ],
+      "source_passage": "New York City was no stranger to slavery. It was, in fact, the largest slaveholding city in all the colonies until 1750, and the number-one place for slave importation and auctions. Slaves arrived in the city as early as 1626, brought in small numbers from the Dutch West Indies. But on September 15, 1655, the Witte Paert docked with three hundred African slaves... but by 1664, the city was 20 to 25 percent black. Under the Dutch, slaves were provided with some medical care, food, and housing. The Dutch gave half freedom to some... children were company property... The British recognized all residents' slave property after their conquest in 1664... eliminated half-free status. In 1677, British law dictated that all blacks brought to trial were presumed to be slaves, and in 1706, it decreed that conversion to Christianity did not affect slaves' status... New York City had 3,137 slaves by 1771... In 1785, the New York Manumission Society began to work for the gradual abolition of slavery... The Gradual Manumission Act of 1799 freed males born after that year at age twenty-eight and females at age twenty-five... legislation emancipating all slaves finally took effect in 1827.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_dark_history_big-onion-ten-historic-tours_1712_uprising_maiden_lane",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "dark_history",
+      "topic_slug": "1712_uprising_maiden_lane",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "New York saw several significant slave uprisings in the eighteenth century, most notably the 1712 uprising on Maiden Lane and Nassau Street — the present site of the Home Insurance Company. There more than fifty armed slaves gathered for an uprising that killed nine white settlers before the slaves dispersed to the north. Ultimately nineteen participants were captured and executed in gruesome fashion — by hanging, burning, and goring — to intimidate the remaining slave population.",
+      "duration_sec": 33,
+      "kid_friendly": "no",
+      "entities": [
+        "Maiden Lane",
+        "Home Insurance Company"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "1712 uprising",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1712 slave uprising on Maiden Lane and Nassau Street (now the Home Insurance Company site)",
+        "More than fifty armed slaves gathered; nine white settlers killed",
+        "Nineteen participants captured and executed by hanging, burning, and goring"
+      ],
+      "source_passage": "New York City saw several significant slave uprisings during the eighteenth century, most notably the 1712 uprising on Maiden Lane and Nassau Street (the present site of the Home Insurance Company). It was here that more than fifty armed slaves gathered for an uprising that eventually killed nine white settlers before the slaves dispersed to the north. Ultimately nineteen participants were captured and executed in gruesome fashion—by hanging, burning, and goring—in order to intimidate the remaining slave population.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_1_wall_street_historic_arch_big-onion-ten-historic-tours_irving_trust_deco_mumford",
+      "city_name": "new_york",
+      "poi_name": "1 Wall Street",
+      "lens": "historic_arch",
+      "topic_slug": "irving_trust_deco_mumford",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The building at 1 Wall Street now houses the Bank of New York, which absorbed the original owners, Irving Trust, in 1988 — at the time the building carried the highest real-estate price tag of any site in New York City. Inside, the three-story reception hall is one of the most glorious interiors in Manhattan: this is Art Deco at its most majestic, soaring and emboldened. Lewis Mumford called 1 Wall Street a building of \"untrammeled imagination.\" At the very top of the fluted skyscraper sits a gilded mosaic boardroom, testament to the extravagance of a different age — before the golden age of Deco came to a screeching halt with the Great Depression.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "1 Wall Street",
+        "Bank of New York",
+        "Irving Trust",
+        "Lewis Mumford"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "art deco interior",
+      "physical_cues": [
+        {
+          "cue": "The three-story Art Deco reception hall inside 1 Wall Street",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "The fluted skyscraper rising to a gilded mosaic boardroom at the top",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1 Wall Street now houses the Bank of New York, which absorbed Irving Trust in 1988",
+        "Then carried the highest real-estate price tag of any NYC site",
+        "Three-story Art Deco reception hall; Mumford called it a building of 'untrammeled imagination'",
+        "Gilded mosaic boardroom at the top"
+      ],
+      "source_passage": "The building at 1Wall Street now houses the Bank of New York, which absorbed the original owners, the Irving Trust, in 1988; at the time the building had the highest real estate price tag of any site in New York City. Inside the three-story reception hall is one of the most glorious interiors in Manhattan... This is Art Deco at its most majestic: soaring, proud, and emboldened. Lewis Mumford called 1Wall Street a building of \"untrammeled imagination.\"... At the very top of the fluted skyscraper is a gilded mosaic boardroom, testament to the extravagance of a different age.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_trinity_church_historic_worship_big-onion-ten-historic-tours_tallest_until_brooklyn_bridge",
+      "city_name": "new_york",
+      "poi_name": "Trinity Church",
+      "lens": "historic_worship",
+      "topic_slug": "tallest_until_brooklyn_bridge_land_grant",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "There was a time when churches were all one could see on the skyline, and Trinity, at 280 feet, was the highest point in New York City until surpassed by the towers of the Brooklyn Bridge — which says a lot about commerce. Trinity began as a land grant from King William III to the colonists in the late seventeenth century; the church originally controlled all the land from Fulton up to Christopher Street. Many early belfrymen, pastors, and rectors now have city streets named after them — Chambers, Murray, and Reade, for example. Trinity has gone through three incarnations: the first (1698-1776) burned in the fire of 1776, the second saw its roof implode in 1839, and the present building by Richard Upjohn has withstood the ravages of time.",
+      "duration_sec": 53,
+      "kid_friendly": "yes",
+      "entities": [
+        "Trinity Church",
+        "Brooklyn Bridge",
+        "King William III",
+        "Richard Upjohn"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "tallest land grant",
+      "physical_cues": [
+        {
+          "cue": "Trinity's 280-foot spire, at Wall Street and Broadway",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Trinity at 280 feet was NYC's highest point until surpassed by the Brooklyn Bridge towers",
+        "Began as a land grant from King William III; originally controlled land from Fulton to Christopher Street",
+        "Early clergy have streets named after them (Chambers, Murray, Reade)",
+        "Three incarnations: 1698-1776 (burned 1776), second (roof imploded 1839), present by Richard Upjohn"
+      ],
+      "source_passage": "Trinity, at 280feet, was the highest point in New York City until surpassed by the towers of the Brooklyn Bridge (which says a lot about commerce)... Trinity began as a land grant from King William III to the colonists in the late seventeenth century. Many of the early belfrymen, pastors, and rectors now have New York City streets named after them (Chambers, Murray, and Reade Streets, for example). The church originally controlled all the land from Fulton up to Christopher Street. Trinity Church has gone through three incarnations. The first church (1698–1776) was burned in the fire of 1776. The second saw its roof implode in 1839. The present building by Richard Upjohn has fortunately withstood the ravages of time.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_trinity_church_local_legends_big-onion-ten-historic-tours_shipwrecks_whales_parish_holdings",
+      "city_name": "new_york",
+      "poi_name": "Trinity Church",
+      "lens": "local_legends",
+      "topic_slug": "shipwrecks_whales_parish_holdings",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Today the church is no stranger to wealth: though many have been sold over time, parish holdings still bring in roughly $40 million a year. A curiosity from yesteryear — Trinity still maintains the rights to all unclaimed shipwrecks and beached whales along part of the Hudson River.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Trinity Church",
+        "Hudson River"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "shipwrecks and whales",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Parish holdings still bring in roughly $40 million a year",
+        "Trinity retains rights to unclaimed shipwrecks and beached whales along part of the Hudson River"
+      ],
+      "source_passage": "Today the church is no stranger to wealth and influence; although many have been sold over time, parish holdings still bring in approximately $40million per year. A curiosity from yesteryear: Trinity still maintains the rights to all unclaimed shipwrecks and beached whales along part of the Hudson River.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_trinity_church_famous_residents_big-onion-ten-historic-tours_churchyard_fulton_lewis_martyrs",
+      "city_name": "new_york",
+      "poi_name": "Trinity Church",
+      "lens": "famous_residents",
+      "topic_slug": "churchyard_fulton_lewis_soldiers_monument",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": "churchyard",
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Walk the churchyard and you'll meet an illustrious gathering of the city's financial elite and early purveyors of freedom. Alexander Hamilton was buried here after his fateful duel with Vice President Aaron Burr in Weehawken; Robert Fulton, inventor of the steamship, is memorialized; William Bradford, publisher of New York's first newspaper, rests here; and so does Francis Lewis, the only signer of the Declaration of Independence buried in Manhattan. Opposite Pine Street stands the Soldiers/Martyrs monument, erected in 1852 to soldiers who died imprisoned in the Rhinelander Sugar House during the Revolution — of the war's 18,500 who died in captivity, more than half perished in New York.",
+      "duration_sec": 52,
+      "kid_friendly": "yes",
+      "entities": [
+        "Alexander Hamilton",
+        "Aaron Burr",
+        "Robert Fulton",
+        "William Bradford",
+        "Francis Lewis",
+        "Declaration of Independence",
+        "Rhinelander Sugar House"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "churchyard graves",
+      "physical_cues": [
+        {
+          "cue": "Graves of Hamilton, Fulton, Bradford and Francis Lewis in the Trinity churchyard",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        },
+        {
+          "cue": "The Soldiers/Martyrs monument (1852) opposite Pine Street, in the north part of the churchyard",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hamilton buried here after his duel with Aaron Burr in Weehawken",
+        "Robert Fulton memorialized; William Bradford buried here",
+        "Francis Lewis, only Declaration signer buried in Manhattan, rests here",
+        "Soldiers/Martyrs monument (1852) to those who died in the Rhinelander Sugar House; over half of the war's 18,500 captivity deaths were in New York"
+      ],
+      "source_passage": "Alexander Hamilton was buried here after his fateful duel with Vice President Aaron Burr in Weehawken, New Jersey; Robert Fulton, noted inventor of the steamship, is memorialized; and the churchyard provides the final resting places for William Bradford, publisher of New York's first newspaper; and Francis Lewis, the only signer of the Declaration of Independence buried in Manhattan. Opposite Pine Street, in the north part of the churchyard, stands the Soldiers/Martyrs monument. Erected in 1852, it stands as a memorial to soldiers who died during the American Revolution while imprisoned in Rhinelander Sugar House on Liberty (originally Crown) Street... Another 18,500died in captivity, more than half of them in New York.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_trinity_church_historic_markets_big-onion-ten-historic-tours_amex_curb_brokers",
+      "city_name": "new_york",
+      "poi_name": "Trinity Church",
+      "lens": "historic_markets",
+      "topic_slug": "amex_curb_brokers",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "Trinity Place",
+      "beat_length_class": "seasoning",
+      "script_body": "Take a detour through the graveyard and down the stairs to Trinity Place to peek at the American Stock Exchange. The AMEX has its roots at the curbstone of Broad Street and Exchange Place, where \"curb brokers\" would literally stop at nothing to buy and sell. Only in 1921 — after fifty-six years — did the New York curb market find a home, and in 1953 it was officially designated the American Stock Exchange.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "American Stock Exchange",
+        "curb brokers"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "amex curb market",
+      "physical_cues": [
+        {
+          "cue": "The American Stock Exchange building on Trinity Place, reached down the stairs behind the churchyard",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "AMEX has roots at the curbstone of Broad Street and Exchange Place ('curb brokers')",
+        "The curb market found a home in 1921, after fifty-six years",
+        "Officially designated the American Stock Exchange in 1953"
+      ],
+      "source_passage": "The American Stock Exchange (AMEX) has its roots at the curbstone of Broad Street and Exchange Place, where curb brokers would literally stop at nothing to buy and sell. It was only in 1921(after fifty-six years!) that the New York curb market found a home. In 1953it was officially designated the American Stock Exchange.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_historic_arch_big-onion-ten-historic-tours_equitable_setback_zoning",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "historic_arch",
+      "topic_slug": "equitable_setback_zoning",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "120 Broadway",
+      "beat_length_class": "mid",
+      "script_body": "Standing on Thames Street opposite 120 Broadway gives a crash course in New York City's first zoning ordinance. The Equitable Building's extreme mass — floor area thirty times the site's area, shafts going straight up forty floors, forty-five acres of floor space on a site just over an acre — was discouraging enough that light and air became the most desired commodities on the block. The new ordinance called for a \"zoning envelope\" that forced what became known as the \"setback\": the stepped-back, stairlike recesses you see as buildings grow taller. Spurred on by Hugh Ferris's exquisite drawings, setbacks became a design challenge, each architect trying to outdo the next in geometry and flair.",
+      "duration_sec": 48,
+      "kid_friendly": "yes",
+      "entities": [
+        "Equitable Building",
+        "Hugh Ferris"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "equitable zoning setback",
+      "physical_cues": [
+        {
+          "cue": "The Equitable Building filling the block between Pine and Cedar, viewed from Thames Street opposite 120 Broadway",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Equitable Building's extreme mass (floor area 30x the site, 45 acres on just over an acre) prompted NYC's first zoning ordinance",
+        "The ordinance created the 'zoning envelope' and the 'setback'",
+        "Hugh Ferris's drawings spurred setbacks as a design challenge"
+      ],
+      "source_passage": "Standing on Thames Street opposite 120Broadway offers the tourist an ideal crash course in New York City's first zoning ordinance. The extreme mass of the Equitable Building, where the floor area was thirty times the site's area and the shafts went straight up—all the way to the fortieth floor—was a bit discouraging. Forty-five acres of floor space all on a site that was just over an acre in size!... the new ordinance called for a \"zoning envelope\" that restricted pure shafts darting straight into the sky and forced what became known as the \"setback\"—the stepped-back, stairlike recesses one sees as buildings grow taller. Spurred on by the exquisite drawings of Hugh Ferris, setbacks became a design challenge for architects, each trying to outdo the next in terms of geometry and flair.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_zuccotti_park_modern_design_big-onion-ten-historic-tours_seagram_plaza_1961_zoning",
+      "city_name": "new_york",
+      "poi_name": "Zuccotti Park",
+      "lens": "modern_design",
+      "topic_slug": "seagram_plaza_1961_zoning",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "You may wonder how, in this dense and overoccupied district, an open-air plaza with benches managed to emerge here at Liberty Plaza. It was the great Seagram Building on Park Avenue, with its pristine plaza and open space, that convinced the city to find incentives for developers to allow more public use. Thus was born the 1961 zoning ordinance, which rewarded builders who provided public space integrated with private buildings.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Liberty Plaza",
+        "Seagram Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "1961 plaza zoning",
+      "physical_cues": [
+        {
+          "cue": "The open-air Liberty Plaza with benches where you're standing",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Liberty Plaza is an open-air plaza with benches in a dense district",
+        "The Seagram Building's plaza convinced the city to incentivize public space",
+        "The 1961 zoning ordinance rewarded builders who provided public space"
+      ],
+      "source_passage": "You may be wondering how, in this dense and overoccupied downtown district, an open-air plaza (with benches!) was able to emerge... it was the great Seagram Building on Park Avenue, with its pristine plaza and open space, that convinced the city to find incentives for developers to allow more public use. Thus was born the 1961zoning ordinance, which encouraged and rewarded builders who provided public space integrated with private buildings.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_9_11_memorial_and_museum_war_conflict_big-onion-ten-historic-tours_twin_towers_third_tallest_2001",
+      "city_name": "new_york",
+      "poi_name": "9/11 Memorial and Museum",
+      "lens": "war_conflict",
+      "topic_slug": "twin_towers_third_tallest_2001",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Directly west of Liberty Plaza once stood the seven-building complex of the World Trade Center, spotlighted by the twin towers — Towers 1 and 2 — the third-tallest buildings in the world. In the greatest act of terror to occur on American soil, almost three thousand persons lost their lives on September 11, 2001, when two hijacked planes were crashed into the towers, resulting in horrible fires and the buildings' implosion. As the authors wrote, it was too early to know what would become of this tragic space — but in New York's unceasing effort to rebuild that which is torn down, it was unlikely the area would remain fallow far into the future. The question of how to memorialize echoed the long-debated African burial ground just north near City Hall.",
+      "duration_sec": 53,
+      "kid_friendly": "no",
+      "entities": [
+        "World Trade Center",
+        "African Burial Ground National Monument"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "world trade center",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "West of Liberty Plaza stood the seven-building WTC complex; the twin towers were the third-tallest buildings in the world",
+        "Almost three thousand died on September 11, 2001 when two hijacked planes hit the towers",
+        "Authors note the memorialization question echoed the African burial ground debate near City Hall"
+      ],
+      "source_passage": "Directly west of the plaza once stood the complex of seven buildings, the World Trade Center, spotlighted by the \"twin towers\"—Towers 1and 2—the third tallest buildings in the world. In the greatest act of terror to occur on American soil, almost three thousand persons lost their lives on September 11, 2001, when two hijacked planes were crashed into the twin towers, resulting in horrible fires and the buildings' implosion... Yet the question remains how and in what way to memorialize, a question long debated at the site of the African burial ground, which still lies just north near City Hall.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_modern_design_big-onion-ten-historic-tours_marine_midland_helmsley_noguchi_cube",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "modern_design",
+      "topic_slug": "marine_midland_helmsley_noguchi_cube",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "140 Broadway",
+      "beat_length_class": "mid",
+      "script_body": "Across Broadway, the Marine Midland Bank Building at 140 Broadway shows what an ambitious developer could do. It was uncommon — impossible, really — in the late 1960s and 1970s for a developer to think about quality as a way of attracting tenants, but Harry Helmsley was ahead of his time. He hired one of the great international-style architects, Gordon Bunshaft of Skidmore Owings and Merrill, who also designed the Chase building behind it, as well as the sculptor Isamu Noguchi. The result is a sleek, refined glass exterior, and Noguchi's contribution is an orange cube — to be exact, a six-sided rhombohedron — with a cut-out hole.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Marine Midland Bank Building",
+        "Harry Helmsley",
+        "Gordon Bunshaft",
+        "Skidmore Owings and Merrill",
+        "Isamu Noguchi"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "marine midland cube",
+      "physical_cues": [
+        {
+          "cue": "The sleek glass Marine Midland Bank Building at 140 Broadway and Noguchi's orange cube with a cut-out hole",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Harry Helmsley built the Marine Midland Bank Building at 140 Broadway, prioritizing quality",
+        "Architect Gordon Bunshaft of Skidmore Owings and Merrill (who also designed Chase) and sculptor Isamu Noguchi",
+        "Noguchi's orange cube is a six-sided rhombohedron with a cut-out hole"
+      ],
+      "source_passage": "But in the case of the Marine Midland Bank Building (140Broadway), Harry Helmsley was ahead of his time. Helmsley was moved to hire one of the great international style architects, Gordon Bunshaft of Skidmore Owings and Merrill (who also designed the Chase Manhattan building behind it in 1960), as well as the sculptor Isamu Noguchi... The result is a sleek, refined, glass exterior that adds dignity to this stretch of Broadway. Noguchi's moving contribution is an orange cube (well, to be exact, it's a rhombohedron—a six-sided figure) with a cut-out hole.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_hidden_history_big-onion-ten-historic-tours_singer_building_tallest_demolished",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "lens": "hidden_history",
+      "topic_slug": "singer_building_tallest_demolished",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "1 Liberty Plaza",
+      "beat_length_class": "seasoning",
+      "script_body": "On the site of today's U.S. Steel Building at 1 Liberty Plaza once stood one of the great downtown buildings, the Singer Building. Perhaps the mourning wasn't as great as when Pennsylvania Station was slaughtered in 1963, but the Singer Building's demolition brought tears of rage consistent with its long-standing place in the skyline. Its tragic epitaph: it is the tallest building ever to be demolished.",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Singer Building",
+        "U.S. Steel Building",
+        "Pennsylvania Station"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "somber",
+      "subject_tag": "singer building lost",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Singer Building once stood on the site of the U.S. Steel Building at 1 Liberty Plaza",
+        "Its demolition was mourned, though less than Penn Station's in 1963",
+        "It is the tallest building ever to be demolished"
+      ],
+      "source_passage": "On the site of today's U.S. Steel/1 Liberty and the outdoor plaza stood one of the great downtown buildings in New York, the Singer Building. Perhaps the mourning wasn't as great as when Pennsylvania Station was slaughtered in 1963, but the Singer Building's demolition brought tears of rage consistent with its long-standing importance in New York City's skyline. Its tragic epitaph notes that it is the tallest building ever to be demolished.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_woolworth_building_historic_arch_big-onion-ten-historic-tours_cathedral_commerce_gargoyles",
+      "city_name": "new_york",
+      "poi_name": "The Woolworth Building",
+      "lens": "historic_arch",
+      "topic_slug": "cathedral_commerce_gargoyles_cash",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": "233 Broadway",
+      "beat_length_class": "mid",
+      "script_body": "The tallest building in the world from 1913 to 1929, the Woolworth at 233 Broadway is symbolized by its trademarked name, the \"Cathedral of Commerce.\" It was Frank Woolworth's revolutionary genius to open stores where the buyer could touch, feel, and examine every item — and it made him a mint. The exterior is dressed in late Gothic style, its terra-cotta facade and clear base-shaft-tower form making it, for many enthusiasts, the archetype of a skyscraper. Inside, look for the magnificent gargoyles, including Cass Gilbert the architect and Woolworth himself counting the nickels and dimes with which he literally paid for the building — in full, with $13 million in cash, so it never had a mortgage.",
+      "duration_sec": 55,
+      "kid_friendly": "yes",
+      "entities": [
+        "Woolworth Building",
+        "Frank Woolworth",
+        "Cass Gilbert"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "cathedral of commerce",
+      "physical_cues": [
+        {
+          "cue": "The late-Gothic terra-cotta facade of the Woolworth Building at 233 Broadway",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Interior gargoyles of Cass Gilbert and Woolworth counting nickels and dimes",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Tallest building in the world 1913-1929, the 'Cathedral of Commerce' at 233 Broadway",
+        "Woolworth's genius was stores where buyers could touch and examine items",
+        "Late-Gothic terra-cotta facade; archetype of a skyscraper",
+        "Interior gargoyles of Cass Gilbert and Woolworth; Woolworth paid $13 million in cash, no mortgage"
+      ],
+      "source_passage": "The tallest building in the world from 1913to 1929, the Woolworth is symbolized by its trademarked name the \"Cathedral of Commerce.\"... It was the revolutionary genius of Woolworth to open a set of stores where the buyer could touch, feel, and examine every item he or she thought of purchasing... The exterior of the building is dressed up in late Gothic style... specifically the terra cotta used throughout the facade; the clear and articulated form of the base, shaft, and tower... you have time to appreciate several magnificent gargoyles, including Cass Gilbert (the architect) and Woolworth himself counting the nickels and dimes with which he (literally) paid for the building. (Since Frank Woolworth paid in full with $13million in cash, the building never had a mortgage.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_woolworth_building_local_legends_big-onion-ten-historic-tours_landmark_name_forever",
+      "city_name": "The Woolworth Building",
+      "poi_name": "The Woolworth Building",
+      "lens": "local_legends",
+      "topic_slug": "landmark_name_forever_witkoff",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-01-wall-street",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The great cathedral closed its famous stores in the mid-1990s and sold its Gothic tower in June 1998 for $155 million to the Witkoff Group. But there's a happy ending: under landmark rulings, once a building is landmarked it forever retains the name of the original structure. Hence, forevermore, the Woolworth will be the Woolworth.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Woolworth Building",
+        "Witkoff Group"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "callback",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "landmark name forever",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Woolworth closed its stores in the mid-1990s",
+        "Sold its Gothic tower in June 1998 for $155 million to the Witkoff Group",
+        "Landmark rulings mean a landmarked building forever keeps the original name"
+      ],
+      "source_passage": "Sadly, the great cathedral closed its famous stores in the mid-1990s and sold its Gothic-style tower in June 1998for $155million to the Witkoff Group. But there is a happy ending: because of landmark rulings, once a building has been landmarked it forever retains the name of the original structure. Hence, forevermore, the Woolworth will be the Woolworth.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "Wall Street: The Architecture of Capitalism"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [
+        {
+          "field": "city_name",
+          "original": "The Woolworth Building",
+          "corrected": "new_york",
+          "reason": "city_name field must be 'new_york'; emitter typo. Authoritative value is new_york.",
+          "sources": []
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "DISPUTE",
+      "description": "1920 Wall Street bombing death toll: Big Onion says 'thirty-one people' killed; Wikipedia, FBI, and Britannica all say 38 killed (30 at scene). Auto-corrected to thirty-eight per the two-source-minimum rule (3 independent sources agree).",
+      "recommendation": "Accept auto-correction to 38 in beat newyork_new_york_stock_exchange_dark_history_big-onion-ten-historic-tours_morgan_bombing_pockmarks. Note the existing Frommer's bombing beat (newyork_federal_hall_dark_history_frommers-nyc-2024_jp_morgan_1920_bombing) is anchored to Federal Hall; this Big Onion version is anchored to the NYSE (Morgan building, SE corner Broad and Wall) — both are valid geographic anchors; let beat-dedup reconcile if desired."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "26 Broadway (Standard Oil) dates: book says first building 1886 and current tower 1924; external sources give the original building as 1884-85 and the current Carrère & Hastings tower as completed ~1921-1928. Discrepancy is within a noisy range and the book is a published-historian source; NOT auto-corrected. The trust-breakup year (1911) is verified correct.",
+      "recommendation": "Leave as-is; flag for /fact-check if precise build dates matter downstream."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "New POI 'Delmonico's' (56 Beaver St, ~40.7050, -74.0103) sits within ~150-200m of existing POIs Fraunces Tavern (Pearl/Broad) and Stone Street. Distinct building/address and a separately notable landmark, but inside the 100m-flag spirit of a dense corridor.",
+      "recommendation": "Create as a new POI at /poi-generate time; run /poi-dedup new_york after geocode to confirm it is not an alias of an existing entry. Likely tier-3 per /poi-gravity."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Many Wall Street corridor buildings (Cunard 25 Broadway, NASDAQ/33 Whitehall, City Bank Farmers' Trust 22 William, Bankers Trust 14 Wall, 55 Wall, 60 Wall/J.P. Morgan, Chase Manhattan Plaza, Federal Reserve plaza sculptures, Marine Midland 140 Broadway, Singer Building/1 Liberty, AMEX, Equitable 120 Broadway) were extracted as seasoning/mid beats anchored to the existing 'Wall Street' POI (or Trinity Church / Zuccotti Park) with trigger_address, rather than auto-created as new POIs, per the proximity guardrail in a dense existing-POI corridor.",
+      "recommendation": "If any of these warrant standalone POIs (e.g., Cunard Building, Equitable Building, American Stock Exchange / 86 Trinity Place are Wikipedia-deep landmarks), flag at /poi-generate. Until then they ride on the Wall Street anchor via trigger_address."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Heavy pre-existing corpus overlap: Bowling Green, Custom House/NMAI, Fraunces Tavern, Federal Hall, NYSE buttonwood, Trinity, Woolworth, 40 Wall race-to-top, Stone Street and the JP Morgan bombing are already covered by Frommer's/Lonely Planet/Moon/NatGeo beats. This run adds Big Onion's distinct angles (Asser Levy, De Wal wall, slavery sidebar, 1712 uprising, Steamship Row/Cunard, Whitehall draft protest, Bankers Trust pyramid, Chase/Marine Midland modernism, Equitable zoning, India House cotton, AMEX curb market) with distinct topic_slugs.",
+      "recommendation": "Run /beat-dedup new_york after commit to reconcile the NYSE-buttonwood, Woolworth, and 40-Wall race beats against their existing Frommer's/LP counterparts."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 41,
+    "pois_touched": 11,
+    "new_pois": 1,
+    "corrections_applied": 3,
+    "disputes": 0,
+    "anomalies": 4,
+    "lenses_hit": [
+      "hidden_history",
+      "war_conflict",
+      "dark_history",
+      "social_change",
+      "historic_arch",
+      "modern_design",
+      "visual_art",
+      "historic_cuisine",
+      "local_legends",
+      "famous_residents",
+      "historic_worship",
+      "historic_markets"
+    ],
+    "lenses_missed": [
+      "street_art",
+      "music_heritage",
+      "film_tv",
+      "markets_street_food",
+      "literary_heritage",
+      "sacred_traditions",
+      "parks_gardens",
+      "waterways_views",
+      "science_tech"
+    ],
+    "confidence_counts": {
+      "HIGH": 38,
+      "MEDIUM": 3,
+      "LOW": 0
+    }
+  }
+}

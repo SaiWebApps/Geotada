@@ -1,0 +1,617 @@
+[
+  {
+    "name": "Dakota Building",
+    "short_description": "A landmark apartment building at 1 W 72nd St on Central Park West where John Lennon lived and was fatally shot in 1980; directly across from Strawberry Fields.",
+    "trigger_radius": 10,
+    "importance_tier": 4,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Dakota Building facade at 1 W 72nd St on Central Park West",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "John Lennon lived in the Dakota Building, at 1 W 72nd St on Central Park West, and was fatally shot there."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Dakota apartment building's Gothic exterior facade on Central Park West",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "factoid",
+        "script_excerpt": "The Dakota Building on the Upper West Side was used in the classic thriller Rosemary's Baby (1968) and was once the home of Judy Garland."
+      }
+    ]
+  },
+  {
+    "name": "Studio Museum in Harlem",
+    "short_description": "A treasured Harlem museum showcasing influential African American artists, serving as a cultural hub for rotating exhibitions, film screenings, and gallery talks.",
+    "trigger_radius": 15,
+    "importance_tier": 4,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "For more than 40 years, this treasured museum has showcased influential African American artists. The permanent collection is small \u2014 just under 2000 objects \u2014 but rich. The Studio Museum has been an important patron to African American art"
+      }
+    ]
+  },
+  {
+    "name": "Columbia University",
+    "short_description": "An Ivy League research university founded in 1754, whose Morningside Heights campus features Italian Renaissance-style buildings, the Alma Mater statue, and a famous site of the 1968 student uprising.",
+    "trigger_radius": 30,
+    "importance_tier": 4,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The main courtyard along College Walk at 116th Street surrounded by Italian Renaissance-style buildings",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Alma Mater statue with open arms seated before the Low Memorial Library in the northern half of the courtyard",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Founded in Lower Manhattan in 1754 as King's College, the oldest university in New York is now one of the world's premier research institutions. In 1897, the Ivy League school moved to its current location \u2014 the site of a former asylum \u2014 wh"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Hamilton Hall at the eastern end of College Walk, corner of Amsterdam Avenue",
+            "direction": "east",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On the eastern end of College Walk, at the corner of Amsterdam Avenue, is Hamilton Hall \u2014 a key site during the famous student uprising of 1968."
+      }
+    ]
+  },
+  {
+    "name": "General Ulysses S Grant National Memorial",
+    "short_description": "The largest mausoleum in America, holding the remains of Civil War hero and 18th US president Ulysses S Grant and his wife Julia, completed in 1897 and surrounded by Gaud\u00ed-inspired mosaic benches.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The imposing granite structure of Grant's Tomb on Riverside Drive at 122nd Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Popularly known as Grant's Tomb \u2014 'Who's buried in Grant's Tomb? Who? Grant, stupid!' goes a classic joke \u2014 this landmark holds the remains of Civil War hero and 18th president Ulysses S Grant and his wife, Julia. Completed in 1897, twelve "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Seventeen Gaud\u00ed-inspired mosaic benches surrounding the mausoleum, designed by Pedro Silva in the 1970s",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Seventeen Gaud\u00ed-inspired mosaic benches, designed by Chilean artist Pedro Silva in the 1970s, surround the mausoleum. It's a downright hallucinatory installation \u2014 and a good spot to contemplate the musings of the late, great comedian Georg"
+      }
+    ]
+  },
+  {
+    "name": "Riverside Church",
+    "short_description": "A neo-Gothic church built by the Rockefeller family in 1930, featuring 16th-century Flemish stained glass and a 74-bell carillon with the world's largest bass bell at 20 tons.",
+    "trigger_radius": 15,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Imposing neo-Gothic exterior of Riverside Church on Riverside Drive at 120th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "16th-century Flemish stained-glass windows in the narthex",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This imposing neo-Gothic beauty was built by the Rockefeller family in 1930. While the sparseness of the interior evokes an Italian Gothic style, the stained-glass windows in the narthex are actually Flemish, dating back to the 16th century"
+      }
+    ]
+  },
+  {
+    "name": "Schomburg Center for Research in Black Culture",
+    "short_description": "The nation's largest collection of documents, rare books, and photographs relating to the African American experience, run by the New York Public Library and named after Black Puerto Rican activist Arthur Schomburg.",
+    "trigger_radius": 15,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The nation's largest collection of documents, rare books and photographs relating to the African American experience resides at this scholarly center run by the New York Public Library. It's named after Arthur Schomburg, a Black Puerto Rica"
+      }
+    ]
+  },
+  {
+    "name": "Hamilton Grange",
+    "short_description": "Alexander Hamilton's Federal-style country retreat from the early 1800s, now a National Memorial in St Nicholas Park, and a major draw since the success of Lin-Manuel Miranda's musical Hamilton.",
+    "trigger_radius": 15,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Federal-style Hamilton Grange building in St Nicholas Park at 141st Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This Federal-style retreat belonged to Founding Father Alexander Hamilton, who owned a 32-acre country estate here in the early 1800s. Unfortunately, Hamilton was able to enjoy his abode for only two years before his life was cut short in a"
+      }
+    ]
+  },
+  {
+    "name": "555 Edgecombe Avenue",
+    "short_description": "A 1916 beaux-arts apartment building in Washington Heights that became a hub of African American cultural life by the 1940s, home to Joe Louis, Lena Horne, Count Basie, Duke Ellington, and Billy Strayhorn.",
+    "trigger_radius": 15,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The brick beaux-arts facade of 555 Edgecombe Avenue at 160th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "When completed in 1916, this brick beaux-arts giant at 555 Edgecombe Avenue was Washington Heights' first luxury apartment complex, with a concierge, a separate workers' entrance, and no fewer than three elevators. It was initially availabl"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Today the building's cultural legacy lives on every Sunday afternoon, when veteran musician Marjorie Eliot throws open the doors to her apartment, inviting anyone and everyone into her living room for one of the city's most enchanting jazz "
+      }
+    ]
+  },
+  {
+    "name": "Inwood Hill Park",
+    "short_description": "A 196-acre park containing Manhattan's last natural forest and salt marsh, with evidence of 17th-century Native American use and hilly paths for hiking, plus bald eagle nesting in the treetops.",
+    "trigger_radius": 30,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Hilly forest paths and grassy patches in a 196-acre natural park at Dyckman Street and the Hudson River",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This 196-acre oasis contains the last natural forest and salt marsh in Manhattan, and evidence suggests the land was used by Native Americans in the 17th century. It's a cool escape in summer and a great place to explore anytime, as you'll "
+      }
+    ]
+  },
+  {
+    "name": "Abyssinian Baptist Church",
+    "short_description": "Harlem's most famous gospel church, known for its celebrated Sunday tourist gospel services running from mid-September through July with strict visitor dress codes.",
+    "trigger_radius": 15,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "What started as an occasional pilgrimage has turned into a tourist-industry spectacle: entire busloads of travelers now make their way to Harlem every Sunday to attend a gospel service. The volume of visitors is so high that some churches t"
+      }
+    ]
+  },
+  {
+    "name": "Hamilton Heights Historic District",
+    "short_description": "A landmark stretch of historic limestone and brownstone townhouses on Convent Avenue and Hamilton Terrace in Hamilton Heights, dating from 1866 to 1931, including a turreted corner building recognizable from Wes Anderson's The Royal Tenenbaums.",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Historic limestone and brownstone townhouses lining Convent Avenue and Hamilton Terrace",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Turreted building at the southeastern corner of Convent Avenue and 144th Street \u2014 from The Royal Tenenbaums",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Two parallel streets in Hamilton Heights \u2014 Convent Avenue and Hamilton Terrace \u2014 contain a landmark stretch of historic limestone and brownstone townhouses from the period between 1866 and 1931. Wes Anderson fans may recognize the turreted "
+      }
+    ]
+  },
+  {
+    "name": "Sylvan Terrace",
+    "short_description": "A historic Washington Heights street of wooden row houses featuring NYC's first affordable worker housing, original late-19th-century gas lamps, and Belgian cobblestones.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Wooden row houses with high narrow stoops and dentiled canopies along Sylvan Terrace",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Original late-19th-century gas lamps and Belgian cobblestones on the street surface",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The wooden houses on storybook Sylvan Terrace \u2014 resplendent with their high narrow stoops, dentiled canopies, and boldly paneled wooden doors \u2014 constitute NYC's first attempt at building affordable abodes for workers. The street itself is g"
+      }
+    ]
+  },
+  {
+    "name": "Jane's Carousel",
+    "short_description": "A lovingly restored 1922 carousel by the Philadelphia Toboggan Company, housed in a Jean Nouvel acrylic pavilion at the north end of Brooklyn Bridge Park in Dumbo.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The vintage carousel with 48 horses and 1,200 lights inside its clear acrylic pavilion",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The star attraction of the north end of Brooklyn Bridge Park is a vintage carousel built by the Philadelphia Toboggan Company back in 1922. In 1984 it was purchased by Dumbo artist Jane Walentas, who spent the next two decades faithfully re"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Historical Society",
+    "short_description": "A museum devoted to all things Brooklyn, housed in a landmarked 1881 terracotta building in Brooklyn Heights, holding a rare 1770 NYC map and the Othmer Library.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The landmarked 1881 building's terracotta details and the Othmer Library's black-ash balcony",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Housed in a majestic, landmarked 1881 building with striking terracotta details, this museum is devoted to all things Brooklyn. Its priceless collection contains a rare 1770 map of NYC and a signed copy of the Emancipation Proclamation. Pee"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Heights Promenade",
+    "short_description": "A narrow paved walking strip over the BQE in Brooklyn Heights, offering breathtaking views of Lower Manhattan and New York Harbor; the neighborhood's number-one attraction.",
+    "trigger_radius": 15,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The paved walking strip over the BQE with views of Lower Manhattan and the Harbor",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Six of the east-west streets of well-to-do Brooklyn Heights, such as Montague and Clark Sts, lead to the neighborhood's number-one attraction: a narrow, paved walking strip with breathtaking views of Lower Manhattan and New York Harbor, bli"
+      }
+    ]
+  },
+  {
+    "name": "Empire Stores",
+    "short_description": "A cluster of restored Civil War-era brick warehouses in Dumbo, once stacked with coffee, sugar and tobacco, now an upscale 360,000-sq-ft hub of commerce, dining and culture.",
+    "trigger_radius": 12,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Civil War-era brick warehouses, retaining their original structure",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Built just after the Civil War, the Empire Stores are a vestige of Brooklyn's historic waterfront, which once supported 3 miles of brick warehouses stacked with coffee, sugar and tobacco. Retaining its original structure and features, it ha"
+      }
+    ]
+  },
+  {
+    "name": "Fort Greene Park",
+    "short_description": "A hilly 30-acre park in Fort Greene, Brooklyn's first park, redesigned by Olmsted and Vaux; home to Stanford White's Prison Ship Martyrs' Monument.",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 149ft Doric column of the Prison Ship Martyrs' Monument at the park's center",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "At the center of Fort Greene Park stands the Prison Ship Martyrs' Monument, at the time of its construction the world's tallest Doric column, at 149ft. Designed by Stanford White of the prominent firm McKim, Mead & White, it was built in 19"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "War history and a hilly aspect make 30-acre Fort Greene Park a rewarding space to ramble. Forts from the Revolutionary War and War of 1812 were retired by 1847, when this tract became Brooklyn's first park \u2014 a measure championed by Walt Whi"
+      }
+    ]
+  },
+  {
+    "name": "Williamsburg Bridge",
+    "short_description": "A 1903 steel-frame suspension bridge linking Williamsburg and the Lower East Side; at the time the longest suspension bridge on earth, with foot and bike paths offering East River views.",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The bridge's all-steel towers and foot/bike paths with East River views",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Built in 1903 to link Williamsburg and the Lower East Side at Delancey St, this steel-frame suspension bridge helped transform the area into a teeming industrial center. At the time it was the longest suspension bridge on earth, a behemoth "
+      }
+    ]
+  },
+  {
+    "name": "McCarren Park",
+    "short_description": "A grassy 35-acre Williamsburg park with a historic free swimming pool that reopened in 2012, popular for picnics, barbecues and summer movies and live music.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The huge historic free swimming pool at the park",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The grassy 35-acre McCarren Park makes a good picnic spot, where barbecues and bikinis define warm summer weekends. On sweltering days you might head to the free swimming pool \u2014 a huge, historic community spot that reopened in 2012 after be"
+      }
+    ]
+  },
+  {
+    "name": "East River State Park",
+    "short_description": "A 7-acre Williamsburg waterfront park with Manhattan views and cobbled vestiges of its cargo past; summer home to Smorgasburg, the country's largest outdoor food market.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The waterfront greenery with cobbled vestiges of its cargo-handling past and Manhattan views",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This 7-acre waterfront park is a slice of greenery with sublime views of Manhattan and cobbled vestiges of its cargo-handling past. On Saturdays in the warmer months the park is given over to Smorgasburg, the country's largest outdoor food "
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Brewery",
+    "short_description": "A Williamsburg craft brewery offering tours and tastings, whose cursive logo was designed by Milton Glaser of 'I Heart New York' fame.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Harking back to when this area of New York was a beer-brewing center, the Brooklyn Brewery brews local suds and offers 45-minute tours of its facilities. Here's an interesting fact: the brewery's cursive logo was designed by none other than"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Art Library",
+    "short_description": "A Williamsburg gallery holding the world's largest collection of artist sketchbooks \u2014 over 41,000 from contributors in more than 130 countries.",
+    "trigger_radius": 10,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "More than 41,000 sketchbooks lining the walls",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Brooklyn Art Library has assembled the world's largest collection of artist sketchbooks. More than 41,000 sketchbooks line the walls, a wild mix of graphic design, collage, fine art, poetry, irreverent comics and personal essays from co"
+      }
+    ]
+  },
+  {
+    "name": "Coney Art Walls",
+    "short_description": "An open-air public street-art museum off Surf Ave in Coney Island, with 35 freestanding walls repainted each season by emerging and renowned graffiti artists.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 35 freestanding mural walls off Surf Ave",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This open-air public museum of street art features 35 freestanding walls transformed each season into colorful murals by emerging and renowned graffiti artists from around the world, including pioneers such as Daze and Lee Qui\u00f1ones. On summ"
+      }
+    ]
+  },
+  {
+    "name": "Sunset Park",
+    "short_description": "A hilltop Brooklyn park between 41st and 44th Sts with an Olympic-size outdoor pool, sports courts and incredible views of New York Harbor and the Statue of Liberty.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Views of New York Harbor and the Statue of Liberty from the park's highest point",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Sunset Park is a lovely hangout spot. On summer evenings, families keep cool in its Olympic-size outdoor swimming pool, and kids love its large, modern playground. Small enough to walk around easily yet large enough to spread out for picnic"
+      }
+    ]
+  },
+  {
+    "name": "Weeksville Heritage Center",
+    "short_description": "A Crown Heights historic site preserving the Hunterfly Road Houses of Weeksville, a free African American community founded in 1838 by formerly enslaved man James Weeks.",
+    "trigger_radius": 12,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The three preserved Hunterfly Road Houses",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In 1838 a formerly enslaved man named James Weeks purchased a tract of land on the fringes of Brooklyn's settled areas to build a free African American community of entrepreneurs, doctors, laborers and craftspeople. The village was eventual"
+      }
+    ]
+  },
+  {
+    "name": "Wyckoff House Museum",
+    "short_description": "The Pieter Claesen Wyckoff House in East Flatbush, built in 1652 \u2014 New York City's oldest building and a Dutch Colonial H-frame former farmhouse.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Dutch Colonial H-frame house with shingled walls, split doors and a vegetable garden",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Built in 1652, the Pieter Claesen Wyckoff House is New York City's oldest building and one of the oldest in the US. A working farm until 1901, this Dutch Colonial H-frame house has shingled walls and split doors, with a community vegetable "
+      }
+    ]
+  },
+  {
+    "name": "Plymouth Church",
+    "short_description": "A Brooklyn Heights church on Orange St where Henry Ward Beecher gave abolitionist sermons and where Abraham Lincoln worshiped during his 1860 presidential campaign.",
+    "trigger_radius": 10,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Two blocks north on Orange St is Plymouth Church. In the mid-19th century, Henry Ward Beecher gave abolitionist sermons here, and Abraham Lincoln worshiped here during his 1860 presidential campaign."
+      }
+    ]
+  },
+  {
+    "name": "Museum of Contemporary African Diasporan Arts",
+    "short_description": "A small Fort Greene museum (MoCADA) in a brownstone, hosting multidisciplinary installations exploring social and political issues facing people of the African Diaspora.",
+    "trigger_radius": 10,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "This small Fort Greene museum in a brownstone building, known as MoCADA, hosts thought-provoking, multidisciplinary installations exploring social and political issues facing people of the African Diaspora. Through rotating exhibitions \u2014 fr"
+      }
+    ]
+  },
+  {
+    "name": "BRIC House",
+    "short_description": "A 40,000-sq-ft multidisciplinary arts complex in Fort Greene, home to a 400-seat theater and producer of the free summer Celebrate Brooklyn! Festival in Prospect Park.",
+    "trigger_radius": 10,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "This long-running Brooklyn arts organization \u2014 responsible for the free summer Celebrate Brooklyn! Festival in Prospect Park \u2014 is housed in an impressive 40,000-sq-ft space. The multidisciplinary complex stages art exhibitions, media events"
+      }
+    ]
+  },
+  {
+    "name": "Coffey Park",
+    "short_description": "A Red Hook neighborhood park named for an Irish-American district leader, with lawns, basketball courts and a kids' playground; hosts NYC Summer Stage concerts.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Named for an Irish-American former district leader, this Red Hook neighborhood park hosts NYC Summer Stage concerts and other free events."
+      }
+    ]
+  }
+]

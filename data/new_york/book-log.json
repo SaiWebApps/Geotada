@@ -1,234 +1,547 @@
 {
-  "frommers-nyc-2024": {
-    "chunk-03": {
-      "beats_extracted": 43,
-      "pois_touched": 28,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-09": {
-      "beats_extracted": 45,
-      "pois_touched": 19,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-10": {
-      "beats_extracted": 25,
-      "pois_touched": 11,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-11": {
-      "beats_extracted": 43,
-      "pois_touched": 14,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-01": {
-      "beats_extracted": 13,
-      "pois_touched": 13,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-02": {
-      "beats_extracted": 34,
-      "pois_touched": 25,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-04": {
-      "beats_extracted": 63,
-      "pois_touched": 27,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-05": {
-      "beats_extracted": 24,
-      "pois_touched": 9,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-06": {
-      "beats_extracted": 15,
-      "pois_touched": 7,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-07": {
-      "beats_extracted": 44,
-      "pois_touched": 21,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-08": {
-      "beats_extracted": 39,
-      "pois_touched": 26,
-      "processed_at": "2026-06-14"
-    },
-    "chunk-12": {
-      "beats_extracted": 18,
-      "pois_touched": 12,
-      "processed_at": "2026-06-14"
-    }
+ "frommers-nyc-2024": {
+  "chunk-03": {
+   "beats_extracted": 43,
+   "pois_touched": 28,
+   "processed_at": "2026-06-14"
   },
-  "lonely-planet-new-york-city": {
-    "chunk-01": {
-      "beats_extracted": 37,
-      "pois_touched": 20,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-02": {
-      "beats_extracted": 30,
-      "pois_touched": 17,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-03": {
-      "beats_extracted": 26,
-      "pois_touched": 8,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-04": {
-      "beats_extracted": 48,
-      "pois_touched": 27,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-05": {
-      "beats_extracted": 18,
-      "pois_touched": 7,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-06": {
-      "beats_extracted": 56,
-      "pois_touched": 20,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-07": {
-      "beats_extracted": 24,
-      "pois_touched": 11,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-08": {
-      "beats_extracted": 34,
-      "pois_touched": 21,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-09": {
-      "beats_extracted": 29,
-      "pois_touched": 17,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-10": {
-      "beats_extracted": 65,
-      "pois_touched": 38,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-11": {
-      "beats_extracted": 27,
-      "pois_touched": 13,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-12": {
-      "beats_extracted": 32,
-      "pois_touched": 21,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-13": {
-      "beats_extracted": 24,
-      "pois_touched": 17,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-14": {
-      "beats_extracted": 32,
-      "pois_touched": 28,
-      "processed_at": "2026-06-15"
-    },
-    "chunk-15": {
-      "beats_extracted": 20,
-      "pois_touched": 17,
-      "processed_at": "2026-06-15"
-    }
+  "chunk-09": {
+   "beats_extracted": 45,
+   "pois_touched": 19,
+   "processed_at": "2026-06-14"
   },
-  "moon-nyc-walks": {
-    "chunk-01": {
-      "beats_extracted": 18,
-      "pois_touched": 18,
-      "processed_at": "2026-06-16"
-    },
-    "chunk-02": {
-      "beats_extracted": 19,
-      "pois_touched": 17,
-      "processed_at": "2026-06-16"
-    },
-    "chunk-03": {
-      "beats_extracted": 21,
-      "pois_touched": 20,
-      "processed_at": "2026-06-16"
-    },
-    "chunk-04": {
-      "beats_extracted": 23,
-      "pois_touched": 23,
-      "processed_at": "2026-06-16"
-    },
-    "chunk-05": {
-      "beats_extracted": 20,
-      "pois_touched": 17,
-      "processed_at": "2026-06-16"
-    },
-    "chunk-06": {
-      "beats_extracted": 13,
-      "pois_touched": 11,
-      "processed_at": "2026-06-16"
-    },
-    "chunk-07": {
-      "beats_extracted": 12,
-      "pois_touched": 12,
-      "processed_at": "2026-06-16"
-    }
+  "chunk-10": {
+   "beats_extracted": 25,
+   "pois_touched": 11,
+   "processed_at": "2026-06-14"
   },
-  "national-geographic-walking-nyc": {
-    "chunk-01": {
-      "beats_extracted": 31,
-      "pois_touched": 18,
-      "new_pois": 2,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-02": {
-      "beats_extracted": 33,
-      "pois_touched": 18,
-      "new_pois": 11,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-03": {
-      "beats_extracted": 28,
-      "pois_touched": 11,
-      "new_pois": 0,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-04": {
-      "beats_extracted": 26,
-      "pois_touched": 10,
-      "new_pois": 1,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-05": {
-      "beats_extracted": 27,
-      "pois_touched": 9,
-      "new_pois": 1,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-06": {
-      "beats_extracted": 17,
-      "pois_touched": 4,
-      "new_pois": 0,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-07": {
-      "beats_extracted": 22,
-      "pois_touched": 9,
-      "new_pois": 3,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-08": {
-      "beats_extracted": 23,
-      "pois_touched": 9,
-      "new_pois": 0,
-      "processed_at": "2026-06-17"
-    },
-    "chunk-09": {
-      "beats_extracted": 25,
-      "pois_touched": 9,
-      "new_pois": 1,
-      "processed_at": "2026-06-17"
-    }
+  "chunk-11": {
+   "beats_extracted": 43,
+   "pois_touched": 14,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-01": {
+   "beats_extracted": 13,
+   "pois_touched": 13,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-02": {
+   "beats_extracted": 34,
+   "pois_touched": 25,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-04": {
+   "beats_extracted": 63,
+   "pois_touched": 27,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-05": {
+   "beats_extracted": 24,
+   "pois_touched": 9,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-06": {
+   "beats_extracted": 15,
+   "pois_touched": 7,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-07": {
+   "beats_extracted": 44,
+   "pois_touched": 21,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-08": {
+   "beats_extracted": 39,
+   "pois_touched": 26,
+   "processed_at": "2026-06-14"
+  },
+  "chunk-12": {
+   "beats_extracted": 18,
+   "pois_touched": 12,
+   "processed_at": "2026-06-14"
   }
+ },
+ "lonely-planet-new-york-city": {
+  "chunk-01": {
+   "beats_extracted": 37,
+   "pois_touched": 20,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-02": {
+   "beats_extracted": 30,
+   "pois_touched": 17,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-03": {
+   "beats_extracted": 26,
+   "pois_touched": 8,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-04": {
+   "beats_extracted": 48,
+   "pois_touched": 27,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-05": {
+   "beats_extracted": 18,
+   "pois_touched": 7,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-06": {
+   "beats_extracted": 56,
+   "pois_touched": 20,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-07": {
+   "beats_extracted": 24,
+   "pois_touched": 11,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-08": {
+   "beats_extracted": 34,
+   "pois_touched": 21,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-09": {
+   "beats_extracted": 29,
+   "pois_touched": 17,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-10": {
+   "beats_extracted": 65,
+   "pois_touched": 38,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-11": {
+   "beats_extracted": 27,
+   "pois_touched": 13,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-12": {
+   "beats_extracted": 32,
+   "pois_touched": 21,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-13": {
+   "beats_extracted": 24,
+   "pois_touched": 17,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-14": {
+   "beats_extracted": 32,
+   "pois_touched": 28,
+   "processed_at": "2026-06-15"
+  },
+  "chunk-15": {
+   "beats_extracted": 20,
+   "pois_touched": 17,
+   "processed_at": "2026-06-15"
+  }
+ },
+ "moon-nyc-walks": {
+  "chunk-01": {
+   "beats_extracted": 18,
+   "pois_touched": 18,
+   "processed_at": "2026-06-16"
+  },
+  "chunk-02": {
+   "beats_extracted": 19,
+   "pois_touched": 17,
+   "processed_at": "2026-06-16"
+  },
+  "chunk-03": {
+   "beats_extracted": 21,
+   "pois_touched": 20,
+   "processed_at": "2026-06-16"
+  },
+  "chunk-04": {
+   "beats_extracted": 23,
+   "pois_touched": 23,
+   "processed_at": "2026-06-16"
+  },
+  "chunk-05": {
+   "beats_extracted": 20,
+   "pois_touched": 17,
+   "processed_at": "2026-06-16"
+  },
+  "chunk-06": {
+   "beats_extracted": 13,
+   "pois_touched": 11,
+   "processed_at": "2026-06-16"
+  },
+  "chunk-07": {
+   "beats_extracted": 12,
+   "pois_touched": 12,
+   "processed_at": "2026-06-16"
+  }
+ },
+ "national-geographic-walking-nyc": {
+  "chunk-01": {
+   "beats_extracted": 31,
+   "pois_touched": 18,
+   "new_pois": 2,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-02": {
+   "beats_extracted": 33,
+   "pois_touched": 18,
+   "new_pois": 11,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-03": {
+   "beats_extracted": 28,
+   "pois_touched": 11,
+   "new_pois": 0,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-04": {
+   "beats_extracted": 26,
+   "pois_touched": 10,
+   "new_pois": 1,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-05": {
+   "beats_extracted": 27,
+   "pois_touched": 9,
+   "new_pois": 1,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-06": {
+   "beats_extracted": 17,
+   "pois_touched": 4,
+   "new_pois": 0,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-07": {
+   "beats_extracted": 22,
+   "pois_touched": 9,
+   "new_pois": 3,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-08": {
+   "beats_extracted": 23,
+   "pois_touched": 9,
+   "new_pois": 0,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-09": {
+   "beats_extracted": 25,
+   "pois_touched": 9,
+   "new_pois": 1,
+   "processed_at": "2026-06-17"
+  }
+ },
+ "big-onion-ten-historic-tours": {
+  "chunk-01": {
+   "beats_extracted": 50,
+   "pois_touched": 16,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-02": {
+   "beats_extracted": 55,
+   "pois_touched": 21,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-03": {
+   "beats_extracted": 34,
+   "pois_touched": 10,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-04": {
+   "beats_extracted": 54,
+   "pois_touched": 7,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-05": {
+   "beats_extracted": 45,
+   "pois_touched": 11,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-06": {
+   "beats_extracted": 36,
+   "pois_touched": 12,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-07": {
+   "beats_extracted": 33,
+   "pois_touched": 23,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-08": {
+   "beats_extracted": 38,
+   "pois_touched": 10,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-09": {
+   "beats_extracted": 37,
+   "pois_touched": 1,
+   "processed_at": "2026-06-17"
+  },
+  "chunk-10": {
+   "beats_extracted": 49,
+   "pois_touched": 27,
+   "processed_at": "2026-06-17"
+  }
+ },
+ "books_processed": [
+  {
+   "book_title": "Wikipedia",
+   "author": "Wikipedia contributors",
+   "chunks_processed": [
+    {
+     "chunk": "yankee_stadium-rev-1358311733",
+     "processed_at": "2026-06-18T20:05:39+00:00",
+     "beats_extracted": 11,
+     "pois_touched": [
+      "Yankee Stadium"
+     ]
+    },
+    {
+     "chunk": "carnegie_hall-rev-1352216015",
+     "processed_at": "2026-06-18T20:06:00+00:00",
+     "beats_extracted": 11,
+     "pois_touched": [
+      "Carnegie Hall"
+     ]
+    },
+    {
+     "chunk": "radio_city_music_hall-rev-1356664344",
+     "processed_at": "2026-06-18T20:06:20+00:00",
+     "beats_extracted": 13,
+     "pois_touched": [
+      "Radio City Music Hall"
+     ]
+    },
+    {
+     "chunk": "bronx_zoo-rev-1359901384",
+     "processed_at": "2026-06-18T20:07:00+00:00",
+     "beats_extracted": 14,
+     "pois_touched": [
+      "Bronx Zoo"
+     ]
+    },
+    {
+     "chunk": "hudson_yards-rev-1358623241",
+     "processed_at": "2026-06-18T20:08:00+00:00",
+     "beats_extracted": 12,
+     "pois_touched": [
+      "Hudson Yards"
+     ]
+    },
+    {
+     "chunk": "hudson_river_park-rev-1359497815",
+     "processed_at": "2026-06-18T20:08:30+00:00",
+     "beats_extracted": 14,
+     "pois_touched": [
+      "Hudson River Park"
+     ]
+    },
+    {
+     "chunk": "chelsea_market-rev-1356162084",
+     "processed_at": "2026-06-18T21:22:16+00:00",
+     "beats_extracted": 8,
+     "pois_touched": [
+      "Chelsea Market"
+     ]
+    },
+    {
+     "chunk": "historic_richmond_town-rev-1356598490",
+     "processed_at": "2026-06-18T21:22:16+00:00",
+     "beats_extracted": 8,
+     "pois_touched": [
+      "Historic Richmond Town"
+     ]
+    },
+    {
+     "chunk": "village_vanguard-rev-1353654115",
+     "processed_at": "2026-06-18T21:22:19+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Village Vanguard"
+     ]
+    },
+    {
+     "chunk": "wollman_rink-rev-1359619109",
+     "processed_at": "2026-06-18T21:22:35+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Wollman Rink"
+     ]
+    },
+    {
+     "chunk": "henry_street_settlement-rev-1358400822",
+     "processed_at": "2026-06-18T21:22:16+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Henry Street Settlement"
+     ]
+    },
+    {
+     "chunk": "strawberry_fields-rev-1349450082",
+     "processed_at": "2026-06-18T21:22:37+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Strawberry Fields"
+     ]
+    },
+    {
+     "chunk": "hotel_theresa-rev-1351397157",
+     "processed_at": "2026-06-18T21:22:17+00:00",
+     "beats_extracted": 11,
+     "pois_touched": [
+      "Hotel Theresa"
+     ]
+    },
+    {
+     "chunk": "flatiron_district-rev-1344159462",
+     "processed_at": "2026-06-18T21:22:35+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Flatiron District"
+     ]
+    },
+    {
+     "chunk": "verrazzano_narrows_bridge-rev-1356095408",
+     "processed_at": "2026-06-18T21:22:19+00:00",
+     "beats_extracted": 10,
+     "pois_touched": [
+      "Verrazzano-Narrows Bridge"
+     ]
+    },
+    {
+     "chunk": "metropolitan_opera_house-rev-1345381404",
+     "processed_at": "2026-06-18T21:22:36+00:00",
+     "beats_extracted": 10,
+     "pois_touched": [
+      "Metropolitan Opera House"
+     ]
+    },
+    {
+     "chunk": "sheep_meadow-rev-1345264269",
+     "processed_at": "2026-06-18T21:22:36+00:00",
+     "beats_extracted": 10,
+     "pois_touched": [
+      "Sheep Meadow"
+     ]
+    },
+    {
+     "chunk": "studio_museum_in_harlem-rev-1359969766",
+     "processed_at": "2026-06-18T21:22:37+00:00",
+     "beats_extracted": 10,
+     "pois_touched": [
+      "Studio Museum in Harlem"
+     ]
+    },
+    {
+     "chunk": "beacon_theatre-rev-1345095013",
+     "processed_at": "2026-06-18T21:22:15+00:00",
+     "beats_extracted": 11,
+     "pois_touched": [
+      "Beacon Theatre"
+     ]
+    },
+    {
+     "chunk": "manhattan_bridge-rev-1358974534",
+     "processed_at": "2026-06-18T21:22:17+00:00",
+     "beats_extracted": 10,
+     "pois_touched": [
+      "Manhattan Bridge"
+     ]
+    },
+    {
+     "chunk": "plaza_hotel-rev-1351357196",
+     "processed_at": "2026-06-18T21:22:18+00:00",
+     "beats_extracted": 15,
+     "pois_touched": [
+      "Plaza Hotel"
+     ]
+    },
+    {
+     "chunk": "sailors_snug_harbor-rev-1359387380",
+     "processed_at": "2026-06-18T21:22:19+00:00",
+     "beats_extracted": 13,
+     "pois_touched": [
+      "Sailors' Snug Harbor"
+     ]
+    },
+    {
+     "chunk": "flushing_meadows_corona_park-rev-1358195034",
+     "processed_at": "2026-06-18T21:22:36+00:00",
+     "beats_extracted": 8,
+     "pois_touched": [
+      "Flushing Meadows Corona Park"
+     ]
+    },
+    {
+     "chunk": "rockaway_beach-rev-1341573502",
+     "processed_at": "2026-06-18T21:22:36+00:00",
+     "beats_extracted": 12,
+     "pois_touched": [
+      "Rockaway Beach"
+     ]
+    },
+    {
+     "chunk": "little_island-rev-1355194959",
+     "processed_at": "2026-06-18T21:25:53+00:00",
+     "beats_extracted": 11,
+     "pois_touched": [
+      "Little Island"
+     ]
+    },
+    {
+     "chunk": "wave_hill-rev-1359146230",
+     "processed_at": "2026-06-18T21:25:53+00:00",
+     "beats_extracted": 6,
+     "pois_touched": [
+      "Wave Hill"
+     ]
+    },
+    {
+     "chunk": "chelsea-rev-1357748470",
+     "processed_at": "2026-06-18T21:22:37+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Chelsea"
+     ]
+    },
+    {
+     "chunk": "friends_meeting_house_flushing-rev-1348805367",
+     "processed_at": "2026-06-18T21:25:53+00:00",
+     "beats_extracted": 8,
+     "pois_touched": [
+      "Friends Meeting House (Flushing)"
+     ]
+    },
+    {
+     "chunk": "manhattan-rev-1359944961",
+     "processed_at": "2026-06-18T21:22:38+00:00",
+     "beats_extracted": 11,
+     "pois_touched": [
+      "Manhattan"
+     ]
+    },
+    {
+     "chunk": "midtown_east-rev-1359539359",
+     "processed_at": "2026-06-18T21:22:38+00:00",
+     "beats_extracted": 8,
+     "pois_touched": [
+      "Midtown East"
+     ]
+    },
+    {
+     "chunk": "midtown_west-rev-1357146949",
+     "processed_at": "2026-06-18T21:25:54+00:00",
+     "beats_extracted": 9,
+     "pois_touched": [
+      "Midtown West"
+     ]
+    }
+   ]
+  },
+  {
+   "book_title": "New York: The Movie Lover's Guide",
+   "author": "Richard Alleman",
+   "chunks_processed": 12
+  }
+ ]
 }

@@ -1,0 +1,838 @@
+{
+ "chunk_id": "chunk-07-with-more-time",
+ "chunk_file": "/Users/adamserblowski/Geotada/Books/new_york/moon-nyc-walks/chunk-07-with-more-time.txt",
+ "pois": [
+  {
+   "name": "Upright Citizens Brigade Theatre",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Chelsea comedy club for stand-up and improv, with nightly shows from leading comedians and free Sunday-night 9:30 shows.",
+   "name_variations": [
+    "UCB Theatre",
+    "Upright Citizens Brigade"
+   ],
+   "kid_friendly": "no",
+   "latitude": 40.7472,
+   "longitude": -73.9966,
+   "trigger_radius": 25,
+   "geocode_source": "book_address_line",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Coordinates derived from the book's address line '307 W 26th St' (Chelsea, between 8th and 9th Aves). Network geocode not run; MEDIUM confidence. Note: the original UCB Chelsea theatre at 307 W 26th St closed in 2017 and the chain later wound down NYC venues — flag for user review of current status."
+  },
+  {
+   "name": "Grand Army Plaza",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Plaza forming the formal entrance to Prospect Park in Brooklyn, anchored by the Soldiers & Sailors Monument arch and ringed by the Brooklyn Library, Brooklyn Museum, and Flatbush Avenue.",
+   "name_variations": [
+    "Grand Army Plaza Brooklyn",
+    "Soldiers & Sailors Monument"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.6727,
+   "longitude": -73.9701,
+   "trigger_radius": 30,
+   "geocode_source": "book_address_line",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Coordinates derived from known Grand Army Plaza location at the north entrance of Prospect Park (Flatbush Ave), per the book's description placing it 'at the point' of the park. Network geocode not run; MEDIUM confidence. Relationship to Prospect Park: adjacent entrance plaza, likely standalone POI — flag for user review."
+  },
+  {
+   "name": "Long Beach",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Three-mile beach on Long Island, walkable directly from the train station onto the sand.",
+   "name_variations": [
+    "Long Beach Long Island"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.5884,
+   "longitude": -73.6579,
+   "trigger_radius": 50,
+   "geocode_source": "book_text",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "On Long Island, outside NYC's five boroughs; coordinates from known Long Beach NY location. The book lists it among NYC-area beaches reachable by train. Network geocode not run; MEDIUM confidence. Flag for user review (outside city geofence)."
+  },
+  {
+   "name": "Manhattan Beach",
+   "is_new": true,
+   "matched_existing": null,
+   "short_description": "Small family beach in Brooklyn next to Brighton Beach, favored for picnics and barbecuing by the water.",
+   "name_variations": [
+    "Manhattan Beach Brooklyn"
+   ],
+   "kid_friendly": "yes",
+   "latitude": 40.5779,
+   "longitude": -73.9389,
+   "trigger_radius": 40,
+   "geocode_source": "book_text",
+   "geocode_confidence": "MEDIUM",
+   "gravity_reasoning": "Coordinates from known Manhattan Beach, Brooklyn location (adjacent to Brighton Beach, which already exists in corpus). Network geocode not run; MEDIUM confidence. Within ~500m of existing Brighton Beach POI but a distinct named beach — flag for user review."
+  }
+ ],
+ "beats": [
+  {
+   "beat_id": "newyork_united_nations_modern_design_moon-nyc-walks_international_style_headquarters",
+   "city_name": "new_york",
+   "poi_name": "United Nations",
+   "parent_poi": null,
+   "lens": "modern_design",
+   "topic_slug": "international_style_headquarters",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "Since 1952 the United Nations headquarters has stood on this spot beside the East River. The buildings' simple geometric shapes, glass walls, and deliberate lack of cultural references are characteristic of the International Style in which they were built — an architecture meant to belong to no single nation. The Visitors Centre is free and regularly hosts exhibits, and you can also take a guided tour inside.",
+   "duration_sec": 28,
+   "kid_friendly": "yes",
+   "entities": [
+    "United Nations",
+    "International Style"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "architectural_detail",
+   "emotional_register": "neutral",
+   "subject_tag": "international style",
+   "physical_cues": [
+    {
+     "cue": "Glass curtain walls and stark geometric forms of the UN buildings",
+     "direction": "here",
+     "feature_type": "architectural_detail"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "UN headquarters has stood on this spot since 1952",
+    "Built in the International Style with glass walls, geometric shapes, no cultural references",
+    "Visitors Centre is free; guided tours available"
+   ],
+   "source_passage": "Since 1952 the United Nations headquarters has stood on this spot. The buildings' simple geometric shapes, glass walls, and lack of cultural references are characteristic of the international style in which it was built. The Visitors Centre is free and regularly hosts interesting exhibits. It is also possible to take a guided tour.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_brooklyn_museum_historic_arch_moon-nyc-walks_1895_stately_building",
+   "city_name": "new_york",
+   "poi_name": "Brooklyn Museum",
+   "parent_poi": null,
+   "lens": "historic_arch",
+   "topic_slug": "1895_stately_building",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "The Brooklyn Museum is one of the country's oldest and largest museums, housed in a stately building dating back to 1895. Its permanent collection spans art from world cultures alongside paintings and sculptures, but it's the temporary exhibitions in particular that draw the crowds. You won't see everything in a single day here, so you'll have to make some choices.",
+   "duration_sec": 26,
+   "kid_friendly": "yes",
+   "entities": [
+    "Brooklyn Museum"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "neutral",
+   "subject_tag": "oldest largest museum",
+   "physical_cues": [
+    {
+     "cue": "The stately 1895 museum building",
+     "direction": "here",
+     "feature_type": "architectural_detail"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "One of the country's oldest and largest museums",
+    "Building dates back to 1895",
+    "Known especially for its temporary exhibitions"
+   ],
+   "source_passage": "The Brooklyn Museum is one of the country's oldest and largest museums. Its permanent collection includes a range of objects, including art from various world cultures as well as paintings, sculptures, and much more. However, it's the museum's temporary exhibitions in particular that draw so many visitors to this stately building, which dates back to 1895. It's not possible to see everything here in one day, so you'll have to make some choices.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_the_cloisters_historic_arch_moon-nyc-walks_hilltop_medieval_branch",
+   "city_name": "new_york",
+   "poi_name": "The Cloisters",
+   "parent_poi": null,
+   "lens": "historic_arch",
+   "topic_slug": "hilltop_medieval_branch",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "Although it's officially still in Manhattan, the Met Cloisters — perched on a hilltop above the city — gives the impression that you've travelled far from the urban bustle. The museum is a branch of the Metropolitan Museum of Art devoted entirely to medieval art.",
+   "duration_sec": 18,
+   "kid_friendly": "yes",
+   "entities": [
+    "Met Cloisters",
+    "Metropolitan Museum of Art"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "reverent",
+   "subject_tag": "medieval art branch",
+   "physical_cues": [
+    {
+     "cue": "Hilltop setting above the city",
+     "direction": "here",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Officially in Manhattan but feels removed from the city",
+    "Perched on a hilltop",
+    "A branch of the Metropolitan Museum of Art dedicated to medieval art"
+   ],
+   "source_passage": "Although officially still in Manhattan, the Met Cloisters—perched on a hilltop above the city—gives the impression that you're far away from the urban bustle of the city. The museum is a branch of the Metropolitan Museum of Art dedicated to medieval art.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_pieter_claesen_wyckoff_house_historic_arch_moon-nyc-walks_oldest_dutch_building_1652",
+   "city_name": "new_york",
+   "poi_name": "Pieter Claesen Wyckoff House",
+   "parent_poi": null,
+   "lens": "historic_arch",
+   "topic_slug": "oldest_dutch_building_1652",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "The Pieter Claesen Wyckoff House dates back to 1652, making it the oldest Dutch building in New York City and the surrounding area. The small museum housed inside tells the story of everyday Dutch life in New York centuries ago.",
+   "duration_sec": 16,
+   "kid_friendly": "yes",
+   "entities": [
+    "Pieter Claesen Wyckoff House"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "neutral",
+   "subject_tag": "oldest dutch building",
+   "physical_cues": [
+    {
+     "cue": "The 1652 Dutch farmhouse",
+     "direction": "here",
+     "feature_type": "architectural_detail"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Dates back to 1652",
+    "Oldest Dutch building in New York City and surrounding area",
+    "Houses a small museum about Dutch daily life"
+   ],
+   "source_passage": "The Pieter Claesen Wyckoff House dates back to 1652 and is therefore the oldest Dutch building in New York City and the surrounding area. The small museum housed here today tells about daily Dutch life in New York at that time centuries ago.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_brooklyn_heights_promenade_waterways_views_moon-nyc-walks_1950_east_river_panorama",
+   "city_name": "new_york",
+   "poi_name": "Brooklyn Heights Promenade",
+   "parent_poi": null,
+   "lens": "waterways_views",
+   "topic_slug": "1950_east_river_panorama",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "Walk along the romantic Brooklyn Heights Promenade and take in the famous view of the East River, the Statue of Liberty, and the Brooklyn Bridge. Since the promenade opened in 1950, countless photographers and filmmakers have pointed their cameras in this direction, by day and by night.",
+   "duration_sec": 20,
+   "kid_friendly": "yes",
+   "entities": [
+    "Brooklyn Heights Promenade",
+    "East River",
+    "Statue of Liberty",
+    "Brooklyn Bridge"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "sensory_observation",
+   "emotional_register": "reverent",
+   "subject_tag": "river panorama",
+   "physical_cues": [
+    {
+     "cue": "View across the East River to the Statue of Liberty and Brooklyn Bridge",
+     "direction": "west",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Promenade opened in 1950",
+    "Offers a famous view of the East River, Statue of Liberty, and Brooklyn Bridge",
+    "Long favored by photographers and filmmakers"
+   ],
+   "source_passage": "Walk along the romantic Brooklyn Heights Promenade and take in the famous view of the East River, the Statue of Liberty, and the Brooklyn Bridge. Since the promenade opened in 1950, countless photographers and filmmakers have focused their cameras in this direction both by day and by night.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_prospect_park_parks_gardens_moon-nyc-walks_central_park_makers_brooklyn",
+   "city_name": "new_york",
+   "poi_name": "Prospect Park",
+   "parent_poi": null,
+   "lens": "parks_gardens",
+   "topic_slug": "central_park_makers_brooklyn",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "When the makers of Central Park were asked to design a park for Brooklyn, the result was Prospect Park. At its head sits Grand Army Plaza with the Soldiers & Sailors Monument, forming the formal entrance to the park. Around the plaza you'll find the Brooklyn Library, the Brooklyn Museum, and Flatbush Avenue, which separates Prospect Park from the Brooklyn Botanical Garden. It's a place with lots to do.",
+   "duration_sec": 28,
+   "kid_friendly": "yes",
+   "entities": [
+    "Prospect Park",
+    "Central Park",
+    "Grand Army Plaza",
+    "Soldiers & Sailors Monument",
+    "Brooklyn Library",
+    "Brooklyn Museum",
+    "Brooklyn Botanical Garden",
+    "Flatbush Avenue"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "neutral",
+   "subject_tag": "central park designers",
+   "physical_cues": [
+    {
+     "cue": "Grand Army Plaza and the Soldiers & Sailors Monument at the park entrance",
+     "direction": "here",
+     "feature_type": "adjacent_landmark"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Designed by the makers of Central Park (Olmsted and Vaux)",
+    "Grand Army Plaza with the Soldiers & Sailors Monument forms the entrance",
+    "Brooklyn Library, Brooklyn Museum nearby; Flatbush Ave separates it from the Brooklyn Botanical Garden"
+   ],
+   "source_passage": "When the makers of Central Park were asked to design a park for Brooklyn, they designed Prospect Park. At the point is Grand Army Plaza, with the Soldiers & Sailors Monument, which forms the entrance to the park. Around this plaza you'll find the Brooklyn Library, the Brooklyn Museum, and Flatbush Avenue that separates Prospect Park from the Brooklyn Botanical Garden. It's a place with lots to do.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_hudson_river_park_parks_gardens_moon-nyc-walks_four_mile_battery_to_57th",
+   "city_name": "new_york",
+   "poi_name": "Hudson River Park",
+   "parent_poi": null,
+   "lens": "parks_gardens",
+   "topic_slug": "four_mile_battery_to_57th",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "Hudson River Park stretches some 4.5 miles along the water, from Battery Park up to 57th Street. It's full of activity: come here for kayaking, ice skating, tennis courts, boat clubs, and playgrounds, with events organized throughout the year. There's a scenic two-mile walking route that starts at Battery Park; in summer the grassy field fills with sunbathers, and there are even outdoor showers to cool down when it gets too hot.",
+   "duration_sec": 30,
+   "kid_friendly": "yes",
+   "entities": [
+    "Hudson River Park",
+    "Battery Park",
+    "Hudson River"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "playful",
+   "subject_tag": "riverside recreation",
+   "physical_cues": [
+    {
+     "cue": "The grassy waterfront field and walking route along the Hudson",
+     "direction": "here",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Stretches about 4.5 miles from Battery Park to 57th Street",
+    "Offers kayaking, ice skating, tennis, boat clubs, playgrounds",
+    "A scenic 2-mile walking route starts at Battery Park; summer field with outdoor showers"
+   ],
+   "source_passage": "The Hudson River Park stretches some 4.5 miles from Battery Park to 57th Street. The park is full of activity and offers lots to do. Come here for kayaking, ice skating, and playing in the playgrounds. There are also tennis courts and boat clubs. Throughout the year many events are organized in the park. Tip: there's a scenic 2-mile walking route along the Hudson River that starts at Battery Park. Afterward, have a refreshing drink at Pier 45. In the summer the grassy field fills up with sunbathers—there are even outside showers to help you cool down when it gets too hot.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_the_museum_at_fit_visual_art_moon-nyc-walks_largest_garment_collection",
+   "city_name": "new_york",
+   "poi_name": "The Museum at FIT",
+   "parent_poi": null,
+   "lens": "visual_art",
+   "topic_slug": "largest_garment_collection",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "The Museum at FIT, part of the Fashion Institute of Technology, is a slice of heaven for fashion lovers. It holds the world's largest collection of garments and accessories, with fashion and haute couture spanning the 18th century to the present, plus regular exhibitions from big names in the field. During New York Fashion Week a visit here is a must — you might even run into a famous designer or blogger.",
+   "duration_sec": 30,
+   "kid_friendly": "yes",
+   "entities": [
+    "The Museum at FIT",
+    "Fashion Institute of Technology",
+    "New York Fashion Week"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "playful",
+   "subject_tag": "largest garment collection",
+   "physical_cues": [],
+   "inline_foreign_phrases": [
+    {
+     "phrase": "haute couture",
+     "gloss": "high-end, made-to-order fashion"
+    }
+   ],
+   "pronunciation": null,
+   "key_claims": [
+    "Part of the Fashion Institute of Technology",
+    "Home to the world's largest collection of garments and accessories",
+    "Spans 18th century to present; busy during New York Fashion Week"
+   ],
+   "source_passage": "The Museum at FIT (Fashion Institute of Technology) is a slice of heaven on earth for fashion lovers. It is home to the world's largest collection of garments and accessories and includes items of fashion and haute couture from the 18th century to the present. There are also regular exhibitions from big names in the fashion world. During New York Fashion Week a visit here is a must—who knows, maybe you'll even run into a famous designer or blogger.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_rockaway_beach_local_legends_moon-nyc-walks_only_surfing_beach_subway",
+   "city_name": "new_york",
+   "poi_name": "Rockaway Beach",
+   "parent_poi": null,
+   "lens": "local_legends",
+   "topic_slug": "only_surfing_beach_subway",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "The large Rockaway Beach in Queens is the only beach in New York City where surfing is permitted, and it's reachable by subway as well as by the NYC Beach Bus. New York's beach season officially opens each year on Memorial Day weekend in late May and runs until Labor Day in early September.",
+   "duration_sec": 22,
+   "kid_friendly": "yes",
+   "entities": [
+    "Rockaway Beach",
+    "NYC Beach Bus",
+    "Memorial Day",
+    "Labor Day"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "hook",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "only surfing beach",
+   "physical_cues": [
+    {
+     "cue": "The wide sand of Rockaway Beach",
+     "direction": "here",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Rockaway Beach is the only NYC beach where surfing is permitted",
+    "Reachable by subway and the NYC Beach Bus",
+    "NYC beach season runs Memorial Day weekend to Labor Day"
+   ],
+   "source_passage": "The large Rockaway Beach in Queens is the only beach in New York City where surfing is permitted, and it is accessible by subway and with the NYC Beach Bus (www.nycbeachbus.com).",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_coney_island_local_legends_moon-nyc-walks_boardwalk_amusement_park",
+   "city_name": "new_york",
+   "poi_name": "Coney Island",
+   "parent_poi": null,
+   "lens": "local_legends",
+   "topic_slug": "boardwalk_amusement_park",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "micro",
+   "script_body": "Brooklyn's Coney Island has a wonderful boardwalk and amusement park, and is easily reached by subway.",
+   "duration_sec": 7,
+   "kid_friendly": "yes",
+   "entities": [
+    "Coney Island"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "boardwalk amusements",
+   "physical_cues": [
+    {
+     "cue": "The Coney Island boardwalk and amusement park",
+     "direction": "here",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Coney Island has a boardwalk and amusement park",
+    "Easily accessible by subway"
+   ],
+   "source_passage": "Brooklyn's Coney Island has a wonderful boardwalk and amusement park, and is easily accessible by subway.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_manhattan_beach_local_legends_moon-nyc-walks_family_picnic_beach",
+   "city_name": "new_york",
+   "poi_name": "Manhattan Beach",
+   "parent_poi": null,
+   "lens": "local_legends",
+   "topic_slug": "family_picnic_beach",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "micro",
+   "script_body": "Manhattan Beach, also in Brooklyn, is a small family beach next to Brighton Beach, where people come to picnic and barbecue by the water.",
+   "duration_sec": 9,
+   "kid_friendly": "yes",
+   "entities": [
+    "Manhattan Beach",
+    "Brighton Beach"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "establishing",
+   "beat_type": "factoid",
+   "emotional_register": "playful",
+   "subject_tag": "family beach",
+   "physical_cues": [
+    {
+     "cue": "Small family beach beside Brighton Beach",
+     "direction": "here",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Manhattan Beach is in Brooklyn next to Brighton Beach",
+    "Small family beach used for picnics and barbecues"
+   ],
+   "source_passage": "Manhattan Beach, also in Brooklyn, is a small, family beach next to Brighton Beach, and people come here for picnics and to barbeque by the water.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_upright_citizens_brigade_theatre_film_tv_moon-nyc-walks_standup_improv_cheap_tickets",
+   "city_name": "new_york",
+   "poi_name": "Upright Citizens Brigade Theatre",
+   "parent_poi": null,
+   "lens": "film_tv",
+   "topic_slug": "standup_improv_cheap_tickets",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "seasoning",
+   "script_body": "End the day at the Upright Citizens Brigade Theatre, a comedy club for stand-up and improv. Every evening you can catch shows from some of the funniest and most creative comedians in the business, with tickets usually around ten dollars or less — and on Sunday nights the 9:30 shows are free.",
+   "duration_sec": 22,
+   "kid_friendly": "yes",
+   "entities": [
+    "Upright Citizens Brigade Theatre"
+   ],
+   "sensory_anchor": false,
+   "narrative_function": "establishing",
+   "beat_type": "establishing",
+   "emotional_register": "playful",
+   "subject_tag": "comedy club",
+   "physical_cues": [],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "A comedy club for stand-up and improv with nightly shows",
+    "Tickets usually around $10 or less",
+    "Sunday 9:30pm shows are free"
+   ],
+   "source_passage": "End the day with a stop at the Upright Citizens Brigade Theatre, a comedy club for stand-up and improv. Every evening you can catch shows from the funniest and most creative comedians in the business. Tickets are usually around $10 or less, and on Sunday nights the 9:30 shows are free.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "MEDIUM",
+   "fact_check_status": "unverified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  },
+  {
+   "beat_id": "newyork_governors_island_hidden_history_moon-nyc-walks_closed_200_years_opened_2006",
+   "city_name": "new_york",
+   "poi_name": "Governors Island",
+   "parent_poi": null,
+   "lens": "hidden_history",
+   "topic_slug": "closed_200_years_opened_2006",
+   "book_slug": "moon-nyc-walks",
+   "source_chunk_slug": "chunk-07-with-more-time",
+   "sub_location": null,
+   "trigger_address": null,
+   "beat_length_class": "mid",
+   "script_body": "Governors Island lies less than half a mile off the coast of lower Manhattan. For nearly 200 years it was closed to civilians as a military base, but since 2006 it has been open to the public, with ferries shuttling visitors across the water in just seven minutes. Come for the military history, a festival, a picnic near the Statue of Liberty, or simply the greenery and the view of the NYC skyline — a good way to explore is by bike, your own or one rented from Bike and Roll on arrival.",
+   "duration_sec": 36,
+   "kid_friendly": "yes",
+   "entities": [
+    "Governors Island",
+    "Statue of Liberty",
+    "Bike and Roll"
+   ],
+   "sensory_anchor": true,
+   "narrative_function": "hook",
+   "beat_type": "establishing",
+   "emotional_register": "neutral",
+   "subject_tag": "former army base",
+   "physical_cues": [
+    {
+     "cue": "View of the NYC skyline across the water",
+     "direction": "north",
+     "feature_type": "view"
+    }
+   ],
+   "inline_foreign_phrases": [],
+   "pronunciation": null,
+   "key_claims": [
+    "Lies less than half a mile off lower Manhattan",
+    "Closed to civilians for nearly 200 years as a military base; open to the public since 2006",
+    "Ferries cross in about seven minutes; bikes available from Bike and Roll"
+   ],
+   "source_passage": "Governors Island is a small island less than half a mile off the coast of lower Manhattan. For nearly 200 years Governors Island was not accessible to civilians, but since 2006 it has been open to the public. Ferries shuttle visitors across the water to this former army base in just seven minutes. Come here for the military history, for a festival, to picnic near the Statue of Liberty, or simply to enjoy the greenery and the awesome view of the NYC skyline. A good way to explore the island is by bike—bring your own on the ferry or rent one at Bike and Roll when you arrive.",
+   "source_passage_verified": true,
+   "source_attribution": {
+    "book_title": "Moon New York City Walks",
+    "author": "Moon Travel Guides",
+    "chapter": "With More Time"
+   },
+   "confidence": "HIGH",
+   "fact_check_status": "verified",
+   "corrections": [],
+   "disputes": [],
+   "_meta": {
+    "prompt_version": "unified_v2"
+   }
+  }
+ ],
+ "review_queue": [
+  {
+   "type": "new_poi",
+   "name": "Upright Citizens Brigade Theatre",
+   "note": "Not in corpus. Geocoded MEDIUM from book address '307 W 26th St'. Relationship: independent. STATUS WARNING: the UCB Chelsea theatre at 307 W 26th St closed in 2017 and UCB has since wound down its NYC theatre operations — current operating status is doubtful. Do not auto-create; user to verify whether the venue still operates before adding."
+  },
+  {
+   "type": "new_poi",
+   "name": "Grand Army Plaza",
+   "note": "Not in corpus. Entrance plaza/arch (Soldiers & Sailors Monument) at the head of Prospect Park, Brooklyn. Geocoded MEDIUM (~40.6727, -73.9701). Relationship to existing Prospect Park: adjacent landmark, likely a distinct standalone POI rather than a sub-POI. User decides at poi-generate time."
+  },
+  {
+   "type": "new_poi",
+   "name": "Long Beach",
+   "note": "Not in corpus. On Long Island, OUTSIDE NYC's five-borough geofence. The book groups it with NYC-area beaches reachable by train. Geocoded MEDIUM. Flag: may fall outside the city geofence — user decides whether to include."
+  },
+  {
+   "type": "new_poi",
+   "name": "Manhattan Beach",
+   "note": "Not in corpus. Brooklyn beach adjacent to existing Brighton Beach POI. PROXIMITY WARNING: within ~500m of Brighton Beach (existing). Distinct named beach but geographically close — confirm it is not an alias/overlap of Brighton Beach before creating."
+  },
+  {
+   "type": "poi_match_note",
+   "name": "Met Cloisters -> The Cloisters",
+   "note": "Book says 'Met Cloisters'; matched to existing corpus POI 'The Cloisters' (also listed as 'The Cloisters' / Met Cloisters branch). Added 'Met Cloisters' as effective name variation."
+  },
+  {
+   "type": "poi_mentioned_no_content",
+   "name": "Pier 45",
+   "note": "Mentioned in the Hudson River Park entry ('have a refreshing drink at Pier 45'). Pier 45 already exists in corpus; the mention is a sub-feature of the Hudson River Park beat, not a standalone beat. No separate beat emitted."
+  },
+  {
+   "type": "poi_mentioned_no_content",
+   "name": "Brighton Beach",
+   "note": "Mentioned only as a locator for Manhattan Beach; no standalone content. Brighton Beach already exists in corpus."
+  }
+ ],
+ "summary": {
+  "beats_extracted": 13,
+  "pois_touched": 13,
+  "new_pois": 4,
+  "corrections_applied": 0,
+  "disputes": 0,
+  "anomalies": 1,
+  "lenses_hit": [
+   "modern_design",
+   "historic_arch",
+   "waterways_views",
+   "parks_gardens",
+   "visual_art",
+   "local_legends",
+   "film_tv",
+   "hidden_history"
+  ],
+  "lenses_missed": [
+   "war_conflict",
+   "dark_history",
+   "social_change",
+   "music_heritage",
+   "street_art",
+   "historic_cuisine",
+   "markets_street_food",
+   "literary_heritage",
+   "famous_residents",
+   "historic_worship",
+   "sacred_traditions",
+   "historic_markets",
+   "science_tech"
+  ],
+  "confidence_counts": {
+   "HIGH": 9,
+   "MEDIUM": 4,
+   "LOW": 0
+  }
+ }
+}

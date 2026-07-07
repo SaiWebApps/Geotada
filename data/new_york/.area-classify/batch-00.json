@@ -1,0 +1,1225 @@
+[
+  {
+    "name": "9/11 Memorial and Museum",
+    "short_description": "Top-tier global landmark. Full Wikipedia article, primary Frommer's headline sight, ~3M+ annual visitors. Among NYC's most-visited attractions.",
+    "trigger_radius": 60,
+    "importance_tier": 5,
+    "n_beats": 14,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "For well over two millennia, humans have told one another stories about the danger of looking back at evil or death. Lot's wife turned to a pillar of salt for glancing over her shoulder into the maw of destruction; Orpheus lost his beloved "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Remnant of the 'survivors' stair' to the right of the museum's staircase",
+            "direction": "down",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "History exhibition at the bottom of the final staircase, to the left",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "After a thorough security check, visitors descend down, down, down into this underground museum. It's a fitting metaphor: for the escape route Twin Towers survivors took when fleeing by stair \u2014 a remnant of the famous \"survivors' stair\" sit"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Ground Zero cross, formed from severed metal beams",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Brick from Bin Laden's Abbottabad compound in the Al Qaeda section",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Among the artifacts museumgoers encounter is the famous Ground Zero cross \u2014 a severed chunk of metal beams that accidentally formed this Christian symbol \u2014 alongside a squashed fire truck. A thought-provoking section explores the rise of Al"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Two reflecting pools and waterfalls in the footprints of the towers",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Brass parapets engraved with victims' names around each pool",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Surrounding the museum is the eight-acre Memorial Plaza, with two reflecting pools and waterfalls set in the one-acre footprints of the individual towers. Each pool is ringed by a brass parapet engraved with the names of victims of both the"
+      }
+    ]
+  },
+  {
+    "name": "African Burial Ground National Monument",
+    "short_description": "National Park Service monument, dedicated Wikipedia article, one of the most important US archaeological finds. Moderate-high gravity; niche but nationally significant.",
+    "trigger_radius": 30,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The symbol-laden National Monument memorial",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Some fifteen thousand enslaved Africans were buried in a Manhattan graveyard during the seventeenth and eighteenth centuries, but their resting places were lost to memory \u2014 until 1991, when construction workers stumbled on human remains whi"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The memorial site marking America's largest, oldest African cemetery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In 1991, construction workers here uncovered more than 400 stacked wooden caskets, just 16ft to 28ft below street level. The boxes contained the remains of both enslaved and free African Americans from the 17th and 18th centuries; from 1697"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Bridge",
+    "short_description": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+    "trigger_radius": 120,
+    "importance_tier": 5,
+    "n_beats": 13,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The two great Gothic towers that hold up the bridge's cables",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "It took seven years and massive heartbreak to build the bridge's two great Gothic towers. In 1869, just two weeks after the project was approved, architect and immigrant John A. Roebling was surveying the area when a ferry rammed the spot w"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The spectacular views of Brooklyn and Manhattan from the bridge's center",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The steel cables overhead",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "From the center of the bridge, take in the views of both boroughs. When it was built, the span \u2014 1,595 feet \u2014 was the longest leap across open space anywhere on Earth, and the first bridge to connect Manhattan with any of the surrounding la"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "One of the great Gothic towers on the Manhattan side",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "New York has a grand Gothic cathedral in St. Patrick's, but for many New Yorkers the city's true cathedral \u2014 the point where earth and water join and thrust upward toward the heavens \u2014 is the Brooklyn Bridge. To fully appreciate its dazzle,"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Massive Gothic brownstone towers of the bridge",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Views up and down the East River from the walkway",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Walking the span of the Brooklyn Bridge lets you see this marvel of engineering up close. When it was built in 1883, it was the longest suspension bridge in the world. Look up and down the East River, and you also get a close-up of the brid"
+      }
+    ]
+  },
+  {
+    "name": "Ellis Island National Museum of Immigration",
+    "short_description": "Top-tier national landmark, full Wikipedia article, NPS site, ~12M historical immigrants processed, major Frommer's sight. High gravity.",
+    "trigger_radius": 80,
+    "importance_tier": 4,
+    "n_beats": 9,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Ellis Island was the epicenter of the largest migration in human history. From 1892 to 1954 it was in near-continuous use as the point-of-entry processing center for the majority of immigrants who settled in the United States in those years"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The massive white-tile vaulted ceiling of the second-floor Grand Hall",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Listening stations in the small rooms behind the Grand Hall",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Begin on the awe-inspiring second-floor Grand Hall \u2014 officially the Registry Hall \u2014 beneath its massive white-tile vaulted ceiling, built by the same firm that made the ceiling in Grand Central's Oyster Bar. For most arrivals it was larger "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "JR's oversize archival photos mounted on the hospital's crumbling walls and broken windows",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Hard Hat Tour leads through the unrenovated \u2014 and haunting \u2014 Ellis Island hospital. About ten percent of arriving immigrants spent time here, often only to be shipped back to Europe, their only crime being ill. The facility was closed f"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The most famous port of entry in the world, and a physical symbol of the American immigrant story, Ellis Island is now a National Monument. Operating only from 1892 to 1924, it nonetheless processed some 12 million new arrivals. An estimate"
+      }
+    ]
+  },
+  {
+    "name": "Federal Reserve Bank of New York",
+    "short_description": "World's largest gold vault, dedicated Wikipedia article, internationally famous. High gravity. Note: book gives '44 Maiden Lane' (visitor entrance); building is 33 Liberty St \u2014 same complex.",
+    "trigger_radius": 40,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The five-foot-thick vault door 80 feet below street level",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Descend eighty feet to the basement of this financial fortress and you'll see more lucre than you ever will again in your life. Behind a door a good five feet thick sits a gold vault straight out of Mission: Impossible, holding a full twent"
+      }
+    ]
+  },
+  {
+    "name": "Hall des Lumi\u00e8res",
+    "short_description": "Opened 2022, has Wikipedia entry; immersive digital-art venue in landmarked former bank. Low-moderate gravity; newer attraction.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The historic former bank building housing the show",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The organization behind the first Van Gogh light show created this permanent attraction, which opened in a historic bank building in 2022. Its first offering, a show on Gustav Klimt, was so rapturously beautiful \u2014 with finely choreographed "
+      }
+    ]
+  },
+  {
+    "name": "Museum of Jewish Heritage",
+    "short_description": "Major Holocaust memorial museum, Wikipedia article, Battery Park City. Moderate-high gravity.",
+    "trigger_radius": 30,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The annotated edition of Mein Kampf that belonged to Heinrich Himmler",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The breadloaf-size suitcase a family of four escaped with",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Since a recent overhaul, this Holocaust memorial museum focuses far more on the personal stories of those whose lives were upended or ended \u2014 and on those who survived against all odds \u2014 told through thousands of personal accounts, never-be"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The six-sided building symbolizing the Star of David",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Garden of Stones installation of 18 boulders supporting living trees",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This evocative waterfront museum explores all aspects of modern Jewish identity and culture, with a core exhibition across three themed floors: Jewish Life a Century Ago, Jewish Renewal, and The War Against the Jews, a detailed exploration "
+      }
+    ]
+  },
+  {
+    "name": "National Museum of the American Indian",
+    "short_description": "Tier-4/5 candidate: George Gustav Heye Center inside the landmark Beaux Arts Alexander Hamilton U.S. Custom House (Cass Gilbert, Daniel Chester French sculptures). Free museum, major architecture stop.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The magnificent Customs House designed by Cass Gilbert",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This branch of the Smithsonian is notable above all for the touring exhibits it hosts and for its robust program of performances, lectures, and courses on Native American topics. It is housed in the magnificent Customs House designed by arc"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The grand Beaux Arts Customs House building in front of you at the foot of Broadway",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "You are now standing at the foot of Broadway, the thoroughfare that leads all the way to the top of Manhattan, thirteen miles away. The original Dutch fort stood in this exact place. The building in front of you, designed by Cass Gilbert, w"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Four seated women sculptures across the front of the facade: Asia, the Americas, Europe, Africa, left to right",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "It's a wedding cake of an edifice, with dozens of bright white sculptures adorning the gray granite facade. Daniel Chester French was the sculptor \u2014 he also did the seated Lincoln at the Lincoln Memorial in Washington, D.C. \u2014 and his choice"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Twelve figures of great trading nations along the top of the building",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "At the top of the building are twelve more figures, meant to represent the great trading nations of history: Greece, Rome, Phoenicia, Genoa, Venice, Spain, Holland, Portugal, Denmark, England, France, and Belgium. Why Belgium? The official "
+      }
+    ]
+  },
+  {
+    "name": "One World Observatory",
+    "short_description": "Observation deck atop One World Trade Center (Western Hemisphere's tallest building). High gravity, major ticketed Frommer's sight.",
+    "trigger_radius": 40,
+    "importance_tier": 4,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The rough-hewn bedrock tunnel in the lobby with lit signs about the foundation",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Part of the allure of the view from the Western Hemisphere's tallest building, at 1,776 feet, is the sense that you may be tempting fate by being here. The skyscraper was built as a nose-thumb to the terrorists who twice attacked the World "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The elevator walls that become video 'windows' during the 47-second ascent",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The observatory's elevators shoot passengers up 102 stories in an ear-popping 47 seconds \u2014 among the fastest in the world \u2014 while their walls turn into video \"windows\" showing a computer-generated history of the city, from meadowlands to to"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The tapered tower with chamfered edges forming isosceles triangles, seen from the base looking up",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The 408ft cable-stayed spire crowning the tower",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Leaping from the northwestern corner of the World Trade Center site, the 104-floor tower is architect David M Childs' redesign of Daniel Libeskind's original 2002 concept. The loftiest building in America and currently the tallest in the We"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The lattice antenna atop the tower that howls in high wind",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "One thing not foreseen by the architects and engineers was the antenna's noisy disposition: the strong winds that race through its lattice design produce a haunting, howling sound known to keep some locals up at night."
+      }
+    ]
+  },
+  {
+    "name": "Skyscraper Museum",
+    "short_description": "Small specialty museum, has Wikipedia entry. Low gravity. Coordinate derived from address proximity (exact building coords not directly returned); flagged for geocode verification.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Shiny metals, an ascending ramp, and mirrored surfaces giving the room a skyscraper aspect",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Don't dismiss this small museum \u2014 it's far more interesting than you'd expect, and an architecturally innovative space in its own right. Notice how the shiny metals, the ascending ramp, and the mirrored surfaces give the smallish room its o"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "This compact, high-gloss gallery examines skyscrapers as objects of design, engineering and urban renewal. Temporary exhibitions dominate the space, exploring everything from New York's new generation of superslim residential towers to the "
+      }
+    ]
+  },
+  {
+    "name": "South Street Seaport Museum",
+    "short_description": "Historic-vessel museum, Wikipedia coverage, reduced in scope per source. Low-moderate gravity.",
+    "trigger_radius": 40,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The historic sailing vessels moored off Pier 16",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The top reason to come here is for tours of the historic sailing vessels the museum keeps moored off Pier 16 \u2014 it owns six, and some still take visitors out on sails. Beyond that, the museum has been pared down to a \"ye olde printing shoppe"
+      }
+    ]
+  },
+  {
+    "name": "Staten Island Ferry",
+    "short_description": "Iconic free ferry, Wikipedia article, millions of riders, famous free Statue of Liberty views. High gravity. Geocoded to Manhattan (Whitehall) terminal.",
+    "trigger_radius": 50,
+    "importance_tier": 5,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The older orange-and-green ferry boats with viewing decks",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The right side at the back of the ferry for the Manhattan skyline view",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Most visitors \u2014 and even some New Yorkers \u2014 don't know that the Staten Island Ferry makes its daily run within Instagram distance of the Statue of Liberty, Ellis Island, and Governor's Island, and riders pay absolutely nothing for the great"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Staten Island Ferry terminal \u2014 the starting point of Melanie Griffith's Working Girl journey to Wall Street",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Staten Island Ferry takes bullied secretary Melanie Griffith from suburbia to Wall St in Working Girl (1988)."
+      }
+    ]
+  },
+  {
+    "name": "Statue of Liberty",
+    "short_description": "World-famous monument, extensive Wikipedia coverage, UNESCO World Heritage Site, ~4M annual visitors. Top-tier gravity.",
+    "trigger_radius": 80,
+    "importance_tier": 5,
+    "n_beats": 8,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "The statue was dreamed up at a dinner party of French intellectuals in 1865, first proposed as a hundredth-birthday present from France to the United States \u2014 and as a not-so-subtle jab at France's own authoritarian Second Empire. Fundraisi"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The pedestal designed by Richard Morris Hunt beneath the statue",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Though the statue was finished, it took another two years for Americans to hold up their half of the bargain and build a pedestal. Newspaperman Joseph Pulitzer finally stepped in, and through a series of angry editorials condemning the weal"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Eiffel's intricate internal metalwork visible on the 146-step climb to the crown",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "If you can book it, the crown is a thrilling, exhausting climb \u2014 a circular stairway of 146 steps. On the way up you'll see the intricate metalwork French engineer Gustave Eiffel, of Eiffel Tower fame, created to anchor the statue. It acts "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The seven rays of the crown and the tablet's Roman numerals",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Lady Liberty was created using repouss\u00e9, a technique of hammering and shaping thin strips of copper. Though the statue is massive \u2014 over 151 feet from base to torch \u2014 the \"skin\" is just three thirty-seconds of an inch thick. It's thought th"
+      }
+    ]
+  },
+  {
+    "name": "St. Paul's Chapel",
+    "short_description": "Oldest church building in Manhattan (1766), Wikipedia article, George Washington connection, 9/11 relief site. Moderate-high gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "George Washington's pew, marked by a plaque",
+            "direction": "here",
+            "feature_type": "plaque"
+          },
+          {
+            "cue": "The Ionic columns and huge pediment of the facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Built in 1766, St. Paul's is not only the oldest church in the city but the only public space in continuous use since the colonial era, its design \u2014 Ionic columns and a huge pediment \u2014 based on St. Martin-in-the-Fields in London. The chapel"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 1766 Classical Revival brownstone chapel, a block from the WTC site",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "After his inauguration in 1789, George Washington worshipped at this Classical Revival brownstone chapel, built in 1766 and narrowly avoiding destruction in the fire of 1776. It avoided disaster again on September 11, 2001, when the destruc"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 1760s chapel south of City Hall Park, modeled on London's St Martin-in-the-Fields",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "St Paul's Chapel, south of City Hall Park, was built in the 1760s and is the oldest surviving church in the city. Its design was inspired by the much bigger St Martin-in-the-Fields church in London."
+      }
+    ]
+  },
+  {
+    "name": "Trinity Church",
+    "short_description": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) \u2014 minimal content here.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 280-foot Gothic spire",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The chancel raised a few feet above the floor instead of railed off",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This is actually the third Trinity Church on the site. The first was destroyed in the fire set by fleeing colonists in 1776 to thwart British occupiers \u2014 a blaze that razed a third of Manhattan's structures \u2014 and the second was so poorly bu"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Captain James Lawrence's ship-shaped tomb on the southern side, fenced with captured British cannons",
+            "direction": "south",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Alexander Hamilton's grave, with Robert Fulton's beside it",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The graveyard holds many Revolutionary War\u2013era New Yorkers. On the southern side, Captain James Lawrence \u2014 who gave the famous War of 1812 command \"Don't give up the ship\" \u2014 lies in a tomb shaped like a ship, ringed by a fence made from cap"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Karl Bitter's self-portrait, a knoblike head in the lower right corner of the door",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The church's bronze doors, modeled after Ghiberti's famous doors for the Baptistery of Florence, were designed by Richard Morris Hunt \u2014 the same architect who designed the base of the Statue of Liberty \u2014 with their sculptures executed by Au"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Trinity Church graveyard, resting place of Alexander Hamilton",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Do wander the graveyard here; it holds the remains of Alexander Hamilton and other notables."
+      }
+    ]
+  },
+  {
+    "name": "New York Stock Exchange",
+    "short_description": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+    "trigger_radius": 30,
+    "importance_tier": 4,
+    "n_beats": 8,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The scraggly buttonwood tree in front of the Stock Exchange",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The facade fronting Broad Street, not Wall Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "In front of the Stock Exchange stands a scraggly buttonwood tree, planted to invoke the buttonwood under which New York's first traders gathered in 1792 to begin brokering Revolutionary War debt \u2014 the first stock market in America. One odd "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Towering columns, crowded ornamental pediment, and huge flag on the Exchange facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Scraggly buttonwood tree in front of the Exchange",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "You are now gazing at the most famous \u2014 some would say infamous \u2014 financial institution in the world. The building's towering columns, crowded ornamental pediment, and huge flag trumpet that this is a place of incomparable might and prestig"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Bronze Fearless Girl statue, fists on hips, in front of the Exchange",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Also in front is the bronze statue of a fierce young girl, fists on hips \u2014 Fearless Girl. In March of 2017 she was set in a face-off with the Charging Bull in Bowling Green, as a statement on the need for more women working in finance. The "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The neoclassical NYSE facade behind barricades on Wall Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Fearless Girl statue across the cobblestones of Broad St",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Home to the world's best-known stock exchange, the NYSE is an iconic symbol of US capitalism. Behind its portentous neoclassical facade, about one billion shares change hands daily, a sight no longer publicly viewable due to security concer"
+      }
+    ]
+  },
+  {
+    "name": "The Woolworth Building",
+    "short_description": "Landmark skyscraper ('Cathedral of Commerce'), full Wikipedia article, former world's tallest building. Moderate-high gravity.",
+    "trigger_radius": 30,
+    "importance_tier": 3,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The neo-Gothic spires, gargoyles, flying buttresses and turrets of the facade",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This soaring \"Cathedral of Commerce\" cost Frank W. Woolworth fourteen million dollars' worth of nickels and dimes in 1913. It was the tallest building in the city from 1913 until 1930, when the Chrysler Building surpassed it. At its opening"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The neo-Gothic terra-cotta-clad facade rising 792ft",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Byzantine-like mosaic lobby (tours only)",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The world's tallest building upon its completion in 1913, surpassed only by the Chrysler Building in 1930, Cass Gilbert's 60-story, 792ft-tall Woolworth Building is a neo-Gothic marvel, elegantly clad in masonry and terra-cotta. The breatht"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Cass Gilbert's neo-Gothic 60-story tower rising above Broadway",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "By the 20th century, elevators and steel-frame engineering let the city grow up \u2014 literally. The skyscraper boom began with Cass Gilbert's neo-Gothic, 60-story Woolworth Building, completed in 1913, which was the world's tallest building fo"
+      }
+    ]
+  },
+  {
+    "name": "International Center of Photography",
+    "short_description": "Major photography museum, Wikipedia article, founded by Cornell Capa. Moderate gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The multi-floor museum space across from the Essex Street Market",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Founded in 1974 by Cornell Capa \u2014 brother of the eminent war photographer Robert Capa \u2014 the ICP has a deep grounding in photojournalism. Expect probing work that investigates the current zeitgeist, from societal challenges and recent confli"
+      }
+    ]
+  },
+  {
+    "name": "Museum at Eldridge Street",
+    "short_description": "National Historic Landmark 1887 synagogue, Wikipedia article. Moderate gravity.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The grand 1887 synagogue interior, crumbling picturesquely in places",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Housed in an 1887 synagogue \u2014 the oldest house of worship in the city built by Eastern European Jews \u2014 the Museum at Eldridge Street has the kind of grandeur usually reserved for the cathedrals of Europe. There's poignancy here too: the bui"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Restored interior of the Eldridge Street Synagogue, shining with original splendor after the 2007 restoration",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This landmark house of worship, built in 1887, was a center of Jewish life before suffering a decline in the congregation in the late 1920s. After WWII, the main sanctuary was closed off and services relocated to the basement. The badly det"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "In addition to the restored portion of the synagogue, there's a hall of exhibits and artifacts about the history of Jewish life on the Lower East Side, as well as special events and seminars."
+      }
+    ]
+  },
+  {
+    "name": "New Museum of Contemporary Art",
+    "short_description": "Major contemporary-art museum on the Bowery, Wikipedia article, landmark SANAA building. Moderate-high gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The massive steel-and-glass tower rising over the Bowery",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Perhaps the clearest sign of New York's ever-increasing prosperity is that even the gritty, grimy Bowery \u2014 birthplace of the term \"bowery bums\" for the homeless men who once swarmed its cheap bars and bunked in its missions \u2014 now has a muse"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Stacked off-white box-atop-box facade of the New Museum at 235 Bowery, viewed from across the street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The New Museum's building is the brainchild of Japanese firm SANAA \u2014 a partnership between Kazuyo Sejima and Ryue Nishizawa. In 2010, SANAA won the coveted Pritzker Prize (think the Oscars of architecture) for its contributions to the world"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Founded in 1977 by Marcia Tucker and housed in five different locations over the years, the museum's mission statement is simple: 'New art, new ideas.' The institution gave gallery space to artists Keith Haring, Jeff Koons, Joan Jonas, Mary"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "To save cash, stop by on Thursday evening between 7pm and 9pm, when admission is 'pay what you wish.' Depending on the show, the crowds can be sizable \u2014 the book recommends lining up by 6:45pm."
+      }
+    ]
+  },
+  {
+    "name": "The Tenement Museum",
+    "short_description": "Highly regarded immigration museum, National Trust site, Wikipedia article, major Frommer's headline sight. Moderate-high gravity. Note: original tenement is 97 Orchard; visitor center/coords at 103 Orchard.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The brownstone tenement facade at 97 Orchard Street, indistinguishable from its neighbors",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "At first glance this museum looks like just another brownstone on the block \u2014 and that's exactly the point. It was the first National Trust for Historic Preservation site that wasn't the home of someone rich or famous; its original building"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Visits are by hour-long guided tour, with a choice of six programs, each illuminating a different sort of tenant \u2014 from nineteenth-century garment workers doing piecework in their apartment, to a family that survived not one but two depress"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Spread across two 19th-century tenements in the gentrifying Lower East Side, this wonderful, immersive museum gives some sense of what life was like in the poorest parts of the world's greatest city in the 19th and early 20th centuries. For"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Recreated 1870s and 1930s apartments visible on the Hard Times tour",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The 'Hard Times' tour, one of the most popular, visits apartments from two periods \u2014 the 1870s and the 1930s. There you'll see the squalid conditions tenants faced: in the early days there was a wretched communal outhouse and no electricity"
+      }
+    ]
+  },
+  {
+    "name": "Jackie Robinson Museum",
+    "short_description": "Opened 2022, Wikipedia article, civil-rights + baseball focus. Moderate gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The wall timeline juxtaposing Robinson's life with world events",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "As much about the Civil Rights Movement as about baseball, this two-room museum takes a detailed, clear-eyed look at the life of a great American hero and his times. It does so with well-produced videos, a smattering of artifacts, and a sav"
+      }
+    ]
+  },
+  {
+    "name": "Leslie-Lohman Museum of Art",
+    "short_description": "World's first LGBTQ art museum, Wikipedia article. Moderate gravity; niche-significant.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The first LGBTQ art museum in the world grew out of the collection of Charles W. Leslie and Fritz Lohman, pioneers who began collecting and exhibiting this genre in 1969. Along the way they acquired genuine masterworks by such big names as "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The world's first museum dedicated to LGBTIQ+ themes stages six to eight annual exhibitions of both homegrown and international art. Offerings have included solo-artist retrospectives as well as themed shows exploring the likes of 'art and "
+      }
+    ]
+  },
+  {
+    "name": "Merchant's House Museum",
+    "short_description": "Only fully intact 19th-century Manhattan residence, Wikipedia article, NHL. Moderate gravity.",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Greek Revival town house facade on East 4th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The preserved interior with silk couches and bronze gas chandeliers",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "On East 4th Street this precious sliver of history has survived utterly intact \u2014 the only Victorian-era structure in New York City preserved both inside and out. A handsome Greek Revival town house, it was once home to the Tredwell family, "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Redbrick Federal-style facade at 29 E 4th St, NoHo",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Mahogany pocket doors, bronze gasoliers, and marble mantelpieces inside",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Parlor chairs attributed to Duncan Phyfe",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Multilevel servant call bell system, still functional",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Built in 1832 and purchased by merchant magnate Seabury Tredwell three years later, this redbrick mansion is the most authentic Federal-style house in town \u2014 one of about 300 such houses that survive. An antiquarian's dream, the Merchant's "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Parlor chairs where the ghost's shadow was said to take a seat during a Valentine's Day concert",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Many believe that the ghost of Gertrude Tredwell \u2014 Seabury's youngest child and the building's last resident \u2014 haunts the place, making cameos late in the evening and at public events. Several attendees once witnessed the shadow of a woman "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The intact Federal-style interiors of the 1832 house in NoHo",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The 1832 Merchant's House Museum, in NoHo, is a Federal-style specimen \u2014 a style marked by slim columned entrances, triangular pediments and rounded fanlights over doors and windows. The house still contains its intact interiors."
+      }
+    ]
+  },
+  {
+    "name": "Mmuseumm",
+    "short_description": "Tiny novelty museum in a freight-elevator shaft, Wikipedia article, cult following. Low gravity.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 60-square-foot freight elevator shaft housing the collection, off Cortlandt Alley",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Found objects in a found space \u2014 that, in a nutshell, is what makes this nutshell-size gallery so beguiling. Set in a non-working, sixty-square-foot freight elevator shaft off an alley, it was created by three indie filmmakers drawn to obje"
+      }
+    ]
+  },
+  {
+    "name": "Museum of Chinese in America",
+    "short_description": "Chinatown museum designed by Maya Lin, Wikipedia article. Moderate gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The story of the Chinese immigrant experience in the U.S. is unlike that of any other ethnic group. Arguably these Chinese Americans, like the African Americans brought here as slaves, faced a far harder road than other immigrants \u2014 held to"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Museum entrance at 215 Centre St, between Grand and Howard Sts",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Museum of Chinese in America, designed by Maya Lin \u2014 architect of Washington, DC's Vietnam Memorial \u2014 is a multifaceted space with exhibitions that illuminate Chinese American life, both past and present. Wind your way through multimedi"
+      }
+    ]
+  },
+  {
+    "name": "Old St. Patrick's Cathedral",
+    "short_description": "Historic basilica (city's first cathedral), Wikipedia article, Catacombs-by-Candlelight tour. Moderate gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The dimly lit burial place beneath the old cathedral",
+            "direction": "down",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The historic graveyard surrounding the church",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Funnily enough, though the tour is called \"Catacombs by Candlelight,\" the catacombs aren't really the highlight. What makes it absorbing is how the talented, humorous guides retell the history of the city \u2014 and the country \u2014 through the len"
+      }
+    ]
+  },
+  {
+    "name": "Whitney Museum of American Art",
+    "short_description": "Major American-art museum, Renzo Piano building, Wikipedia article, top Frommer's headline sight, adjacent to High Line. High gravity.",
+    "trigger_radius": 30,
+    "importance_tier": 2,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The canon of American art was celebrated \u2014 and in some ways created \u2014 by the Whitney. It was Whitney curators, and founder Gertrude Vanderbilt Whitney herself, who championed now-iconic artists like Edward Hopper, Georgia O'Keeffe, Alexande"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Renzo Piano building next to the High Line park",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          },
+          {
+            "cue": "The naturally lit galleries with floors sprung on 'sleepers'",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In May 2015 the Whitney's new Renzo Piano\u2013designed home opened in the Meatpacking District, right next to the High Line park. The design is built for flexibility: floors can be drilled into, every interior wall is movable, and every inch is"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Asymmetrical glass-cloaked nine-story building at the southern edge of the Meatpacking District",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Designed by Italian architect Renzo Piano, the Whitney's asymmetrical, glass-cloaked home quickly became a major landmark at the southern edge of the Meatpacking District, anchoring the first-opened section of the High Line. The nine-story "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Permanent-collection works on display: LeWitt's Five Towers, Warhol's Mao prints, Neel's portrait of Warhol, Johns's Three Flags",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Whitney's collection of over 23,000 works by 3,000-plus American artists carries extra weight because it's all 20th- and 21st-century work, much of it by still-practising artists. Expect Sol LeWitt's Five Towers, looking like the load-b"
+      }
+    ]
+  },
+  {
+    "name": "Battery Park",
+    "short_description": "Tier-5 candidate: 25-acre waterfront park at Manhattan's southern tip; tour start point with harbor/Statue of Liberty views. High footfall. Importance_tier NOT assigned per task.",
+    "trigger_radius": 60,
+    "importance_tier": 4,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Look out at the river and the great natural harbor from the waterfront",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Look out at the river. It's the reason this great city was built. When Henry Hudson and his crew of sixteen sailed up it in 1609, mistakenly thinking they'd find Asia at its mouth, little did they know they were setting in motion a chain of"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "A spot in Battery Park where you can see the river and harbor",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "From the subway, walk into Battery Park and toward the river. Find a spot where you can see the water \u2014 that open view of the harbor is where this walk begins."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The string of waterfront park spaces, riverside promenade and yacht marina",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The Seaglass Carousel with its plexiglass fish at the downtown end",
+            "direction": "south",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "At the southernmost tip of Manhattan, Battery Park has been growing kudzu-like for decades \u2014 it\u2019s now a string of eclectic park spaces hugging the waterfront from just above the original Battery Park, where the Statue of Liberty ferry termi"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "South Cove's quays, bridges and walkways with river views",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The Irish Hunger Memorial grassy outcropping with its real Irish stone fence",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Two standout corners reward a walk through Battery Park. South Cove, on the Esplanade between First and Third places, is an artfully varied collection of quays, bridges, and meandering walkways with great river views. And the Irish Hunger M"
+      }
+    ]
+  },
+  {
+    "name": "Castle Clinton",
+    "short_description": "Tier-4/5 candidate: National Monument, former fort/Castle Garden/aquarium/immigration depot. Major historic landmark inside Battery Park.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The circular stone building you can go inside if it is open",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This circular stone structure \u2014 taller in some earlier incarnations \u2014 has been at the center of New York life over the years. In 1807, the West Battery, as it was then called, was built as a fort on a landfill island in the water off Manhat"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "After 1823 the site became an extremely popular entertainment center called Castle Gardens. The 'Swedish Nightingale,' Jenny Lind, was a headliner here in 1850."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Ellis Island visible from here, to the right of the Statue of Liberty, its main hall topped with four little spires",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In 1855, the space was transformed once more, into the city's first immigrant processing center. Over eight million new arrivals \u2014 a full two-thirds of those who came to the United States at this time \u2014 spent their first hours in the countr"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The famed architectural team of McKim, Mead, and White then stepped in and transformed the site into the nation's first aquarium, visited by about ninety million people until it was moved in 1941 to Coney Island. After the site stood empty "
+      }
+    ]
+  }
+]

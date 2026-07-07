@@ -1,0 +1,1086 @@
+[
+  {
+    "name": "New York Transit Museum",
+    "short_description": "Subway-history museum in former subway station. Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Vintage subway cars, turnstiles, and station mosaics in the former subway station",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Best for kids and train nuts, this underground museum \u2014 yes, it's in a former subway station \u2014 covers the storied history of the NYC subway system. It houses a number of handsome vintage subway cars, turnstiles, and mosaics that used to ado"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The downstairs platform with 20 original subway and elevated train cars from 1907",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Occupying an old subway station built in 1936 \u2014 out of service since 1946 \u2014 this kid-friendly museum takes on 100-plus years of getting around town. The best part is the downstairs platform area, where you can climb aboard 20 original subwa"
+      }
+    ]
+  },
+  {
+    "name": "Isamu Noguchi Garden Museum",
+    "short_description": "Only US museum founded by an artist in his lifetime; Zen sculpture garden. Quick gravity: medium.",
+    "trigger_radius": 120,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Utterly unique, this is the only museum in the nation founded by an artist in his lifetime, dedicated to his work and curated by him. Because Noguchi, who lived from 1904 to 1988, was a genius across sculpture, architecture, ceramics, and f"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The updated Zen sculpture garden on-site",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "On-site are a small cafe and bookstore and an updated Zen sculpture garden \u2014 one of the most serene spots in the city. Gallery talks, held at 2pm each day, illuminate the complex engineering issues and intentions behind Noguchi's large, som"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Minimalist sculpture garden and serene indoor galleries designed by Noguchi",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Both the art and the context in which it's displayed here are the work of LA-born sculptor, designer and landscape architect Isamu Noguchi, famous for iconic lamps and coffee tables, as well as elegant, abstract stone sculptures. Artifacts "
+      }
+    ]
+  },
+  {
+    "name": "Louis Armstrong House Museum",
+    "short_description": "Preserved home of Louis Armstrong; jazz heritage. Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The preserved two-story home as Armstrong left it",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The only house this traveling musician ever owned, it was perfectly preserved after his wife Lucille died in 1983 \u2014 Armstrong himself had passed away in 1971 \u2014 and opened to the public in 2003. There's an eerie sense that someone still live"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Custom 24-karat bathroom fixtures, Baccarat chandeliers, and the state-of-the-art audio system inside the home",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On the tour you'll learn Louis's rags-to-riches history \u2014 son of a prostitute, he learned to play trumpet in a juvenile detention center and made his name in mobster-owned clubs. It's a fairly modest two-story home, but he and Lucille lavis"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Tape recordings of family and musicians played by the guide as you walk through the rooms",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "The highlight is the tape recordings of everyday life that Armstrong captured himself. Your guide plays them as you wander through, letting you hear the family and visiting musicians talking, laughing, and jamming together."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Dazzling retro-turquoise kitchen preserved exactly as Armstrong knew it",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "At the peak of his career and with worldwide fame at hand, legendary trumpeter Armstrong settled in this modest Queens home, and lived there until his death in 1971. The place has been immaculately preserved in groovy style, down to the daz"
+      }
+    ]
+  },
+  {
+    "name": "Museum of the Moving Image",
+    "short_description": "TV/film/video-game museum; built on Kaufman Astoria Studios. Quick gravity: medium-high.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 8,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "This was the first museum anywhere to look at TV, film, and video games together \u2014 a heretical concept when it opened in 1988. Rather than simply archiving past shows, it explores the craft and technology behind these arts with imaginative "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Behind the Screen core exhibit where you can dub your voice into My Fair Lady and make animation",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Start with the core exhibit, Behind the Screen, which explores the technical issues behind moving images \u2014 from how the eye is tricked into seeing movement in rapidly repeating images to the intricacies of sound and film editing. You can du"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The elevator that screens custom-made GIFs by top GIF-makers",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "This part of Queens was where many early American films were made \u2014 the 98,000-square-foot museum was built on the grounds of Kaufman Astoria Studios. Take the elevator while you're here: it screens custom-made GIFs by some of the top GIF-m"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The no. 7 train \u2014 which originates at Times Square and snakes mostly above ground through the heart of ethnic Queens \u2014 is popularly known as the International Express. Built by immigrants in the early 1900s, the no. 7 IRT brought those same"
+      }
+    ]
+  },
+  {
+    "name": "P.S. 1 Contemporary Art Center",
+    "short_description": "Source-name variant of MoMA PS1; kept as the poi_name used in beats (source-locked). Likely alias \u2014 resolve at poi-dedup.",
+    "trigger_radius": 60,
+    "importance_tier": 3,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The decrepit former public-school building housing the galleries in Long Island City",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "At this proving ground for young artists, the work is challenging, right of the moment, and sometimes downright wacky. That 'crazy building' in Long Island City was once a public school \u2014 hence the name \u2014 and its somewhat decrepit charm is "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "The bulk of the work here is in changing exhibits \u2014 visitors are often greeted with as many as 14 different shows in all parts of the building \u2014 and some can be quite bizarre. In a retrospective of New York City art, one framed sculpture tu"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "PS1 first hit the scene in the 1970s \u2014 the age of Dia, Artists' Space and the New Museum, projects showcasing the city's thriving experimental, multimedia art scene. In 1976, Alanna Heiss \u2014 a supporter of art in alternative spaces \u2014 took po"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Alan Saret's The Hole at P.S.1, Fifth Solar Chthonic Wall Temple on the north wing's 3rd floor",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Pipilotti Rist's Selbstlos im Lavabad visible through the lobby floorboards",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Surviving remnants of PS1's 1976 inaugural show Rooms include Richard Artschwager's oval-shaped wall 'blps' and Alan Saret's light-channeling The Hole at P.S.1, Fifth Solar Chthonic Wall Temple, on the north wing's 3rd floor. These works ar"
+      }
+    ]
+  },
+  {
+    "name": "Queens Museum",
+    "short_description": "Home of the Panorama of the City of New York; 1939 World's Fair building. Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 9,335-square-foot Panorama of the City of New York diorama of all five boroughs",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Long before Google Earth, there was the Panorama of the City of New York \u2014 a diorama of 9,335 square feet created for the 1964\u201365 World's Fair, with the help of photographers who swooped in helicopters over the city, taking over 7,000 photo"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The exhibit of Tiffany lamps inside the museum",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The museum building has a storied history of its own: erected for the 1939 World's Fair, it served as the home of the United Nations during its first five years. There's also a lovely exhibit of Tiffany lamps \u2014 a nod to the fact that the Ti"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "9335-sq-ft Panorama of New York City miniature with dusk-to-dawn light simulation",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "The Queens Museum's most famous installation is the Panorama of New York City \u2014 a gob-smacking 9335-sq-ft miniature NYC, with all buildings accounted for and a 15-minute dusk-to-dawn light simulation."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Retro-fabulous World's Fair memorabilia collection from '39 and '64 fairs on display",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Queens Museum is housed in a historic building constructed for the 1939 World's Fair \u2014 and once home to the UN. You'll find a retro-fabulous collection of memorabilia from both the '39 and '64 fairs on display."
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Children's Museum",
+    "short_description": "First children's museum in the nation. Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The pretend restaurant, grocery store, and 'building brainstorm' play areas",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The very first museum of its type in the nation, the Brooklyn Children's Museum is inspired by the idea that children love to play at working. It gives them places to toil: a garden where they can plant things and learn botany, a pretend re"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The bright-yellow, L-shaped building and re-created bodega, pizza joint and Caribbean market inside",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "A bright-yellow, L-shaped structure houses this hands-on kids' favorite, founded in 1899 as the first children's museum in the US. The collection holds almost 30,000 cultural objects \u2014 musical instruments, masks and dolls \u2014 and natural-hist"
+      }
+    ]
+  },
+  {
+    "name": "Children's Museum of Manhattan",
+    "short_description": "Upper West Side hands-on kids museum (Manhattan, included in 'Especially for Kids' section). Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The fourth-floor Child Development Center with finger-painting, little stoves, and the twisted ball tube",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "At this slick hands-on attraction, changing exhibits highlight the kiddie zeitgeist of the moment \u2014 Red Grooms, Maurice Sendak, and William Wegman's dog art were a few recent themes. Those with toddlers should head straight to the Child Dev"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 8ft mural wall for fingerpainting and the Talking Dragon",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This small museum features interactive exhibits scaled down for the 0-to-10-year-old set \u2014 perennial favorites like the Talking Dragon, Dora the Explorer-themed rooms and an 8ft mural wall for fingerpainting. The outdoor seasonal Dynamic H2"
+      }
+    ]
+  },
+  {
+    "name": "National Museum of Mathematics",
+    "short_description": "Interactive math museum (source: 'The Museum of Mathematics'/MoMath, Manhattan). Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Interactive displays including bikes with square wheels across two floors",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "When this museum first debuted in 2012, the author warned her children that if they didn't behave, she'd take them there \u2014 but it proved no punishment at all. Creatively designed to bring math concepts to life, the little museum has two flo"
+      }
+    ]
+  },
+  {
+    "name": "New York City Fire Museum",
+    "short_description": "Firehouse-memorabilia museum (Manhattan/SoHo). Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Big red fire engines and a room full of red fire hats",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "What kid can resist a big red fire engine or a room full of swooping red fire hats? You'll see both in abundance at the New York City Fire Museum, which holds one of the largest collections of firehouse memorabilia in the nation. It also ha"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Grand firehouse exterior at 278 Spring St, dating from 1904",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Horse-drawn firefighting carriages and stovepipe hats on display inside",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In a grand old firehouse dating from 1904, this ode to firefighters includes a fantastic collection of historic equipment and artifacts. Eye up everything from horse-drawn firefighting carriages and early stovepipe firefighter hats to Chief"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Seedling from the World Trade Center survivor tree planted in front of the museum in 2019",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The New York Fire Department lost half of its members in the collapse of the World Trade Center on September 11, 2001, and memorials and exhibits have become a permanent part of the collection \u2014 as well as the 2019 planting of a seedling fr"
+      }
+    ]
+  },
+  {
+    "name": "New York Hall of Science",
+    "short_description": "Hands-on science museum in 1964 World's Fair building. Quick gravity: medium.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 1964 World's Fair building housing the hands-on exhibits, plus the science-themed playground",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Set in one of the few remaining buildings from the 1964 World's Fair, the New York Hall of Science is a big hit with science-attuned youngsters, since most of its exhibits are hands-on and interactive. For those who just want to blow off st"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "1965 building with rippling stained-glass exterior",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Occupying a weird 1965 building rippling with stained glass, this science museum is unapologetically nerdy. An outdoor mini-golf course and North America's largest science playground don't require as much brain power, but inside highlights "
+      }
+    ]
+  },
+  {
+    "name": "Belvedere Castle",
+    "short_description": "",
+    "trigger_radius": 25,
+    "importance_tier": 4,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Turreted castle atop the second-highest elevation in the park",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "View down onto the Great Lawn ballfields below",
+            "direction": "down",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This turreted castle is Olmsted and Vaux\u2019s \u201cfolly\u201d \u2014 a fantasy building \u2014 and it sits atop the second-highest elevation in the park. Inside is a nature observatory with good rainy-day activities for children. From Belvedere you also look do"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Delacorte Theater in front of Belvedere Castle",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In front of the castle is the Delacorte Theater, where the famed Shakespeare in the Park is performed \u2014 a star-studded and free evening of theater staged only in the summer months. If you decide to take in a show, know that you could end up"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Belvedere Castle perched as a lookout near the Great Lawn",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Belvedere Castle, near the southeast corner of the Great Lawn, serves as a bird-watching lookout."
+      }
+    ]
+  },
+  {
+    "name": "The Carousel",
+    "short_description": "",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The carousel's tall hand-carved merry-go-round horses",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "This Victorian spinner is most children\u2019s favorite stop in the park. It\u2019s not the original \u2014 the first burned down in the 1950s \u2014 but it\u2019s a beaut, built on Coney Island in 1908 and featuring some of the tallest merry-go-round horses in the"
+      }
+    ]
+  },
+  {
+    "name": "Central Park Zoo",
+    "short_description": "",
+    "trigger_radius": 120,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The indoor multilevel Tropic Zone rainforest exhibit",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Penguin enclosure in the Polar Circle",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Because of its small size, this zoo is at its best showing off smaller animals. The indoor, multilevel Tropic Zone is a real highlight \u2014 a steamy rainforest home to everything from black-and-white colobus monkeys to emerald tree boa constri"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The sea lion and penguin tanks, rowdy at feeding times",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This small zoo gained fame for its part in the DreamWorks animated movie Madagascar. Today it is home to penguins, snow leopards and lemurs, and feeding times in the sea lion and penguin tanks make for a rowdy spectacle. The attached pettin"
+      }
+    ]
+  },
+  {
+    "name": "Cleopatra's Needle",
+    "short_description": "",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The obelisk and the plaque at its base translating the hieroglyphics",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "This handsome obelisk was a gift to the United States from Egypt in 1881, in recognition of the help this country gave in building the Suez Canal. Transporting the 200-ton pillar took 38 days by ship from Alexandria to New York \u2014 and then a"
+      }
+    ]
+  },
+  {
+    "name": "Conservatory Garden",
+    "short_description": "",
+    "trigger_radius": 120,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The three formal garden sections \u2014 French, Italian, and English styles",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "These are the park\u2019s only formal gardens, and they\u2019re simply stunning \u2014 which may be why they\u2019re a favorite spot for wedding photographers. Walk around and you\u2019ll notice that each of the garden\u2019s three sections has a different ambience: one"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The crabapple trees and meandering boxwood of the 6-acre garden",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "If you want a little peace and quiet \u2014 as in, no runners, cyclists or buskers \u2014 the 6-acre Conservatory Garden serves as one of the park's official quiet zones. And it's beautiful to boot: bursting with crabapple trees, meandering boxwood a"
+      }
+    ]
+  },
+  {
+    "name": "Conservatory Water",
+    "short_description": "",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Hans Christian Andersen statue and the Alice in Wonderland statue beside the pond",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "This is the model boat pond where Stuart Little had his fabled race. You can rent a remote-control model boat to float around, take in the Hans Christian Andersen statue \u2014 where storytelling takes place on summer weekends \u2014 or visit the Ali"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The toadstool-studded Alice in Wonderland statue at the water's edge",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          },
+          {
+            "cue": "The Hans Christian Andersen statue to the west of the water",
+            "direction": "west",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "North of the zoo, at 74th St, is Conservatory Water, where model sailboats drift and kids scramble about on a toadstool-studded Alice in Wonderland statue. There are Saturday story hours at 11am from June to September at the Hans Christian "
+      }
+    ]
+  },
+  {
+    "name": "The Dairy",
+    "short_description": "",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The frou-frou-laden Gothic dairy building, now the park's visitor center",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Completed in 1871, this frou-frou\u2013laden Gothic structure was an actual dairy, set up to give city children access to fresh milk. Today it serves as the park\u2019s visitor center \u2014 a good place to stop for maps \u2014 and most of the Central Park Con"
+      }
+    ]
+  },
+  {
+    "name": "Bethesda Terrace",
+    "short_description": "",
+    "trigger_radius": 25,
+    "importance_tier": 4,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Two massive carved posts at the stairs \u2014 the 'night' side shows a witch on a broom",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Four-seasons carvings on the stairs down to the fountain, no two alike",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Bethesda Terrace is, without a doubt, the architectural heart of the park, and you\u2019re likely to see a bride or two using this lovely area as a backdrop for wedding photographs. Approaching from the Mall, you\u2019ll reach two massive posts on ei"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The angel Bethesda statue blessing the water, a lily in one hand",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Bethesda Fountain commemorates the opening of the Croton Aqueduct, which finally solved New York\u2019s water problems in 1842; the fountain itself was finished in 1864. It was sculpted by Emma Stebbins, the first woman to receive this type of c"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Loeb Boathouse and the dock that pushes out from the cafe onto the lake",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Added to the park in 1874, Loeb Boathouse is where you rent the boats you see bobbing on the lake, and it\u2019s a fine place to eat. It also had its Hollywood moment: Carrie and Mr. Big of Sex and the City fell into the water together at the en"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The grand elm-lined Mall walkway with statues, leading to the band shell and the dance-skate rink",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "In their original plans, Olmsted and Vaux called this area the \u201cPromenade\u201d and intended it as an \u201copen air hall of reception.\u201d Today the grand, elm\u2013lined walkway is bedecked with statues; at its uptown end is an underused band shell, and ju"
+      }
+    ]
+  },
+  {
+    "name": "Sheep Meadow",
+    "short_description": "",
+    "trigger_radius": 120,
+    "importance_tier": 4,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The open expanse of grass where sunbathers gather",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Today this expanse of grass is the premier see-and-be-seen spot for New York\u2019s teenagers, who turn it into a sunbathing party come spring and summer. They\u2019re following a long tradition: this is where New York\u2019s hippie \u201cbe-in\u201d \u2014 a day of non"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The meadow got its name in 1864, when park commissioners set sheep to graze here in an attempt to stop the First Division of the New York National Guard from using it as a parade ground \u2014 it didn\u2019t work. In 1934, the sheep were finally exil"
+      }
+    ]
+  },
+  {
+    "name": "Strawberry Fields",
+    "short_description": "",
+    "trigger_radius": 20,
+    "importance_tier": 4,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 'Imagine' mosaic on the ground",
+            "direction": "here",
+            "feature_type": "plaque"
+          },
+          {
+            "cue": "The Dakota apartment house at 1 W. 72nd St. across the street",
+            "direction": "west",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This is a memorial to John Lennon, who was shot to death in front of the Dakota apartment house at 1 West 72nd Street, just across the street from here. A mosaic on the ground spells out \u201cImagine,\u201d and many people come to play music and lea"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The tiled mosaic reading 'Imagine' set in the grove of elms",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This tear-shaped garden at W 72nd St serves as a memorial to former Beatle John Lennon, who lived directly across the street in the Dakota Building and was fatally shot there. The garden, partially funded by his widow Yoko Ono, is composed "
+      }
+    ]
+  },
+  {
+    "name": "Wollman Rink",
+    "short_description": "",
+    "trigger_radius": 20,
+    "importance_tier": 4,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The scenic ice-skating rink",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "This is a wonderfully scenic place to skate, and you may recognize it from the movies Home Alone 2, Serendipity, and Love Story. In the summer and spring months the rink hosts varied events, from concerts to \u201csip and paint\u201d classes."
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Bridge Park",
+    "short_description": "Independent top-level POI. Distinct from existing 'Brooklyn Bridge' POI. Flagged for /poi-generate.",
+    "trigger_radius": 120,
+    "importance_tier": 5,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 1922 carousel inside its Jean Nouvel pavilion",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          },
+          {
+            "cue": "Killer views of the Manhattan skyline across the East River",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Many visitors who walk over the Brooklyn Bridge from Manhattan feel the urge to linger in this handsome 85-acre waterfront park. Once an industrial area, it\u2019s now home to a spectacular 1922 carousel \u2014 surrounded by a pavilion designed by co"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The waterfront park stretching along the East River with its piers",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "A stunning example of industrial regeneration, this 85-acre, multi-use waterfront park skirts the East River for 1.3 miles, from Jay St in Dumbo to the west end of Atlantic Ave in Cobble Hill. It has revitalized a barren shore and its once-"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Sweeping grassy lawn with views of the East River between the Brooklyn and Manhattan Bridges",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The Empire Stores Civil War-era warehouses bordering the lawn",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In the northern section of Dumbo, between the Brooklyn and Manhattan Bridges, the Empire Fulton Ferry section of the park spreads a sweeping grassy lawn with stunning views of the East River. Alongside the lovingly restored 1922 Jane's Caro"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The three lawns of Pier 1 just south of the Brooklyn Bridge",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Just south of the Brooklyn Bridge, Pier 1 is the largest of the park's piers, with three lawns inviting picnicking, playgrounds and photography. From May through August it stages free events: free films screened against the stunning backdro"
+      }
+    ]
+  },
+  {
+    "name": "Bryant Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "trigger_radius": 120,
+    "importance_tier": 5,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 4-acre lawn with London planetree-shaded promenades behind the NY Public Library",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Just behind the New York Public Library, this park is a welcome respite from the endless high-rises and crushing crowds of midtown \u2014 a 4-acre lawn surrounded by benches, statuary, and London planetree\u2013shaded promenades, much like the Tuiler"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The lawn and coffee kiosks behind the New York Public Library",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "European coffee kiosks, alfresco chess games, summer film screenings and winter ice skating: it's hard to believe this leafy oasis was a crime-ridden hellscape known as 'Needle Park' in the '70s. Nestled behind the beaux-arts New York Publi"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The fountain at Bryant Park, scene of the debriefing in Manhattan Murder Mystery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "It's at the fountain in Bryant Park that DIY sleuth Diane Keaton debriefs husband Woody Allen about their supposedly bloodthirsty elderly neighbor in Manhattan Murder Mystery (1993). True to form, Allen uses the film to showcase a slew of N"
+      }
+    ]
+  },
+  {
+    "name": "Governors Island",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "trigger_radius": 150,
+    "importance_tier": 3,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The two 1812-era fortresses at the national monument",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Four man-made hills with stellar Manhattan views",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Situated a half-mile south of Manhattan, the 172-acre Governors Island was for many years a Coast Guard installation. Before that it was an army post for nearly 200 years and played a part in the Revolutionary War. In April 2010, New York C"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Admiral's House, a colonnaded 1843 military residence in Nolan Park",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Originally named 'Nut Island,' or Paggank, by the indigenous Lenape people, the island was renamed first by the Dutch and then dubbed Governors Island when it became a military installation. Besides serving as a fort in the Revolutionary Wa"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Star-shaped Fort Jay and the red sandstone Castle Williams",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In the northern corner stands star-shaped Fort Jay, built in 1794 and rebuilt 15 years later, a failed attempt to prevent the British from invading Manhattan; nearby is Colonels Row, eight lovely 19th-century brick officers' quarters; and t"
+      }
+    ]
+  },
+  {
+    "name": "Little Island",
+    "short_description": "Independent top-level POI. Source's 'Hudson River between 13th and 14th sts.' footer matches. Flagged for /poi-generate.",
+    "trigger_radius": 150,
+    "importance_tier": 4,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 132 concrete 'tulips' of differing heights rising from the Hudson",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Hills, amphitheaters and winding paths atop the structure",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Gotham\u2019s newest park seems to float like a watery mirage in the Hudson River. The engineering and architecture by Thomas Featherwick \u2014 the designer of Vessel \u2014 is stupendous: a set of 132 concrete \u201ctulips,\u201d all of differing heights, emerge "
+      }
+    ]
+  },
+  {
+    "name": "Hudson River Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "trigger_radius": 120,
+    "importance_tier": 5,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Hudson River views along the four-mile waterfront",
+            "direction": "west",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The 36-passenger carousel of indigenous animals at Pier 62 near 23rd St.",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This 500-acre park runs for four miles, transforming once-industrial waterfront into a string of parks and playspaces \u2014 Sheep Meadow\u2013like expanses of grass, marvelous landscaping, terrific Hudson River views, innovative playgrounds, and pub"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Hudson River Greenway path running between the river and the West Side Hwy",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "As its maritime industry dwindled, New York had to devise a future for the bristling ranks of piers left behind. The answer, stretching from Manhattan's southern tip to 59th St in Midtown, is the Hudson River Park. Running through it is the"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The dockside Frying Pan ship at Pier 66 Maritime",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "On warm summer evenings locals loll on the grass for people-watching, while those after sunset revelry join the sangria-loving crowds at the dockside Frying Pan, a historic ship serving food and drink from Pier 66 Maritime."
+      }
+    ]
+  },
+  {
+    "name": "Riverside Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "trigger_radius": 120,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Grant's Tomb at 122nd St., the largest mausoleum in the U.S.",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          },
+          {
+            "cue": "Garden-laced promenades with Hudson River views",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Another masterwork by Olmsted and Vaux, Riverside Park has always had one advantage over Central Park: glorious river views, which its garden-laced promenades make the most of. Among its monuments is Grant\u2019s Tomb at 122nd Street, the larges"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The leafy waterfront banked by the Hudson, with the Jersey shore across the water",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "A classic beauty designed by Central Park creators Frederick Law Olmsted and Calvert Vaux, this waterside spot runs north on the Upper West Side, banked by the Hudson River from W 59th to 155th Sts, and is lusciously leafy. Plenty of bike p"
+      }
+    ]
+  },
+  {
+    "name": "Tompkins Square Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "trigger_radius": 120,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "This is the city\u2019s funkiest green space, and it\u2019s seen its share of political protest. In 1988, a standoff between the police and the homeless people living here culminated in five days of rioting and charges of police brutality. Incorporat"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Open green of Tompkins Square Park with concrete chess tables, dog run, and playground visible",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The 10.5-acre Tompkins Square Park honors Daniel Tompkins, who served as governor of New York from 1807 to 1817, and as the nation's vice president after that, under James Monroe. Dating from 1879, the park is like a friendly town square fo"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "In the 1980s the park was a dirty, needle-strewn homeless encampment, unusable for folks wanting a place to stroll or picnic. A contentious turning point came when police razed the band shell and evicted more than 100 squatters living in a "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "callback",
+        "script_excerpt": "These days there's not much drama in Tompkins Square Park, outside of the occasional music and arts festival that attempts to briefly reclaim the park's bohemian glory days \u2014 such as the Charlie Parker Jazz Festival held here every August."
+      }
+    ]
+  },
+  {
+    "name": "The Little Red Lighthouse",
+    "short_description": "Independent top-level POI (in Fort Washington Park). Flagged for /poi-generate.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The little red lighthouse under the George Washington Bridge",
+            "direction": "up",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Also known as Jeffrey\u2019s Hook Lighthouse, this historic beauty sits under the George Washington Bridge in Fort Washington Park, and it inspired the 1942 children\u2019s classic The Little Red Lighthouse and the Great Gray Bridge by Hildegarde Swi"
+      }
+    ]
+  }
+]

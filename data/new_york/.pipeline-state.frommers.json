@@ -1,0 +1,82 @@
+{
+  "stage": "complete",
+  "city": "new_york",
+  "book": "frommers-nyc-2024",
+  "chunks_total": [
+    "chunk-03",
+    "chunk-09",
+    "chunk-10",
+    "chunk-11"
+  ],
+  "chunks_completed": [
+    "chunk-03",
+    "chunk-09",
+    "chunk-10",
+    "chunk-11"
+  ],
+  "chunks_failed": [],
+  "chunks_pending": [],
+  "new_pois_created": 191,
+  "gravity_scored": true,
+  "export_validated": true,
+  "started_at": "2026-06-14",
+  "agent_outputs": {
+    "chunk-03": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a6b17e608e8534e98.output",
+    "chunk-09": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a761b46d346636d73.output",
+    "chunk-10": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a9aaafa537dfaaf31.output",
+    "chunk-11": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/aff07b54da2e7ee95.output",
+    "chunk-01": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/ad8d884ceafa6eb17.output",
+    "chunk-02": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a1de0846f731764f6.output",
+    "chunk-04": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a30a23707adf8152c.output",
+    "chunk-05": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a6c639629af47b836.output",
+    "chunk-06": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/af64f1da17e14aed3.output",
+    "chunk-07": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/ab170be5bfc76d0e3.output",
+    "chunk-08": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a5204f6a127fd14c2.output",
+    "chunk-12": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/ae19a371575535bad.output"
+  },
+  "batch2_chunks": [
+    "chunk-01",
+    "chunk-02",
+    "chunk-04",
+    "chunk-05",
+    "chunk-06",
+    "chunk-07",
+    "chunk-08",
+    "chunk-12"
+  ],
+  "chunks_completed_batch1": [
+    "chunk-03",
+    "chunk-09",
+    "chunk-10",
+    "chunk-11"
+  ],
+  "chunks_completed_batch2": [
+    "chunk-01",
+    "chunk-06",
+    "chunk-12",
+    "chunk-02",
+    "chunk-05",
+    "chunk-07",
+    "chunk-08",
+    "chunk-04"
+  ],
+  "note_network": "batch-2 agents report WebFetch/Bash network DENIED -> geocodes are model-knowledge, no web fact-check. Main convo HAS network -> re-geocode via Nominatim in Phase B; run /fact-check after.",
+  "total_beats": 406,
+  "geocoded": true,
+  "gravity_agents": {
+    "1": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a286679e450aefcf1.output",
+    "2": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a5a99d9cbd6ef6089.output",
+    "3": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a08f25abb3bba78c3.output",
+    "4": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/aa3d87625544284bd.output",
+    "5": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a8a80e26c33dba04e.output",
+    "6": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a6d3af9c16e60199c.output",
+    "7": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/acfc63c8a3e12b667.output",
+    "8": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/af5843b34379dd73b.output",
+    "9": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a7e68b0a0d24137b2.output"
+  },
+  "gravity_batches_done": [
+    0
+  ],
+  "uploaded": true,
+  "uploaded_at": "2026-06-15"
+}

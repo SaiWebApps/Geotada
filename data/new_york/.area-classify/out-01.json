@@ -1,0 +1,242 @@
+[
+  {
+    "name": "Large Flagpole",
+    "poi_role": "walk_by_only",
+    "parent_poi": null,
+    "source_passage": "Minor monument: bas-relief flagpole base; tour seasoning stop",
+    "confidence": "high",
+    "reasoning": "Tier-1 minor monument with small radius, framed as seasoning passed in transition toward the tall buildings."
+  },
+  {
+    "name": "Bowling Green Park",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The green where colonial soldiers once lawn-bowled, on the site of old Fort George",
+    "confidence": "medium",
+    "reasoning": "Small named park (30m) treated as a single discrete green you stand at to view the fence, statue site, and surrounding buildings."
+  },
+  {
+    "name": "Fraunces Tavern",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "in front of you will be Fraunces Tavern",
+    "confidence": "high",
+    "reasoning": "Discrete tavern/museum building you stand before; classic stop signals."
+  },
+  {
+    "name": "Goldman Sachs Building",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Directly across the street from the tavern is the headquarters of Goldman Sachs, a massive glass-and-brownstone skyscraper",
+    "confidence": "high",
+    "reasoning": "A single skyscraper you stand at to view the sidewalk excavation panels."
+  },
+  {
+    "name": "Stone Street",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "This narrow, winding street was the first to be paved in New Amsterdam",
+    "confidence": "medium",
+    "reasoning": "A historic cobbled streetscape experienced as you move along it rather than a single point."
+  },
+  {
+    "name": "Mill Lane",
+    "poi_role": "walk_by_only",
+    "parent_poi": null,
+    "source_passage": "Mill Lane, the shortest street on Manhattan, site of the old mill",
+    "confidence": "high",
+    "reasoning": "Tier-1 minor street with a single passing beat and small radius."
+  },
+  {
+    "name": "Hanover Square",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "India House, on the west side of the square, is a perfectly preserved example of a brownstone banking house",
+    "confidence": "medium",
+    "reasoning": "Small square (25m) treated as a discrete spot where you stand to take in India House and the square's history."
+  },
+  {
+    "name": "Wall Street",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "You're now entering the 'canyons of Wall Street,' so named because the skyscrapers stand so close together",
+    "confidence": "high",
+    "reasoning": "A named corridor with large radius narrated as you walk through the canyons, not a single point."
+  },
+  {
+    "name": "40 Wall Street",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Take a moment to gaze up at 40 Wall Street",
+    "confidence": "high",
+    "reasoning": "A single skyscraper you stand at and gaze up at."
+  },
+  {
+    "name": "Federal Hall",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Note the statue of George Washington: it was here... Greek Revival edifice",
+    "confidence": "high",
+    "reasoning": "Discrete Greek Revival landmark building you stand before."
+  },
+  {
+    "name": "1 Wall Street",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Take a moment to gaze at this absolutely stunning Art Deco building",
+    "confidence": "high",
+    "reasoning": "A single building you stand at to admire the facade."
+  },
+  {
+    "name": "Canyon of Heroes",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Look down as you amble along Broadway at the brass plates naming the ticker-tape parades",
+    "confidence": "high",
+    "reasoning": "Linear parade route narrated as you amble along Broadway, with a large radius."
+  },
+  {
+    "name": "Zuccotti Park",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "this private one-block-long park is where the 'Occupy Wall Street' movement started",
+    "confidence": "medium",
+    "reasoning": "Small one-block park treated as a single discrete spot you stand at."
+  },
+  {
+    "name": "Mt. Olivet Baptist Church",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Look closely at the facade of this prominent Harlem church",
+    "confidence": "high",
+    "reasoning": "Discrete church building you stand across the street from to view the facade."
+  },
+  {
+    "name": "Hale House",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Plaque at the door of Hale House describing the house and its mission",
+    "confidence": "medium",
+    "reasoning": "A specific house with a door plaque you stop at, despite low tier."
+  },
+  {
+    "name": "4-16 W. 122nd St.",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "This is not a famous building, but a very beautiful one",
+    "confidence": "medium",
+    "reasoning": "A specific brownstone row you stand before to view its second-floor entrance, low-gravity but a discrete address."
+  },
+  {
+    "name": "Marcus Garvey Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "It was near where you stand... In the park stands a cast-iron tower",
+    "confidence": "high",
+    "reasoning": "20-acre park with 60m radius experienced as an area you move through, with features standing within it."
+  },
+  {
+    "name": "55 W. 125th St.",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Top floor of the high-rise building at 55 W. 125th St.",
+    "confidence": "high",
+    "reasoning": "A single high-rise address you stand at to look up at the top floor."
+  },
+  {
+    "name": "Langston Hughes House",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Garden in front of the house that Hughes called 'The Children's Garden'",
+    "confidence": "high",
+    "reasoning": "Discrete house museum you stand before."
+  },
+  {
+    "name": "Collyer Park",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "This pretty pocket park marks the site where the most famous hoarders... once lived",
+    "confidence": "medium",
+    "reasoning": "A small pocket park treated as a single site you stand at, low radius and one beat."
+  },
+  {
+    "name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Look first to the windswept northeast corner, where a statue of Adam Clayton Powell, Jr. ... stands",
+    "confidence": "medium",
+    "reasoning": "An intersection viewing point where you stand and look to corners and across the street at named landmarks."
+  },
+  {
+    "name": "Blumstein's Department Store",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "note the beautifully worked copper ornamentation on the facade",
+    "confidence": "high",
+    "reasoning": "Discrete former store building you stand at to view the facade."
+  },
+  {
+    "name": "Apollo Theater",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Cross the street, and you'll see the marquee of the Apollo Theater",
+    "confidence": "high",
+    "reasoning": "Iconic discrete venue you stand before and enter; tour finish point."
+  },
+  {
+    "name": "Washington Square Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "The massive elm still standing on the park's northwest corner... The white marble arch at the foot of Fifth Avenue",
+    "confidence": "high",
+    "reasoning": "Iconic large square (40m, 14 beats) with multiple internal features narrated as an area you move through."
+  },
+  {
+    "name": "22 Washington Square North",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Inventor Samuel Morse lived in this New York University building",
+    "confidence": "high",
+    "reasoning": "A specific building address you walk to and stand at."
+  },
+  {
+    "name": "Washington Square North",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "the longest unbroken string of Greek Revival town houses anywhere in the United States",
+    "confidence": "medium",
+    "reasoning": "A row/strip of townhouses experienced along its length as you view the unbroken run rather than a single point."
+  },
+  {
+    "name": "29 Washington Place",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The building on this site at the corner of Washington Place and Greene St where the fire occurred",
+    "confidence": "high",
+    "reasoning": "A specific corner building site you walk to and stand before."
+  },
+  {
+    "name": "Judson Memorial Church",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "This boxy Romanesque church, from 1929, was another masterwork by architect Stanford White",
+    "confidence": "high",
+    "reasoning": "Discrete church building you stop beside."
+  },
+  {
+    "name": "New York University School of Law",
+    "poi_role": "walk_by_only",
+    "parent_poi": null,
+    "source_passage": "On-tour pass-by; the narrative gravity is the vanished John Reed boardinghouse",
+    "confidence": "medium",
+    "reasoning": "Framed as a pass-by where the real subject is a vanished building and street names, low standalone gravity."
+  },
+  {
+    "name": "Provincetown Playhouse",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "turn left, and stop beside the legendary Provincetown Playhouse",
+    "confidence": "high",
+    "reasoning": "Instructed to stop beside it; a discrete named site even though only the name remains."
+  }
+]

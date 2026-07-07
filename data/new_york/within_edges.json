@@ -2,9 +2,9 @@
   "_meta": {
     "generated_by": "scripts/generate_within_edges.py",
     "city_name": "new_york",
-    "total_pois": 338,
+    "total_pois": 403,
     "total_areas": 37,
-    "poi_to_area_count": 911,
+    "poi_to_area_count": 1084,
     "area_to_area_count": 36,
     "orphans": []
   },
@@ -91,6 +91,21 @@
     },
     {
       "poi_name": "22 Washington Square North",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "23 Fifth Avenue",
+      "area_name": "East Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "23 Fifth Avenue",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "23 Fifth Avenue",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -310,6 +325,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Appellate Division Courthouse",
+      "area_name": "Flatiron District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Appellate Division Courthouse",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Appellate Division Courthouse",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Artechouse",
       "area_name": "Chelsea",
       "area_type": "neighborhood"
@@ -333,6 +363,21 @@
       "poi_name": "Artists Space",
       "area_name": "Manhattan",
       "area_type": "district"
+    },
+    {
+      "poi_name": "Asia Society",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Asia Society",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Asia Society",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "Asia Society and Museum",
@@ -465,6 +510,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Beth Hamedrash Hagadol",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Beth Hamedrash Hagadol",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Beth Hamedrash Hagadol",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Bethesda Terrace",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -535,6 +595,16 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Bow Bridge",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bow Bridge",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Bowery Mural",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -543,6 +613,21 @@
       "poi_name": "Bowery Mural",
       "area_name": "NoHo",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Bowery Savings Bank Building",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Bowery Savings Bank Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bowery Savings Bank Building",
+      "area_name": "New York City",
+      "area_type": "city"
     },
     {
       "poi_name": "Bowling Green Park",
@@ -621,6 +706,16 @@
     },
     {
       "poi_name": "Brooklyn Academy of Music",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Borough Hall",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Borough Hall",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -741,6 +836,21 @@
     },
     {
       "poi_name": "Brooklyn Public Library",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brotherhood Synagogue",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brotherhood Synagogue",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brotherhood Synagogue",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -925,6 +1035,36 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Central Presbyterian Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Central Presbyterian Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Central Presbyterian Church",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chatham Square",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chatham Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Chatham Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Chelsea",
       "area_name": "Chelsea",
       "area_type": "neighborhood"
@@ -1060,6 +1200,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Church of the Transfiguration",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Church of the Transfiguration",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Church of the Transfiguration",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Citarella",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -1086,6 +1241,21 @@
     },
     {
       "poi_name": "City Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "City College of New York",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "City College of New York",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "City College of New York",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -1146,6 +1316,36 @@
     },
     {
       "poi_name": "Collyer Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Colony Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Colony Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Colony Club",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Columbia Heights",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Columbia Heights",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Columbia Heights",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -1260,6 +1460,16 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Copacabana (10 East 60th Street site)",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Copacabana (10 East 60th Street site)",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
       "area_name": "Harlem",
       "area_type": "neighborhood"
@@ -1290,6 +1500,16 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Curtis High School",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Curtis High School",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Dakota Building",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -1328,6 +1548,31 @@
       "poi_name": "Delacorte Theater",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Delmonico's",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Delmonico's",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Delmonico's",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Di Palo's Fine Foods",
+      "area_name": "Little Italy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Di Palo's Fine Foods",
+      "area_name": "Manhattan",
+      "area_type": "district"
     },
     {
       "poi_name": "Domino Park",
@@ -1420,6 +1665,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Edgar Allan Poe Cottage",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Edgar Allan Poe Cottage",
+      "area_name": "The Bronx",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Edith and Ernesto Fabbri House",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -1433,6 +1688,21 @@
       "poi_name": "Edith and Ernesto Fabbri House",
       "area_name": "Upper East Side",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Educational Alliance",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Educational Alliance",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Educational Alliance",
+      "area_name": "New York City",
+      "area_type": "city"
     },
     {
       "poi_name": "El Museo del Barrio",
@@ -1515,6 +1785,36 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Fifth Avenue (apartment houses, 63rd Street)",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fifth Avenue (apartment houses, 63rd Street)",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Fifth Avenue (apartment houses, 63rd Street)",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Fifth Avenue Synagogue",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fifth Avenue Synagogue",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Fifth Avenue Synagogue",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Filthy Rich Barbershop",
       "area_name": "Brooklyn",
       "area_type": "district"
@@ -1541,6 +1841,21 @@
     },
     {
       "poi_name": "Financial District",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "First Shearith Israel Graveyard",
+      "area_name": "Civic Center",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "First Shearith Israel Graveyard",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "First Shearith Israel Graveyard",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -1600,6 +1915,31 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Fort Wadsworth",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Fort Wadsworth",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Forward Building",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Forward Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Forward Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Fotografiska",
       "area_name": "Gramercy",
       "area_type": "neighborhood"
@@ -1645,6 +1985,16 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Friends Meeting House (Flushing)",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Friends Meeting House (Flushing)",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Fulton Ferry Landing",
       "area_name": "Brooklyn",
       "area_type": "district"
@@ -1682,6 +2032,16 @@
     {
       "poi_name": "Gantry Plaza State Park",
       "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Garibaldi-Meucci Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Garibaldi-Meucci Museum",
+      "area_name": "Staten Island",
       "area_type": "district"
     },
     {
@@ -1790,6 +2150,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Grand Army Plaza (Manhattan)",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Grand Central Terminal",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -1845,6 +2220,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Grolier Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Grolier Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Grolier Club",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Hale House",
       "area_name": "Harlem",
       "area_type": "neighborhood"
@@ -1867,6 +2257,16 @@
     {
       "poi_name": "Hall des Lumières",
       "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hall of Fame for Great Americans",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hall of Fame for Great Americans",
+      "area_name": "The Bronx",
       "area_type": "district"
     },
     {
@@ -1930,12 +2330,82 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Harlem YMCA",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Harlem YMCA",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Harlem YMCA",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Harmonie Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Harmonie Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Harmonie Club",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Heckscher Ballfields",
       "area_name": "Manhattan",
       "area_type": "district"
     },
     {
       "poi_name": "Heckscher Ballfields",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Henry Street Settlement",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Henry Street Settlement",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Henry Street Settlement",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Historic Richmond Town",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Historic Richmond Town",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hotel Theresa",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hotel Theresa",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hotel Theresa",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -2065,6 +2535,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Jacques Marchais Museum of Tibetan Art",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jacques Marchais Museum of Tibetan Art",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Jane's Carousel",
       "area_name": "Brooklyn",
       "area_type": "district"
@@ -2110,6 +2590,16 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "John Bowne House",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "John Bowne House",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Joyce Theater",
       "area_name": "Chelsea",
       "area_type": "neighborhood"
@@ -2138,6 +2628,21 @@
       "poi_name": "Judson Memorial Church",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Julius'",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Julius'",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Julius'",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "Junior's Restaurant",
@@ -2220,6 +2725,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Lesbian and Gay Community Services Center",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Lesbian and Gay Community Services Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Lesbian and Gay Community Services Center",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Leslie-Lohman Museum of Art",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -2270,6 +2790,16 @@
       "area_type": "district"
     },
     {
+      "poi_name": "Lotos Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Lotos Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Louis Armstrong House Museum",
       "area_name": "New York City",
       "area_type": "city"
@@ -2303,6 +2833,21 @@
       "poi_name": "Madame Tussauds New York",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Madison Avenue",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Madison Avenue",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Madison Avenue",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "Madison Square Park",
@@ -2350,6 +2895,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Maine Monument",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Maine Monument",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Manhattan",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -2371,6 +2926,21 @@
     },
     {
       "poi_name": "Manhattan Beach",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Manhattan Bridge",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Manhattan Bridge",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Manhattan Bridge",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -2568,6 +3138,21 @@
       "poi_name": "Mmuseumm",
       "area_name": "Manhattan",
       "area_type": "district"
+    },
+    {
+      "poi_name": "Montague Street",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Montague Street",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Montague Street",
+      "area_name": "New York City",
+      "area_type": "city"
     },
     {
       "poi_name": "Morris-Jumel Mansion",
@@ -2945,6 +3530,21 @@
       "area_type": "district"
     },
     {
+      "poi_name": "New York Life Building",
+      "area_name": "Flatiron District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York Life Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Life Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "New York Public Library",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -3041,21 +3641,6 @@
     },
     {
       "poi_name": "Nicholas Roerich Museum",
-      "area_name": "Upper West Side",
-      "area_type": "neighborhood"
-    },
-    {
-      "poi_name": "Nicolas Roerich Museum",
-      "area_name": "Manhattan",
-      "area_type": "district"
-    },
-    {
-      "poi_name": "Nicolas Roerich Museum",
-      "area_name": "New York City",
-      "area_type": "city"
-    },
-    {
-      "poi_name": "Nicolas Roerich Museum",
       "area_name": "Upper West Side",
       "area_type": "neighborhood"
     },
@@ -3380,6 +3965,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Richard Morris Hunt Memorial",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Richard Morris Hunt Memorial",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Richard Morris Hunt Memorial",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Rise NY",
       "area_name": "New York City",
       "area_type": "city"
@@ -3475,6 +4075,16 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Sailors' Snug Harbor",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sailors' Snug Harbor",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Salmagundi Club",
       "area_name": "Greenwich Village",
       "area_type": "neighborhood"
@@ -3486,6 +4096,21 @@
     },
     {
       "poi_name": "Salmagundi Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sara Delano Roosevelt Park",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Sara Delano Roosevelt Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sara Delano Roosevelt Park",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -3513,6 +4138,21 @@
       "poi_name": "SculptureCenter",
       "area_name": "Queens",
       "area_type": "district"
+    },
+    {
+      "poi_name": "Seward Park",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Seward Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Seward Park",
+      "area_name": "New York City",
+      "area_type": "city"
     },
     {
       "poi_name": "Sheep Meadow",
@@ -3650,6 +4290,36 @@
       "area_type": "district"
     },
     {
+      "poi_name": "St. George Hotel",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. George Hotel",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. George Hotel",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "St. George's Episcopal Church",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. George's Episcopal Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. George's Episcopal Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "St. Mark's Church in-the-Bowery",
       "area_name": "East Village",
       "area_type": "neighborhood"
@@ -3658,6 +4328,36 @@
       "poi_name": "St. Mark's Church in-the-Bowery",
       "area_name": "Manhattan",
       "area_type": "district"
+    },
+    {
+      "poi_name": "St. Mary's Church",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. Mary's Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. Mary's Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "St. Nicholas Historic District",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. Nicholas Historic District",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. Nicholas Historic District",
+      "area_name": "New York City",
+      "area_type": "city"
     },
     {
       "poi_name": "St. Patrick's Cathedral",
@@ -3691,6 +4391,16 @@
     },
     {
       "poi_name": "Staten Island",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Staten Island Borough Hall",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Staten Island Borough Hall",
       "area_name": "Staten Island",
       "area_type": "district"
     },
@@ -3775,6 +4485,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Straus Square",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Straus Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Straus Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Strawberry Fields",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -3796,6 +4521,36 @@
     },
     {
       "poi_name": "Studio Museum in Harlem",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Stuyvesant Square",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Stuyvesant Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Stuyvesant Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sugar Hill",
+      "area_name": "Hamilton Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Sugar Hill",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sugar Hill",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -3885,6 +4640,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "The Bowery",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Bowery",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
       "poi_name": "The Bronx",
       "area_name": "New York City",
       "area_type": "city"
@@ -3918,6 +4683,16 @@
       "poi_name": "The Cloisters",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "The Crimson Beech",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Crimson Beech",
+      "area_name": "Staten Island",
+      "area_type": "district"
     },
     {
       "poi_name": "The Dairy",
@@ -4078,6 +4853,21 @@
       "poi_name": "The Pierre",
       "area_name": "Upper East Side",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Players Club",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Players Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Players Club",
+      "area_name": "New York City",
+      "area_type": "city"
     },
     {
       "poi_name": "The Public Theater",
@@ -4255,6 +5045,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Union Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Union Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Union Club",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Union Square",
       "area_name": "Gramercy",
       "area_type": "neighborhood"
@@ -4328,6 +5133,16 @@
       "poi_name": "Upper West Side",
       "area_name": "Upper West Side",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Verrazzano-Narrows Bridge",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Verrazzano-Narrows Bridge",
+      "area_name": "Staten Island",
+      "area_type": "district"
     },
     {
       "poi_name": "Vessel",
@@ -4405,6 +5220,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Wave Hill",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Wave Hill",
+      "area_name": "The Bronx",
+      "area_type": "district"
+    },
+    {
       "poi_name": "Weeksville Heritage Center",
       "area_name": "Brooklyn",
       "area_type": "district"
@@ -4475,6 +5300,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Wildenstein Gallery",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Wildenstein Gallery",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Wildenstein Gallery",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Williamsburg",
       "area_name": "Brooklyn",
       "area_type": "district"
@@ -4515,6 +5355,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Willow Street",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Willow Street",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Willow Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Wollman Rink",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -4533,6 +5388,16 @@
       "poi_name": "Wyckoff House Museum",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Yankee Stadium",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Yankee Stadium",
+      "area_name": "The Bronx",
+      "area_type": "district"
     },
     {
       "poi_name": "Zabar's",

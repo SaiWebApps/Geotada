@@ -1,0 +1,2051 @@
+{
+  "chunk_id": "chunk-02-the-villages",
+  "chunk_file": "Books/new_york/national-geographic-walking-nyc/chunk-02-the-villages.cleaned.txt",
+  "pois": [
+    {
+      "name": "St. Mark's Church in-the-Bowery",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "One of New York's oldest churches at 131 East 10th Street, built on the site of Peter Stuyvesant's bowery chapel; Stuyvesant is buried here.",
+      "name_variations": [
+        "St. Mark's Church in-the-Bowery",
+        "St. Marks Church in the Bowery"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7287,
+      "longitude": -73.9866,
+      "trigger_radius": 25,
+      "importance_tier": 3,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Second-oldest church in NYC, burial place of Peter Stuyvesant, landmark East Village cultural venue (Poetry Project, Danspace). Solid tier-3 standalone POI."
+    },
+    {
+      "name": "The Bitter End",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "New York's oldest rock club at 147 Bleecker Street, opened 1961; launched and hosted Bob Dylan, Stevie Wonder, Woody Allen.",
+      "name_variations": [
+        "The Bitter End"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.73,
+      "longitude": -73.9996,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Iconic, continuously operating Greenwich Village music venue with deep Dylan/folk-revival history. Tier-3."
+    },
+    {
+      "name": "Café Wha?",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Greenwich Village music club at 115 MacDougal Street that hosted early Bruce Springsteen and Richard Pryor; still presents jazz, soul, R&B.",
+      "name_variations": [
+        "Cafe Wha?",
+        "Café Wha?"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7301,
+      "longitude": -74.0003,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Famous MacDougal Street club tied to Dylan and Hendrix early careers; durable Village landmark. Tier-3."
+    },
+    {
+      "name": "The Duplex",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Greenwich Village cabaret and piano-bar standby at 61 Christopher Street with multiple stages.",
+      "name_variations": [
+        "The Duplex",
+        "Duplex"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7339,
+      "longitude": -74.0019,
+      "trigger_radius": 15,
+      "importance_tier": 4,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Long-running neighborhood cabaret; minor stop. Tier-4."
+    },
+    {
+      "name": "Patchin Place",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Tiny gated Greenwich Village mews near Washington Square, home to poet e. e. cummings, playwright Eugene O'Neill, and journalist John Reed.",
+      "name_variations": [
+        "Patchin Place"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7338,
+      "longitude": -73.9995,
+      "trigger_radius": 20,
+      "importance_tier": 3,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Celebrated literary mews with strong famous-resident density (cummings, O'Neill, Reed); evocative walk-by stop. Tier-3."
+    },
+    {
+      "name": "White Horse Tavern",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Western Greenwich Village tavern at 567 Hudson Street, formerly a longshoremen's bar, later a literary haunt of Mailer, Baldwin, and Anaïs Nin.",
+      "name_variations": [
+        "White Horse Tavern"
+      ],
+      "kid_friendly": "no",
+      "latitude": 40.7349,
+      "longitude": -74.0066,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic literary watering hole (Dylan Thomas legend, Beat-era hangout); durable Village landmark. Tier-3."
+    },
+    {
+      "name": "Smalls Jazz Club",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Basement jazz club at 183 West 10th Street presenting up-and-coming talent in a hole-in-the-wall space.",
+      "name_variations": [
+        "Smalls",
+        "Smalls Jazz Club"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7338,
+      "longitude": -74.0026,
+      "trigger_radius": 15,
+      "importance_tier": 4,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Respected intimate Village jazz basement; secondary venue. Tier-4."
+    },
+    {
+      "name": "The Stone",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Not-for-profit East Village space (16 Avenue C) dedicated to avant-garde and experimental jazz, founded by John Zorn.",
+      "name_variations": [
+        "The Stone"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7227,
+      "longitude": -73.9787,
+      "trigger_radius": 15,
+      "importance_tier": 4,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "LOW",
+      "gravity_reasoning": "Niche experimental-jazz venue; the original Avenue C location has since relocated. Minor, tier-4; geocode LOW because address may be stale."
+    },
+    {
+      "name": "Kettle of Fish",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Greenwich Village bar at 59 Christopher Street where Ginsberg, Kerouac and friends spent many nights.",
+      "name_variations": [
+        "Kettle of Fish"
+      ],
+      "kid_friendly": "no",
+      "latitude": 40.7335,
+      "longitude": -74.0028,
+      "trigger_radius": 15,
+      "importance_tier": 4,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Beat-era bar (since relocated to Christopher St); minor literary watering hole. Tier-4."
+    },
+    {
+      "name": "Trash and Vaudeville",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Punk and rock-fashion shop on St. Mark's Place, dressing rock stars and rebels since 1975.",
+      "name_variations": [
+        "Trash and Vaudeville"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7283,
+      "longitude": -73.9874,
+      "trigger_radius": 15,
+      "importance_tier": 4,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Iconic but small East Village punk-clothing store; walk-by color, tier-4."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_st_marks_place_local_legends_national-geographic-walking-nyc_tompkins_square_labor_hendrix",
+      "city_name": "new_york",
+      "poi_name": "Tompkins Square Park",
+      "lens": "local_legends",
+      "topic_slug": "labor_demo_hendrix_punk",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "St. Mark's Place ends at Tompkins Square, the scene of the first labor demonstration in 1874 and a performance space for Jimi Hendrix and other 1960s legends. The square sat at the edge of an East Village that, a decade later, would help birth American punk — bands like the Ramones and Blondie playing the now-defunct CBGB nightclub on the Bowery, once one of the slummiest areas of the city.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Tompkins Square",
+        "Jimi Hendrix",
+        "Ramones",
+        "Blondie",
+        "CBGB",
+        "Bowery"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "labor demo punk",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Tompkins Square was the scene of the first labor demonstration in 1874",
+        "Jimi Hendrix performed at Tompkins Square",
+        "Ramones and Blondie played CBGB on the Bowery"
+      ],
+      "source_passage": "St. Mark's Place ends at Tompkins Square, the scene of the first labor demonstration in 1874 and a performance space for Jimi Hendrix and other 1960s legends. Punk rock arrived in the 1970s, with bands such as the Ramones and Blondie regularly playing at the (now defunct) CBGB nightclub on the Bowery, once one of the slummiest areas of the city.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_marks_place_street_art_national-geographic-walking-nyc_mosaic_trail_jim_power",
+      "city_name": "new_york",
+      "poi_name": "St Marks Place",
+      "lens": "street_art",
+      "topic_slug": "mosaic_trail_lampposts",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The East Village's artsy vibe shows in its graffiti-covered walls and independent stores — and underfoot in the lampposts. Street artist Jim Power has decorated almost all of the neighborhood's 80 lampposts with ceramics, mirrors, and glass, a new streetscape he calls the Mosaic Trail.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jim Power",
+        "Mosaic Trail"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "mosaic trail",
+      "physical_cues": [
+        {
+          "cue": "Ceramic, mirror, and glass mosaics covering the lampposts along St. Mark's Place",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jim Power decorated almost all 80 East Village lampposts with ceramics, mirrors, glass",
+        "The work is known as the Mosaic Trail"
+      ],
+      "source_passage": "Street artist Jim Power has decorated almost all of the 80 lampposts with ceramics, mirrors, and glass: a new streetscape known as the Mosaic Trail.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_marks_place_social_change_national-geographic-walking-nyc_trash_vaudeville_since_1975",
+      "city_name": "new_york",
+      "poi_name": "St Marks Place",
+      "lens": "social_change",
+      "topic_slug": "trash_vaudeville_rock_fashion",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "4 St. Mark's Pl.",
+      "beat_length_class": "seasoning",
+      "script_body": "At the heart of the village is St. Mark's Place, where vintage shops keep the alternative spirit alive. One of the most famous, Trash and Vaudeville at 4 St. Mark's Place, has been dressing rock stars and teenage rebels since 1975.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Trash and Vaudeville"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "punk fashion shop",
+      "physical_cues": [
+        {
+          "cue": "Storefront of Trash and Vaudeville at 4 St. Mark's Place",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Trash and Vaudeville at 4 St. Mark's Place has dressed rock stars and rebels since 1975"
+      ],
+      "source_passage": "One of the most famous, Trash and Vaudeville (4 St. Mark's PI.), has been dressing rock stars and teenage rebels since 1975.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_marks_place_hidden_history_national-geographic-walking-nyc_bowery_bouwerij_stuyvesant",
+      "city_name": "new_york",
+      "poi_name": "St Marks Place",
+      "lens": "hidden_history",
+      "topic_slug": "bowery_bouwerij_stuyvesant",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Bowery's name derives from the bouwerij — the farm — belonging to the Dutch governor Peter Stuyvesant in the 17th century. He is buried nearby at St. Mark's Church in-the-Bowery, one of New York's oldest churches, built on what was once his land.",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Stuyvesant",
+        "Bowery",
+        "St. Mark's Church in-the-Bowery"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "bouwerij origin",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "bouwerij",
+          "gloss": "farm"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "The Bowery's name derives from the Dutch word bouwerij meaning farm",
+        "The farm belonged to Dutch governor Peter Stuyvesant in the 17th century",
+        "Stuyvesant is buried at St. Mark's Church in-the-Bowery"
+      ],
+      "source_passage": "The street's name derives from the bouwerij or farm belonging to the Dutch governor Peter Stuyvesant in the 17th century. He is buried at nearby St. Mark's Church in-the-Bowery (131 East 10th St.), one of New York's oldest churches.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_marks_church_in_the_bowery_hidden_history_national-geographic-walking-nyc_stuyvesant_burial",
+      "city_name": "new_york",
+      "poi_name": "St. Mark's Church in-the-Bowery",
+      "lens": "hidden_history",
+      "topic_slug": "stuyvesant_oldest_church",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "131 East 10th St.",
+      "beat_length_class": "seasoning",
+      "script_body": "At 131 East 10th Street stands St. Mark's Church in-the-Bowery, one of New York's oldest churches. The Dutch governor Peter Stuyvesant — whose 17th-century farm, the bouwerij, gave the Bowery its name — is buried here.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Stuyvesant",
+        "St. Mark's Church in-the-Bowery",
+        "Bowery"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "oldest church burial",
+      "physical_cues": [
+        {
+          "cue": "Facade of St. Mark's Church in-the-Bowery at 131 East 10th Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "bouwerij",
+          "gloss": "farm"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "St. Mark's Church in-the-Bowery is at 131 East 10th Street",
+        "It is one of New York's oldest churches",
+        "Peter Stuyvesant is buried there"
+      ],
+      "source_passage": "He is buried at nearby St. Mark's Church in-the-Bowery (131 East 10th St.), one of New York's oldest churches.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_merchants_house_museum_local_legends_national-geographic-walking-nyc_candlelight_ghost_tredwell",
+      "city_name": "new_york",
+      "poi_name": "Merchant's House Museum",
+      "lens": "local_legends",
+      "topic_slug": "candlelight_ghost_tours_tredwell",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Tredwells' 1832 Federal-style row house is reportedly Manhattan's most haunted house. Each month from January to October it presents Candlelight Ghost Tours, in which Gertrude Tredwell — the last family owner, who died in 1933 — is summoned from the great beyond. By day, eight rooms over three floors keep the family's fixtures, furnishings, decorative arts, and personal possessions exactly as they left them, the city's only 19th-century home to retain its original interior and exterior.",
+      "duration_sec": 37,
+      "kid_friendly": "yes",
+      "entities": [
+        "Tredwells",
+        "Gertrude Tredwell"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "haunted ghost tours",
+      "physical_cues": [
+        {
+          "cue": "Federal-style row-house facade of the Merchant's House Museum",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Eight period rooms over three floors with original Tredwell furnishings",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Tredwell house was built in 1832 in Federal style",
+        "It is the city's only 19th-century home to retain original interior and exterior",
+        "Reportedly Manhattan's most haunted house",
+        "Candlelight Ghost Tours run monthly January to October",
+        "Gertrude Tredwell, last owner, died in 1933"
+      ],
+      "source_passage": "A wealthy merchant family, the Tredwells, owned this Federal-style row house, built in 1832—the city's only 19th-century home to retains its original interior and exterior. Displayed in eight rooms over three floors are the family's fixtures and furnishings, decorative arts, and personal possessions. The museum is also reportedly Manhattan's most haunted house. Monthly, from January to October it presents Candlelight Ghost Tours; Gertrude Tredwell, the last owner, who died in 1933, is summoned from the great beyond.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_park_visual_art_national-geographic-walking-nyc_washington_equestrian_oldest",
+      "city_name": "new_york",
+      "poi_name": "Union Square Park",
+      "lens": "visual_art",
+      "topic_slug": "washington_equestrian_oldest_sculpture",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Among the famous sculptures dotting Union Square is a bronze equestrian statue of the first U.S. President, George Washington. Cast in 1856, it is the oldest sculpture in New York City's park collection.",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "George Washington"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest park sculpture",
+      "physical_cues": [
+        {
+          "cue": "Bronze equestrian statue of George Washington in Union Square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "A bronze equestrian statue of George Washington stands in Union Square",
+        "Cast in 1856, it is the oldest sculpture in NYC's park collection"
+      ],
+      "source_passage": "Among the famous sculptures dotting the park is a bronze equestrian statue of first U.S. President George Washington. Cast in 1814, it is the oldest sculpture in New York City's park collection.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "field": "script_body",
+          "claim": "casting date of the Washington equestrian statue",
+          "from": "1814",
+          "to": "1856",
+          "reasoning": "Book says 'Cast in 1814'; this is a factual error. The Henry Kirke Brown equestrian statue was dedicated/cast in 1856 (it remains the oldest sculpture in NYC's parks collection, which the book gets right).",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Equestrian_statue_of_George_Washington_(New_York_City)",
+            "https://www.nycgovparks.org/parks/union-square-park/monuments/1676"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_park_visual_art_national-geographic-walking-nyc_metronome_kinetic_steam",
+      "city_name": "new_york",
+      "poi_name": "Union Square Park",
+      "lens": "visual_art",
+      "topic_slug": "metronome_kinetic_clock_steam",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Look up at the buildings around Union Square to spot one of the city's most cherished landmarks: the kinetic Metronome, designed by artists Kristin Jones and Andrew Gizel. The piece features a digital clock and releases a continuous plume of steam.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Metronome",
+        "Kristin Jones",
+        "Andrew Gizel"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "metronome artwork",
+      "physical_cues": [
+        {
+          "cue": "The kinetic Metronome with its digital clock and steam plume on the building south of the square",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The kinetic Metronome was designed by Kristin Jones and Andrew Gizel",
+        "It features a digital clock and releases a continuous plume of steam"
+      ],
+      "source_passage": "Be sure to look up at the surrounding buildings to spot one of the city's most cherished landmarks: the kinetic Metronome, designed by artists Kristin Jones and Andrew Gizel. The piece features a digital clock and releases a continuous plume of steam.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_union_square_park_markets_street_food_national-geographic-walking-nyc_greenmarket_holiday_market",
+      "city_name": "new_york",
+      "poi_name": "Union Square Park",
+      "lens": "markets_street_food",
+      "topic_slug": "greenmarket_holiday_market",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Union Square lies at the intersection — the union — of Broadway and Fourth Avenue, marking Greenwich Village's northeastern tip. Its 6.5-acre park hosts a popular farmers' market on Mondays, Wednesdays, Fridays, and Saturdays, where you can sample local bread, cheese, wine, and crafts; in November and December the Union Square Holiday Market takes over with jewelry, candles, ornaments, and Christmas décor.",
+      "duration_sec": 29,
+      "kid_friendly": "yes",
+      "entities": [
+        "Union Square",
+        "Union Square Holiday Market"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "greenmarket holiday market",
+      "physical_cues": [
+        {
+          "cue": "Farmers' market stalls across the 6.5-acre Union Square park",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Union Square sits at the union of Broadway and Fourth Avenue",
+        "Its 6.5-acre park holds a farmers' market Mon/Wed/Fri/Sat",
+        "The Union Square Holiday Market runs in November and December"
+      ],
+      "source_passage": "Marking Greenwich Village's northeastern tip, Union Square lies at the intersection—or union—of Broadway and Fourth Avenue. Its 6.5-acre (2.6 ha) park has a popular farmers' market, where you can sample local bread, cheese, wine, and crafts on Mondays, Wednesdays, Fridays, and Saturdays. During November and December, the Union Square Holiday Market takes center stage, with stalls selling everything from jewelry and candles to ornaments and Christmas décor.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_meatpacking_district_markets_street_food_national-geographic-walking-nyc_boutiques_designer_row",
+      "city_name": "new_york",
+      "poi_name": "Meatpacking District",
+      "lens": "markets_street_food",
+      "topic_slug": "designer_boutiques_chelsea_market",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Once the home of the meat trade, this cluster of streets is now Manhattan's trendiest quarter, a backdrop to some of the city's coolest restaurants, most exclusive clubs, and most expensive shops — though you might still spot a few surviving meatpacking houses among the modern glass architecture. Along 14th Street you can window-shop the high-end boutiques of Diane von Furstenberg, Jeffrey New York, and Christian Louboutin, while just to the north lie the 35-plus upscale food vendors of Chelsea Market.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Diane von Furstenberg",
+        "Jeffrey New York",
+        "Christian Louboutin",
+        "Chelsea Market"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "designer boutiques",
+      "physical_cues": [
+        {
+          "cue": "High-end boutiques along 14th Street and surviving meatpacking houses amid glass architecture",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Meatpacking District is now Manhattan's trendiest quarter",
+        "14th Street has boutiques of Diane von Furstenberg, Jeffrey New York, Christian Louboutin",
+        "Chelsea Market with 35-plus food vendors lies just to the north"
+      ],
+      "source_passage": "Once the home of the meat trade, this cluster of streets is now Manhattan's trendiest quarter and backdrop to some of the city's coolest restaurants, most exclusive clubs, and most expensive shops. You might even see a few meatpacking houses surviving among the modern glass architecture—snapshots of the area's past. Along 14th Street you can window-shop at the high-end boutiques of Diane von Furstenberg, Jeffrey New York, and Christian Louboutin. ... Tasty treats of Chelsea Market lie just to the north of the district. Its 35-plus upscale food vendors include Lucy's Whey for handcrafted American cheeses, and Eleni's for hand-painted cookies.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_whitney_museum_of_american_art_modern_design_national-geographic-walking-nyc_relocated_high_line_expansion",
+      "city_name": "new_york",
+      "poi_name": "Whitney Museum of American Art",
+      "lens": "modern_design",
+      "topic_slug": "relocated_high_line_expanded",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "99 Gansevoort St.",
+      "beat_length_class": "mid",
+      "script_body": "The radically redesigned Whitney Museum of American Art at 99 Gansevoort Street recently relocated from the Upper East Side to a prime spot between the Hudson and The High Line. Focusing on 20th-century and contemporary art, the museum vastly expanded its indoor and outdoor gallery spaces and added an education center with state-of-the-art classrooms and a 170-seat theater.",
+      "duration_sec": 29,
+      "kid_friendly": "yes",
+      "entities": [
+        "Whitney Museum of American Art",
+        "The High Line"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "whitney relocation",
+      "physical_cues": [
+        {
+          "cue": "The Whitney's stepped facade and outdoor terraces at 99 Gansevoort Street, beside the Hudson and the High Line",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Whitney at 99 Gansevoort St. relocated from the Upper East Side to between the Hudson and the High Line",
+        "It focuses on 20th-century and contemporary art",
+        "It expanded gallery spaces and added an education center with a 170-seat theater"
+      ],
+      "source_passage": "An exciting cultural newcomer to the neighborhood is the radically redesigned Whitney Museum of American Art (99 Gansevoort St., tel 212/570-3600, $$$$, whitney.org), which recently relocated from the Upper East Side to a prime spot between the Hudson and The High Line. Focusing on 20th-century and contemporary art, the museum has vastly expanded its indoor and outdoor gallery spaces and has added an education center outfitted with state-of-the-art classrooms and a 170-seat theater.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_high_line_parks_gardens_national-geographic-walking-nyc_elevated_freight_track_park",
+      "city_name": "new_york",
+      "poi_name": "The High Line",
+      "lens": "parks_gardens",
+      "topic_slug": "elevated_freight_track_sunset",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "This slimline park sits 30 feet above the ground, created along 1.45 miles of disused freight track. Miniature landscapes — wildflower meadows among them — line the walking trail from Gansevoort Street to West 34th Street; en route you can pause on wooden loungers and viewing platforms and take in temporary art installations. With views of the Hudson River and the streets below, the High Line is a special place to watch the sun set over the city.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "The High Line",
+        "Hudson River"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "elevated rail park",
+      "physical_cues": [
+        {
+          "cue": "Wildflower meadows, wooden loungers, and viewing platforms along the elevated trail 30 feet above the street",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Views of the Hudson River and the streets below",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The High Line is 30 feet above ground along 1.45 miles of disused freight track",
+        "It runs from Gansevoort Street to West 34th Street",
+        "It has wildflower meadows, wooden loungers, viewing platforms, and temporary art installations"
+      ],
+      "source_passage": "This slimline park, 30 feet (9 m) above the ground, was created along 1.45 miles (2.3 km) of disused freight track. Miniature landscapes, such as wildflower meadows, adorn the walking trail from Gansevoort Street to West 34th Street; en route you can pause on wooden loungers and viewing platforms, and admire temporary art installations. With views of the Hudson River and the streets below, The High Line is a special place to watch the sun set over the city.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_historic_arch_national-geographic-walking-nyc_arch_completed_1895_centennial",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "historic_arch",
+      "topic_slug": "arch_1895_inauguration_centennial",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "New York's regular street pattern breaks up around Washington Square, the hub of Greenwich Village and home of New York University since 1835. At the head of the 10-acre park stands the Washington Square Arch, completed in 1895, which commemorates the centennial of the first president's inauguration.",
+      "duration_sec": 21,
+      "kid_friendly": "yes",
+      "entities": [
+        "Washington Square Arch",
+        "New York University",
+        "George Washington"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "arch inauguration centennial",
+      "physical_cues": [
+        {
+          "cue": "The marble Washington Square Arch at the head of the 10-acre park",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Washington Square is hub of Greenwich Village and home of NYU since 1835",
+        "The Washington Square Arch was completed in 1895",
+        "The arch commemorates the centennial of the first president's inauguration"
+      ],
+      "source_passage": "New York's regular street pattern breaks up around Washington Square, home of New York University since 1835 and hub of Greenwich Village. ... Washington Square Arch commemorates the centennial of the first president's inauguration. ... At the head of the 10-acre (4 ha) park stands the Washington Square Arch, completed in 1895.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_social_change_national-geographic-walking-nyc_duchamp_independent_republic_1917",
+      "city_name": "new_york",
+      "poi_name": "Washington Square Park",
+      "lens": "social_change",
+      "topic_slug": "duchamp_independent_republic_arch_climb",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "In 1917, members of the left-leaning Liberal Club — including the artist Marcel Duchamp — scaled the 86-foot-tall arch and proclaimed the \"Independent Republic of Greenwich Village.\" It was a piece of theater true to a square that, by the end of World War I, drew avant-garde figures like Duchamp into its literary salons and cutting-edge theaters.",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Marcel Duchamp",
+        "Liberal Club",
+        "Independent Republic of Greenwich Village"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "playful",
+      "subject_tag": "independent republic stunt",
+      "physical_cues": [
+        {
+          "cue": "The arch the Liberal Club members climbed to proclaim their republic",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1917 members of the left-leaning Liberal Club including Marcel Duchamp scaled the arch",
+        "They proclaimed the 'Independent Republic of Greenwich Village'",
+        "Avant-garde figures like Duchamp frequented the Village by the end of WWI"
+      ],
+      "source_passage": "In 1917, members of the left-leaning Liberal Club, including artist Marcel Duchamp, scaled the 86-foot-tall (26 m) arch and proclaimed the \"Independent Republic of Greenwich Village.\" ... by the end of World War I, residents and visitors included avant-garde figures such as Marcel Duchamp.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "In 1917 members of the 'Liberal Club' scaled the 86-foot-tall arch and proclaimed the 'Independent Republic of Greenwich Village'",
+          "book_value": "Liberal Club organizers; arch 86 feet tall",
+          "conflicting_value": "Independent sources name the 1917 climbers as the 'Arch Conspirators' (Gertrude Drick, John Sloan, Marcel Duchamp, and three Provincetown Playhouse actors) declaring a 'Free and Independent Republic of Washington Square / Greenwich Village'; the arch is ~73 ft 6 in, not 86 ft.",
+          "reasoning": "Book's 'Liberal Club' attribution and 86-foot height conflict with multiple sources, but the core event (1917 Duchamp arch-top proclamation) is real. Kept the book's wording as the source-of-record; flagged for human review rather than rewriting, since the discrepancy is attribution/measurement not a deletable claim.",
+          "sources": [
+            "https://www.washingtonsquareparkblog.com/2022/01/26/105-years-ago-washington-square-park-arch-conspirators-greenwich-village/",
+            "https://www.villagevoice.com/the-arch-conspirators/",
+            "https://www.nycgovparks.org/parks/washington-square-park/monuments/1657"
+          ]
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_music_heritage_national-geographic-walking-nyc_bitter_end_cafe_wha_legends",
+      "city_name": "new_york",
+      "poi_name": "The Bitter End",
+      "lens": "music_heritage",
+      "topic_slug": "oldest_rock_club_dylan_wonder",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "147 Bleecker St.",
+      "beat_length_class": "seasoning",
+      "script_body": "Since 1962, New York's oldest rock club, The Bitter End at 147 Bleecker Street, has been central to the area's music and comedy scenes. Bob Dylan, Stevie Wonder, and Woody Allen, among others, all performed here.",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Bitter End",
+        "Bob Dylan",
+        "Stevie Wonder",
+        "Woody Allen"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest rock club",
+      "physical_cues": [
+        {
+          "cue": "Storefront of The Bitter End at 147 Bleecker Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Bitter End at 147 Bleecker St. is New York's oldest rock club, since 1962",
+        "Bob Dylan, Stevie Wonder, and Woody Allen performed there"
+      ],
+      "source_passage": "Since 1962, New York's oldest rock club, The Bitter End (147 Bleecker St. at LaGuardia PL, tel 212/673-7030) has been central to the area's music and comedy scenes. Bob Dylan, Stevie Wonder, and Woody Allen, among others, all performed here.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "The Bitter End opened in 1962",
+          "book_value": "Since 1962",
+          "conflicting_value": "Multiple sources (Wikipedia, bitterend.com, NYC Tourism) state The Bitter End opened in 1961.",
+          "reasoning": "2+ independent sources agree on 1961, but since this is a NEW POI mention extracted verbatim from a club listing, flagged as a dispute for human review rather than silently overwriting the source text.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/The_Bitter_End",
+            "https://bitterend.com/history/"
+          ]
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_washington_square_park_music_heritage_national-geographic-walking-nyc_cafe_wha_springsteen_pryor",
+      "city_name": "new_york",
+      "poi_name": "Café Wha?",
+      "lens": "music_heritage",
+      "topic_slug": "springsteen_pryor_house_bands",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "115 MacDougal St.",
+      "beat_length_class": "seasoning",
+      "script_body": "Café Wha? at 115 MacDougal Street, between Bleecker and West 3rd, has attracted major musical and comedy talents, from Bruce Springsteen to Richard Pryor. Its house bands and guest musicians still pump out everything from jazz, soul, and R&B to modern and alternative.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Café Wha?",
+        "Bruce Springsteen",
+        "Richard Pryor"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "music comedy club",
+      "physical_cues": [
+        {
+          "cue": "Entrance to Café Wha? at 115 MacDougal Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Café Wha? at 115 MacDougal St. attracted talents from Bruce Springsteen to Richard Pryor",
+        "Its house bands play jazz, soul, R&B, modern and alternative"
+      ],
+      "source_passage": "Café Wha? (115 Macdougal St., between Bleecker and West 3rd Sts., tel 212/254-3706) also attracted major musical and comedy talents, from Bruce Springsteen to Richard Pryor. Its house bands and guest musicians still pump out styles from jazz, soul, and R&B to modern and alternative.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_christopher_park_local_legends_national-geographic-walking-nyc_duplex_piano_cabaret",
+      "city_name": "new_york",
+      "poi_name": "The Duplex",
+      "lens": "local_legends",
+      "topic_slug": "piano_bar_cabaret_stages",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "61 Christopher St.",
+      "beat_length_class": "micro",
+      "script_body": "At 61 Christopher Street, the Duplex is a neighborhood standby with multiple stages — a piano bar, cabaret, and more.",
+      "duration_sec": 9,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Duplex"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "cabaret piano bar",
+      "physical_cues": [
+        {
+          "cue": "The Duplex storefront at 61 Christopher Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Duplex at 61 Christopher St. is a piano bar and cabaret with multiple stages"
+      ],
+      "source_passage": "Don't miss a visit to the Duplex (61 Christopher St.; tel 212/2555438), a neighborhood standby with multiple stages featuring a piano bar, cabaret, and more.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stonewall_inn_social_change_national-geographic-walking-nyc_birthplace_gay_liberation_1969",
+      "city_name": "new_york",
+      "poi_name": "Stonewall Inn",
+      "lens": "social_change",
+      "topic_slug": "birthplace_gay_liberation_riots",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "53 Christopher St.",
+      "beat_length_class": "seasoning",
+      "script_body": "The Stonewall Inn at 53 Christopher Street, on Seventh Avenue, proclaims itself the birthplace of the gay liberation movement, after a police raid triggered the Stonewall riots of June 1969. Today the renovated bar runs gay cabaret, karaoke, and comedy shows.",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stonewall Inn",
+        "Stonewall riots"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "gay liberation birthplace",
+      "physical_cues": [
+        {
+          "cue": "The Stonewall Inn at 53 Christopher Street near Seventh Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Stonewall Inn at 53 Christopher St. proclaims itself birthplace of the gay liberation movement",
+        "A police raid triggered the Stonewall riots of June 1969"
+      ],
+      "source_passage": "The Stonewall Inn (53 Christopher St. at Seventh Ave, tel 212/488-2705) proclaims itself the birthplace of the gay liberation movement, after a police raid triggered the Stonewall riots of June 1969. Gay cabaret, karaoke, and comedy shows are all part of the lineup in the renovated bar.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_literary_heritage_national-geographic-walking-nyc_patchin_place_cummings_oneill_reed",
+      "city_name": "new_york",
+      "poi_name": "Patchin Place",
+      "lens": "literary_heritage",
+      "topic_slug": "cummings_oneill_reed_residents",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Close to Washington Square, the charming cul-de-sac of Patchin Place was home to poet e. e. cummings, playwright Eugene O'Neill, and journalist John Reed.",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [
+        "e. e. cummings",
+        "Eugene O'Neill",
+        "John Reed"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "writers mews",
+      "physical_cues": [
+        {
+          "cue": "The gated mews of Patchin Place off West 10th Street",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Patchin Place was home to e. e. cummings, Eugene O'Neill, and John Reed"
+      ],
+      "source_passage": "Close to Washington Square, charming Patchin Place was home to poet e. e. cummings, playwright Eugene O'Neill, and journalist John Reed.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_caffe_reggio_literary_heritage_national-geographic-walking-nyc_kerouac_cappuccino_hangout",
+      "city_name": "new_york",
+      "poi_name": "Caffe Reggio",
+      "lens": "literary_heritage",
+      "topic_slug": "kerouac_cappuccino_hangout",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "119 MacDougal St.",
+      "beat_length_class": "micro",
+      "script_body": "Drop in at cozy Caffe Reggio, 119 MacDougal Street, to sip a cappuccino where Jack Kerouac once hung out.",
+      "duration_sec": 8,
+      "kid_friendly": "yes",
+      "entities": [
+        "Caffe Reggio",
+        "Jack Kerouac"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "kerouac cafe",
+      "physical_cues": [
+        {
+          "cue": "Caffe Reggio storefront at 119 MacDougal Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Caffe Reggio at 119 MacDougal St. was a Jack Kerouac hangout"
+      ],
+      "source_passage": "Drop in at cozy Caffe Reggio (119 Macdougal St., tel 212/4759557) to sip a cappuccino where Jack Kerouac hung out.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_cherry_lane_theatre_film_tv_national-geographic-walking-nyc_oldest_off_broadway_debuts",
+      "city_name": "new_york",
+      "poi_name": "Cherry Lane Theatre",
+      "lens": "film_tv",
+      "topic_slug": "oldest_off_broadway_debuts",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "38 Commerce St.",
+      "beat_length_class": "micro",
+      "script_body": "At 38 Commerce Street, the Cherry Lane Theatre is New York's oldest Off-Broadway venue, where plays by F. Scott Fitzgerald, Tennessee Williams, and Samuel Beckett debuted.",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cherry Lane Theatre",
+        "F. Scott Fitzgerald",
+        "Tennessee Williams",
+        "Samuel Beckett"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest off-broadway",
+      "physical_cues": [
+        {
+          "cue": "The Cherry Lane Theatre facade at 38 Commerce Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cherry Lane Theatre at 38 Commerce St. is New York's oldest Off-Broadway venue",
+        "Plays by Fitzgerald, Tennessee Williams, and Beckett debuted there"
+      ],
+      "source_passage": "Theater lovers can sample New York's oldest Off-Broadway venue, Cherry Lane Theatre (38 Commerce St., tel 212/989-2020), where plays by F. Scott Fitzgerald, Tennessee Williams, and Samuel Beckett debuted.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_literary_heritage_national-geographic-walking-nyc_city_of_writers_irving_gotham",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "literary_heritage",
+      "topic_slug": "washington_irving_gotham_salmagundi",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "New York's literary roots trace to Washington Irving, considered the first American to make a living from writing. Famous for the short story \"Rip Van Winkle,\" Irving was born and raised in post-colonial Manhattan. In 1807 he launched the satirical literary magazine Salmagundi, in which he coined the term \"Gotham\" as a pseudonym for New York — a nickname that has clung to the city ever since.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Washington Irving",
+        "Rip Van Winkle",
+        "Salmagundi",
+        "Gotham"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "gotham coined",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Washington Irving was the first American to make a living from writing",
+        "Irving was born and raised in post-colonial Manhattan",
+        "Irving launched Salmagundi in 1807 and coined 'Gotham' for New York"
+      ],
+      "source_passage": "New York's literary roots can be traced to Washington Irving, considered the first American to make a living from writing. Famous for the short story \"Rip Van Winkle,\" Irving was born and raised in post-colonial Manhattan. In 1807 Irving launched the satirical literary magazine Salmagundi, in which he coined the term \"Gotham\" as a pseudonym for New York.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_literary_heritage_national-geographic-walking-nyc_twain_union_square_bankruptcy",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "literary_heritage",
+      "topic_slug": "mark_twain_publishing_bankruptcy",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Mark Twain was senior partner in the publishing company Charles L. Webster & Co., based in Union Square, until bad investments forced him to file for bankruptcy. Having recouped his fortunes, he returned to New York in 1900.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Mark Twain",
+        "Charles L. Webster & Co.",
+        "Union Square"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "twain bankruptcy",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Mark Twain was senior partner of Charles L. Webster & Co. based in Union Square",
+        "Bad investments forced him into bankruptcy",
+        "He returned to New York in 1900 after recouping his fortunes"
+      ],
+      "source_passage": "Mark Twain was senior partner in the publishing company Charles L. Webster & Co., based in Union Square, until bad investments obliged him to file for bankruptcy. Having recouped his fortunes, he returned to New York in 1900.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_literary_heritage_national-geographic-walking-nyc_beat_modern_greats_baldwin_capote",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "literary_heritage",
+      "topic_slug": "postwar_writers_baldwin_capote_ginsberg",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "By the 1950s, New York was abuzz with literary talent, including poet Allen Ginsberg and novelists Jack Kerouac and Norman Mailer. Truman Capote published Breakfast at Tiffany's in 1958, and James Baldwin published Another Country — set in Harlem and Greenwich Village — in 1962. In recent decades, figures such as the Bronx-born Don DeLillo and Brooklyn resident Paul Auster have dominated the city's literary scene.",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "Allen Ginsberg",
+        "Jack Kerouac",
+        "Norman Mailer",
+        "Truman Capote",
+        "James Baldwin",
+        "Don DeLillo",
+        "Paul Auster"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "postwar literature",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "By the 1950s NYC writers included Ginsberg, Kerouac, Mailer",
+        "Capote published Breakfast at Tiffany's in 1958",
+        "Baldwin published Another Country (set in Harlem and Greenwich Village) in 1962",
+        "DeLillo and Auster dominate in recent decades"
+      ],
+      "source_passage": "By the 1950s, New York was abuzz with literary talent, including poet Allen Ginsberg and novelists Jack Kerouac and Norman Mailer. Truman Capote published Breakfast at Tiffany's in 1958. James Baldwin published Another Country, set in Harlem and Greenwich Village, in 1962. In recent decades, figures such as the Bronx-born Don DeLillo and Brooklyn resident Paul Auster have dominated the city's literary scene.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_literary_heritage_national-geographic-walking-nyc_white_horse_tavern_longshoremen",
+      "city_name": "new_york",
+      "poi_name": "White Horse Tavern",
+      "lens": "literary_heritage",
+      "topic_slug": "longshoremen_bar_mailer_baldwin_nin",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "567 Hudson St.",
+      "beat_length_class": "seasoning",
+      "script_body": "Before being colonized by writers, the White Horse Tavern at 567 Hudson Street was a longshoremen's bar. In western Greenwich Village, it became a favorite with novelists Norman Mailer, James Baldwin, and Anaïs Nin.",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "White Horse Tavern",
+        "Norman Mailer",
+        "James Baldwin",
+        "Anaïs Nin"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "literary tavern",
+      "physical_cues": [
+        {
+          "cue": "The White Horse Tavern at 567 Hudson Street at 11th Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The White Horse Tavern was a longshoremen's bar before becoming a writers' haunt",
+        "At 567 Hudson St., it was a favorite of Norman Mailer, James Baldwin, and Anaïs Nin"
+      ],
+      "source_passage": "Before being colonized by writers, the White Horse Tavern (right) was a longshoremen's bar. ... In western Greenwich Village, the White Horse was a favorite with novelists Norman Mailer, James Baldwin, and Anais Nin. 567 Hudson St. at 11th St., tel 212/989-3956",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_minetta_tavern_literary_heritage_national-geographic-walking-nyc_pound_hemingway_1937",
+      "city_name": "new_york",
+      "poi_name": "Minetta Tavern",
+      "lens": "literary_heritage",
+      "topic_slug": "pound_hemingway_1937",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "113 MacDougal St.",
+      "beat_length_class": "micro",
+      "script_body": "Opened in Greenwich Village in 1937, the now-renovated Minetta Tavern at 113 MacDougal Street once drew poet Ezra Pound and novelist Ernest Hemingway.",
+      "duration_sec": 10,
+      "kid_friendly": "yes",
+      "entities": [
+        "Minetta Tavern",
+        "Ezra Pound",
+        "Ernest Hemingway"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "literary tavern",
+      "physical_cues": [
+        {
+          "cue": "The Minetta Tavern frontage at 113 MacDougal Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Minetta Tavern opened in Greenwich Village in 1937",
+        "At 113 MacDougal St., it drew Ezra Pound and Ernest Hemingway"
+      ],
+      "source_passage": "Opened in Greenwich Village in 1937, this now renovated restaurant once drew poet Ezra Pound and novelist Ernest Hemingway. 113 Macdougal St., tel 212/475-3850",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_literary_heritage_national-geographic-walking-nyc_kettle_of_fish_ginsberg_kerouac",
+      "city_name": "new_york",
+      "poi_name": "Kettle of Fish",
+      "lens": "literary_heritage",
+      "topic_slug": "kettle_of_fish_beat_bar",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "59 Christopher St.",
+      "beat_length_class": "micro",
+      "script_body": "Ginsberg, Kerouac, and friends spent many a happy night at the Kettle of Fish, a still-popular Greenwich Village bar at 59 Christopher Street.",
+      "duration_sec": 9,
+      "kid_friendly": "yes",
+      "entities": [
+        "Kettle of Fish",
+        "Allen Ginsberg",
+        "Jack Kerouac"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "beat bar",
+      "physical_cues": [
+        {
+          "cue": "The Kettle of Fish bar at 59 Christopher Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Ginsberg, Kerouac and friends frequented the Kettle of Fish at 59 Christopher St."
+      ],
+      "source_passage": "Ginsberg, Kerouac, and friends spent many a happy night in this still popular neighborhood bar in Greenwich Village. 59 Christopher St., tel 212/414-2278",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_blue_note_music_heritage_national-geographic-walking-nyc_founded_1981_intimate_big_names",
+      "city_name": "new_york",
+      "poi_name": "Blue Note",
+      "lens": "music_heritage",
+      "topic_slug": "founded_1981_big_name_acts",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "131 West Third St.",
+      "beat_length_class": "seasoning",
+      "script_body": "Arguably the most famous jazz club in the world, the Blue Note at 131 West Third Street — between Sixth Avenue and MacDougal Street — was founded in 1981 and is the number-one choice for seeing big-name acts in an intimate setting.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Blue Note"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "jazz club fame",
+      "physical_cues": [
+        {
+          "cue": "The Blue Note's awning at 131 West Third Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Blue Note at 131 West Third St. was founded in 1981",
+        "It is arguably the most famous jazz club in the world",
+        "It is the top choice for big-name acts in an intimate setting"
+      ],
+      "source_passage": "Arguably the most famous jazz club in the world, the Blue Note (131 West Third St. between Sixth Ave. and Macdougal St, tel 212/475-8592) was founded in 1981 and is the number-one choice for seeing big-name acts in an intimate setting.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_village_vanguard_music_heritage_national-geographic-walking-nyc_coltrane_1961_recordings",
+      "city_name": "new_york",
+      "poi_name": "Village Vanguard",
+      "lens": "music_heritage",
+      "topic_slug": "coltrane_1961_live_recordings",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "178 Seventh Ave.",
+      "beat_length_class": "seasoning",
+      "script_body": "Just around the corner from the Blue Note is the Village Vanguard at 178 Seventh Avenue, unmissable if only because it is where saxophonist John Coltrane made his famous 1961 live recordings.",
+      "duration_sec": 14,
+      "kid_friendly": "yes",
+      "entities": [
+        "Village Vanguard",
+        "John Coltrane"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "coltrane recordings",
+      "physical_cues": [
+        {
+          "cue": "The Village Vanguard's red awning at 178 Seventh Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Village Vanguard is at 178 Seventh Avenue",
+        "John Coltrane made his famous 1961 live recordings there"
+      ],
+      "source_passage": "Just around the corner is the Village Vanguard (178 Seventh Ave. at Perry St., tel 212/255-4037), unmissable if only because it is where saxophonist John Coltrane made his famous 1961 live recordings.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_blue_note_music_heritage_national-geographic-walking-nyc_smalls_basement_up_and_coming",
+      "city_name": "new_york",
+      "poi_name": "Smalls Jazz Club",
+      "lens": "music_heritage",
+      "topic_slug": "smalls_basement_emerging_talent",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "183 West 10th St.",
+      "beat_length_class": "micro",
+      "script_body": "Smalls, at 183 West 10th Street, promises an authentic club experience — a hole-in-the-wall basement space that presents up-and-coming talent.",
+      "duration_sec": 9,
+      "kid_friendly": "yes",
+      "entities": [
+        "Smalls"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "basement jazz",
+      "physical_cues": [
+        {
+          "cue": "The Smalls basement entrance at 183 West 10th Street",
+          "direction": "down",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Smalls at 183 West 10th St. is a hole-in-the-wall basement presenting up-and-coming talent"
+      ],
+      "source_passage": "Smalls (183 West 10th St. at West Fourth St., tel 212/252-5091) promises an authentic club experience—a hole-in-the-wall basement space that presents up-and-coming talent.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_tompkins_square_park_music_heritage_national-geographic-walking-nyc_the_stone_avant_garde_jazz",
+      "city_name": "new_york",
+      "poi_name": "The Stone",
+      "lens": "music_heritage",
+      "topic_slug": "the_stone_avant_garde_jazz",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": "16 Ave. C",
+      "beat_length_class": "micro",
+      "script_body": "Over in the East Village, The Stone at 16 Avenue C is a not-for-profit space dedicated to avant-garde and experimental jazz.",
+      "duration_sec": 8,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Stone"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "avant-garde jazz",
+      "physical_cues": [
+        {
+          "cue": "The Stone at 16 Avenue C in the East Village",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Stone at 16 Avenue C is a not-for-profit avant-garde and experimental jazz space"
+      ],
+      "source_passage": "Over in the East Village, The Stone (16 Ave. C at Second St., closed Mon., thestonenyc.com) is a not-for-profit space dedicated to avant-garde and experimental jazz.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_greenwich_village_local_legends_national-geographic-walking-nyc_real_village_to_bohemia",
+      "city_name": "new_york",
+      "poi_name": "Greenwich Village",
+      "lens": "local_legends",
+      "topic_slug": "really_a_village_bohemian_salons",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Known to locals simply as \"the Village,\" the world-famous neighborhood originally really was a village. By the late 19th century, literary salons, art clubs, and cutting-edge theaters were flourishing here, a radical, bohemian spirit that has drawn some of the most creative minds in politics and the arts since the early 19th century.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "village bohemia",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Greenwich Village originally really was a village",
+        "By the late 19th century literary salons, art clubs, and cutting-edge theaters flourished",
+        "Its bohemian spirit has drawn creative minds since the early 19th century"
+      ],
+      "source_passage": "Known to locals as \"the Village,\" the world-famous neighborhood originally really was a village. By the late 19th century, literary salons, art clubs, and cutting-edge theaters were flourishing... The neighborhood's radical, bohemian spirit has attracted some of the most creative minds in politics and the arts since the early 19th century.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_east_village_social_change_national-geographic-walking-nyc_beats_hippies_counterculture",
+      "city_name": "new_york",
+      "poi_name": "St Marks Place",
+      "lens": "social_change",
+      "topic_slug": "beats_hippies_counterculture_origins",
+      "book_slug": "national-geographic-walking-nyc",
+      "source_chunk_slug": "chunk-02-the-villages",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Once an immigrant neighborhood, the East Village acquired its distinctive feel in the 1960s as the haunt of artists, musicians, and hippies, and as the center of America's counterculture. It was home to writers of the Beat Generation in the 1950s; with the rise of 1960s counterculture, hippies moved in where immigrants had once settled. Gentrification has since erased some of the area's grittiness, but its artsy vibe survives in graffiti-covered walls and independent stores.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Beat Generation"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "counterculture history",
+      "physical_cues": [
+        {
+          "cue": "Graffiti-covered walls and independent storefronts of the East Village",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The East Village was home to Beat Generation writers in the 1950s",
+        "In the 1960s it became a haunt of artists, musicians, hippies and the center of America's counterculture",
+        "Gentrification eroded its grittiness but graffiti walls and independent stores remain"
+      ],
+      "source_passage": "The East Village... was home to writers of the Beat Generation in the 1950s. With the rise of 1960s counterculture, hippies moved in where immigrants had once settled... Once an immigrant neighborhood, the East Village acquired its distinctive feel in the 1960s as the haunt of artists, musicians, and hippies, and as the center of America's counterculture. Gentrification has erased some of the area's grittiness, but the neighborhood's artsy vibe is still evident in the graffiti-covered walls and independent stores.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "The Villages (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "DISPUTE",
+      "description": "Union Square George Washington equestrian statue: book says 'Cast in 1814'; auto-corrected to 1856 in the beat body (2+ independent sources: Wikipedia, NYC Parks). The 'oldest sculpture in NYC parks collection' claim is correct and retained.",
+      "recommendation": "Accept the 1856 correction (already applied; logged in beat corrections)."
+    },
+    {
+      "type": "DISPUTE",
+      "description": "Washington Square Arch Duchamp stunt: book attributes the 1917 arch climb to the 'Liberal Club' and states the arch is '86-foot-tall'. Sources name the group the 'Arch Conspirators' (Drick, Sloan, Duchamp + 3 actors) and give the arch height as ~73 ft 6 in. Core event (1917 Duchamp proclamation) is real; not auto-corrected because it touches attribution/measurement, not a deletable factual error with clean 2-source convergence on the exact phrasing.",
+      "recommendation": "Human review: keep the beat but consider editing 'Liberal Club' → 'a group of Village bohemians' and dropping the '86-foot' figure before upload."
+    },
+    {
+      "type": "DISPUTE",
+      "description": "The Bitter End: book says 'Since 1962'; 2+ sources (Wikipedia, bitterend.com, NYC Tourism) say it opened in 1961. Left as a dispute (not auto-corrected) because The Bitter End is a NEW POI flagged for triage, not yet in the corpus.",
+      "recommendation": "Correct to 1961 at /poi-generate time when the POI is created."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "Several NEW POIs sit within ~100m of existing corpus POIs: The Bitter End (147 Bleecker St) and Café Wha? (115 MacDougal St) are near Bleecker Street and Minetta Tavern; The Duplex (61 Christopher St), Kettle of Fish (59 Christopher St), Smalls (183 W 10th St) cluster near Stonewall Inn / Christopher Park / Sheridan Square; Trash and Vaudeville (4 St Mark's Pl) sits on St Marks Place; St. Mark's Church in-the-Bowery (131 E 10th St) near St Marks Place / Astor Place.",
+      "recommendation": "Confirm at /poi-generate + /poi-dedup that these are genuinely distinct venues (they are — distinct named establishments) and not aliases of the containing street/square POIs."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Many jazz/literary venues in this chunk are bare directory listings (address + one sentence) inside 'Best Of' and 'Distinctly NY' sidebars; several (Iridium, Birdland, Dizzy's, Jazz Standard, Minton's, American Legion Post 398, Barbés, Frank's Cocktail Lounge) lie OUTSIDE the Villages geofence (Midtown, Harlem, Brooklyn) and were NOT extracted as Villages beats — they belong to other chapters/neighborhoods.",
+      "recommendation": "No action; correctly excluded under city-geofence/neighborhood scoping. Extract them when their own chapters are processed if desired."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Chunk is OCR from a PDF with heavy interleaved map-label and caption noise (lines ~1-650 are largely garbage fragments). All extracted source_passages were re-verified against coherent prose blocks and found present (approximate OCR match). St. Mark's Bookshop (31 Third Ave, since 1977) appears only as an isolated photo caption fragment and was not extracted as a standalone beat — too thin and now closed; flagged here for completeness.",
+      "recommendation": "No action."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 29,
+    "pois_touched": 18,
+    "new_pois": 11,
+    "corrections_applied": 1,
+    "disputes": 3,
+    "anomalies": 3,
+    "lenses_hit": [
+      "local_legends",
+      "street_art",
+      "social_change",
+      "hidden_history",
+      "visual_art",
+      "markets_street_food",
+      "modern_design",
+      "parks_gardens",
+      "historic_arch",
+      "literary_heritage",
+      "music_heritage",
+      "film_tv"
+    ],
+    "lenses_missed": [
+      "war_conflict",
+      "dark_history",
+      "historic_cuisine",
+      "famous_residents",
+      "historic_worship",
+      "sacred_traditions",
+      "waterways_views",
+      "historic_markets",
+      "science_tech"
+    ],
+    "confidence_counts": {
+      "HIGH": 24,
+      "MEDIUM": 4,
+      "LOW": 0
+    }
+  }
+}

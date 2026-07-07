@@ -1,0 +1,437 @@
+[
+  {
+    "name": "New York City",
+    "area_type": "city",
+    "parent": null,
+    "query": "New York City, New York, USA",
+    "osm_type": "relation",
+    "osm_id": 175905,
+    "class": "boundary",
+    "type": "administrative",
+    "display": "New York, United States",
+    "rel_candidates": [
+      {
+        "id": 175905,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "Manhattan",
+    "area_type": "borough",
+    "parent": "New York City",
+    "query": "Manhattan, New York, USA",
+    "osm_type": "relation",
+    "osm_id": 8398124,
+    "class": "boundary",
+    "type": "administrative",
+    "display": "Manhattan, New York County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 8398124,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Manhattan, New York County, New York, United States"
+      },
+      {
+        "id": 3954665,
+        "class": "place",
+        "type": "island",
+        "d": "Manhattan Island, New York, United States"
+      },
+      {
+        "id": 2552485,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "New York County, New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn",
+    "area_type": "borough",
+    "parent": "New York City",
+    "query": "Brooklyn, New York, USA",
+    "osm_type": "relation",
+    "osm_id": 9691750,
+    "class": "boundary",
+    "type": "administrative",
+    "display": "Brooklyn, Kings County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 9691750,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Brooklyn, Kings County, New York, United States"
+      },
+      {
+        "id": 369518,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Kings County, New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "Queens",
+    "area_type": "borough",
+    "parent": "New York City",
+    "query": "Queens, New York, USA",
+    "osm_type": "relation",
+    "osm_id": 9691819,
+    "class": "boundary",
+    "type": "administrative",
+    "display": "Queens, Queens County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 9691819,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Queens, Queens County, New York, United States"
+      },
+      {
+        "id": 369519,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Queens County, New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "The Bronx",
+    "area_type": "borough",
+    "parent": "New York City",
+    "query": "The Bronx, New York, USA",
+    "osm_type": "relation",
+    "osm_id": 9691916,
+    "class": "boundary",
+    "type": "administrative",
+    "display": "The Bronx, Bronx County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 9691916,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "The Bronx, Bronx County, New York, United States"
+      },
+      {
+        "id": 2552450,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Bronx County, New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "Staten Island",
+    "area_type": "borough",
+    "parent": "New York City",
+    "query": "Staten Island, New York, USA",
+    "osm_type": "relation",
+    "osm_id": 9691948,
+    "class": "boundary",
+    "type": "administrative",
+    "display": "Staten Island, Richmond County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 9691948,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Staten Island, Richmond County, New York, United States"
+      },
+      {
+        "id": 962876,
+        "class": "boundary",
+        "type": "administrative",
+        "d": "Richmond County, New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "Upper East Side",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Upper East Side, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 2642533054,
+    "class": "place",
+    "type": "quarter",
+    "display": "Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10028, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Upper West Side",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Upper West Side, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158839157,
+    "class": "place",
+    "type": "quarter",
+    "display": "Upper West Side, Manhattan Community Board 7, Manhattan, New York County, New York, 10024, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Harlem",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Harlem, Manhattan, New York",
+    "osm_type": "relation",
+    "osm_id": 9768501,
+    "class": "waterway",
+    "type": "tidal_channel",
+    "display": "Harlem River, New York County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 9768501,
+        "class": "waterway",
+        "type": "tidal_channel",
+        "d": "Harlem River, New York County, New York, United States"
+      }
+    ]
+  },
+  {
+    "name": "Midtown West",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Hell's Kitchen, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 666,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Hell's Kitchen, Manhattan Community Board 4, Manhattan, New York County, New York, 10036, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Midtown East",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Midtown East, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 5706568331,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Midtown East, Manhattan Community Board 5, Manhattan, New York County, New York, 10055, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Financial District",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Financial District, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 5706568347,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Financial District, Lower Manhattan, Manhattan, New York County, New York, 10045, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Lower East Side",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Lower East Side, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158853595,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Lower East Side, Manhattan Community Board 3, Manhattan, New York County, New York, 10002, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Chelsea",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Chelsea, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158869539,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Chelsea, Manhattan Community Board 4, Manhattan, New York County, New York, 10199, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Chinatown",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Chinatown, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158856492,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Chinatown, Lower Manhattan, Manhattan, New York County, New York, 10013, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "SoHo",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "SoHo, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158809984,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "SoHo, Manhattan, New York County, New York, 10012, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Flatiron District",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Flatiron District, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 2517056822,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Flatiron District, Manhattan Community Board 5, Manhattan, New York County, New York, 10010, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Little Italy",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Little Italy, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158910289,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Little Italy, Lower Manhattan, Manhattan, New York County, New York, 10013, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Meatpacking District",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Meatpacking District, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 5706568342,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Meatpacking District, Manhattan, New York County, New York, 10014, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Greenwich Village",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Greenwich Village, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158861717,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Greenwich Village, Manhattan, New York County, New York, 10012, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Hamilton Heights Historic District",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "Hamilton Heights, Manhattan, New York",
+    "osm_type": "node",
+    "osm_id": 158853967,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Hamilton Heights, Manhattan Community Board 9, Manhattan, New York County, New York, 10031, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Chelsea Gallery District",
+    "area_type": "neighborhood",
+    "parent": "Manhattan",
+    "query": "West Chelsea, Manhattan, New York",
+    "osm_type": "way",
+    "osm_id": 315298214,
+    "class": "building",
+    "type": "apartments",
+    "display": "Avalon West Chelsea, 282, 11th Avenue, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10001, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Park Slope",
+    "area_type": "neighborhood",
+    "parent": "Brooklyn",
+    "query": "Park Slope, Brooklyn, New York",
+    "osm_type": "way",
+    "osm_id": 351304122,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Park Slope, Brooklyn, Kings County, New York, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Williamsburg",
+    "area_type": "neighborhood",
+    "parent": "Brooklyn",
+    "query": "Williamsburg, Brooklyn, New York",
+    "osm_type": "node",
+    "osm_id": 158863515,
+    "class": "place",
+    "type": "quarter",
+    "display": "Williamsburg, Brooklyn, Kings County, New York, 11249, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Brooklyn Heights",
+    "area_type": "neighborhood",
+    "parent": "Brooklyn",
+    "query": "Brooklyn Heights, Brooklyn, New York",
+    "osm_type": "way",
+    "osm_id": 244581129,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Brooklyn Heights, Brooklyn, Kings County, New York, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Brighton Beach",
+    "area_type": "neighborhood",
+    "parent": "Brooklyn",
+    "query": "Brighton Beach, Brooklyn, New York",
+    "osm_type": "way",
+    "osm_id": 570563993,
+    "class": "place",
+    "type": "neighbourhood",
+    "display": "Brighton Beach, Brooklyn, Kings County, New York, United States",
+    "rel_candidates": []
+  },
+  {
+    "name": "Coney Island",
+    "area_type": "neighborhood",
+    "parent": "Brooklyn",
+    "query": "Coney Island, Brooklyn, New York",
+    "osm_type": "relation",
+    "osm_id": 15552991,
+    "class": "natural",
+    "type": "peninsula",
+    "display": "Coney Island, Kings County, New York, 11224, United States",
+    "rel_candidates": [
+      {
+        "id": 15552991,
+        "class": "natural",
+        "type": "peninsula",
+        "d": "Coney Island, Kings County, New York, 11224, United States"
+      }
+    ]
+  },
+  {
+    "name": "Governors Island",
+    "area_type": "island",
+    "parent": "Manhattan",
+    "query": "Governors Island, New York",
+    "osm_type": "relation",
+    "osm_id": 2389631,
+    "class": "leisure",
+    "type": "park",
+    "display": "Governors Island, Manhattan, New York County, New York, United States",
+    "rel_candidates": [
+      {
+        "id": 2389631,
+        "class": "leisure",
+        "type": "park",
+        "d": "Governors Island, Manhattan, New York County, New York, United States"
+      }
+    ]
+  }
+]

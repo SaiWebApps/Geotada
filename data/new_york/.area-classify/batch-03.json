@@ -1,0 +1,1079 @@
+[
+  {
+    "name": "Hudson Yards",
+    "short_description": "Large development; contains The Edge, Vessel, The Shed sub-attractions.",
+    "trigger_radius": 60,
+    "importance_tier": 5,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Gleaming centerpiece mall and outsized skyscrapers",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Gotham's newest neighborhood, Hudson Yards, looks more like Dallas than New York City\u2014thanks to its gleaming centerpiece mall and the proportions and placement of its skyscrapers. Still, a few attractions make it worth a visit, foremost amo"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The skyscrapers resting on a platform built above 30 active railway tracks",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "At 28 acres, Hudson Yards is the largest private real estate development in American history \u2014 and amazingly, it was built in the most crowded city in the United States without displacing a single resident. The area it occupies, from 30th S"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "For all its state-of-the-art innovations, Hudson Yards is one of the most unpopular projects in recent New York memory. Many locals compare it unfavorably with Rockefeller Center, the city's last large-scale development and a place of unpar"
+      }
+    ]
+  },
+  {
+    "name": "Times Square",
+    "short_description": "Most congested pedestrian icon in the Western Hemisphere; very high gravity.",
+    "trigger_radius": 40,
+    "importance_tier": 5,
+    "n_beats": 16,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Adam Gopnik wrote about Times Square in The New Yorker, \u201cNo other part of New York has had such a melodramatic sensitivity to the changes in the city's history, with an image for every decade.\u201d Think for a moment and the visions flood in: s"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The flashing billboards, giant TV screens, and electronic news crawls covering the buildings around the Square",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The tradition of massive \u201cspectaculars\u201d is codified into law: in the 1980s, ordinances were passed requiring that new buildings abutting the Square have 16,000 square feet of light shows on their facades, with \u201cmoving elements\u201d sufficiently"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The corner of 47th and Seventh Avenue, the most congested spot in the Western Hemisphere",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Costumed characters and 'painted ladies' roaming the pedestrianized square",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Don't beat yourself up if you feel claustrophobic at the corner of 47th and Seventh Avenue: studies have shown that it's the most congested spot in the Western Hemisphere. Times Square still has more playhouses per acre than any other area "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The sidewalk-level Good Morning America TV studios at 44th and Broadway",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "For dawn theater, peer into the sidewalk-level television studios of Good Morning America at 44th and Broadway; the show also offers advance tickets for those who'd like to be part of the studio audience."
+      }
+    ]
+  },
+  {
+    "name": "Midtown West",
+    "short_description": "",
+    "trigger_radius": 500,
+    "importance_tier": 4,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Midtown West encompasses several famous places: Madison Square Garden, the Garment District, Rockefeller Center, the Theater District, and Times Square. It's the area most people picture when they think of New York, and the reason so many v"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The diagonal truss honeycomb of Hearst Tower rising above the 1928 cast-stone base",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "This 46-floor Hearst Tower is one of NYC's most creative works of contemporary architecture, and one of its greenest \u2014 around 90% of its structural steel is from recycled sources. Designed by Foster & Partners, its diagonal grid of trusses "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The crystal-shaped tower with its 255ft spire at One Bryant Park",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Designed by Cook & Fox Architects, the 58-floor Bank of America Tower at One Bryant Park is famed for its striking crystal shape, piercing 255ft spire and green credentials: an on-site cogeneration plant provides around 65% of the tower's a"
+      }
+    ]
+  },
+  {
+    "name": "Midtown East",
+    "short_description": "",
+    "trigger_radius": 500,
+    "importance_tier": 4,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Looming glass towers along Madison, Park, and Lexington avenues",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In the 1950s, Madison, Park, and Lexington avenues started to sprout skyscrapers and were soon rivaling the Wall Street area for office space. That's primarily what you'll find here: people in suits, looming glass towers, and lots of traffi"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The triangular-cut roof and the tower perched on nine-story stilts at Lexington and 53rd",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "With its striking triangular-cut roof and candy-striped facade, Hugh Stubbins' 59-story Citigroup Center signaled a shift from the flat-roof sobriety of the international style. Even more dramatic is its base, cut away at the four corners, "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The slim white cubic tube of 432 Park Avenue rising over the skyline",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "It's a case of 'thin is in' with 432 Park Avenue, a 1396ft-tall, $1.3-billion residential tower by Uruguayan architect Rafael Vi\u00f1oly. Its clean, white, cubic facade \u2014 inspired by a 1905 trash can by Austrian designer Josef Hoffman \u2014 rises a"
+      }
+    ]
+  },
+  {
+    "name": "Upper East Side",
+    "short_description": "",
+    "trigger_radius": 600,
+    "importance_tier": 4,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Mansions and marble-faced townhouses from 61st to 80th streets",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "The zip code 10021 is the richest in the world, and it belongs to the Upper East Side\u2014in particular the swank swath of pavement that runs from 61st to 80th streets. Also known as \u201cThe Gold Coast\u201d and \u201cMillionaire's Mile,\u201d this is the stompi"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Museums play a key role on the Upper East Side\u2014there's a greater concentration of top-flight museums here than anywhere else in the country, with the exception of the Mall in Washington, D.C. You'll want at least a day to explore Museum Mil"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Fifth Avenue from 70th to 93rd Streets lined with museums; low stone wall of Central Park to the west",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Upper East Side is mainly a residential area, and with a few exceptions its sights are clustered along Fifth Ave from 70th to 93rd Sts \u2014 the famed Museum Mile. Central Park runs along the western side of Fifth Ave, bordered by a low sto"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "The Upper East Side is famed for well-coiffed 'ladies who lunch,' dispensing air kisses while armed with designer handbags the size of steamer trunks. Spot them at Sant Ambroeus and Caf\u00e9 Boulud on weekdays."
+      }
+    ]
+  },
+  {
+    "name": "Upper West Side",
+    "short_description": "",
+    "trigger_radius": 600,
+    "importance_tier": 4,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "In some ways the Upper West Side has the most suburban vibe of any of Manhattan's neighborhoods. National chain stores line the major thoroughfares and the sidewalks swarm with strollers. It's a popular area for families thanks to its proxi"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The stretch of Manhattan west of Central Park was once a lively mix of African American, Latino and German Jewish immigrant communities \u2014 which is where you'll find some of the best smoked fish in town. In more recent decades it has become "
+      }
+    ]
+  },
+  {
+    "name": "Harlem",
+    "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+    "trigger_radius": 600,
+    "importance_tier": 4,
+    "n_beats": 9,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Touring Harlem takes imagination, because much of what made it unique during the fabled Jazz Era \u2014 the Harlem Renaissance \u2014 crumbled beneath the wrecking ball decades ago. The wide avenues, rows of brownstones, and elegant apartment buildin"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Harlem was settled in waves \u2014 Dutch farmers first, then their British counterparts, then poor Irish and Italian immigrants. But development only took off just before 1904, when the city's first subway line opened: a nine-and-a-half-mile sna"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Left with hundreds of unrentable homes, property owners began doing what nobody else had done in the history of the United States: renting or selling brand-new, beautifully appointed buildings to the race that had until then always made do "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Perhaps the most rapidly transforming neighborhood in the city, Harlem is safer and cleaner than it's been in decades, but may be losing some of its intrinsic character. It has been a largely African-American neighborhood since the 1920s\u2014ho"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn",
+    "short_description": "",
+    "trigger_radius": 1000,
+    "importance_tier": 5,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "With 2.6 million residents according to the last census, Brooklyn is the most populous borough of the city, and at 71 square miles it's also the largest. It's very difficult to pin down Brooklyn's personality\u2014it's just too darn big to be su"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Home to more than 2.6 million people spread across 71 square miles, Brooklyn is a universe unto its own. There's much to see, from charming brownstone-lined neighborhoods and beautifully landscaped parks to cutting-edge art galleries and se"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Alongside the suffragists holding street-corner rallies for the vote, nurse and midwife Margaret Sanger opened the first birth-control clinic in Brooklyn \u2014 where 'purity police' promptly arrested her. After her release from jail in 1921, sh"
+      }
+    ]
+  },
+  {
+    "name": "Park Slope",
+    "short_description": "",
+    "trigger_radius": 400,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Park Slope is the area surrounding Prospect Park, Frederick Law Olmsted's other great work of landscape architecture after Central Park. In Park Slope a constellation of sights includes the Brooklyn Museum, the Brooklyn Botanical Gardens, a"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Known for tree-lined streets and graceful brownstone houses, Park Slope is Brooklyn's answer to Manhattan's Upper West Side. This former working-class area is today filled with couples with toddlers and designer dogs, who stroll between bru"
+      }
+    ]
+  },
+  {
+    "name": "Williamsburg",
+    "short_description": "",
+    "trigger_radius": 400,
+    "importance_tier": 4,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Streets peopled by the Hasidic sect on one side, galleries and boutiques on the other",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Williamsburg has a split personality. Part of it houses one of the largest Hasidic Jewish communities in the world; walk the streets peopled by this sect and you may feel as if you've stepped back into an old-country shtetl\u2014an illusion only"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "An international byword for beards, body art, bustling bars and fixed-wheel bikes, Williamsburg is now well and truly gentrified. Artists and students piled into the postindustrial neighborhood, then since the late 1990s its revitalized str"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Beer brewing was once a thriving industry in Brooklyn \u2014 by the 1870s, the borough boasted a belly-swelling 48 breweries. Most of these were based in Williamsburg, Bushwick and Greenpoint, neighborhoods packed with German immigrants with ext"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Brooklyn side of the Williamsburg Bridge \u2014 active graffiti and street art hot spot",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Contemporary graffiti as we know it was cultivated in NYC. In the 1970s, the graffiti-covered subway train became a potent symbol of the city and work by figures such as Dondi, Blade and Lady Pink became known around the world. Fine artists"
+      }
+    ]
+  },
+  {
+    "name": "Brighton Beach",
+    "short_description": "",
+    "trigger_radius": 300,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Stores selling rows of nesting dolls and Lenin T-shirts",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Eastern Europe makes an appearance in Brighton Beach, which has the largest expat Ukrainian and Russian community in the world. It's not the friendliest area, but fascinating to visit nonetheless, with stores selling endless rows of nesting"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The elevated subway tracks and Slavic shops along Brighton Beach Ave",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "For a sense of the city as it was, wander around Brighton Beach. Under the elevated tracks on Brighton Beach Ave, the bustling Russian district known as 'Little Odessa' is packed with greengrocers and emporiums dispensing smoked fish and pi"
+      }
+    ]
+  },
+  {
+    "name": "The Bronx",
+    "short_description": "",
+    "trigger_radius": 1000,
+    "importance_tier": 3,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The author is blunt: to his mind there are only four reasons a tourist should even think of going to the Bronx\u2014Yankee Stadium, the Bronx Zoo, the New York Botanical Garden, and the Italian restaurants and stores of Arthur Avenue. If you hav"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "During the 1970s a wave of arson attacks reduced blocks of apartment houses in the South Bronx to cinders. Amid the smoke, an influential hip-hop culture was born, fueled by the percussive rhythms of Puerto Rican salsa. Rock Steady Crew, le"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Daring graffiti dazzled the public with train-long graphics. The best-known 'masterpiece' belied the writers' reputation as vandals: Lee 163, with the Fab 5 crew, painted a whole subway car with the message 'Merry Christmas, New York.' Some"
+      }
+    ]
+  },
+  {
+    "name": "Queens",
+    "short_description": "",
+    "trigger_radius": 1000,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Archie Bunker no longer lives in Queens. The grouchy, bigoted xenophobe at the center of the famed 1970s sitcom All in the Family probably wouldn't recognize the borough today. In just the past 50 years it has gone from a somewhat insulated"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Museums are another big draw, and the borough now rivals Brooklyn for its cultural attractions, boasting four great ones: the Museum of the Moving Image, P.S. 1 Museum of Contemporary Art, the Isamu Noguchi Galleries, and the Louis Armstron"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Before Queens was incorporated into New York City in 1898, it was a series of unrelated towns and villages each with their own street nomenclature \u2014 there were 40 Washington Streets alone. Something had to be done, but it didn't happen unti"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Queens is NYC's biggest borough by land area \u2014 anywhere else, it would be a major city in its own right."
+      }
+    ]
+  },
+  {
+    "name": "Staten Island",
+    "short_description": "",
+    "trigger_radius": 150,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The author is blunt about Staten Island: except for the fun and free ferry ride here, and the outlet mall near the ferry terminal, there's little reason for tourists to visit. There are a handful of cultural and historic sites, but none mor"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "The first European to muscle in came aboard the French vessel La Dauphine, piloted by the Florentine Giovanni da Verrazzano. He explored the Upper Bay in 1524, deemed it a 'very beautiful lake,' and \u2014 while anchored off Staten Island \u2014 atte"
+      }
+    ]
+  },
+  {
+    "name": "Empire State Building",
+    "short_description": "Iconic global landmark, top observation deck, very high tourist gravity.",
+    "trigger_radius": 40,
+    "importance_tier": 5,
+    "n_beats": 13,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The view of Manhattan from the observation deck, 1,454 feet up",
+            "direction": "down",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "There's no better introduction to New York than a visit to the Empire State Building. It's an apex of the New York skyline, both literally at 102 stories and 1,454 feet, and figuratively. From your bird's-eye perch you orient yourself geogr"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The oddly shaped spire at the top, originally meant as a blimp landing port",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Empire State Building opened in 1931 after just 14 months of construction, at a total cost of $25 million. It was the tallest building in the world from 1931 to 1970, when the World Trade Center took the title; it's still the 32nd talle"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "In 1945, a plane accidentally crashed into the building, killing 17 people. On a lighter note, every Valentine's Day, 14 couples are married for free on the observation deck."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The building has done an excellent job in recent years of spreading out guests with advance timed reservations, so the crowding issues that plagued it pre-2018 have pretty much disappeared. All guests are offered the chance to take the stai"
+      }
+    ]
+  },
+  {
+    "name": "Museum of Modern Art",
+    "short_description": "World-class art museum, very high tourist gravity.",
+    "trigger_radius": 25,
+    "importance_tier": 5,
+    "n_beats": 9,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Van Gogh's Starry Night, its thick brush strokes visible in person",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Be sure to give yourself enough time for Vincent van Gogh's Starry Night, which has a vivid impact in person, the thickness of the brush strokes making it as much sculpture as painting. Created a year before his suicide, when van Gogh was i"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The figures in Demoiselles d'Avignon: the African-mask head, Egyptian profile, Venus pose, cubist leg",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Pablo Picasso's Desmoiselles d'Avignon is a massive brothel scene in which Picasso experimented with a number of art styles \u2014 look closely and you'll see that one of the women's heads looks like an African mask, another profile is taken fro"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The small size of Dal\u00ed's Persistence of Memory, with its melting watches",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Salvador Dal\u00ed's Persistence of Memory, in which watches melt and a long-nosed figure \u2014 some say a self-portrait of Dal\u00ed, others think it represents an unborn baby \u2014 lies prostrate on the ground. You may be surprised at how small this semina"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Abby Aldrich Rockefeller Sculpture Garden, left untouched by the renovation",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "MoMA doesn't rest on its laurels: in 2019, the museum closed for four months to \u201creimagine\u201d itself. Pieces were re-hung and moved, and architectural re-finagling added 40,000 square feet of gallery space, expanding the museum by almost a th"
+      }
+    ]
+  },
+  {
+    "name": "Rockefeller Center",
+    "short_description": "Multi-block complex (Top of the Rock, rink, Radio City); high gravity.",
+    "trigger_radius": 60,
+    "importance_tier": 5,
+    "n_beats": 10,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The several-blocks-wide collection of 19 buildings forming an airy, light space",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Gotham's splendid \u201ccity within a city\u201d was built in the 1930s at the height of the Depression. Thanks to the jobs it gave construction workers, it was the city's second-largest employer at the time, surpassed only by the federal Works Progr"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The golden Prometheus statue lying beneath the RCA Building above the ice rink",
+            "direction": "down",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Plaque behind the statue marking the spot of the Christmas tree",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "From Fifth Avenue, the gardened central path is called \u201cThe Channel\u201d because it runs between the French and the British buildings. Follow this boulevard down to the ice-skating rink \u2014 the first commercial one in the world \u2014 and the golden s"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Lee Lawrie's bronze Atlas hoisting a globe, facing St. Patrick's Cathedral across the street",
+            "direction": "east",
+            "feature_type": "view"
+          },
+          {
+            "cue": "International Building lobby behind the statue with swirling Greek marble walls",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On Fifth Avenue between 50th and 51st streets stands Prometheus's brother, mighty Atlas \u2014 the finest piece of art in the complex, by artist Lee Lawrie \u2014 hoisting a giant globe on his shoulders, muscles rippling. From the back, Atlas looks a"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The glassed-in Today Show TV studio on the corner near 49th Street",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Walk toward 49th Street to the small side street with the glassed-in TV studio on the corner, where NBC's Today Show is taped. Sign-waving crowds gather in this street area every weekday morning, as early as 4am, to try to get their faces o"
+      }
+    ]
+  },
+  {
+    "name": "Flatiron Building",
+    "short_description": "Iconic triangular early skyscraper; high recognition.",
+    "trigger_radius": 30,
+    "importance_tier": 4,
+    "n_beats": 7,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The Flatiron Building itself, recognizable from Stieglitz's photographs",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "You'll probably know the Flatiron Building even before you see it, thanks to the famous photos by Alfred Stieglitz, who snapped it numerous times, calling the Fuller Building \u2014 its original name \u2014 \u201ca picture of new America still in the maki"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 6-foot-wide apex of the building at the Broadway/Fifth Avenue intersection",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Its unusual triangular shape was architect Daniel Burnham's solution to a space problem: the building rests on the bow-tie intersection where Broadway and Fifth Avenue cross. To produce a decent amount of rentable space, he built it to a to"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Madison Square Park across the street from the building",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "When it was first erected in 1902, crowds gathered in Madison Square Park across the street to wait for it to fall down. Later, men were drawn here by the urban myth that the building's shape caused strange wind patterns effective in liftin"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Flatiron Building's narrow triangular prow at Broadway, Fifth Ave and 23rd St; beaux-arts limestone and terracotta facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Designed by Daniel Burnham and built in 1902, the 20-story Flatiron Building has a narrow triangular footprint that resembles the prow of a massive ship. It also features a beaux-arts limestone and terracotta facade that gets more complex a"
+      }
+    ]
+  },
+  {
+    "name": "The Edge",
+    "short_description": "Sky deck jutting 65 ft; sub-POI of Hudson Yards. Pending /poi-geocode.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The large triangle of glass inset in the floor of the deck",
+            "direction": "down",
+            "feature_type": "view"
+          },
+          {
+            "cue": "The angled glass walls giving glare-free views of the river and city",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Edge is an observation deck jutting out 65 feet from its skyscraper, making it a \u201csky deck\u201d \u2014 the tallest one in the Western Hemisphere, and the fifth highest on the planet at 1,100 feet. Designers inset a large triangle of glass in the"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 45-degree staircase up the exterior to the crown of 30 Hudson Yards",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "If the deck isn't enough of an adrenaline rush, City Climb will take you another hundred feet up \u2014 by scaling the outside of the building. Visitors suit up in special gear clipped to a trolley to keep them safe as they climb a 45-degree sta"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The prow-shaped balcony jutting from the 101st floor",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "At The Edge you can indulge in the thrill of Hudson Yards' rarefied heights \u2014 a large, prow-shaped balcony jutting out from the 100th floor that's New York's highest open-air observatory."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The open-air deck on the 100th floor, 1100 feet above the street",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "An outdoor observation deck on the 100th floor of 30 Hudson Yards opened to vertigo-immune visitors in 2020; at 1100 feet above ground, it is the highest of its kind in the Western Hemisphere."
+      }
+    ]
+  },
+  {
+    "name": "Vessel",
+    "short_description": "Heatherwick interactive stair-sculpture; sub-POI of Hudson Yards. Pending /poi-geocode.",
+    "trigger_radius": 15,
+    "importance_tier": 2,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The copper-colored stainless steel open tower with 154 interlinking sets of stairs",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "When the renderings of Hudson Yards were first made public, no element elicited quite so much derision as the massive interactive statue Vessel. Designed by Thomas Heatherwick, the open tower of copper-colored stainless steel is shaped like"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Tragically, Vessel has been the site of several suicides, so at the time the guide went to press nobody was allowed up it. The author hoped it would reopen to the public after the owners finished installing better guard rails."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 150ft copper-colored latticed structure of interlacing stairs in the Hudson Yards plaza",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Sprouting 150ft high from the central plaza of Hudson Yards is the controversial construction called 'The Vessel.' Looking something like a giant, copper-colored, latticed beehive \u2014 allegedly inspired by stepwells in India \u2014 it features 154"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Escher-like interlocking staircases of the steel Vessel structure",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "At the heart of Hudson Yards stands the Vessel, a 2019 Escher-like steel structure by Heatherwick Studio rising skywards. Its 2500 steps form a series of interlocking walkways designed for climbing; locals have nicknamed it 'the shawarma.'"
+      }
+    ]
+  },
+  {
+    "name": "The Shed",
+    "short_description": "Movable-shell arts complex; sub-POI of Hudson Yards. Pending /poi-geocode.",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The silver puffy-coat-like exterior shell on massive wheels",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The audacious arts complex The Shed is set on massive wheels that can be \u201cnested\u201d into the tower behind it, creating an open-air pavilion for outdoor performances. Its exterior is covered with what looks like a giant silver puffy coat, like"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The movable retractable outer shell of the arts center",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Newly minted in 2019, The Shed is an arts center with a 500-seat theater and a retractable shell, designed by Diller Scofidio + Renfro with the Rockwell Group."
+      }
+    ]
+  },
+  {
+    "name": "Artechouse",
+    "short_description": "Immersive digital-art gallery in former Chelsea Market boiler room.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 6,000-square-foot former boiler room of Chelsea Market housing the digital shows",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Artechouse mounts immersive digital art pieces by contemporary artists, with a new show every three months or so, held in the 6,000-square-foot former boiler room of Chelsea Market. The shows range from mesmerizing, thought-provoking works "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Boiler room beneath Chelsea Market with immersive large-scale digital projections",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The previously unused boiler room beneath historic Chelsea Market has finally found a tenant in Artechouse, a technology-forward creative space where digital projections deliver hallucinatory experiences through ambitiously large-scale inst"
+      }
+    ]
+  },
+  {
+    "name": "The Museum at FIT",
+    "short_description": "Fashion museum at NYC's premier design school.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "You don't have to be a fashionista to appreciate the museum of NYC's premier design school. Yes, you'll see a lot of clothing, but exhibits here tend to explore cultural history through the lens of fashion, looking at such topics as how den"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Fashionistas won't want to miss the sartorial exhibits at the Fashion Institute of Technology, which holds one of the world's richest collections of garments, textiles and accessories \u2014 more than 50,000 items spanning the 18th century to th"
+      }
+    ]
+  },
+  {
+    "name": "Rubin Museum of Art",
+    "short_description": "Himalayan art museum on former Barney's site.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Paintings and scrolls on fabric in the deepest blues, ruby reds, emerald greens, and dazzling golds",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Travelers who need a break from the bustle of New York can escape to the Rubin, a serene museum of art from the Himalayas. Secular in origin \u2014 it was founded by an American millionaire and his wife who fell in love with the art of the regio"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The central circular stairway that the founders thought resembled a mandala",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The museum sits on the site of the former Barney's department store. The Rubins chose it because the central circular stairway looked like a \u201cmandala,\u201d the Tantric Buddhist diagram of the cosmos."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Galleries of Himalayan art: gilt-copper bodhisattvas, Tibetan dance masks, Bhutanese paintings",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The Rubin is the first museum in the Western world to dedicate itself to the art of the Himalayas and surrounding regions. Its collection spans 1,500 years to the present and includes Chinese embroidered textiles, Nepalese gilt-copper bodhi"
+      }
+    ]
+  },
+  {
+    "name": "Chelsea Gallery District",
+    "short_description": "250+ contemporary art galleries; container anchor for gallery seasoning beats.",
+    "trigger_radius": 90,
+    "importance_tier": 3,
+    "n_beats": 10,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Former warehouses and industrial spaces converted into galleries between Tenth and Eleventh avenues",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "More than 250 galleries fill the blocks spanning 19th to 29th streets between Tenth and Eleventh avenues in West Chelsea, effectively making the Big Apple the planet's premier marketplace for contemporary art. Gallery after gallery has take"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Storefront of 303 Gallery at 555 W. 21st St.",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "303 Gallery, at 555 West 21st Street, is on speed dial for the Whitney biennial, which has picked up works by several of the young to mid-career cutting-edge photographers and painters who present here."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Barbara Gladstone Gallery storefront at 515 W. 24th St.",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Barbara Gladstone Gallery, at 515 West 24th Street, shows artists who emerged as honchos in the last two decades or so, such as Matthew Barney and Richard Prince. Gladstone features conceptual, often highly political art \u2014 most prominently "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "David Zwirner gallery spaces at 519 & 525 W. 19th St.",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "David Zwirner, with spaces on West 19th and 20th Streets, is not the place for people with delicate sensibilities, but if you don't mind art that's really on the edge you'll often find something that gets your adrenaline pumping. A New York"
+      }
+    ]
+  },
+  {
+    "name": "Fotografiska",
+    "short_description": "Contemporary photography venue in an 1894 landmark building.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The attached 19th-century church next door housing the Chapel bar",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Part of an international chain of museum-cum-nightlife venues, Fotografiska showcases provocative contemporary photography, mixing single-artist exhibits with themed shows. The venue keeps the longest hours in the city, meaning you can come"
+      }
+    ]
+  },
+  {
+    "name": "Intrepid Sea, Air & Space Museum",
+    "short_description": "WWII aircraft carrier museum with Enterprise shuttle, Concorde, submarine.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 40,000-ton aircraft carrier itself, the Fighting I",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "The main focus of a visit is the Fighting I, a 40,000-ton aircraft carrier that had one of the greatest survival stories of World War II. Though it was hit by five kamikaze planes \u2014 two of them in a single day \u2014 during its tours of duty, it"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Seats A and B on the Concorde, reserved for Queen Elizabeth II and Prince Philip",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The Concorde \u2014 the oversize luxury lawn dart \u2014 was taken out of commission in 2003 after flying half-empty for years. This ultra-deluxe flying bus carried a mere 100 passengers at a time, most of them paying $6,000 each way for the privileg"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The USS Growler submarine, so narrow only small groups can enter",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "How's this for an all-star lineup? The Intrepid now displays the space shuttle Enterprise, the world's only tourable nuclear submarine, the famed Concorde jet, nearly two dozen grounded jets, a Revolutionary War\u2013era submarine, and is itself"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The flight deck with fighter planes and military helicopters",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In WWII, the USS Intrepid survived both a bomb and kamikaze attacks. Today the hulking aircraft carrier hosts an interactive military museum that tells its tale through videos, historical artifacts and frozen-in-time living quarters. The fl"
+      }
+    ]
+  },
+  {
+    "name": "Museum of Broadway",
+    "short_description": "New museum of Broadway theater history near Times Square.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Tony's jacket from the original run of West Side Story on display",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "When a Broadway show needs new cast members, it puts an ad in Playbill, the long-running theater publication \u2014 and the Museum of Broadway did the same when looking for gallery guards. These eager, knowledgeable theater geeks, most of them w"
+      }
+    ]
+  },
+  {
+    "name": "Rise NY",
+    "short_description": "Flying-theater ride plus NYC-invention galleries near Times Square.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 40-foot-tall dome with 180-degree 3D video screens for the flying ride",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Rise NY is an amusement park with the soul of a museum. Its marquee attraction is a ride that makes you feel like you're swooping over the city, set in a 40-foot-tall dome with 180-degree 3D videos and a soundtrack of every song ever writte"
+      }
+    ]
+  },
+  {
+    "name": "Radio City Music Hall",
+    "short_description": "Art Deco theater, Rockettes / Christmas Spectacular; part of Rockefeller area.",
+    "trigger_radius": 25,
+    "importance_tier": 5,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The exquisite Art Deco features of the music hall's interior",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Radio City Music Hall remains a kitschy, thrilling delight. Its Christmas Spectacular is a marvel of excess, with dozens of people and hooved animals on stage, orchestras magically rising from the pit, and best of all the Rockettes chorus l"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The auditorium, the History of Cosmetics mural and the Roxy Suite seen on the guided tour",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This spectacular moderne movie palace was the brainchild of vaudeville producer Samuel Lionel 'Roxy' Rothafel. Never one for understatement, Roxy launched his venue on December 27, 1932, with an over-the-top extravaganza that included camp "
+      }
+    ]
+  }
+]

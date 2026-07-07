@@ -1,1312 +1,1314 @@
 [
-  {
-    "name": "Dakota Building",
-    "short_description": "A landmark apartment building at 1 W 72nd St on Central Park West where John Lennon lived and was fatally shot in 1980; directly across from Strawberry Fields.",
-    "name_variations": [
-      "1 W 72nd St",
-      "Dakota Apartments",
-      "Dakota Building",
-      "The Dakota"
-    ],
+ {
+  "name": "Dakota Building",
+  "short_description": "A landmark apartment building at 1 W 72nd St on Central Park West where John Lennon lived and was fatally shot in 1980; directly across from Strawberry Fields.",
+  "name_variations": [
+   "1 W 72nd St",
+   "Dakota Apartments",
+   "Dakota Building",
+   "The Dakota"
+  ],
+  "kid_friendly": "no",
+  "latitude": 40.7765,
+  "longitude": -73.976,
+  "trigger_radius": 10,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch:lonely-planet-new-york-city",
+   "city_name": "new_york",
+   "book_slug": "lonely-planet-new-york-city",
+   "created_at": "2026-06-15T00:00:00Z",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 4,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A discrete landmark apartment building with a 'here' facade cue and tiny radius.",
+  "_poi_role_source": "The Dakota Building facade at 1 W 72nd St on Central Park West",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Dakota Building",
+    "lens": "famous_residents",
+    "topic_slug": "lennon_shot_yoko_ono",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Dakota dates back to 1884 and is actually nothing more than an upscale apartment building. But since December 8, 1980, when John Lennon was shot dead in the street on the way back to his home here, people flock to this building. To this day, Lennon's wife, Yoko Ono, still lives in the Dakota.",
+    "duration_sec": 22,
     "kid_friendly": "no",
-    "latitude": 40.7765,
-    "longitude": -73.976,
-    "trigger_radius": 10,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch:lonely-planet-new-york-city",
-      "city_name": "new_york",
-      "book_slug": "lonely-planet-new-york-city",
-      "created_at": "2026-06-15T00:00:00Z",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 4,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A discrete landmark apartment building with a 'here' facade cue and tiny radius.",
-    "_poi_role_source": "The Dakota Building facade at 1 W 72nd St on Central Park West",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Dakota Building",
-        "lens": "famous_residents",
-        "topic_slug": "lennon_shot_yoko_ono",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The Dakota dates back to 1884 and is actually nothing more than an upscale apartment building. But since December 8, 1980, when John Lennon was shot dead in the street on the way back to his home here, people flock to this building. To this day, Lennon's wife, Yoko Ono, still lives in the Dakota.",
-        "duration_sec": 22,
-        "kid_friendly": "no",
-        "entities": [
-          "John Lennon",
-          "Yoko Ono"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "hook",
-        "beat_type": "event",
-        "emotional_register": "somber",
-        "subject_tag": "Lennon shooting",
-        "physical_cues": [
-          {
-            "cue": "The 72nd Street entrance to the building, where John Lennon was shot",
-            "direction": "here",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "The Dakota dates back to 1884 and is actually nothing more than an upscale apartment building. However, since December 8, 1980, when John Lennon was shot dead in the street on the way back to his home here, people flock to this building. To this day, Lennon's wife, Yoko Ono, still lives in the Dakota.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "359ca6e33df0e3ecb1675200cdac3e6ffcca4408645bb1a320dc8062e6cb1daf",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      },
-      {
-        "city_name": "new_york",
-        "poi_name": "Dakota Building",
-        "lens": "historic_arch",
-        "topic_slug": "castle_turrets_luxury",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "seasoning",
-        "script_body": "With its turrets and spires, the building resembles something of a castle. This was done intentionally, to convince wealthy New Yorkers that living in an apartment could be just as luxurious as living in an entire house.",
-        "duration_sec": 15,
-        "kid_friendly": "yes",
-        "entities": [],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "architectural_detail",
-        "emotional_register": "neutral",
-        "subject_tag": "castle turrets",
-        "physical_cues": [
-          {
-            "cue": "Turrets and spires giving the building a castle-like silhouette",
-            "direction": "up",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "With its turrets and spires, the building resembles something of a castle. This was done intentionally to convince wealthy New Yorkers that living in an apartment could be just as luxurious as an entire house.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "e1cf9761a95d4d7ae955352958ab198b187de23544df25c1dbe5c3491025189a",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  },
-  {
-    "name": "Strawberry Fields",
-    "short_description": "",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.775445,
-    "longitude": -73.974737,
-    "trigger_radius": 20,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 4,
-    "poi_role": "stop",
-    "parent_poi": "Central Park",
-    "_poi_role_reasoning": "A small tear-shaped memorial garden centered on the Imagine mosaic, 20m radius; a discrete named feature inside Central Park.",
-    "_poi_role_source": "A mosaic on the ground spells out “Imagine”",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Strawberry Fields",
-        "lens": "famous_residents",
-        "topic_slug": "imagine_mosaic_tribute",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Following John Lennon's death, Strawberry Fields — a small spot in Central Park across from the Dakota — has become a place to pay respects to the musician. Fans come here to place flowers on a memorial mosaic bearing the single word 'imagine.' This peaceful spot is a nice place to sit and listen as fans sing and play the guitar in tribute to Lennon.",
-        "duration_sec": 26,
-        "kid_friendly": "yes",
-        "entities": [
-          "John Lennon"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "deepen",
-        "beat_type": "anecdote",
-        "emotional_register": "reverent",
-        "subject_tag": "Imagine memorial",
-        "physical_cues": [
-          {
-            "cue": "The memorial mosaic bearing the single word 'imagine'",
-            "direction": "down",
-            "feature_type": "plaque"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Following John Lennon's death, Strawberry Fields, a small spot in Central Park across from the Dakota, has become a place to pay respects to the musician. Fans come to here to place flowers on a memorial mosaic bearing the single word \"imagine.\" This peaceful spot in the park is a nice place to sit and listen as fans sing and play the guitar in tribute to Lennon.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "7969bc0d098c707fbe6fc167bf6c0875566d5cac7d9deb33bda671b71565c165",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
-  },
-  {
-    "name": "Upper West Side",
-    "short_description": "",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.787045,
-    "longitude": -73.975416,
-    "trigger_radius": 600,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 4,
-    "poi_role": "setting",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A residential neighborhood described as a stretch of Manhattan, trigger_radius 600m.",
-    "_poi_role_source": "The stretch of Manhattan west of Central Park",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Upper West Side",
-        "lens": "historic_arch",
-        "topic_slug": "dakota_birth_of_uws",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Hard as it is to imagine today, up until the 19th century this part of New York City was considered the wilderness. The area wasn't built up until after 1880, when construction began on its first apartment complex — the Dakota. As more train lines were laid, it became easier for New Yorkers to live farther from their work downtown. Thus the Upper West Side was born.",
-        "duration_sec": 26,
-        "kid_friendly": "yes",
-        "entities": [
-          "The Dakota"
-        ],
-        "sensory_anchor": false,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "neutral",
-        "subject_tag": "neighborhood origin",
-        "physical_cues": [],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Today it is hard to imagine that, up until the 19th century, this part of New York City was considered the wilderness. The area wasn't built up until after 1880, when construction began on the first apartment complex—the Dakota. As more train lines were laid, it became easier for New Yorkers to live farther away from their work downtown. Thus, the Upper West Side was born.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "cbf00b73b44ece44042787709653d94e7ada3174db2b8d664000f1b5b654ddd9",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  },
-  {
-    "name": "Aylsmere apartments",
-    "short_description": "",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "city_name": "new_york",
-    "_meta": {
-      "prompt_version": "unified_v2",
-      "city_name": "new_york",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "latitude": 40.7797067,
-    "longitude": -73.9765985,
-    "trigger_radius": 20,
-    "importance_tier": 1,
-    "typical_duration_min": 15,
-    "poi_role": null,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Aylsmere apartments",
-        "lens": "historic_arch",
-        "topic_slug": "renaissance_split_depression",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The Aylsmere apartments occupy a beautiful Renaissance building decorated with brick ornaments. It dates back to 1894 and was built as apartments for the wealthy: initially just two apartments per floor, each complete with dining rooms, sitting rooms, bedrooms, bathrooms, and — of course — a room for the help. Following the Great Depression, however, the apartments were split up.",
-        "duration_sec": 24,
-        "kid_friendly": "yes",
-        "entities": [
-          "Great Depression"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "architectural_detail",
-        "emotional_register": "neutral",
-        "subject_tag": "Renaissance apartments",
-        "physical_cues": [
-          {
-            "cue": "Renaissance facade decorated with brick ornaments",
-            "direction": "up",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "The Aylsmere apartments are located in a beautiful Renaissance building decorated with brick ornaments. The building dates back to 1894 and was built as apartments for the wealthy. Initially there were just two apartments per floor, complete with dining rooms, sitting rooms, bedrooms, bathrooms, and—of course—a room for the help. Following the Great Depression, however, the apartments were split up.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "ec654da993357331ed0fe243ba531fb0b3138190d51d3e46485b85a2c709fe1c",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  },
-  {
-    "name": "American Museum of Natural History",
-    "short_description": "Tier-5: preeminent natural-history museum since 1869; $431M Gilder Center (2023).",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.781101,
-    "longitude": -73.974236,
-    "trigger_radius": 25,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 5,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A single museum building with described interior halls and the Gilder Center, a discrete stop.",
-    "_poi_role_source": "The Gilder Center lobby, its canyon-like walls of sprayed structural concrete",
-    "typical_duration_min": 90,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "American Museum of Natural History",
-        "lens": "science_tech",
-        "topic_slug": "dinosaur_fossils_collections",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The American Museum of Natural History is one of the biggest museums in the United States, primarily known for its large collection of dinosaur fossils. The stately museum, located across from Central Park, also holds impressive collections on Native Americans, human biology and evolution, meteorites, minerals, and mammals.",
-        "duration_sec": 21,
-        "kid_friendly": "yes",
-        "entities": [],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "neutral",
-        "subject_tag": "dinosaur fossils",
-        "physical_cues": [
-          {
-            "cue": "The stately museum facade facing Central Park across the street",
-            "direction": "east",
-            "feature_type": "adjacent_landmark"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "The American Museum of Natural History is one of the biggest museums in the United States and is primarily known for its large collection of dinosaur fossils. The stately museum, which is located across from Central Park, has impressive collections on Native Americans, human biology and evolution, meteorites, minerals, mammals, and much, much more.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "3803bd903ea4edcf0ea94ab2c6c74c1b657f4508e3e89f3dafcbe943a6b771a8",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  },
-  {
-    "name": "Nicolas Roerich Museum",
-    "short_description": "",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "city_name": "new_york",
-    "_meta": {
-      "prompt_version": "unified_v2",
-      "city_name": "new_york",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "latitude": 40.8029241,
-    "longitude": -73.9690126,
-    "trigger_radius": 15,
-    "importance_tier": 1,
-    "typical_duration_min": 15,
-    "poi_role": null,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Nicolas Roerich Museum",
-        "lens": "visual_art",
-        "topic_slug": "russian_artist_townhouse",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "seasoning",
-        "script_body": "The Nicolas Roerich Museum is a small, eccentric museum set in a typical Upper West Side townhouse. The Russian artist came to New York City in the 1920s, and the museum displays some 200 pieces of his work.",
-        "duration_sec": 15,
-        "kid_friendly": "yes",
-        "entities": [
-          "Nicolas Roerich"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "neutral",
-        "subject_tag": "Roerich townhouse museum",
-        "physical_cues": [
-          {
-            "cue": "A typical Upper West Side townhouse housing the museum",
-            "direction": "here",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "The Nicolas Roerich Museum is a small, eccentric museum in a typical Upper West Side townhouse. The Russian artist came to New York City in the 1920s, and this museum displays some 200 pieces of his work.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "6de381e633188f9cab99ac84481575c589b1041be99caf461e69d203a88010ba",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  },
-  {
-    "name": "Tom's Restaurant",
-    "short_description": "Upper West Side diner whose facade served as the exterior of Monk's Diner in Seinfeld.",
-    "name_variations": [
-      "Monk's Diner",
-      "Tom's Diner"
+    "entities": [
+     "John Lennon",
+     "Yoko Ono"
     ],
-    "kid_friendly": "yes",
-    "latitude": 40.8054509,
-    "longitude": -73.9654163,
-    "trigger_radius": 20,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch:lonely-planet-new-york-city",
-      "city_name": "new_york",
-      "book_slug": "lonely-planet-new-york-city",
-      "created_at": "2026-06-15T00:00:00Z",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 3,
-    "poi_role": "walk_by_only",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A minor diner noted only as a factoid about its facade, single passing beat.",
-    "_poi_role_source": "the diner whose facade was used regularly in Seinfeld as the exterior of ... Monk's Diner",
-    "typical_duration_min": 45,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Tom's Restaurant",
-        "lens": "film_tv",
-        "topic_slug": "seinfeld_monks_cafe_vega",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Characters in the popular comedy Seinfeld regularly ate at the fictional Monk's Café. The interior was a studio set, but the exterior shots were of Tom's Restaurant, whose neon sign is now one of the most recognized in the city. Suzanne Vega's hit song 'Tom's Diner' is also based on this restaurant.",
-        "duration_sec": 21,
-        "kid_friendly": "yes",
-        "entities": [
-          "Seinfeld",
-          "Monk's Café",
-          "Suzanne Vega",
-          "Tom's Diner"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "hook",
-        "beat_type": "factoid",
-        "emotional_register": "playful",
-        "subject_tag": "Seinfeld diner",
-        "physical_cues": [
-          {
-            "cue": "The neon sign above the restaurant, one of the most recognized in the city",
-            "direction": "up",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Characters in the popular comedy Seinfeld regularly ate at the fictional Monk's Café. The inside of the café was a studio, but images of the exterior were of Tom's Restaurant. The neon sign above this restaurant is now one of the most recognized in the city. Suzanne Vega's hit song \"Tom's Diner\" is also based on this restaurant.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "af1ce4d6c2379d24a39a15cbd1c908e0cb737d7eed17b1c0461a0a2ca048234e",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
-  },
-  {
-    "name": "General Ulysses S Grant National Memorial",
-    "short_description": "The largest mausoleum in America, holding the remains of Civil War hero and 18th US president Ulysses S Grant and his wife Julia, completed in 1897 and surrounded by Gaudí-inspired mosaic benches.",
-    "name_variations": [
-      "Grant National Memorial",
-      "Grant Tomb",
-      "Grant's Tomb"
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Lennon shooting",
+    "physical_cues": [
+     {
+      "cue": "The 72nd Street entrance to the building, where John Lennon was shot",
+      "direction": "here",
+      "feature_type": "architectural_detail"
+     }
     ],
-    "kid_friendly": "yes",
-    "latitude": 40.8135,
-    "longitude": -73.9618,
-    "trigger_radius": 20,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch:lonely-planet-new-york-city",
-      "city_name": "new_york",
-      "book_slug": "lonely-planet-new-york-city",
-      "created_at": "2026-06-15T00:00:00Z",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The Dakota dates back to 1884 and is actually nothing more than an upscale apartment building. However, since December 8, 1980, when John Lennon was shot dead in the street on the way back to his home here, people flock to this building. To this day, Lennon's wife, Yoko Ono, still lives in the Dakota.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "importance_tier": 3,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A discrete mausoleum monument you stand before, small radius.",
-    "_poi_role_source": "The imposing granite structure of Grant's Tomb on Riverside Drive at 122nd Street",
-    "typical_duration_min": 45,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "General Ulysses S Grant National Memorial",
-        "lens": "dark_history",
-        "topic_slug": "who_is_buried_riddle",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The 18th president, General Ulysses S. Grant, and his wife Julia were laid to rest at the General Grant National Memorial — but not technically buried in the tomb. Thus an old student's riddle asks, 'Who is buried in Grant's Tomb?' The answer, of course, is nobody. A Civil War hero, Grant was hugely popular in his time, which explains why his is the largest mausoleum in North America.",
-        "duration_sec": 28,
-        "kid_friendly": "yes",
-        "entities": [
-          "Ulysses S. Grant",
-          "Julia Grant",
-          "American Civil War"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "hook",
-        "beat_type": "anecdote",
-        "emotional_register": "wry",
-        "subject_tag": "Grant's Tomb riddle",
-        "physical_cues": [
-          {
-            "cue": "The tomb, the largest mausoleum in North America",
-            "direction": "here",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "The 18th president, General Ulysses S. Grant, and his wife, Julia, were laid to rest at the General Grant National Memorial but not technically buried in the tomb. Thus, an old student's riddle asks, \"Who is buried in Grant's Tomb?\" The answer, of course, is nobody. A Civil War hero, Grant was very popular in his time, which explains why his is the largest mausoleum in North America.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "0f456b4f6ea72c1d0a6ef7aa7c6dc66ca0f56071ad8b00637440043ef246f568",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
-  },
-  {
-    "name": "Riverside Church",
-    "short_description": "A neo-Gothic church built by the Rockefeller family in 1930, featuring 16th-century Flemish stained glass and a 74-bell carillon with the world's largest bass bell at 20 tons.",
-    "name_variations": [
-      "Riverside Church NYC"
+    "script_body_hash": "359ca6e33df0e3ecb1675200cdac3e6ffcca4408645bb1a320dc8062e6cb1daf",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   },
+   {
+    "city_name": "new_york",
+    "poi_name": "Dakota Building",
+    "lens": "historic_arch",
+    "topic_slug": "castle_turrets_luxury",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "With its turrets and spires, the building resembles something of a castle. This was done intentionally, to convince wealthy New Yorkers that living in an apartment could be just as luxurious as living in an entire house.",
+    "duration_sec": 15,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "castle turrets",
+    "physical_cues": [
+     {
+      "cue": "Turrets and spires giving the building a castle-like silhouette",
+      "direction": "up",
+      "feature_type": "architectural_detail"
+     }
     ],
-    "kid_friendly": "yes",
-    "latitude": 40.8117872,
-    "longitude": -73.9631446,
-    "trigger_radius": 15,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch:lonely-planet-new-york-city",
-      "city_name": "new_york",
-      "book_slug": "lonely-planet-new-york-city",
-      "created_at": "2026-06-15T00:00:00Z",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "With its turrets and spires, the building resembles something of a castle. This was done intentionally to convince wealthy New Yorkers that living in an apartment could be just as luxurious as an entire house.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "importance_tier": 3,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A discrete church building with a 'here' facade cue.",
-    "_poi_role_source": "Imposing neo-Gothic exterior of Riverside Church on Riverside Drive at 120th Street",
-    "typical_duration_min": 45,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Riverside Church",
-        "lens": "historic_arch",
-        "topic_slug": "tallest_church_chartres_carillon",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Standing 392 feet tall — about 120 meters — Riverside Church was completed in 1930 and is the tallest church in the United States. The building was modeled on the Gothic cathedral of Chartres in France. Inside hangs a carillon with 74 bells, the heaviest in the world: the largest bell weighs 18 tons, the smallest just 11 pounds.",
-        "duration_sec": 25,
-        "kid_friendly": "yes",
-        "entities": [
-          "Chartres Cathedral"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "architectural_detail",
-        "emotional_register": "reverent",
-        "subject_tag": "tallest church carillon",
-        "physical_cues": [
-          {
-            "cue": "The 392-foot tower rising overhead, tallest church in the US",
-            "direction": "up",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Standing 392 feet tall (120 meters), Riverside Church, which was completed in 1930, is the tallest church in the United States. The building was modeled on the Gothic cathedral of Chartres in France. Inside the church hangs a carillon with 74 bells—the heaviest in the world. The largest bell weighs 18 tons, and the smallest just 11 pounds.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "a934be4effdcc18f002ac5b3538c94ba4898a27e1cb7bd856ebbb4510d16e9f6",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
+    "script_body_hash": "e1cf9761a95d4d7ae955352958ab198b187de23544df25c1dbe5c3491025189a",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Strawberry Fields",
+  "short_description": "",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.775445,
+  "longitude": -73.974737,
+  "trigger_radius": 20,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
   },
-  {
-    "name": "Columbia University",
-    "short_description": "An Ivy League research university founded in 1754, whose Morningside Heights campus features Italian Renaissance-style buildings, the Alma Mater statue, and a famous site of the 1968 student uprising.",
-    "name_variations": [
-      "Columbia",
-      "Columbia University New York"
+  "importance_tier": 5,
+  "poi_role": "stop",
+  "parent_poi": "Central Park",
+  "_poi_role_reasoning": "A small tear-shaped memorial garden centered on the Imagine mosaic, 20m radius; a discrete named feature inside Central Park.",
+  "_poi_role_source": "A mosaic on the ground spells out “Imagine”",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Strawberry Fields",
+    "lens": "famous_residents",
+    "topic_slug": "imagine_mosaic_tribute",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Following John Lennon's death, Strawberry Fields — a small spot in Central Park across from the Dakota — has become a place to pay respects to the musician. Fans come here to place flowers on a memorial mosaic bearing the single word 'imagine.' This peaceful spot is a nice place to sit and listen as fans sing and play the guitar in tribute to Lennon.",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+     "John Lennon"
     ],
-    "kid_friendly": "yes",
-    "latitude": 40.8077507,
-    "longitude": -73.9624901,
-    "trigger_radius": 30,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch:lonely-planet-new-york-city",
-      "city_name": "new_york",
-      "book_slug": "lonely-planet-new-york-city",
-      "created_at": "2026-06-15T00:00:00Z",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 4,
-    "poi_role": "setting",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A multi-building campus with movement along College Walk and dispersed cues (Alma Mater, Hamilton Hall) rather than a single point.",
-    "_poi_role_source": "The main courtyard along College Walk at 116th Street surrounded by Italian Renaissance-style buildings",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Columbia University",
-        "lens": "famous_residents",
-        "topic_slug": "ivy_league_alumni_1897",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Columbia University is one of the oldest, wealthiest, and largest universities in the country, and a prestigious Ivy League school. In 1897 the university moved to its current location in Morningside Heights. A mix of classic and modern architecture and an abundance of green space make this a truly urban campus. Among its famous alumni you'll find Theodore Roosevelt, John Jay, and Barack Obama.",
-        "duration_sec": 27,
-        "kid_friendly": "yes",
-        "entities": [
-          "Theodore Roosevelt",
-          "John Jay",
-          "Barack Obama"
-        ],
-        "sensory_anchor": false,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "neutral",
-        "subject_tag": "Columbia alumni",
-        "physical_cues": [],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Columbia University is one of the oldest, wealthiest, and largest universities in the country, not to mention it's a prestigious Ivy League school. In 1897, the university moved to its current location in Morningside Heights. The hustle and bustle here, combined with a mix of classic and modern architecture and an abundance of green space make this a truly urban campus. Among the impressive list of famous Columbia alumni, you'll find Theodore Roosevelt, John Jay, and Barack Obama.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "5da05433727909cef5df2424e1658f1acba9fc01566e6c23b1e07ccd5edb3c46",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      },
-      {
-        "city_name": "new_york",
-        "poi_name": "Columbia University",
-        "lens": "local_legends",
-        "topic_slug": "alma_mater_hidden_owl",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": "alma-mater-statue",
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The most photographed item on the Columbia campus is probably the bronze Alma Mater statue. With her outstretched arms and an open book on her lap, she seems to welcome students and visitors. Hidden among the folds of her robe is an owl, the symbol of wisdom. Legend has it that the first student of each incoming class to find the owl will graduate at the top of the class.",
-        "duration_sec": 27,
-        "kid_friendly": "yes",
-        "entities": [
-          "Alma Mater statue"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "hook",
-        "beat_type": "anecdote",
-        "emotional_register": "playful",
-        "subject_tag": "hidden owl legend",
-        "physical_cues": [
-          {
-            "cue": "The bronze Alma Mater statue with outstretched arms and an open book",
-            "direction": "here",
-            "feature_type": "architectural_detail"
-          },
-          {
-            "cue": "The owl hidden among the folds of her robe",
-            "direction": "here",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "The most photographed item on the Columbia University campus is probably the bronze Alma Mater statue. With her outstretched arms and an open book on her lap, she appears to be welcoming students and visitors. Hidden among the folds of her robe is an owl, the symbol of wisdom. Legend has it that the first student of each incoming class to find the owl will graduate at the top of the class.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "734eacf507cdbc9586aa3c41c46177a0e4f56301a6c1a785c90cf98fc1ec22b8",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      },
-      {
-        "city_name": "new_york",
-        "poi_name": "Columbia University",
-        "lens": "historic_arch",
-        "topic_slug": "low_library_no_books_since_1934",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": "low-memorial-library",
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Low Memorial Library is a classical building dating to 1895, set in the middle of the Columbia campus with a dome-shaped roof and a row of columns out front. Despite the name, the building has not housed a library since 1934. Instead it holds school offices and the Visitors Center, and the lobby displays a collection of artifacts from the university's history.",
-        "duration_sec": 24,
-        "kid_friendly": "yes",
-        "entities": [],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "architectural_detail",
-        "emotional_register": "neutral",
-        "subject_tag": "Low Library misnomer",
-        "physical_cues": [
-          {
-            "cue": "Dome-shaped roof and row of columns at the front of the building",
-            "direction": "up",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Low Memorial Library is a classical building dating back to 1895. The building, with its dome-shaped roof and row of columns in front, is located in the middle of the Columbia University campus. Despite the name, the building has not housed a library since 1934. Instead, it is home to a number of school offices as well as the Visitors Center (office 213), where you can pick up a map of campus. For those interested in the university's rich history, there is a collection of artifacts on display in the building's lobby.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "861d561d10fc7dcf8a1d0064b26d04e7959eab662322920f6434a6407d0da989",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  },
-  {
-    "name": "Cathedral of St. John the Divine",
-    "short_description": "Major place of worship, Frommer's 'most impressive place of worship'. Tourist-relevant. Solid gravity.",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.803766,
-    "longitude": -73.961784,
-    "trigger_radius": 25,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
-    },
-    "importance_tier": 3,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A single named church building with facade and interior cues, a discrete destination you stand before.",
-    "_poi_role_source": "Gothic cathedral facade, still unfinished and under construction",
-    "typical_duration_min": 45,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Cathedral of St. John the Divine",
-        "lens": "historic_arch",
-        "topic_slug": "unfinished_colossus_bike_blessing",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "If bigger is indeed better, you may never find a better cathedral than the Cathedral Church of Saint John the Divine. Construction of this colossus began in 1891 and is still not complete — a truly time-consuming affair. Every April dozens of cyclists come to the church for the traditional blessing of the bikes.",
-        "duration_sec": 21,
-        "kid_friendly": "yes",
-        "entities": [],
-        "sensory_anchor": true,
-        "narrative_function": "hook",
-        "beat_type": "factoid",
-        "emotional_register": "wry",
-        "subject_tag": "unfinished cathedral",
-        "physical_cues": [
-          {
-            "cue": "The colossal, still-unfinished cathedral facade",
-            "direction": "up",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "If bigger is indeed better, then you may never find a better cathedral than the Cathedral Church of Saint John the Divine. Construction of this colossus, which began in 1891 and is still not complete, has been a truly time-consuming affair. Every April dozens of cyclists come to the church for the traditional blessing of the bikes. Tours of the cathedral are offered daily.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "a54f1c6b4b9db2b9a659eefd3b5118946e40002de49fe3320ade61774950d24e",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
-  },
-  {
-    "name": "Studio Museum in Harlem",
-    "short_description": "A treasured Harlem museum showcasing influential African American artists, serving as a cultural hub for rotating exhibitions, film screenings, and gallery talks.",
-    "name_variations": [
-      "Studio Museum",
-      "Studio Museum in Harlem"
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "reverent",
+    "subject_tag": "Imagine memorial",
+    "physical_cues": [
+     {
+      "cue": "The memorial mosaic bearing the single word 'imagine'",
+      "direction": "down",
+      "feature_type": "plaque"
+     }
     ],
-    "kid_friendly": "yes",
-    "latitude": 40.8084179,
-    "longitude": -73.947616,
-    "trigger_radius": 15,
-    "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch:lonely-planet-new-york-city",
-      "city_name": "new_york",
-      "book_slug": "lonely-planet-new-york-city",
-      "created_at": "2026-06-15T00:00:00Z",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Following John Lennon's death, Strawberry Fields, a small spot in Central Park across from the Dakota, has become a place to pay respects to the musician. Fans come to here to place flowers on a memorial mosaic bearing the single word \"imagine.\" This peaceful spot in the park is a nice place to sit and listen as fans sing and play the guitar in tribute to Lennon.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "importance_tier": 4,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A discrete museum building you stand at, small radius.",
-    "_poi_role_source": "this treasured museum has showcased influential African American artists",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Studio Museum in Harlem",
-        "lens": "social_change",
-        "topic_slug": "first_african_american_art_museum_1968",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "When the Studio Museum opened in 1968, it was the first museum in the country dedicated to promoting the work of African American artists. The space feels more like a gallery or studio, and you can see work from the 19th and 20th centuries by African American artists or artists influenced by black culture. Temporary exhibits have included historical photos of the 1920s Harlem Renaissance.",
-        "duration_sec": 26,
-        "kid_friendly": "yes",
-        "entities": [
-          "Harlem Renaissance"
-        ],
-        "sensory_anchor": false,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "reverent",
-        "subject_tag": "first Black art museum",
-        "physical_cues": [],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "When Studio Museum opened in 1968, it was the first museum in the country dedicated to promoting the work of African American artists. In this museum, which actually feels more like a gallery or studio, you can check out artwork from the 19th and 20th centuries by African American artists or artists influenced by black culture. In addition to the permanent collection, the museum also has temporary exhibits, such as—for example—historical photos of the Harlem Renaissance in the 1920s.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "617b2d16519abe1ee736dc92ed9a828350def9e4f878fd5cce39cb918251cd73",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
+    "script_body_hash": "7969bc0d098c707fbe6fc167bf6c0875566d5cac7d9deb33bda671b71565c165",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "Upper West Side",
+  "short_description": "",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.787045,
+  "longitude": -73.975416,
+  "trigger_radius": 600,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
   },
-  {
-    "name": "Astor Row",
-    "short_description": "A row of 28 set-back townhouses with wooden porches on the south side of West 130th Street in Harlem, designed by Charles Buek and built 1880–1883 for the Astor family.",
-    "name_variations": [
-      "Astor Row Houses",
-      "West 130th Street townhouses"
+  "importance_tier": 4,
+  "poi_role": "setting",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A residential neighborhood described as a stretch of Manhattan, trigger_radius 600m.",
+  "_poi_role_source": "The stretch of Manhattan west of Central Park",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Upper West Side",
+    "lens": "historic_arch",
+    "topic_slug": "dakota_birth_of_uws",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Hard as it is to imagine today, up until the 19th century this part of New York City was considered the wilderness. The area wasn't built up until after 1880, when construction began on its first apartment complex — the Dakota. As more train lines were laid, it became easier for New Yorkers to live farther from their work downtown. Thus the Upper West Side was born.",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+     "The Dakota"
     ],
-    "kid_friendly": "yes",
-    "city_name": "new_york",
-    "_meta": {
-      "prompt_version": "unified_v2",
-      "city_name": "new_york",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "neighborhood origin",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Today it is hard to imagine that, up until the 19th century, this part of New York City was considered the wilderness. The area wasn't built up until after 1880, when construction began on the first apartment complex—the Dakota. As more train lines were laid, it became easier for New Yorkers to live farther away from their work downtown. Thus, the Upper West Side was born.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "latitude": 40.8126,
-    "longitude": -73.9407,
-    "trigger_radius": 30,
-    "importance_tier": 2,
-    "typical_duration_min": 30,
-    "poi_role": null,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Astor Row",
-        "lens": "historic_arch",
-        "topic_slug": "28_townhouses_buek_porches",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Astor Row is the name for the 28 townhouses on the south side of West 130th Street in Harlem. Designed by Charles Buek and built between 1880 and 1883, the houses were very progressive for their time. Each is three stories, set back about 20 feet from the road, and has a beautiful wooden porch — though many porches are no longer original, due to necessary renovations.",
-        "duration_sec": 27,
-        "kid_friendly": "yes",
-        "entities": [
-          "Charles Buek"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "architectural_detail",
-        "emotional_register": "neutral",
-        "subject_tag": "set-back townhouses",
-        "physical_cues": [
-          {
-            "cue": "The 28 three-story townhouses set back about 20 feet from the road, with wooden porches",
-            "direction": "here",
-            "feature_type": "architectural_detail"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Astor Row refers to the 28 townhouses on the south side of West 130th Street in Harlem. Designed by Charles Buek and built between 1880 and 1883, the houses were very progressive for their time. Each one is three stories, set back about 20 feet (6 meters) from the road and has a beautiful wooden porch. However, many of the porches are no longer originals due to necessary renovations.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "f2d91883f71af72abc156a7b518ec1429519ce9a68085ebe66ad89628063bf9d",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
-  },
-  {
-    "name": "Apollo Theater",
-    "short_description": "Iconic landmark music hall, legendary Amateur Night; tour finish point. Very high tourist gravity. NOTE: source says whites-only burlesque 'until 1934'; corroborating sources put the burlesque-house origin at 1914 (Hurtig & Seamon's) — source's 1934 conversion date checks out.",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.81,
-    "longitude": -73.95,
-    "trigger_radius": 25,
-    "city_name": "new_york",
+    "script_body_hash": "cbf00b73b44ece44042787709653d94e7ada3174db2b8d664000f1b5b654ddd9",
     "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
     },
-    "importance_tier": 4,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "Iconic discrete venue you stand before and enter; tour finish point.",
-    "_poi_role_source": "Cross the street, and you'll see the marquee of the Apollo Theater",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Apollo Theater",
-        "lens": "music_heritage",
-        "topic_slug": "stars_born_amateur_night",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The Apollo Theater is a place where stars are born. Ella Fitzgerald, James Brown, Michael Jackson, D'Angelo, and Lauryn Hill have all performed here. Others have made their debut during the famous Wednesday-night 'Amateur Night,' a true one-of-a-kind experience. The theater even has its own Walk of Fame.",
-        "duration_sec": 20,
-        "kid_friendly": "yes",
-        "entities": [
-          "Ella Fitzgerald",
-          "James Brown",
-          "Michael Jackson",
-          "D'Angelo",
-          "Lauryn Hill"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "hook",
-        "beat_type": "anecdote",
-        "emotional_register": "playful",
-        "subject_tag": "Amateur Night",
-        "physical_cues": [
-          {
-            "cue": "The theater's own Walk of Fame",
-            "direction": "here",
-            "feature_type": "plaque"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Apollo Theater is a place where stars are born. Ella Fitzgerald, James Brown, Michael Jackson, D'Angelo, and Lauryn Hill have all performed here. Others have made their debut here during the famous Wednesday night \"Amateur Night,\" which is a true one-of-a-kind experience. The theater also has its own Walk of Fame.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "54bec5da58d1efce242c0cf0a8f1668aa0ff14e42e50d57acb308c6080a639d2",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "verified"
-      }
-    ]
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Aylsmere apartments",
+  "short_description": "",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "city_name": "new_york",
+  "_meta": {
+   "prompt_version": "unified_v2",
+   "city_name": "new_york",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
   },
-  {
-    "name": "National Jazz Museum in Harlem",
-    "short_description": "A small Harlem museum on West 129th Street dedicated to the history of jazz in New York, offering a compact overview of the genre's local heritage.",
-    "name_variations": [
-      "Jazz Museum in Harlem",
-      "National Jazz Museum"
+  "latitude": 40.7797067,
+  "longitude": -73.9765985,
+  "trigger_radius": 20,
+  "importance_tier": 1,
+  "typical_duration_min": 15,
+  "poi_role": null,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Aylsmere apartments",
+    "lens": "historic_arch",
+    "topic_slug": "renaissance_split_depression",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Aylsmere apartments occupy a beautiful Renaissance building decorated with brick ornaments. It dates back to 1894 and was built as apartments for the wealthy: initially just two apartments per floor, each complete with dining rooms, sitting rooms, bedrooms, bathrooms, and — of course — a room for the help. Following the Great Depression, however, the apartments were split up.",
+    "duration_sec": 24,
+    "kid_friendly": "yes",
+    "entities": [
+     "Great Depression"
     ],
-    "kid_friendly": "yes",
-    "city_name": "new_york",
-    "_meta": {
-      "prompt_version": "unified_v2",
-      "city_name": "new_york",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "Renaissance apartments",
+    "physical_cues": [
+     {
+      "cue": "Renaissance facade decorated with brick ornaments",
+      "direction": "up",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The Aylsmere apartments are located in a beautiful Renaissance building decorated with brick ornaments. The building dates back to 1894 and was built as apartments for the wealthy. Initially there were just two apartments per floor, complete with dining rooms, sitting rooms, bedrooms, bathrooms, and—of course—a room for the help. Following the Great Depression, however, the apartments were split up.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "latitude": 40.8093,
-    "longitude": -73.941,
-    "trigger_radius": 15,
-    "importance_tier": 2,
-    "typical_duration_min": 30,
-    "poi_role": null,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "National Jazz Museum in Harlem",
-        "lens": "music_heritage",
-        "topic_slug": "jazz_lives_in_harlem",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "seasoning",
-        "script_body": "There's nothing more American, more New York, or more typical of Harlem than jazz. Jazz lives in this borough, and the National Jazz Museum in Harlem captures it — a not-too-big collection that gives a great overview of jazz in New York.",
-        "duration_sec": 16,
-        "kid_friendly": "yes",
-        "entities": [],
-        "sensory_anchor": false,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "playful",
-        "subject_tag": "Harlem jazz heritage",
-        "physical_cues": [],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "There's nothing more American, New York, or even more typical of Harlem than jazz! Jazz lives in this borough, and the National Jazz Museum in Harlem knows to highlight it all. An interesting and not too big of a collection gives you a great overview of jazz in New York.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "a21f1e8f7a75de33c90899eca842e8e4d39a1691a6582cdb2b475e3e988bdf3b",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
+    "script_body_hash": "ec654da993357331ed0fe243ba531fb0b3138190d51d3e46485b85a2c709fe1c",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "American Museum of Natural History",
+  "short_description": "Tier-5: preeminent natural-history museum since 1869; $431M Gilder Center (2023).",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.781101,
+  "longitude": -73.974236,
+  "trigger_radius": 25,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
   },
-  {
-    "name": "Riverside Park",
-    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.80688,
-    "longitude": -73.96866,
-    "trigger_radius": 500,
+  "importance_tier": 5,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A single museum building with described interior halls and the Gilder Center, a discrete stop.",
+  "_poi_role_source": "The Gilder Center lobby, its canyon-like walls of sprayed structural concrete",
+  "typical_duration_min": 90,
+  "beats": [
+   {
     "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "poi_name": "American Museum of Natural History",
+    "lens": "science_tech",
+    "topic_slug": "dinosaur_fossils_collections",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The American Museum of Natural History is one of the biggest museums in the United States, primarily known for its large collection of dinosaur fossils. The stately museum, located across from Central Park, also holds impressive collections on Native Americans, human biology and evolution, meteorites, minerals, and mammals.",
+    "duration_sec": 21,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "dinosaur fossils",
+    "physical_cues": [
+     {
+      "cue": "The stately museum facade facing Central Park across the street",
+      "direction": "east",
+      "feature_type": "adjacent_landmark"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The American Museum of Natural History is one of the biggest museums in the United States and is primarily known for its large collection of dinosaur fossils. The stately museum, which is located across from Central Park, has impressive collections on Native Americans, human biology and evolution, meteorites, minerals, mammals, and much, much more.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "importance_tier": 3,
-    "poi_role": "setting",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A long linear waterfront park with 120m radius you move along; a setting, and itself a candidate parent.",
-    "_poi_role_source": "this waterside spot runs north on the Upper West Side, banked by the Hudson River from W 59th to 155th Sts",
-    "typical_duration_min": 45,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Riverside Park",
-        "lens": "parks_gardens",
-        "topic_slug": "peoples_garden_volunteers",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "Riverside Park runs along the west side of Manhattan, stretching about four miles — from 155th Street in the north down to 59th Street in the south — with great views of the Hudson. Around 91st Street there's a local plot called the People's Garden, wonderfully maintained by 40 diligent volunteers.",
-        "duration_sec": 20,
-        "kid_friendly": "yes",
-        "entities": [
-          "People's Garden"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "neutral",
-        "subject_tag": "People's Garden",
-        "physical_cues": [
-          {
-            "cue": "The People's Garden plot around 91st Street",
-            "direction": "here",
-            "feature_type": "view"
-          },
-          {
-            "cue": "Views of the Hudson River along the park's length",
-            "direction": "west",
-            "feature_type": "view"
-          }
-        ],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "Riverside Park is located on the west side of Manhattan. It stretches about 4 miles (6.5 km), from 155th Street in the north to 59th Street in the south. This is a good alternative to Central Park if you are looking for someplace green to relax—it's also where residents of the Upper West Side and Harlem come. Here you can go for long walks and bike rides while enjoying a great view of the Hudson. Around 91st Street there is a local garden—the People's Garden—which is wonderfully maintained by 40 diligent volunteers.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "abd79c1239fcba94c81f4226f36fce20a9edafaf20341f44a516b3218c6460cd",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
+    "script_body_hash": "3803bd903ea4edcf0ea94ab2c6c74c1b657f4508e3e89f3dafcbe943a6b771a8",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Nicholas Roerich Museum",
+  "short_description": "",
+  "name_variations": [
+   "Nicolas Roerich Museum"
+  ],
+  "kid_friendly": "yes",
+  "city_name": "new_york",
+  "_meta": {
+   "prompt_version": "unified_v2",
+   "city_name": "new_york",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
   },
-  {
-    "name": "Harlem",
-    "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.807858,
-    "longitude": -73.945467,
-    "trigger_radius": 600,
+  "latitude": 40.8029241,
+  "longitude": -73.9690126,
+  "trigger_radius": 10,
+  "importance_tier": 2,
+  "typical_duration_min": 15,
+  "poi_role": null,
+  "beats": [
+   {
     "city_name": "new_york",
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14",
-      "exported_at": "2026-06-16T00:00:00+00:00",
-      "source_chunk": "chunk-05"
+    "poi_name": "Nicholas Roerich Museum",
+    "lens": "visual_art",
+    "topic_slug": "russian_artist_townhouse",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The Nicolas Roerich Museum is a small, eccentric museum set in a typical Upper West Side townhouse. The Russian artist came to New York City in the 1920s, and the museum displays some 200 pieces of his work.",
+    "duration_sec": 15,
+    "kid_friendly": "yes",
+    "entities": [
+     "Nicolas Roerich"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "Roerich townhouse museum",
+    "physical_cues": [
+     {
+      "cue": "A typical Upper West Side townhouse housing the museum",
+      "direction": "here",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The Nicolas Roerich Museum is a small, eccentric museum in a typical Upper West Side townhouse. The Russian artist came to New York City in the 1920s, and this museum displays some 200 pieces of his work.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
     },
-    "importance_tier": 4,
-    "poi_role": "setting",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A large neighborhood narrated through its avenues and blocks, trigger_radius 600m.",
-    "_poi_role_source": "The wide avenues, rows of brownstones, and elegant apartment buildin",
-    "typical_duration_min": 75,
-    "beats": [
-      {
-        "city_name": "new_york",
-        "poi_name": "Harlem",
-        "lens": "social_change",
-        "topic_slug": "african_american_culture_gentrification",
-        "book_slug": "moon-nyc-walks",
-        "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "North of the Upper West Side lies an important center of African American culture: Harlem. Here you'll find art galleries, churches often named after notable African American figures, the legendary Apollo Theater, and much more. In recent years Harlem has experienced a wave of gentrification, and the neighborhood's historical brownstones and wide streets have been drawing people from across the city.",
-        "duration_sec": 25,
-        "kid_friendly": "yes",
-        "entities": [
-          "Apollo Theater"
-        ],
-        "sensory_anchor": false,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "neutral",
-        "subject_tag": "Harlem gentrification",
-        "physical_cues": [],
-        "inline_foreign_phrases": [],
-        "pronunciation": null,
-        "source_passage": "North of the Upper West Side lies an important center of African American culture: Harlem. Here you'll find art galleries, churches (often named after notable African American figures), the legendary Apollo Theater, and much more. In recent years Harlem has experienced a wave of gentrification, and the neighborhood's historical brownstones and wide streets have been attracting people from around the city.",
-        "source_attribution": {
-          "book_title": "Moon New York City Walks",
-          "author": "Moon Travel Guides",
-          "chapter": "Walk 5: Upper West Side & Harlem"
-        },
-        "script_body_hash": "aec6b6776cf1215309be90bc595b1b998642d3c5d727834eee7fb42bf33f3ea5",
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-16T00:00:00+00:00",
-          "city_name": "new_york"
-        },
-        "fact_check_status": "unverified"
-      }
-    ]
-  }
+    "script_body_hash": "6de381e633188f9cab99ac84481575c589b1041be99caf461e69d203a88010ba",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Tom's Restaurant",
+  "short_description": "Upper West Side diner whose facade served as the exterior of Monk's Diner in Seinfeld.",
+  "name_variations": [
+   "Monk's Diner",
+   "Tom's Diner"
+  ],
+  "kid_friendly": "yes",
+  "latitude": 40.8054509,
+  "longitude": -73.9654163,
+  "trigger_radius": 20,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch:lonely-planet-new-york-city",
+   "city_name": "new_york",
+   "book_slug": "lonely-planet-new-york-city",
+   "created_at": "2026-06-15T00:00:00Z",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 3,
+  "poi_role": "walk_by_only",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A minor diner noted only as a factoid about its facade, single passing beat.",
+  "_poi_role_source": "the diner whose facade was used regularly in Seinfeld as the exterior of ... Monk's Diner",
+  "typical_duration_min": 45,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Tom's Restaurant",
+    "lens": "film_tv",
+    "topic_slug": "seinfeld_monks_cafe_vega",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Characters in the popular comedy Seinfeld regularly ate at the fictional Monk's Café. The interior was a studio set, but the exterior shots were of Tom's Restaurant, whose neon sign is now one of the most recognized in the city. Suzanne Vega's hit song 'Tom's Diner' is also based on this restaurant.",
+    "duration_sec": 21,
+    "kid_friendly": "yes",
+    "entities": [
+     "Seinfeld",
+     "Monk's Café",
+     "Suzanne Vega",
+     "Tom's Diner"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "Seinfeld diner",
+    "physical_cues": [
+     {
+      "cue": "The neon sign above the restaurant, one of the most recognized in the city",
+      "direction": "up",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Characters in the popular comedy Seinfeld regularly ate at the fictional Monk's Café. The inside of the café was a studio, but images of the exterior were of Tom's Restaurant. The neon sign above this restaurant is now one of the most recognized in the city. Suzanne Vega's hit song \"Tom's Diner\" is also based on this restaurant.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "af1ce4d6c2379d24a39a15cbd1c908e0cb737d7eed17b1c0461a0a2ca048234e",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "General Ulysses S Grant National Memorial",
+  "short_description": "The largest mausoleum in America, holding the remains of Civil War hero and 18th US president Ulysses S Grant and his wife Julia, completed in 1897 and surrounded by Gaudí-inspired mosaic benches.",
+  "name_variations": [
+   "Grant National Memorial",
+   "Grant Tomb",
+   "Grant's Tomb"
+  ],
+  "kid_friendly": "yes",
+  "latitude": 40.8135,
+  "longitude": -73.9618,
+  "trigger_radius": 20,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch:lonely-planet-new-york-city",
+   "city_name": "new_york",
+   "book_slug": "lonely-planet-new-york-city",
+   "created_at": "2026-06-15T00:00:00Z",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 3,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A discrete mausoleum monument you stand before, small radius.",
+  "_poi_role_source": "The imposing granite structure of Grant's Tomb on Riverside Drive at 122nd Street",
+  "typical_duration_min": 45,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "General Ulysses S Grant National Memorial",
+    "lens": "dark_history",
+    "topic_slug": "who_is_buried_riddle",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The 18th president, General Ulysses S. Grant, and his wife Julia were laid to rest at the General Grant National Memorial — but not technically buried in the tomb. Thus an old student's riddle asks, 'Who is buried in Grant's Tomb?' The answer, of course, is nobody. A Civil War hero, Grant was hugely popular in his time, which explains why his is the largest mausoleum in North America.",
+    "duration_sec": 28,
+    "kid_friendly": "yes",
+    "entities": [
+     "Ulysses S. Grant",
+     "Julia Grant",
+     "American Civil War"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "Grant's Tomb riddle",
+    "physical_cues": [
+     {
+      "cue": "The tomb, the largest mausoleum in North America",
+      "direction": "here",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The 18th president, General Ulysses S. Grant, and his wife, Julia, were laid to rest at the General Grant National Memorial but not technically buried in the tomb. Thus, an old student's riddle asks, \"Who is buried in Grant's Tomb?\" The answer, of course, is nobody. A Civil War hero, Grant was very popular in his time, which explains why his is the largest mausoleum in North America.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "0f456b4f6ea72c1d0a6ef7aa7c6dc66ca0f56071ad8b00637440043ef246f568",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "Riverside Church",
+  "short_description": "A neo-Gothic church built by the Rockefeller family in 1930, featuring 16th-century Flemish stained glass and a 74-bell carillon with the world's largest bass bell at 20 tons.",
+  "name_variations": [
+   "Riverside Church NYC"
+  ],
+  "kid_friendly": "yes",
+  "latitude": 40.8117872,
+  "longitude": -73.9631446,
+  "trigger_radius": 15,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch:lonely-planet-new-york-city",
+   "city_name": "new_york",
+   "book_slug": "lonely-planet-new-york-city",
+   "created_at": "2026-06-15T00:00:00Z",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 3,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A discrete church building with a 'here' facade cue.",
+  "_poi_role_source": "Imposing neo-Gothic exterior of Riverside Church on Riverside Drive at 120th Street",
+  "typical_duration_min": 45,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Riverside Church",
+    "lens": "historic_arch",
+    "topic_slug": "tallest_church_chartres_carillon",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Standing 392 feet tall — about 120 meters — Riverside Church was completed in 1930 and is the tallest church in the United States. The building was modeled on the Gothic cathedral of Chartres in France. Inside hangs a carillon with 74 bells, the heaviest in the world: the largest bell weighs 18 tons, the smallest just 11 pounds.",
+    "duration_sec": 25,
+    "kid_friendly": "yes",
+    "entities": [
+     "Chartres Cathedral"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "tallest church carillon",
+    "physical_cues": [
+     {
+      "cue": "The 392-foot tower rising overhead, tallest church in the US",
+      "direction": "up",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Standing 392 feet tall (120 meters), Riverside Church, which was completed in 1930, is the tallest church in the United States. The building was modeled on the Gothic cathedral of Chartres in France. Inside the church hangs a carillon with 74 bells—the heaviest in the world. The largest bell weighs 18 tons, and the smallest just 11 pounds.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "a934be4effdcc18f002ac5b3538c94ba4898a27e1cb7bd856ebbb4510d16e9f6",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "Columbia University",
+  "short_description": "An Ivy League research university founded in 1754, whose Morningside Heights campus features Italian Renaissance-style buildings, the Alma Mater statue, and a famous site of the 1968 student uprising.",
+  "name_variations": [
+   "Columbia",
+   "Columbia University New York"
+  ],
+  "kid_friendly": "yes",
+  "latitude": 40.8077507,
+  "longitude": -73.9624901,
+  "trigger_radius": 30,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch:lonely-planet-new-york-city",
+   "city_name": "new_york",
+   "book_slug": "lonely-planet-new-york-city",
+   "created_at": "2026-06-15T00:00:00Z",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 5,
+  "poi_role": "setting",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A multi-building campus with movement along College Walk and dispersed cues (Alma Mater, Hamilton Hall) rather than a single point.",
+  "_poi_role_source": "The main courtyard along College Walk at 116th Street surrounded by Italian Renaissance-style buildings",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Columbia University",
+    "lens": "famous_residents",
+    "topic_slug": "ivy_league_alumni_1897",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Columbia University is one of the oldest, wealthiest, and largest universities in the country, and a prestigious Ivy League school. In 1897 the university moved to its current location in Morningside Heights. A mix of classic and modern architecture and an abundance of green space make this a truly urban campus. Among its famous alumni you'll find Theodore Roosevelt, John Jay, and Barack Obama.",
+    "duration_sec": 27,
+    "kid_friendly": "yes",
+    "entities": [
+     "Theodore Roosevelt",
+     "John Jay",
+     "Barack Obama"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "Columbia alumni",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Columbia University is one of the oldest, wealthiest, and largest universities in the country, not to mention it's a prestigious Ivy League school. In 1897, the university moved to its current location in Morningside Heights. The hustle and bustle here, combined with a mix of classic and modern architecture and an abundance of green space make this a truly urban campus. Among the impressive list of famous Columbia alumni, you'll find Theodore Roosevelt, John Jay, and Barack Obama.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "5da05433727909cef5df2424e1658f1acba9fc01566e6c23b1e07ccd5edb3c46",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   },
+   {
+    "city_name": "new_york",
+    "poi_name": "Columbia University",
+    "lens": "local_legends",
+    "topic_slug": "alma_mater_hidden_owl",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": "alma-mater-statue",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The most photographed item on the Columbia campus is probably the bronze Alma Mater statue. With her outstretched arms and an open book on her lap, she seems to welcome students and visitors. Hidden among the folds of her robe is an owl, the symbol of wisdom. Legend has it that the first student of each incoming class to find the owl will graduate at the top of the class.",
+    "duration_sec": 27,
+    "kid_friendly": "yes",
+    "entities": [
+     "Alma Mater statue"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "hidden owl legend",
+    "physical_cues": [
+     {
+      "cue": "The bronze Alma Mater statue with outstretched arms and an open book",
+      "direction": "here",
+      "feature_type": "architectural_detail"
+     },
+     {
+      "cue": "The owl hidden among the folds of her robe",
+      "direction": "here",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The most photographed item on the Columbia University campus is probably the bronze Alma Mater statue. With her outstretched arms and an open book on her lap, she appears to be welcoming students and visitors. Hidden among the folds of her robe is an owl, the symbol of wisdom. Legend has it that the first student of each incoming class to find the owl will graduate at the top of the class.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "734eacf507cdbc9586aa3c41c46177a0e4f56301a6c1a785c90cf98fc1ec22b8",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   },
+   {
+    "city_name": "new_york",
+    "poi_name": "Columbia University",
+    "lens": "historic_arch",
+    "topic_slug": "low_library_no_books_since_1934",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": "low-memorial-library",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Low Memorial Library is a classical building dating to 1895, set in the middle of the Columbia campus with a dome-shaped roof and a row of columns out front. Despite the name, the building has not housed a library since 1934. Instead it holds school offices and the Visitors Center, and the lobby displays a collection of artifacts from the university's history.",
+    "duration_sec": 24,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "Low Library misnomer",
+    "physical_cues": [
+     {
+      "cue": "Dome-shaped roof and row of columns at the front of the building",
+      "direction": "up",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Low Memorial Library is a classical building dating back to 1895. The building, with its dome-shaped roof and row of columns in front, is located in the middle of the Columbia University campus. Despite the name, the building has not housed a library since 1934. Instead, it is home to a number of school offices as well as the Visitors Center (office 213), where you can pick up a map of campus. For those interested in the university's rich history, there is a collection of artifacts on display in the building's lobby.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "861d561d10fc7dcf8a1d0064b26d04e7959eab662322920f6434a6407d0da989",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Cathedral of St. John the Divine",
+  "short_description": "Major place of worship, Frommer's 'most impressive place of worship'. Tourist-relevant. Solid gravity.",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.803766,
+  "longitude": -73.961784,
+  "trigger_radius": 25,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 3,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A single named church building with facade and interior cues, a discrete destination you stand before.",
+  "_poi_role_source": "Gothic cathedral facade, still unfinished and under construction",
+  "typical_duration_min": 45,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Cathedral of St. John the Divine",
+    "lens": "historic_arch",
+    "topic_slug": "unfinished_colossus_bike_blessing",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "If bigger is indeed better, you may never find a better cathedral than the Cathedral Church of Saint John the Divine. Construction of this colossus began in 1891 and is still not complete — a truly time-consuming affair. Every April dozens of cyclists come to the church for the traditional blessing of the bikes.",
+    "duration_sec": 21,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "unfinished cathedral",
+    "physical_cues": [
+     {
+      "cue": "The colossal, still-unfinished cathedral facade",
+      "direction": "up",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "If bigger is indeed better, then you may never find a better cathedral than the Cathedral Church of Saint John the Divine. Construction of this colossus, which began in 1891 and is still not complete, has been a truly time-consuming affair. Every April dozens of cyclists come to the church for the traditional blessing of the bikes. Tours of the cathedral are offered daily.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "a54f1c6b4b9db2b9a659eefd3b5118946e40002de49fe3320ade61774950d24e",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "Studio Museum in Harlem",
+  "short_description": "A treasured Harlem museum showcasing influential African American artists, serving as a cultural hub for rotating exhibitions, film screenings, and gallery talks.",
+  "name_variations": [
+   "Studio Museum",
+   "Studio Museum in Harlem"
+  ],
+  "kid_friendly": "yes",
+  "latitude": 40.8084179,
+  "longitude": -73.947616,
+  "trigger_radius": 15,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch:lonely-planet-new-york-city",
+   "city_name": "new_york",
+   "book_slug": "lonely-planet-new-york-city",
+   "created_at": "2026-06-15T00:00:00Z",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 4,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A discrete museum building you stand at, small radius.",
+  "_poi_role_source": "this treasured museum has showcased influential African American artists",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Studio Museum in Harlem",
+    "lens": "social_change",
+    "topic_slug": "first_african_american_art_museum_1968",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "When the Studio Museum opened in 1968, it was the first museum in the country dedicated to promoting the work of African American artists. The space feels more like a gallery or studio, and you can see work from the 19th and 20th centuries by African American artists or artists influenced by black culture. Temporary exhibits have included historical photos of the 1920s Harlem Renaissance.",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+     "Harlem Renaissance"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "reverent",
+    "subject_tag": "first Black art museum",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "When Studio Museum opened in 1968, it was the first museum in the country dedicated to promoting the work of African American artists. In this museum, which actually feels more like a gallery or studio, you can check out artwork from the 19th and 20th centuries by African American artists or artists influenced by black culture. In addition to the permanent collection, the museum also has temporary exhibits, such as—for example—historical photos of the Harlem Renaissance in the 1920s.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "617b2d16519abe1ee736dc92ed9a828350def9e4f878fd5cce39cb918251cd73",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "Astor Row",
+  "short_description": "A row of 28 set-back townhouses with wooden porches on the south side of West 130th Street in Harlem, designed by Charles Buek and built 1880–1883 for the Astor family.",
+  "name_variations": [
+   "Astor Row Houses",
+   "West 130th Street townhouses"
+  ],
+  "kid_friendly": "yes",
+  "city_name": "new_york",
+  "_meta": {
+   "prompt_version": "unified_v2",
+   "city_name": "new_york",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "latitude": 40.8126,
+  "longitude": -73.9407,
+  "trigger_radius": 30,
+  "importance_tier": 2,
+  "typical_duration_min": 30,
+  "poi_role": null,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Astor Row",
+    "lens": "historic_arch",
+    "topic_slug": "28_townhouses_buek_porches",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Astor Row is the name for the 28 townhouses on the south side of West 130th Street in Harlem. Designed by Charles Buek and built between 1880 and 1883, the houses were very progressive for their time. Each is three stories, set back about 20 feet from the road, and has a beautiful wooden porch — though many porches are no longer original, due to necessary renovations.",
+    "duration_sec": 27,
+    "kid_friendly": "yes",
+    "entities": [
+     "Charles Buek"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "set-back townhouses",
+    "physical_cues": [
+     {
+      "cue": "The 28 three-story townhouses set back about 20 feet from the road, with wooden porches",
+      "direction": "here",
+      "feature_type": "architectural_detail"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Astor Row refers to the 28 townhouses on the south side of West 130th Street in Harlem. Designed by Charles Buek and built between 1880 and 1883, the houses were very progressive for their time. Each one is three stories, set back about 20 feet (6 meters) from the road and has a beautiful wooden porch. However, many of the porches are no longer originals due to necessary renovations.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "f2d91883f71af72abc156a7b518ec1429519ce9a68085ebe66ad89628063bf9d",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "Apollo Theater",
+  "short_description": "Iconic landmark music hall, legendary Amateur Night; tour finish point. Very high tourist gravity. NOTE: source says whites-only burlesque 'until 1934'; corroborating sources put the burlesque-house origin at 1914 (Hurtig & Seamon's) — source's 1934 conversion date checks out.",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.81,
+  "longitude": -73.95,
+  "trigger_radius": 25,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 4,
+  "poi_role": "stop",
+  "parent_poi": null,
+  "_poi_role_reasoning": "Iconic discrete venue you stand before and enter; tour finish point.",
+  "_poi_role_source": "Cross the street, and you'll see the marquee of the Apollo Theater",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Apollo Theater",
+    "lens": "music_heritage",
+    "topic_slug": "stars_born_amateur_night",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Apollo Theater is a place where stars are born. Ella Fitzgerald, James Brown, Michael Jackson, D'Angelo, and Lauryn Hill have all performed here. Others have made their debut during the famous Wednesday-night 'Amateur Night,' a true one-of-a-kind experience. The theater even has its own Walk of Fame.",
+    "duration_sec": 20,
+    "kid_friendly": "yes",
+    "entities": [
+     "Ella Fitzgerald",
+     "James Brown",
+     "Michael Jackson",
+     "D'Angelo",
+     "Lauryn Hill"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "Amateur Night",
+    "physical_cues": [
+     {
+      "cue": "The theater's own Walk of Fame",
+      "direction": "here",
+      "feature_type": "plaque"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Apollo Theater is a place where stars are born. Ella Fitzgerald, James Brown, Michael Jackson, D'Angelo, and Lauryn Hill have all performed here. Others have made their debut here during the famous Wednesday night \"Amateur Night,\" which is a true one-of-a-kind experience. The theater also has its own Walk of Fame.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "54bec5da58d1efce242c0cf0a8f1668aa0ff14e42e50d57acb308c6080a639d2",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "verified"
+   }
+  ]
+ },
+ {
+  "name": "National Jazz Museum in Harlem",
+  "short_description": "A small Harlem museum on West 129th Street dedicated to the history of jazz in New York, offering a compact overview of the genre's local heritage.",
+  "name_variations": [
+   "Jazz Museum in Harlem",
+   "National Jazz Museum"
+  ],
+  "kid_friendly": "yes",
+  "city_name": "new_york",
+  "_meta": {
+   "prompt_version": "unified_v2",
+   "city_name": "new_york",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "latitude": 40.8093,
+  "longitude": -73.941,
+  "trigger_radius": 15,
+  "importance_tier": 2,
+  "typical_duration_min": 30,
+  "poi_role": null,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "National Jazz Museum in Harlem",
+    "lens": "music_heritage",
+    "topic_slug": "jazz_lives_in_harlem",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "There's nothing more American, more New York, or more typical of Harlem than jazz. Jazz lives in this borough, and the National Jazz Museum in Harlem captures it — a not-too-big collection that gives a great overview of jazz in New York.",
+    "duration_sec": 16,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "playful",
+    "subject_tag": "Harlem jazz heritage",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "There's nothing more American, New York, or even more typical of Harlem than jazz! Jazz lives in this borough, and the National Jazz Museum in Harlem knows to highlight it all. An interesting and not too big of a collection gives you a great overview of jazz in New York.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "a21f1e8f7a75de33c90899eca842e8e4d39a1691a6582cdb2b475e3e988bdf3b",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Riverside Park",
+  "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.80688,
+  "longitude": -73.96866,
+  "trigger_radius": 500,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 3,
+  "poi_role": "setting",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A long linear waterfront park with 120m radius you move along; a setting, and itself a candidate parent.",
+  "_poi_role_source": "this waterside spot runs north on the Upper West Side, banked by the Hudson River from W 59th to 155th Sts",
+  "typical_duration_min": 45,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Riverside Park",
+    "lens": "parks_gardens",
+    "topic_slug": "peoples_garden_volunteers",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Riverside Park runs along the west side of Manhattan, stretching about four miles — from 155th Street in the north down to 59th Street in the south — with great views of the Hudson. Around 91st Street there's a local plot called the People's Garden, wonderfully maintained by 40 diligent volunteers.",
+    "duration_sec": 20,
+    "kid_friendly": "yes",
+    "entities": [
+     "People's Garden"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "People's Garden",
+    "physical_cues": [
+     {
+      "cue": "The People's Garden plot around 91st Street",
+      "direction": "here",
+      "feature_type": "view"
+     },
+     {
+      "cue": "Views of the Hudson River along the park's length",
+      "direction": "west",
+      "feature_type": "view"
+     }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Riverside Park is located on the west side of Manhattan. It stretches about 4 miles (6.5 km), from 155th Street in the north to 59th Street in the south. This is a good alternative to Central Park if you are looking for someplace green to relax—it's also where residents of the Upper West Side and Harlem come. Here you can go for long walks and bike rides while enjoying a great view of the Hudson. Around 91st Street there is a local garden—the People's Garden—which is wonderfully maintained by 40 diligent volunteers.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "abd79c1239fcba94c81f4226f36fce20a9edafaf20341f44a516b3218c6460cd",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ },
+ {
+  "name": "Harlem",
+  "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+  "name_variations": [],
+  "kid_friendly": "yes",
+  "latitude": 40.807858,
+  "longitude": -73.945467,
+  "trigger_radius": 600,
+  "city_name": "new_york",
+  "_meta": {
+   "created_by": "pipeline-batch",
+   "city_name": "new_york",
+   "book_slug": "frommers-nyc-2024",
+   "created_at": "2026-06-14",
+   "exported_at": "2026-06-16T00:00:00+00:00",
+   "source_chunk": "chunk-05"
+  },
+  "importance_tier": 4,
+  "poi_role": "setting",
+  "parent_poi": null,
+  "_poi_role_reasoning": "A large neighborhood narrated through its avenues and blocks, trigger_radius 600m.",
+  "_poi_role_source": "The wide avenues, rows of brownstones, and elegant apartment buildin",
+  "typical_duration_min": 75,
+  "beats": [
+   {
+    "city_name": "new_york",
+    "poi_name": "Harlem",
+    "lens": "social_change",
+    "topic_slug": "african_american_culture_gentrification",
+    "book_slug": "moon-nyc-walks",
+    "source_chunk_slug": "chunk-05-walk5-upper-west-side-harlem",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "North of the Upper West Side lies an important center of African American culture: Harlem. Here you'll find art galleries, churches often named after notable African American figures, the legendary Apollo Theater, and much more. In recent years Harlem has experienced a wave of gentrification, and the neighborhood's historical brownstones and wide streets have been drawing people from across the city.",
+    "duration_sec": 25,
+    "kid_friendly": "yes",
+    "entities": [
+     "Apollo Theater"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "Harlem gentrification",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "North of the Upper West Side lies an important center of African American culture: Harlem. Here you'll find art galleries, churches (often named after notable African American figures), the legendary Apollo Theater, and much more. In recent years Harlem has experienced a wave of gentrification, and the neighborhood's historical brownstones and wide streets have been attracting people from around the city.",
+    "source_attribution": {
+     "book_title": "Moon New York City Walks",
+     "author": "Moon Travel Guides",
+     "chapter": "Walk 5: Upper West Side & Harlem"
+    },
+    "script_body_hash": "aec6b6776cf1215309be90bc595b1b998642d3c5d727834eee7fb42bf33f3ea5",
+    "_meta": {
+     "prompt_version": "unified_v2",
+     "generated_at": "2026-06-16T00:00:00+00:00",
+     "city_name": "new_york"
+    },
+    "fact_check_status": "unverified"
+   }
+  ]
+ }
 ]

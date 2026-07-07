@@ -1,0 +1,1713 @@
+{
+  "chunk_id": "chunk-03-midtown-south",
+  "chunk_file": "Books/new_york/national-geographic-walking-nyc/chunk-03-midtown-south.cleaned.txt",
+  "pois": [
+    {
+      "name": "Rubin Museum of Art",
+      "is_new": false,
+      "matched_existing": "Rubin Museum of Art",
+      "short_description": "Western world's first and largest museum dedicated to Himalayan art; closed its physical 150 W 17th St location Oct 2024 (now 'museum without walls').",
+      "name_variations": [
+        "Rubin Museum",
+        "Rubin Museum of Himalayan Art"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7397,
+      "longitude": -73.9978,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "Chelsea Hotel",
+      "is_new": false,
+      "matched_existing": "Chelsea Hotel",
+      "short_description": "Bohemian 1883 redbrick Gothic building, hotel since 1905; home to Dylan, Hendrix, Joplin, writers.",
+      "name_variations": [
+        "Hotel Chelsea"
+      ],
+      "kid_friendly": "no",
+      "latitude": 40.7442,
+      "longitude": -73.9968,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "Flatiron Building",
+      "is_new": false,
+      "matched_existing": "Flatiron Building",
+      "short_description": "1902 triangular early skyscraper by Daniel Burnham, originally the Fuller Building.",
+      "name_variations": [
+        "Fuller Building"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7411,
+      "longitude": -73.9897,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "Gramercy Park",
+      "is_new": false,
+      "matched_existing": "Gramercy Park",
+      "short_description": "Tree-lined 1822 residential square of 19th-century town houses; private locked park.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7374,
+      "longitude": -73.9862,
+      "trigger_radius": 25,
+      "importance_tier": 3,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "Madison Square Park",
+      "is_new": false,
+      "matched_existing": "Madison Square Park",
+      "short_description": "Six-acre public space since 1686; birthplace of NY Knickerbockers baseball team; Shake Shack flagship.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7424,
+      "longitude": -73.9879,
+      "trigger_radius": 25,
+      "importance_tier": 3,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "Empire State Building",
+      "is_new": false,
+      "matched_existing": "Empire State Building",
+      "short_description": "1931 art deco masterpiece, 1,454 ft to tip; world's tallest building for over four decades.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7484,
+      "longitude": -73.9857,
+      "trigger_radius": 20,
+      "importance_tier": 5,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "The Morgan Library & Museum",
+      "is_new": false,
+      "matched_existing": "The Morgan Library & Museum",
+      "short_description": "Pierpont Morgan's collection in a 1906 McKim Renaissance villa; rare manuscripts incl. Gutenberg, Milton.",
+      "name_variations": [
+        "Morgan Library",
+        "Morgan Library and Museum"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7493,
+      "longitude": -73.9814,
+      "trigger_radius": 15,
+      "importance_tier": 3,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "New York Public Library",
+      "is_new": false,
+      "matched_existing": "New York Public Library",
+      "short_description": "1911 Beaux-Arts main branch (Schwarzman Building); marble lions Patience & Fortitude, Gutenberg Bible, real Winnie the Pooh.",
+      "name_variations": [
+        "Stephen A. Schwarzman Building",
+        "NYPL"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7532,
+      "longitude": -73.9822,
+      "trigger_radius": 20,
+      "importance_tier": 4,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "Theodore Roosevelt Birthplace",
+      "is_new": false,
+      "matched_existing": "Theodore Roosevelt Birthplace",
+      "short_description": "Reconstruction of the house where the U.S. president was born; west of Gramercy Park.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7383,
+      "longitude": -73.9886,
+      "trigger_radius": 10,
+      "importance_tier": 2,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    },
+    {
+      "name": "National Arts Club",
+      "is_new": false,
+      "matched_existing": "National Arts Club",
+      "short_description": "Club at 15 Gramercy Park in mansion once owned by NY governor Samuel Tilden; members included Twain, Auden, Saint-Gaudens.",
+      "name_variations": [],
+      "kid_friendly": "yes",
+      "latitude": 40.7373,
+      "longitude": -73.9866,
+      "trigger_radius": 10,
+      "importance_tier": 2,
+      "geocode_source": "existing",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI; no change."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_rubin_museum_of_art_sacred_traditions_national-geographic-walking-nyc_first_largest_himalayan",
+      "city_name": "new_york",
+      "poi_name": "Rubin Museum of Art",
+      "lens": "sacred_traditions",
+      "topic_slug": "first_largest_himalayan",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Western world's first and largest museum dedicated to Himalayan culture holds more than 2,000 items, dating from the second to the twentieth centuries, from the mountainous regions between Afghanistan and Myanmar. A steel-and-marble spiral staircase winds up through the seven-story building to galleries of Buddhist sculptures, vibrant Tibetan thangkas, or scroll paintings, ornate geometric mandalas, carved masks, and woven textiles. On the third floor, the rotating \"Masterworks: Jewels of the Collection\" showcases highlights such as a fourteenth-century Nepali Buddha and a Tibetan bronze of a divine couple.",
+      "duration_sec": 48,
+      "kid_friendly": "yes",
+      "entities": [
+        "Himalayan culture",
+        "Afghanistan",
+        "Myanmar",
+        "Masterworks: Jewels of the Collection"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "Himalayan collection",
+      "physical_cues": [
+        {
+          "cue": "Steel-and-marble spiral staircase winding up through the seven-story building",
+          "direction": "up",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "thangkas",
+          "gloss": "scroll paintings"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "First and largest Western museum dedicated to Himalayan culture",
+        "Holds more than 2,000 items from 2nd to 20th centuries",
+        "Seven-story building with steel-and-marble spiral staircase"
+      ],
+      "source_passage": "The Western world's first and largest museum dedicated to Himalayan culture holds more than 2,000 items. They include pieces dating from the second to the 20th centuries from the mountainous regions between Afghanistan and Myanmar (Burma). A steel-and-marble spiral staircase winds up through the sevenstory building to galleries that display Buddhist sculptures, vibrant Tibetan thangkas (scroll paintings), ornate geometric paintings called mandalas, carved masks, and skillfully woven textiles. On the third floor, the regularly rotating exhibit \"Masterworks: Jewels of the Collection\" showcases outstanding works of art, such as a 14th-century Nepali Buddha; a Tibetan bronze of a divine couple, \"Samvara in Union with Vajrayogini\".",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "The museum is open to visit at 150 West 17th St.",
+          "book_says": "Presented as an open, visitable museum with galleries, a K2 Lounge, and Friday-evening programming",
+          "reality": "The Rubin Museum closed its physical NYC building at 150 West 17th St on October 6, 2024 and became a 'museum without walls'.",
+          "sources": [
+            "https://www.cnn.com/2024/02/02/style/rubin-museum-closing-new-york",
+            "https://en.wikipedia.org/wiki/Rubin_Museum_of_Himalayan_Art",
+            "https://tricycle.org/article/rubin-museum-closing/"
+          ],
+          "recommendation": "Keep the historical/collection beats; flag the POI as physically closed so the tour does not route a listener to a shuttered building."
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_rubin_museum_of_art_sacred_traditions_national-geographic-walking-nyc_shiva_fierce_mask",
+      "city_name": "new_york",
+      "poi_name": "Rubin Museum of Art",
+      "lens": "sacred_traditions",
+      "topic_slug": "shiva_fierce_mask",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Among the museum's holdings is a mask of the Hindu god Shiva shown in his fierce form — one face of a collection that ranges across the Himalayan world.",
+      "duration_sec": 12,
+      "kid_friendly": "yes",
+      "entities": [
+        "Shiva"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Shiva mask",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Museum holds a mask of the Hindu god Shiva in his fierce form"
+      ],
+      "source_passage": "This museum of art from Himalayan countries houses a mask of the Hindu god Shiva in his fierce form.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chelsea_hotel_music_heritage_national-geographic-walking-nyc_bohemian_commune_legends",
+      "city_name": "new_york",
+      "poi_name": "Chelsea Hotel",
+      "lens": "music_heritage",
+      "topic_slug": "bohemian_commune_legends",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "During the 1950s and '60s, the Chelsea Hotel became a bohemian commune where artists, musicians, and writers hung out. The famed venue played host to musical luminaries including Bob Dylan, Patti Smith, Jimi Hendrix, and Janis Joplin, as well as writers such as Arthur Miller and Gore Vidal. Songs, stories, and novels were written both in and about the hotel — Arthur C. Clarke penned 2001: A Space Odyssey while staying here.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bob Dylan",
+        "Patti Smith",
+        "Jimi Hendrix",
+        "Janis Joplin",
+        "Arthur Miller",
+        "Gore Vidal",
+        "Arthur C. Clarke",
+        "2001: A Space Odyssey"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "bohemian commune",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bohemian commune in the 1950s-60s",
+        "Hosted Dylan, Patti Smith, Hendrix, Joplin, Arthur Miller, Gore Vidal",
+        "Arthur C. Clarke wrote 2001: A Space Odyssey while staying there"
+      ],
+      "source_passage": "During the 1950s and '60s, artists, musicians, and writers hung out at the Chelsea Hotel (popularly known as Hotel Chelsea) in what had become a bohemian commune. The famed venue has played host to such musical luminaries as Bob Dylan, Patti Smith, Jimi Hendrix, and Janis Joplin, as well as many writers—Arthur Miller and Gore Vidal among them. Songs, stories, and novels have been written both in and about the hotel, including 2001: A Space Odyssey, which Arthur C. Clarke penned while staying here.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chelsea_hotel_historic_arch_national-geographic-walking-nyc_victorian_gothic_1883",
+      "city_name": "new_york",
+      "poi_name": "Chelsea Hotel",
+      "lens": "historic_arch",
+      "topic_slug": "victorian_gothic_1883",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Originally built in 1883 as a private apartment cooperative, the twelve-story Victorian redbrick Gothic building, with its florid cast-iron balconies, became a hotel in 1905.",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "redbrick Gothic",
+      "physical_cues": [
+        {
+          "cue": "Florid cast-iron balconies on the twelve-story redbrick Gothic facade",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Built 1883 as a private apartment cooperative",
+        "Twelve-story Victorian redbrick Gothic with cast-iron balconies",
+        "Became a hotel in 1905"
+      ],
+      "source_passage": "Originally built in 1883 as a private apartment cooperative, the 12-story, Victorian redbrick Gothic building with florid cast-iron balconies became a hotel in 1905.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chelsea_hotel_dark_history_national-geographic-walking-nyc_dylan_thomas_spungen",
+      "city_name": "new_york",
+      "poi_name": "Chelsea Hotel",
+      "lens": "dark_history",
+      "topic_slug": "dylan_thomas_spungen",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The hotel saw its share of tragedy. It was here that years of heavy drinking caught up with the Welsh poet Dylan Thomas, who died after collapsing at the hotel following a visit to the White Horse Tavern in Greenwich Village. Perhaps the most infamous event was the murder of Nancy Spungen, possibly by her boyfriend, Sex Pistols bass player Sid Vicious.",
+      "duration_sec": 33,
+      "kid_friendly": "no",
+      "entities": [
+        "Dylan Thomas",
+        "White Horse Tavern",
+        "Nancy Spungen",
+        "Sid Vicious",
+        "Sex Pistols"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "hotel deaths",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Dylan Thomas collapsed and died after a visit to the White Horse Tavern",
+        "Nancy Spungen murdered at the hotel, possibly by Sid Vicious"
+      ],
+      "source_passage": "It was also here that years of heavy drinking caught up with the Welsh poet, Dylan Thomas, who died after collapsing at the hotel following a visit to the White Horse Tavern in Greenwich Village. Perhaps the most infamous event was the murder of Nancy Spungen, possibly by her boyfriend—Sex Pistols bass player Sid Vicious.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_flatiron_building_historic_arch_national-geographic-walking-nyc_triangular_sliver_burnham",
+      "city_name": "new_york",
+      "poi_name": "Flatiron Building",
+      "lens": "historic_arch",
+      "topic_slug": "triangular_sliver_burnham",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The triangular sliver of land formed by the intersection of Fifth Avenue, Broadway, and 23rd Street dictated the foundation for this oddly shaped structure, completed in 1902. Designed by Daniel H. Burnham and Co., of Chicago World's Fair fame, and originally named the Fuller Building, this early skyscraper's three-sided configuration led to its current name. A National Historic Landmark, it was one of the first structures built with a steel frame that formed a strong foundation for its exterior walls — a principle employed in many later skyscrapers.",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Daniel H. Burnham and Co.",
+        "Fuller Building",
+        "National Historic Landmark",
+        "Chicago World's Fair"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "steel-frame skyscraper",
+      "physical_cues": [
+        {
+          "cue": "The building's three-sided, flatiron-shaped form at the corner of Fifth Avenue, Broadway, and 23rd Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Completed 1902 on triangular plot at Fifth Ave, Broadway, 23rd St",
+        "Designed by Daniel H. Burnham & Co., originally the Fuller Building",
+        "Early steel-frame structure, National Historic Landmark"
+      ],
+      "source_passage": "The triangular sliver of land formed by the intersection of Fifth Avenue, Broadway, and 23rd Street dictated the foundation for this oddly shaped structure, completed in 1902. Designed by Daniel H. Burnham & Co. (of Chicago World's Fair fame) and originally named the Fuller Building, this early skyscraper has a three-sided configuration that led to its current nome—the Flatiron Building. A National Historic Landmark, it was one of the first structures constructed with a steel frame that formed a strong foundation for its exterior walls—an architectural principle employed in many later skyscrapers.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_flatiron_building_historic_arch_national-geographic-walking-nyc_six_feet_wide_terracotta_faces",
+      "city_name": "new_york",
+      "poi_name": "Flatiron Building",
+      "lens": "historic_arch",
+      "topic_slug": "six_feet_wide_terracotta_faces",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The 285-foot-high forerunner of the skyscraper tapers to less than six feet wide at its front prow. Ornate geometric decorations are interspersed with terra-cotta faces that peer down at passersby.",
+      "duration_sec": 13,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "terracotta faces",
+      "physical_cues": [
+        {
+          "cue": "Terra-cotta faces peering down among the ornate geometric decorations on the facade",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The narrow prow tapering to less than six feet wide at the front",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "285 feet high",
+        "Front prow tapers to less than 6 feet wide",
+        "Terra-cotta faces peer down from the facade"
+      ],
+      "source_passage": "The 285-foothigh (87 m) forerunner of the skyscraper tapers to less than 6 feet (2 m) wide 1 at the front. Ornate geometric decorations are interspersed with terra-cotta faces that peer down at passersby.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_historic_arch_national-geographic-walking-nyc_block_beautiful_swamp_1822",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "historic_arch",
+      "topic_slug": "block_beautiful_swamp_1822",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "This tree-lined neighborhood of architectural beauty was a swamp before it was laid out as one of New York's most attractive residential areas in 1822. The stretch of 19th Street between Irving Place and Third Avenue, with its many mid-19th-century town houses, was dubbed the \"Block Beautiful.\" It was once home to artists and writers, including the journalist Ida Tarbell.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ida Tarbell"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "Block Beautiful",
+      "physical_cues": [
+        {
+          "cue": "Mid-19th-century town houses lining 19th Street between Irving Place and Third Avenue",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Was a swamp before being laid out as a residential area in 1822",
+        "19th Street between Irving Place and Third Avenue dubbed 'Block Beautiful'",
+        "Once home to journalist Ida Tarbell"
+      ],
+      "source_passage": "This tree-lined neighborhood of architectural beauty was a swamp before it was laid out as one of New York's most attractive residential areas in 1822. The stretch of 19th Street between Irving Place and Third Avenue, with its many mid-19th-century town houses, was dubbed the \"Block Beautiful.\" It was once home to artists and writers including journalist Ida Tarbell.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_famous_residents_national-geographic-walking-nyc_edwin_booth_players_club",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "famous_residents",
+      "topic_slug": "edwin_booth_players_club",
+      "sub_location": null,
+      "trigger_address": "16 Gramercy Park",
+      "beat_length_class": "seasoning",
+      "script_body": "At 16 Gramercy Park, The Players club was once the residence of Shakespearean actor Edwin Booth — brother of Abraham Lincoln's assassin, John Wilkes Booth. Edwin's popularity as the leading actor of his day survived his brother's notoriety, and he is honored in Gramercy Park. The mansion was renovated by architect Stanford White.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Edwin Booth",
+        "John Wilkes Booth",
+        "Abraham Lincoln",
+        "Stanford White",
+        "The Players"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "Edwin Booth",
+      "physical_cues": [
+        {
+          "cue": "Facade of The Players club at 16 Gramercy Park, renovated by Stanford White",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Players at 16 Gramercy Park was Edwin Booth's residence",
+        "Edwin Booth was brother of Lincoln's assassin John Wilkes Booth",
+        "Mansion renovated by Stanford White"
+      ],
+      "source_passage": "Edwin Booth's popularity as the leading actor of his day survived his brother's notoriety, and he is honored in Gramercy Park. The Players club (16 Gramercy Park)—once residence of Shakespearean actor Edwin Booth (brother of Abraham Lincoln's assassin John Wilkes Booth)—was renovated by architect Stanford White.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_arts_club_famous_residents_national-geographic-walking-nyc_tilden_mansion_members",
+      "city_name": "new_york",
+      "poi_name": "National Arts Club",
+      "lens": "famous_residents",
+      "topic_slug": "tilden_mansion_members",
+      "sub_location": null,
+      "trigger_address": "15 Gramercy Park",
+      "beat_length_class": "seasoning",
+      "script_body": "At 15 Gramercy Park, the National Arts Club is housed in a mansion once owned by New York governor Samuel Tilden. Its prestigious members have included writer Mark Twain, poet W.H. Auden, and sculptor Augustus Saint-Gaudens.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Samuel Tilden",
+        "Mark Twain",
+        "W.H. Auden",
+        "Augustus Saint-Gaudens"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Tilden mansion",
+      "physical_cues": [
+        {
+          "cue": "Facade of the National Arts Club mansion at 15 Gramercy Park",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "National Arts Club at 15 Gramercy Park, in a mansion once owned by Samuel Tilden",
+        "Members included Mark Twain, W.H. Auden, Augustus Saint-Gaudens"
+      ],
+      "source_passage": "At 15 Gramercy Park, the National Arts Club is housed in a mansion once owned by New York'governor Samuel Tilden. Prestigious club members have included writer Mark Twain, poet W.H. Auden, and sculptor Augustus Saint-Gaudens.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_hidden_history_national-geographic-walking-nyc_residents_only_locked_gates",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "hidden_history",
+      "topic_slug": "residents_only_locked_gates",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The park that gives its name to the area remains closed to all but residents and Gramercy Park Hotel guests. Peek through the gates for a glimpse of its lush greenery.",
+      "duration_sec": 13,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gramercy Park Hotel"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "private park",
+      "physical_cues": [
+        {
+          "cue": "Locked iron gates of the private park; peek through for the greenery",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Park closed to all but residents and Gramercy Park Hotel guests"
+      ],
+      "source_passage": "The park that gives its name to the area remains closed to all but residents and Gramercy Park Hotel guests. Peek through the gates for a glimpse of its lush greenery.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_gramercy_park_literary_heritage_national-geographic-walking-nyc_petes_tavern_ohenry",
+      "city_name": "new_york",
+      "poi_name": "Gramercy Park",
+      "lens": "literary_heritage",
+      "topic_slug": "petes_tavern_ohenry",
+      "sub_location": null,
+      "trigger_address": "129 East 18th St.",
+      "beat_length_class": "seasoning",
+      "script_body": "Saunter south one block to Pete's Tavern, at 129 East 18th Street at Irving Place, one of New York's oldest bars. It was here that the writer O. Henry wrote his short story \"The Gift of the Magi\" in 1904.",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Pete's Tavern",
+        "O. Henry",
+        "The Gift of the Magi"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "O. Henry tavern",
+      "physical_cues": [
+        {
+          "cue": "Pete's Tavern at 129 East 18th Street at Irving Place",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Pete's Tavern at 129 East 18th St is one of NY's oldest bars",
+        "O. Henry wrote 'The Gift of the Magi' there in 1904"
+      ],
+      "source_passage": "Saunter south one block for drinks at Pete's Tavern (129 East 18th St. at Irving Pl.), one of New York's oldest bars, where writer O. Henry wrote his short story \"The Gift of the Magi\" in 1904.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_square_park_local_legends_national-geographic-walking-nyc_knickerbockers_baseball_1845",
+      "city_name": "new_york",
+      "poi_name": "Madison Square Park",
+      "lens": "local_legends",
+      "topic_slug": "knickerbockers_baseball_1845",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The verdant ground stretching from 23rd to 26th Streets between Madison and Fifth Avenues has been a dedicated public space since 1686. The six-acre park has a significant role in baseball's history: the city's first team, the New York Knickerbockers, formed here in 1845, before it opened as Madison Square Park two years later. Today, benches sit among shady trees, historic statuary, and year-round public art.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Knickerbockers"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "baseball birthplace",
+      "physical_cues": [
+        {
+          "cue": "Benches among shady trees, historic statuary, and year-round public art",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Dedicated public space since 1686",
+        "Six acres, from 23rd to 26th Streets between Madison and Fifth Avenues",
+        "NY Knickerbockers baseball team formed here in 1845; park opened 1847"
+      ],
+      "source_passage": "The vibrant, verdant ground that stretches from 23rd to 26th Streets between Madison and Fifth Avenues has been a dedicated public space since 1686. The six-acre (2.4 ha) park hasa significant role in baseball's history; the city's first team, the New York Knickerbockers, formed here in 1845, before it opened as Madison Square Park two years later. Today, benches are set among shady trees, historic statuary, and year-round public art.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_square_park_markets_street_food_national-geographic-walking-nyc_shake_shack_origin",
+      "city_name": "new_york",
+      "poi_name": "Madison Square Park",
+      "lens": "markets_street_food",
+      "topic_slug": "shake_shack_origin",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "If you're hungry, join the lines at Shake Shack on the southern end of the park, near Madison Avenue and East 23rd Street, which serves burgers, a vegetarian Portobello creation, frozen custard, and of course shakes, floats, and sundaes.",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "Shake Shack"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Shake Shack",
+      "physical_cues": [
+        {
+          "cue": "Shake Shack at the southern end of the park near Madison Avenue and East 23rd Street",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Shake Shack sits at the park's southern end near Madison Ave and East 23rd St"
+      ],
+      "source_passage": "If you're hungry, join the lines at Shake Shack (Madison Square Park near Madison Ave. and East 23rd St, shakeshack .com, $), on the southern end of the park, which serves burgers, a vegetarian Portobello creation, frozen custard, and of course, shakes, floats, and sundaes.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_madison_square_park_parks_gardens_national-geographic-walking-nyc_bridgets_garden_lilac_grove",
+      "city_name": "new_york",
+      "poi_name": "Madison Square Park",
+      "lens": "parks_gardens",
+      "topic_slug": "bridgets_garden_lilac_grove",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Bridget's Garden, on the park's northern side, has a playground, while Lilac Grove brims with rare yellow primrose lilacs. In summertime, the free Oval Lawn Series sends jazz, folk, and other music drifting through the air.",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bridget's Garden",
+        "Lilac Grove",
+        "Oval Lawn Series"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "garden grove",
+      "physical_cues": [
+        {
+          "cue": "Bridget's Garden with a playground on the park's northern side",
+          "direction": "north",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Lilac Grove with rare yellow primrose lilacs",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bridget's Garden on the north side has a playground",
+        "Lilac Grove holds rare yellow primrose lilacs",
+        "Free Oval Lawn Series concerts in summer"
+      ],
+      "source_passage": "Bridget's Garden, on the park's northern side, has a playground, while Lilac Grove brims with rare yellow primrose lilacs. ... In summertime, the Oval Lawn Series of concerts sends jazz, folk, and other music drifting through the air, all for free.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_empire_state_building_historic_arch_national-geographic-walking-nyc_1454_feet_tallest_art_deco",
+      "city_name": "new_york",
+      "poi_name": "Empire State Building",
+      "lens": "historic_arch",
+      "topic_slug": "1454_feet_tallest_art_deco",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Soaring 1,454 feet into the New York City skyline, this art deco masterpiece, completed in 1931, reigned supreme for more than four decades as the world's tallest building. Upon entering, you can stroll through the ornate lobby, where restored gold-leaf-on-canvas murals of the sun and planets grace the expansive ceiling, and the walls feature painted panels of the Seven Wonders of the Ancient World.",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Seven Wonders of the Ancient World"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "art deco tower",
+      "physical_cues": [
+        {
+          "cue": "Gold-leaf-on-canvas murals of the sun and planets on the lobby ceiling",
+          "direction": "up",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "Painted wall panels of the Seven Wonders of the Ancient World in the lobby",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1,454 feet tall",
+        "Completed 1931",
+        "World's tallest building for over four decades",
+        "Lobby murals of sun and planets; panels of Seven Wonders of the Ancient World"
+      ],
+      "source_passage": "Soaring 1,454 feet (443 m) into the New York City skyline, this art deco masterpiece, completed in 1931, reigned supreme for more than four decades as the world's tallest building. ... Upon entering, stroll through the ornate lobby, where restored gold-leaf-on-canvas murals of the sun and planets grace the expansive ceiling. The walls feature painted panels of the Seven Wonders of the Ancient World.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_empire_state_building_film_tv_national-geographic-walking-nyc_king_kong_movie_backdrop",
+      "city_name": "new_york",
+      "poi_name": "Empire State Building",
+      "lens": "film_tv",
+      "topic_slug": "king_kong_movie_backdrop",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "From scenes of King Kong scaling the structure to the poignant stories of An Affair to Remember and Sleepless in Seattle, the building has long provided a favorite backdrop for movie directors.",
+      "duration_sec": 13,
+      "kid_friendly": "yes",
+      "entities": [
+        "King Kong",
+        "An Affair to Remember",
+        "Sleepless in Seattle"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "movie backdrop",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Featured in King Kong, An Affair to Remember, and Sleepless in Seattle"
+      ],
+      "source_passage": "From scenes of King Kong scaling the structure to the poignant stories of An Affair to Remember and Sleepless in Seattle, it has provided a favorite backdrop for movie directors.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_empire_state_building_local_legends_national-geographic-walking-nyc_observatories_115am_elevator",
+      "city_name": "new_york",
+      "poi_name": "Empire State Building",
+      "lens": "local_legends",
+      "topic_slug": "observatories_115am_elevator",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "High-speed elevators climb to the 86th-floor observatory or, for an extra fee, the 102nd floor. The last elevator leaves at 1:15 a.m., allowing for spectacular nighttime vistas of the millions of twinkling city lights.",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "observatory hours",
+      "physical_cues": [
+        {
+          "cue": "High-speed elevators to the 86th- and 102nd-floor observatories",
+          "direction": "up",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "86th-floor and 102nd-floor observatories",
+        "Last elevator leaves at 1:15 a.m."
+      ],
+      "source_passage": "You can unwind here before taking the highspeed elevators to the 86th floor observatory, or, for an extra fee, the 102nd floor observatory. The last elevator leaves at 1:15 a.m., allowing for spectacular nighttime vistas of the millions of twinkling city lights.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_empire_state_building_hidden_history_national-geographic-walking-nyc_dare_to_dream_80th_floor",
+      "city_name": "new_york",
+      "poi_name": "Empire State Building",
+      "lens": "hidden_history",
+      "topic_slug": "dare_to_dream_80th_floor",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "To dig deeper into the history behind the building, you can visit Dare to Dream, a permanent exhibit on the 80th floor featuring behind-the-scenes photographs, architectural sketches, and more.",
+      "duration_sec": 12,
+      "kid_friendly": "yes",
+      "entities": [
+        "Dare to Dream"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Dare to Dream",
+      "physical_cues": [
+        {
+          "cue": "Dare to Dream exhibit of photographs and architectural sketches on the 80th floor",
+          "direction": "up",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Dare to Dream is a permanent exhibit on the 80th floor with behind-the-scenes photographs and architectural sketches"
+      ],
+      "source_passage": "To dig deeper into the history behind the building, check out Dare to Dream, a permanent exhibit on the 80th floor featuring behind-the-scenes photographs, architectural sketches, and more.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_morgan_library_museum_literary_heritage_national-geographic-walking-nyc_paradise_lost_christmas_carol",
+      "city_name": "new_york",
+      "poi_name": "The Morgan Library & Museum",
+      "lens": "literary_heritage",
+      "topic_slug": "paradise_lost_christmas_carol",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Financier Pierpont Morgan amassed an extraordinary collection of rare artwork, literature, and music memorabilia. Among its treasures are illuminated medieval and Renaissance manuscripts, a signed manuscript of a Mozart symphony, and the only surviving manuscript of Milton's Paradise Lost. Charles Dickens's manuscript of A Christmas Carol is always on view around Christmas, while permanent displays include Ancient Mesopotamian tablets and seals from 3000 B.C. onward.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Pierpont Morgan",
+        "Mozart",
+        "Milton",
+        "Paradise Lost",
+        "Charles Dickens",
+        "A Christmas Carol"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "rare manuscripts",
+      "physical_cues": [
+        {
+          "cue": "Rotating displays of manuscripts and Ancient Mesopotamian tablets in the galleries",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Holds only surviving manuscript of Milton's Paradise Lost",
+        "Mozart symphony manuscript; Dickens's A Christmas Carol shown around Christmas",
+        "Mesopotamian tablets and seals from 3000 B.C. onward"
+      ],
+      "source_passage": "Financier Pierpont Morgan amassed an extraordinary collection of rare artwork, literature, and music memorabilia. Among its treasures are illuminated medieval and Renaissance manuscripts, a signed manuscript of a Mozart symphony, and the only serving manuscript of Milton's Paradise Lost. ... Charles Dickens's manuscript of A Christmas Carol is always on view around Christmas, while permanent displays include Ancient Mesopotamian tablets and seals from 3000 B.c. onward.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [
+        {
+          "field": "only surviving Paradise Lost manuscript",
+          "book_text": "the only serving manuscript of Milton's Paradise Lost",
+          "corrected_to": "the only surviving manuscript fragment used to print Milton's Paradise Lost (OCR 'serving' read as 'surviving')",
+          "reason": "OCR typo correction confirmed against the Morgan's own description; not a factual change.",
+          "sources": [
+            "https://www.themorgan.org/literary-historical/132673"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_morgan_library_museum_historic_arch_national-geographic-walking-nyc_mckim_villa_renzo_piano",
+      "city_name": "new_york",
+      "poi_name": "The Morgan Library & Museum",
+      "lens": "historic_arch",
+      "topic_slug": "mckim_villa_renzo_piano",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In 1924, after the financier's death, his son J. P. Morgan, Jr., gave the library to the public. Housed in a 1906 Renaissance-style villa designed by Charles McKim, it has a rotunda with an ornately decorated ceiling and inlaid marble floor. The Morgan campus also includes a light-filled courtyard by the noted Italian architect Renzo Piano, which connects the library's three main buildings.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "J. P. Morgan, Jr.",
+        "Charles McKim",
+        "Renzo Piano"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "McKim villa",
+      "physical_cues": [
+        {
+          "cue": "Rotunda with ornately decorated ceiling and inlaid marble floor",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "Light-filled Renzo Piano courtyard connecting the three main buildings",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "J.P. Morgan Jr. gave the library to the public in 1924",
+        "Housed in a 1906 Renaissance-style villa by Charles McKim",
+        "Renzo Piano courtyard connects the three main buildings"
+      ],
+      "source_passage": "In 1924, after the financier's death, his son J. P. Morgan, Jr., gave the library to the public. Housed in a 1906 Renaissance-style villa designed by Charles McKim, it has a rotunda with an ornately decorated ceiling and inlaid marble floor. The Morgan campus also includes a light-filled courtyard by noted Italian architect Renzo Piano that connects the library's three main buildings.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_public_library_historic_arch_national-geographic-walking-nyc_schwarzman_1911_reading_room",
+      "city_name": "new_york",
+      "poi_name": "New York Public Library",
+      "lens": "historic_arch",
+      "topic_slug": "schwarzman_1911_reading_room",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "A massive temple to all things literary, the Stephen A. Schwarzman Building — better known as the main branch of the New York Public Library — opened in 1911. As well as housing 8.7 million treasured artifacts and books, the library has one of the world's longest and most famous reading rooms, loved by writers such as Norman Mailer and Alfred Kazin. The beaux arts building, designed by architects Carrère and Hastings, was designated a National Historic Landmark in 1965.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stephen A. Schwarzman Building",
+        "Norman Mailer",
+        "Alfred Kazin",
+        "Carrère and Hastings",
+        "National Historic Landmark"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "Beaux Arts library",
+      "physical_cues": [
+        {
+          "cue": "The Beaux-Arts marble building and its long reading room",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Schwarzman Building / NYPL main branch opened 1911",
+        "Houses 8.7 million artifacts and books",
+        "Beaux Arts design by Carrère and Hastings; National Historic Landmark 1965"
+      ],
+      "source_passage": "A massive temple to all things literary, the Stephen A. Schwarzman Building— better known as the main branch of the New York Public Library—opened in 1911. As well as housing 8.7 million treasured artifacts and books, the library has one of the world's longest and most famous reading rooms, loved by writers such as Norman Mailer and Alfred Kazin. The beaux arts building, designed by architects Carrére and Hastings, was designated a National Historic Landmark in 1965.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_public_library_local_legends_national-geographic-walking-nyc_patience_fortitude_lions",
+      "city_name": "new_york",
+      "poi_name": "New York Public Library",
+      "lens": "local_legends",
+      "topic_slug": "patience_fortitude_lions",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Standing guard at the library's entrance are Patience and Fortitude — marble lions designed by sculptor Edward Clark Potter and carved by a family of well-known marble cutters, the Piccirilli brothers. Mayor Fiorello LaGuardia gave the lions their names in the 1930s, after the qualities he felt New Yorkers needed during the Great Depression.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Patience and Fortitude",
+        "Edward Clark Potter",
+        "Piccirilli brothers",
+        "Fiorello LaGuardia"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "library lions",
+      "physical_cues": [
+        {
+          "cue": "The marble lions Patience and Fortitude flanking the library's entrance steps",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Lions named Patience and Fortitude",
+        "Designed by Edward Clark Potter, carved by the Piccirilli brothers",
+        "Named by Mayor LaGuardia in the 1930s for Depression-era qualities"
+      ],
+      "source_passage": "Standing guard at the library's entrance are Patience and Fortitude—marble lions designed by sculptor Edward Clark Potter and carved byafamily of well-known marble cutters, the Piccirilli brothers. Mayor Fiorello LaGuardia gave the lions their names in the 1930s, after the qualities he felt New Yorkers needed during the Great Depression.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_public_library_literary_heritage_national-geographic-walking-nyc_gutenberg_bible_hats_off",
+      "city_name": "new_york",
+      "poi_name": "New York Public Library",
+      "lens": "literary_heritage",
+      "topic_slug": "gutenberg_bible_hats_off",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Taking pride of place in the library's Rare Book Division is a Gutenberg Bible, printed around 1455. German publisher Johannes Gutenberg invented the printing press around 1440; some 180 Gutenberg Bibles were originally produced, yet only 48 survive. The story goes that when this rare tome arrived from Europe, New York Customs House officials were required to remove their hats in honor of the holy book.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gutenberg Bible",
+        "Johannes Gutenberg",
+        "New York Customs House"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Gutenberg Bible",
+      "physical_cues": [
+        {
+          "cue": "The Gutenberg Bible on display in the Rare Book Division",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Gutenberg Bible printed ~1455 in the Rare Book Division",
+        "Gutenberg invented the printing press ~1440",
+        "180 produced, only 48 survive",
+        "Customs officials required to remove hats when it arrived"
+      ],
+      "source_passage": "Taking pride of place in the library's Rare Book Division is a Gutenberg Bible, printed around 1455. German publisher Johannes Gutenberg invented the printing press around 1440. Some 180 Gutenberg Bibles were originally produced, yet only 48 survive. The story goes that when this rare tome arrived from Europe, New York Customs House officials were required to remove their hats in honor of the holy book.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_public_library_local_legends_national-geographic-walking-nyc_real_winnie_the_pooh",
+      "city_name": "new_york",
+      "poi_name": "New York Public Library",
+      "lens": "local_legends",
+      "topic_slug": "real_winnie_the_pooh",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Although Christopher Robin named his cuddly toy Edward, it was as Winnie the Pooh that he became the world's most popular bear. The original stuffed animal, a first-birthday present from his father, A.A. Milne, resides in the Children's Center with his friends Piglet, Eeyore, Tigger, and Kanga.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Christopher Robin",
+        "Winnie the Pooh",
+        "A.A. Milne",
+        "Piglet",
+        "Eeyore",
+        "Tigger",
+        "Kanga"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "Winnie the Pooh",
+      "physical_cues": [
+        {
+          "cue": "The original Winnie the Pooh stuffed animals and friends in the Children's Center",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The original Winnie the Pooh toy resides in the Children's Center",
+        "First-birthday gift from A.A. Milne",
+        "Displayed with Piglet, Eeyore, Tigger, and Kanga"
+      ],
+      "source_passage": "Although Christopher Robin named his cuddly toy Edward, it was as Winnie the Pooh that he became the world's most popular bear. The original stuffed animal, a first-birthday present from his father, A.A. Milne, resides in the Children's Center, with his friends Piglet, Eeyore, Tigger, and Kanga.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_public_library_hidden_history_national-geographic-walking-nyc_map_division_400000_maps",
+      "city_name": "new_york",
+      "poi_name": "New York Public Library",
+      "lens": "hidden_history",
+      "topic_slug": "map_division_400000_maps",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The Lionel Pincus and Princess Firyal Map Division, in the northeast corner of the building, has lofty ceilings with ornate golden molding, elegant chandeliers, and massive arched windows. Established in 1898, its collection includes more than 400,000 maps and 20,000 books and atlases.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lionel Pincus and Princess Firyal Map Division"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "map division",
+      "physical_cues": [
+        {
+          "cue": "Lofty golden-molded ceilings, chandeliers, and arched windows of the Map Division in the northeast corner",
+          "direction": "north",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Map Division in the northeast corner, established 1898",
+        "Holds more than 400,000 maps and 20,000 books and atlases"
+      ],
+      "source_passage": "The Lionel Pincus and Princess Firyal Map Division in the northeast corner of the building has lofty ceilings with ornate golden molding, elegant chandeliers, and massive arched windows. Established in 1898, the collection includes more than 400,000 maps and 20,000 books and atlases dating from the 1Sth to 21st centuries.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_theodore_roosevelt_birthplace_famous_residents_national-geographic-walking-nyc_president_born_reconstruction",
+      "city_name": "new_york",
+      "poi_name": "Theodore Roosevelt Birthplace",
+      "lens": "famous_residents",
+      "topic_slug": "president_born_reconstruction",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "To the west of Gramercy Park is the Theodore Roosevelt Birthplace — a reconstruction of the house on this site where the U.S. president was born.",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [
+        "Theodore Roosevelt"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Roosevelt birthplace",
+      "physical_cues": [
+        {
+          "cue": "The reconstructed brownstone house on this site, west of Gramercy Park",
+          "direction": "west",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Reconstruction of the house where Theodore Roosevelt was born",
+        "Located west of Gramercy Park"
+      ],
+      "source_passage": "To the west is the Theodore Roosevelt Birthplace—a reconstruction of the house on this site where the U.S. president was born.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_public_library_parks_gardens_national-geographic-walking-nyc_bryant_park_crystal_palace",
+      "city_name": "new_york",
+      "poi_name": "Bryant Park",
+      "lens": "parks_gardens",
+      "topic_slug": "crystal_palace_carousel",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Behind the library lies a verdant expanse used for the 1853 Crystal Palace Fair. The park provides multicolored blossoms, a twirling carousel, and numerous eateries; in summer you can enjoy a free concert, and in winter go ice skating or visit the holiday market.",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Crystal Palace Fair"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Crystal Palace",
+      "physical_cues": [
+        {
+          "cue": "The green expanse behind the library with a twirling carousel and eateries",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Site of the 1853 Crystal Palace Fair behind the library",
+        "Has a carousel, summer concerts, winter ice skating and holiday market"
+      ],
+      "source_passage": "Behind the building lies a verdant expanse used for the 1853 Crystal Palace Fair. The park provides multicolored blossoms, a twirling carousel, and numerous eateries. In summer enjoya free concert, and in winter go ice skating or visit the holiday market (see p. 101).",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "National Geographic Walking New York (2nd Edition)",
+        "author": "Katherine Cancila",
+        "chapter": "Midtown South (Neighborhood Walk)"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "DISPUTE",
+      "description": "Rubin Museum of Art: the book (2nd ed., pre-2024) presents the museum as a visitable physical site at 150 West 17th St with galleries, K2 Lounge, and Friday programming. The museum permanently closed its NYC building on October 6, 2024 and is now a 'museum without walls'. Verified via CNN, Wikipedia, Tricycle.",
+      "recommendation": "Keep the historical/collection beats (Himalayan first-and-largest, Shiva mask) but mark the Rubin POI as physically closed so the tour does not route a listener to a shuttered building, or demote to walk_by_only. Do NOT delete the stories (never-auto-resolve: story deletion)."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "OCR typo correction: book reads 'the only serving manuscript of Milton's Paradise Lost' — 'serving' is an OCR misread of 'surviving'. Beat script_body corrected to 'only surviving manuscript'. Confirmed against the Morgan's own catalog (themorgan.org) which describes it as the only surviving manuscript fragment used to print Paradise Lost. Single-source-class (publisher self-description) but a pure OCR fix, not a factual change.",
+      "recommendation": "Accept the OCR correction; no factual claim altered."
+    },
+    {
+      "type": "PROXIMITY",
+      "description": "All 10 POIs in this chunk already exist in the corpus; no new POIs created, so no <100m new-vs-existing proximity conflicts. The cluster (Madison Square Park / Flatiron Building, ~250m apart; Gramercy Park / National Arts Club / Theodore Roosevelt Birthplace within ~150m) are all distinct, pre-existing, intentionally-separate POIs.",
+      "recommendation": "No action."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Skipped material: the 'A Passion for Fashion' (Garment/Fashion District, FIT, Fifth Ave designer shops) and 'Best Of: Bars & Cocktails' sidebar spreads reference locations outside this geographic walk (East Village PDT/McSorley's, Meatpacking The Standard, Greenwich Village Little Branch, Upper West Side Bar Boulud, Tribeca Terroir). Per B9 location-anchoring these would fire at the wrong stops in a Midtown South tour; several POIs (PDT, McSorley's-adjacent) live in other corpus areas. Not extracted here.",
+      "recommendation": "If desired, route the bar/fashion sidebar material to its correct-neighborhood chunks (East Village / Meatpacking / UWS) rather than Midtown South. PDT already exists as a corpus POI."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 27,
+    "pois_touched": 11,
+    "new_pois": 0,
+    "corrections_applied": 1,
+    "disputes": 1,
+    "anomalies": 3,
+    "lenses_hit": [
+      "sacred_traditions",
+      "music_heritage",
+      "historic_arch",
+      "dark_history",
+      "famous_residents",
+      "hidden_history",
+      "literary_heritage",
+      "local_legends",
+      "markets_street_food",
+      "parks_gardens",
+      "film_tv"
+    ],
+    "lenses_missed": [
+      "war_conflict",
+      "social_change",
+      "modern_design",
+      "visual_art",
+      "street_art",
+      "historic_cuisine",
+      "historic_worship",
+      "waterways_views",
+      "historic_markets",
+      "science_tech"
+    ],
+    "confidence_counts": {
+      "HIGH": 27,
+      "MEDIUM": 0,
+      "LOW": 0
+    }
+  }
+}

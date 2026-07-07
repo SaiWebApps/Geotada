@@ -1,0 +1,242 @@
+[
+  {
+    "name": "130 MacDougal Street",
+    "poi_role": "stop",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "until you reach the brick town house at 130 MacDougal",
+    "confidence": "high",
+    "reasoning": "Discrete federal town house you stand before, small radius and architectural facade cue, located within Greenwich Village."
+  },
+  {
+    "name": "Minetta Tavern",
+    "poi_role": "stop",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "take a look at Minetta Tavern",
+    "confidence": "high",
+    "reasoning": "Single named restaurant building with interior fixtures cue, small radius, a discrete Village venue."
+  },
+  {
+    "name": "Minetta Street",
+    "poi_role": "setting",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "Turn onto Minetta Lane and walk halfway down ... to an unmarked, twisting street",
+    "confidence": "high",
+    "reasoning": "A street you walk down with stream-below and narrow-layout cues describing movement along it, a small Village corridor."
+  },
+  {
+    "name": "Bleecker Street",
+    "poi_role": "setting",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "continuing west on Bleecker Street ... This stretch of Bleecker Street holds some of the finest noshes",
+    "confidence": "high",
+    "reasoning": "A food-shop street stretch you walk along passing multiple storefronts, a sensory corridor within Greenwich Village."
+  },
+  {
+    "name": "One If by Land, Two If by Sea",
+    "poi_role": "stop",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "The 1767 carriage house at 17 Barrow St that houses the restaurant",
+    "confidence": "high",
+    "reasoning": "Discrete single carriage-house building at a specific address, small radius, within Greenwich Village."
+  },
+  {
+    "name": "Stonewall Inn",
+    "poi_role": "stop",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "The Stonewall Inn storefront on Christopher Street, site of the June 1969 raid",
+    "confidence": "high",
+    "reasoning": "A single named storefront/monument you stand before, modest radius, located within Greenwich Village."
+  },
+  {
+    "name": "Caffe Reggio",
+    "poi_role": "stop",
+    "parent_poi": "Greenwich Village",
+    "source_passage": "The huge copper espresso machines inside Caffe Reggio at 119 MacDougal St",
+    "confidence": "high",
+    "reasoning": "Single coffeehouse at a specific address with interior cue, small radius, a discrete Village venue."
+  },
+  {
+    "name": "Greenwich Village",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "you're more likely to see dads with strollers than long-haired poets walking these streets",
+    "confidence": "high",
+    "reasoning": "A neighborhood with large radius described as walked-through streets and alleys, contextual area narration rather than a point."
+  },
+  {
+    "name": "Chrysler Building",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Sleek Art Deco hood-ornament spire of the Chrysler Building",
+    "confidence": "high",
+    "reasoning": "A single iconic skyscraper you look up at; cues describe standing before one object despite the moderate radius."
+  },
+  {
+    "name": "Grand Central Terminal",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Beaux Arts interior of Grand Central, restored to its original brilliance",
+    "confidence": "high",
+    "reasoning": "A single landmark transit building with facade and interior cues you stand before, not an area walked through."
+  },
+  {
+    "name": "Cathedral of St. John the Divine",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "Gothic cathedral facade, still unfinished and under construction",
+    "confidence": "high",
+    "reasoning": "A single named church building with facade and interior cues, a discrete destination you stand before."
+  },
+  {
+    "name": "Coney Island",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Come here to taste the vintage pleasures of what was once New York City's favorite summer playground",
+    "confidence": "high",
+    "reasoning": "A large seaside amusement district (radius 150) with diffuse attractions you move through, a contextual area."
+  },
+  {
+    "name": "Central Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "As you stroll, you'll cross three deliberately different kinds of landscape",
+    "confidence": "high",
+    "reasoning": "A large park (radius 120) with cues describing strolling and crossing landscapes, contextual walking narration."
+  },
+  {
+    "name": "Domino Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "The turquoise gantry elevated walkway with Manhattan views",
+    "confidence": "high",
+    "reasoning": "A waterfront park (radius 120) you move through past industrial artifacts and a walkway, an area not a single point."
+  },
+  {
+    "name": "The High Line",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Snaking through the Meatpacking District at 30ft above street level, this 1.5-mile urban park",
+    "confidence": "high",
+    "reasoning": "A linear 1.5-mile elevated park you walk along (radius 120), contextual area narration as you move through it."
+  },
+  {
+    "name": "Prospect Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "this 562-acre expanse of woodland, meadows, and ponds",
+    "confidence": "high",
+    "reasoning": "A large Brooklyn park (radius 120) of woodland and meadows you move through, a diffuse contextual area."
+  },
+  {
+    "name": "Brooklyn Heights",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "you'll understand why when you stroll through its blocks of pristine 19th-century row houses",
+    "confidence": "high",
+    "reasoning": "A neighborhood/historic district (radius 200) you stroll through block by block, a contextual walking area."
+  },
+  {
+    "name": "The Public Theater",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The Romanesque curved arches of the former Astor Library facade",
+    "confidence": "high",
+    "reasoning": "A single landmark theater building with a distinct facade cue, a discrete destination you stand before."
+  },
+  {
+    "name": "PDT",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The phone booth inside the East Village hot dog stand that hides the secret entrance",
+    "confidence": "high",
+    "reasoning": "A single hidden speakeasy at a fixed entrance with strong story hook; a discrete point despite the 40m radius."
+  },
+  {
+    "name": "Roosevelt Island Tram",
+    "poi_role": "stop",
+    "parent_poi": null,
+    "source_passage": "The aerial tram running beside the 59th Street Bridge (Ed Koch Queensboro Bridge)",
+    "confidence": "medium",
+    "reasoning": "A specific named tram you board at a fixed station; the large radius reflects the route span, not a walk-through area."
+  },
+  {
+    "name": "Financial District",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Suited traders pouring onto the streets at 5pm in the financial canyons",
+    "confidence": "high",
+    "reasoning": "A neighborhood (radius 400) of canyons and streets you move through, a contextual diffuse area."
+  },
+  {
+    "name": "Chinatown",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "the dense crowds on the streets, the awnings with Chinese characters",
+    "confidence": "high",
+    "reasoning": "A large neighborhood (radius 350) experienced as you move through its sensory streets, a contextual area."
+  },
+  {
+    "name": "Little Italy",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "two blocks of Mulberry Street, from Canal to Broome, strung with colored lights",
+    "confidence": "high",
+    "reasoning": "A neighborhood (radius 250) defined by walking its Mulberry Street blocks, a contextual area."
+  },
+  {
+    "name": "SoHo",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Cobblestoned streets lined with cast-iron buildings",
+    "confidence": "high",
+    "reasoning": "A large neighborhood (radius 350) of cobbled streets and cast-iron lofts you move through, a contextual area."
+  },
+  {
+    "name": "Lower East Side",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Old-world fabric and luggage stores along Orchard Street",
+    "confidence": "high",
+    "reasoning": "A large neighborhood (radius 400) walked along its immigrant-era streets, a contextual area."
+  },
+  {
+    "name": "Meatpacking District",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "A stroll through the Meatpacking District ... takes you past sleek boutiques and roaring nightclubs",
+    "confidence": "high",
+    "reasoning": "A neighborhood (radius 250) explicitly described as a stroll past boutiques and clubs, a contextual walking area."
+  },
+  {
+    "name": "Chelsea",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "its broad avenues lined with breezy cafes, themed bars and sweaty clubs",
+    "confidence": "high",
+    "reasoning": "A large neighborhood (radius 400) of avenues and gallery blocks you move through, a contextual area."
+  },
+  {
+    "name": "Flatiron District",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "As you meander through these areas you're likely to see brown street signs proclaiming \"Ladies Mile\"",
+    "confidence": "high",
+    "reasoning": "A neighborhood (radius 300) you meander through reading the streetscape, a contextual walking area."
+  },
+  {
+    "name": "Union Square",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "On its western side, Union Square hosts the finest greenmarket in the city",
+    "confidence": "medium",
+    "reasoning": "A square/park with directional cues (western side, surrounding buildings) you cross and move through despite the modest 40m radius."
+  },
+  {
+    "name": "Gramercy Park",
+    "poi_role": "setting",
+    "parent_poi": null,
+    "source_passage": "Around it, beautifully preserved historic homes and clubs include the wisteria-clad home",
+    "confidence": "medium",
+    "reasoning": "A park-and-surrounding-square area (radius 120) you walk around viewing the bordering homes and clubs, a contextual area."
+  }
+]

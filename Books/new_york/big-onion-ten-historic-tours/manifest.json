@@ -1,0 +1,92 @@
+{
+  "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+  "author": "Seth I. Kamil and Eric Wakin (foreword by Kenneth T. Jackson)",
+  "source_file": "The Big Onion Guide to New York City Ten Historic Tours (Seth I. Kamil, Eric Wakin, Kenneth Jackson) (z-library.sk, 1lib.sk, z-lib.sk).pdf",
+  "city": "new_york",
+  "total_pages": 401,
+  "chunked_at": "2026-06-17",
+  "extraction_note": "Historian-led walking-tour guide (Big Onion Walking Tours / Columbia). Chunked at the natural per-tour chapter level: the 10 self-guided historic tours, each a turn-by-turn route (Start: transit + directions, then numbered/inline stops with deep historical narrative and addresses; the ➢ glyph marks walking directions). EXTRACTION CAVEAT: the PDF sets digits and small-caps in Adobe Expert fonts (FournierExpertMT) encoded in the private-use range U+F700-U+F7FF with no ToUnicode map, so plain pdftotext silently DROPS EVERY DIGIT (dates, addresses) -- catastrophic for a historical guide. Extracted instead via scripts/extract_pua_pdf.py (PyMuPDF + deterministic ASCII = codepoint - 0xF700 remap + fi/fl ligature expansion); 608-1611 digits/chunk recovered. Excluded as non-tour content: front matter (title, copyright, Introduction, About Big Onion) and back matter (Sources bibliography pp.382+, About the Contributors, Index). .cleaned.txt == .txt (strip_pdf_artifacts found no map-label artifacts).",
+  "total_chunks": 10,
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-wall-street.txt",
+      "section_title": "Wall Street: The Architecture of Capitalism",
+      "page_range": "18-49",
+      "line_count": 956,
+      "summary": "Wall Street tour: Bowling Green, the Custom House, Fraunces Tavern, Federal Hall, Trinity Church, the NYSE, the wall of New Amsterdam, the financial district's architecture and history of capitalism."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-lower-east-side.txt",
+      "section_title": "The Lower East Side: Immigrant New York",
+      "page_range": "50-91",
+      "line_count": 1315,
+      "summary": "Lower East Side immigrant tour: tenements, the Eldridge Street Synagogue, Orchard Street, German/Jewish/Irish/Italian/Chinese waves of settlement, sweatshops, settlement houses, and immigrant institutions."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-greenwich-village.txt",
+      "section_title": "Greenwich Village: A Gay and Lesbian History",
+      "page_range": "92-121",
+      "line_count": 940,
+      "summary": "Greenwich Village LGBTQ history tour across the East and West Villages: the Stonewall Inn, Christopher Street, bohemian and queer landmarks, and the historical and contemporary gay and lesbian worlds of the Village."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-four-squares.txt",
+      "section_title": "Four Squares: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square",
+      "page_range": "122-161",
+      "line_count": 1264,
+      "summary": "Four Squares tour from Fourteenth to Twenty-third Street: Union Square, Stuyvesant Square, Gramercy Park, and Madison Square -- commercial and residential Manhattan, labor history, mansions, and the Flatiron."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-brooklyn-bridge.txt",
+      "section_title": "The Brooklyn Bridge: A Walk from Brooklyn Heights to City Hall",
+      "page_range": "162-191",
+      "line_count": 930,
+      "summary": "Brooklyn Bridge tour from Brooklyn Borough Hall through Brooklyn Heights (Plymouth Church, the Promenade, brownstones) across the bridge to City Hall; the Roeblings, the Beecher trial, and consolidation."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-central-park.txt",
+      "section_title": "Central Park: New York City's Largest Work of Art",
+      "page_range": "192-217",
+      "line_count": 747,
+      "summary": "Central Park tour from Columbus Circle: Olmsted and Vaux's design, the Mall, Bethesda Terrace, the Ramble, Seneca Village, the Reservoir, and the park as a democratic landscape and engineered work of art."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-upper-east-side.txt",
+      "section_title": "The Upper East Side: Manhattan's \"Gold Coast\"",
+      "page_range": "218-259",
+      "line_count": 1317,
+      "summary": "Upper East Side 'Gold Coast' tour: Fifth Avenue mansions and Museum Mile, the Frick, Carnegie and Vanderbilt wealth, Park and Madison Avenues, and the social history beneath the myth of monolithic wealth."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-historic-harlem.txt",
+      "section_title": "Historic Harlem: African American Capital",
+      "page_range": "260-289",
+      "line_count": 875,
+      "summary": "Historic Harlem tour: the Harlem Renaissance, the Apollo Theater, Striver's Row, Abyssinian Baptist Church, 125th Street, and Harlem as the cultural and political capital of African American life."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-green-wood-cemetery.txt",
+      "section_title": "Green-Wood Cemetery: A Garden Cemetery",
+      "page_range": "290-327",
+      "line_count": 1158,
+      "summary": "Green-Wood Cemetery tour: the rural/garden cemetery movement, notable interments (Currier, Beecher, Tweed, Steinway, Morse), monuments and mausoleums, and the cemetery as proto-park in Brooklyn."
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-other-boroughs.txt",
+      "section_title": "The Other Boroughs: A Driving Tour",
+      "page_range": "328-380",
+      "line_count": 1745,
+      "summary": "Driving tour of Staten Island, the Bronx, and Queens: Staten Island's St. George and historic Richmond, the Bronx (Grand Concourse, Yankee Stadium, Woodlawn), and Queens landmarks, linked by turn-by-turn driving directions."
+    }
+  ]
+}

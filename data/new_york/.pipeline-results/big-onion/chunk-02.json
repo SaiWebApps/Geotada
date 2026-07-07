@@ -1,0 +1,3394 @@
+{
+  "chunk_id": "chunk-02-lower-east-side",
+  "chunk_file": "Books/new_york/big-onion-ten-historic-tours/chunk-02-lower-east-side.cleaned.txt",
+  "pois": [
+    {
+      "name": "Sara Delano Roosevelt Park",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Seven-block Lower East Side park created 1932-1936 by razing tenements under a Depression-era federal relief plan; named for FDR's mother.",
+      "name_variations": [
+        "Sara D. Roosevelt Park",
+        "Sara Roosevelt Park"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7188,
+      "longitude": -73.9925,
+      "trigger_radius": 40,
+      "geocode_source": "Known landmark (Chrystie/Grand St, Manhattan); coordinates from OSM-documented park extent",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Named NYC park spanning seven blocks, Wikipedia article, documented Depression-era origin; moderate tourism draw. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "The Bowery",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Historic Lower Manhattan thoroughfare laid out by New Amsterdam governor Willem Kieft in 1637 to link Dutch farms to the city; later New York's 'Skid Row.'",
+      "name_variations": [
+        "Bowery"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7209,
+      "longitude": -73.9934,
+      "trigger_radius": 60,
+      "geocode_source": "Known street (centroid near Grand St); OSM-documented",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Iconic historic NYC street with deep Wikipedia coverage, guidebook ubiquity, high visitor familiarity. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Bowery Savings Bank Building",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Landmarked 1894-95 bank building at 130 Bowery designed by Stanford White; L-shaped, one of the few landmarked buildings on the Lower East Side.",
+      "name_variations": [
+        "130 Bowery",
+        "Bowery Savings Bank"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7185,
+      "longitude": -73.9952,
+      "trigger_radius": 15,
+      "geocode_source": "Wikipedia/address 130 Bowery at Grand St",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "NYC-designated landmark interior and exterior, NRHP-listed, Stanford White design with own Wikipedia article. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Di Palo's Fine Foods",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Century-old Italian grocery and cheese shop at Mott and Grand, opened 1910 by Savino Di Palo of Puglia; still family-run.",
+      "name_variations": [
+        "Di Palo's",
+        "DiPalo's",
+        "Di Palo Fine Foods"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7184,
+      "longitude": -73.9974,
+      "trigger_radius": 15,
+      "geocode_source": "Address: 200 Grand St / NE corner Mott and Grand, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Well-known surviving Little Italy institution, press coverage, guidebook presence; tourism draw but not a top-tier monument. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Columbus Park",
+      "is_new": false,
+      "matched_existing": "Columbus Park",
+      "short_description": "Chinatown park built 1892-94 atop the former Five Points and Collect Pond; first open space designed for the neighborhood, championed by Jacob Riis.",
+      "name_variations": [
+        "Mulberry Bend Park"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7155,
+      "longitude": -73.9999,
+      "trigger_radius": 40,
+      "geocode_source": "Existing POI (matched)",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Already in corpus; no new POI created."
+    },
+    {
+      "name": "Church of the Transfiguration",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Georgian-style church at 29 Mott Street, built 1801 as a Lutheran church, later Catholic; served Irish, Italian and now Chinese congregations.",
+      "name_variations": [
+        "Church of the Transfiguration Chinatown",
+        "Transfiguration Church"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.714628,
+      "longitude": -73.999012,
+      "trigger_radius": 15,
+      "geocode_source": "Apple Maps / address 29 Mott St",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmark Chinatown church with layered immigrant history, Wikipedia coverage, guidebook presence. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Chatham Square",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Ten-street intersection at the edge of Chinatown named for William Pitt, Earl of Chatham; site of the Kimlau Memorial Arch.",
+      "name_variations": [
+        "Kimlau Square"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7138,
+      "longitude": -73.9979,
+      "trigger_radius": 30,
+      "geocode_source": "Known intersection, Chinatown Manhattan; OSM-documented",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Major Chinatown landmark intersection with the Kimlau Memorial Arch, Wikipedia coverage. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "First Shearith Israel Graveyard",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Oldest surviving Jewish cemetery in the U.S. at 55-57 St. James Place; burials include Revolutionary War soldiers and an NYSE founder.",
+      "name_variations": [
+        "First Cemetery of the Spanish and Portuguese Synagogue",
+        "Chatham Square Cemetery",
+        "Shearith Israel Cemetery"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7131,
+      "longitude": -73.9966,
+      "trigger_radius": 12,
+      "geocode_source": "Address 55-57 St. James Place, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Oldest extant U.S. Jewish cemetery, National and NYC landmark, Wikipedia article. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Eldridge Street Synagogue",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Moorish-revival synagogue at 12-16 Eldridge Street, built 1886-87 by the Herter brothers; a National Historic Landmark. Note: existing corpus has 'Museum at Eldridge Street' — likely the same site.",
+      "name_variations": [
+        "Congregation Khal Adath Jeshurun",
+        "Anshe Lubz Synagogue",
+        "Museum at Eldridge Street"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7148,
+      "longitude": -73.9931,
+      "trigger_radius": 15,
+      "geocode_source": "Address 12-16 Eldridge St, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "National Historic Landmark synagogue/museum, Wikipedia + NPS coverage, established tourist site. PROXIMITY/ALIAS flag: existing corpus POI 'Museum at Eldridge Street' is the same building — likely alias, not new. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Seward Park",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Three-acre Lower East Side park built 1901, named for Lincoln's secretary of state William Seward; gathering point for striking garment workers.",
+      "name_variations": [
+        "Seward Park Manhattan"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7141,
+      "longitude": -73.9897,
+      "trigger_radius": 35,
+      "geocode_source": "Known park, Canal/Essex/East Broadway, Manhattan; OSM-documented",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic NYC park, Wikipedia coverage, labor-history significance. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Straus Square",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Small Lower East Side traffic triangle with a marble veterans' memorial column, named for philanthropist Nathan Straus.",
+      "name_variations": [
+        "Rutgers Square",
+        "Nathan Straus Square"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7141,
+      "longitude": -73.9889,
+      "trigger_radius": 20,
+      "geocode_source": "Known square at East Broadway/Canal/Essex, Manhattan",
+      "geocode_confidence": "MEDIUM",
+      "gravity_reasoning": "Minor named square with a war memorial; limited standalone coverage. Possible PROXIMITY to existing 'Straus Park' (a different UWS site) — distinct location. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Forward Building",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Twelve-story 1912 building at 173 East Broadway that housed the Jewish Daily Forward; later a church, now luxury condos.",
+      "name_variations": [
+        "Forverts Building",
+        "Jewish Daily Forward Building",
+        "173 East Broadway"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7141,
+      "longitude": -73.9884,
+      "trigger_radius": 12,
+      "geocode_source": "Address 173 East Broadway, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Landmark Yiddish-press building with Wikipedia coverage; architectural and cultural significance. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Educational Alliance",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Settlement house built 1889 at East Broadway and Jefferson, founded by uptown German Jews to Americanize East European immigrants; renamed for David Sarnoff.",
+      "name_variations": [
+        "The Edgies",
+        "Educational Alliance Building"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.714,
+      "longitude": -73.9863,
+      "trigger_radius": 15,
+      "geocode_source": "Address 197 East Broadway at Jefferson St, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic settlement house, still operating, documented in immigrant-history literature. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Henry Street Settlement",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Social-services settlement founded 1893 by Lillian Wald in three 1827 Federalist houses at 263-267 Henry Street; birthplace of the Visiting Nurse Service.",
+      "name_variations": [
+        "Henry Street Settlement House"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7137,
+      "longitude": -73.9847,
+      "trigger_radius": 15,
+      "geocode_source": "Address 263-267 Henry St, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Nationally significant settlement house, NHL-listed buildings, Wikipedia coverage. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "St. Mary's Church",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Oldest Catholic church building in NYC, founded 1827 and built 1833 at Grand and Ridge Streets; Greek-revival brick facade and double spires added 1871.",
+      "name_variations": [
+        "Church of St. Mary",
+        "St. Mary's Roman Catholic Church"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7159,
+      "longitude": -73.9839,
+      "trigger_radius": 15,
+      "geocode_source": "Address 438-440 Grand St at Ridge St, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Oldest extant Catholic church building in NYC, documented in city histories. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Beth Hamedrash Hagadol",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Synagogue at 60 Norfolk Street, built 1850 as the Norfolk Baptist Church and bought by a Jewish congregation in 1885; oldest Russian Orthodox congregation in the U.S.",
+      "name_variations": [
+        "Beth Hamedrash Hagodol",
+        "Great House of Study",
+        "Norfolk Baptist Church"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7172,
+      "longitude": -73.9879,
+      "trigger_radius": 12,
+      "geocode_source": "Address 60 Norfolk St, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Historic landmarked synagogue (destroyed by fire 2017) with Wikipedia coverage; deep immigrant-history significance. Tier deferred to /poi-gravity."
+    },
+    {
+      "name": "Manhattan Bridge",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Third bridge linking Lower Manhattan and Brooklyn, designed by Gustav Lindenthal in 1905, with a 1916 City Beautiful colonnade and arch by Carrère & Hastings at the Canal Street entrance.",
+      "name_variations": [
+        "Manhattan Bridge Arch and Colonnade"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 40.7169,
+      "longitude": -73.9933,
+      "trigger_radius": 30,
+      "geocode_source": "Canal Street entrance / arch and colonnade, Manhattan",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Major NYC bridge with own Wikipedia article and a landmarked monumental entrance arch. Tier deferred to /poi-gravity."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_two_centuries_first_settlement",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "social_change",
+      "topic_slug": "two_centuries_first_settlement",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Lower East Side is probably the single most significant multiethnic neighborhood in America. For two hundred years it has been the first area of settlement for migrant and immigrant communities, and it still is. New Yorkers continue to argue about where it begins and ends; the contemporary neighborhood is bordered to the north by Houston Street, to the west by Lafayette, and to the south and east by the East River. But it is better understood as a living multiethnic neighborhood, not one fixed by geographic boundaries.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Houston Street",
+        "Lafayette Street",
+        "East River"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "immigrant gateway",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Lower East Side has been the first area of settlement for immigrants for two hundred years",
+        "Bordered by Houston Street, Lafayette, and the East River"
+      ],
+      "source_passage": "the lower east sideis probably the single most significant multiethnic neighborhood in America. For the past two hundred years it has been the first area of settlement for numerous migrant and immigrant communities, and it continues to be so today. The contemporary neighborhood is bordered to the north by Houston Street, to the west by Lafayette, and to the south and east by the East River. But the Lower East Side should also be thought of as a living multiethnic neighborhood—one not necessarily constrained by geographic boundaries.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_immigrant_waves_irish_to_latino",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "social_change",
+      "topic_slug": "immigrant_waves_irish_to_latino",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Early eighteenth-century maps show this area as the country estates of established Dutch and English settlers — the Stuyvesant, Delancey, Rutgers, DePeyster, and Roosevelt families. After the American Revolution the estates gave way to suburban settlements, and by the mid-nineteenth century the first great influx of immigrants arrived. By the 1840s the largest groups were Irish, Germans, and free blacks. A half century later these had moved northward, replaced by southern and eastern Europeans from Italy, Russia, and Poland. Most of today's immigrant residents are Latino and Asian.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stuyvesant family",
+        "Delancey family",
+        "Rutgers family",
+        "DePeyster family",
+        "Roosevelt family",
+        "American Revolution"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "immigrant waves",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Early owners included the Stuyvesant, Delancey, Rutgers, DePeyster, and Roosevelt families",
+        "1840s largest groups were Irish, Germans, free blacks",
+        "Later replaced by Italians, Russians, Poles; today Latino and Asian"
+      ],
+      "source_passage": "Early eighteenth-century maps show the area as the location of the country estates of established Dutch and English settlers of New York. Early property owners included the Stuyvesant, Delancey, Rutgers, DePeyster, and Roosevelt families. By the 1840s the largest numbers of ethnic residents were Irish, Germans, and free blacks. A half century later these groups had largely moved northward and were replaced by southern and eastern Europeans from Italy, Russia, Poland, and elsewhere. Most of today's immigrant residents are Latino and Asian immigrants.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_hidden_history_big-onion-ten-historic-tours_densest_spot_on_earth",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "hidden_history",
+      "topic_slug": "densest_spot_on_earth",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In 1900 the Lower East Side was the most densely populated spot on earth, with 850 residents per block and nearly 1,000 per acre. A single square block beside Sara Delano Roosevelt Park — bounded by Canal, Hester, Eldridge, and Forsythe Streets — housed 2,628 people in 1890. That same block today houses no residents at all; it holds only a school and a few manufacturers. Other blocks were destroyed to build the approaches to the Manhattan and Williamsburg Bridges in 1903 and 1909, forcing tens of thousands from their homes.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Manhattan Bridge",
+        "Williamsburg Bridge"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "dramatic",
+      "subject_tag": "extreme density",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1900 the Lower East Side was the most densely populated spot on earth, 850 per block and nearly 1,000 per acre",
+        "A block bounded by Canal, Hester, Eldridge, Forsythe housed 2,628 people in 1890",
+        "Bridge approaches built 1903 and 1909 displaced tens of thousands"
+      ],
+      "source_passage": "In 1900the Lower East Side was the most densely populated spot on earth. It had 850residents per block and nearly 1,000per acre. In fact, a single square block adjacent to the park—bordered by Canal, Hester, Eldridge, and Forsythe Streets—housed 2,628people in 1890. This block currently houses no residents. Other blocks in the neighborhood were destroyed to build the approaches to the Manhattan and Williamsburg Bridges in 1903and 1909, forcing tens of thousands of people out of their homes.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "the most densely populated spot on earth",
+          "reason": "Superlative — never auto-resolved per guardrails. Commonly cited about the LES c.1900 but contested vs. other global slums; left as the book states.",
+          "recommendation": "Leave as-authored; flag superlative for human review."
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_sara_delano_roosevelt_park_hidden_history_big-onion-ten-historic-tours_tenements_razed_fdr_mother",
+      "city_name": "new_york",
+      "poi_name": "Sara Delano Roosevelt Park",
+      "lens": "hidden_history",
+      "topic_slug": "tenements_razed_fdr_mother",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "This green space exists because seven blocks of tenement houses were destroyed between 1932 and 1936. The demolition was part of a Depression-era plan to employ thousands of laborers with federal relief funds: the city proclaimed eminent domain over the tenements, removed the tenants, and tore the buildings down. Like most public spaces in New York, the park is named for a significant New Yorker — Franklin Delano Roosevelt's mother, Sara, who was raised in a manor house, now long gone, on nearby Chrystie Street.",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Franklin Delano Roosevelt",
+        "Sara Delano Roosevelt",
+        "Chrystie Street"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "park origin",
+      "physical_cues": [
+        {
+          "cue": "The open green expanse of the park where seven blocks of tenements once stood",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Seven blocks of tenements destroyed 1932-1936 to create the park",
+        "Depression-era federal relief jobs plan",
+        "Named for FDR's mother Sara, raised on Chrystie Street"
+      ],
+      "source_passage": "Seven blocks of tenement houses were destroyed from 1932to 1936to create this \"green\" space. Construction was part of a Depression-era plan to employ thousands of laborers using federal relief funds. The city proclaimed \"eminent domain\" over the existing tenements, removed the tenants, and tore the buildings down. Like most public spaces in New York, the park is named for a significant New Yorker—Franklin Delano Roosevelt's mother. Sara was raised in a manor house, now long gone, on Chrystie Street.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_markets_street_food_big-onion-ten-historic-tours_grand_street_new_chinatown_food",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "markets_street_food",
+      "topic_slug": "grand_street_new_chinatown_food",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Walking Grand Street between Chrystie Street and the Bowery, note the incredible array of fish and produce stores lining the street. This is the New Chinatown, where thousands of immigrants from mainland China have moved in the past ten or fifteen years, and this block has become one of the best food-shopping blocks in Chinatown — shopping for residents, not for tourists.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Grand Street",
+        "Chrystie Street",
+        "Bowery"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "neutral",
+      "subject_tag": "food shopping block",
+      "physical_cues": [
+        {
+          "cue": "Fish and produce stores lining Grand Street between Chrystie and the Bowery",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Grand Street between Chrystie and Bowery is a New Chinatown food-shopping block for residents"
+      ],
+      "source_passage": "Walking along Grand Street between Chrystie Street and the Bowery, note the incredible array of fish and produce stores that line the street. This block in particular has become one of the best food shopping blocks in Chinatown. But note, it is shopping for residents—not for tourists.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bowery_hidden_history_big-onion-ten-historic-tours_dutch_farm_road_1637",
+      "city_name": "new_york",
+      "poi_name": "The Bowery",
+      "lens": "hidden_history",
+      "topic_slug": "dutch_farm_road_1637",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In 1637 the Bowery was created by New Amsterdam governor Willem Kieft to connect the distant Dutch farms of what we now call the East Village with the city, then south of Wall Street. Some historians claim the name derives from bowerij, the Dutch word for farm; others say it comes from de bowerie, the road to the farms. Either way, it linked the city to the countryside, and by 1776 the Bowery connected New York City all the way to Boston, Massachusetts.",
+      "duration_sec": 32,
+      "kid_friendly": "yes",
+      "entities": [
+        "Willem Kieft",
+        "New Amsterdam",
+        "East Village",
+        "Wall Street",
+        "Boston"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "bowery origin",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "bowerij",
+          "gloss": "the Dutch word for farm"
+        },
+        {
+          "phrase": "de bowerie",
+          "gloss": "the road to the farms"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Bowery created 1637 by governor Willem Kieft to connect Dutch farms to the city",
+        "Name from bowerij (farm) or de bowerie (road to the farms)",
+        "By 1776 connected NYC with Boston"
+      ],
+      "source_passage": "In 1637 the Bowery was created by New Amsterdam governor Willem Keift to connect the distant Dutch farms of what we now call the East Village with the city, which was south of Wall Street. Some historians claim that Bowery derives its name from bowerij, the Dutch word for farm, but others state it is from de bowerie, the road to the farms. By 1776, the Bowery connected New York City with Boston, Massachusetts.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [
+        {
+          "field": "governor name",
+          "from": "Willem Keift (source spelling)",
+          "to": "Willem Kieft (corrected in script_body)",
+          "reason": "Standard spelling is Kieft; source's 'Keift' is a typo. Two+ sources confirm.",
+          "source_urls": [
+            "https://en.wikipedia.org/wiki/Willem_Kieft"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bowery_dark_history_big-onion-ten-historic-tours_skid_row_saloons_arrests",
+      "city_name": "new_york",
+      "poi_name": "The Bowery",
+      "lens": "dark_history",
+      "topic_slug": "skid_row_saloons_arrests",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "During the mid-nineteenth century this bucolic roadway turned commercial and gained a reputation as New York's Skid Row — a place of saloons, sailors, homeless men, and activities the middle class condemned as unsavory. In 1884 more than a quarter of all the police arrests in Manhattan took place here. That same year there were eighty-two saloons on the Bowery, an average of more than six per block.",
+      "duration_sec": 28,
+      "kid_friendly": "no",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "skid row reputation",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1884 over a quarter of all Manhattan police arrests took place on the Bowery",
+        "82 saloons on the Bowery in 1884, over six per block"
+      ],
+      "source_passage": "this bucolic roadway became increasingly commercial and simultaneously gained a reputation for being New York's Skid Row, a place of saloons, sailors, homeless men, and a wide array of activities condemned as unsavory by the middle class. In 1884, more than a quarter of all the police arrests in Manhattan took place here. In that same year there were eighty-two saloons on the Bowery, an average of more than six per block.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bowery_social_change_big-onion-ten-historic-tours_el_train_divider_italian_jewish",
+      "city_name": "new_york",
+      "poi_name": "The Bowery",
+      "lens": "social_change",
+      "topic_slug": "el_train_divider_italian_jewish",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "In the early twentieth century the Bowery was a geographical divider — Little Italy to the west, the Jewish Lower East Side to the east. Between 1878 and 1955 an elevated train ran the length of the street. Before electrification, soot and burning embers falling from the engines made crossing under the tracks dangerous and unpleasant, and the El shrouded the Bowery in darkness, deepening its seedy, dingy atmosphere.",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "Little Italy",
+        "Jewish Lower East Side"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "elevated train divider",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bowery divided Little Italy (west) from Jewish LES (east)",
+        "Elevated train ran 1878-1955, soot and darkness made the street seedy"
+      ],
+      "source_passage": "In the early twentieth century, the Bowery was a geographical divider between Little Italy (to the west) and the Jewish Lower East Side (to the east). Not only was this a major commercial street, but between 1878 and 1955 an elevated train ran the length of the Bowery. Prior to electrification, the soot and burning embers falling from the engines made crossing under the tracks dangerous and unpleasant. Furthermore, the El tracks shrouded the Bowery in darkness, adding to the seedy and dingy atmosphere.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bowery_dark_history_big-onion-ten-historic-tours_hotel_providence_flophouse_cages",
+      "city_name": "new_york",
+      "poi_name": "The Bowery",
+      "lens": "dark_history",
+      "topic_slug": "hotel_providence_flophouse_cages",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "125 Bowery",
+      "beat_length_class": "mid",
+      "script_body": "The Hotel Providence on the southeast corner of Bowery and Grand, at 125 Bowery, is one of eight surviving Bowery flophouses. These private hotels emerged in the early 1870s; the largest, the Mills Hotel, had five hundred rooms and slept over a thousand men. For eight to fifteen dollars a night a male resident gets a four-by-eight-foot cubicle with a cot and a hanging light, sharing toilets and baths on each floor. The rooms are nicknamed cages because the walls do not reach the ceiling — just above the door jamb, the wall is replaced with a wire screen.",
+      "duration_sec": 38,
+      "kid_friendly": "no",
+      "entities": [
+        "Hotel Providence",
+        "Mills Hotel"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "somber",
+      "subject_tag": "flophouse cages",
+      "physical_cues": [
+        {
+          "cue": "Through the windows, the second-floor common space of the Hotel Providence with tables and chairs",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hotel Providence at 125 Bowery is one of eight surviving flophouses",
+        "Mills Hotel had 500 rooms, slept over 1,000 men",
+        "Cubicles are 4x8 ft with cot and hanging light; rooms called 'cages' for wire-screen tops"
+      ],
+      "source_passage": "The Hotel Providence stands on the southeast corner of Bowery and Grand Street, at 125Bowery. This is one of the eight surviving Bowery \"flophouses.\" These private hotels emerged on the Bowery in the early 1870s. The largest was the Mills Hotel on Bowery and Rivington Street, which had five hundred rooms and slept over one thousand men. Today, for $8to $15per night, a male resident can get a four-by-eight-foot cubicle with a cot and a hanging light. The rooms are nicknamed \"cages\" because the walls do not go to the ceiling. Just above the door jamb, the wall and ceiling are replaced with a wire screen.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_bowery_local_legends_big-onion-ten-historic-tours_steve_brodie_bridge_jump_saloon",
+      "city_name": "new_york",
+      "poi_name": "The Bowery",
+      "lens": "local_legends",
+      "topic_slug": "steve_brodie_bridge_jump_saloon",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "114 Bowery",
+      "beat_length_class": "anchor",
+      "script_body": "Across the Bowery from the Hotel Providence stood Steve Brodie's Saloon, at 114 Bowery. Brodie, a national champion racewalker, jumped from the Brooklyn Bridge in July 1886, collected a two-hundred-dollar bet for surviving the leap, and used the money to open his saloon here. On the wall behind the bar he painted a large image of himself falling between the bridge and the water. While a regular saloon, Brodie's quickly became a prime tourist spot: for a small consideration he would retell his story to visitors. Should anyone doubt his tale, he would point to the signed affidavit from the nearly dozen witnesses who saw his leap. A cloud of suspicion does remain — those who signed were members of Brodie's gang. For years after his death an old man would pretend to be Brodie and recount the tale, much to the delight of the tourists.",
+      "duration_sec": 60,
+      "kid_friendly": "yes",
+      "entities": [
+        "Steve Brodie",
+        "Brooklyn Bridge"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "playful",
+      "subject_tag": "Brodie bridge jump",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Steve Brodie's Saloon was at 114 Bowery",
+        "Brodie jumped from the Brooklyn Bridge July 1886, won a $200 bet, opened the saloon",
+        "Mural of his leap behind the bar; witnesses were his own gang members"
+      ],
+      "source_passage": "Across the Bowery from the Hotel Providence stood Steve Brodie's Saloon, at 114Bowery. Steve Brodie, a national champion racewalker, jumped from the Brooklyn Bridge in July 1886. He collected a $200bet for surviving his leap and used the money to open his saloon here. On the wall behind the bar he painted a large image of himself falling between the bridge and the water. While a regular saloon, Brodie's also quickly became a prime tourist spot. For a \"small consideration\" Brodie would retell his story to visitors. Should anyone not believe his tale, he would point to the signed affidavit from the nearly dozen witnesses who saw his leap. A cloud of suspicion does remain—those who signed were members of Brodie's gang. For years after Brodie's death, an old man would pretend to be Brodie and recount the tale, much to the delight of the tourists.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowery_savings_bank_building_historic_arch_big-onion-ten-historic-tours_stanford_white_landmark",
+      "city_name": "new_york",
+      "poi_name": "Bowery Savings Bank Building",
+      "lens": "historic_arch",
+      "topic_slug": "stanford_white_landmark",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "130 Bowery",
+      "beat_length_class": "mid",
+      "script_body": "Wrapped around the old Bowery Bank is the Bowery Savings Bank, built 1894 to 1895 and designed by Stanford White. The L-shaped building's street address is 130 Bowery, and it is one of the few landmarked buildings on the Lower East Side. The Bowery Savings Bank was created in 1834 by three prominent New York businessmen: Hamilton Fish, Peter C. Stuyvesant, and Anson Phelps. The original 1834 safe box is displayed in a small historical exhibit in the restored main banking room.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Stanford White",
+        "Hamilton Fish",
+        "Peter C. Stuyvesant",
+        "Anson Phelps"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Stanford White bank",
+      "physical_cues": [
+        {
+          "cue": "The L-shaped Bowery Savings Bank wrapping around the older Bowery Bank at 130 Bowery",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bowery Savings Bank built 1894-95, designed by Stanford White, L-shaped at 130 Bowery, a landmark",
+        "Bank created 1834 by Hamilton Fish, Peter C. Stuyvesant, Anson Phelps",
+        "Original 1834 safe box displayed in the restored banking room"
+      ],
+      "source_passage": "Wrapped around the Bowery Bank is the Bowery Savings Bank (1894–95, designed by Stanford White). The street address of the L-shaped Savings Bank is 130Bowery and is one of the few landmarked buildings on the Lower East Side. The Bowery Savings Bank was created in 1834by three prominent New York businessmen: Hamilton Fish, Peter C. Stuyvesant, and Anson Phelps. The original 1834safe box is displayed as part of a small historical exhibit in the restored main banking room.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_di_palos_fine_foods_historic_cuisine_big-onion-ten-historic-tours_puglia_cheese_1910",
+      "city_name": "new_york",
+      "poi_name": "Di Palo's Fine Foods",
+      "lens": "historic_cuisine",
+      "topic_slug": "puglia_cheese_1910",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Di Palo's Fine Foods, on the northeast corner of Mott and Grand, is one of the few Italian stores left in the midst of New Chinatown. It was opened by Savino Di Palo in 1910 and moved to this corner in 1925, where it has remained ever since. The family comes from Puglia, a rural region known for its dairy farmers and cheese-makers, and the shop still makes its own mozzarella and other cheeses. The low marble counters are reminiscent of the Italian kitchen table — designed for conversation as well as commerce — and the entire front of the store is kept at cheese-curing temperature.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Savino Di Palo",
+        "Louis Di Palo",
+        "Puglia"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Italian cheese shop",
+      "physical_cues": [
+        {
+          "cue": "Low marble counters at the front of the shop, kept at cheese-curing temperature",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Di Palo's opened by Savino Di Palo in 1910, moved to Mott and Grand corner in 1925",
+        "Family from Puglia; shop makes its own mozzarella",
+        "Front kept at cheese-curing temperature"
+      ],
+      "source_passage": "Di Palo's Fine Foods on the northeast corner of Mott and Grand is one of the few remaining Italian stores ... in the midst of New Chinatown. DiPalo's was opened by Savino Di Palo, the great-grandfather of the current owner, in 1910. In 1925it moved to its present corner, where it has remained ever since. The Di Palo family comes from the Puglia province in Italy. Savino brought his trade to America and the family shop still makes its own mozzarella and other cheeses. The low marble counters are reminiscent of the Italian kitchen table and are designed for conversation as well as commerce, and the entire front of the store is maintained at cheese-curing temperature.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_little_italy_social_change_big-onion-ten-historic-tours_sons_of_italy_founded_1905",
+      "city_name": "new_york",
+      "poi_name": "Little Italy",
+      "lens": "social_change",
+      "topic_slug": "sons_of_italy_founded_1905",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "203 Grand Street",
+      "beat_length_class": "mid",
+      "script_body": "At 203 Grand Street, on June 22, 1905, Dr. Vincent Sellaro founded the Order of the Sons of Italy in America. Sellaro wanted an organization with a dual mission: to encourage Italian immigrants to work together despite their provincial origins, and to preserve Italian languages and customs in America. The Sons of Italy grew into a national umbrella organization bringing together more than 750 Italian social clubs, family societies, and fraternal orders — much like the Chinese Consolidated Benevolent Association and the Irish Ancient Order of Hibernians.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Vincent Sellaro",
+        "Order of the Sons of Italy in America",
+        "Chinese Consolidated Benevolent Association",
+        "Ancient Order of Hibernians"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "Sons of Italy founding",
+      "physical_cues": [
+        {
+          "cue": "Storefront at 203 Grand Street, diagonally across Mott Street",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Order of the Sons of Italy founded by Dr. Vincent Sellaro at 203 Grand Street on June 22, 1905",
+        "Grew to over 750 affiliated clubs and societies"
+      ],
+      "source_passage": "Diagonally across Mott Street, at 203Grand Street, on June 22, 1905, Dr. Vincent Sellaro founded the Order of the Sons of Italy in America. Sellaro sought to create an organization that fulfilled a dual mission: first, to encourage Italian immigrants to work together despite their provincial or local origins; second, to maintain the Italian languages and customs in America. The Sons of Italy has grown into a national umbrella organization, bringing together more than 750different Italian social clubs, family societies, and fraternal orders.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_little_italy_social_change_big-onion-ten-historic-tours_four_million_italians_migrated_out",
+      "city_name": "new_york",
+      "poi_name": "Little Italy",
+      "lens": "social_change",
+      "topic_slug": "four_million_italians_migrated_out",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Between 1880 and 1920, nearly 4.1 million Italian immigrants came to the United States — no other ethnic group in American history has sent so many in such a short period. Manhattan had fewer than twenty thousand Italian residents in 1880, but by 1930 more than a million New Yorkers were of Italian descent. Most came from the rural south, driven out by extreme poverty, heavy taxation, a population surge, and recurring agricultural crises. Today more than eighty percent of the residents of what used to be Little Italy are Asian; the Italians, like the Irish and Germans before them, have migrated away.",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Italian migration",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "contadini",
+          "gloss": "landless farmers"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Nearly 4.1 million Italians immigrated to the US 1880-1920",
+        "Manhattan had under 20,000 Italians in 1880; over 1 million NYers of Italian descent by 1930",
+        "Today over 80% of former Little Italy is Asian"
+      ],
+      "source_passage": "Between 1880 and 1920, nearly 4.1 million Italian immigrants came to the United States. No other ethnic group in American history has sent so many in such a short period of time. While Manhattan had fewer than twenty thousand Italian residents in 1880, by 1930 more than 1 million New Yorkers were of Italian descent. Today, more than 80 percent of the residents of what used to be Little Italy are Asian. \"push\" factors influenced millions of landless farmers—contadini—to leave.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_mulberry_street_historic_cuisine_big-onion-ten-historic-tours_banca_stabile_1865_bank",
+      "city_name": "new_york",
+      "poi_name": "Mulberry Street",
+      "lens": "hidden_history",
+      "topic_slug": "banca_stabile_1865_bank",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "189 Grand Street",
+      "beat_length_class": "mid",
+      "script_body": "Banca Stabile, at 189 Grand Street on the southwest corner of Grand and Mulberry, is an 1865 Neapolitan family bank that served the varied needs of Italian immigrants. The tin ceilings, terrazzo floors, large vault, and brass tellers' cages have all been preserved. Beyond banking, Stabile provided currency exchange, translation services, and steamship-ticket sales. Look inside at the cashiers' cages, still labeled tickets, money exchange, and foreign transfers.",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "Banca Stabile"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "immigrant bank",
+      "physical_cues": [
+        {
+          "cue": "Brass tellers' cages inside, still labeled 'tickets,' 'money exchange,' and 'foreign transfers'",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Banca Stabile",
+          "gloss": "Stabile Bank, a Neapolitan family bank"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Banca Stabile at 189 Grand Street is an 1865 Neapolitan family bank",
+        "Preserved tin ceilings, terrazzo floors, vault, brass tellers' cages",
+        "Provided currency exchange, translation, steamship tickets"
+      ],
+      "source_passage": "Banca Stabile (189Grand Street at the southwest corner of Grand and Mulberry Streets) is an 1865Neapolitan family bank that served the varied needs of the Italian immigrants. The tin ceilings, terrazzo floors, large vault, and brass tellers' cages have all been preserved. Beyond its role as a bank, Stabile also provided currency exchange, translation services, and steamship-ticket sales. Look inside at the cashiers' cages, which are still labeled \"tickets,\" \"money exchange,\" and \"foreign transfers.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_mulberry_street_historic_arch_big-onion-ten-historic-tours_paolucci_van_rensselaer_house",
+      "city_name": "new_york",
+      "poi_name": "Mulberry Street",
+      "lens": "historic_arch",
+      "topic_slug": "paolucci_van_rensselaer_house",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "149 Mulberry Street",
+      "beat_length_class": "seasoning",
+      "script_body": "The oldest building in this area now houses Paolucci's Restaurant at 149 Mulberry. Built in 1816 as the Van Rensselaer residence, it is a perfect early-nineteenth-century merchant house: shop on the first floor, storage in the basement, family on the upper floors, and servants or slaves in the attic. In the 1880s it became the Italian Free Library.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Paolucci's Restaurant",
+        "Van Rensselaer residence",
+        "Italian Free Library"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest merchant house",
+      "physical_cues": [
+        {
+          "cue": "Facade of the 1816 merchant house at 149 Mulberry, now Paolucci's Restaurant",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "149 Mulberry built 1816 as the Van Rensselaer residence, oldest building in the area",
+        "Became the Italian Free Library in the 1880s"
+      ],
+      "source_passage": "The oldest building in this area now houses Paolucci's Restaurant at 149Mulberry, between Grand and Hester Streets. Originally built as the Van Rensselaer residence in 1816, it is a perfect example of an early nineteenth-century merchant house. In the 1880s it became the Italian Free Library, with a collection of Italian-language books for neighborhood residents.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_little_italy_local_legends_big-onion-ten-historic-tours_san_gennaro_blood_miracle_feast",
+      "city_name": "new_york",
+      "poi_name": "Little Italy",
+      "lens": "sacred_traditions",
+      "topic_slug": "san_gennaro_blood_miracle_feast",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "109 Mulberry Street",
+      "beat_length_class": "anchor",
+      "script_body": "The Franciscan Fathers who care for the Shrine of San Gennaro, Saint Januarius, keep a rectory at 109 Mulberry Street, with the Church of the Most Precious Blood entered from 113 Baxter Street behind it. San Gennaro, the patron saint of Naples, was martyred by the Romans at Pozzuoli in A.D. 305; the legend says an old couple gathered his blood after his beheading and preserved it in a vial. That blood is said to liquify twice a year — the miracle of San Gennaro — on the first Sunday in May and on September 19. Two thousand years later, in 1917, four Neapolitan businessmen on Mulberry Street decided to celebrate Gennaro's martyrdom, and a great New York tradition was born. Every year for ten days in mid-September, Mulberry Street from Canal up to Houston is closed for the Feast of San Gennaro. Although most of the feast today is sausage and zeppole stands, a bust of the saint is paraded through the streets by the faithful; between parades it sits in the window of the Mulberry Street Cigar Company at 140 Mulberry.",
+      "duration_sec": 62,
+      "kid_friendly": "yes",
+      "entities": [
+        "San Gennaro",
+        "Shrine of San Gennaro",
+        "Church of the Most Precious Blood",
+        "Mulberry Street Cigar Company"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "reverent",
+      "subject_tag": "San Gennaro feast",
+      "physical_cues": [
+        {
+          "cue": "Plaque on the gate into the rectory courtyard at 109 Mulberry Street",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "zeppole",
+          "gloss": "fried dough pastries"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Shrine of San Gennaro rectory at 109 Mulberry; Church of Most Precious Blood at 113 Baxter",
+        "San Gennaro martyred at Pozzuoli A.D. 305; blood said to liquify first Sunday in May and Sept 19",
+        "Feast of San Gennaro began 1917, ten days each mid-September",
+        "Saint's bust kept at Mulberry Street Cigar Company, 140 Mulberry"
+      ],
+      "source_passage": "The Franciscan Fathers who care for the Shrine of San Gennaro (Saint Januarius) have a rectory at 109Mulberry Street, just north of Canal Street. San Gennaro, the patron saint of Naples, was martyred by the Romans at Pozzuoli in a.d. 305. After his beheading, the legend goes, his blood was gathered by an old couple and preserved in a vial. This blood liquifies twice a year—the miracle of San Gennaro—on the first Sunday in May and on September 19. Two thousand years later, in 1917, four Neapolitan businessmen on Mulberry Street decided to celebrate Gennaro's martyrdom, and a great New York tradition was born. Every year for ten days in mid-September, Mulberry Street from its southern end at Canal Street all the way up to Houston Street is closed for the Feast of San Gennaro. In between parades, the saint's bust sits in the window of the Mulberry Street Cigar Company at 140Mulberry.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_little_italy_social_change_big-onion-ten-historic-tours_vietnam_plaque_vietnamese_refugees",
+      "city_name": "new_york",
+      "poi_name": "Little Italy",
+      "lens": "social_change",
+      "topic_slug": "vietnam_plaque_vietnamese_refugees",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "109 Mulberry Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Look at the plaque on the gate into the rectory courtyard at 109 Mulberry: it commemorates Private First Class Frank Vallone, United States Marine Corps, who died fighting in Vietnam in 1968. Today the Church of the Most Precious Blood is home to the Co Bac Si Thuong Truc, the Refugee Social Services, serving the Vietnamese Catholic community — in Private Vallone and the refugee center are writ the rapid changes of the Lower East Side.",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Frank Vallone",
+        "Church of the Most Precious Blood",
+        "Co Bac Si Thuong Truc"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "somber",
+      "subject_tag": "Vietnamese refugees",
+      "physical_cues": [
+        {
+          "cue": "Plaque on the rectory courtyard gate at 109 Mulberry commemorating PFC Frank Vallone",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Co Bac Si Thuong Truc",
+          "gloss": "the Refugee Social Services"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Plaque at 109 Mulberry commemorates PFC Frank Vallone, killed in Vietnam 1968",
+        "Church of the Most Precious Blood now houses the Co Bac Si Thuong Truc Refugee Social Services for Vietnamese Catholics"
+      ],
+      "source_passage": "Look at the plaque on the gate into the rectory courtyard: it commemorates the death of Private First Class Frank Vallone, United States Marine Corps, who died fighting in Vietnam in 1968. Today the Church of the Most Precious Blood is home to the Co Bac Si Thuong Truc, or the Refugee Social Services, and the Vaco Youth Center, serving the community of Vietnamese Catholic immigrants. In Private Vallone and the Co Bac Si Thuong Truc are writ the rapid changes that take place in the Lower East Side.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_columbus_park_dark_history_big-onion-ten-historic-tours_five_points_collect_pond_paradise",
+      "city_name": "new_york",
+      "poi_name": "Columbus Park",
+      "lens": "dark_history",
+      "topic_slug": "five_points_collect_pond_paradise",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "Columbus Park sits atop the former Five Points district and the old Collect Pond. Before 1790 this was a beautiful freshwater pond ringed by low hills and the cottages of wealthy New Yorkers. In 1790 the chief landowner, Sarah Delancey, daughter of colonial governor James Delancey, leased much of it to a consortium of forty-six butchers, who set up a slaughter yard along the shore. Bone-boiling and leather-tanning shops followed, rapidly polluting the pond. The city drained it by way of Canal Street in 1805, leveled the surrounding hills, filled the pond, and renamed the area Paradise Square. But the Collect had been fed by underground springs, and with the constant dampness the ground decayed. The upper-middle-class residents moved out to Greenwich Village and St. John's Park, replaced by poor Irish Catholic immigrants. Paradise Square became Five Points — named for the five-pointed intersection where Park (now Mosco), Worth, and Orange (now Baxter) Streets met, at the southwestern tip of today's Columbus Park.",
+      "duration_sec": 66,
+      "kid_friendly": "yes",
+      "entities": [
+        "Five Points",
+        "Collect Pond",
+        "Sarah Delancey",
+        "James Delancey",
+        "Paradise Square",
+        "Greenwich Village",
+        "St. John's Park"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "Five Points origin",
+      "physical_cues": [
+        {
+          "cue": "The southwestern tip of Columbus Park, the exact site of the Five Points intersection",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Columbus Park sits on the former Five Points and Collect Pond",
+        "Sarah Delancey leased land to 46 butchers in 1790; slaughter and tanning polluted the pond",
+        "Pond drained 1805, renamed Paradise Square, which decayed into Five Points",
+        "Five Points named for intersection of Park (Mosco), Worth, and Orange (Baxter), at the park's SW tip"
+      ],
+      "source_passage": "Columbus Park sits atop the former Five Points District and the old Collect Pond. Prior to 1790, the site immediately to the west was a beautiful freshwater pond. In 1790the primary landowner, Sarah Delancey, daughter of British colonial governor James Delancey, leased much of her property to a consortium of forty-six butchers. These butchers established a slaughter yard along the shore of the Collect. Bone-boiling and leather-tanning shops soon followed, all contributing to the rapid pollution of the pond. This early nineteenth-century environmental hazard was drained by the City of New York along the aforementioned Canal in 1805. city government hired workers to level the surrounding hills and fill the pond, extended streets, and renamed the area Paradise Square. The upper-middle-class residents of the area began moving to the newer neighborhoods of Greenwich Village and St. John's Park in today's TriBeCa. This outflow of people coincided with an influx of poor Irish Catholic immigrants. Paradise Square had become Five Points, so called because three streets—Park (now Mosco), Worth, and Orange (now Baxter)—came together forming a five-pointed intersection. The exact location of the intersection that gave the neighborhood its name is at the southwestern tip of Columbus Park.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_columbus_park_hidden_history_big-onion-ten-historic-tours_jacob_riis_mulberry_bend",
+      "city_name": "new_york",
+      "poi_name": "Columbus Park",
+      "lens": "hidden_history",
+      "topic_slug": "jacob_riis_mulberry_bend",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Built between 1892 and 1894, Columbus Park was the first open space designed and built for this neighborhood. The person most responsible was Jacob Riis, the Danish American photographer and writer who chronicled the lives of poor New Yorkers. To create it, the city destroyed an entire block of tenements by right of eminent domain. First called Mulberry Bend Park, it was rechristened Columbus Park by Italian residents in 1911. Note how Mulberry Street curves here — this sharp crook is the infamous Mulberry Bend, which residents and newspapers called Ragpickers' Row, Bandits' Roost, and Thieves' Alley.",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jacob Riis",
+        "Mulberry Bend Park",
+        "Mulberry Bend"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Riis Mulberry Bend",
+      "physical_cues": [
+        {
+          "cue": "The sharp crook of Mulberry Street alongside the park — the infamous Mulberry Bend",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Columbus Park built 1892-94, championed by Jacob Riis",
+        "First called Mulberry Bend Park, renamed Columbus Park by Italian residents 1911",
+        "Mulberry Bend nicknamed Ragpickers' Row, Bandits' Roost, Thieves' Alley"
+      ],
+      "source_passage": "Diagonally across the street and stretching southward is Columbus Park. Built between 1892and 1894, this park was the first open space designed and built for the neighborhood. The person most responsible for its creation was Jacob Riis, the Danish American photographer and writer. The park was first called Mulberry Bend Park, but Italian residents rechristened it Columbus Park in 1911. This sharp crook is the infamous Mulberry Bend, an area with individual tenements that both residents and contemporary newspapers named Ragpickers' Row, Bandits' Roost, and Thieves' Alley.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_mulberry_street_dark_history_big-onion-ten-historic-tours_cuneo_padrone_system_bank",
+      "city_name": "new_york",
+      "poi_name": "Mulberry Street",
+      "lens": "dark_history",
+      "topic_slug": "cuneo_padrone_system_bank",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "28 Mulberry Street",
+      "beat_length_class": "mid",
+      "script_body": "On the south corner of Mosco and Mulberry, at 28 Mulberry, a building with marble pillars and a terra-cotta eagle was Antonio Cuneo's 1881 bank. Cuneo, a Piedmontese immigrant who arrived in 1855, began selling nuts and fruit from a pushcart and slowly built a real estate and banking empire. In 1887 a U.S. congressional investigation found the bank operated under the padrone system — a labor arrangement in which the bank, for a fee, ran an agency in Naples coordinating prepaid steamer tickets and requests for underpaid labor. The system, outlawed in 1885 by the Contract Labor Law, brought immigrants in to undercut American wages.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antonio Cuneo",
+        "Wah Wing Sang Funeral Corporation",
+        "Contract Labor Law"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "padrone labor bank",
+      "physical_cues": [
+        {
+          "cue": "Marble pillars and a terra-cotta eagle over the entrance at 28 Mulberry, now the Wah Wing Sang Funeral Corporation",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "padrone",
+          "gloss": "a labor arrangement in which the bank coordinated prepaid steamer tickets and underpaid labor for a fee"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "28 Mulberry (marble pillars, terra-cotta eagle) was Antonio Cuneo's 1881 bank",
+        "Cuneo arrived 1855, built empire from pushcart fruit",
+        "1887 congressional probe found padrone system; outlawed 1885 by Contract Labor Law"
+      ],
+      "source_passage": "On the south corner of Mosco and Mulberry Streets, at 28Mulberry, is a building with marble pillars and a terra-cotta eagle as entrance ornamentation. Currently the Wah Wing Sang Funeral Corporation, this was Antonio Cuneo's 1881bank. Cuneo, a Piedmontese immigrant, arrived in America in 1855. He began selling nuts and fruit from a pushcart and slowly built a real estate and banking empire. In 1887a United States congressional investigation found that the bank operated under the padrone system, a labor arrangement where the bank, for a fee, operated an agency in Naples that coordinated prepaid steamer tickets and requests for underpaid labor. This system, outlawed in 1885by the Contract Labor Law, brought immigrants into the country to undercut America's industrial and unskilled wages.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_columbus_park_dark_history_big-onion-ten-historic-tours_cow_bay_free_black_neighborhood",
+      "city_name": "new_york",
+      "poi_name": "Columbus Park",
+      "lens": "social_change",
+      "topic_slug": "cow_bay_free_black_neighborhood",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "At the southern end of the block, where Mulberry meets Worth, was the Cow Bay section of Five Points — the largest free-black neighborhood in Manhattan in the early nineteenth century. In 1805, nearly 1,200 of the 1,960 free blacks in Manhattan lived in this general area, and by 1825 the community had built seven churches. Historians debate whether the free blacks and Irish immigrants coexisted peacefully; newer research finds they not only shared the street but even shared houses, and historian Graham Hodges reports a dozen intermarried couples living here in the late 1860s.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cow Bay",
+        "Five Points",
+        "Graham Hodges"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Cow Bay community",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cow Bay (Mulberry at Worth) was the largest free-black neighborhood in Manhattan in the early 1800s",
+        "1805: nearly 1,200 of 1,960 free blacks lived here; seven churches built by 1825",
+        "Graham Hodges reports a dozen intermarried Irish-black couples in the late 1860s"
+      ],
+      "source_passage": "where Mulberry intersects Worth, was the Cow Bay section of Five Points. Cow Bay was the largest free-black neighborhood in Manhattan in the early nineteenth century. In 1805, nearly 1,200out of the 1,960free blacks in Manhattan lived in this general area. By 1825the community had built seven churches. Newer research, however, indicates that they not only coexisted on the street but even shared houses. Historian Graham Hodges reports that a dozen intermarried couples were living here in the late 1860s.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_church_of_the_transfiguration_historic_worship_big-onion-ten-historic-tours_lutheran_to_catholic_layers",
+      "city_name": "new_york",
+      "poi_name": "Church of the Transfiguration",
+      "lens": "historic_worship",
+      "topic_slug": "lutheran_to_catholic_layers",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "29 Mott Street",
+      "beat_length_class": "mid",
+      "script_body": "The Church of the Transfiguration at 29 Mott Street was originally built in 1801 as the English Lutheran First Church of Zion, a Georgian-style church serving the farmers of the area. In 1827, as the neighborhood became Irish, the Lutheran congregation leased the building to the Catholic Church, which bought it outright in 1853. Look carefully at the facade and you'll notice different stone was used for the church and the steeple — the steeple was added after 1853.",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "First Church of Zion"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "church layered history",
+      "physical_cues": [
+        {
+          "cue": "Different stone on the church body and the later steeple on the facade",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "29 Mott built 1801 as the Lutheran First Church of Zion",
+        "Leased to the Catholic Church in 1827, bought in 1853",
+        "Steeple of different stone added after 1853"
+      ],
+      "source_passage": "walk a few feet to your left to see the Church of the Transfiguration at 29Mott Street. Originally built in 1801as the English Lutheran First Church of Zion, this Georgian-style church served the farmers of the surrounding area. In 1827, as the neighborhood became increasingly Irish, the Lutheran congregation leased their building to the Catholic Church, which ultimately bought it in 1853. If you look carefully at the facade, you will notice that different stone was used for the church and the steeple. The steeple was added after 1853.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_church_of_the_transfiguration_famous_residents_big-onion-ten-historic-tours_valera_caruso_cabrini",
+      "city_name": "new_york",
+      "poi_name": "Church of the Transfiguration",
+      "lens": "famous_residents",
+      "topic_slug": "valera_caruso_cabrini",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "29 Mott Street",
+      "beat_length_class": "anchor",
+      "script_body": "The parish was founded in 1827 by Padre Félix Varela, New York's first Spanish-speaking priest. Born in Havana in 1788, Varela was an outspoken voice for Cuban independence; after his expulsion from Cuba he became a leader of this church and its Irish parishioners. The plaque calls him Father to needy Irish immigrants. By the early 1880s the Irish began migrating out and Italians used the basement for services — the two congregations worshiped the same God but in styles different enough that they didn't worship together. In 1902 an Italian priest, Father Cappo, moved the Italian community upstairs to sit with the Irish, and this became the church of Enrico Caruso, Jimmy Durante, and Mother Cabrini, the first naturalized American saint. By the 1960s the congregation had become increasingly Chinese; today it is almost exclusively so, with Mass given in Cantonese, Mandarin, and English.",
+      "duration_sec": 64,
+      "kid_friendly": "yes",
+      "entities": [
+        "Félix Varela",
+        "Father Cappo",
+        "Enrico Caruso",
+        "Jimmy Durante",
+        "Mother Cabrini"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "parish notables",
+      "physical_cues": [
+        {
+          "cue": "The plaque on the church calling Varela 'Father to needy Irish immigrants'",
+          "direction": "here",
+          "feature_type": "plaque"
+        },
+        {
+          "cue": "The Mass schedule posted outside, listing Cantonese, Mandarin, and English",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Padre",
+          "gloss": "Father (priest)"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Parish founded 1827 by Padre Félix Varela, NY's first Spanish-speaking priest, born Havana 1788",
+        "Plaque calls Varela 'Father to needy Irish immigrants'",
+        "1902 Father Cappo united Italian and Irish congregations; church of Caruso, Durante, Mother Cabrini",
+        "Today almost exclusively Chinese; Mass in Cantonese, Mandarin, English"
+      ],
+      "source_passage": "The parish was founded in 1827on Ann Street in Lower Manhattan by Padre Félix Francisco José Maria de la Concepcion Morales y Valera, New York's first Spanish-speaking priest. Born in 1788in Havana, Cuba, Valera was an outspoken voice for Cuban independence from Spain. The plaque on the church calls Valera \"Father to needy Irish immigrants.\" In 1902an Italian priest, Father Cappo, moved the Italian community upstairs into the main chapel to sit with the Irish. With Italian immigration, this became the church of Enrico Caruso, Jimmy Durante, and Mother Cabrini, the first naturalized American saint. By the 1960s the congregation had become increasingly Chinese; today the congregation is almost exclusively Chinese. Mass is given in Cantonese, Mandarin, and English.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [
+        {
+          "field": "priest surname",
+          "from": "Valera (source spelling)",
+          "to": "Varela (used in script_body)",
+          "reason": "Standard spelling of Father Félix Varela; source consistently writes 'Valera' (typo). Multiple sources confirm.",
+          "source_urls": [
+            "https://en.wikipedia.org/wiki/F%C3%A9lix_Varela"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_social_change_big-onion-ten-historic-tours_exclusion_act_bachelor_society",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "social_change",
+      "topic_slug": "exclusion_act_bachelor_society",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "Of all the immigrant groups that passed through the Lower East Side, the Chinese have had the longest continuous presence — a small group of sailors lived here as early as 1850, and by 1859 the New York Times estimated some 150 Chinese in the district. After the transcontinental railroad's completion in 1869 and rising anti-Chinese nativism, Chinese immigrants moved to cities, and Mott, Pell, and Doyers Streets became home to two thousand Chinese within a decade. America's anti-Chinese bigotry culminated in the Chinese Exclusion Act of 1882 — the Chinese became the first and only ethnic group excluded from admission and denied citizenship. Because the laborers already here could not bring their wives, the result was a bachelor society: in 1910 the New York ratio of Chinese young men to young women aged fifteen to twenty-one was 3,961 to 100. The act was finally revoked in 1943, and after the Immigration Act of 1965 the neighborhood's Chinese population exploded from 11,000 in 1960 to nearly 150,000 by 1995.",
+      "duration_sec": 72,
+      "kid_friendly": "yes",
+      "entities": [
+        "Chinese Exclusion Act",
+        "New York Times",
+        "Immigration Act of 1965"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "factoid",
+      "emotional_register": "somber",
+      "subject_tag": "Chinese exclusion",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Chinese present since 1850; ~150 by 1859 per NYT",
+        "Two thousand on Mott, Pell, Doyers within a decade after the 1869 railroad",
+        "Chinese Exclusion Act 1882; only group excluded and denied citizenship",
+        "1910 male-to-female ratio 3,961:100 (bachelor society); act revoked 1943",
+        "Population 11,000 (1960) to ~150,000 (1995) after 1965 Immigration Act"
+      ],
+      "source_passage": "the Chinese have had the longest continuous presence. A small group of Chinese, predominantly sailors, lived here as early as 1850. In 1859, the New York Times estimated that some 150 Chinese lived in the district. Mott, Pell, and Doyers Streets became home to two thousand Chinese within a decade. America's anti-Chinese bigotry culminated in the passing of the Chinese Exclusion Act in 1882. With this law, the Chinese became the first and the only ethnic group to be excluded from admission into, and denied citizenship of, this country. the ratio of Chinese young men between the ages of fifteen and twenty-one to Chinese young women of the same age range was 3,961 to 100 in 1910. The United States revoked the Chinese Exclusion Act in 1943. the Chinese population increased from 11,000 in 1960 to nearly 150,000 by 1995.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_hidden_history_big-onion-ten-historic-tours_sun_yat_sen_kaoshen_club",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "hidden_history",
+      "topic_slug": "sun_yat_sen_kaoshen_club",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "12 Mott Street",
+      "beat_length_class": "mid",
+      "script_body": "On the third floor of 12 Mott Street, south of the Church of the Transfiguration, was the former New York headquarters of the Kaoshen — High Mountain — Club, a secret political organization founded by Dr. Sun Yat Sen in 1895. This was the local chapter of Sun's secret revolutionary party, the Hsing Chung Hui, which helped overthrow the Chinese emperor in 1911. After a life as a revolutionary, Sun became the first president of the Republic of China — but only for a month. A junior high school on Hester Street is named for him.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sun Yat Sen",
+        "Kaoshen Club",
+        "Hsing Chung Hui",
+        "Republic of China"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "Sun Yat Sen revolution",
+      "physical_cues": [
+        {
+          "cue": "The third floor of 12 Mott Street, south of the Church of the Transfiguration",
+          "direction": "up",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Kaoshen",
+          "gloss": "High Mountain"
+        },
+        {
+          "phrase": "Hsing Chung Hui",
+          "gloss": "Sun Yat Sen's secret revolutionary party"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "12 Mott St third floor was the Kaoshen (High Mountain) Club, founded by Sun Yat Sen 1895",
+        "Local chapter of the Hsing Chung Hui, which helped overthrow the emperor in 1911",
+        "Sun became first president of the Republic of China for only a month"
+      ],
+      "source_passage": "On the third floor of the building at 12Mott Street, south of the Church of the Transfiguration, was the former New York headquarters of the Kaoshen (High Mountain) Club, a secret political organization founded by Dr. Sun Yat Sen in 1895. This was the local chapter of Sun's secret revolutionary party, the Hsing Chung Hui, which helped overthrow the Chinese emperor in 1911. Sun went on to become the first president of the Republic of China, but only for a month. A junior high school on Hester Street is named for him.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_historic_cuisine_big-onion-ten-historic-tours_quong_yuen_shing_general_store",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "historic_cuisine",
+      "topic_slug": "quong_yuen_shing_general_store",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "32 Mott Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Across from the Church of the Transfiguration, at 32 Mott, is Quong Yuen Shing & Co., the Mott Street General Store, founded by the Lee family in 1891. Originally a grocery, it is the oldest continuously operating shop in Chinatown — in the early days it also served as post office, meeting place, message center, and bank, and it keeps its original interior and exterior.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Quong Yuen Shing & Co.",
+        "Lee family"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest Chinatown store",
+      "physical_cues": [
+        {
+          "cue": "The original interior and exterior of the Mott Street General Store at 32 Mott",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Quong Yuen Shing & Co. at 32 Mott founded by the Lee family 1891, oldest continuously operating Chinatown shop",
+        "Once served as post office, meeting place, message center, bank"
+      ],
+      "source_passage": "Across the street from the Church of the Transfiguration, at 32Mott, is Quong Yuen Shing & Co., (also known as the Mott Street General Store). This store was founded by the Lee family in 1891. Originally a grocery, it is the oldest continuously operating shop in Chinatown. In the early days of Chinatown it served as a post office, meeting place, message center, bank, and, of course, store. The store has maintained its original interior and exterior.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_social_change_big-onion-ten-historic-tours_ccba_benevolent_association",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "social_change",
+      "topic_slug": "ccba_benevolent_association",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "62 Mott Street",
+      "beat_length_class": "mid",
+      "script_body": "For Chinatown, the umbrella organization overseeing many of the social groups is the Zhonghua Gong Suo — the New York Chinese Consolidated Benevolent Association, or CCBA — at 62 Mott Street, with the Taiwanese flag flying from the roof. Founded in 1883 in response to the Chinese Exclusion Act, it served as spokesperson and advocate for the community, settled disputes among Chinese organizations, hired lawyers to defend Chinese in court, and ran social-welfare programs. For a long time it was seen as the informal government of the Chinese community, binding together more than sixty family and fraternal associations.",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Chinese Consolidated Benevolent Association",
+        "Chinese Exclusion Act"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "CCBA government",
+      "physical_cues": [
+        {
+          "cue": "The Taiwanese flag flying from the roof of the CCBA building at 62 Mott Street",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Zhonghua Gong Suo",
+          "gloss": "the New York Chinese Consolidated Benevolent Association"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "CCBA (Zhonghua Gong Suo) at 62 Mott, Taiwanese flag on roof",
+        "Founded 1883 in response to the Chinese Exclusion Act",
+        "Seen as informal government binding 60+ family and fraternal associations"
+      ],
+      "source_passage": "the umbrella organization that oversees many of the various social organizations is the Zhonghua Gong Suo—the New York Chinese Consolidated Benevolent Association (CCBA)—at 62Mott Street, with the Taiwanese flag flying from the roof. It was founded in 1883in response to the Chinese Exclusion Act. The CCBA served as the spokesperson and advocate for the community, settled disputes among the Chinese organizations, collected funds to hire lawyers to defend the interests of Chinese in court, and sponsored various social welfare programs. For a long time the CCBA was seen as the \"informal government\" of the Chinese community, bringing together more than sixty different family and fraternal associations.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_local_legends_big-onion-ten-historic-tours_sun_wui_pagoda_symbolism",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "local_legends",
+      "topic_slug": "sun_wui_pagoda_symbolism",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "24 Pell Street",
+      "beat_length_class": "mid",
+      "script_body": "At No. 24 Pell Street stands the former Sun Wui Association, the last wooden pagoda building in Chinatown and a great example of symbolism in Chinatown architecture. The roof is a pagoda topped with two fish — symbols of good luck and abundance, since the word for fish in many Chinese languages sounds like the one for profit or surplus. Its colors are red, gold, and green: red for good luck, gold for money or wealth, green for growth and flowering. Many signs in Chinatown combine these three traditional colors.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sun Wui Association"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "pagoda symbolism",
+      "physical_cues": [
+        {
+          "cue": "The pagoda roof topped with two fish at No. 24 Pell Street, in red, gold, and green",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "No. 24 Pell is the former Sun Wui Association, last wooden pagoda in Chinatown",
+        "Roof has two fish (luck/abundance); colors red (luck), gold (wealth), green (growth)"
+      ],
+      "source_passage": "Further along Pell Street, at No. 24, is the former Sun Wui Association, the last wooden pagoda building in Chinatown. The roof is a pagoda with two fish, symbols of good luck and abundance. (The word for fish in many Chinese languages is the same as the one for profit or surplus.) The colors are red, gold, and green. Red is a symbol of good luck; gold represents money or wealth; and green stands for growth and flowering. Many signs in Chinatown are a combination of these three traditional colors.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_dark_history_big-onion-ten-historic-tours_hip_sing_tong_two_sides",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "dark_history",
+      "topic_slug": "hip_sing_tong_two_sides",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "16 Pell Street",
+      "beat_length_class": "mid",
+      "script_body": "The Hip Sing Tong, the most powerful individual fraternal organization in Chinatown, is at 16 Pell Street, in the building labeled Pell Street Social Club. Tong means association, like wui, but it is a charged word carrying insinuations of criminal activity. These secret societies began arriving in New York in the early 1880s to protect their members' business interests. Over the years numerous tongs have been investigated and indicted for extortion, prostitution, and gambling — yet they also serve community functions. The Hip Sing Tong, for example, runs a federally insured credit union and offers business loans and student scholarships.",
+      "duration_sec": 38,
+      "kid_friendly": "no",
+      "entities": [
+        "Hip Sing Tong"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "tong two sides",
+      "physical_cues": [
+        {
+          "cue": "The building at 16 Pell Street labeled 'Pell Street Social Club'",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Tong",
+          "gloss": "association (but charged with insinuations of criminal activity)"
+        },
+        {
+          "phrase": "wui",
+          "gloss": "association"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Hip Sing Tong at 16 Pell, labeled Pell Street Social Club, most powerful fraternal org in Chinatown",
+        "Tongs arrived early 1880s; indicted for extortion, prostitution, gambling",
+        "Hip Sing Tong runs a federally insured credit union and offers loans and scholarships"
+      ],
+      "source_passage": "The Hip Sing Tong, the most powerful individual fraternal organization in Chinatown, is at 16Pell Street in the building labeled Pell Street Social Club. \"Tong\" has the same meaning as wui; both mean \"association.\" But tong is a charged word carrying insinuations of criminal activity and danger. They began arriving in New York in the early 1880s to protect their members' business interests. Over the years, numerous tongs have been investigated and indicted for criminal activities—extortion, prostitution, gambling. For example, the Hip Sing Tong contains a federally insured credit union for members and offers business loans and student scholarships.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chinatown_hidden_history_big-onion-ten-historic-tours_pell_mott_butcher_street_names",
+      "city_name": "new_york",
+      "poi_name": "Chinatown",
+      "lens": "hidden_history",
+      "topic_slug": "pell_mott_butcher_street_names",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "As you walk these narrow, curved streets, notice that they predate urban development and the automobile. Pell Street, which appeared on maps beginning in 1776, is named for John Pell, a prosperous butcher. Mott Street is named for Joseph Mott, also a butcher. The street names are our last link to those very early residents of the neighborhood.",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "John Pell",
+        "Joseph Mott"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "butcher street names",
+      "physical_cues": [
+        {
+          "cue": "The narrow, curved streets that predate the automobile",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Pell Street (on maps from 1776) named for butcher John Pell",
+        "Mott Street named for butcher Joseph Mott"
+      ],
+      "source_passage": "Pell Street, which appeared on maps beginning in 1776, is named for John Pell, a prosperous butcher. Mott Street is named for Joseph Mott, also a butcher. The street names are our last link to those very early residents of this neighborhood.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chatham_square_local_legends_big-onion-ten-historic-tours_callahans_jolson_berlin",
+      "city_name": "new_york",
+      "poi_name": "Chatham Square",
+      "lens": "music_heritage",
+      "topic_slug": "callahans_jolson_berlin",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "4-6 Doyers Street",
+      "beat_length_class": "mid",
+      "script_body": "In the nineteenth century scores of seedy saloons lined Doyers Street. Where the Chinatown Post Office now stands, at 4-6 Doyers, was one of the most famous: Callahan's. Neighborhood saloons hired singing men and scantily clad women to draw customers, and Callahan's hired two of the most popular young Jewish singers — Asa Yoelson and Israel Baline. When the pair were able to move out of the neighborhood, they changed their names to the more familiar, more American Al Jolson and Irving Berlin.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Callahan's",
+        "Asa Yoelson",
+        "Israel Baline",
+        "Al Jolson",
+        "Irving Berlin"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "playful",
+      "subject_tag": "singing waiters",
+      "physical_cues": [
+        {
+          "cue": "The Chinatown Post Office at 4-6 Doyers Street, former site of Callahan's saloon",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Callahan's saloon stood at 4-6 Doyers (now the Chinatown Post Office)",
+        "It hired Asa Yoelson and Israel Baline, who became Al Jolson and Irving Berlin"
+      ],
+      "source_passage": "Where the Chinatown Post Office now stands at 4–6Doyers Street was one of the most famous of these saloons: Callahan's. Callahan's hired two of the most popular young Jewish men to sing: Asa Yoelson and Israel Baline. When these two were able to move out of the neighborhood they changed their names, to the more familiar (and American) Al Jolson and Irving Berlin.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chatham_square_hidden_history_big-onion-ten-historic-tours_ten_streets_william_pitt",
+      "city_name": "new_york",
+      "poi_name": "Chatham Square",
+      "lens": "hidden_history",
+      "topic_slug": "ten_streets_william_pitt",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Doyers Street ends at an urban planner's nightmare — Chatham Square, where ten different streets collide at one site. The square is named for William Pitt, the Earl of Chatham, an eighteenth-century English prime minister who became a local hero by arguing against the impending war with Britain's American colonies.",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "William Pitt",
+        "Earl of Chatham"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "ten-street square",
+      "physical_cues": [
+        {
+          "cue": "The ten streets colliding at Chatham Square",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Chatham Square is where ten streets collide",
+        "Named for William Pitt, Earl of Chatham, who opposed war with the American colonies"
+      ],
+      "source_passage": "Doyers Street ends at an intersection that is an urban planner's nightmare—Chatham Square. Ten different streets collide at this one site. The square is named for William Pitt, the earl of Chatham, an eighteenth-century English prime minister who became a local hero when he argued against the impending war with the British colonies in America.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chatham_square_war_conflict_big-onion-ten-historic-tours_kimlau_arch_chinatown_war",
+      "city_name": "new_york",
+      "poi_name": "Chatham Square",
+      "lens": "war_conflict",
+      "topic_slug": "kimlau_arch_chinatown_war",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On an island slightly south of Doyers stands the 1962 Benjamin Ralph Kimlau Memorial Arch, dedicated to all Chinatown residents who died serving in the American armed forces during World War II. The war was a crucial turning point in Chinatown. Before the 1940s, books, plays, and reporters described the Chinese as opium addicts, gangsters, and the Yellow Peril. For Chinese Americans the war began not in December 1941 with Pearl Harbor but in 1932, with the Japanese invasion of Manchuria. When America entered the war, propaganda films presented the Chinese as patriotic and loyal, and other Americans slowly began to see them in an entirely different light.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Benjamin Ralph Kimlau Memorial Arch",
+        "Pearl Harbor",
+        "Manchuria"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "Kimlau war memorial",
+      "physical_cues": [
+        {
+          "cue": "The 1962 Benjamin Ralph Kimlau Memorial Arch on an island slightly south of Doyers Street",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1962 Kimlau Memorial Arch honors Chinatown residents who died in WWII",
+        "For Chinese Americans the war began in 1932 with Japan's invasion of Manchuria",
+        "WWII propaganda films shifted American perception of the Chinese"
+      ],
+      "source_passage": "Cross Bowery to the 1962 Benjamin Ralph Kimlau Memorial Arch, standing on an island slightly south of Doyers. The arch is dedicated to all Chinatown residents who died serving in the American armed forces during World War II. Prior to the 1940s, numerous books, plays, movies, and reporters described the Chinese as opium addicts, gangsters, and the \"Yellow Peril.\" For most Americans, World War II began in December 1941with the Japanese attack on Pearl Harbor, but for Chinese Americans it began in 1932after the Japanese invasion of Manchuria. When America entered the war, numerous American propaganda films presented the Chinese as patriotic and loyal.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_first_shearith_israel_graveyard_sacred_traditions_big-onion-ten-historic-tours_oldest_jewish_cemetery",
+      "city_name": "new_york",
+      "poi_name": "First Shearith Israel Graveyard",
+      "lens": "sacred_traditions",
+      "topic_slug": "oldest_jewish_cemetery",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "55-57 St. James Place",
+      "beat_length_class": "mid",
+      "script_body": "At 55-57 St. James Place is the First Cemetery of the Spanish and Portuguese Synagogue, Shearith Israel — both a National Historic and a New York City Landmark, and the oldest Jewish cemetery in the United States. Buried here are Jewish American soldiers who fought in the American Revolution and Benjamin Mendes-Seixas, one of the founders of the New York Stock Exchange. When the cemetery was established it lay over a mile north of the city limits; Dutch governor Peter Stuyvesant, New York's first prominent anti-Semite, ordered it built outside New Amsterdam proper. The congregation still exists, meeting at Seventieth Street and Central Park West.",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Shearith Israel",
+        "American Revolution",
+        "Benjamin Mendes-Seixas",
+        "New York Stock Exchange",
+        "Peter Stuyvesant"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "oldest Jewish cemetery",
+      "physical_cues": [
+        {
+          "cue": "The small cemetery enclosed at 55-57 St. James Place",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First Shearith Israel Cemetery at 55-57 St. James Place is the oldest Jewish cemetery in the US; National and NYC landmark",
+        "Buried here: Revolutionary War soldiers and NYSE founder Benjamin Mendes-Seixas",
+        "Peter Stuyvesant ordered it built outside New Amsterdam; congregation now at 70th and CPW"
+      ],
+      "source_passage": "At 55–57St. James (between St. James Place and Oliver Street) is the First Cemetery of the Spanish and Portuguese Synagogue, Shearith Israel. Built in 1654, this site is both a National Historic and a New York City Landmark. It is the oldest Jewish cemetery in the United States. Buried here, among others, are Jewish American soldiers who fought in the American Revolution and Benjamin Mendes-Seixes, one of the founders of the New York Stock Exchange. Dutch governor Peter Stuyvesant, New York's first prominent anti-Semite, ordered it built outside New Amsterdam proper. This congregation still exists and meets at Seventieth Street and Central Park West.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "Built in 1654",
+          "reason": "Sources date the surviving graveyard at 55-57 St. James Place to 1683; 1654 is the year the Jewish community arrived / the congregation's origin. The book appears to conflate the two. Kept verbatim per no-auto-correct on a source-vs-single-source date nuance.",
+          "recommendation": "Human review: consider clarifying 'congregation founded 1654, this graveyard dates to 1683.' Sources: en.wikipedia.org/wiki/First_Shearith_Israel_Graveyard"
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_irish_tammany_hall_grace",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "social_change",
+      "topic_slug": "irish_tammany_hall_grace",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Irish are one of the oldest immigrant groups in New York; the first St. Patrick's Day parade was held in 1766, and in 1784 the Society of the Friendly Sons of St. Patrick became the city's first specifically ethnic self-help organization. Mass Irish immigration began in the 1820s and peaked in the famine years of 1845 to 1855; by 1860 roughly one in six city residents claimed Irish heritage. The Irish helped found the police and fire departments and, through Tammany Hall, came to dominate Democratic politics by the 1870s. Tammany was a rampantly corrupt machine, but to immigrant Irish it was a crucial institution offering social welfare in exchange for a vote — and it was behind the 1880 election of William Grace, New York's first Irish Catholic mayor.",
+      "duration_sec": 52,
+      "kid_friendly": "yes",
+      "entities": [
+        "Society of the Friendly Sons of St. Patrick",
+        "Tammany Hall",
+        "William Grace"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Irish Tammany politics",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First St. Patrick's Day parade 1766; Friendly Sons of St. Patrick 1784, first ethnic self-help org",
+        "Famine immigration 1845-1855; by 1860 one in six New Yorkers claimed Irish heritage",
+        "Irish dominated Tammany Hall by the 1870s; Tammany behind 1880 election of William Grace, first Irish Catholic mayor"
+      ],
+      "source_passage": "The first St. Patrick's Day parade was held in 1766. In 1784 the Society of the Friendly Sons of St. Patrick was formed, the first specifically ethnic self-help organization in the city. Mass Irish immigration began in the 1820s and peaked during the Irish famine years of 1845–1855. By 1860, roughly one in six city residents claimed some Irish heritage. The Irish were instrumental in the founding of the New York City police and fire departments. They were invited into the Democratic Party through Tammany Hall and by the 1870s came to dominate the organization. It was Tammany that was behind the 1880 election of William Grace, New York's first Irish Catholic mayor.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_yung_wing_first_chinese_yale",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "social_change",
+      "topic_slug": "yung_wing_first_chinese_yale",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "Division Street",
+      "beat_length_class": "mid",
+      "script_body": "The 1976 elementary school P.S. 124 on Division Street, opposite Market Street, is named for Yung Wing — both school and man serving as role models for the area's Chinese immigrant children. Yung Wing, born near Macao in 1828, came to the United States as a student in 1847, entered Yale, and in 1854 became the first Chinese person to graduate from an American college. He devoted his life to the modernization of China and served as a Chinese diplomat in the United States, remaining in America until his death.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Yung Wing",
+        "Yale University",
+        "Macao"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Yung Wing Yale",
+      "physical_cues": [
+        {
+          "cue": "The P.S. named for Yung Wing on Division Street, opposite Market Street",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "School on Division Street named for Yung Wing",
+        "Yung Wing born near Macao 1828, entered Yale, became first Chinese graduate of an American college in 1854",
+        "Devoted his life to modernizing China; served as a diplomat in the US"
+      ],
+      "source_passage": "The 1976elementary school P.S. 214, located just opposite Market Street, is named for Yung Wing. Yung Wing (1828–1912), was born near Macao, China. He came to the United States as a student visitor in 1847, entered Yale University, and, in 1854, became the first Chinese person to graduate from an American college. While primarily an educational reformer, he also served as a Chinese diplomat in the United States. Despite his lack of American citizenship, he remained in America until his death in 1902.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "disputed",
+      "corrections": [],
+      "disputes": [
+        {
+          "claim": "school number P.S. 214 vs death year 1902/1912",
+          "reason": "Source internally inconsistent: gives Yung Wing's dates as (1828-1912) but later says he 'remained in America until his death in 1902.' Standard biography: Yung Wing died 1912. The 1902 in the source is likely a typo. Not auto-corrected (single internal conflict); script_body omits the disputed death year to avoid propagating the error.",
+          "recommendation": "Human review: confirm death year 1912."
+        }
+      ],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_manhattan_bridge_historic_arch_big-onion-ten-historic-tours_lindenthal_carrere_colonnade",
+      "city_name": "new_york",
+      "poi_name": "Manhattan Bridge",
+      "lens": "historic_arch",
+      "topic_slug": "lindenthal_carrere_colonnade",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Manhattan Bridge, the third bridge connecting Lower Manhattan with Brooklyn, was designed by engineer Gustav Lindenthal in 1905 and was the divider between Chinatown and the old Jewish East Side. The structure is greatly enhanced by its restored 1916 colonnade at the Canal Street entrance. Built by the architects Carrère & Hastings, this triumphal arch is a wonderful example of the City Beautiful movement, which from 1890 to World War I saw New York invest in beautifying its neighborhoods — planting trees, clearing slums for parks, and adding architectural enhancements.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gustav Lindenthal",
+        "Carrère & Hastings",
+        "City Beautiful movement"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "bridge colonnade",
+      "physical_cues": [
+        {
+          "cue": "The 1916 colonnade and triumphal arch at the Canal Street entrance to the bridge",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Manhattan Bridge, third Manhattan-Brooklyn bridge, designed by Gustav Lindenthal 1905",
+        "Divider between Chinatown and the old Jewish East Side",
+        "1916 Canal Street colonnade and arch by Carrère & Hastings; City Beautiful movement 1890-WWI"
+      ],
+      "source_passage": "you will walk beneath the Manhattan Bridge, the third bridge connecting Lower Manhattan with Brooklyn. Designed by engineer Gustav Lindenthal in 1905, the bridge was the divider between Chinatown and the old Jewish East Side. This rather unattractive structure is greatly enhanced by the newly restored 1916colonnade that stands at the Canal Street entrance to the bridge. Built by the architects Carrere & Hastings, this triumphal arch is a wonderful example of the City Beautiful movement, which, from 1890to World War I, saw New York City invest in the beautification of urban neighborhoods.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_jewish_arrivals_permanent_home",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "social_change",
+      "topic_slug": "jewish_arrivals_permanent_home",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The East European Jews began arriving in large numbers in the early 1880s and settled almost exclusively in the Lower East Side, regrouping not as Jews but by country and region — Russians, Poles, and Hungarians forming distinct enclaves. Because American law forbids asking an immigrant's religion, estimates of how many Jews came range widely, from three to five million. Unlike most Italians, most Jews were fleeing political or religious oppression and came to stay: for every thousand Jews who arrived through Ellis Island, only three chose to return to Europe. The population of the Lower East Side climaxed at some 542,000 residents in 1910, then declined as subways opened newer neighborhoods uptown and in the outer boroughs.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ellis Island"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Jewish settlement",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "East European Jews arrived from early 1880s, settling almost exclusively in the LES, grouped by country",
+        "Estimates of Jewish immigrants range 3-5 million; only 3 per 1,000 returned to Europe",
+        "LES population climaxed at ~542,000 in 1910, then declined with the subways"
+      ],
+      "source_passage": "The East European Jews began arriving in large numbers in the early 1880s and almost exclusively settled in the Lower East Side. they came together not as Jews but by country and area of origin, creating ethnic enclaves of Russians, Poles, and Hungarians. estimates range widely, from 3 to 5 million. most Jews were fleeing political or religious oppression and were viewing America as a permanent home. For every one thousand Jews to come to America through Ellis Island, only three chose to return to Europe. The population of the Lower East Side climaxed with some 542,000 residents in 1910. Yet the population quickly declined with the building of the subways.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_eldridge_street_synagogue_historic_worship_big-onion-ten-historic-tours_moorish_revival_twelve_tribes",
+      "city_name": "new_york",
+      "poi_name": "Eldridge Street Synagogue",
+      "lens": "historic_worship",
+      "topic_slug": "moorish_revival_twelve_tribes",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "12-16 Eldridge Street",
+      "beat_length_class": "anchor",
+      "script_body": "At 12-16 Eldridge Street stands the Congregation Khal Adath Jeshurun and Anshe Lubz Synagogue, popularly the Eldridge Street Synagogue. Built in 1886-87 by the Herter brothers, German architects, in a Moorish revival and Romanesque style, it was named a National Historic Landmark in 1996. The exterior rose window resembles those of Christian churches but is distinctly Jewish: it contains twelve rondels, smaller windows representing the twelve tribes of Israel. Note too the recurring patterns — two tablets for the Ten Commandments, five windows for the five books of the Torah, and three sets of stairs leading to four sets of doors for the Jewish biblical matriarchs and patriarchs. The interior is a beautiful Orthodox synagogue with women's balconies, designed in Moorish and Sephardic style.",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "Congregation Khal Adath Jeshurun",
+        "Anshe Lubz Synagogue",
+        "Herter brothers"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "synagogue symbolism",
+      "physical_cues": [
+        {
+          "cue": "The exterior rose window with twelve rondels for the twelve tribes of Israel",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Three sets of stairs leading to four sets of doors at the entrance",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "rondels",
+          "gloss": "smaller round windows"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Eldridge Street Synagogue (Khal Adath Jeshurun/Anshe Lubz) at 12-16 Eldridge, built 1886-87 by the Herter brothers, Moorish revival; NHL 1996",
+        "Rose window has twelve rondels for the twelve tribes of Israel",
+        "Two tablets (Ten Commandments), five windows (Torah books), three stairs to four doors (matriarchs and patriarchs)"
+      ],
+      "source_passage": "At 12–16Eldridge Street stands the Congregation Khal Adath Jeshurun and Anshe Lubz Synagogue, popularly known as the Eldridge Street Synagogue. Built in 1886–87by the Herter brothers, German architects, in a Moorish revival and Romanesque style, this synagogue was named a National Historic Landmark in 1996. It contains twelve rondels, or smaller windows, representing the twelve tribes of Israel. Also note the recurring patterns of two tablets (the Ten Commandments), five windows (the five books of the Torah), and three sets of stairs leading to four sets of doors (Jewish biblical matriarchs and patriarchs). The interior is a beautiful Orthodox synagogue complete with women's balconies and designed overall in Moorish/Sephardic style.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_hidden_history_big-onion-ten-historic-tours_allen_street_second_avenue_subway",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "hidden_history",
+      "topic_slug": "allen_street_second_avenue_subway",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "Allen Street",
+      "beat_length_class": "mid",
+      "script_body": "The wide Allen Street thoroughfare is very different today than in the heyday of the Jewish Lower East Side. Before 1932 the street was only thirty-two feet wide and completely covered by an elevated train; that year the buildings on the east side were torn down and the street widened to 138 feet for the automobile. The city removed the El in 1942, planning a Second Avenue subway to connect the northern Bronx with Wall Street. Construction finally began in 1972 but was soon discontinued for lack of money — New York, like so many American cities, became beholden to the automobile at the expense of public transit.",
+      "duration_sec": 43,
+      "kid_friendly": "yes",
+      "entities": [
+        "Allen Street",
+        "Second Avenue subway"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "Allen Street widening",
+      "physical_cues": [
+        {
+          "cue": "The wide 138-foot Allen Street thoroughfare",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Before 1932 Allen Street was 32 feet wide under an elevated train; widened to 138 feet in 1932",
+        "El removed 1942; planned Second Avenue subway began 1972 but was discontinued"
+      ],
+      "source_passage": "Prior to 1932, the street was only thirty-two feet wide and was completely covered by an elevated train. In that year the buildings on the east side were torn down and the street was widened to 138feet to accommodate the automobile. The city removed the elevated train in 1942. At that time the city planned to build the Second Avenue subway to connect the northern Bronx with Wall Street. Construction finally began in 1972but was soon discontinued for lack of money.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_dark_history_big-onion-ten-historic-tours_jarmulovsky_bank_run_1914",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "dark_history",
+      "topic_slug": "jarmulovsky_bank_run_1914",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "Canal and Orchard Streets",
+      "beat_length_class": "anchor",
+      "script_body": "On the southwest corner of Canal and Orchard stands the tall former Jarmulovsky Bank, a story of how one could make it and lose it on the Lower East Side. Sender Jarmulovsky began his banking career with savings from his peddler days and built this building in homage to himself in 1912. The bank catered to poor immigrants, especially those sending money back to family in the Old World. Jarmulovsky died a few months after the building was finished, and his sons continued the business. Then came World War I: Jewish depositors rushed to withdraw their money to help family in Europe, and, distrusting paper money, demanded silver and gold coins. The runs forced the state to close the bank on August 4, 1914. The New York Times reported that two thousand people demonstrated in front of the bank, a mob of fifteen hundred enraged depositors required a hundred policemen to restrain, and five hundred people gathered outside Jarmulovsky's apartment, forcing the family to flee.",
+      "duration_sec": 70,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jarmulovsky Bank",
+        "Sender Jarmulovsky",
+        "World War I",
+        "New York Times"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "bank run",
+      "physical_cues": [
+        {
+          "cue": "The tall former Jarmulovsky Bank taking up most of the block at Canal and Orchard",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Sender Jarmulovsky built the bank building in 1912; catered to poor immigrants",
+        "WWI deposit runs forced the state to close the bank August 4, 1914",
+        "NYT: 2,000 demonstrated; 100 police restrained a mob of 1,500; 500 forced the family to flee their apartment"
+      ],
+      "source_passage": "It's the former Jarmulovsky Bank. Jarmulovsky began his banking career with his savings from his peddler days. He built this building in homage to himself in 1912. The bank essentially catered to poor immigrants, especially those sending money back to family in the Old World. Jarmulovsky died of old age a few months after his building was completed. The war led many Jewish depositors to withdraw their money. the immigrant depositors held no confidence in paper money and demanded silver and gold coins. The \"runs\" on the banks caused the state superintendent to close the Jarmulovsky bank on August 4, 1914. The New York Times reported: On August 5, two thousand people demonstrated in front of Yarmulowsky's bank; three days later riots broke out in front . . . and one hundred policemen were called to restrain a mob of fifteen hundred enraged depositors. . . . On September 5, five hundred people gathered in front of M. Yarmulowsky's apartment, forcing him and his family to flee.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_historic_arch_big-onion-ten-historic-tours_pre_law_tenements_orchard",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "historic_arch",
+      "topic_slug": "pre_law_tenements_orchard",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "27-33 Orchard Street",
+      "beat_length_class": "anchor",
+      "script_body": "Four buildings at 27-33 Orchard Street are excellent examples of pre-law tenements — multifamily dwellings built before 1879, among the oldest and least desirable housing in New York City. Each building holds sixteen apartments, four to a floor. Each apartment averages three rooms totaling 270 square feet: a kitchen, bedroom, and living room, each only nine by ten feet. The only windows are two in the living room; there is no elevator, and before 1901 no indoor plumbing — residents shared backyard outhouses, cleaned out twice a year, and hand pumps. Compare these with the more ornate tenements nearby: a few doors back, at 14-16 Orchard, the terra-cotta details show two rows of Jewish stars surrounded by twelve pomegranates. Contrary to popular lore these were never Jewish buildings — the decoration was meant to entice Jews to live here.",
+      "duration_sec": 64,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "somber",
+      "subject_tag": "pre-law tenements",
+      "physical_cues": [
+        {
+          "cue": "The four plain pre-law tenement facades at 27-33 Orchard Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Terra-cotta Jewish stars and twelve pomegranates on 14-16 Orchard Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "27-33 Orchard are pre-law tenements (built before 1879); 16 apartments each, ~270 sq ft, no plumbing before 1901",
+        "14-16 Orchard has ornate terra-cotta Jewish stars and twelve pomegranates",
+        "The decoration was meant to entice Jews, not because they were 'Jewish' buildings"
+      ],
+      "source_passage": "Four buildings, 27–33Orchard Street, are excellent examples of \"pre-law\" tenements. A pre-law tenement is a multifamily dwelling built before 1879. Each building contains sixteen apartments, four on each floor. Each apartment is, on average, three rooms totaling 270square feet. There is no elevator, and before 1901there was no indoor plumbing. Walk back and view the terra-cotta details on 14–16Orchard Street. The two rows of Jewish stars surrounded by twelve pomegranates are exceptional in detail. Contrary to popular lore, these were never \"Jewish\" buildings. Rather, the decoration was meant to entice Jews to live here.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_markets_street_food_big-onion-ten-historic-tours_hester_pig_market_riis",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "markets_street_food",
+      "topic_slug": "hester_pig_market_riis",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "Hester Street",
+      "beat_length_class": "mid",
+      "script_body": "Hester Street between Orchard and Essex was the site of the Khazzer Mark — Pig Market in Yiddish — where Jewish and Italian peddlers set up pushcarts to sell an incredible array of goods. Why Pig Market? Jacob Riis described turn-of-the-century Hester Street as a place where scarcely anything other than pork could not be hawked from a wagon, at ridiculously low prices, amid crowds pushing, struggling, babbling, and shouting in foreign tongues — a veritable Babel of confusion. Pushcart peddling was finally abolished by Mayor Fiorello La Guardia in 1935, who built enclosed markets and offered peddlers heated, policed buildings in exchange for a license and taxes.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Khazzer Mark",
+        "Jacob Riis",
+        "Fiorello La Guardia"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "Pig Market pushcarts",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Khazzer Mark",
+          "gloss": "Pig Market in Yiddish"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Hester Street between Orchard and Essex was the Khazzer Mark (Pig Market)",
+        "Jacob Riis described it as a Babel of pushcarts",
+        "Pushcart peddling abolished by Mayor La Guardia in 1935 in favor of enclosed markets"
+      ],
+      "source_passage": "Hester Street, between Orchard and Essex, was the site of the Khazzer Mark—\"Pig Market\" in Yiddish. Here Jewish and Italian peddlers set up pushcarts to sell an incredible array of goods. There is scarcely anything else [other than pork] that can be hawked from a wagon that is not to be found, and at ridiculously low prices. Pushing, struggling, babbling, and shouting in foreign tongues, a veritable Babel of confusion. Pushcart peddling was abolished by Mayor Fiorello La Guardia in 1935. La Guardia had enclosed markets built throughout the city and offered peddlers a bargain—heated and ventilated buildings complete with police for safety—all in exchange for getting a license and paying taxes.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_seward_park_social_change_big-onion-ten-historic-tours_garment_strikes_forward_building",
+      "city_name": "new_york",
+      "poi_name": "Seward Park",
+      "lens": "social_change",
+      "topic_slug": "garment_strikes_forward_building",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The small three-acre Seward Park, built in 1901 and named for Lincoln's secretary of state William Seward, was the first park built in this part of the neighborhood. The city tore down three blocks of tenement houses and displaced nearly three thousand people to create it — like Columbus Park, less a philanthropic gift than an early attempt at slum clearance and population control. The park is best known as a gathering point for striking garment workers: in 1909, 1912, and 1916, thousands of workers gathered here and gazed south toward the Jewish Daily Forward Building, waiting for reports on their demands for a living wage and an eight-hour day.",
+      "duration_sec": 46,
+      "kid_friendly": "yes",
+      "entities": [
+        "William Seward",
+        "Jewish Daily Forward Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "garment strikes",
+      "physical_cues": [
+        {
+          "cue": "The view south from Seward Park toward the Forward Building",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Seward Park built 1901, named for William Seward; first park in this part of the neighborhood",
+        "Three blocks of tenements razed, ~3,000 displaced; slum-clearance project",
+        "Gathering point for garment workers' strikes in 1909, 1912, 1916"
+      ],
+      "source_passage": "the small, three-acre Seward Park in front of you. Built in 1901and named for Abraham Lincoln's secretary of state William Seward (1801–1872), this was the first park built in this part of the neighborhood. The City of New York tore down three blocks of tenement houses and displaced nearly three thousand people to create this open space. this was not simply a philanthropic act for the immigrants of the Lower East Side but an early attempt at \"slum\" clearance and neighborhood population control. This park is best known as a gathering point for striking garment workers during their numerous work stoppages. In 1909, 1912, and 1916, thousands of workers gathered here and gazed south toward the Jewish Daily Forward Building, waiting to hear reports on their demands for a living wage and an eight-hour day.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_straus_square_war_conflict_big-onion-ten-historic-tours_nathan_straus_veterans_column",
+      "city_name": "new_york",
+      "poi_name": "Straus Square",
+      "lens": "social_change",
+      "topic_slug": "nathan_straus_veterans_column",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Straus Square is the small traffic triangle with the marble pillar before you. Its namesake is Nathan Straus, financier, philanthropist, and a leader of the New York Jewish community, best remembered for sponsoring the 1919 program to bring free sterilized-milk stations to children across the country. The marble column itself is a tribute to the neighborhood's Jewish men and women who died in both world wars and the Korean War, presented by the Morris Dickstein Post of the Veterans of Foreign Wars in May 1953.",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Nathan Straus",
+        "Veterans of Foreign Wars",
+        "Korean War"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "Straus memorial column",
+      "physical_cues": [
+        {
+          "cue": "The marble memorial pillar in the traffic triangle",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Straus Square named for Nathan Straus, who sponsored 1919 free sterilized-milk stations",
+        "Marble column honors neighborhood Jews who died in both world wars and the Korean War",
+        "Presented by the Morris Dickstein Post of the VFW in May 1953"
+      ],
+      "source_passage": "Straus Square is the small traffic triangle with the marble pillar directly in front of you. The square's namesake is Nathan Straus, the great financier, philanthropist, and a leader of the New York Jewish community. Straus is best remembered for sponsoring the 1919program to bring free sterilized-milk stations to children throughout the country. The marble column is a tribute to the Jewish men and women of the neighborhood who gave their lives in both world wars and the Korean War. It was presented by the Morris Dickstein Post No. 462of the Veterans of Foreign Wars in May 1953.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_forward_building_historic_arch_big-onion-ten-historic-tours_forverts_cahan_bintel_brief",
+      "city_name": "new_york",
+      "poi_name": "Forward Building",
+      "lens": "hidden_history",
+      "topic_slug": "forverts_cahan_bintel_brief",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "173 East Broadway",
+      "beat_length_class": "anchor",
+      "script_body": "Look southeast across the square at the old Forverts Building at 173 East Broadway. Built in 1912 and designed by George A. Boehm, the twelve-story Jewish Daily Forward Building was a towering presence over the neighborhood, with the name Forverts inscribed across the top beneath a huge clock. From 1901 until 1951 the Forward was edited by Abraham Cahan, a Russian Jewish immigrant who made it the most widely read Yiddish paper in the world and used it as an Americanizing tool to introduce East European Jews to American life. The most popular section was the Bintel Brief, the Bundle of Letters, where readers presented their problems and received answers from the editors. The Forward moved out in 1975; the building became an evangelical Protestant church, and in 1999 it was sold to a developer transforming it into luxury condominiums — the first luxury doorman condo in the Lower East Side, a clear sign of the gentrification to come.",
+      "duration_sec": 74,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jewish Daily Forward",
+        "George A. Boehm",
+        "Abraham Cahan",
+        "Bintel Brief"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Forward newspaper",
+      "physical_cues": [
+        {
+          "cue": "The twelve-story Forverts Building southeast across the square at 173 East Broadway",
+          "direction": "south",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Forverts",
+          "gloss": "Forward (the Yiddish newspaper)"
+        },
+        {
+          "phrase": "Bintel Brief",
+          "gloss": "Bundle of Letters"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Forward Building at 173 East Broadway built 1912, designed by George A. Boehm, twelve stories",
+        "Edited 1901-1951 by Abraham Cahan, most widely read Yiddish paper in the world; the Bintel Brief letters section",
+        "Forward moved out 1975; became a church; sold 1999 for luxury condo conversion"
+      ],
+      "source_passage": "Look directly across the square to the southeast at the old Forverts (Forward) Building at 173East Broadway. Built in 1912and designed by George A. Boehm, the twelve-story Jewish Daily Forward Building was a towering presence over the neighborhood. This building used to have the name Forverts inscribed across the top, along with a huge clock. From 1901until 1951the Forward (Forverts) was edited by Abraham Cahan, a Russian Jewish immigrant, who made the Forward the most widely read Yiddish paper in the world. The most widely read section of the paper was the \"Bintel Brief\" (the \"Bundle of Letters\"). The Forward moved from this space in 1975. The Forward Building was then purchased by the New York Ling Liang Church. was sold in 1999to a developer who is transforming the space into luxury condominiums. This will be the first luxury doorman condo in the Lower East Side.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_educational_alliance_social_change_big-onion-ten-historic-tours_edgies_americanize_sarnoff",
+      "city_name": "new_york",
+      "poi_name": "Educational Alliance",
+      "lens": "social_change",
+      "topic_slug": "edgies_americanize_sarnoff",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "East Broadway and Jefferson Street",
+      "beat_length_class": "anchor",
+      "script_body": "At the southeast corner of East Broadway and Jefferson is the Educational Alliance, known as the Edgies. Built in 1889 by uptown German Jews to Americanize the East European immigrants, it offered day and evening classes in English, citizenship, and hygiene, coordinated the immigration process for Jews arriving at Ellis Island, and became the center for American relief to Jews in Nazi-occupied Europe. The main building was renamed for David Sarnoff after a 1960s renovation. Sarnoff's life is a veritable Horatio Alger story: born in Russia in 1891, he arrived in America at age nine, and the family's first home was a fourth-floor walk-up on Monroe Street at ten dollars a month. Within days he was earning money selling the Yiddish paper Tageblatt at four a.m. At night he took English classes here at the Educational Alliance. From newsboy to messenger at the Commercial Cable Company, his career took off — he eventually became president and CEO of RCA and was instrumental in RCA's creation of NBC television in 1926.",
+      "duration_sec": 78,
+      "kid_friendly": "yes",
+      "entities": [
+        "Educational Alliance",
+        "David Sarnoff",
+        "Ellis Island",
+        "RCA",
+        "NBC",
+        "Commercial Cable Company"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Sarnoff Horatio Alger",
+      "physical_cues": [
+        {
+          "cue": "The Educational Alliance building at the southeast corner of East Broadway and Jefferson",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Tageblatt",
+          "gloss": "a Yiddish newspaper"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Educational Alliance ('the Edgies') built 1889 by uptown German Jews to Americanize immigrants",
+        "Renamed for David Sarnoff after a 1960s renovation",
+        "Sarnoff born Russia 1891, arrived at age nine, sold the Tageblatt, took classes here; became CEO of RCA, created NBC TV 1926"
+      ],
+      "source_passage": "At the southeast corner of East Broadway and Jefferson is the Educational Alliance, known as \"the Edgies.\" Built in 1889, the alliance was established by \"uptown\" German Jews as an attempt to Americanize the East European immigrants by providing day and evening classes in English, citizenship, and hygiene. The main building was renamed for David Sarnoff after its 1960s renovation. Born in Russia in 1891, Sarnoff arrived in America at age nine. The family's first American home was a fourth-floor walk-up on Monroe Street, for which they paid $10a month. the young David Sarnoff began earning money by picking up copies of the Yiddish newspaper Tageblatt at 4a.m. At night he enrolled in English-language classes at the Educational Alliance. he eventually became president and CEO of RCA. Sarnoff was instrumental in the RCA creation of NBC television in 1926.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_hias_shteebel_row",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "sacred_traditions",
+      "topic_slug": "hias_shteebel_row",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "229 East Broadway",
+      "beat_length_class": "mid",
+      "script_body": "The converted double tenement at 229 East Broadway was the first home of the Hebrew Sheltering and Immigrant Aid Society, now known as HIAS. Founded in 1892 to provide burial services for Jews who had died on Ellis Island, by 1897 it offered job training, legal aid, temporary housing, and interpreter services. This block of East Broadway is known as Shteebel Row — a shteeblach is a Jewish synagogue based in a house, and most of these tenement buildings contain synagogues, each with a Hebrew and English sign. Note how the communities are organized by landslayt, or homeland, rather than by religious denomination.",
+      "duration_sec": 43,
+      "kid_friendly": "yes",
+      "entities": [
+        "Hebrew Sheltering and Immigrant Aid Society",
+        "HIAS",
+        "Ellis Island"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "HIAS Shteebel Row",
+      "physical_cues": [
+        {
+          "cue": "The house-synagogues of Shteebel Row, each with a Hebrew and English sign",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "shteeblach",
+          "gloss": "room — a Jewish synagogue based in a house"
+        },
+        {
+          "phrase": "landslayt",
+          "gloss": "homeland"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "229 East Broadway was the first home of HIAS, founded 1892 for Ellis Island burials, expanded by 1897",
+        "The block is 'Shteebel Row' of house-synagogues",
+        "Communities organized by landslayt (homeland) not denomination"
+      ],
+      "source_passage": "the converted double tenement at 229East Broadway was the first home of the Hebrew Sheltering and Immigrant Aid Society, now known as HIAS. Founded in 1892to provide burial services for Jews who had died on Ellis Island, by 1897the organization had grown to provide job training, legal aid, temporary housing, and interpreter services. The rest of this block of East Broadway is known as \"Shteebel Row.\" A shteeblach (room) is a Jewish synagogue based in a house. Note how the communities are created based on place of origin rather than on Jewish religious denomination. Jewish immigrationwasdividedbyone'slandslayt,orhomeland.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_henry_street_settlement_social_change_big-onion-ten-historic-tours_lillian_wald_visiting_nurse",
+      "city_name": "new_york",
+      "poi_name": "Henry Street Settlement",
+      "lens": "social_change",
+      "topic_slug": "lillian_wald_visiting_nurse",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "263-267 Henry Street",
+      "beat_length_class": "mid",
+      "script_body": "At 263, 265, and 267 Henry Street stand three 1827 Federalist buildings, now National Historical and New York City Landmarks. Here in 1893 Lillian Wald began the Henry Street Settlement, and with the help of philanthropist Jacob Schiff she launched the Visiting Nurse Service — nurses who brought care to people in their homes rather than requiring a visit to a medical office. The settlement house is still a strong anchor of nonsectarian assistance for the neighborhood. Before being added to the settlement, no. 267 had been the Hebrew Technical School for Girls, a trade school for immigrants.",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Lillian Wald",
+        "Henry Street Settlement",
+        "Jacob Schiff",
+        "Visiting Nurse Service",
+        "Hebrew Technical School for Girls"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Visiting Nurse Service",
+      "physical_cues": [
+        {
+          "cue": "The three 1827 Federalist row houses at 263, 265, and 267 Henry Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "263-267 Henry Street are three 1827 Federalist landmark buildings",
+        "Lillian Wald founded the Henry Street Settlement here in 1893",
+        "With Jacob Schiff she began the Visiting Nurse Service; no. 267 was the Hebrew Technical School for Girls"
+      ],
+      "source_passage": "At 263, 265, and 267Henry Street are three 1827Federalist buildings that are National Historical and New York City Landmarks. It was here in 1893that Lillian Wald began the Henry Street Settlement. With the assistance of philanthropist Jacob Shiff, she began the Visiting Nurse Service to care for the ill and infirm. Rather than require a visit to a medical office, these nurses would bring care to the people in their homes. The Henry Street Settlement House is still a strong anchor of nonsectarian assistance for the neighborhood. Prior to being added to the settlement house, no. 267had been the Hebrew Technical School for Girls, a trade school for immigrants.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [
+        {
+          "field": "philanthropist surname",
+          "from": "Jacob Shiff (source spelling)",
+          "to": "Jacob Schiff (used in script_body)",
+          "reason": "Standard spelling is Schiff; source's 'Shiff' is a typo. Multiple sources confirm.",
+          "source_urls": [
+            "https://en.wikipedia.org/wiki/Jacob_Schiff"
+          ]
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_st_marys_church_historic_worship_big-onion-ten-historic-tours_oldest_catholic_building_keely",
+      "city_name": "new_york",
+      "poi_name": "St. Mary's Church",
+      "lens": "historic_worship",
+      "topic_slug": "oldest_catholic_building_keely",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "Grand and Ridge Streets",
+      "beat_length_class": "mid",
+      "script_body": "St. Mary's Church, on the corner of Grand and Ridge Streets, is the oldest Catholic church building in all of New York City and its third parish, founded in 1827. Originally built in 1833, its brick facade and double spires were added in 1871 by architect Patrick C. Keely. Unlike other Lower East Side houses of worship, this building has served the Catholic community without interruption since it was erected — no other house of worship has served one religion for so long in this neighborhood. When the Catholic Church abolished the mandatory Latin Mass in 1965, churches like this became more diverse; St. Mary's now offers Mass in English and Spanish.",
+      "duration_sec": 43,
+      "kid_friendly": "yes",
+      "entities": [
+        "St. Mary's Church",
+        "Patrick C. Keely"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "oldest Catholic church",
+      "physical_cues": [
+        {
+          "cue": "The brick facade and double spires added in 1871, on the corner of Grand and Ridge",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "St. Mary's at Grand and Ridge is the oldest Catholic church building in NYC, third parish, founded 1827",
+        "Built 1833; brick facade and double spires added 1871 by Patrick C. Keely",
+        "Mass abolished as Latin-mandatory 1965; now offered in English and Spanish"
+      ],
+      "source_passage": "St. Mary's Church on the corner of Grand and Ridge Streets is the oldest Catholic church building in all of New York City and its third parish, founded in 1827. Originally built in 1833, the structure's brick facade and double spires were added in 1871by architect Patrick C. Keely. This building has served the Catholic community since it was first erected. No other house of worship has served one religion for so long in this neighborhood. When the Catholic Church abolished mandatory Latin Mass in 1965, it enabled buildings such as this to become diverse gathering places for believers. St. Mary's currently offers Mass in English and Spanish.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_historic_arch_big-onion-ten-historic-tours_dumbbell_tenement_airshaft",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "historic_arch",
+      "topic_slug": "dumbbell_tenement_airshaft",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "402 Grand Street",
+      "beat_length_class": "mid",
+      "script_body": "On the north side of Grand between Clinton and Suffolk, no. 402 is a wonderful 1830s merchant house, shop at street level and family above. Next to it stands a fine example of a dumbbell tenement. The tenement law changed in 1887, and the crucial addition was the airshaft, along with a required window in every room. But the airshafts failed in their mission to provide fresh air — they mostly cost residents usable square footage. An 1888 journal described them as great prison-like structures of brick, with a narrow court-yard that was a damp, foul-smelling place supposed to do duty as an airshaft, and that in case of fire would be perfect death-traps.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "somber",
+      "subject_tag": "dumbbell tenement",
+      "physical_cues": [
+        {
+          "cue": "The 1830s merchant house at no. 402 Grand and the adjacent dumbbell tenement",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "No. 402 Grand is an 1830s merchant house; next to it a dumbbell tenement",
+        "Tenement law changed 1887, adding the airshaft and a window in every room",
+        "Airshafts failed; an 1888 journal called the tenements prison-like fire death-traps"
+      ],
+      "source_passage": "No. 402is a wonderful example of an 1830s merchant house. Next to the merchant house is a fine example of a dumbbell tenement. The change in tenement law came in 1887. The crucial addition was the airshaft, along with the requirement for a window in every room. The airshafts failed, however, in their mission to provide fresh air to the apartments. They are great prison-like structures of brick. The narrow court-yard in the middle is a damp foul-smelling place, supposed to do duty as an airshaft. In case of fire they would be perfect death-traps.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_beth_hamedrash_hagadol_historic_worship_big-onion-ten-historic-tours_baptist_church_russian_orthodox",
+      "city_name": "new_york",
+      "poi_name": "Beth Hamedrash Hagadol",
+      "lens": "historic_worship",
+      "topic_slug": "baptist_church_russian_orthodox",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "60 Norfolk Street",
+      "beat_length_class": "mid",
+      "script_body": "At 60 Norfolk is the Beth Hamedrash Hagadol, the Great House of Study. Built in 1850 as the Norfolk Baptist Church and purchased by a Jewish congregation in 1885, it is the oldest Russian Ashkenazic Orthodox congregation in the United States, formed in 1852. In 1888 it became the pulpit of Rabbi Jacob Joseph, the first and only chief rabbi of New York's Orthodox community — but the neighborhood's diverse Jewish communities proved unable to sustain a single chief rabbi. Once the largest Russian synagogue in the country, the congregation is now small; the building is worth visiting for its beautiful Gothic interior and was made a New York Historical Landmark in January 1967.",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Beth Hamedrash Hagadol",
+        "Norfolk Baptist Church",
+        "Jacob Joseph"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "oldest Russian synagogue",
+      "physical_cues": [
+        {
+          "cue": "The Gothic interior and former Baptist-church facade at 60 Norfolk Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Beth Hamedrash Hagadol",
+          "gloss": "Great House of Study"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "60 Norfolk built 1850 as the Norfolk Baptist Church, bought by a Jewish congregation 1885",
+        "Oldest Russian (Ashkenazic) Orthodox congregation in the US, formed 1852",
+        "1888-99 pulpit of Rabbi Jacob Joseph, first and only NY chief rabbi; landmarked January 1967"
+      ],
+      "source_passage": "At 60Norfolk is the Beth Hamedrash Hagadol (Great House of Study). Built in 1850as the Norfolk Baptist Church and purchased by a Jewish congregation in 1885, it is the oldest Russian (Ashkenazic) Orthodox congregation in the United States. The congregation was formed in 1852. this was the pulpit of Rabbi Jacob Joseph, the first and only chief rabbi of New York's Orthodox community. Joseph, a native of Vilna, Lithuania, came to America in 1888. the multifaceted neighborhood was unable to sustain a single chief rabbi. Once the largest Russian synagogue in the country, the congregation is now rather small. In January 1967, Beth Hamedrash Hagadol was made a New York Historical Landmark.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_dark_history_big-onion-ten-historic-tours_robert_moses_expressway_foiled",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "dark_history",
+      "topic_slug": "robert_moses_expressway_foiled",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "Broome Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Broome Street is worth pondering for a moment. In 1946 Robert Moses, the great builder and destroyer of New York, wanted to run the Lower Manhattan Expressway across it, connecting the Holland Tunnel with the Williamsburg and Manhattan Bridges. It would have stood about a hundred feet above the ground and devastated this neighborhood. Luckily, Moses was foiled.",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Robert Moses",
+        "Lower Manhattan Expressway",
+        "Holland Tunnel"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "Moses expressway",
+      "physical_cues": [
+        {
+          "cue": "Broome Street, the path the Lower Manhattan Expressway would have followed",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1946 Robert Moses wanted to build the Lower Manhattan Expressway across Broome Street",
+        "It would have stood ~100 feet up, linking the Holland Tunnel with the Williamsburg and Manhattan Bridges; Moses was foiled"
+      ],
+      "source_passage": "In 1946, Robert Moses, urban planner, head of the Triboro Bridge and Tunnel Authority, and great builder and destroyer of New York, wanted to build the Lower Manhattan Expressway across Broome Street. This expressway was to connect the Holland Tunnel with the Williamsburg and Manhattan Bridges. It would have run at a height of about one hundred feet above the ground and would have caused the devastation of this neighborhood. Luckily, Moses was foiled.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_lower_east_side_social_change_big-onion-ten-historic-tours_bnai_brith_sinsheimer_cafe",
+      "city_name": "new_york",
+      "poi_name": "Lower East Side",
+      "lens": "social_change",
+      "topic_slug": "bnai_brith_sinsheimer_cafe",
+      "book_slug": "big-onion-ten-historic-tours",
+      "source_chunk_slug": "chunk-02-lower-east-side",
+      "sub_location": null,
+      "trigger_address": "60 Essex Street",
+      "beat_length_class": "seasoning",
+      "script_body": "Note the very small plaque on the wall at what would be 60 Essex Street. This was the site of Sinsheimer's Cafe, where on October 13, 1843, the B'nai Brith — Sons of the Covenant — was organized by immigrant German Jews. Like the other immigrant groups' organizations, it was founded as a self-help and defensive society to protect American Jews against anti-immigrant sentiment, and it is the oldest Jewish fraternal organization in America.",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "B'nai Brith",
+        "Sinsheimer's Cafe"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "B'nai Brith founding",
+      "physical_cues": [
+        {
+          "cue": "The very small plaque on the wall to your east at 60 Essex Street",
+          "direction": "east",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "B'nai Brith",
+          "gloss": "Sons of the Covenant"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "A plaque at 60 Essex marks the site of Sinsheimer's Cafe",
+        "B'nai Brith organized there by German Jews on October 13, 1843",
+        "Oldest Jewish fraternal organization in America"
+      ],
+      "source_passage": "be certain to note the very small plaque on the wall to your east at what would be 60Essex Street. This was the site of Sinsheimer's Cafe. It was here that the B'nai Brith (Sons of the Covenant) was organized by immigrant German Jews on October 13, 1843. it was founded as a self-help and defensive organization to protect American Jews in the face of anti-immigrant sentiment. It is the oldest Jewish fraternal organization in America.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "The Big Onion Guide to New York City: Ten Historic Tours",
+        "author": "Seth I. Kamil and Eric Wakin",
+        "chapter": "The Lower East Side: Immigrant New York"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-17",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [],
+  "summary": {
+    "beats_extracted": 55,
+    "recovered": true
+  }
+}

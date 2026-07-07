@@ -1,0 +1,990 @@
+[
+  {
+    "name": "Large Flagpole",
+    "short_description": "Minor monument: bas-relief flagpole base depicting the 1626 Minuit 'purchase'. Low standalone gravity; tour seasoning stop. LOW geocode confidence \u2014 flagged for review.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Ferry terminal you pass walking around Castle Clinton toward the tall buildings",
+            "direction": "north",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "transition",
+        "script_excerpt": "Walk around Castle Clinton, past the ferry terminal, and head inland \u2014 northeast \u2014 toward the tall buildings. Soon you'll come upon a large flagpole."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Bas-relief sculpture at the base of the flagpole showing the 1626 'purchase' of Manhattan",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "At the base of this flagpole is a bas-relief sculpture depicting the historic scene of Dutch official Peter Minuit 'buying' Manhattan from Native American residents in 1626, to consolidate the Dutch colony in one easily defended spot. Just "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "As for Peter Minuit, he was recalled from his post in Manhattan in 1631, much to his dismay, but returned on behalf of the Swedish government in 1638 to set up a rival 'New Sweden' colony on the Delaware River."
+      }
+    ]
+  },
+  {
+    "name": "Bowling Green Park",
+    "short_description": "Tier-4/5 candidate: NYC's oldest official park (est. 1733), George III statue toppling, original colonial fence, Charging Bull at uptown end. High gravity historic + photo-op site.",
+    "trigger_radius": 30,
+    "importance_tier": 3,
+    "n_beats": 8,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The green where colonial soldiers once lawn-bowled, on the site of old Fort George",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This was the city's first official park, established in 1733. Had you been a soldier during the British Colonial era, you'd have been stationed at the fort that once stood here, Fort George, and likely passed your leisure time lawn bowling "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The original colonial fence ringing the park, its tips once topped with royal crowns now removed",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "On July 9, 1776, the Declaration of Independence was read aloud near City Hall, and a small battalion of agitated colonists marched here to behead the statue of King George that stood in the center of the park. It had been erected just five"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Building with the Egyptian motif at 5 Broadway, on your left",
+            "direction": "west",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "On your left, the building with the Egyptian motif at 5 Broadway was the headquarters of the White Star shipping line. It was here that distraught relatives came to learn the fate of their loved ones after the sinking of the Titanic. There'"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Former Standard Oil HQ at 26 Broadway, to your right, with an oil-lamp ornament at the top",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Across the street, to your right at 26 Broadway, is the former headquarters of Standard Oil, the company that made John D. Rockefeller his millions. Depending on where you're standing, you may be able to see the representation of an elabora"
+      }
+    ]
+  },
+  {
+    "name": "Fraunces Tavern",
+    "short_description": "Tier-4/5 candidate: 18th-century tavern/museum, Washington's Farewell to Officers, Sons of Liberty, 1975 FALN bombing site. High historic gravity.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The 1904 reconstructed tavern building, about 40% original",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The bad news first: this is not what Fraunces Tavern actually looked like, but a hopeful reconstruction completed in 1904, based on the architectural styles of the period \u2014 about forty percent of the building is original. Nonetheless, it wa"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "On a more sobering note, in 1975 Fraunces Tavern was bombed by the Armed Forces Puerto Rican National Liberation Front. Four people were killed and dozens injured. The choice of this site had dual reasons: not only is it a symbol of America"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Walk out of the park, going toward the museum and then along the side of the museum on Whitehall Street until you reach Bridge Street. Turn onto it and walk to Broad Street; take a right, and in front of you will be Fraunces Tavern."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 2nd-floor dining room where Washington gave his farewell speech",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The five combined early-18th-century structures",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Combining five early-18th-century structures, this unique museum, restaurant and bar pays homage to the nation-shaping events of 1783, the momentous year in which the British officially relinquished control of New York following the end of "
+      }
+    ]
+  },
+  {
+    "name": "Goldman Sachs Building",
+    "short_description": "Tier-3 candidate: glass-and-brownstone tower over Stone St; archaeological interest = Lovelace's Tavern foundations under sidewalk glass. Book describes it diagonally across from Fraunces; the Lovelace Tavern excavation is documented at 85 Broad St. MODERATE confidence \u2014 book identifies it only as 'Goldman Sachs Building'; flagged for review.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Glass viewing panels in the sidewalk showing the Lovelace Tavern excavations, at the end of the benches \u2014 one under the colonnade, one in the open air",
+            "direction": "down",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Plaques beside the excavation panels",
+            "direction": "down",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Directly across the street from the tavern is the headquarters of Goldman Sachs, a massive glass-and-brownstone skyscraper that cuts Stone Street in two. When it was being constructed, crews found the foundations of old Governor Lovelace's "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "By the way, this street is known as Pearl because it was once the beachy edge of the island, where residents went to look for oysters. Oysters were one of the most common foods served in New Amsterdam; some biologists have estimated that Ne"
+      }
+    ]
+  },
+  {
+    "name": "Stone Street",
+    "short_description": "Tier-3/4 candidate: cobbled Greek Revival historic street, first paved street in New Amsterdam, 1835 fire rebuild. Distinctive streetscape.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The narrow, winding cobbled street, a snapshot of the city circa 1837",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Here you'll have a remarkably accurate snapshot of what the city looked like around 1837. This narrow, winding street was the first to be paved in New Amsterdam and the only one thought to still sit where the Dutch colonists originally plac"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Dutch steplike gable atop 57 Stone Street, added 1908",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "The buildings here are classic Greek Revival \u2014 straight up-and-down brick with granite bases, built as counting houses and warehouses for local merchants. Number 57 Stone Street has a very Dutch steplike gable, added in 1908 by architect C."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "After Willem Kieft let the colony fall into disrepair, Peter Stuyvesant stepped in to fix the demoralized settlement \u2014 making peace with the Lenape, establishing markets and a night watch, repairing the fort and digging a canal under what i"
+      }
+    ]
+  },
+  {
+    "name": "Mill Lane",
+    "short_description": "Minor: shortest street on Manhattan, Stuyvesant surrender legend. Low standalone gravity. LOW-MODERATE geocode confidence \u2014 flagged for review.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Mill Lane, the shortest street on Manhattan, site of the old mill",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "Mill Lane has the distinction of being the shortest street on Manhattan \u2014 and yes, there was once a mill here. Folk tradition held that it was here that Peter Stuyvesant, the Dutch Director-General of New Amsterdam, signed a treaty of surre"
+      }
+    ]
+  },
+  {
+    "name": "Hanover Square",
+    "short_description": "Tier-3/4 candidate: historic square, first newspaper, cotton exchange, Captain Kidd residence, India House (1850s brownstone banking house).",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Hanover Square is one of the only places in New York City to keep its 'royalist' title after the American Revolution; it was named for the House of Hanover, from which the era's British monarchy was descended. Once the center of the city's "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "When he was still considered a respectable citizen, the notorious pirate Captain Kidd lived here in bourgeois splendor with his wife \u2014 the two were known for their grand dinner parties."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "India House, a preserved 1850s brownstone banking house on the west side of the square",
+            "direction": "west",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "India House, on the west side of the square, is a perfectly preserved example of a brownstone banking house from the 1850s."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "On December 16, 1835, a gas line broke in a dry-goods store near Hanover Square. The fire spread fast \u2014 south down Stone St and northeast toward Wall St \u2014 and raged for over a day, destroying much of what remained of the original Dutch and "
+      }
+    ]
+  },
+  {
+    "name": "Wall Street",
+    "short_description": "Tier-5 candidate: the street itself as Dutch boundary wall + slave-market site (74 Wall St) + 'canyons'. High gravity as a named corridor; geocoded to a representative mid-street point.",
+    "trigger_radius": 40,
+    "importance_tier": 5,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "You are now standing at what was the boundary of the city during Dutch colonial times. If you'd been alive then, you'd be staring at a nine-foot-high wooden wall, erected to keep out British invaders who, it was thought \u2014 wrongly \u2014 would be"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Small plaque about the slave market at Water and Wall streets (though scholars place the market here, at 74 Wall St.)",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "If you walk to 74 Wall Street, you'll be standing in the heart of what was once the United States' largest slave market, a bastion of inhumanity that held more auctions than any other in the country. The sale of humans began here in 1711 an"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The 'canyons' where skyscrapers crowd so close the sidewalk gets little light",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "transition",
+        "script_excerpt": "Continue to the uptown point of the triangle that is Hanover Square and hook a left onto Hanover Street. You're now entering the 'canyons of Wall Street,' so named because the skyscrapers stand so close together that the sidewalk gets littl"
+      }
+    ]
+  },
+  {
+    "name": "40 Wall Street",
+    "short_description": "Tier-3/4 candidate: neo-Gothic/Art Deco skyscraper, Bank of Manhattan, race-to-the-top vs Chrysler Building. Notable architecture stop.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Gaze up at 40 Wall Street with its ziggurat-like step-backs of the late-1920s skyscraper",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "Here is New York's greatest monument to thwarted ambition. Architect H. Craig Severance dreamed of building the tallest building in the world, taller than the Woolworth Building, which had held the record from 1917 to 1930. The trouble was "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The ziggurat-like step-backs cascading up 40 Wall Street",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Take a moment to gaze up at 40 Wall Street; it's still an impressive achievement and a beautiful building, with all the ziggurat-like step-backs \u2014 cascading layers \u2014 of the prototypical late-'20s skyscraper. Those setbacks were added to let"
+      }
+    ]
+  },
+  {
+    "name": "Federal Hall",
+    "short_description": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue.",
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "n_beats": 5,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Statue of George Washington on the steps, perhaps on the very spot of his oath of office",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The most historically significant piece of land in the city, Federal Hall is a quintessential Greek Revival edifice \u2014 a modified version of the Parthenon \u2014 completed in 1842. Note the statue of George Washington: it was here, perhaps on the"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The magnificent rotunda inside Federal Hall",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In this former British City Hall \u2014 transformed into 'Federal Hall' when the Brits quit the city \u2014 the famous 1735 Zenger Trial, which helped secure freedom of the press, was held. In 1765 the pre-Revolutionary Stamp Act Congress met here to"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Small indentations pocking the side of the J. P. Morgan building facing Federal Hall \u2014 scars of the 1920 bomb",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Window of J. P. Morgan's former office, above the flagpole",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "Note the austere building across the street; it was the headquarters of banker J. P. Morgan \u2014 the window of his former office is above the flagpole. Look closely at the side facing Federal Hall and you'll see it is pocked with small indenta"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The Greek Revival facade of Federal Hall",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "A Greek Revival masterpiece, Federal Hall houses a museum dedicated to postcolonial New York. Its themes include George Washington's inauguration, Alexander Hamilton's relationship with the city, and the struggles of John Peter Zenger, a pr"
+      }
+    ]
+  },
+  {
+    "name": "1 Wall Street",
+    "short_description": "Tier-3 candidate: landmark Art Deco skyscraper, fluted limestone facade, cathedral window, soaring lobby. Architecture stop.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Fluted, curtainlike limestone facade of 1 Wall Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Spider-web pattern of the cathedral window above the entry",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Take a moment to gaze at this absolutely stunning Art Deco building, once one of the priciest addresses in the city. The beautifully fluted, curtainlike limestone of the facade; the spider-web pattern of the cathedral window above the entry"
+      }
+    ]
+  },
+  {
+    "name": "Canyon of Heroes",
+    "short_description": "Tier-3 candidate: Broadway ticker-tape parade route with brass sidewalk plates. Linear feature; geocode is a representative point. LOW-MODERATE confidence \u2014 flagged for review.",
+    "trigger_radius": 40,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Brass plates set into the Broadway sidewalk naming the ticker-tape parades",
+            "direction": "down",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "Look down as you amble along Broadway at the brass plates naming the ticker-tape parades held along this stretch. Had you been here in the 1930s or '40s, the crowds would have stood shoulder-to-shoulder, and above your head hundreds at the "
+      }
+    ]
+  },
+  {
+    "name": "Zuccotti Park",
+    "short_description": "Tier-3 candidate: privately owned park, origin of Occupy Wall Street (Sept 2011). Modern political-history stop.",
+    "trigger_radius": 25,
+    "importance_tier": 3,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "The private one-block-long park where Occupy Wall Street began",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "There's not much to see anymore, but this private one-block-long park is where the 'Occupy Wall Street' movement started in September of 2011, bringing the concept of the power of the one percent into modern political discourse. Activists o"
+      }
+    ]
+  },
+  {
+    "name": "Mt. Olivet Baptist Church",
+    "short_description": "Landmarked former Temple Israel synagogue (Arnold W. Brunner, 1906-07), now a prominent Harlem church addressed by political figures; moderate tourist gravity, strong local/historic significance.",
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Several Stars of David worked into the facade of the church",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Look closely at the facade of this prominent Harlem church and you'll notice something you don't usually see on a church: several Stars of David. The building epitomizes the neighborhood's transformation. It was built in 1907 to be the neig"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Facade of Mt. Olivet Baptist Church across the street at 120th St and Malcolm X Blvd",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Over the years this prominent Harlem church has hosted some notable speakers from its pulpit \u2014 among them presidential candidate Howard Dean and the late Venezuelan president Hugo Chavez, both of whom addressed the congregation here."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Church facade viewed from across the street at 120th St and Malcolm X Blvd",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "Stand across the street, at the corner of 120th Street and Malcolm X Boulevard \u2014 also known as Lenox Avenue \u2014 so you can get a better look at this prominent Harlem church on the far side."
+      }
+    ]
+  },
+  {
+    "name": "Hale House",
+    "short_description": "Nationally-recognized institution founded 1969 by Clara 'Mother' Hale for drug-addicted/HIV-positive infants; strong social-history gravity, low foot-traffic landmark.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "climax",
+        "script_excerpt": "In 1969, an act of kindness changed the lives of thousands of children. A young woman named Lorraine Hale was driving on 146th Street when she saw a drugged-out mother nodding off on the street, her two-month-old baby almost slipping from h"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Plaque at the door of Hale House describing the house and its mission",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Mother Hale's work unfolded during the 1960s, '70s, and '80s \u2014 a period of steep decline for Harlem, when many landlords stopped maintaining and even abandoned their buildings. A 1960 census found only 50% of Harlem's housing sound, against"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "From the church, walk uptown on Malcolm X Boulevard, turn left on 122nd Street, and continue to 152 West 122nd Street."
+      }
+    ]
+  },
+  {
+    "name": "4-16 W. 122nd St.",
+    "short_description": "Anonymous but architecturally notable brownstone row by William Tuthill (later Carnegie Hall architect); low gravity, walking-tour interest only.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Main entrance raised to the second floor rather than the ground floor",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This is not a famous building, but a very beautiful one \u2014 a good example of the talent enlisted to build Harlem's brownstones when the neighborhood was first developed. It's the work of architect William Tuthill, who later went on to design"
+      }
+    ]
+  },
+  {
+    "name": "Marcus Garvey Park",
+    "short_description": "20-acre landmarked park, site of 1969 Harlem Cultural Festival ('Black Woodstock', Summer of Soul) and 1857 cast-iron fire watchtower; high local/cultural gravity.",
+    "trigger_radius": 60,
+    "importance_tier": 2,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "climax",
+        "script_excerpt": "This park \u2014 long known as Mount Morris Park, named for General Roger Morris \u2014 was created in honor of the very first American victory in the Revolutionary War. It was near where you stand, on September 16, 1776, that George Washington engag"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "In 1969 this park hosted the outdoor Harlem Cultural Festival \u2014 sometimes called 'the Black Woodstock' \u2014 which was celebrated decades later in the 2021 Oscar-winning documentary Summer of Soul."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "In 1973 the park was renamed Marcus Garvey Park, in honor of the founder of the Universal Negro Improvement Association."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Cast-iron fire-lookout tower standing in the park",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "In the park stands a cast-iron tower, built in 1857 as a fire lookout."
+      }
+    ]
+  },
+  {
+    "name": "55 W. 125th St.",
+    "short_description": "High-rise that housed Bill Clinton's first post-presidency office (2001); modest gravity, anecdotal stop.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Top floor of the high-rise building at 55 W. 125th St.",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Former President Bill Clinton set up his first post-presidency office on the top floor of this high-rise. He chose Harlem after a public outcry over the taxpayer-supported rent on his proposed Carnegie Hill office space \u2014 a whopping $850,00"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Walk back to Malcolm X Boulevard and head uptown to 55 West 125th Street."
+      }
+    ]
+  },
+  {
+    "name": "Langston Hughes House",
+    "short_description": "NYC-landmarked Italianate brownstone (1869) where Hughes lived 1947-1967; literary-pilgrimage gravity, now a house museum.",
+    "trigger_radius": 15,
+    "importance_tier": 2,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Garden in front of the house that Hughes called 'The Children's Garden'",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "Poet Langston Hughes bought this brownstone in 1947, likely with the royalties from writing the libretto to the Broadway musical Street Scene. His was an open house, with writers, musicians, and neighborhood friends dropping by at all hours"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The 1950s and '60s saw the rise of writers who began to question the status quo. Poet Langston Hughes examined the condition of African Americans in Harlem, while Beat poets such as Allen Ginsberg rejected traditional rhyme in favor of free"
+      }
+    ]
+  },
+  {
+    "name": "Collyer Park",
+    "short_description": "Pocket park on the razed Collyer Brothers hoarder mansion site (deaths 1947); niche dark-history/true-crime gravity. Official name is 'Collyer Brothers Park'; source uses 'Collyer Park'.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 1,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "climax",
+        "script_excerpt": "This pretty pocket park marks the site where the most famous hoarders of the pre-television age once lived: a pair of reclusive brothers who occupied their home here from the 1880s until their deaths in 1947. Rumors swirled about their comp"
+      }
+    ]
+  },
+  {
+    "name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+    "short_description": "Major Harlem intersection: Adam Clayton Powell Jr. statue ('Higher Ground', 2005), Malcolm X NOI lecturing site, and the former Hotel Theresa (Castro/Khrushchev 1960). Very high historic gravity.",
+    "trigger_radius": 35,
+    "importance_tier": 3,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Statue of Adam Clayton Powell, Jr. on the windswept northeast corner",
+            "direction": "north",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This intersection is one of the most important in Harlem. Look first to the windswept northeast corner, where a statue of Adam Clayton Powell, Jr. \u2014 Harlem's first African-American congressman \u2014 stands. This is also the spot where Malcolm X"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Tall white former Hotel Theresa across the street, geometric patterns climbing its facade",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "Across the street rises the tall white building with geometric patterns climbing its facade \u2014 the former Hotel Theresa. In 1960 a young Fidel Castro was scheduled to address the United Nations, but no hotel in town would take him and his co"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "Former Hotel Theresa across the street, where Malcolm X kept his OAAU offices",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "Four years after Castro's stay, when Malcolm X broke with the Nation of Islam to found his own Organization of Afro-American Unity \u2014 open to people of all religions \u2014 he held his press conference at the Theresa and soon moved his offices he"
+      }
+    ]
+  },
+  {
+    "name": "Blumstein's Department Store",
+    "short_description": "Former flagship Harlem department store; site of 1934 'Don't Buy Where You Can't Work' boycott and 1958 stabbing of Dr. King by Izola Ware Curry. High civil-rights-history gravity.",
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Copper ornamentation on the facade, mixing Art Deco and Spanish Renaissance patterning",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "When it opened in 1900, Blumstein's was the neighborhood's largest and most exclusive store, built at a cost of $1 million \u2014 note the beautifully worked copper ornamentation on the facade, a mix of Art Deco and Spanish Renaissance. It was o"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "climax",
+        "script_excerpt": "In 1958, Dr. King himself was at the center of history at Blumstein's. He was seated at a table signing copies of his book Strides Towards Freedom when a Black woman named Izola Ware Curry reached the front of the line. After asking, 'Are y"
+      }
+    ]
+  },
+  {
+    "name": "Apollo Theater",
+    "short_description": "Iconic landmark music hall, legendary Amateur Night; tour finish point. Very high tourist gravity. NOTE: source says whites-only burlesque 'until 1934'; corroborating sources put the burlesque-house origin at 1914 (Hurtig & Seamon's) \u2014 source's 1934 conversion date checks out.",
+    "trigger_radius": 25,
+    "importance_tier": 4,
+    "n_beats": 6,
+    "beat_evidence": [
+      {
+        "physical_cues": [
+          {
+            "cue": "Marquee of the Apollo Theater directly in front of you across the street",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "For years, 125th Street was known as the 'Great Black Way,' a play on Broadway's 'Great White Way' \u2014 this was the theater district of Harlem. Only a few of those great show palaces still exist, but right in front of you is the most famous a"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Cross the street, and you'll see the marquee of the Apollo Theater."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The collage of all the greats who've played here, just inside the entrance",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "It's a thrill just to walk into the legendary but intimate Apollo Theater, past the collage of all the greats who've played here. Built in 1914, it looks much bigger on TV. Perhaps most famous for launching the careers of Ella Fitzgerald, A"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The neoclassical facade of the Apollo Theater on 125th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "More than simply historic, the Apollo Theater is a swinging testament to Harlem's astounding musical legacy. Originally a whites-only burlesque joint, the neoclassical venue reinvented itself in 1934 with 'Jazz \u00e0 la Carte.' Soon after, virt"
+      }
+    ]
+  },
+  {
+    "name": "Washington Square Park",
+    "short_description": "Iconic Greenwich Village landmark and NYU social center; one of NYC's most-visited public squares with the Stanford White marble arch. Very high tourist gravity.",
+    "trigger_radius": 40,
+    "importance_tier": 5,
+    "n_beats": 14,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "establishing",
+        "script_excerpt": "Greenwich Village started as its own village \u2014 a place where, as in Boccaccio's Decameron, the well-to-do fled on a near-yearly basis to escape the plagues of colonial Nieuw Amsterdam and then New York City, mostly recurrent bouts of yellow"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "hook",
+        "script_excerpt": "Hangings, protests, burials, parades \u2014 if another spot in New York has seen as much drama as Washington Square Park, the guidebook hadn't heard of it. North of the first Dutch settlement in Manhattan, this was originally marshland fed by a "
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The massive elm still standing on the park's northwest corner, used for public hangings",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "In 1797 the drained swamp was designated a potter's field, and it was put to grim use a year later when yellow fever swept the city. Over five percent of New York's population died that muggy, mosquito-infested summer, and the poorest of th"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The white marble arch at the foot of Fifth Avenue",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Right-side sculpture: Washington as President, Accompanied by Wisdom and Justice",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Left-side sculpture: Washington as Commander-in-Chief, Accompanied by Fame and Valor",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "The magnificent white marble arch at the foot of Fifth Avenue was designed by Stanford White \u2014 his second such arch. The first, made of wood and plaster, was erected in 1889 to mark the centennial of George Washington's inauguration and to "
+      }
+    ]
+  },
+  {
+    "name": "22 Washington Square North",
+    "short_description": "Modest gravity on its own; significance is the Samuel Morse / birthplace-of-telegraph plaque-level story. Niche history stop.",
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "From the park, cross the street, turn left to head west, and walk until you reach 22 Washington Square North."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The New York University building at 22 Washington Square North where Morse lived and taught",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "hook",
+        "script_excerpt": "Dash-dot-dot-dash \u2014 you've reached the birthplace of the telegraph. Inventor Samuel Morse lived in this New York University building, where he was a painting instructor, when in 1836 he worked out the rudiments of the telegraphic alphabet b"
+      }
+    ]
+  },
+  {
+    "name": "Washington Square North",
+    "short_description": "The longest unbroken run of Greek Revival town houses in the US; architectural and literary (Henry James) gravity. Moderate-high.",
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Retrace your steps and cross Fifth Avenue, looking at the magnificent row houses ahead of you."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The unbroken row of Greek Revival town houses, with Greek symbols incorporated into the fences in front of you",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "You're looking at the longest unbroken string of Greek Revival town houses anywhere in the United States. New York University owns most of them now \u2014 in fact it owns much of the neighborhood \u2014 but in the 1830s, when they were built, they we"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Henry James' grandmother lived here, and he used the area as the inspiration for his famed novel Washington Square \u2014 later turned into the play and film The Heiress."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The facade of #3 Washington Square North, home to Hopper, Eakins, and Dos Passos",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "deepen",
+        "script_excerpt": "By the early 20th century this strip had run down, and many of the Village's best-known \"Bohemians\" moved in. Painters Edward Hopper and Thomas Eakins and writer John Dos Passos all lived at #3 Washington Square North \u2014 though not at the sa"
+      }
+    ]
+  },
+  {
+    "name": "29 Washington Place",
+    "short_description": "Site of the 1911 Triangle Shirtwaist Factory fire (the Brown/Asch Building, now NYU); a NHL and major American-labor-history pilgrimage site. High historical gravity.",
+    "trigger_radius": 12,
+    "importance_tier": 3,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Turn right, heading downtown, onto Washington Square East, then take a left onto Washington Place and walk to the corner of Greene Street."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The building on this site at the corner of Washington Place and Greene St where the fire occurred on the upper floors",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "climax",
+        "script_excerpt": "On March 25, 1911, a horrific tragedy on this site reshaped New York State law and the history of the American labor movement. That Saturday, some 600 young women \u2014 mostly Jewish and Italian immigrants between 13 and 23 \u2014 were at work in a "
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "After many protests, the state legislature answered the tragedy by rewriting the labor code into the most stringent in the nation. The labor movement, which had been struggling up to this point, gathered steam, and the International Ladies "
+      }
+    ]
+  },
+  {
+    "name": "Judson Memorial Church",
+    "short_description": "Stanford White Romanesque church, social-activism landmark on the south side of Washington Square. Moderate gravity.",
+    "trigger_radius": 15,
+    "importance_tier": 3,
+    "n_beats": 4,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Walk back to Washington Square and follow the perimeter of the park south to 4th Street, then turn right and walk to Thompson Street."
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The thin ochre bricks of the boxy Romanesque church, inspired by Florence",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "narrative_function": "establishing",
+        "script_excerpt": "This boxy Romanesque church, from 1929, was another masterwork by architect Stanford White, who took his inspiration from the churches of Florence \u2014 hence the thin, ochre bricks."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "The church was a center for immigrant life at the turn of the 20th century, and in the 1950s and '60s it became known for the progressive politics of minister Howard Moody, who sheltered protesters from the police and helped overturn a shor"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The church facing the south side of Washington Square Park",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "narrative_function": "scene_setter",
+        "script_excerpt": "Facing onto the south side of Washington Square Park, Judson Church carries a rich legacy of social activism."
+      }
+    ]
+  },
+  {
+    "name": "New York University School of Law",
+    "short_description": "On-tour pass-by; the narrative gravity is the vanished John Reed boardinghouse and the Revolutionary-War general street names. Low standalone gravity.",
+    "trigger_radius": 20,
+    "importance_tier": 3,
+    "n_beats": 2,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "When journalist John Reed \u2014 the subject of the Warren Beatty biopic Reds \u2014 lodged in a famous boardinghouse that once stood here, he wrote a poem about his artsy neighbors, whom he dubbed \"Inglorious Miltons by the Score / And Rodins, one t"
+      },
+      {
+        "physical_cues": [
+          {
+            "cue": "The street name signs on this side of the park, named for Revolutionary War generals",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "narrative_function": "factoid",
+        "script_excerpt": "Take a look at the street names on this side of Washington Square Park \u2014 every one was chosen to honor Washington's Revolutionary War generals."
+      }
+    ]
+  },
+  {
+    "name": "Provincetown Playhouse",
+    "short_description": "Historic American theater (Eugene O'Neill launch site); 'only the name remains' but strong cultural-history gravity. Moderate.",
+    "trigger_radius": 12,
+    "importance_tier": 2,
+    "n_beats": 3,
+    "beat_evidence": [
+      {
+        "physical_cues": [],
+        "narrative_function": "transition",
+        "script_excerpt": "Walk west to MacDougal Street, turn left, and stop beside the legendary Provincetown Playhouse."
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "climax",
+        "script_excerpt": "The more theatrical strain of Greenwich Village bohemianism found its home at the little theater that once stood here \u2014 only the name remains \u2014 at one point one of the city's most influential playhouses. That was thanks largely to Eugene O'"
+      },
+      {
+        "physical_cues": [],
+        "narrative_function": "deepen",
+        "script_excerpt": "Other famous names contributed here too: Edna St. Vincent Millay, whose anti-war classic Aria de Capo debuted in 1919, along with John Reed and e. e. cummings. Among the actors who trod these boards were Eva Le Gallienne, Tallulah Bankhead,"
+      }
+    ]
+  }
+]
