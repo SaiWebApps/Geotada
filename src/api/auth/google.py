@@ -21,6 +21,9 @@ def verify_google_id_token(token: str) -> dict:
     if not email:
         raise TokenError("Google ID token missing email claim")
 
+    if not idinfo.get("email_verified"):
+        raise TokenError("Google email not verified")
+
     return {
         "email": email,
         "sub": idinfo.get("sub", ""),

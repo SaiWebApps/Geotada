@@ -226,7 +226,14 @@ def generate(
     # sees the whole route; never empties a beat, so emitted beat-ids are stable.
     sentences = suppress_repeated_claims(sentences, beat_sequence)
 
-    selected_pois = _flatten_pois(beat_sequence, route)
+    # A beat is "voiced" only if at least one of its sentences actually survived
+    # the full stitch (cold-open/anchor/transit) AND #22 claim-dedup. A
+    # transit-class beat the direction check rejected, or a beat whose every
+    # sentence was deduped, emits nothing — it must NOT be reported as voiced
+    # (dwell over-report) nor block keep-exploring (its ScriptPOI.beat_ids feeds
+    # extra_beat_ids's exclusion set). Compute the truth from emitted sentences.
+    voiced_beat_ids = {s.source_id for s in sentences if s.source_type == "beat"}
+    selected_pois = _flatten_pois(beat_sequence, route, voiced_beat_ids)
     lens_coverage = _lens_coverage(beat_sequence)
     total_audio = _sum_audio(sentences, beat_sequence)
     walking = int(route.total_walk_seconds)
@@ -853,13 +860,34 @@ def _coerce_glue_output(raw: str, *, default: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def _flatten_pois(beat_sequence: BeatSequence, route: Route) -> tuple[ScriptPOI, ...]:
-    """Build the selected_pois roster aligning Route POIs with their beats."""
+def _flatten_pois(
+    beat_sequence: BeatSequence,
+    route: Route,
+    voiced_beat_ids: set[str] | None = None,
+) -> tuple[ScriptPOI, ...]:
+    """Build the selected_pois roster aligning Route POIs with their beats.
+
+    ``voiced_beat_ids`` is the set of beat ids that ACTUALLY emitted at least one
+    sentence into the final stitch (post claim-dedup). When supplied, a stop's
+    ``beat_ids`` and its ``planned_audio_seconds`` dwell sum are restricted to
+    those beats. This prevents a transit-class beat that the direction check
+    dropped from _build_transit (and that the anchor block filters out) from
+    being reported as voiced: leaving it in ``beat_ids`` would both over-report
+    dwell by its spoken seconds AND wrongly mark it "voiced" so keep-exploring
+    (``extra_beat_ids``) excludes its unreachable content. When ``None`` (legacy
+    callers/tests), every planned beat is counted as before.
+    """
     by_id = {pb.poi_id: pb for pb in beat_sequence.poi_beats}
     out: list[ScriptPOI] = []
     for poi in route.pois:
         plan = by_id.get(poi.id)
-        beat_ids = tuple(b.id for b in plan.beats) if plan else ()
+        if plan is None:
+            plan_beats: tuple[BeatRef, ...] = ()
+        elif voiced_beat_ids is None:
+            plan_beats = plan.beats
+        else:
+            plan_beats = tuple(b for b in plan.beats if b.id in voiced_beat_ids)
+        beat_ids = tuple(b.id for b in plan_beats)
         out.append(
             ScriptPOI(
                 id=poi.id,
@@ -875,7 +903,7 @@ def _flatten_pois(beat_sequence: BeatSequence, route: Route) -> tuple[ScriptPOI,
                 # route change (selection still books tier dwell until C9).
                 dwell_seconds=max(
                     compute_dwell_seconds(poi.tier),
-                    planned_audio_seconds(plan.beats) if plan else 0,
+                    planned_audio_seconds(plan_beats),
                 ),
                 beat_ids=beat_ids,
                 # C9g: the governor's trimmed-off beats, surfaced for
@@ -896,10 +924,14 @@ def _lens_coverage(beat_sequence: BeatSequence) -> dict[str, int]:
     return dict(counter)
 
 
+def _word_count(text: str) -> int:
+    return len(text.split())
+
+
 def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> int:
     """Sum est_spoken_seconds across cited beats, scaled by the fraction of each
-    beat's sentences that actually SURVIVED to be voiced, plus a flat 4 seconds
-    per glue sentence (≈10 spoken words).
+    beat's WORDS that actually survived to be voiced, plus a flat 4 seconds per
+    glue sentence (≈10 spoken words).
 
     Track B (B.4): a vignette voices only the FIRST sentence of its beat, so
     counting the whole beat's est_spoken_seconds would overcount — each vignette
@@ -907,30 +939,42 @@ def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> in
 
     #8: the #22 claim-dedup drops a beat's repeated sentences while keeping the
     beat, so counting the whole beat's audio over-reports the tour's minutes.
-    Scale each cited beat by ``surviving_sentences / total_sentences`` — a
-    non-deduped beat keeps all its sentences (fraction 1.0), so this is identical
-    to the old behaviour there, and only the trimmed beats report honestly less.
+    Scale each cited beat by its voiced share so a trimmed beat reports honestly
+    less. #8 (compose refinement): the COMPOSE step may legitimately MERGE a
+    beat's sentences into a different (usually smaller) sentence count while
+    voicing every word, so scaling by ``surviving_sentences / total_sentences``
+    under-reported a faithful merge. Scale by WORD coverage instead — the sum of
+    the composed/emitted beat-sentence word counts vs. the beat's own word count,
+    capped at 1.0. A faithful merge preserves words → ratio ≈ 1.0 → full credit;
+    only genuinely suppressed content (dedup) drops words and reports less.
     """
     vignette_ids = {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
-    surviving_by_beat: Counter[str] = Counter()
+    voiced_words_by_beat: Counter[str] = Counter()
     glue_count = 0
     for s in sentences:
         if s.source_type == "beat" and s.source_id not in vignette_ids:
-            surviving_by_beat[s.source_id] += 1
+            voiced_words_by_beat[s.source_id] += _word_count(s.text)
         else:
             glue_count += 1
     by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
     total = 0
-    for beat_id, surviving in surviving_by_beat.items():
+    for beat_id, voiced_words in voiced_words_by_beat.items():
         beat = by_id.get(beat_id)
         if beat is None:
             continue
         beat_secs = beat_spoken_seconds(beat)
-        total_sents = len(split_sentences(beat.script_body or ""))
-        if total_sents <= 0:
-            total += beat_secs  # no splittable body — count the whole estimate
+        # Denominator: the words the beat itself carries in its script_body,
+        # summed the SAME way emitted beat-sentences are counted (via
+        # split_sentences). This keeps the common un-deduped, un-merged case at
+        # exactly ratio 1.0 (voiced_words == body_words) — identical credit to
+        # the old sentence-fraction model — while a merge that preserves words
+        # still lands at ~1.0 and only real dedup suppression drops below it.
+        # No countable body words → count the whole estimate.
+        body_words = sum(_word_count(sent) for sent in split_sentences(beat.script_body or ""))
+        if body_words <= 0:
+            total += beat_secs
         else:
-            total += round(beat_secs * min(1.0, surviving / total_sents))
+            total += round(beat_secs * min(1.0, voiced_words / body_words))
     total += glue_count * 4
     return total
 

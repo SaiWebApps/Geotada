@@ -53,6 +53,43 @@ class TestGetProviders:
         mock_info = next(p for p in data["providers"] if p["name"] == "mock")
         assert mock_info["available"] is True
 
+    def test_openai_unavailable_when_key_unset(self, client, monkeypatch):
+        """Regression: availability must reflect real usability, not mere
+        instantiation. With OPENAI_API_KEY unset, /audio/providers must report
+        openai as available=False — otherwise a client cannot tell a usable
+        provider from one that will 502 'OPENAI_API_KEY not set' on generate."""
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        resp = client.get("/api/v1/audio/providers")
+        data = resp.json()
+        openai_info = next(p for p in data["providers"] if p["name"] == "openai")
+        assert openai_info["available"] is False
+
+    def test_openai_available_when_key_set(self, client, monkeypatch):
+        monkeypatch.setenv("OPENAI_API_KEY", "sk-test-key")
+        resp = client.get("/api/v1/audio/providers")
+        data = resp.json()
+        openai_info = next(p for p in data["providers"] if p["name"] == "openai")
+        assert openai_info["available"] is True
+
+    def test_elevenlabs_unavailable_without_voice_id(self, client, monkeypatch):
+        """ElevenLabs needs BOTH an API key AND a voice id; a key alone still
+        502s ('ELEVENLABS_VOICE_ID not set') on generate, so availability must
+        require both."""
+        monkeypatch.setenv("ELEVENLABS_API_KEY", "el-test-key")
+        monkeypatch.delenv("ELEVENLABS_VOICE_ID", raising=False)
+        resp = client.get("/api/v1/audio/providers")
+        data = resp.json()
+        el_info = next(p for p in data["providers"] if p["name"] == "elevenlabs")
+        assert el_info["available"] is False
+
+    def test_elevenlabs_available_with_key_and_voice(self, client, monkeypatch):
+        monkeypatch.setenv("ELEVENLABS_API_KEY", "el-test-key")
+        monkeypatch.setenv("ELEVENLABS_VOICE_ID", "voice-abc")
+        resp = client.get("/api/v1/audio/providers")
+        data = resp.json()
+        el_info = next(p for p in data["providers"] if p["name"] == "elevenlabs")
+        assert el_info["available"] is True
+
 
 # ── POST /audio/preview ──
 
@@ -259,3 +296,63 @@ class TestEvalRegeneratesOnDegradedAudio:
         data = resp.json()
         assert calls["n"] == 3, "a persistently degraded voice exhausts the bounded retries"
         assert data["verdict"] == "FAIL", "a genuine quality failure must still surface"
+
+    def test_transient_ttserror_on_retry_keeps_earlier_result(self, client, monkeypatch):
+        """Regression (Defect #1): a transient TTSError on a LATER attempt must
+        not discard an already-captured result. Attempt 1 evaluates (result
+        captured, high WER so the loop retries); attempt 2's generate raises a
+        transient TTSError. The endpoint must return 200 with the best result so
+        far, NOT a 502 that throws the earlier good transcription away."""
+        from src.api.routes import audio as audio_routes
+        from src.audio.eval import EvalResult
+        from src.audio.provider import TTSError
+
+        gen_calls = {"n": 0}
+
+        class _FlakyOpenAI:
+            name = "openai"
+
+            def generate(self, text, *, voice_id=None):
+                gen_calls["n"] += 1
+                if gen_calls["n"] >= 2:  # a transient blip on the retry attempt
+                    raise TTSError("temporary upstream 503")
+                return b"audio-bytes"
+
+        monkeypatch.setattr(audio_routes, "get_provider", lambda name: _FlakyOpenAI())
+
+        def degraded_once(text, audio, *, filename="x"):
+            # High WER on the first (only successful) generation so the loop
+            # would retry — but the retry's generate raises.
+            return EvalResult(
+                original_text=text, transcribed_text="you", similarity_score=0.0,
+                word_error_rate=0.98, missing_words=["a"], extra_words=[],
+            )
+
+        monkeypatch.setattr(audio_routes, "evaluate", degraded_once)
+
+        resp = client.post(
+            "/api/v1/audio/eval", json={"text": "A grounded line.", "provider": "openai"}
+        )
+        assert resp.status_code == 200, "a transient retry blip must not discard a good result"
+        data = resp.json()
+        assert data["word_error_rate"] == 0.98
+        assert data["verdict"] == "FAIL"
+
+    def test_transient_ttserror_with_no_result_still_502s(self, client, monkeypatch):
+        """The 502 path is preserved when NO successful attempt exists: if the
+        very first generate raises, there is nothing to fall back to."""
+        from src.api.routes import audio as audio_routes
+        from src.audio.provider import TTSError
+
+        class _DeadOpenAI:
+            name = "openai"
+
+            def generate(self, text, *, voice_id=None):
+                raise TTSError("hard failure")
+
+        monkeypatch.setattr(audio_routes, "get_provider", lambda name: _DeadOpenAI())
+
+        resp = client.post(
+            "/api/v1/audio/eval", json={"text": "A grounded line.", "provider": "openai"}
+        )
+        assert resp.status_code == 502

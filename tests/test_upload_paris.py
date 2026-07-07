@@ -16,7 +16,9 @@ from scripts.upload_paris import (
     _in_city_bounds,
     _provenance_fields,
     _upload_beats,
+    _upload_pois,
 )
+from src.api.models.nodes import canonical_name_key
 from src.connection import get_database
 from tests.conftest import needs_neo4j
 
@@ -183,3 +185,113 @@ class TestProvenanceUploadAndBackfill:
         assert list(b3["key_claims"]) == ["claim one", "claim two"]
         assert b3["source_passage"] == "A fact from the source book."
         assert b3["audio_url"] == "https://example.com/existing.mp3"
+
+
+# ---------------------------------------------------------------------------
+# Defect: _upload_beats MERGEs NarrativeBeat on unconstrained beat_id. Two
+# distinct beats that both carry an empty/missing beat_id would MATCH the same
+# {beat_id: ""} node and SET-overwrite each other, silently collapsing two
+# beats into one node (no uniqueness constraint on NarrativeBeat.beat_id
+# catches it). Empty-beat_id beats must be skipped, never merged.
+# ---------------------------------------------------------------------------
+
+
+@needs_neo4j
+class TestEmptyBeatIdNotCollapsed:
+    POI_NAME = "Empty Beat Id POI"
+
+    def _seed_poi(self, driver) -> None:
+        with driver.session(database=get_database()) as s:
+            s.run(
+                "MERGE (p:POI {name: $name}) SET p.id = 'empty-bid-poi'",
+                name=self.POI_NAME,
+            )
+
+    def _beat(self, beat_id: str, body: str) -> dict:
+        return {
+            "beat_id": beat_id,
+            "poi_name": self.POI_NAME,
+            "script_body": body,
+            "fact_check": {"status": "verified"},
+        }
+
+    def test_distinct_empty_beat_id_beats_do_not_collapse(self, clean_driver):
+        """Two beats with empty beat_id must not both MERGE onto {beat_id: ''}
+        and overwrite each other. They are skipped, so no single node ends up
+        silently carrying only the last beat's body."""
+        self._seed_poi(clean_driver)
+        beats = [
+            self._beat("", "First distinct body."),
+            self._beat("", "Second distinct body."),
+            self._beat("real-id", "A real beat that still uploads."),
+        ]
+        with clean_driver.session(database=get_database()) as s:
+            stats = _upload_beats(s, beats)
+
+        # Both empty-beat_id beats are refused; the real one uploads.
+        assert stats["no_beat_id"] == 2
+        assert stats["linked"] == 1
+
+        with clean_driver.session(database=get_database()) as s:
+            empty = s.run(
+                "MATCH (b:NarrativeBeat {beat_id: ''}) RETURN count(b) AS c"
+            ).single()["c"]
+            real = s.run(
+                "MATCH (b:NarrativeBeat {beat_id: 'real-id'}) RETURN b.script_body AS body"
+            ).single()
+        # No empty-beat_id node was created (no silent collapse), and the
+        # legitimate beat is intact.
+        assert empty == 0
+        assert real["body"] == "A real beat that still uploads."
+
+
+# ---------------------------------------------------------------------------
+# Defect: POI MERGE key must be (name_key, city_name) — casing/whitespace name
+# variants must dedup onto a single node, matching the API create_node path,
+# not fork into duplicate POIs with split beat sets.
+# ---------------------------------------------------------------------------
+
+
+def _poi(name: str) -> dict:
+    # A valid in-bounds Paris POI (Notre-Dame) with the canonical dedup key
+    # computed the same way _upload_pois does.
+    return {
+        "name": name,
+        "name_key": canonical_name_key(name),
+        "city_name": "paris",
+        "latitude": 48.8530,
+        "longitude": 2.3499,
+    }
+
+
+@needs_neo4j
+class TestPoiMergeKeyDedup:
+    def _poi_nodes_for(self, driver, name_key: str) -> list[dict]:
+        with driver.session(database=get_database()) as s:
+            recs = s.run(
+                "MATCH (p:POI {name_key: $nk, city_name: 'paris'}) "
+                "RETURN properties(p) AS props",
+                nk=name_key,
+            )
+            return [r["props"] for r in recs]
+
+    def test_casing_whitespace_variants_dedup_to_one_poi(self, clean_driver):
+        """Two variants that differ only by casing/whitespace share one name_key,
+        so the upload path MERGEs onto a single POI node instead of forking —
+        the exact fork the name_key canonicalization was built to prevent."""
+        name_key = canonical_name_key("Notre-Dame")
+
+        with clean_driver.session(database=get_database()) as s:
+            _upload_pois(s, [_poi("Notre-Dame")])
+        with clean_driver.session(database=get_database()) as s:
+            # Casing + trailing whitespace variant — same canonical key.
+            _upload_pois(s, [_poi("notre-dame  ")])
+
+        nodes = self._poi_nodes_for(clean_driver, name_key)
+        assert len(nodes) == 1, (
+            f"Expected one deduped POI, got {len(nodes)}: "
+            f"{[n.get('name') for n in nodes]}"
+        )
+        # Display casing is preserved (last-written form).
+        assert nodes[0]["name"] == "notre-dame  "
+        assert nodes[0]["name_key"] == name_key

@@ -16,6 +16,7 @@ class TestVerifyGoogleIdToken:
     def test_valid_token_returns_user_info(self, mock_verify):
         mock_verify.return_value = {
             "email": "user@gmail.com",
+            "email_verified": True,
             "sub": "google-uid-123",
             "name": "Test User",
         }
@@ -41,9 +42,38 @@ class TestVerifyGoogleIdToken:
             verify_google_id_token("token-no-email")
 
     @patch("src.api.auth.google.id_token.verify_oauth2_token")
+    def test_unverified_email_raises_token_error(self, mock_verify):
+        """A Google ID token whose email is not verified must be rejected.
+
+        Otherwise an attacker can present a token for an email they do not
+        control and have routes.py MERGE/link to (or take over) that account.
+        """
+        mock_verify.return_value = {
+            "email": "victim@gmail.com",
+            "email_verified": False,
+            "sub": "attacker-sub-999",
+            "name": "Attacker",
+        }
+
+        with pytest.raises(TokenError, match="Google email not verified"):
+            verify_google_id_token("token-unverified-email")
+
+    @patch("src.api.auth.google.id_token.verify_oauth2_token")
+    def test_missing_email_verified_claim_raises_token_error(self, mock_verify):
+        """A token with no email_verified claim at all is treated as unverified."""
+        mock_verify.return_value = {
+            "email": "victim@gmail.com",
+            "sub": "attacker-sub-000",
+        }
+
+        with pytest.raises(TokenError, match="Google email not verified"):
+            verify_google_id_token("token-no-email-verified")
+
+    @patch("src.api.auth.google.id_token.verify_oauth2_token")
     def test_passes_correct_client_id(self, mock_verify):
         mock_verify.return_value = {
             "email": "user@gmail.com",
+            "email_verified": True,
             "sub": "123",
         }
 

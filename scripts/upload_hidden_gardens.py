@@ -4,10 +4,17 @@
 Strategy:
 - Read poi-raw.json + beats.json as canonical source of truth
 - For each Hidden Gardens chunk export: create new POIs (skip matches),
-  create beats (MERGE auto-dedups by script_body), create HAS_BEAT edges,
+  create beats (skip ones already in the DB), create HAS_BEAT edges,
   create TAGGED_WITH edges (lens lookup by name)
-- All operations are idempotent (DB uses MERGE on POI {name, city_name}
-  and NarrativeBeat {script_body})
+- Idempotency (2026-07-06): the API now keys NarrativeBeat on its own `id`
+  (not on script_body), so a naive re-POST would silently create a second
+  node with identical narration plus a duplicate POI-[:HAS_BEAT]->beat edge.
+  This script therefore pre-fetches every existing NarrativeBeat, indexes
+  them by the API's canonical normalized-script_body hash, and REUSES the
+  existing beat id (skipping the POST) when the same narration is already
+  present. HAS_BEAT/TAGGED_WITH edges are MERGE-based server-side, so once
+  the beat node is deduped the edges dedup too. Net: re-runs upsert, never
+  accumulate. POIs are idempotent server-side (MERGE on name_key/city_name).
 - Strip pipeline-only fields before sending to API
 
 Outputs: data/paris/.upload-report-hidden-gardens.json with full audit log.
@@ -18,6 +25,8 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 import requests
+
+from src.api.models.nodes import _normalized_script_body_hash
 
 API = "http://localhost:8000/api/v1"
 ROOT = Path("/Users/adamserblowski/Geotada")
@@ -83,6 +92,68 @@ def _fetch_lenses() -> dict:
     return out
 
 
+def _fetch_all_beats() -> dict:
+    """Return {script_body_hash: beat_id} index of every NarrativeBeat in DB.
+
+    Idempotency key (2026-07-06): the API keys beats on their own `id`, so a
+    re-POST of identical narration creates a duplicate node. We dedup on the
+    API's canonical normalized-script_body hash. Prefer the stored
+    ``script_body_hash`` property; fall back to recomputing it from
+    ``script_body`` for any legacy node missing the hash — both are computed by
+    the same ``_normalized_script_body_hash`` so they agree.
+    """
+    out: dict[str, str] = {}
+    skip = 0
+    while True:
+        r = _http("GET", f"/nodes/NarrativeBeat?skip={skip}&limit=200")
+        r.raise_for_status()
+        data = r.json()
+        for item in data["items"]:
+            props = item["properties"]
+            body_hash = props.get("script_body_hash")
+            if not body_hash:
+                body = props.get("script_body")
+                if not body:
+                    continue
+                body_hash = _normalized_script_body_hash(body)
+            # First writer wins: a stable existing id to reuse for this body.
+            out.setdefault(body_hash, item["id"])
+        if skip + 200 >= data.get("total", 0):
+            break
+        skip += 200
+    return out
+
+
+def _post_beat(payload: dict) -> dict:
+    """POST a NarrativeBeat; return the created node dict or raise on failure."""
+    r = _http("POST", "/nodes/NarrativeBeat", json=payload)
+    if r.status_code not in (200, 201):
+        raise RuntimeError(f"Beat create failed {r.status_code}: {r.text[:200]}")
+    return r.json()
+
+
+def _resolve_beat_id(existing_beats: dict, payload: dict, post_fn) -> tuple[str, bool]:
+    """Return ``(beat_id, created)`` for a beat, deduping against existing_beats.
+
+    If a beat with the same normalized-script_body hash already exists in the
+    DB, reuse its id and DO NOT POST (created=False) — this is what makes
+    re-runs idempotent against the id-keyed API. Otherwise POST a new beat,
+    record its id under the hash so later beats in the same run also dedup, and
+    return created=True.
+
+    ``post_fn`` is called only on the create path and must return the API's
+    created-node dict (``{"id": ...}``). Mutates ``existing_beats`` in place.
+    """
+    body_hash = _normalized_script_body_hash(payload.get("script_body") or "")
+    existing_id = existing_beats.get(body_hash)
+    if existing_id is not None:
+        return existing_id, False
+    beat_node = post_fn(payload)
+    beat_id = beat_node["id"]
+    existing_beats[body_hash] = beat_id
+    return beat_id, True
+
+
 def _build_poi_payload(canonical: dict) -> dict:
     payload = {"city_name": CITY}
     for f in POI_FORWARD_FIELDS:
@@ -111,8 +182,12 @@ def main() -> int:
     beats_by_id = {b["beat_id"]: b for b in beats_all if b.get("beat_id")}
 
     db_pois = _fetch_all_pois()
+    db_beats = _fetch_all_beats()
     lenses = _fetch_lenses()
-    print(f"DB state: {len(db_pois)} POIs (incl. variations) · {len(lenses)} taggable lenses")
+    print(
+        f"DB state: {len(db_pois)} POIs (incl. variations) · "
+        f"{len(db_beats)} beats · {len(lenses)} taggable lenses"
+    )
 
     chunk_files = sorted(EXPORT_DIR.glob(f"{BOOK_PREFIX}-chunk-*.json"))
     print(f"chunks to upload: {len(chunk_files)}")
@@ -188,17 +263,21 @@ def main() -> int:
                 if not payload.get("script_body"):
                     chunk_report["errors"].append(f"empty script_body in beat {bid!r}")
                     continue
-                r = _http("POST", "/nodes/NarrativeBeat", json=payload)
-                if r.status_code not in (200, 201):
-                    err = f"Beat create failed {r.status_code}: {bid!r} :: {r.text[:200]}"
-                    chunk_report["errors"].append(err)
+
+                # Idempotency (2026-07-06): the API keys beats on their own id,
+                # so a naive re-POST duplicates the node (and its HAS_BEAT edge).
+                # Dedup client-side on the canonical normalized-script_body hash:
+                # reuse the existing beat id when the same narration is already in
+                # the DB, else POST once and remember the new id for this run.
+                try:
+                    beat_id, created = _resolve_beat_id(db_beats, payload, _post_beat)
+                except RuntimeError as exc:
+                    chunk_report["errors"].append(f"{exc} (beat {bid!r})")
                     continue
-                beat_node = r.json()
-                beat_id = beat_node["id"]
-                # crude detection of "matched vs created": check if response indicates
-                # idempotent merge (the API returns 200 either way but the body might differ)
-                # — we just count both as creates for the report
-                chunk_report["beats_created"] += 1
+                if created:
+                    chunk_report["beats_created"] += 1
+                else:
+                    chunk_report["beats_matched"] += 1
 
                 # HAS_BEAT (POI → Beat)
                 edge = _http("POST", "/edges/HAS_BEAT", json={
@@ -234,6 +313,7 @@ def main() -> int:
         for k in ("pois_created", "pois_matched"):
             report["totals"][f"pois_{'created' if k == 'pois_created' else 'matched'}"] += len(chunk_report[k])
         report["totals"]["beats_created"] += chunk_report["beats_created"]
+        report["totals"]["beats_matched"] += chunk_report["beats_matched"]
         report["totals"]["has_beat_created"] += chunk_report["has_beat_edges"]
         report["totals"]["tagged_with_created"] += chunk_report["tagged_with_edges"]
         report["totals"]["errors"].extend(chunk_report["errors"])

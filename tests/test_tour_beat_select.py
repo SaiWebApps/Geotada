@@ -21,6 +21,7 @@ from src.tour.beat_select import (
 )
 from src.tour.contract import POI, BeatRef, BeatSequence, PhysicalCue, POIBeats, Route, ScriptPOI
 from src.tour.fixtures import NOTRE_DAME_SUB_LOCATION_ORDER
+from src.tour.generation import _find_orientation_beat
 
 
 def _poi(name: str, tier: int = 5) -> POI:
@@ -1026,6 +1027,58 @@ def test_orientation_beat_hoisted_under_trigger_address_strategy():
     plan = select_poi_beats(poi, [*addrs, orient])
     assert plan.beats[0].id == "orient"
     assert plan.ordering_strategy == "trigger_address"
+
+
+def test_dedup_never_drops_hoisted_orientation_cold_open():
+    """B8-lite dedup must not evict the hoisted stop_orientation cold-open head.
+
+    The orientation beat (micro, low score) shares a lens with an anchor-class
+    paraphrase carrying the SAME entities (Jaccard 1.0), so the pair collides.
+    Without head-protection, _pick_dedup_loser picks the low-scoring orientation
+    as the loser and drops it — undoing _hoist_orientation and forcing the
+    cold-open to fall through to the SYNTHESIZED_OPENER. The fix drops the
+    OTHER (paraphrase) beat instead, so a stop_orientation beat still survives
+    and generation._find_orientation_beat finds it.
+    """
+    poi = _poi("Notre-Dame Cathedral")
+    shared_entities = ("Notre-Dame", "Maurice de Sully", "Gothic")
+    orient = BeatRef(
+        id="orient",
+        poi_id="poi",
+        sub_location=None,  # orientation beats lack sub_location
+        beat_type="stop_orientation",
+        narrative_function="establishing",
+        emotional_register="neutral",
+        beat_length_class="micro",  # lowest score -> the dedup loser without protection
+        lenses=("hidden_history",),
+        entities=shared_entities,
+        script_body="Face the cathedral; Maurice de Sully began this Gothic pile.",
+        word_count=20,
+    )
+    paraphrase = _beat(
+        "paraphrase",
+        sub_location="parvis",
+        narrative_function="deepen",
+        emotional_register="neutral",
+        beat_length_class="anchor",  # highest score -> would win the collision
+        lenses=("hidden_history",),
+        entities=shared_entities,
+        script_body="Maurice de Sully began this Gothic Notre-Dame, a landmark work.",
+        word_count=200,
+    )
+    nave = _beat("nave", sub_location="nave", narrative_function="hook")
+    choir = _beat("choir", sub_location="choir", narrative_function="climax")
+
+    plan = select_poi_beats(poi, [orient, paraphrase, nave, choir])
+    ids = [b.id for b in plan.beats]
+    # The cold-open orientation beat must survive the dedup...
+    assert "orient" in ids, f"hoisted orientation was dropped by dedup: {ids}"
+    assert plan.beats[0].id == "orient", "orientation must remain the hoisted head"
+    # ...and its paraphrase is the one collapsed (paraphrase removal still happened).
+    assert "paraphrase" not in ids
+    # generation's cold-open lookup must find a stop_orientation beat for this stop.
+    assert _find_orientation_beat(plan) is not None
+    assert _find_orientation_beat(plan).id == "orient"
 
 
 def test_no_orientation_beat_means_no_change():

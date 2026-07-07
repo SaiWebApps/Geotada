@@ -97,6 +97,34 @@ class TestMockProvider:
         audio = MockTTSProvider().generate("Hello", voice_id="test-voice")
         assert len(audio) > 0
 
+    def test_output_size_bounded_for_huge_input(self):
+        """DoS guard: a 10k-word input must NOT allocate a word-scaled WAV.
+
+        Without the duration clamp, 10,000 words -> ~705 MB per request (and the
+        bytes are then returned as the HTTP body). The mock is not run through
+        _split_for_tts, so the WAV size must be capped independent of input.
+        A 60s silent WAV (44100 * 2ch * 2B * 60) is ~10.6 MB — a generous ceiling
+        that still fails the unbounded original (~705 MB for 10k words).
+        """
+        max_bytes = 44100 * 2 * 2 * 60 + 4096  # ~10.6 MB + WAV header slack
+        huge = "word " * 10_000  # 10k words -> ~705 MB before the fix
+        audio = MockTTSProvider().generate(huge)
+        assert len(audio) <= max_bytes, (
+            f"mock WAV must be bounded regardless of input length; "
+            f"got {len(audio)} bytes (> {max_bytes})"
+        )
+
+    def test_duration_capped_regardless_of_word_count(self):
+        """The synthesized duration must not grow unboundedly with word count.
+
+        The pre-fix heuristic (word_count / 2.5) gives 10k words -> 4000s. The
+        duration must be clamped to a small ceiling instead.
+        """
+        audio = MockTTSProvider().generate("word " * 10_000)
+        with wave.open(BytesIO(audio), "rb") as wf:
+            duration = wf.getnframes() / wf.getframerate()
+        assert duration <= 60.0, f"duration must be bounded; got {duration}s"
+
 
 class TestOpenAIProvider:
     def test_name(self):

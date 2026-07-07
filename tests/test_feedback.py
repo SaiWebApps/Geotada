@@ -6,6 +6,7 @@ from typing import ClassVar
 from unittest.mock import patch
 
 import anthropic
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 
@@ -18,11 +19,17 @@ def _reset_rate_limit():
     from src.api.routes import feedback as feedback_mod
 
     state = getattr(feedback_mod, "_rate_state", None)
-    if state is not None:
-        state.clear()
+    global_hits = getattr(feedback_mod, "_global_hits", None)
+
+    def _clear():
+        if state is not None:
+            state.clear()
+        if global_hits is not None:
+            global_hits.clear()
+
+    _clear()
     yield
-    if state is not None:
-        state.clear()
+    _clear()
 
 
 @pytest.fixture()
@@ -352,6 +359,86 @@ class TestRateLimit:
 
     @patch("src.api.routes.feedback._create_github_issue")
     @patch("src.api.routes.feedback._structure_feedback")
+    def test_distinct_xforwarded_for_get_isolated_buckets(
+        self, mock_structure, mock_github, client, monkeypatch
+    ):
+        """Defect #1: behind a single trusted edge proxy the identity is the
+        RIGHTMOST X-Forwarded-For entry (the peer our edge actually observed and
+        appended). Distinct real clients still get their OWN bucket — one client
+        exhausting the window must not 429 an unrelated tester."""
+        monkeypatch.setattr("src.api.routes.feedback._RATE_LIMIT_MAX", 2)
+        mock_structure.return_value = {"title": "t", "body": "b", "labels": []}
+        mock_github.return_value = {
+            "issue_url": "u",
+            "issue_number": 1,
+            "title": "t",
+        }
+        payload = {"transcript": "loop me"}
+
+        # Client 1.1.1.1 (rightmost = real peer seen by edge) fills its window.
+        attacker = {"X-Forwarded-For": "1.1.1.1"}
+        s = [
+            client.post("/api/v1/feedback", json=payload, headers=attacker).status_code
+            for _ in range(3)
+        ]
+        assert s == [201, 201, 429]
+
+        # A DIFFERENT real client (2.2.2.2) is untouched by the above.
+        victim = {"X-Forwarded-For": "2.2.2.2"}
+        assert (
+            client.post("/api/v1/feedback", json=payload, headers=victim).status_code
+            == 201
+        )
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_spoofed_leftmost_xff_cannot_evade_bucket(
+        self, mock_structure, mock_github, client, monkeypatch
+    ):
+        """Defect #1 (the core fix): a client controls the LEFT of X-Forwarded-For.
+        With one trusted edge proxy the real client is the RIGHTMOST entry (what the
+        edge appended), so prepending a fresh fake leftmost IP on each request MUST
+        NOT land the attacker in a new bucket. This is the exact bypass the old
+        leftmost-trusting code allowed."""
+        monkeypatch.setattr("src.api.routes.feedback._RATE_LIMIT_MAX", 1)
+        mock_structure.return_value = {"title": "t", "body": "b", "labels": []}
+        mock_github.return_value = {"issue_url": "u", "issue_number": 2, "title": "t"}
+        payload = {"transcript": "x"}
+
+        # Same real client (rightmost 9.9.9.9), rotating a spoofed leftmost each time.
+        first = {"X-Forwarded-For": "3.3.3.3, 9.9.9.9"}
+        second = {"X-Forwarded-For": "4.4.4.4, 9.9.9.9"}  # different fake leftmost
+        assert client.post("/api/v1/feedback", json=payload, headers=first).status_code == 201
+        # The rotated-leftmost second request is STILL throttled — same real peer.
+        assert client.post("/api/v1/feedback", json=payload, headers=second).status_code == 429
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_global_cap_throttles_across_rotated_ips(
+        self, mock_structure, mock_github, client, monkeypatch
+    ):
+        """Defense-in-depth: even with a fresh (rightmost) IP per request — which
+        never trips the per-IP limit — the global cap bounds TOTAL accepted
+        requests per window, so IP rotation can't drain LLM/GitHub without limit."""
+        monkeypatch.setattr("src.api.routes.feedback._RATE_LIMIT_MAX", 100)
+        monkeypatch.setattr("src.api.routes.feedback._GLOBAL_RATE_LIMIT_MAX", 3)
+        mock_structure.return_value = {"title": "t", "body": "b", "labels": []}
+        mock_github.return_value = {"issue_url": "u", "issue_number": 3, "title": "t"}
+        payload = {"transcript": "x"}
+
+        statuses = [
+            client.post(
+                "/api/v1/feedback",
+                json=payload,
+                headers={"X-Forwarded-For": f"5.5.5.{i}"},  # unique real client each time
+            ).status_code
+            for i in range(4)
+        ]
+        assert statuses[:3] == [201, 201, 201]
+        assert statuses[3] == 429  # global cap trips despite every IP being distinct
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
     def test_429_carries_retry_after(
         self, mock_structure, mock_github, client, monkeypatch
     ):
@@ -530,3 +617,50 @@ class TestProviderErrors:
         resp = client.post("/api/v1/feedback", json={"transcript": "throttled"})
         assert resp.status_code == 503
         assert resp.headers.get("Retry-After") == "30"
+
+
+class TestGitHubTransportErrors:
+    """Defect #2: httpx transport errors from client.post() must return 502/503
+    with a Retry-After hint, not an opaque 500 stack trace that loses the report."""
+
+    @staticmethod
+    def _client_raising(exc: Exception):
+        """Build a mock replacement for feedback.httpx.Client whose context-managed
+        .post() raises `exc`. Patching the module symbol (not httpx.Client.post
+        globally) keeps the TestClient's own httpx machinery intact."""
+        from unittest.mock import MagicMock
+
+        instance = MagicMock()
+        instance.post.side_effect = exc
+        factory = MagicMock()
+        factory.return_value.__enter__.return_value = instance
+        return factory
+
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_github_timeout_returns_503_with_retry_after(
+        self, mock_structure, client, monkeypatch
+    ):
+        mock_structure.return_value = {"title": "[Bug] t", "body": "b", "labels": ["bug"]}
+        monkeypatch.setenv("GITHUB_TOKEN", "ghp_fake")
+
+        with patch(
+            "src.api.routes.feedback.httpx.Client",
+            self._client_raising(httpx.TimeoutException("timed out")),
+        ):
+            resp = client.post("/api/v1/feedback", json={"transcript": "gh down"})
+
+        assert resp.status_code == 503
+        assert resp.headers.get("Retry-After") == "30"
+
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_github_connect_error_returns_502(self, mock_structure, client, monkeypatch):
+        mock_structure.return_value = {"title": "[Bug] t", "body": "b", "labels": ["bug"]}
+        monkeypatch.setenv("GITHUB_TOKEN", "ghp_fake")
+
+        with patch(
+            "src.api.routes.feedback.httpx.Client",
+            self._client_raising(httpx.ConnectError("connection refused")),
+        ):
+            resp = client.post("/api/v1/feedback", json={"transcript": "gh unreachable"})
+
+        assert resp.status_code == 502

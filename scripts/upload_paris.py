@@ -165,9 +165,9 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
     result = session.run(
         """
         UNWIND $pois AS poi
-        MERGE (p:POI {name: poi.name, city_name: poi.city_name})
+        MERGE (p:POI {name_key: poi.name_key, city_name: poi.city_name})
         ON CREATE SET p.id = randomUUID()
-        SET p.name_key            = poi.name_key,
+        SET p.name                = poi.name,
             p.short_description   = poi.short_description,
             p.location            = point({latitude: poi.lat, longitude: poi.lon, srid: 4326}),
             p.importance_tier     = poi.importance_tier,
@@ -235,12 +235,21 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
     params = []
     pre_skipped = 0
     blocked = 0
+    no_beat_id = 0
 
     for beat in beats:
         poi_name = beat.get("poi_name", "")
         script_body = beat.get("script_body", "")
         beat_id = beat.get("beat_id", "")
 
+        if not beat_id:
+            # MERGE (beat:NarrativeBeat {beat_id: ""}) has no uniqueness
+            # constraint behind it, so a second empty-beat_id beat would MATCH
+            # the first node and SET-overwrite it — silently collapsing distinct
+            # beats into one. Refuse rather than corrupt: an empty beat_id is a
+            # data defect the validate_beats gate should have caught upstream.
+            no_beat_id += 1
+            continue
         if not poi_name or not script_body:
             pre_skipped += 1
             continue
@@ -342,7 +351,13 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
     else:
         tagged = 0
 
-    return {"linked": linked, "orphaned": orphaned, "tagged": tagged, "blocked": blocked}
+    return {
+        "linked": linked,
+        "orphaned": orphaned,
+        "tagged": tagged,
+        "blocked": blocked,
+        "no_beat_id": no_beat_id,
+    }
 
 
 @abort_on_connection_error
@@ -430,7 +445,8 @@ def main() -> None:
             beat_stats = _upload_beats(session, beats)
             print(
                 f"         {beat_stats['linked']} linked, {beat_stats['orphaned']} orphaned, "
-                f"{beat_stats['tagged']} tagged, {beat_stats['blocked']} blocked (disputed) "
+                f"{beat_stats['tagged']} tagged, {beat_stats['blocked']} blocked (disputed), "
+                f"{beat_stats['no_beat_id']} skipped (no beat_id) "
                 f"({time.time()-t0:.1f}s)"
             )
 

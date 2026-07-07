@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import os
+import time
 import uuid
+from collections import deque
+from threading import Lock
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from neo4j import Session
 
 from src.api.auth.apple import verify_apple_id_token
@@ -55,13 +59,81 @@ SET u.apple_sub = coalesce(u.apple_sub, $apple_sub)
 """
 
 
+# --- Abuse guard: magic-link request ----------------------------------------
+# /auth/magic-link/request is unauthenticated and each call sends a real email
+# via Resend (billed, and lands in a victim's inbox). Left unguarded, an
+# attacker can email-bomb any address and burn the Resend quota. Mirror the
+# /feedback rate limiter: a fixed-window counter keyed by BOTH the caller IP
+# (stops one host fanning out to many victims) AND the target email (stops many
+# IPs bombing one victim). In-process only (per worker); a multi-worker Render
+# deploy would need a shared store (e.g. Redis) for a hard guarantee.
+_MAGIC_LINK_RATE_LIMIT_MAX = int(os.getenv("MAGIC_LINK_RATE_LIMIT_MAX", "5"))
+_MAGIC_LINK_RATE_LIMIT_WINDOW_S = int(os.getenv("MAGIC_LINK_RATE_LIMIT_WINDOW_S", "60"))
+_magic_link_rate_state: dict[str, deque[float]] = {}
+_magic_link_rate_lock = Lock()
+
+
+def _client_ip(request: Request) -> str:
+    """Resolve the real client IP for rate-limiting.
+
+    On Render (and any reverse proxy) uvicorn is not started with
+    --forwarded-allow-ips, so ``request.client.host`` is the proxy peer — the
+    SAME address for every external caller. That collapses all clients into a
+    single ``ip:`` bucket, so once any few callers trip the window a legitimate
+    first-time user is locked out of passwordless login (a login-availability
+    DoS) even though their own per-email bucket is empty. Derive the originating
+    client from the leftmost entry of ``X-Forwarded-For`` (the edge appends the
+    real client IP there), falling back to the socket peer when the header is
+    absent (direct connection / local dev). Mirrors
+    src/api/routes/feedback.py::_client_ip."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        # Leftmost hop is the original client; strip whitespace and ignore
+        # empty segments from a malformed header.
+        for part in forwarded.split(","):
+            candidate = part.strip()
+            if candidate:
+                return candidate
+    if request.client:
+        return request.client.host
+    return "unknown"
+
+
+def _magic_link_rate_limit(request: Request, email: str) -> None:
+    """Per-IP and per-email fixed-window guard. Raises HTTPException(429) when
+    either the caller IP or the target email has exceeded
+    _MAGIC_LINK_RATE_LIMIT_MAX requests within the trailing window."""
+    if _MAGIC_LINK_RATE_LIMIT_MAX <= 0:
+        return
+    client_ip = _client_ip(request)
+    keys = (f"ip:{client_ip}", f"email:{email.lower()}")
+    now = time.monotonic()
+    cutoff = now - _MAGIC_LINK_RATE_LIMIT_WINDOW_S
+    with _magic_link_rate_lock:
+        # Prune both keys first so we never mint a token when either is over cap.
+        for key in keys:
+            hits = _magic_link_rate_state.setdefault(key, deque())
+            while hits and hits[0] <= cutoff:
+                hits.popleft()
+            if len(hits) >= _MAGIC_LINK_RATE_LIMIT_MAX:
+                retry_after = max(1, int(hits[0] + _MAGIC_LINK_RATE_LIMIT_WINDOW_S - now))
+                raise HTTPException(
+                    status_code=429,
+                    detail="Too many magic link requests, please retry later",
+                    headers={"Retry-After": str(retry_after)},
+                )
+        for key in keys:
+            _magic_link_rate_state[key].append(now)
+
+
 @router.get("/me", response_model=UserResponse)
 def me(current_user: dict = Depends(get_current_user)):
     return UserResponse(**current_user)
 
 
 @router.post("/magic-link/request", status_code=200)
-async def magic_link_request(body: MagicLinkRequest):
+async def magic_link_request(request: Request, body: MagicLinkRequest):
+    _magic_link_rate_limit(request, body.email)
     token = create_magic_token(body.email)
     try:
         await send_magic_link(body.email, token)

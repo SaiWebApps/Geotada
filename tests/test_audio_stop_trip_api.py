@@ -310,6 +310,35 @@ class TestKeepExploringStopAudio:
         assert second_data["duration_sec"] == first_data["duration_sec"]
         assert len(recorder.texts) == 1, "cached hit must not re-run TTS"
 
+    def test_different_voice_invalidates_cache(
+        self, client, clean_driver, _temp_audio_storage
+    ):
+        """Defect 1: the keep-exploring TTS cache is keyed on the narration hash
+        ONLY. A second call for the SAME narration but a DIFFERENT voice_id must
+        NOT hit the cache — otherwise the client silently receives audio voiced
+        with the ORIGINAL voice. The mock provider's call count proves the second
+        (different-voice) call re-runs TTS instead of serving the cached url."""
+        _seed(clean_driver)
+        item1 = f"{TRIP_ID}-item1"
+        recorder = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+            first = client.post(
+                f"/api/v1/audio/stops/{item1}/keep-exploring",
+                json={"provider": "mock", "voice_id": "alice"},
+            )
+            assert first.status_code == 200, first.text
+            assert first.json()["status"] == "generated"
+            assert len(recorder.texts) == 1  # TTS ran exactly once
+
+            # Same narration, DIFFERENT voice — must not be served from cache.
+            second = client.post(
+                f"/api/v1/audio/stops/{item1}/keep-exploring",
+                json={"provider": "mock", "voice_id": "bob"},
+            )
+        assert second.status_code == 200, second.text
+        assert second.json()["status"] == "generated"
+        assert len(recorder.texts) == 2, "a different voice_id must invalidate the cache"
+
     def test_force_regenerates_even_when_cached(
         self, client, clean_driver, _temp_audio_storage
     ):

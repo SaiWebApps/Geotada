@@ -167,7 +167,19 @@ def select_poi_beats(
     # it. Generation's consumed_in_cold_open set keeps it from being
     # double-emitted at stop 0.
     ordered = _hoist_orientation(ordered, active, interest)
-    ordered = _apply_b8_lite_dedup(ordered, interest)
+    # Protect the just-hoisted stop_orientation head from being the dedup loser:
+    # _hoist_orientation promoted it precisely so generation's cold-open lookup
+    # (_find_orientation_beat / _build_cold_open) can find a canonical orientation
+    # beat for this stop. If dedup silently dropped it on a paraphrase collision the
+    # hoist would be undone and the tour would fall back to the SYNTHESIZED_OPENER —
+    # the exact cold-open flatness the hoist exists to prevent. Mirrors the
+    # ordered[0] protection in _cap_spatial_by_score.
+    protected_id = (
+        ordered[0].id
+        if ordered and (ordered[0].beat_type or "").lower() == "stop_orientation"
+        else None
+    )
+    ordered = _apply_b8_lite_dedup(ordered, interest, protected_id=protected_id)
 
     # Per-tier ceiling (R1), applied AFTER dedup (so the capped plan is a strict
     # subset of the uncapped KE0 plan — one shared dedup pass, no diverging
@@ -690,7 +702,9 @@ def _hoist_orientation(
     return [chosen, *rest]
 
 
-def _apply_b8_lite_dedup(beats: list[BeatRef], interest: frozenset[str]) -> list[BeatRef]:
+def _apply_b8_lite_dedup(
+    beats: list[BeatRef], interest: frozenset[str], *, protected_id: str | None = None
+) -> list[BeatRef]:
     """Drop near-duplicate beats per phase-1-design §3.3.
 
     Two beats collide when they share at least one lens (or are both
@@ -702,6 +716,10 @@ def _apply_b8_lite_dedup(beats: list[BeatRef], interest: frozenset[str]) -> list
     3. then lower narrative_function priority
        (climax > deepen > establishing > hook > scene_setter
         > callback > transition).
+
+    ``protected_id`` (the hoisted stop_orientation cold-open head) is never
+    selected as the loser: when it would lose a collision, the OTHER beat is
+    dropped instead so the cold-open primitive always survives.
 
     Survives in original order; this is paraphrase removal, not
     re-ordering.
@@ -724,6 +742,9 @@ def _apply_b8_lite_dedup(beats: list[BeatRef], interest: frozenset[str]) -> list
             if not _claims_collide(a, b):
                 continue
             loser = _pick_dedup_loser(a, b, interest)
+            if protected_id is not None and loser.id == protected_id:
+                # The cold-open head must survive — drop the other beat instead.
+                loser = b if loser is a else a
             drop_ids.add(loser.id)
             _DEDUP_TRACE.append(
                 {

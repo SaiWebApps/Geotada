@@ -266,6 +266,49 @@ def test_preview_single_stop_carries_yellow_tourability_on_the_wire(make_client)
     assert len(dwell) >= 2 or tourability is not None
 
 
+def test_preview_round_trip_plus_end_is_422_not_500(make_client):
+    """round_trip + a full end coordinate is a CLIENT error -> 422, never 500.
+
+    TourInput's _end_round_trip_mutex (src/tour/contract.py) raises a pydantic
+    ValidationError when both ``end`` and ``round_trip`` are set. The route
+    builds that TourInput at the boundary (before load_paris_corpus), so the
+    error fires with NO corpus/routing needed. app.py registers no
+    ValidationError handler, so before the fix Starlette returned an opaque
+    HTTP 500 with a stack trace. It must be a 422 the client can act on.
+
+    Records are intentionally empty: the mutex must be caught at TourInput
+    construction, upstream of the corpus load — if the fake driver were ever
+    reached it would raise on the unrecognized (never-run) query instead.
+    """
+    records = {
+        "pois": [],
+        "beats": [],
+        "areas": _AREA_RECORDS,
+        "adjacency": [],
+        "lenses": [],
+    }
+    client = make_client(records)
+
+    r = client.post(
+        "/api/v1/trips/preview",
+        json={
+            "center_lat": START[0],
+            "center_lng": START[1],
+            "end_lat": START[0] + 0.01,
+            "end_lng": START[1] + 0.01,
+            "round_trip": True,
+            "duration_min": 60,
+        },
+    )
+    assert r.status_code == 422, (
+        f"round_trip + end must be a 422 client error, not {r.status_code}: {r.text}"
+    )
+    detail = r.json()["detail"]
+    assert detail["reason"] == "invalid_tour_input"
+    # The mutex message reaches the client so it can correct the request.
+    assert any("mutually exclusive" in e["msg"] for e in detail["errors"]), detail
+
+
 def test_preview_green_multi_stop_has_null_tourability_and_multiple_stops(make_client):
     """Control arm: a GREEN multi-stop preview ships tourability == null.
 

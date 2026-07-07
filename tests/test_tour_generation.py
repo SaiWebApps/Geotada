@@ -966,23 +966,29 @@ def test_every_stop_with_dwellworthy_pool_emits_own_beat_sentence(n_stops: int):
         )
 
 
-def test_transit_only_stop_emits_zero_beat_sentences_current_contract_pin():
-    """CURRENT-CONTRACT PIN: a stop whose whole pool is transit-class ships
-    glue-only narration, invisibly.
+def test_transit_only_stop_dropped_beat_is_not_reported_as_voiced():
+    """#8 fix (was a CURRENT-CONTRACT PIN): a stop whose only beat is
+    transit-class AND directionally rejected emits zero beat sentences — and
+    that dropped beat must NOT be reported as voiced.
 
-    The per-stop emitted-beat floor is owned by
-    specs/2026-07-02-dwell-audio-reconciliation/; when a floor/disclosure
-    lands, flip assertions (2)-(4) DELIBERATELY. This test exists so the
-    known hole is DETECTED and version-controlled rather than latent: it is
-    the reproducible seed of the "thin single-beat-feeling narration"
-    complaint — a dwell stop whose only beat is transit-class AND
-    directionally rejected emits zero beat sentences while its
-    ScriptPOI.beat_ids stays non-empty and validate_script passes. It also
-    guards the inverse regression: if the anchor block's transit-class
+    Before the #8 fix, ``_flatten_pois`` derived ``beat_ids`` from the raw plan,
+    so a directionally-rejected transit beat that ``_build_transit`` never
+    consumed AND the anchor block filters out still appeared in the stop's
+    ``beat_ids``. That double-lied: it over-reported dwell by the beat's spoken
+    seconds AND made keep-exploring (``extra_beat_ids``, which excludes anything
+    in ``beat_ids``) treat the unreachable content as already-voiced — so the
+    listener could never reach it. The fix computes ``beat_ids`` from the beats
+    that actually emitted a sentence, so the dropped beat is (a) absent from
+    ``beat_ids``, (b) not counted in ``dwell_seconds``, and (c) recoverable as a
+    keep-exploring extra.
+
+    This also guards the inverse regression: if the anchor block's transit-class
     filter is ever DROPPED, assertion (2) fails, preventing out-of-place
     navigation sentences from leaking back into anchor blocks (the original
     Phase 7 bug the filter exists for).
     """
+    from src.tour.beat_select import extra_beat_ids
+
     p1 = _poi("p1", "Place des Vosges")
     p2 = _poi("p2", "Saint-Pierre")
     p1_orient = _beat("p1-orient", "p1", body="Find the corner bench.", nf="stop_orientation")
@@ -997,6 +1003,7 @@ def test_transit_only_stop_emits_zero_beat_sentences_current_contract_pin():
         body="Leave the Old Mill and cross toward the gate.",
         nf="transition",
         addr="Rue Imaginaire 12",
+        word_count=300,  # 300w @150wpm = 120s of dwell it would falsely add
     )
     # Precondition: the rejection premise is explicit, not accidental — a
     # helper-default or body edit that lets p1's name slip in would flip the
@@ -1008,20 +1015,29 @@ def test_transit_only_stop_emits_zero_beat_sentences_current_contract_pin():
                                   _poi_beats(p2, (p2_transit,))))
     script = generate(seq, _route((p1, p2)), _input(), glue_client=MockGlueClient())
 
-    # (1) The PLAN still carries the beat (beat_ids reflect the plan, not
-    # emissions).
-    assert script.selected_pois[1].beat_ids == ("p2-transit",)
-    # (2) The zero-emission condition, detected.
+    # (1) FIX: the dropped, unvoiced beat is NOT reported as voiced — beat_ids is
+    # empty (nothing was actually voiced at this stop).
+    sp2 = script.selected_pois[1]
+    assert sp2.beat_ids == ()
+    # (1b) FIX: dwell does not over-report the 120s of never-voiced audio; a
+    # tier-5 stop still floors at its tier dwell (300s), never above it here.
+    from src.tour.routing import compute_dwell_seconds
+
+    assert sp2.dwell_seconds == compute_dwell_seconds(p2.tier)
+    # (1c) FIX: because beat_ids no longer marks it voiced, keep-exploring
+    # re-classifies the unreachable content as an extra the user CAN reach.
+    extras = extra_beat_ids(p2, (p2_transit,), sp2.beat_ids)
+    assert "p2-transit" in extras
+    # (2) The zero-emission condition still holds (anchor filter intact).
     assert not any(s.source_type == "beat" and s.stop_idx == 1 for s in script.script), (
         "stop 1 emitted a beat sentence — the transit-class filter changed; "
         "update this pin consciously (specs/2026-07-02-dwell-audio-reconciliation/)"
     )
-    # (3) Stop 1's narration is non-empty but consists ONLY of glue — exactly
-    # what the preview renders as a story-less stop.
+    # (3) Stop 1's narration is non-empty but consists ONLY of glue.
     stop1 = [s for s in script.script if s.stop_idx == 1]
     assert stop1, "stop 1 must still get glue narration"
     assert all(s.source_type in ("glue", "arith") for s in stop1)
-    # (4) validate_script does NOT catch this today.
+    # (4) validate_script still passes (structural validity is unaffected).
     assert script.validation.passed is True
 
 
@@ -1187,9 +1203,10 @@ def test_first_leg_text_none_without_stop_name():
     assert _synth_first_leg_text(_stop(""), _route_with_first_leg(300)) is None
 
 
-def test_sum_audio_scales_by_surviving_sentence_fraction():
-    """#8: a claim-dedup-trimmed beat reports only its SURVIVING sentences' share
-    of audio, not the whole beat — an honest tour-minutes total."""
+def test_sum_audio_scales_by_surviving_word_fraction():
+    """#8: a claim-dedup-trimmed beat reports only its SURVIVING share of audio,
+    not the whole beat — an honest tour-minutes total. Sentences here are
+    equal-length, so word-coverage and sentence-fraction agree."""
     beat = _beat("b1", "p", body="First fact here. Second fact here. Third fact here.")
     beat = beat.model_copy(update={"est_spoken_seconds": 90})
     seq = BeatSequence(
@@ -1203,6 +1220,32 @@ def test_sum_audio_scales_by_surviving_sentence_fraction():
     all_three = [_s("First fact here."), _s("Second fact here."), _s("Third fact here.")]
     assert _sum_audio(all_three, seq) == 90  # nothing dropped -> full beat audio
 
-    # dedup dropped the middle sentence: 2 of 3 survive -> 2/3 of the audio.
+    # dedup dropped the middle sentence: 6 of 9 words survive -> 2/3 of the audio.
     two = [_s("First fact here."), _s("Third fact here.")]
     assert _sum_audio(two, seq) == round(90 * 2 / 3)  # 60, not 90
+
+
+def test_sum_audio_gives_full_credit_when_compose_merges_sentences():
+    """#8 (compose refinement): when the composer legitimately MERGES a beat's
+    sentences into a smaller sentence count while voicing every word, the beat
+    keeps FULL audio credit — the old surviving_sentences/total_sentences model
+    under-reported it (2 emitted / 3 original -> only 2/3 credit) even though no
+    content was dropped. Word coverage lands at ratio 1.0."""
+    body = "First fact here. Second fact here. Third fact here."  # 3 sentences, 9 words
+    beat = _beat("b1", "p", body=body)
+    beat = beat.model_copy(update={"est_spoken_seconds": 90})
+    seq = BeatSequence(
+        poi_beats=(POIBeats(poi_id="p", poi_name="P", ordering_strategy="narrative_function",
+                            beats=(beat,)),)
+    )
+
+    def _s(text: str) -> Sentence:
+        return Sentence(text=text, source_id="b1", source_type="beat", stop_idx=0)
+
+    # Composer merged 3 source sentences into 2, preserving all 9 words. The old
+    # sentence-fraction model would score this 2/3 -> 60s; word coverage keeps
+    # the full 90s because every word is still voiced.
+    merged = [_s("First fact here, second fact here."), _s("Third fact here.")]
+    assert sum(len(m.text.split()) for m in merged) == 9  # words preserved
+    assert len(merged) == 2  # fewer sentences than the 3-sentence body
+    assert _sum_audio(merged, seq) == 90

@@ -7,6 +7,7 @@ import re
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from neo4j import Driver, Session
+from pydantic import ValidationError
 
 from src.api.crud.trips import (
     create_trip_with_stops,
@@ -79,6 +80,30 @@ def _end_point(end_lat: float | None, end_lng: float | None) -> tuple[float, flo
     if end_lat is None or end_lng is None:
         return None
     return (end_lat, end_lng)
+
+
+def _build_tour_input(**kwargs) -> TourInput:
+    """Construct TourInput, mapping its contract ValidationError to a 422.
+
+    TourInput's model_validator (e.g. _end_round_trip_mutex: end + round_trip
+    are mutually exclusive, src/tour/contract.py) raises a pydantic
+    ValidationError on a contradictory request. Unhandled, that surfaces as an
+    opaque HTTP 500 with a stack trace (app.py registers no ValidationError
+    handler). It is a CLIENT error, so translate it to a 422 with the field
+    messages the caller needs to correct the request.
+    """
+    try:
+        return TourInput(**kwargs)
+    except ValidationError as exc:
+        raise HTTPException(
+            422,
+            {
+                "reason": "invalid_tour_input",
+                "errors": [
+                    {"loc": list(e["loc"]), "msg": e["msg"]} for e in exc.errors()
+                ],
+            },
+        ) from exc
 
 
 def _refusal_detail(exc: TourabilityRefusedError) -> dict:
@@ -194,7 +219,7 @@ def generate_trip(
 
     lenses = _resolve_lenses(session, body)
 
-    tour_input = TourInput(
+    tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
         city_slug="paris",
@@ -427,7 +452,7 @@ def compose_trip(
         poi_ids = entry
         anchor_restore = {}
 
-    tour_input = TourInput(
+    tour_input = _build_tour_input(
         start=tuple(tour_input_dict["start"]),
         duration_min=tour_input_dict["duration_min"],
         city_slug=tour_input_dict["city_slug"],
@@ -659,7 +684,7 @@ def preview_trip(
     story fast. Audio is fetched per stop by the client via POST /audio/preview on
     each stop's narration text. RED density / no reachable POIs -> 422.
     """
-    tour_input = TourInput(
+    tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
         city_slug="paris",

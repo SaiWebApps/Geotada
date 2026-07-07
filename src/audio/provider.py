@@ -121,6 +121,13 @@ def _split_for_tts(text: str, max_chars: int = MAX_TTS_CHARS) -> list[str]:
 class MockTTSProvider:
     """Returns a short silent WAV for testing without API keys."""
 
+    # Ceiling on the synthesized silent-WAV duration, independent of input size.
+    # The mock is NOT run through _split_for_tts, so without this the WAV grows
+    # linearly with word count (10k words -> ~700 MB) and a few concurrent
+    # /audio/preview or /audio/eval requests OOM the API process. A silent test
+    # WAV need not be honestly sized, so we clamp to a small, bounded duration.
+    _MAX_DURATION_SEC = 30.0
+
     @property
     def name(self) -> str:
         return "mock"
@@ -128,10 +135,11 @@ class MockTTSProvider:
     def generate(self, text: str, *, voice_id: str | None = None) -> bytes:
         """Generate a silent WAV whose duration approximates the text length.
 
-        Rough heuristic: ~150 words/min speaking rate.
+        Rough heuristic: ~150 words/min speaking rate, clamped to
+        ``_MAX_DURATION_SEC`` so the output size is bounded regardless of input.
         """
         word_count = len(text.split())
-        duration_sec = max(1.0, word_count / 2.5)
+        duration_sec = min(max(1.0, word_count / 2.5), self._MAX_DURATION_SEC)
 
         sample_rate = 44100
         channels = 2  # stereo per NORTHSTAR spec

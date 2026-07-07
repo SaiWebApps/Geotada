@@ -25,10 +25,19 @@ except Exception:
 [ -z "$CMD" ] && exit 0
 
 # High-consequence patterns. Deliberately narrow: routine reads/tests never match.
-DANGER='(docker[[:space:]]+compose[[:space:]]+(down|rm)|docker[[:space:]]+(volume|system)[[:space:]]+(rm|prune)|docker[[:space:]]+rm[[:space:]]|docker[[:space:]]+rmi|colima[[:space:]]+(stop|restart|delete)|git[[:space:]]+worktree[[:space:]]+(remove|prune)|git[[:space:]]+branch[[:space:]]+-[Dd]|git[[:space:]]+push[[:space:]]+.*(--force|-f[[:space:]])|git[[:space:]]+reset[[:space:]]+--hard|git[[:space:]]+clean[[:space:]]|rm[[:space:]]+-[a-z]*r[a-z]*f|make[[:space:]]+(db-reset|db-test-reset|db-workbench-reset|clean-db)|DETACH[[:space:]]+DELETE)'
+DANGER='(docker[[:space:]]+compose[[:space:]]+(down|rm)|docker[[:space:]]+(volume|system)[[:space:]]+(rm|prune)|docker[[:space:]]+rm[[:space:]]|docker[[:space:]]+rmi|colima[[:space:]]+(stop|restart|delete)|git[[:space:]]+worktree[[:space:]]+(remove|prune)|git[[:space:]]+branch[[:space:]]+-[Dd]|git[[:space:]]+push([[:space:]]|.*[[:space:]])(--force([[:space:]=-]|$)|-[a-zA-Z]*f([[:space:]]|$))|git[[:space:]]+reset[[:space:]]+--hard|git[[:space:]]+clean[[:space:]]|make[[:space:]]+(db-reset|db-test-reset|db-workbench-reset|clean-db)|DETACH[[:space:]]+DELETE)'
+
+# Recursive-force `rm` is order/spelling agnostic: require BOTH a recursive flag
+# and a force flag anywhere in the command (short-bundled, split, or long-form).
+# `rm -fr`, `rm -f -r`, `rm -r -f`, `rm --recursive --force` all match.
+RM_RECURSIVE='rm[[:space:]].*(-[a-zA-Z]*r|--recursive)'
+RM_FORCE='rm[[:space:]].*(-[a-zA-Z]*f|--force)'
 
 if ! printf '%s' "$CMD" | grep -qiE "$DANGER"; then
-    exit 0
+    if ! { printf '%s' "$CMD" | grep -qiE "$RM_RECURSIVE" \
+        && printf '%s' "$CMD" | grep -qiE "$RM_FORCE"; }; then
+        exit 0
+    fi
 fi
 
 LOG_DIR="$(cd "$(dirname "$0")" && pwd)"

@@ -94,16 +94,34 @@ def _cleanup_old_comparisons() -> None:
         pass  # Directory may not exist yet
 
 
+def _provider_available(name: str) -> bool:
+    """Report whether a provider is actually usable, not merely instantiable.
+
+    The real providers (openai/elevenlabs) have no ``__init__`` and defer their
+    API-key checks to ``generate()``, so instantiation never raises even when no
+    credentials are configured. Probe the required env vars per provider so a
+    client can distinguish a usable provider from one that will 502 on first
+    generate. Unknown providers fall back to instantiation success.
+    """
+    try:
+        get_provider(name)
+    except Exception:
+        return False
+    if name == "mock":
+        return True
+    if name == "openai":
+        return bool(os.getenv("OPENAI_API_KEY"))
+    if name == "elevenlabs":
+        return bool(os.getenv("ELEVENLABS_API_KEY")) and bool(os.getenv("ELEVENLABS_VOICE_ID"))
+    return True
+
+
 @router.get("/audio/providers", response_model=ProviderListResponse)
 def get_providers():
     """List all registered TTS providers and their availability."""
-    providers = []
-    for name in list_providers():
-        try:
-            get_provider(name)
-            providers.append(ProviderInfo(name=name, available=True))
-        except Exception:
-            providers.append(ProviderInfo(name=name, available=False))
+    providers = [
+        ProviderInfo(name=name, available=_provider_available(name)) for name in list_providers()
+    ]
     return ProviderListResponse(providers=providers)
 
 
@@ -244,13 +262,21 @@ def eval_audio(body: EvalRequest):
     max_attempts = 1 if provider.name == "mock" else _EVAL_MAX_ATTEMPTS
     result = None
     for _ in range(max_attempts):
+        # A transient failure on a LATER attempt must not discard a good result
+        # already captured on an earlier one: only surface a 502 while we still
+        # have no successful attempt (result is None). Otherwise stop retrying
+        # and fall through to verdict assignment using the best result so far.
         try:
             audio_bytes = provider.generate(body.text, voice_id=body.voice_id)
         except TTSError as e:
+            if result is not None:
+                break
             raise HTTPException(502, f"TTS generation failed ({provider.name}): {e}") from None
         try:
             attempt = evaluate(body.text, audio_bytes, filename=f"eval.{ext}")
         except AudioEvalError as e:
+            if result is not None:
+                break
             raise HTTPException(502, f"Transcription failed: {e}") from None
         if result is None or attempt.word_error_rate < result.word_error_rate:
             result = attempt
@@ -677,7 +703,13 @@ def keep_exploring_stop_audio(
     # (capped) extra_narration. A repeat call with the same narration returns the
     # cached url WITHOUT re-running paid TTS; force=True or a changed narration
     # (hash mismatch) regenerates.
-    narration_hash = hashlib.sha256(narration.encode()).hexdigest()
+    # Defect 1: the cache key must also discriminate on provider/voice — otherwise
+    # a client requesting a different voice/provider silently gets audio generated
+    # with the ORIGINAL voice. Mix provider_name and voice_id into the hash so a
+    # voice/provider change yields a mismatch and regenerates.
+    narration_hash = hashlib.sha256(
+        f"{provider_name or ''}\x00{voice_id or ''}\x00{narration}".encode()
+    ).hexdigest()
     if not force and rec["ke_url"] and rec["ke_hash"] == narration_hash:
         return KeepExploringAudioResponse(
             stop_id=stop_id,
