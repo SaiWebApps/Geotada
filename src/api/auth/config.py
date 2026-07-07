@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import logging
 import os
 import sys
+import time
+from collections.abc import Callable
 
 from dotenv import load_dotenv
 
@@ -21,6 +24,26 @@ _MIN_SECRET_LEN: int = 32
 # production deploy to a trivially-forgeable key.
 _DEV_PLACEHOLDER_SECRET: str = "ondoway-insecure-dev-secret-do-not-use-in-production"
 
+# Bounded retry for the PRODUCTION fail-closed path only: if a signing secret
+# reads empty/short at startup, re-read os.getenv a few times with a short
+# backoff before giving up. This is CHEAP INSURANCE + TELEMETRY, not a proven
+# cure for the Render env-injection glitch that motivated it (deploy failure
+# 2026-07-07T01:14). Honest limit: under CPython/POSIX exec semantics os.getenv
+# reads os.environ, a snapshot taken at process start, so a value Render injects
+# into the container AFTER this process started is NOT visible to an in-process
+# re-read — the proven recovery there was a FRESH process (container restart).
+# This loop therefore only rescues a value that becomes observable IN-PROCESS
+# within the budget (e.g. an import-order / dotenv transient); it can never
+# weaken the fail-closed guard below, costs nothing on every healthy path, and —
+# most usefully — logs each attempt so any recurrence is diagnosable (the 01:14
+# event had no such telemetry). The real cure for genuinely-late CONTAINER env
+# is an entrypoint shell wait before `exec uvicorn` (deferred follow-up).
+_SECRET_RETRY_MAX_ATTEMPTS: int = 6
+# One backoff per gap between attempts (max_attempts - 1 == 5 gaps); the sum is
+# 7.5s, a hard <=10s ceiling far under Render's deploy timeout. Extra gaps (were
+# max_attempts ever raised past len+1) clamp to the last value.
+_SECRET_RETRY_BACKOFFS: tuple[float, ...] = (0.5, 1.0, 2.0, 2.0, 2.0)
+
 
 def _allow_insecure_secrets() -> bool:
     """Whether an empty/short signing secret may fall back to a dev placeholder.
@@ -35,19 +58,47 @@ def _allow_insecure_secrets() -> bool:
     return "pytest" in sys.modules
 
 
-def _load_signing_secret(env_var: str) -> str:
+def _load_signing_secret(
+    env_var: str,
+    *,
+    max_attempts: int = _SECRET_RETRY_MAX_ATTEMPTS,
+    backoffs: tuple[float, ...] = _SECRET_RETRY_BACKOFFS,
+    sleep: Callable[[float], None] | None = None,
+) -> str:
     """Load a JWT signing secret, failing closed on an empty/short value.
 
     Raises RuntimeError at import time if the secret is missing or too short,
     so the app refuses to start rather than accepting a trivially-forgeable
     HS256 key. In non-production contexts (see _allow_insecure_secrets) a
     deterministic non-empty dev placeholder is substituted instead.
+
+    On the PRODUCTION fail-closed path only, a first empty/short read triggers a
+    bounded, backing-off re-read (see _SECRET_RETRY_* for the rationale and its
+    honest limits) before raising; every other path returns immediately without
+    sleeping. ``sleep`` is injectable so the retry is unit-testable without real
+    wall-clock (mirrors src/audio/_http.py:post_with_retry).
     """
     value = os.getenv(env_var, "")
     if len(value) >= _MIN_SECRET_LEN:
         return value
     if _allow_insecure_secrets():
         return _DEV_PLACEHOLDER_SECRET
+    # Production, and the secret read empty/short. Re-read with a bounded backoff
+    # before failing closed; the dev placeholder is never substituted on this path.
+    do_sleep = sleep if sleep is not None else time.sleep
+    for attempt in range(1, max_attempts):
+        logging.getLogger("ondoway.api").warning(
+            "auth signing secret %s empty/short on read attempt %d/%d (len=%d); "
+            "backing off then re-reading",
+            env_var,
+            attempt,
+            max_attempts,
+            len(value),
+        )
+        do_sleep(backoffs[min(attempt - 1, len(backoffs) - 1)])
+        value = os.getenv(env_var, "")
+        if len(value) >= _MIN_SECRET_LEN:
+            return value
     raise RuntimeError(
         f"{env_var} is unset or shorter than {_MIN_SECRET_LEN} characters. "
         "Refusing to start with an empty/trivially-forgeable HS256 signing key. "

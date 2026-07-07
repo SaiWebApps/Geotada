@@ -10,6 +10,7 @@ for local development and the test suite.
 
 from __future__ import annotations
 
+import logging
 import sys
 
 import pytest
@@ -26,8 +27,10 @@ class TestSigningSecretGuard:
         # the module's view of sys.modules (restored automatically after test).
         monkeypatch.delitem(sys.modules, "pytest", raising=False)
 
+        # Inject a no-op sleep: the prod path now re-reads with backoff before
+        # failing closed; without this the test would sleep ~7.5s of real time.
         with pytest.raises(RuntimeError, match="trivially-forgeable"):
-            config._load_signing_secret("JWT_SECRET_KEY")
+            config._load_signing_secret("JWT_SECRET_KEY", sleep=lambda _: None)
 
     def test_short_secret_fails_closed(self, monkeypatch):
         """A too-short secret is as dangerous as empty and must also raise."""
@@ -36,7 +39,7 @@ class TestSigningSecretGuard:
         monkeypatch.delitem(sys.modules, "pytest", raising=False)
 
         with pytest.raises(RuntimeError):
-            config._load_signing_secret("JWT_SECRET_KEY")
+            config._load_signing_secret("JWT_SECRET_KEY", sleep=lambda _: None)
 
     def test_never_returns_empty_string(self, monkeypatch):
         """Even with the dev escape hatch, the secret is never the empty string."""
@@ -59,3 +62,128 @@ class TestSigningSecretGuard:
         """The imported module constants must never be the empty string."""
         assert config.JWT_SECRET_KEY != ""
         assert config.MAGIC_LINK_SECRET_KEY != ""
+
+
+class TestSigningSecretStartupRetry:
+    """The bounded, fail-closed startup retry (added for the Render env-injection
+    glitch on deploy 2026-07-07T01:14): on the PRODUCTION path only, a first
+    empty/short read backs off and re-reads a few times before failing closed.
+    Every other path must return immediately without sleeping. The retry is
+    cheap insurance + telemetry, NOT a claimed cure for the race (see the
+    _SECRET_RETRY_* comment in config.py).
+    """
+
+    def test_happy_path_returns_verbatim_with_zero_sleeps(self, monkeypatch):
+        """AC1: a valid secret on the first read never enters the loop or sleeps."""
+        strong = "x" * config._MIN_SECRET_LEN
+        monkeypatch.setenv("JWT_SECRET_KEY", strong)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        calls: list[float] = []
+        result = config._load_signing_secret("JWT_SECRET_KEY", sleep=calls.append)
+
+        assert result == strong
+        assert calls == []  # zero sleeps on the happy path
+
+    def test_insecure_optin_path_never_sleeps(self, monkeypatch):
+        """AC2(A): explicit dev opt-in returns the placeholder with no retry."""
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.setenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", "1")
+
+        calls: list[float] = []
+        result = config._load_signing_secret("JWT_SECRET_KEY", sleep=calls.append)
+
+        assert result == config._DEV_PLACEHOLDER_SECRET
+        assert calls == []
+
+    def test_pytest_path_never_sleeps(self, monkeypatch):
+        """AC2(B): under pytest (no delitem), the placeholder path skips retry."""
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        calls: list[float] = []
+        result = config._load_signing_secret("JWT_SECRET_KEY", sleep=calls.append)
+
+        assert result == config._DEV_PLACEHOLDER_SECRET
+        assert calls == []
+
+    def test_late_value_recovered_on_retry_prod_path(self, monkeypatch):
+        """AC4 (mutation test): a value that appears during backoff is returned.
+
+        This is the load-bearing undo-test: reverting _load_signing_secret to a
+        single-read-then-raise flips this RED (it would raise instead of return),
+        proving the retry loop is actually exercised.
+        """
+        monkeypatch.delitem(sys.modules, "pytest", raising=False)
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        strong = "y" * 40
+        calls: list[float] = []
+
+        def fake_sleep(duration: float) -> None:
+            calls.append(duration)
+            # Simulate the env var becoming observable in-process after 2 backoffs.
+            if len(calls) == 2:
+                monkeypatch.setenv("JWT_SECRET_KEY", strong)
+
+        result = config._load_signing_secret("JWT_SECRET_KEY", sleep=fake_sleep)
+
+        assert result == strong  # recovered without raising
+        assert len(calls) == 2  # two failed reads => exactly two backoffs
+
+    def test_budget_is_bounded_and_uses_full_backoff_schedule(self, monkeypatch):
+        """AC5: total default backoff <= 10s over exactly max_attempts-1 sleeps."""
+        monkeypatch.delitem(sys.modules, "pytest", raising=False)
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        durations: list[float] = []
+        with pytest.raises(RuntimeError, match="trivially-forgeable"):
+            config._load_signing_secret("JWT_SECRET_KEY", sleep=durations.append)
+
+        assert len(durations) == config._SECRET_RETRY_MAX_ATTEMPTS - 1
+        assert durations == list(config._SECRET_RETRY_BACKOFFS)  # exact schedule
+        assert sum(durations) <= 10.0  # hard wall-clock ceiling
+
+    def test_exhausted_budget_still_fails_closed_when_empty(self, monkeypatch):
+        """AC3: an empty secret on every read still raises after the budget."""
+        monkeypatch.delitem(sys.modules, "pytest", raising=False)
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        with pytest.raises(RuntimeError, match="trivially-forgeable"):
+            config._load_signing_secret("JWT_SECRET_KEY", sleep=lambda _: None)
+
+    def test_exhausted_budget_still_fails_closed_when_short(self, monkeypatch):
+        """AC3: a persistently short secret is as dangerous as empty and raises."""
+        monkeypatch.delitem(sys.modules, "pytest", raising=False)
+        monkeypatch.setenv("JWT_SECRET_KEY", "short")
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        with pytest.raises(RuntimeError, match="trivially-forgeable"):
+            config._load_signing_secret("JWT_SECRET_KEY", sleep=lambda _: None)
+
+    def test_each_failed_attempt_is_logged_without_leaking_secret(
+        self, monkeypatch, caplog
+    ):
+        """AC6: one WARNING per failed attempt, naming the var, leaking no secret."""
+        monkeypatch.delitem(sys.modules, "pytest", raising=False)
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        with (
+            caplog.at_level(logging.WARNING, logger="ondoway.api"),
+            pytest.raises(RuntimeError, match="trivially-forgeable"),
+        ):
+            config._load_signing_secret(
+                "JWT_SECRET_KEY", max_attempts=3, sleep=lambda _: None
+            )
+
+        records = [r for r in caplog.records if r.levelno == logging.WARNING]
+        assert len(records) == 2  # max_attempts - 1
+        for rec in records:
+            msg = rec.getMessage()
+            assert "JWT_SECRET_KEY" in msg
+            assert "attempt" in msg.lower()
+            assert config._DEV_PLACEHOLDER_SECRET not in msg
