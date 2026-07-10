@@ -29,7 +29,7 @@ from src.audio.tts_normalize import normalize_for_tts
         ("Charles V ruled an empire.", "Charles the fifth ruled an empire."),
         ("Louis VI the Fat.", "Louis the sixth the Fat."),
         ("Pope John XXIII opened the council.", "Pope John the twenty-third opened the council."),
-        ("Napoléon Ier — accented stem.", "Napoléon Ier — accented stem."),  # 'Ier' is not roman
+        ("Napoléon Ier reigned briefly.", "Napoléon Ier reigned briefly."),  # 'Ier' is not roman
         # possessive + sentence-final punctuation must survive
         ("Louis XVI's head fell.", "Louis the sixteenth's head fell."),
         ("It ended under Louis XIV.", "It ended under Louis the fourteenth."),
@@ -77,3 +77,37 @@ def test_malformed_roman_left_alone() -> None:
 def test_high_regnal_number() -> None:
     assert normalize_for_tts("Ramses II built it.") == "Ramses the second built it."
     assert normalize_for_tts("Pius XII reigned.") == "Pius the twelfth reigned."
+
+
+def test_clause_em_dash_becomes_comma() -> None:
+    # A bare em-dash is voiced as "dash"; a clause em-dash → comma (a spoken pause).
+    out = normalize_for_tts("head for the Meurice — about a 5-minute walk.")
+    assert "—" not in out
+    assert out == "head for the Meurice, about a 5-minute walk."
+    # No flanking spaces still folds.
+    assert (
+        normalize_for_tts("the grandest hotel—colonised the quarter")
+        == "the grandest hotel, colonised the quarter"
+    )
+    # Idempotent.
+    assert normalize_for_tts(out) == out
+
+
+def test_spaced_en_dash_becomes_comma_but_ranges_preserved() -> None:
+    # A SPACED en-dash is a clause break -> comma; a TIGHT numeric/date range is NOT
+    # comma-swapped (no "1615, 1630") and must still read as a range.
+    en = chr(0x2013)  # en-dash, built via chr to avoid an ambiguous source literal
+    assert normalize_for_tts(f"open May {en} September") == "open May, September"
+    for rng in (f"built 1615{en}1630", f"at 57{en}59 rue de Rivoli", f"the 1912{en}14 works"):
+        assert normalize_for_tts(rng) == rng, f"range corrupted: {rng!r}"
+
+
+def test_hyphenated_compounds_survive_byte_identical() -> None:
+    # A hyphen (U+002D) joins compounds/ordinals — never touched by the dash rule.
+    for s in (
+        "an 8-minute walk",
+        "Saint-Germain-des-Prés",
+        "the twenty-third arrondissement",
+        "Jean-Baptiste Colbert",
+    ):
+        assert normalize_for_tts(s) == s

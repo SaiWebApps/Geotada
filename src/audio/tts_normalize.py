@@ -130,6 +130,18 @@ _REGNAL_RE = re.compile(r"\b([^\W\d_][\w-]*)\s+([IVXLCDM]+)\b")
 # the rewrite idempotent (the result contains no ``.-`` to re-match).
 _INITIALS_HYPHEN_RE = re.compile(r"(?<![A-Za-z])([A-Z])\.-(?=[A-Z]\.)")
 
+# TTS voices a bare em/en-dash as the word "dash", so a clause dash reads as an
+# audible "dash" mid-sentence. Rewrite CLAUSE dashes to a comma (a spoken pause):
+# an em-dash (U+2014) is always a clause/parenthetical break; a SPACED en-dash
+# (U+2013 flanked by whitespace) likewise. A TIGHT en-dash joins a numeric/date
+# range and a hyphen (U+002D) joins compounds; both lack flanking spaces and are
+# left byte-identical so ranges and compounds still read correctly. Unicode
+# escapes (not literal dashes) keep the source unambiguous for the linter.
+_EM_DASH = chr(0x2014)
+_EN_DASH = chr(0x2013)
+_EM_DASH_RE = re.compile(rf"\s*{_EM_DASH}\s*")
+_EN_DASH_CLAUSE_RE = re.compile(rf"\s+{_EN_DASH}\s+")
+
 
 def _int_to_roman(n: int) -> str:
     """Canonical Roman numeral for 1..3999 (used to reject malformed input)."""
@@ -201,6 +213,8 @@ def normalize_for_tts(text: str) -> str:
 
     - ``Louis XIV`` -> ``Louis the fourteenth`` (regnal/papal numerals only)
     - ``J.-B.`` -> ``J. B.`` (hyphen-joined initials)
+    - clause em-dash / spaced en-dash -> comma (a spoken pause, not "dash");
+      tight numeric/date ranges and hyphenated compounds are preserved.
 
     All other text — including ``World War II``, ``Chapter IV`` and the pronoun
     ``I`` — is returned byte-identical.
@@ -209,6 +223,8 @@ def normalize_for_tts(text: str) -> str:
         return text
     text = _REGNAL_RE.sub(_regnal_sub, text)
     text = _INITIALS_HYPHEN_RE.sub(r"\1. ", text)
+    text = _EM_DASH_RE.sub(", ", text)
+    text = _EN_DASH_CLAUSE_RE.sub(", ", text)
     return text
 
 
