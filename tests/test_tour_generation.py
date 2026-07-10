@@ -880,6 +880,52 @@ def test_synthesized_opener_view_cue_uses_look_up_verb():
     assert any("Take a moment" in t for t in cold_open_texts)
 
 
+def test_synthesized_opener_does_not_double_a_cue_that_already_stages():
+    """A physical_cue that already opens with its own staging directive ('Look up
+    at the dome') must not get a second 'Look up at' prefixed — the workbench
+    'Look up at Look up at the golden dome' defect."""
+    poi = _poi("p1", "Some Square")
+    body = _beat_with_cues(
+        "body",
+        poi.id,
+        cues=(PhysicalCue(cue="Look up at the golden dome", direction="up", feature_type="view"),),
+        body="A fact.",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name,
+                     ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
+    texts = [s.text for s in script.script if s.stop_idx == 0]
+    assert any("Look up at the golden dome" in t for t in texts)
+    assert not any("Look up at Look up at" in t for t in texts)
+
+
+def test_synthesized_opener_lowercases_raw_leading_the_in_cue():
+    """A raw title-case cue field ('The square...') reads 'Look up at the square',
+    not 'Look up at The square' — the capital-The template seam."""
+    poi = _poi("p1", "Some Square")
+    body = _beat_with_cues(
+        "body",
+        poi.id,
+        cues=(PhysicalCue(cue="The square, now half-pedestrianised", direction="up",
+                          feature_type="view"),),
+        body="A fact.",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name,
+                     ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
+    texts = [s.text for s in script.script if s.stop_idx == 0]
+    assert any("Look up at the square" in t for t in texts)
+    assert not any("at The square" in t for t in texts)
+
+
 # ---------------------------------------------------------------------------
 # 2026-07-03 — per-stop emission guards (the "thin single-beat-feeling
 # narration" half of the 2026-07-02 regression).
@@ -1203,6 +1249,15 @@ def test_first_leg_text_lowercases_leading_the():
 def test_first_leg_text_short_leg_is_just_ahead():
     text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(40))  # <1 min
     assert text == "When you're ready, head for Pantheon — it's just ahead."
+
+
+def test_first_leg_text_at_the_stop_does_not_say_head_for():
+    """When the first stop is essentially where the walker is already standing
+    (routed leg under ~20s), don't tell them to 'head for' a place they're on
+    top of — the Tuileries/Concorde 'walk to where you already are' complaint."""
+    text = _synth_first_leg_text(_stop("Place de la Concorde"), _route_with_first_leg(5))
+    assert text == "You're starting right at Place de la Concorde. Take a moment to take it in."
+    assert "head for" not in text
 
 
 def test_first_leg_text_none_without_stop_name():

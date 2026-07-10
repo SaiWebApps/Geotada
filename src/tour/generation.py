@@ -410,14 +410,22 @@ def _build_synthesized_opener(
         feature = (chosen_cue.feature_type or "").lower()
         cue_phrase = chosen_cue.cue.strip()
         if cue_phrase:
-            staging_verb = "Look up at" if feature == _SYNTH_VIEW_FEATURE_TYPE else "Notice"
+            low = cue_phrase.lower()
+            if low.startswith(("look ", "look up", "notice ")):
+                # The cue already carries its own staging directive — don't double it
+                # ("Look up at Look up at the dome").
+                text = cue_phrase
+            else:
+                # Lowercase a leading "The " so it reads "Look up at the square", not
+                # "...at The square" (a raw title-case field).
+                if cue_phrase.startswith("The "):
+                    cue_phrase = "the " + cue_phrase[4:]
+                staging_verb = "Look up at" if feature == _SYNTH_VIEW_FEATURE_TYPE else "Notice"
+                text = f"{staging_verb} {cue_phrase}"
+            if not text.endswith((".", "!", "?")):
+                text += "."
             out.append(
-                Sentence(
-                    text=f"{staging_verb} {cue_phrase}.",
-                    source_id=GLUE_STAGING,
-                    source_type="glue",
-                    stop_idx=stop_idx,
-                )
+                Sentence(text=text, source_id=GLUE_STAGING, source_type="glue", stop_idx=stop_idx)
             )
 
     # 4. Sensory invitation when there's a view to take in. (The old generic
@@ -454,6 +462,10 @@ def _synth_first_leg_text(first_stop: POIBeats, route: Route) -> str | None:
         return f"When you're ready, head for {name} — it's just ahead."
     leg = route.transits[0]
     secs = leg.leg_seconds or leg.walk_seconds or 0
+    if secs < 20:
+        # You're already standing at the first stop — don't tell the walker to
+        # "head for" a place they're on top of (the Tuileries/Concorde complaint).
+        return f"You're starting right at {name}. Take a moment to take it in."
     minutes = round(secs / 60)
     if minutes <= 1:
         return f"When you're ready, head for {name} — it's just ahead."
