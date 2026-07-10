@@ -774,20 +774,25 @@ def _build_closing(
 
     if tour_input.round_trip and len(beat_sequence.poi_beats) == 1:
         # PdV-style square circumnavigation: the canonical Pariswalks closing.
-        text = f"You've now circled {last.poi_name}." if last else "You've now finished the walk."
-    elif tour_input.round_trip:
-        text = "You've now completed the loop and are back where you started."
-    else:
-        text = "End the walk here, or carry on at your own pace."
-
-    out.append(
-        Sentence(
-            text=text,
-            source_id=GLUE_CLOSING,
-            source_type="glue",
-            stop_idx=stop_idx,
+        text = (
+            f"And that completes our circle of {last.poi_name}."
+            if last
+            else "And that completes the walk."
         )
+    elif tour_input.round_trip:
+        text = "And that closes the loop, back where we started."
+    else:
+        text = "And that brings our walk to a close."
+    # A warm sign-off so the tour ENDS rather than just stops (the user's "grand
+    # finale + sign off + thank the user" ask). Deterministic — the story-specific
+    # tie-off is the LLM /compose layer's job; this guarantees every tour signs off.
+    signoff = (
+        "Thank you for coming along with me today. When you're ready, "
+        "take your time to keep exploring on your own."
     )
+
+    for t in (text, signoff):
+        out.append(Sentence(text=t, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx))
     return out
 
 

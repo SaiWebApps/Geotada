@@ -541,7 +541,10 @@ def test_closing_round_trip_single_stop_uses_circled_phrase():
     )
     script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
     closing = next(s for s in script.script if s.source_id == GLUE_CLOSING)
-    assert closing.text == "You've now circled Place des Vosges."
+    assert closing.text == "And that completes our circle of Place des Vosges."
+    # A warm sign-off (thanks + hand-off) follows so the tour ENDS, not just stops.
+    signoff = [s for s in script.script if s.source_id == GLUE_CLOSING][-1]
+    assert "Thank you" in signoff.text and "exploring on your own" in signoff.text
 
 
 def test_closing_oneway_no_thematic_summary():
@@ -563,7 +566,10 @@ def test_closing_oneway_no_thematic_summary():
     )
     script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=MockGlueClient())
     closing = next(s for s in script.script if s.source_id == GLUE_CLOSING)
-    assert "End the walk here" in closing.text
+    assert closing.text == "And that brings our walk to a close."
+    # The physical-closure phrase is followed by a warm guide sign-off + thanks.
+    signoff = [s for s in script.script if s.source_id == GLUE_CLOSING][-1]
+    assert "Thank you" in signoff.text and "keep exploring on your own" in signoff.text
 
 
 # ---------------------------------------------------------------------------
