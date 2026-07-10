@@ -1450,6 +1450,16 @@ def select_route(
     # and demote the smaller-tier of each pair. Demoted POI beats are
     # merged into the host's pool by the harness via Route.demoted_beats.
     selected, demoted_beats = apply_co_located_demotion(selected, snapshot)
+    # Belt-and-suspenders against a place loaded twice (same display NAME, distinct
+    # id): every dedup path above keys on POI id, and apply_co_located_demotion's
+    # tier>=4 + cross-address-token gate can skip a bare same-name twin, so an
+    # id-distinct twin would otherwise surface as two adjacent stops (the workbench
+    # duplicate-stop bug — the beat-starved copy reads "Walk to the next stop."). Fold
+    # twins by NAME here; the dropped twin's beats merge into the survivor. On a clean
+    # corpus (globally unique names) this is a strict no-op.
+    selected, twin_beats = collapse_name_twins(selected, snapshot)
+    for host_id, beats in twin_beats.items():
+        demoted_beats[host_id] = demoted_beats.get(host_id, ()) + beats
 
     # M4 ORDER: exact Held-Karp pass over the final set — the greedy's
     # insertion order is a by-product of selection, not an optimum. A pulled
@@ -1690,6 +1700,69 @@ def _distinctive_name_tokens(name: str) -> set[str]:
         return set()
     tokens = re.findall(r"[a-zà-öø-ÿ]+", name.lower())
     return {t for t in tokens if len(t) >= _NAME_TOKEN_MIN_LEN and t not in _NAME_GENERIC_TOKENS}
+
+
+# Two selected POIs sharing a display name within this radius are one place loaded
+# twice (a data twin), not two distinct places — the corpus keeps names globally
+# unique, so this only ever fires on duplicated data.
+NAME_TWIN_PROXIMITY_M = 250.0
+
+
+def _pick_twin_host(a: POI, b: POI) -> tuple[POI, POI]:
+    """(host, dropped) for a same-name twin pair — keep the richer / higher-tier /
+    lower-id one so the choice is deterministic and content is preserved."""
+    if a.beat_count != b.beat_count:
+        return (a, b) if a.beat_count > b.beat_count else (b, a)
+    if a.tier != b.tier:
+        return (a, b) if a.tier > b.tier else (b, a)
+    return (a, b) if a.id < b.id else (b, a)
+
+
+def collapse_name_twins(
+    selected: list[POI],
+    snapshot: CorpusSnapshot,
+) -> tuple[list[POI], dict[str, tuple[BeatRef, ...]]]:
+    """Collapse selected POIs that share a display NAME into one (name-keyed dedup).
+
+    Returns ``(selected_minus_twins, host_id -> merged_twin_beats)``. Two POIs are
+    twins when their names match (case-insensitive, trimmed) and they sit within
+    ``NAME_TWIN_PROXIMITY_M``. This catches a place loaded twice (same name, distinct
+    id) that id-based dedup and the tier-/address-gated co-located demotion both miss.
+    The dropped twin's beats fold into the survivor so no content is lost.
+
+    No-op when the route is empty or every selected name is unique — the clean-corpus
+    case — so a well-formed tour is never perturbed.
+    """
+    if len(selected) < 2:
+        return list(selected), {}
+
+    def _norm(name: str) -> str:
+        return (name or "").strip().casefold()
+
+    dropped_to_host: dict[str, str] = {}
+    for i in range(len(selected)):
+        a = selected[i]
+        if a.id in dropped_to_host:
+            continue
+        for j in range(i + 1, len(selected)):
+            b = selected[j]
+            if b.id in dropped_to_host:
+                continue
+            if _norm(a.name) != _norm(b.name):
+                continue
+            if haversine_m(a.lat, a.lng, b.lat, b.lng) > NAME_TWIN_PROXIMITY_M:
+                continue
+            host, drop = _pick_twin_host(a, b)
+            dropped_to_host[drop.id] = host.id
+
+    if not dropped_to_host:
+        return list(selected), {}
+
+    new_selected = [p for p in selected if p.id not in dropped_to_host]
+    merged: dict[str, tuple[BeatRef, ...]] = {}
+    for drop_id, host_id in dropped_to_host.items():
+        merged[host_id] = merged.get(host_id, ()) + tuple(snapshot.beats_for(drop_id))
+    return new_selected, merged
 
 
 def _apply_fill_pass(

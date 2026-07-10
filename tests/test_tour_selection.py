@@ -2187,3 +2187,43 @@ def test_build_poi_extra_beats_omits_pois_with_no_extras():
     route = Route(pois=(poi,), transits=(), total_walk_distance_m=0.0, total_walk_seconds=0)
     voiced = tuple(b.id for b in build_poi_beat_plans(route, snap, lenses=None)[0].beats)
     assert build_poi_extra_beats(route, snap, {"thin": voiced}, lenses=None) == {}
+
+
+# ---------------------------------------------------------------------------
+# Same-name twin collapse — the workbench duplicate-stop bug
+# ---------------------------------------------------------------------------
+
+
+def test_same_name_twins_never_produce_duplicate_stops():
+    """A place loaded twice (same NAME, different id) must collapse to ONE stop.
+
+    Reproduces the workbench duplicate-stop bug (Rodin/Rodin, Tuileries/Tuileries):
+    two nodes sharing a display name both get selected, and the id-keyed dedup plus
+    the co-located-demotion gate (tier>=4 AND <=100m AND cross-address token
+    overlap) can miss them, so the tour shows the place twice — the 2nd stop
+    beat-starved. The engine must dedup by NAME so a duplicate in the DATA can
+    never surface as a duplicate STOP; the dropped twin's beats fold into the
+    survivor (no content lost).
+    """
+    start = (48.8553, 2.3159)
+    # A place loaded twice: identical coords + display name, distinct ids. Both get
+    # selected (co-located = zero marginal walk), and the co-located-demotion guard
+    # skips them (their beats carry no cross-address token overlap), so today the
+    # tour emits the place twice — the beat-starved copy reads "Walk to the next stop."
+    host = POI(id="rodin-real", name="Musee Rodin", tier=5, poi_role="stop",
+               lat=start[0], lng=start[1], areas=("Le Marais",), beat_count=8)
+    twin = POI(id="rodin-dup", name="Musee Rodin", tier=5, poi_role="stop",
+               lat=start[0], lng=start[1], areas=("Le Marais",), beat_count=8)
+    fillers = _density_fillers(start, n=4)
+    snap = _snap([host, twin, *fillers], area_types={"Le Marais": "neighborhood"})
+    route = select_route(TourInput(start=start, duration_min=120, city_slug="paris"), snap)
+
+    names = [p.name for p in route.pois]
+    assert names.count("Musee Rodin") == 1, f"twin place surfaced twice: {names}"
+    assert len(names) == len(set(names)), f"duplicate-name stops in route: {names}"
+    # No content lost: whichever twin is dropped, its beats fold into the survivor.
+    survivor = next(p for p in route.pois if p.name == "Musee Rodin")
+    (dropped_id,) = {"rodin-real", "rodin-dup"} - {survivor.id}
+    merged = route.demoted_beats.get(survivor.id, ())
+    assert any(b.poi_id == dropped_id for b in merged), (
+        f"dropped twin {dropped_id} beats not merged into survivor {survivor.id}")
