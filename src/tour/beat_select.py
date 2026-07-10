@@ -58,11 +58,11 @@ TRIGGER_ADDRESS_THRESHOLD: int = 5  # ≥5 distinct values → square circumnav
 # fixture deepens to the 6-beat trim. 8 keeps all empirical anchor-flat
 # beats while staying under the audio budget for 90-min tours
 # (Île 8 anchors x ~4 extra-beat seconds is well within the 44-min budget).
-DEFAULT_FLAT_MAX: int = 8
+DEFAULT_FLAT_MAX: int = 12
 # Phase 4 calibration (2026-04-29): bumped from 2 to 3. The empirical
 # Vert-Galant pause stop carries 3 beats (establishing + view + tarnished);
 # the prior cap dropped the 'tarnished' deepen.
-PAUSE_BEATS_MAX: int = 3  # tier-3 stop
+PAUSE_BEATS_MAX: int = 4  # tier-3 stop
 
 # Phase 4 calibration (2026-04-29): when both sub_location and
 # trigger_address meet their thresholds, pick the dominant primitive.

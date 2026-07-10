@@ -2157,12 +2157,12 @@ def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
 
 
 def test_build_poi_extra_beats_is_full_minus_voiced():
-    # A tier-5 POI with 12 beats: the tour voices 8 (flat cap), 4 are extras.
+    # A tier-5 POI with 16 beats: the tour voices 12 (flat cap DEFAULT_FLAT_MAX), 4 are extras.
     poi = _poi("rich", tier=5, lat=PDV[0], lng=PDV[1], beat_count=0)
     beats = [
         BeatRef(id=f"rich-b{i:02d}", poi_id="rich", narrative_function="establishing",
                 word_count=300 - i, entities=(f"E{i}",), active_status="active")
-        for i in range(12)
+        for i in range(16)
     ]
     snap = _snap([poi], beats_by_poi={"rich": beats})
     route = Route(pois=(poi,), transits=(), total_walk_distance_m=0.0, total_walk_seconds=0)
@@ -2171,7 +2171,7 @@ def test_build_poi_extra_beats_is_full_minus_voiced():
     voiced_ids = tuple(b.id for b in voiced.beats)
     extras = build_poi_extra_beats(route, snap, {"rich": voiced_ids}, lenses=None)
 
-    assert len(voiced_ids) == 8, "flat cap voices 8"
+    assert len(voiced_ids) == 12, "flat cap voices DEFAULT_FLAT_MAX (12)"
     assert set(extras["rich"]).isdisjoint(voiced_ids), "extras are never voiced beats"
     assert len(extras["rich"]) == 4, "the 4 beats beyond the cap are the extras"
 

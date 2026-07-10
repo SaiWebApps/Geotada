@@ -259,23 +259,25 @@ def test_narrative_function_ordering_when_no_spatial_primitive():
 
 
 def test_narrative_function_caps_at_default_flat_max_for_anchor():
-    """Phase 4 calibration: DEFAULT_FLAT_MAX bumped 6→8 to recover empirical
-    Sainte-Chapelle / Île de la Cité deepens that lost the prior 6-beat trim.
+    """Calibration: DEFAULT_FLAT_MAX bumped 8→12 (2026-07-09, golden-gap R4) so a
+    dense marquee voices more of its deepens (Île 42.6%→55.3%, PdV 55.6%→66.7%);
+    the C9 governor still bounds per-stop audio downstream.
     """
     poi = _poi("Sainte-Chapelle")  # tier 5
-    beats = [_beat(f"b{i}", narrative_function="deepen") for i in range(10)]
+    beats = [_beat(f"b{i}", narrative_function="deepen") for i in range(DEFAULT_FLAT_MAX + 4)]
     plan = select_poi_beats(poi, beats)
-    assert len(plan.beats) == 8
+    assert len(plan.beats) == DEFAULT_FLAT_MAX
 
 
 def test_narrative_function_pause_tier3_caps_at_pause_max():
-    """Phase 4 calibration: PAUSE_BEATS_MAX bumped 2→3 to match the empirical
-    Vert-Galant pause carrying establishing + view + tarnished beats.
+    """Calibration: PAUSE_BEATS_MAX bumped 3→4 (2026-07-09, golden-gap R5) so a
+    tier-3 pause stop can carry its 4th deepen (the empirical Vert-Galant miss
+    ranked exactly 4th).
     """
     poi = _poi("Some Pause", tier=3)
-    beats = [_beat(f"b{i}", narrative_function="deepen") for i in range(5)]
+    beats = [_beat(f"b{i}", narrative_function="deepen") for i in range(6)]
     plan = select_poi_beats(poi, beats)
-    assert len(plan.beats) == 3
+    assert len(plan.beats) == 4
 
 
 def test_narrative_function_walkby_tier1_caps_at_one():
