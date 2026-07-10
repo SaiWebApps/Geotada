@@ -1718,6 +1718,18 @@ def _pick_twin_host(a: POI, b: POI) -> tuple[POI, POI]:
     return (a, b) if a.id < b.id else (b, a)
 
 
+def _resolve_twin_host(host_id: str, dropped_to_host: dict[str, str]) -> str:
+    """Follow a twin host-chain to its ultimate survivor — a host that is not itself
+    dropped. With 3+ same-name twins the pairwise picks can chain (A→C, C→B), so a
+    dropped twin's beats must land on B, not the dropped intermediate C. Cycle-safe
+    via ``seen`` (``_pick_twin_host`` is antisymmetric, so cycles cannot form)."""
+    seen: set[str] = set()
+    while host_id in dropped_to_host and host_id not in seen:
+        seen.add(host_id)
+        host_id = dropped_to_host[host_id]
+    return host_id
+
+
 def collapse_name_twins(
     selected: list[POI],
     snapshot: CorpusSnapshot,
@@ -1761,7 +1773,10 @@ def collapse_name_twins(
     new_selected = [p for p in selected if p.id not in dropped_to_host]
     merged: dict[str, tuple[BeatRef, ...]] = {}
     for drop_id, host_id in dropped_to_host.items():
-        merged[host_id] = merged.get(host_id, ()) + tuple(snapshot.beats_for(drop_id))
+        # Fold beats into the ULTIMATE survivor, never an intermediate host that is
+        # itself dropped (a 3-way chain would otherwise orphan a twin's beats).
+        survivor_id = _resolve_twin_host(host_id, dropped_to_host)
+        merged[survivor_id] = merged.get(survivor_id, ()) + tuple(snapshot.beats_for(drop_id))
     return new_selected, merged
 
 

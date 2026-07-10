@@ -2227,3 +2227,26 @@ def test_same_name_twins_never_produce_duplicate_stops():
     merged = route.demoted_beats.get(survivor.id, ())
     assert any(b.poi_id == dropped_id for b in merged), (
         f"dropped twin {dropped_id} beats not merged into survivor {survivor.id}")
+
+
+def test_three_way_name_twins_lose_no_beats():
+    """3+ same-name twins fold to ONE survivor with NONE of the dropped twins'
+    beats lost. Guards a host-chain: A drops to C and C drops to B — A's beats
+    must reach the ultimate survivor B, not orphan on the dropped intermediate C.
+    """
+    from src.tour.selection import collapse_name_twins
+
+    coord = (48.8553, 2.3159)
+    # beat_count picks the host (more beats wins): b(3) > c(2) > a(1). Processing
+    # order [a, b, c] chains a→c then c→b, so a's beats route through dropped c.
+    a = POI(id="a", name="Twin", tier=5, poi_role="stop", lat=coord[0], lng=coord[1], beat_count=1)
+    b = POI(id="b", name="Twin", tier=5, poi_role="stop", lat=coord[0], lng=coord[1], beat_count=3)
+    c = POI(id="c", name="Twin", tier=5, poi_role="stop", lat=coord[0], lng=coord[1], beat_count=2)
+    snap = _snap([a, b, c])
+
+    new_selected, merged = collapse_name_twins([a, b, c], snap)
+
+    assert [p.id for p in new_selected] == ["b"], "should fold to the richest twin"
+    survivor_id = new_selected[0].id
+    merged_poi_ids = {beat.poi_id for beat in merged.get(survivor_id, ())}
+    assert merged_poi_ids == {"a", "c"}, f"a dropped twin's beats were lost: {merged_poi_ids}"
