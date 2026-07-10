@@ -45,7 +45,7 @@ services:
       - key: GOOGLE_CLIENT_ID
         sync: false
       - key: TTS_PROVIDER
-        value: mock
+        value: openai
       - key: AUDIO_STORAGE
         value: local
       - key: AUDIO_STORAGE_PATH

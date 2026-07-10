@@ -1051,7 +1051,7 @@
             <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
           </div>
           <h2 id="detailTitle"></h2>
-          <select id="ttsProviderSelect" class="tts-provider-select" title="TTS Provider"><option value="mock">mock</option></select>
+          <select id="ttsProviderSelect" class="tts-provider-select" title="TTS Provider"><option value="openai">openai</option><option value="mock">mock (silent)</option></select>
           <button class="btn btn-outline btn-sm" id="deferBtn" style="color:var(--yellow);border-color:var(--yellow);">Defer</button>
           <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
         </div>
@@ -2988,7 +2988,7 @@
 
   // ── TTS state & helpers ──
   const ttsAudioCache = new Map();
-  let ttsProvider = 'mock';
+  let ttsProvider = 'openai';
 
   function ttsTextHash(str) {
     let h = 0;
