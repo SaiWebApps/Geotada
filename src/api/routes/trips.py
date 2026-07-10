@@ -48,7 +48,6 @@ from src.tour.contract import (
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, split_sentences
 from src.tour.options import build_route_option
-from src.tour.render_md import stop_narration_text
 from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
@@ -604,7 +603,17 @@ def _preview_stops(
     from src.tour.selection import spotlight
 
     lenses_fs = frozenset(script.inputs.lenses or ())
-    per_stop = stop_narration_text(script)
+    # The vignette one-liner is voiced by its own interleaved card (below); strip it
+    # from the dwell stop's narration so the workbench doesn't double-voice it (the
+    # "bleed"). _build_transit folds the one-liner in at the arrival dwell stop_idx as
+    # a vignette-beat sentence, so drop sentences sourced from a vignette beat.
+    vignette_beat_ids = {b.id for beats in vignette_beats.values() for b in beats}
+    _dwell_sents: dict[int, list[str]] = {}
+    for s in script.script:
+        if s.source_type == "beat" and s.source_id in vignette_beat_ids:
+            continue
+        _dwell_sents.setdefault(s.stop_idx, []).append(s.text)
+    per_stop = {idx: " ".join(t) for idx, t in _dwell_sents.items()}
     one_liner_by_poi: dict[str, str] = {}
     for beats in vignette_beats.values():
         for beat in beats:

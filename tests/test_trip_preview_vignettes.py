@@ -91,6 +91,28 @@ def test_vignette_interleaves_before_its_leg_destination():
     assert stops[2].narration == "Stop one story."
 
 
+def test_vignette_one_liner_does_not_bleed_into_dwell_narration():
+    """The vignette's one-liner is voiced by its OWN interleaved card; it must NOT
+    also fold into the following dwell stop's narration. Live, _build_transit puts
+    the one-liner at the arrival dwell stop's stop_idx as a beat sentence, which
+    stop_narration_text then folds in — the workbench 'bleed' the user reported."""
+    vpoi = _poi("v1")
+    one_liner = "A tiny plaque marks the spot."
+    beat = BeatRef(id="vb1", poi_id="v1", script_body=f"{one_liner} More detail here.")
+    base = _script_two_stops()
+    # Reproduce the fold: the vignette one-liner sentence sits at dwell stop 1.
+    bled = base.model_copy(update={"script": (
+        *base.script,
+        Sentence(text=one_liner, source_id="vb1", source_type="beat", stop_idx=1),
+    )})
+    stops = _preview_stops(bled, _route({1: (vpoi,)}), {1: (beat,)}, _snapshot(vpoi, beat), {})
+    assert [s.band for s in stops] == ["dwell", "vignette", "dwell"]
+    assert stops[1].narration == one_liner  # the vignette CARD still voices it
+    # The following dwell card must NOT repeat the vignette line.
+    assert one_liner not in stops[2].narration, f"vignette bled into dwell: {stops[2].narration!r}"
+    assert stops[2].narration == "Stop one story."
+
+
 def test_no_vignettes_is_todays_shape():
     stops = _preview_stops(
         _script_two_stops(), _route({}), {}, _snapshot(_poi("vx"), BeatRef(id="b", poi_id="vx")), {}
