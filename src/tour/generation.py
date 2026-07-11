@@ -37,7 +37,7 @@ import re
 from collections import Counter
 from collections.abc import Iterable
 
-from .claim_dedup import suppress_repeated_claims
+from .claim_dedup import suppress_exact_repeats, suppress_repeated_claims
 from .contract import (
     BeatRef,
     BeatSequence,
@@ -225,6 +225,9 @@ def generate(
     # beat (cross-book / cross-POI repetition). Runs after the full stitch so it
     # sees the whole route; never empties a beat, so emitted beat-ids are stable.
     sentences = suppress_repeated_claims(sentences, beat_sequence)
+    # Then drop byte-identical restatements the claim pass leaves behind (two beats
+    # at one stop sharing an exact sentence): pure repetition, zero content loss.
+    sentences = suppress_exact_repeats(sentences, beat_sequence)
 
     # A beat is "voiced" only if at least one of its sentences actually survived
     # the full stitch (cold-open/anchor/transit) AND #22 claim-dedup. A

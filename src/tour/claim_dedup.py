@@ -200,4 +200,58 @@ def suppress_repeated_claims(
     return [s for i, s in enumerate(sentences) if i not in drop]
 
 
-__all__ = ["suppress_repeated_claims"]
+def _repeat_key(text: str) -> str:
+    """Normalized form for exact-repeat detection: lowercased, whitespace-
+    collapsed, surrounding quotes/spaces stripped."""
+    return re.sub(r"\s+", " ", text.strip().strip("\"'“” ").lower()).strip()
+
+
+def suppress_exact_repeats(
+    sentences: list[Sentence], beat_sequence: BeatSequence
+) -> list[Sentence]:
+    """Drop a beat sentence byte-identical (normalized) to an EARLIER beat
+    sentence in the SAME stop.
+
+    A verbatim restatement carries zero new information, so this is always
+    content-safe — the FIRST occurrence is kept. It catches the gross literal
+    repeats the claim-based pass leaves behind: two beats seated at one POI that
+    share an identical sentence (the workbench "duplicated in the beats" report),
+    which ``suppress_repeated_claims`` misses when the sentence maps to no
+    ``key_claim``. Runs WITHIN a stop only (a repeated framing across distant
+    stops is left to the claim pass). Never empties a seated beat — vignette
+    walk-past beats are exempt (additive annotations).
+    """
+    vignette_ids = {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
+    seen_by_stop: dict[int, set[str]] = defaultdict(set)
+    drop: set[int] = set()
+    for i, s in enumerate(sentences):
+        if s.source_type != "beat":
+            continue
+        key = _repeat_key(s.text)
+        if len(key) < 25:  # too short to be a meaningful restatement
+            continue
+        if key in seen_by_stop[s.stop_idx]:
+            drop.add(i)
+        else:
+            seen_by_stop[s.stop_idx].add(key)
+    if not drop:
+        return sentences
+    # Never empty a SEATED beat: restore its first dropped sentence if every one
+    # of its sentences was a duplicate (keeps the emitted beat-id set stable).
+    kept_by_beat: dict[str, int] = defaultdict(int)
+    for i, s in enumerate(sentences):
+        if s.source_type == "beat" and i not in drop:
+            kept_by_beat[s.source_id] += 1
+    for i, s in enumerate(sentences):
+        if (
+            s.source_type == "beat"
+            and s.source_id not in vignette_ids
+            and kept_by_beat[s.source_id] == 0
+            and i in drop
+        ):
+            drop.discard(i)
+            kept_by_beat[s.source_id] = 1
+    return [s for i, s in enumerate(sentences) if i not in drop]
+
+
+__all__ = ["suppress_exact_repeats", "suppress_repeated_claims"]

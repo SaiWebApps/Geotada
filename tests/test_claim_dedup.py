@@ -9,7 +9,11 @@ content-safety property the skeptic panel demanded).
 
 from __future__ import annotations
 
-from src.tour.claim_dedup import _signature, suppress_repeated_claims
+from src.tour.claim_dedup import (
+    _signature,
+    suppress_exact_repeats,
+    suppress_repeated_claims,
+)
 from src.tour.contract import BeatRef, BeatSequence, POIBeats, Sentence
 
 
@@ -178,3 +182,88 @@ def test_vignette_with_novel_fact_survives():
     ]
     out = suppress_repeated_claims(sentences, seq)
     assert {"dwell1", "vig1"} <= {s.source_id for s in out}
+
+
+# ---------------------------------------------------------------------------
+# Exact-repeat suppression (the byte-identical restatements the claim pass
+# leaves behind — two beats at one stop sharing an identical sentence).
+# ---------------------------------------------------------------------------
+
+def _ss(text: str, source_id: str, stop_idx: int, source_type: str = "beat") -> Sentence:
+    return Sentence(text=text, source_id=source_id, source_type=source_type, stop_idx=stop_idx)
+
+
+def _seq2(*beats: BeatRef) -> BeatSequence:
+    return BeatSequence(
+        poi_beats=(POIBeats(poi_id="p", poi_name="P", ordering_strategy="narrative_function",
+                            beats=tuple(beats)),)
+    )
+
+
+_DUP = "On the right as you exit is the special entrance designed for the imperial carriages."
+
+
+def test_exact_duplicate_sentence_in_stop_is_dropped():
+    """Two beats at one stop share an identical sentence; each also has unique
+    text (the real Palais Garnier case). The restatement is heard once."""
+    seq = _seq2(_beat("b1", ()), _beat("b2", ()))
+    sents = [
+        _ss("Charles Garnier won the competition in 1861 with a bold new style.", "b1", 0),
+        _ss(_DUP, "b1", 0),
+        _ss(_DUP, "b2", 0),  # byte-identical restatement from a different beat
+        _ss("The grand staircase is the theatrical heart of the whole building.", "b2", 0),
+    ]
+    out = suppress_exact_repeats(sents, seq)
+    assert [s.text for s in out].count(_DUP) == 1, "the exact restatement must be dropped once"
+    assert out[0].text.startswith("Charles Garnier")  # unique text untouched
+    assert {"b1", "b2"} == {s.source_id for s in out}  # both beats keep their unique content
+
+
+def test_exact_repeat_across_different_stops_is_kept():
+    """Within-stop only — an identical framing that recurs at a DISTANT stop is
+    left for the claim pass, not force-dropped here."""
+    seq = _seq2(_beat("b1", ()), _beat("b2", ()))
+    sents = [_ss(_DUP, "b1", 0), _ss(_DUP, "b2", 3)]
+    out = suppress_exact_repeats(sents, seq)
+    assert len(out) == 2
+
+
+def test_near_but_not_exact_is_kept():
+    """No false positives: two similar-but-not-identical sentences both survive
+    (semantic dedup is the claim pass's job, not this exact-match guard)."""
+    seq = _seq2(_beat("b1", ()))
+    sents = [
+        _ss("Napoleon placed the four horses from St Mark's on top of the arch.", "b1", 0),
+        _ss("The horses of Saint Mark were taken from Venice by Napoleon in 1798.", "b1", 0),
+    ]
+    out = suppress_exact_repeats(sents, seq)
+    assert len(out) == 2
+
+
+def test_exact_repeat_never_empties_a_seated_beat():
+    """If every one of a seated beat's sentences duplicates an earlier beat, its
+    first sentence is restored so the emitted beat-id set stays stable."""
+    seq = _seq2(_beat("b1", ()), _beat("b2", ()))
+    sents = [_ss(_DUP, "b1", 0), _ss(_DUP, "b2", 0)]
+    out = suppress_exact_repeats(sents, seq)
+    assert {"b1", "b2"} == {s.source_id for s in out}, "b2 must keep one sentence, not vanish"
+
+
+def test_short_identical_fragments_are_left_alone():
+    seq = _seq2(_beat("b1", ()), _beat("b2", ()))
+    short = "It opened in 1875."
+    sents = [_ss(short, "b1", 0), _ss(short, "b2", 0)]
+    out = suppress_exact_repeats(sents, seq)
+    assert len(out) == 2  # under the length floor — not treated as a restatement
+
+
+def test_glue_sentences_are_never_deduped_by_exact_pass():
+    seq = _seq2(_beat("b1", ()))
+    nav = "Walk to the next stop."
+    sents = [
+        _ss(nav, "GLUE_NAV", 0, "glue"),
+        _ss(nav, "GLUE_NAV", 1, "glue"),
+        _ss("A long unique sentence about the opera house and its grand staircase.", "b1", 0),
+    ]
+    out = suppress_exact_repeats(sents, seq)
+    assert [s.text for s in out].count(nav) == 2  # glue is the nav-glue pass's concern
