@@ -247,6 +247,9 @@ golden-diff: db-up valhalla-up ## Per-POI/beat diagnostic diff vs a golden fixtu
 tour-grade: db-up valhalla-up ## M8 GRADE regression gate: score each golden tour against the rubric on the live dev graph (port 7687). Excluded from `make test`. Requires Valhalla — without real routing the engine falls back to haversine (straight lines), which cross water and trip the never-swim-the-Seine audit with a FALSE red.
 	uv run pytest -m grade -v
 
+tour-invariants: db-up valhalla-up ## Live-graph INVARIANT gate: generate REAL tours across representative paths (dev graph 7687 + Valhalla) and assert the 2026-07 workbench-reported defect classes stay dead (no dup adjacent stops, no empty/glue-only stops, closing sign-off, no doubled/mis-cased opener staging, monotonic order, no exact-dup sentence in a stop). Excluded from `make test`.
+	uv run pytest -m invariants -v
+
 tour-audio-gate: db-up ## Live "audio says the story" gate (Step 1.5c): voice a real Paris tour's stitched per-stop narration (OpenAI TTS) + Whisper-eval each vs its narration → WER < 0.15. Live (OpenAI + dev graph 7687); excluded from `make test`. Needs OPENAI_API_KEY in .env.
 	uv run pytest tests/test_audio_says_story.py -m live -v -s
 
