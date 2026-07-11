@@ -49,7 +49,10 @@ class GlueClient(Protocol):
 
 
 _DEFAULT_MOCK_RESPONSES: dict[str, str] = {
-    "GLUE_NAV": "Walk to the next stop.",
+    # NAV defers to generation's deterministic connective-tissue template (which
+    # names the destination + distance), rather than a flat canned line repeated
+    # every leg. A test can still inject an explicit GLUE_NAV response.
+    "GLUE_NAV": NO_GLUE_SENTINEL,
     "GLUE_STAGING": "Stand here.",
     "GLUE_PACING": "Take a moment.",
     "GLUE_CALLBACK": NO_GLUE_SENTINEL,

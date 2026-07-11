@@ -30,6 +30,7 @@ from src.tour.generation import (
     _area_article,
     _sum_audio,
     _synth_first_leg_text,
+    _template_nav,
     generate,
     split_sentences,
 )
@@ -1262,6 +1263,53 @@ def test_first_leg_text_at_the_stop_does_not_say_head_for():
 
 def test_first_leg_text_none_without_stop_name():
     assert _synth_first_leg_text(_stop(""), _route_with_first_leg(300)) is None
+
+
+# ---------------------------------------------------------------------------
+# Connective-tissue nav glue (replacing the flat "Walk to the next stop.").
+# ---------------------------------------------------------------------------
+
+def test_nav_template_names_both_ends_and_the_walk():
+    text = _template_nav("Palais Garnier", "Galeries Lafayette", 240.0, 1)  # ~3 min
+    assert "Palais Garnier" in text and "Galeries Lafayette" in text
+    assert "3-minute walk" in text
+    assert "Walk to the next stop" not in text
+    assert "—" not in text  # no em-dash (TTS-clean)
+
+
+def test_nav_template_short_leg_reads_just_ahead():
+    text = _template_nav("Rue de la Paix", "Place Vendome", 60.0, 2)  # <2 min
+    assert "just ahead" in text
+    assert "Place Vendome" in text
+
+
+def test_nav_template_varies_between_consecutive_legs():
+    a = _template_nav("A Place", "B Place", 200.0, 1)
+    b = _template_nav("B Place", "C Place", 200.0, 2)
+    assert a.split()[0:3] != b.split()[0:3], "consecutive legs must not read identically"
+
+
+def test_nav_template_final_destination_is_a_graceful_arrival():
+    text = _template_nav("Bourse de Commerce", "Destination", 300.0, 6,
+                         is_final_destination=True)
+    assert "final destination" in text.lower()
+    assert "Destination" not in text  # never voice the placeholder POI name
+    assert "next stop" not in text.lower()
+
+
+def test_generate_nav_glue_names_destinations_not_flat_walk_to_next_stop():
+    """With the mock glue client, a multi-stop tour's nav lines name the
+    destination (connective tissue), never the flat 'Walk to the next stop.'."""
+    pois = tuple(_poi(f"p{i}", f"Place {i}") for i in range(3))
+    seq = BeatSequence(poi_beats=tuple(
+        _poi_beats(p, (_beat_with_cues(f"b{i}", p.id, body=f"A fact about place {i} here."),))
+        for i, p in enumerate(pois)
+    ))
+    script = generate(seq, _route(pois), _input(round_trip=True), glue_client=MockGlueClient())
+    nav = [s.text for s in script.script if s.source_id == GLUE_NAV]
+    assert nav, "expected nav glue between stops"
+    assert all(t != "Walk to the next stop." for t in nav)
+    assert any("Place" in t for t in nav)  # destinations are named
 
 
 def test_sum_audio_scales_by_surviving_word_fraction():

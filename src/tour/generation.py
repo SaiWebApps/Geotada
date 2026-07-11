@@ -608,6 +608,48 @@ def _build_anchor_block(
 # ---------------------------------------------------------------------------
 
 
+# The fixed-end sentinel id prefix (selection._materialize_fixed_end_b): a pinned
+# endpoint with no POI of its own is materialized as "__end_b__<lat>_<lng>".
+_END_B_SENTINEL_PREFIX: str = "__end_b__"
+
+# Varied deterministic connective-tissue templates, cycled by leg so the tour
+# never reads the identical nav line twice in a row (the "Walk to the next stop."
+# ten-times complaint). No em-dashes (TTS-clean).
+_NAV_TEMPLATES: tuple[str, ...] = (
+    "From {prev}, make your way on to {cur}{dist}.",
+    "Leaving {prev} behind, head for {cur}{dist}.",
+    "From {prev}, carry on to {cur}{dist}.",
+)
+
+
+def _nav_walk_minutes(distance_m: float) -> int:
+    """Whole-minute walking estimate at a relaxed strolling pace (~80 m/min)."""
+    return round(distance_m / 80) if distance_m and distance_m > 0 else 0
+
+
+def _template_nav(
+    previous_name: str,
+    current_name: str,
+    distance_m: float,
+    stop_idx: int,
+    *,
+    is_final_destination: bool = False,
+) -> str:
+    """Deterministic connective-tissue nav sentence for a leg (no LLM).
+
+    Names the destination and gives a sense of the walk, varied by leg — the
+    connective tissue between points, replacing the old flat "Walk to the next
+    stop." For a pinned beatless endpoint, a graceful arrival (never routes the
+    walker to a placeholder literally named "Destination").
+    """
+    if is_final_destination:
+        return "From here, make your way to your final destination."
+    minutes = _nav_walk_minutes(distance_m)
+    dist = f", about a {minutes}-minute walk away" if minutes >= 2 else ", just ahead"
+    template = _NAV_TEMPLATES[stop_idx % len(_NAV_TEMPLATES)]
+    return template.format(prev=previous_name, cur=current_name, dist=dist)
+
+
 def _build_transit(
     previous: POIBeats,
     current: POIBeats,
@@ -666,21 +708,26 @@ def _build_transit(
         out_sentences = _beat_to_sentences(transit_beat, stop_idx)
     else:
         distance_m = _segment_distance_m(route, stop_idx)
-        distance_clause = f", distance approx {round(distance_m)}m" if distance_m else ""
-        request = (
-            f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
-            f"Use only navigation language — no facts, no names, no dates."
+        is_final_dest = current.poi_id.startswith(_END_B_SENTINEL_PREFIX)
+        template_nav = _template_nav(
+            previous.poi_name, current.poi_name, distance_m, stop_idx,
+            is_final_destination=is_final_dest,
         )
-        context = _format_glue_context(previous, current)
-        out = client.stitch(GLUE_NAV, context, request)
-        text = _coerce_glue_output(out, default=f"Walk on toward {current.poi_name}.")
-        out_sentences = [
-            Sentence(
-                text=text,
-                source_id=GLUE_NAV,
-                source_type="glue",
-                stop_idx=stop_idx,
+        if is_final_dest:
+            # A pinned endpoint with no content: voice a graceful arrival, never
+            # "walk to" a placeholder named "Destination". Skip the glue client.
+            text = template_nav
+        else:
+            distance_clause = f", distance approx {round(distance_m)}m" if distance_m else ""
+            request = (
+                f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
+                f"Use only navigation language, no facts, no names, no dates."
             )
+            context = _format_glue_context(previous, current)
+            out = client.stitch(GLUE_NAV, context, request)
+            text = _coerce_glue_output(out, default=template_nav)
+        out_sentences = [
+            Sentence(text=text, source_id=GLUE_NAV, source_type="glue", stop_idx=stop_idx)
         ]
     out_sentences.extend(_vignette_one_liners(vignette_beats, stop_idx))
     return out_sentences
