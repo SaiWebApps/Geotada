@@ -53,6 +53,13 @@ from .contract import BeatRef, BeatSequence, Script, Sentence
 # A sentence must contain at least this fraction of a claim's tokens to be judged
 # "about" that claim (overlap coefficient, so ~containment of the terse claim).
 CLAIM_MATCH_MIN: float = 0.5
+# COVERAGE uses a LOWER floor than the dedup pass. Coverage only guards against
+# GROSS deletion — a fact mentioned in NO sentence — and its counterpart, the
+# semantic faithfulness gate, already blocks a fusion that quietly loses a fact.
+# A bold fusion rewords a claim heavily, dropping its lexical overlap below 0.5
+# though the fact is plainly present; at 0.5 coverage false-flags that as a drop
+# and reverts the whole (faithful) stop. 0.34 keeps gross deletions caught.
+COVERAGE_MATCH_MIN: float = 0.34
 # Two claim signatures are the SAME fact at or above this overlap coefficient.
 CLAIM_DEDUP_THRESHOLD: float = 0.7
 # ...and must share at least this many tokens (guards against tiny-claim noise).
@@ -260,10 +267,11 @@ def claims_realized_by(
     """The ``(beat_id, claim_index)`` pairs realized by ≥1 beat-cited sentence.
 
     "Realized" = some beat sentence's signature overlaps the claim's at
-    ``CLAIM_MATCH_MIN``. Run on the PRE-compose stitch to get the coverage
-    baseline (what actually got voiced — not every ``key_claim``, since a beat's
-    prose may never voice some of its claims), and on the composed output to
-    prove nothing the stitch voiced was lost. Order-independent (a set).
+    ``COVERAGE_MATCH_MIN`` (lenient — coverage guards only gross deletion; the
+    faithfulness gate guards quiet loss). Run on the PRE-compose stitch to get the
+    coverage baseline (what actually got voiced — not every ``key_claim``, since a
+    beat's prose may never voice some of its claims), and on the composed output
+    to prove nothing the stitch voiced was lost. Order-independent (a set).
     """
     sent_sigs = [
         sig
@@ -276,7 +284,7 @@ def claims_realized_by(
             csig = _signature(claim)
             if len(csig) < MIN_SHARED_TOKENS:
                 continue
-            if any(_overlap(csig, ssig) >= CLAIM_MATCH_MIN for ssig in sent_sigs):
+            if any(_overlap(csig, ssig) >= COVERAGE_MATCH_MIN for ssig in sent_sigs):
                 realized.add((bid, ci))
     return realized
 

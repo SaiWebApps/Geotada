@@ -124,6 +124,9 @@ class HaikuFaithfulnessChecker:
         response = self._client.messages.create(  # type: ignore[attr-defined]
             model=self.model,
             max_tokens=self.max_output_tokens,
+            temperature=0,  # deterministic entailment: a borderline sentence must
+            # give the SAME verdict every verify, or the gate flakes and a compose
+            # that just passed fails on the post-repair re-verify (never converges).
             messages=[{"role": "user", "content": rendered}],
         )
         text = "".join(
