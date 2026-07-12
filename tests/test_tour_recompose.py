@@ -15,6 +15,7 @@ from src.tour.compose_gate import (
     ComposeVerificationError,
     build_full_verifier,
     compose_and_verify,
+    drop_failing_sentences,
     repair_composed,
     serve_or_block,
 )
@@ -238,3 +239,22 @@ def test_compose_and_verify_still_refuses_when_repair_cannot_help():
 
     with pytest.raises(ComposeVerificationError):
         compose_and_verify(compose, _verify())
+
+
+def test_drop_failing_sentences_removes_only_the_flagged():
+    keep = _s("A grounded, faithful fact.", "b1", 0)
+    bad_reflection = Sentence(text="An embellished aside.", source_id="GLUE_REFLECTION",
+                              source_type="glue", stop_idx=0)
+    kept_glue = Sentence(text="Walk on.", source_id="GLUE_NAV", source_type="glue", stop_idx=0)
+    script = _script([keep, bad_reflection, kept_glue])
+    report = ValidationReport(faithfulness_failures=((bad_reflection, "unfaithful_reflection"),))
+    out = drop_failing_sentences(script, report)
+    texts = [s.text for s in out.script]
+    assert "A grounded, faithful fact." in texts  # good beat prose kept
+    assert "Walk on." in texts                    # unrelated glue kept
+    assert "An embellished aside." not in texts   # only the flagged one dropped
+
+
+def test_drop_failing_sentences_is_a_noop_when_clean():
+    script = _script([_s("A grounded fact.", "b1", 0)])
+    assert drop_failing_sentences(script, ValidationReport()) is script

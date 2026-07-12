@@ -28,6 +28,7 @@ from .compose_gate import (
     _bad_stops,
     build_full_verifier,
     compose_and_verify,
+    drop_failing_sentences,
     repair_composed,
 )
 from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
@@ -670,7 +671,15 @@ def compose_script_per_chapter(
         if report.passed:
             return composed.model_copy(update={"validation": report})
 
-    repaired = repair_composed(composed, stitched, report)  # revert what still fails
+    # Granular repair first: drop just the failing sentences (a stop whose only
+    # fault is an embellished reflection keeps all its fused beat prose). If that
+    # leaves a fact uncovered, fall back to reverting the whole coverage-failing
+    # stop to the grounded stitch.
+    trimmed = drop_failing_sentences(composed, report)
+    tr_report = verify(trimmed)
+    if tr_report.passed:
+        return trimmed.model_copy(update={"validation": tr_report})
+    repaired = repair_composed(trimmed, stitched, tr_report)
     rep_report = verify(repaired)
     if rep_report.passed:
         return repaired.model_copy(update={"validation": rep_report})

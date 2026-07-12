@@ -49,8 +49,28 @@ class ComposeVerificationError(Exception):
             f"{len(report.untraceable_sentences)} untraceable, "
             f"{len(report.forbidden_phrase_hits)} forbidden, "
             f"{len(report.provenance_failures)} provenance, "
-            f"{len(report.faithfulness_failures)} faithfulness"
+            f"{len(report.faithfulness_failures)} faithfulness, "
+            f"{len(report.coverage_failures)} coverage"
         )
+
+
+def drop_failing_sentences(script: Script, report: ValidationReport) -> Script:
+    """Remove ONLY the individual sentences VERIFY flagged (unfaithful, untraceable,
+    or forbidden), keeping the rest of the stop's fusion. The finest-grained
+    repair: a stop whose one bad sentence is an embellished reflection keeps all
+    its fused beat prose. Dropping a fact-carrying sentence may then leave a claim
+    uncovered — the caller falls back to a whole-stop revert for that residue."""
+    keys: set[tuple[int, str, str]] = set()
+    for s, _reason in report.faithfulness_failures:
+        keys.add((s.stop_idx, s.source_id, s.text))
+    for s in report.untraceable_sentences:
+        keys.add((s.stop_idx, s.source_id, s.text))
+    for s, _code in report.forbidden_phrase_hits:
+        keys.add((s.stop_idx, s.source_id, s.text))
+    if not keys:
+        return script
+    kept = tuple(s for s in script.script if (s.stop_idx, s.source_id, s.text) not in keys)
+    return script.model_copy(update={"script": kept})
 
 
 def _bad_stops(report: ValidationReport, stitched: Script) -> set[int]:
