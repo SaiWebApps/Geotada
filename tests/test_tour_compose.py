@@ -526,3 +526,46 @@ def test_compose_system_prompt_carries_the_anti_tell_craft_rules():
     assert "fuse repeats boldly" in s                              # in-stop dedup mandate
     assert "fuse without fear" in s                                # coverage-gate reassurance
     assert "precise time of day" in s                              # reflection embellishment guard
+
+
+def test_best_of_n_picks_the_cleaner_candidate_per_stop():
+    """candidates=2 composes each stop twice and keeps the lower-penalty one:
+    stop 0's first candidate embellishes (an entailment failure), its second is
+    clean, so the clean one is kept and the tour serves."""
+    import threading
+
+    seq, route, stitched = _five_stop_setup()
+
+    class _AliensChecker:  # entails anything that does NOT smuggle in 'ALIENS'
+        def entails(self, key_claims, sentence_text):
+            return "ALIENS" not in sentence_text
+
+    class _BestOfClient:
+        def __init__(self):
+            self._lock = threading.Lock()
+            self._n: dict[int, int] = {}
+            self.calls = 0
+
+        def compose(self, request, attempt, prev_report):
+            stop = next(iter({s.stop_idx for s in request.stitched.script}))
+            with self._lock:
+                self.calls += 1
+                k = self._n.get(stop, 0)
+                self._n[stop] = k + 1
+            base = list(request.stitched.script)
+            if stop == 0 and k == 0:  # first candidate at stop 0 embellishes its BEAT sentences
+                base = [
+                    s.model_copy(update={"text": s.text + " ALIENS"})
+                    if s.source_type == "beat"
+                    else s
+                    for s in base
+                ]
+            return tuple(base)
+
+    client = _BestOfClient()
+    composed = compose_script_per_chapter(
+        stitched, seq, route, client=client, faithfulness_checker=_AliensChecker(), candidates=2
+    )
+    assert composed.validation.passed
+    assert not any("ALIENS" in s.text for s in composed.script)  # the bad candidate was dropped
+    assert client.calls == 2 * len({s.stop_idx for s in stitched.script})  # best-of-2, every stop

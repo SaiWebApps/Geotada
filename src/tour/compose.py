@@ -22,7 +22,7 @@ from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .claim_dedup import candidate_duplicate_pairs, claims_realized_by
+from .claim_dedup import candidate_duplicate_pairs, claims_realized_by, verify_claim_coverage
 from .compose_gate import (
     ComposeVerificationError,
     _bad_stops,
@@ -33,7 +33,12 @@ from .compose_gate import (
 from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
 from .reflection import reflection_slots
-from .verify import FaithfulnessChecker, _visited_claims
+from .verify import (
+    FaithfulnessChecker,
+    MockFaithfulnessChecker,
+    _visited_claims,
+    verify_faithfulness,
+)
 
 # narrative_function values that mark a beat as transit-class — mirrors
 # generation._TRANSIT_NARRATIVE_FUNCTIONS (the transit stage is the only
@@ -533,6 +538,7 @@ def compose_script_per_chapter(
     faithfulness_checker: FaithfulnessChecker | None = None,
     chunk_text_by_slug: dict[str, str] | None = None,
     max_workers: int = _PER_CHAPTER_MAX_WORKERS,
+    candidates: int = 1,
 ) -> Script:
     """Compose each stop in its OWN focused call, in PARALLEL, then verify the
     assembled tour and repair only what still fails.
@@ -544,7 +550,12 @@ def compose_script_per_chapter(
     (~1 min). Reflections are still VERIFIED on the assembled whole (each sees the
     earlier stops' visited claims), and a stop that still fails after its own
     bounded recompose reverts to the grounded stitch. Same gates, same guarantees
-    — just per-stop scope and concurrency."""
+    — just per-stop scope and concurrency.
+
+    ``candidates`` > 1 turns on BEST-OF-N: each stop is composed that many times
+    (in parallel, sampling diversity from the LLM) and the candidate with the
+    fewest LOCAL faithfulness + coverage failures is kept — extra lottery tickets
+    for the big, dense stops whose single fusion trips the gate and reverts."""
     beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
     beat_stop = {s.source_id: s.stop_idx for s in stitched.script if s.source_type == "beat"}
     tour_context = tuple(p.name for p in route.pois)
@@ -580,13 +591,50 @@ def compose_script_per_chapter(
         # OUTPUT (not a client error) is what the VERIFY + repair path handles.
         return list(client.compose(_request_for(stop_idx), attempt, prev))
 
+    checker = faithfulness_checker or MockFaithfulnessChecker()
     composed_by_stop: dict[int, list[Sentence]] = {}
+
+    def _local_penalty(stop_idx: int, cand: list[Sentence]) -> int:
+        """Beat-faithfulness + coverage failures of ONE stop's candidate — the
+        signal best-of-N ranks on. Reflections are cross-stop (judged on the
+        assembled whole later), so they are excluded here."""
+        stop_beats = {
+            s.source_id: beats_by_id[s.source_id]
+            for s in by_stop[stop_idx]
+            if s.source_type == "beat" and s.source_id in beats_by_id
+        }
+        mini = stitched.model_copy(update={"script": tuple(by_stop[stop_idx])})
+        expected = claims_realized_by(mini, stop_beats)
+        beat_only = mini.model_copy(
+            update={"script": tuple(s for s in cand if s.source_type == "beat")}
+        )
+        faith = verify_faithfulness(beat_only, stop_beats, checker)
+        cov = verify_claim_coverage(
+            mini.model_copy(update={"script": tuple(cand)}), expected, stop_beats
+        )
+        return len(faith) + len(cov)
 
     def _run(targets: list[int], attempt: int, prev_of):
         with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(targets)))) as pool:
             results = pool.map(lambda i: _compose_stop(i, attempt, prev_of(i)), targets)
         for stop_idx, sents in zip(targets, results, strict=True):
             composed_by_stop[stop_idx] = sents
+
+    def _run_best_of_n(targets: list[int]):
+        """Attempt 1 with best-of-N: compose every (stop, candidate) pair in one
+        parallel wave, then keep each stop's lowest-penalty candidate."""
+        n = max(1, candidates)
+        jobs = [(i, k) for i in targets for k in range(n)]
+        with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(jobs)))) as pool:
+            gen = list(pool.map(lambda job: (job[0], _compose_stop(job[0], 1, None)), jobs))
+        cands: dict[int, list[list[Sentence]]] = defaultdict(list)
+        for stop_idx, sents in gen:
+            cands[stop_idx].append(sents)
+        for stop_idx in targets:
+            cs = cands[stop_idx]
+            composed_by_stop[stop_idx] = (
+                cs[0] if len(cs) == 1 else min(cs, key=lambda c: _local_penalty(stop_idx, c))
+            )
 
     def _assemble() -> Script:
         out: list[Sentence] = []
@@ -608,7 +656,7 @@ def compose_script_per_chapter(
         expected_claim_ids=claims_realized_by(stitched, beats_by_id),
     )
 
-    _run(stops, 1, lambda _i: None)  # attempt 1: every stop in parallel
+    _run_best_of_n(stops)  # attempt 1: best-of-N per stop, all in parallel
     composed = _assemble()
     report = verify(composed)
     if report.passed:

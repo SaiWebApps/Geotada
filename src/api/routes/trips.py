@@ -772,6 +772,7 @@ def preview_trip(
                 route,
                 client=compose_client,
                 faithfulness_checker=faithfulness_checker,
+                candidates=2,  # best-of-2: extra tickets for the big, dense stops
             )
         except ComposeVerificationError:
             compose_status = "refused"  # unrepairable — keep the grounded stitch
