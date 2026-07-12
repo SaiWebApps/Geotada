@@ -12123,55 +12123,6 @@
   "_poi_role_source": "700ft Metropolitan Life Tower clock tower at 1 Madison Ave"
  },
  {
-  "name": "Asia Society and Museum",
-  "short_description": "Cultural center founded by John D. Rockefeller III in 1956, hosting art and cultural exhibitions spanning Buddhist, Jain, Nepalese and contemporary Asian traditions.",
-  "name_variations": [
-   "Asia Society & Museum"
-  ],
-  "kid_friendly": "yes",
-  "latitude": 40.7655,
-  "longitude": -73.9657,
-  "trigger_radius": 10,
-  "city_name": "new_york",
-  "_pipeline": {
-   "address": "",
-   "discovery_sources": [
-    "Lonely Planet New York City (12th ed, 2022)"
-   ],
-   "discovery_notes": "Extracted from LP chunks: chunk-07. gravity: Founded by Rockefeller III; prominent cultural institution for Asian art and ideas; broad programming.",
-   "verified": false,
-   "geocode_source": "agent",
-   "geocode_confidence": "LOW",
-   "parent_poi": null,
-   "source_chunks": [
-    "chunk-07"
-   ],
-   "gravity_audit": {
-    "official_visitors": null,
-    "google_review_count": 512,
-    "google_trends": null,
-    "wikipedia_depth": "moderate",
-    "guidebook_presence": "COMMON",
-    "raw_composite": 68,
-    "assigned_gravity": 3,
-    "reasoning": "LP new POI. Notability composite 68 from agent-extraction prominence, guidebook (Lonely Planet) presence, ~512 reviews. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
-    "scored_at": "2026-06-15T00:00:00Z",
-    "formula_version": "v1-lp-batch"
-   }
-  },
-  "_meta": {
-   "created_by": "pipeline-batch:lonely-planet-new-york-city",
-   "city_name": "new_york",
-   "book_slug": "lonely-planet-new-york-city",
-   "created_at": "2026-06-15T00:00:00Z"
-  },
-  "importance_tier": 3,
-  "poi_role": "stop",
-  "parent_poi": null,
-  "_poi_role_reasoning": "A discrete museum/cultural center building you stand at.",
-  "_poi_role_source": "this cultural center hosts fascinating exhibits"
- },
- {
   "name": "Gracie Mansion",
   "short_description": "Federal-style country house built in 1799 for merchant Archibald Gracie; official residence of New York City mayors since 1942.",
   "name_variations": [
@@ -19904,7 +19855,8 @@
   "name": "Asia Society",
   "short_description": "Cultural institution at 725 Park Avenue (corner of 70th), founded 1956 by John D. Rockefeller III; red-sandstone-and-granite building opened 1981.",
   "name_variations": [
-   "Asia Society"
+   "Asia Society and Museum",
+   "Asia Society & Museum"
   ],
   "kid_friendly": "yes",
   "city_name": "new_york",
@@ -19916,18 +19868,24 @@
   "_pipeline": {
    "address": "",
    "discovery_sources": [
-    "The Big Onion Guide to New York City: Ten Historic Tours"
+    "The Big Onion Guide to New York City: Ten Historic Tours",
+    "Lonely Planet New York City (12th ed, 2022)"
    ],
    "discovery_notes": "Existing POI; no new geocode.",
    "verified": false,
    "geocode_source": "Nominatim OSM",
    "geocode_confidence": "HIGH",
    "gravity_audit": {
-    "google_review_count": null,
-    "wikipedia_depth": "see reasoning",
-    "guidebook_presence": "Big Onion (historian-led)",
+    "official_visitors": null,
+    "google_review_count": 512,
+    "google_trends": null,
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "raw_composite": 68,
     "assigned_gravity": 3,
-    "reasoning": "Backfilled orphan POI referenced by Big Onion beats. Calibrated tier 3; qualitative signals."
+    "reasoning": "LP new POI. Notability composite 68 from agent-extraction prominence, guidebook (Lonely Planet) presence, ~512 reviews. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+    "scored_at": "2026-06-15T00:00:00Z",
+    "formula_version": "v1-lp-batch"
    },
    "geocode_audit": {
     "source": "OpenStreetMap Nominatim",
@@ -19935,6 +19893,24 @@
     "placement": "Main approach point for Asia Society (entrance/front facade on the primary street).",
     "trigger_radius_reasoning": "Larger footprint (plaza/campus/bridge/monument), trigger_radius 20m so any reasonable approach fires.",
     "notes": "Existing POI; no new geocode."
+   },
+   "merge_log": {
+    "merged_at": "2026-07-12",
+    "merged_poi": "Asia Society and Museum",
+    "reason": "Same institution (725 Park Ave, Asia Society, founded 1956 by Rockefeller III) split into two nodes because the name_key MERGE differed. Kept Big Onion HIGH-confidence geocode (40.769839,-73.964291) + Lonely Planet gravity_audit (512 reviews). Re-linked 3 beats from the dropped name; union of name_variations retained.",
+    "sources": [
+     "The Big Onion Guide to New York City: Ten Historic Tours",
+     "Lonely Planet New York City (12th ed, 2022)",
+     "National Geographic Walking New York City"
+    ],
+    "grafted_gravity_from": {
+     "book_slug": "lonely-planet-new-york-city",
+     "created_at": "2026-06-15T00:00:00Z",
+     "source_chunks": [
+      "chunk-07"
+     ],
+     "gravity_formula_version": "v1-lp-batch"
+    }
    }
   },
   "_meta": {

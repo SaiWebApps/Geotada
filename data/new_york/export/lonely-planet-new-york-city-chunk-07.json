@@ -1,14 +1,14 @@
 [
   {
-    "name": "Asia Society and Museum",
+    "name": "Asia Society",
     "short_description": "Cultural center founded by John D. Rockefeller III in 1956, hosting art and cultural exhibitions spanning Buddhist, Jain, Nepalese and contemporary Asian traditions.",
     "name_variations": [
       "Asia Society",
       "Asia Society & Museum"
     ],
     "kid_friendly": "yes",
-    "latitude": 40.7655,
-    "longitude": -73.9657,
+    "latitude": 40.769839,
+    "longitude": -73.964291,
     "trigger_radius": 10,
     "city_name": "new_york",
     "_pipeline": {
