@@ -29,32 +29,45 @@ import pytest
 
 pytestmark = pytest.mark.invariants
 
-# Representative paths: the 4 original workbench cases + broad coverage.
-# (label, start(lat,lng), duration_min, lenses, end(lat,lng) | None)
+# Representative paths across BOTH launch cities.
+# (label, city_slug, start(lat,lng), duration_min, lenses, end(lat,lng) | None)
+#
+# New York (second city) note: these assert the same NARRATIVE invariants, which
+# are routing-independent. NYC currently runs against (a) the graph's OLD corpus
+# (the richer nyc-corpus-restore is in the repo but its graph upload is deferred)
+# and (b) haversine legs — Valhalla only carries Île-de-France tiles, so NYC has
+# no real routed distances. So NYC tours are honestly THIN here (few stops); this
+# is narrative-defect coverage for NYC, NOT a claim of routing/density parity. It
+# gets richer automatically once the corpus is uploaded. Coords were dry-run to
+# confirm they yield feasible, invariant-clean tours before being pinned.
 _PATHS = [
-    ("concorde-250-loop", (48.8656, 2.3281), 200, None, None),
-    ("louvre-150-loop", (48.8606, 2.3376), 150, None, None),
-    ("marais-150-hidden", (48.8590, 2.3620), 150,
+    ("concorde-250-loop", "paris", (48.8656, 2.3281), 200, None, None),
+    ("louvre-150-loop", "paris", (48.8606, 2.3376), 150, None, None),
+    ("marais-150-hidden", "paris", (48.8590, 2.3620), 150,
      ["hidden_history", "war_conflict", "social_change"], None),
-    ("latin-120-parks", (48.8480, 2.3470), 120,
+    ("latin-120-parks", "paris", (48.8480, 2.3470), 120,
      ["parks_gardens", "waterways_views", "nature_landscape"], None),
-    ("pantheon-120-loop", (48.8462, 2.3464), 120, None, None),
+    ("pantheon-120-loop", "paris", (48.8462, 2.3464), 120, None, None),
     # Point-to-point (the Test-3/Test-4 shape): a generous budget so the path is
     # feasible — an over-budget fixed end is a separate (cruise-mode) concern.
-    ("garnier-leshalles-p2p", (48.8719, 2.3316), 180, None, (48.8626, 2.3449)),
+    ("garnier-leshalles-p2p", "paris", (48.8719, 2.3316), 180, None, (48.8626, 2.3449)),
+    # New York (see note above) — the two dry-run-clean scenarios.
+    ("nyc-lower-manhattan-150", "new_york", (40.7069, -74.0113), 150, None, None),
+    ("nyc-greenwich-village-150-hidden", "new_york", (40.7336, -74.0027), 150,
+     ["hidden_history", "social_change"], None),
 ]
 
 # A seated dwell stop must voice at least this much narration — the "empty
 # second stop that just says 'Walk to the next stop.'" bug floor.
 _MIN_DWELL_NARRATION_CHARS = 80
 
-_SNAPSHOT = None
+# city_slug -> live CorpusSnapshot, loaded once for every city the fixtures use.
+_SNAPSHOTS: dict[str, object] = {}
 
 
 @pytest.fixture(scope="module", autouse=True)
 def _live_snapshot():
-    """Load the live Paris corpus once; skip if the dev graph is down."""
-    global _SNAPSHOT
+    """Load each fixture city's live corpus once; skip if the dev graph is down."""
     from neo4j import GraphDatabase
     from neo4j.exceptions import AuthError, ServiceUnavailable
 
@@ -72,12 +85,14 @@ def _live_snapshot():
         d.verify_connectivity()
     except (ServiceUnavailable, AuthError, Exception):
         pytest.skip("live dev Neo4j unreachable — start it with `make db-up`")
-    _SNAPSHOT = load_paris_corpus(d, city_slug="paris")
+    for city in {c for _, c, *_ in _PATHS}:
+        _SNAPSHOTS[city] = load_paris_corpus(d, city_slug=city)
     d.close()
     yield
+    _SNAPSHOTS.clear()
 
 
-def _build_tour(start, duration_min, lenses, end):
+def _build_tour(city, start, duration_min, lenses, end):
     """Run the real pipeline for one input; return (route, script)."""
     from src.tour.beat_select import select_poi_beats
     from src.tour.contract import BeatSequence, TourInput
@@ -85,14 +100,15 @@ def _build_tour(start, duration_min, lenses, end):
     from src.tour.routing_client import RoutingClient
     from src.tour.selection import select_route
 
+    snapshot = _SNAPSHOTS[city]
     tour_input = TourInput(
-        start=tuple(start), duration_min=duration_min, city_slug="paris",
+        start=tuple(start), duration_min=duration_min, city_slug=city,
         round_trip=(end is None), lenses=lenses,
         end=(tuple(end) if end else None),
     )
     with RoutingClient() as rc:
-        route = select_route(tour_input, _SNAPSHOT, routing_client=rc)
-    plans = [select_poi_beats(p, _SNAPSHOT.beats_for(p.id)) for p in route.pois]
+        route = select_route(tour_input, snapshot, routing_client=rc)
+    plans = [select_poi_beats(p, snapshot.beats_for(p.id)) for p in route.pois]
     script = generate(BeatSequence(poi_beats=tuple(plans)), route, tour_input)
     return route, script
 
@@ -172,12 +188,13 @@ def _check_invariants(route, script) -> list[str]:
     return v
 
 
-@pytest.mark.parametrize("label,start,duration,lenses,end", _PATHS, ids=[p[0] for p in _PATHS])
-def test_generated_tour_holds_invariants(label, start, duration, lenses, end):
+@pytest.mark.parametrize("label,city,start,duration,lenses,end", _PATHS,
+                         ids=[p[0] for p in _PATHS])
+def test_generated_tour_holds_invariants(label, city, start, duration, lenses, end):
     from src.tour.density import TourabilityRefusedError
 
     try:
-        route, script = _build_tour(start, duration, lenses, end)
+        route, script = _build_tour(city, start, duration, lenses, end)
     except TourabilityRefusedError as e:  # a feasible fixture must not refuse
         pytest.fail(f"{label}: engine refused a fixture expected to be feasible — {e}")
     assert route.pois, f"{label}: engine produced no stops"
