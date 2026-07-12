@@ -200,6 +200,13 @@ def select_poi_beats(
             ordered = _cap_spatial_by_score(poi, ordered, interest)
 
     ordered = _enforce_tone_variety(ordered)
+    # Flat/narrative stops only: after selection is settled, make the surviving
+    # beats flow oldest→newest so a history-dense stop reads in order instead of
+    # a chronological jumble. Reorder-only (golden-safe); spatial strategies keep
+    # their walk order. The final stop's closing beat is re-hoisted downstream by
+    # generation.reorder_final_stop_for_closing, so a grand closing still lands last.
+    if strategy == "narrative_function":
+        ordered = _order_body_chronologically(ordered)
 
     return POIBeats(
         poi_id=poi.id,
@@ -378,6 +385,35 @@ def _order_by_narrative_function(
         leftover.extend(bucket)
     out.extend(leftover)
     return out
+
+
+# A 4-digit year 1000-2099 — the anchor for "do these facts flow chronologically".
+_BEAT_YEAR_RE = re.compile(r"\b(1[0-9]{3}|20[0-9]{2})\b")
+
+
+def _min_year(beat: BeatRef) -> int:
+    """Earliest 4-digit year mentioned in the beat body; 9999 if it names none."""
+    years = [int(y) for y in _BEAT_YEAR_RE.findall(beat.script_body or "")]
+    return min(years) if years else 9999
+
+
+def _order_body_chronologically(ordered: list[BeatRef]) -> list[BeatRef]:
+    """Reorder a flat stop's beats so dated facts flow oldest→newest.
+
+    The workbench "the facts are not flowing logically into one another" /
+    "chronological jumble" complaint: narrative-function bucketing emitted a
+    stop's beats 1983, 2003, 1190, 2026… A hoisted ``stop_orientation`` head is
+    kept in place (the cold-open lookup depends on it); the remaining body is
+    STABLE-sorted by earliest year, so undated beats (year 9999) keep their
+    relative order and trail the dated ones. Pure reorder — no beat is dropped,
+    so golden overlap (a beat-id count, order-independent) is unchanged.
+    """
+    if len(ordered) <= 2:
+        return ordered
+    head_n = 1 if (ordered[0].beat_type or "").lower() == "stop_orientation" else 0
+    body = ordered[head_n:]
+    body_sorted = [b for _, b in sorted(enumerate(body), key=lambda iv: (_min_year(iv[1]), iv[0]))]
+    return [*ordered[:head_n], *body_sorted]
 
 
 def _tier_cap(poi: POI) -> int:

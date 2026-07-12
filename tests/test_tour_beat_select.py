@@ -11,6 +11,8 @@ from src.tour.beat_select import (
     HOIST_PROXIMITY_M,
     NARRATIVE_FUNCTION_ORDER,
     _enforce_tone_variety,
+    _min_year,
+    _order_body_chronologically,
     choose_ordering_strategy,
     extra_beat_ids,
     find_area_orientation_beat,
@@ -1618,3 +1620,33 @@ def test_spatial_cap_never_drops_the_cold_open_orientation():
     full_ids = {b.id for b in select_poi_beats_full(poi, [*addrs, orient]).beats}
     assert "orient" in full_ids
     assert set(ids) <= full_ids
+
+
+def _yr_beat(bid: str, body: str, *, beat_type: str | None = None) -> BeatRef:
+    return BeatRef(id=bid, poi_id="p", script_body=body, beat_type=beat_type,
+                   narrative_function="establishing", active_status="active")
+
+
+def test_min_year_extracts_earliest_year_or_sentinel():
+    assert _min_year(_yr_beat("a", "Built in 1875, restored in 2019.")) == 1875
+    assert _min_year(_yr_beat("b", "A timeless colonnade of marble.")) == 9999
+
+
+def test_order_body_chronologically_flows_oldest_to_newest():
+    """A history-dense stop's beats read oldest→newest; a hoisted orientation
+    head stays put; undated beats keep order and trail (the Louvre-jumble fix)."""
+    orient = _yr_beat("o", "You're standing in the great courtyard.", beat_type="stop_orientation")
+    b1983 = _yr_beat("b1983", "In 1983 the glass pyramid work began under Pei.")
+    b1190 = _yr_beat("b1190", "Philippe-Auguste raised the first fortress here in 1190.")
+    b2025 = _yr_beat("b2025", "On 19 October 2025, thieves entered the gallery.")
+    undated = _yr_beat("bx", "The galleries stretch for kilometres of corridors.")
+    out = _order_body_chronologically([orient, b1983, b1190, b2025, undated])
+    assert out[0].id == "o", "hoisted orientation head must stay at index 0"
+    assert [b.id for b in out[1:]] == ["b1190", "b1983", "b2025", "bx"]
+
+
+def test_order_body_chronologically_is_pure_reorder_no_drops():
+    beats = [_yr_beat(f"b{y}", f"An event in {y}.") for y in (2001, 1500, 1800)]
+    out = _order_body_chronologically(beats)
+    assert {b.id for b in out} == {b.id for b in beats}  # same set, just reordered
+    assert [b.id for b in out] == ["b1500", "b1800", "b2001"]
