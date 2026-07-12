@@ -22,6 +22,7 @@ no-ops and the traceability/forbidden gates still apply.
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Protocol
 
@@ -85,6 +86,8 @@ class MockFaithfulnessChecker:
 
 
 FAITHFULNESS_MODEL = "claude-haiku-4-5-20251001"
+# Concurrency for the per-sentence entailment checks (independent Haiku calls).
+_FAITHFULNESS_MAX_WORKERS = 8
 _ENTAILMENT_PROMPT = (
     "You are a strict fact-checker. Given a list of KEY CLAIMS and one "
     "SENTENCE, answer with exactly 'YES' if the sentence is fully supported "
@@ -186,15 +189,16 @@ def verify_faithfulness(
     an empty union is itself a failure — an unverifiable reflection never
     ships. Reflections stay claims-only: they are synthesis, not retelling.
     """
-    failures: list[tuple[Sentence, str]] = []
+    # Collect, in script order, each check as (sentence, support, fail_reason).
+    # support=None marks an IMMEDIATE failure (no LLM call needed).
+    checks: list[tuple[Sentence, tuple[str, ...] | None, str]] = []
     for sentence in script.script:
         if sentence.source_type == "glue" and sentence.source_id == GLUE_REFLECTION:
             claims = _visited_claims(script, beats_by_id, sentence.stop_idx)
             if not claims:
-                failures.append((sentence, "unverifiable_reflection:no_visited_claims"))
-                continue
-            if not checker.entails(claims, sentence.text):
-                failures.append((sentence, "unfaithful_reflection"))
+                checks.append((sentence, None, "unverifiable_reflection:no_visited_claims"))
+            else:
+                checks.append((sentence, claims, "unfaithful_reflection"))
             continue
         if sentence.source_type != "beat":
             continue
@@ -205,6 +209,26 @@ def verify_faithfulness(
         if body and _normalize_for_verbatim(sentence.text) in _normalize_for_verbatim(body):
             continue  # canonical corpus text, unchanged — trivially faithful
         support = (*beat.key_claims, *((body,) if body else ()))
-        if not checker.entails(support, sentence.text):
-            failures.append((sentence, f"unfaithful:{sentence.source_id}"))
+        checks.append((sentence, support, f"unfaithful:{sentence.source_id}"))
+
+    # The entailment checks are independent one-call-per-sentence Haiku calls and,
+    # run sequentially, are the dominant compose-gate latency (hundreds of calls,
+    # ~15 min on a live tour). Run them CONCURRENTLY; assembly stays in script
+    # order so the failure list is byte-identical to the sequential version.
+    entail_positions = [i for i, (_, sup, _) in enumerate(checks) if sup is not None]
+    verdicts: dict[int, bool] = {}
+    if entail_positions:
+        workers = min(_FAITHFULNESS_MAX_WORKERS, len(entail_positions))
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {
+                pool.submit(checker.entails, checks[i][1], checks[i][0].text): i
+                for i in entail_positions
+            }
+            for future, i in futures.items():
+                verdicts[i] = future.result()
+
+    failures: list[tuple[Sentence, str]] = []
+    for i, (sentence, support, reason) in enumerate(checks):
+        if support is None or not verdicts.get(i, True):
+            failures.append((sentence, reason))
     return failures

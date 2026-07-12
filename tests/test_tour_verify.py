@@ -179,14 +179,12 @@ def test_reflection_entails_against_union_of_visited_claims():
     ]
     fails = verify_faithfulness(_script(sentences), {"b1": b1, "b2": b2}, checker)
     assert fails == []
-    # The reflection's entailment call received the ORDERED union of claims
-    # from BOTH visited stops (plus one call per beat sentence).
-    reflection_call = checker.calls[-1]
-    assert reflection_call[0] == (
-        "Henri IV built it",
-        "completed 1612",
-        "Hugo lived at number 6",
-    )
+    # The reflection's entailment call received the ORDERED union of claims from
+    # BOTH visited stops. Find it by content, not position: the per-sentence
+    # entailment calls now run concurrently, so call order is non-deterministic.
+    union = ("Henri IV built it", "completed 1612", "Hugo lived at number 6")
+    reflection_calls = [c for c in checker.calls if c[0] == union]
+    assert len(reflection_calls) == 1
 
 
 def test_unfaithful_reflection_is_flagged():
@@ -290,3 +288,23 @@ def test_invented_fact_still_fails():
     )
     fails = verify_faithfulness(_script([bad]), {"b1": beat}, _RejectingChecker("Aliens"))
     assert fails == [(bad, "unfaithful:b1")]
+
+
+def test_faithfulness_entailment_runs_concurrently():
+    """The independent per-sentence entailment calls run in PARALLEL: 16 beat
+    sentences against a 50ms checker finish well under the ~800ms a sequential
+    run would take — this is the fix for the ~15-min live compose-gate latency."""
+    import time
+
+    class _SlowChecker:
+        def entails(self, key_claims, sentence_text):
+            time.sleep(0.05)
+            return True
+
+    beats = {f"b{i}": _beat(f"b{i}", key_claims=(f"claim number {i}",)) for i in range(16)}
+    sentences = [_beat_sentence(f"b{i}", i) for i in range(16)]
+    t0 = time.perf_counter()
+    fails = verify_faithfulness(_script(sentences), beats, _SlowChecker())
+    elapsed = time.perf_counter() - t0
+    assert fails == []
+    assert elapsed < 0.4, f"concurrent verify should be < 0.4s, got {elapsed:.2f}s (~0.8s serial)"
