@@ -552,10 +552,11 @@ def compose_script_per_chapter(
         )
 
     def _compose_stop(stop_idx: int, attempt: int, prev: ValidationReport | None) -> list[Sentence]:
-        try:
-            return list(client.compose(_request_for(stop_idx), attempt, prev))
-        except Exception:  # a single stop's client error must not sink the tour
-            return list(by_stop[stop_idx])  # fall back to that stop's stitch
+        # Client errors propagate (matching whole-tour compose_script): a systemic
+        # failure — auth, billing, rate limit — must SURFACE, not be silently
+        # reverted to stitched and mislabelled a partial compose. Bad compose
+        # OUTPUT (not a client error) is what the VERIFY + repair path handles.
+        return list(client.compose(_request_for(stop_idx), attempt, prev))
 
     composed_by_stop: dict[int, list[Sentence]] = {}
 

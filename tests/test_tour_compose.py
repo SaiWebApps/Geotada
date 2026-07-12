@@ -341,6 +341,19 @@ def test_per_chapter_reverts_only_the_failed_stop_and_keeps_facts():
     assert st <= {s.text for s in composed.script if s.source_type == "beat"}
 
 
+def test_per_chapter_propagates_a_systemic_client_error():
+    """A client error (auth / billing / rate-limit) must SURFACE, not be silently
+    reverted to stitched and mislabelled a partial compose."""
+    seq, route, stitched = _five_stop_setup()
+
+    class _BoomClient:
+        def compose(self, request, attempt, prev_report):
+            raise RuntimeError("credit balance too low")
+
+    with pytest.raises(RuntimeError, match="credit balance"):
+        compose_script_per_chapter(stitched, seq, route, client=_BoomClient())
+
+
 # ---------------------------------------------------------------------------
 # AnthropicComposeClient (Step 4.5) — offline, fake SDK client injected
 # ---------------------------------------------------------------------------
