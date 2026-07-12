@@ -213,8 +213,11 @@ tells that make generated prose feel generated:
   département to pay taxes" and "Napoleon gave naming rights to the district that
   paid first" are the SAME fact). Merge each repeat into ONE richer telling that
   keeps every distinct particular from both versions, and drop the redundant one.
-  A downstream check guarantees no distinct fact is lost, so fuse without fear —
-  when in doubt whether two sentences are the same fact, they usually are.
+  Carrying over EVERY year, date, number, and proper noun from both sentences is
+  non-negotiable — fuse the wording, never lose a fact (dropping a date is the
+  most common fusion error). A downstream check rejects any fusion that loses a
+  fact, so fuse without fear; when in doubt whether two sentences are the same
+  fact, they usually are.
 - The CANDIDATE DUPLICATE PAIRS list (when present) flags same-stop sentences a
   cheap pre-scan found similar; treat each as "probably the same fact — fuse
   unless they are genuinely distinct." It is a hint, not exhaustive: also fuse
@@ -321,10 +324,18 @@ def _compose_user_prompt(
                 [s.text, code] for s, code in prev_report.forbidden_phrase_hits
             ],
             "unfaithful": [[s.text, code] for s, code in prev_report.faithfulness_failures],
+            # Facts the previous attempt DROPPED (usually a date or number lost while
+            # fusing a repeat). Each MUST reappear — it was in the stitched script.
+            "dropped_facts_you_must_restore": [
+                claim for _bid, claim in prev_report.coverage_failures
+            ],
         }
         parts.append(
             "PREVIOUS ATTEMPT FAILED VERIFICATION — fix exactly these problems "
-            f"(this is the single allowed recompose):\n{json.dumps(failures, ensure_ascii=False)}"
+            "(this is the single allowed recompose). For dropped_facts_you_must_restore, "
+            "weave each fact back in (fuse it into the sentence that now covers that "
+            "topic; do not re-introduce the repetition):\n"
+            f"{json.dumps(failures, ensure_ascii=False)}"
         )
     return "\n\n".join(parts)
 
