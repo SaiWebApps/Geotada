@@ -6,7 +6,16 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
-from src.tour.contract import RouteOption
+from src.tour.contract import SUPPORTED_CITIES, RouteOption
+
+
+def _validate_city_slug(v: str) -> str:
+    """Reject an unknown city at the edge (clear 422) instead of loading an
+    empty corpus and emitting a broken/thin tour."""
+    slug = (v or "").strip().lower()
+    if slug not in SUPPORTED_CITIES:
+        raise ValueError(f"city_slug must be one of {sorted(SUPPORTED_CITIES)}, got {v!r}")
+    return slug
 
 
 class TripGenerateRequest(BaseModel):
@@ -50,6 +59,11 @@ class TripGenerateRequest(BaseModel):
     round_trip: bool = Field(
         default=False, description="Return to the start point (loops the route)"
     )
+    city_slug: str = Field(
+        default="paris", description="City corpus to tour; validated against SUPPORTED_CITIES"
+    )
+
+    _validate_city = field_validator("city_slug")(_validate_city_slug)
 
     @field_validator("start_time")
     @classmethod
@@ -180,6 +194,11 @@ class TripPreviewRequest(BaseModel):
     duration_min: int | None = Field(default=None, ge=1, le=600)
     lenses: list[str] | None = None
     round_trip: bool = False
+    city_slug: str = Field(
+        default="paris", description="City corpus to tour; validated against SUPPORTED_CITIES"
+    )
+
+    _validate_city = field_validator("city_slug")(_validate_city_slug)
     # Opt in to the LLM "AI voice" layer: rewrite the stitched narration into one
     # flowing, de-duplicated story (fusing repeated facts), behind the faithfulness
     # + content-loss gates with graceful per-stop repair. Off = the fast

@@ -227,7 +227,7 @@ def generate_trip(
     tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
-        city_slug="paris",
+        city_slug=body.city_slug,
         lenses=lenses,
         round_trip=body.round_trip,
         end=_end_point(body.end_lat, body.end_lng),
@@ -722,7 +722,7 @@ def preview_trip(
     tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
-        city_slug="paris",
+        city_slug=body.city_slug,
         lenses=body.lenses or None,
         round_trip=body.round_trip,
         end=_end_point(body.end_lat, body.end_lng),

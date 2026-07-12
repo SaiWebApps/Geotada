@@ -11,6 +11,11 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+# Cities with a loaded corpus (data/{slug}/ + graph nodes scoped by city_name).
+# The API validates request city_slug against this so an unknown city is a clear
+# 422 rather than a silent empty-corpus tour. Grow it as cities are onboarded.
+SUPPORTED_CITIES: frozenset[str] = frozenset({"paris", "new_york"})
+
 
 class TourInput(BaseModel):
     """User-supplied tour request. Mirrors §3.1 of phase-1-design.md."""
