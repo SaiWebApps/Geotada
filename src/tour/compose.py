@@ -21,7 +21,7 @@ from typing import Protocol
 from pydantic import BaseModel, ConfigDict, Field
 
 from .claim_dedup import candidate_duplicate_pairs, claims_realized_by
-from .compose_gate import build_full_verifier, compose_and_verify
+from .compose_gate import build_full_verifier, compose_and_verify, repair_composed
 from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
 from .reflection import reflection_slots
@@ -413,15 +413,20 @@ def compose_script(
     client: ComposeClient,
     faithfulness_checker: FaithfulnessChecker | None = None,
     chunk_text_by_slug: dict[str, str] | None = None,
+    repair: bool = False,
 ) -> Script:
     """Fire-once compose behind the M7 gate (Step 4.4).
 
     One compose; on a failing merged VERIFY report, EXACTLY one bounded
-    recompose steered by that report; still failing → the flavour is refused
-    (``ComposeVerificationError`` propagates). The returned Script carries the
-    PASSING report and a ``total_audio_seconds`` recomputed for the composed
-    sentence stream. Checker/chunks default to the offline no-ops so the
-    caller decides where the real teeth are wired (live gate / prod)."""
+    recompose steered by that report. Then, iff ``repair`` is set, a per-stop
+    graceful repair reverts only the stops that still failed to their grounded
+    stitched narration and serves the result (the workbench opts in — it must
+    always show SOMETHING good; the persisted ``/compose`` path leaves ``repair``
+    off so a genuine refusal stays a refusal the editor can act on). Still
+    failing → the flavour is refused (``ComposeVerificationError`` propagates).
+    The returned Script carries the PASSING report and a ``total_audio_seconds``
+    recomputed for the composed sentence stream. Checker/chunks default to the
+    offline no-ops so the caller decides where the real teeth are wired."""
     request = build_compose_request(stitched, beat_sequence, route)
     # Coverage baseline: the claims the pre-compose stitch actually voiced. The
     # gate then blocks any compose (however bold its fusion) that drops one — the
@@ -445,7 +450,10 @@ def compose_script(
             }
         )
 
-    return compose_and_verify(compose, verify)
+    repair_fn = (
+        (lambda comp, rep: repair_composed(comp, stitched, rep)) if repair else None
+    )
+    return compose_and_verify(compose, verify, repair=repair_fn)
 
 
 __all__ = [

@@ -15,6 +15,7 @@ from src.tour.compose_gate import (
     ComposeVerificationError,
     build_full_verifier,
     compose_and_verify,
+    repair_composed,
     serve_or_block,
 )
 from src.tour.contract import (
@@ -171,3 +172,69 @@ def test_full_verifier_without_chunks_skips_provenance_for_backfilled_beats():
     # With a chunk library loaded, a slug it cannot confirm still fails.
     wrong_chunks = build_full_verifier(seq, {"b1": beat}, chunk_text_by_slug={"other": "text"})
     assert wrong_chunks(script).provenance_failures == (("b1", 0.0),)
+
+
+# ---------------------------------------------------------------------------
+# Graceful per-stop repair: a partly-embellished compose still ships its good
+# stops (grounded fallback for the failed ones) instead of a whole-tour refusal.
+# ---------------------------------------------------------------------------
+
+_B2 = BeatRef(id="b2", poi_id="p2", script_body="Hugo lived here.")
+_SEQ2 = BeatSequence(
+    poi_beats=(
+        POIBeats(poi_id="p1", poi_name="A", ordering_strategy="trigger_address", beats=(BEAT,)),
+        POIBeats(poi_id="p2", poi_name="B", ordering_strategy="trigger_address", beats=(_B2,)),
+    )
+)
+_BEATS2 = {"b1": BEAT, "b2": _B2}
+
+
+def _s(text: str, sid: str, stop: int, stype: str = "beat") -> Sentence:
+    return Sentence(text=text, source_id=sid, source_type=stype, stop_idx=stop)
+
+
+def test_repair_reverts_only_the_failed_stop():
+    stitched = _script([_s("Henri IV built it.", "b1", 0), _s("Hugo lived here.", "b2", 1)])
+    composed = _script([_s("Grandly, Henri IV built it.", "b1", 0), _s("Spurious.", "ghost", 1)])
+    verify = build_full_verifier(_SEQ2, _BEATS2)
+    report = verify(composed)
+    assert not report.passed  # stop 1 cites an untraceable id
+    repaired = repair_composed(composed, stitched, report)
+    texts = {s.text for s in repaired.script}
+    assert "Grandly, Henri IV built it." in texts  # good stop 0: composed (fused) KEPT
+    assert "Hugo lived here." in texts              # bad stop 1: reverted to stitched
+    assert "Spurious." not in texts                 # the failing sentence is gone
+    assert verify(repaired).passed                  # the repaired tour verifies
+
+
+def test_repair_is_a_noop_when_nothing_failed():
+    composed = _script([_s("Henri IV built it.", "b1", 0)])
+    verify = build_full_verifier(SEQ, BEATS_BY_ID)
+    report = verify(composed)
+    assert report.passed
+    assert repair_composed(composed, composed, report) is composed
+
+
+def test_compose_and_verify_repairs_a_bad_stop_and_serves():
+    stitched = _script([_s("Henri IV built it.", "b1", 0), _s("Hugo lived here.", "b2", 1)])
+
+    def compose(attempt, prev):  # never recovers stop 1 on its own
+        return _script([_s("Grandly, Henri IV built it.", "b1", 0), _s("Spurious.", "ghost", 1)])
+
+    verify = build_full_verifier(_SEQ2, _BEATS2)
+    result = compose_and_verify(
+        compose, verify, repair=lambda comp, rep: repair_composed(comp, stitched, rep)
+    )
+    assert result.validation.passed  # SERVED via repair, not refused
+    texts = {s.text for s in result.script}
+    assert "Grandly, Henri IV built it." in texts  # fused good stop kept
+    assert "Hugo lived here." in texts and "Spurious." not in texts  # bad stop grounded
+
+
+def test_compose_and_verify_still_refuses_when_repair_cannot_help():
+    # No repair callback -> a persistently failing compose still refuses (bounded).
+    def compose(attempt, prev):
+        return _DIRTY
+
+    with pytest.raises(ComposeVerificationError):
+        compose_and_verify(compose, _verify())
