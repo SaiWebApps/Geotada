@@ -230,6 +230,12 @@ tells that make generated prose feel generated:
   most common fusion error). A downstream check rejects any fusion that loses a
   fact, so fuse without fear; when in doubt whether two sentences are the same
   fact, they usually are.
+- CITE EVERY BEAT YOU MERGE. When the two sentences you fuse come from DIFFERENT
+  beats (different source_id), the merged sentence MUST keep one source_id as its
+  primary AND list the OTHER merged beat id(s) in its "also_cites" field. This is
+  mandatory: the faithfulness check entails a fused sentence against the UNION of
+  its cited beats, so a cross-beat merge with only one source_id is rejected even
+  though every fact is true. A sentence from a single beat leaves also_cites empty.
 - The CANDIDATE DUPLICATE PAIRS list (when present) flags same-stop sentences a
   cheap pre-scan found similar; treat each as "probably the same fact — fuse
   unless they are genuinely distinct." It is a hint, not exhaustive: also fuse
@@ -273,6 +279,15 @@ _COMPOSE_OUTPUT_SCHEMA = {
                     "source_id": {"type": "string"},
                     "source_type": {"type": "string", "enum": ["beat", "glue"]},
                     "stop_idx": {"type": "integer"},
+                    "also_cites": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "When THIS sentence fuses a fact stated by more than one "
+                            "beat, list the OTHER beats' ids here (source_id is the "
+                            "primary). Omit or [] for a plain single-beat sentence."
+                        ),
+                    },
                 },
                 "required": ["text", "source_id", "source_type", "stop_idx"],
                 "additionalProperties": False,
@@ -422,6 +437,13 @@ class AnthropicComposeClient:
                 source_id=s["source_id"],
                 source_type=s["source_type"],
                 stop_idx=s["stop_idx"],
+                # Only beat sentences carry fused citations; ignore any stray
+                # also_cites the model attaches to glue.
+                also_cites=(
+                    tuple(s.get("also_cites") or ())
+                    if s["source_type"] == "beat"
+                    else ()
+                ),
             )
             for s in data["sentences"]
         )

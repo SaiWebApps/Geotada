@@ -318,6 +318,13 @@ class Sentence(BaseModel):
 
     ``source_id`` is either a NarrativeBeat UUID (when source_type=='beat')
     or a whitelisted glue/arith label (when source_type in {'glue','arith'}).
+
+    ``also_cites`` (multi-beat citation): the ADDITIONAL beat ids a composed
+    sentence draws on when it FUSES two beats' overlapping tellings of one fact
+    into a single sentence. Empty for a plain (single-source) sentence. VERIFY
+    entails a fused sentence against the UNION of ``source_id`` + ``also_cites``
+    beats, so a cross-book merge is faithful instead of failing on the cited
+    beat alone. Every id must still trace to a real beat.
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -326,6 +333,15 @@ class Sentence(BaseModel):
     source_id: str
     source_type: SourceType
     stop_idx: int = Field(..., ge=0)
+    also_cites: tuple[str, ...] = ()
+
+    @property
+    def cited_beat_ids(self) -> tuple[str, ...]:
+        """All beat ids this sentence draws on (primary + fused), when it is a
+        beat sentence; empty for glue."""
+        if self.source_type != "beat":
+            return ()
+        return (self.source_id, *self.also_cites)
 
 
 class ScriptPOI(BaseModel):

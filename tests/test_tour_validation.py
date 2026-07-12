@@ -101,6 +101,25 @@ def test_unknown_beat_id_is_untraceable():
     assert any(s.source_id == "not-a-real-id" for s in report.untraceable_sentences)
 
 
+def test_fused_sentence_with_valid_also_cites_traces():
+    a = _beat("A", body="One telling.")
+    b = _beat("B", body="Another telling.")
+    seq = _seq([a, b])
+    fused = Sentence(text="Fused telling.", source_id="A", also_cites=("B",),
+                     source_type="beat", stop_idx=0)
+    report = validate_script(_script([fused]), seq)
+    assert report.untraceable_sentences == ()
+
+
+def test_fused_sentence_with_an_unknown_also_cites_is_untraceable():
+    a = _beat("A", body="One telling.")
+    seq = _seq([a])
+    fused = Sentence(text="Fused telling.", source_id="A", also_cites=("ghost",),
+                     source_type="beat", stop_idx=0)
+    report = validate_script(_script([fused]), seq)
+    assert fused in report.untraceable_sentences
+
+
 def test_glue_with_unknown_label_is_untraceable():
     beat = _beat("b1", body="Cite this.")
     seq = _seq([beat])

@@ -117,7 +117,9 @@ def _untraceable_sentences(script: Script, beat_sequence: BeatSequence) -> list[
     out: list[Sentence] = []
     for sentence in script.script:
         if sentence.source_type == "beat":
-            if sentence.source_id not in known_beat_ids:
+            # Multi-beat citation: the primary AND every fused (also_cites) id
+            # must trace to a real beat.
+            if any(bid not in known_beat_ids for bid in sentence.cited_beat_ids):
                 out.append(sentence)
         elif sentence.source_type in ("glue", "arith"):
             if sentence.source_id not in GLUE_LABELS:

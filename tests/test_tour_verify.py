@@ -308,3 +308,27 @@ def test_faithfulness_entailment_runs_concurrently():
     elapsed = time.perf_counter() - t0
     assert fails == []
     assert elapsed < 0.4, f"concurrent verify should be < 0.4s, got {elapsed:.2f}s (~0.8s serial)"
+
+
+def test_multibeat_fused_sentence_entails_against_the_union_of_cited_beats():
+    """A fused sentence combining two beats' facts is faithful only when it CITES
+    both (also_cites) — the entailment support is their UNION, not the primary
+    beat alone. This is what lets a cross-book merge pass instead of reverting."""
+    import re
+
+    a = _beat("A", key_claims=("the square was renamed in 1800",))
+    b = _beat("B", key_claims=("Napoleon promised naming rights to the district",))
+    bbi = {"A": a, "B": b}
+
+    class _Containment:
+        def entails(self, key_claims, sentence_text):
+            support = " ".join(key_claims).lower()
+            return all(w in support for w in re.findall(r"[a-z]{4,}", sentence_text.lower()))
+
+    txt = "In 1800 Napoleon promised naming rights to the district"
+    solo = Sentence(text=txt, source_id="A", source_type="beat", stop_idx=0)
+    fused = Sentence(text=txt, source_id="A", also_cites=("B",), source_type="beat", stop_idx=0)
+    # cited to A alone -> B's content is unsupported -> a faithfulness failure
+    assert verify_faithfulness(_script([solo]), bbi, _Containment())
+    # cited to A + B -> entailed by the union -> clean
+    assert verify_faithfulness(_script([fused]), bbi, _Containment()) == []

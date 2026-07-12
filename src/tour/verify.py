@@ -202,13 +202,21 @@ def verify_faithfulness(
             continue
         if sentence.source_type != "beat":
             continue
-        beat = beats_by_id.get(sentence.source_id)
-        if beat is None or not beat.key_claims:
-            continue
-        body = beat.script_body or ""
-        if body and _normalize_for_verbatim(sentence.text) in _normalize_for_verbatim(body):
+        # Multi-beat citation: a FUSED sentence draws on source_id + also_cites;
+        # entail it against the UNION of those beats' key_claims + bodies, so a
+        # cross-book merge ("in 1800 [beat A] Napoleon promised naming rights
+        # [beat B]") is faithful instead of failing on the primary beat alone.
+        cited = [beats_by_id[bid] for bid in sentence.cited_beat_ids if bid in beats_by_id]
+        if not any(b.key_claims for b in cited):
+            continue  # nothing to entail against
+        norm = _normalize_for_verbatim(sentence.text)
+        if any(b.script_body and norm in _normalize_for_verbatim(b.script_body) for b in cited):
             continue  # canonical corpus text, unchanged — trivially faithful
-        support = (*beat.key_claims, *((body,) if body else ()))
+        support = tuple(
+            piece
+            for b in cited
+            for piece in (*b.key_claims, *((b.script_body,) if b.script_body else ()))
+        )
         checks.append((sentence, support, f"unfaithful:{sentence.source_id}"))
 
     # The entailment checks are independent one-call-per-sentence Haiku calls and,
