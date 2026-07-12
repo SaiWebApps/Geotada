@@ -35,7 +35,12 @@ from src.api.models.trips import (
     TripPreviewTourability,
 )
 from src.tour.beat_select import select_vignette_beats
-from src.tour.compose import ComposeClient, ComposeRequest, compose_script
+from src.tour.compose import (
+    ComposeClient,
+    ComposeRequest,
+    compose_script,
+    compose_script_per_chapter,
+)
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
     BeatSequence,
@@ -758,13 +763,15 @@ def preview_trip(
     compose_status = "stitched"
     if body.compose:
         try:
-            composed = compose_script(
+            # Per-chapter: one focused (parallel) Opus call per stop, so the big
+            # repetitive stops fuse without dropping facts (whole-tour compose
+            # reverted them) and the tour composes in ~1 min, not ~19.
+            composed = compose_script_per_chapter(
                 script,
                 seq,
                 route,
                 client=compose_client,
                 faithfulness_checker=faithfulness_checker,
-                repair=True,
             )
         except ComposeVerificationError:
             compose_status = "refused"  # unrepairable — keep the grounded stitch

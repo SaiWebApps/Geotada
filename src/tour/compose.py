@@ -16,12 +16,20 @@ key-claims reflection per slot — deterministic, attributable, entailable.
 
 from __future__ import annotations
 
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from .claim_dedup import candidate_duplicate_pairs, claims_realized_by
-from .compose_gate import build_full_verifier, compose_and_verify, repair_composed
+from .compose_gate import (
+    ComposeVerificationError,
+    _bad_stops,
+    build_full_verifier,
+    compose_and_verify,
+    repair_composed,
+)
 from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
 from .reflection import reflection_slots
@@ -50,6 +58,10 @@ class ComposeRequest(BaseModel):
     slots: tuple[int, ...] = ()
     visited_claims_by_slot: dict[int, tuple[str, ...]] = Field(default_factory=dict)
     duplicate_pairs: tuple[tuple[int, str, str], ...] = ()
+    # Per-chapter compose only: the ordered stop names of the WHOLE tour, so a
+    # single-stop rewrite still knows where it sits (cohesion) without re-writing
+    # the other stops. Empty for a whole-tour compose.
+    tour_context: tuple[str, ...] = ()
 
 
 def build_compose_request(
@@ -300,6 +312,16 @@ def _compose_user_prompt(
     ]
     parts = [
         f"LENSES (register dial): {request.stitched.inputs.lenses or 'none — neutral register'}",
+    ]
+    if request.tour_context:
+        here = {s.stop_idx for s in request.stitched.script}
+        parts.append(
+            "TOUR CONTEXT — you are composing ONLY the stop(s) in STITCHED SCRIPT "
+            f"below (stop index {sorted(here)}). The whole walk, in order, is: "
+            f"{json.dumps(list(request.tour_context), ensure_ascii=False)}. Keep this "
+            "stop coherent with that arc; do NOT write the other stops."
+        )
+    parts += [
         f"STITCHED SCRIPT:\n{json.dumps(stitched, ensure_ascii=False)}",
         f"BEATS (id -> key_claims + corpus text):\n{json.dumps(beats, ensure_ascii=False)}",
         "REFLECTION SLOTS (each reflection must be fully supported by its own "
@@ -456,6 +478,134 @@ def compose_script(
     return compose_and_verify(compose, verify, repair=repair_fn)
 
 
+_PER_CHAPTER_MAX_WORKERS = 6
+
+
+def _report_for_stop(
+    report: ValidationReport, stop_idx: int, beat_stop: dict[str, int]
+) -> ValidationReport:
+    """The subset of a whole-tour report pertaining to one stop — the failure
+    feedback a per-stop recompose needs."""
+    return ValidationReport(
+        untraceable_sentences=tuple(
+            s for s in report.untraceable_sentences if s.stop_idx == stop_idx
+        ),
+        forbidden_phrase_hits=tuple(
+            (s, c) for s, c in report.forbidden_phrase_hits if s.stop_idx == stop_idx
+        ),
+        faithfulness_failures=tuple(
+            (s, c) for s, c in report.faithfulness_failures if s.stop_idx == stop_idx
+        ),
+        coverage_failures=tuple(
+            (bid, cl) for bid, cl in report.coverage_failures if beat_stop.get(bid) == stop_idx
+        ),
+    )
+
+
+def compose_script_per_chapter(
+    stitched: Script,
+    beat_sequence: BeatSequence,
+    route: Route,
+    *,
+    client: ComposeClient,
+    faithfulness_checker: FaithfulnessChecker | None = None,
+    chunk_text_by_slug: dict[str, str] | None = None,
+    max_workers: int = _PER_CHAPTER_MAX_WORKERS,
+) -> Script:
+    """Compose each stop in its OWN focused call, in PARALLEL, then verify the
+    assembled tour and repair only what still fails.
+
+    Whole-tour compose juggles ~150 sentences: it drops facts on the big stops
+    (so they revert to stitched and the repetition survives) and is slow (~19
+    min). Composing one stop at a time keeps the model's attention on that stop's
+    repeats — it fuses them without dropping facts — and parallelizes across stops
+    (~1 min). Reflections are still VERIFIED on the assembled whole (each sees the
+    earlier stops' visited claims), and a stop that still fails after its own
+    bounded recompose reverts to the grounded stitch. Same gates, same guarantees
+    — just per-stop scope and concurrency."""
+    beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
+    beat_stop = {s.source_id: s.stop_idx for s in stitched.script if s.source_type == "beat"}
+    tour_context = tuple(p.name for p in route.pois)
+    all_slots = reflection_slots(route, beat_sequence)
+    visited = {slot: _visited_claims(stitched, beats_by_id, slot) for slot in all_slots}
+
+    stops = sorted({s.stop_idx for s in stitched.script})
+    by_stop: dict[int, list[Sentence]] = defaultdict(list)
+    for s in stitched.script:
+        by_stop[s.stop_idx].append(s)
+
+    def _request_for(stop_idx: int) -> ComposeRequest:
+        stop_sents = by_stop[stop_idx]
+        mini = stitched.model_copy(update={"script": tuple(stop_sents)})
+        stop_beats = {
+            s.source_id: beats_by_id[s.source_id]
+            for s in stop_sents
+            if s.source_type == "beat" and s.source_id in beats_by_id
+        }
+        return ComposeRequest(
+            stitched=mini,
+            beats_by_id=stop_beats,
+            slots=tuple(slot for slot in all_slots if slot == stop_idx),
+            visited_claims_by_slot={k: v for k, v in visited.items() if k == stop_idx},
+            duplicate_pairs=candidate_duplicate_pairs(mini),
+            tour_context=tour_context,
+        )
+
+    def _compose_stop(stop_idx: int, attempt: int, prev: ValidationReport | None) -> list[Sentence]:
+        try:
+            return list(client.compose(_request_for(stop_idx), attempt, prev))
+        except Exception:  # a single stop's client error must not sink the tour
+            return list(by_stop[stop_idx])  # fall back to that stop's stitch
+
+    composed_by_stop: dict[int, list[Sentence]] = {}
+
+    def _run(targets: list[int], attempt: int, prev_of):
+        with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(targets)))) as pool:
+            results = pool.map(lambda i: _compose_stop(i, attempt, prev_of(i)), targets)
+        for stop_idx, sents in zip(targets, results, strict=True):
+            composed_by_stop[stop_idx] = sents
+
+    def _assemble() -> Script:
+        out: list[Sentence] = []
+        for stop_idx in stops:
+            out.extend(composed_by_stop[stop_idx])
+        return stitched.model_copy(
+            update={
+                "script": tuple(out),
+                "total_audio_seconds": _sum_audio(out, beat_sequence),
+                "validation": ValidationReport(),
+            }
+        )
+
+    verify = build_full_verifier(
+        beat_sequence,
+        beats_by_id,
+        chunk_text_by_slug=chunk_text_by_slug,
+        faithfulness_checker=faithfulness_checker,
+        expected_claim_ids=claims_realized_by(stitched, beats_by_id),
+    )
+
+    _run(stops, 1, lambda _i: None)  # attempt 1: every stop in parallel
+    composed = _assemble()
+    report = verify(composed)
+    if report.passed:
+        return composed.model_copy(update={"validation": report})
+
+    bad = sorted(_bad_stops(report, stitched))
+    if bad:  # attempt 2: recompose ONLY the failed stops, each with its own feedback
+        _run(bad, 2, lambda i: _report_for_stop(report, i, beat_stop))
+        composed = _assemble()
+        report = verify(composed)
+        if report.passed:
+            return composed.model_copy(update={"validation": report})
+
+    repaired = repair_composed(composed, stitched, report)  # revert what still fails
+    rep_report = verify(repaired)
+    if rep_report.passed:
+        return repaired.model_copy(update={"validation": rep_report})
+    raise ComposeVerificationError(rep_report, 2)
+
+
 __all__ = [
     "COMPOSE_MODEL",
     "AnthropicComposeClient",
@@ -464,4 +614,5 @@ __all__ = [
     "MockComposeClient",
     "build_compose_request",
     "compose_script",
+    "compose_script_per_chapter",
 ]

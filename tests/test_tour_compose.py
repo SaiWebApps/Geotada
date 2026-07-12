@@ -9,7 +9,12 @@ from __future__ import annotations
 
 import pytest
 
-from src.tour.compose import MockComposeClient, build_compose_request, compose_script
+from src.tour.compose import (
+    MockComposeClient,
+    build_compose_request,
+    compose_script,
+    compose_script_per_chapter,
+)
 from src.tour.compose_gate import ComposeVerificationError, build_full_verifier
 from src.tour.contract import (
     POI,
@@ -286,6 +291,54 @@ def test_compose_script_blocks_after_the_bounded_recompose():
         compose_script(stitched, seq, route, client=client)
     assert exc.value.attempts == 2
     assert len(client.calls) == 2  # never a third attempt
+
+
+# ---------------------------------------------------------------------------
+# Per-chapter compose: one focused (parallel) call per stop, whole-tour verify,
+# per-stop recompose, per-stop repair.
+# ---------------------------------------------------------------------------
+
+
+class _FailStop2Client:
+    """Honest mock everywhere except it fabricates an untraceable sentence
+    whenever the mini-request is for stop 2 (persistently — never recovers)."""
+
+    def __init__(self):
+        self.mock = MockComposeClient()
+        self.stops_seen: list[frozenset[int]] = []
+
+    def compose(self, request, attempt, prev_report):
+        idxs = frozenset(s.stop_idx for s in request.stitched.script)
+        self.stops_seen.append(idxs)
+        base = tuple(self.mock.compose(request, attempt, prev_report))
+        if 2 in idxs:
+            return (*base, Sentence(text="Nope.", source_id="ghost",
+                                    source_type="beat", stop_idx=2))
+        return base
+
+
+def test_per_chapter_composes_each_stop_alone_and_serves():
+    seq, route, stitched = _five_stop_setup()
+    client = _FailStop2Client()
+    composed = compose_script_per_chapter(stitched, seq, route, client=client)
+    assert composed.validation.passed  # served via per-stop repair, not refused
+    # EVERY request was a single stop — the defining per-chapter property.
+    assert client.stops_seen and all(len(idxs) == 1 for idxs in client.stops_seen)
+
+
+def test_per_chapter_reverts_only_the_failed_stop_and_keeps_facts():
+    seq, route, stitched = _five_stop_setup()
+    client = _FailStop2Client()
+    composed = compose_script_per_chapter(stitched, seq, route, client=client)
+    # the bad stop's fabrication is gone (stop 2 reverted to its grounded stitch)
+    assert not any(s.source_id == "ghost" for s in composed.script)
+    # stop 2 was RETRIED (its own recompose) before being reverted
+    assert client.stops_seen.count(frozenset({2})) >= 2
+    # reflections still land at the two slots, verified on the assembled whole
+    assert len([s for s in composed.script if s.source_id == GLUE_REFLECTION]) == 2
+    # every stitched beat sentence survives (mock is identity on the good stops)
+    st = {s.text for s in stitched.script if s.source_type == "beat"}
+    assert st <= {s.text for s in composed.script if s.source_type == "beat"}
 
 
 # ---------------------------------------------------------------------------

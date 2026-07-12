@@ -29,6 +29,12 @@ from dotenv import load_dotenv
 _test_env = Path(__file__).resolve().parent.parent / ".env.test"
 if _test_env.exists():
     load_dotenv(dotenv_path=_test_env, override=True)
+    # The hermetic bar must NEVER call a real compose LLM. connection.py's
+    # import-time load_dotenv() can leak a developer .env COMPOSE_PROVIDER=anthropic
+    # (set to preview real compose in the workbench) into the suite, which then
+    # hangs on live Opus calls. Force mock here; test_compose_provider.py
+    # monkeypatches per-test to exercise the selector.
+    os.environ["COMPOSE_PROVIDER"] = "mock"
 else:
     import pytest as _pytest
 
