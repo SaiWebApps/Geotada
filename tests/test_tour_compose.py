@@ -446,3 +446,16 @@ def test_anthropic_client_raises_helpful_error_when_no_text_block():
     fake.messages.stream = lambda **kw: _NoTextStream()
     with pytest.raises(ValueError, match="no text block"):
         client.compose(request, 1, None)
+
+
+def test_compose_system_prompt_carries_the_anti_tell_craft_rules():
+    """Prompt v2 encodes the StoryScope-measured AI tells to suppress (the
+    Fable-5 advisor's P0 craft), so attempt 1 leans human, not machine."""
+    from src.tour.compose import _COMPOSE_SYSTEM
+    s = _COMPOSE_SYSTEM.lower()
+    assert "a testament to" in s and "stands as a symbol of" in s  # moralizing ban
+    assert "never convert a feeling" in s                          # embodied-emotion ban
+    assert "name things" in s                                      # explicit-naming push
+    assert "vary the shape of the stops" in s                      # anti-uniformity
+    assert "same fact in different words" in s                     # in-stop dedup
+    assert "precise time of day" in s                              # reflection embellishment guard

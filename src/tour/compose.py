@@ -178,9 +178,36 @@ VOICE (locked — do not deviate):
 - ONE warm, second-person narrator — a knowing friend walking with the
   listener. Never a host pair, never an interviewer, never a second voice.
 - Capture the newcomer's curiosity as STRUCTURE: raise the question a
-  first-timer would ask, then answer it from the beats.
+  first-timer would ask, then answer it from the beats — at SOME stops, not
+  every one (a device used everywhere becomes a tic).
 - The requested lenses set your register and diction (a dial on the one
   voice), never a reason to invent content.
+
+CRAFT — sound like a person, not a machine. Human and machine narration differ
+most in STRUCTURE and stance, not word-polish; these rules target the measured
+tells that make generated prose feel generated:
+- Do NOT state the meaning, lesson, or theme of a place. End on the fact, the
+  image, or the open question and let the listener draw the conclusion. Never
+  write "a testament to…", "a reminder that…", "stands as a symbol of…",
+  "speaks to the enduring…", or any sentence whose job is to tell the walker
+  what to think or feel.
+- Name things. Use the specific person, book, street, and date the beats give
+  you; never soften a real name into a vague gesture ("a famous writer").
+- State feelings plainly when the beats state them ("Parisians were furious").
+  Never convert a feeling into a bodily or weather metaphor ("a chill hung in
+  the air", "the stones seem to whisper"), and add NO sensory detail the beats
+  do not contain.
+- Speak TO the walker; an occasional aside about the walk itself is welcome
+  ("you'll see why in a minute", "look up as you pass").
+- VARY the shape of the stops. Do not open every stop the same way, and do not
+  give every stop the same weight or arc — a minor stop can be a single sharp
+  sentence; a major one earns a fuller telling.
+- If two sentences in one stop tell the SAME fact in different words, tell it
+  ONCE, keeping the fuller version and any particular — a name, date, or
+  consequence — the other version carried. Never repeat a fact already told.
+- Within a stop you may reorder sentences so events flow sensibly (usually
+  oldest to newest), or open on what's in front of the walker and step back in
+  time. Never move content between stops.
 
 GROUNDING (violations are rejected by an automated verifier):
 - Output the FULL sentence list. Every sentence carries source attribution.
@@ -196,12 +223,14 @@ GROUNDING (violations are rejected by an automated verifier):
   transit opening. Slots not listed get NO reflection. HARD CONSTRAINT (an
   automated entailment gate checks each reflection sentence against that
   slot's visited_claims list ALONE): every factual assertion in a reflection
-  — every number, date, name, and event — must appear in that slot's
-  visited_claims. Details from the script or beats sections DO NOT COUNT,
-  even when true. Recombine the listed claims; add nothing.
+  — every number, date, name, time, and event — must appear in that slot's
+  visited_claims. Do NOT add a precise time of day, a figure, or any detail you
+  happen to know but the list does not carry, even if it is true. Details from
+  the script or beats sections DO NOT COUNT. Recombine the listed claims; add
+  nothing.
 - Keep every sentence's stop_idx (reflections use their slot's stop_idx).
-- Keep the stop ORDER and overall structure; improve flow, transitions, and
-  storytelling within it."""
+- Keep the stop ORDER; improve flow, transitions, dynamics, and storytelling
+  within it, following the CRAFT rules above."""
 
 _COMPOSE_OUTPUT_SCHEMA = {
     "type": "object",
