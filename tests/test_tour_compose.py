@@ -457,5 +457,6 @@ def test_compose_system_prompt_carries_the_anti_tell_craft_rules():
     assert "never convert a feeling" in s                          # embodied-emotion ban
     assert "name things" in s                                      # explicit-naming push
     assert "vary the shape of the stops" in s                      # anti-uniformity
-    assert "same fact in different words" in s                     # in-stop dedup
+    assert "fuse repeats boldly" in s                              # in-stop dedup mandate
+    assert "fuse without fear" in s                                # coverage-gate reassurance
     assert "precise time of day" in s                              # reflection embellishment guard

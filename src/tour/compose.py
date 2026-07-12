@@ -20,6 +20,7 @@ from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from .claim_dedup import candidate_duplicate_pairs, claims_realized_by
 from .compose_gate import build_full_verifier, compose_and_verify
 from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
@@ -48,6 +49,7 @@ class ComposeRequest(BaseModel):
     beats_by_id: dict[str, BeatRef] = Field(default_factory=dict)
     slots: tuple[int, ...] = ()
     visited_claims_by_slot: dict[int, tuple[str, ...]] = Field(default_factory=dict)
+    duplicate_pairs: tuple[tuple[int, str, str], ...] = ()
 
 
 def build_compose_request(
@@ -74,6 +76,7 @@ def build_compose_request(
         beats_by_id=beats_by_id,
         slots=tuple(kept),
         visited_claims_by_slot=claims_by_slot,
+        duplicate_pairs=candidate_duplicate_pairs(stitched),
     )
 
 
@@ -202,9 +205,20 @@ tells that make generated prose feel generated:
 - VARY the shape of the stops. Do not open every stop the same way, and do not
   give every stop the same weight or arc — a minor stop can be a single sharp
   sentence; a major one earns a fuller telling.
-- If two sentences in one stop tell the SAME fact in different words, tell it
-  ONCE, keeping the fuller version and any particular — a name, date, or
-  consequence — the other version carried. Never repeat a fact already told.
+- FUSE REPEATS BOLDLY. Guidebook sources overlap heavily, so a stop often tells
+  the same event, person, date, or place TWICE in different words — the single
+  most common flaw in this material, and it makes the guide sound broken. Before
+  you finalize each stop, re-read it and hunt for any fact stated more than once
+  (even when the wording differs completely — "renamed to honour the first
+  département to pay taxes" and "Napoleon gave naming rights to the district that
+  paid first" are the SAME fact). Merge each repeat into ONE richer telling that
+  keeps every distinct particular from both versions, and drop the redundant one.
+  A downstream check guarantees no distinct fact is lost, so fuse without fear —
+  when in doubt whether two sentences are the same fact, they usually are.
+- The CANDIDATE DUPLICATE PAIRS list (when present) flags same-stop sentences a
+  cheap pre-scan found similar; treat each as "probably the same fact — fuse
+  unless they are genuinely distinct." It is a hint, not exhaustive: also fuse
+  repeats it missed.
 - Within a stop you may reorder sentences so events flow sensibly (usually
   oldest to newest), or open on what's in front of the walker and step back in
   time. Never move content between stops.
@@ -289,6 +303,17 @@ def _compose_user_prompt(
         f"visited_claims list ALONE — nothing from elsewhere in this prompt):\n"
         f"{json.dumps(slots, ensure_ascii=False)}",
     ]
+    if request.duplicate_pairs:
+        dupes = [
+            {"stop_idx": stop_idx, "a": a, "b": b}
+            for stop_idx, a, b in request.duplicate_pairs
+        ]
+        parts.append(
+            "CANDIDATE DUPLICATE PAIRS (same-stop sentences a pre-scan found "
+            "similar — probably the same fact; fuse each into one telling unless "
+            "genuinely distinct, and also fuse repeats not listed here):\n"
+            f"{json.dumps(dupes, ensure_ascii=False)}"
+        )
     if attempt > 1 and prev_report is not None:
         failures = {
             "untraceable": [s.text for s in prev_report.untraceable_sentences],
@@ -387,11 +412,16 @@ def compose_script(
     sentence stream. Checker/chunks default to the offline no-ops so the
     caller decides where the real teeth are wired (live gate / prod)."""
     request = build_compose_request(stitched, beat_sequence, route)
+    # Coverage baseline: the claims the pre-compose stitch actually voiced. The
+    # gate then blocks any compose (however bold its fusion) that drops one — the
+    # safety net that lets the prompt say "fuse without fear".
+    expected_claim_ids = claims_realized_by(stitched, request.beats_by_id)
     verify = build_full_verifier(
         beat_sequence,
         request.beats_by_id,
         chunk_text_by_slug=chunk_text_by_slug,
         faithfulness_checker=faithfulness_checker,
+        expected_claim_ids=expected_claim_ids,
     )
 
     def compose(attempt: int, prev: ValidationReport | None) -> Script:
