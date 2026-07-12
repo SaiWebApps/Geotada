@@ -48,7 +48,7 @@ from __future__ import annotations
 import re
 from collections import defaultdict
 
-from .contract import BeatSequence, Sentence
+from .contract import BeatRef, BeatSequence, Script, Sentence
 
 # A sentence must contain at least this fraction of a claim's tokens to be judged
 # "about" that claim (overlap coefficient, so ~containment of the terse claim).
@@ -254,4 +254,60 @@ def suppress_exact_repeats(
     return [s for i, s in enumerate(sentences) if i not in drop]
 
 
-__all__ = ["suppress_exact_repeats", "suppress_repeated_claims"]
+def claims_realized_by(
+    script: Script, beats_by_id: dict[str, BeatRef]
+) -> set[tuple[str, int]]:
+    """The ``(beat_id, claim_index)`` pairs realized by ≥1 beat-cited sentence.
+
+    "Realized" = some beat sentence's signature overlaps the claim's at
+    ``CLAIM_MATCH_MIN``. Run on the PRE-compose stitch to get the coverage
+    baseline (what actually got voiced — not every ``key_claim``, since a beat's
+    prose may never voice some of its claims), and on the composed output to
+    prove nothing the stitch voiced was lost. Order-independent (a set).
+    """
+    sent_sigs = [
+        sig
+        for s in script.script
+        if s.source_type == "beat" and (sig := _signature(s.text))
+    ]
+    realized: set[tuple[str, int]] = set()
+    for bid, beat in beats_by_id.items():
+        for ci, claim in enumerate(beat.key_claims):
+            csig = _signature(claim)
+            if len(csig) < MIN_SHARED_TOKENS:
+                continue
+            if any(_overlap(csig, ssig) >= CLAIM_MATCH_MIN for ssig in sent_sigs):
+                realized.add((bid, ci))
+    return realized
+
+
+def verify_claim_coverage(
+    composed: Script,
+    expected: set[tuple[str, int]],
+    beats_by_id: dict[str, BeatRef],
+) -> tuple[tuple[str, str], ...]:
+    """Compose may MERGE or reword a fact, but never silently DELETE one.
+
+    Returns ``(beat_id, claim_text)`` for every claim the pre-compose stitch
+    voiced (``expected``) that NO composed sentence still realizes — the deletion
+    blind spot the invention-focused checks (traceability / provenance /
+    entailment) all share. Deduped paraphrase twins are handled for free: a
+    twin's realizing sentence keeps the shared fact covered, so folding two
+    beats' paraphrases into one telling passes, while dropping a distinct fact
+    fails.
+    """
+    still = claims_realized_by(composed, beats_by_id)
+    out: list[tuple[str, str]] = []
+    for bid, ci in sorted(expected - still):
+        beat = beats_by_id.get(bid)
+        claim = beat.key_claims[ci] if beat and ci < len(beat.key_claims) else ""
+        out.append((bid, claim))
+    return tuple(out)
+
+
+__all__ = [
+    "claims_realized_by",
+    "suppress_exact_repeats",
+    "suppress_repeated_claims",
+    "verify_claim_coverage",
+]

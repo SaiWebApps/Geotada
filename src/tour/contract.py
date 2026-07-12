@@ -405,6 +405,13 @@ class ValidationReport(BaseModel):
       ``source_passage`` did not match its source chunk above threshold.
     - ``faithfulness_failures``: (sentence, reason) for beat-cited sentences
       that the entailment pass found unsupported by the beat's ``key_claims``.
+
+    The 2026-07 compose-safety addition closes the deletion blind spot the other
+    checks share (they all police INVENTION, none policed DROPPED content):
+    - ``coverage_failures``: (beat_id, dropped_claim) for a key_claim that the
+      pre-compose (stitched) script voiced but NO composed sentence still
+      realizes — i.e. compose silently deleted a distinct fact. Empty (a no-op)
+      unless the verifier is built with the pre-compose claim set.
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -413,6 +420,7 @@ class ValidationReport(BaseModel):
     forbidden_phrase_hits: tuple[tuple[Sentence, str], ...] = ()
     provenance_failures: tuple[tuple[str, float], ...] = ()
     faithfulness_failures: tuple[tuple[Sentence, str], ...] = ()
+    coverage_failures: tuple[tuple[str, str], ...] = ()
 
     @property
     def passed(self) -> bool:
@@ -421,6 +429,7 @@ class ValidationReport(BaseModel):
             or self.forbidden_phrase_hits
             or self.provenance_failures
             or self.faithfulness_failures
+            or self.coverage_failures
         )
 
 

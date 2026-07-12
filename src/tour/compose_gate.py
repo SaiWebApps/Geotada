@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from .claim_dedup import verify_claim_coverage
 from .contract import BeatRef, BeatSequence, Script, ValidationReport
 from .validation import validate_script
 from .verify import (
@@ -96,12 +97,15 @@ def build_full_verifier(
     *,
     chunk_text_by_slug: dict[str, str] | None = None,
     faithfulness_checker: FaithfulnessChecker | None = None,
+    expected_claim_ids: set[tuple[str, int]] | None = None,
 ) -> VerifyFn:
-    """A ``verify(script)`` that merges all four VERIFY checks into one report.
+    """A ``verify(script)`` that merges the VERIFY checks into one report.
 
     ``chunk_text_by_slug`` empty → provenance is a no-op (corpus not
     backfilled); ``faithfulness_checker`` None → the offline Mock (trusts the
-    corpus). Both keep the gate runnable and ``make test`` offline.
+    corpus). ``expected_claim_ids`` (from ``claims_realized_by`` on the PRE-compose
+    stitch) enables the content-loss / coverage check — omit it and coverage is a
+    no-op. All keep the gate runnable and ``make test`` offline.
     """
     checker = faithfulness_checker or MockFaithfulnessChecker()
     chunks = chunk_text_by_slug or {}
@@ -113,12 +117,18 @@ def build_full_verifier(
         # without this guard every one of them would fail at 0.0 against an
         # empty dict. A missing slug only means something when chunks exist.
         provenance = tuple(verify_provenance(beat_sequence, chunks)) if chunks else ()
+        coverage = (
+            verify_claim_coverage(script, expected_claim_ids, beats_by_id)
+            if expected_claim_ids
+            else ()
+        )
         return base.model_copy(
             update={
                 "provenance_failures": provenance,
                 "faithfulness_failures": tuple(
                     verify_faithfulness(script, beats_by_id, checker)
                 ),
+                "coverage_failures": coverage,
             }
         )
 

@@ -11,10 +11,20 @@ from __future__ import annotations
 
 from src.tour.claim_dedup import (
     _signature,
+    claims_realized_by,
     suppress_exact_repeats,
     suppress_repeated_claims,
+    verify_claim_coverage,
 )
-from src.tour.contract import BeatRef, BeatSequence, POIBeats, Sentence
+from src.tour.contract import (
+    BeatRef,
+    BeatSequence,
+    POIBeats,
+    Script,
+    Sentence,
+    TourInput,
+    ValidationReport,
+)
 
 
 def _beat(bid: str, claims: tuple[str, ...]) -> BeatRef:
@@ -267,3 +277,105 @@ def test_glue_sentences_are_never_deduped_by_exact_pass():
     ]
     out = suppress_exact_repeats(sents, seq)
     assert [s.text for s in out].count(nav) == 2  # glue is the nav-glue pass's concern
+
+
+# ---------------------------------------------------------------------------
+# Content-loss / coverage gate — compose may merge or reword a fact but never
+# silently DELETE one (the deletion blind spot the invention checks all shared).
+# ---------------------------------------------------------------------------
+
+def _script_of(*sentences: Sentence) -> Script:
+    return Script(
+        city_slug="paris",
+        generated_at="2026-07-11T00:00:00+00:00",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris"),
+        total_audio_seconds=60, total_walking_seconds=60,
+        total_walk_distance_m=100, total_planned_seconds=120,
+        selected_pois=(), lens_coverage={}, script=tuple(sentences),
+        validation=ValidationReport(),
+    )
+
+
+def _bbi(*beats: BeatRef) -> dict[str, BeatRef]:
+    return {b.id: b for b in beats}
+
+
+def test_claims_realized_by_finds_voiced_and_misses_unvoiced():
+    beat = _beat("A", ("Napoleon placed four horses from Saint Mark on the arch",
+                       "The arch was built between 1806 and 1808"))
+    script = _script_of(
+        _s("Napoleon placed four bronze horses from Saint Mark on the arch.", "A"),
+    )  # claim 1 (the 1806-1808 date) is voiced by no sentence
+    realized = claims_realized_by(script, _bbi(beat))
+    assert ("A", 0) in realized
+    assert ("A", 1) not in realized
+
+
+def test_coverage_flags_a_dropped_distinct_fact():
+    beat = _beat("A", ("Napoleon placed four horses from Saint Mark on the arch",
+                       "The arch was built between 1806 and 1808"))
+    bbi = _bbi(beat)
+    stitched = _script_of(
+        _s("Napoleon placed four bronze horses from Saint Mark on the arch.", "A"),
+        _s("The arch was built between 1806 and 1808 by Napoleon.", "A"),
+    )
+    expected = claims_realized_by(stitched, bbi)
+    # compose keeps the horses but DROPS the 1806-1808 date
+    composed = _script_of(_s("Napoleon set four horses from Saint Mark atop the arch.", "A"))
+    fails = verify_claim_coverage(composed, expected, bbi)
+    assert fails and fails[0][0] == "A"
+    assert "1806" in fails[0][1]
+
+
+def test_coverage_passes_when_all_facts_kept():
+    beat = _beat("A", ("Napoleon placed four horses from Saint Mark on the arch",
+                       "The arch was built between 1806 and 1808"))
+    bbi = _bbi(beat)
+    stitched = _script_of(
+        _s("Napoleon placed four bronze horses from Saint Mark on the arch.", "A"),
+        _s("The arch was built between 1806 and 1808 by Napoleon.", "A"),
+    )
+    expected = claims_realized_by(stitched, bbi)
+    assert verify_claim_coverage(stitched, expected, bbi) == ()  # passthrough loses nothing
+
+
+def test_coverage_allows_paraphrase_merge_but_catches_dropped_distinct_fact():
+    a = _beat("A", ("The Parisii settled the island in the third century BC",))
+    b = _beat("B", ("Celtic Parisii first settled the island in the third century BC",
+                    "The Romans invaded and took the island in 52 BC"))
+    bbi = _bbi(a, b)
+    stitched = _script_of(
+        _s("The Parisii settled the island in the third century BC.", "A"),
+        _s("The Celtic Parisii first settled the island in the third century BC.", "B"),
+        _s("The Romans invaded and took the island in 52 BC.", "B"),
+    )
+    expected = claims_realized_by(stitched, bbi)
+    # MERGE the two founding paraphrases into one telling; keep the Roman fact.
+    merged = _script_of(
+        _s("The Celtic Parisii settled the island in the third century BC.", "B"),
+        _s("The Romans took the island in 52 BC.", "B"),
+    )
+    assert verify_claim_coverage(merged, expected, bbi) == (), "a legal merge must pass"
+    # but DROPPING the distinct Roman fact is caught.
+    lossy = _script_of(_s("The Celtic Parisii settled the island in the third century BC.", "B"))
+    assert verify_claim_coverage(lossy, expected, bbi), "dropping a distinct fact must fail"
+
+
+def test_full_verifier_coverage_gate_blocks_deletion():
+    from src.tour.compose_gate import build_full_verifier
+    beat = _beat("A", ("Napoleon placed four horses from Saint Mark on the arch",
+                       "The arch was built between 1806 and 1808"))
+    seq = _seq(beat)
+    bbi = _bbi(beat)
+    stitched = _script_of(
+        _s("Napoleon placed four bronze horses from Saint Mark on the arch.", "A"),
+        _s("The arch was built between 1806 and 1808 by Napoleon.", "A"),
+    )
+    expected = claims_realized_by(stitched, bbi)
+    verify = build_full_verifier(seq, bbi, expected_claim_ids=expected)
+    # a faithful passthrough passes coverage; a deletion fails it.
+    assert verify(stitched).passed
+    lossy = _script_of(_s("Napoleon set four horses from Saint Mark atop the arch.", "A"))
+    report = verify(lossy)
+    assert not report.passed
+    assert report.coverage_failures and report.coverage_failures[0][0] == "A"
