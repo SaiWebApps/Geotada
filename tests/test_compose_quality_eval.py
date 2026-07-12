@@ -24,7 +24,7 @@ from __future__ import annotations
 import pytest
 
 from src.tour.claim_dedup import claims_realized_by
-from src.tour.compose import ComposeRequest, MockComposeClient, compose_script_per_chapter
+from src.tour.compose import ComposeRequest, compose_script_per_chapter
 from src.tour.compose_gate import build_full_verifier
 from src.tour.compose_metrics import (
     compute_compose_metrics,
@@ -214,12 +214,20 @@ def test_replay_hard_fails_on_a_cache_miss():
         )
 
 
-def test_eval_never_touches_a_live_model():
-    # The gate faithfulness checker and the compose client used above are both
-    # offline; assert the offline types, so a refactor that swapped in a live one
-    # would fail here.
-    assert isinstance(MockFaithfulnessChecker(), MockFaithfulnessChecker)
-    assert isinstance(MockComposeClient(), MockComposeClient)
+def test_eval_never_touches_a_live_model(monkeypatch):
+    # Strip the API key and force mock: the ENTIRE offline flow (stitch -> replay
+    # compose -> real gate) must still complete. If any live Opus/Haiku call
+    # sneaked into this path it would raise without a key, failing here — a real
+    # guard, not a tautology.
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setenv("COMPOSE_PROVIDER", "mock")
+    stitched = _stitched()
+    good = _fuse_stop0(stitched, drop_date=False)
+    served = compose_script_per_chapter(
+        stitched, SEQ, _route(), client=ReplayComposeClient(_by_stop(good)),
+        faithfulness_checker=MockFaithfulnessChecker(),
+    )
+    assert served.validation.passed
 
 
 def test_fixtures_pinned_to_prompt():
