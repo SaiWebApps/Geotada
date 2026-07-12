@@ -180,6 +180,11 @@ class TripPreviewRequest(BaseModel):
     duration_min: int | None = Field(default=None, ge=1, le=600)
     lenses: list[str] | None = None
     round_trip: bool = False
+    # Opt in to the LLM "AI voice" layer: rewrite the stitched narration into one
+    # flowing, de-duplicated story (fusing repeated facts), behind the faithfulness
+    # + content-loss gates with graceful per-stop repair. Off = the fast
+    # deterministic stitch. The workbench sends true to preview the real app voice.
+    compose: bool = False
 
 
 class TripPreviewStop(BaseModel):
@@ -238,3 +243,8 @@ class TripPreviewResponse(BaseModel):
     lens_coverage_note: str | None = None
     # None = GREEN (no warning needed). RED never reaches a 200 response.
     tourability: TripPreviewTourability | None = None
+    # compose outcome when the request opted in: 'composed' (fully AI-voiced),
+    # 'composed_partial' (some stops fell back to the grounded stitch via repair),
+    # 'refused' (compose failed even after repair — stitched shown), or 'stitched'
+    # (compose not requested / provider is mock). None only on legacy paths.
+    compose_status: str | None = None

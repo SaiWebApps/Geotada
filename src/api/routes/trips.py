@@ -40,6 +40,7 @@ from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
     BeatSequence,
     Route,
+    Script,
     Sentence,
     TourabilityAssessment,
     TourInput,
@@ -684,10 +685,27 @@ def _tourability_payload(
     )
 
 
+def _compose_status(stitched: Script, composed: Script) -> str:
+    """'composed' (fully AI-voiced) or 'composed_partial' when the graceful
+    per-stop repair reverted at least one stop to the grounded stitch."""
+
+    def _by_stop(s: Script) -> dict[int, tuple[str, ...]]:
+        out: dict[int, list[str]] = {}
+        for sent in s.script:
+            out.setdefault(sent.stop_idx, []).append(sent.text)
+        return {k: tuple(v) for k, v in out.items()}
+
+    st, co = _by_stop(stitched), _by_stop(composed)
+    reverted = any(co.get(k) == v for k, v in st.items())
+    return "composed_partial" if reverted else "composed"
+
+
 @router.post("/trips/preview", response_model=TripPreviewResponse)
 def preview_trip(
     body: TripPreviewRequest,
     driver: Driver = Depends(get_driver),
+    compose_client: ComposeClient = Depends(get_compose_client),
+    faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
 ):
     """Web-first preview (Phase 1.5): run the engine and return per-stop narration
     WITHOUT a profile and WITHOUT persisting a Trip/ItineraryItem.
@@ -725,15 +743,34 @@ def preview_trip(
     vignette_beats = select_vignette_beats(
         route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
     )
-    script = generate(
-        BeatSequence(
-            poi_beats=tuple(plans),
-            vignette_beats=vignette_beats,
-            overflow_by_poi=overflow_by_poi,
-        ),
-        route,
-        tour_input,
+    seq = BeatSequence(
+        poi_beats=tuple(plans),
+        vignette_beats=vignette_beats,
+        overflow_by_poi=overflow_by_poi,
     )
+    script = generate(seq, route, tour_input)
+
+    # Opt-in "AI voice": rewrite the stitched narration into one flowing,
+    # de-duplicated story behind the faithfulness + content-loss gates, with
+    # graceful per-stop repair so the workbench ALWAYS shows something good (and
+    # honestly flags which stops fell back). With COMPOSE_PROVIDER=mock this is a
+    # deterministic passthrough; with 'anthropic' it is the real Opus voice.
+    compose_status = "stitched"
+    if body.compose:
+        try:
+            composed = compose_script(
+                script,
+                seq,
+                route,
+                client=compose_client,
+                faithfulness_checker=faithfulness_checker,
+                repair=True,
+            )
+        except ComposeVerificationError:
+            compose_status = "refused"  # unrepairable — keep the grounded stitch
+        else:
+            compose_status = _compose_status(script, composed)
+            script = composed
 
     stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
@@ -743,6 +780,7 @@ def preview_trip(
         # Per-corridor lens coverage note ships later in Phase 3 (REACH).
         lens_coverage_note=None,
         tourability=_tourability_payload(route.tourability),
+        compose_status=compose_status,
     )
 
 
