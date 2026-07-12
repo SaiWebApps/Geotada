@@ -12126,7 +12126,6 @@
   "name": "Asia Society and Museum",
   "short_description": "Cultural center founded by John D. Rockefeller III in 1956, hosting art and cultural exhibitions spanning Buddhist, Jain, Nepalese and contemporary Asian traditions.",
   "name_variations": [
-   "Asia Society",
    "Asia Society & Museum"
   ],
   "kid_friendly": "yes",
@@ -18338,7 +18337,6 @@
   "name": "Brooklyn Borough Hall",
   "short_description": "Greek Revival 1849 building that served as the City Hall of the independent City of Brooklyn until 1898, when consolidation renamed it Borough Hall and a cupola was added; designed by Gamaliel King.",
   "name_variations": [
-   "Borough Hall",
    "Brooklyn City Hall",
    "Brooklyn's 1849 City Hall"
   ],
@@ -19139,7 +19137,6 @@
   "name": "Staten Island Borough Hall",
   "short_description": "1904–06 French Renaissance civic building by Carrere & Hastings at St. George, designed to greet ferry arrivals as Staten Island's seat of government.",
   "name_variations": [
-   "Borough Hall",
    "Staten Island Borough Hall, St. George"
   ],
   "kid_friendly": "yes",
@@ -19907,9 +19904,7 @@
   "name": "Asia Society",
   "short_description": "Cultural institution at 725 Park Avenue (corner of 70th), founded 1956 by John D. Rockefeller III; red-sandstone-and-granite building opened 1981.",
   "name_variations": [
-   "Asia Society",
-   "Asia Society & Museum",
-   "Asia Society and Museum"
+   "Asia Society"
   ],
   "kid_friendly": "yes",
   "city_name": "new_york",
