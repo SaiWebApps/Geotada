@@ -18,6 +18,7 @@ import pytest
 from src.tour.contract import POI
 from src.tour.ordering import held_karp_open
 from src.tour.routing import default_leg_seconds
+from src.tour.selection import HARD_ANCHOR_CAP
 
 START = (48.8550, 2.3600)
 UNIT = 0.003  # ~220m of longitude at Paris latitude
@@ -130,11 +131,13 @@ def test_exactness_against_brute_force(n: int):
 
 
 def test_cap_sized_input_under_a_second():
-    pts = _random_points(12, seed=99)  # HARD_ANCHOR_CAP
+    # Exercise the REAL anchor cap so the sub-1s guarantee is validated at the
+    # ceiling select_route can actually hand the solver (raised 12→15).
+    pts = _random_points(HARD_ANCHOR_CAP, seed=99)
     t0 = time.perf_counter()
     hk = held_karp_open(pts, fixed_start=START)
     assert time.perf_counter() - t0 < 1.0
-    assert len(hk) == 12
+    assert len(hk) == HARD_ANCHOR_CAP
 
 
 def test_edge_cases_and_contract_errors():

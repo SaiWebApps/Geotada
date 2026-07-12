@@ -203,7 +203,14 @@ ANCHOR_TIERS: frozenset[int] = frozenset({3, 4, 5})
 #   bounded above by HARD_ANCHOR_CAP. Calibrated against the empirical Île
 #   walk (90 min → 9 anchors).
 ANCHOR_CAP_DIVISOR: int = 10
-HARD_ANCHOR_CAP: int = 12  # outer anchors only — internal vignettes don't count
+# Outer anchors only — internal vignettes don't count. Raised 12→15 (2026-07-11)
+# to give long requests (150-400 min) denser coverage of nearby POIs instead of
+# overstuffing 12 stops (the thin-tour complaint). 15 keeps the EXACT Held-Karp
+# order solver comfortably under its 1s guard (~249ms measured; 2^15·15^2 ≈ 7.4M
+# transitions). Do NOT exceed 16 (the outer timing edge). Tours ≤120 min are
+# unaffected (max_anchors = duration//10 stays ≤12), so the calibration goldens
+# do not move.
+HARD_ANCHOR_CAP: int = 15  # outer anchors only — internal vignettes don't count
 
 # Spine selection: pick the most-populated non-city Area within this many
 # metres of the start point, weighted by tier among the candidate POIs.

@@ -559,6 +559,35 @@ def test_select_route_respects_hard_anchor_cap():
     assert len(route.pois) <= HARD_ANCHOR_CAP
 
 
+def test_long_tour_seats_more_than_the_old_twelve_stop_cap():
+    """The thin-tour fix: a long request seats denser coverage of nearby POIs
+    (up to the raised cap) instead of overstuffing 12 stops. Moderate per-stop
+    audio (2 beats each) keeps the greedy ANCHOR-bound — it hits the cap rather
+    than terminating audio-bound early."""
+    pois = [
+        _poi(
+            f"p{i}",
+            tier=5,
+            lat=48.8556 + (i % 6) * 0.0004,
+            lng=2.3658 + (i // 6) * 0.0004,
+            beat_count=2,
+        )
+        for i in range(25)
+    ]
+    snap = _snap(pois)
+    route = select_route(TourInput(start=PDV, duration_min=250, city_slug="paris"), snap)
+    n = len(route.pois)
+    assert n > 12, f"raised cap should seat >12 stops for a long tour, got {n}"
+    assert n <= HARD_ANCHOR_CAP
+
+
+def test_hard_anchor_cap_stays_within_held_karp_timing_ceiling():
+    """The exact Held-Karp order solver stays under its 1s guard only up to ~16
+    anchors; keep the cap at/under that measured ceiling (see
+    test_tour_ordering_heldkarp::test_cap_sized_input_under_a_second)."""
+    assert HARD_ANCHOR_CAP <= 16
+
+
 def test_select_route_deterministic_under_input_shuffle():
     base = [_poi(f"p{i}", lat=48.8550 + i * 0.0001, lng=2.3650 + i * 0.0001) for i in range(8)]
 
