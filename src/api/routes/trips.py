@@ -600,6 +600,7 @@ def _preview_stops(
     of that stop's beats out into the "keep exploring here" extras. Vignette
     (walk-past) stops never have deeper-dive. Pure and deterministic.
     """
+    from src.audio.tts_normalize import normalize_dashes_for_reading
     from src.tour.selection import spotlight
 
     lenses_fs = frozenset(script.inputs.lenses or ())
@@ -613,13 +614,15 @@ def _preview_stops(
         if s.source_type == "beat" and s.source_id in vignette_beat_ids:
             continue
         _dwell_sents.setdefault(s.stop_idx, []).append(s.text)
-    per_stop = {idx: " ".join(t) for idx, t in _dwell_sents.items()}
+    # Display-normalize dashes so the workbench text reads the way the audio
+    # sounds (comma pause, not a dangling em-dash the tourist complained about).
+    per_stop = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in _dwell_sents.items()}
     one_liner_by_poi: dict[str, str] = {}
     for beats in vignette_beats.values():
         for beat in beats:
             sentences = split_sentences(beat.script_body or "")
             if sentences:
-                one_liner_by_poi[beat.poi_id] = sentences[0]
+                one_liner_by_poi[beat.poi_id] = normalize_dashes_for_reading(sentences[0])
 
     out: list[TripPreviewStop] = []
     for i, sp in enumerate(script.selected_pois):

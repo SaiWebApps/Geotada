@@ -165,3 +165,20 @@ def test_deeper_dive_flag_false_when_no_overflow():
     )
     assert [s.band for s in stops] == ["dwell", "dwell"]
     assert all(s.has_deeper_dive is False for s in stops)
+
+
+def test_preview_normalizes_display_em_dashes_to_commas():
+    """The workbench narration reads the way the audio sounds: a clause em-dash
+    becomes a comma pause, not a dangling stroke (the tourist's em-dash complaint)."""
+    em = chr(0x2014)
+    base = _script_two_stops()
+    bled = base.model_copy(update={"script": (
+        Sentence(text=f"The Meurice {em} grandest of the palace hotels {em} faced the gardens.",
+                 source_id="GLUE_PACING", source_type="glue", stop_idx=0),
+        base.script[1],
+    )})
+    stops = _preview_stops(
+        bled, _route({}), {}, _snapshot(_poi("vx"), BeatRef(id="b", poi_id="vx")), {}
+    )
+    assert em not in stops[0].narration, f"em-dash leaked into display: {stops[0].narration!r}"
+    assert "Meurice, grandest of the palace hotels, faced" in stops[0].narration

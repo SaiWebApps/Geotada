@@ -143,6 +143,19 @@ _EM_DASH_RE = re.compile(rf"\s*{_EM_DASH}\s*")
 _EN_DASH_CLAUSE_RE = re.compile(rf"\s+{_EN_DASH}\s+")
 
 
+def normalize_dashes_for_reading(text: str) -> str:
+    """Replace clause em-dashes and spaced en-dashes with a comma.
+
+    Shared by TTS normalization AND the workbench preview display so what you
+    READ matches what you HEAR: the spoken audio pauses (not the word 'dash')
+    and the printed narration is not dash-riddled (the tourist complaint). Tight
+    numeric/date ranges (12 to 14) and hyphen compounds keep their stroke.
+    """
+    text = _EM_DASH_RE.sub(", ", text)
+    text = _EN_DASH_CLAUSE_RE.sub(", ", text)
+    return text
+
+
 def _int_to_roman(n: int) -> str:
     """Canonical Roman numeral for 1..3999 (used to reject malformed input)."""
     table = (
@@ -223,8 +236,7 @@ def normalize_for_tts(text: str) -> str:
         return text
     text = _REGNAL_RE.sub(_regnal_sub, text)
     text = _INITIALS_HYPHEN_RE.sub(r"\1. ", text)
-    text = _EM_DASH_RE.sub(", ", text)
-    text = _EN_DASH_CLAUSE_RE.sub(", ", text)
+    text = normalize_dashes_for_reading(text)
     return text
 
 

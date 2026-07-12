@@ -111,3 +111,12 @@ def test_hyphenated_compounds_survive_byte_identical() -> None:
         "Jean-Baptiste Colbert",
     ):
         assert normalize_for_tts(s) == s
+
+
+def test_normalize_dashes_for_reading_shared_helper():
+    from src.audio.tts_normalize import normalize_dashes_for_reading
+    em, en = chr(0x2014), chr(0x2013)
+    assert normalize_dashes_for_reading(f"A{em}B") == "A, B"
+    assert normalize_dashes_for_reading(f"1940 {en} 1944 it fell") == "1940, 1944 it fell"
+    tight = f"the 1940{en}44 range"
+    assert normalize_dashes_for_reading(tight) == tight  # tight range kept
