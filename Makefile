@@ -348,11 +348,15 @@ valhalla-status: ## Host-side health check against Valhalla's /status endpoint
 	@curl -fs --max-time 3 http://localhost:8002/status && echo " ← Valhalla OK" \
 		|| echo "Valhalla not responding on :8002 (engine falls back to haversine)"
 
-valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for tile building on next start (into the MAIN checkout's mount)
+valhalla-build-tiles: ## Download the Paris (Île-de-France ~334MB) + New York (~152MB) OSM extracts for tile building on next start (into the MAIN checkout's mount)
 	mkdir -p "$(VALHALLA_ROOT)/valhalla/custom_files"
 	curl -L -o "$(VALHALLA_ROOT)/valhalla/custom_files/ile-de-france-latest.osm.pbf" \
 		https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf
-	@echo "✓ PBF downloaded. Run 'make valhalla-up' (restart if already running) to build tiles."
+	curl -L -o "$(VALHALLA_ROOT)/valhalla/custom_files/new-york.osm.pbf" \
+		https://download.bbbike.org/osm/bbbike/NewYork/NewYork.osm.pbf
+	@echo "✓ PBFs downloaded (paris + new_york). Valhalla builds all *.osm.pbf on start;"
+	@echo "  a first build from an EXISTING tar needs force_rebuild=True once (see docker-compose)."
+	@echo "  Run 'make valhalla-up' (restart if already running) to build tiles."
 
 # ════════════════════════════════════════════════════════════════════════════
 #  RUN   —   the API, the workbench, the dashboard, the mobile app
