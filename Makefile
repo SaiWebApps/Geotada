@@ -38,7 +38,7 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	valhalla-up valhalla-down valhalla-status valhalla-build-tiles \
 	api api-test run workbench dashboard \
 	flutter-web flutter-ios flutter-device flutter-pub-get flutter-clean \
-	setup verify clean-db upload-paris upload deploy deploy-cloud backfill-provenance backfill-poi-role \
+	setup verify clean-db upload-paris upload deploy deploy-cloud prune-orphans prune-orphans-cloud backfill-provenance backfill-poi-role \
 	backfill-name-key \
 	survey-area-candidates fix-area-radii upload-areas fetch-boundary geocode-pois \
 	wiki-fetch gen-within-edges validate-beats tour-build measure-planned-audio measure-governor \
@@ -461,6 +461,12 @@ deploy: ## One-shot: deploy a city (POIs+beats+areas) from the repo to the ACTIV
 
 deploy-cloud: ## One-shot: deploy a city from the repo to AURA (additive, audio-safe), then verify parity. Usage: make deploy-cloud CITY=new_york
 	set -a && . .env.cloud && set +a && uv run python -m scripts.deploy --slug "$(CITY)" --allow-cloud
+
+prune-orphans: ## Delete ACTIVE-graph POIs/beats the repo dropped (the deploy complement). Dry-run unless APPLY=1. Usage: make prune-orphans CITY=new_york [APPLY=1]
+	uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" $(if $(APPLY),--apply,)
+
+prune-orphans-cloud: ## Same, against AURA (sources .env.cloud). Dry-run unless APPLY=1. Usage: make prune-orphans-cloud CITY=new_york [APPLY=1]
+	set -a && . .env.cloud && set +a && uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" --allow-cloud $(if $(APPLY),--apply,)
 
 fetch-boundary: ## Fetch a city/area OSM boundary polygon. Usage: make fetch-boundary SLUG=new_york RELATION=175905 [FORCE=1]
 	uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" --relation "$(RELATION)"$(if $(FORCE), --force,)
