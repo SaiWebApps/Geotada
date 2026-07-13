@@ -6,15 +6,22 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
-from src.tour.contract import SUPPORTED_CITIES, RouteOption
+from src import city_registry
+from src.tour.contract import RouteOption
 
 
 def _validate_city_slug(v: str) -> str:
     """Reject an unknown city at the edge (clear 422) instead of loading an
-    empty corpus and emitting a broken/thin tour."""
+    empty corpus and emitting a broken/thin tour.
+
+    Validates against ``servable_cities()`` (evaluated per-request, not the
+    import-time ``SUPPORTED_CITIES``) so the prod cloud-filter takes effect: a
+    locally-onboarded but not-yet-deployed city is rejected by the public prod
+    /trips API while still being tourable by the local workbench."""
     slug = (v or "").strip().lower()
-    if slug not in SUPPORTED_CITIES:
-        raise ValueError(f"city_slug must be one of {sorted(SUPPORTED_CITIES)}, got {v!r}")
+    allowed = city_registry.servable_cities()
+    if slug not in allowed:
+        raise ValueError(f"city_slug must be one of {sorted(allowed)}, got {v!r}")
     return slug
 
 
@@ -60,7 +67,8 @@ class TripGenerateRequest(BaseModel):
         default=False, description="Return to the start point (loops the route)"
     )
     city_slug: str = Field(
-        default="paris", description="City corpus to tour; validated against SUPPORTED_CITIES"
+        default="paris",
+        description="City corpus to tour; validated against city_registry.servable_cities()",
     )
 
     _validate_city = field_validator("city_slug")(_validate_city_slug)
@@ -195,7 +203,8 @@ class TripPreviewRequest(BaseModel):
     lenses: list[str] | None = None
     round_trip: bool = False
     city_slug: str = Field(
-        default="paris", description="City corpus to tour; validated against SUPPORTED_CITIES"
+        default="paris",
+        description="City corpus to tour; validated against city_registry.servable_cities()",
     )
 
     _validate_city = field_validator("city_slug")(_validate_city_slug)

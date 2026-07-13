@@ -1,0 +1,22 @@
+{
+  "topic": "new-city-onboarding",
+  "created": "2026-07-12",
+  "tier": 3,
+  "decisions": {
+    "sourcing_modes": ["license_clean", "shadow_discovery_only", "manual_book_drop"],
+    "prod_filter": "cloud_deployed",
+    "execution": "atomic-autonomous-verifier-proven",
+    "grey_zone": "discovery-only, 5 structural walls, no auto-download of copyrighted text"
+  },
+  "steps": [
+    {"id": 1, "name": "City registry foundation", "status": "completed", "cost": "$0", "commit": "pending", "proof": "make test-local 1623 passed/0 failed/0 skipped; skeptic panel (opus SURVIVED, sonnet REFUTE→cloud_deployed bool-check fix); QA 3 undo-tests RED-then-GREEN; judge PROCEED"},
+    {"id": 2, "name": "Onboard core (models+jobs+fetch+boundary)", "status": "pending", "cost": "$0", "commit": null},
+    {"id": 3, "name": "Source connectors", "status": "pending", "cost": "$0", "commit": null},
+    {"id": 4, "name": "Assemble + beat draft + CLI", "status": "pending", "cost": "$0", "commit": null},
+    {"id": 5, "name": "Onboard API router", "status": "pending", "cost": "$0", "commit": null},
+    {"id": 6, "name": "Frontend panel", "status": "pending", "cost": "$0", "commit": null},
+    {"id": 7, "name": "Real-browser Playwright proof", "status": "pending", "cost": "$0", "commit": null},
+    {"id": 8, "name": "Real onboarding + milestone gate", "status": "pending", "cost": "LIVE-estimated", "commit": null}
+  ],
+  "baseline": {"lint": "green 2026-07-12", "note": "full make test bar reserved for Step 8 milestone"}
+}

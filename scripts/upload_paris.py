@@ -3,7 +3,9 @@
 City-parameterized: pass a city slug (default ``paris``). Reads from
 ``data/{city_slug}/poi-raw.json`` and ``data/{city_slug}/beats.json`` and
 rejects POIs outside the city's bbox in ``CITY_BBOX`` (the out-of-city geofence
-guard). Add a new city by adding its bbox to ``CITY_BBOX``.
+guard). Register a new city via the onboarding panel /
+``src.city_registry.register_city`` (which writes ``src/cities.json``);
+``CITY_BBOX`` below is derived from that registry.
 
 Creates:
   - Schema constraints and indexes
@@ -30,6 +32,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse
 
+from src import city_registry
 from src.api.models.nodes import canonical_name_key
 from src.connection import abort_on_connection_error, create_driver, get_database
 from src.schema.constraints import apply_all
@@ -64,11 +67,9 @@ VALIDATOR = Path(__file__).resolve().parent / "validate_beats.py"
 
 # Generous per-city bounding boxes (city + inner edges): reject gross coordinate
 # errors (a Boston POI, (0,0), or out-of-city leaks) without clipping legitimate
-# edge POIs. (min_lat, max_lat, min_lon, max_lon)
-CITY_BBOX: dict[str, tuple[float, float, float, float]] = {
-    "paris": (48.70, 49.00, 2.10, 2.60),
-    "new_york": (40.45, 40.93, -74.28, -73.68),
-}
+# edge POIs. (min_lat, max_lat, min_lon, max_lon). Now derived from the city
+# registry (src/cities.json) — the single writable registration surface.
+CITY_BBOX: dict[str, tuple[float, float, float, float]] = city_registry.bbox_map()
 PARIS_BBOX = CITY_BBOX["paris"]  # back-compat default
 
 
@@ -386,7 +387,8 @@ def main() -> None:
     if city_slug not in CITY_BBOX:
         sys.exit(
             f"Unknown city '{city_slug}'. Known: {', '.join(sorted(CITY_BBOX))}. "
-            f"Add its bbox to CITY_BBOX in {Path(__file__).name}."
+            f"Register it first (onboarding panel / src.city_registry.register_city → "
+            f"src/cities.json)."
         )
     poi_file, beats_file = _city_paths(city_slug)
     bbox = CITY_BBOX[city_slug]

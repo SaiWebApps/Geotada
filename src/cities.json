@@ -1,0 +1,22 @@
+{
+  "new_york": {
+    "bbox": [
+      40.45,
+      40.93,
+      -74.28,
+      -73.68
+    ],
+    "cloud_deployed": true,
+    "display_name": "New York"
+  },
+  "paris": {
+    "bbox": [
+      48.7,
+      49.0,
+      2.1,
+      2.6
+    ],
+    "cloud_deployed": true,
+    "display_name": "Paris"
+  }
+}

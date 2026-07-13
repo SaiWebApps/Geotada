@@ -35,6 +35,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.upload_paris import CITY_BBOX, _beat_blocked, _in_city_bounds
 from src.api.models.nodes import canonical_name_key
+from src.city_registry import load_registry
 from src.connection import create_driver, get_database
 
 DATA_ROOT = ROOT / "data"
@@ -145,11 +146,21 @@ def main() -> int:
     # Label by the real URI host, not get_database() truthiness (NEO4J_DATABASE is
     # set to 'neo4j' locally too, so it can't distinguish local vs cloud).
     host = urlparse(os.getenv("NEO4J_URI", "")).hostname or ""
-    label = "local" if host in ("localhost", "127.0.0.1", "::1") else f"cloud ({host})"
+    is_local = host in ("localhost", "127.0.0.1", "::1")
+    label = "local" if is_local else f"cloud ({host})"
     print(f"\n{'='*66}\n  DB PARITY — repo (source of truth) vs [{label}]\n{'='*66}")
+    registry = load_registry()
     total_drift: dict[str, list] = {}
     with d.session(database=db) as s:
         for slug in cities:
+            # On a CLOUD target, a city onboarded + uploaded LOCALLY but not yet
+            # deployed to Aura (cloud_deployed:false) is legitimately absent from
+            # the cloud graph — skip it so it does not read as drift and turn
+            # `make test-cloud` RED. Local targets check every city as before.
+            if not is_local and not registry.get(slug, {}).get("cloud_deployed", True):
+                print(f"\n  {slug}:")
+                print("    [SKIP] local-only (cloud_deployed:false) — not yet deployed to Aura")
+                continue
             exp, act = _expected(slug), _actual(s, slug)
             print(f"\n  {slug}:")
             drift: list = []

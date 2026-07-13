@@ -44,6 +44,7 @@ def test_every_data_city_is_fully_registered(city_dir: Path) -> None:
     catches a half-onboarded city at CI time instead of at deploy/request time, so
     the tour algorithm truly generalizes to 'any and all cities' we add."""
     from scripts.upload_paris import CITY_BBOX
+    from src.city_registry import load_registry
     from src.tour.contract import SUPPORTED_CITIES
 
     city = city_dir.name
@@ -54,6 +55,36 @@ def test_every_data_city_is_fully_registered(city_dir: Path) -> None:
         problems.append("missing from SUPPORTED_CITIES (contract.py) — the API 422s every request")
     if not (city_dir / "beats.json").exists():
         problems.append("has poi-raw.json but no beats.json — POIs would seat with zero narration")
+
+    # Registry entry must exist and carry a valid 4-element bbox that actually
+    # CONTAINS the city's POI centroid — a mis-entered bbox (wrong sign, swapped
+    # lat/lon, a typo'd degree) would silently drop most POIs on upload, so pin
+    # the geofence to the data it must admit.
+    registry = load_registry()
+    entry = registry.get(city)
+    if entry is None:
+        problems.append("missing from the city registry (src/cities.json)")
+    else:
+        bbox = entry.get("bbox")
+        if not (isinstance(bbox, list) and len(bbox) == 4):
+            problems.append("registry bbox is not a 4-element [min_lat, max_lat, min_lon, max_lon]")
+        else:
+            pois = json.loads((city_dir / "poi-raw.json").read_text())
+            coords = [
+                (float(p["latitude"]), float(p["longitude"]))
+                for p in pois
+                if p.get("latitude") is not None and p.get("longitude") is not None
+            ]
+            if coords:
+                mean_lat = sum(c[0] for c in coords) / len(coords)
+                mean_lon = sum(c[1] for c in coords) / len(coords)
+                min_lat, max_lat, min_lon, max_lon = bbox
+                if not (min_lat <= mean_lat <= max_lat and min_lon <= mean_lon <= max_lon):
+                    problems.append(
+                        f"registry bbox {bbox} does not contain the POI centroid "
+                        f"({mean_lat:.5f}, {mean_lon:.5f}) — likely a mis-entered bbox"
+                    )
+
     assert not problems, f"city '{city}' is not fully onboarded:\n  " + "\n  ".join(problems)
 
 
