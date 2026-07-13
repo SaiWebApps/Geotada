@@ -37,6 +37,27 @@ def _city_dirs() -> list[Path]:
 
 
 @pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
+def test_every_data_city_is_fully_registered(city_dir: Path) -> None:
+    """Onboarding fail-fast: any city with data/ must ALSO be registered in every
+    surface the engine reads, or it silently misbehaves — upload rejects POIs
+    outside CITY_BBOX, and the API 422s a city absent from SUPPORTED_CITIES. This
+    catches a half-onboarded city at CI time instead of at deploy/request time, so
+    the tour algorithm truly generalizes to 'any and all cities' we add."""
+    from scripts.upload_paris import CITY_BBOX
+    from src.tour.contract import SUPPORTED_CITIES
+
+    city = city_dir.name
+    problems: list[str] = []
+    if city not in CITY_BBOX:
+        problems.append("missing from CITY_BBOX (upload_paris.py) — every POI skipped on upload")
+    if city not in SUPPORTED_CITIES:
+        problems.append("missing from SUPPORTED_CITIES (contract.py) — the API 422s every request")
+    if not (city_dir / "beats.json").exists():
+        problems.append("has poi-raw.json but no beats.json — POIs would seat with zero narration")
+    assert not problems, f"city '{city}' is not fully onboarded:\n  " + "\n  ".join(problems)
+
+
+@pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
 def test_no_accent_or_case_duplicate_pois(city_dir: Path) -> None:
     """No two POIs should collide after accent stripping + case folding.
     Would have caught the 'Café de Flore' vs 'Cafe de Flore' duplicate bug."""
