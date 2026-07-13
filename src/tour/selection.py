@@ -1918,6 +1918,15 @@ def _isochrone_walk_minutes(duration_min: int, *, round_trip: bool) -> int:
     return max(1, round(walk_min / 2.0 if round_trip else walk_min))
 
 
+# A real pedestrian isochrone covers a meaningful slice of the walk envelope; a
+# real Paris 30-min iso is ~5 km² (≈2x the haversine circle), while a tile-less
+# Valhalla returns a degenerate ~0.03 km² near-point. Require the iso to cover at
+# least this fraction of the haversine-envelope circle, else it is degenerate and
+# REACH falls back to the analytic envelope. 0.25 sits ~7x below a real iso and
+# ~20x above a degenerate one — a wide, safe margin.
+ISO_MIN_AREA_FRACTION: float = 0.25
+
+
 def _reach_predicate(
     start: tuple[float, float],
     radius_m: float,
@@ -1944,11 +1953,22 @@ def _reach_predicate(
                     union = geoms[0]
                     for g in geoms[1:]:
                         union = union.union(g)
-                    prepared = _shapely_prep(union)
-                    return (
-                        lambda lat, lng: bool(prepared.covers(_ShapelyPoint(lng, lat))),
-                        False,
-                    )
+                    # Reject a DEGENERATE isochrone. Valhalla with no tiles for
+                    # the region (e.g. New York on a Paris-only tileset) can't
+                    # snap the origin to an edge and returns a near-point polygon
+                    # (~0.03 km² vs the ~5 km² of a real 30-min walk). Trusting it
+                    # collapses REACH to the handful of co-located start POIs, so
+                    # the greedy seats 1 stop. Fall through to the haversine
+                    # envelope when the polygon is implausibly small for the walk.
+                    lng_km = 111.0 * math.cos(math.radians(start[0]))
+                    iso_area_km2 = union.area * 111.0 * lng_km
+                    envelope_area_km2 = math.pi * (radius_m / 1000.0) ** 2
+                    if iso_area_km2 >= ISO_MIN_AREA_FRACTION * envelope_area_km2:
+                        prepared = _shapely_prep(union)
+                        return (
+                            lambda lat, lng: bool(prepared.covers(_ShapelyPoint(lng, lat))),
+                            False,
+                        )
             except (KeyError, TypeError, ValueError, _ShapelyError):
                 # Malformed GeoJSON, or shapely GEOS errors on degenerate/
                 # self-intersecting isochrone rings (GEOSException derives
