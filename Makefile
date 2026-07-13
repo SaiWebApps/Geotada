@@ -209,7 +209,7 @@ db-parity: ## Check the ACTIVE .env graph against the repo source of truth; non-
 
 test-cloud: ## Read-only PARITY check of Aura vs the repo source of truth (per city; counts + key sets). NEVER wipes — Aura is the single persistent store; the destructive suite runs only on local Docker (test-local).
 	@echo "  → Read-only parity check against Aura (no writes, no wipe)"
-	set -a && . .env.cloud && set +a && uv run python -m scripts.db_parity
+	set -a && . .env.cloud && set +a && uv run python -m scripts.aura_ensure_running && uv run python -m scripts.db_parity
 
 test-integration: ## Run integration tests (needs Neo4j)
 	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
@@ -460,13 +460,13 @@ deploy: ## One-shot: deploy a city (POIs+beats+areas) from the repo to the ACTIV
 	uv run python -m scripts.deploy --slug "$(CITY)"
 
 deploy-cloud: ## One-shot: deploy a city from the repo to AURA (additive, audio-safe), then verify parity. Usage: make deploy-cloud CITY=new_york
-	set -a && . .env.cloud && set +a && uv run python -m scripts.deploy --slug "$(CITY)" --allow-cloud
+	set -a && . .env.cloud && set +a && uv run python -m scripts.aura_ensure_running && uv run python -m scripts.deploy --slug "$(CITY)" --allow-cloud
 
 prune-orphans: ## Delete ACTIVE-graph POIs/beats the repo dropped (the deploy complement). Dry-run unless APPLY=1. Usage: make prune-orphans CITY=new_york [APPLY=1]
 	uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" $(if $(APPLY),--apply,)
 
 prune-orphans-cloud: ## Same, against AURA (sources .env.cloud). Dry-run unless APPLY=1. Usage: make prune-orphans-cloud CITY=new_york [APPLY=1]
-	set -a && . .env.cloud && set +a && uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" --allow-cloud $(if $(APPLY),--apply,)
+	set -a && . .env.cloud && set +a && uv run python -m scripts.aura_ensure_running && uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" --allow-cloud $(if $(APPLY),--apply,)
 
 fetch-boundary: ## Fetch a city/area OSM boundary polygon. Usage: make fetch-boundary SLUG=new_york RELATION=175905 [FORCE=1]
 	uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" --relation "$(RELATION)"$(if $(FORCE), --force,)
