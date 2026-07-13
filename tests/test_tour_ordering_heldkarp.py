@@ -134,9 +134,13 @@ def test_cap_sized_input_under_a_second():
     # Exercise the REAL anchor cap so the sub-1s guarantee is validated at the
     # ceiling select_route can actually hand the solver (raised 12→15).
     pts = _random_points(HARD_ANCHOR_CAP, seed=99)
-    t0 = time.perf_counter()
+    # process_time (CPU), not perf_counter (wall): this guards against an
+    # ALGORITHMIC regression (exponential blow-up), not the machine's current
+    # load. On a heavily-contended host the same sub-second compute can take
+    # multiple wall seconds; CPU time stays ~constant, so the guarantee holds.
+    t0 = time.process_time()
     hk = held_karp_open(pts, fixed_start=START)
-    assert time.perf_counter() - t0 < 1.0
+    assert time.process_time() - t0 < 1.0
     assert len(hk) == HARD_ANCHOR_CAP
 
 
