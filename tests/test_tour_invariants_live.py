@@ -61,6 +61,18 @@ _PATHS = [
 # second stop that just says 'Walk to the next stop.'" bug floor.
 _MIN_DWELL_NARRATION_CHARS = 80
 
+# GENERALITY CONTRACT (any city, current + future): for every neighbourhood start
+# x duration, select_route must EITHER serve a non-empty tour OR raise
+# TourabilityRefusedError with alternatives — NEVER a silent 0-stop Route (which
+# shipped an empty "tour" from edge/waterfront starts or tight budgets). A start
+# per major neighbourhood per city; ONBOARD a new city by adding its starts here.
+_GENERALITY_STARTS = {
+    "paris": [(48.8606, 2.3376), (48.8590, 2.3620), (48.8480, 2.3470),
+              (48.8867, 2.3431), (48.8584, 2.2945), (48.8532, 2.3692)],
+    "new_york": [(40.7069, -74.0113), (40.7336, -74.0027), (40.7549, -73.9840),
+                 (40.7736, -73.9566), (40.8116, -73.9465), (40.7061, -73.9969)],
+}
+
 # city_slug -> live CorpusSnapshot, loaded once for every city the fixtures use.
 _SNAPSHOTS: dict[str, object] = {}
 
@@ -85,7 +97,7 @@ def _live_snapshot():
         d.verify_connectivity()
     except (ServiceUnavailable, AuthError, Exception):
         pytest.skip("live dev Neo4j unreachable — start it with `make db-up`")
-    for city in {c for _, c, *_ in _PATHS}:
+    for city in {c for _, c, *_ in _PATHS} | set(_GENERALITY_STARTS):
         _SNAPSHOTS[city] = load_paris_corpus(d, city_slug=city)
     d.close()
     yield
@@ -202,3 +214,29 @@ def test_generated_tour_holds_invariants(label, city, start, duration, lenses, e
     assert not violations, (
         f"\n{label}: {len(violations)} invariant violation(s):\n  " + "\n  ".join(violations)
     )
+
+
+@pytest.mark.parametrize("city", sorted(_GENERALITY_STARTS))
+def test_no_silent_empty_tour_in_any_city(city):
+    """GENERALITY: across every neighbourhood x duration, select_route serves a
+    non-empty tour OR refuses cleanly — never a silent 0-stop Route. This is the
+    contract a new city must also satisfy (add its starts to _GENERALITY_STARTS)."""
+    from src.tour.contract import TourInput
+    from src.tour.density import TourabilityRefusedError
+    from src.tour.routing_client import RoutingClient
+    from src.tour.selection import select_route
+
+    snap = _SNAPSHOTS[city]
+    empties: list[str] = []
+    for lat, lng in _GENERALITY_STARTS[city]:
+        for duration in (60, 120, 180, 250):
+            ti = TourInput(start=(lat, lng), duration_min=duration,
+                           city_slug=city, round_trip=True)
+            try:
+                with RoutingClient() as rc:
+                    route = select_route(ti, snap, routing_client=rc)
+            except TourabilityRefusedError:
+                continue  # an honest refusal (with alternatives) is a valid outcome
+            if not route.pois:
+                empties.append(f"{(lat, lng)} @ {duration}min served a SILENT 0-stop route")
+    assert not empties, f"\n{city}: {len(empties)} silent-empty tour(s):\n  " + "\n  ".join(empties)

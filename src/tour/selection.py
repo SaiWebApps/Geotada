@@ -1266,17 +1266,18 @@ def select_route(
     )
 
     if not candidates:
-        empty = summarise_route(
-            (),
-            start_lat=start_lat,
-            start_lng=start_lng,
-            round_trip=input.round_trip,
-            duration_min=input.duration_min,
-            spine_area=None,
-            routing_client=routing_client,
+        # REACH (the authoritative walkable-POI check) found nothing seatable.
+        # The haversine density pre-check can be optimistic at an edge/waterfront
+        # start (e.g. on the Brooklyn Bridge: POIs across the East River are
+        # inside the straight-line envelope but NOT inside the walking
+        # isochrone). Returning a silent 0-stop Route here shipped an empty
+        # "tour" for ANY such start in ANY city. Refuse cleanly with the
+        # assessment's alternatives, exactly like the density-RED path.
+        raise TourabilityRefusedError(
+            assessment,
+            f"No POIs are reachable on foot within a {input.duration_min}-min walk "
+            f"of this start — try a longer duration or a start nearer the density.",
         )
-        empty = empty.model_copy(update={"reach": reach})
-        return _attach_tourability_if_yellow(empty, assessment)
 
     # Step 2: spine.
     spine = pick_spine_area(start_lat, start_lng, candidates, snapshot)
@@ -1494,6 +1495,20 @@ def select_route(
         routed_cost_fn=leg_fn,
     )
 
+    # Never ship a silent 0-stop tour. Even when REACH found candidates, the
+    # greedy can seat NONE of them (every reachable anchor's round-trip insertion
+    # cost exceeds a tight walk budget — e.g. a short tour from an isolated start),
+    # or demotion/collapse can fold the selection to empty. In any city that is an
+    # honest refusal, not a served empty route: surface the assessment's
+    # alternatives (extend the duration, move the start) like the density-RED path.
+    # (A→B has already materialized its pinned end B above, so a fixed-destination
+    # tour is never empty here.)
+    if not selected:
+        raise TourabilityRefusedError(
+            assessment,
+            f"No POIs could be seated within a {input.duration_min}-min walk of this "
+            f"start — try a longer duration or a start nearer the density.",
+        )
     route = summarise_route(
         selected,
         start_lat=start_lat,
