@@ -319,6 +319,34 @@ def test_thin_city_raises_valueerror_naming_count(tmp_path: Path) -> None:
     assert not (tmp_path / "london").exists()
 
 
+def test_write_city_rejects_traversal_slug_and_writes_nothing(tmp_path: Path) -> None:
+    """write_city validates ``city.slug`` at the VERY TOP — before any mkdir/write
+    — so a path-traversal slug ('../evil') raises ValueError and creates NO file:
+    not inside the data root, and NOT at the escaped target outside it. (>=30 POIs
+    so the slug guard, not the thin-city guard, is what fires.)
+
+    UNDO: remove the slug guard at the top of write_city -> it mkdirs
+    tmp_path/../evil and writes poi-raw.json OUTSIDE the data root (register_city's
+    late slug check raises only AFTER the files are on disk) -> the escaped target
+    exists -> RED."""
+    ctx = _ctx()  # a valid ctx; write_city keys off city.slug, not ctx.slug
+    evil = AssembledCity(
+        slug="../evil",
+        pois=[{"name": f"P{i}", "latitude": 51.5, "longitude": -0.1} for i in range(30)],
+        wiki_extracts={},
+    )
+    escaped = tmp_path.parent / "evil"
+    assert not escaped.exists(), "precondition: escaped target must not pre-exist"
+
+    with pytest.raises(ValueError, match=r"slug"):
+        write_city(evil, ctx, data_root=tmp_path, registry_path=tmp_path / "cities.json")
+
+    assert not escaped.exists(), f"traversal target was written OUTSIDE the data root: {escaped}"
+    assert not (tmp_path / "..evil").exists()
+    written = list(tmp_path.iterdir())
+    assert written == [], f"files written into the data root: {written}"
+
+
 # ---------------------------------------------------------------------------
 # FIX 1 — every write_text must pass encoding="utf-8" (accented cities round-trip
 # on a non-utf-8-locale runner; validate_beats READS with encoding="utf-8").

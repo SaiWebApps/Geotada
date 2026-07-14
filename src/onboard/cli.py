@@ -35,51 +35,18 @@ import os
 import sys
 from collections import Counter
 from pathlib import Path
-from urllib.parse import urlencode
 
 from scripts import validate_beats
-from src.onboard.assemble import WikiExtract, assemble, write_city
+from src.onboard.assemble import assemble, write_city
+from src.onboard.flow import (
+    FIXTURES_ROOT,
+    OnboardError,
+    build_extracts,
+    consult_source,
+    resolve_connectors,
+)
 from src.onboard.jobs import get_store
-from src.onboard.models import CityContext, ConnectorResult
-from src.onboard.sources.base import SourceConnector
-from src.onboard.sources.osm import OsmSource
-from src.onboard.sources.wikidata import WikidataConnector
-from src.onboard.sources.wikipedia import WikipediaConnector
-from src.onboard.sources.wikivoyage import WikivoyageConnector
-
-# Repo root: src/onboard/cli.py -> src/onboard -> src -> repo root.
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-FIXTURES_ROOT = REPO_ROOT / "tests" / "fixtures" / "onboard"
-
-# The connectors an onboarding MODE consults. Step 4 handles ``license_clean``:
-# the four license-clean POI-discovery sources (order sets NAME/COORD precedence
-# ties deterministically, matching test_onboard_assemble's _base_results).
-_MODE_CONNECTORS: dict[str, tuple[str, ...]] = {
-    "license_clean": ("wikipedia", "wikivoyage", "wikidata", "osm"),
-}
-
-# Slug -> the PURE connector instance whose ``parse`` maps a fixture payload to a
-# typed ConnectorResult (no network — see module docstring).
-_CONNECTORS: dict[str, SourceConnector] = {
-    "wikipedia": WikipediaConnector(),
-    "wikivoyage": WikivoyageConnector(),
-    "wikidata": WikidataConnector(),
-    "osm": OsmSource(),
-}
-
-# Slug -> the committed run fixture the CLI feeds that connector's ``parse`` in
-# fixture mode. Wikipedia uses the fuller ``run/`` geosearch; the others use the
-# flat cross-source fixtures (mirrors test_onboard_assemble._base_results).
-_CONNECTOR_FIXTURE: dict[str, str] = {
-    "wikipedia": "run/wikipedia_geosearch.json",
-    "wikivoyage": "wikivoyage_page.json",
-    "wikidata": "wikidata_sparql.json",
-    "osm": "osm_overpass.json",
-}
-
-
-class OnboardError(Exception):
-    """A user-facing onboarding failure (printed to stderr, non-zero exit)."""
+from src.onboard.models import CityContext
 
 
 def _load_json(path: Path) -> dict:
@@ -91,24 +58,6 @@ def _atomic_write_text(path: Path, text: str) -> None:
     tmp = path.with_name(path.name + ".tmp")
     tmp.write_text(text, encoding="utf-8")
     os.replace(tmp, path)
-
-
-def _resolve_connectors(modes: list[str]) -> list[str]:
-    """The ordered, de-duplicated connector slugs for the requested modes.
-
-    Raises ``OnboardError`` on an unknown mode — Step 4 only knows the modes in
-    ``_MODE_CONNECTORS``; a silent no-op would ship a thin/empty city.
-    """
-    ordered: list[str] = []
-    for mode in modes:
-        if mode not in _MODE_CONNECTORS:
-            raise OnboardError(
-                f"unknown mode {mode!r}; Step-4 handles {sorted(_MODE_CONNECTORS)}"
-            )
-        for slug in _MODE_CONNECTORS[mode]:
-            if slug not in ordered:
-                ordered.append(slug)
-    return ordered
 
 
 def _geocode(city: str) -> CityContext:
@@ -126,56 +75,6 @@ def _geocode(city: str) -> CityContext:
         display_name=data["display_name"],
         bbox=tuple(data["bbox"]),
     )
-
-
-def _consult(
-    slug: str, ctx: CityContext, store, job_id: str
-) -> ConnectorResult:
-    """Parse one connector over its fixture, emitting the same live events.
-
-    Mirrors ``base.run_connector``: it emits a ``source_consult`` event naming the
-    concrete URL the connector WOULD GET live, then (instead of fetching, which
-    the fixture-mode network door forbids) parses the committed fixture and emits
-    a scalar-only ``candidate_batch`` event.
-    """
-    connector = _CONNECTORS[slug]
-    fixture = FIXTURES_ROOT / ctx.slug / _CONNECTOR_FIXTURE[slug]
-    if not fixture.exists():
-        raise OnboardError(f"no {slug} fixture for {ctx.slug!r}: {fixture} not found")
-
-    url, params = connector.consult_url(ctx)
-    full = f"{url}?{urlencode(params)}" if params else url
-    store.append_event(job_id, "source_consult", f"Consulting {slug}", source=slug, url=full)
-
-    result = connector.parse(_load_json(fixture), ctx)
-    store.append_event(
-        job_id,
-        "candidate_batch",
-        f"{slug}: {len(result.candidates)} candidates, {len(result.documents)} documents",
-        source=slug,
-        data={"candidates": len(result.candidates), "documents": len(result.documents)},
-    )
-    return result
-
-
-def _build_extracts(city: str) -> list[WikiExtract]:
-    """Pinned ``WikiExtract``s from ``run/wikipedia_extracts.json``.
-
-    Each entry is ``{title: {"revid": ..., "extract": ...}}``; write_city saves
-    each as ``wikipedia/{slug}-rev-{revid}.txt`` verbatim, which the beat drafter
-    quotes and ``validate_beats`` grounds against.
-    """
-    raw = _load_json(FIXTURES_ROOT / city / "run" / "wikipedia_extracts.json")
-    return [
-        WikiExtract(
-            poi_name=title,
-            revid=str(entry["revid"]),
-            text=entry["extract"],
-            article_title=title,
-            url=f"https://en.wikipedia.org/wiki/{title.replace(' ', '_')}?oldid={entry['revid']}",
-        )
-        for title, entry in raw.items()
-    ]
 
 
 def _load_beat_drafter():
@@ -205,15 +104,15 @@ def _env_path(name: str) -> Path | None:
 
 def run(city: str, modes: list[str], *, confirm_cost: bool) -> int:
     """Run the full onboarding flow for ``city``. Returns a process exit code."""
-    connector_slugs = _resolve_connectors(modes)
+    connector_slugs = resolve_connectors(modes)
     ctx = _geocode(city)
 
     store = get_store()
     job = store.create(ctx.slug, modes)
     store.set_status(job.id, "running")
 
-    results = [_consult(slug, ctx, store, job.id) for slug in connector_slugs]
-    extracts = _build_extracts(city)
+    results = [consult_source(slug, ctx, store, job.id) for slug in connector_slugs]
+    extracts = build_extracts(city)
 
     assembled = assemble(results, ctx, extracts)
     store.set_status(job.id, "assembled")

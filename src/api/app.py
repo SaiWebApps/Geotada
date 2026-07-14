@@ -14,7 +14,7 @@ from neo4j.exceptions import ServiceUnavailable
 
 from src.api.auth.routes import router as auth_router
 from src.api.dependencies import close_driver, get_resume_coordinator, init_driver
-from src.api.routes import audio, edges, feedback, graph, nodes, schema, trips
+from src.api.routes import audio, edges, feedback, graph, nodes, onboard, schema, trips
 
 
 def _workbench_api_enabled() -> bool:
@@ -179,6 +179,10 @@ def create_app() -> FastAPI:
         app.include_router(nodes.router, prefix="/api/v1")
         app.include_router(edges.router, prefix="/api/v1")
         app.include_router(schema.router, prefix="/api/v1")
+        # New-city onboarding: writes data/ + shells out to scripts.deploy, so it
+        # MUST stay behind the same gate as the workbench CRUD surface (prod
+        # WORKBENCH_API_ENABLED=false => never mounted).
+        app.include_router(onboard.router, prefix="/api/v1")
 
     # Serve the graph editor frontend
     editor_dir = os.path.join(

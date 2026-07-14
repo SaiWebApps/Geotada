@@ -14,13 +14,21 @@ structural walls below are load-bearing:
 
 from __future__ import annotations
 
+import re
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 # A source's licensing basis. ``SourceDocument`` REQUIRES one of these — an
 # un-licensed document is a construction error, not a runtime check downstream.
 SourceLicense = Literal["public_domain", "cc_by_sa", "user_provided"]
+
+# The canonical city-slug allowlist. MIRRORS ``city_registry._SLUG_RE`` (kept in
+# sync deliberately, like ``assemble._norm``): a slug also names the on-disk
+# ``data/{slug}/`` corpus dir, so a value carrying path separators or traversal
+# (``..``, ``/``) must never even CONSTRUCT — otherwise ``write_city`` would
+# escape the data root before the registry's (later) slug check can fire.
+_SLUG_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 
 
 class SourceDocument(BaseModel):
@@ -182,6 +190,20 @@ class CityContext(BaseModel):
     slug: str
     display_name: str
     bbox: tuple[float, float, float, float]  # (min_lat, max_lat, min_lon, max_lon)
+
+    @field_validator("slug")
+    @classmethod
+    def _validate_slug(cls, value: str) -> str:
+        """Reject any slug that is not the canonical ``[a-z][a-z0-9_]*`` form, so a
+        path-traversal / separator-bearing slug (``../../x``, ``a/b``) raises a
+        ``ValidationError`` at CONSTRUCTION — the attacker-controlled slug can
+        never reach ``write_city`` and escape the ``data/`` root."""
+        if not _SLUG_RE.match(value or ""):
+            raise ValueError(
+                f"invalid city slug {value!r}: must match {_SLUG_RE.pattern} "
+                "(lowercase letters/digits/underscore, letter-initial)"
+            )
+        return value
 
     @property
     def centre(self) -> tuple[float, float]:

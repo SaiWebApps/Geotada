@@ -579,6 +579,18 @@ def write_city(
     ``wikipedia/{poi_slug}-rev-{revid}.txt`` per ``WikiExtract`` — nothing else.
     Refuses to write a thin city (< 30 POIs). Returns the city directory.
     """
+    # SLUG WALL (defense in depth): validate BEFORE any mkdir/write, so a
+    # path-traversal slug ('../evil') can never escape the data root. The registry
+    # (``register_city``) also validates the slug, but that runs LAST — after the
+    # corpus is already on disk — so it cannot protect the filesystem. Reuse
+    # city_registry's canonical allowlist. Protects the CLI + any direct caller.
+    if not city_registry._SLUG_RE.match(city.slug or ""):
+        raise ValueError(
+            f"refusing to write city with invalid slug {city.slug!r}: must match "
+            f"{city_registry._SLUG_RE.pattern} (lowercase letters/digits/underscore, "
+            "letter-initial)"
+        )
+
     if len(city.pois) < MIN_POIS:
         raise ValueError(
             f"refusing to write a thin city {city.slug!r}: only {len(city.pois)} POI(s), "

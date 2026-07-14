@@ -226,6 +226,27 @@ The enabler; tightly coupled → ONE coherent unit.
   zero-LLM counter; router absent when workbench disabled; upload subprocess env-pinning).
 - **Proof:** full mock-mode flow returns ≥1 `source_consult` per selected source each with a
   concrete URL; stream is `text/event-stream`; workbench-disabled → router absent. Undo-tests.
+- **2026-07-14 outcome (Step 5):** shared flow extracted to `src/onboard/flow.py` (imported by BOTH
+  cli.py and the router — no API→CLI private coupling); `src/api/routes/onboard.py` mounts INSIDE
+  `_workbench_api_enabled()` (prod `WORKBENCH_API_ENABLED=false` → never mounted; guarded by
+  `test_render_manifest`). SSE via BackgroundTasks (deterministic under TestClient: job terminal before
+  the POST returns), worker try/except always terminates the stream, 409 cost gate makes zero LLM calls,
+  upload pins NEO4J_* from the API's own env via a patched `_run_deploy` seam. Bar: make lint clean,
+  test_onboard_api 16 passed (incl. security + negative-path coverage), test_onboard_assemble 15 passed,
+  onboard-city regression 36/PASS, FULL make test-local 1761 passed/0 failed/0 skipped. QA: all undo-tests genuine. **Security skeptic (opus) found a REAL hole: slug
+  path-traversal** — `slug` was unvalidated on the write path, so `write_city` wrote OUTSIDE data_root
+  before `register_city` (the only allowlist) ran last; and a valid `slug="paris"` would clobber
+  committed data/paris. FIXED: `^[a-z][a-z0-9_]*$` validation at the API boundary + at the top of
+  `write_city` + a `CityContext` validator, PLUS create_job rejects an already-registered slug
+  (onboarding is for NEW cities). Also hardened: upload wraps `_run_deploy` (deploy failure → status
+  error, not stuck "assembled").
+- **DEFERRED hardening (documented, not changed in Step 5): `_workbench_api_enabled()` is FAIL-OPEN** —
+  only `{false,0,no,off}` disable it; an unset/typo'd value (`WORKBENCH_API_ENABLED=disabled`) would
+  expose the unauthenticated repo-write+deploy surface. Prod is safe today (`render.yaml` sets `"false"`,
+  guarded by the render-manifest test) and this behavior is PRE-EXISTING + shared by all workbench CRUD
+  routers (graph/nodes/edges/schema) with CI depending on default-on — so flipping to fail-closed is a
+  separate, broader decision, not a Step-5 change. Follow-up: make it opt-in (fail-closed) + add auth to
+  the workbench surface.
 
 ### Step 6 — Frontend panel  [proof in Step 7]
 - NEW `frontend/onboard.html` (mode checkboxes; live consult feed; POI/beat panes; cost-confirm
