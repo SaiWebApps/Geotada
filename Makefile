@@ -376,10 +376,10 @@ valhalla-build-tiles: ## Download the Paris (Île-de-France ~334MB) + New York (
 ##@ RUN
 
 api: ## Start the FastAPI graph API (port 8000)
-	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
+	WORKBENCH_API_ENABLED=true NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 api-test: db-workbench-up ## Start API against the WORKBENCH database (port 8001 → Neo4j 7689; coexists with `make api` on 8000; workbench: review.html?apiPort=8001). `make test-workbench` needs :8001 free — stop this first.
-	set -a && . .env.test && set +a && NEO4J_URI=bolt://localhost:7689 NEO4J_PASSWORD=ondoway_workbench_2026 NEO4J_DATABASE=neo4j NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8001 --reload
+	set -a && . .env.test && set +a && WORKBENCH_API_ENABLED=true NEO4J_URI=bolt://localhost:7689 NEO4J_PASSWORD=ondoway_workbench_2026 NEO4J_DATABASE=neo4j NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8001 --reload
 
 run: api ## Alias for `make api` — start the graph API for local development (port 8000)
 

@@ -13,9 +13,11 @@ services:
         value: mock
       # Gate OFF the editorial-workbench graph-CRUD routers (graph/nodes/edges/
       # schema) on the public deploy. These are an UNAUTHENTICATED create/update/
-      # DETACH DELETE surface over the live Neo4j/Aura graph; app.py mounts them
-      # unless this is an explicit off value. Without it, anonymous callers can
-      # mutate or wipe the production corpus. Must stay "false" in prod.
+      # DETACH DELETE + data/-write + deploy surface over the live Neo4j/Aura
+      # graph; app.py mounts them ONLY on an explicit truthy value (fail-closed),
+      # so unset would already be OFF — but we pin "false" explicitly so the
+      # intent is auditable and the render-manifest test can guard it. Without
+      # this OFF, anonymous callers could mutate or wipe the production corpus.
       - key: WORKBENCH_API_ENABLED
         value: "false"
       - key: NEO4J_URI

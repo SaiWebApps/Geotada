@@ -39,6 +39,14 @@ if _test_env.exists():
     # Same wall for onboarding beat-drafting: force the mock drafter so the bar
     # (and src/onboard/cli.py) can NEVER make a live Anthropic call.
     os.environ["ONBOARD_PROVIDER"] = "mock"
+    # The workbench API gate is now FAIL-CLOSED (src/api/app.py: mounts the
+    # unauthenticated graph-CRUD + onboard routers ONLY on an explicit truthy
+    # value). Opt the suite in so every in-process TestClient test — and the
+    # uvicorn subprocess that tests/test_workbench_ui.py launches with
+    # env={**os.environ, ...} — sees the workbench routers mounted. setdefault
+    # (not plain assignment) so a shell `WORKBENCH_API_ENABLED=` export can still
+    # force fail-closed for a run (CLAUDE.md: shell env wins).
+    os.environ.setdefault("WORKBENCH_API_ENABLED", "true")
 else:
     import pytest as _pytest
 

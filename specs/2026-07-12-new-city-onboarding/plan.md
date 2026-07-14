@@ -240,7 +240,15 @@ The enabler; tightly coupled → ONE coherent unit.
   `write_city` + a `CityContext` validator, PLUS create_job rejects an already-registered slug
   (onboarding is for NEW cities). Also hardened: upload wraps `_run_deploy` (deploy failure → status
   error, not stuck "assembled").
-- **DEFERRED hardening (documented, not changed in Step 5): `_workbench_api_enabled()` is FAIL-OPEN** —
+- **RESOLVED 2026-07-14 (own commit, user-activated): `_workbench_api_enabled()` flipped to FAIL-CLOSED** —
+  now mounts the workbench CRUD + onboard routers ONLY on an explicit truthy `WORKBENCH_API_ENABLED`
+  ({true,1,yes,on}); unset/empty/typo'd → OFF. CI + local dev opt in explicitly (conftest `setdefault`,
+  Makefile `api`/`api-test`, `scripts/workbench.sh`); prod `render.yaml` "false" stays OFF; `city_registry`'s
+  cloud-filter mirror left as-is (intentional unset-value asymmetry, commented). Proof: full `make test-local`
+  1777 passed + real-browser `make test-workbench` 58 passed + an 18-value fail-closed parser probe + judge
+  mutation-check. **Auth (a shared-secret/localhost dep) was DELIBERATELY NOT added** — the surface is now
+  fail-closed + prod-unmounted + 127.0.0.1-bound, so auth stays a further optional step, not shipped here.
+- **(historical) DEFERRED hardening (documented, not changed in Step 5): `_workbench_api_enabled()` was FAIL-OPEN** —
   only `{false,0,no,off}` disable it; an unset/typo'd value (`WORKBENCH_API_ENABLED=disabled`) would
   expose the unauthenticated repo-write+deploy surface. Prod is safe today (`render.yaml` sets `"false"`,
   guarded by the render-manifest test) and this behavior is PRE-EXISTING + shared by all workbench CRUD

@@ -19,14 +19,22 @@ from src.api.routes import audio, edges, feedback, graph, nodes, onboard, schema
 
 def _workbench_api_enabled() -> bool:
     """Whether to mount the editorial-workbench graph-CRUD routers (graph, nodes,
-    edges, schema). Default TRUE (local dev + tests). The public Render deployment
-    sets WORKBENCH_API_ENABLED=false so the unauthenticated create/update/delete
-    graph surface is not reachable over the internet."""
-    return os.getenv("WORKBENCH_API_ENABLED", "true").strip().lower() not in (
-        "false",
-        "0",
-        "no",
-        "off",
+    edges, schema) + the new-city onboard router.
+
+    FAIL-CLOSED / DEFAULTS OFF (opt-in): mounts ONLY when WORKBENCH_API_ENABLED is
+    an EXPLICIT truthy value (true/1/yes/on, case-insensitive, whitespace-trimmed).
+    An unset, empty, or typo'd/garbage value ("disbaled", "flase", "") keeps the
+    surface OFF. This is a security property: these routers are an UNAUTHENTICATED
+    create/update/DETACH-DELETE + data/-write-and-deploy surface, so under the old
+    fail-OPEN default a single mis-set env var silently exposed it over the
+    internet. Local dev + the test suite opt in explicitly (Makefile `api`/
+    `api-test`, scripts/workbench.sh, tests/conftest.py); prod render.yaml pins
+    "false" (still OFF under this parser)."""
+    return os.getenv("WORKBENCH_API_ENABLED", "").strip().lower() in (
+        "true",
+        "1",
+        "yes",
+        "on",
     )
 
 
@@ -171,9 +179,12 @@ def create_app() -> FastAPI:
     # Editorial-workbench CRUD (create/update/delete graph nodes + edges, read the
     # schema/city catalogue). These are the LOCAL workbench's surface — an
     # UNAUTHENTICATED write surface — so they must NOT be exposed on the public
-    # deployment. Gated ON by default for local dev + the test/CI suites; the
-    # public Render service sets WORKBENCH_API_ENABLED=false so anonymous callers
-    # cannot mutate (or crash) the graph over the internet.
+    # deployment. FAIL-CLOSED: mounted ONLY on an explicit truthy
+    # WORKBENCH_API_ENABLED (opt-in). Local dev + the test/CI suites set it
+    # explicitly (Makefile, scripts/workbench.sh, conftest); the public Render
+    # service leaves it "false" so anonymous callers cannot mutate (or crash) the
+    # graph over the internet — and, crucially, a typo'd/unset value now also
+    # stays OFF instead of silently exposing the surface.
     if _workbench_api_enabled():
         app.include_router(graph.router, prefix="/api/v1")
         app.include_router(nodes.router, prefix="/api/v1")

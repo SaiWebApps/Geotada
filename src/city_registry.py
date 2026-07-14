@@ -64,7 +64,16 @@ def supported_cities() -> frozenset[str]:
 def _prod_cloud_filter_active() -> bool:
     """True when the public prod cloud-filter should apply — i.e. the workbench is
     DISABLED. Mirrors ``src/api/app.py:_workbench_api_enabled`` falsey parsing
-    exactly, so ``false``/``0``/``no``/``off`` (any case) all count as prod."""
+    exactly, so ``false``/``0``/``no``/``off`` (any case) all count as prod.
+
+    INTENTIONAL ASYMMETRY (do NOT "unify" with app.py): this controls the
+    ``servable_cities()`` /trips filter, NOT router mounting. app.py flipped to
+    fail-CLOSED (unset ⇒ routers OFF); this stays fail-OPEN (unset ⇒ cloud-filter
+    OFF ⇒ local/all-servable). On an UNSET value they diverge, but harmlessly:
+    prod pins render.yaml ``"false"`` (both agree ⇒ routers off + cloud-filter on)
+    and the tests set it ``"true"`` (both agree ⇒ routers on + cloud-filter off).
+    Flipping this to fail-closed would instead make an unset local dev env serve
+    ONLY cloud-deployed cities — the opposite of the local-workbench intent."""
     return os.getenv("WORKBENCH_API_ENABLED", "true").strip().lower() in (
         "false",
         "0",

@@ -14,9 +14,10 @@ is visible.
 
 from __future__ import annotations
 
+import pytest
 from fastapi.testclient import TestClient
 
-from src.api.app import create_app
+from src.api.app import _workbench_api_enabled, create_app
 
 _DEAD_AURA_URI = "neo4j+s://deadbeef-nonexistent-ondoway.databases.neo4j.io:7687"
 
@@ -72,15 +73,44 @@ def test_workbench_crud_gated_off_public_deployment(monkeypatch):
         assert client.get("/api/v1/healthz").status_code == 200
 
 
-def test_workbench_crud_enabled_by_default(monkeypatch):
-    """Default (local dev + tests): the workbench CRUD routes ARE mounted, and
-    gating them off drops exactly those paths (checked via the route table so no
-    live DB is needed)."""
+def test_workbench_crud_gated_off_by_default(monkeypatch):
+    """New FAIL-CLOSED contract (2026-07-14 security hardening): the workbench
+    graph-CRUD routers are the LOCAL editorial workbench's UNAUTHENTICATED
+    create/update/DETACH-DELETE surface. They now mount ONLY when
+    WORKBENCH_API_ENABLED is EXPLICITLY truthy — an unset (or typo'd) value
+    leaves them OFF, so a mis-configured deploy can never silently expose the
+    repo-write/deploy surface on the internet. Checked via the route table so no
+    live DB is needed."""
+    # UNSET => workbench routes ABSENT (fail-closed default); mobile routes stay.
     monkeypatch.delenv("WORKBENCH_API_ENABLED", raising=False)
     paths = {getattr(r, "path", None) for r in create_app().routes}
-    assert "/api/v1/cities" in paths, "graph router mounted by default"
-    assert "/api/v1/nodes/{label}" in paths, "nodes write surface mounted by default"
-    monkeypatch.setenv("WORKBENCH_API_ENABLED", "false")
-    gated = {getattr(r, "path", None) for r in create_app().routes}
-    assert "/api/v1/cities" not in gated and "/api/v1/nodes/{label}" not in gated
-    assert "/api/v1/healthz" in gated, "mobile-facing routes stay mounted"
+    assert "/api/v1/cities" not in paths, "graph router must NOT mount when unset"
+    assert "/api/v1/nodes/{label}" not in paths, "nodes write surface must NOT mount when unset"
+    assert "/api/v1/healthz" in paths, "mobile-facing routes stay mounted"
+    # Explicit truthy => opt-in, workbench routes PRESENT.
+    monkeypatch.setenv("WORKBENCH_API_ENABLED", "true")
+    enabled = {getattr(r, "path", None) for r in create_app().routes}
+    assert "/api/v1/cities" in enabled, "graph router mounts when explicitly enabled"
+    assert "/api/v1/nodes/{label}" in enabled, "nodes write surface mounts when explicitly enabled"
+
+
+@pytest.mark.parametrize("value", ["true", "1", "yes", "on", "TRUE", "On", "yes "])
+def test_workbench_gate_truthy_values_mount(monkeypatch, value):
+    """FAIL-CLOSED parser: only an explicit truthy value (case-insensitive,
+    whitespace-trimmed) opens the gate."""
+    monkeypatch.setenv("WORKBENCH_API_ENABLED", value)
+    assert _workbench_api_enabled() is True
+
+
+@pytest.mark.parametrize("value", ["false", "0", "no", "off", "FALSE", "", "garbage", "disabled"])
+def test_workbench_gate_non_truthy_values_stay_off(monkeypatch, value):
+    """FAIL-CLOSED parser: explicit off values AND any unrecognized/empty value
+    (a typo, a garbage export) keep the gate OFF — the whole point of the flip."""
+    monkeypatch.setenv("WORKBENCH_API_ENABLED", value)
+    assert _workbench_api_enabled() is False
+
+
+def test_workbench_gate_unset_is_off(monkeypatch):
+    """FAIL-CLOSED parser: an UNSET var is OFF (opt-in, not opt-out)."""
+    monkeypatch.delenv("WORKBENCH_API_ENABLED", raising=False)
+    assert _workbench_api_enabled() is False
