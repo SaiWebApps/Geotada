@@ -1,0 +1,322 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "geosearch": [
+      {
+        "pageid": 5060,
+        "ns": 0,
+        "title": "British Museum",
+        "lat": 51.5194,
+        "lon": -0.127,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 70890,
+        "ns": 0,
+        "title": "Tower of London",
+        "lat": 51.5081,
+        "lon": -0.0759,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 4653,
+        "ns": 0,
+        "title": "Big Ben",
+        "lat": 51.5007,
+        "lon": -0.1246,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 30390,
+        "ns": 0,
+        "title": "Tower Bridge",
+        "lat": 51.5055,
+        "lon": -0.0754,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 30450,
+        "ns": 0,
+        "title": "Trafalgar Square",
+        "lat": 51.508,
+        "lon": -0.1281,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 61277,
+        "ns": 0,
+        "title": "St Paul's Cathedral",
+        "lat": 51.5138,
+        "lon": -0.0984,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 71159,
+        "ns": 0,
+        "title": "Buckingham Palace",
+        "lat": 51.5014,
+        "lon": -0.1419,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 34321,
+        "ns": 0,
+        "title": "Westminster Abbey",
+        "lat": 51.4994,
+        "lon": -0.1273,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 24955001,
+        "ns": 0,
+        "title": "The Shard",
+        "lat": 51.5045,
+        "lon": -0.0865,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 44190,
+        "ns": 0,
+        "title": "London Eye",
+        "lat": 51.5033,
+        "lon": -0.1196,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 152753,
+        "ns": 0,
+        "title": "Tate Modern",
+        "lat": 51.5076,
+        "lon": -0.0994,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 100202,
+        "ns": 0,
+        "title": "National Gallery",
+        "lat": 51.5089,
+        "lon": -0.1283,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 174129,
+        "ns": 0,
+        "title": "Natural History Museum",
+        "lat": 51.4967,
+        "lon": -0.1764,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 217272,
+        "ns": 0,
+        "title": "Victoria and Albert Museum",
+        "lat": 51.4966,
+        "lon": -0.1722,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 233871,
+        "ns": 0,
+        "title": "Science Museum",
+        "lat": 51.4978,
+        "lon": -0.1745,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 234093,
+        "ns": 0,
+        "title": "Hyde Park",
+        "lat": 51.5073,
+        "lon": -0.1657,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 476301,
+        "ns": 0,
+        "title": "Kensington Palace",
+        "lat": 51.505,
+        "lon": -0.1877,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 152804,
+        "ns": 0,
+        "title": "Piccadilly Circus",
+        "lat": 51.5098,
+        "lon": -0.1342,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 152724,
+        "ns": 0,
+        "title": "Covent Garden",
+        "lat": 51.5117,
+        "lon": -0.124,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 152816,
+        "ns": 0,
+        "title": "Leicester Square",
+        "lat": 51.5103,
+        "lon": -0.13,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 234321,
+        "ns": 0,
+        "title": "St James's Park",
+        "lat": 51.5027,
+        "lon": -0.1347,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 234510,
+        "ns": 0,
+        "title": "Regent's Park",
+        "lat": 51.5313,
+        "lon": -0.157,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 1543210,
+        "ns": 0,
+        "title": "Camden Market",
+        "lat": 51.5414,
+        "lon": -0.146,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 155841,
+        "ns": 0,
+        "title": "British Library",
+        "lat": 51.5299,
+        "lon": -0.1276,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 250881,
+        "ns": 0,
+        "title": "King's Cross Station",
+        "lat": 51.5308,
+        "lon": -0.1238,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 3125401,
+        "ns": 0,
+        "title": "St Pancras Renaissance Hotel",
+        "lat": 51.5309,
+        "lon": -0.1258,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 320045,
+        "ns": 0,
+        "title": "Somerset House",
+        "lat": 51.511,
+        "lon": -0.117,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 267781,
+        "ns": 0,
+        "title": "Royal Albert Hall",
+        "lat": 51.501,
+        "lon": -0.1774,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 234701,
+        "ns": 0,
+        "title": "Marble Arch",
+        "lat": 51.5131,
+        "lon": -0.1589,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 234901,
+        "ns": 0,
+        "title": "Green Park",
+        "lat": 51.5044,
+        "lon": -0.1427,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 41234501,
+        "ns": 0,
+        "title": "Sky Garden",
+        "lat": 51.5113,
+        "lon": -0.0838,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 315401,
+        "ns": 0,
+        "title": "Monument to the Great Fire of London",
+        "lat": 51.5102,
+        "lon": -0.0859,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 411201,
+        "ns": 0,
+        "title": "Shakespeare's Globe",
+        "lat": 51.5081,
+        "lon": -0.0972,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 512301,
+        "ns": 0,
+        "title": "Borough Market",
+        "lat": 51.5055,
+        "lon": -0.091,
+        "dist": 0.0,
+        "primary": ""
+      },
+      {
+        "pageid": 618801,
+        "ns": 0,
+        "title": "Trinity Square Gardens",
+        "lat": 51.5096,
+        "lon": -0.0785,
+        "dist": 0.0,
+        "primary": ""
+      }
+    ]
+  }
+}

@@ -36,6 +36,9 @@ if _test_env.exists():
     # hangs on live Opus calls. Force mock here; test_compose_provider.py
     # monkeypatches per-test to exercise the selector.
     os.environ["COMPOSE_PROVIDER"] = "mock"
+    # Same wall for onboarding beat-drafting: force the mock drafter so the bar
+    # (and src/onboard/cli.py) can NEVER make a live Anthropic call.
+    os.environ["ONBOARD_PROVIDER"] = "mock"
 else:
     import pytest as _pytest
 

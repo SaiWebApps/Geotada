@@ -194,6 +194,27 @@ The enabler; tightly coupled → ONE coherent unit.
   → ≥30 POIs each with coords + `gravity_audit`, registry entry written, `beats.json` passes
   `validate_beats.py`; live provider without `confirm_cost` makes ZERO Anthropic calls
   (counting fake). Undo-test per new behavior.
+- **2026-07-14 skeptic-panel outcome (Step 4):** built `assemble.py` (pure merge/tier/dedup) +
+  `write_city` (sole disk/registry touch; wall-3 STRUCTURAL — it only ever receives POI dicts +
+  `WikiExtract`, never a `DiscoveryPointer`) + `beat_draft.py` (mock/Anthropic; BOTH set
+  `source_passage` to a mechanical verbatim slice of the pinned extract, so live grounding cannot
+  regress vs. mock) + `cli.py` + `make onboard-city`. Proof: `make onboard-city CITY=london` (fixture+mock,
+  tmp DATA_ROOT) → 36 POIs, tiers T5=3/T4=6/T3=9/T2=9/T1=9 (passes the shape guard), 35 grounded beats,
+  `validate_beats` PASS, registry entry (no `centre`), and NOTHING written to committed `data/` — hermetic.
+  A 2-model panel (opus grounding/wall-3/flow SURVIVED; sonnet tiers SURVIVED verified N=30..2e6, registry
+  try/finally SURVIVED under forced exception) found + we FIXED: (i) `write_text` missing `encoding="utf-8"`
+  (would break the first accented city on a non-utf-8 runner); (ii) distance-blind exact-`_norm` merge that
+  silently collapsed two distinct same-named places → now geo-aware (co-located merge; distant same-names
+  kept as separate, disambiguated, logged POIs); (iii) added the registry-exception-restore test. All
+  red-first + undo, with a hard regression gate that London's 36-POI output is unchanged.
+- **DEFERRED to Step 8 (BINDING, real-data — documented, all fail-CLOSED/visible, none silent-corrupt):**
+  (a) abbreviation-equivalence dedup ("St." vs "Saint" at same coords currently survive as a visible
+  same-coords duplicate) — deferred because "St"→"Saint" vs "Street" is genuinely ambiguous and needs real
+  data + human review; (b) live identical-body `hash_body` collision (aborts the run via `validate_beats`,
+  not corrupts) — add a live de-dup/retry in Step 8; (c) `slugify`-collision surviving `_norm` dedup
+  ("Notre-Dame" vs "Notre Dame" → identical `beat_id`, one shared extract) — aborts loudly via identity gate.
+  The full geo-split + disambiguation quality tuning is best validated against the real London corpus at the
+  Step-8 milestone (acceptance-agent tour judgement + human sign-off), not a synthetic fixture.
 
 ### Step 5 — Onboard API router  [$0 in bar via mock+fixture]
 - NEW `src/api/routes/onboard.py` (`POST /onboard/jobs`, `GET /onboard/jobs/{id}` snapshot,
