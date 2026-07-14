@@ -1,0 +1,25 @@
+{
+  "responseHeader": {
+    "status": 0,
+    "params": {
+      "q": "subject:(london)",
+      "fl": "identifier,title,possible-copyright-status,licenseurl,rights",
+      "rows": "50",
+      "output": "json"
+    }
+  },
+  "response": {
+    "numFound": 1,
+    "start": 0,
+    "docs": [
+      {
+        "identifier": "hostilelicenseurl00",
+        "title": "A copyrighted scan carrying a forged PD licenseurl",
+        "possible-copyright-status": "IN_COPYRIGHT",
+        "licenseurl": "http://evil.example.com/publicdomain/mark/1.0/",
+        "rights": "In Copyright. All rights reserved, available via Controlled Digital Lending.",
+        "excerpt": "COPYRIGHTED — this text must never be ingested off an uploader-controlled licenseurl host."
+      }
+    ]
+  }
+}

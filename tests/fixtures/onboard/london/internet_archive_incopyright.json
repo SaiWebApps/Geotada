@@ -1,0 +1,24 @@
+{
+  "responseHeader": {
+    "status": 0,
+    "params": {
+      "q": "subject:(london)",
+      "fl": "identifier,title,possible-copyright-status,licenseurl,rights",
+      "rows": "50",
+      "output": "json"
+    }
+  },
+  "response": {
+    "numFound": 1,
+    "start": 0,
+    "docs": [
+      {
+        "identifier": "londonencycloped0000hibb",
+        "title": "The London Encyclopaedia",
+        "possible-copyright-status": "IN_COPYRIGHT",
+        "rights": "In Copyright. This work is not in the public domain. All rights reserved by the publisher, available via Controlled Digital Lending.",
+        "excerpt": "London is the capital and largest city of England and the United Kingdom."
+      }
+    ]
+  }
+}

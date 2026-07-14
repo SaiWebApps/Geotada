@@ -1,0 +1,51 @@
+{
+  "count": 2,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1661,
+      "title": "The Adventures of Sherlock Holmes",
+      "authors": [
+        {
+          "name": "Doyle, Arthur Conan",
+          "birth_year": 1859,
+          "death_year": 1930
+        }
+      ],
+      "subjects": [
+        "Detective and mystery stories, English",
+        "London (England) -- Fiction"
+      ],
+      "copyright": false,
+      "excerpt": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name.",
+      "formats": {
+        "text/html; charset=utf-8": "https://www.gutenberg.org/files/1661/1661-h/1661-h.htm",
+        "application/epub+zip": "https://www.gutenberg.org/ebooks/1661.epub3.images",
+        "text/plain; charset=utf-8": "https://www.gutenberg.org/files/1661/1661-0.txt",
+        "application/rdf+xml": "https://www.gutenberg.org/ebooks/1661.rdf",
+        "image/jpeg": "https://www.gutenberg.org/cache/epub/1661/pg1661.cover.medium.jpg"
+      }
+    },
+    {
+      "id": 999001,
+      "title": "A Modern London Memoir",
+      "authors": [
+        {
+          "name": "Doe, Jane",
+          "birth_year": 1970,
+          "death_year": null
+        }
+      ],
+      "subjects": [
+        "London (England) -- Description and travel"
+      ],
+      "copyright": true,
+      "excerpt": "A contemporary walk through the city, its rights still firmly held.",
+      "formats": {
+        "text/html; charset=utf-8": "https://www.gutenberg.org/files/999001/999001-h/999001-h.htm",
+        "text/plain; charset=utf-8": "https://www.gutenberg.org/files/999001/999001-0.txt"
+      }
+    }
+  ]
+}

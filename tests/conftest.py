@@ -17,6 +17,7 @@ backlog.conftest_test_isolation for context.
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from urllib.parse import urlparse
@@ -167,3 +168,15 @@ def client(clean_driver):
     app = create_app()
     with TestClient(app) as c:
         yield c
+
+
+def load_onboard_fixture(city: str, name: str) -> dict:
+    """Load a Step-3 connector JSON fixture from tests/fixtures/onboard/{city}/{name}.
+
+    Connectors are PURE — their ``parse`` maps a raw provider JSON payload to a
+    typed ``ConnectorResult`` — so the bar drives them from these committed
+    fixtures and never touches the network.
+    """
+    return json.loads(
+        (Path(__file__).parent / "fixtures" / "onboard" / city / name).read_text()
+    )

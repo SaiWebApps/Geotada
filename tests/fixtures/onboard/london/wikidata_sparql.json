@@ -1,0 +1,57 @@
+{
+  "head": {
+    "vars": ["place", "placeLabel", "coord"]
+  },
+  "results": {
+    "bindings": [
+      {
+        "place": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q84"
+        },
+        "placeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "London"
+        },
+        "coord": {
+          "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+          "type": "literal",
+          "value": "Point(-0.1278 51.5074)"
+        }
+      },
+      {
+        "place": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q41225"
+        },
+        "placeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Big Ben"
+        },
+        "coord": {
+          "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+          "type": "literal",
+          "value": "Point(-0.1246 51.5007)"
+        }
+      },
+      {
+        "place": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q83125"
+        },
+        "placeLabel": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Tower Bridge"
+        },
+        "coord": {
+          "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+          "type": "literal",
+          "value": "Point(-0.0754 51.5055)"
+        }
+      }
+    ]
+  }
+}

@@ -139,6 +139,23 @@ The enabler; tightly coupled → ONE coherent unit.
     import the fetcher → RED.
 - **Proof:** each connector parses its fixture → typed candidates with the expected fields
   (coords where required); undo a connector → its case RED. Fan out to parallel devs.
+- **2026-07-14 skeptic-panel outcome (what actually shipped in Step 3):** 7 connectors built in
+  parallel against a frozen `base.py` interface (connectors are PURE `consult_url`+`parse`; only
+  `base.run_connector` imports `fetch` — verified sole caller). A 2-model panel then found + we fixed:
+  (R1) wikidata `KeyError` on WDQS-omitted `placeLabel` → defensive `.get` + skip labelless;
+  (R2) wikivoyage `{{listing}}` regex not brace-balanced → nested templates silently dropped coords →
+  replaced with a brace-balanced scanner; (R3) internet_archive `KeyError` on missing `title`/`response`
+  → `.get` guards + skip. **F6 (the IA public-domain wall) broke THREE times under re-attack** — a
+  substring collapse, a host-spoofed `licenseurl`, then an OR-override where a genuine-host PD
+  `licenseurl` beat an explicit `IN_COPYRIGHT` status — so it was SIMPLIFIED to one authoritative,
+  fail-closed signal: **IA auto-ingest accepts iff `possible-copyright-status` normalizes to exactly
+  `NOT_IN_COPYRIGHT` (string or list; fail-closed on missing/empty/mixed/non-string). No `licenseurl`
+  and no free-text `rights` acceptance path remains.** DELIBERATE COVERAGE BOUNDARY: a genuinely-PD IA
+  item lacking that computed status is NOT auto-ingested — use the Manual book-drop. (F8) the shadow
+  connector-isolation AST guard was hardened (dynamic `__import__`/`import_module` detection +
+  `urllib3`/`aiohttp`/`socket`/`http.client`); transitive-import evasion is a documented single-file-AST
+  limitation, not covered. Every fix is red-first + undo-verified; each wall re-attacked until an
+  adversary failed.
 
 ### Step 4 — Assemble + beat draft + CLI  [$0 in bar via mock]
 - NEW `src/onboard/assemble.py` (merge on `canonical_name_key` + rapidfuzz; coords

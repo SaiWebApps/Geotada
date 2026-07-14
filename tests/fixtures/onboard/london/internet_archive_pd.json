@@ -1,0 +1,25 @@
+{
+  "responseHeader": {
+    "status": 0,
+    "params": {
+      "q": "subject:(london)",
+      "fl": "identifier,title,possible-copyright-status,licenseurl,rights",
+      "rows": "50",
+      "output": "json"
+    }
+  },
+  "response": {
+    "numFound": 1,
+    "start": 0,
+    "docs": [
+      {
+        "identifier": "londonpastpresen00loft",
+        "title": "London, past and present",
+        "possible-copyright-status": "NOT_IN_COPYRIGHT",
+        "licenseurl": "http://creativecommons.org/publicdomain/mark/1.0/",
+        "rights": "Public Domain",
+        "excerpt": "London, the capital of England, seated on the Thames, was in the days of the Romans a place of great trade and resort."
+      }
+    ]
+  }
+}

@@ -126,3 +126,65 @@ class OnboardJob(BaseModel):
     result: dict = {}
     error: str | None = None
     created_at: str | None = None  # ISO-8601 timestamp
+
+
+# ---------------------------------------------------------------------------
+# Step-3 connector contract (NEW): what a source connector produces.
+# ---------------------------------------------------------------------------
+
+
+class PoiCandidate(BaseModel):
+    """A single name + coords + provenance HIT from ONE source (e.g. one
+    Wikipedia geosearch result, one Overpass node).
+
+    This is NOT a POI yet: ``tier`` / ``poi_role`` / ``gravity`` are assigned
+    later by the Step-4 assemble pass that merges candidates across sources —
+    never here. ``meta`` carries provenance SCALARS ONLY (e.g. ``revid`` /
+    ``qid`` / ``osm_id`` / copyright-status), never body text.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    source: str  # provider slug, e.g. "wikipedia"
+    source_url: str
+    latitude: float | None = None
+    longitude: float | None = None
+    short_description: str = ""
+    name_variations: list[str] = []
+    meta: dict = {}  # provenance SCALARS ONLY (revid/qid/osm_id/...), never text
+
+
+class ConnectorResult(BaseModel):
+    """The uniform return type every Step-3 connector produces: the typed
+    ``candidates`` it found, any license-clean full-text ``documents``
+    (``SourceDocument``), and any shadow-library ``pointers``
+    (``DiscoveryPointer``) surfaced for legal acquisition.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    candidates: list[PoiCandidate] = []
+    documents: list[SourceDocument] = []
+    pointers: list[DiscoveryPointer] = []
+
+
+class CityContext(BaseModel):
+    """The per-run city frame handed to every connector.
+
+    For onboarding the city is NOT yet in the registry, so ``bbox`` comes from
+    the onboarding request / geocode, NOT from ``city_registry.bbox_map()``. The
+    tuple order MIRRORS ``bbox_map()``: ``(min_lat, max_lat, min_lon, max_lon)``.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    slug: str
+    display_name: str
+    bbox: tuple[float, float, float, float]  # (min_lat, max_lat, min_lon, max_lon)
+
+    @property
+    def centre(self) -> tuple[float, float]:
+        """The bbox centre as ``(lat, lon)`` — mirrors the ``bbox`` order."""
+        min_lat, max_lat, min_lon, max_lon = self.bbox
+        return ((min_lat + max_lat) / 2, (min_lon + max_lon) / 2)

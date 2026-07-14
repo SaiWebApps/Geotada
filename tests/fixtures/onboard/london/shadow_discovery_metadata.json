@@ -1,0 +1,27 @@
+{
+  "query": "London",
+  "source": "annas_archive",
+  "hits": [
+    {
+      "title": "Around and About London: An Illustrated Guide",
+      "author": "Herbert Fry",
+      "year": 1889,
+      "format": "pdf",
+      "source_url": "https://annas-archive.org/md5/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d"
+    },
+    {
+      "title": "The Streets of London: Their History and Associations",
+      "author": "Thomas Burke",
+      "year": 1940,
+      "format": "epub",
+      "source_url": "https://annas-archive.org/md5/9f8e7d6c5b4a3928170615243342a1b0"
+    },
+    {
+      "title": "Old and New London: A Narrative of Its History and Its People",
+      "author": "Walter Thornbury",
+      "year": 1873,
+      "format": "pdf",
+      "source_url": "https://welib.org/book/old-and-new-london-1873"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "14232": {
+        "pageid": 14232,
+        "ns": 0,
+        "title": "London",
+        "revisions": [
+          {
+            "revid": 4835211,
+            "parentid": 4835102,
+            "slots": {
+              "main": {
+                "contentmodel": "wikitext",
+                "contentformat": "text/x-wiki",
+                "*": "{{pagebanner|London Banner.jpg}}\n'''London''' is the capital and largest city of [[England]] and the [[United Kingdom]]. Standing on the [[River Thames]], it has been a major settlement for two millennia and remains one of the world's foremost cultural, financial and tourist destinations.\n\n==See==\n{{listing\n| name=Tower of London | alt=Her Majesty's Royal Palace and Fortress | url=https://www.hrp.org.uk/tower-of-london/\n| lat=51.5081 | long=-0.0759 | directions=Tower Hill tube\n| content=A historic castle on the north bank of the River Thames, home to the Crown Jewels and centuries of history.\n}}\n\nThere is a great deal more to see along the river, but the museums are the real draw for many visitors.\n\n{{listing\n| name=British Museum | alt= | url=https://www.britishmuseum.org/\n| lat=51.5194 | directions=Tottenham Court Road tube\n| content=A public museum dedicated to human history, art and culture, with a permanent collection of some eight million works.\n}}\n\n==Go next==\nDay trips to Oxford, Cambridge and Windsor are all within easy reach.\n"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

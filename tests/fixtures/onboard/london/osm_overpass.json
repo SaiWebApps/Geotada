@@ -1,0 +1,39 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62",
+  "elements": [
+    {
+      "type": "node",
+      "id": 12345678,
+      "lat": 51.508039,
+      "lon": -0.128069,
+      "tags": {
+        "tourism": "attraction",
+        "name": "Trafalgar Square"
+      }
+    },
+    {
+      "type": "way",
+      "id": 987654,
+      "center": {
+        "lat": 51.519459,
+        "lon": -0.126931
+      },
+      "nodes": [1, 2, 3, 4],
+      "tags": {
+        "tourism": "museum",
+        "historic": "building",
+        "name": "British Museum"
+      }
+    },
+    {
+      "type": "node",
+      "id": 55555,
+      "lat": 51.500729,
+      "lon": -0.124625,
+      "tags": {
+        "tourism": "yes"
+      }
+    }
+  ]
+}

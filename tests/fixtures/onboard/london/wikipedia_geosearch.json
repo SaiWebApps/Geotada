@@ -1,0 +1,52 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "geosearch": [
+      {
+        "pageid": 70890,
+        "ns": 0,
+        "title": "Tower of London",
+        "lat": 51.5081,
+        "lon": -0.0759,
+        "dist": 210.3,
+        "primary": ""
+      },
+      {
+        "pageid": 5060,
+        "ns": 0,
+        "title": "British Museum",
+        "lat": 51.5194,
+        "lon": -0.127,
+        "dist": 1543.8,
+        "primary": ""
+      },
+      {
+        "pageid": 4653,
+        "ns": 0,
+        "title": "Big Ben",
+        "lat": 51.5007,
+        "lon": -0.1246,
+        "dist": 1988.1,
+        "primary": ""
+      },
+      {
+        "pageid": 61277,
+        "ns": 0,
+        "title": "St Paul's Cathedral",
+        "lat": 51.5138,
+        "lon": -0.0984,
+        "dist": 902.5,
+        "primary": ""
+      },
+      {
+        "pageid": 30450,
+        "ns": 0,
+        "title": "Trafalgar Square",
+        "lat": 51.508,
+        "lon": -0.1281,
+        "dist": 2201.4,
+        "primary": ""
+      }
+    ]
+  }
+}

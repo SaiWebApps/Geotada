@@ -15,6 +15,7 @@ Pure — no Neo4j, no network. Run with:
 
 from __future__ import annotations
 
+import ast
 import json
 import re
 from pathlib import Path
@@ -232,3 +233,165 @@ def test_no_beat_attribution_references_shadow_library(beats_path: Path) -> None
     assert not offenders, (
         f"{beats_path} has beats attributing a shadow-library source: {offenders[:5]}"
     )
+
+
+# ---------------------------------------------------------------------------
+# F8 — connector isolation: shadow_discovery.py can never reach the network
+# ---------------------------------------------------------------------------
+
+_SHADOW_DISCOVERY_SRC = _REPO_ROOT / "src" / "onboard" / "sources" / "shadow_discovery.py"
+
+# Any of these would give the discovery connector a path to the network. If NONE
+# is imported, the connector is STRUCTURALLY discovery-only: it holds no code
+# that can fetch, so it can only ever surface metadata pointers. The set is
+# broad on purpose: a future editor reaching for a DIFFERENT network client
+# (aiohttp / urllib3) or dropping to raw sockets / a low-level HTTP connection
+# (socket / http.client) is just as much a network path as httpx — each must be
+# flagged, so each has its OWN entry (a prefix of one does NOT imply another:
+# ``urllib3`` is not under ``urllib``, ``http.client`` is not under ``httpx``).
+_FORBIDDEN_IMPORTS = frozenset(
+    {
+        "src.onboard.fetch",  # the network door (allowlisted GET)
+        "src.onboard.sources.base",  # run_connector — the ONE thing that fetches
+        "httpx",
+        "requests",
+        "urllib.request",
+        "urllib",  # bare urllib (urllib.request lives under it)
+        "urllib3",  # separate 3rd-party client — NOT under stdlib urllib
+        "aiohttp",  # async HTTP client
+        "socket",  # raw sockets — the lowest-level network path
+        "http.client",  # stdlib low-level HTTP (HTTPConnection/HTTPSConnection)
+        "http",  # bare http (http.client / http.server live under it)
+    }
+)
+
+
+def _module_is_forbidden(name: str) -> bool:
+    """True if ``name`` IS a forbidden module or lives UNDER one (dotted-prefix),
+    so ``http.client.HTTPSConnection`` and ``urllib.request`` both match. The
+    dotted boundary is deliberate: ``httptools`` does NOT match ``http`` and
+    ``urllib3`` does NOT match ``urllib`` — those network-capable siblings need
+    their OWN entries in the forbidden set, they are not covered by a prefix."""
+    return any(name == f or name.startswith(f + ".") for f in _FORBIDDEN_IMPORTS)
+
+
+def _imported_modules(source: str) -> set[str]:
+    """Every module named by an import in ``source``, PLUS each ``from X import Y``
+    target as the combined dotted path ``X.Y``.
+
+    Recording ``X.Y`` is what makes ``from src.onboard import fetch`` detectable,
+    not only ``import src.onboard.fetch``: the former's ``ast.ImportFrom`` carries
+    ``module="src.onboard"`` with name ``fetch``, so only the combined
+    ``src.onboard.fetch`` reveals the forbidden target."""
+    tree = ast.parse(source)
+    modules: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                modules.add(alias.name)
+        elif isinstance(node, ast.ImportFrom) and node.module is not None:
+            modules.add(node.module)
+            for alias in node.names:
+                modules.add(f"{node.module}.{alias.name}")
+    return modules
+
+
+def _forbidden_imports_in_source(src: str) -> list[str]:
+    """Every forbidden network-capable module referenced in ``src`` — by STATIC
+    import (``import X`` / ``from X import Y``) OR by a DYNAMIC string-literal
+    import (``__import__("X")`` / ``importlib.import_module("X")``).
+
+    Refactored out of the test body so the guard is unit-testable against
+    adversarial source strings, proving it catches an evasion WITHOUT mutating
+    the real connector on disk.
+
+    HONEST SCOPE LIMIT — this is a SINGLE-FILE check. It proves the connector
+    FILE itself contains no network-capable import, static or string-literal
+    dynamic. It deliberately does NOT follow TRANSITIVE imports: if
+    shadow_discovery imported a LOCAL module that itself imported httpx, that
+    indirection is invisible to a single-file AST walk. A full import-graph /
+    dependency-closure check (resolve + parse every reachable module) is
+    deliberately OUT OF SCOPE — over-scoping it here would trade a crisp,
+    fast, deterministic file-level guarantee for a fragile whole-graph one.
+    F8's contract is precisely "this connector FILE is network-free" (and the
+    connector is kept tiny so that file-level guarantee is meaningful). Also
+    not detectable statically: a COMPUTED module name (``__import__(var)`` where
+    the string is built at runtime) — only string-LITERAL dynamic imports."""
+    tree = ast.parse(src)
+    hits: set[str] = set()
+
+    # (1) Static imports — reuse _imported_modules' `import X` + `from X import Y`
+    #     (recorded as the combined `X.Y`) coverage.
+    for module in _imported_modules(src):
+        if _module_is_forbidden(module):
+            hits.add(module)
+
+    # (2) Dynamic string-literal imports: `__import__("X")` and
+    #     `importlib.import_module("X")` (or a bare `import_module("X")` when it
+    #     was `from importlib import import_module`) are ast.Call nodes, NOT
+    #     ast.Import — the static walk above cannot see them. Flag any such call
+    #     whose first positional arg is a string literal naming a forbidden
+    #     module. (A NON-literal arg, e.g. a variable, is intentionally uncaught:
+    #     it is not statically resolvable — see the SCOPE LIMIT above.)
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call) or not node.args:
+            continue
+        first = node.args[0]
+        if not (isinstance(first, ast.Constant) and isinstance(first.value, str)):
+            continue
+        func = node.func
+        is_builtin_import = isinstance(func, ast.Name) and func.id == "__import__"
+        is_importlib_call = (
+            isinstance(func, ast.Attribute)
+            and func.attr == "import_module"
+            and isinstance(func.value, ast.Name)
+            and func.value.id == "importlib"
+        ) or (isinstance(func, ast.Name) and func.id == "import_module")
+        if (is_builtin_import or is_importlib_call) and _module_is_forbidden(first.value):
+            hits.add(first.value)
+
+    return sorted(hits)
+
+
+@pytest.mark.parametrize(
+    "adversarial_src",
+    [
+        "import socket",
+        "import aiohttp",
+        "import urllib3",
+        "from http.client import HTTPSConnection",
+        '__import__("httpx")',
+        'importlib.import_module("requests")',
+        'import importlib\nimportlib.import_module("requests")',
+        'from importlib import import_module\nimport_module("socket")',
+    ],
+)
+def test_forbidden_import_check_catches_evasions(adversarial_src: str) -> None:
+    """The guard must catch evasions the naive Import-only + fixed-set walk
+    MISSED: network-capable modules outside the original set (socket / aiohttp /
+    urllib3 / http.client) AND dynamic string-literal imports (``__import__`` /
+    ``importlib.import_module``). Each is RED against the old guard, GREEN after
+    strengthening."""
+    assert _forbidden_imports_in_source(adversarial_src), (
+        f"guard failed to flag a network-capable evasion: {adversarial_src!r}"
+    )
+
+
+def test_forbidden_import_check_passes_clean_source() -> None:
+    """A discovery-only source that imports ONLY models is not flagged — the
+    guard does not false-positive on legitimate metadata-only code."""
+    clean = (
+        "from __future__ import annotations\n"
+        "from src.onboard.models import CityContext, DiscoveryPointer\n"
+    )
+    assert _forbidden_imports_in_source(clean) == []
+
+
+def test_shadow_discovery_never_imports_the_fetcher() -> None:
+    """F8: the shadow-discovery connector imports ONLY ``src.onboard.models`` —
+    never the fetch door, ``run_connector``, or any HTTP client. Parsed from the
+    source with ``ast`` so the guarantee is STRUCTURAL, not a runtime accident: a
+    connector that cannot import a network path cannot fetch, so it can only ever
+    surface metadata pointers."""
+    leaked = _forbidden_imports_in_source(_SHADOW_DISCOVERY_SRC.read_text())
+    assert not leaked, f"shadow_discovery.py imports a network-capable module: {leaked}"
