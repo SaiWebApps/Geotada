@@ -38,9 +38,24 @@ in prod. All tests cover the new city.
 3. **Persistence wall** — pointers live only in the job's in-memory event log/results,
    rendered as an outbound link labelled "acquire legally, then use Manual book drop"; never
    written into `data/{slug}/` or `Books/`.
-4. **Validator wall (already exists)** — `scripts/validate_beats.py` grounds every beat in a
-   pinned Wikipedia revision or an on-disk `Books/` chunk; a beat citing a shadow source has
-   no groundable file and hard-blocks upload.
+   *(NOT YET ENFORCED as of Step 2 — flagged by the 2026-07-14 opus skeptic. The carriers
+   `OnboardEvent.data` and `OnboardJob.result` are open `dict`s (`models.py:96,118`), so unlike
+   the airtight `DiscoveryPointer` they COULD hold text. BINDING for Step 4/5: (a) a
+   `discovery_pointer` event's `data` must be DiscoveryPointer-shaped and text-free — add a
+   validator/guard where these events are created (Step 3 shadow_discovery) and rendered
+   (Step 5); (b) `assemble`'s persistence layer must NEVER write any event/`result`/pointer
+   payload into `data/{slug}/` or `Books/` — add a test asserting a run that surfaced a pointer
+   writes nothing shadow-derived to disk.)*
+4. **Validator wall (already exists — but weaker than first stated; corrected 2026-07-14 by
+   the skeptic panel).** `scripts/validate_beats.py` grounds every beat's `source_passage`
+   against a pinned Wikipedia revision or an on-disk `Books/` chunk by VERBATIM substring.
+   Caveats it does NOT cover: (a) a *missing* chunk file is a SOFT-SKIP (`validate_beats.py:231`
+   `if chunk_text is None: continue`), not a hard block — so absence alone does not stop an
+   upload; (b) it checks file *existence + text match*, never *provenance/license*, so a
+   shadow book the user (wrongly) drops into `Books/{city}/` would ground SUCCESSFULLY. This
+   wall therefore backstops "the quoted text really is in the cited source", NOT "the source
+   is license-clean". License-cleanliness is carried by walls 1–3 + the Step-3 connector
+   contract, never by this validator.
 5. **Regression wall** — `tests/test_onboard_boundary.py`: allowlist rejection, model-shape,
    a repo-wide scan that no `data/*/beats.json` attribution references shadow domains, and an
    AST/grep check that `shadow_discovery.py` never imports the document fetcher.
@@ -108,6 +123,20 @@ The enabler; tightly coupled → ONE coherent unit.
   `tests/test_onboard_sources.py` (fixture-mode parse per connector; NO live HTTP in the bar).
   osm/wikidata must return coordinates; shadow_discovery returns `DiscoveryPointer` only and
   never imports the document fetcher.
+- **BINDING requirements from the 2026-07-14 skeptic panel (do not drop):**
+  - **F6 — the `internet_archive` connector MUST verify per-ITEM public-domain status before
+    emitting a `SourceDocument`.** The `archive.org` allowlist entry is HOST-based, not
+    license-based (archive.org hosts in-copyright CDL scans + community uploads), so the host
+    wall alone does NOT satisfy the plan's "Internet Archive (public-domain)" decision. The
+    connector reads each item's `metadata` (`possible-copyright-status` == "NOT_IN_COPYRIGHT"
+    and/or a public-domain `licenseurl`/`rights`) and REFUSES any item that is not provably
+    public-domain. Add a test proving an in-copyright IA fixture is rejected. (Live IA full-text
+    ingest is deferred to Step 8, so this is not on the near-term path — but the wall lands here.)
+  - **F8 — Wall 5's connector-isolation check ships in THIS step.** Add to
+    `tests/test_onboard_boundary.py` an AST/import scan asserting `shadow_discovery.py` never
+    imports `src.onboard.fetch` (nor any httpx/requests network module) — this is the committed
+    proof of fetch.py's "only door" property, currently unenforced. Undo: make shadow_discovery
+    import the fetcher → RED.
 - **Proof:** each connector parses its fixture → typed candidates with the expected fields
   (coords where required); undo a connector → its case RED. Fan out to parallel devs.
 
@@ -121,6 +150,29 @@ The enabler; tightly coupled → ONE coherent unit.
   `ONBOARD_PROVIDER`, mock default; drafts ONLY from pinned Wikipedia revisions; output passes
   `validate_beats.py` unchanged; `estimate_cost(n)` for the confirm modal).
 - NEW `src/onboard/cli.py` + Makefile `onboard-city` target.
+- **BINDING requirements from the 2026-07-14 researcher stock-take (the silent gates that will
+  turn RED the instant `data/london/` exists — design against them up front):**
+  - **Forced-distribution histogram + bbox clamp.** `test_gravity_distribution` (auto-parametrized
+    over every `data/*/`) enforces T5 ∈ [7,20]%, T3 ≤ 35%, **T1+T2 ≥ T4+T5** (bottom-heavy), and a
+    truthy `_pipeline.gravity_audit` on EVERY POI. `assemble` must emit an explicit target histogram,
+    and CLAMP/verify every POI's coords inside the registry bbox (`upload_paris.py:149` silently drops
+    out-of-bbox POIs, which can also break the centroid check `test_data_integrity.py:82`).
+  - **Verbatim-substring Wikipedia grounding.** `validate_beats.py:158-159` requires each beat's
+    `source_passage` to be a literal (normalized) substring of `data/london/wikipedia/{chunk}.txt`.
+    So (a) `assemble` MUST actually write those pinned `wikipedia/{slug}-rev-{revid}.txt` files (reuse
+    `scripts/wiki_fetch.py`'s save path), and (b) even `MockBeatDrafter` must QUOTE a real span from the
+    pinned fixture text — paraphrase/lorem fails. Mock path must be self-consistent: fixture wiki text →
+    mock quotes a substring of that same text.
+  - **Accent-normalized dedup.** `canonical_name_key` (`nodes.py:25`) only lowercases + collapses
+    whitespace; it does NOT strip accents, but `test_data_integrity.py:92` dedups on accent-strip+casefold
+    (`_norm`) and `:151` forbids `name_variation` collisions. Merge key MUST mirror `_norm` (accent-strip)
+    and use `rapidfuzz` for near-dups, staying conservative per poi-dedup's ZERO-FALSE-MERGE rule.
+  - **Cost hygiene:** force `ONBOARD_PROVIDER=mock` in `tests/conftest.py` (mirror `COMPOSE_PROVIDER`
+    at `conftest.py:37`) so the bar never makes a live Anthropic call. Do NOT emit a `centre` field —
+    `src/cities.json` / `register_city` validate only `display_name`/`bbox`/`cloud_deployed`.
+- **Reuse (zero new deps — researcher-confirmed):** wikipedia/wikivoyage → `scripts/wiki_fetch.py`;
+  osm → `src/utils/spatial.py` (Overpass); merge → `rapidfuzz` (already a dep) + `canonical_name_key`;
+  wikidata coords → P625; do NOT add `osmnx`/`gutenbergpy`/`internetarchive` (heavy, uv.lock/Apple-index risk).
 - **Proof:** `make onboard-city CITY=london MODES=license_clean` (fixture+mock, tmp DATA_ROOT)
   → ≥30 POIs each with coords + `gravity_audit`, registry entry written, `beats.json` passes
   `validate_beats.py`; live provider without `confirm_cost` makes ZERO Anthropic calls
@@ -158,6 +210,18 @@ The enabler; tightly coupled → ONE coherent unit.
 - Deferred to follow-on slices: cloud/Aura upload button wiring + `mark_cloud_deployed`;
   shadow-library discovery EXECUTION (walls built in Step 2); manual `Books/{city}` orchestration;
   Gutenberg/IA full-text→beats; London Valhalla tiles; London live-invariant scenarios.
+
+## Per-step test bar (tiered — amendment 2026-07-12, ratified by the Step-1 judge)
+- **Modifies an existing widely-imported module** (e.g. Step 1's `contract.py`): bar = `make lint`
+  + FULL `make test-local` (0 failed/0 skipped) — a broad import-time change can break an unrun suite.
+- **Purely additive isolated new files** (nothing existing imports them — Steps 2–4's `src/onboard/*`):
+  bar = `make lint` + every new test file (`make test-file`/`test-file-local`) + `uv run pytest
+  --collect-only -q` (via a make target) to prove nothing else's collection broke. Full `make test-local`
+  is NOT required per step (avoids re-running the live-OpenAI audio gate on unrelated code).
+- **Wires new files into an existing module** (Step 5's `app.py` router include): bar = additive rule
+  + FULL `make test-local` (the include touches app startup, a wide surface).
+- **Milestone** (Step 8): full `make test` (Python + Flutter) + `make test-workbench` + browser
+  screenshots + `make db-parity` + acceptance-agent tour judgement + human sign-off.
 
 ## Verifier discipline (applies to every step)
 - Developer (Sonnet 5 / Opus 4.8 agent) implements minimal change + red-first test.

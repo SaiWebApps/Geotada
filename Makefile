@@ -194,6 +194,10 @@ test-file: ## Run ONE pure (no-Neo4j) test file for atomic-step iteration: make 
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest $(FILE) -v
 
+test-collect: ## Collect the WHOLE suite without running it — proves an additive change broke no other file's import/collection. Fast, no Neo4j. NOT the bar.
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	uv run pytest tests/ --collect-only -q
+
 test-file-local: db-up db-test-up ## Run ONE Neo4j-backed test file against local test Neo4j (7688) for atomic iteration: make test-file-local FILE=tests/test_x.py. NOT the bar.
 	@cp .env.test.example .env.test && echo "  → Testing $(FILE) against LOCAL Neo4j (test instance, port 7688)"
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
