@@ -118,3 +118,38 @@ def test_listing_with_nested_template_keeps_coords() -> None:
     cathedral = by_name["St Pauls Cathedral"]
     assert cathedral.latitude == 51.5138
     assert cathedral.longitude == -0.0984
+
+
+def test_listing_template_stamps_listing_type() -> None:
+    """CURATION VOTE: a ``{{listing}}`` candidate now carries its template name in
+    ``meta['listing_type']``. Pre-change wikivoyage set no meta, so this KeyErrors
+    — the wikivoyage undo-test."""
+    result = WikivoyageConnector().parse(_payload(), _ctx())
+    by_name = {c.name: c for c in result.candidates}
+    assert by_name["Tower of London"].meta["listing_type"] == "listing"
+
+
+def test_see_and_do_templates_become_candidates_with_type() -> None:
+    """The regex must widen from ``{{listing`` to ``{{(listing|see|do)`` so a
+    ``{{see}}``/``{{do}}`` template is now mined into a candidate whose
+    ``meta['listing_type']`` records which template voted for it.
+
+    Pre-change only ``{{listing`` matched, so neither name is found → KeyError."""
+    wikitext = (
+        "==See==\n"
+        "{{see\n"
+        "| name=Trafalgar Square | lat=51.508 | long=-0.128\n"
+        "| content=A famous public square in central London.\n"
+        "}}\n"
+        "==Do==\n"
+        "{{do\n"
+        "| name=Thames River Cruise | lat=51.507 | long=-0.122\n"
+        "| content=A sightseeing boat tour along the river.\n"
+        "}}\n"
+    )
+    result = WikivoyageConnector().parse(_wikitext_payload(wikitext), _ctx())
+    by_name = {c.name: c for c in result.candidates}
+
+    assert by_name["Trafalgar Square"].meta["listing_type"] == "see"
+    assert by_name["Trafalgar Square"].latitude == 51.508
+    assert by_name["Thames River Cruise"].meta["listing_type"] == "do"

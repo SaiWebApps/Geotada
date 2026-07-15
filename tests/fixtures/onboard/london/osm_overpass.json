@@ -23,6 +23,8 @@
       "tags": {
         "tourism": "museum",
         "historic": "building",
+        "wikidata": "Q6373",
+        "wikipedia": "en:British Museum",
         "name": "British Museum"
       }
     },

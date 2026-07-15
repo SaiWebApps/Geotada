@@ -4459,29 +4459,44 @@ class TestOnboardPanel:
         assert poi_n >= 30, f"expected >= 30 merged POIs (36), got {poi_n} from {poi_text!r}"
         _take_screenshot(page, "onboard-03-pois-rendered")
 
-        # (e) The cost gate: a modal with a $ estimate and the beat count.
-        # NOTE: the estimate is computed over the POI count (one candidate beat per
-        # POI = 36 here), NOT the eventual drafted count (35). One POI has no
-        # Wikipedia extract so it yields no beat, so draft_all returns 35 while the
-        # PRE-draft estimate is 36. The modal therefore shows the SAME number as
-        # #poiCount; assert against that rather than a magic literal.
+        # (e) The cost gate: a modal with a $ estimate and the MULTI-BEAT count.
+        # NOTE: the drafter now splits each POI's lead into ~3 verbatim spans, so
+        # the estimate is sized off planned_beat_count (~3 beats/POI), NOT the POI
+        # count. The modal therefore shows a beat count GREATER than #poiCount (the
+        # one-beat era would have shown ~poi_n). Assert the $ estimate + the
+        # multi-beat property, never a magic literal.
         page.locator("#draftBeatsBtn").click()
         expect(page.locator("#costModal")).to_be_visible(timeout=15000)
         modal_text = page.locator("#costModal").text_content() or ""
         assert "$" in modal_text, f"cost modal shows no dollar estimate: {modal_text!r}"
-        assert str(poi_n) in modal_text, (
-            f"cost modal should show the POI-count estimate ({poi_n}): {modal_text!r}"
+        modal_match = re.search(r"(\d+)\s+beat", modal_text)
+        assert modal_match, f"cost modal shows no beat count: {modal_text!r}"
+        modal_beats = int(modal_match.group(1))
+        assert modal_beats > poi_n, (
+            f"cost estimate must be multi-beat (> {poi_n} POIs), got {modal_beats}: {modal_text!r}"
         )
         _take_screenshot(page, "onboard-04-cost-modal")
 
-        # (f) Confirm the cost -> beats drafted (35 of them appear in the beat pane).
+        # (f) Confirm the cost -> beats drafted. The pane shows "<N> beats drafted";
+        # with ~3 beats/POI that N is > #poiCount (the one-beat era drafted < poi_n
+        # because a POI without a Wikipedia extract yields none). Wait for that
+        # multi-beat drafted state, not a stale literal.
         page.locator("#costConfirmBtn").click()
         page.wait_for_function(
-            """() => {
+            """(minBeats) => {
                 const el = document.querySelector('#beatPane');
-                return el && (el.textContent || '').includes('35');
+                if (!el) return false;
+                const m = (el.textContent || '').match(/(\\d+)\\s+beats drafted/);
+                return m !== null && parseInt(m[1], 10) > minBeats;
             }""",
+            arg=poi_n,
             timeout=30000,
+        )
+        beat_text = page.locator("#beatPane").text_content() or ""
+        beat_match = re.search(r"(\d+)\s+beats drafted", beat_text)
+        assert beat_match, f"beat pane never showed a drafted count: {beat_text!r}"
+        assert int(beat_match.group(1)) > poi_n, (
+            f"drafted beats ({beat_match.group(1)}) must be multi-beat (> {poi_n} POIs): {beat_text!r}"
         )
         _take_screenshot(page, "onboard-05-beats-drafted")
 

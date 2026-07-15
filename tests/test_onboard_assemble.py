@@ -20,6 +20,7 @@ import pytest
 
 from src import city_registry
 from src.onboard.assemble import (
+    TARGET_POIS,
     AssembledCity,
     WikiExtract,
     assemble,
@@ -525,3 +526,248 @@ def test_registry_global_restored_on_register_failure(
     assert original_path == city_registry._REGISTRY_PATH
     # ... and the real src/cities.json is byte-for-byte untouched.
     assert original_path.read_bytes() == real_registry_bytes
+
+
+# ---------------------------------------------------------------------------
+# NOTABILITY FILTER — turn a live city's 55K-candidate firehose into ~48 real
+# landmarks. STAGE A (per-candidate hard blocklist, pre-merge) + STAGE B
+# (post-merge notability keep) + composite-score CAP. Candidates are built
+# DIRECTLY here (not via the connectors) so each test controls the exact
+# ``PoiCandidate.meta`` scalars the new contract keys off. Each behavior names
+# its mutation/undo target so a reverted fix goes RED.
+# ---------------------------------------------------------------------------
+def _pt(i: int) -> tuple[float, float]:
+    """A distinct, walkable-core coordinate inside the London bbox and within
+    ~7 km of its centre (so STAGE A's far-outlier rule never fires for these)."""
+    return (51.500 + (i % 20) * 0.002, -0.100 + (i // 20) * 0.002)
+
+
+def _wiki(name: str, i: int, *, sitelinks: int | None = None) -> PoiCandidate:
+    """A wikipedia geosearch hit (its own enwiki article -> notable)."""
+    meta: dict = {"pageid": 1000 + i}
+    if sitelinks is not None:
+        meta["sitelinks"] = sitelinks
+    lat, lon = _pt(i)
+    return PoiCandidate(
+        name=name,
+        source="wikipedia",
+        source_url=f"https://en.wikipedia.org/wiki/{name.replace(' ', '_')}",
+        latitude=lat,
+        longitude=lon,
+        meta=meta,
+    )
+
+
+def _wd(
+    name: str,
+    i: int,
+    *,
+    sitelinks: int = 0,
+    enwiki: str | None = None,
+    p31: str | None = None,
+    lat: float | None = None,
+    lon: float | None = None,
+) -> PoiCandidate:
+    plat, plon = _pt(i)
+    meta: dict = {"qid": f"Q{2000 + i}", "sitelinks": sitelinks}
+    if enwiki is not None:
+        meta["enwiki"] = enwiki
+    if p31 is not None:
+        meta["p31"] = p31
+    return PoiCandidate(
+        name=name,
+        source="wikidata",
+        source_url=f"http://www.wikidata.org/entity/Q{2000 + i}",
+        latitude=lat if lat is not None else plat,
+        longitude=lon if lon is not None else plon,
+        meta=meta,
+    )
+
+
+def _osm(
+    name: str,
+    i: int,
+    *,
+    tourism: str | None = None,
+    historic: str | None = None,
+    osm_wikipedia: str | None = None,
+    osm_wikidata: str | None = None,
+    sitelinks: int | None = None,
+) -> PoiCandidate:
+    meta: dict = {"osm_type": "node", "osm_id": 3000 + i}
+    if tourism is not None:
+        meta["tourism"] = tourism
+    if historic is not None:
+        meta["historic"] = historic
+    if osm_wikipedia is not None:
+        meta["osm_wikipedia"] = osm_wikipedia
+    if osm_wikidata is not None:
+        meta["osm_wikidata"] = osm_wikidata
+    if sitelinks is not None:
+        meta["sitelinks"] = sitelinks
+    lat, lon = _pt(i)
+    return PoiCandidate(
+        name=name,
+        source="osm",
+        source_url=f"https://www.openstreetmap.org/node/{3000 + i}",
+        latitude=lat,
+        longitude=lon,
+        meta=meta,
+    )
+
+
+# 5 CJK-only names: slugify(name) == "" -> STAGE A empty-slug reject (non-Latin).
+_EMPTY_SLUG_NAMES = ["北京", "東京", "京都", "大阪", "名古屋"]
+
+
+def _firehose(ctx: CityContext) -> list[ConnectorResult]:
+    """~200 raw candidates: 44 real landmarks + every STAGE-A junk class + a
+    batch of non-notable minor nodes (survive STAGE A, dropped by STAGE B)."""
+    cands: list[PoiCandidate] = []
+    # 44 real landmarks (own enwiki article).
+    cands += [_wiki(f"Landmark {i}", i) for i in range(44)]
+    # 60 lodging/transient OSM classes.
+    cands += [_osm(f"Hotel {i}", 60 + i, tourism="hotel") for i in range(40)]
+    cands += [_osm(f"Hostel {i}", 100 + i, tourism="hostel") for i in range(20)]
+    # 20 EVENT articles by name (Olympics regex) + 15 by Wikidata P31.
+    cands += [
+        _wiki(f"Sport {i} at the 2016 Summer Olympics", 120 + i) for i in range(20)
+    ]
+    cands += [_wd(f"Ceremony {i}", 140 + i, p31="Q5|Q1656682") for i in range(15)]
+    # 20 OSM historic grave/marker junk.
+    cands += [_osm(f"Grave {i}", 160 + i, historic="grave") for i in range(20)]
+    # 5 non-Latin empty-slug names.
+    cands += [_wd(name, 180 + k) for k, name in enumerate(_EMPTY_SLUG_NAMES)]
+    # 8 far outliers (~25 km west of centre — in the bbox, but unwalkable).
+    cands += [
+        _wd(f"Outlier {i}", 190 + i, lat=51.47, lon=-0.45) for i in range(8)
+    ]
+    # 25 non-notable minor nodes (a coordinate + a bare qid, nothing else).
+    cands += [_wd(f"Minor {i}", 40 + i, sitelinks=1) for i in range(25)]
+    return [ConnectorResult(candidates=cands)]
+
+
+def test_firehose_collapses_to_real_landmarks_only() -> None:
+    """A ~200-candidate firehose with hotels/events/graves/empty-slug + 44 real
+    landmarks collapses to <= TARGET real landmarks with NONE of the junk.
+    UNDO: revert STAGE A (``_stage_a_filter``) or STAGE B (``_is_notable``) ->
+    a hotel/event/minor node reappears, or the count blows past the cap -> RED."""
+    ctx = _ctx()
+    city = assemble(_firehose(ctx), ctx, [], target_pois=40)
+    names = {p["name"] for p in city.pois}
+
+    # The CAP holds and the city is still healthy.
+    assert 30 <= len(city.pois) <= 40, len(city.pois)
+    assert len(city.pois) <= TARGET_POIS
+
+    # EVERY survivor is a real landmark — no junk class leaked through.
+    assert all(n.startswith("Landmark ") for n in names), sorted(names)[:10]
+    for bad in ("Hotel ", "Hostel ", "Grave ", "Minor ", "Outlier ", "Ceremony "):
+        assert not any(n.startswith(bad) for n in names), bad
+    assert not any("Olympics" in n for n in names)
+    assert not (set(names) & set(_EMPTY_SLUG_NAMES)), "non-Latin empty-slug survived"
+
+
+def test_pinned_anchor_landmarks_always_survive_the_cap() -> None:
+    """The unmissable anchors (British Museum, Tower of London, Buckingham Palace,
+    Westminster Abbey, Tower Bridge) — high sitelinks + enwiki — are ALWAYS kept,
+    even when the candidate set exceeds the cap and lower landmarks are trimmed.
+    UNDO: drop the sitelinks term from the composite score (or the CAP sort) ->
+    an anchor can fall below a filler POI and be trimmed -> RED."""
+    ctx = _ctx()
+    anchors = [
+        "British Museum",
+        "Tower of London",
+        "Buckingham Palace",
+        "Westminster Abbey",
+        "Tower Bridge",
+    ]
+    cands: list[PoiCandidate] = []
+    # Each anchor is a single high-sitelinks + enwiki Wikidata item — so ONLY its
+    # sitelinks (via the composite score) keeps it above the fillers.
+    for k, name in enumerate(anchors):
+        cands.append(_wd(name, k, sitelinks=250 + k, enwiki=name))
+    # 60 enwiki filler landmarks whose names sort ALPHABETICALLY BEFORE every
+    # anchor, so if the sitelinks score term is removed (scores tie at the enwiki
+    # bonus) the name tiebreak fills the cap with fillers and TRIMS the anchors.
+    cands += [_wiki(f"Aaa Filler {i:02d}", 10 + i) for i in range(60)]
+
+    city = assemble([ConnectorResult(candidates=cands)], ctx, [])
+    names = {p["name"] for p in city.pois}
+
+    assert len(city.pois) <= TARGET_POIS
+    for anchor in anchors:
+        assert anchor in names, f"pinned anchor trimmed by the cap: {anchor}"
+
+
+def test_thin_after_filter_raises_with_drop_counts() -> None:
+    """Fewer than MIN_POIS survivors is a hard ValueError naming the per-rule
+    drop counts — never an auto-relaxed thin city.
+    UNDO: remove the ``len(pois) < MIN_POIS`` raise -> a 20-POI city assembles
+    silently -> RED."""
+    ctx = _ctx()
+    cands = [_wiki(f"Small {i}", i) for i in range(20)]
+    cands += [_osm(f"Hotel {i}", 60 + i, tourism="hotel") for i in range(2)]
+
+    with pytest.raises(ValueError) as excinfo:
+        assemble([ConnectorResult(candidates=cands)], ctx, [])
+
+    msg = str(excinfo.value)
+    assert "20" in msg, msg  # the survivor count
+    assert "30" in msg, msg  # MIN_POIS
+    assert "osm_lodging=2" in msg, msg  # the per-rule drop counts are reported
+
+
+def test_hotel_class_reentry_requires_high_sitelinks() -> None:
+    """A hotel-class candidate is dropped in STAGE A UNLESS it is itself very
+    notable (``sitelinks >= 15``) — a landmark hotel re-enters; a roadside motel
+    does not.
+    UNDO: drop the ``sitelinks >= _HOTEL_REENTRY_SITELINKS`` escape -> the
+    landmark hotel is culled with the rest -> RED."""
+    ctx = _ctx()
+    cands = [_wiki(f"Spot {i}", i) for i in range(33)]
+    cands.append(
+        _osm(
+            "Grand Landmark Hotel",
+            100,
+            tourism="hotel",
+            osm_wikipedia="en:Grand Landmark Hotel",
+            sitelinks=20,
+        )
+    )
+    cands.append(_osm("Roadside Motel", 101, tourism="motel"))
+
+    city = assemble([ConnectorResult(candidates=cands)], ctx, [])
+    names = {p["name"] for p in city.pois}
+
+    assert "Grand Landmark Hotel" in names, "notable hotel must re-enter STAGE A"
+    assert "Roadside Motel" not in names, "plain lodging must stay culled"
+
+
+def test_filtered_tiers_still_satisfy_shape_guard() -> None:
+    """After the firehose is filtered, the re-tiered survivors still pass
+    test_gravity_distribution's shape rule (T5 anchors, no T3 clustering,
+    seasoning-heavy base).
+    UNDO: rank _assign_tiers by a constant instead of the notability score, or
+    break the quantile boundaries -> unhealthy shape -> RED."""
+    ctx = _ctx()
+    city = assemble(_firehose(ctx), ctx, [], target_pois=40)
+
+    counts = Counter(p["importance_tier"] for p in city.pois)
+    failures = _distribution_failures(counts, len(city.pois))
+    assert not failures, "unhealthy tier shape:\n" + "\n".join(failures)
+
+
+def test_notability_score_and_sitelinks_stamped_in_audit() -> None:
+    """Every survivor carries the composite ``notability_score`` and its
+    ``sitelinks`` in the gravity_audit (so the re-tier ranks by it and the audit
+    is inspectable).
+    UNDO: stop stamping ``notability_score`` -> _assign_tiers KeyErrors / the
+    audit lacks the field -> RED."""
+    ctx = _ctx()
+    city = assemble(_base_results(ctx), ctx, _extracts())
+    for p in city.pois:
+        audit = p["_pipeline"]["gravity_audit"]
+        assert "notability_score" in audit, p["name"]
+        assert isinstance(audit["notability_score"], (int, float)), p["name"]
+        assert "sitelinks" in audit, p["name"]

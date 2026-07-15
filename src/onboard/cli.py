@@ -23,8 +23,18 @@ The pipeline:
 7. Write ``beats.json`` beside the corpus and gate it through
    ``validate_beats.validate`` — non-zero exit on any error.
 
+``--dry-run`` is an ESTIMATE-ONLY short-circuit: it runs steps 1-4 (geocode →
+consult each source → ``assemble`` with EMPTY extracts) and then PRINTS the POI
+count, per-POI summary, tier histogram, and the ESTIMATED beat-drafting cost —
+then exits 0 WITHOUT drafting any beats (zero LLM spend) or writing anything to
+disk (no corpus, no registry). It honours ``ONDOWAY_ONBOARD_HTTP``, so
+``ONDOWAY_ONBOARD_HTTP=live`` fetches REAL source data while still spending and
+writing nothing. It deliberately skips ``build_extracts`` (a dry run needs no
+Wikipedia extracts), so a live dry run never has to walk the extract-fetch path.
+
 Usage:
     python -m src.onboard.cli --city london --modes license_clean [--confirm-cost]
+    python -m src.onboard.cli --city london --modes license_clean --dry-run
 """
 
 from __future__ import annotations
@@ -41,12 +51,18 @@ from src.onboard.assemble import assemble, write_city
 from src.onboard.flow import (
     FIXTURES_ROOT,
     OnboardError,
-    build_extracts,
+    build_extract_index,
     consult_source,
     resolve_connectors,
 )
 from src.onboard.jobs import get_store
 from src.onboard.models import CityContext
+
+# The drafter emits ~3 beats per POI (each POI's Wikipedia lead is split into
+# several verbatim spans). A --dry-run deliberately skips extract fetching, so it
+# cannot count the exact spans; it estimates over this per-POI multiplier as an
+# UPPER BOUND ("up to ~3 beats/POI") so the printed cost is never ~3x low.
+_DRY_RUN_BEATS_PER_POI = 3
 
 
 def _load_json(path: Path) -> dict:
@@ -102,8 +118,16 @@ def _env_path(name: str) -> Path | None:
     return Path(value) if value else None
 
 
-def run(city: str, modes: list[str], *, confirm_cost: bool) -> int:
-    """Run the full onboarding flow for ``city``. Returns a process exit code."""
+def run(city: str, modes: list[str], *, confirm_cost: bool, dry_run: bool = False) -> int:
+    """Run the full onboarding flow for ``city``. Returns a process exit code.
+
+    ``dry_run=True`` short-circuits to the estimate-only path: fetch + assemble,
+    print the POI count + beat-drafting cost estimate, then exit 0 — no beats
+    drafted (zero LLM spend), nothing written to disk or the registry.
+    """
+    if dry_run:
+        return _run_dry_run(city, modes)
+
     connector_slugs = resolve_connectors(modes)
     ctx = _geocode(city)
 
@@ -112,9 +136,12 @@ def run(city: str, modes: list[str], *, confirm_cost: bool) -> int:
     store.set_status(job.id, "running")
 
     results = [consult_source(slug, ctx, store, job.id) for slug in connector_slugs]
-    extracts = build_extracts(city)
-
-    assembled = assemble(results, ctx, extracts)
+    # Assemble FIRST so the merged/filtered POI names are final, THEN fetch each
+    # POI's Wikipedia extract keyed to those names (a live run must ground against
+    # the real POIs, not the raw candidates). Fixture mode ignores the POIs arg and
+    # reads the committed extracts fixture — same result as the prior ordering.
+    assembled = assemble(results, ctx, [])
+    assembled.wiki_extracts = build_extract_index(city, assembled.pois)
     store.set_status(job.id, "assembled")
 
     draft_all, cost_not_confirmed = _load_beat_drafter()
@@ -177,6 +204,75 @@ def _print_summary(
     print("─" * 60)
 
 
+def _run_dry_run(city: str, modes: list[str]) -> int:
+    """ESTIMATE-ONLY path: fetch + assemble, then PRINT the POI count, per-POI
+    summary, tier histogram, and the ESTIMATED beat-drafting cost — WITHOUT
+    drafting any beats (zero LLM spend) or writing anything to disk/registry.
+
+    Honours ``ONDOWAY_ONBOARD_HTTP`` via ``consult_source`` (``=live`` fetches
+    real data). ``assemble`` is passed EMPTY extracts on purpose: a dry run needs
+    no Wikipedia extracts, and ``build_extracts`` is deliberately NOT called, so a
+    live dry run never has to walk the extract-fetch path. Returns 0.
+    """
+    # estimate_cost is pure (no anthropic import at module load); the drafter it
+    # sizes is NEVER constructed here — that is the whole point of the dry run.
+    from src.onboard.beat_draft import estimate_cost
+
+    connector_slugs = resolve_connectors(modes)
+    ctx = _geocode(city)
+
+    store = get_store()
+    job = store.create(ctx.slug, modes)
+    store.set_status(job.id, "running")
+
+    results = [consult_source(slug, ctx, store, job.id) for slug in connector_slugs]
+    assembled = assemble(results, ctx, [])  # EMPTY extracts — no build_extracts call
+    store.set_status(job.id, "assembled")
+
+    # No extracts were fetched, so size the estimate over the UPPER BOUND of
+    # ~3 beats/POI — never one-beat-per-POI, which under-reports the true cost ~3x.
+    poi_count = len(assembled.pois)
+    estimate = estimate_cost(poi_count * _DRY_RUN_BEATS_PER_POI)
+    _print_dry_run(ctx, assembled, estimate, poi_count)
+    return 0
+
+
+def _print_dry_run(ctx: CityContext, assembled, estimate: dict, poi_count: int) -> None:
+    """Print the dry-run report: POI count, per-POI summary (by tier desc then
+    name), tier histogram, and the ESTIMATED (not-yet-spent) drafting cost.
+
+    The beat count is an UPPER-BOUND estimate (``up to ~3 beats/POI``): a dry run
+    never fetches the Wikipedia extracts, so it cannot count the exact spans."""
+    pois = assembled.pois
+    hist = Counter(p["importance_tier"] for p in pois)
+    tier_line = "  ".join(f"T{tier}={hist[tier]}" for tier in sorted(hist, reverse=True))
+
+    print("─" * 60)
+    print("onboard-city DRY RUN — estimate only (no beats drafted, nothing written)")
+    print(f"  city:        {ctx.display_name} ({ctx.slug})")
+    print(f"  POIs:        {len(pois)}")
+    print(f"  tiers:       {tier_line}")
+    print("─" * 60)
+    print("  POIs (by importance tier, then name):")
+    for poi in sorted(pois, key=lambda p: (-p["importance_tier"], p["name"])):
+        print(
+            f"    T{poi['importance_tier']}  {poi['name']}  "
+            f"({poi['latitude']:.5f}, {poi['longitude']:.5f})"
+        )
+    print("─" * 60)
+    print("  ESTIMATED beat-drafting cost (NOT yet spent):")
+    print(f"    model:              {estimate['model']}")
+    print(f"    POIs:               {poi_count}")
+    print(
+        f"    beats (estimated):  {estimate['beats']}  "
+        f"(up to ~{_DRY_RUN_BEATS_PER_POI} beats/POI — exact count known after extract fetch)"
+    )
+    print(f"    est_input_tokens:   {estimate['est_input_tokens']}")
+    print(f"    est_output_tokens:  {estimate['est_output_tokens']}")
+    print(f"    est_usd:            ${estimate['est_usd']}")
+    print("─" * 60)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m src.onboard.cli",
@@ -193,13 +289,22 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="confirm paid beat-drafting (needed only for a live ONBOARD_PROVIDER)",
     )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help=(
+            "ESTIMATE ONLY: fetch + assemble, print the POI count + beat-drafting "
+            "cost estimate, then exit — draft NO beats (zero LLM spend) and write "
+            "NOTHING to disk or the registry"
+        ),
+    )
     args = parser.parse_args(argv)
     modes = [m.strip() for m in args.modes.split(",") if m.strip()]
     if not modes:
         parser.error("--modes must name at least one mode")
 
     try:
-        return run(args.city, modes, confirm_cost=args.confirm_cost)
+        return run(args.city, modes, confirm_cost=args.confirm_cost, dry_run=args.dry_run)
     except OnboardError as exc:
         print(f"onboard-city: {exc}", file=sys.stderr)
         return 2

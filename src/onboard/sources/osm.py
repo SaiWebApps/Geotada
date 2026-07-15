@@ -82,7 +82,18 @@ class OsmSource:
                     source_url=f"https://www.openstreetmap.org/{etype}/{osm_id}",
                     latitude=latitude,
                     longitude=longitude,
-                    meta={"osm_type": etype, "osm_id": osm_id},
+                    # STOP discarding tags: the assemble filter reads these
+                    # curation signals to keep real POIs (a museum/monument, or
+                    # anything OSM cross-references to Wikidata/Wikipedia) and
+                    # cut noise. Absent tags degrade to None via tags.get.
+                    meta={
+                        "osm_type": etype,
+                        "osm_id": osm_id,
+                        "tourism": tags.get("tourism"),
+                        "historic": tags.get("historic"),
+                        "osm_wikidata": tags.get("wikidata"),
+                        "osm_wikipedia": tags.get("wikipedia"),
+                    },
                 )
             )
         return ConnectorResult(candidates=candidates)

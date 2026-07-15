@@ -23,11 +23,14 @@ privates: both callers depend on this module's PUBLIC surface, nothing more.
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from urllib.parse import urlencode
 
+from scripts.beat_builder import slugify
 from src.onboard import fetch
 from src.onboard.assemble import WikiExtract
+from src.onboard.extract import build_live_extracts
 from src.onboard.jobs import JobStore
 from src.onboard.models import CityContext, ConnectorResult
 from src.onboard.sources.base import SourceConnector, run_connector
@@ -39,6 +42,8 @@ from src.onboard.sources.wikivoyage import WikivoyageConnector
 # Repo root: src/onboard/flow.py -> src/onboard -> src -> repo root.
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 FIXTURES_ROOT = REPO_ROOT / "tests" / "fixtures" / "onboard"
+
+logger = logging.getLogger(__name__)
 
 # The connectors an onboarding MODE consults. ``license_clean`` drives the four
 # license-clean POI-discovery sources (order sets NAME/COORD precedence ties
@@ -104,37 +109,106 @@ def consult_source(
     concrete URL the connector WOULD GET live, then — instead of fetching, which
     the fixture-mode door forbids — parses the committed fixture and emits a
     scalar-only ``candidate_batch`` event (wall 3: never body text in ``data``).
+
+    RESILIENCE: a per-connector RUN failure (an HTTP 403/timeout, a malformed
+    payload, any parse error) must NOT abort the whole onboarding — several
+    sources are consulted and a human reviews the output, so one missing source
+    should simply drop cross-source agreement, not tank the run. On such a failure
+    this emits a VISIBLE ``error`` event naming the source (never swallowed
+    silently) and returns an EMPTY ``ConnectorResult`` so ``assemble`` proceeds
+    with the OTHER sources' candidates. A CONFIG error (``OnboardError`` — e.g. a
+    missing fixture) is NOT a source failure and still propagates loudly.
     """
     connector = CONNECTORS[slug]
-    if fetch.HTTP_MODE == "live":
-        return run_connector(connector, ctx, store, job_id)
+    try:
+        if fetch.HTTP_MODE == "live":
+            return run_connector(connector, ctx, store, job_id)
 
-    fixture = FIXTURES_ROOT / ctx.slug / CONNECTOR_FIXTURE[slug]
-    if not fixture.exists():
-        raise OnboardError(f"no {slug} fixture for {ctx.slug!r}: {fixture} not found")
+        fixture = FIXTURES_ROOT / ctx.slug / CONNECTOR_FIXTURE[slug]
+        if not fixture.exists():
+            raise OnboardError(f"no {slug} fixture for {ctx.slug!r}: {fixture} not found")
 
-    url, params = connector.consult_url(ctx)
-    full = f"{url}?{urlencode(params)}" if params else url
-    store.append_event(job_id, "source_consult", f"Consulting {slug}", source=slug, url=full)
+        url, params = connector.consult_url(ctx)
+        full = f"{url}?{urlencode(params)}" if params else url
+        store.append_event(job_id, "source_consult", f"Consulting {slug}", source=slug, url=full)
 
-    result = connector.parse(_load_json(fixture), ctx)
-    store.append_event(
-        job_id,
-        "candidate_batch",
-        f"{slug}: {len(result.candidates)} candidates, {len(result.documents)} documents",
-        source=slug,
-        data={"candidates": len(result.candidates), "documents": len(result.documents)},
+        result = connector.parse(_load_json(fixture), ctx)
+        store.append_event(
+            job_id,
+            "candidate_batch",
+            f"{slug}: {len(result.candidates)} candidates, {len(result.documents)} documents",
+            source=slug,
+            data={"candidates": len(result.candidates), "documents": len(result.documents)},
+        )
+        return result
+    except OnboardError:
+        # A config/setup error (missing fixture) is not a degradable source
+        # failure — surface it loudly.
+        raise
+    except Exception as exc:
+        # Any source-run failure (HTTP/timeout/parse) degrades gracefully: a
+        # VISIBLE error event, and an empty result so assemble uses the rest.
+        store.append_event(job_id, "error", f"{slug} failed: {exc}", source=slug)
+        return ConnectorResult()
+
+
+def _log_extract_coverage(slug: str, report: dict) -> None:
+    """Surface a LIVE extract-coverage report LOUDLY (the accounting requirement —
+    never silent thinness): an INFO summary always, WARNINGs for the miss list, any
+    empty-slug skips, and a below-floor coverage."""
+    resolved = report["resolved"]
+    missed = report["missed"]
+    skipped = report.get("skipped_no_slug", [])
+    total = resolved + len(missed)
+    logger.info(
+        "build_extracts(%s): live Wikipedia coverage %.1f%% — %d/%d POIs grounded",
+        slug,
+        report["coverage_pct"],
+        resolved,
+        total,
     )
-    return result
+    if missed:
+        logger.warning(
+            "build_extracts(%s): %d POI(s) got NO Wikipedia extract (ungrounded): %s",
+            slug,
+            len(missed),
+            ", ".join(missed),
+        )
+    if skipped:
+        logger.warning(
+            "build_extracts(%s): %d POI(s) skipped (empty slug, unkeyable): %s",
+            slug,
+            len(skipped),
+            ", ".join(skipped),
+        )
+    if report.get("below_floor"):
+        logger.warning(
+            "build_extracts(%s): live coverage %.1f%% is BELOW the %.1f%% floor — thin city",
+            slug,
+            report["coverage_pct"],
+            report.get("floor_pct", 0.0),
+        )
 
 
-def build_extracts(slug: str) -> list[WikiExtract]:
-    """Pinned ``WikiExtract``s from ``run/wikipedia_extracts.json``.
+def build_extracts(slug: str, pois: list[dict]) -> list[WikiExtract]:
+    """Pinned ``WikiExtract``s for a city, keyed later by ``slugify(poi_name)``.
 
-    Each entry is ``{title: {"revid": ..., "extract": ...}}``; ``write_city``
-    saves each as ``wikipedia/{slug}-rev-{revid}.txt`` verbatim, which the beat
-    drafter quotes and ``validate_beats`` grounds against.
+    LIVE (``fetch.HTTP_MODE == "live"``): resolve + fetch each FINAL assembled
+    POI's CURRENT en.wikipedia revision via ``extract.build_live_extracts(pois)``,
+    then log the coverage report loudly (no silent thinness) and return the list.
+    Because the live path needs the merged/filtered POI NAMES, callers must pass
+    the assembled POIs here (fetched AFTER ``assemble``).
+
+    FIXTURE (default): read the committed ``run/wikipedia_extracts.json`` (``pois``
+    is ignored). Each entry is ``{title: {"revid": ..., "extract": ...}}``;
+    ``write_city`` saves each as ``wikipedia/{slug}-rev-{revid}.txt`` verbatim,
+    which the beat drafter quotes and ``validate_beats`` grounds against.
     """
+    if fetch.HTTP_MODE == "live":
+        extracts, report = build_live_extracts(pois)
+        _log_extract_coverage(slug, report)
+        return extracts
+
     raw = _load_json(FIXTURES_ROOT / slug / "run" / "wikipedia_extracts.json")
     return [
         WikiExtract(
@@ -146,3 +220,11 @@ def build_extracts(slug: str) -> list[WikiExtract]:
         )
         for title, entry in raw.items()
     ]
+
+
+def build_extract_index(slug: str, pois: list[dict]) -> dict[str, WikiExtract]:
+    """``build_extracts`` keyed by ``slugify(poi_name)`` — the SAME key ``assemble``
+    uses for ``AssembledCity.wiki_extracts``. Callers assemble the city with EMPTY
+    extracts (so the final POI names exist), then attach this index — which fetches
+    live extracts for those POIs (or reads the fixture) and keys them identically."""
+    return {slugify(e.poi_name): e for e in build_extracts(slug, pois)}

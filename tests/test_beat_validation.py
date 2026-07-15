@@ -121,6 +121,51 @@ def test_validator_identity_collision(tmp_path):
     assert "IDENTITY_COLLISION" in result.stdout
 
 
+def _idty_beat(beat_id: str, topic: str, body_hash: str) -> dict:
+    """A minimal, otherwise-valid beat (legacy_unknown book → grounding + identity
+    wildcards skip) whose beat_id/topic/hash are caller-controlled."""
+    return {
+        "beat_id": beat_id,
+        "city_name": "paris",
+        "poi_name": "X",
+        "lens": "historic_arch",
+        "book_slug": "legacy_unknown",
+        "topic_slug": topic,
+        "source_chunk_slug": "legacy_ambiguous",
+        "script_body_hash": body_hash,
+    }
+
+
+def test_validator_duplicate_beat_id_fails(tmp_path):
+    """Two beats sharing a beat_id → exit 1 with BEAT_ID_COLLISION.
+
+    The upload path MERGEs NarrativeBeat on beat_id with NO DB uniqueness
+    constraint behind it, so two beats with the same beat_id collapse onto one
+    graph node (the second SET-overwrites the first). Distinct topic_slug + hash
+    here mean ONLY the beat_id check can catch them. [undo: remove
+    _check_beat_id_uniqueness from validate() → returncode 0 → RED]"""
+    beats = [
+        _idty_beat("paris_dup_beat", "t1", "h1"),
+        _idty_beat("paris_dup_beat", "t2", "h2"),
+    ]
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps(beats))
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "BEAT_ID_COLLISION" in result.stdout
+
+
+def test_validator_unique_beat_ids_pass(tmp_path):
+    """Distinct beat_ids (the normal case) do not trip the collision check."""
+    beats = [
+        _idty_beat("paris_beat_a", "t1", "h1"),
+        _idty_beat("paris_beat_b", "t2", "h2"),
+    ]
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps(beats))
+    assert run_validator(target).returncode == 0, "unique beat_ids must pass"
+
+
 def test_validator_missing_hash_flagged(tmp_path):
     """A beat with no script_body_hash field is flagged (HASH_MISSING)."""
     beats = json.loads(FIXTURE_PARIS.read_text())

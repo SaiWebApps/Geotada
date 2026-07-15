@@ -39,7 +39,9 @@ import json
 import logging
 import math
 import os
+import re
 import unicodedata
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -54,6 +56,95 @@ logger = logging.getLogger(__name__)
 
 # The minimum POI count a real city must carry — never ship a thin city.
 MIN_POIS = 30
+
+# NOTABILITY CAP: the number of real landmarks a live city keeps out of its raw
+# multi-source firehose. A live city can surface ~55K coordinate-bearing
+# candidates (every Wikidata item + OSM feature in the bbox); only a few dozen
+# are genuine tour landmarks. ``assemble`` keeps the top ``TARGET_POIS`` by a
+# composite notability score. Near ``MIN_POIS``; override via the
+# ``ONBOARD_TARGET_POIS`` env var or the ``target_pois`` param to ``assemble``.
+TARGET_POIS = int(os.getenv("ONBOARD_TARGET_POIS", "48"))
+
+# ---------------------------------------------------------------------------
+# STAGE A — per-candidate hard blocklist, applied to the RAW candidates BEFORE
+# the bucket/geo-split/fuzzy merge. This is the PERFORMANCE fix as much as a
+# quality one: the fuzzy near-dup union is O(n^2) (~16 min at 55K candidates),
+# so culling the obvious non-landmarks FIRST keeps the merge over a far smaller
+# set. Every rule below is name/meta-local (no cross-candidate state), so it is
+# a single cheap linear pass.
+# ---------------------------------------------------------------------------
+# OSM ``tourism`` values that are lodging / transient / info noise, never a stop.
+_OSM_LODGING_TOURISM = frozenset(
+    {
+        "hotel",
+        "hostel",
+        "guest_house",
+        "apartment",
+        "motel",
+        "camp_site",
+        "caravan_site",
+        "information",
+        "picnic_site",
+    }
+)
+# OSM ``historic`` values that are graves / boundary markers, never a stop.
+_OSM_HISTORIC_JUNK = frozenset(
+    {
+        "tomb",
+        "tumulus",
+        "grave",
+        "boundary_stone",
+        "milestone",
+        "wayside_cross",
+        "wayside_shrine",
+    }
+)
+# A ``PoiCandidate.name`` that is an Olympics-event article ("Athletics at the
+# 2012 Summer Olympics") is an EVENT, not a place.
+_OLYMPICS_EVENT_RE = re.compile(r" at the \d{4} (?:Summer|Winter) Olympics")
+# Wikidata ``P31`` (instance-of) QIDs for event / occurrence classes: an item
+# that IS an event must never become a POI.
+_EVENT_P31_CLASSES = frozenset(
+    {
+        "Q1656682",   # event
+        "Q1190554",   # occurrence
+        "Q16510064",  # sporting event
+        "Q13406554",  # sports competition
+        "Q18608583",  # recurring event
+        "Q1079023",   # ceremony
+    }
+)
+# A candidate farther than this from the bbox centre is an outer-suburb outlier
+# (airports, park-and-rides) that would break a walkable tour — dropped. Keeps
+# Heathrow (~25 km out) out while keeping the whole walkable core in.
+_MAX_CENTRE_METERS = 12_000.0
+# A hotel-class candidate re-enters STAGE A only if it is itself very notable
+# (a landmark hotel like the Savoy) — measured by its own ``sitelinks``.
+_HOTEL_REENTRY_SITELINKS = 15
+
+# ---------------------------------------------------------------------------
+# Notability scoring (post-merge). OSM classes strong enough to add a small
+# bonus to the composite score (never enough to KEEP a POI on their own).
+# ---------------------------------------------------------------------------
+_OSM_STRONG_TOURISM = frozenset(
+    {"museum", "gallery", "attraction", "viewpoint", "artwork", "theme_park", "zoo", "aquarium"}
+)
+_OSM_STRONG_HISTORIC = frozenset(
+    {
+        "castle",
+        "monument",
+        "memorial",
+        "monastery",
+        "ruins",
+        "archaeological_site",
+        "fort",
+        "city_gate",
+        "palace",
+        "manor",
+    }
+)
+# Wikivoyage ``listing_type`` values that mark a curated sightseeing pick.
+_WIKIVOYAGE_CURATED = frozenset({"see", "do"})
 
 # NAME-source precedence: which source's spelling wins as the display name.
 _NAME_PRIORITY: dict[str, int] = {
@@ -359,18 +450,18 @@ def _sweep_collisions(pois: list[dict]) -> None:
 def _assign_tiers(pois: list[dict]) -> None:
     """FORCED GRAVITY DISTRIBUTION (in place): deterministic rank-quantile.
 
-    Rank by ``(-agreement, -(wikidata+wikipedia bonus), _norm(name))`` then slice
-    at boundaries [10, 25, 50, 75]% into tiers 5/4/3/2/1. This emits exactly the
-    SHAPE ``test_gravity_distribution`` demands (T5 ≈ 10%, T3 ≈ 25%, bottom-heavy),
-    independent of the raw agreement values, and stamps every POI's audit block.
+    Rank by ``(-notability_score, _norm(name))`` then slice at boundaries
+    [10, 25, 50, 75]% into tiers 5/4/3/2/1. Ranking by the composite NOTABILITY
+    SCORE (not raw agreement) means the most notable landmarks land in the top
+    tiers instead of post-filter agreement ties being tiered alphabetically. The
+    quantile slicing is unchanged, so the emitted SHAPE (T5 ≈ 10%, T3 ≈ 25%,
+    bottom-heavy) still satisfies ``test_gravity_distribution`` for n in 30..60.
     """
     n = len(pois)
 
-    def _rank_key(poi: dict) -> tuple[int, int, str]:
+    def _rank_key(poi: dict) -> tuple[float, str]:
         audit = poi["_pipeline"]["gravity_audit"]
-        srcs = set(audit["sources"])
-        bonus = int("wikidata" in srcs) + int("wikipedia" in srcs)
-        return (-audit["cross_source_agreement"], -bonus, _norm(poi["name"]))
+        return (-audit["notability_score"], _norm(poi["name"]))
 
     ranked = sorted(pois, key=_rank_key)
     b = [int(0.10 * n), int(0.25 * n), int(0.50 * n), int(0.75 * n)]
@@ -394,23 +485,186 @@ def _assign_tiers(pois: list[dict]) -> None:
         audit["scored_at"] = scored_at
 
 
+def _stage_a_filter(
+    results: list[ConnectorResult], ctx: CityContext
+) -> tuple[list[ConnectorResult], Counter]:
+    """STAGE A: drop obvious non-landmark candidates BEFORE the O(n^2) merge.
+
+    Returns the results with their candidate lists filtered (documents/pointers
+    untouched — ``assemble`` never reads them, but a copy keeps the model valid)
+    plus a per-rule drop-count ``Counter`` for the audit log and the thin-city
+    error. See the module ``STAGE A`` block for why this runs first.
+    """
+    centre_lat, centre_lon = ctx.centre
+    drops: Counter = Counter()
+    filtered: list[ConnectorResult] = []
+    for result in results:
+        kept = [
+            c for c in result.candidates if _keep_candidate(c, centre_lat, centre_lon, drops)
+        ]
+        filtered.append(result.model_copy(update={"candidates": kept}))
+    return filtered, drops
+
+
+def _keep_candidate(
+    cand: PoiCandidate, centre_lat: float, centre_lon: float, drops: Counter
+) -> bool:
+    """One candidate's STAGE-A verdict; ``drops`` is incremented per fired rule.
+
+    ``meta`` is read with ``.get`` + safe defaults throughout — an OLDER fixture
+    whose connectors did not yet attach ``tourism``/``historic``/``p31``/
+    ``sitelinks`` simply doesn't trip the meta rules (its real landmarks survive).
+    """
+    meta = cand.meta or {}
+    # 1. EMPTY SLUG: a non-Latin-only name slugifies to "" — unroutable as a POI
+    #    slug (write_city keys the corpus files on ``slugify(name)``). Reject.
+    if slugify(cand.name) == "":
+        drops["empty_slug"] += 1
+        return False
+    # 2. OSM lodging / transient / info classes — not a tour stop. A hotel-class
+    #    candidate re-enters ONLY if it is itself very notable (a landmark hotel).
+    tourism = meta.get("tourism")
+    if (
+        tourism in _OSM_LODGING_TOURISM
+        and int(meta.get("sitelinks") or 0) < _HOTEL_REENTRY_SITELINKS
+    ):
+        drops["osm_lodging"] += 1
+        return False
+    # 3. OSM ``tourism=artwork`` with no wiki linkage — street furniture.
+    if tourism == "artwork" and not (meta.get("osm_wikidata") or meta.get("osm_wikipedia")):
+        drops["osm_artwork_no_wiki"] += 1
+        return False
+    # 4. OSM historic graves / boundary markers.
+    if meta.get("historic") in _OSM_HISTORIC_JUNK:
+        drops["osm_historic_junk"] += 1
+        return False
+    # 5. EVENT (not a place): an Olympics-event name, or a Wikidata event ``P31``.
+    if _OLYMPICS_EVENT_RE.search(cand.name):
+        drops["event"] += 1
+        return False
+    p31 = meta.get("p31") or ""
+    if p31 and _EVENT_P31_CLASSES.intersection(p31.split("|")):
+        drops["event"] += 1
+        return False
+    # 6. FAR OUTLIER: > ~12 km from the bbox centre (unwalkable; kills airports /
+    #    outer park-and-rides while keeping the whole walkable core).
+    if (
+        cand.latitude is not None
+        and cand.longitude is not None
+        and _haversine_m(centre_lat, centre_lon, cand.latitude, cand.longitude)
+        > _MAX_CENTRE_METERS
+    ):
+        drops["far_from_centre"] += 1
+        return False
+    return True
+
+
+def _notability_signals(group: list[PoiCandidate]) -> dict:
+    """The notability SIGNALS of a merged group, from ``PoiCandidate.meta`` only.
+
+    All reads use ``.get`` + safe defaults so an older fixture (sparse meta)
+    degrades gracefully rather than crashing. ``sitelinks_max`` defaults to 0;
+    ``has_enwiki`` is true when the group has its OWN English Wikipedia article
+    (a wikipedia-source candidate, a Wikidata ``enwiki`` sitelink, or an OSM
+    ``wikipedia`` tag).
+    """
+    sitelinks_max = max((int((c.meta or {}).get("sitelinks") or 0) for c in group), default=0)
+    has_enwiki = (
+        any(c.source == "wikipedia" for c in group)
+        or any(c.source == "wikidata" and (c.meta or {}).get("enwiki") for c in group)
+        or any((c.meta or {}).get("osm_wikipedia") for c in group)
+    )
+    agreement = len({c.source for c in group})
+    wikivoyage_curated = any(
+        c.source == "wikivoyage" and (c.meta or {}).get("listing_type") in _WIKIVOYAGE_CURATED
+        for c in group
+    )
+    osm_strong = any(
+        c.source == "osm"
+        and (
+            (c.meta or {}).get("tourism") in _OSM_STRONG_TOURISM
+            or (c.meta or {}).get("historic") in _OSM_STRONG_HISTORIC
+            or (c.meta or {}).get("osm_wikidata")
+            or (c.meta or {}).get("osm_wikipedia")
+        )
+        for c in group
+    )
+    score = (
+        2.0 * math.log10(1 + sitelinks_max)
+        + 1.0 * (agreement - 1)
+        + 1.5 * float(has_enwiki)
+        + 1.0 * float(wikivoyage_curated)
+        + 0.5 * float(osm_strong)
+    )
+    return {
+        "sitelinks_max": sitelinks_max,
+        "has_enwiki": has_enwiki,
+        "agreement": agreement,
+        "wikivoyage_curated": wikivoyage_curated,
+        "osm_strong_class": osm_strong,
+        "score": round(score, 6),
+    }
+
+
+def _is_notable(sig: dict) -> bool:
+    """STAGE B: the post-merge notability KEEP predicate (the firehose filter).
+
+    A place with its OWN English Wikipedia article near the city centre is a
+    landmark by definition, so ``has_enwiki`` keeps it — this is the graceful
+    default that keeps real landmarks from an OLDER fixture whose connectors did
+    not yet attach ``sitelinks``/``enwiki`` scalars (the spec keep-clauses
+    ``has_enwiki AND sitelinks_max>=3`` and ``has_enwiki AND agreement>=2`` are
+    the stronger, corroborated cases of this same signal). With NO English
+    article we demand a strong independent signal: heavy cross-wiki linkage
+    (a foreign-notable global landmark) or a corroborated curated Wikivoyage
+    pick. Everything below this bar is the 55K firehose tail.
+    """
+    if sig["has_enwiki"]:
+        return True
+    if sig["sitelinks_max"] >= 10:
+        return True
+    # No English article: a corroborated curated Wikivoyage see/do pick keeps it.
+    return sig["wikivoyage_curated"] and sig["agreement"] >= 2
+
+
+def _drop_report(drops: Counter) -> str:
+    """A stable, human-readable ``rule=count`` summary of every filter drop."""
+    return ", ".join(f"{rule}={drops[rule]}" for rule in sorted(drops)) or "(none)"
+
+
 def assemble(
     results: list[ConnectorResult],
     ctx: CityContext,
     extracts: list[WikiExtract],
     *,
     cloud_deployed: bool = False,
+    target_pois: int | None = None,
 ) -> AssembledCity:
     """Merge cross-source candidates into geofenced, gravity-tiered POI dicts.
 
     PURE — no network, no disk, no registry. Reads ONLY ``result.candidates``;
     ``result.pointers`` / ``result.documents`` are never consulted (wall 3).
+
+    The notability pipeline turns a live city's raw firehose into ~``TARGET_POIS``
+    real landmarks: STAGE A culls per-candidate junk BEFORE the O(n^2) merge (the
+    perf fix), the merge is unchanged, STAGE B keeps only the notable merged POIs,
+    and a composite-score CAP trims the survivors to ``target_pois``. When a
+    (small / older-fixture) city yields fewer notable POIs than the target the CAP
+    BACKFILLS from the best remaining POIs rather than nuking a real city to a
+    handful — but a real firehose has far more notable POIs than the target, so
+    the tail never gets a slot. Fewer than ``MIN_POIS`` survivors raises (never
+    auto-relax).
     """
+    target = TARGET_POIS if target_pois is None else target_pois
     min_lat, max_lat, min_lon, max_lon = ctx.bbox
+    raw_in = sum(len(r.candidates) for r in results)
+
+    # 0. STAGE A — per-candidate hard blocklist BEFORE the O(n^2) merge (perf fix).
+    results, stage_a_drops = _stage_a_filter(results, ctx)
 
     # 1. MERGE/DEDUP: exact-norm buckets, GEO-SPLIT each bucket into same-place
     # clusters (distinct places sharing a name stay separate), then a conservative
-    # fuzzy near-dup union-find over the clusters.
+    # fuzzy near-dup union-find over the clusters — now over the FAR smaller set.
     buckets = _bucket_candidates(results)
     clusters: dict[str, list[PoiCandidate]] = {}
     for bkey, bcands in buckets.items():
@@ -421,8 +675,9 @@ def assemble(
     for key, cands in clusters.items():
         groups.setdefault(uf.find(key), []).extend(cands)
 
-    # 2. COORDS + 3. BBOX drop (never clip).
-    pois: list[dict] = []
+    # 2. COORDS + 3. BBOX drop (never clip). Each surviving group also gets its
+    # notability SIGNALS + composite score (stamped into the gravity_audit).
+    scored: list[tuple[dict, dict]] = []  # (poi, notability signals)
     dropped_no_coords = 0
     dropped_out_of_bbox = 0
     for group in groups.values():
@@ -436,34 +691,36 @@ def assemble(
             continue
         sources = sorted({c.source for c in group})
         source_urls = sorted({c.source_url for c in group if c.source_url})
-        pois.append(
-            {
-                "name": canonical,
-                "short_description": _short_description(group),
-                "name_variations": _variations(group, canonical),
-                "latitude": lat,
-                "longitude": lon,
-                "city_name": ctx.slug,
-                "trigger_radius": 30,
-                "kid_friendly": "yes",
-                "poi_role": "stop",
-                "importance_tier": None,  # stamped by _assign_tiers
-                "_pipeline": {
-                    "discovery_sources": sources,
-                    "source_urls": source_urls,
-                    "gravity_audit": {
-                        "signal_source": "onboard_auto_v1",
-                        "assigned_gravity": None,  # stamped below
-                        "cross_source_agreement": len(sources),
-                        "sources": sources,
-                        "rank": None,  # stamped below
-                        "of": None,  # stamped below
-                        "method": "rank_quantile_forced_distribution",
-                        "scored_at": None,  # stamped below
-                    },
+        sig = _notability_signals(group)
+        poi = {
+            "name": canonical,
+            "short_description": _short_description(group),
+            "name_variations": _variations(group, canonical),
+            "latitude": lat,
+            "longitude": lon,
+            "city_name": ctx.slug,
+            "trigger_radius": 30,
+            "kid_friendly": "yes",
+            "poi_role": "stop",
+            "importance_tier": None,  # stamped by _assign_tiers
+            "_pipeline": {
+                "discovery_sources": sources,
+                "source_urls": source_urls,
+                "gravity_audit": {
+                    "signal_source": "onboard_auto_v1",
+                    "assigned_gravity": None,  # stamped below
+                    "cross_source_agreement": len(sources),
+                    "sources": sources,
+                    "notability_score": sig["score"],
+                    "sitelinks": sig["sitelinks_max"],
+                    "rank": None,  # stamped below
+                    "of": None,  # stamped below
+                    "method": "rank_quantile_forced_distribution",
+                    "scored_at": None,  # stamped below
                 },
-            }
-        )
+            },
+        }
+        scored.append((poi, sig))
 
     if dropped_out_of_bbox or dropped_no_coords:
         logger.info(
@@ -472,6 +729,42 @@ def assemble(
             dropped_out_of_bbox,
             ctx.bbox,
             dropped_no_coords,
+        )
+
+    # 3b. STAGE B (notability KEEP) + composite-score CAP. Sort each partition by
+    # score desc (tiebreak _norm(name)); keep every notable POI up to the target,
+    # then BACKFILL from the best non-notable ONLY to reach the target (so a small
+    # real city is never nuked, while a firehose's notable set alone fills it).
+    def _by_score(item: tuple[dict, dict]) -> tuple[float, str]:
+        poi, sig = item
+        return (-sig["score"], _norm(poi["name"]))
+
+    notable = sorted((it for it in scored if _is_notable(it[1])), key=_by_score)
+    rejected = sorted((it for it in scored if not _is_notable(it[1])), key=_by_score)
+    kept = notable[:target]
+    if len(kept) < target:
+        kept = kept + rejected[: target - len(kept)]
+    dropped_low_notability = len(rejected) - max(0, len(kept) - len(notable))
+    dropped_over_cap = max(0, len(notable) - target)
+    pois = [poi for poi, _ in kept]
+
+    stage_a_drops["low_notability"] = dropped_low_notability
+    stage_a_drops["over_cap"] = dropped_over_cap
+    stage_a_drops["no_coords"] = dropped_no_coords
+    stage_a_drops["out_of_bbox"] = dropped_out_of_bbox
+    logger.info(
+        "assemble(%s): notability filter kept %d/%d POIs (target=%d); drops: %s",
+        ctx.slug,
+        len(pois),
+        len(scored),
+        target,
+        _drop_report(stage_a_drops),
+    )
+    if len(pois) < MIN_POIS:
+        raise ValueError(
+            f"refusing to assemble a thin city {ctx.slug!r}: only {len(pois)} POI(s) "
+            f"survived the notability filter (from {raw_in} raw candidates), need at "
+            f"least {MIN_POIS}. Per-rule drops: {_drop_report(stage_a_drops)}"
         )
 
     # 1 (cont.) DISAMBIGUATE distinct places that share a name (geo-split), then

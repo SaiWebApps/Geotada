@@ -20,9 +20,11 @@ import json
 import re
 from pathlib import Path
 
+import httpx
 import pytest
 from pydantic import ValidationError
 
+from src.onboard import fetch
 from src.onboard.fetch import (
     INGEST_DOMAIN_ALLOWLIST,
     IngestDomainError,
@@ -395,3 +397,83 @@ def test_shadow_discovery_never_imports_the_fetcher() -> None:
     surface metadata pointers."""
     leaked = _forbidden_imports_in_source(_SHADOW_DISCOVERY_SRC.read_text())
     assert not leaked, f"shadow_discovery.py imports a network-capable module: {leaked}"
+
+
+# ---------------------------------------------------------------------------
+# FIX 1 — Wikimedia User-Agent policy: a live GET must carry a descriptive
+# default User-Agent (en.wikipedia.org 403s an anonymous UA), and an explicit
+# caller header still WINS over the default. Live mode only — fixture mode
+# raises before any httpx call, so it is untouched. Kept network-free by
+# monkeypatching httpx.get.
+# ---------------------------------------------------------------------------
+
+
+class _CaptureResponse:
+    """A minimal httpx-response stand-in: answers only the two methods the fetch
+    door calls after a GET (``raise_for_status`` + ``json``), plus a ``text``
+    attribute for the text door."""
+
+    text = "body"
+
+    def raise_for_status(self) -> None:
+        return None
+
+    def json(self) -> dict:
+        return {"ok": True}
+
+
+def _patch_live_capture(monkeypatch) -> dict:
+    """Put the fetch door in live mode with a fake ``httpx.get`` that RECORDS the
+    kwargs it was called with, so a test can assert the headers actually sent —
+    without ever touching the network."""
+    captured: dict = {}
+
+    def _fake_get(url, params=None, timeout=None, headers=None):
+        captured["url"] = url
+        captured["headers"] = headers
+        return _CaptureResponse()
+
+    monkeypatch.setattr(httpx, "get", _fake_get)
+    monkeypatch.setattr(fetch, "HTTP_MODE", "live")
+    return captured
+
+
+def test_onboard_user_agent_constant_is_descriptive_with_contact() -> None:
+    """Wikimedia's UA policy requires a DESCRIPTIVE agent naming the tool + a
+    contact. The module constant satisfies it (tool name + a contact URL)."""
+    ua = fetch.ONBOARD_USER_AGENT
+    assert "Ondoway" in ua
+    assert "ondoway.com" in ua
+
+
+def test_http_get_json_sends_default_user_agent(monkeypatch) -> None:
+    """A live JSON GET with no caller headers still carries the descriptive
+    default UA — the fix for the en.wikipedia.org 403.
+
+    UNDO: pass ``headers=headers`` (drop the UA merge) -> ``captured['headers']``
+    is None -> this goes RED."""
+    captured = _patch_live_capture(monkeypatch)
+    fetch.http_get_json("https://en.wikipedia.org/w/api.php", params={"a": "b"})
+    assert captured["headers"]["User-Agent"] == fetch.ONBOARD_USER_AGENT
+    assert "Ondoway" in captured["headers"]["User-Agent"]
+
+
+def test_http_get_text_sends_default_user_agent(monkeypatch) -> None:
+    """The text door merges the SAME default UA in as the JSON door.
+
+    UNDO: drop the UA merge in http_get_text -> ``captured['headers']`` is None
+    -> RED."""
+    captured = _patch_live_capture(monkeypatch)
+    fetch.http_get_text("https://en.wikipedia.org/wiki/Paris")
+    assert "Ondoway" in captured["headers"]["User-Agent"]
+
+
+def test_caller_user_agent_overrides_default(monkeypatch) -> None:
+    """An explicit caller ``User-Agent`` still WINS over the default (the merge
+    spreads the caller's headers LAST). Guards that the fix does not clobber a
+    connector that sets its own UA."""
+    captured = _patch_live_capture(monkeypatch)
+    fetch.http_get_json(
+        "https://en.wikipedia.org/w/api.php", headers={"User-Agent": "Custom-Caller/9.9"}
+    )
+    assert captured["headers"]["User-Agent"] == "Custom-Caller/9.9"

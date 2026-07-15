@@ -243,8 +243,16 @@ def _backfill_provenance(session, beats: list[dict]) -> dict[str, int]:
     return {"updated": updated, "candidates": len(params)}
 
 
-def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
-    """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND."""
+def _upload_beats(session, beats: list[dict], city_name: str) -> dict[str, int]:
+    """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND.
+
+    ``city_name`` is the slug of the city being deployed (POI ``city_name`` in the
+    graph). The beat→POI link is scoped to it so a beat only ever attaches to a
+    POI in the SAME city: many POI names recur across cities (Chinatown, SoHo,
+    Greenwich Village, Chelsea, Cleopatra's Needle all exist in both London and
+    New York), and a name-only match would MERGE, say, a London beat onto the
+    New York POI — seating London beats on NYC tours and breaking db_parity.
+    """
     params = []
     pre_skipped = 0
     blocked = 0
@@ -315,7 +323,7 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
     result = session.run(
         """
         UNWIND $beats AS b
-        OPTIONAL MATCH (p:POI {name: b.poi_name})
+        OPTIONAL MATCH (p:POI {name: b.poi_name, city_name: $city})
         WITH b, p WHERE p IS NOT NULL
         MERGE (beat:NarrativeBeat {beat_id: b.beat_id})
         // audio_url is stamped ONCE on create; a re-deploy must never wipe live
@@ -346,6 +354,7 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
         RETURN count(beat) AS linked
         """,
         beats=params,
+        city=city_name,
     )
     linked = result.single()["linked"]
     orphaned = len(params) - linked + pre_skipped
@@ -470,7 +479,7 @@ def main() -> None:
             # 4. Beats + relationships
             print(f"  [4/5] Uploading {len(beats)} beats + linking...")
             t0 = time.time()
-            beat_stats = _upload_beats(session, beats)
+            beat_stats = _upload_beats(session, beats, city_slug)
             print(
                 f"         {beat_stats['linked']} linked, {beat_stats['orphaned']} orphaned, "
                 f"{beat_stats['tagged']} tagged, {beat_stats['blocked']} blocked (disputed), "

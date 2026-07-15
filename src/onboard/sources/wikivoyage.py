@@ -24,28 +24,37 @@ from src.onboard.models import (
 )
 from src.onboard.sources.mediawiki import api_url, pages
 
-# The OPENING of a ``{{listing ...}}`` template. We deliberately do NOT match the
-# closing ``}}`` with a regex: a non-greedy ``(.*?)\}\}`` stops at the FIRST ``}}``
-# — including one that closes a NESTED template ({{dead link|...}}, {{cite web|...}},
-# {{convert|...}}), routine in real Wikivoyage wikitext — truncating the body before
-# the real ``lat=``/``long=`` fields and silently dropping coordinates. Instead
-# ``_listing_bodies`` walks the braces to find the balanced end.
-_LISTING_START_RE = re.compile(r"\{\{listing\b", re.IGNORECASE)
+# The OPENING of a POI-listing template. Wikivoyage curates POIs under THREE
+# template names — the generic ``{{listing}}`` plus the section-specific
+# ``{{see}}`` and ``{{do}}`` — so matching all three turns each into a curation
+# VOTE (the template name is captured into ``meta['listing_type']`` so the
+# assemble filter can weigh a hand-curated see/do sight over a raw geo-hit).
+#
+# We deliberately do NOT match the closing ``}}`` with a regex: a non-greedy
+# ``(.*?)\}\}`` stops at the FIRST ``}}`` — including one that closes a NESTED
+# template ({{dead link|...}}, {{cite web|...}}, {{convert|...}}), routine in real
+# Wikivoyage wikitext — truncating the body before the real ``lat=``/``long=``
+# fields and silently dropping coordinates. Instead ``_listings`` walks the braces
+# to find the balanced end. The ``\b`` keeps ``{{listings``/``{{doable`` from
+# matching (only whole template names count).
+_LISTING_START_RE = re.compile(r"\{\{(listing|see|do)\b", re.IGNORECASE)
 
 
-def _listing_bodies(wikitext: str) -> list[str]:
-    """Every ``{{listing ...}}`` body (between the braces), BRACE-BALANCED.
+def _listings(wikitext: str) -> list[tuple[str, str]]:
+    """Every listing template as ``(listing_type, body)``, BRACE-BALANCED.
 
-    For each ``{{listing`` we walk forward tracking nesting depth (+1 on each
-    ``{{``, -1 on each ``}}``) and take the body up to the ``}}`` that returns
-    depth to 0, so nested templates inside the body do NOT terminate it early.
-    An unclosed listing (depth never returns to 0) is skipped, as the old
-    regex also emitted nothing without a closing ``}}``.
+    ``listing_type`` is the lower-cased template name (``listing``/``see``/``do``)
+    that opened it. For each opener we walk forward tracking nesting depth (+1 on
+    each ``{{``, -1 on each ``}}``) and take the body up to the ``}}`` that returns
+    depth to 0, so nested templates inside the body do NOT terminate it early. An
+    unclosed template (depth never returns to 0) is skipped, as the old regex also
+    emitted nothing without a closing ``}}``.
     """
-    bodies: list[str] = []
+    listings: list[tuple[str, str]] = []
     n = len(wikitext)
     for start in _LISTING_START_RE.finditer(wikitext):
-        body_start = start.end()  # just past ``{{listing``
+        listing_type = start.group(1).lower()  # the template name that voted
+        body_start = start.end()  # just past ``{{<name>``
         depth = 1  # the ``{{`` we just matched is open
         i = body_start
         while i < n:
@@ -57,11 +66,11 @@ def _listing_bodies(wikitext: str) -> list[str]:
                 depth -= 1
                 i += 2
                 if depth == 0:
-                    bodies.append(wikitext[body_start : i - 2])
+                    listings.append((listing_type, wikitext[body_start : i - 2]))
                     break
             else:
                 i += 1
-    return bodies
+    return listings
 
 
 def _field(body: str, key: str) -> str | None:
@@ -129,7 +138,7 @@ class WikivoyageConnector:
         )
 
         candidates: list[PoiCandidate] = []
-        for body in _listing_bodies(wikitext):
+        for listing_type, body in _listings(wikitext):
             name = _field(body, "name")
             if not name:
                 continue  # a listing with no name is not an identifiable POI
@@ -140,6 +149,10 @@ class WikivoyageConnector:
                     source_url=page_url,
                     latitude=_coord(_field(body, "lat")),
                     longitude=_coord(_field(body, "long")),
+                    # Which template curated this POI — a see/do sight is a
+                    # stronger curation vote than a bare {{listing}} the filter
+                    # can weigh.
+                    meta={"listing_type": listing_type},
                 )
             )
 

@@ -131,6 +131,94 @@ def test_binding_without_placeLabel_is_skipped_not_crash() -> None:  # noqa: N80
     assert all(c.name for c in result.candidates), "no nameless candidate may be emitted"
 
 
+def test_notability_meta_sitelinks_int_enwiki_and_p31() -> None:
+    """NOTABILITY SIGNALS the assemble filter consumes. Each candidate must carry
+    ``meta['sitelinks']`` as an INT, ``meta['enwiki']`` as the article title, and
+    ``meta['p31']`` as the pipe-joined Q-ids — pulled from the WDQS binding.
+
+    Pre-change ``parse`` emits only ``{'qid'}`` in meta, so every assertion below
+    KeyErrors — this doubles as the wikidata undo-test.
+    """
+    result = WikidataConnector().parse(
+        load_onboard_fixture("london", "wikidata_sparql.json"), _CTX
+    )
+    london = _london(result)
+    assert london.meta["sitelinks"] == 250
+    assert isinstance(london.meta["sitelinks"], int)
+    assert london.meta["enwiki"] == "London"
+    assert london.meta["p31"] == "Q515|Q5119"
+
+    big_ben = next(c for c in result.candidates if c.name == "Big Ben")
+    assert big_ben.meta["sitelinks"] == 83
+    assert big_ben.meta["enwiki"] == "Big Ben"
+    assert big_ben.meta["p31"] == "Q200334"
+
+
+def test_missing_sitelinks_and_enwiki_default_to_zero_and_none() -> None:
+    """GUARD: a binding that OMITS ``sitelinks``/``enwiki`` (real WDQS leaves an
+    OPTIONAL/aggregate unbound) must NOT crash — sitelinks defaults to int 0 and
+    enwiki to None, per the .get contract."""
+    payload = {
+        "results": {
+            "bindings": [
+                {
+                    "place": {
+                        "type": "uri",
+                        "value": "http://www.wikidata.org/entity/Q84",
+                    },
+                    "placeLabel": {"type": "literal", "value": "London"},
+                    "coord": {
+                        "type": "literal",
+                        "value": "Point(-0.1278 51.5074)",
+                    },
+                    # No 'sitelinks', 'enwiki', or 'p31' bindings at all.
+                }
+            ]
+        }
+    }
+    result = WikidataConnector().parse(payload, _CTX)
+    london = _london(result)
+    assert london.meta["sitelinks"] == 0
+    assert isinstance(london.meta["sitelinks"], int)
+    assert london.meta["enwiki"] is None
+
+
+def test_box_query_adds_sitelink_floor_and_event_exclusion() -> None:
+    """SERVER-SIDE RELIEF so WDQS doesn't time out at 55K: the box query must
+    request sitelinks + the enwiki article + P31, and carry the sitelink floor
+    (``>= 3``) and the event/occurrence exclusion (Q1190554)."""
+    _, params = WikidataConnector().consult_url(_CTX)
+    query = params["query"]
+    assert "wikibase:sitelinks" in query
+    assert "schema:isPartOf" in query and "en.wikipedia.org" in query
+    assert "wdt:P31" in query
+    assert ">= 3" in query
+    assert "Q1190554" in query  # occurrences/events excluded server-side
+
+
+def test_box_query_avoids_the_timeout_prone_transitive_walk() -> None:
+    """REGRESSION GUARD for the live-London ranking bug. The prior box query used
+    a transitive ``wdt:P31/wdt:P279*`` subclass walk PLUS a ``GROUP_CONCAT`` P31
+    aggregation; together they blew past the WDQS timeout on a Greater-London box,
+    so the flow's error-resilience turned the source into an EMPTY result — every
+    POI then scored equal (no sitelinks) and the cap + tiers collapsed to
+    ALPHABETICAL (British Museum last, tiers inverted).
+
+    The query must therefore NOT contain the transitive ``P279*`` walk or the P31
+    ``GROUP_CONCAT`` aggregation; events are excluded by a CHEAP DIRECT ``wdt:P31``
+    membership test instead (still naming Q1190554), so sitelinks come back fast.
+    UNDO: restore ``FILTER NOT EXISTS { ?place wdt:P31/wdt:P279* wd:Q1190554 }`` or
+    the ``GROUP_CONCAT(... AS ?p31)`` column -> this goes RED.
+    """
+    _, params = WikidataConnector().consult_url(_CTX)
+    query = params["query"]
+    assert "P279" not in query, "the transitive P279* subclass walk timed WDQS out"
+    assert "GROUP_CONCAT" not in query, "the P31 GROUP_CONCAT aggregation timed WDQS out"
+    # Events are STILL excluded server-side — by the cheap direct-P31 membership test.
+    assert "FILTER NOT EXISTS" in query and "wdt:P31" in query
+    assert "Q1190554" in query
+
+
 def test_consult_url_is_wdqs_box_query() -> None:
     """consult_url is PURE: it names the WDQS endpoint + a JSON-format box query
     whose SW/NE corners come from the ctx bbox (WKT 'Point(LON LAT)' corners)."""

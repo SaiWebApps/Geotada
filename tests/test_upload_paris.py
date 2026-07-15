@@ -158,7 +158,7 @@ class TestProvenanceUploadAndBackfill:
     def _seed_poi(self, driver) -> None:
         with driver.session(database=get_database()) as s:
             s.run(
-                "MERGE (p:POI {name: $name}) SET p.id = 'prov-test-poi'",
+                "MERGE (p:POI {name: $name}) SET p.id = 'prov-test-poi', p.city_name = 'paris'",
                 name=self.POI_NAME,
             )
 
@@ -177,7 +177,7 @@ class TestProvenanceUploadAndBackfill:
             _provenance_beat("prov-b2", self.POI_NAME, with_fields=False),
         ]
         with clean_driver.session(database=get_database()) as s:
-            stats = _upload_beats(s, beats)
+            stats = _upload_beats(s, beats, "paris")
         assert stats["linked"] == 2
 
         b1 = self._beat_props(clean_driver, "prov-b1")
@@ -221,7 +221,7 @@ class TestProvenanceUploadAndBackfill:
         self._seed_poi(clean_driver)
         beat = _provenance_beat("prov-audio", self.POI_NAME, with_fields=True)
         with clean_driver.session(database=get_database()) as s:
-            _upload_beats(s, [beat])
+            _upload_beats(s, [beat], "paris")
         assert self._beat_props(clean_driver, "prov-audio")["audio_url"] == ""
         # Simulate generated TTS audio + a stale body landing on the live beat.
         with clean_driver.session(database=get_database()) as s:
@@ -232,7 +232,7 @@ class TestProvenanceUploadAndBackfill:
         # Re-deploy the same beat with an edited body.
         beat["script_body"] = "RESYNCED BODY"
         with clean_driver.session(database=get_database()) as s:
-            _upload_beats(s, [beat])
+            _upload_beats(s, [beat], "paris")
         props = self._beat_props(clean_driver, "prov-audio")
         assert props["audio_url"] == "https://example.com/generated.mp3", (
             "re-deploy WIPED live audio_url — audio_url must be ON CREATE only"
@@ -256,7 +256,7 @@ class TestEmptyBeatIdNotCollapsed:
     def _seed_poi(self, driver) -> None:
         with driver.session(database=get_database()) as s:
             s.run(
-                "MERGE (p:POI {name: $name}) SET p.id = 'empty-bid-poi'",
+                "MERGE (p:POI {name: $name}) SET p.id = 'empty-bid-poi', p.city_name = 'paris'",
                 name=self.POI_NAME,
             )
 
@@ -279,7 +279,7 @@ class TestEmptyBeatIdNotCollapsed:
             self._beat("real-id", "A real beat that still uploads."),
         ]
         with clean_driver.session(database=get_database()) as s:
-            stats = _upload_beats(s, beats)
+            stats = _upload_beats(s, beats, "paris")
 
         # Both empty-beat_id beats are refused; the real one uploads.
         assert stats["no_beat_id"] == 2
@@ -348,3 +348,78 @@ class TestPoiMergeKeyDedup:
         # Display casing is preserved (last-written form).
         assert nodes[0]["name"] == "notre-dame  "
         assert nodes[0]["name_key"] == name_key
+
+
+# ---------------------------------------------------------------------------
+# Showstopper: the beat→POI link must be CITY-SCOPED. Many POI names recur
+# across cities (Chinatown, SoHo, Greenwich Village, Chelsea, Cleopatra's
+# Needle all exist in BOTH data/london and data/new_york). A name-only match
+# would MERGE a London beat onto New York's identically-named POI — seating
+# London beats on NYC tours and failing db_parity. The link must additionally
+# constrain city_name = the city being deployed.
+# ---------------------------------------------------------------------------
+
+
+@needs_neo4j
+class TestBeatPoiLinkCityScoped:
+    def _seed_poi(self, driver, name: str, city: str, marker: str) -> None:
+        with driver.session(database=get_database()) as s:
+            s.run(
+                "CREATE (p:POI {name: $name, city_name: $city, id: $marker})",
+                name=name,
+                city=city,
+                marker=marker,
+            )
+
+    def _beat(self, beat_id: str, poi_name: str, city: str) -> dict:
+        return {
+            "beat_id": beat_id,
+            "poi_name": poi_name,
+            "city_name": city,
+            "script_body": "A beat about a place that shares its name across cities.",
+            "fact_check": {"status": "verified"},
+        }
+
+    def test_cross_city_name_collision_does_not_link(self, clean_driver):
+        """A London beat whose poi_name ("Chinatown") ALSO exists in New York
+        must NOT attach to the New York POI when no London POI of that name
+        exists. [undo: drop `city_name: $city` from the OPTIONAL MATCH → the
+        london beat MERGEs a HAS_BEAT onto the NY Chinatown POI → RED]"""
+        self._seed_poi(clean_driver, "Chinatown", "new_york", "ny-chinatown-1")
+        with clean_driver.session(database=get_database()) as s:
+            stats = _upload_beats(
+                s, [self._beat("london_chinatown_1", "Chinatown", "london")], "london"
+            )
+        # No London POI named Chinatown exists → the beat links to nothing.
+        assert stats["linked"] == 0
+        with clean_driver.session(database=get_database()) as s:
+            leaked = s.run(
+                "MATCH (p:POI {id: 'ny-chinatown-1'})-[:HAS_BEAT]->(b) RETURN count(b) AS c"
+            ).single()["c"]
+            beat_exists = s.run(
+                "MATCH (b:NarrativeBeat {beat_id: 'london_chinatown_1'}) RETURN count(b) AS c"
+            ).single()["c"]
+        assert leaked == 0, "London beat leaked onto the New York Chinatown POI"
+        # City-blind match would have created + linked the beat; scoped match
+        # never creates it (WITH ... WHERE p IS NOT NULL filters it out).
+        assert beat_exists == 0
+
+    def test_same_city_poi_still_links(self, clean_driver):
+        """The scope must not over-block: when a London POI of that name DOES
+        exist, the London beat attaches to it (and never to the NY twin)."""
+        self._seed_poi(clean_driver, "SoHo", "new_york", "ny-soho-2")
+        self._seed_poi(clean_driver, "SoHo", "london", "ldn-soho-2")
+        with clean_driver.session(database=get_database()) as s:
+            stats = _upload_beats(
+                s, [self._beat("london_soho_2", "SoHo", "london")], "london"
+            )
+        assert stats["linked"] == 1
+        with clean_driver.session(database=get_database()) as s:
+            ldn = s.run(
+                "MATCH (p:POI {id: 'ldn-soho-2'})-[:HAS_BEAT]->(b) RETURN count(b) AS c"
+            ).single()["c"]
+            ny = s.run(
+                "MATCH (p:POI {id: 'ny-soho-2'})-[:HAS_BEAT]->(b) RETURN count(b) AS c"
+            ).single()["c"]
+        assert ldn == 1, "London beat did not attach to its own London POI"
+        assert ny == 0, "London beat leaked onto the New York SoHo POI"

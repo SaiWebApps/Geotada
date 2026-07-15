@@ -1,25 +1,37 @@
-"""Step-4 DRAFT: turn each POI's pinned Wikipedia lead into one establishing beat.
+"""Step-4 DRAFT: turn each POI's pinned Wikipedia lead into SEVERAL beats.
+
+A POI must carry **≥ 3 active beats** (and be tier ≥ 3) to count as an *anchor
+candidate* for the tour engine's density gate (``src/tour/density.py`` —
+``ANCHOR_CANDIDATE_BEAT_COUNT_MIN = 3``). A city drafted with one beat per POI
+therefore yields ZERO anchors and the engine refuses (RED) at every duration.
+So each POI's lead is split into 3-5 contiguous, VERBATIM sentence-spans and one
+beat is emitted per span — enough active beats for a landmark POI to anchor.
 
 Two drafters, one wall between free and paid:
 
-- ``MockBeatDrafter`` is free and deterministic. It sets ``source_passage`` to a
-  VERBATIM contiguous span of ``extract.text`` (a literal slice, never a
-  paraphrase), so the emitted beat is a normalized substring of the pinned
+- ``MockBeatDrafter`` is free and deterministic. Each beat's ``source_passage``
+  is a VERBATIM contiguous span of ``extract.text`` (a literal slice, never a
+  paraphrase), so every emitted beat is a normalized substring of the pinned
   ``wikipedia/{poi_slug}-rev-{revid}.txt`` file ``write_city`` wrote from the
-  SAME text — i.e. it passes ``scripts/validate_beats.validate`` unchanged.
+  SAME text — i.e. it passes ``scripts/validate_beats.validate`` unchanged. Its
+  ``script_body`` is the span's first sentence (a real, verbatim sentence — never
+  a synthesized ``"POI: fragment."`` stub).
 - ``AnthropicBeatDrafter`` spends real API credits, so it can NEVER run without
   an explicit ``confirm=True``: ``draft_all`` raises ``CostNotConfirmed`` (which
-  carries the dollar estimate) BEFORE any client is constructed or any call is
-  made. Its ``source_passage`` is ALSO the mechanical verbatim slice — only the
-  narration prose (``script_body``) comes from the model, and only from the
-  pinned ``extract.text`` (never WebFetch/memory) — so a paid beat can no more be
-  grounded in reconstructed memory than a mock one.
+  carries the dollar estimate for the FULL beat count, not the POI count) BEFORE
+  any client is constructed or any call is made. Its ``source_passage`` is ALSO
+  the mechanical verbatim slice — only the narration prose (``script_body``)
+  comes from the model, and only from the given span (never WebFetch/memory) —
+  so a paid beat can no more be grounded in reconstructed memory than a mock one.
 
-The emitted beat dict mirrors a real ``data/*/beats.json`` wikipedia beat and is
-built from the FROZEN ``WikiExtract`` and the shared ``slugify`` / ``hash_body``
-helpers in ``scripts/beat_builder.py`` (imported, never re-implemented). It
-carries NO ``fact_check`` block: an absent status is allowed by validate, whereas
-a "verified" status would (rightly) trip the verification-freshness gate.
+Every beat mirrors a real ``data/*/beats.json`` wikipedia beat and is built from
+the FROZEN ``WikiExtract`` and the shared ``slugify`` / ``hash_body`` helpers in
+``scripts/beat_builder.py`` (imported, never re-implemented). The beats of one
+POI share a CITY-PREFIXED ``beat_id`` stem and a taggable (non-parent) ``lens``
+but carry a per-span ``topic_slug`` and a distinct verbatim body, so their
+identity tuples and body hashes are unique (``validate_beats`` passes). No
+``fact_check`` block: an absent status is allowed by validate, whereas a
+"verified" status would (rightly) trip the verification-freshness gate.
 """
 
 from __future__ import annotations
@@ -39,14 +51,26 @@ MODEL = "claude-opus-4-8"
 ONBOARD_PROVIDER = os.getenv("ONBOARD_PROVIDER", "mock")
 
 # Cost model for claude-opus-4-8: $5 / 1M input tokens, $25 / 1M output tokens.
+# Per BEAT (a POI now yields ~3 beats), so draft_all's confirm gate estimates the
+# full drafted-beat count, not the POI count.
 _INPUT_TOKENS_PER_BEAT = 1200
 _OUTPUT_TOKENS_PER_BEAT = 350
 _INPUT_USD_PER_TOKEN = 5.0 / 1e6
 _OUTPUT_USD_PER_TOKEN = 25.0 / 1e6
 
-# Longest verbatim span we quote as source_passage; we always cut at a sentence
-# boundary at/under this many characters so the passage stays a clean substring.
-_MAX_PASSAGE_CHARS = 500
+# A landmark POI needs ≥ this many beats to clear the tour engine's anchor gate
+# (density.ANCHOR_CANDIDATE_BEAT_COUNT_MIN); we never emit fewer while the lead
+# has the sentences for it. Capped so a very long lead doesn't explode.
+_TARGET_SPANS = 3
+_MAX_SPANS = 5
+
+# The Wikipedia-lead beats are tagged with a TAGGABLE CHILD lens (never a parent
+# genre like "history", which is is_parent:True and absent from TAGGABLE_LENSES —
+# tagging to it would tag a parent Lens node and trip
+# test_no_parent_lens_in_city_beats). "historic_arch" is the most common lens on
+# real establishing Wikipedia beats in data/new_york/beats.json. Membership in
+# TAGGABLE_LENSES is guarded by tests/test_onboard_beat_draft.py.
+_WIKIPEDIA_LENS = "historic_arch"
 
 _SENTENCE_END_RE = re.compile(r"(?<=[.!?])\s+")
 
@@ -54,20 +78,70 @@ _SENTENCE_END_RE = re.compile(r"(?<=[.!?])\s+")
 # ---------------------------------------------------------------------------
 # Verbatim-span helpers (shared by both drafters).
 # ---------------------------------------------------------------------------
-def _verbatim_span(text: str) -> str:
-    """A contiguous, VERBATIM slice of ``text`` ending at a sentence boundary at
-    or under ~500 chars — a literal substring of the pinned revision file, never
-    a paraphrase, so it grounds against ``wikipedia/{slug}-rev-{revid}.txt``."""
-    text = text.strip()
-    if len(text) <= _MAX_PASSAGE_CHARS:
-        return text
-    window = text[:_MAX_PASSAGE_CHARS]
-    cut = max(window.rfind(". "), window.rfind("! "), window.rfind("? "))
-    if cut == -1:
-        cut = window.rfind(" ")  # no sentence end — fall back to a word boundary
-    if cut == -1:
-        return window
-    return text[: cut + 1].strip()
+def _sentence_bounds(text: str) -> tuple[str, list[tuple[int, int]]]:
+    """Return ``(stripped_text, [(start, end), ...])`` — the char offsets of each
+    sentence in ``text``. ``stripped_text[start:end]`` is a VERBATIM sentence
+    (terminal punctuation included, trailing whitespace excluded), so any group
+    of consecutive sentences sliced back out of ``stripped_text`` is a literal
+    contiguous substring — never a re-joined approximation."""
+    s = text.strip()
+    bounds: list[tuple[int, int]] = []
+    start = 0
+    for m in _SENTENCE_END_RE.finditer(s):
+        bounds.append((start, m.start()))
+        start = m.end()
+    if start < len(s):
+        bounds.append((start, len(s)))
+    return s, bounds
+
+
+def _num_spans(n_sentences: int) -> int:
+    """How many spans (beats) to carve from a lead of ``n_sentences``.
+
+    Aims for ~2 sentences per span so at least one span has ≥ 2 sentences (which
+    the grounding/paraphrase gate needs), while guaranteeing ≥ 3 spans whenever
+    the lead has ≥ 3 sentences (so a landmark POI can anchor) and capping at 5.
+    """
+    if n_sentences <= 0:
+        return 0
+    n = min(_MAX_SPANS, max(n_sentences // 2, 1))
+    return max(n, min(_TARGET_SPANS, n_sentences))
+
+
+def _span_texts(text: str) -> list[str]:
+    """Split ``text`` into contiguous, VERBATIM sentence-spans (one per beat).
+
+    Contiguous groups of whole sentences, front-loaded so the first
+    (establishing) span carries the extra sentence when the split is uneven — so
+    the establishing span is the richest and is ≥ 2 sentences for a ≥ 4-sentence
+    lead. Each returned string is a literal substring of ``text.strip()``.
+    """
+    s, bounds = _sentence_bounds(text)
+    k = len(bounds)
+    n = _num_spans(k)
+    if n == 0:
+        return []
+    if n == 1:
+        return [s[bounds[0][0] : bounds[-1][1]]] if bounds else [s]
+    base, rem = divmod(k, n)
+    spans: list[str] = []
+    idx = 0
+    for j in range(n):
+        take = base + (1 if j < rem else 0)
+        start_char = bounds[idx][0]
+        end_char = bounds[idx + take - 1][1]
+        spans.append(s[start_char:end_char])
+        idx += take
+    return spans
+
+
+def _first_sentence(span: str) -> str:
+    """The span's first sentence, VERBATIM — a real, self-contained sentence
+    (used as the mock ``script_body`` and the paid-path fallback). This is a
+    literal substring of the span, so it is grounded and is never a synthesized
+    ``"POI: fragment."`` stub."""
+    parts = _SENTENCE_END_RE.split(span.strip(), maxsplit=1)
+    return parts[0].strip()
 
 
 def _paraphrase(span: str) -> str:
@@ -75,34 +149,53 @@ def _paraphrase(span: str) -> str:
     fabricated lead-in on every sentence so the passage is no longer a verbatim
     substring of the pinned file. Used only by the mock's paraphrase mode (the
     undo test); the grounding gate needs ≥2 ungrounded fragments to fire, so a
-    single-word edit could not exercise it — the whole passage must drift."""
+    single-word edit could not exercise it — the whole passage must drift, which
+    is why the establishing span carries ≥ 2 sentences."""
     parts = [p for p in _SENTENCE_END_RE.split(span.strip()) if p]
     return " ".join(f"Reportedly, {p}" for p in parts)
 
 
-def _lead_line(poi_name: str, span: str) -> str:
-    """A short, non-empty lead derived from the span. Includes ``poi_name`` so
-    the body hash is unique across POIs even if two share an opening sentence."""
-    first = span.split(". ")[0].strip().rstrip(".")
-    return f"{poi_name}: {first}."
+def _arc(i: int) -> tuple[str, str]:
+    """The (narrative_function, beat_type) for the i-th span of a POI. The first
+    span ESTABLISHES; the rest DEEPEN — mirroring the real corpus shape (1
+    establishing + N deepen per POI) so the beats read as a small arc and count
+    as distinct active beats for the anchor gate."""
+    if i == 0:
+        return "establishing", "establishing"
+    return "deepen", "factoid"
 
 
-def _build_beat(poi_name: str, extract: WikiExtract, script_body: str, source_passage: str) -> dict:
-    """Assemble one establishing wikipedia beat matching a real ``beats.json``
-    row and accepted unchanged by ``scripts/validate_beats.validate``.
+def _build_beat(
+    *,
+    city_slug: str,
+    poi_name: str,
+    extract: WikiExtract,
+    index: int,
+    narrative_function: str,
+    beat_type: str,
+    script_body: str,
+    source_passage: str,
+) -> dict:
+    """Assemble one wikipedia beat matching a real ``beats.json`` row and accepted
+    unchanged by ``scripts/validate_beats.validate``.
 
-    Keyed off the POI: ``topic_slug`` (and thus the identity tuple) and
-    ``script_body_hash`` are unique per distinct POI. ``book_slug="wikipedia"``
-    arms the grounding gate; ``source_chunk_slug`` is the pinned filename stem
-    ``write_city`` produces. No ``fact_check`` block (absent status is allowed)."""
+    ``beat_id`` and ``city_name`` are CITY-PREFIXED so this POI's beats can never
+    collide with paris/new_york or another onboarded city. Within a POI the
+    per-span ``index`` keeps ``topic_slug`` (and thus the identity tuple) and
+    ``beat_id`` unique; distinct spans give distinct ``script_body_hash``es.
+    ``book_slug="wikipedia"`` arms the grounding gate; ``source_chunk_slug`` is
+    the pinned filename stem ``write_city`` produces. No ``fact_check`` block
+    (absent status is allowed).
+    """
     poi_slug = slugify(poi_name)
     body = script_body.strip()
     return {
-        "beat_id": f"{poi_slug}_wikipedia_lead",
+        "beat_id": f"{city_slug}_{poi_slug}_wikipedia_{index}",
+        "city_name": city_slug,
         "poi_name": poi_name,
         "parent_poi": None,
-        "lens": "history",
-        "topic_slug": f"{poi_slug}_lead",
+        "lens": _WIKIPEDIA_LENS,
+        "topic_slug": f"{poi_slug}_lead_{index}",
         "book_slug": "wikipedia",
         "source_chunk_slug": f"{poi_slug}-rev-{extract.revid}",
         "script_body": body,
@@ -115,8 +208,8 @@ def _build_beat(poi_name: str, extract: WikiExtract, script_body: str, source_pa
         "inline_foreign_phrases": [],
         "key_claims": [],
         "sensory_anchor": False,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
+        "narrative_function": narrative_function,
+        "beat_type": beat_type,
         "emotional_register": "neutral",
         "source_passage": source_passage.strip(),
         "source_attribution": {
@@ -132,28 +225,42 @@ def _build_beat(poi_name: str, extract: WikiExtract, script_body: str, source_pa
 
 
 # ---------------------------------------------------------------------------
-# Drafters.
+# Drafters. Each ``draft`` returns the LIST of beats for one POI.
 # ---------------------------------------------------------------------------
 class MockBeatDrafter:
-    """Free, deterministic drafter. ``source_passage`` is a verbatim slice of the
-    pinned text; ``script_body`` is a short lead derived from it. With
-    ``paraphrase=True`` it instead emits a memory-style paraphrase (used only to
-    prove the grounding gate bites)."""
+    """Free, deterministic drafter. Each beat's ``source_passage`` is a verbatim
+    span of the pinned text; its ``script_body`` is the span's first sentence.
+    With ``paraphrase=True`` the ``source_passage`` is instead a memory-style
+    paraphrase (used only to prove the grounding gate bites)."""
 
     def __init__(self, *, paraphrase: bool = False) -> None:
         self._paraphrase = paraphrase
 
-    def draft(self, poi_name: str, extract: WikiExtract) -> dict:
-        span = _verbatim_span(extract.text)
-        source_passage = _paraphrase(span) if self._paraphrase else span
-        return _build_beat(poi_name, extract, _lead_line(poi_name, span), source_passage)
+    def draft(self, poi_name: str, extract: WikiExtract, city_slug: str) -> list[dict]:
+        beats: list[dict] = []
+        for i, span in enumerate(_span_texts(extract.text)):
+            narrative_function, beat_type = _arc(i)
+            source_passage = _paraphrase(span) if self._paraphrase else span
+            beats.append(
+                _build_beat(
+                    city_slug=city_slug,
+                    poi_name=poi_name,
+                    extract=extract,
+                    index=i,
+                    narrative_function=narrative_function,
+                    beat_type=beat_type,
+                    script_body=_first_sentence(span),
+                    source_passage=source_passage,
+                )
+            )
+        return beats
 
 
 class AnthropicBeatDrafter:
-    """Paid drafter. The model writes only ``script_body`` and only from the
-    pinned ``extract.text``; ``source_passage`` remains the mechanical verbatim
-    slice, so a paid beat cannot be grounded in reconstructed memory. The client
-    is constructed lazily so ``draft_all(confirm=False)`` never builds one."""
+    """Paid drafter. The model writes only ``script_body`` and only from the given
+    span; ``source_passage`` remains the mechanical verbatim slice, so a paid beat
+    cannot be grounded in reconstructed memory. The client is constructed lazily
+    so ``draft_all(confirm=False)`` never builds one."""
 
     def __init__(self, *, client: Any = None) -> None:
         self._client = client
@@ -165,22 +272,38 @@ class AnthropicBeatDrafter:
             self._client = anthropic.Anthropic()
         return self._client
 
-    def draft(self, poi_name: str, extract: WikiExtract) -> dict:
-        span = _verbatim_span(extract.text)
-        message = self._get_client().messages.create(
-            model=MODEL,
-            max_tokens=512,
-            messages=[{"role": "user", "content": _draft_prompt(poi_name, span)}],
-        )
-        script_body = _response_text(message) or _lead_line(poi_name, span)
-        return _build_beat(poi_name, extract, script_body, span)
+    def draft(self, poi_name: str, extract: WikiExtract, city_slug: str) -> list[dict]:
+        beats: list[dict] = []
+        for i, span in enumerate(_span_texts(extract.text)):
+            narrative_function, beat_type = _arc(i)
+            message = self._get_client().messages.create(
+                model=MODEL,
+                max_tokens=512,
+                messages=[{"role": "user", "content": _draft_prompt(poi_name, span)}],
+            )
+            script_body = _response_text(message) or _first_sentence(span)
+            beats.append(
+                _build_beat(
+                    city_slug=city_slug,
+                    poi_name=poi_name,
+                    extract=extract,
+                    index=i,
+                    narrative_function=narrative_function,
+                    beat_type=beat_type,
+                    script_body=script_body,
+                    source_passage=span,
+                )
+            )
+        return beats
 
 
 def _draft_prompt(poi_name: str, source_span: str) -> str:
     return (
-        "Write a single short establishing narration line for an audio walking "
-        f"tour stop at {poi_name}. Use ONLY the facts in the source text below; "
-        "do not add anything from memory.\n\nSOURCE:\n" + source_span
+        "Write one narration passage of about 60 to 70 words for a stop on an "
+        f"audio walking tour at {poi_name}. Ground every statement ONLY in the "
+        "source text below — do not add any fact, name, date, or figure that is "
+        "not present in it, and do not draw on outside memory. Write flowing "
+        "spoken prose (no lists, no headings).\n\nSOURCE:\n" + source_span
     )
 
 
@@ -200,9 +323,23 @@ def get_drafter() -> MockBeatDrafter | AnthropicBeatDrafter:
 # ---------------------------------------------------------------------------
 # Cost estimate + confirmation gate.
 # ---------------------------------------------------------------------------
+def planned_beat_count(pois: list[dict], extracts_by_slug: dict[str, WikiExtract]) -> int:
+    """How many beats ``draft_all`` WOULD draft — the sum of span counts over the
+    POIs that have a matching extract. Pure sentence-splitting, no API call, so
+    the confirm gate can estimate the true (multi-beat) cost before drafting."""
+    total = 0
+    for poi in pois:
+        extract = extracts_by_slug.get(slugify(poi["name"]))
+        if extract is None:
+            continue
+        total += len(_span_texts(extract.text))
+    return total
+
+
 def estimate_cost(n: int) -> dict:
     """Dollar estimate for drafting ``n`` beats on claude-opus-4-8, assuming
-    ~1200 input + ~350 output tokens per beat."""
+    ~1200 input + ~350 output tokens per beat. ``n`` is a BEAT count (a POI now
+    yields several beats)."""
     est_usd = n * (
         _INPUT_TOKENS_PER_BEAT * _INPUT_USD_PER_TOKEN
         + _OUTPUT_TOKENS_PER_BEAT * _OUTPUT_USD_PER_TOKEN
@@ -236,17 +373,20 @@ def draft_all(
     confirm: bool = False,
     drafter: MockBeatDrafter | AnthropicBeatDrafter | None = None,
 ) -> list[dict]:
-    """Draft one establishing beat per POI that has a matching extract (by
-    ``slugify(poi_name)``). The mock is free; a paid ``AnthropicBeatDrafter``
-    with ``confirm=False`` raises ``CostNotConfirmed`` BEFORE any client is built
-    or any call is made."""
+    """Draft ~3-5 beats per POI that has a matching extract (by
+    ``slugify(poi_name)``), splitting the pinned lead into verbatim spans. The
+    mock is free; a paid ``AnthropicBeatDrafter`` with ``confirm=False`` raises
+    ``CostNotConfirmed`` — carrying the estimate for the FULL beat count — BEFORE
+    any client is built or any call is made. The city prefix for each beat comes
+    from the POI's own ``city_name`` (stamped by ``assemble``)."""
     drafter = drafter or get_drafter()
     if isinstance(drafter, AnthropicBeatDrafter) and not confirm:
-        raise CostNotConfirmed(estimate_cost(len(pois)))
+        raise CostNotConfirmed(estimate_cost(planned_beat_count(pois, extracts_by_slug)))
     beats: list[dict] = []
     for poi in pois:
         extract = extracts_by_slug.get(slugify(poi["name"]))
         if extract is None:
             continue
-        beats.append(drafter.draft(poi["name"], extract))
+        city_slug = poi.get("city_name") or ""
+        beats.extend(drafter.draft(poi["name"], extract, city_slug))
     return beats

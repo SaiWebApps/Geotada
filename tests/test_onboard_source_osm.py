@@ -91,3 +91,28 @@ def test_parse_stamps_source_and_osm_provenance() -> None:
     assert way_cand.source == "osm"
     assert way_cand.source_url == "https://www.openstreetmap.org/way/987654"
     assert way_cand.meta["osm_id"] == 987654
+
+
+def test_parse_captures_notability_tags_into_meta() -> None:
+    """CURATION SIGNALS the assemble filter consumes: parse must STOP discarding
+    tags and stamp ``tourism``/``historic``/``osm_wikidata``/``osm_wikipedia`` into
+    meta (None when the tag is absent).
+
+    Pre-change ``parse`` emits only ``osm_type``/``osm_id``, so these KeyError —
+    this doubles as the osm undo-test."""
+    result = OsmSource().parse(_payload(), _ctx())
+    by_name = {c.name: c for c in result.candidates}
+
+    # Trafalgar Square (node): tourism only, no historic / wiki tags → None.
+    tra = by_name["Trafalgar Square"]
+    assert tra.meta["tourism"] == "attraction"
+    assert tra.meta["historic"] is None
+    assert tra.meta["osm_wikidata"] is None
+    assert tra.meta["osm_wikipedia"] is None
+
+    # British Museum (way): full house of curation signals.
+    bm = by_name["British Museum"]
+    assert bm.meta["tourism"] == "museum"
+    assert bm.meta["historic"] == "building"
+    assert bm.meta["osm_wikidata"] == "Q6373"
+    assert bm.meta["osm_wikipedia"] == "en:British Museum"

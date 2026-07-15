@@ -22,7 +22,7 @@ from fastapi.testclient import TestClient
 
 import src.api.routes.onboard as onboard_mod
 from src.api.app import create_app
-from src.onboard.beat_draft import estimate_cost
+from src.onboard.beat_draft import estimate_cost, planned_beat_count
 
 LONDON_BBOX = [51.28, 51.7, -0.51, 0.33]
 
@@ -166,6 +166,15 @@ def test_draft_beats_cost_gate_is_zero_llm(client, monkeypatch):
     job_id, snap = _run_to_assembled(client)
     n = snap["result"]["poi_count"]
 
+    # The estimate AND the drafted count are now MULTI-beat (~3 beats/POI), sized
+    # off the assembled artifacts (each POI-with-extract yields several verbatim
+    # spans), NOT the POI count. Compute the exact expectation from the same
+    # artifacts the endpoint sees, and assert the multi-beat PROPERTY, not a literal.
+    art = onboard_mod._get_artifacts(job_id)
+    expected_beats = planned_beat_count(art.assembled.pois, art.assembled.wiki_extracts)
+    assert expected_beats > n, f"estimate must be multi-beat (> {n} POIs), got {expected_beats}"
+    assert expected_beats >= 3 * 30, f"multi-beat did not happen: {expected_beats}"
+
     calls = {"n": 0}
 
     class _FakeMessage:
@@ -186,13 +195,15 @@ def test_draft_beats_cost_gate_is_zero_llm(client, monkeypatch):
     r = client.post(f"/api/v1/onboard/jobs/{job_id}/draft-beats", json={"confirm_cost": False})
     assert r.status_code == 409, r.text
     detail = r.json()["detail"]
-    assert detail["estimate"]["est_usd"] == estimate_cost(n)["est_usd"]
+    assert detail["estimate"]["beats"] == expected_beats, detail
+    assert detail["estimate"]["est_usd"] == estimate_cost(expected_beats)["est_usd"]
     assert calls["n"] == 0, "cost gate must be structurally zero-LLM"
 
     monkeypatch.setenv("ONBOARD_PROVIDER", "mock")
     r2 = client.post(f"/api/v1/onboard/jobs/{job_id}/draft-beats", json={"confirm_cost": True})
     assert r2.status_code == 200, r2.text
-    assert r2.json()["beats_count"] == 35
+    assert r2.json()["beats_count"] == expected_beats
+    assert r2.json()["beats_count"] >= n, "every POI-with-extract yields >= 1 beat"
     assert calls["n"] == 0, "mock drafting must never touch the anthropic client"
 
 

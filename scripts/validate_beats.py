@@ -88,6 +88,32 @@ def _check_hash_uniqueness(beats: list[dict]) -> list[str]:
     return errors
 
 
+def _check_beat_id_uniqueness(beats: list[dict]) -> list[str]:
+    """Every `beat_id` must be unique across the file.
+
+    The upload path MERGEs ``NarrativeBeat {beat_id: ...}`` with NO DB uniqueness
+    constraint behind it, so two beats sharing a beat_id collapse onto a SINGLE
+    graph node — the second silently SET-overwriting the first, losing one beat.
+    (Empty-slug non-Latin POI names are a real source of identical ids.) This is
+    the collection-level uniqueness the Pydantic model can't see; blocked here at
+    commit so it can never reach the graph. Empty/missing beat_ids are a
+    different defect (the uploader refuses them via its ``no_beat_id`` skip), so
+    they are not counted as collisions here.
+    """
+    by_id: dict[str, int] = defaultdict(int)
+    for beat in beats:
+        beat_id = beat.get("beat_id", "")
+        if not beat_id:
+            continue
+        by_id[beat_id] += 1
+    return [
+        f"BEAT_ID_COLLISION beat_id={beat_id!r} appears {count} times — beats would "
+        f"collapse onto one NarrativeBeat node"
+        for beat_id, count in by_id.items()
+        if count >= 2
+    ]
+
+
 def _identity_key(beat: dict) -> tuple[str, str, str, str, str] | None:
     """Build the identity tuple. Returns None when wildcards make this row
     non-collidable with any other row carrying the same wildcard in the same
@@ -295,6 +321,7 @@ def validate(path: Path) -> list[str]:
     beats = _load_beats(path)
     return (
         _check_hash_uniqueness(beats)
+        + _check_beat_id_uniqueness(beats)
         + _check_identity_uniqueness(beats)
         + _check_wikipedia_grounding(beats, path.parent / "wikipedia")
         + _check_book_grounding(beats, path)

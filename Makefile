@@ -233,12 +233,12 @@ test-onboarding: ## Run onboarding tests only
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest tests/test_onboarding_api.py -v --tb=long
 
-onboard-city: ## Onboard a city (fixture+mock, tmp DATA_ROOT). Usage: make onboard-city CITY=london MODES=license_clean
+onboard-city: ## Onboard a city (fixture+mock, tmp DATA_ROOT). Usage: make onboard-city CITY=london MODES=license_clean [DRY_RUN=1]. DRY_RUN=1 = estimate only (POI count + beat-cost; NO beats, NO writes). Env ONDOWAY_ONBOARD_HTTP/ONBOARD_PROVIDER/DATA_ROOT/REGISTRY overridable from the shell (e.g. ONDOWAY_ONBOARD_HTTP=live).
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	ONBOARD_PROVIDER=mock ONDOWAY_ONBOARD_HTTP=fixture \
+	ONBOARD_PROVIDER=$${ONBOARD_PROVIDER:-mock} ONDOWAY_ONBOARD_HTTP=$${ONDOWAY_ONBOARD_HTTP:-fixture} \
 	ONBOARD_DATA_ROOT=$${ONBOARD_DATA_ROOT:-/tmp/ondoway-onboard} \
 	ONBOARD_REGISTRY_PATH=$${ONBOARD_REGISTRY_PATH:-/tmp/ondoway-onboard/cities.json} \
-	uv run python -m src.onboard.cli --city $(CITY) --modes $(MODES)
+	uv run python -m src.onboard.cli --city $(CITY) --modes $(MODES) $(if $(DRY_RUN),--dry-run,)
 
 test-workbench: db-up db-workbench-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API on :8001 against the DEDICATED workbench Neo4j (7689) — never the shared 7688, which concurrent `make test` runs full-wipe per-module. Concurrent test-workbench runs are unsupported (:8001 must be free; the suite fails fast if not).
 	@cp .env.test.example .env.test

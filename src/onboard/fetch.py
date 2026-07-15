@@ -84,6 +84,12 @@ _FIXTURE_MODE_MESSAGE = (
     "onboard HTTP is in fixture mode; set ONDOWAY_ONBOARD_HTTP=live"
 )
 
+# Wikimedia's User-Agent policy REQUIRES a descriptive agent naming the tool and
+# a contact — an anonymous UA is 403'd by en.wikipedia.org (and the other MediaWiki
+# APIs). Sent by default on every live GET (merged in only if the caller did not
+# set its own User-Agent, so an explicit connector header still wins).
+ONBOARD_USER_AGENT = "Ondoway-Onboard/1.0 (https://ondoway.com; new-city onboarding pipeline)"
+
 
 def http_get_json(
     url: str,
@@ -102,7 +108,10 @@ def http_get_json(
         raise RuntimeError(_FIXTURE_MODE_MESSAGE)
     import httpx
 
-    resp = httpx.get(url, params=params, timeout=timeout, headers=headers)
+    # Default the descriptive UA (Wikimedia policy) but let an explicit caller
+    # header win — the caller's headers are spread LAST.
+    merged = {"User-Agent": ONBOARD_USER_AGENT, **(headers or {})}
+    resp = httpx.get(url, params=params, timeout=timeout, headers=merged)
     resp.raise_for_status()
     return resp.json()
 
@@ -124,6 +133,9 @@ def http_get_text(
         raise RuntimeError(_FIXTURE_MODE_MESSAGE)
     import httpx
 
-    resp = httpx.get(url, params=params, timeout=timeout, headers=headers)
+    # Default the descriptive UA (Wikimedia policy) but let an explicit caller
+    # header win — the caller's headers are spread LAST.
+    merged = {"User-Agent": ONBOARD_USER_AGENT, **(headers or {})}
+    resp = httpx.get(url, params=params, timeout=timeout, headers=merged)
     resp.raise_for_status()
     return resp.text

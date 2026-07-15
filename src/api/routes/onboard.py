@@ -38,10 +38,15 @@ from pydantic import BaseModel, ValidationError
 
 from src import city_registry
 from src.onboard.assemble import AssembledCity, assemble, write_city
-from src.onboard.beat_draft import CostNotConfirmed, draft_all, estimate_cost
+from src.onboard.beat_draft import (
+    CostNotConfirmed,
+    draft_all,
+    estimate_cost,
+    planned_beat_count,
+)
 from src.onboard.flow import (
     MODE_CONNECTORS,
-    build_extracts,
+    build_extract_index,
     consult_source,
     resolve_connectors,
 )
@@ -144,8 +149,11 @@ def _run_onboard(job_id: str, ctx: CityContext, modes: list[str]) -> None:
     try:
         slugs = resolve_connectors(modes)
         results = [consult_source(slug, ctx, store, job_id) for slug in slugs]
-        extracts = build_extracts(ctx.slug)
-        assembled = assemble(results, ctx, extracts)
+        # Assemble FIRST so the merged/filtered POI names are final, THEN fetch each
+        # POI's Wikipedia extract keyed to those names (a live run grounds against the
+        # real POIs, not the raw candidates). Fixture mode ignores the POIs arg.
+        assembled = assemble(results, ctx, [])
+        assembled.wiki_extracts = build_extract_index(ctx.slug, assembled.pois)
 
         art = _get_artifacts(job_id)
         if art is not None:
@@ -278,12 +286,18 @@ def stream_job(job_id: str) -> StreamingResponse:
 
 @router.post("/jobs/{job_id}/draft-beats")
 def draft_beats(job_id: str, body: DraftBeatsRequest) -> dict:
-    """Draft one establishing beat per assembled POI, behind a COST GATE.
+    """Draft SEVERAL beats per assembled POI (~3 verbatim spans each), behind a
+    COST GATE.
 
     Without ``confirm_cost`` this returns 409 + a dollar estimate and calls NO
     drafter at all (structurally zero LLM — the guard returns before any drafter
     is selected or constructed). With ``confirm_cost`` it drafts (mock in the bar
-    → free) and records the beat count."""
+    → free) and records the beat count.
+
+    The estimate is sized off ``planned_beat_count`` — the TRUE multi-beat count
+    ``draft_all`` will produce — not the POI count: the extracts were already
+    fetched during assembly (``build_extract_index`` in ``_run_onboard``), so the
+    user is never shown a ~3x-low (one-beat-era) number."""
     store = get_store()
     job = store.get(job_id)
     if job is None:
@@ -293,9 +307,12 @@ def draft_beats(job_id: str, body: DraftBeatsRequest) -> dict:
         raise HTTPException(409, "job is not assembled yet; nothing to draft")
 
     assembled = art.assembled
-    n = len(assembled.pois)
+    planned = planned_beat_count(assembled.pois, assembled.wiki_extracts)
     if not body.confirm_cost:
-        detail = {"error": "beat drafting requires cost confirmation", "estimate": estimate_cost(n)}
+        detail = {
+            "error": "beat drafting requires cost confirmation",
+            "estimate": estimate_cost(planned),
+        }
         raise HTTPException(409, detail=detail)
 
     try:
