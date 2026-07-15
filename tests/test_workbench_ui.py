@@ -19,6 +19,7 @@ import re
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.parse
@@ -29,7 +30,7 @@ from typing import Any
 
 import pytest
 from neo4j import GraphDatabase
-from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import Page, expect, sync_playwright
 
 # ---------------------------------------------------------------------------
 # DOM Selectors — single source of truth (Risk R1 mitigation)
@@ -117,6 +118,21 @@ WORKBENCH_URL = (
     f"{(Path(__file__).parent.parent / 'frontend' / 'review.html').resolve().as_uri()}"
     f"?apiPort={WORKBENCH_API_PORT}"
 )
+# New-city onboarding panel (Step 7). Same file:// + ?apiPort= pattern as review.html.
+ONBOARD_URL = (
+    f"{(Path(__file__).parent.parent / 'frontend' / 'onboard.html').resolve().as_uri()}"
+    f"?apiPort={WORKBENCH_API_PORT}"
+)
+# London bbox as the panel's text field expects it: "min_lat, max_lat, min_lon, max_lon".
+LONDON_BBOX = "51.28, 51.7, -0.51, 0.33"
+# Repo root (tests/ -> repo). Used to assert the committed tree is UNTOUCHED by a
+# hermetic onboarding upload.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+# A module-scoped tmp dir the api_server subprocess points the onboarding write +
+# deploy at (ONBOARD_DATA_ROOT / ONBOARD_REGISTRY_PATH), so the London onboarding
+# round-trip is fully HERMETIC — it writes here, never into the committed data/ or
+# src/cities.json.
+_ONBOARD_TMP = Path(tempfile.mkdtemp(prefix="onboard-wb-"))
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "ui_test_fixture.json"
 REPORT_DIR = Path(__file__).parent / "reports"
 SCREENSHOT_DIR = REPORT_DIR / "screenshots"
@@ -538,6 +554,15 @@ def api_server():
             # start (src/api/auth/config.py). Opt into the dev placeholder — a
             # local test server is never a production deploy.
             "ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS": "1",
+            # Step-7 onboarding: point the panel's write + deploy at a module-scoped
+            # tmp dir so the London upload->deploy round-trip is HERMETIC — it writes
+            # data/london/ + cities.json under the tmp root and NEVER touches the
+            # committed data/ or src/cities.json. Harmless to the review.html tests,
+            # which never onboard. ONBOARD_DEPLOY_API_PORT keeps the deploy's transient
+            # areas-upload API off :8001/:8000 (London has no areas, so it is skipped).
+            "ONBOARD_DATA_ROOT": str(_ONBOARD_TMP / "data"),
+            "ONBOARD_REGISTRY_PATH": str(_ONBOARD_TMP / "cities.json"),
+            "ONBOARD_DEPLOY_API_PORT": "8002",
         },
     )
 
@@ -4360,6 +4385,163 @@ class TestDefectRegressions:
             )
         finally:
             page.unroute("**/api/v1/**")
+
+
+# ---------------------------------------------------------------------------
+# Test: New-city onboarding panel (Step 7) — real-browser end-to-end proof
+# ---------------------------------------------------------------------------
+
+
+class TestOnboardPanel:
+    """Real-browser proof of the new-city onboarding panel (frontend/onboard.html).
+
+    Drives the LIVE onboard API on :8001 (fixture + mock mode, so $0 and no
+    network) through the whole London flow in a real Chromium page: the live
+    source-consult feed, the merged POIs, the beat-drafting cost gate, a HERMETIC
+    local upload (writes land only under the module tmp dir wired into api_server's
+    env), and finally the round-trip — the deployed city appears in the :8001
+    graph (7689) via GET /cities AND in review.html's city picker.
+
+    Uses ``browser_page`` to reuse the module server + Chromium page; the seeded
+    graph is irrelevant here, so the seed_data payload is ignored. This is the LAST
+    DB-mutating test in the module (it uploads London into 7689), so it cannot
+    perturb the earlier exact-count/proximity assertions.
+    """
+
+    def test_onboard_london_end_to_end(self, browser_page):
+        page, _seed_data, _reporter = browser_page
+
+        # (a) Panel initial state: only the license-clean mode is available.
+        page.goto(ONBOARD_URL)
+        expect(page.locator("#onboardStartBtn")).to_be_visible()
+        expect(page.locator("#mode-license_clean")).to_be_checked()
+        expect(page.locator("#mode-license_clean")).to_be_enabled()
+        expect(page.locator("#mode-shadow_discovery_only")).to_be_disabled()
+        expect(page.locator("#mode-manual_book_drop")).to_be_disabled()
+        _take_screenshot(page, "onboard-01-panel-initial")
+
+        # (b) Fill the form and start the run.
+        page.locator("#onboardSlug").fill("london")
+        page.locator("#onboardDisplayName").fill("London")
+        page.locator("#onboardBbox").fill(LONDON_BBOX)
+        page.locator("#onboardStartBtn").click()
+
+        # (c) The consult feed streams every source line-by-line, each with a URL.
+        page.wait_for_function(
+            """() => {
+                const el = document.querySelector('#consultFeed');
+                if (!el) return false;
+                const t = (el.textContent || '').toLowerCase();
+                return ['wikipedia', 'wikivoyage', 'wikidata', 'osm'].every(s => t.includes(s))
+                    && t.includes('http');
+            }""",
+            timeout=30000,
+        )
+        feed_text = (page.locator("#consultFeed").text_content() or "").lower()
+        for source in ("wikipedia", "wikivoyage", "wikidata", "osm"):
+            assert source in feed_text, f"consult feed is missing a line for {source!r}: {feed_text!r}"
+        assert "http" in feed_text, f"consult feed has no source URL: {feed_text!r}"
+        _take_screenshot(page, "onboard-02-feed-consulting")
+
+        # (d) The POI pane renders the merged count (expect 36; assert >= 30).
+        page.wait_for_function(
+            """() => {
+                const el = document.querySelector('#poiCount');
+                if (!el) return false;
+                const digits = (el.textContent || '').replace(/[^0-9]/g, '');
+                return digits.length > 0 && parseInt(digits, 10) >= 30;
+            }""",
+            timeout=30000,
+        )
+        poi_text = page.locator("#poiCount").text_content() or ""
+        poi_match = re.search(r"\d+", poi_text)
+        poi_n = int(poi_match.group()) if poi_match else 0
+        assert poi_n >= 30, f"expected >= 30 merged POIs (36), got {poi_n} from {poi_text!r}"
+        _take_screenshot(page, "onboard-03-pois-rendered")
+
+        # (e) The cost gate: a modal with a $ estimate and the beat count.
+        # NOTE: the estimate is computed over the POI count (one candidate beat per
+        # POI = 36 here), NOT the eventual drafted count (35). One POI has no
+        # Wikipedia extract so it yields no beat, so draft_all returns 35 while the
+        # PRE-draft estimate is 36. The modal therefore shows the SAME number as
+        # #poiCount; assert against that rather than a magic literal.
+        page.locator("#draftBeatsBtn").click()
+        expect(page.locator("#costModal")).to_be_visible(timeout=15000)
+        modal_text = page.locator("#costModal").text_content() or ""
+        assert "$" in modal_text, f"cost modal shows no dollar estimate: {modal_text!r}"
+        assert str(poi_n) in modal_text, (
+            f"cost modal should show the POI-count estimate ({poi_n}): {modal_text!r}"
+        )
+        _take_screenshot(page, "onboard-04-cost-modal")
+
+        # (f) Confirm the cost -> beats drafted (35 of them appear in the beat pane).
+        page.locator("#costConfirmBtn").click()
+        page.wait_for_function(
+            """() => {
+                const el = document.querySelector('#beatPane');
+                return el && (el.textContent || '').includes('35');
+            }""",
+            timeout=30000,
+        )
+        _take_screenshot(page, "onboard-05-beats-drafted")
+
+        # (g) Upload locally, then prove the write landed HERMETICALLY.
+        page.locator("#uploadLocalBtn").click()
+        page.wait_for_function(
+            """() => {
+                const el = document.querySelector('#uploadResult');
+                return el && (el.textContent || '').trim().length > 0;
+            }""",
+            timeout=60000,
+        )
+        upload_text = page.locator("#uploadResult").text_content() or ""
+        assert "error" not in upload_text.lower() and "fail" not in upload_text.lower(), (
+            f"upload reported a failure: {upload_text!r}"
+        )
+        # HERMETIC: the city + beats were written under the module tmp root and the
+        # tmp registry now knows London — asserted from the TEST process (not the page).
+        london_dir = _ONBOARD_TMP / "data" / "london"
+        assert (london_dir / "poi-raw.json").exists(), f"{london_dir / 'poi-raw.json'} was not written"
+        assert (london_dir / "beats.json").exists(), f"{london_dir / 'beats.json'} was not written"
+        tmp_registry = json.loads((_ONBOARD_TMP / "cities.json").read_text(encoding="utf-8"))
+        assert "london" in tmp_registry, f"tmp cities.json is missing 'london': {tmp_registry}"
+        # And the COMMITTED tree is byte-untouched: no data/london/, no src/cities.json entry.
+        assert not (REPO_ROOT / "data" / "london").exists(), (
+            "onboarding wrote into the COMMITTED data/london/ — the tmp-root pin failed"
+        )
+        committed_registry = json.loads(
+            (REPO_ROOT / "src" / "cities.json").read_text(encoding="utf-8")
+        )
+        assert "london" not in committed_registry, (
+            f"onboarding mutated the COMMITTED src/cities.json: {committed_registry}"
+        )
+        _take_screenshot(page, "onboard-06-upload-success")
+
+        # (h) Round-trip: the deploy loaded London into the :8001 server's OWN graph
+        # (7689), so GET /cities reports it, and review.html's picker offers it.
+        cities_resp = _api_get("/cities")
+        assert isinstance(cities_resp, dict) and "cities" in cities_resp, (
+            f"GET /cities did not return the expected shape: {cities_resp!r}"
+        )
+        # POIs are written with city_name == the slug, so the entry is 'london'
+        # (lowercase); match case-insensitively for robustness.
+        london_entries = [
+            c for c in cities_resp["cities"] if (c.get("city_name") or "").lower() == "london"
+        ]
+        assert london_entries, f"GET /cities has no London entry after upload: {cities_resp!r}"
+        assert london_entries[0]["poi_count"] >= 30, (
+            f"deployed London has {london_entries[0]['poi_count']} POIs, expected >= 30"
+        )
+
+        page.goto(WORKBENCH_URL)
+        page.wait_for_function(
+            """() => {
+                const s = document.querySelector('#citySelect');
+                return s && [...s.options].some(o => (o.textContent || '').toLowerCase().includes('london'));
+            }""",
+            timeout=20000,
+        )
+        _take_screenshot(page, "onboard-07-selector-shows-london")
 
 
 # ---------------------------------------------------------------------------

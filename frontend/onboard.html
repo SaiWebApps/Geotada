@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ondoway — Onboard a New City</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens mirror frontend/review.html's :root so the two panels read as one app. */
+  :root {
+    --bg: #0c0f14;
+    --surface: #141820;
+    --surface-2: #1a1f2b;
+    --border: #252b38;
+    --text: #e4e8f0;
+    --text-muted: #6b7280;
+    --accent: #f59e0b;
+    --accent-dim: rgba(245, 158, 11, 0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59, 130, 246, 0.15);
+    --purple: #a855f7;
+    --orange: #f97316;
+    --orange-dim: rgba(249, 115, 22, 0.15);
+    --yellow: #eab308;
+    --yellow-dim: rgba(234, 179, 8, 0.15);
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Header (mirrors review.html) ── */
+  .header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .header h1 { font-size: 1.25rem; font-weight: 700; }
+  .header .city-label {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Layout ── */
+  .layout {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .card h2 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .card h2 .count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+  }
+  .card p.hint { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+
+  label.field-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .card input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: inherit;
+    margin-bottom: 0.9rem;
+  }
+  .card input[type="text"]:focus { outline: none; border-color: var(--accent); }
+
+  .modes { margin-bottom: 1rem; }
+  .modes label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+  }
+  .modes label.disabled { color: var(--text-muted); }
+  .modes input[type="checkbox"] { width: 1rem; height: 1rem; accent-color: var(--accent); }
+
+  /* ── Buttons (mirror review.html) ── */
+  .btn {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-success { background: var(--green); color: #000; }
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
+
+  /* ── Live consult feed ── */
+  .feed {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    max-height: 320px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .feed:empty::before {
+    content: 'No activity yet — start an onboarding run.';
+    color: var(--text-muted);
+  }
+  .feed-line { padding: 0.15rem 0; word-break: break-all; }
+  .feed-line.error { color: var(--red); }
+  .feed-line a { color: var(--blue); }
+
+  /* ── POI rows ── */
+  .poi-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .poi-row:last-child { border-bottom: none; }
+  .poi-name { font-weight: 500; }
+  .poi-coords { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+  .poi-tier {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.05rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .result-ok { color: var(--green); font-size: 0.9rem; margin-top: 0.75rem; }
+  .result-err { color: var(--red); font-size: 0.85rem; margin-top: 0.75rem; white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; }
+  .pane-note { color: var(--text-muted); font-size: 0.85rem; }
+  .row-actions { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; }
+
+  /* ── Overlay / cost modal (mirror review.html) ── */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+  }
+  .overlay.hidden { display: none; }
+  .overlay-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    max-width: 520px;
+    width: 90%;
+  }
+  .overlay-card h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+  .overlay-card p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem; }
+  .overlay-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <h1>Ondoway — Onboard a New City</h1>
+  <span class="city-label">license-clean web auto-ingest</span>
+</div>
+
+<div class="layout">
+
+  <!-- (a) Request form -->
+  <div class="card">
+    <h2>New city</h2>
+    <p class="hint">Kick off a license-clean web auto-ingest run for a brand-new city. Onboarding is for cities that are not already in the graph.</p>
+
+    <label class="field-label" for="onboardSlug">Slug</label>
+    <input type="text" id="onboardSlug" placeholder="london" autocomplete="off" spellcheck="false">
+
+    <label class="field-label" for="onboardDisplayName">Display name</label>
+    <input type="text" id="onboardDisplayName" placeholder="London" autocomplete="off">
+
+    <label class="field-label" for="onboardBbox">Bounding box</label>
+    <input type="text" id="onboardBbox" placeholder="min_lat, max_lat, min_lon, max_lon" autocomplete="off" spellcheck="false">
+
+    <div class="modes">
+      <label><input type="checkbox" id="mode-license_clean" checked> License-clean web auto-ingest</label>
+      <label class="disabled"><input type="checkbox" id="mode-shadow_discovery_only" disabled> Shadow-library discovery only (later slice)</label>
+      <label class="disabled"><input type="checkbox" id="mode-manual_book_drop" disabled> Manual rights-cleared book drop (later slice)</label>
+    </div>
+
+    <button class="btn btn-primary" id="onboardStartBtn">Start onboarding</button>
+  </div>
+
+  <!-- (b) Live consult feed -->
+  <div class="card">
+    <h2>Live consult feed</h2>
+    <p class="hint">Every source being consulted, streamed as it happens. Discovery pointers are outbound links only — never any body text.</p>
+    <div class="feed" id="consultFeed"></div>
+  </div>
+
+  <!-- (c) POI pane -->
+  <div class="card">
+    <h2>Merged POIs <span class="count" id="poiCount">0 POIs</span></h2>
+    <div id="poiPane"><p class="pane-note">POIs appear here once the run is assembled.</p></div>
+  </div>
+
+  <!-- (d) Beat pane + cost gate -->
+  <div class="card">
+    <h2>Beats</h2>
+    <p class="hint">Draft one establishing beat per POI. Drafting is behind a cost gate — you confirm the dollar estimate first.</p>
+    <div class="row-actions">
+      <button class="btn btn-primary" id="draftBeatsBtn">Draft beats</button>
+    </div>
+    <div id="beatPane"><p class="pane-note">No beats drafted yet.</p></div>
+  </div>
+
+  <!-- (e) Upload -->
+  <div class="card">
+    <h2>Upload</h2>
+    <p class="hint">Write the assembled city to data/{slug}/ and deploy it into the API's active graph.</p>
+    <div class="row-actions">
+      <button class="btn btn-success" id="uploadLocalBtn">Upload locally</button>
+      <button class="btn btn-outline" id="uploadCloudBtn" disabled title="later slice">Upload to cloud</button>
+    </div>
+    <div id="uploadResult"></div>
+  </div>
+
+</div>
+
+<!-- ── Cost confirmation modal ── -->
+<div id="costModal" class="overlay hidden">
+  <div class="overlay-card">
+    <h2>Confirm beat-drafting cost</h2>
+    <p id="costModalBody">This run will call the model to draft beats.</p>
+    <div class="overlay-actions">
+      <button class="btn btn-outline" id="costCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="costConfirmBtn">Draft beats (confirm cost)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── API base URL ──
+// Port-configurable via ?apiPort= (default 8000) so the panel can point at a
+// test-DB API (e.g. 8001) without colliding with a dev `make api` on 8000.
+// Copied VERBATIM from frontend/review.html.
+const API_BASE = (() => {
+  const raw = new URLSearchParams(location.search).get('apiPort');
+  const port = raw && /^\d{2,5}$/.test(raw) ? raw : '8000';
+  return `http://localhost:${port}/api/v1`;
+})();
+
+const consultFeed = document.getElementById('consultFeed');
+const poiPane = document.getElementById('poiPane');
+const poiCount = document.getElementById('poiCount');
+const beatPane = document.getElementById('beatPane');
+const uploadResult = document.getElementById('uploadResult');
+const costModal = document.getElementById('costModal');
+const costModalBody = document.getElementById('costModalBody');
+
+let jobId = null;
+
+// ── Small helpers ──
+function postJSON(path, body) {
+  return fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
+
+function feedLine(text, cls) {
+  const div = document.createElement('div');
+  div.className = 'feed-line' + (cls ? ' ' + cls : '');
+  div.textContent = text;
+  consultFeed.appendChild(div);
+  consultFeed.scrollTop = consultFeed.scrollHeight;
+  return div;
+}
+
+// ── One live-feed line per event kind ──
+function handleEvent(ev) {
+  switch (ev.kind) {
+    case 'source_consult':
+      feedLine(`Consulting ${ev.source}: ${ev.url}`);
+      break;
+    case 'candidate_batch':
+      feedLine(`${ev.source}: ${ev.data.candidates} candidates, ${ev.data.documents} documents`);
+      break;
+    case 'phase':
+      feedLine(`phase → ${ev.message}`);
+      break;
+    case 'discovery_pointer': {
+      // METADATA ONLY — DiscoveryPointer carries no body text; render the outbound
+      // acquire-legally link and nothing else.
+      const div = document.createElement('div');
+      div.className = 'feed-line';
+      const a = document.createElement('a');
+      a.href = ev.data.source_url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = `Acquire legally: ${ev.data.title}`;
+      div.appendChild(a);
+      consultFeed.appendChild(div);
+      consultFeed.scrollTop = consultFeed.scrollHeight;
+      break;
+    }
+    case 'error':
+      feedLine(ev.message, 'error');
+      break;
+    default:
+      feedLine(ev.message || '');
+  }
+}
+
+// ── Snapshot the assembled result: POIs + count ──
+async function loadResult() {
+  let resp;
+  try {
+    resp = await fetch(`${API_BASE}/onboard/jobs/${jobId}`);
+  } catch (err) {
+    feedLine(`failed to load result: ${err}`, 'error');
+    return;
+  }
+  if (!resp.ok) {
+    feedLine(`failed to load result (${resp.status})`, 'error');
+    return;
+  }
+  const data = await resp.json();
+  const result = data.result || {};
+  poiCount.textContent = `${result.poi_count ?? 0} POIs`;
+
+  poiPane.innerHTML = '';
+  const pois = result.pois || [];
+  if (pois.length === 0) {
+    const note = document.createElement('p');
+    note.className = 'pane-note';
+    note.textContent = 'No POIs were assembled.';
+    poiPane.appendChild(note);
+    return;
+  }
+  pois.forEach((poi) => {
+    const row = document.createElement('div');
+    row.className = 'poi-row';
+
+    const name = document.createElement('span');
+    name.className = 'poi-name';
+    name.textContent = poi.name;
+
+    const coords = document.createElement('span');
+    coords.className = 'poi-coords';
+    coords.textContent = `${poi.latitude}, ${poi.longitude}`;
+
+    const tier = document.createElement('span');
+    tier.className = 'poi-tier';
+    tier.textContent = poi.importance_tier != null ? poi.importance_tier : '—';
+
+    row.append(name, coords, tier);
+    poiPane.appendChild(row);
+  });
+}
+
+// ── Start a run: POST /onboard/jobs, then open the SSE stream ──
+document.getElementById('onboardStartBtn').addEventListener('click', async () => {
+  const slug = document.getElementById('onboardSlug').value.trim();
+  const displayName = document.getElementById('onboardDisplayName').value.trim();
+  const bboxRaw = document.getElementById('onboardBbox').value;
+  const bbox = bboxRaw.split(',').map((s) => Number(s.trim()));
+  if (bbox.length !== 4 || bbox.some((n) => !Number.isFinite(n))) {
+    feedLine('bbox must be 4 numbers: min_lat, max_lat, min_lon, max_lon', 'error');
+    return;
+  }
+
+  let resp;
+  try {
+    resp = await postJSON('/onboard/jobs', {
+      slug,
+      display_name: displayName,
+      bbox,
+      modes: ['license_clean'],
+    });
+  } catch (err) {
+    feedLine(`start failed: ${err}`, 'error');
+    return;
+  }
+  if (resp.status !== 202) {
+    let detail = '';
+    try { detail = (await resp.json()).detail || ''; } catch { detail = await resp.text(); }
+    feedLine(`start failed (${resp.status}): ${detail}`, 'error');
+    return;
+  }
+
+  const body = await resp.json();
+  jobId = body.job_id;
+
+  // Disable the request form once a run is live.
+  document.getElementById('onboardSlug').disabled = true;
+  document.getElementById('onboardDisplayName').disabled = true;
+  document.getElementById('onboardBbox').disabled = true;
+  document.getElementById('mode-license_clean').disabled = true;
+  document.getElementById('onboardStartBtn').disabled = true;
+
+  feedLine(`phase → run ${jobId} started`);
+
+  let ended = false;
+  const es = new EventSource(`${API_BASE}/onboard/jobs/${jobId}/stream`);
+  es.onmessage = (e) => {
+    try { handleEvent(JSON.parse(e.data)); } catch (err) { feedLine(`bad event: ${err}`, 'error'); }
+  };
+  // The worker appends a terminal `event: end` frame; close the stream and pull
+  // the assembled result.
+  es.addEventListener('end', () => {
+    ended = true;
+    es.close();
+    loadResult();
+  });
+  es.onerror = () => {
+    // Once the terminal frame closed the stream this is expected; otherwise stop
+    // the browser's auto-reconnect and surface the drop.
+    es.close();
+    if (!ended) feedLine('stream connection closed', 'error');
+  };
+});
+
+// ── Beats: cost-gated draft ──
+async function draftBeats(confirm) {
+  if (!jobId) return;
+  let resp;
+  try {
+    resp = await postJSON(`/onboard/jobs/${jobId}/draft-beats`, { confirm_cost: confirm });
+  } catch (err) {
+    beatPane.innerHTML = '';
+    beatPane.appendChild(Object.assign(document.createElement('p'), { className: 'result-err', textContent: `draft failed: ${err}` }));
+    return;
+  }
+
+  if (resp.status === 409 && !confirm) {
+    // Cost gate: show the estimate and wait for explicit confirmation.
+    const body = await resp.json();
+    const est = (body.detail && body.detail.estimate) || {};
+    costModalBody.textContent =
+      `Drafting ${est.beats} beat(s) with ${est.model} will cost about $${est.est_usd}. Proceed?`;
+    costModal.classList.remove('hidden');
+    return;
+  }
+
+  if (resp.ok) {
+    const body = await resp.json();
+    costModal.classList.add('hidden');
+    beatPane.textContent = `${body.beats_count} beats drafted`;
+    return;
+  }
+
+  // Any other failure (e.g. 409 "not assembled yet").
+  let detail = '';
+  try { detail = JSON.stringify((await resp.json()).detail); } catch { detail = await resp.text(); }
+  beatPane.innerHTML = '';
+  const p = document.createElement('p');
+  p.className = 'result-err';
+  p.textContent = `draft failed (${resp.status}): ${detail}`;
+  beatPane.appendChild(p);
+}
+
+document.getElementById('draftBeatsBtn').addEventListener('click', () => draftBeats(false));
+document.getElementById('costConfirmBtn').addEventListener('click', () => draftBeats(true));
+document.getElementById('costCancelBtn').addEventListener('click', () => costModal.classList.add('hidden'));
+
+// ── Upload (local) ──
+document.getElementById('uploadLocalBtn').addEventListener('click', async () => {
+  if (!jobId) return;
+  uploadResult.className = '';
+  uploadResult.textContent = '';
+  let resp;
+  try {
+    resp = await postJSON(`/onboard/jobs/${jobId}/upload`, { target: 'local' });
+  } catch (err) {
+    uploadResult.className = 'result-err';
+    uploadResult.textContent = `upload failed: ${err}`;
+    return;
+  }
+
+  if (resp.ok) {
+    const body = await resp.json();
+    uploadResult.className = 'result-ok';
+    uploadResult.textContent = `Uploaded to ${body.city_dir}`;
+    return;
+  }
+
+  // On 500 the deploy failed — surface its stderr tail.
+  let stderr = `upload failed (${resp.status})`;
+  try {
+    const detail = (await resp.json()).detail;
+    stderr = (detail && detail.stderr) || (typeof detail === 'string' ? detail : stderr);
+  } catch { /* keep the fallback */ }
+  uploadResult.className = 'result-err';
+  uploadResult.textContent = stderr;
+});
+</script>
+</body>
+</html>

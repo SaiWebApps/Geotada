@@ -990,6 +990,7 @@
     </select>
     <div id="cityError" style="color:var(--red);font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
     <button class="btn btn-primary" id="citySubmitBtn" style="width:100%;">Set City</button>
+    <a id="onboardLink" class="btn btn-outline" style="display:block;text-align:center;margin-top:0.75rem;text-decoration:none;">Onboard a new city →</a>
   </div>
 </div>
 
@@ -2985,6 +2986,7 @@
   // Populate the city picker now that API_BASE is initialised (the modal is
   // shown on load; loadCityPicker is hoisted from the city-picker section above).
   loadCityPicker();
+  document.getElementById('onboardLink').href = 'onboard.html' + location.search;
 
   // ── TTS state & helpers ──
   const ttsAudioCache = new Map();

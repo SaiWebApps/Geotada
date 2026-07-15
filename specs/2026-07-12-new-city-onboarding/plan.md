@@ -267,6 +267,22 @@ The enabler; tightly coupled → ONE coherent unit.
   source line-by-line, POI/beat panes render, "Upload locally" → `/cities` contains london →
   reopen review.html → selector shows "London — N POIs". Screenshots to `tests/reports/screenshots/`.
 - **Proof:** `make test-workbench` green + pasted screenshots.
+- **2026-07-14 outcome (Steps 6+7, + inserted Step 6.5):** the user chose the FULL upload→graph
+  round-trip for Step 7, so Step 6.5 (hermetic deploy read-chain) landed first (see above). Then
+  `frontend/onboard.html` (vanilla, mirrors review.html — request form + mode checkboxes with the two
+  later-slice modes disabled, a live consult feed via EventSource showing every source line-by-line with
+  its concrete URL and discovery pointers as outbound-links-only, a POI pane, a beat pane + a
+  cost-confirm modal, "Upload locally" + a disabled "Upload to cloud") + a 2-line `review.html`
+  "Onboard a new city →" anchor. Proof: `make test-workbench` 59 passed/0/0 (58 existing +
+  `TestOnboardPanel::test_onboard_london_end_to_end`) driving the REAL :8001 API through feed → 36 POIs →
+  $0.531 cost modal → confirm-draft (35 beats) → hermetic Upload locally → deploy into 7689 → `GET /cities`
+  returns london + review.html's selector gains a london option. 7 screenshots in
+  `tests/reports/screenshots/onboard-*.png` (manager-viewed). Sonnet skeptic SOLID (mutation-proved the
+  round-trip: faking `_run_deploy` → RED at "no London entry"; committed tree asserted untouched).
+  MINOR follow-ups (documented, non-blocking): the review.html anchor's CLICK-navigation is untested (it
+  renders + its JS is one trivial line); `beatPane` "35" is a substring check (safe under the 36-POI
+  ceiling); the cost modal shows the POI-count estimate (36) vs the drafted actual (35, one POI lacks a
+  Wikipedia extract) — a conservative over-estimate, the safe direction for a spend gate.
 
 ### Step 8 — Real onboarding + milestone gate  [LIVE spend — cost-estimated + user-confirmed]
 - Run the panel live for London (real HTTP; LLM beat drafting with a printed $ estimate and
