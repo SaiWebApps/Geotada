@@ -30,13 +30,10 @@ from dotenv import load_dotenv
 _test_env = Path(__file__).resolve().parent.parent / ".env.test"
 if _test_env.exists():
     load_dotenv(dotenv_path=_test_env, override=True)
-    # The hermetic bar must NEVER call a real compose LLM. connection.py's
-    # import-time load_dotenv() can leak a developer .env COMPOSE_PROVIDER=anthropic
-    # (set to preview real compose in the workbench) into the suite, which then
-    # hangs on live Opus calls. Force mock here; test_compose_provider.py
-    # monkeypatches per-test to exercise the selector.
-    os.environ["COMPOSE_PROVIDER"] = "mock"
-    # Same wall for onboarding beat-drafting: force the mock drafter so the bar
+    # (The compose LLM wall is now enforced by the ``_money_guard_no_live_compose``
+    # autouse fixture below — get_compose_client() ALWAYS builds the real Opus
+    # client in the product, so an env toggle can no longer make it offline.)
+    # Force the mock onboarding beat-drafter so the bar
     # (and src/onboard/cli.py) can NEVER make a live Anthropic call.
     os.environ["ONBOARD_PROVIDER"] = "mock"
     # The workbench API gate is now FAIL-CLOSED (src/api/app.py: mounts the
@@ -76,6 +73,43 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()
     if report.skipped and not getattr(report, "wasxfail", False):
         report.outcome = "failed"
+
+
+@pytest.fixture(autouse=True)
+def _money_guard_no_live_compose(request, monkeypatch):
+    """HARD money-guard. The product now ALWAYS builds the real Opus composer +
+    Haiku checker (``get_compose_client`` / ``get_faithfulness_checker`` — the mock
+    provider was removed so a CUSTOMER can never be served the stitcher passthrough
+    as if it were the narrator). The hermetic bar must therefore be prevented from
+    ever CONSTRUCTING those billing clients: for every non-``live`` test, patch the
+    real classes to their offline stubs. ``make test`` then physically cannot make
+    a paid Anthropic call — the real clients are never instantiated (proven by
+    ``test_compose_provider.test_money_guard_compose_client_is_offline_stub``).
+    ``@pytest.mark.live`` tests (excluded from ``make test``; only ``make
+    tour-compose-gate`` etc.) intentionally spend and bind the real client by
+    direct import, so they are left untouched."""
+    if request.node.get_closest_marker("live"):
+        return
+    import src.tour.compose as _compose_mod
+    import src.tour.verify as _verify_mod
+
+    _real_compose = _compose_mod.AnthropicComposeClient
+
+    def _guard_compose(model=_compose_mod.COMPOSE_MODEL, *, client=None):
+        # client is None == the PRODUCT get_compose_client() path, which would build
+        # the real billing SDK — hand back the offline stitcher stub instead. A
+        # direct unit test that injects a FAKE sdk client (client=<fake>) is already
+        # offline, so let it exercise the REAL composer class.
+        if client is None:
+            return _compose_mod.MockComposeClient()
+        return _real_compose(model, client=client)
+
+    monkeypatch.setattr(_compose_mod, "AnthropicComposeClient", _guard_compose)
+    # No non-live test constructs the real Haiku checker with a fake SDK, so the
+    # billing checker is always swapped for the offline trusting stub.
+    monkeypatch.setattr(
+        _verify_mod, "HaikuFaithfulnessChecker", _verify_mod.MockFaithfulnessChecker
+    )
 
 
 # Ports the conftest is allowed to wipe. Update this if your local test

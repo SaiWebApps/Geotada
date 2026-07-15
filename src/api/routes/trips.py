@@ -758,8 +758,9 @@ def preview_trip(
     # Opt-in "AI voice": rewrite the stitched narration into one flowing,
     # de-duplicated story behind the faithfulness + content-loss gates, with
     # graceful per-stop repair so the workbench ALWAYS shows something good (and
-    # honestly flags which stops fell back). With COMPOSE_PROVIDER=mock this is a
-    # deterministic passthrough; with 'anthropic' it is the real Opus voice.
+    # honestly flags which stops fell back). This is ALWAYS the real Opus voice in
+    # the product now (get_compose_client has no mock provider); the hermetic test
+    # suite stubs the client offline so `make test` never spends.
     compose_status = "stitched"
     if body.compose:
         try:

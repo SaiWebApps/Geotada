@@ -145,9 +145,17 @@ def _reflection_text(claims: tuple[str, ...]) -> str:
 
 
 class MockComposeClient:
-    """Deterministic offline default: stitched sentences + one verbatim
-    key-claims reflection per (non-empty) slot, inserted immediately after
-    the slot's transit opening and before its anchor beats. Records calls."""
+    """TEST DOUBLE ONLY — never wired into a product path.
+
+    The product composer (``api.dependencies.get_compose_client``) is ALWAYS the
+    real Opus ``AnthropicComposeClient``; a customer is never served this stitcher
+    passthrough as the narrator. This class exists so the hermetic ``make test``
+    bar stays offline + $0: ``tests/conftest.py`` patches ``AnthropicComposeClient``
+    to THIS for every non-``live`` test, and unit tests inject it directly.
+
+    Deterministic offline behaviour: stitched sentences + one verbatim key-claims
+    reflection per (non-empty) slot, inserted immediately after the slot's transit
+    opening and before its anchor beats. Records calls."""
 
     def __init__(self) -> None:
         self.calls: list[tuple[int, ValidationReport | None]] = []

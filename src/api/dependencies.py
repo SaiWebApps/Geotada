@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import Generator
 from typing import TYPE_CHECKING
 
 from src.connection import create_driver, get_database
-from src.tour.compose import ComposeClient, MockComposeClient
+from src.tour.compose import ComposeClient
 
 if TYPE_CHECKING:
     from neo4j import Driver, Session
@@ -110,36 +109,29 @@ def get_driver() -> Driver:
     return _driver
 
 
-def _compose_provider() -> str:
-    provider = os.getenv("COMPOSE_PROVIDER", "mock").strip().lower()
-    if provider not in ("mock", "anthropic"):
-        raise RuntimeError(
-            f"Unknown COMPOSE_PROVIDER {provider!r} — use 'mock' or 'anthropic'"
-        )
-    return provider
-
-
 def get_compose_client() -> ComposeClient:
-    """The narration composer for POST /trips/{id}/compose (Phase 4 Step 4.8).
+    """The narration composer for the CUSTOMER compose paths — POST
+    /trips/{id}/compose (the app + workbench) and POST /trips/preview (workbench).
 
-    COMPOSE_PROVIDER selects it: 'mock' (default — `make test` never sees an
-    LLM) or 'anthropic' (the real fire-once client; Render sets this). Tests
-    override this dependency to inject deterministic or failing composers.
+    ALWAYS the real fire-once Opus composer. There is no 'mock' provider in the
+    product any more: a customer must never be served the deterministic stitcher
+    passthrough as if it were the narrator. Requires ANTHROPIC_API_KEY (in .env
+    locally, in Render for prod). The hermetic test suite NEVER reaches this live
+    client — ``tests/conftest.py`` patches ``AnthropicComposeClient`` to an offline
+    stub for the whole (non-``live``) bar, so ``make test`` can never bill the
+    account; tests that assert on compose also override this dependency directly.
     """
-    if _compose_provider() == "anthropic":
-        from src.tour.compose import AnthropicComposeClient
+    from src.tour.compose import AnthropicComposeClient
 
-        return AnthropicComposeClient()
-    return MockComposeClient()
+    return AnthropicComposeClient()
 
 
 def get_faithfulness_checker() -> FaithfulnessChecker | None:
-    """VERIFY's entailment checker for /compose, PAIRED with the provider:
-    the real compose is never gated by the trusting Mock (M-7). None -> the
-    offline Mock inside build_full_verifier; 'anthropic' -> the real Haiku
-    entailment. Tests override to inject rejecting checkers."""
-    if _compose_provider() == "anthropic":
-        from src.tour.verify import HaikuFaithfulnessChecker
+    """VERIFY's entailment checker for the compose paths — ALWAYS the real Haiku
+    checker, paired with the real Opus composer (M-7: the real compose is never
+    gated by the trusting Mock). The hermetic suite patches this to an offline
+    stub (see ``get_compose_client``); tests override to inject rejecting checkers.
+    """
+    from src.tour.verify import HaikuFaithfulnessChecker
 
-        return HaikuFaithfulnessChecker()
-    return None
+    return HaikuFaithfulnessChecker()

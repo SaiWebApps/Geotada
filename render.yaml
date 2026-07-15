@@ -5,12 +5,10 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      # Narration composer for POST /trips/{id}/compose (Phase 4 Step 4.8):
-      # 'mock' = deterministic stitcher passthrough; 'anthropic' = the real
-      # fire-once Opus compose gated by the real Haiku faithfulness checker
-      # (needs ANTHROPIC_API_KEY). Flip to 'anthropic' to go live.
-      - key: COMPOSE_PROVIDER
-        value: mock
+      # Narration compose is ALWAYS the real fire-once Opus composer now (the
+      # 'mock' provider was removed — a customer must never be served the stitcher
+      # passthrough as the narrator). It needs ANTHROPIC_API_KEY (set below); the
+      # hermetic test suite stubs the client offline so `make test` never spends.
       # Gate OFF the editorial-workbench graph-CRUD routers (graph/nodes/edges/
       # schema) on the public deploy. These are an UNAUTHENTICATED create/update/
       # DETACH DELETE + data/-write + deploy surface over the live Neo4j/Aura
