@@ -586,6 +586,30 @@ geofence trigger radius, which is the natural notion of "same place".
 """
 
 
+def _vignette_beat_names_poi(body: str | None, poi_name: str) -> bool:
+    """True when the beat's FIRST sentence — the ONLY one voiced as a walk-past
+    one-liner (``generation._vignette_one_liners``) — contains the POI's name.
+
+    A vignette one-liner is stitched into the leg INTO the next seated stop, so a
+    line that does not name its own POI (e.g. "The statue of Nelson at the top was
+    carved from…") reads as if it belongs to that stop — the Nelson's-Column-under-
+    the-National-Gallery mis-attribution a hostile panel caught. Preferring a
+    self-naming beat ("Nelson's Column is a monument in Trafalgar Square…") fixes
+    it in canonical corpus text, with no glue and no new proper-noun leakage."""
+    if not body or not poi_name:
+        return False
+    # Use the SAME splitter generation uses to voice the one-liner, so the sentence
+    # checked here is exactly the sentence a tourist hears (a naive ". " split would
+    # disagree on abbreviations — "St. Paul's Cathedral" — and mis-judge naming).
+    # Lazy import: generation imports THIS module (cycle avoidance).
+    from .generation import split_sentences
+
+    sents = split_sentences(body)
+    if not sents:
+        return False
+    return poi_name.casefold() in sents[0].casefold()
+
+
 def select_vignette_beats(
     vignettes: dict[int, tuple[POI, ...]],
     beats_by_poi_id: dict[str, tuple[BeatRef, ...]],
@@ -614,11 +638,17 @@ def select_vignette_beats(
             ]
             if not voiceable:
                 continue
+            # Prefer a SELF-NAMING beat (its first sentence names the POI) so the
+            # walk-past one-liner is never mis-read as the seated stop's content;
+            # within the preferred pool still honour a requested lens, else take the
+            # first. No self-naming beat -> the prior behaviour (lensed else first).
+            naming = [b for b in voiceable if _vignette_beat_names_poi(b.script_body, poi.name)]
+            pool = naming or voiceable
             lensed = next(
-                (b for b in voiceable if any(ln.lower() in interest for ln in b.lenses)),
+                (b for b in pool if any(ln.lower() in interest for ln in b.lenses)),
                 None,
             )
-            chosen.append(lensed if lensed is not None else voiceable[0])
+            chosen.append(lensed if lensed is not None else pool[0])
         if chosen:
             out[leg_idx] = tuple(chosen)
     return out

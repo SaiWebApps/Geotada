@@ -267,6 +267,83 @@ def test_select_vignette_beats_prefers_requested_lens():
     ) == {1: (lensed,)}
 
 
+def test_select_vignette_beats_prefers_self_naming_beat():
+    """Among a POI's voiceable beats, the one whose FIRST sentence names the POI
+    wins — so the walk-past one-liner reads as unmistakably about that POI, never
+    mis-attributed to the seated stop it lands under (the Nelson's-Column-under-
+    the-National-Gallery bug a hostile tour-adversary panel caught).
+    UNDO: drop the self-naming preference (fall back to ``voiceable[0]``) -> the
+    non-naming 'The statue…' beat is chosen -> RED."""
+    poi = _v_poi("Nelson's Column")  # name == id
+    # Corpus order puts the NON-naming beat first, so a naive voiceable[0] picks the
+    # unattributed one; the self-naming preference must reach past it.
+    unnamed = _beat(
+        "nc-statue", "Nelson's Column",
+        "The statue at the top was carved from Craigleith sandstone.",
+    )
+    naming = _beat(
+        "nc-def", "Nelson's Column",
+        "Nelson's Column is a monument in Trafalgar Square.",
+    )
+    beats = {"Nelson's Column": (unnamed, naming)}
+    assert select_vignette_beats({1: (poi,)}, beats) == {1: (naming,)}
+    # A requested lens is still honoured WITHIN the self-naming pool.
+    naming_lensed = _beat(
+        "nc-def2", "Nelson's Column",
+        "Nelson's Column also anchors the whole square.", lenses=("hidden_history",),
+    )
+    beats2 = {"Nelson's Column": (unnamed, naming, naming_lensed)}
+    assert select_vignette_beats(
+        {1: (poi,)}, beats2, lenses=frozenset({"hidden_history"})
+    ) == {1: (naming_lensed,)}
+
+
+def test_vignette_self_naming_detects_abbreviation_leading_name():
+    """A POI whose definitional sentence STARTS with an abbreviation ("St. Paul's
+    Cathedral is…") must still be detected as self-naming. The one-liner is voiced
+    with ``generation.split_sentences`` (which re-glues "St."), so the naming check
+    must use the SAME splitter — a naive ". " split truncates at "St." and misses
+    the name. Guards the ~25 real St./numbered POIs across the live corpora the
+    opus skeptic enumerated (St. Paul's Chapel, St. Patrick's Cathedral, …).
+    UNDO: revert ``_vignette_beat_names_poi`` to a naive ``re.split(". ")[0]`` ->
+    "St." is the first fragment, the name isn't found, the non-naming beat wins,
+    so the wrong beat is selected -> RED."""
+    poi = _v_poi("St. Paul's Cathedral")
+    # Corpus order: NON-naming beat first (a naive voiceable[0] would take it).
+    unnamed = _beat(
+        "sp-dome", "St. Paul's Cathedral",
+        "The dome is among the highest in the world.",
+    )
+    naming = _beat(
+        "sp-def", "St. Paul's Cathedral",
+        "St. Paul's Cathedral is an Anglican cathedral in London. It sits on Ludgate Hill.",
+    )
+    beats = {"St. Paul's Cathedral": (unnamed, naming)}
+    assert select_vignette_beats({1: (poi,)}, beats) == {1: (naming,)}
+
+
+def test_vignette_self_naming_outranks_lens_match():
+    """Naming CLARITY outranks genre: a self-naming beat with NO requested lens
+    beats a lensed beat that does NOT name the POI. A mis-attributed walk-past is a
+    real defect; a lens miss on a brief one-liner is a soft preference.
+    UNDO: make the lens pool win over the naming pool (select lensed across all
+    voiceable before restricting to self-naming) -> the non-naming lensed beat is
+    chosen -> RED."""
+    poi = _v_poi("Nelson's Column")
+    naming_plain = _beat(
+        "nc-def", "Nelson's Column",
+        "Nelson's Column is a monument in Trafalgar Square.",
+    )
+    unnamed_lensed = _beat(
+        "nc-lens", "Nelson's Column",
+        "The statue at the top honours a naval victory.", lenses=("hidden_history",),
+    )
+    beats = {"Nelson's Column": (naming_plain, unnamed_lensed)}
+    assert select_vignette_beats(
+        {1: (poi,)}, beats, lenses=frozenset({"hidden_history"})
+    ) == {1: (naming_plain,)}
+
+
 def test_select_vignette_beats_skips_unvoiceable_and_drops_empty_legs():
     voiced = _beat("gb", "v1", "A fine line.")
     beats = {"v1": (voiced,), "v2": (BeatRef(id="nb", poi_id="v2"),)}

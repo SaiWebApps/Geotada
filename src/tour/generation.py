@@ -742,6 +742,10 @@ def _vignette_one_liners(
     attributed to the beat's own id, at the leg's ``stop_idx``. Beats with no
     body (callers should have filtered them — ``select_vignette_beats`` only
     picks voiceable beats) contribute nothing.
+
+    ``select_vignette_beats`` prefers a SELF-NAMING beat (its first sentence
+    contains the POI name), so the one-liner reads as unmistakably about the
+    walk-past POI — never mis-read as content of the seated stop it lands under.
     """
     out: list[Sentence] = []
     for beat in vignette_beats:
