@@ -22,7 +22,13 @@ from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .claim_dedup import candidate_duplicate_pairs, claims_realized_by, verify_claim_coverage
+from .claim_dedup import (
+    candidate_duplicate_pairs,
+    claims_realized_by,
+    suppress_exact_repeats,
+    suppress_repeated_claims,
+    verify_claim_coverage,
+)
 from .compose_gate import (
     ComposeVerificationError,
     _bad_stops,
@@ -719,6 +725,14 @@ def compose_script_per_chapter(
         out: list[Sentence] = []
         for stop_idx in stops:
             out.extend(composed_by_stop[stop_idx])
+        # De-dup the composed narration the way the stitch already is — PLUS
+        # same-beat: over a big multi-beat stop the composer can echo one beat as a
+        # polished paraphrase AND a near-verbatim retelling (same source_id, same
+        # fact, different wording), which is the dominant repetition in real tours.
+        # Coverage-safe (novel claims kept, never empties a beat), so the verify
+        # that runs next still holds.
+        out = suppress_repeated_claims(out, beat_sequence, include_same_beat=True)
+        out = suppress_exact_repeats(out, beat_sequence)
         return stitched.model_copy(
             update={
                 "script": tuple(out),

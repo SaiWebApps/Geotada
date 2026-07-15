@@ -133,12 +133,25 @@ def _realized_claim_signatures(
 
 
 def suppress_repeated_claims(
-    sentences: list[Sentence], beat_sequence: BeatSequence
+    sentences: list[Sentence],
+    beat_sequence: BeatSequence,
+    *,
+    include_same_beat: bool = False,
 ) -> list[Sentence]:
     """Drop beat sentences that restate a claim already voiced by an earlier beat.
 
     Pure. Preserves order, never empties a beat, and only ever removes
     ``source_type == "beat"`` sentences.
+
+    ``include_same_beat`` (default off, so the pre-compose stitch behaves exactly
+    as before): also drop a sentence that merely restates a claim already voiced by
+    an EARLIER sentence of its OWN beat. The composer (over a big multi-beat stop)
+    can echo one beat as both a polished paraphrase and a near-verbatim retelling —
+    same ``source_id``, same claim, different wording — which the cross-beat-only
+    rule leaves in place, and which neither ``suppress_exact_repeats`` (not byte-
+    identical) catches. On the composed output we turn this on so the fact reads
+    once. Still coverage-safe: a beat sentence carrying a NOVEL claim is always
+    kept, and the never-empty-a-beat restore below guarantees every beat keeps ≥1.
     """
     beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
     # Vignette (walk-past) beats are voiced as real beat sentences too, so they must
@@ -158,7 +171,7 @@ def suppress_repeated_claims(
 
     def _already_voiced(sig: frozenset[str], own_beat: str) -> bool:
         return any(
-            bid != own_beat
+            (include_same_beat or bid != own_beat)
             and _overlap(sig, vsig) >= CLAIM_DEDUP_THRESHOLD
             and len(sig & vsig) >= MIN_SHARED_TOKENS
             for bid, vsig in voiced

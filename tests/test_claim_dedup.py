@@ -95,6 +95,38 @@ def test_pure_founding_restatement_dropped() -> None:
     assert not any("Archaeological evidence" in t for t in texts)
 
 
+def test_same_beat_paraphrase_echo_dropped_only_with_flag() -> None:
+    """Over a big multi-beat stop the composer can echo ONE beat as a polished
+    paraphrase AND a near-verbatim retelling — same source_id, same claim, different
+    wording — which is the dominant repetition in real composed tours. The default
+    (cross-beat only) leaves both; ``include_same_beat=True`` (used on the composed
+    output in compose_script_per_chapter._assemble) drops the echo, keeping the
+    first (polished) telling.
+    UNDO: drop the ``include_same_beat or`` branch in ``_already_voiced`` -> the echo
+    survives even with the flag -> RED."""
+    beat = _beat(
+        "nd01", ("Napoleon crowned himself emperor at Notre-Dame in 1804 with the walls draped",)
+    )
+    seq = _seq(beat)
+    sents = [
+        _s(
+            "Napoleon crowned himself emperor here at Notre-Dame in 1804, the dilapidated "
+            "walls draped to hide their state.",
+            "nd01",
+        ),
+        _s(
+            "Napoleon crowned himself emperor at Notre-Dame in 1804 with the walls draped.",
+            "nd01",
+        ),
+    ]
+    # Default (cross-beat only) = today's stitch behaviour, unchanged: both survive.
+    assert len(suppress_repeated_claims(sents, seq)) == 2
+    # Same-beat aware: the echo is dropped, the first (polished) telling kept.
+    deduped = suppress_repeated_claims(sents, seq, include_same_beat=True)
+    assert len(deduped) == 1
+    assert deduped[0].text.startswith("Napoleon crowned himself emperor here")
+
+
 def test_compound_sentence_keeps_novel_fact() -> None:
     # Skeptic-A regression: B3 fuses the repeated founding clause with the NOVEL
     # palace-fortress fact (voiced nowhere else) -> the whole sentence is KEPT.
