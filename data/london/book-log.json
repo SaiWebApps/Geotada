@@ -1,0 +1,1132 @@
+{
+  "city": "London",
+  "books_processed": [
+    {
+      "book_title": "Wikipedia",
+      "author": "Wikipedia contributors",
+      "source": "wikipedia",
+      "chunks_processed": [
+        {
+          "chunk": "british_library-rev-1363969932",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "British Library"
+          ]
+        },
+        {
+          "chunk": "tate_modern-rev-1363578018",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Tate Modern"
+          ]
+        },
+        {
+          "chunk": "piccadilly_circus-rev-1349740205",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Piccadilly Circus"
+          ]
+        },
+        {
+          "chunk": "british_museum-rev-1363772384",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "British Museum"
+          ]
+        },
+        {
+          "chunk": "buckingham_palace-rev-1363781557",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Buckingham Palace"
+          ]
+        },
+        {
+          "chunk": "westminster_abbey-rev-1363981461",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Westminster Abbey"
+          ]
+        },
+        {
+          "chunk": "tower_of_london-rev-1363492010",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Tower of London"
+          ]
+        },
+        {
+          "chunk": "tower_bridge-rev-1363146774",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Tower Bridge"
+          ]
+        },
+        {
+          "chunk": "palace_of_westminster-rev-1362904922",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Palace of Westminster"
+          ]
+        },
+        {
+          "chunk": "london_bridge-rev-1358373462",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Bridge"
+          ]
+        },
+        {
+          "chunk": "london_eye-rev-1357603018",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Eye"
+          ]
+        },
+        {
+          "chunk": "st_paul_s_cathedral-rev-1362781550",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "St Paul's Cathedral"
+          ]
+        },
+        {
+          "chunk": "trafalgar_square-rev-1364154913",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Trafalgar Square"
+          ]
+        },
+        {
+          "chunk": "national_gallery-rev-1363572827",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "National Gallery"
+          ]
+        },
+        {
+          "chunk": "madame_tussauds-rev-1356149825",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Madame Tussauds"
+          ]
+        },
+        {
+          "chunk": "10_downing_street-rev-1359622241",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "10 Downing Street"
+          ]
+        },
+        {
+          "chunk": "hyde_park-rev-1363889329",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Hyde Park"
+          ]
+        },
+        {
+          "chunk": "greenwich_meridian-rev-1359339080",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Greenwich meridian"
+          ]
+        },
+        {
+          "chunk": "victoria_and_albert_museum-rev-1362796668",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Victoria and Albert Museum"
+          ]
+        },
+        {
+          "chunk": "the_shard-rev-1355810409",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "The Shard"
+          ]
+        },
+        {
+          "chunk": "royal_opera_house-rev-1362640546",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Opera House"
+          ]
+        },
+        {
+          "chunk": "natural_history_museum-rev-1355431976",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Natural History Museum"
+          ]
+        },
+        {
+          "chunk": "new_scotland_yard-rev-1358392921",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "New Scotland Yard"
+          ]
+        },
+        {
+          "chunk": "kensington_palace-rev-1361815201",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Kensington Palace"
+          ]
+        },
+        {
+          "chunk": "royal_albert_hall-rev-1363855426",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Albert Hall"
+          ]
+        },
+        {
+          "chunk": "london_underground-rev-1363483453",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Underground"
+          ]
+        },
+        {
+          "chunk": "canary_wharf-rev-1360106195",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Canary Wharf"
+          ]
+        },
+        {
+          "chunk": "westminster_bridge-rev-1352955116",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Westminster Bridge"
+          ]
+        },
+        {
+          "chunk": "harrods-rev-1359230293",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Harrods"
+          ]
+        },
+        {
+          "chunk": "london_king_s_cross_railway_station-rev-1360424285",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London King's Cross railway station"
+          ]
+        },
+        {
+          "chunk": "national_portrait_gallery-rev-1363333096",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "National Portrait Gallery"
+          ]
+        },
+        {
+          "chunk": "science_museum-rev-1359052905",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Science Museum"
+          ]
+        },
+        {
+          "chunk": "globe_theatre-rev-1356052809",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Globe Theatre"
+          ]
+        },
+        {
+          "chunk": "westminster_cathedral-rev-1363876172",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Westminster Cathedral"
+          ]
+        },
+        {
+          "chunk": "london_zoo-rev-1361793528",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Zoo"
+          ]
+        },
+        {
+          "chunk": "cutty_sark-rev-1362553032",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Cutty Sark"
+          ]
+        },
+        {
+          "chunk": "leicester_square-rev-1360531657",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Leicester Square"
+          ]
+        },
+        {
+          "chunk": "royal_academy_of_arts-rev-1358528761",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Academy of Arts"
+          ]
+        },
+        {
+          "chunk": "london_waterloo_station-rev-1360424302",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Waterloo station"
+          ]
+        },
+        {
+          "chunk": "nelson_s_column-rev-1362120387",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Nelson's Column"
+          ]
+        },
+        {
+          "chunk": "abbey_road_studios-rev-1363429678",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Abbey Road Studios"
+          ]
+        },
+        {
+          "chunk": "imperial_war_museum_london-rev-1362011734",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Imperial War Museum London"
+          ]
+        },
+        {
+          "chunk": "st_martin_in_the_fields-rev-1360290115",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "St Martin-in-the-Fields"
+          ]
+        },
+        {
+          "chunk": "kensington_gardens-rev-1334393672",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Kensington Gardens"
+          ]
+        },
+        {
+          "chunk": "tate_britain-rev-1363578011",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Tate Britain"
+          ]
+        },
+        {
+          "chunk": "clarence_house-rev-1361749641",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Clarence House"
+          ]
+        },
+        {
+          "chunk": "greenwich_park-rev-1362588062",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Greenwich Park"
+          ]
+        },
+        {
+          "chunk": "highgate_cemetery-rev-1362705177",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Highgate Cemetery"
+          ]
+        },
+        {
+          "chunk": "lambeth_palace-rev-1360455576",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Lambeth Palace"
+          ]
+        },
+        {
+          "chunk": "marble_arch-rev-1356842607",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Marble Arch"
+          ]
+        },
+        {
+          "chunk": "national_maritime_museum-rev-1363332462",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "National Maritime Museum"
+          ]
+        },
+        {
+          "chunk": "hms_belfast-rev-1363702913",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "HMS Belfast"
+          ]
+        },
+        {
+          "chunk": "queen_s_house-rev-1345580430",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Queen's House"
+          ]
+        },
+        {
+          "chunk": "somerset_house-rev-1362709836",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Somerset House"
+          ]
+        },
+        {
+          "chunk": "admiralty_arch-rev-1359958304",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Admiralty Arch"
+          ]
+        },
+        {
+          "chunk": "covent_garden-rev-1362641919",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Covent Garden"
+          ]
+        },
+        {
+          "chunk": "alexandra_palace-rev-1355440733",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Alexandra Palace"
+          ]
+        },
+        {
+          "chunk": "banqueting_house-rev-1360424494",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Banqueting House"
+          ]
+        },
+        {
+          "chunk": "british_empire-rev-1360622504",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "British Empire"
+          ]
+        },
+        {
+          "chunk": "parliament_square-rev-1356022475",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Parliament Square"
+          ]
+        },
+        {
+          "chunk": "downing_street-rev-1363184724",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Downing Street"
+          ]
+        },
+        {
+          "chunk": "marlborough_house-rev-1360457951",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Marlborough House"
+          ]
+        },
+        {
+          "chunk": "monument_to_the_great_fire_of_london-rev-1359439625",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Monument to the Great Fire of London"
+          ]
+        },
+        {
+          "chunk": "speakers_corner-rev-1359409529",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Speakers' Corner"
+          ]
+        },
+        {
+          "chunk": "commonwealth_of_nations-rev-1363497403",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Commonwealth of Nations"
+          ]
+        },
+        {
+          "chunk": "221b_baker_street-rev-1355793067",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "221B Baker Street"
+          ]
+        },
+        {
+          "chunk": "british_broadcasting_corporation-rev-1364128281",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "British Broadcasting Corporation"
+          ]
+        },
+        {
+          "chunk": "apsley_house-rev-1362872035",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Apsley House"
+          ]
+        },
+        {
+          "chunk": "bt_tower-rev-1363325684",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "BT Tower"
+          ]
+        },
+        {
+          "chunk": "freud_museum_london-rev-1363278437",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Freud Museum London"
+          ]
+        },
+        {
+          "chunk": "hammersmith_bridge-rev-1362344423",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Hammersmith Bridge"
+          ]
+        },
+        {
+          "chunk": "horse_guards_parade-rev-1347885332",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Horse Guards Parade"
+          ]
+        },
+        {
+          "chunk": "lincoln_s_inn-rev-1364249046",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Lincoln's Inn"
+          ]
+        },
+        {
+          "chunk": "wellington_arch-rev-1360535006",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Wellington Arch"
+          ]
+        },
+        {
+          "chunk": "white_cube-rev-1362286505",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "White Cube"
+          ]
+        },
+        {
+          "chunk": "carnaby_street-rev-1353796718",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Carnaby Street"
+          ]
+        },
+        {
+          "chunk": "kenwood_house-rev-1360454547",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Kenwood House"
+          ]
+        },
+        {
+          "chunk": "petrie_museum_of_egyptian_archaeology-rev-1363437535",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Petrie Museum of Egyptian Archaeology"
+          ]
+        },
+        {
+          "chunk": "royal_festival_hall-rev-1345229562",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Festival Hall"
+          ]
+        },
+        {
+          "chunk": "borough_market-rev-1358603645",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Borough Market"
+          ]
+        },
+        {
+          "chunk": "chinatown-rev-1363365104",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Chinatown"
+          ]
+        },
+        {
+          "chunk": "dulwich_picture_gallery-rev-1363486021",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Dulwich Picture Gallery"
+          ]
+        },
+        {
+          "chunk": "gray_s_inn-rev-1364249001",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Gray's Inn"
+          ]
+        },
+        {
+          "chunk": "saatchi_gallery-rev-1364101271",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Saatchi Gallery"
+          ]
+        },
+        {
+          "chunk": "sir_john_soane_s_museum-rev-1363577259",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Sir John Soane's Museum"
+          ]
+        },
+        {
+          "chunk": "2012_summer_olympics-rev-1364127019",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "2012 Summer Olympics"
+          ]
+        },
+        {
+          "chunk": "chelsea_physic_garden-rev-1363145789",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Chelsea Physic Garden"
+          ]
+        },
+        {
+          "chunk": "guildhall-rev-1354472577",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Guildhall"
+          ]
+        },
+        {
+          "chunk": "heron_tower-rev-1344801683",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Heron Tower"
+          ]
+        },
+        {
+          "chunk": "london_transport_museum-rev-1363489885",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Transport Museum"
+          ]
+        },
+        {
+          "chunk": "chelsea_f_c-rev-1364130785",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Chelsea F.C."
+          ]
+        },
+        {
+          "chunk": "thames_tunnel-rev-1358221062",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Thames Tunnel"
+          ]
+        },
+        {
+          "chunk": "arcelormittal_orbit-rev-1344384492",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "ArcelorMittal Orbit"
+          ]
+        },
+        {
+          "chunk": "design_museum-rev-1358806043",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Design Museum"
+          ]
+        },
+        {
+          "chunk": "shaftesbury_avenue-rev-1356963884",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Shaftesbury Avenue"
+          ]
+        },
+        {
+          "chunk": "the_cenotaph-rev-1361369463",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "the Cenotaph"
+          ]
+        },
+        {
+          "chunk": "battersea_park-rev-1362481926",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Battersea Park"
+          ]
+        },
+        {
+          "chunk": "churchill_war_rooms-rev-1363433159",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Churchill War Rooms"
+          ]
+        },
+        {
+          "chunk": "royal_central_school_of_speech_and_drama-rev-1359861799",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Central School of Speech and Drama"
+          ]
+        },
+        {
+          "chunk": "royal_courts_of_justice-rev-1362732189",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Courts of Justice"
+          ]
+        },
+        {
+          "chunk": "white_tower-rev-1357998020",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "White Tower"
+          ]
+        },
+        {
+          "chunk": "the_guardian-rev-1362389614",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "The Guardian"
+          ]
+        },
+        {
+          "chunk": "southwark-rev-1361639928",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Southwark"
+          ]
+        },
+        {
+          "chunk": "burlington_house-rev-1336848353",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Burlington House"
+          ]
+        },
+        {
+          "chunk": "county_hall-rev-1361950627",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "County Hall"
+          ]
+        },
+        {
+          "chunk": "eltham_palace-rev-1362432785",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Eltham Palace"
+          ]
+        },
+        {
+          "chunk": "london_stone-rev-1358137714",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London Stone"
+          ]
+        },
+        {
+          "chunk": "old_royal_naval_college-rev-1361864180",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Old Royal Naval College"
+          ]
+        },
+        {
+          "chunk": "the_rolling_bridge-rev-1321526166",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "The Rolling Bridge"
+          ]
+        },
+        {
+          "chunk": "brompton_cemetery-rev-1363256928",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Brompton Cemetery"
+          ]
+        },
+        {
+          "chunk": "kensal_green_cemetery-rev-1360916398",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Kensal Green Cemetery"
+          ]
+        },
+        {
+          "chunk": "greater_london-rev-1362894495",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Greater London"
+          ]
+        },
+        {
+          "chunk": "city_of_london-rev-1363512553",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "City of London"
+          ]
+        },
+        {
+          "chunk": "wimbledon_championships-rev-1364047298",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Wimbledon Championships"
+          ]
+        },
+        {
+          "chunk": "kingdom_of_great_britain-rev-1362548187",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Kingdom of Great Britain"
+          ]
+        },
+        {
+          "chunk": "royal_society-rev-1364273951",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Royal Society"
+          ]
+        },
+        {
+          "chunk": "charles_dickens_museum-rev-1359994945",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Charles Dickens Museum"
+          ]
+        },
+        {
+          "chunk": "chiswick_house-rev-1363004230",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Chiswick House"
+          ]
+        },
+        {
+          "chunk": "shakespeare_s_globe-rev-1360472516",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Shakespeare's Globe"
+          ]
+        },
+        {
+          "chunk": "spencer_house-rev-1363296050",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Spencer House"
+          ]
+        },
+        {
+          "chunk": "big_ben-rev-1363545261",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Big Ben"
+          ]
+        },
+        {
+          "chunk": "mandela_way_t_34_tank-rev-1362691300",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Mandela Way T-34 Tank"
+          ]
+        },
+        {
+          "chunk": "university_of_london_2-rev-1359892587",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "University of London (2)"
+          ]
+        },
+        {
+          "chunk": "aldwych_tube_station-rev-1363845283",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Aldwych tube station"
+          ]
+        },
+        {
+          "chunk": "southbank_centre-rev-1359545888",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Southbank Centre"
+          ]
+        },
+        {
+          "chunk": "kennington_tube_station-rev-1360414364",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Kennington tube station"
+          ]
+        },
+        {
+          "chunk": "house_of_commons-rev-1360541348",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "House of Commons"
+          ]
+        },
+        {
+          "chunk": "united_kingdom_of_great_britain_and_ireland-rev-1358517904",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "United Kingdom of Great Britain and Ireland"
+          ]
+        },
+        {
+          "chunk": "bermondsey-rev-1335810013",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Bermondsey"
+          ]
+        },
+        {
+          "chunk": "all_hallows_by_the_tower-rev-1363676274",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "All Hallows-by-the-Tower"
+          ]
+        },
+        {
+          "chunk": "crystal_palace_dinosaurs-rev-1361976997",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Crystal Palace Dinosaurs"
+          ]
+        },
+        {
+          "chunk": "hayward_gallery-rev-1354478180",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Hayward Gallery"
+          ]
+        },
+        {
+          "chunk": "whitechapel_gallery-rev-1363579521",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Whitechapel Gallery"
+          ]
+        },
+        {
+          "chunk": "house_of_lords-rev-1361255404",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "House of Lords"
+          ]
+        },
+        {
+          "chunk": "emirates_stadium-rev-1359559138",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Emirates Stadium"
+          ]
+        },
+        {
+          "chunk": "stamford_bridge-rev-1363464636",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Stamford Bridge"
+          ]
+        },
+        {
+          "chunk": "borough_tube_station-rev-1360414186",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Borough tube station"
+          ]
+        },
+        {
+          "chunk": "elephant_castle_tube_station-rev-1360414261",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Elephant & Castle tube station"
+          ]
+        },
+        {
+          "chunk": "london_school_of_economics_and_political_science-rev-1364082721",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "London School of Economics and Political Science"
+          ]
+        },
+        {
+          "chunk": "bunhill_fields-rev-1307135954",
+          "processed_at": "2026-07-15",
+          "beats_extracted": 0,
+          "pois_touched": [
+            "Bunhill Fields"
+          ]
+        }
+      ]
+    }
+  ]
+}

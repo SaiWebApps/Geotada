@@ -87,6 +87,28 @@ def _poi(name="British Museum", lat=_BM_LAT, lon=_BM_LON, source_urls=None) -> d
 
 
 # ---------------------------------------------------------------------------
+# _extract_params — LEAD-SECTION-ONLY grounding (exintro).
+# ---------------------------------------------------------------------------
+def test_extract_params_requests_lead_section_only() -> None:
+    """LEAD-ONLY RED-FIRST: ``_extract_params`` must carry ``exintro=1`` so the
+    extract is the article's lead section (the coherent definitional summary) and
+    the beat drafter never carves deep-article, off-topic spans (e.g. a "The
+    British Empire comprised…" sentence surfacing under Trafalgar Square).
+
+    Remove ``exintro`` from the params dict -> this test goes RED; restore -> GREEN.
+    The remaining assertions pin the rest of the query shape (plain text, redirect
+    following, coordinates + revids) so this fix cannot silently drop them."""
+    params = extract._extract_params("Trafalgar Square")
+
+    assert params["exintro"] == 1  # LEAD SECTION ONLY — the whole point of the fix
+    assert params["explaintext"] == 1  # still plain text, not wikitext/HTML
+    assert params["redirects"] == 1  # still follows redirects
+    assert params["prop"] == "extracts|revisions|coordinates|pageprops"
+    assert params["rvprop"] == "ids"  # still pins the current revid
+    assert params["titles"] == "Trafalgar Square"
+
+
+# ---------------------------------------------------------------------------
 # resolve_and_fetch_extract.
 # ---------------------------------------------------------------------------
 def test_resolve_from_source_url_returns_wikiextract(monkeypatch) -> None:
@@ -194,6 +216,40 @@ def test_build_live_extracts_reports_coverage_and_misses(monkeypatch) -> None:
     assert report["missed"] == ["Nowhere Place"]
     assert "東京" in report["skipped_no_slug"]
     assert report["coverage_pct"] == 50.0  # 1 of 2 sluggable POIs grounded
+
+
+def test_build_live_extracts_dedups_same_article_twin(monkeypatch) -> None:
+    """FIX 2 RED-FIRST: two DIFFERENT POIs that resolve to the SAME article (a
+    geo-split ``"(2)"`` twin, e.g. "University of London" + "University of London
+    (2)") must not both pin the same revision. The FIRST keeps the extract; the twin
+    is recorded in ``duplicates`` and gets NO extract — hence no beats — so their
+    byte-identical beats can never HASH_COLLISION downstream.
+
+    Undo the same-article guard in ``build_live_extracts`` -> two extracts come back
+    and ``duplicates`` is empty -> this test goes RED."""
+    lat, lon = _BM_LAT, _BM_LON
+
+    def fake(url, params=None, **kw):
+        p = dict(params or {})
+        if p.get("list") == "search":
+            return _search_empty()
+        # BOTH POIs' titles resolve to the SAME article + revision.
+        return _extract_response(title="University of London", revid=555, lat=lat, lon=lon)
+
+    monkeypatch.setattr(fetch, "http_get_json", fake)
+    url = "https://en.wikipedia.org/wiki/University_of_London"
+    pois = [
+        _poi("University of London", lat=lat, lon=lon, source_urls=[url]),
+        _poi("University of London (2)", lat=lat, lon=lon, source_urls=[url]),
+    ]
+
+    extracts, report = extract.build_live_extracts(pois)
+
+    assert [e.poi_name for e in extracts] == ["University of London"]  # only the first
+    assert report["resolved"] == 1
+    assert report["duplicates"] == ["University of London (2)"]
+    assert "University of London (2)" not in report["missed"]  # a dup is not a miss
+    assert report["coverage_pct"] == 100.0  # the twin is excluded from coverage
 
 
 # ---------------------------------------------------------------------------

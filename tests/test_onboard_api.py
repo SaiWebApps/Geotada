@@ -21,6 +21,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 import src.api.routes.onboard as onboard_mod
+from src import city_registry
 from src.api.app import create_app
 from src.onboard.beat_draft import estimate_cost, planned_beat_count
 
@@ -36,6 +37,22 @@ def client():
     conftest module-scoped ``client`` so these tests stay hermetic."""
     with TestClient(create_app()) as c:
         yield c
+
+
+@pytest.fixture(autouse=True)
+def _london_free_registry(monkeypatch):
+    """Run these hermetic tests against a registry view that EXCLUDES ``london``.
+
+    ``london`` is now a REAL registered city (``data/london/`` + ``src/cities.json``),
+    so ``create_job``'s "already onboarded" guard would 422 every happy-path setup
+    here — but the fixtures are london-specific (``tests/fixtures/onboard/london/``),
+    so the tests must keep using slug ``london``. Surgically drop ONLY london from
+    the guard's view; every OTHER registered city (``paris``, ``new_york``) still
+    counts as onboarded, so ``test_onboarding_an_existing_city_is_rejected`` (POST
+    paris -> 422) still exercises the guard. Touches only the ``create_job`` guard —
+    the upload/write path uses its own tmp ``ONBOARD_REGISTRY_PATH``."""
+    real = city_registry.supported_cities()
+    monkeypatch.setattr(city_registry, "supported_cities", lambda: real - {"london"})
 
 
 # ---------------------------------------------------------------------------

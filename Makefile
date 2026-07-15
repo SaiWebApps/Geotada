@@ -238,7 +238,7 @@ onboard-city: ## Onboard a city (fixture+mock, tmp DATA_ROOT). Usage: make onboa
 	ONBOARD_PROVIDER=$${ONBOARD_PROVIDER:-mock} ONDOWAY_ONBOARD_HTTP=$${ONDOWAY_ONBOARD_HTTP:-fixture} \
 	ONBOARD_DATA_ROOT=$${ONBOARD_DATA_ROOT:-/tmp/ondoway-onboard} \
 	ONBOARD_REGISTRY_PATH=$${ONBOARD_REGISTRY_PATH:-/tmp/ondoway-onboard/cities.json} \
-	uv run python -m src.onboard.cli --city $(CITY) --modes $(MODES) $(if $(DRY_RUN),--dry-run,)
+	uv run python -m src.onboard.cli --city $(CITY) --modes $(MODES) $(if $(DRY_RUN),--dry-run,) $(if $(CONFIRM_COST),--confirm-cost,)
 
 test-workbench: db-up db-workbench-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API on :8001 against the DEDICATED workbench Neo4j (7689) — never the shared 7688, which concurrent `make test` runs full-wipe per-module. Concurrent test-workbench runs are unsupported (:8001 must be free; the suite fails fast if not).
 	@cp .env.test.example .env.test

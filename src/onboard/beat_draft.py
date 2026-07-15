@@ -378,15 +378,38 @@ def draft_all(
     mock is free; a paid ``AnthropicBeatDrafter`` with ``confirm=False`` raises
     ``CostNotConfirmed`` — carrying the estimate for the FULL beat count — BEFORE
     any client is built or any call is made. The city prefix for each beat comes
-    from the POI's own ``city_name`` (stamped by ``assemble``)."""
+    from the POI's own ``city_name`` (stamped by ``assemble``).
+
+    DEDUP (the corpus-wide content wall): a denser city inevitably produces beats
+    that share IDENTICAL content across POIs — two POIs resolving to the SAME
+    Wikipedia article (a geo-split "(2)" twin) yield identical extracts → identical
+    spans → identical bodies, and two DIFFERENT POIs' leads can share an identical
+    sentence → identical ``script_body``. Either way ``validate_beats`` rightly
+    HARD-FAILS with ``HASH_COLLISION`` (``script_body_hash`` must be unique file-wide).
+    So we dedup ACROSS THE WHOLE RUN: a beat whose ``script_body_hash`` OR whose
+    verbatim ``source_passage`` span has already been emitted is SKIPPED — never a
+    second copy. The FIRST occurrence (in POI/span order) survives, preserving its
+    grounding + per-span ``index`` (so surviving ``beat_id``/``topic_slug`` stay
+    unique and the beats still read in order). A POI whose beats ALL collide with
+    earlier ones (a pure duplicate) ends up with 0 beats — an acceptable beatless
+    nav-POI (validate checks beat→POI, not POI→beat)."""
     drafter = drafter or get_drafter()
     if isinstance(drafter, AnthropicBeatDrafter) and not confirm:
         raise CostNotConfirmed(estimate_cost(planned_beat_count(pois, extracts_by_slug)))
     beats: list[dict] = []
+    seen_hashes: set[str] = set()
+    seen_passages: set[str] = set()
     for poi in pois:
         extract = extracts_by_slug.get(slugify(poi["name"]))
         if extract is None:
             continue
         city_slug = poi.get("city_name") or ""
-        beats.extend(drafter.draft(poi["name"], extract, city_slug))
+        for beat in drafter.draft(poi["name"], extract, city_slug):
+            body_hash = beat["script_body_hash"]
+            passage = beat["source_passage"]
+            if body_hash in seen_hashes or passage in seen_passages:
+                continue  # identical content already emitted — skip the duplicate
+            seen_hashes.add(body_hash)
+            seen_passages.add(passage)
+            beats.append(beat)
     return beats

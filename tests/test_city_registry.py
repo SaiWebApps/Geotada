@@ -42,8 +42,12 @@ def test_bbox_map_byte_equal_to_old_literals() -> None:
 
 
 def test_supported_cities_today() -> None:
-    """Equals the former frozenset({'paris', 'new_york'}) literal exactly."""
-    assert city_registry.supported_cities() == frozenset({"paris", "new_york"})
+    """The launch cities (paris, new_york) remain registered. Asserted as a SUBSET,
+    not exact equality: the registry now GROWS as cities are onboarded (london, etc.),
+    so an exact ``frozenset({'paris', 'new_york'})`` pin would RED the moment a new
+    city is committed. The invariant that matters is that the refactor never DROPPED
+    a launch city — not that the set is frozen at two."""
+    assert {"paris", "new_york"} <= city_registry.supported_cities()
 
 
 def _fake_registry() -> dict[str, dict]:
@@ -238,32 +242,36 @@ def test_onboard_data_root_honors_env_when_set(monkeypatch, tmp_path) -> None:
 
 def test_registry_path_honors_existing_env_file(tmp_path, monkeypatch) -> None:
     """ONBOARD_REGISTRY_PATH → an EXISTING tmp registry wins: supported_cities()
-    and bbox_map() read IT (london visible); unset → the committed src/cities.json
-    (paris, new_york, NOT london).
-    [undo: make _effective_registry_path ignore the env → london never appears → RED]"""
+    and bbox_map() read IT (the injected marker visible); unset → the committed
+    src/cities.json (paris, new_york; NOT the injected marker).
+    [undo: make _effective_registry_path ignore the env → the marker never appears → RED]
+
+    The marker is a NEVER-committed slug ('gotham'), not a real onboarded city, so the
+    "unset does not see the injected city" property holds regardless of which real
+    cities (london, …) already live in the committed registry."""
     real = Path(city_registry.__file__).resolve().parent / "cities.json"
     reg = dict(json.loads(real.read_text()))
-    reg["london"] = {
-        "display_name": "London",
+    reg["gotham"] = {
+        "display_name": "Gotham",
         "bbox": [51.28, 51.7, -0.51, 0.33],
         "cloud_deployed": False,
     }
     hermetic = tmp_path / "cities.json"
     hermetic.write_text(json.dumps(reg, indent=2, sort_keys=True) + "\n")
 
-    # UNSET → the real registry (paris, new_york; NOT london).
+    # UNSET → the real registry (paris, new_york; NOT the injected marker).
     monkeypatch.delenv("ONBOARD_REGISTRY_PATH", raising=False)
     city_registry.load_registry.cache_clear()
     assert {"paris", "new_york"} <= city_registry.supported_cities()
-    assert "london" not in city_registry.supported_cities()
-    assert "london" not in city_registry.bbox_map()
+    assert "gotham" not in city_registry.supported_cities()
+    assert "gotham" not in city_registry.bbox_map()
 
-    # SET to the existing hermetic file → london visible in BOTH accessors.
+    # SET to the existing hermetic file → the marker is visible in BOTH accessors.
     monkeypatch.setenv("ONBOARD_REGISTRY_PATH", str(hermetic))
     city_registry.load_registry.cache_clear()
-    assert "london" in city_registry.supported_cities()
-    assert city_registry.bbox_map()["london"] == (51.28, 51.7, -0.51, 0.33)
-    assert {"paris", "new_york", "london"} <= set(city_registry.bbox_map())
+    assert "gotham" in city_registry.supported_cities()
+    assert city_registry.bbox_map()["gotham"] == (51.28, 51.7, -0.51, 0.33)
+    assert {"paris", "new_york", "gotham"} <= set(city_registry.bbox_map())
 
 
 def test_registry_env_missing_file_falls_back_to_global(tmp_path, monkeypatch) -> None:
@@ -275,7 +283,10 @@ def test_registry_env_missing_file_falls_back_to_global(tmp_path, monkeypatch) -
     monkeypatch.setenv("ONBOARD_REGISTRY_PATH", str(tmp_path / "not-yet-written.json"))
     city_registry.load_registry.cache_clear()
     assert {"paris", "new_york"} <= city_registry.supported_cities()
-    assert "london" not in city_registry.supported_cities()
+    # A never-committed marker stays absent: fallback yields exactly the committed
+    # registry, conjuring no phantom city. (Was 'london'; that inverts once london is
+    # a real committed city.)
+    assert "gotham" not in city_registry.supported_cities()
 
 
 def test_registry_env_unset_preserves_global_swap(tmp_path, monkeypatch) -> None:

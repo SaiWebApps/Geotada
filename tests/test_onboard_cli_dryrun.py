@@ -59,10 +59,12 @@ def test_dry_run_estimates_without_drafting_or_writing(
     # Exit 0 — a dry run has no gate to fail.
     assert rc == 0, out
 
-    # (a) prints the POI count (36 for the committed london fixture) + an est_usd line.
+    # (a) prints the POI count + an est_usd line. 35, not 36: STAGE A now drops the
+    # administrative "London" city node (p31 Q515 city / Q5119 capital, and it
+    # name-matches the city) — it must never be a tour STOP.
     match = re.search(r"POIs:\s+(\d+)", out)
     assert match is not None, out
-    assert int(match.group(1)) == 36, out
+    assert int(match.group(1)) == 35, out
     assert "est_usd" in out, out
 
     # (c) ZERO Anthropic work — no drafter built, no draft_all call.

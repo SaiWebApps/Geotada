@@ -159,6 +159,7 @@ def _log_extract_coverage(slug: str, report: dict) -> None:
     resolved = report["resolved"]
     missed = report["missed"]
     skipped = report.get("skipped_no_slug", [])
+    duplicates = report.get("duplicates", [])
     total = resolved + len(missed)
     logger.info(
         "build_extracts(%s): live Wikipedia coverage %.1f%% — %d/%d POIs grounded",
@@ -180,6 +181,14 @@ def _log_extract_coverage(slug: str, report: dict) -> None:
             slug,
             len(skipped),
             ", ".join(skipped),
+        )
+    if duplicates:
+        logger.warning(
+            "build_extracts(%s): %d POI(s) dropped as same-article duplicates "
+            "(twin of an already-grounded POI, no beats): %s",
+            slug,
+            len(duplicates),
+            ", ".join(duplicates),
         )
     if report.get("below_floor"):
         logger.warning(

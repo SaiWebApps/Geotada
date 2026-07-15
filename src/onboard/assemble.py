@@ -114,6 +114,28 @@ _EVENT_P31_CLASSES = frozenset(
         "Q1079023",   # ceremony
     }
 )
+# Wikidata ``P31`` QIDs for administrative / settlement classes: the CITY node
+# itself and its boroughs/districts are places you tour WITHIN, never a walkable
+# STOP. The live London onboard proved the hole — the "London" city node (P31
+# includes Q515) resolved to the London article, drafted beats, and surfaced as a
+# nonsensical stop ("head for London — a 3-minute walk from here"). Q515 and
+# Q211690 are VERIFIED against the live entities (London Q84, City of Westminster
+# Q179351, London Borough of Lewisham Q215030); the settlement/country classes
+# are forward-looking robustness for the next city. A tour LANDMARK (museum
+# Q33506, square Q174782, park Q22698, monument, church, building) carries none
+# of these, so no real stop is dropped.
+_ADMIN_P31_CLASSES = frozenset(
+    {
+        "Q515",       # city (London Q84, City of Westminster Q179351 — verified)
+        "Q211690",    # London borough (Westminster, Lewisham — verified)
+        "Q5119",      # capital
+        "Q486972",    # human settlement
+        "Q3957",      # town
+        "Q532",       # village
+        "Q6256",      # country
+        "Q3624078",   # sovereign state
+    }
+)
 # A candidate farther than this from the bbox centre is an outer-suburb outlier
 # (airports, park-and-rides) that would break a walkable tour — dropped. Keeps
 # Heathrow (~25 km out) out while keeping the whole walkable core in.
@@ -496,24 +518,35 @@ def _stage_a_filter(
     error. See the module ``STAGE A`` block for why this runs first.
     """
     centre_lat, centre_lon = ctx.centre
+    # The city's own identity — a candidate that IS the city (or a borough sharing
+    # its name) is administrative, never a stop. Normalized once here.
+    city_names = {_norm(ctx.display_name), _norm(ctx.slug)}
     drops: Counter = Counter()
     filtered: list[ConnectorResult] = []
     for result in results:
         kept = [
-            c for c in result.candidates if _keep_candidate(c, centre_lat, centre_lon, drops)
+            c
+            for c in result.candidates
+            if _keep_candidate(c, centre_lat, centre_lon, city_names, drops)
         ]
         filtered.append(result.model_copy(update={"candidates": kept}))
     return filtered, drops
 
 
 def _keep_candidate(
-    cand: PoiCandidate, centre_lat: float, centre_lon: float, drops: Counter
+    cand: PoiCandidate,
+    centre_lat: float,
+    centre_lon: float,
+    city_names: set[str],
+    drops: Counter,
 ) -> bool:
     """One candidate's STAGE-A verdict; ``drops`` is incremented per fired rule.
 
     ``meta`` is read with ``.get`` + safe defaults throughout — an OLDER fixture
     whose connectors did not yet attach ``tourism``/``historic``/``p31``/
     ``sitelinks`` simply doesn't trip the meta rules (its real landmarks survive).
+    ``city_names`` is the normalized {display_name, slug} — a candidate whose own
+    name matches is the city/borough node, dropped even without a ``p31``.
     """
     meta = cand.meta or {}
     # 1. EMPTY SLUG: a non-Latin-only name slugifies to "" — unroutable as a POI
@@ -545,6 +578,16 @@ def _keep_candidate(
     p31 = meta.get("p31") or ""
     if p31 and _EVENT_P31_CLASSES.intersection(p31.split("|")):
         drops["event"] += 1
+        return False
+    # 5b. ADMINISTRATIVE AREA (not a place you STOP at): the city node itself or a
+    #     borough/district — by Wikidata ``P31`` (a landmark carries none of these)
+    #     OR by name (an OSM-only city node with no ``p31`` still matches the city's
+    #     own name). Either kills the "London is a tour stop" bug at the root.
+    if p31 and _ADMIN_P31_CLASSES.intersection(p31.split("|")):
+        drops["admin_area"] += 1
+        return False
+    if _norm(cand.name) in city_names:
+        drops["admin_area"] += 1
         return False
     # 6. FAR OUTLIER: > ~12 km from the bbox centre (unwalkable; kills airports /
     #    outer park-and-rides while keeping the whole walkable core).

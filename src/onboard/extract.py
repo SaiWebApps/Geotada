@@ -110,9 +110,11 @@ def _candidate_titles(poi: dict) -> list[str]:
 
 
 def _extract_params(title: str) -> dict:
-    """MediaWiki params for the lead plain-text extract + current revid +
-    coordinates of ``title`` — the ``scripts/wiki_fetch.py`` shape plus
-    ``coordinates`` (for the wrong-article geo check) and ``redirects``."""
+    """MediaWiki params for the LEAD-SECTION plain-text extract + current revid +
+    coordinates of ``title``. ``exintro=1`` restricts the extract to the lead
+    section (the coherent definitional summary) so the beat drafter never carves
+    deep-article, off-topic spans; the rest is the ``scripts/wiki_fetch.py`` shape
+    plus ``coordinates`` (for the wrong-article geo check) and ``redirects``."""
     return {
         "action": "query",
         "format": "json",
@@ -120,6 +122,7 @@ def _extract_params(title: str) -> dict:
         "titles": title,
         "prop": "extracts|revisions|coordinates|pageprops",
         "explaintext": 1,
+        "exintro": 1,
         "exsectionformat": "plain",
         "exlimit": 1,
         "rvprop": "ids",
@@ -220,17 +223,29 @@ def build_live_extracts(pois: list[dict]) -> tuple[list[WikiExtract], dict]:
     """Fetch a live ``WikiExtract`` per POI and account for EVERY POI.
 
     Returns ``(extracts, report)``. ``report`` = ``{"resolved": int, "missed":
-    [name, ...], "skipped_no_slug": [name, ...], "coverage_pct": float,
-    "floor_pct": float, "below_floor": bool}``. A POI whose ``slugify(name) == ""``
-    (e.g. a wholly non-Latin name that ``assemble`` should already have filtered)
-    is SKIPPED and recorded — never fetched — because it cannot be keyed to disk
-    without colliding with every other empty-slug POI. ``coverage_pct`` is over the
-    SLUGGABLE POIs (resolved / (resolved + missed)); a below-floor run is flagged so
-    the caller can shout about the thinness rather than ship it silently.
+    [name, ...], "skipped_no_slug": [name, ...], "duplicates": [name, ...],
+    "coverage_pct": float, "floor_pct": float, "below_floor": bool}``. A POI whose
+    ``slugify(name) == ""`` (e.g. a wholly non-Latin name that ``assemble`` should
+    already have filtered) is SKIPPED and recorded — never fetched — because it
+    cannot be keyed to disk without colliding with every other empty-slug POI.
+
+    SAME-ARTICLE DEDUP: in a dense city two DIFFERENT POIs can resolve to the SAME
+    en.wikipedia article — most often a geo-split "(2)" twin of a big landmark
+    ("University of London" + "University of London (2)"). Both would pin the SAME
+    revision, so both would draft IDENTICAL beats and ``validate_beats`` would
+    HARD-FAIL with ``HASH_COLLISION``. So the FIRST POI to resolve to a given
+    article (by resolved title OR revid) keeps the extract; any later POI resolving
+    to the same article is recorded in ``duplicates`` and gets NO extract — hence no
+    beats — dropping the pointless twin from the corpus. ``coverage_pct`` is over the
+    SLUGGABLE, NON-DUPLICATE POIs (resolved / (resolved + missed)); a below-floor run
+    is flagged so the caller can shout about the thinness rather than ship it silently.
     """
     extracts: list[WikiExtract] = []
     missed: list[str] = []
     skipped: list[str] = []
+    duplicates: list[str] = []
+    seen_titles: set[str] = set()
+    seen_revids: set[str] = set()
 
     for poi in pois:
         name = poi["name"]
@@ -240,8 +255,15 @@ def build_live_extracts(pois: list[dict]) -> tuple[list[WikiExtract], dict]:
         extract = resolve_and_fetch_extract(poi)
         if extract is None:
             missed.append(name)
-        else:
-            extracts.append(extract)
+            continue
+        if extract.article_title in seen_titles or extract.revid in seen_revids:
+            # Same article as an already-kept POI — a redundant twin. Drop it (no
+            # extract -> no beats) so its identical beats never collide file-wide.
+            duplicates.append(name)
+            continue
+        seen_titles.add(extract.article_title)
+        seen_revids.add(extract.revid)
+        extracts.append(extract)
 
     sluggable = len(extracts) + len(missed)
     coverage_pct = round(100.0 * len(extracts) / sluggable, 1) if sluggable else 0.0
@@ -249,6 +271,7 @@ def build_live_extracts(pois: list[dict]) -> tuple[list[WikiExtract], dict]:
         "resolved": len(extracts),
         "missed": missed,
         "skipped_no_slug": skipped,
+        "duplicates": duplicates,
         "coverage_pct": coverage_pct,
         "floor_pct": _COVERAGE_FLOOR_PCT,
         "below_floor": coverage_pct < _COVERAGE_FLOOR_PCT,

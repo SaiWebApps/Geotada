@@ -240,6 +240,105 @@ def test_identity_check_catches_same_topic_slug(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# 2b. Corpus-wide content DEDUP — a dense city must not HASH_COLLISION when two
+#     POIs share identical beat content (same-article twins OR a shared sentence).
+# ---------------------------------------------------------------------------
+
+
+def _shared_sentence_extracts() -> list[WikiExtract]:
+    """Two DISTINCT POIs whose 4-sentence leads SHARE one identical sentence
+    (``"It holds many artifacts."``). The split front-loads 2/1/1, so that shared
+    sentence is the SECOND span (a one-sentence span) — and thus an identical
+    ``script_body`` AND identical verbatim ``source_passage`` — in BOTH POIs.
+    Without the run-wide dedup those two beats share a ``script_body_hash`` and
+    ``validate_beats`` HARD-FAILS with HASH_COLLISION."""
+    return [
+        WikiExtract(
+            poi_name="Alpha Museum",
+            revid="901",
+            text=(
+                "The Alpha Museum is a museum in Testville. It opened in 1850. "
+                "It holds many artifacts. The collection is famous."
+            ),
+            article_title="Alpha Museum",
+            url="https://en.wikipedia.org/wiki/Alpha_Museum?oldid=901",
+        ),
+        WikiExtract(
+            poi_name="Beta Gallery",
+            revid="902",
+            text=(
+                "The Beta Gallery is a gallery in Testville. It was founded in 1900. "
+                "It holds many artifacts. Admission is free."
+            ),
+            article_title="Beta Gallery",
+            url="https://en.wikipedia.org/wiki/Beta_Gallery?oldid=902",
+        ),
+    ]
+
+
+def test_shared_sentence_across_pois_dedups_no_hash_collision(tmp_path: Path) -> None:
+    """RED-FIRST (undo the dedup in ``draft_all`` -> this goes RED): two POIs share
+    one identical lead sentence, so their per-span bodies would collide. The
+    run-wide dedup skips the SECOND copy, so every ``script_body_hash`` is unique
+    and ``validate_beats`` reports NO HASH_COLLISION on the assembled corpus.
+    The FIRST POI (Alpha) keeps all its beats; only Beta's colliding span is skipped."""
+    extracts = _shared_sentence_extracts()
+    pois = [{"name": e.poi_name, "city_name": "testville"} for e in extracts]
+    beats = draft_all(pois, _by_slug(extracts), drafter=MockBeatDrafter())
+
+    # No two emitted beats share a script_body_hash (the collision the gate hates).
+    hashes = [b["script_body_hash"] for b in beats]
+    assert len(set(hashes)) == len(hashes), f"duplicate script_body_hash survived dedup: {hashes}"
+
+    by_poi: dict[str, list[dict]] = {}
+    for b in beats:
+        by_poi.setdefault(b["poi_name"], []).append(b)
+    # Alpha comes first -> keeps all 3 spans; Beta's shared "It holds many
+    # artifacts." span is the duplicate -> skipped, leaving 2 beats.
+    assert len(by_poi["Alpha Museum"]) == 3, by_poi["Alpha Museum"]
+    assert len(by_poi["Beta Gallery"]) == 2, by_poi["Beta Gallery"]
+    shared_body = "It holds many artifacts."
+    alpha_bodies = [b["script_body"] for b in by_poi["Alpha Museum"]]
+    beta_bodies = [b["script_body"] for b in by_poi["Beta Gallery"]]
+    assert shared_body in alpha_bodies, alpha_bodies  # first occurrence survives
+    assert shared_body not in beta_bodies, beta_bodies  # duplicate skipped
+
+    # And the whole corpus validates clean — the HASH_COLLISION is gone.
+    beats_path = _write_corpus(tmp_path, "testville", extracts, beats)
+    errors = validate_beats.validate(beats_path)
+    assert not [e for e in errors if "HASH_COLLISION" in e], errors
+    assert errors == [], errors  # fully clean, not just collision-free
+
+
+def test_pure_duplicate_poi_yields_zero_beats(tmp_path: Path) -> None:
+    """A POI whose lead is byte-identical to an earlier POI's (a same-article "(2)"
+    twin that slipped past the extract-layer dedup) has ALL its beats collide with
+    the first POI's — so after the run-wide dedup it emits 0 beats (an acceptable
+    beatless nav-POI), NOT a full set of HASH_COLLISION duplicates."""
+    original = _extracts()[0]
+    twin = WikiExtract(
+        poi_name="Brooklyn Bridge Overlook",  # a distinct POI, identical article text
+        revid="112",
+        text=original.text,
+        article_title=original.article_title,
+        url="https://en.wikipedia.org/wiki/Brooklyn_Bridge?oldid=112",
+    )
+    extracts = [original, twin]
+    pois = [{"name": e.poi_name, "city_name": "testville"} for e in extracts]
+    beats = draft_all(pois, _by_slug(extracts), drafter=MockBeatDrafter())
+
+    by_poi: dict[str, list[dict]] = {}
+    for b in beats:
+        by_poi.setdefault(b["poi_name"], []).append(b)
+    assert len(by_poi["Brooklyn Bridge"]) >= 3
+    assert by_poi.get("Brooklyn Bridge Overlook", []) == [], "twin should emit 0 beats"
+
+    beats_path = _write_corpus(tmp_path, "testville", extracts, beats)
+    errors = validate_beats.validate(beats_path)
+    assert not [e for e in errors if "HASH_COLLISION" in e], errors
+
+
+# ---------------------------------------------------------------------------
 # 3. Live (paid) provider cannot spend without confirm=True; estimate is
 #    per-beat (multi-beat), not per-POI.
 # ---------------------------------------------------------------------------

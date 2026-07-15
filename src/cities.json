@@ -1,4 +1,14 @@
 {
+  "london": {
+    "bbox": [
+      51.28,
+      51.7,
+      -0.51,
+      0.33
+    ],
+    "cloud_deployed": false,
+    "display_name": "London"
+  },
   "new_york": {
     "bbox": [
       40.45,

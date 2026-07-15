@@ -23,6 +23,7 @@ from src.onboard.assemble import (
     TARGET_POIS,
     AssembledCity,
     WikiExtract,
+    _stage_a_filter,
     assemble,
     write_city,
 )
@@ -298,12 +299,16 @@ def test_registry_global_not_leaked(tmp_path: Path) -> None:
     """The redirected registry global is restored (try/finally), so the real
     src/cities.json is untouched and no sibling test sees a leaked path."""
     original = city_registry._REGISTRY_PATH
+    committed_before = original.read_text()  # snapshot the real cities.json bytes
     ctx = _ctx()
     city = assemble(_base_results(ctx), ctx, _extracts())
     write_city(city, ctx, data_root=tmp_path, registry_path=tmp_path / "cities.json")
 
     assert original == city_registry._REGISTRY_PATH
-    assert "london" not in city_registry.load_registry()
+    # The committed registry FILE is byte-unchanged by the tmp-redirected write.
+    # (Was ``"london" not in load_registry()``; that inverts once london is a real
+    # committed city — an unchanged-bytes snapshot proves non-mutation regardless.)
+    assert original.read_text() == committed_before
 
 
 def test_thin_city_raises_valueerror_naming_count(tmp_path: Path) -> None:
@@ -666,6 +671,31 @@ def test_firehose_collapses_to_real_landmarks_only() -> None:
         assert not any(n.startswith(bad) for n in names), bad
     assert not any("Olympics" in n for n in names)
     assert not (set(names) & set(_EMPTY_SLUG_NAMES)), "non-Latin empty-slug survived"
+
+
+def test_admin_area_nodes_dropped_stage_a() -> None:
+    """The CITY node itself + its boroughs are administrative areas, NEVER tour
+    stops — the live London onboard surfaced 'London' as a nonsensical STOP ("head
+    for London — a 3-minute walk from here"). STAGE A drops them by Wikidata P31
+    (Q515 city / Q211690 borough, both VERIFIED against Q84 / Q179351) and, for an
+    OSM-only node carrying no p31, by name-equals-city. A real landmark (museum) is
+    untouched.
+    UNDO: remove rule 5b (the ADMIN P31 test AND the name-equals-city test) -> the
+    'London' city node + the borough survive STAGE A -> RED."""
+    ctx = _ctx()  # london / London
+    cands = [
+        _wd("London", 0, sitelinks=400, enwiki="London", p31="Q515"),  # city node, verified P31
+        _osm("London", 1),  # OSM-only city node, NO p31 -> name guard must catch it
+        _wd("City of Westminster", 2, sitelinks=90, enwiki="City of Westminster", p31="Q211690"),
+        _wd("British Museum", 3, sitelinks=250, enwiki="British Museum", p31="Q33506"),  # museum
+    ]
+    filtered, drops = _stage_a_filter([ConnectorResult(candidates=cands)], ctx)
+    survivors = {c.name for r in filtered for c in r.candidates}
+
+    assert "British Museum" in survivors, "a real landmark (museum) must survive"
+    assert "London" not in survivors, "city node (by P31 AND by name) must be dropped"
+    assert "City of Westminster" not in survivors, "borough (P31 Q211690) must be dropped"
+    assert drops["admin_area"] >= 3, drops
 
 
 def test_pinned_anchor_landmarks_always_survive_the_cap() -> None:

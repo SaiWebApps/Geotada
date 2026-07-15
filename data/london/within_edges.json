@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "generated_by": "src/onboard/assemble.py",
+    "city_name": "london",
+    "total_pois": 150,
+    "total_areas": 0,
+    "poi_to_area_count": 0,
+    "area_to_area_count": 0,
+    "orphans": []
+  },
+  "poi_to_area": [],
+  "area_to_area": []
+}

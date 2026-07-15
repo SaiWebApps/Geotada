@@ -1,0 +1,5544 @@
+[
+  {
+    "name": "British Library",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.529444,
+    "longitude": -0.126944,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata",
+        "wikivoyage"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q23308",
+        "https://en.wikivoyage.org/wiki/London",
+        "https://www.openstreetmap.org/way/4680891"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 3,
+        "sources": [
+          "osm",
+          "wikidata",
+          "wikivoyage"
+        ],
+        "notability_score": 7.795254,
+        "sitelinks": 78,
+        "rank": 0,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Tate Modern",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.507777777,
+    "longitude": -0.099444444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata",
+        "wikivoyage"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q193375",
+        "https://en.wikivoyage.org/wiki/London",
+        "https://www.openstreetmap.org/way/24642569"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 3,
+        "sources": [
+          "osm",
+          "wikidata",
+          "wikivoyage"
+        ],
+        "notability_score": 7.584783,
+        "sitelinks": 61,
+        "rank": 1,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Piccadilly Circus",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.51,
+    "longitude": -0.134444444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata",
+        "wikivoyage"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q215255",
+        "https://en.wikivoyage.org/wiki/London",
+        "https://www.openstreetmap.org/relation/8250949"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 3,
+        "sources": [
+          "osm",
+          "wikidata",
+          "wikivoyage"
+        ],
+        "notability_score": 7.464788,
+        "sitelinks": 53,
+        "rank": 2,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "British Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.519444444,
+    "longitude": -0.126944444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q6373",
+        "https://www.openstreetmap.org/relation/177044"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 7.074853,
+        "sitelinks": 108,
+        "rank": 3,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Buckingham Palace",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.501,
+    "longitude": -0.142,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q42182",
+        "https://www.openstreetmap.org/relation/5208404"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.946256,
+        "sitelinks": 93,
+        "rank": 4,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Westminster Abbey",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4994,
+    "longitude": -0.127367,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q5933",
+        "https://www.openstreetmap.org/way/364313092"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.927576,
+        "sitelinks": 91,
+        "rank": 5,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Tower of London",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5082,
+    "longitude": -0.076198055,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q62378",
+        "https://www.openstreetmap.org/way/370870741"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.89878,
+        "sitelinks": 88,
+        "rank": 6,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Tower Bridge",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505555555,
+    "longitude": -0.075277777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q83125",
+        "https://www.openstreetmap.org/node/2079674503",
+        "https://www.openstreetmap.org/node/5352812330"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.879039,
+        "sitelinks": 86,
+        "rank": 7,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Palace of Westminster",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.499444444,
+    "longitude": -0.124166666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q62408",
+        "https://www.openstreetmap.org/relation/1567699"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.858838,
+        "sitelinks": 84,
+        "rank": 8,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Bridge",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.508055555,
+    "longitude": -0.087777777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q130206",
+        "https://www.openstreetmap.org/way/378493707"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.795254,
+        "sitelinks": 78,
+        "rank": 9,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Eye",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.503333333,
+    "longitude": -0.119722222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q160659",
+        "https://www.openstreetmap.org/way/204068874"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.795254,
+        "sitelinks": 78,
+        "rank": 10,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "St Paul's Cathedral",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513777777,
+    "longitude": -0.098305555,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q173882",
+        "https://www.openstreetmap.org/way/369161987"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.750123,
+        "sitelinks": 74,
+        "rank": 11,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Trafalgar Square",
+    "short_description": "",
+    "name_variations": [
+      "Trafalgar Square 2"
+    ],
+    "latitude": 51.508055555,
+    "longitude": -0.128055555,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q129143",
+        "https://www.openstreetmap.org/node/1504408026",
+        "https://www.openstreetmap.org/relation/3962877"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.738463,
+        "sitelinks": 73,
+        "rank": 12,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "National Gallery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.508888888,
+    "longitude": -0.128333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q180788",
+        "https://www.openstreetmap.org/way/4372002"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.714665,
+        "sitelinks": 71,
+        "rank": 13,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Madame Tussauds",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.52279,
+    "longitude": -0.15517,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 5,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q186309",
+        "https://www.openstreetmap.org/way/684695074"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 5,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.690196,
+        "sitelinks": 69,
+        "rank": 14,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "10 Downing Street",
+    "short_description": "",
+    "name_variations": [
+      "11 Downing Street",
+      "12 Downing Street"
+    ],
+    "latitude": 51.503333333,
+    "longitude": -0.127777777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q169101",
+        "http://www.wikidata.org/entity/Q2403633",
+        "http://www.wikidata.org/entity/Q2722248",
+        "https://www.openstreetmap.org/relation/1879842"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.625827,
+        "sitelinks": 64,
+        "rank": 15,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Hyde Park",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.508611111,
+    "longitude": -0.163611111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q123738",
+        "https://www.openstreetmap.org/way/372975520"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.61236,
+        "sitelinks": 63,
+        "rank": 16,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Greenwich meridian",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.477811111,
+    "longitude": -0.001475,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q131108",
+        "https://www.openstreetmap.org/way/268533450"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.598681,
+        "sitelinks": 62,
+        "rank": 17,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Victoria and Albert Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.49685,
+    "longitude": -0.17162,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q213322",
+        "https://www.openstreetmap.org/relation/29795"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.584783,
+        "sitelinks": 61,
+        "rank": 18,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "The Shard",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.504444444,
+    "longitude": -0.086666666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q18536",
+        "https://www.openstreetmap.org/way/31110737"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.556303,
+        "sitelinks": 59,
+        "rank": 19,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Opera House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513055555,
+    "longitude": -0.122777777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q55018",
+        "https://www.openstreetmap.org/way/33721672"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.51175,
+        "sitelinks": 56,
+        "rank": 20,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Natural History Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.496111111,
+    "longitude": -0.176111111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q309388",
+        "https://www.openstreetmap.org/way/24436446"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.496376,
+        "sitelinks": 55,
+        "rank": 21,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "New Scotland Yard",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.50183,
+    "longitude": -0.12446,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q184619",
+        "http://www.wikidata.org/entity/Q19872443",
+        "https://www.openstreetmap.org/node/1937435160"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.496376,
+        "sitelinks": 55,
+        "rank": 22,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Kensington Palace",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505277777,
+    "longitude": -0.188333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q207385",
+        "https://www.openstreetmap.org/relation/904705"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.480725,
+        "sitelinks": 54,
+        "rank": 23,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Albert Hall",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.50105,
+    "longitude": -0.17748,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q193639",
+        "https://www.openstreetmap.org/way/372860405"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.448552,
+        "sitelinks": 52,
+        "rank": 24,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Underground",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.49277778,
+    "longitude": -0.10083333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata",
+        "wikivoyage"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q20075",
+        "https://en.wikivoyage.org/wiki/London"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "wikidata",
+          "wikivoyage"
+        ],
+        "notability_score": 6.39878,
+        "sitelinks": 88,
+        "rank": 25,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Canary Wharf",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505,
+    "longitude": -0.019444444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1032811",
+        "http://www.wikidata.org/entity/Q1032842",
+        "http://www.wikidata.org/entity/Q124377",
+        "https://www.openstreetmap.org/node/5302085651"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.39794,
+        "sitelinks": 49,
+        "rank": 26,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Westminster Bridge",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.500833333,
+    "longitude": -0.121944444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q456960",
+        "https://www.openstreetmap.org/relation/19306462",
+        "https://www.openstreetmap.org/relation/2910728",
+        "https://www.openstreetmap.org/way/216998718",
+        "https://www.openstreetmap.org/way/920237507",
+        "https://www.openstreetmap.org/way/920237508"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.39794,
+        "sitelinks": 49,
+        "rank": 27,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Borough of Lewisham",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.445277777,
+    "longitude": -0.020277777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q215030",
+        "https://www.openstreetmap.org/node/12235813444"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.380392,
+        "sitelinks": 48,
+        "rank": 28,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Harrods",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.499586,
+    "longitude": -0.163517,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q332474",
+        "https://www.openstreetmap.org/way/25739565"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.362482,
+        "sitelinks": 47,
+        "rank": 29,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London King's Cross railway station",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.530972222,
+    "longitude": -0.123333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q219867",
+        "https://www.openstreetmap.org/way/260720558"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.362482,
+        "sitelinks": 47,
+        "rank": 30,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "National Portrait Gallery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.509444444,
+    "longitude": -0.128055555,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q238587",
+        "https://www.openstreetmap.org/way/59161723"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.362482,
+        "sitelinks": 47,
+        "rank": 31,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Science Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4975,
+    "longitude": -0.174722222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q674773",
+        "https://www.openstreetmap.org/way/27765411"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.362482,
+        "sitelinks": 47,
+        "rank": 32,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Globe Theatre",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.506666666,
+    "longitude": -0.094722222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q272434",
+        "https://www.openstreetmap.org/node/1948210427"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.344196,
+        "sitelinks": 46,
+        "rank": 33,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Westminster Cathedral",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.495825,
+    "longitude": -0.139475,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q739364",
+        "https://www.openstreetmap.org/way/10810446"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.344196,
+        "sitelinks": 46,
+        "rank": 34,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Zoo",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.535555555,
+    "longitude": -0.155833333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q270263",
+        "https://www.openstreetmap.org/relation/231792"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.306425,
+        "sitelinks": 44,
+        "rank": 35,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Cutty Sark",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.482778,
+    "longitude": -0.009722,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 4,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q171255",
+        "https://www.openstreetmap.org/way/25608663"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 4,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.286905,
+        "sitelinks": 43,
+        "rank": 36,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Leicester Square",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.510277777,
+    "longitude": -0.130277777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q848912",
+        "https://www.openstreetmap.org/way/4082589"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.246499,
+        "sitelinks": 41,
+        "rank": 37,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Academy of Arts",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.509166666,
+    "longitude": -0.139444444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q270920",
+        "https://www.openstreetmap.org/way/31510288"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.225568,
+        "sitelinks": 40,
+        "rank": 38,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Waterloo station",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5031,
+    "longitude": -0.1132,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q795691",
+        "https://www.openstreetmap.org/way/4245075"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.20412,
+        "sitelinks": 39,
+        "rank": 39,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Nelson's Column",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.50775,
+    "longitude": -0.127944444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q842089",
+        "https://www.openstreetmap.org/way/150920358"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.20412,
+        "sitelinks": 39,
+        "rank": 40,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Abbey Road Studios",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.531944444,
+    "longitude": -0.178333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q209651",
+        "https://www.openstreetmap.org/way/396544249"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.182129,
+        "sitelinks": 38,
+        "rank": 41,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Imperial War Museum London",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.495833333,
+    "longitude": -0.108611111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q749808",
+        "https://www.openstreetmap.org/way/8614496"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.159567,
+        "sitelinks": 37,
+        "rank": 42,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "St Martin-in-the-Fields",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.508888888,
+    "longitude": -0.126944444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1335201",
+        "https://www.openstreetmap.org/way/30734422"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.159567,
+        "sitelinks": 37,
+        "rank": 43,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Kensington Gardens",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.507222222,
+    "longitude": -0.180277777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q822607",
+        "https://www.openstreetmap.org/way/3986346"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.136403,
+        "sitelinks": 36,
+        "rank": 44,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Tate Britain",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.491062,
+    "longitude": -0.127789,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q195436",
+        "https://www.openstreetmap.org/way/24553580"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.136403,
+        "sitelinks": 36,
+        "rank": 45,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "The Mall",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.504166666,
+    "longitude": -0.135277777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q842930",
+        "https://www.openstreetmap.org/node/4800377221"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.136403,
+        "sitelinks": 36,
+        "rank": 46,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Clarence House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.504,
+    "longitude": -0.1385,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q565521",
+        "https://www.openstreetmap.org/way/54478457"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.112605,
+        "sitelinks": 35,
+        "rank": 47,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Greenwich Park",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4767,
+    "longitude": 0.00013,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q929586",
+        "https://www.openstreetmap.org/way/4483968"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.112605,
+        "sitelinks": 35,
+        "rank": 48,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Highgate Cemetery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.567,
+    "longitude": -0.147,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q533697",
+        "https://www.openstreetmap.org/relation/1612806"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.112605,
+        "sitelinks": 35,
+        "rank": 49,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Lambeth Palace",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.49556,
+    "longitude": -0.11972,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1130266",
+        "https://www.openstreetmap.org/relation/1403938"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.112605,
+        "sitelinks": 35,
+        "rank": 50,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Marble Arch",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513055555,
+    "longitude": -0.158888888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q845529",
+        "https://www.openstreetmap.org/way/41772567"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.112605,
+        "sitelinks": 35,
+        "rank": 51,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "National Maritime Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4811,
+    "longitude": -0.005556,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1199924",
+        "https://www.openstreetmap.org/way/183090506"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.112605,
+        "sitelinks": 35,
+        "rank": 52,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "HMS Belfast",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.506666666,
+    "longitude": -0.081388888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q757178",
+        "https://www.openstreetmap.org/way/5006061"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.088136,
+        "sitelinks": 34,
+        "rank": 53,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Wall",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5175,
+    "longitude": -0.09694444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q60308",
+        "https://www.openstreetmap.org/way/126469162",
+        "https://www.openstreetmap.org/way/126469165",
+        "https://www.openstreetmap.org/way/1296455214",
+        "https://www.openstreetmap.org/way/1296455219",
+        "https://www.openstreetmap.org/way/1296455220",
+        "https://www.openstreetmap.org/way/1307133920",
+        "https://www.openstreetmap.org/way/34040013",
+        "https://www.openstreetmap.org/way/98672689",
+        "https://www.openstreetmap.org/way/99430357"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.088136,
+        "sitelinks": 34,
+        "rank": 54,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Queen's House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4812,
+    "longitude": -0.00378253,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q564981",
+        "https://www.openstreetmap.org/relation/15327162"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.062958,
+        "sitelinks": 33,
+        "rank": 55,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Somerset House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.511111111,
+    "longitude": -0.117777777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1344889",
+        "https://www.openstreetmap.org/way/372841786"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.062958,
+        "sitelinks": 33,
+        "rank": 56,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Admiralty Arch",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.506758333,
+    "longitude": -0.128691666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q359256",
+        "https://www.openstreetmap.org/relation/17074208"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.037028,
+        "sitelinks": 32,
+        "rank": 57,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Covent Garden",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5125,
+    "longitude": -0.1225,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q55019",
+        "https://www.openstreetmap.org/way/49797434"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 6.01175,
+        "sitelinks": 56,
+        "rank": 58,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Alexandra Palace",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.594166666,
+    "longitude": -0.130833333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q254650",
+        "https://www.openstreetmap.org/way/4768526"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.954243,
+        "sitelinks": 29,
+        "rank": 59,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Banqueting House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5046,
+    "longitude": -0.1259,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q642039",
+        "https://www.openstreetmap.org/way/140470549"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.954243,
+        "sitelinks": 29,
+        "rank": 60,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "British Empire",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.507222,
+    "longitude": -0.1275,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q8680"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.950619,
+        "sitelinks": 167,
+        "rank": 61,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Parliament Square",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.500555555,
+    "longitude": -0.126666666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1368556",
+        "https://www.openstreetmap.org/way/256427111"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.924796,
+        "sitelinks": 28,
+        "rank": 62,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Downing Street",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.503333333,
+    "longitude": -0.1275,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q192687",
+        "https://www.openstreetmap.org/way/139726517"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.89794,
+        "sitelinks": 49,
+        "rank": 63,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Marlborough House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505,
+    "longitude": -0.135833333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q565532",
+        "https://www.openstreetmap.org/way/161800467"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.894316,
+        "sitelinks": 27,
+        "rank": 64,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Monument to the Great Fire of London",
+    "short_description": "",
+    "name_variations": [
+      "The Monument to the Great Fire of London"
+    ],
+    "latitude": 51.510138888,
+    "longitude": -0.085944444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q607700",
+        "https://www.openstreetmap.org/relation/3374550"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.894316,
+        "sitelinks": 27,
+        "rank": 65,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Speakers' Corner",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.511708333,
+    "longitude": -0.159777777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q510323",
+        "https://www.openstreetmap.org/way/223926841"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.894316,
+        "sitelinks": 27,
+        "rank": 66,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Victoria Memorial",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.501833,
+    "longitude": -0.140639,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1333411",
+        "https://www.openstreetmap.org/way/374945234"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.894316,
+        "sitelinks": 27,
+        "rank": 67,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Commonwealth of Nations",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505,
+    "longitude": -0.135833,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q7785"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.891799,
+        "sitelinks": 156,
+        "rank": 68,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "221B Baker Street",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.523333333,
+    "longitude": -0.158333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1992196",
+        "https://www.openstreetmap.org/node/5568763423"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.862728,
+        "sitelinks": 26,
+        "rank": 69,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "British Broadcasting Corporation",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.518563,
+    "longitude": -0.143774,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q9531"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.852183,
+        "sitelinks": 149,
+        "rank": 70,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Apsley House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.503472222,
+    "longitude": -0.151666666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q622206",
+        "https://www.openstreetmap.org/way/120316250"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 71,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "BT Tower",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5215,
+    "longitude": -0.1389,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q797085",
+        "https://www.openstreetmap.org/way/5022282"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 72,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Freud Museum London",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5483,
+    "longitude": -0.177778,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1455777",
+        "https://www.openstreetmap.org/way/103107384"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 73,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Hammersmith Bridge",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4889,
+    "longitude": -0.229735,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 3,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1573860",
+        "https://www.openstreetmap.org/node/13905477401"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 3,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 74,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Horse Guards Parade",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5047,
+    "longitude": -0.1283,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1254964",
+        "https://www.openstreetmap.org/way/4256958"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 75,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Lincoln's Inn",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.517125,
+    "longitude": -0.114577777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q69482",
+        "https://www.openstreetmap.org/relation/2354019"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 76,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Wellington Arch",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5025,
+    "longitude": -0.150833333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q526804",
+        "https://www.openstreetmap.org/way/24923117"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.829947,
+        "sitelinks": 25,
+        "rank": 77,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "White Cube",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4997,
+    "longitude": -0.081864,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1423414",
+        "https://en.wikipedia.org/wiki/White_Cube",
+        "https://www.openstreetmap.org/way/102403106"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 3,
+        "sources": [
+          "osm",
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.80618,
+        "sitelinks": 7,
+        "rank": 78,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Carnaby Street",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513333333,
+    "longitude": -0.138888888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q38778",
+        "https://www.openstreetmap.org/node/5657364621"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.79588,
+        "sitelinks": 24,
+        "rank": 79,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Kenwood House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.571388888,
+    "longitude": -0.1675,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q764804",
+        "https://www.openstreetmap.org/way/24653374"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.79588,
+        "sitelinks": 24,
+        "rank": 80,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Petrie Museum of Egyptian Archaeology",
+    "short_description": "",
+    "name_variations": [
+      "Petrie Museum of Egyptian Archeology"
+    ],
+    "latitude": 51.5236,
+    "longitude": -0.133056,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2002512",
+        "https://www.openstreetmap.org/way/27703085"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.79588,
+        "sitelinks": 24,
+        "rank": 81,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Festival Hall",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505836111,
+    "longitude": -0.116788888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q647390",
+        "https://www.openstreetmap.org/way/5987419"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.79588,
+        "sitelinks": 24,
+        "rank": 82,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Borough Market",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505555555,
+    "longitude": -0.090833333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q894072",
+        "https://www.openstreetmap.org/node/11189268091"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.760422,
+        "sitelinks": 23,
+        "rank": 83,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Chinatown",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.511111111,
+    "longitude": -0.131388888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1988417",
+        "https://www.openstreetmap.org/node/4291579190"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.760422,
+        "sitelinks": 23,
+        "rank": 84,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Dulwich Picture Gallery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.446111111,
+    "longitude": -0.086388888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1241163",
+        "https://www.openstreetmap.org/way/4961350"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.760422,
+        "sitelinks": 23,
+        "rank": 85,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Gray's Inn",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.519444444,
+    "longitude": -0.112222222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q157412",
+        "https://www.openstreetmap.org/way/314262878",
+        "https://www.openstreetmap.org/way/314262879"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.760422,
+        "sitelinks": 23,
+        "rank": 86,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Saatchi Gallery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4906,
+    "longitude": -0.1589,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1311497",
+        "https://www.openstreetmap.org/way/5317958"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.760422,
+        "sitelinks": 23,
+        "rank": 87,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Sir John Soane's Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.517102777,
+    "longitude": -0.116913888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2060860",
+        "https://www.openstreetmap.org/way/61453261"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.760422,
+        "sitelinks": 23,
+        "rank": 88,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "2012 Summer Olympics",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.538611,
+    "longitude": -0.016389,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q8577"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.747703,
+        "sitelinks": 132,
+        "rank": 89,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Chelsea Physic Garden",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.485,
+    "longitude": -0.162777777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1069148",
+        "https://www.openstreetmap.org/way/10806964"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.723456,
+        "sitelinks": 22,
+        "rank": 90,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Guildhall",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.515894,
+    "longitude": -0.091791,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q81279",
+        "https://www.openstreetmap.org/way/539317283",
+        "https://www.openstreetmap.org/way/539320743"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.723456,
+        "sitelinks": 22,
+        "rank": 91,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Heron Tower",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5161,
+    "longitude": -0.0808333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1613853",
+        "https://www.openstreetmap.org/way/96937598"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.723456,
+        "sitelinks": 22,
+        "rank": 92,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Transport Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.511944444,
+    "longitude": -0.121666666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1541098",
+        "https://www.openstreetmap.org/way/44599803"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.723456,
+        "sitelinks": 22,
+        "rank": 93,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Chelsea F.C.",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.481666666,
+    "longitude": -0.190833333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q9616"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.707607,
+        "sitelinks": 126,
+        "rank": 94,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Thames Tunnel",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.503055555,
+    "longitude": -0.054444444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1190691",
+        "https://www.openstreetmap.org/way/145817338",
+        "https://www.openstreetmap.org/way/165220708"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.684845,
+        "sitelinks": 21,
+        "rank": 95,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "ArcelorMittal Orbit",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.538333333,
+    "longitude": -0.013333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q631871",
+        "https://www.openstreetmap.org/way/149637725"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.644439,
+        "sitelinks": 20,
+        "rank": 96,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Design Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4998973,
+    "longitude": -0.200244,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q571249",
+        "https://www.openstreetmap.org/way/640554759"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.644439,
+        "sitelinks": 20,
+        "rank": 97,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Shaftesbury Avenue",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.512,
+    "longitude": -0.132,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1631720",
+        "https://www.openstreetmap.org/way/1065127950",
+        "https://www.openstreetmap.org/way/1094661232",
+        "https://www.openstreetmap.org/way/1455296983",
+        "https://www.openstreetmap.org/way/4376580",
+        "https://www.openstreetmap.org/way/542471105",
+        "https://www.openstreetmap.org/way/542471106"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.644439,
+        "sitelinks": 20,
+        "rank": 98,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "the Cenotaph",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.502694444,
+    "longitude": -0.126083333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2896743",
+        "https://www.openstreetmap.org/way/1222922473"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.644439,
+        "sitelinks": 20,
+        "rank": 99,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Battersea Park",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4793,
+    "longitude": -0.1573,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q810947",
+        "https://www.openstreetmap.org/way/840130236"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.60206,
+        "sitelinks": 19,
+        "rank": 100,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Churchill War Rooms",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.50222,
+    "longitude": -0.1293,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1024854",
+        "https://www.openstreetmap.org/way/197206542"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.60206,
+        "sitelinks": 19,
+        "rank": 101,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Central School of Speech and Drama",
+    "short_description": "",
+    "name_variations": [
+      "The Royal Central School of Speech and Drama"
+    ],
+    "latitude": 51.544166666,
+    "longitude": -0.174166666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q981195",
+        "https://www.openstreetmap.org/way/77109286"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.60206,
+        "sitelinks": 19,
+        "rank": 102,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Courts of Justice",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513611111,
+    "longitude": -0.113333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q609835",
+        "https://www.openstreetmap.org/relation/2335557"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.60206,
+        "sitelinks": 19,
+        "rank": 103,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "White Tower",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5081,
+    "longitude": -0.075977,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1528473",
+        "https://www.openstreetmap.org/way/369135772"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.60206,
+        "sitelinks": 19,
+        "rank": 104,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "The Guardian",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.535109414,
+    "longitude": -0.121685573,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q11148"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.598436,
+        "sitelinks": 111,
+        "rank": 105,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Southwark",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4988,
+    "longitude": -0.0901,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q5273898",
+        "https://en.wikipedia.org/wiki/Southwark"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.562958,
+        "sitelinks": 33,
+        "rank": 106,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Burlington House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.508888888,
+    "longitude": -0.139444444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q225471",
+        "https://www.openstreetmap.org/relation/3848545"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.557507,
+        "sitelinks": 18,
+        "rank": 107,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "County Hall",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.501944444,
+    "longitude": -0.118888888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2916209",
+        "https://www.openstreetmap.org/node/8039445042"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.557507,
+        "sitelinks": 18,
+        "rank": 108,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Eltham Palace",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4471,
+    "longitude": 0.0483968,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q62397",
+        "https://www.openstreetmap.org/way/17110975"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.557507,
+        "sitelinks": 18,
+        "rank": 109,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London Stone",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.511544444,
+    "longitude": -0.089466666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q738950",
+        "https://www.openstreetmap.org/node/10892732222"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.557507,
+        "sitelinks": 18,
+        "rank": 110,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Old Royal Naval College",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.483666666,
+    "longitude": -0.005944444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 2,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1753590",
+        "https://www.openstreetmap.org/way/1217996820",
+        "https://www.openstreetmap.org/way/35535194"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 2,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.557507,
+        "sitelinks": 18,
+        "rank": 111,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "The Rolling Bridge",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.518388888,
+    "longitude": -0.174736111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2001686",
+        "https://www.openstreetmap.org/way/174458597"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.557507,
+        "sitelinks": 18,
+        "rank": 112,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Brompton Cemetery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.484882,
+    "longitude": -0.190796,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q926913",
+        "https://www.openstreetmap.org/way/4999977"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.460898,
+        "sitelinks": 16,
+        "rank": 113,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Kensal Green Cemetery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5286,
+    "longitude": -0.2241,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1574424",
+        "https://www.openstreetmap.org/way/149381619"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.460898,
+        "sitelinks": 16,
+        "rank": 114,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Greater London",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.52,
+    "longitude": -0.1,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q23306"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.455447,
+        "sitelinks": 94,
+        "rank": 115,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "City of London",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.515555555,
+    "longitude": -0.093055555,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q23311"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.446256,
+        "sitelinks": 93,
+        "rank": 116,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "City of Westminster",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4975,
+    "longitude": -0.137222222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q179351"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.436966,
+        "sitelinks": 92,
+        "rank": 117,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Wimbledon Championships",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.43375,
+    "longitude": -0.214027777,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q41520"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.436966,
+        "sitelinks": 92,
+        "rank": 118,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Kingdom of Great Britain",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5,
+    "longitude": -0.13333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q161885"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.418083,
+        "sitelinks": 90,
+        "rank": 119,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Royal Society",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.506111111,
+    "longitude": -0.132222222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q123885"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.408485,
+        "sitelinks": 89,
+        "rank": 120,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Charles Dickens Museum",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5239,
+    "longitude": -0.116902,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2723633",
+        "https://www.openstreetmap.org/node/334631276"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.40824,
+        "sitelinks": 15,
+        "rank": 121,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Chiswick House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.48361111,
+    "longitude": -0.25861111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1074877",
+        "https://www.openstreetmap.org/node/679119297",
+        "https://www.openstreetmap.org/relation/8048634"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.40824,
+        "sitelinks": 15,
+        "rank": 122,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Horse Guards",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5047,
+    "longitude": -0.127222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q492350",
+        "https://www.openstreetmap.org/way/133153176"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.40824,
+        "sitelinks": 15,
+        "rank": 123,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Shakespeare's Globe",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5081,
+    "longitude": -0.0972222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q7725501",
+        "https://www.openstreetmap.org/relation/1239793"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.40824,
+        "sitelinks": 15,
+        "rank": 124,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Spencer House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.505277777,
+    "longitude": -0.14,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2505545",
+        "https://www.openstreetmap.org/relation/16057566"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.40824,
+        "sitelinks": 15,
+        "rank": 125,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Big Ben",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.50067,
+    "longitude": -0.12457,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q41225"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.39878,
+        "sitelinks": 88,
+        "rank": 126,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Mandela Way T-34 Tank",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.493,
+    "longitude": -0.0827,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q6747960",
+        "https://en.wikipedia.org/wiki/Mandela_Way_T-34_Tank",
+        "https://www.openstreetmap.org/node/4330943538"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 3,
+        "sources": [
+          "osm",
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.39794,
+        "sitelinks": 4,
+        "rank": 127,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "University of London (2)",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5229378,
+    "longitude": -0.1308206,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q170027"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.388965,
+        "sitelinks": 87,
+        "rank": 129,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "University of London",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.521111111,
+    "longitude": -0.128888888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q170027"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.388965,
+        "sitelinks": 87,
+        "rank": 128,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Aldwych tube station",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.51215,
+    "longitude": -0.11595,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q990658",
+        "https://www.openstreetmap.org/node/2405990288"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.352183,
+        "sitelinks": 14,
+        "rank": 130,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Parliament Hill",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.559722222,
+    "longitude": -0.159722222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2036052",
+        "https://www.openstreetmap.org/node/1672235731"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.352183,
+        "sitelinks": 14,
+        "rank": 131,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Southbank Centre",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.506064,
+    "longitude": -0.116306,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q2339207",
+        "https://www.openstreetmap.org/relation/1698905"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.352183,
+        "sitelinks": 14,
+        "rank": 132,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Temple Bar",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513694,
+    "longitude": -0.111922,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q125555724",
+        "https://www.openstreetmap.org/way/732968085"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.352183,
+        "sitelinks": 14,
+        "rank": 133,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Kennington tube station",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.488611,
+    "longitude": -0.105556,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1738951",
+        "https://en.wikipedia.org/wiki/Kennington_tube_station"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.329947,
+        "sitelinks": 25,
+        "rank": 134,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "House of Commons",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.49988889,
+    "longitude": -0.12466667,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q11005"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.327628,
+        "sitelinks": 81,
+        "rank": 135,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "United Kingdom of Great Britain and Ireland",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.507222222,
+    "longitude": -0.1275,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q174193"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.31697,
+        "sitelinks": 80,
+        "rank": 136,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Bermondsey",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4986,
+    "longitude": -0.0757,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q822040",
+        "https://en.wikipedia.org/wiki/Bermondsey"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.29588,
+        "sitelinks": 24,
+        "rank": 137,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Admiralty House",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5055,
+    "longitude": -0.1274,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q779754",
+        "https://www.openstreetmap.org/way/140467283"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.292256,
+        "sitelinks": 13,
+        "rank": 138,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "All Hallows-by-the-Tower",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.509444,
+    "longitude": -0.079444,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q579381",
+        "https://www.openstreetmap.org/way/59213570"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.292256,
+        "sitelinks": 13,
+        "rank": 139,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Crystal Palace Dinosaurs",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.4175,
+    "longitude": -0.06722222,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q3428134",
+        "https://www.openstreetmap.org/relation/12744617"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.292256,
+        "sitelinks": 13,
+        "rank": 140,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Hayward Gallery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.5061,
+    "longitude": -0.115556,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q779736",
+        "https://www.openstreetmap.org/way/25913653"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.292256,
+        "sitelinks": 13,
+        "rank": 141,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Whitechapel Gallery",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.516,
+    "longitude": -0.070485,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1814654",
+        "https://www.openstreetmap.org/way/264131965"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.292256,
+        "sitelinks": 13,
+        "rank": 142,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "House of Lords",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.49880556,
+    "longitude": -0.12486111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q11007"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.284189,
+        "sitelinks": 77,
+        "rank": 143,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Emirates Stadium",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.555,
+    "longitude": -0.108333333,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q163995"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.272981,
+        "sitelinks": 76,
+        "rank": 144,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Stamford Bridge",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.481666666,
+    "longitude": -0.191111111,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q171458"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.272981,
+        "sitelinks": 76,
+        "rank": 145,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Borough tube station",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.501111,
+    "longitude": -0.093889,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q894073",
+        "https://en.wikipedia.org/wiki/Borough_tube_station"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.260422,
+        "sitelinks": 23,
+        "rank": 146,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Elephant & Castle tube station",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.495556,
+    "longitude": -0.100556,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata",
+        "wikipedia"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q1481451",
+        "https://en.wikipedia.org/wiki/Elephant_&_Castle_tube_station"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "wikidata",
+          "wikipedia"
+        ],
+        "notability_score": 5.260422,
+        "sitelinks": 23,
+        "rank": 147,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "London School of Economics and Political Science",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.513888888,
+    "longitude": -0.116666666,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q174570"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 1,
+        "sources": [
+          "wikidata"
+        ],
+        "notability_score": 5.250123,
+        "sitelinks": 74,
+        "rank": 148,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  },
+  {
+    "name": "Bunhill Fields",
+    "short_description": "",
+    "name_variations": [],
+    "latitude": 51.523611111,
+    "longitude": -0.088888888,
+    "city_name": "london",
+    "trigger_radius": 30,
+    "kid_friendly": "yes",
+    "poi_role": "stop",
+    "importance_tier": 1,
+    "_pipeline": {
+      "discovery_sources": [
+        "osm",
+        "wikidata"
+      ],
+      "source_urls": [
+        "http://www.wikidata.org/entity/Q782140",
+        "https://www.openstreetmap.org/way/263374781"
+      ],
+      "gravity_audit": {
+        "signal_source": "onboard_auto_v1",
+        "assigned_gravity": 1,
+        "cross_source_agreement": 2,
+        "sources": [
+          "osm",
+          "wikidata"
+        ],
+        "notability_score": 5.227887,
+        "sitelinks": 12,
+        "rank": 149,
+        "of": 150,
+        "method": "rank_quantile_forced_distribution",
+        "scored_at": "2026-07-15"
+      }
+    }
+  }
+]

@@ -4392,6 +4392,25 @@ class TestDefectRegressions:
 # ---------------------------------------------------------------------------
 
 
+def _committed_tree_snapshot() -> dict[str, bytes]:
+    """Content snapshot of the committed artifacts a HERMETIC (tmp-root) onboard must
+    never touch: ``src/cities.json`` plus every file under ``data/london/`` (when it
+    exists). Comparing a before/after snapshot proves the onboard wrote ONLY under its
+    tmp root — robust to london being a REAL committed city. (The pre-milestone check
+    asserted london was *absent* from the committed tree; that inverts the day london
+    ships, so we assert *unchanged bytes* instead.)"""
+    snap: dict[str, bytes] = {}
+    registry = REPO_ROOT / "src" / "cities.json"
+    if registry.exists():
+        snap["src/cities.json"] = registry.read_bytes()
+    london = REPO_ROOT / "data" / "london"
+    if london.exists():
+        for path in sorted(london.rglob("*")):
+            if path.is_file():
+                snap[str(path.relative_to(REPO_ROOT))] = path.read_bytes()
+    return snap
+
+
 class TestOnboardPanel:
     """Real-browser proof of the new-city onboarding panel (frontend/onboard.html).
 
@@ -4410,6 +4429,11 @@ class TestOnboardPanel:
 
     def test_onboard_london_end_to_end(self, browser_page):
         page, _seed_data, _reporter = browser_page
+
+        # Snapshot the committed tree BEFORE any onboarding runs, so the hermeticity
+        # assertion (below) can prove the tmp-root onboard left src/cities.json and any
+        # committed data/london/ byte-identical — even once london is a real city.
+        committed_before = _committed_tree_snapshot()
 
         # (a) Panel initial state: only the license-clean mode is available.
         page.goto(ONBOARD_URL)
@@ -4520,15 +4544,13 @@ class TestOnboardPanel:
         assert (london_dir / "beats.json").exists(), f"{london_dir / 'beats.json'} was not written"
         tmp_registry = json.loads((_ONBOARD_TMP / "cities.json").read_text(encoding="utf-8"))
         assert "london" in tmp_registry, f"tmp cities.json is missing 'london': {tmp_registry}"
-        # And the COMMITTED tree is byte-untouched: no data/london/, no src/cities.json entry.
-        assert not (REPO_ROOT / "data" / "london").exists(), (
-            "onboarding wrote into the COMMITTED data/london/ — the tmp-root pin failed"
-        )
-        committed_registry = json.loads(
-            (REPO_ROOT / "src" / "cities.json").read_text(encoding="utf-8")
-        )
-        assert "london" not in committed_registry, (
-            f"onboarding mutated the COMMITTED src/cities.json: {committed_registry}"
+        # And the COMMITTED tree is byte-untouched by the hermetic (tmp-root) onboard:
+        # src/cities.json and any committed data/london/ are identical before/after.
+        # (Robust to london being a REAL committed city — the pre-milestone "london is
+        # absent from the committed tree" check inverts the day london ships.)
+        assert _committed_tree_snapshot() == committed_before, (
+            "the hermetic onboard mutated the COMMITTED tree (src/cities.json or "
+            "data/london/) — the tmp-root pin failed"
         )
         _take_screenshot(page, "onboard-06-upload-success")
 
