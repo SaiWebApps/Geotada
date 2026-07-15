@@ -54,12 +54,11 @@ class ComposeVerificationError(Exception):
         )
 
 
-def drop_failing_sentences(script: Script, report: ValidationReport) -> Script:
-    """Remove ONLY the individual sentences VERIFY flagged (unfaithful, untraceable,
-    or forbidden), keeping the rest of the stop's fusion. The finest-grained
-    repair: a stop whose one bad sentence is an embellished reflection keeps all
-    its fused beat prose. Dropping a fact-carrying sentence may then leave a claim
-    uncovered — the caller falls back to a whole-stop revert for that residue."""
+def _failing_sentence_keys(report: ValidationReport) -> set[tuple[int, str, str]]:
+    """The ``(stop_idx, source_id, text)`` identity of every sentence VERIFY flagged
+    as unfaithful, untraceable, or forbidden — the exact set ``drop_failing_sentences``
+    removes. Factored out so the surgical repair can replace those SAME positions in
+    the composed stream with grounded stitch."""
     keys: set[tuple[int, str, str]] = set()
     for s, _reason in report.faithfulness_failures:
         keys.add((s.stop_idx, s.source_id, s.text))
@@ -67,6 +66,18 @@ def drop_failing_sentences(script: Script, report: ValidationReport) -> Script:
         keys.add((s.stop_idx, s.source_id, s.text))
     for s, _code in report.forbidden_phrase_hits:
         keys.add((s.stop_idx, s.source_id, s.text))
+    return keys
+
+
+def drop_failing_sentences(script: Script, report: ValidationReport) -> Script:
+    """Remove ONLY the individual sentences VERIFY flagged (unfaithful, untraceable,
+    or forbidden), keeping the rest of the stop's fusion. The finest-grained
+    repair: a stop whose one bad sentence is an embellished reflection keeps all
+    its fused beat prose. Dropping a fact-carrying sentence may then leave a claim
+    uncovered — the caller then SURGICALLY splices only that beat's stitch back
+    (see ``repair_composed_surgical``), falling back to a whole-stop revert only if
+    the surgical result itself fails to verify."""
+    keys = _failing_sentence_keys(report)
     if not keys:
         return script
     kept = tuple(s for s in script.script if (s.stop_idx, s.source_id, s.text) not in keys)
@@ -109,6 +120,105 @@ def repair_composed(composed: Script, stitched: Script, report: ValidationReport
     for stop_idx in sorted(set(stitched_by_stop) | set(composed_by_stop)):
         out.extend(stitched_by_stop[stop_idx] if stop_idx in bad else composed_by_stop[stop_idx])
     return composed.model_copy(update={"script": tuple(out)})
+
+
+def repair_composed_surgical(
+    composed: Script,
+    stitched: Script,
+    drop_report: ValidationReport,
+    uncovered_report: ValidationReport,
+) -> tuple[Script, dict[int, tuple[str, ...]], set[int]]:
+    """SENTENCE/BEAT-GRANULAR repair — keep every composed sentence that PASSED
+    verify; restore ONLY the specific failing beat's grounded STITCHED sentence(s).
+
+    This is the honest middle between the finest-grained ``drop_failing_sentences``
+    (which leaves the failing beat's fact uncovered) and the coarse whole-stop
+    ``repair_composed`` (which throws away a whole stop's AI voice for one bad
+    fusion). A dense stop with several good composed sentences and ONE fusion the
+    entailment gate over-rejects keeps all its other AI-voiced sentences; only the
+    specific failing beat falls back to stitch.
+
+    ``composed`` is the PRE-trim compose (still carrying the sentences VERIFY
+    flagged). ``drop_report`` is that verify — its flagged sentences are exactly the
+    ones ``drop_failing_sentences`` removes, so we know which positions to replace.
+    ``uncovered_report`` is the verify of the TRIMMED script — its
+    ``coverage_failures`` name the beats whose claim no surviving composed sentence
+    still realizes (the dropped fusion). For each such beat we splice its grounded
+    stitched sentence(s) back IN PLACE of the dropped fusion that cited it (so it
+    reads where the beat belongs, never appended at the end), and keep the rest of
+    the stop's composed sentences.
+
+    Never admits ungrounded content — restored text is ALWAYS the grounded stitch.
+    The caller re-verifies the result and, if a splice still fails, falls back to a
+    whole-stop revert (``repair_composed``) as the safety net.
+
+    Returns ``(repaired_script, restored_by_stop, fully_reverted_stops)``:
+    - ``restored_by_stop``: ``{stop_idx: restored_beat_ids}`` for every stop the
+      splice touched;
+    - ``fully_reverted_stops``: the subset of those stops where NO composed BEAT
+      sentence survived (every beat was restored) — for the caller to mark
+      ``reverted_to_stitched`` rather than ``partially_reverted``, so the label is
+      accurate.
+    """
+    uncovered = {bid for bid, _claim in uncovered_report.coverage_failures}
+    if not uncovered:
+        return composed, {}, set()
+
+    drop_keys = _failing_sentence_keys(drop_report)
+
+    # The grounded stitch sentence(s) that carry each uncovered beat (its claim), in
+    # stitched order — what we splice back.
+    stitched_for_beat: dict[str, list[Sentence]] = defaultdict(list)
+    for s in stitched.script:
+        if s.source_type == "beat":
+            for bid in s.cited_beat_ids:
+                if bid in uncovered:
+                    stitched_for_beat[bid].append(s)
+    beat_stop = {s.source_id: s.stop_idx for s in stitched.script if s.source_type == "beat"}
+
+    out_by_stop: dict[int, list[Sentence]] = defaultdict(list)
+    restored_by_stop: dict[int, list[str]] = defaultdict(list)
+    surviving_composed_beat: dict[int, bool] = defaultdict(bool)
+
+    def _restore(stop_idx: int, bid: str) -> None:
+        if bid in restored_by_stop[stop_idx]:
+            return
+        for s in stitched_for_beat.get(bid, ()):
+            if s not in out_by_stop[stop_idx]:
+                out_by_stop[stop_idx].append(s)
+        restored_by_stop[stop_idx].append(bid)
+
+    for s in composed.script:
+        k = s.stop_idx
+        if (s.stop_idx, s.source_id, s.text) not in drop_keys:
+            out_by_stop[k].append(s)  # a surviving (passing) composed sentence
+            if s.source_type == "beat":
+                surviving_composed_beat[k] = True
+            continue
+        # A dropped, failing sentence: restore in its place any uncovered beat it
+        # cited (the grounded stitch). If it cited no uncovered beat (an embellished
+        # reflection / a forbidden glue line), it simply stays dropped.
+        for bid in s.cited_beat_ids:
+            if bid in uncovered:
+                _restore(k, bid)
+
+    # Uncovered beats not tied to a dropped sentence (compose omitted them outright)
+    # -> splice their grounded stitch at the end of their OWN stop's block, still in
+    # place (never at the tour's end).
+    for bid in sorted(uncovered):
+        if any(bid in v for v in restored_by_stop.values()):
+            continue
+        k = beat_stop.get(bid)
+        if k is not None:
+            _restore(k, bid)
+
+    out: list[Sentence] = []
+    for k in sorted(out_by_stop):
+        out.extend(out_by_stop[k])
+    repaired = composed.model_copy(update={"script": tuple(out)})
+    restored = {k: tuple(v) for k, v in restored_by_stop.items() if v}
+    fully_reverted = {k for k in restored if not surviving_composed_beat.get(k)}
+    return repaired, restored, fully_reverted
 
 
 def compose_and_verify(

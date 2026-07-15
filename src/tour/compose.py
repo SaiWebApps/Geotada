@@ -30,8 +30,17 @@ from .compose_gate import (
     compose_and_verify,
     drop_failing_sentences,
     repair_composed,
+    repair_composed_surgical,
 )
-from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
+from .contract import (
+    BeatRef,
+    BeatSequence,
+    Route,
+    Script,
+    Sentence,
+    StopVerifyStatus,
+    ValidationReport,
+)
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
 from .reflection import reflection_slots
 from .verify import (
@@ -530,6 +539,67 @@ def _report_for_stop(
     )
 
 
+def _per_stop_verify_report(
+    served: Script,
+    beat_stop: dict[str, int],
+    reverted_stops: set[int],
+    partial_by_stop: dict[int, tuple[str, ...]],
+    *reports: ValidationReport | None,
+) -> tuple[StopVerifyStatus, ...]:
+    """Diagnostic: one entry per stop marking whether it kept its composed
+    narration (``composed``), kept it except for a surgically-restored beat
+    (``partially_reverted``, ``restored_beats`` naming which), or was rolled back
+    whole to the stitch (``reverted_to_stitched``), plus — from the failing
+    report(s) that drove the gate — which VERIFY categories fired against that stop.
+
+    ``reverted_stops`` and ``partial_by_stop`` are computed STRUCTURALLY by the
+    caller (the exact sets the repair whole-reverted / surgically spliced), never
+    inferred from text: the Mock composer is an identity passthrough, so a
+    composed-but-unchanged stop is byte-identical to the stitch yet was NOT
+    reverted. Pure, off the hot path.
+    """
+    faith: dict[int, list[str]] = defaultdict(list)
+    cov: dict[int, list[str]] = defaultdict(list)
+    forb: dict[int, list[str]] = defaultdict(list)
+    untr: dict[int, list[str]] = defaultdict(list)
+    for report in reports:
+        if report is None:
+            continue
+        for s, reason in report.faithfulness_failures:
+            faith[s.stop_idx].append(f"{s.source_id}: {reason}")
+        for bid, claim in report.coverage_failures:
+            k = beat_stop.get(bid)
+            if k is not None:
+                cov[k].append(f"{bid}: {claim}")
+        for s, code in report.forbidden_phrase_hits:
+            forb[s.stop_idx].append(code)
+        for s in report.untraceable_sentences:
+            untr[s.stop_idx].append(s.source_id)
+
+    def _status(k: int) -> str:
+        if k in reverted_stops:
+            return "reverted_to_stitched"
+        if k in partial_by_stop:
+            return "partially_reverted"
+        return "composed"
+
+    stops = sorted({s.stop_idx for s in served.script} | reverted_stops | set(partial_by_stop))
+    out: list[StopVerifyStatus] = []
+    for k in stops:
+        out.append(
+            StopVerifyStatus(
+                stop_idx=k,
+                status=_status(k),
+                restored_beats=tuple(partial_by_stop.get(k, ())),
+                faithfulness=tuple(faith.get(k, ())),
+                coverage=tuple(cov.get(k, ())),
+                forbidden=tuple(forb.get(k, ())),
+                untraceable=tuple(untr.get(k, ())),
+            )
+        )
+    return tuple(out)
+
+
 def compose_script_per_chapter(
     stitched: Script,
     beat_sequence: BeatSequence,
@@ -657,11 +727,31 @@ def compose_script_per_chapter(
         expected_claim_ids=claims_realized_by(stitched, beats_by_id),
     )
 
+    def _served(
+        script: Script,
+        passing: ValidationReport,
+        reverted: set[int],
+        partial: dict[int, tuple[str, ...]],
+        *fail_reports: ValidationReport | None,
+    ) -> Script:
+        """Attach the passing report AND the per-stop verify_report diagnostic
+        (which stops whole-reverted, which were surgically-repaired, + the failing
+        report(s) that drove the gate) to the served Script — additive, so no
+        existing behavior changes."""
+        return script.model_copy(
+            update={
+                "validation": passing,
+                "verify_report": _per_stop_verify_report(
+                    script, beat_stop, reverted, partial, *fail_reports
+                ),
+            }
+        )
+
     _run_best_of_n(stops)  # attempt 1: best-of-N per stop, all in parallel
     composed = _assemble()
     report = verify(composed)
     if report.passed:
-        return composed.model_copy(update={"validation": report})
+        return _served(composed, report, set(), {})  # every stop composed clean
 
     bad = sorted(_bad_stops(report, stitched))
     if bad:  # attempt 2: recompose ONLY the failed stops, each with its own feedback
@@ -669,20 +759,36 @@ def compose_script_per_chapter(
         composed = _assemble()
         report = verify(composed)
         if report.passed:
-            return composed.model_copy(update={"validation": report})
+            return _served(composed, report, set(), {})
 
     # Granular repair first: drop just the failing sentences (a stop whose only
-    # fault is an embellished reflection keeps all its fused beat prose). If that
-    # leaves a fact uncovered, fall back to reverting the whole coverage-failing
-    # stop to the grounded stitch.
+    # fault is an embellished reflection keeps all its fused beat prose).
     trimmed = drop_failing_sentences(composed, report)
     tr_report = verify(trimmed)
     if tr_report.passed:
-        return trimmed.model_copy(update={"validation": tr_report})
-    repaired = repair_composed(trimmed, stitched, tr_report)
+        # No revert — only individual sentences were dropped; every stop keeps its
+        # (possibly trimmed) composed narration.
+        return _served(trimmed, tr_report, set(), {}, report)
+
+    # Surgical repair: for each stop whose trimmed compose left a beat's claim
+    # uncovered (a dropped fusion), splice back ONLY that beat's grounded stitched
+    # sentence(s) IN PLACE — keeping the stop's other AI-voiced sentences. A stop
+    # whose every beat was restored is marked reverted (accurate), the rest
+    # partially_reverted.
+    surgical, restored, fully = repair_composed_surgical(composed, stitched, report, tr_report)
+    surg_report = verify(surgical)
+    if surg_report.passed:
+        partial = {k: v for k, v in restored.items() if k not in fully}
+        return _served(surgical, surg_report, fully, partial, report, tr_report)
+
+    # Safety net: any stop a surgical splice still could not verify falls back to a
+    # whole-stop revert to the grounded stitch.
+    reverted = _bad_stops(surg_report, stitched) | fully
+    repaired = repair_composed(surgical, stitched, surg_report)
     rep_report = verify(repaired)
     if rep_report.passed:
-        return repaired.model_copy(update={"validation": rep_report})
+        partial = {k: v for k, v in restored.items() if k not in reverted}
+        return _served(repaired, rep_report, reverted, partial, report, tr_report)
     raise ComposeVerificationError(rep_report, 2)
 
 

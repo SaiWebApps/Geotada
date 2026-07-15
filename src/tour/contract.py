@@ -458,6 +458,44 @@ class ValidationReport(BaseModel):
         )
 
 
+class StopVerifyStatus(BaseModel):
+    """Per-stop outcome of the per-chapter compose gate (diagnostic, additive).
+
+    ``status`` is:
+    - ``composed`` — the stop kept its AI-voiced (rewritten/fused) narration;
+    - ``partially_reverted`` — a SURGICAL repair kept the stop's passing composed
+      sentences but spliced ONLY the specific failing beat(s) back to their
+      grounded stitch (``restored_beats`` names them). The honest middle: the stop
+      still speaks in the AI voice except for the one beat whose fusion the gate
+      over-rejected;
+    - ``reverted_to_stitched`` — the whole stop rolled back to the grounded stitch
+      (all its beat content failed, or the surgical splice itself did not verify and
+      the whole-stop safety net fired).
+    The reason tuples explain WHY the gate acted on the stop — the exact VERIFY
+    categories that fired against that stop's composed sentences, so a caller (or a
+    test) can see per-stop reasons WITHOUT re-running the compose. Empty tuples mean
+    that category was clean for this stop.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    stop_idx: int = Field(..., ge=0)
+    status: Literal["composed", "partially_reverted", "reverted_to_stitched"]
+    # beat ids the surgical repair rolled back to their grounded stitch while
+    # keeping the rest of the stop composed. Non-empty only for partially_reverted.
+    restored_beats: tuple[str, ...] = ()
+    # "source_id: reason" for each beat/reflection sentence the entailment gate
+    # rejected (the dominant cause of a revert on a bold, faithful fusion).
+    faithfulness: tuple[str, ...] = ()
+    # "beat_id: dropped_claim" for each pre-compose claim no composed sentence
+    # still realized (a fusion that lost a fact, or a dropped fact-carrying line).
+    coverage: tuple[str, ...] = ()
+    # forbidden-phrase / invented-proper-noun|year codes on this stop's glue.
+    forbidden: tuple[str, ...] = ()
+    # source_ids of sentences that failed source-traceability.
+    untraceable: tuple[str, ...] = ()
+
+
 class Script(BaseModel):
     """Final tour-builder output. §3.6 of phase-1-design."""
 
@@ -474,3 +512,8 @@ class Script(BaseModel):
     lens_coverage: dict[str, int]
     script: tuple[Sentence, ...]
     validation: ValidationReport
+    # Per-stop compose-gate diagnostic, populated only by
+    # ``compose_script_per_chapter`` (empty everywhere else — additive, off the
+    # hot path). Lets a caller see which stops kept the AI voice vs reverted to
+    # the stitch, and the exact VERIFY reason for each revert, without re-running.
+    verify_report: tuple[StopVerifyStatus, ...] = ()

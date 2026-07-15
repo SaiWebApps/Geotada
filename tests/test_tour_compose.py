@@ -341,6 +341,70 @@ def test_per_chapter_reverts_only_the_failed_stop_and_keeps_facts():
     assert st <= {s.text for s in composed.script if s.source_type == "beat"}
 
 
+def test_per_chapter_verify_report_is_populated_per_stop():
+    """The compose result carries a per-stop verify_report: one entry per stop,
+    each marked composed or reverted_to_stitched. On the clean path every stop is
+    composed and its reason tuples are empty."""
+    seq, route, stitched = _five_stop_setup()
+    composed = compose_script_per_chapter(stitched, seq, route, client=MockComposeClient())
+    stops = sorted({s.stop_idx for s in stitched.script})
+    assert [r.stop_idx for r in composed.verify_report] == stops
+    assert all(r.status == "composed" for r in composed.verify_report)
+    assert all(
+        not (r.faithfulness or r.coverage or r.forbidden or r.untraceable)
+        for r in composed.verify_report
+    )
+
+
+def test_per_chapter_verify_report_flags_the_reverted_stop_with_its_reason():
+    """A stop that reverts to the stitch (its fact-carrying rewrite failed
+    entailment, and dropping it left the claim uncovered) is marked
+    reverted_to_stitched AND carries the exact faithfulness + coverage reasons —
+    the diagnostic that pinpoints WHY a stop lost its AI voice, without re-running."""
+    # Every stop carries a claim; short legs -> no reflection slots, so the test
+    # isolates the beat-paraphrase revert path (stop 1 is the target).
+    seq = _seq(
+        [
+            [_claim_beat("b0", "p0", CLAIM_A)],
+            [_claim_beat("b1", "p1", CLAIM_B)],
+            [_claim_beat("b2", "p2", "Napoleon crowned himself emperor in 1804")],
+        ]
+    )
+    route = _route([10, 10, 10])
+    stitched = generate(seq, route, _input())
+
+    class _ParaphraseStop1Client:
+        """Identity everywhere except stop 1, whose beat sentence it paraphrases
+        away from a claim substring — a bold-but-faithful reword a STRICT checker
+        over-rejects. Dropping it uncovers stop 1's claim, forcing a whole revert."""
+
+        def compose(self, request, attempt, prev_report):
+            stop = next(iter({s.stop_idx for s in request.stitched.script}))
+            out = []
+            for s in request.stitched.script:
+                if stop == 1 and s.source_type == "beat":
+                    out.append(s.model_copy(update={"text": "A totally reworded telling."}))
+                else:
+                    out.append(s)
+            return tuple(out)
+
+    class _StrictSubstringChecker:  # entails only a near-verbatim claim quote
+        def entails(self, key_claims, sentence_text):
+            return any(c in sentence_text for c in key_claims)
+
+    composed = compose_script_per_chapter(
+        stitched, seq, route, client=_ParaphraseStop1Client(),
+        faithfulness_checker=_StrictSubstringChecker(),
+    )
+    by_stop = {r.stop_idx: r for r in composed.verify_report}
+    assert by_stop[1].status == "reverted_to_stitched"
+    # the exact gate reasons that flattened stop 1 are surfaced
+    assert by_stop[1].faithfulness  # the paraphrase failed entailment
+    assert by_stop[1].coverage      # dropping it left the claim uncovered
+    # every other stop kept its composed narration
+    assert all(by_stop[k].status == "composed" for k in by_stop if k != 1)
+
+
 def test_per_chapter_propagates_a_systemic_client_error():
     """A client error (auth / billing / rate-limit) must SURFACE, not be silently
     reverted to stitched and mislabelled a partial compose."""
