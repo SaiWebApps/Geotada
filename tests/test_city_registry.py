@@ -210,3 +210,89 @@ def test_mark_unknown_city_raises(tmp_path, monkeypatch) -> None:
 
     with pytest.raises(KeyError):
         city_registry.mark_cloud_deployed("nowhere")
+
+
+# ---------------------------------------------------------------------------
+# HERMETIC ENV: onboard_data_root() + ONBOARD_REGISTRY_PATH honoring. All
+# env-gated with the default (unset) behavior preserved byte-for-byte, so real
+# paris/new_york reads are unchanged.
+# ---------------------------------------------------------------------------
+_REPO_ROOT = Path(city_registry.__file__).resolve().parent.parent
+
+
+def test_onboard_data_root_defaults_to_repo_data_when_unset(monkeypatch) -> None:
+    """Unset (or empty) ONBOARD_DATA_ROOT → <repo>/data — the old hardcoded default.
+    [undo: hardcode env-only → RED on the unset/empty cases]"""
+    monkeypatch.delenv("ONBOARD_DATA_ROOT", raising=False)
+    assert city_registry.onboard_data_root() == _REPO_ROOT / "data"
+    monkeypatch.setenv("ONBOARD_DATA_ROOT", "")  # empty string is treated as unset
+    assert city_registry.onboard_data_root() == _REPO_ROOT / "data"
+
+
+def test_onboard_data_root_honors_env_when_set(monkeypatch, tmp_path) -> None:
+    """ONBOARD_DATA_ROOT set (non-empty) → that path.
+    [undo: ignore the env / hardcode <repo>/data → RED when set]"""
+    monkeypatch.setenv("ONBOARD_DATA_ROOT", str(tmp_path))
+    assert city_registry.onboard_data_root() == tmp_path
+
+
+def test_registry_path_honors_existing_env_file(tmp_path, monkeypatch) -> None:
+    """ONBOARD_REGISTRY_PATH → an EXISTING tmp registry wins: supported_cities()
+    and bbox_map() read IT (london visible); unset → the committed src/cities.json
+    (paris, new_york, NOT london).
+    [undo: make _effective_registry_path ignore the env → london never appears → RED]"""
+    real = Path(city_registry.__file__).resolve().parent / "cities.json"
+    reg = dict(json.loads(real.read_text()))
+    reg["london"] = {
+        "display_name": "London",
+        "bbox": [51.28, 51.7, -0.51, 0.33],
+        "cloud_deployed": False,
+    }
+    hermetic = tmp_path / "cities.json"
+    hermetic.write_text(json.dumps(reg, indent=2, sort_keys=True) + "\n")
+
+    # UNSET → the real registry (paris, new_york; NOT london).
+    monkeypatch.delenv("ONBOARD_REGISTRY_PATH", raising=False)
+    city_registry.load_registry.cache_clear()
+    assert {"paris", "new_york"} <= city_registry.supported_cities()
+    assert "london" not in city_registry.supported_cities()
+    assert "london" not in city_registry.bbox_map()
+
+    # SET to the existing hermetic file → london visible in BOTH accessors.
+    monkeypatch.setenv("ONBOARD_REGISTRY_PATH", str(hermetic))
+    city_registry.load_registry.cache_clear()
+    assert "london" in city_registry.supported_cities()
+    assert city_registry.bbox_map()["london"] == (51.28, 51.7, -0.51, 0.33)
+    assert {"paris", "new_york", "london"} <= set(city_registry.bbox_map())
+
+
+def test_registry_env_missing_file_falls_back_to_global(tmp_path, monkeypatch) -> None:
+    """ONBOARD_REGISTRY_PATH set but the file not yet MATERIALIZED → the read chain
+    falls back to the committed registry (never FileNotFoundError). This keeps the
+    onboard API's pre-write ``supported_cities()`` call (before ``write_city`` seeds
+    the tmp file) safe.
+    [undo: drop the .exists() guard → load_registry opens a missing file → RED]"""
+    monkeypatch.setenv("ONBOARD_REGISTRY_PATH", str(tmp_path / "not-yet-written.json"))
+    city_registry.load_registry.cache_clear()
+    assert {"paris", "new_york"} <= city_registry.supported_cities()
+    assert "london" not in city_registry.supported_cities()
+
+
+def test_registry_env_unset_preserves_global_swap(tmp_path, monkeypatch) -> None:
+    """With ONBOARD_REGISTRY_PATH UNSET, the module-global swap (assemble._register's
+    mechanism) still drives the effective path exactly as before — a monkeypatched
+    _REGISTRY_PATH is what load_registry reads.
+    [undo: n/a — this guards that env-honoring did not break the swap contract]"""
+    monkeypatch.delenv("ONBOARD_REGISTRY_PATH", raising=False)
+    swapped = tmp_path / "swapped.json"
+    swapped.write_text(
+        json.dumps(
+            {"gotham": {"display_name": "Gotham", "bbox": [0.0, 1.0, 0.0, 1.0],
+                        "cloud_deployed": False}},
+            indent=2, sort_keys=True,
+        )
+        + "\n"
+    )
+    monkeypatch.setattr(city_registry, "_REGISTRY_PATH", swapped)
+    city_registry.load_registry.cache_clear()
+    assert city_registry.supported_cities() == frozenset({"gotham"})

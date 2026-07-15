@@ -62,7 +62,6 @@ def _assert_upload_target_allowed(allow_cloud: bool) -> None:
         )
 
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
 VALIDATOR = Path(__file__).resolve().parent / "validate_beats.py"
 
 # Generous per-city bounding boxes (city + inner edges): reject gross coordinate
@@ -74,7 +73,10 @@ PARIS_BBOX = CITY_BBOX["paris"]  # back-compat default
 
 
 def _city_paths(city_slug: str) -> tuple[Path, Path]:
-    data_dir = REPO_ROOT / "data" / city_slug
+    # Hermetic-aware data root (``$ONBOARD_DATA_ROOT`` when set, else
+    # ``<repo>/data``) so a hermetic onboard's tmp corpus is what the deploy reads;
+    # unset → <repo>/data/{slug}, byte-identical to the prior hardcoded path.
+    data_dir = city_registry.onboard_data_root() / city_slug
     return data_dir / "poi-raw.json", data_dir / "beats.json"
 
 # fact_check.status values that must never reach the live database.

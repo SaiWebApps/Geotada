@@ -35,16 +35,21 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.upload_paris import CITY_BBOX, _beat_blocked, _in_city_bounds
 from src.api.models.nodes import canonical_name_key
-from src.city_registry import load_registry
+from src.city_registry import load_registry, onboard_data_root
 from src.connection import create_driver, get_database
 
-DATA_ROOT = ROOT / "data"
+
+def _data_root() -> Path:
+    """Hermetic-aware data root (``$ONBOARD_DATA_ROOT`` when set, else
+    ``<repo>/data``). Resolved at CALL time so the deploy subprocess (env set at
+    launch) and the tests both see the right root; unset → ``ROOT/data`` exactly."""
+    return onboard_data_root()
 
 
 def _cities() -> list[str]:
     return [
         d.name
-        for d in sorted(DATA_ROOT.iterdir())
+        for d in sorted(_data_root().iterdir())
         if d.is_dir() and (d / "poi-raw.json").exists()
     ]
 
@@ -55,7 +60,7 @@ def _load(path: Path) -> list | dict:
 
 def _expected(slug: str) -> dict:
     """Repo-derived sets that SHOULD be in the graph for this city."""
-    ddir = DATA_ROOT / slug
+    ddir = _data_root() / slug
     bbox = CITY_BBOX.get(slug)
     pois = _load(ddir / "poi-raw.json")
     # In-bbox POIs are the ones the uploader keeps.

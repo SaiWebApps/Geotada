@@ -24,10 +24,17 @@ from shapely.geometry import Polygon
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from src.city_registry import onboard_data_root
 from src.utils.spatial import coords_to_wkt, fetch_osm_boundary, simplify_polygon
 
-PROJECT = Path(__file__).resolve().parent.parent
 API = "http://localhost:8000/api/v1"
+
+
+def _city_data_dir(slug: str) -> Path:
+    """The city's corpus dir under the hermetic-aware data root
+    (``$ONBOARD_DATA_ROOT`` when set, else ``<repo>/data``). Unset → the prior
+    ``<repo>/data/{slug}`` exactly, so real deploys are byte-identical."""
+    return onboard_data_root() / slug
 
 
 def get_boundary(area: dict, slug: str) -> list[tuple[float, float]]:
@@ -131,7 +138,8 @@ def upload_area_to_area(areas: list[dict], created: dict[str, str]) -> int:
 
 def upload_poi_to_area(slug: str, city_name: str, created: dict[str, str]) -> tuple[int, int]:
     print("\n=== POI->Area WITHIN edges ===")
-    staging = json.load(open(PROJECT / "data" / slug / "within_edges.json"))
+    with open(_city_data_dir(slug) / "within_edges.json") as f:
+        staging = json.load(f)
     pois_by_name = {
         p["properties"]["name"]: p["id"]
         for p in fetch_all("POI")
@@ -175,7 +183,8 @@ def main():
     ap.add_argument("--slug", required=True, help="city slug, e.g. new_york")
     args = ap.parse_args()
 
-    areas = json.load(open(PROJECT / "data" / args.slug / "areas.json"))
+    with open(_city_data_dir(args.slug) / "areas.json") as f:
+        areas = json.load(f)
     city_name = areas[0]["city_name"]
     print(f"Uploading {len(areas)} Areas for '{args.slug}' (city_name={city_name})\n")
 

@@ -21,6 +21,7 @@ Target selection follows .env exactly like every other tool:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import signal
 import subprocess
@@ -30,7 +31,11 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-API_PROBE = "http://localhost:8000/api/v1/nodes/Area?skip=0&limit=1"
+sys.path.insert(0, str(ROOT))
+
+from src.city_registry import onboard_data_root
+
+_DEFAULT_DEPLOY_API_PORT = 8000
 
 
 def _run(cmd: list[str]) -> None:
@@ -38,18 +43,89 @@ def _run(cmd: list[str]) -> None:
     subprocess.run(cmd, check=True, cwd=str(ROOT))
 
 
-def _api_healthy() -> bool:
+def _deploy_api_port() -> int:
+    """Port for the transient areas-upload API. ``$ONBOARD_DEPLOY_API_PORT`` when
+    set (non-empty), else 8000 — so a hermetic deploy can dodge a busy :8000."""
+    raw = (os.environ.get("ONBOARD_DEPLOY_API_PORT") or "").strip()
+    return int(raw) if raw else _DEFAULT_DEPLOY_API_PORT
+
+
+def _api_probe(port: int) -> str:
+    return f"http://localhost:{port}/api/v1/nodes/Area?skip=0&limit=1"
+
+
+def _api_healthy(probe: str) -> bool:
     try:
-        urllib.request.urlopen(API_PROBE, timeout=2)  # localhost probe only
+        urllib.request.urlopen(probe, timeout=2)  # localhost probe only
         return True
     except Exception:
         return False
 
 
-def _port_8000_busy() -> bool:
+def _port_busy(port: int) -> bool:
     return subprocess.run(
-        ["lsof", "-ti:8000"], capture_output=True, text=True
+        ["lsof", f"-ti:{port}"], capture_output=True, text=True
     ).stdout.strip() != ""
+
+
+def _areas_for(slug: str) -> list:
+    """The city's Area records (``data/{slug}/areas.json`` under the hermetic-aware
+    data root), or ``[]`` when the file is absent, empty, or not a JSON list.
+    A fresh onboarded city writes ``areas.json == []`` — no areas to deploy."""
+    path = onboard_data_root() / slug / "areas.json"
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return []
+    return data if isinstance(data, list) else []
+
+
+def _upload_areas_step(slug: str, py: str) -> None:
+    """Step 2: Areas + WITHIN edges via a TRANSIENT local API (upload_areas POSTs
+    to it).
+
+    ROBUSTNESS FIX: SKIP the whole step — and DO NOT spawn any transient API —
+    when the city has no areas (``areas.json == []``/absent, e.g. a fresh
+    onboarded city). Only spawn the uvicorn when there are Area nodes to create,
+    so a hermetic deploy never hard-fails on a busy port for a city with nothing
+    to upload. Honors ``$ONBOARD_DEPLOY_API_PORT`` (default 8000)."""
+    if not _areas_for(slug):
+        print(f"  [2/3] {slug}: no areas (areas.json empty/absent) — skipping areas upload")
+        return
+
+    port = _deploy_api_port()
+    if _port_busy(port):
+        sys.exit(f"ERROR: :{port} is already in use — deploy manages its own API; free it first.")
+    env = {
+        **os.environ,
+        # Never proxy the localhost API round-trip (matches `make api`).
+        "NO_PROXY": "localhost,127.0.0.1,::1",
+        "no_proxy": "localhost,127.0.0.1,::1",
+    }
+    probe = _api_probe(port)
+    api = subprocess.Popen(
+        [py, "-m", "uvicorn", "src.api.app:app", "--host", "127.0.0.1", "--port", str(port)],
+        cwd=str(ROOT),
+        env=env,
+    )
+    try:
+        for _ in range(25):
+            if _api_healthy(probe):
+                break
+            if api.poll() is not None:
+                sys.exit("ERROR: transient API exited before becoming healthy.")
+            time.sleep(1)
+        else:
+            sys.exit(f"ERROR: transient API never became healthy on :{port}.")
+        _run([py, "scripts/upload_areas.py", "--slug", slug])
+    finally:
+        api.send_signal(signal.SIGTERM)
+        try:
+            api.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            api.kill()
 
 
 def main() -> int:
@@ -67,36 +143,9 @@ def main() -> int:
         upload.append("--allow-cloud")
     _run(upload)
 
-    # 2. Areas + WITHIN edges via a transient local API (upload_areas POSTs to it).
-    if _port_8000_busy():
-        sys.exit("ERROR: :8000 is already in use — deploy manages its own API; free it first.")
-    env = {
-        **os.environ,
-        # Never proxy the localhost API round-trip (matches `make api`).
-        "NO_PROXY": "localhost,127.0.0.1,::1",
-        "no_proxy": "localhost,127.0.0.1,::1",
-    }
-    api = subprocess.Popen(
-        [py, "-m", "uvicorn", "src.api.app:app", "--host", "127.0.0.1", "--port", "8000"],
-        cwd=str(ROOT),
-        env=env,
-    )
-    try:
-        for _ in range(25):
-            if _api_healthy():
-                break
-            if api.poll() is not None:
-                sys.exit("ERROR: transient API exited before becoming healthy.")
-            time.sleep(1)
-        else:
-            sys.exit("ERROR: transient API never became healthy on :8000.")
-        _run([py, "scripts/upload_areas.py", "--slug", args.slug])
-    finally:
-        api.send_signal(signal.SIGTERM)
-        try:
-            api.wait(timeout=10)
-        except subprocess.TimeoutExpired:
-            api.kill()
+    # 2. Areas + WITHIN edges via a transient local API — SKIPPED entirely for a
+    #    city with no areas (no transient server spawned; see _upload_areas_step).
+    _upload_areas_step(args.slug, py)
 
     # 3. Verify parity — the deploy is not 'done' until the graph matches the repo.
     _run([py, "-m", "scripts.db_parity", args.slug])

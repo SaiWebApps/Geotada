@@ -52,9 +52,6 @@ from src.onboard.models import CityContext, ConnectorResult, PoiCandidate
 
 logger = logging.getLogger(__name__)
 
-# Repo root: src/onboard/assemble.py -> src/onboard -> src -> repo root.
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-
 # The minimum POI count a real city must carry — never ship a thin city.
 MIN_POIS = 30
 
@@ -597,11 +594,10 @@ def write_city(
             f"need at least {MIN_POIS}"
         )
 
-    root = (
-        data_root
-        or (Path(os.environ["ONBOARD_DATA_ROOT"]) if os.getenv("ONBOARD_DATA_ROOT") else None)
-        or REPO_ROOT / "data"
-    )
+    # Explicit ``data_root`` wins; otherwise the ONE shared resolver
+    # (``$ONBOARD_DATA_ROOT`` when set, else ``<repo>/data``) — same result as the
+    # prior inline resolution, now defined once so scripts + assemble never drift.
+    root = data_root or city_registry.onboard_data_root()
     city_dir = root / city.slug
     wiki_dir = city_dir / "wikipedia"
     wiki_dir.mkdir(parents=True, exist_ok=True)

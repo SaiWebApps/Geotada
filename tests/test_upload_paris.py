@@ -6,6 +6,7 @@ the targeted backfill (which must never run the audio_url-wiping full upload).""
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 
@@ -14,6 +15,7 @@ from scripts.upload_paris import (
     _assert_beats_valid,
     _backfill_provenance,
     _beat_blocked,
+    _city_paths,
     _in_city_bounds,
     _provenance_fields,
     _upload_beats,
@@ -22,6 +24,31 @@ from scripts.upload_paris import (
 from src.api.models.nodes import canonical_name_key
 from src.connection import get_database
 from tests.conftest import needs_neo4j
+
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+# ---------------------------------------------------------------------------
+# _city_paths resolves the corpus root via the hermetic-aware helper: with
+# ONBOARD_DATA_ROOT set the deploy subprocess reads {tmp}/{slug}; unset →
+# <repo>/data/{slug} exactly (real paris/new_york deploys unchanged).
+# ---------------------------------------------------------------------------
+def test_city_paths_defaults_to_repo_data_when_unset(monkeypatch) -> None:
+    """Unset ONBOARD_DATA_ROOT → <repo>/data/{slug}/... — byte-identical to the old
+    hardcoded path. [undo: n/a for unset; guards the default is preserved]"""
+    monkeypatch.delenv("ONBOARD_DATA_ROOT", raising=False)
+    poi, beats = _city_paths("london")
+    assert poi == _REPO_ROOT / "data" / "london" / "poi-raw.json"
+    assert beats == _REPO_ROOT / "data" / "london" / "beats.json"
+
+
+def test_city_paths_honors_onboard_data_root(monkeypatch, tmp_path) -> None:
+    """ONBOARD_DATA_ROOT=tmp → {tmp}/{slug}/... so the deploy reads the hermetic
+    corpus. [undo: hardcode REPO_ROOT/data → RED when the env is set]"""
+    monkeypatch.setenv("ONBOARD_DATA_ROOT", str(tmp_path))
+    poi, beats = _city_paths("london")
+    assert poi == tmp_path / "london" / "poi-raw.json"
+    assert beats == tmp_path / "london" / "beats.json"
 
 
 def test_in_city_bounds_accepts_paris():

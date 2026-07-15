@@ -36,16 +36,68 @@ _SLUG_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 # Registry file lives next to this module (ships in the prod image under src/).
 _REGISTRY_PATH = Path(__file__).resolve().parent / "cities.json"
 
+# Repo root: src/city_registry.py -> src -> repo root.
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def onboard_data_root() -> Path:
+    """The hermetic-aware corpus root: ``$ONBOARD_DATA_ROOT`` when set (non-empty),
+    else the committed ``<repo>/data``.
+
+    ONE definition shared by the onboard WRITE path (``assemble.write_city``) and
+    the deploy READ chain (``scripts.upload_paris`` / ``upload_areas`` /
+    ``db_parity``) so a hermetic write and the deploy that consumes it resolve the
+    SAME root. BACKWARD-COMPATIBLE: when the env is unset the result is byte-
+    identical to the old hardcoded ``REPO_ROOT/'data'`` — real paris/new_york
+    deploys are unaffected. Mirrors ``write_city``'s prior inline resolution."""
+    env = os.environ.get("ONBOARD_DATA_ROOT")
+    return Path(env) if env else _REPO_ROOT / "data"
+
+
+def _effective_registry_path() -> Path:
+    """The registry file every read/write in this module resolves to.
+
+    ``$ONBOARD_REGISTRY_PATH`` when set to an EXISTING file, else the module-global
+    ``_REGISTRY_PATH`` (the committed ``src/cities.json``, or whatever
+    ``assemble._register`` has swapped in under try/finally).
+
+    The existence guard preserves two invariants:
+      * env UNSET → byte-identical to today: the module global (real
+        ``src/cities.json``), so real paris/new_york reads/writes are unchanged and
+        ``_register``'s global-swap keeps working exactly as before.
+      * env SET but the hermetic registry not yet materialized (the onboard API
+        calls ``supported_cities()`` before ``write_city`` seeds the tmp file) →
+        the committed registry, never a ``FileNotFoundError``.
+    Once ``write_city`` has materialized the hermetic file — and in the DEPLOY
+    subprocess, where it already exists — the env path WINS (the whole point: the
+    deploy read chain sees the hermetically-onboarded city).
+
+    CALLER INVARIANT (do not break): a caller that sets ``$ONBOARD_REGISTRY_PATH``
+    MUST also pass ``registry_path=Path($ONBOARD_REGISTRY_PATH)`` to ``write_city``
+    so ``assemble._register`` SEEDS/materializes that file before the write. If the
+    env is set but the file is never materialized and ``register_city`` is called
+    directly (no ``registry_path``), this resolver falls back to the committed
+    ``src/cities.json`` and the onboarded city would land in the real registry (the
+    Step-5 clobber). Both current callers (routes/onboard.py, cli.py) honor this."""
+    env = os.environ.get("ONBOARD_REGISTRY_PATH")
+    if env:
+        path = Path(env)
+        if path.exists():
+            return path
+    return _REGISTRY_PATH
+
 
 @lru_cache(maxsize=1)
 def load_registry() -> dict[str, dict]:
-    """Read + parse ``src/cities.json`` (cached).
+    """Read + parse the effective ``cities.json`` (cached).
 
+    The effective path is ``$ONBOARD_REGISTRY_PATH`` (when set to an existing file)
+    else the module-global ``_REGISTRY_PATH`` — see ``_effective_registry_path``.
     The cache is invalidated by ``register_city`` / ``mark_cloud_deployed`` via
-    ``load_registry.cache_clear()``; anything that writes the file directly must
-    clear it too.
+    ``load_registry.cache_clear()``; anything that writes the file directly, or
+    changes ``$ONBOARD_REGISTRY_PATH`` / the global mid-process, must clear it too.
     """
-    with open(_REGISTRY_PATH) as f:
+    with open(_effective_registry_path()) as f:
         return json.load(f)
 
 
@@ -130,11 +182,15 @@ def _validate_entry(entry: dict) -> None:
 
 
 def _atomic_write(registry: dict[str, dict]) -> None:
-    """Write ``cities.json`` atomically (temp file in the same dir + ``os.replace``),
-    keys sorted for a stable diff, then invalidate the loader cache."""
-    tmp = _REGISTRY_PATH.with_name(_REGISTRY_PATH.name + ".tmp")
+    """Write the effective ``cities.json`` atomically (temp file in the same dir +
+    ``os.replace``), keys sorted for a stable diff, then invalidate the loader
+    cache. Writes to ``_effective_registry_path()`` — the hermetic file when
+    ``$ONBOARD_REGISTRY_PATH`` points at one (``_register`` seeds it before the
+    first write, so it exists), else the module global (unchanged default)."""
+    path = _effective_registry_path()
+    tmp = path.with_name(path.name + ".tmp")
     tmp.write_text(json.dumps(registry, indent=2, sort_keys=True) + "\n")
-    os.replace(tmp, _REGISTRY_PATH)
+    os.replace(tmp, path)
     load_registry.cache_clear()
 
 
