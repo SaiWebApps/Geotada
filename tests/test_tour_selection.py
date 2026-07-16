@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from src.tour.contract import POI, BeatRef, Route, TourInput
+from src.tour.contract import POI, BeatRef, POIBeats, Route, TourInput
 from src.tour.routing import envelope_radius_m, haversine_m, pace_corrected_walk_seconds
 from src.tour.selection import (
     AREA_ALIGNMENT_ADJACENT,
@@ -1873,76 +1873,46 @@ def test_absolute_ceiling_caps_every_stop_including_the_marquee():
         assert {b.id for b in m_kept.beats} | set(m_ov) == {b.id for b in full["marq"].beats}
 
 
-def test_final_stop_closing_beat_survives_the_cap():
-    """C9h regression (red-team find): the cap must NOT trim the FINAL stop's
-    closing-friendly beat (callback/climax) — that beat carries the walk's wrap-up,
-    and reorder_final_stop_for_closing runs AFTER the cap and can only reorder KEPT
-    beats, so a trimmed callback ends the tour mid-fact. UNDO: remove the
-    _keep_final_closing_beat splice -> the callback lands in overflow -> RED."""
-    from src.tour.beat_select import _find_closing_friendly_index
-    from src.tour.routing import planned_audio_seconds, summarise_route
-    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
+def test_keep_final_closing_beat_splices_a_trimmed_callback():
+    """C9h regression (red-team): if the per-stop cap trimmed the terminal stop's
+    closing-friendly beat (callback) into overflow, _keep_final_closing_beat must
+    splice it back — else reorder_final_stop_for_closing (which runs later and can
+    only reorder KEPT beats) can't recover it and the tour ends mid-fact. Unit-tested
+    directly (the end-to-end beat ORDER is POI-strategy-dependent, so an integration
+    fixture can't reliably force the callback into the trimmed tail). UNDO: gut the
+    splice in _keep_final_closing_beat -> callback stays in overflow -> RED."""
+    from src.tour.selection import _keep_final_closing_beat
 
-    # GENUINELY distinct bodies (the within-POI dedup collapses near-identical ones).
-    _distinct = [
-        "Ravaillac stabbed Henri the Fourth in 1610.",
-        "Iron spikes lined the oubliettes below the river tower.",
-        "Marie Gredeler was the only woman jailed in this wing.",
-        "Cartouche the bandit trained thieves on little bells here.",
-        "The Sanson family served as executioners for seven generations.",
-        "Fouquier-Tinville ran the Revolutionary Tribunal upstairs.",
-        "Madame Roland awaited the guillotine in a dreary cell.",
-        "Danton and Robespierre held cells beside the queen.",
-        "The Salle des Gens d'Armes was built around 1310.",
-        "A wealthy prisoner could rent a bed for 27 livres a month.",
-        "The Tour Bonbec earned its name from the screams of the tortured.",
-        "Napoleon crowned himself emperor at Notre-Dame in 1804.",
-        "And remember Duval, whose grain once fed the whole quarter.",
-    ]
+    def _b(i, nf=None):
+        return BeatRef(id=f"b{i}", poi_id="p", est_spoken_seconds=40, active_status="active",
+                       narrative_function=nf, script_body=f"A distinct fact number {i}.")
 
-    def _b(pid, i, secs, nf=None):
-        return BeatRef(
-            id=f"{pid}-b{i}", poi_id=pid, est_spoken_seconds=secs, active_status="active",
-            narrative_function=nf, script_body=_distinct[i % len(_distinct)],
-        )
-
-    # Terminal POI: enough 40s beats that the ceiling trims SEVERAL (so restoring only
-    # the closing beat still leaves the tour shorter), with a CALLBACK ordered last —
-    # exactly where the prefix cut falls.
-    n = min(MAX_DWELL_AUDIO_SECONDS // 40 + 3, len(_distinct))
-    first = _poi("first", tier=4, lat=48.8556, lng=2.3658, areas=("Le Marais",))
-    last = _poi("last", tier=5, lat=48.8560, lng=2.3665, areas=("Le Marais",))
-    last_beats = [_b("last", i, 40, "establishing") for i in range(n - 1)]
-    last_beats.append(_b("last", n - 1, 40, "callback"))
-    beats = {
-        "first": [
-            BeatRef(id="first-b0", poi_id="first", est_spoken_seconds=40,
-                    active_status="active", script_body="You start here at the first stop."),
-            BeatRef(id="first-b1", poi_id="first", est_spoken_seconds=40,
-                    active_status="active", script_body="A short note about the first stop."),
-        ],
-        "last": last_beats,
-    }
-    snap = _snap([first, last], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats)
-    route = summarise_route(
-        [first, last], start_lat=48.8556, start_lng=2.3658, round_trip=True,
-        duration_min=60, spine_area="Le Marais", routing_client=None,
+    full = POIBeats(
+        poi_id="p", poi_name="p", ordering_strategy="sub_location",
+        beats=(*(_b(i, "establishing") for i in range(10)), _b(10, "callback")),
     )
-    capped = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=True)
-    full = {p.poi_id: p for p in build_poi_beat_plans(route, snap, lenses=None)}
-    kept_last, ov_last = capped[-1]  # the terminal stop
-    full_last = full[kept_last.poi_id]
-    # precondition: the terminal stop's FULL plan is over the ceiling (the cap engages)
-    assert planned_audio_seconds(full_last.beats) > MAX_DWELL_AUDIO_SECONDS, kept_last.poi_id
-    idx = _find_closing_friendly_index(full_last.beats)
-    assert idx is not None
-    closing_id = full_last.beats[idx].id
-    kept_ids = {b.id for b in kept_last.beats}
-    # the closing beat survived the cap (spliced back) — RED without the fix
-    assert closing_id in kept_ids, (closing_id, sorted(kept_ids))
-    assert closing_id not in ov_last
-    # and the cap still bit: kept audio is bounded (ceiling + the one closing beat)
-    assert planned_audio_seconds(kept_last.beats) < planned_audio_seconds(full_last.beats)
+    # Simulate the audio cap having trimmed the last TWO beats (incl. the callback):
+    kept = full.model_copy(update={"beats": full.beats[:9]})
+    new_kept, new_ov = _keep_final_closing_beat((kept, ("b9", "b10")), full)
+    kept_ids = {b.id for b in new_kept.beats}
+    assert "b10" in kept_ids, kept_ids          # the callback is spliced back
+    assert "b10" not in new_ov                   # and removed from overflow
+    assert "b9" in new_ov                         # a NON-closing trimmed beat stays trimmed
+    # coverage-safe: kept + overflow == the full plan, no duplicates, none lost
+    assert kept_ids | set(new_ov) == {b.id for b in full.beats}
+    assert len(new_kept.beats) + len(new_ov) == len(full.beats)
+
+
+def test_keep_final_closing_beat_is_a_noop_when_nothing_was_trimmed():
+    from src.tour.selection import _keep_final_closing_beat
+
+    only = BeatRef(id="b0", poi_id="p", est_spoken_seconds=40, active_status="active",
+                   narrative_function="callback", script_body="The only fact here.")
+    plan = POIBeats(poi_id="p", poi_name="p", ordering_strategy="sub_location", beats=(only,))
+    assert _keep_final_closing_beat((plan, ()), plan) == (plan, ())  # empty overflow -> no-op
+    # closing beat already kept -> no duplicate splice
+    kept, ov = _keep_final_closing_beat((plan, ("someOtherId",)), plan)
+    assert [b.id for b in kept.beats] == ["b0"] and ov == ("someOtherId",)
 
 
 # ---------------------------------------------------------------------------

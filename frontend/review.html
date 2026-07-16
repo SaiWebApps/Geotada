@@ -3142,7 +3142,7 @@
     if (cmpBtn) cmpBtn.disabled = true;  // no concurrent compare while a preview runs (D6)
     const cmpEl = document.getElementById('tourCompare');
     if (cmpEl) cmpEl.innerHTML = '';  // clear any prior side-by-side (D5b)
-    stopsEl.innerHTML = ''; tourStops = [];
+    stopsEl.innerHTML = ''; tourStops = []; drawTourRoute([]);  // clear map unconditionally (D5a)
     try {
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },

@@ -169,9 +169,9 @@ def suppress_repeated_claims(
 
     voiced: list[tuple[str, frozenset[str]]] = []  # (beat_id, claim_sig) from kept sentences
 
-    def _already_voiced(sig: frozenset[str], own_beat: str) -> bool:
+    def _already_voiced(sig: frozenset[str], own_beats: tuple[str, ...]) -> bool:
         return any(
-            (include_same_beat or bid != own_beat)
+            (include_same_beat or bid not in own_beats)
             and _overlap(sig, vsig) >= CLAIM_DEDUP_THRESHOLD
             and len(sig & vsig) >= MIN_SHARED_TOKENS
             for bid, vsig in voiced
@@ -181,13 +181,18 @@ def suppress_repeated_claims(
     for i, s in enumerate(sentences):
         if s.source_type != "beat":
             continue
-        claim_sigs = claim_sigs_by_beat.get(s.source_id)
+        # Judge the sentence against the UNION of ALL its cited beats' claims
+        # (source_id + also_cites): a FUSED cross-beat sentence carries the also_cited
+        # beat's fact too, so it must NOT be dropped as a "pure restatement" of its
+        # primary beat alone — that silently empties the also_cited beat.
+        cited = s.cited_beat_ids
+        claim_sigs = [sig for bid in cited for sig in claim_sigs_by_beat.get(bid, [])]
         if not claim_sigs:
             continue
         realized = _realized_claim_signatures(s.text, claim_sigs)
         if not realized:
             continue
-        novel = [sig for sig in realized if not _already_voiced(sig, s.source_id)]
+        novel = [sig for sig in realized if not _already_voiced(sig, cited)]
         if not novel:
             # PURE restatement — every claim it realizes is already voiced elsewhere.
             drop.add(i)
@@ -203,19 +208,22 @@ def suppress_repeated_claims(
     # goldens) hold. Vignette walk-past beats are EXEMPT — they are additive
     # annotations, not seated stops, so a vignette that is entirely a restatement is
     # dropped whole rather than voiced as a duplicate.
+    # A beat is "kept" if any SURVIVING sentence cites it (primary or also_cites), so
+    # an also_cited beat carried only by a fused sentence counts as voiced.
     kept_by_beat: dict[str, int] = defaultdict(int)
     for i, s in enumerate(sentences):
         if s.source_type == "beat" and i not in drop:
-            kept_by_beat[s.source_id] += 1
+            for bid in s.cited_beat_ids:
+                kept_by_beat[bid] += 1
     for i, s in enumerate(sentences):
-        if (
-            s.source_type == "beat"
-            and s.source_id not in vignette_ids
-            and kept_by_beat[s.source_id] == 0
-            and i in drop
-        ):
+        if s.source_type != "beat" or i not in drop:
+            continue
+        # Restore this dropped sentence if it is the last carrier of any SEATED
+        # (non-vignette) cited beat — so no beat, primary OR also_cited, is emptied.
+        if any(bid not in vignette_ids and kept_by_beat[bid] == 0 for bid in s.cited_beat_ids):
             drop.discard(i)
-            kept_by_beat[s.source_id] = 1  # only the first dropped sentence is restored
+            for bid in s.cited_beat_ids:
+                kept_by_beat[bid] = max(kept_by_beat[bid], 1)
 
     return [s for i, s in enumerate(sentences) if i not in drop]
 

@@ -43,6 +43,28 @@ def _s(text: str, source_id: str, source_type: str = "beat") -> Sentence:
     return Sentence(text=text, source_id=source_id, source_type=source_type, stop_idx=0)
 
 
+def test_suppress_repeated_claims_keeps_a_fused_also_cites_sentence():
+    """Silent-fact-loss regression (red-team): a FUSED sentence (primary A, also_cites
+    B) carrying B's DISTINCT fact must NOT be dropped as a pure restatement of A alone
+    when A's fact was already voiced — that silently EMPTIES beat B. The pass judges a
+    sentence by the UNION of its cited beats' claims. UNDO: judge by source_id only
+    (drop the also_cites union) -> the fused sentence is dropped, B emptied -> RED."""
+    seq = _seq(
+        _beat("A", ("Napoleon crowned himself emperor in 1804",)),
+        _beat("B", ("Marie Gredeler was the only woman executed at this prison",)),
+    )
+    s1 = _s("Napoleon crowned himself emperor here in 1804.", "A")  # voices A's fact first
+    fused = Sentence(
+        text="Napoleon crowned himself emperor in 1804, and Marie Gredeler was "
+        "the only woman executed at this prison.",
+        source_id="A", source_type="beat", stop_idx=0, also_cites=("B",),
+    )
+    out = suppress_repeated_claims([s1, fused], seq, include_same_beat=True)
+    assert fused in out, [x.text for x in out]  # kept — it carries B's novel fact
+    # beat B is still voiced by some surviving sentence (not emptied)
+    assert any("B" in x.cited_beat_ids for x in out if x.source_type == "beat")
+
+
 # Three founding beats + the distinct Nanterre-debate beat, faithful to the corpus.
 B1 = _beat("f052", (
     "Parisii settled 3rd century BC",

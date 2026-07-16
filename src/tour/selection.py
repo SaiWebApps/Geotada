@@ -168,6 +168,8 @@ MIN_DWELL_AUDIO_SECONDS: int = 90
 # Absolute per-stop audio CEILING (C9h, 2026-07-16). No single stop may voice more
 # than this many seconds of continuous narration — the 10-minute "wall, not a walk"
 # monologue an acceptance review flagged as the top reason tours feel stilted.
+# SOFT on the terminal stop only: it may overshoot by ONE closing beat, which
+# _keep_final_closing_beat splices back so the tour does not end mid-fact.
 # Applied to EVERY stop (the marquee included) on BOTH open-walk and A→B routes, as
 # min(existing governor cap, this). It is a WHOLE-BEAT cap via govern_poi_beats:
 # trimmed beats become keep-exploring overflow (never dropped), and compose
@@ -1052,13 +1054,15 @@ def build_poi_beat_plans_capped(
     capped = [
         govern_poi_beats(plan, cap) for plan, cap in zip(plans, final_caps, strict=True)
     ]
-    # Protect the FINAL stop's closing-friendly beat from the cap. The closing glue
-    # fires after the last beat of the last stop, and reorder_final_stop_for_closing
-    # (which runs later, in generate) can only reorder beats the cap KEPT — so if the
-    # cap trimmed the callback/climax beat, the tour would end mid-fact. Splice it
-    # back (a bounded one-beat overshoot, like govern's always-keep-the-first-beat
-    # rule) and drop it from that stop's overflow.
-    capped[-1] = _keep_final_closing_beat(capped[-1], plans[-1])
+    # Protect the last NARRATED stop's closing-friendly beat from the cap. The closing
+    # glue fires after the last beat of the last stop WITH content, and
+    # reorder_final_stop_for_closing (which runs later, in generate) can only reorder
+    # beats the cap KEPT — so if the cap trimmed the callback/climax, the tour ends
+    # mid-fact. Skip a beatless fixed-end (A→B) sentinel and protect the real terminal.
+    for i in range(len(capped) - 1, -1, -1):
+        if capped[i][0].beats:
+            capped[i] = _keep_final_closing_beat(capped[i], plans[i])
+            break
     return tuple(capped)
 
 

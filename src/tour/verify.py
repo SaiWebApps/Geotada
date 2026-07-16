@@ -210,8 +210,10 @@ def verify_faithfulness(
         # cross-book merge ("in 1800 [beat A] Napoleon promised naming rights
         # [beat B]") is faithful instead of failing on the primary beat alone.
         cited = [beats_by_id[bid] for bid in sentence.cited_beat_ids if bid in beats_by_id]
-        if not any(b.key_claims for b in cited):
-            continue  # nothing to entail against
+        if not any(b.key_claims or b.script_body for b in cited):
+            continue  # nothing to entail against (support = key_claims + script_body
+            # below), so a KEYLESS corpus (e.g. London, key_claims=[]) is still gated
+            # against its grounded script_body instead of skipping faithfulness.
         norm = _normalize_for_verbatim(sentence.text)
         if any(b.script_body and norm in _normalize_for_verbatim(b.script_body) for b in cited):
             continue  # canonical corpus text, unchanged — trivially faithful
