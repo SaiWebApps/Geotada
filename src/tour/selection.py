@@ -32,7 +32,12 @@ from shapely.geometry import Point as _ShapelyPoint
 from shapely.geometry import shape as _shapely_shape
 from shapely.prepared import prep as _shapely_prep
 
-from .beat_select import extra_beat_ids, govern_poi_beats, select_poi_beats
+from .beat_select import (
+    _find_closing_friendly_index,
+    extra_beat_ids,
+    govern_poi_beats,
+    select_poi_beats,
+)
 from .contract import (
     POI,
     BeatRef,
@@ -1044,9 +1049,40 @@ def build_poi_beat_plans_capped(
         MAX_DWELL_AUDIO_SECONDS if c is None else min(c, MAX_DWELL_AUDIO_SECONDS)
         for c in dom_caps
     ]
-    return tuple(
+    capped = [
         govern_poi_beats(plan, cap) for plan, cap in zip(plans, final_caps, strict=True)
-    )
+    ]
+    # Protect the FINAL stop's closing-friendly beat from the cap. The closing glue
+    # fires after the last beat of the last stop, and reorder_final_stop_for_closing
+    # (which runs later, in generate) can only reorder beats the cap KEPT — so if the
+    # cap trimmed the callback/climax beat, the tour would end mid-fact. Splice it
+    # back (a bounded one-beat overshoot, like govern's always-keep-the-first-beat
+    # rule) and drop it from that stop's overflow.
+    capped[-1] = _keep_final_closing_beat(capped[-1], plans[-1])
+    return tuple(capped)
+
+
+def _keep_final_closing_beat(
+    capped: tuple[POIBeats, tuple[str, ...]], full_plan: POIBeats
+) -> tuple[POIBeats, tuple[str, ...]]:
+    """If the per-stop cap trimmed the FINAL stop's closing-friendly beat
+    (callback > climax > longest, per ``_find_closing_friendly_index``), splice it
+    back onto the kept plan and drop it from overflow, so the tour never ends
+    mid-fact. A bounded one-closing-beat overshoot, mirroring ``govern_poi_beats``'
+    always-keep-the-first-beat rule. No-op when nothing was trimmed, the plan has no
+    closing-friendly beat, or that beat already survived the cap."""
+    kept, overflow = capped
+    if not overflow:
+        return capped
+    idx = _find_closing_friendly_index(full_plan.beats)
+    if idx is None:
+        return capped
+    closing = full_plan.beats[idx]
+    if any(b.id == closing.id for b in kept.beats):
+        return capped
+    new_kept = kept.model_copy(update={"beats": (*kept.beats, closing)})
+    new_overflow = tuple(bid for bid in overflow if bid != closing.id)
+    return new_kept, new_overflow
 
 
 def planned_capped_audio_seconds(

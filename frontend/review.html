@@ -3126,18 +3126,24 @@
         return;
       }
     }
+    const composeEl = document.getElementById('tourCompose');
+    const compose = !!(composeEl && composeEl.checked);  // OFF by default -> $0 stitch
+    const provider = (document.getElementById('tourProvider') || {}).value || 'anthropic';
+    // Confirm the spend BEFORE clearing/disabling anything, so Cancel is a true no-op
+    // that leaves the existing preview intact (D4).
+    if (compose && !window.confirm(
+      '“Real AI narration” is on — this runs a LIVE compose with '
+      + (provider === 'openai' ? 'ChatGPT' : 'Claude Opus')
+      + ' and spends real money on your API key (~1 min). Continue?')) {
+      return;
+    }
+    const cmpBtn = document.getElementById('tourCompareBtn');
     genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
+    if (cmpBtn) cmpBtn.disabled = true;  // no concurrent compare while a preview runs (D6)
+    const cmpEl = document.getElementById('tourCompare');
+    if (cmpEl) cmpEl.innerHTML = '';  // clear any prior side-by-side (D5b)
     stopsEl.innerHTML = ''; tourStops = [];
     try {
-      const composeEl = document.getElementById('tourCompose');
-      const compose = !!(composeEl && composeEl.checked);  // OFF by default -> $0 stitch
-      const provider = (document.getElementById('tourProvider') || {}).value || 'anthropic';
-      if (compose && !window.confirm(
-        '“Real AI narration” is on — this runs a LIVE compose with '
-        + (provider === 'openai' ? 'ChatGPT' : 'Claude Opus')
-        + ' and spends real money on your API key (~1 min). Continue?')) {
-        return;  // user declined the spend; the finally block re-enables the button
-      }
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -3158,12 +3164,12 @@
         }
         return;
       }
-      document.getElementById('tourCompare').innerHTML = '';
       renderTourStops(await resp.json(), duration);
     } catch (err) {
       showError('Tour preview failed: ' + err.message);
     } finally {
       genBtn.disabled = false; genBtn.textContent = 'Generate preview';
+      if (cmpBtn) cmpBtn.disabled = false;
     }
   }
 
@@ -3307,20 +3313,24 @@
 
   // Read the shared tour inputs into a /trips/preview request body (provider set).
   function _tourRequestBody(provider, compose) {
-    const parts = document.getElementById('tourStart').value.split(',').map(s => parseFloat(s.trim()));
-    if (parts.length !== 2 || parts.some(isNaN)) return null;
+    const startEl = document.getElementById('tourStart');
+    const parts = (startEl ? startEl.value : '').split(',').map(s => parseFloat(s.trim()));
+    if (parts.length !== 2 || parts.some(isNaN)) return null;  // bad/missing start
     const lenses = document.getElementById('tourLenses').value.split(',').map(s => s.trim()).filter(Boolean);
+    const roundTrip = document.getElementById('tourRoundTrip').checked;
     const endEl = document.getElementById('tourEnd');
     let endLat = null, endLng = null;
     if (endEl && endEl.value.trim()) {
       const ep = endEl.value.split(',').map(s => parseFloat(s.trim()));
-      if (ep.length === 2 && !ep.some(isNaN)) { [endLat, endLng] = ep; }
+      if (ep.length !== 2 || ep.some(isNaN)) return null;  // malformed destination (D3)
+      [endLat, endLng] = ep;
+      if (roundTrip) return null;  // destination + round-trip mutually exclusive (D3)
     }
     return {
       center_lat: parts[0], center_lng: parts[1],
       duration_min: parseInt(document.getElementById('tourDuration').value, 10) || 60,
       lenses: lenses.length ? lenses : null,
-      round_trip: document.getElementById('tourRoundTrip').checked,
+      round_trip: roundTrip,
       end_lat: endLat, end_lng: endLng, compose, provider,
     };
   }
@@ -3330,18 +3340,28 @@
   async function compareProviders() {
     const cmpEl = document.getElementById('tourCompare');
     const btn = document.getElementById('tourCompareBtn');
+    const genBtn = document.getElementById('tourGenerateBtn');
     if (!cmpEl) return;
+    // Snapshot the request ONCE, fully validated, so BOTH legs compose the SAME tour
+    // regardless of later DOM edits (D2), and a bad destination / round-trip conflict
+    // is caught BEFORE any spend (D3).
     const bodyA = _tourRequestBody('anthropic', true);
-    if (!bodyA) { showError('Enter the start as "lat,lng".'); return; }
-    if (!window.confirm('This runs TWO live composes — Opus AND ChatGPT — on the same tour. '
+    if (!bodyA) {
+      showError('Check the inputs: start must be "lat,lng"; a destination must be "lat,lng" and cannot combine with round-trip.');
+      return;
+    }
+    const bodyB = { ...bodyA, provider: 'openai' };
+    if (!window.confirm('This runs TWO live composes — Opus AND ChatGPT — on the SAME tour. '
       + 'That spends real money on your Anthropic and OpenAI keys (~1–2 min). Continue?')) return;
     btn.disabled = true; btn.textContent = '⏳ Composing both…';
+    if (genBtn) genBtn.disabled = true;  // no concurrent generate (D6)
     document.getElementById('tourStops').innerHTML = '';
+    tourStops = []; drawTourRoute([]);  // clear the stale map route/pins (D5a)
     cmpEl.innerHTML = '<div style="color:var(--text-muted);padding:8px;">Composing with Opus and ChatGPT… ~1–2 min.</div>';
-    async function run(provider) {
+    async function run(body) {
       const r = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(_tourRequestBody(provider, true)),
+        body: JSON.stringify(body),
       });
       if (!r.ok) {
         let d = null; try { d = (await r.json()).detail; } catch (_) { /* keep null */ }
@@ -3349,21 +3369,24 @@
       }
       return r.json();
     }
-    try {
-      const opus = await run('anthropic');
-      const gpt = await run('openai');
-      renderComparison(opus, gpt);
-    } catch (e) {
-      showError('Compare failed: ' + e.message);
-      cmpEl.innerHTML = '';
-    } finally {
-      btn.disabled = false; btn.textContent = '⚖ Compare Opus vs ChatGPT';
-    }
+    // INDEPENDENT legs (D1): a failed ChatGPT leg must NOT discard the PAID Opus
+    // result. Each side renders its own result or its own error; nothing is wiped.
+    const [opusR, gptR] = await Promise.allSettled([run(bodyA), run(bodyB)]);
+    const opus = opusR.status === 'fulfilled' ? opusR.value : { error: opusR.reason.message };
+    const gpt = gptR.status === 'fulfilled' ? gptR.value : { error: gptR.reason.message };
+    renderComparison(opus, gpt);
+    btn.disabled = false; btn.textContent = '⚖ Compare Opus vs ChatGPT';
+    if (genBtn) genBtn.disabled = false;
   }
 
   function renderComparison(opus, gpt) {
     const cmpEl = document.getElementById('tourCompare');
     const col = (label, data) => {
+      if (!data || data.error) {  // a failed leg: show its error, never throw (D1)
+        return `<div style="min-width:0;"><h4 style="margin:0 0 6px;">${escHtml(label)} `
+          + `<span style="font-weight:400;font-size:0.78rem;color:#e06c6c;">failed</span></h4>`
+          + `<div style="font-size:0.82rem;color:#e06c6c;">${escHtml((data && data.error) || 'no result')}</div></div>`;
+      }
       const q = data.narration_quality || {};
       const t = q.tells_per_100w || {};
       const stops = (data.stops || []).map((s, i) =>

@@ -1873,6 +1873,78 @@ def test_absolute_ceiling_caps_every_stop_including_the_marquee():
         assert {b.id for b in m_kept.beats} | set(m_ov) == {b.id for b in full["marq"].beats}
 
 
+def test_final_stop_closing_beat_survives_the_cap():
+    """C9h regression (red-team find): the cap must NOT trim the FINAL stop's
+    closing-friendly beat (callback/climax) — that beat carries the walk's wrap-up,
+    and reorder_final_stop_for_closing runs AFTER the cap and can only reorder KEPT
+    beats, so a trimmed callback ends the tour mid-fact. UNDO: remove the
+    _keep_final_closing_beat splice -> the callback lands in overflow -> RED."""
+    from src.tour.beat_select import _find_closing_friendly_index
+    from src.tour.routing import planned_audio_seconds, summarise_route
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
+
+    # GENUINELY distinct bodies (the within-POI dedup collapses near-identical ones).
+    _distinct = [
+        "Ravaillac stabbed Henri the Fourth in 1610.",
+        "Iron spikes lined the oubliettes below the river tower.",
+        "Marie Gredeler was the only woman jailed in this wing.",
+        "Cartouche the bandit trained thieves on little bells here.",
+        "The Sanson family served as executioners for seven generations.",
+        "Fouquier-Tinville ran the Revolutionary Tribunal upstairs.",
+        "Madame Roland awaited the guillotine in a dreary cell.",
+        "Danton and Robespierre held cells beside the queen.",
+        "The Salle des Gens d'Armes was built around 1310.",
+        "A wealthy prisoner could rent a bed for 27 livres a month.",
+        "The Tour Bonbec earned its name from the screams of the tortured.",
+        "Napoleon crowned himself emperor at Notre-Dame in 1804.",
+        "And remember Duval, whose grain once fed the whole quarter.",
+    ]
+
+    def _b(pid, i, secs, nf=None):
+        return BeatRef(
+            id=f"{pid}-b{i}", poi_id=pid, est_spoken_seconds=secs, active_status="active",
+            narrative_function=nf, script_body=_distinct[i % len(_distinct)],
+        )
+
+    # Terminal POI: enough 40s beats that the ceiling trims SEVERAL (so restoring only
+    # the closing beat still leaves the tour shorter), with a CALLBACK ordered last —
+    # exactly where the prefix cut falls.
+    n = min(MAX_DWELL_AUDIO_SECONDS // 40 + 3, len(_distinct))
+    first = _poi("first", tier=4, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+    last = _poi("last", tier=5, lat=48.8560, lng=2.3665, areas=("Le Marais",))
+    last_beats = [_b("last", i, 40, "establishing") for i in range(n - 1)]
+    last_beats.append(_b("last", n - 1, 40, "callback"))
+    beats = {
+        "first": [
+            BeatRef(id="first-b0", poi_id="first", est_spoken_seconds=40,
+                    active_status="active", script_body="You start here at the first stop."),
+            BeatRef(id="first-b1", poi_id="first", est_spoken_seconds=40,
+                    active_status="active", script_body="A short note about the first stop."),
+        ],
+        "last": last_beats,
+    }
+    snap = _snap([first, last], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats)
+    route = summarise_route(
+        [first, last], start_lat=48.8556, start_lng=2.3658, round_trip=True,
+        duration_min=60, spine_area="Le Marais", routing_client=None,
+    )
+    capped = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=True)
+    full = {p.poi_id: p for p in build_poi_beat_plans(route, snap, lenses=None)}
+    kept_last, ov_last = capped[-1]  # the terminal stop
+    full_last = full[kept_last.poi_id]
+    # precondition: the terminal stop's FULL plan is over the ceiling (the cap engages)
+    assert planned_audio_seconds(full_last.beats) > MAX_DWELL_AUDIO_SECONDS, kept_last.poi_id
+    idx = _find_closing_friendly_index(full_last.beats)
+    assert idx is not None
+    closing_id = full_last.beats[idx].id
+    kept_ids = {b.id for b in kept_last.beats}
+    # the closing beat survived the cap (spliced back) — RED without the fix
+    assert closing_id in kept_ids, (closing_id, sorted(kept_ids))
+    assert closing_id not in ov_last
+    # and the cap still bit: kept audio is bounded (ceiling + the one closing beat)
+    assert planned_audio_seconds(kept_last.beats) < planned_audio_seconds(full_last.beats)
+
+
 # ---------------------------------------------------------------------------
 # Step 2.5 — open-walk B* == existing endpoint-pull far anchor.
 #
