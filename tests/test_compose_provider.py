@@ -26,21 +26,57 @@ def test_money_guard_compose_client_is_offline_stub_in_suite() -> None:
     )
 
 
-def test_product_compose_client_is_always_the_real_opus_client(monkeypatch) -> None:
-    """The product has NO mock branch and NO env toggle: ``get_compose_client()``
-    unconditionally builds ``AnthropicComposeClient``. Proven by re-patching that
-    class to a marker (overriding the money-guard's stub — the later ``setattr``
-    on the shared function-scoped monkeypatch wins) and confirming the marker is
-    what gets built. If a ``mock`` fallback branch were reintroduced, the marker
-    would not be returned.
-    UNDO: add back ``if provider == 'mock': return MockComposeClient()`` -> RED."""
+def test_money_guard_blocks_the_openai_provider_too(monkeypatch) -> None:
+    """MONEY-GUARD, OpenAI half: with ``COMPOSE_PROVIDER=openai`` the hermetic suite
+    must STILL return the offline stub, never the billing ChatGPT client — so the
+    Opus-vs-ChatGPT feature can never make ``make test`` spend on OpenAI.
+    UNDO: drop the OpenAI arm of ``_money_guard_no_live_compose`` -> RED."""
+    monkeypatch.setenv("COMPOSE_PROVIDER", "openai")
+    assert type(get_compose_client()).__name__ == "MockComposeClient", (
+        "MONEY-GUARD FAILED: COMPOSE_PROVIDER=openai would construct a LIVE billing "
+        f"OpenAI client ({type(get_compose_client()).__name__})"
+    )
+
+
+def test_provider_toggle_selects_real_opus_or_real_chatgpt(monkeypatch) -> None:
+    """``get_compose_client()`` defaults to the real Opus composer and switches to
+    the real ChatGPT composer on ``COMPOSE_PROVIDER=openai`` — the two REAL narrators
+    the workbench comparison picks between. Proven by re-patching both classes to
+    markers (overriding the money-guard stub; the later setattr wins).
+    UNDO: hardcode one provider in ``compose_client_for`` -> RED."""
     import src.tour.compose as _compose_mod
 
-    class _RealMarker:
+    class _OpusMarker:
         pass
 
-    monkeypatch.setattr(_compose_mod, "AnthropicComposeClient", _RealMarker)
-    assert isinstance(get_compose_client(), _RealMarker)
+    class _GptMarker:
+        pass
+
+    monkeypatch.setattr(_compose_mod, "AnthropicComposeClient", _OpusMarker)
+    monkeypatch.setattr(_compose_mod, "OpenAIComposeClient", _GptMarker)
+
+    monkeypatch.delenv("COMPOSE_PROVIDER", raising=False)
+    assert isinstance(get_compose_client(), _OpusMarker)  # default = Opus
+    monkeypatch.setenv("COMPOSE_PROVIDER", "openai")
+    assert isinstance(get_compose_client(), _GptMarker)  # toggle = ChatGPT
+    monkeypatch.setenv("COMPOSE_PROVIDER", "chatgpt")
+    assert isinstance(get_compose_client(), _GptMarker)  # alias
+
+
+def test_unknown_or_mock_provider_falls_back_to_real_opus_never_a_stub(monkeypatch) -> None:
+    """No 'mock' provider survives in the product: an unknown or legacy ``mock``
+    value falls back to the REAL Opus composer, never the stitcher passthrough.
+    UNDO: add ``if provider == 'mock': return MockComposeClient()`` to
+    ``compose_client_for`` -> the real Opus marker is not returned -> RED."""
+    import src.tour.compose as _compose_mod
+
+    class _OpusMarker:
+        pass
+
+    monkeypatch.setattr(_compose_mod, "AnthropicComposeClient", _OpusMarker)
+    for bad in ("mock", "garbage", ""):
+        monkeypatch.setenv("COMPOSE_PROVIDER", bad)
+        assert isinstance(get_compose_client(), _OpusMarker), bad
 
 
 def test_faithfulness_checker_is_always_the_paired_real_checker(monkeypatch) -> None:

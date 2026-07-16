@@ -389,6 +389,93 @@ def test_preview_green_multi_stop_has_null_tourability_and_multiple_stops(make_c
         assert stop["narration"], f"dwell stop {stop['poi_name']} has empty narration"
 
 
+def _green_cluster_records():
+    """A compact GREEN multi-stop cluster (same shape as the green_multi_stop test)
+    the composer can voice — reused by the compose/provider wire test below."""
+    offsets = [
+        (0.0004, 0.0),
+        (0.0, 0.0007),
+        (-0.0005, 0.0),
+        (0.0, -0.0009),
+        (0.0007, 0.0003),
+        (-0.0006, -0.0006),
+    ]
+    pois = [
+        _poi_record(
+            f"poi-{i}",
+            name=f"Anchor Number {i}",
+            tier=5,
+            lat=START[0] + dlat,
+            lng=START[1] + dlng,
+            areas=["Île de la Cité"],
+        )
+        for i, (dlat, dlng) in enumerate(offsets)
+    ]
+    beats = [
+        _beat_record(
+            f"poi-{i}-b{j}",
+            f"poi-{i}",
+            body=f"Story {j} about anchor {i}. It continues briefly.",
+        )
+        for i in range(len(offsets))
+        for j in range(5)
+    ]
+    return {"pois": pois, "beats": beats, "areas": _AREA_RECORDS, "adjacency": [], "lenses": []}
+
+
+@pytest.mark.parametrize(
+    ("provider", "expected_provider"),
+    [("openai", "openai"), ("chatgpt", "openai"), ("anthropic", "anthropic"), (None, "anthropic")],
+)
+def test_preview_compose_threads_provider_and_scores_quality(
+    make_client, provider, expected_provider
+):
+    """The workbench Opus-vs-ChatGPT wiring on the wire, hermetic + $0 (the autouse
+    money-guard stubs BOTH composers offline, so no live spend): compose=true threads
+    the chosen REAL provider through and the response carries ``provider`` +
+    objective ``narration_quality``. An unknown/absent provider falls back to Opus —
+    never a mock passthrough label. UNDO: drop the provider/quality block in
+    preview_trip, or add a mock provider branch -> these assertions fail."""
+    client = make_client(_green_cluster_records())
+    payload = {
+        "center_lat": START[0],
+        "center_lng": START[1],
+        "duration_min": 60,
+        "compose": True,
+    }
+    if provider is not None:
+        payload["provider"] = provider
+    r = client.post("/api/v1/trips/preview", json=payload)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["compose_status"] in {"composed", "composed_partial", "refused"}, body
+    assert body["provider"] == expected_provider, (provider, body["provider"])
+    if body["compose_status"] != "refused":
+        q = body["narration_quality"]
+        assert q is not None, body
+        assert set(q) >= {"stilted_score", "engagement_score", "burstiness", "tells_per_100w"}, q
+        assert 0.0 <= q["stilted_score"] <= 1.0
+        assert 0.0 <= q["engagement_score"] <= 1.0
+
+
+def test_preview_labels_env_provider_when_request_omits_it(make_client, monkeypatch):
+    """The response ``provider`` must name the ACTUAL narrator. With
+    COMPOSE_PROVIDER=openai set and NO provider in the request, the injected default
+    resolves to ChatGPT, so the label must say 'openai' — not 'anthropic' derived
+    from the empty request field. $0 (money-guard stubs the client).
+    UNDO: label from body.provider alone -> this reports 'anthropic' -> RED."""
+    monkeypatch.setenv("COMPOSE_PROVIDER", "openai")
+    client = make_client(_green_cluster_records())
+    r = client.post(
+        "/api/v1/trips/preview",
+        json={"center_lat": START[0], "center_lng": START[1], "duration_min": 60, "compose": True},
+    )
+    assert r.status_code == 200, r.text
+    body = r.json()
+    if body["compose_status"] != "refused":
+        assert body["provider"] == "openai", body["provider"]
+
+
 def test_preview_green_but_thin_delivery_carries_tourability(make_client):
     """C11a: a GREEN-density pool that DELIVERS thin ships tourability != null.
 

@@ -479,6 +479,233 @@ class AnthropicComposeClient:
         )
 
 
+# ---------------------------------------------------------------------------
+# Real fire-once OpenAI (ChatGPT) compose — the ALTERNATIVE narrator, for the
+# Opus-vs-ChatGPT writing comparison. NOT exercised by `make test`.
+# ---------------------------------------------------------------------------
+
+# Configurable via OPENAI_COMPOSE_MODEL; default a strong writer that supports
+# strict structured outputs. The point is a writing-quality comparison, so the
+# maintainer can pin whichever ChatGPT model they want to judge.
+OPENAI_COMPOSE_MODEL = "gpt-4o"
+
+# OpenAI structured-output STRICT mode requires EVERY property in "required" and
+# additionalProperties:false at every level, so ``also_cites`` (optional for the
+# Anthropic schema) is required here — the model emits [] for a single-beat line.
+_OPENAI_COMPOSE_OUTPUT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "sentences": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "text": {"type": "string"},
+                    "source_id": {"type": "string"},
+                    "source_type": {"type": "string", "enum": ["beat", "glue"]},
+                    "stop_idx": {"type": "integer"},
+                    "also_cites": {"type": "array", "items": {"type": "string"}},
+                },
+                "required": ["text", "source_id", "source_type", "stop_idx", "also_cites"],
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["sentences"],
+    "additionalProperties": False,
+}
+
+
+class OpenAIComposeClient:
+    """Fire-once real compose via OpenAI (ChatGPT) — the alternative narrator for
+    the Opus-vs-ChatGPT writing comparison. Satisfies the SAME ``ComposeClient``
+    Protocol and reuses the SAME ``_COMPOSE_SYSTEM`` + ``_compose_user_prompt`` as
+    the Anthropic path, so ONLY the model differs (apples-to-apples writing). One
+    ``chat.completions.create`` per attempt, structured output via
+    ``response_format`` json_schema (strict). The ``openai`` import is deferred (the
+    ``AnthropicComposeClient`` pattern) so unit tests never need the SDK; ``make
+    test`` never constructs this — ``tests/conftest.py`` patches it to an offline
+    stub for the whole non-``live`` bar, exactly like the Anthropic client, so the
+    suite can never bill the OpenAI account."""
+
+    def __init__(self, model: str | None = None, *, client: object | None = None):
+        import os
+
+        self.model = model or os.getenv("OPENAI_COMPOSE_MODEL", OPENAI_COMPOSE_MODEL)
+        self.input_tokens = 0
+        self.output_tokens = 0
+        if client is None:
+            import openai
+
+            client = openai.OpenAI()
+        self._client = client
+
+    def compose(
+        self,
+        request: ComposeRequest,
+        attempt: int,
+        prev_report: ValidationReport | None,
+    ) -> tuple[Sentence, ...]:
+        import json
+
+        response = self._client.chat.completions.create(  # type: ignore[attr-defined]
+            model=self.model,
+            messages=[
+                {"role": "system", "content": _COMPOSE_SYSTEM},
+                {
+                    "role": "user",
+                    "content": _compose_user_prompt(request, attempt, prev_report),
+                },
+            ],
+            response_format={
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "compose_script",
+                    "strict": True,
+                    "schema": _OPENAI_COMPOSE_OUTPUT_SCHEMA,
+                },
+            },
+        )
+        choice = response.choices[0]
+        if getattr(choice, "finish_reason", None) == "length":
+            raise ValueError(
+                "compose output truncated (finish_reason=length) — the sentence "
+                "list is incomplete"
+            )
+        usage = getattr(response, "usage", None)
+        if usage is not None:
+            self.input_tokens += int(getattr(usage, "prompt_tokens", 0) or 0)
+            self.output_tokens += int(getattr(usage, "completion_tokens", 0) or 0)
+        text = getattr(choice.message, "content", None)
+        if not text:
+            raise ValueError(
+                "compose response carried no content "
+                f"(finish_reason={getattr(choice, 'finish_reason', None)!r}) — "
+                "nothing to parse"
+            )
+        data = json.loads(text)
+        return tuple(
+            Sentence(
+                text=s["text"],
+                source_id=s["source_id"],
+                source_type=s["source_type"],
+                stop_idx=s["stop_idx"],
+                also_cites=(
+                    tuple(s.get("also_cites") or ()) if s["source_type"] == "beat" else ()
+                ),
+            )
+            for s in data["sentences"]
+        )
+
+
+# Provider registry for the Opus-vs-ChatGPT comparison. Keys are the values the
+# workbench / API accept; each maps to a REAL fire-once composer (never a mock —
+# mock lives ONLY in the test money-guard). Unknown/empty -> the default (Opus).
+_COMPOSE_PROVIDERS = {
+    "anthropic": "AnthropicComposeClient",
+    "opus": "AnthropicComposeClient",
+    "claude": "AnthropicComposeClient",
+    "openai": "OpenAIComposeClient",
+    "chatgpt": "OpenAIComposeClient",
+    "gpt": "OpenAIComposeClient",
+}
+DEFAULT_COMPOSE_PROVIDER = "anthropic"
+
+
+def compose_provider_name(provider: str | None) -> str:
+    """Canonical provider key (``anthropic`` | ``openai``) for a requested name;
+    the default (Opus/anthropic) for unknown or empty. Pure, for validation +
+    telemetry so a comparison run can label which model wrote which tour."""
+    key = (provider or DEFAULT_COMPOSE_PROVIDER).strip().lower()
+    cls = _COMPOSE_PROVIDERS.get(key)
+    if cls is None:
+        return DEFAULT_COMPOSE_PROVIDER
+    return "openai" if cls == "OpenAIComposeClient" else "anthropic"
+
+
+def compose_client_for(provider: str | None) -> ComposeClient:
+    """Build the REAL composer for a provider name (workbench/API selectable), so
+    the same tour can be narrated by Opus AND by ChatGPT for a side-by-side writing
+    comparison. There is NO mock provider here — a comparison is never served the
+    stitcher passthrough. Unknown or empty -> the default (Opus). Resolves the class
+    THROUGH the module so the conftest money-guard's monkeypatch (offline stubs) is
+    honored in tests."""
+    import src.tour.compose as _self
+
+    key = (provider or DEFAULT_COMPOSE_PROVIDER).strip().lower()
+    cls_name = _COMPOSE_PROVIDERS.get(key, _COMPOSE_PROVIDERS[DEFAULT_COMPOSE_PROVIDER])
+    return getattr(_self, cls_name)()
+
+
+def _dedup_composed(sentences: list[Sentence], beat_sequence: BeatSequence) -> list[Sentence]:
+    """The composed-path de-dup: collapse a fact the composer (or a spliced-back
+    stitch) voiced twice — cross-beat claim repeat, same-stop byte-identical, and
+    same-beat near-verbatim. Coverage-safe BY CONSTRUCTION: it keeps the FIRST
+    telling / any sentence carrying a novel claim and never empties a beat, so a
+    script that covered every claim before still does (a dropped twin's fact stays
+    voiced by its survivor). Used by ``_assemble`` (the composed stream), by
+    ``compose_script`` (the persisted path), AND applied to each repair candidate
+    before it is served — so NO serve path ships a duplicate the composed path
+    would have removed. Always run where a VERIFY (with the pre-compose coverage
+    baseline) follows, so a drop that would lose a fact fails closed / is undone."""
+    out = suppress_repeated_claims(sentences, beat_sequence, include_same_beat=True)
+    out = suppress_exact_repeats(out, beat_sequence)
+    out = suppress_same_beat_near_duplicates(out)
+    return out
+
+
+def _prefer_deduped(candidate, verify, beat_sequence):
+    """Fail-OPEN de-dup of a repair candidate. Returns ``(script, report, changed)``.
+
+    A repair splice puts grounded stitch back UN-de-duped, so it can re-introduce a
+    duplicate the composed path removes. We prefer the de-duped candidate IFF it
+    still VERIFIES; otherwise we return the ORIGINAL candidate, verified exactly as
+    before. De-dup is a bonus here, NEVER a gate — it can never turn a servable tour
+    into a refusal or a coarser revert (the un-de-duped candidate is still verified
+    and served on the fail path).
+
+    Cost note: on the rare branch where de-dup CHANGES the candidate but the deduped
+    result fails verify, this runs ``verify`` twice (deduped, then original) — one
+    extra faithfulness pass. Bounded (at most once per repair) and only when de-dup
+    both fires and regresses coverage; the no-op and success branches verify once."""
+    deduped_sents = _dedup_composed(list(candidate.script), beat_sequence)
+    if len(deduped_sents) == len(candidate.script):
+        return candidate, verify(candidate), False  # de-dup was a no-op
+    deduped = candidate.model_copy(
+        update={
+            "script": tuple(deduped_sents),
+            "total_audio_seconds": _sum_audio(deduped_sents, beat_sequence),
+        }
+    )
+    dd_report = verify(deduped)
+    if dd_report.passed:
+        return deduped, dd_report, True
+    return candidate, verify(candidate), False
+
+
+def _recompute_fully(
+    served: Script, restored: dict[int, tuple[str, ...]], composed: Script
+) -> set[int]:
+    """After a fail-open de-dup dropped sentences from a surgical splice, recompute
+    which restored stops are FULLY reverted: a stop is fully reverted iff NO
+    composer-authored beat sentence survives in it (every beat fell back to stitch).
+    A sentence is composer-authored iff its ``(stop_idx, source_id, text)`` identity
+    is in the PRE-repair composed stream — the same identity scheme
+    ``compose_gate`` uses for failing-sentence keys, so a reworded composed line is
+    never confused with the grounded stitch it replaced."""
+    composed_ids = {
+        (s.stop_idx, s.source_id, s.text) for s in composed.script if s.source_type == "beat"
+    }
+    fully: set[int] = set()
+    for k in restored:
+        beat_here = [s for s in served.script if s.stop_idx == k and s.source_type == "beat"]
+        if beat_here and not any(
+            (s.stop_idx, s.source_id, s.text) in composed_ids for s in beat_here
+        ):
+            fully.add(k)
+    return fully
+
+
 def compose_script(
     stitched: Script,
     beat_sequence: BeatSequence,
@@ -515,7 +742,11 @@ def compose_script(
     )
 
     def compose(attempt: int, prev: ValidationReport | None) -> Script:
-        sentences = client.compose(request, attempt, prev)
+        # De-dup the composed stream BEFORE verify — the persisted /compose path
+        # must not ship a fact voiced twice any more than the workbench path does.
+        # Coverage-safe, and verify (with the coverage baseline) runs next, so a
+        # drop that would lose a fact fails closed.
+        sentences = _dedup_composed(list(client.compose(request, attempt, prev)), beat_sequence)
         return stitched.model_copy(
             update={
                 "script": tuple(sentences),
@@ -726,17 +957,12 @@ def compose_script_per_chapter(
         out: list[Sentence] = []
         for stop_idx in stops:
             out.extend(composed_by_stop[stop_idx])
-        # De-dup the composed narration the way the stitch already is — PLUS
-        # same-beat: over a big multi-beat stop the composer can echo one beat as a
-        # polished paraphrase AND a near-verbatim retelling (same source_id, same
-        # fact, different wording), which is the dominant repetition in real tours.
-        # Coverage-safe (novel claims kept, never empties a beat), so the verify
-        # that runs next still holds.
-        out = suppress_repeated_claims(out, beat_sequence, include_same_beat=True)
-        out = suppress_exact_repeats(out, beat_sequence)
-        # Catch the composer echoing one beat as two full re-tellings (near-verbatim,
-        # same source_id) — the paraphrase repetition the claim pass misses.
-        out = suppress_same_beat_near_duplicates(out)
+        # De-dup the composed narration (cross-beat claim repeat + same-stop exact +
+        # same-beat near-verbatim). Coverage-safe (novel claims kept, never empties a
+        # beat), so the verify that runs next still holds. The SAME pass is applied
+        # to every repair candidate before serving (see _prefer_deduped) so no serve
+        # path ships a duplicate this one would have removed.
+        out = _dedup_composed(out, beat_sequence)
         return stitched.model_copy(
             update={
                 "script": tuple(out),
@@ -802,13 +1028,23 @@ def compose_script_per_chapter(
     # whose every beat was restored is marked reverted (accurate), the rest
     # partially_reverted.
     surgical, restored, fully = repair_composed_surgical(composed, stitched, report, tr_report)
-    surg_report = verify(surgical)
+    # Fail-open de-dup: the splice put grounded stitch back un-de-duped, so it may
+    # carry a duplicate the composed path removes. Prefer the de-duped surgical iff
+    # it still verifies (else serve the original, exactly as before).
+    surgical, surg_report, surg_deduped = _prefer_deduped(surgical, verify, beat_sequence)
     if surg_report.passed:
+        if surg_deduped:
+            # A dropped composed twin can complete a stop's revert — recompute which
+            # stops are now FULLY vs partially reverted so the diagnostic stays true.
+            fully = _recompute_fully(surgical, restored, composed)
         partial = {k: v for k, v in restored.items() if k not in fully}
         return _served(surgical, surg_report, fully, partial, report, tr_report)
 
-    # Safety net: any stop a surgical splice still could not verify falls back to a
-    # whole-stop revert to the grounded stitch.
+    # Safety net (rare — reached only when a surgical splice itself fails to verify):
+    # whole-stop revert to the grounded stitch. Served as-is, exactly as before this
+    # change: it is near-unreachable offline (no test can drive it, so de-dup here
+    # would be untested), and it serves grounded stitch — any same-beat near-dup left
+    # in it is the pre-existing behavior of this deep fallback, not a new regression.
     reverted = _bad_stops(surg_report, stitched) | fully
     repaired = repair_composed(surgical, stitched, surg_report)
     rep_report = verify(repaired)
@@ -820,11 +1056,15 @@ def compose_script_per_chapter(
 
 __all__ = [
     "COMPOSE_MODEL",
+    "OPENAI_COMPOSE_MODEL",
     "AnthropicComposeClient",
     "ComposeClient",
     "ComposeRequest",
     "MockComposeClient",
+    "OpenAIComposeClient",
     "build_compose_request",
+    "compose_client_for",
+    "compose_provider_name",
     "compose_script",
     "compose_script_per_chapter",
 ]

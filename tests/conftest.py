@@ -105,6 +105,19 @@ def _money_guard_no_live_compose(request, monkeypatch):
         return _real_compose(model, client=client)
 
     monkeypatch.setattr(_compose_mod, "AnthropicComposeClient", _guard_compose)
+
+    # Same guard for the OpenAI (ChatGPT) composer: the product path (client=None)
+    # would build the billing OpenAI SDK, so hand back the offline stub; a unit test
+    # that injects a FAKE sdk client (client=<fake>) stays offline and exercises the
+    # real translation logic. So COMPOSE_PROVIDER=openai can never bill in the bar.
+    _real_openai = _compose_mod.OpenAIComposeClient
+
+    def _guard_openai(model=None, *, client=None):
+        if client is None:
+            return _compose_mod.MockComposeClient()
+        return _real_openai(model, client=client)
+
+    monkeypatch.setattr(_compose_mod, "OpenAIComposeClient", _guard_openai)
     # No non-live test constructs the real Haiku checker with a fake SDK, so the
     # billing checker is always swapped for the offline trusting stub.
     monkeypatch.setattr(

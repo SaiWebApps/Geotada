@@ -1146,6 +1146,7 @@
   let tourPointLayer = null;   // A/B pins dropped by map clicks (dies with the map on re-init)
   detailBody.addEventListener('click', (e) => {
     if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
+    if (e.target.closest('#tourCompareBtn')) { compareProviders(); return; }
     if (e.target.closest('#tourClearBtn')) { clearTourPoints(); return; }
     if (e.target.closest('#tourFeedbackUp')) { submitTourFeedback('up'); return; }
     if (e.target.closest('#tourFeedbackDown')) { submitTourFeedback('down'); return; }
@@ -2125,11 +2126,22 @@
           <div class="field-group"><label>Destination B (lat,lng, optional)</label>
             <input type="text" id="tourEnd" placeholder="48.8606,2.3376 — blank = open walk" /></div>
           <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip (mutually exclusive with a destination)</label></div>
+          <div class="field-row">
+            <div class="field-group"><label>Narrator (AI voice)</label>
+              <select id="tourProvider" class="tts-provider-select" title="Which model writes the narration">
+                <option value="anthropic">Claude Opus 4.8</option>
+                <option value="openai">ChatGPT (OpenAI)</option>
+              </select></div>
+            <div class="field-group"><label><input type="checkbox" id="tourCompose" /> Real AI narration</label>
+              <div style="color:var(--text-muted);font-size:0.72rem;">OFF by default = the fast deterministic stitch ($0). ON = a live compose that spends real $ on your key (~1 min) — you'll get a confirm before it runs.</div></div>
+          </div>
           <div class="field-group" style="color:var(--text-muted);font-size:0.8rem;">
             Tip: click the map — 1st click sets the start, 2nd the destination.</div>
           <button class="btn btn-primary" id="tourGenerateBtn">Generate preview</button>
           <button class="btn btn-outline" id="tourClearBtn" title="Reset start/destination to an open walk">Clear points</button>
+          <button class="btn btn-outline" id="tourCompareBtn" title="Compose the SAME tour with BOTH Opus and ChatGPT and show them side by side. Runs TWO live composes (real $ per model).">⚖ Compare Opus vs ChatGPT</button>
           <div id="tourStops" class="tour-stops"></div>
+          <div id="tourCompare" class="tour-compare"></div>
         </div>`;
       // Step B.6: (re)entering the tour view resets the click-to-set state — the inputs
       // above rendered fresh, so any previously dropped A/B pins are stale.
@@ -3117,12 +3129,22 @@
     genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
     stopsEl.innerHTML = ''; tourStops = [];
     try {
+      const composeEl = document.getElementById('tourCompose');
+      const compose = !!(composeEl && composeEl.checked);  // OFF by default -> $0 stitch
+      const provider = (document.getElementById('tourProvider') || {}).value || 'anthropic';
+      if (compose && !window.confirm(
+        '“Real AI narration” is on — this runs a LIVE compose with '
+        + (provider === 'openai' ? 'ChatGPT' : 'Claude Opus')
+        + ' and spends real money on your API key (~1 min). Continue?')) {
+        return;  // user declined the spend; the finally block re-enables the button
+      }
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           center_lat: lat, center_lng: lng, duration_min: duration,
           lenses: lenses.length ? lenses : null, round_trip: roundTrip,
           end_lat: endLat, end_lng: endLng,
+          compose, provider,
         }),
       });
       if (!resp.ok) {
@@ -3136,6 +3158,7 @@
         }
         return;
       }
+      document.getElementById('tourCompare').innerHTML = '';
       renderTourStops(await resp.json(), duration);
     } catch (err) {
       showError('Tour preview failed: ' + err.message);
@@ -3244,6 +3267,120 @@
     persistentMap.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
   }
 
+  function _providerLabel(p) {
+    if (p === 'openai') return 'ChatGPT (OpenAI)';
+    if (p === 'anthropic') return 'Claude Opus 4.8';
+    return p || '—';
+  }
+  function _composeStatusLabel(s) {
+    return ({
+      composed: '✓ full AI voice',
+      composed_partial: '◐ AI voice — some stops fell back to the grounded stitch',
+      refused: '✗ compose refused — showing grounded stitch',
+      stitched: 'stitch only (no AI voice — turn on “Real AI narration”)',
+    })[s] || s || '—';
+  }
+  function _q(v) { return (v === 0 || v) ? v : '—'; }
+  // Objective spoken-narration quality panel — measured, not vibes. Lower stilted
+  // is better; higher engagement/burstiness is better.
+  function buildNarrationQualityPanel(data) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'background:rgba(120,140,255,0.08);border:1px solid rgba(120,140,255,0.35);'
+      + 'border-radius:6px;padding:8px 10px;margin:0 0 10px;font-size:0.82rem;';
+    const q = data && data.narration_quality;
+    let html = `<b>Narrator:</b> ${escHtml(_providerLabel(data && data.provider))}`
+      + ` &nbsp;·&nbsp; <b>${escHtml(_composeStatusLabel(data && data.compose_status))}</b>`;
+    if (q) {
+      const t = q.tells_per_100w || {};
+      html += '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:12px;">'
+        + `<span title="Lower is better: moralizing closers, puffery, uniform rhythm, dense dates">Stilted <b>${_q(q.stilted_score)}</b></span>`
+        + `<span title="Higher is better: second-person address, look-here prompts, sentence variation">Engagement <b>${_q(q.engagement_score)}</b></span>`
+        + `<span title="Sentence-length variation — higher = more human, less robotic">Burstiness <b>${_q(q.burstiness)}</b></span>`
+        + `<span title="Average words per sentence — lower is easier to hear">Avg sentence <b>${_q(q.mean_sentence_words)}w</b></span>`
+        + `<span title="Em-dashes per 100 words">Em-dash <b>${_q(t.em_dash)}</b></span>`
+        + `<span title="4-digit years per 100 words — date density">Dates <b>${_q(t.year_density)}</b></span>`
+        + '</div>';
+    }
+    wrap.innerHTML = html;
+    return wrap;
+  }
+
+  // Read the shared tour inputs into a /trips/preview request body (provider set).
+  function _tourRequestBody(provider, compose) {
+    const parts = document.getElementById('tourStart').value.split(',').map(s => parseFloat(s.trim()));
+    if (parts.length !== 2 || parts.some(isNaN)) return null;
+    const lenses = document.getElementById('tourLenses').value.split(',').map(s => s.trim()).filter(Boolean);
+    const endEl = document.getElementById('tourEnd');
+    let endLat = null, endLng = null;
+    if (endEl && endEl.value.trim()) {
+      const ep = endEl.value.split(',').map(s => parseFloat(s.trim()));
+      if (ep.length === 2 && !ep.some(isNaN)) { [endLat, endLng] = ep; }
+    }
+    return {
+      center_lat: parts[0], center_lng: parts[1],
+      duration_min: parseInt(document.getElementById('tourDuration').value, 10) || 60,
+      lenses: lenses.length ? lenses : null,
+      round_trip: document.getElementById('tourRoundTrip').checked,
+      end_lat: endLat, end_lng: endLng, compose, provider,
+    };
+  }
+
+  // Compose the SAME tour with BOTH Opus and ChatGPT and render side by side, with
+  // the objective quality scores per model — the Opus-vs-ChatGPT writing bake-off.
+  async function compareProviders() {
+    const cmpEl = document.getElementById('tourCompare');
+    const btn = document.getElementById('tourCompareBtn');
+    if (!cmpEl) return;
+    const bodyA = _tourRequestBody('anthropic', true);
+    if (!bodyA) { showError('Enter the start as "lat,lng".'); return; }
+    if (!window.confirm('This runs TWO live composes — Opus AND ChatGPT — on the same tour. '
+      + 'That spends real money on your Anthropic and OpenAI keys (~1–2 min). Continue?')) return;
+    btn.disabled = true; btn.textContent = '⏳ Composing both…';
+    document.getElementById('tourStops').innerHTML = '';
+    cmpEl.innerHTML = '<div style="color:var(--text-muted);padding:8px;">Composing with Opus and ChatGPT… ~1–2 min.</div>';
+    async function run(provider) {
+      const r = await fetch(`${API_BASE}/trips/preview`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(_tourRequestBody(provider, true)),
+      });
+      if (!r.ok) {
+        let d = null; try { d = (await r.json()).detail; } catch (_) { /* keep null */ }
+        throw new Error(typeof d === 'string' ? d : `compose failed (${r.status})`);
+      }
+      return r.json();
+    }
+    try {
+      const opus = await run('anthropic');
+      const gpt = await run('openai');
+      renderComparison(opus, gpt);
+    } catch (e) {
+      showError('Compare failed: ' + e.message);
+      cmpEl.innerHTML = '';
+    } finally {
+      btn.disabled = false; btn.textContent = '⚖ Compare Opus vs ChatGPT';
+    }
+  }
+
+  function renderComparison(opus, gpt) {
+    const cmpEl = document.getElementById('tourCompare');
+    const col = (label, data) => {
+      const q = data.narration_quality || {};
+      const t = q.tells_per_100w || {};
+      const stops = (data.stops || []).map((s, i) =>
+        `<div style="margin:8px 0;padding:8px;border:1px solid var(--border,#333);border-radius:6px;">`
+        + `<div style="font-weight:600;font-size:0.8rem;margin-bottom:4px;">${i + 1}. ${escHtml(s.poi_name || '')}</div>`
+        + `<div style="font-size:0.82rem;line-height:1.45;white-space:pre-wrap;">${escHtml(s.narration || '')}</div></div>`
+      ).join('');
+      return `<div style="min-width:0;">`
+        + `<h4 style="margin:0 0 6px;">${escHtml(label)} <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted);">${escHtml(_composeStatusLabel(data.compose_status))}</span></h4>`
+        + `<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">`
+        + `Stilted <b>${_q(q.stilted_score)}</b> · Engagement <b>${_q(q.engagement_score)}</b> · Burstiness <b>${_q(q.burstiness)}</b> · Avg <b>${_q(q.mean_sentence_words)}w</b> · Em-dash <b>${_q(t.em_dash)}</b> · Dates <b>${_q(t.year_density)}</b></div>`
+        + stops + `</div>`;
+    };
+    cmpEl.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;">'
+      + col('Claude Opus 4.8', opus) + col('ChatGPT (OpenAI)', gpt) + '</div>';
+  }
+
   function renderTourStops(data, requestedMinutes) {
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
@@ -3255,6 +3392,9 @@
     summary.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
     summary.textContent = `${tourStops.length} stops · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
     stopsEl.appendChild(summary);
+    // Narrator + objective quality panel: which model wrote this, whether it's the
+    // real AI voice or the stitch, and the measured spoken-narration signals.
+    stopsEl.appendChild(buildNarrationQualityPanel(data));
     // Phase 6 contract: YELLOW = generate but WARN. Present only for thin areas
     // (e.g. one isolated mega-anchor -> a legitimate single-stop tour); without
     // this banner such tours read as silent bugs. C11a: the engine also attaches

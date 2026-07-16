@@ -228,6 +228,14 @@ def generate(
     # Then drop byte-identical restatements the claim pass leaves behind (two beats
     # at one stop sharing an exact sentence): pure repetition, zero content loss.
     sentences = suppress_exact_repeats(sentences, beat_sequence)
+    # NOTE: same-beat NEAR-verbatim de-dup (suppress_same_beat_near_duplicates) is
+    # deliberately NOT run here. It is token-similarity only (not claim-aware), and
+    # rapidfuzz.token_set_ratio scores a SUPERSET sentence >= 90 against its subset —
+    # so at the stitch root, BEFORE the coverage baseline is computed, it could
+    # silently drop a sentence that adds a distinct fact, with nothing downstream to
+    # catch it. That pass runs only where it is coverage-checked: inside _assemble
+    # and on each repair candidate via _prefer_deduped (both AFTER expected_claim_ids
+    # is fixed, so a drop that loses a fact fails verify and is undone).
 
     # A beat is "voiced" only if at least one of its sentences actually survived
     # the full stitch (cold-open/anchor/transit) AND #22 claim-dedup. A

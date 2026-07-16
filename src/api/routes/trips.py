@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -38,6 +39,8 @@ from src.tour.beat_select import select_vignette_beats
 from src.tour.compose import (
     ComposeClient,
     ComposeRequest,
+    compose_client_for,
+    compose_provider_name,
     compose_script,
     compose_script_per_chapter,
 )
@@ -53,6 +56,7 @@ from src.tour.contract import (
 )
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, split_sentences
+from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option
 from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
@@ -762,16 +766,27 @@ def preview_trip(
     # the product now (get_compose_client has no mock provider); the hermetic test
     # suite stubs the client offline so `make test` never spends.
     compose_status = "stitched"
+    provider = None
+    narration_quality = None
     if body.compose:
+        # Which REAL narrator writes this tour: the per-request provider (the
+        # workbench's Opus-vs-ChatGPT toggle) overrides the env default; never mock.
+        client = compose_client_for(body.provider) if body.provider else compose_client
+        # Label the ACTUAL narrator. When the request omits a provider we use the
+        # injected default, which honors COMPOSE_PROVIDER — so derive the label from
+        # the SAME source, never from body.provider alone (else a
+        # COMPOSE_PROVIDER=openai deployment would mislabel an omitted-provider tour
+        # as 'anthropic', defeating the point of the comparison).
+        provider = compose_provider_name(body.provider or os.getenv("COMPOSE_PROVIDER"))
         try:
-            # Per-chapter: one focused (parallel) Opus call per stop, so the big
+            # Per-chapter: one focused (parallel) call per stop, so the big
             # repetitive stops fuse without dropping facts (whole-tour compose
             # reverted them) and the tour composes in ~1 min, not ~19.
             composed = compose_script_per_chapter(
                 script,
                 seq,
                 route,
-                client=compose_client,
+                client=client,
                 faithfulness_checker=faithfulness_checker,
                 candidates=2,  # best-of-2: extra tickets for the big, dense stops
             )
@@ -780,6 +795,20 @@ def preview_trip(
         else:
             compose_status = _compose_status(script, composed)
             script = composed
+            # Objective quality signals on the composed narration, so an
+            # Opus-vs-ChatGPT comparison is MEASURED, not a matter of taste.
+            narration = " ".join(s.text for s in script.script if s.source_type == "beat")
+            q = score_narration(narration)
+            narration_quality = {
+                "stilted_score": q.stilted_score,
+                "engagement_score": q.engagement_score,
+                "burstiness": q.burstiness,
+                "mean_sentence_words": q.mean_sentence_words,
+                "long_sentence_rate": q.long_sentence_rate,
+                "second_person_per_100w": q.second_person_rate,
+                "look_prompt_rate": q.look_prompt_rate,
+                "tells_per_100w": q.per_100w,
+            }
 
     stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
@@ -790,6 +819,8 @@ def preview_trip(
         lens_coverage_note=None,
         tourability=_tourability_payload(route.tourability),
         compose_status=compose_status,
+        provider=provider,
+        narration_quality=narration_quality,
     )
 
 

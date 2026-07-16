@@ -113,17 +113,23 @@ def get_compose_client() -> ComposeClient:
     """The narration composer for the CUSTOMER compose paths — POST
     /trips/{id}/compose (the app + workbench) and POST /trips/preview (workbench).
 
-    ALWAYS the real fire-once Opus composer. There is no 'mock' provider in the
-    product any more: a customer must never be served the deterministic stitcher
-    passthrough as if it were the narrator. Requires ANTHROPIC_API_KEY (in .env
-    locally, in Render for prod). The hermetic test suite NEVER reaches this live
-    client — ``tests/conftest.py`` patches ``AnthropicComposeClient`` to an offline
-    stub for the whole (non-``live``) bar, so ``make test`` can never bill the
-    account; tests that assert on compose also override this dependency directly.
+    A REAL fire-once composer — Opus by default, or ChatGPT when
+    ``COMPOSE_PROVIDER=openai`` (the Opus-vs-ChatGPT writing comparison). There is
+    NO 'mock' provider in the product: a customer/comparison must never be served
+    the deterministic stitcher passthrough as if it were the narrator. Opus needs
+    ANTHROPIC_API_KEY; ChatGPT needs OPENAI_API_KEY (both in .env locally, Render for
+    prod). The hermetic test suite NEVER reaches these live clients —
+    ``tests/conftest.py`` patches BOTH ``AnthropicComposeClient`` and
+    ``OpenAIComposeClient`` to offline stubs for the whole (non-``live``) bar, so
+    ``make test`` can never bill either account; tests that assert on compose also
+    override this dependency directly. Per-request provider selection (for the
+    workbench comparison) goes through ``compose_client_for``.
     """
-    from src.tour.compose import AnthropicComposeClient
+    import os
 
-    return AnthropicComposeClient()
+    from src.tour.compose import compose_client_for
+
+    return compose_client_for(os.getenv("COMPOSE_PROVIDER"))
 
 
 def get_faithfulness_checker() -> FaithfulnessChecker | None:

@@ -1,0 +1,402 @@
+"""$0 offline regression suite for the RESIDUAL-DUPLICATE bug: the compose de-dup
+passes ran ONLY inside ``_assemble`` (the composed stream), i.e. BEFORE the gate's
+repair steps, and the repaired script was served WITHOUT re-running them. So when
+the SURGICAL repair spliced a beat's grounded STITCH back in
+(``repair_composed_surgical``), a duplicate the raw stitch carries — one the
+composed path would have removed — shipped past a PASSING gate to the tourist.
+
+This mirrors the class observed in the real delivered tour
+``data/paris/tours/opus-ile-de-la-cite-60min.md`` (the "September Massacres"
+retelling voiced twice near-verbatim in one stop), though that artifact is
+label-free so the exact mechanism there is not provable.
+
+The fix (proven RED-first here): de-dup each REPAIR CANDIDATE via a FAIL-OPEN pass
+(``_prefer_deduped``) and de-dup ``compose_script``'s composed stream — both
+DOWNSTREAM of the coverage baseline, so a drop that would lose a fact fails verify
+and is undone. The stitch root is deliberately NOT de-duped (see generation.py):
+the same-beat near-verbatim pass is token-similarity only and could silently drop a
+superset sentence there, before any coverage check exists.
+
+Tests here are coupled to specific changes by isolated mutation: reverting the
+surgical ``_prefer_deduped`` reddens the repair/fail-open/recompute tests; reverting
+``compose_script``'s de-dup reddens the persisted-path test; stubbing
+``_recompute_fully`` reddens the diagnostic-label test.
+
+Runs the REAL ``compose_script_per_chapter`` with deterministic stubs — no LLM,
+no Neo4j, $0.
+"""
+
+from __future__ import annotations
+
+from src.tour.claim_dedup import (
+    suppress_repeated_claims,
+    suppress_same_beat_near_duplicates,
+)
+from src.tour.compose import compose_script, compose_script_per_chapter
+from src.tour.contract import (
+    POI,
+    BeatRef,
+    BeatSequence,
+    POIBeats,
+    Route,
+    TourInput,
+    TransitSegment,
+)
+from src.tour.generation import generate
+
+# beat bD voices ONE fact as two near-verbatim sentences (rapidfuzz token_set_ratio
+# ~97, well above the pass's 90 threshold), so the stitch carries a same-beat pair.
+_DUP_A = "Marie Gredeler was the only woman executed at this prison"
+_DUP_B = "Marie Gredeler was the only woman executed at this very prison"
+_STOP0_CLAIM = "Henri IV completed the Place des Vosges in 1612"
+_SOLO_CLAIM = "Napoleon crowned himself emperor of the French in 1804"
+
+
+def _poi(pid):
+    return POI(id=pid, name=pid, tier=5, poi_role="stop", lat=48.85, lng=2.36)
+
+
+def _beat(bid, poi_id, claim, script_body=None):
+    body = script_body if script_body is not None else claim
+    return BeatRef(
+        id=bid,
+        poi_id=poi_id,
+        script_body=body,
+        word_count=len(body.split()),
+        key_claims=(claim,),
+    )
+
+
+def _route(walks):
+    pois = tuple(_poi(f"p{i}") for i in range(len(walks)))
+    transits = tuple(
+        TransitSegment(
+            from_poi_id=None if i == 0 else pois[i - 1].id,
+            to_poi_id=p.id,
+            distance_m=100.0,
+            walk_seconds=walks[i],
+        )
+        for i, p in enumerate(pois)
+    )
+    return Route(
+        pois=pois,
+        transits=transits,
+        total_walk_distance_m=100.0 * len(pois),
+        total_walk_seconds=sum(walks),
+    )
+
+
+def _seq(stops):
+    return BeatSequence(
+        poi_beats=tuple(
+            POIBeats(
+                poi_id=f"p{i}",
+                poi_name=f"p{i}",
+                ordering_strategy="sub_location",
+                beats=tuple(beats),
+            )
+            for i, beats in enumerate(stops)
+        )
+    )
+
+
+class _StrictHaikuLikeChecker:
+    """Entails ONLY when a claim appears near-verbatim (substring) in the
+    sentence — the realistic over-rejection of a bold fusion, as in the live
+    Haiku gate. Forces the failing fusion → drop → surgical-restore path."""
+
+    def entails(self, key_claims, sentence_text):
+        return any(c in sentence_text for c in key_claims)
+
+
+class _DupBeatClient:
+    """Stop 0: light reword (claim kept as a substring → entails, composed).
+    Interior stop 1: reword the SOLO beat keeping its claim (→ entails, survives),
+    and collapse beat bD's two near-verbatim stitch sentences into ONE bold fusion
+    that quotes no claim verbatim (→ the strict checker rejects it → dropped →
+    bD's claim uncovered → the surgical repair splices bD's grounded stitch —
+    BOTH near-verbatim sentences — back in)."""
+
+    def compose(self, request, attempt, prev_report):
+        stop = next(iter({s.stop_idx for s in request.stitched.script}))
+        beat_sents = [s for s in request.stitched.script if s.source_type == "beat"]
+        out = [s for s in request.stitched.script if s.source_type != "beat"]
+        if stop == 0:
+            out += [s.model_copy(update={"text": f"And here: {s.text}"}) for s in beat_sents]
+            return tuple(out)
+        seen_dup = False
+        for s in beat_sents:
+            if s.source_id == "bD":
+                if seen_dup:
+                    continue  # collapse bD's two stitch sentences into a single fusion
+                seen_dup = True
+                out.append(
+                    s.model_copy(update={"text": "A single fresh unified telling at this stop."})
+                )
+            else:
+                out.append(s.model_copy(update={"text": f"Notably, {s.text}."}))
+        return tuple(out)
+
+
+def _setup():
+    stops = [
+        [_beat("b0", "p0", _STOP0_CLAIM)],
+        [
+            _beat("bZ", "p1", _SOLO_CLAIM),
+            _beat("bD", "p1", _DUP_A, script_body=f"{_DUP_A}. {_DUP_B}."),
+        ],
+    ]
+    seq = _seq(stops)
+    route = _route([10, 400])
+    stitched = generate(
+        seq, route, TourInput(start=(48.85, 2.36), duration_min=90, city_slug="paris")
+    )
+    assert stitched.validation.passed
+    return seq, route, stitched
+
+
+def test_stitch_intentionally_keeps_same_beat_near_dup():
+    """Design guard (see generation.py): the stitch does NOT run the same-beat
+    near-verbatim pass at the root. That pass is token-similarity only and
+    rapidfuzz.token_set_ratio scores a SUPERSET sentence >= 90 against its subset, so
+    running it before the coverage baseline exists could silently drop a sentence
+    that adds a distinct fact. So the raw stitch KEEPS a beat's two near-verbatim
+    tellings; the coverage-checked repair de-dup removes it downstream (next test)."""
+    _, _, stitched = _setup()
+    bd = [s.text for s in stitched.script if s.source_id == "bD"]
+    assert len(bd) == 2, bd
+
+
+def test_repair_path_ships_no_residual_same_beat_duplicate():
+    """THE regression guard for the fix. The stitch feeds bD's two near-verbatim
+    tellings into the surgical splice UN-de-duped; the fail-open candidate de-dup
+    (_prefer_deduped) must collapse the redundant telling before serving while
+    keeping the fact covered. Assert the SERVED script is de-dup-clean. Undo the
+    surgical _prefer_deduped call in compose.py and this goes RED."""
+    seq, route, stitched = _setup()
+    served = compose_script_per_chapter(
+        stitched,
+        seq,
+        route,
+        client=_DupBeatClient(),
+        faithfulness_checker=_StrictHaikuLikeChecker(),
+        candidates=1,
+    )
+    # The surgical repair produced a verified served script...
+    assert served.validation.passed
+    status = {r.stop_idx: r.status for r in served.verify_report}
+    assert status.get(1) in {"partially_reverted", "reverted_to_stitched"}, status
+
+    # ...but it must not carry a duplicate the compose de-dup would have removed.
+    deduped = suppress_same_beat_near_duplicates(list(served.script))
+    residual = [s.text for s in served.script if s not in deduped]
+    assert len(deduped) == len(served.script), (
+        f"repair path shipped {len(served.script) - len(deduped)} residual same-beat "
+        f"near-duplicate(s) past the gate: {residual}"
+    )
+
+
+# ---- Step 2: the persisted /trips/{id}/compose path (compose_script) ----
+
+
+class _EchoClient:
+    """Composes a beat as TWO near-verbatim sentences (same source_id) — the
+    composer-introduced same-beat echo that ``compose_script`` must collapse before
+    serving. Stop 0 lightly reworded (entails); the echo also entails (claim kept
+    as a substring), so WITHOUT the de-dup the gate passes and both echoes ship."""
+
+    def compose(self, request, attempt, prev_report):
+        out = [s for s in request.stitched.script if s.source_type != "beat"]
+        for s in request.stitched.script:
+            if s.source_type != "beat":
+                continue
+            out.append(s.model_copy(update={"text": f"{s.text}."}))
+            out.append(s.model_copy(update={"text": f"{s.text}, to put it plainly."}))
+        return tuple(out)
+
+
+def _simple_setup():
+    stops = [[_beat("b0", "p0", _STOP0_CLAIM)], [_beat("bE", "p1", _SOLO_CLAIM)]]
+    seq = _seq(stops)
+    route = _route([10, 400])
+    stitched = generate(
+        seq, route, TourInput(start=(48.85, 2.36), duration_min=90, city_slug="paris")
+    )
+    assert stitched.validation.passed
+    return seq, route, stitched
+
+
+def test_compose_script_persisted_path_de_dups_composed_echo():
+    """The persisted /compose path (compose_script, repair=False) must not ship a
+    composer echo. RED before Step 2 (compose_script ran zero de-dup on any path);
+    GREEN after de-dup is applied to its composed stream before verify."""
+    seq, route, stitched = _simple_setup()
+    served = compose_script(
+        stitched,
+        seq,
+        route,
+        client=_EchoClient(),
+        faithfulness_checker=_StrictHaikuLikeChecker(),
+    )
+    assert served.validation.passed
+    be = [s.text for s in served.script if s.source_id == "bE"]
+    assert len(be) == 1, be  # the echo was collapsed, not shipped twice
+    deduped = suppress_same_beat_near_duplicates(list(served.script))
+    assert len(deduped) == len(served.script), [s.text for s in served.script]
+
+
+# ---- Step 3: fail-open de-dup of a SAME-BEAT CLAIM repeat left by a splice ----
+#
+# The class Step 1 (stitch same-beat NEAR-verbatim pass) does NOT catch: one beat
+# voicing ONE claim in two DIFFERENTLY-worded sentences (token_set_ratio < 90, so
+# the near-dup pass misses) that both realize the same key_claim. The stitch keeps
+# both (its claim pass is cross-beat only; near-dup misses; not byte-identical), so
+# a splice serves the repeat raw. Only the fail-open candidate de-dup — which runs
+# suppress_repeated_claims(include_same_beat=True) on the repair candidate — removes
+# it.
+_CLAIM_Y = "over thirteen hundred prisoners were killed in the September Massacres"
+_Y_SENT1 = "In the September Massacres more than thirteen hundred prisoners were killed."
+_Y_SENT2 = "The killing during those September days took over thirteen hundred prisoners' lives."
+_FACT_X = "Marie Gredeler was the only woman among this prison's victims"
+
+
+class _SameBeatClaimRepeatClient:
+    """Stop 0 reworded (entails). Stop 1: rewords beat bX keeping its claim (→
+    survives), and collapses beat bY into ONE bold fusion quoting no claim (→
+    rejected → dropped → bY uncovered → the surgical repair splices bY's stitch
+    back: BOTH sentences, which restate bY's SAME claim in different words). Only
+    the fail-open candidate de-dup collapses that same-beat claim repeat."""
+
+    def compose(self, request, attempt, prev_report):
+        stop = next(iter({s.stop_idx for s in request.stitched.script}))
+        beat_sents = [s for s in request.stitched.script if s.source_type == "beat"]
+        out = [s for s in request.stitched.script if s.source_type != "beat"]
+        if stop == 0:
+            out += [s.model_copy(update={"text": f"And here: {s.text}"}) for s in beat_sents]
+            return tuple(out)
+        seen_y = False
+        for s in beat_sents:
+            if s.source_id == "bY":
+                if seen_y:
+                    continue  # collapse bY's two stitch sentences into one fusion
+                seen_y = True
+                out.append(s.model_copy(update={"text": "A bold fused telling at this stop."}))
+            else:
+                out.append(s.model_copy(update={"text": f"Notably, {s.text}."}))
+        return tuple(out)
+
+
+def test_fail_open_dedup_removes_same_beat_claim_repeat_from_splice():
+    """Step 3, end to end through the real gate. Precondition: bY's two stitch
+    sentences restate one claim but are NOT near-verbatim (so Step 1 leaves them),
+    and both survive stitching. The bold fusion is dropped, bY is spliced back with
+    both, and the fail-open candidate de-dup collapses the repeat while keeping bY's
+    claim covered and bX's composed line. RED before Step 3; GREEN after; the
+    partially_reverted / restored_beats diagnostic stays accurate."""
+    from rapidfuzz import fuzz
+
+    assert fuzz.token_set_ratio(_Y_SENT1, _Y_SENT2) < 90  # Step 1 cannot catch this
+    stops = [
+        [_beat("b0", "p0", _STOP0_CLAIM)],
+        [
+            _beat("bX", "p1", _FACT_X),
+            _beat("bY", "p1", _CLAIM_Y, script_body=f"{_Y_SENT1} {_Y_SENT2}"),
+        ],
+    ]
+    seq = _seq(stops)
+    route = _route([10, 400])
+    stitched = generate(
+        seq, route, TourInput(start=(48.85, 2.36), duration_min=90, city_slug="paris")
+    )
+    assert stitched.validation.passed
+    # Precondition: the stitch KEPT both of bY's tellings (Step 1 didn't catch them).
+    assert len([s for s in stitched.script if s.source_id == "bY"]) == 2
+
+    served = compose_script_per_chapter(
+        stitched,
+        seq,
+        route,
+        client=_SameBeatClaimRepeatClient(),
+        faithfulness_checker=_StrictHaikuLikeChecker(),
+        candidates=1,
+    )
+    assert served.validation.passed
+    # The served script carries no residual same-beat claim repeat: re-running the
+    # include_same_beat claim pass removes nothing.
+    deduped = suppress_repeated_claims(list(served.script), seq, include_same_beat=True)
+    residual = [s.text for s in served.script if s not in deduped]
+    assert len(deduped) == len(served.script), residual
+    # bX's surviving composed line kept the stop partially (not fully) reverted, and
+    # the diagnostic still names bY as the restored beat.
+    status = {r.stop_idx: r for r in served.verify_report}
+    assert status[1].status == "partially_reverted", status[1]
+    assert status[1].restored_beats == ("bY",), status[1].restored_beats
+
+
+# ---- _recompute_fully: keep the reverted-vs-partial diagnostic honest ----
+
+_W_C1 = "The tower held prisoners in the fourteenth century"
+_W_C2 = "Iron spikes lined the tower's oubliettes"
+_W_C1_SENT = f"{_W_C1}."
+_W_C2_SENT = f"{_W_C2}."
+
+
+class _FailBeforeSurvivorClient:
+    """Stop 0 reworded (entails). Stop 1 (single beat bW, two claims): emit bW as
+    TWO sentences IN THIS ORDER — first a bold fusion that quotes no claim (rejected
+    → dropped → the splice for bW's uncovered claim lands at THIS position, i.e.
+    BEFORE the survivor), then a near-verbatim restatement of bW's C1 stitch line
+    that DOES entail (survives). So after the splice the composed survivor sits AFTER
+    the spliced C1 stitch and the fail-open de-dup drops the SURVIVOR — leaving the
+    stop fully stitch. Only _recompute_fully then relabels it reverted_to_stitched."""
+
+    def compose(self, request, attempt, prev_report):
+        stop = next(iter({s.stop_idx for s in request.stitched.script}))
+        beat_sents = [s for s in request.stitched.script if s.source_type == "beat"]
+        out = [s for s in request.stitched.script if s.source_type != "beat"]
+        if stop == 0:
+            out += [s.model_copy(update={"text": f"And here: {s.text}"}) for s in beat_sents]
+            return tuple(out)
+        first = beat_sents[0]
+        out.append(first.model_copy(update={"text": "A bold unified telling here."}))
+        out.append(first.model_copy(update={"text": f"{_W_C1}, notably."}))
+        return tuple(out)
+
+
+def test_recompute_fully_relabels_stop_when_dedup_drops_last_composed():
+    """_recompute_fully guard. The fail-open de-dup drops the stop's only surviving
+    composed sentence (a near-verbatim restatement of the spliced C1 stitch), so the
+    stop is now ENTIRELY grounded stitch. The diagnostic must say
+    reverted_to_stitched, not partially_reverted. Stub _recompute_fully to return an
+    empty set and this goes RED (the label stays the stale, pre-de-dup value)."""
+    from rapidfuzz import fuzz
+
+    assert fuzz.token_set_ratio(_W_C1_SENT, f"{_W_C1}, notably.") >= 90
+    bw = BeatRef(
+        id="bW",
+        poi_id="p1",
+        script_body=f"{_W_C1_SENT} {_W_C2_SENT}",
+        word_count=len(f"{_W_C1_SENT} {_W_C2_SENT}".split()),
+        key_claims=(_W_C1, _W_C2),
+    )
+    seq = _seq([[_beat("b0", "p0", _STOP0_CLAIM)], [bw]])
+    route = _route([10, 400])
+    stitched = generate(
+        seq, route, TourInput(start=(48.85, 2.36), duration_min=90, city_slug="paris")
+    )
+    assert stitched.validation.passed
+    assert len([s for s in stitched.script if s.source_id == "bW"]) == 2
+
+    served = compose_script_per_chapter(
+        stitched,
+        seq,
+        route,
+        client=_FailBeforeSurvivorClient(),
+        faithfulness_checker=_StrictHaikuLikeChecker(),
+        candidates=1,
+    )
+    assert served.validation.passed
+    # The de-dup dropped the composed survivor; stop 1 is now entirely stitch.
+    assert all(s.source_type != "beat" or "notably" not in s.text for s in served.script)
+    status = {r.stop_idx: r for r in served.verify_report}
+    assert status[1].status == "reverted_to_stitched", status[1]

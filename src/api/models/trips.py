@@ -213,6 +213,11 @@ class TripPreviewRequest(BaseModel):
     # + content-loss gates with graceful per-stop repair. Off = the fast
     # deterministic stitch. The workbench sends true to preview the real app voice.
     compose: bool = False
+    # Which REAL narrator writes the tour when compose=true: None/'anthropic'/'opus'
+    # = Claude Opus (default); 'openai'/'chatgpt' = ChatGPT — the workbench's
+    # Opus-vs-ChatGPT writing comparison. There is NO 'mock' provider (a comparison
+    # is never served the stitcher passthrough). Unknown values fall back to Opus.
+    provider: str | None = None
 
 
 class TripPreviewStop(BaseModel):
@@ -274,5 +279,12 @@ class TripPreviewResponse(BaseModel):
     # compose outcome when the request opted in: 'composed' (fully AI-voiced),
     # 'composed_partial' (some stops fell back to the grounded stitch via repair),
     # 'refused' (compose failed even after repair — stitched shown), or 'stitched'
-    # (compose not requested / provider is mock). None only on legacy paths.
+    # (compose not requested). None only on legacy paths.
     compose_status: str | None = None
+    # Which narrator actually wrote this tour ('anthropic' | 'openai'), so the
+    # workbench can label an Opus-vs-ChatGPT comparison. None when not composed.
+    provider: str | None = None
+    # Objective spoken-narration quality signals for the composed tour (stilted vs
+    # engagement scores + the per-100-word tells), so the comparison is MEASURED,
+    # not vibes. None when not composed. See tour.narration_quality.
+    narration_quality: dict | None = None
