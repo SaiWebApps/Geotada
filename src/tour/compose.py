@@ -270,6 +270,17 @@ tells that make generated prose feel generated:
   cheap pre-scan found similar; treat each as "probably the same fact — fuse
   unless they are genuinely distinct." It is a hint, not exhaustive: also fuse
   repeats it missed.
+- ON A DENSE STOP, DE-DUPLICATE BY MEANING BEFORE YOU WRITE. A stop that seats many
+  beats often has SEVERAL of them asserting the SAME fact with NO shared words —
+  "built to house the relics", "raised to shelter the Crown of Thorns", and
+  "commissioned to hold the Passion" are ONE fact, not three. The cheap
+  duplicate-pair scan CANNOT catch these (no shared words), so YOU must: read every
+  beat's key_claims first, GROUP the beats that make the same claim, and voice each
+  grouped fact EXACTLY ONCE — the richest telling, keeping every distinct particular
+  — with the other beats in ``also_cites``. Never re-tell one fact a second (or
+  third) time in "fresh words": a stop that tells one story three ways is the single
+  biggest reason these tours sound stilted and broken. The coverage check reverts
+  any fusion that drops a fact, so fuse by MEANING without fear.
 - Within a stop you may reorder sentences so events flow sensibly (usually
   oldest to newest), or open on what's in front of the walker and step back in
   time. Never move content between stops.
