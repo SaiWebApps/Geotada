@@ -160,6 +160,17 @@ BAND_LANDMARK_TIER: int = 4
 # on-lens but ~275s total) is correctly KEPT.
 MIN_DWELL_AUDIO_SECONDS: int = 90
 
+# Absolute per-stop audio CEILING (C9h, 2026-07-16). No single stop may voice more
+# than this many seconds of continuous narration — the 10-minute "wall, not a walk"
+# monologue an acceptance review flagged as the top reason tours feel stilted.
+# Applied to EVERY stop (the marquee included) on BOTH open-walk and A→B routes, as
+# min(existing governor cap, this). It is a WHOLE-BEAT cap via govern_poi_beats:
+# trimmed beats become keep-exploring overflow (never dropped), and compose
+# recomputes its coverage baseline on the capped stitch, so NO fact is lost. Well
+# above MIN_DWELL_AUDIO_SECONDS so a capped stop never demotes to a vignette.
+# Tunable: raise to let a star dominate longer; lower for tighter stops.
+MAX_DWELL_AUDIO_SECONDS: int = 420
+
 # The five band labels, ordered loudest -> quietest. "silent" means excluded.
 BAND_HEADLINE: str = "headline"
 BAND_FULL: str = "full"
@@ -996,33 +1007,45 @@ def build_poi_beat_plans_capped(
     tour_build, the two golden harnesses) go through here so the cap lives in ONE
     place.
 
-    Caps ONLY a genuine dominating outlier (:func:`_domination_caps`); overflow
-    beats are returned for C9g / keep-exploring (never silently dropped). EXEMPT
-    (may dominate): the MARQUEE — the highest-tier delivered stop, ties broken by
-    highest audio — and ``route.fixed_end_poi_id`` (the fixed destination / pulled
-    endpoint). Marquee-by-importance replaces the v3 proximity-seed exemption that
-    a hostile panel gutted (a thin courtyard held the exemption while the tier-5
-    star was capped, and a demoted seed left the exemption dangling).
+    Two caps compose (whichever is tighter wins per stop):
+    1. The v4 DOMINATION governor (:func:`_domination_caps`) — relative, runs only
+       on ``end_is_none`` (round-trip / open-walk); caps a single dominating outlier
+       and EXEMPTS the MARQUEE (highest-tier delivered stop, ties -> highest audio)
+       and ``route.fixed_end_poi_id``.
+    2. The absolute ``MAX_DWELL_AUDIO_SECONDS`` CEILING (C9h) — no stop, marquee
+       included, may voice more than this on EITHER route type, so no spot becomes a
+       10-minute monologue. The marquee may still dominate, but only up to the
+       ceiling.
 
-    Scope: the cap runs only when ``end_is_none`` (round-trip / open-walk). A→B
-    (``end_is_none`` False) stays byte-identical tier-dwell emission. On end=None a
-    marquee always exists, so there is no empty-exempt inversion.
+    Both are WHOLE-BEAT caps via :func:`govern_poi_beats`: trimmed beats are returned
+    as keep-exploring overflow (never silently dropped), so no fact is lost.
     """
     plans = build_poi_beat_plans(route, snapshot, lenses=lenses)
-    if not end_is_none or not plans:
-        return tuple((plan, ()) for plan in plans)
-    audio = [planned_audio_seconds(plan.beats) for plan in plans]
-    exempt_ids: set[str] = set()
-    if route.fixed_end_poi_id is not None:
-        exempt_ids.add(route.fixed_end_poi_id)
-    # The marquee: highest-tier stop, ties -> highest audio. Always a real POI in
-    # the delivered route (never a dangling / demoted id).
-    marquee = max(range(len(plans)), key=lambda i: (route.pois[i].tier, audio[i]))
-    exempt_ids.add(route.pois[marquee].id)
-    is_exempt = [poi.id in exempt_ids for poi in route.pois]
-    caps = _domination_caps(is_exempt, audio)
+    if not plans:
+        return ()
+    if end_is_none:
+        audio = [planned_audio_seconds(plan.beats) for plan in plans]
+        exempt_ids: set[str] = set()
+        if route.fixed_end_poi_id is not None:
+            exempt_ids.add(route.fixed_end_poi_id)
+        # The marquee: highest-tier stop, ties -> highest audio. Always a real POI in
+        # the delivered route (never a dangling / demoted id).
+        marquee = max(range(len(plans)), key=lambda i: (route.pois[i].tier, audio[i]))
+        exempt_ids.add(route.pois[marquee].id)
+        is_exempt = [poi.id in exempt_ids for poi in route.pois]
+        dom_caps = _domination_caps(is_exempt, audio)
+    else:
+        # A→B: no relative domination governor, but the absolute ceiling still binds.
+        dom_caps = [None] * len(plans)
+    # Apply the absolute ceiling to EVERY stop: min(domination cap, MAX). A None
+    # (exempt / uncapped-by-domination) stop is capped to the MAX; a domination-capped
+    # stop keeps the tighter of the two.
+    final_caps = [
+        MAX_DWELL_AUDIO_SECONDS if c is None else min(c, MAX_DWELL_AUDIO_SECONDS)
+        for c in dom_caps
+    ]
     return tuple(
-        govern_poi_beats(plan, cap) for plan, cap in zip(plans, caps, strict=True)
+        govern_poi_beats(plan, cap) for plan, cap in zip(plans, final_caps, strict=True)
     )
 
 

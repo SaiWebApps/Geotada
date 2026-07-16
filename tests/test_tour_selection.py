@@ -1793,10 +1793,12 @@ def test_governor_v4_marquee_exempt_domination_gated():
     marquee = _poi("marquee", tier=5, lat=48.8556, lng=2.3658, areas=("Le Marais",))
     dump = _poi("dump", tier=4, lat=48.8560, lng=2.3665, areas=("Le Marais",))
     peer = _poi("peer", tier=4, lat=48.8564, lng=2.3670, areas=("Le Marais",))
+    # Realistic beat audio, all stops UNDER MAX_DWELL_AUDIO_SECONDS so this test
+    # isolates the DOMINATION governor (the absolute ceiling is tested separately).
     beats = {
-        "marquee": _b("marquee", 3, 200),
-        "dump": _b("dump", 6, 300),
-        "peer": _b("peer", 2, 150),
+        "marquee": _b("marquee", 3, 40),  # 120s — exempt by tier, under the ceiling
+        "dump": _b("dump", 6, 33),  # 198s — the dominating outlier
+        "peer": _b("peer", 2, 40),  # 80s — thin peer
     }
     snap = _snap(
         [marquee, dump, peer], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats
@@ -1810,23 +1812,65 @@ def test_governor_v4_marquee_exempt_domination_gated():
     assert len(m_kept.beats) == 3 and m_ov == (), "the tier-5 marquee is exempt (not the seed)"
     d_kept, d_ov = by_id["dump"]
     assert len(d_ov) > 0, "the lower-tier dominating dump overflows"
-    assert planned_audio_seconds(d_kept.beats) <= delivered // 3 + 300, "dump within 1/3 (+1 beat)"
+    assert planned_audio_seconds(d_kept.beats) <= delivered // 3 + 40, "dump within 1/3 (+1 beat)"
     assert len(by_id["peer"][0].beats) == 2, "thin peer untouched"
     plain = {p.poi_id: p for p in build_poi_beat_plans(route, snap, lenses=None)}
     assert {b.id for b in d_kept.beats} | set(d_ov) == {b.id for b in plain["dump"].beats}
 
-    # BALANCED tour (3 near-equal stops) → NOTHING capped (the panel's bug-4 fix).
-    bal = {"m": _b("m", 3, 200), "p1": _b("p1", 3, 190), "p2": _b("p2", 3, 180)}
+    # BALANCED tour (3 near-equal stops, all under the ceiling) → NOTHING capped.
+    bal = {"m": _b("m", 3, 40), "p1": _b("p1", 3, 38), "p2": _b("p2", 3, 36)}
     bp = [_poi(x, tier=4, lat=48.8556 + i * 0.0006, lng=2.3658, areas=("Le Marais",))
           for i, x in enumerate(("m", "p1", "p2"))]
     bsnap = _snap(bp, area_types={"Le Marais": "neighborhood"}, beats_by_poi=bal)
     bcap = build_poi_beat_plans_capped(_route(bp), bsnap, lenses=None, end_is_none=True)
     assert all(ov == () for _, ov in bcap), "a balanced tour is never capped"
 
-    # A→B (end_is_none False) → byte-identical uncapped.
+    # A→B (end_is_none False) → still byte-identical here, because every stop is
+    # UNDER the absolute ceiling (the domination governor is open-walk only).
     ab = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=False)
     assert tuple(pb for pb, _ in ab) == tuple(build_poi_beat_plans(route, snap, lenses=None))
     assert all(ov == () for _, ov in ab)
+
+
+def test_absolute_ceiling_caps_every_stop_including_the_marquee():
+    """C9h: no stop — the MARQUEE included — may voice more than
+    MAX_DWELL_AUDIO_SECONDS, on BOTH open-walk and A→B routes (kill the 10-minute
+    monologue). Whole-beat cap: kept + overflow == the full plan (no fact lost); a
+    stop always speaks at least once. UNDO: revert the ceiling in
+    build_poi_beat_plans_capped -> the marquee voices all 8 beats -> RED."""
+    from src.tour.routing import planned_audio_seconds, summarise_route
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
+
+    def _b(pid, n, secs):
+        return [
+            BeatRef(id=f"{pid}-b{i}", poi_id=pid, est_spoken_seconds=secs, active_status="active")
+            for i in range(n)
+        ]
+
+    # A tier-5 marquee whose full plan runs well OVER the ceiling (value-robust:
+    # enough 40s beats to exceed MAX_DWELL_AUDIO_SECONDS whatever it is set to) + a
+    # thin peer.
+    n_over = MAX_DWELL_AUDIO_SECONDS // 40 + 3
+    marquee = _poi("marq", tier=5, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+    peer = _poi("peer", tier=4, lat=48.8560, lng=2.3665, areas=("Le Marais",))
+    beats = {"marq": _b("marq", n_over, 40), "peer": _b("peer", 2, 40)}
+    snap = _snap([marquee, peer], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats)
+    route = summarise_route(
+        [marquee, peer], start_lat=48.8556, start_lng=2.3658, round_trip=True,
+        duration_min=60, spine_area="Le Marais", routing_client=None,
+    )
+    full = {p.poi_id: p for p in build_poi_beat_plans(route, snap, lenses=None)}
+    assert planned_audio_seconds(full["marq"].beats) > MAX_DWELL_AUDIO_SECONDS  # precondition
+
+    for end_is_none in (True, False):  # the ceiling binds on BOTH route types
+        capped = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=end_is_none)
+        by_id = {kept.poi_id: (kept, ov) for kept, ov in capped}
+        m_kept, m_ov = by_id["marq"]
+        assert planned_audio_seconds(m_kept.beats) <= MAX_DWELL_AUDIO_SECONDS, end_is_none
+        assert len(m_kept.beats) >= 1  # a stop always speaks
+        assert len(m_ov) > 0, end_is_none  # the marquee is no longer fully exempt
+        # coverage-safe: kept + overflow == the FULL plan, so no fact is lost
+        assert {b.id for b in m_kept.beats} | set(m_ov) == {b.id for b in full["marq"].beats}
 
 
 # ---------------------------------------------------------------------------
