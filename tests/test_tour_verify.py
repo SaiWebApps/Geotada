@@ -155,6 +155,24 @@ def test_glue_sentences_and_claimless_beats_skip_entailment():
     assert checker.calls == []  # glue skipped, claimless beat skipped
 
 
+def test_keyless_beat_with_body_is_gated_against_its_script_body():
+    """Keyless-corpus faithfulness (round-3 red-team): a beat with key_claims=() but a
+    script_body (the entire London corpus) must be entailed against that BODY — not
+    skipped — so invention on a keyless corpus is caught. UNDO: revert verify.py's
+    skip to key_claims-only -> no entailment call -> RED."""
+    beat = _beat("b1", key_claims=(), script_body="The Great Fire began in Pudding Lane in 1666.")
+    ok = MockFaithfulnessChecker()
+    s_ok = Sentence(text="In 1666 the Great Fire started at Pudding Lane.",
+                    source_id="b1", source_type="beat", stop_idx=0)  # reworded, not verbatim
+    assert verify_faithfulness(_script([s_ok]), {"b1": beat}, ok) == []
+    assert len(ok.calls) == 1  # the keyless beat WAS entailed (against its body), not skipped
+    assert "Pudding Lane" in ok.calls[0][0][0]  # support tuple = the script_body
+    reject = _RejectingChecker("Aliens")
+    s_bad = Sentence(text="Aliens landed at Pudding Lane in 1666.",
+                     source_id="b1", source_type="beat", stop_idx=0)
+    assert verify_faithfulness(_script([s_bad]), {"b1": beat}, reject)  # invention flagged
+
+
 # ---------------------------------------------------------------------------
 # Reflections (Phase 4 Step 4.2) — fail-closed against VISITED key_claims
 # ---------------------------------------------------------------------------

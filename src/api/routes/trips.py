@@ -797,11 +797,17 @@ def preview_trip(
             script = composed
             # Objective quality signals on the composed narration, so an
             # Opus-vs-ChatGPT comparison is MEASURED, not a matter of taste.
-            narration = " ".join(s.text for s in script.script if s.source_type == "beat")
+            # Score the FULL spoken text (composed glue/closers/reflections included —
+            # that is where moralizing closers concentrate, the highest-weighted tell).
+            narration = " ".join(s.text for s in script.script)
             q = score_narration(narration)
             narration_quality = {
                 "stilted_score": q.stilted_score,
                 "engagement_score": q.engagement_score,
+                # reliable=False => the composites are noise (short sample); the UI
+                # must flag this and lean on tells_per_100w instead of the deltas.
+                "reliable": q.reliable,
+                "n_words": q.n_words,
                 "burstiness": q.burstiness,
                 "mean_sentence_words": q.mean_sentence_words,
                 "long_sentence_rate": q.long_sentence_rate,

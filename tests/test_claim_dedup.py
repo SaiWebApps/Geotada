@@ -43,6 +43,37 @@ def _s(text: str, source_id: str, source_type: str = "beat") -> Sentence:
     return Sentence(text=text, source_id=source_id, source_type=source_type, stop_idx=0)
 
 
+def test_coverage_gate_works_for_keyless_beats_via_script_body():
+    """Silent-fact-loss regression (red-team): a KEYLESS beat (key_claims=(), the
+    entire London corpus) must still get a coverage baseline from its script_body
+    sentences — else the deletion gate is a no-op and a fusion can silently DROP a
+    fact there. UNDO: revert _claims_for_coverage to key_claims-only -> the keyless
+    beat contributes no baseline -> the dropped fact is NOT flagged -> RED."""
+    from src.tour.claim_dedup import _claims_for_coverage, claims_realized_by, verify_claim_coverage
+    from src.tour.contract import Script
+
+    keyed = BeatRef(id="K", poi_id="ile", key_claims=("Napoleon crowned himself in 1804",),
+                    script_body="Body.")
+    assert _claims_for_coverage(keyed) == ("Napoleon crowned himself in 1804",)  # keyed unchanged
+
+    keyless = BeatRef(
+        id="L", poi_id="ile", key_claims=(),
+        script_body="The Great Fire began in Pudding Lane in 1666. It burned for four days.",
+    )
+    beats = {"L": keyless}
+    stitched = Script.model_construct(script=(
+        _s("The Great Fire began in Pudding Lane in 1666.", "L"),
+        _s("It burned for four days across the city.", "L"),
+    ))
+    composed = Script.model_construct(script=(  # the SECOND fact was dropped by a fusion
+        _s("The Great Fire began in Pudding Lane in 1666.", "L"),
+    ))
+    expected = claims_realized_by(stitched, beats)
+    assert len(expected) == 2, expected  # both body-sentence facts form the baseline
+    uncovered = verify_claim_coverage(composed, expected, beats)
+    assert any("burned for four days" in claim for _bid, claim in uncovered), uncovered
+
+
 def test_suppress_repeated_claims_keeps_a_fused_also_cites_sentence():
     """Silent-fact-loss regression (red-team): a FUSED sentence (primary A, also_cites
     B) carrying B's DISTINCT fact must NOT be dropped as a pure restatement of A alone

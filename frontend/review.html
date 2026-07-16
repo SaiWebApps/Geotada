@@ -3306,6 +3306,9 @@
         + `<span title="Em-dashes per 100 words">Em-dash <b>${_q(t.em_dash)}</b></span>`
         + `<span title="4-digit years per 100 words — date density">Dates <b>${_q(t.year_density)}</b></span>`
         + '</div>';
+      if (q.reliable === false) {
+        html += `<div style="margin-top:4px;color:#c99;font-size:0.72rem;">⚠ short sample (${_q(q.n_words)} words) — the Stilted/Engagement composites are noisy here; trust the individual tells, not small deltas.</div>`;
+      }
     }
     wrap.innerHTML = html;
     return wrap;
@@ -3397,7 +3400,8 @@
       return `<div style="min-width:0;">`
         + `<h4 style="margin:0 0 6px;">${escHtml(label)} <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted);">${escHtml(_composeStatusLabel(data.compose_status))}</span></h4>`
         + `<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">`
-        + `Stilted <b>${_q(q.stilted_score)}</b> · Engagement <b>${_q(q.engagement_score)}</b> · Burstiness <b>${_q(q.burstiness)}</b> · Avg <b>${_q(q.mean_sentence_words)}w</b> · Em-dash <b>${_q(t.em_dash)}</b> · Dates <b>${_q(t.year_density)}</b></div>`
+        + `Stilted <b>${_q(q.stilted_score)}</b> · Engagement <b>${_q(q.engagement_score)}</b> · Burstiness <b>${_q(q.burstiness)}</b> · Avg <b>${_q(q.mean_sentence_words)}w</b> · Em-dash <b>${_q(t.em_dash)}</b> · Dates <b>${_q(t.year_density)}</b>`
+        + (q.reliable === false ? ` <span style="color:#c99;">⚠ short sample — composites noisy</span>` : '') + `</div>`
         + stops + `</div>`;
     };
     cmpEl.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;">'

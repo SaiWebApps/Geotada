@@ -264,21 +264,25 @@ def suppress_exact_repeats(
             seen_by_stop[s.stop_idx].add(key)
     if not drop:
         return sentences
-    # Never empty a SEATED beat: restore its first dropped sentence if every one
-    # of its sentences was a duplicate (keeps the emitted beat-id set stable).
+    # Never empty a SEATED beat — primary OR also_cited: restore a dropped sentence
+    # if it is the last carrier of any cited beat (keeps the emitted beat-id set
+    # stable and never silently empties a fused-in also_cites beat).
     kept_by_beat: dict[str, int] = defaultdict(int)
     for i, s in enumerate(sentences):
         if s.source_type == "beat" and i not in drop:
-            kept_by_beat[s.source_id] += 1
+            for bid in s.cited_beat_ids:
+                kept_by_beat[bid] += 1
     for i, s in enumerate(sentences):
         if (
             s.source_type == "beat"
-            and s.source_id not in vignette_ids
-            and kept_by_beat[s.source_id] == 0
             and i in drop
+            and any(
+                bid not in vignette_ids and kept_by_beat[bid] == 0 for bid in s.cited_beat_ids
+            )
         ):
             drop.discard(i)
-            kept_by_beat[s.source_id] = 1
+            for bid in s.cited_beat_ids:
+                kept_by_beat[bid] = max(kept_by_beat[bid], 1)
     return [s for i, s in enumerate(sentences) if i not in drop]
 
 
@@ -319,7 +323,46 @@ def suppress_same_beat_near_duplicates(
             drop.add(i)
         else:
             earlier.append(key)
+    if not drop:
+        return sentences
+    # Never empty a cited beat: a fused (also_cites) sentence that is a near-dup of an
+    # earlier same-source sentence may still be the SOLE carrier of an also_cited
+    # beat's fact — restore it rather than silently empty that beat. (A pure same-beat
+    # near-dup never triggers this: its beat's first telling is always kept above.)
+    kept_by_beat: dict[str, int] = defaultdict(int)
+    for i, s in enumerate(sentences):
+        if s.source_type == "beat" and i not in drop:
+            for bid in s.cited_beat_ids:
+                kept_by_beat[bid] += 1
+    for i, s in enumerate(sentences):
+        if (
+            s.source_type == "beat"
+            and i in drop
+            and any(kept_by_beat[bid] == 0 for bid in s.cited_beat_ids)
+        ):
+            drop.discard(i)
+            for bid in s.cited_beat_ids:
+                kept_by_beat[bid] = max(kept_by_beat[bid], 1)
     return [s for i, s in enumerate(sentences) if i not in drop]
+
+
+def _claims_for_coverage(beat: BeatRef) -> tuple[str, ...]:
+    """The claims a beat is expected to voice for the COVERAGE baseline: its
+    ``key_claims`` when it has them, else its grounded ``script_body`` sentences.
+
+    A KEYLESS corpus (e.g. London — every beat has ``key_claims=()``) would otherwise
+    make ``claims_realized_by`` return an empty baseline, turning the coverage
+    (deletion) gate into a NO-OP — so a bold fusion could silently drop a fact there.
+    Falling back to the body sentences gives keyless corpora a real deletion gate.
+    Keyed corpora (Paris/NYC) are unchanged (their key_claims take precedence).
+    """
+    if beat.key_claims:
+        return beat.key_claims
+    if not beat.script_body:
+        return ()
+    from .generation import split_sentences  # deferred: generation imports this module
+
+    return tuple(s for s in (p.strip() for p in split_sentences(beat.script_body)) if s)
 
 
 def claims_realized_by(
@@ -341,7 +384,7 @@ def claims_realized_by(
     ]
     realized: set[tuple[str, int]] = set()
     for bid, beat in beats_by_id.items():
-        for ci, claim in enumerate(beat.key_claims):
+        for ci, claim in enumerate(_claims_for_coverage(beat)):
             csig = _signature(claim)
             if len(csig) < MIN_SHARED_TOKENS:
                 continue
@@ -369,7 +412,8 @@ def verify_claim_coverage(
     out: list[tuple[str, str]] = []
     for bid, ci in sorted(expected - still):
         beat = beats_by_id.get(bid)
-        claim = beat.key_claims[ci] if beat and ci < len(beat.key_claims) else ""
+        claims = _claims_for_coverage(beat) if beat else ()
+        claim = claims[ci] if ci < len(claims) else ""
         out.append((bid, claim))
     return tuple(out)
 
