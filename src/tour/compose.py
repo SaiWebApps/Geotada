@@ -27,6 +27,7 @@ from .claim_dedup import (
     claims_realized_by,
     suppress_exact_repeats,
     suppress_repeated_claims,
+    suppress_same_beat_near_duplicates,
     verify_claim_coverage,
 )
 from .compose_gate import (
@@ -733,6 +734,9 @@ def compose_script_per_chapter(
         # that runs next still holds.
         out = suppress_repeated_claims(out, beat_sequence, include_same_beat=True)
         out = suppress_exact_repeats(out, beat_sequence)
+        # Catch the composer echoing one beat as two full re-tellings (near-verbatim,
+        # same source_id) — the paraphrase repetition the claim pass misses.
+        out = suppress_same_beat_near_duplicates(out)
         return stitched.model_copy(
             update={
                 "script": tuple(out),

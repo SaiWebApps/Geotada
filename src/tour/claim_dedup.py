@@ -274,6 +274,46 @@ def suppress_exact_repeats(
     return [s for i, s in enumerate(sentences) if i not in drop]
 
 
+# A composer echo of one beat as two full re-tellings is near-verbatim but rarely
+# byte-identical; this ratio catches it. Kept high so only a genuine restatement of
+# the SAME beat is dropped — a distinct fact reads well below it (the Abelard echo
+# measured 98-100; two different facts measured ~37).
+_NEAR_DUP_RATIO = 90.0
+
+
+def suppress_same_beat_near_duplicates(
+    sentences: list[Sentence], threshold: float = _NEAR_DUP_RATIO
+) -> list[Sentence]:
+    """Drop a beat sentence that is a near-verbatim restatement (rapidfuzz
+    ``token_set_ratio >= threshold``) of an EARLIER sentence of its OWN beat.
+
+    Catches the composer voicing one beat as TWO full re-tellings — same
+    ``source_id``, near-identical wording, which the claim-based pass misses when
+    the re-telling drifts from the ``key_claims`` tokens (or the beat has none), and
+    which ``suppress_exact_repeats`` misses because it is not byte-identical.
+    Restricted to the SAME ``source_id`` so a genuinely DISTINCT fact — a different
+    beat that happens to read similarly — is NEVER dropped. Pure; preserves order;
+    only removes ``source_type == 'beat'``; never empties a beat (the first telling
+    of each beat has no earlier same-beat sentence, so it is always kept).
+    """
+    from rapidfuzz import fuzz
+
+    kept_keys_by_beat: dict[str, list[str]] = defaultdict(list)
+    drop: set[int] = set()
+    for i, s in enumerate(sentences):
+        if s.source_type != "beat":
+            continue
+        key = _repeat_key(s.text)
+        if len(key) < 25:  # too short to judge as a restatement
+            continue
+        earlier = kept_keys_by_beat[s.source_id]
+        if any(fuzz.token_set_ratio(key, e) >= threshold for e in earlier):
+            drop.add(i)
+        else:
+            earlier.append(key)
+    return [s for i, s in enumerate(sentences) if i not in drop]
+
+
 def claims_realized_by(
     script: Script, beats_by_id: dict[str, BeatRef]
 ) -> set[tuple[str, int]]:

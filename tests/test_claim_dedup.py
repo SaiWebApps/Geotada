@@ -14,6 +14,7 @@ from src.tour.claim_dedup import (
     claims_realized_by,
     suppress_exact_repeats,
     suppress_repeated_claims,
+    suppress_same_beat_near_duplicates,
     verify_claim_coverage,
 )
 from src.tour.contract import (
@@ -125,6 +126,36 @@ def test_same_beat_paraphrase_echo_dropped_only_with_flag() -> None:
     deduped = suppress_repeated_claims(sents, seq, include_same_beat=True)
     assert len(deduped) == 1
     assert deduped[0].text.startswith("Napoleon crowned himself emperor here")
+
+
+def test_same_beat_near_duplicate_retelling_dropped() -> None:
+    """The composer echoes ONE beat as two full re-tellings (near-verbatim, same
+    source_id) — the real Île de la Cité tour repeated the whole Abelard story (the
+    two tellings measured 98-100 rapidfuzz). This text-similarity pass drops the
+    echo where the claim-based pass can't (the re-telling drifts from the claim
+    tokens). A DISTINCT fact of the same beat, and a similar-reading DIFFERENT beat,
+    both survive.
+    UNDO: remove the ``suppress_same_beat_near_duplicates`` call in _assemble (or the
+    same-source_id restriction) -> the echo survives, or a distinct fact is lost."""
+    ab = "ab"
+    sents = [
+        _s("Around the year 1200 one of the teachers was Peter Abelard, a philosophical "
+           "whizz kid and cocker of snooks at establishment intellectuals.", ab),
+        _s("Around the year 1200, one of its teachers was Peter Abelard, a philosophical "
+           "whizz kid and cocker of snooks at establishment intellectuals.", ab),  # echo
+        _s("She gave birth to a baby, her uncle had Abelard castrated, and the story ended "
+           "in convents and lifelong separation.", ab),  # DISTINCT fact of same beat -> kept
+    ]
+    out = suppress_same_beat_near_duplicates(sents)
+    assert len(out) == 2, "the near-verbatim echo must drop, the distinct fact must stay"
+    assert any("castrated" in s.text for s in out), "a novel fact of the same beat is never lost"
+
+    # Two DIFFERENT beats that read near-identically are NOT touched (only same beat).
+    diff = [
+        _s("The great bell was forged in 1685 and spared during the Revolution.", "b1"),
+        _s("The great bell was forged in 1685 and spared during the Revolution.", "b2"),
+    ]
+    assert len(suppress_same_beat_near_duplicates(diff)) == 2
 
 
 def test_compound_sentence_keeps_novel_fact() -> None:
