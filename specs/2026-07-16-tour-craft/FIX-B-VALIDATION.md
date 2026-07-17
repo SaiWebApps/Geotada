@@ -26,13 +26,37 @@ retains EITHER, so the other is silently dropped. Restructuring for a hook makes
 this fire.
 
 ## The real fix (next step, Tier-3, NOT prompt-only)
-A RUNTIME fact-loss guard in the compose gate: for each stop, the composed text
-must retain the distinctive grounded entities (proper nouns + years) of the
-stop's SOURCE beats; a stop that drops one REVERTS to its stitch (which has the
-fact). Narrow (proper-noun/year tokens), not the full semantic-granularity
-rewrite the judge flagged as over-gating-risky. Prototype confirmed it flags
-Charing/Cross/1200s on the current output. Wiring it into the gate + one
-re-validation is the path to ship the (real, proven) opener improvement safely.
+A RUNTIME fact-loss guard in the compose gate: if a stop's composed text drops a
+distinctive grounded fact of its SOURCE beats, that stop REVERTS to its
+fact-complete stitch. This makes Fix B safe: de-label where the compose keeps
+every fact, revert where it doesn't.
+
+### REJECTED implementation (2026-07-16): token / proper-noun matching. DO NOT REBUILD THIS WAY.
+A first cut (`verify_hard_fact_retention`, token retention of distinctive
+multi-word proper nouns) was built, unit-tested on synthetic ASCII names, and
+then REFUTED by a hostile skeptic panel + 4 real full-bar failures. It was
+reverted un-committed. Failure modes:
+- **Over-gates the launch city.** The regex excludes accented letters, so ~494
+  Paris beats ("Théâtre des Variétés" → garbage "Th"/"Vari" tokens) falsely flag
+  on any faithful reword. Same for nicknames ("V&A" ← Victoria and Albert),
+  possessives ("Nelson's" ≠ "Nelson" — its OWN docstring example), and
+  sentence-initial capitals ("The King").
+- **Manufactures duplicates.** Its coverage_failure escalates through
+  `repair_composed_surgical`, which appends the stitch ALONGSIDE the good
+  sentence → the stop ships both → the exact repetition compose exists to remove.
+- **Under-gates.** "Tower Bridge" (both words generic), single proper nouns, and
+  dates are invisible.
+LESSON: fact retention is a SEMANTIC problem; token/entity matching cannot handle
+synonyms/nicknames/accents without over- OR under-gating. Synthetic-ASCII unit
+tests gave FALSE confidence — validate any such guard against real
+`data/paris/beats.json` (and forecast it) BEFORE writing code.
+
+### The likely-correct approach (unbuilt)
+A per-stop LLM OMISSION check (mirror of the existing faithfulness/entailment
+gate, which polices invention): "does the composed stop still convey every
+distinct fact its source beats carried?" One Haiku call/stop (already the gate's
+cost model); a stop that drops a fact reverts. Must be forecast + over-gating
+red-teamed on Paris/NY/London and live-validated before shipping.
 
 ## The improved prompt block (ready to re-apply once the runtime guard exists)
 Inserted after VOICE, before the negative CRAFT block in _COMPOSE_SYSTEM:
