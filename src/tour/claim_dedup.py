@@ -264,25 +264,25 @@ def suppress_exact_repeats(
             seen_by_stop[s.stop_idx].add(key)
     if not drop:
         return sentences
-    # Never empty a SEATED beat — primary OR also_cited: restore a dropped sentence
-    # if it is the last carrier of any cited beat (keeps the emitted beat-id set
-    # stable and never silently empties a fused-in also_cites beat).
+    # Never empty a SEATED beat: restore its first dropped sentence if every one of
+    # its sentences was a duplicate (keeps the emitted beat-id set stable). By SOURCE
+    # ID only — NOT cited_beat_ids: a round-4 red-team proved a cited-beat restore here
+    # RESURRECTS a byte-identical duplicate (the exact bug this system prevents). An
+    # also_cited beat whose sole carrier is a duplicate is either already covered by
+    # its verbatim twin, or a genuine loss the (keyless-aware) coverage gate catches.
     kept_by_beat: dict[str, int] = defaultdict(int)
     for i, s in enumerate(sentences):
         if s.source_type == "beat" and i not in drop:
-            for bid in s.cited_beat_ids:
-                kept_by_beat[bid] += 1
+            kept_by_beat[s.source_id] += 1
     for i, s in enumerate(sentences):
         if (
             s.source_type == "beat"
+            and s.source_id not in vignette_ids
+            and kept_by_beat[s.source_id] == 0
             and i in drop
-            and any(
-                bid not in vignette_ids and kept_by_beat[bid] == 0 for bid in s.cited_beat_ids
-            )
         ):
             drop.discard(i)
-            for bid in s.cited_beat_ids:
-                kept_by_beat[bid] = max(kept_by_beat[bid], 1)
+            kept_by_beat[s.source_id] = 1
     return [s for i, s in enumerate(sentences) if i not in drop]
 
 
@@ -323,26 +323,10 @@ def suppress_same_beat_near_duplicates(
             drop.add(i)
         else:
             earlier.append(key)
-    if not drop:
-        return sentences
-    # Never empty a cited beat: a fused (also_cites) sentence that is a near-dup of an
-    # earlier same-source sentence may still be the SOLE carrier of an also_cited
-    # beat's fact — restore it rather than silently empty that beat. (A pure same-beat
-    # near-dup never triggers this: its beat's first telling is always kept above.)
-    kept_by_beat: dict[str, int] = defaultdict(int)
-    for i, s in enumerate(sentences):
-        if s.source_type == "beat" and i not in drop:
-            for bid in s.cited_beat_ids:
-                kept_by_beat[bid] += 1
-    for i, s in enumerate(sentences):
-        if (
-            s.source_type == "beat"
-            and i in drop
-            and any(kept_by_beat[bid] == 0 for bid in s.cited_beat_ids)
-        ):
-            drop.discard(i)
-            for bid in s.cited_beat_ids:
-                kept_by_beat[bid] = max(kept_by_beat[bid], 1)
+    # NO also_cites never-empty restore here (a round-4 red-team proved it RESURRECTS a
+    # near-verbatim duplicate — the exact bug this system prevents). A fused also_cited
+    # beat whose only carrier is a near-dup is either covered by its near-identical twin
+    # or a genuine loss the (keyless-aware) coverage gate catches and repairs.
     return [s for i, s in enumerate(sentences) if i not in drop]
 
 
@@ -362,6 +346,14 @@ def _claims_for_coverage(beat: BeatRef) -> tuple[str, ...]:
         return ()
     from .generation import split_sentences  # deferred: generation imports this module
 
+    # Pseudo-claim = each FULL body sentence. A round-4 attempt to key only on "hard
+    # facts" (years + proper nouns) was REVERTED: on the live London corpus it left
+    # 85/562 (15.1%) keyless beats with a <2-token baseline — e.g. "…a place for duels
+    # …members of the nobility" collapses to "The" — turning the deletion gate back into
+    # a NO-OP for those (the exact silent-fact-loss this subsystem exists to prevent).
+    # The full sentence keeps every fact gated. Over-gating a bold paraphrase is the
+    # tolerable failure direction: _prefer_deduped fail-opens to the complete stitched
+    # original — no fact lost, only a less-fused telling.
     return tuple(s for s in (p.strip() for p in split_sentences(beat.script_body)) if s)
 
 
