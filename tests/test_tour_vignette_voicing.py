@@ -298,6 +298,65 @@ def test_select_vignette_beats_prefers_self_naming_beat():
     ) == {1: (naming_lensed,)}
 
 
+def test_select_vignette_beats_prefers_shortest_self_naming_beat():
+    """A1: among ≥2 SELF-NAMING beats, the one with the shortest first sentence wins —
+    a tighter walk-past line — with a requested lens still primary. UNDO: drop the
+    length sort of the naming pool -> the corpus-order (longer) beat is chosen -> RED."""
+    poi = _v_poi("Nelson's Column")
+    long_first = _beat(
+        "nc-long", "Nelson's Column",
+        "Nelson's Column is a granite monument raised in the square to honour the "
+        "admiral who fell at Trafalgar.",
+    )  # long first sentence, listed FIRST (corpus order)
+    short_first = _beat(
+        "nc-short", "Nelson's Column", "Nelson's Column dominates the square.",
+    )  # short first sentence, listed SECOND
+    beats = {"Nelson's Column": (long_first, short_first)}
+    assert select_vignette_beats({1: (poi,)}, beats) == {1: (short_first,)}
+
+
+def test_vignette_one_liners_apply_the_run_on_cap():
+    """Generation-path parity: _vignette_one_liners voices the CAPPED one-liner (via
+    the shared vignette_one_liner_text helper), so the audio/script line matches the
+    workbench preview line. A 50-word Nelson beat is voiced as its short first clause."""
+    from src.tour.generation import _vignette_one_liners
+
+    beat = _beat("nc", "Nelson's Column", _NELSON_50W_VOICING)
+    names = {"Nelson's Column": "Nelson's Column"}
+    sents = _vignette_one_liners((beat,), stop_idx=1, poi_names=names)
+    assert len(sents) == 1
+    assert len(sents[0].text.split()) <= 24, sents[0].text
+    assert "nelson's column" in sents[0].text.casefold()
+    assert sents[0].source_id == "nc" and sents[0].source_type == "beat"
+
+
+def test_generated_vignette_one_liner_is_capped_end_to_end():
+    """Integration/name-map guard: the AUDIO/script path must voice the CAPPED line,
+    not just the preview. The name map that lets the cap keep the POI's name must be
+    built from route.VIGNETTES (walk-past POIs), NOT route.pois (seated) — a vignette
+    beat's poi_id is never in route.pois. UNDO: build _build_transit's poi_names from
+    route.pois only -> empty name -> guard falls back to the full 50-word run-on ->
+    the voiced line is 50 words -> RED. (This is the exact bug the live $0 preview
+    caught before any paid re-validation.)"""
+    nelson_poi = _poi("v-nelson", "Nelson's Column")
+    vbeat = _beat("vb-nelson", "v-nelson", _NELSON_50W_VOICING)
+    seq = _seq(vignette_beats={1: (vbeat,)})
+    route = _route().model_copy(update={"vignettes": {1: (nelson_poi,)}})
+    script = generate(seq, route, _INPUT, glue_client=MockGlueClient(), now=_NOW)
+    voiced = [s.text for s in script.script if s.source_id == "vb-nelson"]
+    assert voiced, "vignette one-liner was not voiced"
+    assert len(voiced[0].split()) <= 24, voiced[0]
+    assert "nelson's column" in voiced[0].casefold()
+
+
+_NELSON_50W_VOICING = (
+    "Nelson's Column is a monument in Trafalgar Square in the City of Westminster, "
+    "Central London, England, United Kingdom, built to commemorate British Royal Navy "
+    "officer Horatio Nelson's decisive victory at the Battle of Trafalgar over the "
+    "combined French and Spanish navies, during which he was killed by a French sniper."
+)
+
+
 def test_vignette_self_naming_detects_abbreviation_leading_name():
     """A POI whose definitional sentence STARTS with an abbreviation ("St. Paul's
     Cathedral is…") must still be detected as self-naming. The one-liner is voiced

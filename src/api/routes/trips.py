@@ -55,7 +55,7 @@ from src.tour.contract import (
     ValidationReport,
 )
 from src.tour.density import TourabilityRefusedError
-from src.tour.generation import generate, split_sentences
+from src.tour.generation import generate, vignette_one_liner_text
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option
 from src.tour.routing import summarise_route
@@ -627,12 +627,23 @@ def _preview_stops(
     # Display-normalize dashes so the workbench text reads the way the audio
     # sounds (comma pause, not a dangling em-dash the tourist complained about).
     per_stop = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in _dwell_sents.items()}
+    # Voice the walk-past one-liner via the SAME helper the audio/script path uses
+    # (generation.vignette_one_liner_text) so the workbench text never diverges from
+    # what the tourist hears — clause-capped when the beat's first sentence is a long
+    # run-on, keeping the POI's own name in the shortened line.
+    # Vignette beats belong to WALK-PAST POIs (route.vignettes), NOT the seated
+    # route.pois — the cap's name guard needs THOSE names or it falls back to the
+    # full run-on. Cover both.
+    _poi_name_by_id = {p.id: p.name for p in route.pois}
+    for _pois in route.vignettes.values():
+        for _p in _pois:
+            _poi_name_by_id.setdefault(_p.id, _p.name)
     one_liner_by_poi: dict[str, str] = {}
     for beats in vignette_beats.values():
         for beat in beats:
-            sentences = split_sentences(beat.script_body or "")
-            if sentences:
-                one_liner_by_poi[beat.poi_id] = normalize_dashes_for_reading(sentences[0])
+            text = vignette_one_liner_text(beat.script_body, _poi_name_by_id.get(beat.poi_id, ""))
+            if text:
+                one_liner_by_poi[beat.poi_id] = normalize_dashes_for_reading(text)
 
     out: list[TripPreviewStop] = []
     for i, sp in enumerate(script.selected_pois):

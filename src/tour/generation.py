@@ -199,6 +199,55 @@ def _last_word_is_abbrev(s: str) -> bool:
     return norm in _ABBREVIATIONS
 
 
+# A walk-past vignette is ONE line heard in passing. A raw Wikipedia lead sentence
+# ("Nelson's Column is a monument in Trafalgar Square in the City of Westminster,
+# Central London, England, United Kingdom, built to commemorate …" — 50 words) recited
+# as a walk-past is the "reading Wikipedia aloud" failure a live A/B surfaced. Cap it.
+VIGNETTE_ONE_LINER_MAX_WORDS: int = 24
+
+
+def _first_clause(sentence: str) -> str:
+    """The first top-level clause of ``sentence`` — up to the first comma or semicolon
+    that is NOT inside parentheses ("169 feet (51.59 m), tall" keeps "(51.59 m)"
+    intact). No such boundary -> the whole sentence."""
+    depth = 0
+    for i, ch in enumerate(sentence):
+        if ch in "([":
+            depth += 1
+        elif ch in ")]":
+            depth = max(0, depth - 1)
+        elif ch in ",;" and depth == 0:
+            return sentence[:i].rstrip()
+    return sentence.strip()
+
+
+def vignette_one_liner_text(body: str | None, poi_name: str) -> str:
+    """The spoken walk-past one-liner for a vignette beat, shared by the audio/script
+    voicing (``_vignette_one_liners``) and the workbench preview so the two never
+    diverge. It is the beat's FIRST sentence, clause-capped when that sentence is a
+    long run-on: if the first sentence exceeds ``VIGNETTE_ONE_LINER_MAX_WORDS`` words,
+    serve only its first top-level clause — but ONLY when that clause still names the
+    POI (``poi_name`` in it) and is a substantial clause (≥5 words); otherwise serve
+    the full first sentence unchanged. So a bad extraction is tightened, but the line
+    is NEVER a fragment and NEVER drops the POI's own name (the mis-attribution the
+    self-naming preference exists to prevent). Returns "" for a bodyless beat."""
+    sents = split_sentences(body or "")
+    if not sents:
+        return ""
+    first = sents[0]
+    if len(first.split()) <= VIGNETTE_ONE_LINER_MAX_WORDS:
+        return first
+    clause = _first_clause(first)
+    if (
+        poi_name
+        and poi_name.casefold() in clause.casefold()
+        and len(clause.split()) >= 5
+        and clause != first
+    ):
+        return clause if clause.endswith((".", "!", "?")) else clause + "."
+    return first
+
+
 # ---------------------------------------------------------------------------
 # Top-level entrypoint
 # ---------------------------------------------------------------------------
@@ -790,34 +839,38 @@ def _build_transit(
         out_sentences = [
             Sentence(text=text, source_id=GLUE_NAV, source_type="glue", stop_idx=stop_idx)
         ]
-    out_sentences.extend(_vignette_one_liners(vignette_beats, stop_idx))
+    # Vignette beats belong to WALK-PAST POIs (route.vignettes), not the seated
+    # route.pois; the one-liner cap's name guard needs those names.
+    poi_names = {p.id: p.name for p in route.pois}
+    for _pois in route.vignettes.values():
+        for _p in _pois:
+            poi_names.setdefault(_p.id, _p.name)
+    out_sentences.extend(_vignette_one_liners(vignette_beats, stop_idx, poi_names))
     return out_sentences
 
 
 def _vignette_one_liners(
-    vignette_beats: tuple[BeatRef, ...], stop_idx: int
+    vignette_beats: tuple[BeatRef, ...],
+    stop_idx: int,
+    poi_names: dict[str, str] | None = None,
 ) -> list[Sentence]:
     """One beat-cited sentence per walk-past vignette beat (Track B B.4).
 
-    The FIRST sentence of the beat's ``script_body`` — verbatim corpus text
-    attributed to the beat's own id, at the leg's ``stop_idx``. Beats with no
-    body (callers should have filtered them — ``select_vignette_beats`` only
-    picks voiceable beats) contribute nothing.
-
-    ``select_vignette_beats`` prefers a SELF-NAMING beat (its first sentence
-    contains the POI name), so the one-liner reads as unmistakably about the
-    walk-past POI — never mis-read as content of the seated stop it lands under.
+    The beat's first sentence, clause-capped by ``vignette_one_liner_text`` when it
+    is a long run-on, attributed to the beat's own id at the leg's ``stop_idx``.
+    Beats with no body contribute nothing. ``select_vignette_beats`` prefers a
+    SELF-NAMING beat, so the one-liner reads as unmistakably about the walk-past POI;
+    ``poi_names`` (poi_id -> name) lets the cap keep that name in the shortened line.
     """
+    names = poi_names or {}
     out: list[Sentence] = []
     for beat in vignette_beats:
-        if not beat.script_body:
-            continue
-        sents = split_sentences(beat.script_body)
-        if not sents:
+        text = vignette_one_liner_text(beat.script_body, names.get(beat.poi_id, ""))
+        if not text:
             continue
         out.append(
             Sentence(
-                text=sents[0],
+                text=text,
                 source_id=beat.id,
                 source_type="beat",
                 stop_idx=stop_idx,

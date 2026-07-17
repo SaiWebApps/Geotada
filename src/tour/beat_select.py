@@ -643,7 +643,17 @@ def select_vignette_beats(
             # within the preferred pool still honour a requested lens, else take the
             # first. No self-naming beat -> the prior behaviour (lensed else first).
             naming = [b for b in voiceable if _vignette_beat_names_poi(b.script_body, poi.name)]
-            pool = naming or voiceable
+            # Within the self-naming pool prefer the SHORTEST first sentence — a tighter
+            # walk-past line — with a requested lens still the primary key below. (No-op
+            # for a POI with one self-naming beat; free insurance where several exist.)
+            if naming:
+                from .generation import split_sentences
+
+                pool = sorted(
+                    naming, key=lambda b: len(split_sentences(b.script_body or "")[0].split())
+                )
+            else:
+                pool = voiceable
             lensed = next(
                 (b for b in pool if any(ln.lower() in interest for ln in b.lenses)),
                 None,

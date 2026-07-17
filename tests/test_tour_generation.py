@@ -248,6 +248,52 @@ def test_split_sentences_never_breaks_mid_name_across_corpus():
     assert not offences, "split_sentences breaks mid-name:\n  " + "\n  ".join(offences[:20])
 
 
+_NELSON_50W = (
+    "Nelson's Column is a monument in Trafalgar Square in the City of Westminster, "
+    "Central London, England, United Kingdom, built to commemorate British Royal Navy "
+    "officer Horatio Nelson's decisive victory at the Battle of Trafalgar over the "
+    "combined French and Spanish navies, during which he was killed by a French sniper."
+)
+
+
+def test_vignette_one_liner_caps_a_long_run_on_but_keeps_the_poi_name():
+    """A walk-past one-liner must land in one breath. A raw 50-word Wikipedia lead
+    (Nelson's Column — surfaced by a live Opus-vs-ChatGPT A/B) is clause-capped to its
+    first top-level clause, which stays under the word cap AND still names the POI.
+    UNDO: make vignette_one_liner_text return split_sentences(body)[0] unchanged ->
+    this returns the 50-word line -> RED."""
+    from src.tour.generation import (
+        VIGNETTE_ONE_LINER_MAX_WORDS,
+        split_sentences,
+        vignette_one_liner_text,
+    )
+
+    assert len(split_sentences(_NELSON_50W)[0].split()) == 50  # the whole thing is one sentence
+    out = vignette_one_liner_text(_NELSON_50W, "Nelson's Column")
+    assert len(out.split()) <= VIGNETTE_ONE_LINER_MAX_WORDS, out
+    assert "nelson's column" in out.casefold(), out  # never drops its own name
+    assert out.endswith("."), out  # a clean sentence, not a mid-clause fragment
+
+
+def test_vignette_one_liner_serves_full_sentence_when_the_clause_would_drop_the_name():
+    """No mis-attribution: if the POI name is NOT in the first clause of a long
+    sentence, serve the FULL first sentence rather than a name-less clause (which
+    would read as the seated stop's content). UNDO: drop the name-in-clause guard ->
+    a name-less clause is served -> RED."""
+    from src.tour.generation import vignette_one_liner_text
+
+    body = (
+        "Standing proudly over the fountains and the lions below, the great column "
+        "here honours Nelson, the admiral who fell at the Battle of Trafalgar in 1805."
+    )  # 27 words, name only in the 2nd clause
+    out = vignette_one_liner_text(body, "Nelson")
+    assert out == body, out  # full sentence, because the first clause omits "Nelson"
+
+    # And a short line is never touched.
+    short = "The Médicis fountain dates from 1685."
+    assert vignette_one_liner_text(short, "Médicis fountain") == short
+
+
 def test_split_sentences_terminal_abbreviations_still_split():
     """Dotted-caps abbreviations that legitimately END a sentence (U.S., A.D.,
     P.M.) must NOT be re-glued to the next sentence — the mirror of the initials
