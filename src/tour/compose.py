@@ -260,6 +260,17 @@ say what TO do; the block below says what to avoid — both hold.
   between two related facts. This OVERRIDES "one idea per sentence" whenever the
   ideas are causally linked — keep each sentence sayable in one breath, but let it
   carry a linked cause and effect, not a bare fact.
+- BUILD, DON'T FLATTEN. After the hook, keep raising the stakes or the open
+  question through the body toward a payoff near the end — never settle into a
+  level-pitch list where every beat lands at the same weight. Order what you can so
+  the tension deepens: the worst turn, the reversal, the twist comes LATE, not
+  buried in the middle. Flat, evenly-weighted event escalation is the measured tell
+  of this model specifically — fight it.
+- HOLD THE COMPLEXITY, don't tidy it away. Where the history is genuinely messy — a
+  figure who is both villain and victim, accounts that disagree, a question left
+  open — keep that tension rather than smoothing it into one neat, single-track
+  answer. Real stories carry ambiguity; flattening everything into tidy resolution
+  reads as machine-made. (Never invent ambiguity the beats don't support.)
 - BUILD MOMENTUM. Sometimes plant a question or a tension at one stop and pay it
   off at the NEXT one, so the walk builds instead of resetting at each POI — the
   answer need not land in the same stop. (Keep the stop order; never move content

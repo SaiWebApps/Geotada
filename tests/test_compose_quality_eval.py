@@ -50,7 +50,7 @@ from tools.compose_snapshot import compose_prompt_fingerprint
 # prompt edit changes this and turns the eval RED, forcing a fixture review /
 # recapture — the guard against a permanently-green suite that quietly stopped
 # testing reality. Update it (and recapture live goldens, if any) on purpose.
-PINNED_PROMPT_FINGERPRINT = "5fab7880e9916b30"  # set by test_fixtures_pinned_to_prompt
+PINNED_PROMPT_FINGERPRINT = "b851ee832d22ac34"  # set by test_fixtures_pinned_to_prompt
 
 
 # --- a 3-stop Marais-flavoured fixture: stop 0 has a cross-book DUPLICATE ------
