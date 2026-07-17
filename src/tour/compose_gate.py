@@ -178,7 +178,6 @@ def repair_composed_surgical(
 
     out_by_stop: dict[int, list[Sentence]] = defaultdict(list)
     restored_by_stop: dict[int, list[str]] = defaultdict(list)
-    surviving_composed_beat: dict[int, bool] = defaultdict(bool)
 
     def _restore(stop_idx: int, bid: str) -> None:
         if bid in restored_by_stop[stop_idx]:
@@ -192,8 +191,6 @@ def repair_composed_surgical(
         k = s.stop_idx
         if (s.stop_idx, s.source_id, s.text) not in drop_keys:
             out_by_stop[k].append(s)  # a surviving (passing) composed sentence
-            if s.source_type == "beat":
-                surviving_composed_beat[k] = True
             continue
         # A dropped, failing sentence: restore in its place any uncovered beat it
         # cited (the grounded stitch). If it cited no uncovered beat (an embellished
@@ -202,22 +199,63 @@ def repair_composed_surgical(
             if bid in uncovered:
                 _restore(k, bid)
 
-    # Uncovered beats not tied to a dropped sentence (compose omitted them outright)
-    # -> splice their grounded stitch at the end of their OWN stop's block, still in
-    # place (never at the tour's end).
+    # Uncovered beats not tied to a DROPPED sentence. Three cases (the
+    # splice-beside-surviving-twin duplication):
+    #   - No surviving composed sentence voices the beat -> compose omitted it outright;
+    #     splice its grounded stitch in place (never a dup).
+    #   - A SURVIVING composed sentence still cites ONLY this (uncovered) beat -> it is an
+    #     INCOMPLETE telling (kept one claim, dropped another). Appending the beat's
+    #     fact-complete stitch beside it voices the shared fact twice, and neither dedup
+    #     pass removes it (the near-dup pass misses a <90 reframe; the claim pass keeps
+    #     both). So (a) REPLACE: drop the single-source twin(s), splice the stitch.
+    #   - A surviving twin is FUSED (cites another beat too) -> (b) revert the whole stop
+    #     to its grounded stitch — but ONLY when that stitch re-represents every beat the
+    #     twins carry.
+    # SAFETY INVARIANT (never worse than the old in-place splice): only DROP a surviving
+    # composed sentence when a fact-COMPLETE grounded substitute exists for EVERYTHING the
+    # drop removes; otherwise FALL BACK to the old in-place splice — a harmless duplicate
+    # at worst, never a deleted fact. (This also neutralises the case where a composed
+    # sentence's stop_idx is mis-bucketed vs its beat's true stop.)
+    stitched_by_stop: dict[int, list[Sentence]] = defaultdict(list)
+    for s in stitched.script:
+        stitched_by_stop[s.stop_idx].append(s)
+    revert_stops: set[int] = set()
     for bid in sorted(uncovered):
         if any(bid in v for v in restored_by_stop.values()):
             continue
         k = beat_stop.get(bid)
-        if k is not None:
+        if k is None:
+            continue
+        twins = [s for s in out_by_stop[k] if s.source_type == "beat" and bid in s.cited_beat_ids]
+        if not twins:
+            _restore(k, bid)  # truly omitted -> splice in place (no dup)
+            continue
+        twin_beats = {cb for s in twins for cb in s.cited_beat_ids}
+        stitched_here = {s.source_id for s in stitched_by_stop[k] if s.source_type == "beat"}
+        if all(tuple(s.cited_beat_ids) == (bid,) for s in twins) and stitched_for_beat.get(bid):
+            out_by_stop[k] = [s for s in out_by_stop[k] if s not in twins]  # (a) replace
             _restore(k, bid)
+        elif twin_beats <= stitched_here:
+            revert_stops.add(k)  # (b) the stitch re-represents every beat the twins carry
+        else:
+            _restore(k, bid)  # safe fallback: keep the twin(s), splice in place (never delete)
+
+    for k in revert_stops:
+        out_by_stop[k] = list(stitched_by_stop[k])
+        restored_by_stop[k] = [s.source_id for s in stitched_by_stop[k] if s.source_type == "beat"]
 
     out: list[Sentence] = []
     for k in sorted(out_by_stop):
         out.extend(out_by_stop[k])
     repaired = composed.model_copy(update={"script": tuple(out)})
     restored = {k: tuple(v) for k, v in restored_by_stop.items() if v}
-    fully_reverted = {k for k in restored if not surviving_composed_beat.get(k)}
+    # Recompute fully-reverted AFTER the (a)/(b) edits: a stop is fully reverted iff no
+    # composed BEAT sentence (one not present in that stop's stitch) still survives.
+    fully_reverted: set[int] = set()
+    for k in restored:
+        stitched_set = set(stitched_by_stop.get(k, ()))
+        if not any(s.source_type == "beat" and s not in stitched_set for s in out_by_stop[k]):
+            fully_reverted.add(k)
     return repaired, restored, fully_reverted
 
 

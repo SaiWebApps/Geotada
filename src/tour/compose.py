@@ -418,6 +418,40 @@ def _compose_user_prompt(
     return "\n\n".join(parts)
 
 
+def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tuple[Sentence, ...]:
+    """Build ``Sentence`` objects from a compose response's JSON, COERCING each BEAT
+    sentence's ``stop_idx`` to its beat's TRUE stitched stop.
+
+    The model echoes ``stop_idx`` in its output; trusting that value verbatim let a
+    mis-tagged beat sentence be bucketed into the wrong stop by the compose gate — a
+    silent mis-placement / empty-stop / mis-repair class (a stop could ship with zero
+    narration while the lenient tour-wide coverage gate still passed). A beat's home stop
+    is unambiguous from the stitch, so we take it from ``beat_stop[source_id]`` and ignore
+    the model's echo. Non-beat glue/reflection sentences (no source beat) keep their given
+    slot ``stop_idx``; an unknown ``source_id`` (a hallucinated beat) is left as-given for
+    the traceability gate to reject."""
+    beat_stop = {
+        s.source_id: s.stop_idx for s in request.stitched.script if s.source_type == "beat"
+    }
+    out: list[Sentence] = []
+    for s in sentences:
+        stype = s["source_type"]
+        sid = s["source_id"]
+        stop_idx = beat_stop.get(sid, s["stop_idx"]) if stype == "beat" else s["stop_idx"]
+        out.append(
+            Sentence(
+                text=s["text"],
+                source_id=sid,
+                source_type=stype,
+                stop_idx=stop_idx,
+                # Only beat sentences carry fused citations; ignore any stray also_cites
+                # the model attaches to glue.
+                also_cites=(tuple(s.get("also_cites") or ()) if stype == "beat" else ()),
+            )
+        )
+    return tuple(out)
+
+
 class AnthropicComposeClient:
     """Fire-once real compose: ONE messages.create per attempt, structured
     output via output_config.format (guaranteed-valid JSON), adaptive
@@ -472,22 +506,7 @@ class AnthropicComposeClient:
                 f"(stop_reason={getattr(response, 'stop_reason', None)!r}) — nothing to parse"
             )
         data = json.loads(text)
-        return tuple(
-            Sentence(
-                text=s["text"],
-                source_id=s["source_id"],
-                source_type=s["source_type"],
-                stop_idx=s["stop_idx"],
-                # Only beat sentences carry fused citations; ignore any stray
-                # also_cites the model attaches to glue.
-                also_cites=(
-                    tuple(s.get("also_cites") or ())
-                    if s["source_type"] == "beat"
-                    else ()
-                ),
-            )
-            for s in data["sentences"]
-        )
+        return _sentences_from_json(data["sentences"], request)
 
 
 # ---------------------------------------------------------------------------
@@ -595,18 +614,7 @@ class OpenAIComposeClient:
                 "nothing to parse"
             )
         data = json.loads(text)
-        return tuple(
-            Sentence(
-                text=s["text"],
-                source_id=s["source_id"],
-                source_type=s["source_type"],
-                stop_idx=s["stop_idx"],
-                also_cites=(
-                    tuple(s.get("also_cites") or ()) if s["source_type"] == "beat" else ()
-                ),
-            )
-            for s in data["sentences"]
-        )
+        return _sentences_from_json(data["sentences"], request)
 
 
 # Provider registry for the Opus-vs-ChatGPT comparison. Keys are the values the

@@ -333,6 +333,122 @@ def test_fail_open_dedup_removes_same_beat_claim_repeat_from_splice():
     assert status[1].restored_beats == ("bY",), status[1].restored_beats
 
 
+# ---- §4b cascade dup: splice-beside-surviving-twin (single-source REPLACE) ----
+#
+# The class NONE of Steps 1-3 catch: an uncovered beat whose SURVIVING composed
+# sentence still cites ONLY that beat (a shortened/reframed telling that kept claim-1
+# but dropped claim-2). The omitted-outright splice appended the beat's FULL stitch
+# BESIDE the survivor -> claim-1 voiced twice; the near-dup pass misses it
+# (token_set_ratio 75.8 < 90) and the claim pass keeps both (the stitch carries the
+# novel claim-2, the earlier survivor is never dropped forward-only). Confirmed on
+# current committed code before the fix. Fix (a) REPLACE: drop the single-source
+# survivor, use the fact-complete stitch.
+_CATH_C1 = "the cathedral's foundation stone was laid in eleven sixty three"
+_CATH_C2 = "its spire fell in a great storm in eighteen sixty"
+_CATH_BODY = f"Here, {_CATH_C1}, and {_CATH_C2}."
+_CATH_SURVIVOR = f"Remarkably, {_CATH_C1}, a detail still celebrated by visitors today."
+
+
+class _TwoClaimShortenClient:
+    """Stop 0 reworded (entails). Stop 1 (single beat bV, ONE stitched sentence with
+    TWO key_claims): emit ONE survivor that keeps claim-1 verbatim (-> entails,
+    survives) but DROPS claim-2 and is <90 token_set_ratio to the full stitch. So
+    claim-2 is uncovered, bV is spliced back with its FULL stitch, and without the fix
+    it lands BESIDE the survivor -> claim-1 twice."""
+
+    def compose(self, request, attempt, prev_report):
+        stop = next(iter({s.stop_idx for s in request.stitched.script}))
+        beat_sents = [s for s in request.stitched.script if s.source_type == "beat"]
+        out = [s for s in request.stitched.script if s.source_type != "beat"]
+        if stop == 0:
+            out += [s.model_copy(update={"text": f"And here: {s.text}"}) for s in beat_sents]
+            return tuple(out)
+        out.append(beat_sents[0].model_copy(update={"text": _CATH_SURVIVOR}))
+        return tuple(out)
+
+
+def test_surgical_splice_replaces_single_source_survivor_no_duplicate():
+    """§4b REGRESSION. repair_composed_surgical must NOT splice a beat's full stitch
+    beside a surviving composed sentence that cites ONLY that (uncovered) beat — that
+    voices the shared fact twice, the exact #22 duplication, which neither dedup pass
+    removes here (near-dup 75.8 < 90; claim pass keeps both). The (a) REPLACE fix drops
+    the single-source incomplete survivor and uses the fact-complete stitch. Assert
+    claim-1 is voiced EXACTLY ONCE and claim-2 is present. UNDO: revert the REPLACE
+    branch in repair_composed_surgical -> claim-1 voiced twice -> RED."""
+    from rapidfuzz import fuzz
+
+    assert fuzz.token_set_ratio(_CATH_SURVIVOR, _CATH_BODY) < 90  # near-dup pass can't catch it
+    bv = BeatRef(
+        id="bV",
+        poi_id="p1",
+        script_body=_CATH_BODY,
+        word_count=len(_CATH_BODY.split()),
+        key_claims=(_CATH_C1, _CATH_C2),
+    )
+    seq = _seq([[_beat("b0", "p0", _STOP0_CLAIM)], [bv]])
+    route = _route([10, 400])
+    stitched = generate(
+        seq, route, TourInput(start=(48.85, 2.36), duration_min=90, city_slug="paris")
+    )
+    assert stitched.validation.passed
+    served = compose_script_per_chapter(
+        stitched,
+        seq,
+        route,
+        client=_TwoClaimShortenClient(),
+        faithfulness_checker=_StrictHaikuLikeChecker(),
+        candidates=1,
+    )
+    assert served.validation.passed
+    stop1 = [s.text for s in served.script if s.stop_idx == 1 and s.source_type == "beat"]
+    c1_count = sum(1 for t in stop1 if _CATH_C1 in t)
+    assert c1_count == 1, f"claim-1 voiced {c1_count}x (dup): {stop1}"
+    assert any(_CATH_C2 in t for t in stop1), f"claim-2 lost: {stop1}"
+
+
+def test_surgical_never_deletes_a_fused_beats_fact_when_stitch_lacks_it():
+    """§4b never-delete INVARIANT (hostile-review Repro 1). A surviving composed sentence
+    that FUSES an uncovered beat (bidB) with ANOTHER beat (bidA) whose grounded stitch is
+    NOT seated at this stop must NOT be deleted by the (b) whole-stop revert — that would
+    drop bidA's fact, which only this composed sentence carries. The revert fires ONLY
+    when the stop's stitch re-represents every beat the twins cite; here it does not, so
+    the fix keeps the fused sentence and splices bidB's stitch (a harmless duplicate at
+    worst). This guards the class where a composed sentence's stop_idx is mis-bucketed vs
+    its beat's true stop (a pre-existing compose.py gap). UNDO: make the fused branch
+    `revert_stops.add(k)` unconditionally -> bidA's fact deleted -> RED."""
+    from src.tour.compose_gate import repair_composed_surgical
+    from src.tour.contract import Script, Sentence, ValidationReport
+
+    a_stitch = Sentence(
+        text="Fact A grounded stitch stands here.", source_id="bidA", source_type="beat", stop_idx=0
+    )
+    b_stitch = Sentence(
+        text="Fact B one grounded, and fact B two grounded.",
+        source_id="bidB",
+        source_type="beat",
+        stop_idx=1,
+    )
+    stitched = Script.model_construct(script=(a_stitch, b_stitch))
+    # bidB's composed stop keeps ONE fused sentence carrying bidA's fact + bidB fact-one
+    # (drops fact-two -> bidB uncovered). It survives verify (not in drop_report).
+    fused = Sentence(
+        text="Fact A grounded stitch stands here, and fact B one grounded.",
+        source_id="bidB",
+        source_type="beat",
+        stop_idx=1,
+        also_cites=("bidA",),
+    )
+    composed = Script.model_construct(script=(fused,))  # bidA's fact lives ONLY in the fused twin
+    drop_report = ValidationReport()  # nothing flagged for dropping
+    uncovered_report = ValidationReport(coverage_failures=(("bidB", "fact B two grounded"),))
+    repaired, _restored, _fully = repair_composed_surgical(
+        composed, stitched, drop_report, uncovered_report
+    )
+    texts = [s.text for s in repaired.script]
+    # The fused sentence (the ONLY carrier of bidA's fact) must survive, not be reverted away.
+    assert fused.text in texts, f"the fused sentence carrying bidA's fact was DELETED: {texts}"
+
+
 # ---- _recompute_fully: keep the reverted-vs-partial diagnostic honest ----
 
 _W_C1 = "The tower held prisoners in the fourteenth century"

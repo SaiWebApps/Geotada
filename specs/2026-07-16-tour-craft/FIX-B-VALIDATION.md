@@ -14,7 +14,8 @@ restructuring, with no runtime guard to catch it.
 On BOTH the first and the improved prompt, the Trafalgar stop DROPPED
 "Charing Cross / distances measured from here" AND "since the 1200s" — two
 grounded facts (data/london/wikipedia/trafalgar_square-rev-1364154913.txt,
-beat london_trafalgar_square_wikipedia_3). The composed hook even ASKS the
+beat london_trafalgar_square_wikipedia_1; _3 is Nelson's Column, not this).
+The composed hook even ASKS the
 question those facts answer ("where does London begin?" / "how far to London?")
 then omits the answer. The improved prompt added ANSWER-YOUR-OWN-HOOK +
 REWORK-THE-SHAPE-KEEP-EVERY-FACT bullets; the model still dropped it. Prompt
@@ -90,6 +91,47 @@ call burst.
 A per-fact (not per-stop, not per-claim) omission check would also work but needs an
 extra LLM decomposition layer + global judging + calibration — a full Tier-3 project the
 two rejected guards show is not a tail-of-session patch.
+
+### REJECTED implementation #3 (2026-07-17): clause-granular coverage pseudo-claims. DO NOT REBUILD AS-IS.
+Path B attempted at the COVERAGE-BASELINE layer instead of the beat layer: `_claims_for_coverage`
+was changed so each keyless body sentence is split by a new `_clause_split()` into clause-granular
+VERBATIM sub-claims, cutting at top-level `;` and `,`+CONNECTOR (and/as/who/which/where/while/but/
+allowing/including/with), merging <2-token fragments. It DID catch the headline Charing Cross drop
+(undo-tested RED-on-revert) and was grounded, merge-safe, crash-free across all 1296 real keyless
+beats (0 fabrications, 0 dead fragments, no golden shift). REFUTED PRE-COMMIT by TWO independent
+hostile Fable-5 monitors + source verification; reverted un-committed. Why it died:
+1. **Catches only ~29% of the target population (monitor 1, quantified on real data).** Fact
+   boundaries are usually NOT connectors: fronted participials ("Opened to the public in October
+   1971, Belfast became a branch of the Imperial War Museum in 1978" — comma before a subject),
+   list commas before articles, and parenthesized dates. Of 155 real keyless sentences with ≥2
+   year-facts, 110 (71%) keep both facts inside ONE clause after the split → the overlap-coefficient
+   gate (|a∩b|/min) still scores a subset-deletion at 1.00 and passes. Reproduced on
+   london_hms_belfast_wikipedia_4 and london_london_zoo_wikipedia_4.
+2. **NEW served-duplication regression (monitor 2, reproduced end-to-end + source-verified).** When
+   a finer clause-claim fails coverage but the beat's composed sentence SURVIVED faithfulness-verify,
+   the repair cascade (`compose_gate.py:205-213`, the "compose omitted them outright" branch) splices
+   the full grounded stitch at the end of the beat's OWN stop block WITHOUT checking `surviving_
+   composed_beat[k]` — so the stitch is appended BESIDE the surviving composed twin. Keyless dedup
+   cannot remove it (`suppress_repeated_claims` no-ops with no key_claims; near-dup measured 88.9 <
+   90). Reproduced on the headline `london_trafalgar_square_wikipedia_1`: "significant landmark since
+   the 1200s" voiced twice, back-to-back — the exact duplication (#22) this subsystem exists to kill.
+   >>> This is a LATENT CASCADE BUG the diff merely triggers; it must be fixed for ANY stronger gate. <<<
+3. **Threshold cliff false-positives (monitor 2, arithmetic).** The 0.34 overlap-coefficient was
+   calibrated for whole-sentence/key-claim signatures. On a 3-token clause, one synonym/inflection
+   swap in a legit fact-KEEPING fusion lands at exactly 0.333 < 0.34 → FALSE "lost" → wasted paid
+   recompose + (via #2) duplicate serve. Real repro: london_leicester_square_wikipedia_3, fusion
+   keeping both facts scored 0.333. Census one-reword-from-flagged: 136 London / 281 Paris / 327 NY.
+4. **My "zero blast radius" proof was VACUOUS (monitor 2).** `make tour-invariants` and the goldens
+   import neither `claim_dedup` nor `compose` and generate stitch-only tours — they cannot execute
+   the changed code, so "10 passed / goldens stable" was no-information, not safety proof. (Grounding
+   + no-dead-fragment DID hold via the 30 real-corpus unit tests; those were real.)
+
+CONVERGENT LESSON (memory tour-quality-root-cause + all THREE rejected guards): the LEXICAL coverage
+gate cannot be Fix B's safety net for keyless within-sentence fact retention — every threshold either
+misses drops (overlap-coefficient blind to subset) or false-fires on paraphrase, and a false fire
+becomes served duplication via the cascade. The mechanism must be SEMANTIC (LLM fact-decomposition
+or omission judging), and the cascade splice-beside-surviving-twin bug is a prerequisite fix. Do NOT
+build a 4th lexical downstream guard.
 
 ## The improved prompt block (ready to re-apply once the runtime guard exists)
 Inserted after VOICE, before the negative CRAFT block in _COMPOSE_SYSTEM:

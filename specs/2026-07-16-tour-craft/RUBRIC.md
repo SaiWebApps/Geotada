@@ -27,6 +27,7 @@ A good Ondoway stop is a short story told to one walker through earphones at the
 - **Facts are the material, not the point — lead with the stakes and hang names/dates off that spine.** Tours "come alive through personalities, relationships, emotions and drama," go dull on "names, dates and facts." (VoiceMap; Tilden: "Information does not equal interpretation")
 - **Show, don't tell — one fresh concrete image or metaphor beats abstraction.** Rick Steves: "The Grand Canal was a Venetian chorus line of palaces doing an impressive can-can." (Rick Steves, *Venice Grand Canal* transcript; VoiceMap tip #3, "Theatre of the Mind")
 - **Anchor to what the walker senses on-site right now.** "the cobbles under your feet are original"; "Venice is a barrage on the senses. Water, boats, tourists with luggage…" (Rick Steves, *Venice Grand Canal*; Tilden 2nd principle)
+- **Default the stop's SUBJECT to the visible object in front of the walker, not an unseeable abstraction.** A seeable thing usually beats a story about something that can't be seen — make the object they're looking at the grammatical subject of the stop, not just a look-cue add-on. (Method Writing, *How to Write an Audio Guide Tour Script* — GOOD-TOURS-RESEARCH §e.2)
 
 ## RHYTHM-FOR-THE-EAR
 
@@ -36,6 +37,7 @@ A good Ondoway stop is a short story told to one walker through earphones at the
 - **Strip eye-only punctuation before TTS: parentheticals, colons, em-dash asides, nested lists.** "Avoid brackets, dashes, colons and inverted commas or parentheses." (VoiceMap, *Writing for Voice*)
 - **One strong idea per stop, ruthlessly tight — "if they can see it, cut it."** "Attempting to narrate every object usually dilutes quality… Design a journey, not a catalogue." (VoiceMap tip #13; Pathoura, *Why Museums Need Audio Guides*)
 - **Size the stop to the walk: ~110–170 words for a standing POI, hard-capped near 750 words / 5 min, and match audio length to travel time.** "below 750 words (5 minutes)… attention wanders if you speak for longer"; "60–90 seconds… 110–170 words." (VoiceMap, *Word Counts* and *Ingredients of a Perfect Audio Tour*; look2innovate)
+- **Cap the whole tour, not just each stop: a linear walk runs ~30–40 min max, with audio time matched to travel time and no long silences.** A tour-LEVEL ceiling (distinct from the per-stop budget) keeps the walk from sprawling. (Method Writing; VoiceMap, *Ingredients of a Perfect Audio Tour* — GOOD-TOURS-RESEARCH §e.3)
 
 ## WHAT-TO-AVOID
 
@@ -58,7 +60,7 @@ A human reviewer or the acceptance agent applies this to a real generated tour. 
 4. **You + present tense.** Is it second person, addressing the walker, with a live present-moment frame? (VOICE — Rick Steves, VoiceMap #8) — ___/1
 5. **One idea, tight.** One strong idea per stop; nothing plainly visible is over-described; within the word budget for the segment? (RHYTHM — VoiceMap #13, Pathoura) — ___/1
 6. **Ear-speakable.** Short, varied sentences you can say in one breath; contractions; no eye-only punctuation? (RHYTHM — look2innovate, VoiceMap *Writing for Voice*) — ___/1
-7. **No stated moral.** Does it end on a fact/image/open thread, not "a testament to" or "a reminder that"? (WHAT-TO-AVOID — Fink, Tilden; already enforced by prompt lines 235–238) — ___/1
+7. **Earned point, not an inflated moral.** Does it end on an *earned, concrete* reflection, image, or open thread — the payoff to the question the stop raised — and NOT on hollow inflation ("a testament to," "a reminder that")? Note: a stop with a point is the goal; the failure is an *unearned/inflated* one, OR a flat pointless fact-list with no reflection at all — both fail. (Ira Glass: a story needs its "moment of reflection"; the tell is inflation, not having a point — GOOD-TOURS-RESEARCH §e.1; WHAT-TO-AVOID — Fink, Tilden) — ___/1
 8. **No machine signatures.** Free of "not just X but Y," triplet stacking, puffery ("nestled/vibrant/in the heart of"), significance-participle tails? (WHAT-TO-AVOID — Fink, Wikipedia, NYT) — ___/1
 9. **Insider / non-obvious.** Does it reveal something a generic guidebook wouldn't, rather than the headline everyone knows? (STRUCTURE/HOOK — VoiceMap #10, PrivateMuseumTours) — ___/1
 10. **Momentum + peak.** Does the tour build to a climax and do stops pull forward (a thread/cliffhanger), rather than resetting flat at each POI? (STRUCTURE/HOOK — VoiceMap #11–12, Tilden 5) — ___/1

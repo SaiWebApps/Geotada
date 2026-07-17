@@ -89,3 +89,35 @@ def test_faithfulness_checker_is_always_the_paired_real_checker(monkeypatch) -> 
     sentinel = object()
     monkeypatch.setattr(_verify_mod, "HaikuFaithfulnessChecker", lambda *a, **k: sentinel)
     assert get_faithfulness_checker() is sentinel
+
+
+def test_sentences_from_json_coerces_beat_stop_idx_to_its_true_stitched_stop() -> None:
+    """A composed BEAT sentence's echoed ``stop_idx`` is COERCED to its beat's TRUE
+    stitched stop, so a mis-tagged sentence cannot be bucketed into the wrong stop by the
+    compose gate (the pre-existing "trust the LLM's stop_idx" gap a hostile review found
+    could ship a stop with zero narration past a passing tour-wide coverage gate). Glue
+    keeps its slot; an unknown (hallucinated) source_id is left as-given for the
+    traceability gate. UNDO: parse ``stop_idx=s['stop_idx']`` verbatim -> the mis-tagged
+    beat keeps stop 2 -> RED."""
+    from src.tour.compose import ComposeRequest, _sentences_from_json
+    from src.tour.contract import Script, Sentence
+
+    stitched = Script.model_construct(
+        script=(
+            Sentence(text="Beat A stitch.", source_id="bA", source_type="beat", stop_idx=0),
+            Sentence(text="Beat B stitch.", source_id="bB", source_type="beat", stop_idx=1),
+        )
+    )
+    request = ComposeRequest(stitched=stitched)
+    raw = [
+        # a beat sentence the model MIS-TAGGED with stop 2 (bA truly lives at stop 0)
+        {"text": "Reworded A.", "source_id": "bA", "source_type": "beat", "stop_idx": 2},
+        # glue keeps its own slot
+        {"text": "Leaving here.", "source_id": "GLUE", "source_type": "glue", "stop_idx": 0},
+        # a hallucinated beat not in the stitch -> left as-given (traceability rejects it)
+        {"text": "Ghost.", "source_id": "bZ", "source_type": "beat", "stop_idx": 5},
+    ]
+    out = {s.source_id: s for s in _sentences_from_json(raw, request)}
+    assert out["bA"].stop_idx == 0, "mis-tagged beat stop_idx was NOT coerced to its true stop"
+    assert out["GLUE"].stop_idx == 0, "glue slot changed"
+    assert out["bZ"].stop_idx == 5, "unknown source_id should be left as-given"
