@@ -51,12 +51,45 @@ synonyms/nicknames/accents without over- OR under-gating. Synthetic-ASCII unit
 tests gave FALSE confidence — validate any such guard against real
 `data/paris/beats.json` (and forecast it) BEFORE writing code.
 
-### The likely-correct approach (unbuilt)
-A per-stop LLM OMISSION check (mirror of the existing faithfulness/entailment
-gate, which polices invention): "does the composed stop still convey every
-distinct fact its source beats carried?" One Haiku call/stop (already the gate's
-cost model); a stop that drops a fact reverts. Must be forecast + over-gating
-red-teamed on Paris/NY/London and live-validated before shipping.
+### REJECTED implementation #2 (2026-07-16): per-STOP LLM omission check. DO NOT REBUILD AS-IS.
+A per-stop Haiku omission gate (`verify_omissions`, mirror of HaikuFaithfulnessChecker
+— "does the composed STOP still convey this claim?") was forecast (GO-WITH-CONDITIONS),
+BUILT ($0 machinery, offline-inert, 1913-pass bar), then a hostile Fable-5 monitor
+REFUTED the SERVING design PRE-commit (reverted un-committed). What was SOUND: the
+anti-duplicate firewall (omission failures never reach the surgical splice), gate
+off-by-default, $0 offline bar. What KILLED it — two structural flaws proven on REAL
+`data/paris/beats.json`:
+1. **Global baseline vs per-stop judging.** `claims_realized_by(stitched)` is
+   tour-GLOBAL, but the check judged each claim against its beat's stop ONLY. Cross-stop
+   dedup (`suppress_repeated_claims`, 82 real Paris twin-claim pairs) voices a fact at
+   stop A and drops its retelling at stop B — the check then FALSELY refuses stop B on
+   an IDENTITY compose (nothing changed). Only 7% of Paris key_claims are verbatim in
+   their body, so the "verbatim shortcut guarantees convergence" claim is false on the
+   launch city.
+2. **Atomic multi-fact claim = no granularity.** For KEYLESS London the pseudo-claim is
+   a whole body sentence ("landmark since the 1200s, distances measured from Charing
+   Cross"). An atomic "did it drop ANY piece?" cannot PASS a hook that correctly drops
+   nested geography while KEEPING Charing Cross — it over-gates the exact case it was
+   built for.
+Plus routing gaps (omission_failures silently dropped by `_report_for_stop`,
+`ComposeVerificationError`, `_per_stop_verify_report`) and a sequential (un-parallelized)
+call burst.
+
+### The ACTUAL viable paths (pick one; both avoid the guard entirely)
+- **A — SURGICAL-OPENER prompt (cheapest, prompt-only, testable):** constrain Fix B so
+  the model rewrites ONLY the stop's FIRST sentence into a hook and leaves every other
+  sentence's facts intact and in order. The Charing Cross drop came from restructuring
+  the WHOLE stop; a surgical opener change de-labels (the main win) with minimal
+  fact-drop risk, and the existing coverage gate catches gross drops. Re-validate live.
+- **B — SINGLE-FACT beat decomposition (corpus fix, robust):** the ROOT cause is
+  multi-fact body-sentence beats in the keyless London corpus. Split them into
+  single-fact beats at extraction/dedup so the EXISTING per-claim coverage gate (no
+  new machinery) catches any dropped fact and the compose model gets atomic units. This
+  also independently improves compose quality. Bigger, but removes the blind spot at the
+  source instead of guarding it downstream.
+A per-fact (not per-stop, not per-claim) omission check would also work but needs an
+extra LLM decomposition layer + global judging + calibration — a full Tier-3 project the
+two rejected guards show is not a tail-of-session patch.
 
 ## The improved prompt block (ready to re-apply once the runtime guard exists)
 Inserted after VOICE, before the negative CRAFT block in _COMPOSE_SYSTEM:
