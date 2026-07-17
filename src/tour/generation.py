@@ -126,11 +126,64 @@ def split_sentences(text: str) -> list[str]:
         piece = piece.strip()
         if not piece:
             continue
-        if out and _last_word_is_abbrev(out[-1]):
+        if (
+            out
+            and _last_word_is_abbrev(out[-1])
+            and not _is_regnal_terminal(out[-1], piece)
+        ):
             out[-1] = f"{out[-1]} {piece}"
         else:
             out.append(piece)
     return out
+
+
+# Single-letter Roman numerals — the ones that share the shape of a name-initial.
+_ROMAN_SINGLE: frozenset[str] = frozenset("IVXLCDM")
+# Closed-class words that OPEN a new sentence. The one reliable signal that a
+# trailing single-letter Roman numeral is a REGNAL terminal ("Elizabeth I. The
+# abbey…") and not a middle INITIAL of a name ("John D. Rockefeller"): a real new
+# sentence begins with a function-word opener, whereas a surname is an open-class
+# proper noun. If the next token is NOT in this set we GLUE (assume a name), which
+# keeps every "<First> <RomanLetter>. <Surname>" intact at the cost of leaving the
+# rarer "…World War I. Waterloo…" (regnal before a proper-noun-initial sentence)
+# glued — a minor missing pause, never a mid-name break.
+_SENTENCE_OPENERS: frozenset[str] = frozenset({
+    "the", "a", "an", "it", "he", "she", "they", "we", "you", "i", "this", "that",
+    "these", "those", "his", "her", "its", "their", "our", "in", "on", "at", "by",
+    "for", "from", "with", "after", "before", "during", "since", "when", "while",
+    "as", "although", "though", "but", "and", "however", "later", "today", "now",
+    "here", "there", "then", "once", "under", "over", "between", "among",
+    "following", "despite", "because", "if", "to", "of",
+})
+
+
+def _is_regnal_terminal(prev: str, nxt: str) -> bool:
+    """True when ``prev`` ends with a REGNAL numeral that legitimately ENDS the
+    sentence — "Elizabeth I. The abbey…", "Louis X. The scandal…" — so the
+    abbreviation re-glue must NOT fuse it with ``nxt`` (the mirror of the initial-
+    stutter bug: without this, "…by Elizabeth I. The abbey…" reads as one run-on).
+
+    The hard case is telling a regnal numeral from an ordinary single-letter MIDDLE
+    INITIAL: C/D/I/L/M/V/X are both ("John D. Rockefeller"). The distinguisher is
+    the NEXT token — a regnal ends a sentence, so what follows is a sentence-opener
+    function word (The/It/During/…); a middle initial is followed by a SURNAME
+    (an open-class proper noun). So we split ONLY when the next token is a known
+    opener; otherwise we glue, which keeps "<First> <RomanLetter>. <Surname>" whole.
+    Also glue when a neighbour is itself an initial (an initial CHAIN: "J. M. W.
+    Turner", "by C. W. Stephens"). Multi-letter regnals ("Henry VIII.") never match
+    ``_INITIALS_RE``, so this only governs the single-letter case."""
+    words = prev.split()
+    if len(words) < 2:
+        return False  # a bare "I." with no preceding word is treated as an initial
+    if words[-1].rstrip("\"'»).,") not in _ROMAN_SINGLE:  # last token a lone Roman letter
+        return False
+    if _INITIALS_RE.match(words[-2].rstrip("\"'»)")):
+        return False  # preceded by an initial -> it's a chain (J. M. W.), glue
+    nxt_first = nxt.split()[0] if nxt.split() else ""
+    if _INITIALS_RE.match(nxt_first.rstrip("\"'»)")):
+        return False  # next opens on an initial -> chain (C. -> W. Stephens), glue
+    # regnal iff the next sentence opens on a function word, not a surname.
+    return nxt_first.rstrip("\"'»).,").lower() in _SENTENCE_OPENERS
 
 
 def _last_word_is_abbrev(s: str) -> bool:

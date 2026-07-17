@@ -11,6 +11,7 @@ Catches:
 from __future__ import annotations
 
 import json
+import re
 import unicodedata
 from pathlib import Path
 
@@ -122,6 +123,98 @@ def test_no_ghost_beat_stubs(city_dir: Path) -> None:
         problems.append(f"{len(missing_body)} beat(s) with empty script_body")
     if problems:
         pytest.fail(f"{city_dir.name}: " + "; ".join(problems))
+
+
+@pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
+def test_no_tiny_fragment_beat_bodies(city_dir: Path) -> None:
+    """Cheap universal floor: no beat body under 4 words.
+
+    Catches the most extreme splitter fragments ('S.', 'W.', 'Giles and Soho.')
+    for ALL beats, including book beats that have no wikipedia chunk to check
+    against. Real corpus sentences run 6+ words (measured floors: Paris 6, London
+    6, New York 11), so a sub-4-word body is a truncation artifact, not narration.
+    This is a FLOOR only — the precise guard against longer truncations (7-20 words,
+    which this misses) is ``test_wikipedia_beat_bodies_are_whole_sentences`` below.
+    (If a genuinely terse beat is ever authored, lower the floor and note why.)"""
+    beats = json.loads((city_dir / "beats.json").read_text())
+    frags = [
+        (b.get("beat_id", "?"), body)
+        for b in beats
+        if 0 < len((body := (b.get("script_body") or "").strip()).split()) < 4
+    ]
+    if frags:
+        pytest.fail(
+            f"{city_dir.name}: {len(frags)} beat(s) with a tiny fragment body "
+            f"(<4 words — likely a splitter truncation):\n  "
+            + "\n  ".join(f"{bid}: {body!r}" for bid, body in frags[:20])
+        )
+
+
+# Bodies the whole-sentence proxy flags that are, on inspection, COMPLETE grounded
+# sentences: the CURRENT splitter mis-segments the surrounding CHUNK (not the beat),
+# so the body is a prefix/suffix of a mis-joined chunk "sentence". Each verified by
+# hand. Keyed by beat_id -> reason. (NOT fragments — do not "fix" the beat.)
+_WHOLE_SENTENCE_ALLOWLIST: dict[str, str] = {
+    "london_10_downing_street_wikipedia_4":
+        "complete; splitter won't break before the digit-initial next sentence "
+        "'10 Downing Street is property of…'",
+    "london_science_museum_wikipedia_1":
+        "complete; splitter glues the prior sentence's terminal 'etc.' onto this one",
+    "london_heron_tower_wikipedia_1":
+        "complete; digit-initial building name '110 Bishopsgate', splitter won't "
+        "break before it",
+    "new_york_plaza_hotel_music_heritage_wikipedia_beatles_first_visit":
+        "complete; an intentional edit dropped the discourse marker 'In addition,' "
+        "from the chunk sentence",
+    "london_london_waterloo_station_wikipedia_2":
+        "complete ('…commemorated World War I.'); the splitter keeps the regnal 'I.' "
+        "glued to the proper-noun-initial next sentence 'World War I. Waterloo…' — a "
+        "minor missing pause, not a fragment",
+}
+
+
+@pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
+def test_wikipedia_beat_bodies_are_whole_sentences(city_dir: Path) -> None:
+    """PRECISE splitter-fragment guard: a wikipedia beat body must be a WHOLE
+    sentence (or run of whole sentences) of its source chunk, per the CURRENT
+    ``split_sentences`` — never a truncated HEAD ('They depict the Battle of Cape
+    St.') or an orphaned TAIL ('Woodington, John Ternouth and…') left by the old
+    splitter that broke on name-initials / 'St.'. Word-count alone missed these
+    (they are 7-20 words); this catches any body that is a strict prefix/suffix of a
+    chunk sentence. The allowlist above holds the handful of complete sentences the
+    proxy flags because the current splitter mis-segments the CHUNK, not the beat."""
+    from src.tour.generation import split_sentences
+
+    def _n(s: str) -> str:
+        return re.sub(r"\s+", " ", (s or "").strip()).casefold()
+
+    beats = json.loads((city_dir / "beats.json").read_text())
+    wiki_dir = city_dir / "wikipedia"
+    frags: list[str] = []
+    for b in beats:
+        body = (b.get("script_body") or "").strip()
+        if not body or b.get("book_slug") != "wikipedia":
+            continue
+        if b.get("beat_id") in _WHOLE_SENTENCE_ALLOWLIST:
+            continue
+        chunk = wiki_dir / f"{b.get('source_chunk_slug')}.txt"
+        if not chunk.exists():
+            continue
+        sents = [_n(s) for s in split_sentences(chunk.read_text())]
+        bn = _n(body)
+        if bn in sents:
+            continue  # whole sentence -> clean
+        # a strict, materially-shorter prefix/suffix of a chunk sentence = a fragment
+        if any(
+            (s.startswith(bn) or s.endswith(bn)) and len(bn) < len(s) - 1 for s in sents
+        ):
+            frags.append(f"{b.get('beat_id')}: {body[:70]!r}")
+    if frags:
+        pytest.fail(
+            f"{city_dir.name}: {len(frags)} wikipedia beat(s) whose body is a "
+            f"splitter FRAGMENT (truncated head or orphaned tail), not a whole "
+            f"chunk sentence:\n  " + "\n  ".join(frags[:25])
+        )
 
 
 @pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
