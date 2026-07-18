@@ -33,6 +33,883 @@
       "status": "resolved",
       "resolved_at": "2026-04-28T02:20:53.823849+00:00",
       "resolution": "Attached to Le Marais Area via HAS_BEAT in Phase A-4 closeout (2026-04-27). Beat created in Neo4j with (:Area {name:'Le Marais'})-[:HAS_BEAT]->(:NarrativeBeat) per Schema v3."
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Hotel-Dieu",
+      "predicate": "date",
+      "verdict": "confirmed_contradiction",
+      "correct_fact": "The two Hôtel-Dieu (Paris) beats claiming the hospital was \"founded in the 12th century\" are WRONG. The hospital is traditionally said to have been founded c. 651 AD by Saint Landry (28th Bishop of Paris), and the earliest OFFICIAL documented record of it is a charter of the year 829 — over three centuries before the 12th century. The 12th-century milestones the beats conflate with \"founding\" are (a) the 1157 letters patent that first record the name \"Hôtel-Dieu-Saint-Christophe\" and (b) Bishop Maurice de Sully's 1165 reconstruction of the buildings (old buildings razed 1195, new ones finished 1255) — both of which post-date documented proof of the institution's existence (829). The corpus is also internally contradictory: a separate beat correctly states \"Founded in 651,\" which directly conflicts with the two \"12th century\" beats. Resolution: keep the \"Founded in 651\" beat (correct); correct the two \"founded in the 12th century\" beats to the 651-traditional / 829-first-documented founding. Note the \"19th-century hospital, Hôtel-Dieu\" beat is NOT in conflict and should be kept as-is: it correctly describes the CURRENT building, which was entirely rebuilt 1867–1878 on the north side of the Notre-Dame parvis during Haussmann's renovation — the medieval institution long predates the 19th century even though its present building does not.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+          "quote": "Tradition has it that the hospital was founded by Saint Landry in 651 AD, but the first official records date it to 829. ... In 1157, letters patent mention a \"Hôtel-Dieu-Saint-Christophe\" ... in 1165, Maurice de Sully, bishop of Paris, und"
+        },
+        {
+          "url": "https://archive.org/stream/lhteldieudepar01coye/lhteldieudepar01coye_djvu.txt",
+          "quote": "La plus ancienne mention relative à l'hôpital parisien par excellence est contenue dans un acte de l'année 829. [and] le nom du fondateur de l'Hôtel-Dieu reste toujours à trouver [and] Domus Dei Parisiensis : 1157, 1177, 1178, 1180-1182, 11"
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+          "quote": "L'Hôtel-Dieu, qui aurait été fondé par l'évêque parisien saint Landry, 28e évêque de Paris vers 650 ... les premiers corps de logis avérés affectés aux soins ne remontent qu'à 829 ... 1157: des lettres patentes mentionnent un « Hôtel-Dieu-S"
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_hidden_history_oldest_hospital_around_and_about_paris",
+          "poi": "Hotel-Dieu",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "founded in the 12th century"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "dbsync_170ed495",
+          "poi": "Hotel-Dieu",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "founded in the 12th century"
+          ],
+          "error_locus": "legacy_unverifiable"
+        },
+        {
+          "beat_id": "paris_hotel_dieu_dark_history_frommers_24_great_walks_three_per_bed_medieval",
+          "poi": "Hotel-Dieu",
+          "status": "none",
+          "book_slug": "frommers-24-great-walks",
+          "quoted_spans": [
+            "The 19th-century hospital, Hôtel-Dieu"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_hotel_dieu_hidden_history_hidden_gardens_of_paris_oldest_hospital_saint_landry",
+          "poi": "Hotel-Dieu",
+          "status": "none",
+          "book_slug": "hidden_gardens_of_paris",
+          "quoted_spans": [
+            "Founded in 651"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Hotel-Dieu",
+      "predicate": "founded_by",
+      "verdict": "confirmed_contradiction",
+      "correct_fact": "The Hôtel-Dieu de Paris was, by tradition, founded by Saint Landry (Landericus), 28th Bishop of Paris, around 650–651 AD (earliest verified records of a care institution on the site date to 829). Maurice de Sully, the 12th-century Bishop of Paris (r. 1160–1196, famous for beginning Notre-Dame), did NOT found the hospital: in 1165 he undertook the RECONSTRUCTION of the already-existing hospital (old buildings demolished 1195, new construction completed 1255) — a distinct event from the founding. Therefore the two beats crediting \"Maurice de Sully\" as founder in the 12th century are factually wrong (they conflate his rebuilding with the founding), while the beat crediting \"Bishop Saint-Landry\" (founded 651) states the historically correct, source-supported attribution.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+          "quote": "Tradition has it that the hospital was founded by Saint Landry in 651 AD ... in 1165, Maurice de Sully, bishop of Paris, undertook the reconstruction of this hospital: the old buildings were destroyed in 1195 and the new constructions were "
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+          "quote": "Si la tradition, en réalité établie au XVIIe siècle, fait remonter la fondation [à saint Landry vers 650] ... en 1165, Maurice de Sully, évêque de Paris, entreprend la reconstruction de cet hôpital ... les premiers corps de logis avérés aff"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Landry_of_Paris",
+          "quote": "He is credited with building the first major hospital in the city, dedicating it to Saint Christopher, (now the Hôtel-Dieu). [Landry died c. 661; Bishop of Paris from 650.]"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Maurice_de_Sully",
+          "quote": "Bishop of Paris from 1160 until his retirement in 1196 [12th century; article credits him with Notre-Dame construction, not with founding any hospital]."
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_hidden_history_oldest_hospital_around_and_about_paris",
+          "poi": "Hotel-Dieu",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "founded in the 12th century by Maurice de Sully"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "dbsync_170ed495",
+          "poi": "Hotel-Dieu",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "founded in the 12th century by Maurice de Sully"
+          ],
+          "error_locus": "legacy_unverifiable"
+        },
+        {
+          "beat_id": "paris_hotel_dieu_hidden_history_hidden_gardens_of_paris_oldest_hospital_saint_landry",
+          "poi": "Hotel-Dieu",
+          "status": "none",
+          "book_slug": "hidden_gardens_of_paris",
+          "quoted_spans": [
+            "Founded in 651 by Bishop Saint-Landry"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Hotel-Dieu",
+      "predicate": "count",
+      "verdict": "confirmed_contradiction",
+      "correct_fact": "Beds at the Hôtel-Dieu normally held two to three patients each (arranged heel-to-head). The \"up to five patients per bed\" figure is uncorroborated and single-sourced to Thirza Vallois (her book \"Around and About Paris\" and her own bonjourparis.com post — same author, not two independent sources). Two genuinely independent authoritative sources give normal capacity as 2–3: the 1913 medical-journal history \"The Curious History of L'Hôtel-Dieu de Paris\" (\"capable of holding normally...three persons\") and Charles Coury's definitive academic history via Wikipedia (\"meant to hold 2 or 3 patients each\"). The corpus internally contradicts itself — one beat says \"five,\" another says \"three per bed,\" and the \"three\" beat is the one the independent sources support. During extreme crisis periods (famine/plague/Fronde, 15th–17th c.) overcrowding reached as many as 12–14 patients per bed, but that is a distinct extreme-crisis figure, not the baseline the \"five\" beats assert.",
+      "sources": [
+        {
+          "url": "https://pdfs.semanticscholar.org/5a05/89c5b4ab6c737d1275708adbd8252a35fee7.pdf",
+          "quote": "As may be supposed, the beds were large, and capable of holding normally?if one may use the word?three persons. In the eighteenth century two types of bed were in use?large ones meant to hold four and small ones to hold one person."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+          "quote": "At one point, beds which had a width of 1.3 metres, were meant to hold 2 or 3 patients each; arranged heel to head."
+        },
+        {
+          "url": "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/",
+          "quote": "five patients shared one bed, as was the case well into the 18th century"
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_hidden_history_oldest_hospital_around_and_about_paris",
+          "poi": "Hotel-Dieu",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "Up to five patients were crammed into a single bed"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "dbsync_170ed495",
+          "poi": "Hotel-Dieu",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "up to five patients were crammed into a single bed"
+          ],
+          "error_locus": "legacy_unverifiable"
+        },
+        {
+          "beat_id": "paris_hotel_dieu_dark_history_frommers_24_great_walks_three_per_bed_medieval",
+          "poi": "Hotel-Dieu",
+          "status": "none",
+          "book_slug": "frommers-24-great-walks",
+          "quoted_spans": [
+            "In medieval times there were three people per bed"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Philippe-Auguste",
+      "predicate": "attribution",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "Philippe-Auguste (Philip II, r. 1180–1223) donated to the Hôtel-Dieu of Paris the straw and bedding of his own royal household/bedchamber in Paris (\"pailles et litières de sa maison à Paris\" / \"toute la paille de sa chambre et de sa maison de Paris\"), given each time he left to sleep elsewhere, per royal letters patent of March 1208. Sources uniformly attribute the straw to the king's own chamber/household — none mention horses. The corpus beats' specific attribution to \"his horses'\"/\"royal horses'\" straw is an unsupported embellishment and is contradicted by the record.",
+      "sources": [
+        {
+          "url": "https://catalogue.bnf.fr/ark:/12148/cb32526140w",
+          "quote": "Lettres du Roy Philippe Auguste, de don des pailles et litières de sa maison à Paris, à l'hôtel-Dieu de Paris. (Mars 1208.)"
+        },
+        {
+          "url": "https://www.revuedesdeuxmondes.fr/wp-content/uploads/2016/11/9f7b476da65f6f64b6e44ca934f60da3.pdf",
+          "quote": "Philippe Auguste fit édifier la première salle du nouvel hôpital, la salle Saint Denis, et lui accorda «toute la paille de sa chambre et de sa maison de Paris chaque fois qu'il partirait pour aller coucher ailleurs»."
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_dark_history_sharing_beds_around_and_about_paris",
+          "poi": "Hotel-Dieu",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "Philippe-Auguste donated his horses' straw for bedding"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "dbsync_c101acb2",
+          "poi": "Hotel-Dieu",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "Philippe-Auguste donated the straw from his royal horses to serve as bedding"
+          ],
+          "error_locus": "legacy_unverifiable"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Pont au Double",
+      "predicate": "attribution",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "The Pont au Double (built 1626) connected the Hôtel-Dieu on the Île de la Cité to its Left Bank annex (the salle Saint-Charles, built 1606) — this \"connected the Hotel-Dieu to the Left Bank\" clause is CORRECT and should be kept. However, the Pont au Double did NOT feature an enclosed glass gallery for patients to promenade; its superstructure was ward rooms — two stacked salles, the salle Saint-Cosme (also called du Rosaire) — plus a pedestrian passage. The enclosed glazed gallery / promenoir vitré where recovering patients could promenade belonged to the physically adjacent Pont Saint-Charles (situated between the Pont au Double and the Petit-Pont; covered by a \"galerie vitrée sur toute sa longueur pour le bien-être des malades,\" demolished 1854). The corpus's \"featured an enclosed glass gallery where recovering patients could promenade\" is a bridge-conflation error: the fact is real but describes the neighboring Pont Saint-Charles, not the Pont au Double.",
+      "sources": [
+        {
+          "url": "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/ancien-hotel-dieu-et-pont-saint-charles-4eme-arrondissement-paris",
+          "quote": "A gauche, le premier pont (Saint-Charles) était une passerelle vers l'annexe de l'Hôtel-Dieu sur la rive gauche."
+        },
+        {
+          "url": "https://vergue.com/post/637/Hotel-Dieu-de-Paris.html",
+          "quote": "le pont Saint-Charles, couvert d'une galerie vitrée pour la promenade des malades, qui sera démoli en 1854."
+        },
+        {
+          "url": "https://vergue.com/post/636/Hotel-Dieu-de-Paris",
+          "quote": "Les constructions de la rive droite ne communiquaient à la rive opposée qu'au moyen du pont Saint-Charles, sur lequel on avait établi une galerie vitrée."
+        },
+        {
+          "url": "https://pietondeparis.canalblog.com/archives/2008/09/08/10506726.html",
+          "quote": "relié en 1626 par le pont au Double, sur lequel on édifia une salle, la salle Saint-Cosme (ou du Rosaire)... En 1651 on lança un second pont, entre l'Hôtel-Dieu et cet annexe, le pont Saint-Charles... sur lequel on édifia un promenoir vitré"
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+          "quote": "le pont au Double construit en 1626 comprenant deux salles superposées, les salles Saint-Cosme et du Rosaire et un passage piétonnier accolé à cette construction."
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/Pont_Saint-Charles_(Paris)",
+          "quote": "le pont est recouvert par une galerie vitrée sur toute sa longueur pour le bien-être des malades ... entre le pont au Double et le Petit-Pont ... démoli en 1854."
+        },
+        {
+          "url": "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/",
+          "quote": "Bridges were often built upon at the time, and the Pont au Double had a glass gallery, which served as a promenade for the patients. [CONTRADICTED by all detailed/institutional sources; evident origin of the corpus's conflation error.]"
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_historic_arch_pont_au_double_around_and_about_paris",
+          "poi": "Hotel-Dieu",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "The old Pont au Double featured an enclosed glass gallery"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "dbsync_23e6d6cf",
+          "poi": "Hotel-Dieu",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "which connected the Hotel-Dieu to the Left Bank",
+            "featured an enclosed glass gallery where recovering patients could promenade"
+          ],
+          "error_locus": "legacy_unverifiable"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Île de la Cité",
+      "predicate": "date",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "The corpus claim \"In the 3rd century AD, the Roman Emperor Julian established his seat on the island\" is a century-level (~100-year) date error. Julian (Julian the Apostate) came to Gaul as Caesar in 355 AD; the Palace on the western tip of the Île de la Cité became his military residence in 357 AD; and his troops proclaimed him Augustus at Lutetia (Paris) in February/March 360 AD. His seat/residence on the island therefore belongs to the 4th century AD, not the 3rd century AD. The correct statement is roughly: \"In the 4th century AD (c. 357–360), the future Roman Emperor Julian established his residence at Lutetia (the western tip of the island).\" The other seven listed values (Parisii settlement c. 3rd century BC/~300 BC, Roman conquest 52 BC, Merovingian royal residence in the 6th century, 14th-century overcrowding driving the kings away, and mid-19th-century cholera/Haussmann demolition) are compatible, describe distinct events, and are independently corroborated — only the Julian-century claim is a genuine factual error.",
+      "sources": [
+        {
+          "url": "https://roman-emperors.sites.luc.edu/julian.htm",
+          "quote": "As a result they mutinied and hailed Julian as Augustus at Lutetia [February/March 360]; Caesar from 6 November 355, Augustus to 26 June 363"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Julian_(emperor)",
+          "quote": "The troops proclaimed Julian Augustus in Paris [February 360]; made Caesar in 355; Roman emperor from 361 to 363"
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9",
+          "quote": "le Palais devint en 357 la résidence militaire du césar Julien"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9",
+          "quote": "The Roman Emperor Julian, residing in Gaul from 355 to 361 ... It was hard hit by major cholera epidemics in 1832 and 1849, which killed thousands of Parisians."
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "ile_de_la_cite_hidden_history_origins_around_and_about_paris",
+          "poi": "Ile de la Cite",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "occupied by the Celtic tribe of the Parisii in the 3rd century BC",
+            "In the 3rd century AD, the Roman Emperor Julian established his seat on the island",
+            "In the 6th century, the Merovingian king Childebert made it the permanent home of the kings of France"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_hidden_history_rough_guide_paris_parisii_roman_origins",
+          "poi": "Ile de la Cite",
+          "status": "none",
+          "book_slug": "rough-guide-paris",
+          "quoted_spans": [
+            "It was settled around 300 BC by a Celtic tribe called the Parisii",
+            "and in 52 BC was overrun by the Romans"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_parisii_lutetia_origin",
+          "poi": "Ile de la Cite",
+          "status": "none",
+          "book_slug": "frommers-24-great-walks",
+          "quoted_spans": [
+            "a Celtic tribe called the Parisii first settled on the Île de la Cite"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_social_change_wikipedia_what_drove_kings_out",
+          "poi": "Ile de la Cite",
+          "status": "unverified",
+          "book_slug": "wikipedia",
+          "quoted_spans": [
+            "By the 14th century, the island was suffocating. Crowded streets, jammed traffic, pollution, foul smell"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_social_change_wikipedia_cholera_erased_medieval_island",
+          "poi": "Ile de la Cite",
+          "status": "unverified",
+          "book_slug": "wikipedia",
+          "quoted_spans": [
+            "By the mid-19th century the island was overcrowded again, with narrow streets and poor sanitation. Cholera erupted, and the medieval island was erased"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Robert Desnos",
+      "predicate": "attribution",
+      "verdict": "confirmed_contradiction",
+      "correct_fact": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active in the Resistance,\" \"was himself a deportee,\" and \"died at Theresienstadt\" attributes are all correct; only the before/after-liberation framing is wrong.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Robert_Desnos",
+          "quote": "Desnos died in Malá pevnost, which was an inner part of Terezín used only for political prisoners, from typhoid, a month after the camp's liberation."
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/Robert_Desnos",
+          "quote": "le 8 mai, l'Armée rouge et les partisans tchèques pénètrent dans le camp. ... Le 8 juin 1945, à 5 heures du matin, Robert Desnos meurt."
+        },
+        {
+          "url": "https://poets.org/poet/robert-desnos",
+          "quote": "Although the Allies liberated this camp in 1945, Desnos had contracted typhoid. He died on June 8, 1945."
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "memorial_des_martyrs_de_la_deportation_war_conflict_desnos_around_and_about_paris",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "verified",
+          "book_slug": "around_and_about_paris",
+          "quoted_spans": [
+            "The poet Robert Desnos",
+            "active in the Resistance",
+            "died at Theresienstadt just weeks before liberation"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "dbsync_2cd1f0a7",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "The poet Robert Desnos",
+            "active in the Resistance",
+            "died at the Theresienstadt concentration camp just weeks before liberation"
+          ],
+          "error_locus": "legacy_unverifiable"
+        },
+        {
+          "beat_id": "paris_memorial_des_martyrs_de_la_deportation_literary_heritage_wikipedia_desnos_poem_translated_back",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "unverified",
+          "book_slug": "wikipedia",
+          "quoted_spans": [
+            "Robert Desnos, a French poet and Resistance member",
+            "was himself a deportee",
+            "After Desnos died at Theresienstadt"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CONTRADICTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Memorial des Martyrs de la Deportation",
+      "predicate": "count",
+      "verdict": "confirmed_contradiction",
+      "correct_fact": "The Mémorial des Martyrs de la Déportation is dedicated to exactly 200,000 people (men, women, and children) deported from France (Vichy France) to the Nazi concentration/death camps during WWII — not \"more than 200,000.\" The crypt holds 200,000 illuminated glass crystals, one for each deportee, so the \"200,000 crystals\" figure is consistent with (not contradictory to) the deportee count. The official Base Mérimée inscription describes them as \"200 000 ... déportés depuis la France ... exterminés dans les camps nazis\" (deported from France, exterminated in the Nazi camps), which supports the \"died in Nazi concentration camps\" framing. The only genuinely contradicted corpus claim is the beat that says \"the MORE THAN two hundred thousand people\" — the canonical, symbolic dedication figure is exactly 200,000.",
+      "sources": [
+        {
+          "url": "https://pop.culture.gouv.fr/notice/merimee/PA00125453",
+          "quote": "200 000 hommes et femmes déportés depuis la France pendant la Seconde Guerre mondiale, \"sombrés dans la nuit et le brouillard, exterminés dans les camps nazis\""
+        },
+        {
+          "url": "https://www.liberationroute.com/fr/pois/410/memorial-des-martyrs-de-la-deportation",
+          "quote": "200 000 hommes, femmes et enfants déportés de France vers les camps de concentration nazis pendant la Seconde Guerre mondiale"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/M%C3%A9morial_des_Martyrs_de_la_D%C3%A9portation",
+          "quote": "Dedicated to the 200,000 people deported from Vichy France to the Nazi concentration camps during World War II ... Along both walls of the narrow, dimly lit chamber are 200,000 glass crystals with light shining through"
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "paris_memorial_des_martyrs_de_la_deportation_war_conflict_rough_guide_paris_pardonne_noublie_pas",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "none",
+          "book_slug": "rough-guide-paris",
+          "quoted_spans": [
+            "200,000 French who died in Nazi concentration camps"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_memorial_des_martyrs_de_la_deportation_war_conflict_frommers_24_great_walks_200000_deported_dedication",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "none",
+          "book_slug": "frommers-24-great-walks",
+          "quoted_spans": [
+            "dedicated to the 200,000 people deported from France by the Nazis"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_memorial_des_martyrs_de_la_deportation_historic_arch_wikipedia_pingusson_design_ship_prow",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "unverified",
+          "book_slug": "wikipedia",
+          "quoted_spans": [
+            "honours the more than two hundred thousand people deported from Vichy France"
+          ],
+          "error_locus": "source_defect_book"
+        },
+        {
+          "beat_id": "paris_memorial_des_martyrs_de_la_deportation_war_conflict_wikipedia_crypt_200000_crystals_natzweiler",
+          "poi": "Memorial des Martyrs de la Deportation",
+          "status": "unverified",
+          "book_slug": "wikipedia",
+          "quoted_spans": [
+            "Two hundred thousand small glass crystals are mounted along the walls"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CORRECTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Conciergerie",
+      "predicate": "attribution",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "The Palais de la Cité (later the Conciergerie), on the Île de la Cité, was the permanent royal residence of the French kings from the late 12th century until 1364, when Charles V relocated the court to the Louvre and the Hôtel Saint-Pol. But the Louvre had ALREADY been built as a fortress by Philip II Augustus (ordered 1190, keep built ~1200, completed 1202) — roughly 160 years before it first became a royal residence in 1364. So the Conciergerie was the royal palace before the Louvre became a royal RESIDENCE, not before the Louvre was BUILT: the Louvre already stood as a structure throughout the Conciergerie's entire tenure as the royal palace. The corpus claim's chronology (\"before the Louvre was built\") is therefore false — the Louvre fortress was built (1202) while the Conciergerie was still the royal palace (until 1364).",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Louvre_Palace",
+          "quote": "In 1190 King Philip II of France... ordered the construction of a defensive wall all around Paris... Completed in 1202... Shortly after becoming king in 1364 Charles V abandoned the Palais de la Cité... and made the Louvre into a royal resi"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Palais_de_la_Cit%C3%A9",
+          "quote": "It was an occasional residence of the Kings of France from the early 6th to the 12th century and a permanent one from the late 12th to the 14th century"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Conciergerie",
+          "quote": "He decided to move his residence to the Louvre Castle, and the Hotel Saint-Pol."
+        },
+        {
+          "url": "https://www.worldhistory.org/Louvre/",
+          "quote": "The Louvre was built in the 12th century CE as a fortress, but the majority of that structure is gone. It served as home to the Queen and King of France until 1682 CE when Louis XIV moved to Versailles."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Louvre_Castle",
+          "quote": "The keep was built around 1200 in the center of the courtyard... Soon after becoming king, Charles [V] initiated a major transformation of the Louvre into a prestigious royal residence (1364-1380)."
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "paris_conciergerie_hidden_history_frommers_24_great_walks_royal_palace_before_louvre",
+          "poi": "Conciergerie",
+          "status": "none",
+          "book_slug": "frommers-24-great-walks",
+          "quoted_spans": [
+            "The Conciergerie was the royal palace before the Louvre was built"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CORRECTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Tour Bonbec",
+      "predicate": "attribution",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "The Tour Bonbec at the Conciergerie takes its name from the French \"bon bec,\" which literally means \"good beak\" and idiomatically \"good talker\" / one who \"speaks easily/readily\" (avoir bon bec = parler facilement). It is a grim reference to the tower's use as the Conciergerie's torture chamber, where prisoners were made to \"talk\"/confess readily under torture. Accurate renderings are \"Good Talker Tower\" / \"Good Beak Tower\" / \"Good Word Tower.\" \"Big Mouth Tower\" is a mistranslation — it renders the adjective \"bon\" (good) as \"big\" and carries a pejorative \"blabbermouth\" connotation absent from the actual meaning; no historical, official, or tourism source translates it that way.",
+      "sources": [
+        {
+          "url": "https://www.paris-conciergerie.fr/content/download/9873154/file/Livret facile à lire et à comprendre FALC Conciergerie.pdf",
+          "quote": "La Tour Bonbec est l'endroit où on torture les prisonniers pour les faire parler. Avoir bon bec veut dire parler facilement"
+        },
+        {
+          "url": "https://worldinparis.com/conciergerie-paris",
+          "quote": "Tour Bonbec - Good Word Tower. This tower was the place where the 'question' (torture) was practiced, which made the tortured confess (bonbec or good beak = good word)."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Conciergerie",
+          "quote": "The name of the tower comes from 'Bon Bec,' a slang word for a 'Good talker'. It is reference to the torture chamber, which during the Reign of Terror was located in this tower; it referred to those prisoners who spoke freely under torture."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Palais_de_la_Cité",
+          "quote": "The Tour Bonbec, whose name alludes to the former torture chambers inside, initially built in the mid-13th century."
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "paris_conciergerie_dark_history_frommers_24_great_walks_tour_bonbec_torture_screams",
+          "poi": "Conciergerie",
+          "status": "none",
+          "book_slug": "frommers-24-great-walks",
+          "quoted_spans": [
+            "it is called the Tour Bonbec, meaning 'Big Mouth Tower'"
+          ],
+          "error_locus": "source_defect_book"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "DATA_CORRECTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "subject": "Philippe-Auguste",
+      "predicate": "attribution",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "In 1182 Philippe-Auguste did confiscate Jewish property (the beat's core is true), but two elements of the compound claim are inaccurate. (1) SCOPE: the 1182 edict expelled Jews from the royal demesne — the crown's directly-held lands, essentially the Île-de-France — not \"France\" as a whole. In 1182 the Kingdom of France was a patchwork of largely autonomous fiefs (Plantagenet Normandy/Anjou/Aquitaine, Champagne, Flanders, Burgundy, Toulouse), where Jews continued to live outside royal control. Academic sources are explicit: Bradbury says \"royal demesne,\" and the Jewish Encyclopedia says \"royal domains of France (and not the whole kingdom).\" (The looser popular phrasing \"from the kingdom\" also appears, e.g. the mahj museum, so \"from France\" is a common simplification rather than an outright fabrication.) (2) LES HALLES: the market already existed at the Champeaux site from Louis VI's reign (c.1110); the actual Jewish connection was that confiscated Jewish houses in Paris were demolished to clear the building SITE, and Philippe-Auguste separately purchased the Saint-Lazare fair (1181-83) and erected two covered halls there in 1183 — a land/site and construction transaction. No source supports the beat's assertion that confiscation \"proceeds partly financed\" the market; that mechanism is mischaracterized.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Philip_II_of_France",
+          "quote": "Philip expelled them from the royal demesne in July 1182 ... had Jewish houses in Paris demolished to make way for the Les Halles market."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/History_of_the_Jews_in_France",
+          "quote": "In July they were compelled to leave the royal domains of France (and not the whole kingdom) ... The goods confiscated by the king were at once converted into cash."
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/Halles_de_Paris",
+          "quote": "1181-1183 : Philippe-Auguste achète la foire Saint-Ladre ou Saint-Lazare ... et la transfère à l'emplacement même des futures Halles ... En 1183, deux bâtiments couverts sont élevés pour accueillir le nouveau marché."
+        },
+        {
+          "url": "https://www.mahj.org/en/permanent-collection/2-jews-france-middle-ages",
+          "quote": "King Philip Augustus expelled the Jews from the kingdom in 1182, then recalled them in 1198 ... Synagogues were converted into churches, and gravestones were sold for masonry, resulting in the extreme scarcity of remnants of the Jewish past"
+        }
+      ],
+      "blast_radius": "live",
+      "beats": [
+        {
+          "beat_id": "dbsync_accac340",
+          "poi": "Ile de la Cite",
+          "status": "unverified",
+          "book_slug": "legacy_unknown",
+          "quoted_spans": [
+            "Philippe-Auguste confiscated the Jews' possessions, using the proceeds partly to finance Les Halles market, and expelled them from France in 1182"
+          ],
+          "error_locus": "legacy_unverifiable"
+        }
+      ],
+      "recommended_action": "Correct the flagged script_body span(s) to the verified fact; keep source_passage byte-exact (book beats); set fact_check.status=corrected with these sources; the CORRECT sibling beat (if any) is kept as-is.",
+      "applied_at": "2026-07-18T00:00:00Z"
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Conciergerie",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "The two beats are not actually testing the same proposition, but one of them is an unresolvable superlative, so the pair cannot be auto-resolved either way. (1) \"Paris's oldest prison\" is a bare superlative ranking claim (oldest) — per policy this must never be auto-resolved regardless of how many secondary/tourism sources repeat it. (2) \"One memoirist called the Conciergerie 'the most lucrative furnished lodgings in Paris'\" is a reported-quote/attribution claim, not the corpus asserting an objective ranking itself. This part is well-attested: Honoré Riouffe (1764-1813) was a real detainee held at the Conciergerie during the Terror (arrested Oct 1793, ~14 months' detention) who wrote a memoir of his imprisonment (\"Mémoires d'un détenu, pour servir à l'histoire de la tyrannie de Robespierre,\" 1795; English translation \"Revolutionary Justice Displayed,\" 1796) — confirmed independently via the Bibliothèque nationale de France (Gallica) and Newberry Library catalogs. Wikipedia's exact quote is sourced directly to that 1796 English edition, and the underlying substance (wealthy prisoners paying escalating fees for furnished cells — the \"pistole\" system) is independently corroborated by the Conciergerie's official operator, Centre des monuments nationaux. However, since no second fully-independent source reproduces the EXACT phrase (all other web hits are verbatim Wikipedia mirrors), and the paired claim under review is a bona-fide superlative (\"oldest\"), policy requires leaving the pair unresolved rather than picking a winner.",
+      "beats": [
+        {
+          "beat_id": "paris_conciergerie_dark_history_rough_guide_paris_pailleux_iron_grille",
+          "quoted_span": "and is Paris's oldest prison"
+        },
+        {
+          "beat_id": "paris_conciergerie_dark_history_wikipedia_most_lucrative_furnished_lodgings",
+          "quoted_span": "One memoirist called the Conciergerie 'the most lucrative furnished lodgings in Paris'"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Hotel-Dieu",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Not resolved by policy. All four contested statements are variants of a superlative/absolute claim about Hôtel-Dieu de Paris (either \"oldest hospital in Paris,\" \"oldest PUBLIC hospital in Paris,\" or \"the only hospital serving the city\"). Widely repeated tertiary sources (English and French Wikipedia) describe Hôtel-Dieu as \"the oldest in France and possibly the oldest continuously operating hospital in the world\" (tradition: founded c. 651 by Bishop Saint Landry; first documented structure 829) and as having been \"the only hospital in the city until the beginning of the 17th century\" (French Wikipedia: \"jusqu'à la Renaissance\"). These are consistent with each other in substance, but per policy, superlative claims (oldest/first/only) are never auto-resolved even when sources agree, and \"oldest hospital\" vs. \"oldest PUBLIC hospital\" are distinct propositions (the qualifier \"public\" implicitly concedes there may have been older non-public/religious hospital-like institutions), which further argues against collapsing them into one resolved fact.",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_hidden_history_oldest_hospital_around_and_about_paris",
+          "quoted_span": "The oldest hospital in Paris"
+        },
+        {
+          "beat_id": "dbsync_170ed495",
+          "quoted_span": "The Hotel-Dieu is the oldest hospital in Paris"
+        },
+        {
+          "beat_id": "dbsync_170ed495",
+          "quoted_span": "For centuries it was the only hospital serving the city"
+        },
+        {
+          "beat_id": "paris_hotel_dieu_hidden_history_hidden_gardens_of_paris_oldest_hospital_saint_landry",
+          "quoted_span": "Hôtel-Dieu (since rebuilt) is the oldest public hospital in Paris"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Île de la Cité",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Île de la Cité is traditionally identified as the site of the Parisii's Gallic settlement (the \"oppidum\" of Lutetia, conventionally dated to c. 250-3rd century BC) and is the historic core of Paris. However, the specific claim that it was \"the first part of Paris to be settled\" / \"the original settlement of the Parisii\" is a genuinely disputed superlative, not a settled fact: (a) no pre-Roman (Gallic-era) archaeological remains have been confirmed on Île de la Cité itself — the earliest confirmed traces there date to the 1st century AD (Gallo-Roman); (b) INRAP excavations (1994-2005) uncovered a major Gallic settlement at Nanterre, and contemporary French historians/archaeologists now consider it \"more probable\" that the Parisii's principal settlement was off the island (Nanterre, or a since-vanished island near the mouth of the Bièvre) rather than on Île de la Cité; and (c) even setting the Parisii question aside, Neolithic human traces (c. 4500 BC) found elsewhere within modern Paris (e.g. Bercy) predate the Iron-Age Parisii settlement by millennia, undermining a literal \"first part of Paris settled\" claim. Per policy, this first/original-settlement superlative should not be auto-resolved in either beat's favor.",
+      "beats": [
+        {
+          "beat_id": "ile_de_la_cite_hidden_history_origins_around_and_about_paris",
+          "quoted_span": "the first part of Paris to be settled"
+        },
+        {
+          "beat_id": "paris_square_du_vert_galant_hidden_history_hidden_gardens_of_paris_henri_iv_city_vision",
+          "quoted_span": "is the original settlement of the Parisii, a Celtic tribe"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Pilier des Nautes",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Both beats assert the same superlative claim about the Pilier des Nautes (Pillar of the Boatmen): that it is the oldest sculpted monument found in Paris/the capital. The wording difference (\"in the capital\" vs. \"found in the capital\") is cosmetic paraphrase drift, not a substantive factual contradiction — both encode the identical superlative rank-claim. The primary source itself (Thirza Vallois, \"Around and About Paris,\" chunk-09-4th-arr-arsenal.txt) uses the \"found in the capital\" phrasing verbatim, and multiple independent reference sources (Wikipedia EN/FR, French Ministry of Culture, a dedicated Pilier des Nautes reference site) corroborate the general claim that this Gallo-Roman pillar (dedicated to Jupiter by the Nautae Parisiaci corporation, inscribed to the reign of Tiberius, excavated in 1711 under Notre-Dame's chancel, now at Musée de Cluny) is widely regarded as the oldest (precisely-dated/sculpted) monument in Paris/Lutèce. However, per mandatory policy this is a SUPERLATIVE claim (\"oldest\") and must NOT be auto-resolved regardless of how strong the corroborating evidence is — it requires human review/decision, not an automated flip of either beat.",
+      "beats": [
+        {
+          "beat_id": "notre_dame_cathedral_hidden_history_pilier_des_nautes_around_and_about_paris",
+          "quoted_span": "the oldest sculpted monument in the capital"
+        },
+        {
+          "beat_id": "dbsync_942de7b7",
+          "quoted_span": "making it the oldest sculpted monument found in the capital"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Notre-Dame Cathedral",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "The two beats are not actually describing the same fact-slot, and one of them is an unresolvable superlative, so the \"contradiction\" cannot be auto-resolved. What IS solidly verified: Notre-Dame's construction began in 1163 under Bishop Maurice de Sully, and the cathedral marked its 850th anniversary with a year-long celebration starting 12 December 2012 through 2013, including new bells cast in 2012 and inscribed \"à l'occasion du grand jubilé du 850e anniversaire de la cathédrale (1163–2013).\" That beat (dbsync paris_notre_dame_cathedral_music_heritage_wikipedia_bells_recast_2013) is correct and non-superlative. The other beat's claim that Notre-Dame \"was the birthplace of polyphonic music in Europe\" is a superlative/origin claim and must not be auto-resolved per policy — and independent evidence actually cuts against a literal reading of it: written polyphony in Europe is documented centuries before the Notre-Dame school (Musica enchiriadis/Scolica enchiriadis, c. 900; the Winchester Troper, c. 1000), whereas the Notre-Dame school (Léonin, Pérotin) dates only to c. 1160-1250. Notre-Dame is more accurately the birthplace/center of a specific *style* — measured, rhythmically-notated polyphony (the Magnus Liber Organi / Ars Antiqua) — not of polyphony in Europe overall. Per the fact-check policy this superlative claim is flagged unresolved rather than corrected.",
+      "beats": [
+        {
+          "beat_id": "dbsync_82f97ef9",
+          "quoted_span": "was the birthplace of polyphonic music in Europe"
+        },
+        {
+          "beat_id": "paris_notre_dame_cathedral_music_heritage_wikipedia_bells_recast_2013",
+          "quoted_span": "Notre-Dame's 850th anniversary"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Pont Neuf",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Do not auto-resolve. All four flagged values are superlative claims (\"oldest,\" \"first\") about Pont Neuf, which per pipeline policy (guardrail: \"Never auto-resolve: ... superlatives\") must be routed to human review, not auto-corrected — regardless of how the web evidence leans.\n\nFor context (not a resolution): \"Pont Neuf is the oldest standing bridge in Paris\" (asserted identically by both beats, so those two are not actually in conflict with each other) and \"Pont Neuf was the first stone bridge in Paris built without houses\" are the standard, widely-repeated compound claim in tourism/encyclopedic sources. However, the pipeline decomposed that compound source sentence (\"was the first to be built of stone, and to be free of houses\") into two independent superlative propositions, and the standalone claim \"[Pont Neuf] was the first [bridge in Paris] to be built of stone\" (with no qualifier about \"without houses\" or \"across the full Seine\") is contradicted by earlier stone bridges in Paris: Petit Pont was rebuilt in stone in 1175, and Pont Notre-Dame was rebuilt in stone by 1507 — both a century-plus before Pont Neuf's 1607 completion. So if this fourth value is read as a bare \"first stone bridge in Paris, period\" claim, it looks wrong; if read as shorthand for \"first stone bridge in Paris built without houses\" (the actual well-attested claim), it's fine. That ambiguity is itself a reason a human should adjudicate the exact proposition rather than the pipeline auto-picking a value.",
+      "beats": [
+        {
+          "beat_id": "paris_pont_neuf_hidden_history_frommers_24_great_walks_oldest_new_bridge_irony",
+          "quoted_span": "it is the oldest in Paris"
+        },
+        {
+          "beat_id": "paris_pont_neuf_hidden_history_frommers_24_great_walks_oldest_new_bridge_irony",
+          "quoted_span": "was the first to be built of stone"
+        },
+        {
+          "beat_id": "paris_pont_neuf_hidden_history_frommers_24_great_walks_oldest_new_bridge_irony",
+          "quoted_span": "and to be free of houses"
+        },
+        {
+          "beat_id": "paris_square_du_vert_galant_hidden_history_hidden_gardens_of_paris_henri_iv_city_vision",
+          "quoted_span": "the \"new bridge\" is the oldest bridge in Paris"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Abelard and Heloise's grave at Pere Lachaise",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Unresolved by policy. The proposition \"Abelard and Héloïse's tomb is the most visited grave at Père Lachaise\" is a superlative claim, and per the fact-check policy such claims must not be auto-resolved. Evidence found during research shows the superlative is actively contested in the wild: multiple independent tourism sources instead attribute \"the most visited grave at Père Lachaise\" to Jim Morrison, while neither the English Wikipedia article on Père Lachaise Cemetery nor the article on Peter Abelard makes any visitor-count or \"most visited\" claim about the Abelard/Héloïse tomb at all. Both corpus beats (verified and unverified) should be treated as making an unverified superlative claim; this should be routed to human review rather than corrected automatically.",
+      "beats": [
+        {
+          "beat_id": "rue_chanoinesse_hidden_history_lovers_remains_around_and_about_paris",
+          "quoted_span": "the most visited grave"
+        },
+        {
+          "beat_id": "dbsync_fe009190",
+          "quoted_span": "the most visited grave in that famous necropolis"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Tour de l'Horloge clock mechanism",
+      "predicate": "built_by",
+      "verdict": "superlative_unresolved",
+      "note": "The non-superlative core of the claim is well-corroborated: Henri de Vic, a clockmaker from Lorraine/Germany, was commissioned by King Charles V (r. 1364–1380) around 1370 to build the clock mechanism for the Tour de l'Horloge at the Conciergerie/Palais de la Cité, which went into service in 1371 — so \"built_by = Henri de Vic, during the reign of Charles V\" checks out against two genuinely independent sources beyond Wikipedia (tfp-france.org and viewfromtheback.com), plus both EN and FR Wikipedia. However, the beat's second assertion — \"the first public clock in Paris\" — is a superlative (\"first\"/\"oldest\") that policy forbids auto-resolving. Sources are also inconsistent on it: viewfromtheback.com calls it \"the oldest (and first) public clock in Paris,\" while tfp-france.org only claims \"la plus ancienne horloge de Paris\" (the oldest clock in Paris) without asserting it was the first PUBLIC one specifically — a subtly different and unverified claim. Per policy this superlative portion must be flagged for human review rather than confirmed or corrected; the builder/date attribution itself does not need correction.",
+      "beats": [
+        {
+          "beat_id": "paris_conciergerie_science_tech_wikipedia_first_public_clock_in_paris",
+          "quoted_span": "Henri de Vic installed the mechanism here during the reign of Charles V: the first public clock in Paris"
+        }
+      ],
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+    },
+    {
+      "type": "DATA_CORRECTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "applied",
+      "applied_at": "2026-07-18T00:00:00Z",
+      "subject": "Valois dynasty",
+      "predicate": "founded_by",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "The House of Valois was founded by Charles, Count of Valois (d.1325); first Valois king was Philip VI (1328); Jean II le Bon was Philip VIs son. Struck the false \"founder\" epithet.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/House_of_Valois"
+        },
+        {
+          "url": "https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica/Valois,_Counts_and_Dukes_of"
+        }
+      ],
+      "beats": [
+        {
+          "beat_id": "paris_palais_de_justice_dark_history_around_and_about_paris_etienne_marcel_1357_coup_blood_dauphin",
+          "error_locus": "source_defect_book (source_passage carries the book error; script_body corrected)"
+        }
+      ],
+      "recommended_action": "Applied: script_body \"founder of the Valois dynasty\"->\"of the Valois dynasty\". source_passage kept verbatim as audit trail."
+    },
+    {
+      "type": "DATING_CONVENTION_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "corpus-data-sweep-2026-07-18",
+      "status": "pending_signoff",
+      "subject": "Etienne Marcel murder of the marshals",
+      "predicate": "date",
+      "note": "1357 (old-style, Easter-year) == 1358 (new-style) — SAME event (22 Feb). Not a factual error. Two beats differ (Palais=1357, Ile-de-la-Cite=1358). OPTIONAL: normalize both to modern-standard 1358. Not auto-applied (dating convention).",
+      "beats": [
+        {
+          "beat_id": "paris_palais_de_justice_dark_history_around_and_about_paris_etienne_marcel_1357_coup_blood_dauphin",
+          "quoted_span": "22 February 1357"
+        }
+      ],
+      "recommended_action": "Human decides: keep 1357 (defensible old-style) or normalize to 1358. Also a cross-POI dedup candidate with the sibling 1358 beat."
     }
   ]
 }

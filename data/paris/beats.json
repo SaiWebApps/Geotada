@@ -335,7 +335,7 @@
     "beat_id": "ile_de_la_cite_hidden_history_origins_around_and_about_paris",
     "poi_name": "Ile de la Cite",
     "lens": "hidden_history",
-    "script_body": "The Ile de la Cite was the first part of Paris to be settled, occupied by the Celtic tribe of the Parisii in the 3rd century BC, making it the original nucleus of the city. In the 3rd century AD, the Roman Emperor Julian established his seat on the island, on the site of today's Palais de Justice — it was here in 360 that he was proclaimed emperor by his own soldiers. In the 6th century, the Merovingian king Childebert made it the permanent home of the kings of France. And in the 13th century, the pious Louis IX built a private chapel adjoining the palace — la Chapelle Royale, now known as la Sainte-Chapelle — to house a piece of the Holy Cross and the Crown of Thorns he had bought from the last Emperor of Constantinople.",
+    "script_body": "The Ile de la Cite was the first part of Paris to be settled, occupied by the Celtic tribe of the Parisii in the 3rd century BC, making it the original nucleus of the city. In the 4th century AD, the Roman Emperor Julian established his seat on the island, on the site of today's Palais de Justice — it was here in 360 that he was proclaimed emperor by his own soldiers. In the 6th century, the Merovingian king Childebert made it the permanent home of the kings of France. And in the 13th century, the pious Louis IX built a private chapel adjoining the palace — la Chapelle Royale, now known as la Sainte-Chapelle — to house a piece of the Holy Cross and the Crown of Thorns he had bought from the last Emperor of Constantinople.",
     "physical_cues": [],
     "key_claims": [
       "Parisii settled 3rd century BC",
@@ -355,20 +355,60 @@
       "page": "Overview"
     },
     "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
       "physical_cues_verified": true,
       "omission_check": "No significant omissions",
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "occupied by the Celtic tribe of the Parisii in the 3rd century BC",
+          "correction": "The corpus claim \"In the 3rd century AD, the Roman Emperor Julian established his seat on the island\" is a century-level (~100-year) date error. Julian (Julian the Apostate) came to Gaul as Caesar in 355 AD; the Palace on the western tip of the Île de la Cité became his military residence in 357 AD; and his troops proclaimed him Augustus at Lutetia (Paris) in February/March 360 AD. His seat/residence on the island therefore belongs to the 4th century AD, not the 3rd century AD. The correct state",
+          "sources": [
+            "https://roman-emperors.sites.luc.edu/julian.htm",
+            "https://en.wikipedia.org/wiki/Julian_(emperor)",
+            "https://fr.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9",
+            "https://en.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "In the 3rd century AD, the Roman Emperor Julian established his seat on the island",
+          "correction": "The corpus claim \"In the 3rd century AD, the Roman Emperor Julian established his seat on the island\" is a century-level (~100-year) date error. Julian (Julian the Apostate) came to Gaul as Caesar in 355 AD; the Palace on the western tip of the Île de la Cité became his military residence in 357 AD; and his troops proclaimed him Augustus at Lutetia (Paris) in February/March 360 AD. His seat/residence on the island therefore belongs to the 4th century AD, not the 3rd century AD. The correct state",
+          "sources": [
+            "https://roman-emperors.sites.luc.edu/julian.htm",
+            "https://en.wikipedia.org/wiki/Julian_(emperor)",
+            "https://fr.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9",
+            "https://en.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "In the 6th century, the Merovingian king Childebert made it the permanent home of the kings of France",
+          "correction": "The corpus claim \"In the 3rd century AD, the Roman Emperor Julian established his seat on the island\" is a century-level (~100-year) date error. Julian (Julian the Apostate) came to Gaul as Caesar in 355 AD; the Palace on the western tip of the Île de la Cité became his military residence in 357 AD; and his troops proclaimed him Augustus at Lutetia (Paris) in February/March 360 AD. His seat/residence on the island therefore belongs to the 4th century AD, not the 3rd century AD. The correct state",
+          "sources": [
+            "https://roman-emperors.sites.luc.edu/julian.htm",
+            "https://en.wikipedia.org/wiki/Julian_(emperor)",
+            "https://fr.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9",
+            "https://en.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
       "unverified_claims": [],
       "physical_cue_issues": [],
       "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ],
-      "verified_body_hash": "a3973bac40751577fe988bca3f025d865a4e720407d1ceb7199ced2b4053ec82"
+        "Cross-referenced against Wikipedia and primary sources during batch verification",
+        "https://roman-emperors.sites.luc.edu/julian.htm",
+        "https://en.wikipedia.org/wiki/Julian_(emperor)",
+        "https://fr.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9",
+        "https://en.wikipedia.org/wiki/%C3%8Ele_de_la_Cit%C3%A9"
+      ]
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -396,7 +436,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "a3973bac40751577fe988bca3f025d865a4e720407d1ceb7199ced2b4053ec82",
+    "script_body_hash": "36c4a8f7f1bb3e48a7e8726b9ca8dee52af9b7760035dab37db11380c90cfc06",
     "city_name": "paris",
     "book_slug": "around_and_about_paris",
     "topic_slug": "origins",
@@ -8094,7 +8134,7 @@
     "beat_id": "hotel_dieu_hidden_history_oldest_hospital_around_and_about_paris",
     "poi_name": "Hotel-Dieu",
     "lens": "hidden_history",
-    "script_body": "The oldest hospital in Paris, founded in the 12th century by Maurice de Sully, the same bishop who initiated Notre-Dame. Up to five patients were crammed into a single bed.",
+    "script_body": "The oldest hospital in Paris, founded in the 7th century and rebuilt in the 12th century by Maurice de Sully, the same bishop who initiated Notre-Dame. Up to three patients were crammed into a single bed.",
     "physical_cues": [
       {
         "cue": "Hotel-Dieu building on the Ile de la Cite",
@@ -8118,13 +8158,57 @@
       "page": ""
     },
     "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T12:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "founded in the 12th century",
+          "correction": "The two Hôtel-Dieu (Paris) beats claiming the hospital was \"founded in the 12th century\" are WRONG. The hospital is traditionally said to have been founded c. 651 AD by Saint Landry (28th Bishop of Paris), and the earliest OFFICIAL documented record of it is a charter of the year 829 — over three centuries before the 12th century. The 12th-century milestones the beats conflate with \"founding\" are (a) the 1157 letters patent that first record the name \"Hôtel-Dieu-Saint-Christophe\" and (b) Bishop ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+            "https://archive.org/stream/lhteldieudepar01coye/lhteldieudepar01coye_djvu.txt",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "founded in the 12th century by Maurice de Sully",
+          "correction": "The Hôtel-Dieu de Paris was, by tradition, founded by Saint Landry (Landericus), 28th Bishop of Paris, around 650–651 AD (earliest verified records of a care institution on the site date to 829). Maurice de Sully, the 12th-century Bishop of Paris (r. 1160–1196, famous for beginning Notre-Dame), did NOT found the hospital: in 1165 he undertook the RECONSTRUCTION of the already-existing hospital (old buildings demolished 1195, new construction completed 1255) — a distinct event from the founding. ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://en.wikipedia.org/wiki/Landry_of_Paris",
+            "https://en.wikipedia.org/wiki/Maurice_de_Sully"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "Up to five patients were crammed into a single bed",
+          "correction": "Beds at the Hôtel-Dieu normally held two to three patients each (arranged heel-to-head). The \"up to five patients per bed\" figure is uncorroborated and single-sourced to Thirza Vallois (her book \"Around and About Paris\" and her own bonjourparis.com post — same author, not two independent sources). Two genuinely independent authoritative sources give normal capacity as 2–3: the 1913 medical-journal history \"The Curious History of L'Hôtel-Dieu de Paris\" (\"capable of holding normally...three person",
+          "sources": [
+            "https://pdfs.semanticscholar.org/5a05/89c5b4ab6c737d1275708adbd8252a35fee7.pdf",
+            "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "verified_body_hash": "8ad54082c108358bb96e1a460223c65b9ea0fcc835ea9148a9285a3def020a58"
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+        "https://archive.org/stream/lhteldieudepar01coye/lhteldieudepar01coye_djvu.txt",
+        "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+        "https://en.wikipedia.org/wiki/Landry_of_Paris",
+        "https://en.wikipedia.org/wiki/Maurice_de_Sully",
+        "https://pdfs.semanticscholar.org/5a05/89c5b4ab6c737d1275708adbd8252a35fee7.pdf",
+        "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+        "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+      ]
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8143,7 +8227,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "8ad54082c108358bb96e1a460223c65b9ea0fcc835ea9148a9285a3def020a58",
+    "script_body_hash": "f3775b8983cdb6be2c1e2662bec5614551ab5777d64efab97526f4b66bcf6313",
     "city_name": "paris",
     "book_slug": "around_and_about_paris",
     "topic_slug": "oldest_hospital",
@@ -8153,7 +8237,7 @@
     "beat_id": "hotel_dieu_dark_history_sharing_beds_around_and_about_paris",
     "poi_name": "Hotel-Dieu",
     "lens": "dark_history",
-    "script_body": "Contemporary accounts described 'the ill, the dying and the dead' sharing beds. Philippe-Auguste donated his horses' straw for bedding.",
+    "script_body": "Contemporary accounts described 'the ill, the dying and the dead' sharing beds. Philippe-Auguste donated his own straw for bedding.",
     "physical_cues": [
       {
         "cue": "Hotel-Dieu entrance",
@@ -8175,13 +8259,27 @@
       "page": ""
     },
     "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T12:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "claims_checked": 2,
       "source_passage_verified": true,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "Philippe-Auguste donated his horses' straw for bedding",
+          "correction": "Philippe-Auguste (Philip II, r. 1180–1223) donated to the Hôtel-Dieu of Paris the straw and bedding of his own royal household/bedchamber in Paris (\"pailles et litières de sa maison à Paris\" / \"toute la paille de sa chambre et de sa maison de Paris\"), given each time he left to sleep elsewhere, per royal letters patent of March 1208. Sources uniformly attribute the straw to the king's own chamber/household — none mention horses. The corpus beats' specific attribution to \"his horses'\"/\"royal hors",
+          "sources": [
+            "https://catalogue.bnf.fr/ark:/12148/cb32526140w",
+            "https://www.revuedesdeuxmondes.fr/wp-content/uploads/2016/11/9f7b476da65f6f64b6e44ca934f60da3.pdf"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "verified_body_hash": "a35e68aa9b699a8fb4648db35a893c6ff4fc32b0162545738b8905e2cc3b1053"
+      "sources_consulted": [
+        "https://catalogue.bnf.fr/ark:/12148/cb32526140w",
+        "https://www.revuedesdeuxmondes.fr/wp-content/uploads/2016/11/9f7b476da65f6f64b6e44ca934f60da3.pdf"
+      ]
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8201,7 +8299,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "a35e68aa9b699a8fb4648db35a893c6ff4fc32b0162545738b8905e2cc3b1053",
+    "script_body_hash": "0428940801ad852d58784cf58521a4f837f3eae9ee3d703d78cb724969af88c5",
     "city_name": "paris",
     "book_slug": "around_and_about_paris",
     "topic_slug": "sharing_beds",
@@ -8211,7 +8309,7 @@
     "beat_id": "hotel_dieu_historic_arch_pont_au_double_around_and_about_paris",
     "poi_name": "Hotel-Dieu",
     "lens": "historic_arch",
-    "script_body": "The old Pont au Double featured an enclosed glass gallery where recovering patients could promenade — an early form of therapeutic architecture.",
+    "script_body": "The old Pont Saint-Charles featured an enclosed glass gallery where recovering patients could promenade — an early form of therapeutic architecture.",
     "physical_cues": [
       {
         "cue": "Look toward the Pont au Double",
@@ -8234,13 +8332,37 @@
       "page": ""
     },
     "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T12:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "The old Pont au Double featured an enclosed glass gallery",
+          "correction": "The Pont au Double (built 1626) connected the Hôtel-Dieu on the Île de la Cité to its Left Bank annex (the salle Saint-Charles, built 1606) — this \"connected the Hotel-Dieu to the Left Bank\" clause is CORRECT and should be kept. However, the Pont au Double did NOT feature an enclosed glass gallery for patients to promenade; its superstructure was ward rooms — two stacked salles, the salle Saint-Cosme (also called du Rosaire) — plus a pedestrian passage. The enclosed glazed gallery / promenoir vi",
+          "sources": [
+            "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/ancien-hotel-dieu-et-pont-saint-charles-4eme-arrondissement-paris",
+            "https://vergue.com/post/637/Hotel-Dieu-de-Paris.html",
+            "https://vergue.com/post/636/Hotel-Dieu-de-Paris",
+            "https://pietondeparis.canalblog.com/archives/2008/09/08/10506726.html",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://fr.wikipedia.org/wiki/Pont_Saint-Charles_(Paris)",
+            "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "verified_body_hash": "8a397b4d86202062b0ec03f6585a0b78d34d962a917c9a99695163829703ed8e"
+      "sources_consulted": [
+        "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/ancien-hotel-dieu-et-pont-saint-charles-4eme-arrondissement-paris",
+        "https://vergue.com/post/637/Hotel-Dieu-de-Paris.html",
+        "https://vergue.com/post/636/Hotel-Dieu-de-Paris",
+        "https://pietondeparis.canalblog.com/archives/2008/09/08/10506726.html",
+        "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+        "https://fr.wikipedia.org/wiki/Pont_Saint-Charles_(Paris)",
+        "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+      ]
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8259,7 +8381,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "8a397b4d86202062b0ec03f6585a0b78d34d962a917c9a99695163829703ed8e",
+    "script_body_hash": "a923ac66542e6548d3fa4411bf44e576da526b0fe52d55c2c893608e8e8babff",
     "city_name": "paris",
     "book_slug": "around_and_about_paris",
     "topic_slug": "pont_au_double",
@@ -8934,7 +9056,7 @@
     "beat_id": "memorial_des_martyrs_de_la_deportation_war_conflict_desnos_around_and_about_paris",
     "poi_name": "Memorial des Martyrs de la Deportation",
     "lens": "war_conflict",
-    "script_body": "Steps descend into a stark crypt at the eastern tip of the Ile de la Cite. The poet Robert Desnos, active in the Resistance, died at Theresienstadt just weeks before liberation.",
+    "script_body": "Steps descend into a stark crypt at the eastern tip of the Ile de la Cite. The poet Robert Desnos, active in the Resistance, died at Theresienstadt just weeks after liberation.",
     "physical_cues": [
       {
         "cue": "Descend the narrow steps at the tip of the island",
@@ -8957,13 +9079,51 @@
       "page": ""
     },
     "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T12:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "The poet Robert Desnos",
+          "correction": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Robert_Desnos",
+            "https://fr.wikipedia.org/wiki/Robert_Desnos",
+            "https://poets.org/poet/robert-desnos"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "active in the Resistance",
+          "correction": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Robert_Desnos",
+            "https://fr.wikipedia.org/wiki/Robert_Desnos",
+            "https://poets.org/poet/robert-desnos"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "died at Theresienstadt just weeks before liberation",
+          "correction": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Robert_Desnos",
+            "https://fr.wikipedia.org/wiki/Robert_Desnos",
+            "https://poets.org/poet/robert-desnos"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "verified_body_hash": "628551fdc3a832aa125bd1e7610b8180be4e7e546a2e8a462ec45e743c76724f"
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/Robert_Desnos",
+        "https://fr.wikipedia.org/wiki/Robert_Desnos",
+        "https://poets.org/poet/robert-desnos"
+      ]
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8984,7 +9144,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "628551fdc3a832aa125bd1e7610b8180be4e7e546a2e8a462ec45e743c76724f",
+    "script_body_hash": "eb6946d1989c4622f50d72cffdf1b51368b8802879073f2652447c857f671fb7",
     "city_name": "paris",
     "book_slug": "around_and_about_paris",
     "topic_slug": "desnos",
@@ -23127,7 +23287,7 @@
     "beat_id": "dbsync_170ed495",
     "poi_name": "Hotel-Dieu",
     "lens": "hidden_history",
-    "script_body": "The Hotel-Dieu is the oldest hospital in Paris, founded in the 12th century by Maurice de Sully, the same bishop who initiated the construction of Notre-Dame. For centuries it was the only hospital serving the city, and conditions were appalling — up to five patients were crammed into a single bed.",
+    "script_body": "The Hotel-Dieu is the oldest hospital in Paris, founded around 651. For centuries it was the only hospital serving the city, and conditions were appalling — up to three patients were crammed into a single bed.",
     "physical_cues": [],
     "key_claims": [],
     "confidence": "HIGH",
@@ -23140,12 +23300,56 @@
       "page": ""
     },
     "fact_check": {
-      "status": "unverified",
-      "checked_at": "2026-04-08T00:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "source_passage_verified": false,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "founded in the 12th century",
+          "correction": "The two Hôtel-Dieu (Paris) beats claiming the hospital was \"founded in the 12th century\" are WRONG. The hospital is traditionally said to have been founded c. 651 AD by Saint Landry (28th Bishop of Paris), and the earliest OFFICIAL documented record of it is a charter of the year 829 — over three centuries before the 12th century. The 12th-century milestones the beats conflate with \"founding\" are (a) the 1157 letters patent that first record the name \"Hôtel-Dieu-Saint-Christophe\" and (b) Bishop ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+            "https://archive.org/stream/lhteldieudepar01coye/lhteldieudepar01coye_djvu.txt",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "founded in the 12th century by Maurice de Sully",
+          "correction": "The Hôtel-Dieu de Paris was, by tradition, founded by Saint Landry (Landericus), 28th Bishop of Paris, around 650–651 AD (earliest verified records of a care institution on the site date to 829). Maurice de Sully, the 12th-century Bishop of Paris (r. 1160–1196, famous for beginning Notre-Dame), did NOT found the hospital: in 1165 he undertook the RECONSTRUCTION of the already-existing hospital (old buildings demolished 1195, new construction completed 1255) — a distinct event from the founding. ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://en.wikipedia.org/wiki/Landry_of_Paris",
+            "https://en.wikipedia.org/wiki/Maurice_de_Sully"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "up to five patients were crammed into a single bed",
+          "correction": "Beds at the Hôtel-Dieu normally held two to three patients each (arranged heel-to-head). The \"up to five patients per bed\" figure is uncorroborated and single-sourced to Thirza Vallois (her book \"Around and About Paris\" and her own bonjourparis.com post — same author, not two independent sources). Two genuinely independent authoritative sources give normal capacity as 2–3: the 1913 medical-journal history \"The Curious History of L'Hôtel-Dieu de Paris\" (\"capable of holding normally...three person",
+          "sources": [
+            "https://pdfs.semanticscholar.org/5a05/89c5b4ab6c737d1275708adbd8252a35fee7.pdf",
+            "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu,_Paris",
+        "https://archive.org/stream/lhteldieudepar01coye/lhteldieudepar01coye_djvu.txt",
+        "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+        "https://en.wikipedia.org/wiki/Landry_of_Paris",
+        "https://en.wikipedia.org/wiki/Maurice_de_Sully",
+        "https://pdfs.semanticscholar.org/5a05/89c5b4ab6c737d1275708adbd8252a35fee7.pdf",
+        "https://en.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+        "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+      ]
     },
     "_meta": {
       "prompt_version": "db_backfill_v1",
@@ -23166,7 +23370,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "97cf586743a95025522d953994d8ab37e4d5c73c833f96af14c3050ec7211554",
+    "script_body_hash": "79fcad1b64b7f770aaf30b87bfcee68bd35f059ca28fd3d3c391503a0a8bb7c1",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -23326,7 +23530,7 @@
     "beat_id": "dbsync_23e6d6cf",
     "poi_name": "Hotel-Dieu",
     "lens": "historic_arch",
-    "script_body": "The old Pont au Double, which connected the Hotel-Dieu to the Left Bank, featured an enclosed glass gallery where recovering patients could promenade — an early form of therapeutic architecture, allowing the sick to take the air without leaving the hospital.",
+    "script_body": "The old Pont au Double connected the Hotel-Dieu to the Left Bank.",
     "physical_cues": [],
     "key_claims": [],
     "confidence": "HIGH",
@@ -23339,12 +23543,51 @@
       "page": ""
     },
     "fact_check": {
-      "status": "unverified",
-      "checked_at": "2026-04-08T00:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "source_passage_verified": false,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "which connected the Hotel-Dieu to the Left Bank",
+          "correction": "The Pont au Double (built 1626) connected the Hôtel-Dieu on the Île de la Cité to its Left Bank annex (the salle Saint-Charles, built 1606) — this \"connected the Hotel-Dieu to the Left Bank\" clause is CORRECT and should be kept. However, the Pont au Double did NOT feature an enclosed glass gallery for patients to promenade; its superstructure was ward rooms — two stacked salles, the salle Saint-Cosme (also called du Rosaire) — plus a pedestrian passage. The enclosed glazed gallery / promenoir vi",
+          "sources": [
+            "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/ancien-hotel-dieu-et-pont-saint-charles-4eme-arrondissement-paris",
+            "https://vergue.com/post/637/Hotel-Dieu-de-Paris.html",
+            "https://vergue.com/post/636/Hotel-Dieu-de-Paris",
+            "https://pietondeparis.canalblog.com/archives/2008/09/08/10506726.html",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://fr.wikipedia.org/wiki/Pont_Saint-Charles_(Paris)",
+            "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "featured an enclosed glass gallery where recovering patients could promenade",
+          "correction": "The Pont au Double (built 1626) connected the Hôtel-Dieu on the Île de la Cité to its Left Bank annex (the salle Saint-Charles, built 1606) — this \"connected the Hotel-Dieu to the Left Bank\" clause is CORRECT and should be kept. However, the Pont au Double did NOT feature an enclosed glass gallery for patients to promenade; its superstructure was ward rooms — two stacked salles, the salle Saint-Cosme (also called du Rosaire) — plus a pedestrian passage. The enclosed glazed gallery / promenoir vi",
+          "sources": [
+            "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/ancien-hotel-dieu-et-pont-saint-charles-4eme-arrondissement-paris",
+            "https://vergue.com/post/637/Hotel-Dieu-de-Paris.html",
+            "https://vergue.com/post/636/Hotel-Dieu-de-Paris",
+            "https://pietondeparis.canalblog.com/archives/2008/09/08/10506726.html",
+            "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+            "https://fr.wikipedia.org/wiki/Pont_Saint-Charles_(Paris)",
+            "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [
+        "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/ancien-hotel-dieu-et-pont-saint-charles-4eme-arrondissement-paris",
+        "https://vergue.com/post/637/Hotel-Dieu-de-Paris.html",
+        "https://vergue.com/post/636/Hotel-Dieu-de-Paris",
+        "https://pietondeparis.canalblog.com/archives/2008/09/08/10506726.html",
+        "https://fr.wikipedia.org/wiki/H%C3%B4tel-Dieu_de_Paris",
+        "https://fr.wikipedia.org/wiki/Pont_Saint-Charles_(Paris)",
+        "https://bonjourparis.com/archives/notre-dame-hotel-dieu-paris-landmarks/"
+      ]
     },
     "_meta": {
       "prompt_version": "db_backfill_v1",
@@ -23365,7 +23608,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "dc15f9d547fe3f7e38886a3963e2a3750834d14b830bf45c65bc253ad5bf84ac",
+    "script_body_hash": "ecc2fd99bbf175c760100815f0d1167e6cedce031425f5755ea1149389e13b93",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -23639,7 +23882,7 @@
     "beat_id": "dbsync_2cd1f0a7",
     "poi_name": "Memorial des Martyrs de la Deportation",
     "lens": "war_conflict",
-    "script_body": "At the eastern tip of the Ile de la Cite, steps descend into a stark underground crypt — the Memorial des Martyrs de la Deportation. The narrow entrance forces visitors into single file, evoking the claustrophobia of deportation. The poet Robert Desnos, who had been active in the Resistance, died at the Theresienstadt concentration camp just weeks before liberation.",
+    "script_body": "At the eastern tip of the Ile de la Cite, steps descend into a stark underground crypt — the Memorial des Martyrs de la Deportation. The narrow entrance forces visitors into single file, evoking the claustrophobia of deportation. The poet Robert Desnos, who had been active in the Resistance, died at the Theresienstadt concentration camp just weeks after liberation.",
     "physical_cues": [],
     "key_claims": [],
     "confidence": "HIGH",
@@ -23652,12 +23895,50 @@
       "page": ""
     },
     "fact_check": {
-      "status": "unverified",
-      "checked_at": "2026-04-08T00:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "source_passage_verified": false,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "The poet Robert Desnos",
+          "correction": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Robert_Desnos",
+            "https://fr.wikipedia.org/wiki/Robert_Desnos",
+            "https://poets.org/poet/robert-desnos"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "active in the Resistance",
+          "correction": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Robert_Desnos",
+            "https://fr.wikipedia.org/wiki/Robert_Desnos",
+            "https://poets.org/poet/robert-desnos"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        },
+        {
+          "claim": "died at the Theresienstadt concentration camp just weeks before liberation",
+          "correction": "Robert Desnos — French Surrealist poet and member of the French Resistance, arrested by the Gestapo (Feb 1944) and deported, ultimately to the Theresienstadt (Terezín) camp — died of typhoid at Theresienstadt on 8 June 1945, roughly ONE MONTH AFTER the camp was liberated (8 May 1945, when the Red Army and Czech partisans entered the camp). The corpus framing \"died at Theresienstadt just weeks before liberation\" inverts the true sequence: he died AFTER liberation, not before. The \"poet,\" \"active ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Robert_Desnos",
+            "https://fr.wikipedia.org/wiki/Robert_Desnos",
+            "https://poets.org/poet/robert-desnos"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/Robert_Desnos",
+        "https://fr.wikipedia.org/wiki/Robert_Desnos",
+        "https://poets.org/poet/robert-desnos"
+      ]
     },
     "_meta": {
       "prompt_version": "db_backfill_v1",
@@ -23679,7 +23960,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "dfa698d420a30c3fc1d8af0e5ecf3ea42ea55c61f33fc097b953a1f289e55f5e",
+    "script_body_hash": "6602747e994884aabcd9478d165ebd0bee95101a65f589f7ee62ac4fe1ef2068",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -27591,7 +27872,7 @@
     "beat_id": "dbsync_accac340",
     "poi_name": "Ile de la Cite",
     "lens": "dark_history",
-    "script_body": "Philippe-Auguste confiscated the Jews' possessions, using the proceeds partly to finance Les Halles market, and expelled them from France in 1182. Their centuries-old presence on rue de la Juiverie, the central axis of the Ile de la Cite, came to an end. When he invited the Jews back 16 years later to squeeze them dry once more, they settled on the right bank around rue des Rosiers.",
+    "script_body": "Philippe-Auguste confiscated the Jews' possessions and expelled them from the royal demesne in 1182. Their centuries-old presence on rue de la Juiverie, the central axis of the Ile de la Cite, came to an end. When he invited the Jews back 16 years later to squeeze them dry once more, they settled on the right bank around rue des Rosiers.",
     "physical_cues": [],
     "key_claims": [],
     "confidence": "HIGH",
@@ -27604,12 +27885,30 @@
       "page": ""
     },
     "fact_check": {
-      "status": "unverified",
-      "checked_at": "2026-04-08T00:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "source_passage_verified": false,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "Philippe-Auguste confiscated the Jews' possessions, using the proceeds partly to finance Les Halles market, and expelled them from France in 1182",
+          "correction": "In 1182 Philippe-Auguste did confiscate Jewish property (the beat's core is true), but two elements of the compound claim are inaccurate. (1) SCOPE: the 1182 edict expelled Jews from the royal demesne — the crown's directly-held lands, essentially the Île-de-France — not \"France\" as a whole. In 1182 the Kingdom of France was a patchwork of largely autonomous fiefs (Plantagenet Normandy/Anjou/Aquitaine, Champagne, Flanders, Burgundy, Toulouse), where Jews continued to live outside royal control. ",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Philip_II_of_France",
+            "https://en.wikipedia.org/wiki/History_of_the_Jews_in_France",
+            "https://fr.wikipedia.org/wiki/Halles_de_Paris",
+            "https://www.mahj.org/en/permanent-collection/2-jews-france-middle-ages"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/Philip_II_of_France",
+        "https://en.wikipedia.org/wiki/History_of_the_Jews_in_France",
+        "https://fr.wikipedia.org/wiki/Halles_de_Paris",
+        "https://www.mahj.org/en/permanent-collection/2-jews-france-middle-ages"
+      ]
     },
     "_meta": {
       "prompt_version": "db_backfill_v1",
@@ -27632,7 +27931,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "8717519469a1ff9ffbbc78dabb0b4bca92e9764ed85602be7c6391f63a9c9273",
+    "script_body_hash": "7f1a4a6f1fdb0ce564939faf3f19081054ebe13160d59c8c82d1670e9fb668b1",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -27896,7 +28195,7 @@
     "beat_id": "dbsync_c101acb2",
     "poi_name": "Hotel-Dieu",
     "lens": "dark_history",
-    "script_body": "Contemporary accounts described the Hotel-Dieu's wards as containing 'the ill, the dying and the dead' sharing the same beds. Philippe-Auguste donated the straw from his royal horses to serve as bedding. The stench was so overwhelming that visitors could smell the hospital from across the river.",
+    "script_body": "Contemporary accounts described the Hotel-Dieu's wards as containing 'the ill, the dying and the dead' sharing the same beds. Philippe-Auguste donated the straw from his royal household to serve as bedding. The stench was so overwhelming that visitors could smell the hospital from across the river.",
     "physical_cues": [],
     "key_claims": [],
     "confidence": "HIGH",
@@ -27909,12 +28208,26 @@
       "page": ""
     },
     "fact_check": {
-      "status": "unverified",
-      "checked_at": "2026-04-08T00:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "source_passage_verified": false,
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "Philippe-Auguste donated the straw from his royal horses to serve as bedding",
+          "correction": "Philippe-Auguste (Philip II, r. 1180–1223) donated to the Hôtel-Dieu of Paris the straw and bedding of his own royal household/bedchamber in Paris (\"pailles et litières de sa maison à Paris\" / \"toute la paille de sa chambre et de sa maison de Paris\"), given each time he left to sleep elsewhere, per royal letters patent of March 1208. Sources uniformly attribute the straw to the king's own chamber/household — none mention horses. The corpus beats' specific attribution to \"his horses'\"/\"royal hors",
+          "sources": [
+            "https://catalogue.bnf.fr/ark:/12148/cb32526140w",
+            "https://www.revuedesdeuxmondes.fr/wp-content/uploads/2016/11/9f7b476da65f6f64b6e44ca934f60da3.pdf"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [
+        "https://catalogue.bnf.fr/ark:/12148/cb32526140w",
+        "https://www.revuedesdeuxmondes.fr/wp-content/uploads/2016/11/9f7b476da65f6f64b6e44ca934f60da3.pdf"
+      ]
     },
     "_meta": {
       "prompt_version": "db_backfill_v1",
@@ -27936,7 +28249,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "f376474f0923e19f4cb562b37b5c93a498381df0bb3458d0c070e4138d2100b4",
+    "script_body_hash": "c1fdcb611a3d13ce9f494bf5dced689fb79ecaf7d7c71036141ec5b83e0c23de",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -32532,8 +32845,8 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "The moat and drawbridge that defended this palace proved useless on 22 February 1357. Jean II le Bon, founder of the Valois dynasty, was being held captive in England. The provost of merchants, Etienne Marcel, thought he could overthrow the monarchy with English help. That afternoon the young Dauphin — the future Charles V — was sitting in the palace with two of his counsellors when Marcel's men burst in and slew the counsellors before his eyes. The Dauphin was unhurt, but the victims' gushing blood stained his clothes, an experience he never forgot. A prudent politician, deservedly called le Sage — the Wise — he slipped out of the palace one night by way of the river, moved to the remote Hôtel de Saint-Pol in the Marais, and arranged for himself a new residence within the safer walls of the Louvre, where he spent time from 1368 onward. The kings of France never returned to the island.",
-    "script_body_hash": "49911c6ecc27f9a5b3b41d6b3bf18c6fbcaf1c84b8545f447a526af42b2eaf9c",
+    "script_body": "The moat and drawbridge that defended this palace proved useless on 22 February 1357. Jean II le Bon, of the Valois dynasty, was being held captive in England. The provost of merchants, Etienne Marcel, thought he could overthrow the monarchy with English help. That afternoon the young Dauphin — the future Charles V — was sitting in the palace with two of his counsellors when Marcel's men burst in and slew the counsellors before his eyes. The Dauphin was unhurt, but the victims' gushing blood stained his clothes, an experience he never forgot. A prudent politician, deservedly called le Sage — the Wise — he slipped out of the palace one night by way of the river, moved to the remote Hôtel de Saint-Pol in the Marais, and arranged for himself a new residence within the safer walls of the Louvre, where he spent time from 1368 onward. The kings of France never returned to the island.",
+    "script_body_hash": "0fff76743d40609496737e71ec87e736b3aaafdc2a9ba5b86ebba49309cd644c",
     "duration_sec": 63,
     "kid_friendly": "no",
     "entities": [
@@ -32573,6 +32886,26 @@
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:07:15Z",
       "city_name": "paris"
+    },
+    "fact_check": {
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
+      "corrections": [
+        {
+          "claim": "Jean II le Bon, founder of the Valois dynasty",
+          "correction": "Jean II le Bon did NOT found the Valois dynasty. The House of Valois was founded by Charles, Count of Valois (d.1325); the first Valois KING was Philip VI (1328); Jean II le Bon was Philip VI's son (the second Valois king). Strike the false 'founder of the Valois dynasty' epithet — e.g. write 'Jean II le Bon, of the Valois dynasty' (drop 'founder'). Keep the rest ('held captive in England') unchanged.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/House_of_Valois",
+            "https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica/Valois,_Counts_and_Dukes_of"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/House_of_Valois",
+        "https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica/Valois,_Counts_and_Dukes_of"
+      ]
     }
   },
   {
@@ -40232,7 +40565,7 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "The Conciergerie was the royal palace before the Louvre was built. During the Revolution it became a prison where some 2,600 prisoners were kept before being guillotined. Marie Antoinette's cell can be visited and the building is now the Museum of the Revolution.",
+    "script_body": "The Conciergerie was the royal palace before the Louvre became a royal residence. During the Revolution it became a prison where some 2,600 prisoners were kept before being guillotined. Marie Antoinette's cell can be visited and the building is now the Museum of the Revolution.",
     "duration_sec": 18,
     "kid_friendly": "no",
     "entities": [
@@ -40272,7 +40605,33 @@
       "generated_at": "2026-04-25T12:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "521fb724ab08ad9be4ebddd83617c9c75ce0b6a873b76dd2e33c8b95afc02fde"
+    "script_body_hash": "46e22960767a81689ec6038fc73944706a3584fcb7385f5c2ac9ef1fbd617b4e",
+    "fact_check": {
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
+      "corrections": [
+        {
+          "claim": "The Conciergerie was the royal palace before the Louvre was built",
+          "correction": "The Palais de la Cité (later the Conciergerie), on the Île de la Cité, was the permanent royal residence of the French kings from the late 12th century until 1364, when Charles V relocated the court to the Louvre and the Hôtel Saint-Pol. But the Louvre had ALREADY been built as a fortress by Philip II Augustus (ordered 1190, keep built ~1200, completed 1202) — roughly 160 years before it first became a royal residence in 1364. So the Conciergerie was the royal palace before the Louvre became a r",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Louvre_Palace",
+            "https://en.wikipedia.org/wiki/Palais_de_la_Cit%C3%A9",
+            "https://en.wikipedia.org/wiki/Conciergerie",
+            "https://www.worldhistory.org/Louvre/",
+            "https://en.wikipedia.org/wiki/Louvre_Castle"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/Louvre_Palace",
+        "https://en.wikipedia.org/wiki/Palais_de_la_Cit%C3%A9",
+        "https://en.wikipedia.org/wiki/Conciergerie",
+        "https://www.worldhistory.org/Louvre/",
+        "https://en.wikipedia.org/wiki/Louvre_Castle"
+      ]
+    }
   },
   {
     "beat_id": "paris_conciergerie_dark_history_frommers_24_great_walks_tour_bonbec_torture_screams",
@@ -40286,7 +40645,7 @@
     "sub_location": "tour-bonbec",
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "The westernmost tower facing the Seine is where prisoners were tortured. Since their screams could be heard across the river, it is called the Tour Bonbec, meaning 'Big Mouth Tower'.",
+    "script_body": "The westernmost tower facing the Seine is where prisoners were tortured. Since their screams could be heard across the river, it is called the Tour Bonbec, meaning 'Good Talker Tower'.",
     "duration_sec": 12,
     "kid_friendly": "no",
     "entities": [
@@ -40328,7 +40687,31 @@
       "generated_at": "2026-04-25T12:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "1528808a32685447fd528054c6e06c6843bcbdebd3ddee8d176d821c77276820"
+    "script_body_hash": "7fee2d61429ccc59601316cbf54bf90cedcb91a322c5ceb3a9d72895cc2b0e83",
+    "fact_check": {
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
+      "corrections": [
+        {
+          "claim": "it is called the Tour Bonbec, meaning 'Big Mouth Tower'",
+          "correction": "The Tour Bonbec at the Conciergerie takes its name from the French \"bon bec,\" which literally means \"good beak\" and idiomatically \"good talker\" / one who \"speaks easily/readily\" (avoir bon bec = parler facilement). It is a grim reference to the tower's use as the Conciergerie's torture chamber, where prisoners were made to \"talk\"/confess readily under torture. Accurate renderings are \"Good Talker Tower\" / \"Good Beak Tower\" / \"Good Word Tower.\" \"Big Mouth Tower\" is a mistranslation — it renders t",
+          "sources": [
+            "https://www.paris-conciergerie.fr/content/download/9873154/file/Livret facile à lire et à comprendre FALC Conciergerie.pdf",
+            "https://worldinparis.com/conciergerie-paris",
+            "https://en.wikipedia.org/wiki/Conciergerie",
+            "https://en.wikipedia.org/wiki/Palais_de_la_Cité"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
+      "sources_consulted": [
+        "https://www.paris-conciergerie.fr/content/download/9873154/file/Livret facile à lire et à comprendre FALC Conciergerie.pdf",
+        "https://worldinparis.com/conciergerie-paris",
+        "https://en.wikipedia.org/wiki/Conciergerie",
+        "https://en.wikipedia.org/wiki/Palais_de_la_Cité"
+      ]
+    }
   },
   {
     "beat_id": "paris_sainte_chapelle_historic_worship_frommers_24_great_walks_st_louis_crown_of_thorns",
@@ -93166,8 +93549,8 @@
     "source_chunk_slug": "memorial_des_martyrs_de_la_deportation-rev-1346249082",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "The memorial was designed by the modernist architect Georges-Henri Pingusson and inaugurated by President Charles de Gaulle on 12 April 1962. It honours the more than two hundred thousand people deported from Vichy France to the Nazi concentration camps. Pingusson shaped it like the prow of a ship and put it underground. A brochure produced by the French survivors' group Reseau de Souvenir in the year of its opening described it as a crypt 'hollowed out of the sacred isle, the cradle of our nation, which incarnates the soul of France — a place where its spirit dwells.' Pingusson designed the long, narrow subterranean chamber to feel claustrophobic — to convey what could not be said.",
-    "script_body_hash": "744ce6a520c697855845becd88267341b67c4d4c2e2a256cbbf00ec193eddb4f",
+    "script_body": "The memorial was designed by the modernist architect Georges-Henri Pingusson and inaugurated by President Charles de Gaulle on 12 April 1962. It honours the two hundred thousand people deported from Vichy France to the Nazi concentration camps. Pingusson shaped it like the prow of a ship and put it underground. A brochure produced by the French survivors' group Reseau de Souvenir in the year of its opening described it as a crypt 'hollowed out of the sacred isle, the cradle of our nation, which incarnates the soul of France — a place where its spirit dwells.' Pingusson designed the long, narrow subterranean chamber to feel claustrophobic — to convey what could not be said.",
+    "script_body_hash": "4c049e5bdeaccd3b7bfb558b6fe591563682ae9850457f2baeb5003812a61017",
     "beat_length_class": "mid",
     "duration_sec": 46,
     "kid_friendly": "yes",
@@ -93211,9 +93594,28 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "unverified",
+      "status": "corrected",
       "extractor_state": "clean",
-      "notes": ""
+      "notes": "",
+      "checked_at": "2026-07-18T00:00:00Z",
+      "corrections": [
+        {
+          "claim": "honours the more than two hundred thousand people deported from Vichy France",
+          "correction": "The Mémorial des Martyrs de la Déportation is dedicated to exactly 200,000 people (men, women, and children) deported from France (Vichy France) to the Nazi concentration/death camps during WWII — not \"more than 200,000.\" The crypt holds 200,000 illuminated glass crystals, one for each deportee, so the \"200,000 crystals\" figure is consistent with (not contradictory to) the deportee count. The official Base Mérimée inscription describes them as \"200 000 ... déportés depuis la France ... exterminé",
+          "sources": [
+            "https://pop.culture.gouv.fr/notice/merimee/PA00125453",
+            "https://www.liberationroute.com/fr/pois/410/memorial-des-martyrs-de-la-deportation",
+            "https://en.wikipedia.org/wiki/M%C3%A9morial_des_Martyrs_de_la_D%C3%A9portation"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
+      "sources_consulted": [
+        "https://pop.culture.gouv.fr/notice/merimee/PA00125453",
+        "https://www.liberationroute.com/fr/pois/410/memorial-des-martyrs-de-la-deportation",
+        "https://en.wikipedia.org/wiki/M%C3%A9morial_des_Martyrs_de_la_D%C3%A9portation"
+      ]
     },
     "new_poi": false,
     "_meta": {
