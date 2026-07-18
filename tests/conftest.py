@@ -124,6 +124,56 @@ def _money_guard_no_live_compose(request, monkeypatch):
         _verify_mod, "HaikuFaithfulnessChecker", _verify_mod.MockFaithfulnessChecker
     )
 
+    # AUTHOR-ENGINE money-guard (mirror compose): the opt-in engine='author' preview path
+    # builds an Opus drafter + 3 Haiku judges via get_author_composer. Patch each so the
+    # PRODUCT path (client is None) builds an OFFLINE stub, never a billing SDK — a unit
+    # test that injects a fake SDK client (client=<fake>) stays offline and exercises the
+    # real class. So `make test` can never bill the author path.
+    import src.tour.author as _author_mod
+    import src.tour.factcheck as _fc_mod
+
+    class _OfflineDrafter:  # empty draft -> author_compose_stop falls back to the stitch
+        def write(self, *a, **k):
+            return ""
+
+        def rewrite(self, *a, **k):
+            return ""
+
+    class _OfflineDecomposer:
+        def decompose(self, narration):
+            return ()
+
+    class _TrustingJudge:  # offline; the guard only has to prevent billing
+        def conveys(self, fact, narration):
+            return True
+
+        def entails(self, key_claims, sentence_text):
+            return True
+
+    _real_drafter = _author_mod.LLMDrafter
+
+    def _guard_drafter(model, *, client=None, max_tokens=4000):
+        return _OfflineDrafter() if client is None else _real_drafter(
+            model, client=client, max_tokens=max_tokens
+        )
+
+    monkeypatch.setattr(_author_mod, "LLMDrafter", _guard_drafter)
+
+    _real_dec = _fc_mod.HaikuClaimDecomposer
+
+    def _guard_dec(model=_fc_mod.FAITHFULNESS_MODEL, *, client=None):
+        return _OfflineDecomposer() if client is None else _real_dec(model, client=client)
+
+    monkeypatch.setattr(_fc_mod, "HaikuClaimDecomposer", _guard_dec)
+
+    for _judge_name in ("HaikuCoverageJudge", "HaikuFaithfulnessJudge"):
+        _real_judge = getattr(_fc_mod, _judge_name)
+
+        def _guard_judge(model=_fc_mod.FAITHFULNESS_MODEL, *, client=None, _real=_real_judge):
+            return _TrustingJudge() if client is None else _real(model, client=client)
+
+        monkeypatch.setattr(_fc_mod, _judge_name, _guard_judge)
+
 
 # Ports the conftest is allowed to wipe. Update this if your local test
 # instance runs on a different port. Dev/production must NEVER be in here.

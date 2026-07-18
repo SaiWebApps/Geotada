@@ -9,9 +9,105 @@ from __future__ import annotations
 
 import types
 
-from src.tour.author import LLMDrafter, author_compose_stop
-from src.tour.factcheck import SemanticFactChecker
-from src.tour.generation import split_sentences
+from src.tour.author import LLMDrafter, author_compose_script, author_compose_stop
+from src.tour.contract import (
+    POI,
+    BeatRef,
+    BeatSequence,
+    POIBeats,
+    Route,
+    TourInput,
+    TransitSegment,
+)
+from src.tour.factcheck import FactCheckResult, SemanticFactChecker
+from src.tour.generation import generate, split_sentences
+
+
+# --- minimal Script/BeatSequence/Route builders for author_compose_script (mirror
+# test_tour_compose.py; the stitched Script comes from the REAL generate()) ---
+def _poi(pid: str) -> POI:
+    return POI(id=pid, name=pid, tier=5, poi_role="stop", lat=48.85, lng=2.36)
+
+
+def _beat(bid: str, poi_id: str, claim: str) -> BeatRef:
+    return BeatRef(id=bid, poi_id=poi_id, script_body=claim,
+                   word_count=len(claim.split()), key_claims=(claim,))
+
+
+def _route_seq_stitched(stops: list[list[BeatRef]]):
+    pois = tuple(_poi(f"p{i}") for i in range(len(stops)))
+    transits = tuple(
+        TransitSegment(from_poi_id=None if i == 0 else pois[i - 1].id, to_poi_id=p.id,
+                       distance_m=100.0, walk_seconds=60)
+        for i, p in enumerate(pois)
+    )
+    route = Route(pois=pois, transits=transits, total_walk_distance_m=100.0 * len(pois),
+                  total_walk_seconds=60 * len(pois))
+    seq = BeatSequence(poi_beats=tuple(
+        POIBeats(poi_id=f"p{i}", poi_name=f"p{i}", ordering_strategy="sub_location",
+                 beats=tuple(bs))
+        for i, bs in enumerate(stops)
+    ))
+    ti = TourInput(start=(48.85, 2.36), duration_min=60, city_slug="paris")
+    return route, seq, generate(seq, route, ti)
+
+
+def test_money_guard_author_engine_clients_are_offline_stubs_in_suite():
+    """MONEY-GUARD: inside the hermetic bar the author engine's FOUR billing clients
+    (Opus drafter + 3 Haiku judges) must construct as OFFLINE stubs, never billing SDKs —
+    else engine='author' would spend real money on every `make test`.
+    UNDO: delete the author-engine arm of `_money_guard_no_live_compose` in conftest ->
+    these build the real anthropic clients -> RED (and the bar would bill)."""
+    from src.tour.author import LLMDrafter as _Drafter
+    from src.tour.factcheck import HaikuClaimDecomposer as _Dec
+    from src.tour.factcheck import HaikuCoverageJudge as _Cov
+    from src.tour.factcheck import HaikuFaithfulnessJudge as _Faith
+
+    assert type(_Drafter("m")).__name__ == "_OfflineDrafter"
+    assert type(_Dec()).__name__ == "_OfflineDecomposer"
+    assert type(_Cov()).__name__ == "_TrustingJudge"
+    assert type(_Faith()).__name__ == "_TrustingJudge"
+
+
+class _AlwaysPass:
+    def check(self, narration, facts):
+        return FactCheckResult((), ())
+
+
+class _AlwaysFail:
+    def check(self, narration, facts):
+        return FactCheckResult(("unsupported",), ())
+
+
+def test_author_compose_script_serves_author_prose_when_a_stop_converges():
+    """A converged stop's served beat-sentences are the AUTHOR prose (not the stitch),
+    cited to that stop's beats, and grounded_fallback is False for it."""
+    route, seq, stitched = _route_seq_stitched([[_beat("b0", "p0", "the tower was built in 1250")]])
+    drafter = _MockDrafter(write_out="AUTHORED PROSE about the tower.", rewrite_out="unused")
+    script, fell_back = author_compose_script(
+        stitched, seq, route, lens="dark_history", drafter=drafter, checker=_AlwaysPass())
+    assert fell_back == {0: False}
+    beat_sents = [s for s in script.script if s.source_type == "beat" and s.stop_idx == 0]
+    assert beat_sents and all(s.source_id == "b0" for s in beat_sents)
+    assert "AUTHORED PROSE" in " ".join(s.text for s in beat_sents)  # author prose, not stitch
+    assert drafter.writes == 1
+
+
+def test_author_compose_script_falls_back_to_exact_stitch_when_a_stop_wont_converge():
+    """A stop the drafter can't make faithful+complete serves its EXACT grounded stitch,
+    never a bad draft; grounded_fallback is True. UNDO: make author_compose_script keep the
+    author draft on grounded_fallback -> the fact-dropping draft ships -> RED."""
+    route, seq, stitched = _route_seq_stitched([[
+        _beat("b0", "p0", "the tower was built in 1250"),
+        _beat("b1", "p0", "the bell weighs thirteen tons"),
+    ]])
+    orig = [s.text for s in stitched.script if s.source_type == "beat" and s.stop_idx == 0]
+    drafter = _MockDrafter(write_out="a bad draft that never passes", rewrite_out="still bad")
+    script, fell_back = author_compose_script(
+        stitched, seq, route, lens="x", drafter=drafter, checker=_AlwaysFail(), max_repairs=2)
+    assert fell_back == {0: True}
+    served = [s.text for s in script.script if s.source_type == "beat" and s.stop_idx == 0]
+    assert served == orig  # exact grounded stitch preserved, not the fact-dropping draft
 
 
 def _fake_anthropic(*texts: str):

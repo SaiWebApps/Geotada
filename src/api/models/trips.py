@@ -218,6 +218,14 @@ class TripPreviewRequest(BaseModel):
     # Opus-vs-ChatGPT writing comparison. There is NO 'mock' provider (a comparison
     # is never served the stitcher passthrough). Unknown values fall back to Opus.
     provider: str | None = None
+    # Opt in to the AUTHOR ENGINE (off by default): instead of fusing stitched
+    # beat-sentences (compose), write each stop FRESH from its facts, then a semantic
+    # fact-check-and-repair loop restores dropped / strips invented facts, falling back
+    # to the grounded stitch when a stop won't converge. Strictly OPT-IN and strictly
+    # costlier than compose (an Opus draft per stop) — an env default could never flip
+    # it on, so it is a per-request field only. ``engine="author"`` turns it on; anything
+    # else (None/'compose') is today's behavior, byte-identical.
+    engine: str | None = None
 
 
 class TripPreviewStop(BaseModel):

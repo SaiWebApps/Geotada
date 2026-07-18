@@ -19,6 +19,7 @@ from src.api.crud.trips import (
     route_script_to_stops,
 )
 from src.api.dependencies import (
+    get_author_composer,
     get_compose_client,
     get_driver,
     get_faithfulness_checker,
@@ -726,6 +727,7 @@ def preview_trip(
     driver: Driver = Depends(get_driver),
     compose_client: ComposeClient = Depends(get_compose_client),
     faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
+    author_composer=Depends(get_author_composer),
 ):
     """Web-first preview (Phase 1.5): run the engine and return per-stop narration
     WITHOUT a profile and WITHOUT persisting a Trip/ItineraryItem.
@@ -779,7 +781,31 @@ def preview_trip(
     compose_status = "stitched"
     provider = None
     narration_quality = None
-    if body.compose:
+    if body.engine == "author":
+        # OPT-IN AUTHOR ENGINE (strictly costlier than compose; never a deployment
+        # default — a per-request field only). Write each stop FRESH from its facts,
+        # fact-check-and-repair, with the grounded stitch as the per-stop floor: every
+        # served stop is either 0-unsupported/0-missing author prose or the exact stitch,
+        # never a non-converged draft. Reuses the SAME quality scoring as compose.
+        lens = tour_input.lenses[0] if tour_input.lenses else "general"
+        script, fell_back = author_composer(script, seq, route, lens)
+        compose_status = "authored_partial" if any(fell_back.values()) else "authored"
+        provider = "author"
+        narration = " ".join(s.text for s in script.script)
+        q = score_narration(narration)
+        narration_quality = {
+            "stilted_score": q.stilted_score,
+            "engagement_score": q.engagement_score,
+            "reliable": q.reliable,
+            "n_words": q.n_words,
+            "burstiness": q.burstiness,
+            "mean_sentence_words": q.mean_sentence_words,
+            "long_sentence_rate": q.long_sentence_rate,
+            "second_person_per_100w": q.second_person_rate,
+            "look_prompt_rate": q.look_prompt_rate,
+            "tells_per_100w": q.per_100w,
+        }
+    elif body.compose:
         # Which REAL narrator writes this tour: the per-request provider (the
         # workbench's Opus-vs-ChatGPT toggle) overrides the env default; never mock.
         client = compose_client_for(body.provider) if body.provider else compose_client

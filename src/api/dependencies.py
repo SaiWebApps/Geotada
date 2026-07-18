@@ -141,3 +141,37 @@ def get_faithfulness_checker() -> FaithfulnessChecker | None:
     from src.tour.verify import HaikuFaithfulnessChecker
 
     return HaikuFaithfulnessChecker()
+
+
+def get_author_composer():
+    """The AUTHOR-ENGINE narrator for the OPT-IN ``engine='author'`` preview path only.
+
+    Returns a callable ``(stitched, beat_sequence, route, lens) -> (Script, fell_back)``
+    that writes each stop fresh from its facts + fact-checks/repairs (calibrated
+    HaikuCoverageJudge + HaikuFaithfulnessJudge), falling back to the grounded stitch on
+    non-convergence. Builds the REAL billing clients (Opus drafter + Haiku judges) LAZILY,
+    referencing the module attributes at call time so the conftest money-guard's monkeypatch
+    swaps them for offline stubs in the (non-``live``) bar — exactly like ``get_compose_client``.
+    Tests that exercise the author path override THIS dependency with an offline fake.
+    """
+    from src.tour.author import LLMDrafter, author_compose_script
+    from src.tour.compose import COMPOSE_MODEL
+    from src.tour.factcheck import (
+        HaikuClaimDecomposer,
+        HaikuCoverageJudge,
+        HaikuFaithfulnessJudge,
+        SemanticFactChecker,
+    )
+
+    def _compose(stitched, beat_sequence, route, lens):
+        drafter = LLMDrafter(COMPOSE_MODEL)
+        checker = SemanticFactChecker(
+            entailer=HaikuFaithfulnessJudge(),
+            decomposer=HaikuClaimDecomposer(),
+            coverage_judge=HaikuCoverageJudge(),
+        )
+        return author_compose_script(
+            stitched, beat_sequence, route, lens=lens, drafter=drafter, checker=checker
+        )
+
+    return _compose

@@ -20,10 +20,14 @@ fact-complete and corpus-verbatim, so it trivially passes.
 
 from __future__ import annotations
 
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Protocol
 
+from .contract import BeatSequence, Route, Script, Sentence, ValidationReport
 from .factcheck import FactCheckResult, SemanticFactChecker
+from .generation import split_sentences
 
 
 class Drafter(Protocol):
@@ -104,6 +108,105 @@ def author_compose_stop(
 def _failure_count(result: FactCheckResult) -> int:
     """Total fact-check failures (unsupported + missing); 0 == faithful and complete."""
     return len(result.unsupported_claims) + len(result.missing_facts)
+
+
+def _facts_for_stop(
+    stop_idx: int, stitched: Script, beats_by_id: dict
+) -> tuple[str, ...]:
+    """The grounded facts of one stop: each cited beat's key_claims (or, keyless, its body
+    sentences), order-preserved + deduped. Same derivation the author scripts use."""
+    facts: list[str] = []
+    seen: set[str] = set()
+    for s in stitched.script:
+        if s.stop_idx != stop_idx or s.source_type != "beat":
+            continue
+        b = beats_by_id.get(s.source_id)
+        if not b:
+            continue
+        items = list(getattr(b, "key_claims", ()) or ()) or [
+            p.strip() for p in split_sentences(getattr(b, "script_body", "") or "")
+        ]
+        for it in items:
+            if it and it not in seen:
+                seen.add(it)
+                facts.append(it)
+    return tuple(facts)
+
+
+def author_compose_script(
+    stitched: Script,
+    beat_sequence: BeatSequence,
+    route: Route,
+    *,
+    lens: str,
+    drafter: Drafter,
+    checker: SemanticFactChecker,
+    max_repairs: int = 3,
+    max_workers: int = 6,
+) -> tuple[Script, dict[int, bool]]:
+    """Author-engine counterpart to ``compose_script_per_chapter``: write each dwell stop
+    FRESH from its grounded facts (fact-check-and-repair, grounded-stitch floor), then
+    reassemble into the same ``Script`` shape the endpoint already returns.
+
+    Per stop, the beat sentences are REPLACED by the author prose (each sentence cited to
+    the UNION of that stop's beats, so ``source_type='beat'`` + traceability hold); non-beat
+    sentences (glue / transitions / reflections) are preserved in place. A stop that will not
+    converge serves its grounded stitch (``author_compose_stop``'s floor), so a served stop
+    is ALWAYS either 0-unsupported/0-missing author prose or the exact stitch — never a
+    non-converged draft. Returns ``(script, grounded_fallback_by_stop)``. The intelligence
+    (Opus drafter + calibrated checker) is injected, so this is fully testable offline."""
+    beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
+    poi_name_by_stop = {i: p.name for i, p in enumerate(route.pois)}
+    by_stop: dict[int, list[Sentence]] = defaultdict(list)
+    for s in stitched.script:
+        by_stop[s.stop_idx].append(s)
+    stops = sorted(by_stop)
+
+    def _author_stop(stop_idx: int) -> tuple[int, list[Sentence], bool]:
+        stop_sents = by_stop[stop_idx]
+        beat_sents = [s for s in stop_sents if s.source_type == "beat"]
+        if not beat_sents:
+            return stop_idx, list(stop_sents), False  # vignette/glue-only: nothing to author
+        facts = _facts_for_stop(stop_idx, stitched, beats_by_id)
+        stitch = " ".join(s.text for s in beat_sents)
+        if not facts:  # keyless + bodiless -> nothing to write from; keep the grounded stitch
+            return stop_idx, list(stop_sents), True
+        poi = poi_name_by_stop.get(stop_idx, "this stop")
+        res = author_compose_stop(
+            facts, poi, lens, drafter=drafter, checker=checker,
+            stitch_fallback=stitch, max_repairs=max_repairs,
+        )
+        if res.grounded_fallback:
+            return stop_idx, list(stop_sents), True  # keep the stitch sentences verbatim
+        cited = tuple(dict.fromkeys(s.source_id for s in beat_sents))  # union, order-preserved
+        primary, also = cited[0], cited[1:]
+        author_sents = [
+            Sentence(text=t.strip(), source_id=primary, source_type="beat",
+                     stop_idx=stop_idx, also_cites=also)
+            for t in split_sentences(res.text) if t.strip()
+        ]
+        if not author_sents:  # defensive: never emit an empty stop
+            return stop_idx, list(stop_sents), True
+        out: list[Sentence] = []
+        inserted = False
+        for s in stop_sents:  # replace the run of beat sentences; keep glue in place
+            if s.source_type == "beat":
+                if not inserted:
+                    out.extend(author_sents)
+                    inserted = True
+            else:
+                out.append(s)
+        return stop_idx, out, False
+
+    with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(stops)))) as pool:
+        results = list(pool.map(_author_stop, stops))
+    out_by_stop = {i: sents for i, sents, _ in results}
+    fell_back = {i: fb for i, _, fb in results}
+    out: list[Sentence] = []
+    for stop_idx in stops:
+        out.extend(out_by_stop[stop_idx])
+    script = stitched.model_copy(update={"script": tuple(out), "validation": ValidationReport()})
+    return script, fell_back
 
 
 # --- the drafter prompts (the author voice + the repair instruction) ---
@@ -213,4 +316,10 @@ class LLMDrafter:
         return self._call(_REWRITE_SYSTEM.format(poi=poi, lens=lens), user)
 
 
-__all__ = ["AuthorResult", "Drafter", "LLMDrafter", "author_compose_stop"]
+__all__ = [
+    "AuthorResult",
+    "Drafter",
+    "LLMDrafter",
+    "author_compose_script",
+    "author_compose_stop",
+]
