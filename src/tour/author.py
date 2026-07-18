@@ -87,17 +87,24 @@ _AUTHOR_SYSTEM = (
     "vary rhythm HARD (a sentence under 8 words AND a longer line; never 3 of the same shape "
     "in a row); SAY EACH FACT ONCE; render dark material plainly, then move on. ~150 words, "
     "second person, warm, heard once.\n"
-    "STRICT GROUNDING: use ONLY the facts below; invent nothing; keep EVERY fact. Return "
-    "ONLY the narration."
+    "STRICT GROUNDING — this is non-negotiable and a fact-checker will verify it: use ONLY "
+    "the facts below and keep EVERY one. Add NO name, date, number, material, place, or "
+    "detail that is not in the facts — not even a plausible one (do NOT call a bell "
+    "'bronze' or a figure someone's 'sister' unless the facts say so). Your vividness comes "
+    "from RHYTHM, STRUCTURE, and how you CONNECT the facts — never from inventing detail. "
+    "Rephrasing a fact is welcome; adding a new fact is forbidden. Return ONLY the narration."
 )
 _REWRITE_SYSTEM = (
     "You are revising ONE audio walking-tour stop at {poi} ({lens} lens). Keep the flow and "
     "voice of the draft, but FIX these two problems exactly:\n"
     "1. RESTORE every DROPPED fact below — weave each into the sentence that covers its "
     "topic; do not tack them on as a list, and do not repeat anything already said.\n"
-    "2. REMOVE or correct every UNSUPPORTED statement below — it is not in the source facts, "
-    "so cut it or fix it to match the facts. Invent nothing new.\n"
-    "Keep it ~150 words, flowing, second person. Return ONLY the revised narration."
+    "2. REMOVE or correct every UNSUPPORTED statement below — it asserts a detail the source "
+    "facts do not contain (an added material, name, number, or claim), so cut that detail or "
+    "rephrase to state only what the facts say. Add NOTHING new — no plausible-sounding "
+    "detail, no inference beyond the facts.\n"
+    "Keep it ~150 words, flowing, second person; vividness from rhythm, not new facts. Return "
+    "ONLY the revised narration."
 )
 
 

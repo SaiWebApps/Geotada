@@ -49,6 +49,7 @@ def main() -> int:
     ap.add_argument("--lenses", default="")
     ap.add_argument("--core-seconds", type=int, default=90)
     ap.add_argument("--stop", required=True)
+    ap.add_argument("--text", default="", help="check THIS narration against the stop's facts")
     ap.add_argument("--live", action="store_true")
     args = ap.parse_args()
 
@@ -106,6 +107,9 @@ def main() -> int:
         for f in r.missing_facts:
             print(f"     - {f}")
 
+    if args.text:
+        _report("PROVIDED NARRATION (author prose)", args.text)
+        return 0
     _report("CONTROL: grounded stitch (expect ~empty)", stitch)
     if len(beat_sents) >= 2:
         dropped_sent = beat_sents[len(beat_sents) // 2]

@@ -68,6 +68,7 @@ def main() -> int:
     ap.add_argument("--duration", type=int, default=45)
     ap.add_argument("--lenses", default="")
     ap.add_argument("--core-seconds", type=int, default=90)
+    ap.add_argument("--stop", default="", help="if set, only this POI (substring) — cheap validation")
     ap.add_argument("--live", action="store_true")
     args = ap.parse_args()
     C.COMPOSE_MAX_OUTPUT_TOKENS = 12000
@@ -113,6 +114,8 @@ def main() -> int:
     checker = SemanticFactChecker(entailer=HaikuFaithfulnessChecker(), decomposer=HaikuClaimDecomposer())
 
     for stop_idx, poi in enumerate(route.pois):
+        if args.stop and args.stop.lower() not in poi.name.lower():
+            continue
         facts = tuple(_facts_for(stop_idx, stitched, beats_by_id))
         stitch = " ".join(
             s.text for s in stitched.script if s.stop_idx == stop_idx and s.source_type == "beat")

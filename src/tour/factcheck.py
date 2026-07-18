@@ -102,7 +102,7 @@ class HaikuClaimDecomposer:
         self.calls += 1
         resp = self._client.messages.create(  # type: ignore[attr-defined]
             model=self.model,
-            max_tokens=1024,
+            max_tokens=2048,
             temperature=0,
             system=_DECOMPOSE_SYSTEM,
             output_config={"format": {"type": "json_schema", "schema": _DECOMPOSE_SCHEMA}},
@@ -113,7 +113,10 @@ class HaikuClaimDecomposer:
         ).strip()
         if not text:
             return ()
-        claims = json.loads(text).get("claims", [])
+        try:
+            claims = json.loads(text).get("claims", [])
+        except (json.JSONDecodeError, AttributeError):
+            return ()  # malformed/truncated -> no claims (fail-open; coverage still runs)
         return tuple(c.strip() for c in claims if isinstance(c, str) and c.strip())
 
 
