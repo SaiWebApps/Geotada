@@ -910,6 +910,39 @@
         }
       ],
       "recommended_action": "Human decides: keep 1357 (defensible old-style) or normalize to 1358. Also a cross-POI dedup candidate with the sibling 1358 beat."
+    },
+    {
+      "type": "DATA_CORRECTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "applied",
+      "applied_at": "2026-07-18T00:00:00Z",
+      "subject": "Grande Galerie length",
+      "verdict": "confirmed_wrong",
+      "correct_fact": "~460m (Louvre official), not 470m; 2 beats.",
+      "beats": [
+        {
+          "beat_id": "pavillon_de_flore_historic_arch_around_and_about_paris"
+        },
+        {
+          "beat_id": "paris_louvre_museum_hidden_history_around_and_about_paris_henri_iv_grande_galerie_sully"
+        }
+      ]
+    },
+    {
+      "type": "DATA_CORRECTION",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "applied",
+      "applied_at": "2026-07-18T00:00:00Z",
+      "subject": "Conciergerie prison closure",
+      "verdict": "confirmed_contradiction",
+      "correct_fact": "prison until 1934 (definitive closure); 1914 = tourist visits opened while still a prison.",
+      "beats": [
+        {
+          "beat_id": "conciergerie_dark_history_prison_origins_around_and_about_paris"
+        }
+      ]
     }
   ]
 }

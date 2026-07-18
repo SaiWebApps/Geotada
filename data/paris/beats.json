@@ -513,7 +513,7 @@
     "beat_id": "pavillon_de_flore_historic_arch_around_and_about_paris",
     "poi_name": "Pavillon de Flore",
     "lens": "historic_arch",
-    "script_body": "The Pavillon de Flore was completed as part of Henri IV's Grande Galerie — the colossal 470-metre wing connecting the Louvre to the Palais des Tuileries along the Seine. The gallery met the Tuileries at right angles, with the elegant Pavillon de Flore marking the junction. The Pavillon de Marsan on the northern side of the Tuileries was added only later, at the time of Louis XIV.",
+    "script_body": "The Pavillon de Flore was completed as part of Henri IV's Grande Galerie — the colossal 460-metre wing connecting the Louvre to the Palais des Tuileries along the Seine. The gallery met the Tuileries at right angles, with the elegant Pavillon de Flore marking the junction. The Pavillon de Marsan on the northern side of the Tuileries was added only later, at the time of Louis XIV.",
     "physical_cues": [],
     "key_claims": [
       "Part of Henri IV's Grande Galerie",
@@ -532,20 +532,32 @@
       "page": "Overview"
     },
     "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
       "physical_cues_verified": true,
       "omission_check": "No significant omissions",
-      "corrections": [],
+      "corrections": [
+        {
+          "claim": "470-metre",
+          "correction": "Grande Galerie length: Louvre official + Wikipedia + Musee protestant give ~460m (originally); 470m unsourced.",
+          "sources": [
+            "https://www.louvre.fr/en/explore/the-palace/italian-painting-in-perspective",
+            "https://en.wikipedia.org/wiki/Grande_Galerie"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
       "disputes": [],
       "unverified_claims": [],
       "physical_cue_issues": [],
       "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ],
-      "verified_body_hash": "7a287100615a39999490c12df20cc152d0a2be319f4c99fce36d423b08c05c53"
+        "Cross-referenced against Wikipedia and primary sources during batch verification",
+        "https://www.louvre.fr/en/explore/the-palace/italian-painting-in-perspective",
+        "https://en.wikipedia.org/wiki/Grande_Galerie"
+      ]
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -569,7 +581,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "7a287100615a39999490c12df20cc152d0a2be319f4c99fce36d423b08c05c53",
+    "script_body_hash": "1b7ef20b3425a6d2048adcffe5db3900ea7efcf387be1fe2ae535aa5c118d794",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -1256,7 +1268,7 @@
     "beat_id": "conciergerie_dark_history_prison_origins_around_and_about_paris",
     "poi_name": "Conciergerie",
     "lens": "dark_history",
-    "script_body": "At no. 1 quai de l'Horloge stands the entrance to the Conciergerie — originally the seat of the governor of the King's palace, hence its name. It became a prison in 1391 and remained so until 1914. Not unlike a modern concierge supplementing his income, the Palace concierge profited from vendors who leased the many shops within the Palace walls. But the prison's reality was far darker. In the 15th century, passers-by could still hear the screams of tortured prisoners in the Tour Bonbec — the most westerly tower. The name 'bon-bec' (meaning 'prate' in the Middle Ages) probably alluded to the interrogations on the ground floor: a varied spectrum of torture methods was devised to make victims confess and denounce their accomplices. During a restoration in 1828, two oubliettes were found in the tower's basement, communicating with the river and spiked with iron points — needless to dwell on the fate of the prisoners.",
+    "script_body": "At no. 1 quai de l'Horloge stands the entrance to the Conciergerie — originally the seat of the governor of the King's palace, hence its name. It became a prison in 1391 and remained so until 1934. Not unlike a modern concierge supplementing his income, the Palace concierge profited from vendors who leased the many shops within the Palace walls. But the prison's reality was far darker. In the 15th century, passers-by could still hear the screams of tortured prisoners in the Tour Bonbec — the most westerly tower. The name 'bon-bec' (meaning 'prate' in the Middle Ages) probably alluded to the interrogations on the ground floor: a varied spectrum of torture methods was devised to make victims confess and denounce their accomplices. During a restoration in 1828, two oubliettes were found in the tower's basement, communicating with the river and spiked with iron points — needless to dwell on the fate of the prisoners.",
     "duration_sec": 64,
     "kid_friendly": "no",
     "physical_cues": [],
@@ -1280,9 +1292,25 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "verified",
+      "status": "corrected",
       "notes": "Conciergerie as prison from 1391 confirmed. Tour Bonbec and its etymology confirmed. Prison remained in use until early 20th century.",
-      "verified_body_hash": "4479898ee2f39cbe01ba2d8de4633e49e189135b9ffce9dc2872133a552ea406"
+      "checked_at": "2026-07-18T00:00:00Z",
+      "corrections": [
+        {
+          "claim": "until 1914",
+          "correction": "Conciergerie operated as a prison until 1934 (definitive closure); 1914 is when tourist visits opened while still an active prison.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/Conciergerie",
+            "https://www.paris-conciergerie.fr/"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/Conciergerie",
+        "https://www.paris-conciergerie.fr/"
+      ]
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1305,7 +1333,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "4479898ee2f39cbe01ba2d8de4633e49e189135b9ffce9dc2872133a552ea406",
+    "script_body_hash": "df2baae948de4c0a0ae0dc67ca3fa2ccbeacf504001f2a4e853938eadfbfeb62",
     "city_name": "paris",
     "book_slug": "around_and_about_paris",
     "topic_slug": "prison_origins",
@@ -33718,8 +33746,8 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "In 1593, four years after his accession, Henri IV bartered his Protestant religion for Paris to end the bloody strife between Protestants and Catholics — \"Paris vaut bien une messe,\" Paris is well worth a mass. Paris meant first and foremost the Louvre. Catherine de Medici had built the Palais des Tuileries facing the Louvre in 1564, to the west, running north–south along the Seine. Henri IV set out to connect the two palaces with a colossal wing of monumental grandeur — La Grande Galerie, four hundred and seventy metres long, also known as the Galerie du Bord de l'Eau because it ran along the water's edge. It met the Tuileries at right angles and was capped with the elegant Pavillon de Flore. The enterprise was a constant headache for his minister Sully, who had to squeeze segments of the population dry to raise the funds.",
-    "script_body_hash": "d976728a42feb062a6eef2c310868209eb0cac8d1f490ada233c52d5e36d9cb9",
+    "script_body": "In 1593, four years after his accession, Henri IV bartered his Protestant religion for Paris to end the bloody strife between Protestants and Catholics — \"Paris vaut bien une messe,\" Paris is well worth a mass. Paris meant first and foremost the Louvre. Catherine de Medici had built the Palais des Tuileries facing the Louvre in 1564, to the west, running north–south along the Seine. Henri IV set out to connect the two palaces with a colossal wing of monumental grandeur — La Grande Galerie, four hundred and sixty metres long, also known as the Galerie du Bord de l'Eau because it ran along the water's edge. It met the Tuileries at right angles and was capped with the elegant Pavillon de Flore. The enterprise was a constant headache for his minister Sully, who had to squeeze segments of the population dry to raise the funds.",
+    "script_body_hash": "76d22fb701a703dc2f33ba0c945af9e6e6046bc08d15f798b5708792d7944f19",
     "duration_sec": 58,
     "kid_friendly": "yes",
     "entities": [
@@ -33767,6 +33795,26 @@
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:21:41Z",
       "city_name": "paris"
+    },
+    "fact_check": {
+      "status": "corrected",
+      "checked_at": "2026-07-18T00:00:00Z",
+      "corrections": [
+        {
+          "claim": "four hundred and seventy metres long",
+          "correction": "Grande Galerie length ~460m (Louvre official + Wikipedia), not 470m.",
+          "sources": [
+            "https://www.louvre.fr/en/explore/the-palace/italian-painting-in-perspective",
+            "https://en.wikipedia.org/wiki/Grande_Galerie"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "corpus-data-sweep-2026-07-18"
+        }
+      ],
+      "sources_consulted": [
+        "https://www.louvre.fr/en/explore/the-palace/italian-painting-in-perspective",
+        "https://en.wikipedia.org/wiki/Grande_Galerie"
+      ]
     }
   },
   {
