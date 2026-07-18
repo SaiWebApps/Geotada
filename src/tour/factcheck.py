@@ -65,8 +65,12 @@ _DECOMPOSE_SYSTEM = (
     "imaginative framing ('imagine what carried across the water', 'picture the crowds'), "
     "opinions, mood, and rhetorical questions — these are narration craft, NOT facts to "
     "check, and must yield no claim. Do NOT split a compound fact that loses meaning when "
-    "split. First, in a 'reasoning' field, walk the narration and mark each span "
-    "factual-versus-framing; THEN list the atomic claims."
+    "split. Keep each claim FAITHFUL to what the narration actually said — never ADD, "
+    "STRENGTHEN, or WEAKEN a qualifier of time, place, scope, or degree the narration did "
+    "not state (write 'the kings never returned to the island', NOT 'did not return after "
+    "this period'; write 'the bell was forged in 1685', NOT 'the bell, one of Europe's "
+    "oldest, was forged around 1685'). First, in a 'reasoning' field, walk the narration "
+    "and mark each span factual-versus-framing; THEN list the atomic claims."
 )
 _DECOMPOSE_SCHEMA = {
     "type": "object",
@@ -93,6 +97,8 @@ class HaikuClaimDecomposer:
         self.calls = 0
 
     def decompose(self, narration: str) -> tuple[str, ...]:
+        if not narration.strip():
+            return ()
         self.calls += 1
         resp = self._client.messages.create(  # type: ignore[attr-defined]
             model=self.model,
