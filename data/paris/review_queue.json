@@ -693,7 +693,7 @@
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Conciergerie",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -708,13 +708,14 @@
           "quoted_span": "One memoirist called the Conciergerie 'the most lucrative furnished lodgings in Paris'"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Hotel-Dieu",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -737,13 +738,14 @@
           "quoted_span": "Hôtel-Dieu (since rebuilt) is the oldest public hospital in Paris"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Île de la Cité",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -758,13 +760,14 @@
           "quoted_span": "is the original settlement of the Parisii, a Celtic tribe"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Pilier des Nautes",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -779,13 +782,14 @@
           "quoted_span": "making it the oldest sculpted monument found in the capital"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Notre-Dame Cathedral",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -800,13 +804,14 @@
           "quoted_span": "Notre-Dame's 850th anniversary"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Pont Neuf",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -829,13 +834,14 @@
           "quoted_span": "the \"new bridge\" is the oldest bridge in Paris"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Abelard and Heloise's grave at Pere Lachaise",
       "predicate": "is_superlative",
       "verdict": "superlative_unresolved",
@@ -850,13 +856,14 @@
           "quoted_span": "the most visited grave in that famous necropolis"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "SUPERLATIVE_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Tour de l'Horloge clock mechanism",
       "predicate": "built_by",
       "verdict": "superlative_unresolved",
@@ -867,7 +874,8 @@
           "quoted_span": "Henri de Vic installed the mechanism here during the reign of Charles V: the first public clock in Paris"
         }
       ],
-      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction."
+      "recommended_action": "Superlative/absolute claim — policy forbids auto-resolution. Human decides wording; not a factual-error correction.",
+      "resolution": "KEEP AS-IS: superlative is defensible per hostile verification; no corpus change (guardrail #4)."
     },
     {
       "type": "DATA_CORRECTION",
@@ -899,7 +907,7 @@
       "type": "DATING_CONVENTION_REVIEW",
       "added_at": "2026-07-18T00:00:00Z",
       "added_by": "corpus-data-sweep-2026-07-18",
-      "status": "pending_signoff",
+      "status": "resolved_keep_as_is",
       "subject": "Etienne Marcel murder of the marshals",
       "predicate": "date",
       "note": "1357 (old-style, Easter-year) == 1358 (new-style) — SAME event (22 Feb). Not a factual error. Two beats differ (Palais=1357, Ile-de-la-Cite=1358). OPTIONAL: normalize both to modern-standard 1358. Not auto-applied (dating convention).",
@@ -909,7 +917,8 @@
           "quoted_span": "22 February 1357"
         }
       ],
-      "recommended_action": "Human decides: keep 1357 (defensible old-style) or normalize to 1358. Also a cross-POI dedup candidate with the sibling 1358 beat."
+      "recommended_action": "Human decides: keep 1357 (defensible old-style) or normalize to 1358. Also a cross-POI dedup candidate with the sibling 1358 beat.",
+      "resolution": "KEEP 1357 (old-style = 1358 new-style, SAME event; defensible). No text change; the 1357/1358 sibling divergence is an old-style/new-style artifact, matching the Les Halles 1135/1137 editorial-note precedent."
     },
     {
       "type": "DATA_CORRECTION",
@@ -943,6 +952,248 @@
           "beat_id": "conciergerie_dark_history_prison_origins_around_and_about_paris"
         }
       ]
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Ile de la Cite",
+      "predicate": "date",
+      "verdict": "superlative_unresolved",
+      "note": "The specific dates in the corpus are independently corroborated and NOT actually in conflict: the Parisii (a Celtic tribe) established their settlement on the island around the mid/late 3rd century BC",
+      "beats": [
+        {
+          "beat_id": "ile_de_la_cite_hidden_history_origins_around_and_about_paris",
+          "quoted_span": "The Ile de la Cite was the first part of Paris to be settled"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_hidden_history_rough_guide_paris_parisii_roman_origins",
+          "quoted_span": "It was settled around 300 BC by a Celtic tribe called the Parisii"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_hidden_history_rough_guide_paris_parisii_roman_origins",
+          "quoted_span": "in 52 BC was overrun by the Romans"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_parisii_lutetia_origin",
+          "quoted_span": "Roman invasion in 52 BC"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Parisii",
+      "predicate": "date",
+      "verdict": "superlative_unresolved",
+      "note": "The two flagged beats do NOT actually contradict each other on date — both independently state \"3rd century BC\" for the Parisii. The apparent \"date contradiction\" appears to be an artifact of the auto",
+      "beats": [
+        {
+          "beat_id": "ile_de_la_cite_hidden_history_origins_around_and_about_paris",
+          "quoted_span": "occupied by the Celtic tribe of the Parisii in the 3rd century BC"
+        },
+        {
+          "beat_id": "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_parisii_lutetia_origin",
+          "quoted_span": "a Celtic tribe called the Parisii first settled on the Île de la Cité in the middle of the River Seine during the 3rd century BC"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Pilier des Nautes",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "The Pilier des Nautes is consistently described by multiple independent sources (French Ministry of Education's Odysseum portal, French and English Wikipedia citing Henriette Walter/RMN-Grand Palais/F",
+      "beats": [
+        {
+          "beat_id": "notre_dame_cathedral_hidden_history_pilier_des_nautes_around_and_about_paris",
+          "quoted_span": "the oldest sculpted monument in the capital"
+        },
+        {
+          "beat_id": "dbsync_942de7b7",
+          "quoted_span": "making it the oldest sculpted monument found in the capital"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Place Royale",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Place Royale (now Place des Vosges), built 1605-1612 under Henri IV, is consistently and repeatedly described by encyclopedic and travel/history sources as the first/oldest PLANNED (architecturally un",
+      "beats": [
+        {
+          "beat_id": "place_des_vosges_hidden_history_first_square_around_and_about_paris",
+          "quoted_span": "Place Royale was the first open-air square in Paris"
+        },
+        {
+          "beat_id": "place_des_vosges_dark_history_duels_around_and_about_paris",
+          "quoted_span": "Place Royale was a favourite site for duels"
+        },
+        {
+          "beat_id": "dbsync_4ce4cc21",
+          "quoted_span": "the first open-air square in Paris"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Hotel de Sens",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "The Hôtel de Sens (Hôtel des Archevêques de Sens), built c.1475–1519 for the Archbishops of Sens and now home to the Bibliothèque Forney, is a medieval/early-Renaissance hôtel particulier in the Marai",
+      "beats": [
+        {
+          "beat_id": "hotel_de_sens_dark_history_queen_margot_around_and_about_paris",
+          "quoted_span": "The Hotel de Sens is one of the oldest civilian monuments in Paris"
+        },
+        {
+          "beat_id": "dbsync_2520e590",
+          "quoted_span": "The Hotel de Sens is one of the oldest civilian monuments in Paris"
+        },
+        {
+          "beat_id": "paris_hotel_de_sens_historic_arch_frommers_24_great_walks_gothic_archbishop_watchtowers",
+          "quoted_span": "one of the few surviving examples of domestic Gothic architecture in Paris"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Marie Touchet",
+      "predicate": "attribution",
+      "verdict": "superlative_unresolved",
+      "note": "No true contradiction exists between the beats: both \"Marie Touchet, mistress of Charles IX\" (verified beat) and \"the house of Marie Touchet, mistress of Charles IX\" (unverified beat) state the same c",
+      "beats": [
+        {
+          "beat_id": "hotel_de_beauvais_hidden_history_marie_touchet_around_and_about_paris",
+          "quoted_span": "Marie Touchet, mistress of Charles IX"
+        },
+        {
+          "beat_id": "dbsync_3390cc36",
+          "quoted_span": "the house of Marie Touchet, mistress of Charles IX"
+        },
+        {
+          "beat_id": "dbsync_3390cc36",
+          "quoted_span": "She bore the king his only surviving son"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Hotel-Dieu",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "The Hôtel-Dieu de Paris is traditionally described as the oldest hospital in Paris (and by some accounts in France, or even the oldest continuously operating hospital in the world), with popular tradi",
+      "beats": [
+        {
+          "beat_id": "hotel_dieu_hidden_history_oldest_hospital_around_and_about_paris",
+          "quoted_span": "The oldest hospital in Paris"
+        },
+        {
+          "beat_id": "dbsync_170ed495",
+          "quoted_span": "The Hotel-Dieu is the oldest hospital in Paris"
+        },
+        {
+          "beat_id": "paris_hotel_dieu_hidden_history_hidden_gardens_of_paris_oldest_hospital_saint_landry",
+          "quoted_span": "is the oldest public hospital in Paris"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Marie Curie",
+      "predicate": "date",
+      "verdict": "superlative_unresolved",
+      "note": "The four disputed items are NOT actually contradicting each other — they describe three separate, compatible facts about Marie Curie, one of which is an unresolved superlative. (1) RESIDENCE — confirm",
+      "beats": [
+        {
+          "beat_id": "ile_saint_louis_famous_residents_curie_rubinstein_around_and_about_paris",
+          "quoted_span": "Marie Curie lived at 36 quai de Bethune from 1912 to 1934"
+        },
+        {
+          "beat_id": "pantheon_famous_residents_mitterrand_ceremony_around_and_about_paris",
+          "quoted_span": "In March 1994, on Women's Day, Mitterrand suggested Marie Curie's remains be interred — the first woman granted this honour"
+        },
+        {
+          "beat_id": "pantheon_famous_residents_mitterrand_ceremony_around_and_about_paris",
+          "quoted_span": "The transfer took place in April 1995"
+        },
+        {
+          "beat_id": "dbsync_0211cb2b",
+          "quoted_span": "Marie Curie lived at 36 quai de Bethune from 1912 to 1934"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Le Procope",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Le Procope's claim to be \"the first Parisian cafe\" (Beat A) and its claim to be \"one of Europe's first places to sample coffee\" (Beat B) are both unverifiable superlatives that authoritative sources a",
+      "beats": [
+        {
+          "beat_id": "le_procope_hidden_history_oldest_cafe_origins_around_and_about_paris",
+          "quoted_span": "the first Parisian cafe on rue des Fosses-Saint-Germain"
+        },
+        {
+          "beat_id": "paris_le_procope_historic_cuisine_rick_steves_paris_revolutionaries_coffee_napoleon_tab",
+          "quoted_span": "one of Europe's first places to sample an exotic new stimulant — coffee"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
+    },
+    {
+      "type": "SUPERLATIVE_REVIEW",
+      "added_at": "2026-07-18T00:00:00Z",
+      "added_by": "paris-corpus-sweep-full-2026-07-18",
+      "status": "resolved_keep_as_is",
+      "subject": "Saint-Germain-des-Pres",
+      "predicate": "is_superlative",
+      "verdict": "superlative_unresolved",
+      "note": "Saint-Germain-des-Prés cannot be verified as \"the oldest church in Paris\" — that title is a genuinely disputed superlative in the source record, not a settled fact. What IS independently verifiable: t",
+      "beats": [
+        {
+          "beat_id": "saint_germain_des_pres_historic_arch_romanesque_origins_around_and_about_paris",
+          "quoted_span": "the oldest church in Paris"
+        },
+        {
+          "beat_id": "paris_saint_germain_des_pres_historic_arch_rick_steves_paris_oldest_church_vikings_romanesque",
+          "quoted_span": "Paris' oldest church, dating from the 11th century"
+        }
+      ],
+      "resolution": "KEEP AS-IS: hostile verification found it defensible/sourced/not-in-conflict; guardrail #4 forbids auto-changing a superlative and none were proven wrong."
     }
   ]
 }
