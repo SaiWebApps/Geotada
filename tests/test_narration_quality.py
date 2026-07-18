@@ -5,7 +5,7 @@ found, and (c) be HONEST about what it cannot do (it is content-blind). $0.
 
 from __future__ import annotations
 
-from src.tour.narration_quality import score_narration
+from src.tour.narration_quality import craft_score, score_narration
 
 # Rick-Steves-style: short varied sentences, second person, sentence-initial look
 # prompt, ends on an image.
@@ -140,3 +140,32 @@ def test_short_texts_are_flagged_unreliable_for_the_composite():
 def test_scorer_is_deterministic():
     a, b = score_narration(_STILTED), score_narration(_STILTED)
     assert a.stilted_score == b.stilted_score and a.engagement_score == b.engagement_score
+
+
+# ---- craft_score: the reliability ranker for best-of-N (writing-craft rules) ----
+
+def test_craft_score_ranks_wellwritten_above_flat_and_repetitive():
+    """The core property best-of-N relies on: among candidate composes of one stop, a
+    well-written one out-scores a flat monotone one AND a repetitive one. This is what
+    converts run-to-run LLM variance into a reliable pick. UNDO: make craft_score return
+    a constant -> the ordering collapses -> RED."""
+    good = ("Look up. That bell has only tolled for the darkest days — one of them was the "
+            "morning after 9/11. Forged in 1685, Emmanuel was spared in the Revolution when "
+            "its sister bell was melted for cannon.")
+    flat = ("The bell is called Emmanuel. The bell was forged in 1685. The bell is in the "
+            "south tower. The bell was spared in the Revolution. The bell is very large.")
+    repet = ("Prisoners were tortured in this tower. In this tower prisoners were tortured "
+             "and you could hear them. The tower is where prisoners were tortured, their "
+             "screams carrying across the river.")
+    assert craft_score(good) > craft_score(flat)
+    assert craft_score(good) > craft_score(repet)
+
+
+def test_craft_score_penalizes_restatement():
+    """'The same point twice in new words is padding' (writing-craft). Two versions with
+    identical facts differ only in whether a fact is restated — the non-repeating one wins."""
+    once = ("The Tour Bonbec held the torture chamber. Restorers later found two oubliettes "
+            "spiked with iron below it. Say no more about who went in.")
+    twice = ("The Tour Bonbec held the torture chamber. The Tour Bonbec is where the torture "
+             "chamber was. Restorers found two oubliettes spiked with iron below it.")
+    assert craft_score(once) > craft_score(twice)

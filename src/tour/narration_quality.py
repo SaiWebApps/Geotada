@@ -28,7 +28,10 @@ GPTZero (burstiness), Wikipedia "Signs of AI writing" (puffery / significance-cl
 from __future__ import annotations
 
 import re
+from collections import Counter
 from dataclasses import dataclass, field
+
+from rapidfuzz import fuzz
 
 from .generation import split_sentences
 
@@ -208,4 +211,71 @@ def score_narration(text: str) -> NarrationQuality:
     )
 
 
-__all__ = ["NarrationQuality", "score_narration"]
+# --- craft_score: a deterministic "well-written" ranker for best-of-N SELECTION ---
+# Built from the checkable rules in the user's writing-craft skill (sentence-variety
+# percussion, anti-redundancy = "the same point twice is padding", crutch-word control)
+# plus the AI-tell lint. NOT a quality ORACLE — a RELATIVE ranker among candidate
+# composes of the SAME stop: among fact-safe candidates, pick the highest craft_score so
+# a flat/repetitive/choppy sample loses to a well-written one. This is the reliability
+# lever — it converts run-to-run LLM variance into a consistent pick.
+
+# Function words excluded from crutch/over-repetition detection (repeating "the" is fine;
+# repeating "Conciergerie" or "prisoners" five times is a crutch).
+_STOPWORD_STR = (
+    "the a an and or but of to in on at by for with from as is was were are be been being "
+    "it its this that these those he she they them his her their you your our we us i not "
+    "had has have will would could should can may might do does did so then than there here "
+    "which who whom whose when where what how why all any some one two into over under out "
+    "up down off about after before between through during still only just also more most"
+)
+_STOPWORDS = frozenset(_STOPWORD_STR.split())
+
+
+def _near_dup_pairs(sents: list[str]) -> int:
+    """Sentence pairs that RESTATE each other (rapidfuzz token_set_ratio >= 85) — the
+    'same point twice in new words' redundancy writing-craft calls padding (and the
+    Conciergerie 'screams told twice' wart)."""
+    n = 0
+    for i in range(len(sents)):
+        for j in range(i + 1, len(sents)):
+            if fuzz.token_set_ratio(sents[i], sents[j]) >= 85:
+                n += 1
+    return n
+
+
+def _max_content_repeat(words: list[str]) -> int:
+    """Highest count of any single content word — a crutch/over-repetition signal."""
+    c = Counter(w.lower() for w in words if len(w) > 3 and w.lower() not in _STOPWORDS)
+    return max(c.values(), default=0)
+
+
+def craft_score(text: str) -> float:
+    """Deterministic 'well-written' score, HIGHER = better, for ranking candidate composes
+    of one stop. Rewards sentence-variety percussion (a short punch AND a longer line),
+    burstiness, second-person and look-cues; penalizes redundant restatement, crutch-word
+    over-repetition, and the measured AI tells."""
+    q = score_narration(text)
+    sents = [s for s in (p.strip() for p in split_sentences(text)) if s]
+    lengths = [len(_words(s)) for s in sents]
+    # writing-craft: a stop needs a sentence under 8 words (percussion) AND one over 20
+    percussion = 1.0 if (any(x < 8 for x in lengths) and any(x > 20 for x in lengths)) else 0.0
+    redundancy = _near_dup_pairs(sents)
+    crutch = _max_content_repeat(_words(text))
+    tells = sum(
+        q.per_100w.get(k, 0.0)
+        for k in ("moralizing_closer", "puffery", "ai_vocab", "empty_transition",
+                  "negative_parallelism")
+    )
+    score = (
+        1.5 * percussion
+        + 1.2 * min(q.burstiness, 0.6)
+        + 0.10 * q.second_person_rate
+        + 0.5 * q.look_prompt_rate
+        - 1.5 * redundancy  # the same fact restated is the top wart — penalise hard
+        - 0.4 * max(0, crutch - 3)  # a content word repeated >3x is a crutch
+        - 1.0 * tells
+    )
+    return round(score, 3)
+
+
+__all__ = ["NarrationQuality", "craft_score", "score_narration"]

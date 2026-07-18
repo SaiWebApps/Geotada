@@ -49,6 +49,7 @@ from .contract import (
     ValidationReport,
 )
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
+from .narration_quality import craft_score
 from .reflection import reflection_slots
 from .verify import (
     FaithfulnessChecker,
@@ -245,11 +246,16 @@ say what TO do; the block below says what to avoid — both hold.
   named individual the beats give you, lead with that one person's story; prefer
   one concrete thing the walker can see now over abstract significance. (Still
   voice every beat — this is emphasis and order, never omission.)
-- WRITE FOR THE EAR — it is heard once, never re-read. Let a fragment or a very
-  short sentence land a point, then a longer one carry the story; vary sentence
-  length within a stop, never let them all run the same. Use contractions and
-  active verbs. Avoid parenthetical asides, colons, and clauses stacked past what
-  the ear can hold in one breath.
+- WRITE FOR THE EAR — it is heard once, never re-read. Vary the rhythm HARD:
+  within a stop, land at least one very short sentence (under eight words) as
+  percussion AND let at least one run longer to carry the story; never three
+  sentences in a row of the same shape or length. Use contractions and active
+  verbs. Avoid parenthetical asides, colons, and clauses stacked past what the ear
+  can hold in one breath.
+- SAY IT ONCE. State each fact a single time. If two beats carry the same fact,
+  voice it ONCE and move on — restating the same point in new words ("prisoners
+  were tortured here" then "you could hear the tortured prisoners' screams") is
+  padding; cut the repeat. Explain a name or term once, not twice.
 - MAKE IT FLOW — connect, don't list. A stop is ONE story, not a row of facts.
   Each sentence hands off to the next: state a fact, then let its consequence, or
   the question it raises, pull the listener forward. WEAVE background INTO the
@@ -271,6 +277,11 @@ say what TO do; the block below says what to avoid — both hold.
   open — keep that tension rather than smoothing it into one neat, single-track
   answer. Real stories carry ambiguity; flattening everything into tidy resolution
   reads as machine-made. (Never invent ambiguity the beats don't support.)
+- DON'T FLINCH on the dark material. When the beats carry violence, cruelty, or
+  death, render it plainly and precisely — don't soften it into euphemism ("dealt
+  with", "passed on", "met their end") or hurry past it. Name what happened, let it
+  land, then move on. Softening a grim history makes it dishonest, not gentler.
+  (Match the beats — invent no horror they don't state.)
 - BUILD MOMENTUM. Sometimes plant a question or a tension at one stop and pay it
   off at the NEXT one, so the walk builds instead of resetting at each POI — the
   answer need not land in the same stop. (Keep the stop order; never move content
@@ -1021,9 +1032,20 @@ def compose_script_per_chapter(
             cands[stop_idx].append(sents)
         for stop_idx in targets:
             cs = cands[stop_idx]
-            composed_by_stop[stop_idx] = (
-                cs[0] if len(cs) == 1 else min(cs, key=lambda c: _local_penalty(stop_idx, c))
-            )
+            if len(cs) == 1:
+                composed_by_stop[stop_idx] = cs[0]
+            else:
+                # Rank FACT-FIRST (fewest faithfulness+coverage failures), then break ties
+                # by craft_score (best-written). This is the RELIABILITY lever: among
+                # fact-safe candidates, a flat/repetitive/choppy sample loses to a
+                # well-written one, so quality varies less run-to-run.
+                composed_by_stop[stop_idx] = min(
+                    cs,
+                    key=lambda c: (
+                        _local_penalty(stop_idx, c),
+                        -craft_score(" ".join(s.text for s in c if s.source_type == "beat")),
+                    ),
+                )
 
     def _assemble() -> Script:
         out: list[Sentence] = []

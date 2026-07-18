@@ -516,3 +516,58 @@ def test_recompute_fully_relabels_stop_when_dedup_drops_last_composed():
     assert all(s.source_type != "beat" or "notably" not in s.text for s in served.script)
     status = {r.stop_idx: r for r in served.verify_report}
     assert status[1].status == "reverted_to_stitched", status[1]
+
+
+# ---- best-of-N reliability: craft_score breaks fact-equal ties toward the well-written ----
+
+_BELL_CLAIM = "the great bell was forged in 1685"
+
+
+class _CraftBestOfClient:
+    """Per stop, returns a FLAT monotone candidate FIRST, then a WELL-WRITTEN one — both
+    carrying the beat's key_claim VERBATIM (equal fact-penalty), differing only in craft."""
+
+    def __init__(self):
+        from collections import defaultdict
+
+        self._n = defaultdict(int)
+
+    def compose(self, request, attempt, prev_report):
+        stop = next(iter({s.stop_idx for s in request.stitched.script}))
+        beat_sents = [s for s in request.stitched.script if s.source_type == "beat"]
+        out = [s for s in request.stitched.script if s.source_type != "beat"]
+        i = self._n[stop]
+        self._n[stop] += 1
+        if i == 0:  # FLAT, monotone, no percussion
+            txt = (f"This is a bell in the south tower. Records show {_BELL_CLAIM}. "
+                   "The bell is very large. The bell is really quite old indeed.")
+        else:  # WELL-WRITTEN: a short punch + a longer flowing line (SAME fact)
+            txt = (f"Look up. Above you {_BELL_CLAIM}, and it has tolled only for the "
+                   "city's darkest mornings ever since.")
+        out.append(beat_sents[0].model_copy(update={"text": txt}))
+        return tuple(out)
+
+
+def test_best_of_n_keeps_the_higher_craft_candidate_among_fact_equal():
+    """RELIABILITY LEVER: with candidates>1, among FACT-SAFE candidates best-of-N keeps the
+    one with the higher craft_score — so a flat/monotone sample loses to a well-written one
+    and quality varies less run-to-run. Both candidates here carry the beat's key_claim
+    verbatim (equal fact-penalty), differing only in craft. UNDO: rank by _local_penalty
+    alone (drop the craft tiebreak in _run_best_of_n) -> the FLAT first candidate is kept
+    -> RED."""
+    bell = BeatRef(id="bell", poi_id="p1", script_body=f"Here, {_BELL_CLAIM}.",
+                   word_count=8, key_claims=(_BELL_CLAIM,))
+    seq = _seq([[_beat("b0", "p0", _STOP0_CLAIM)], [bell]])
+    route = _route([10, 400])
+    stitched = generate(
+        seq, route, TourInput(start=(48.85, 2.36), duration_min=90, city_slug="paris")
+    )
+    assert stitched.validation.passed
+    served = compose_script_per_chapter(
+        stitched, seq, route, client=_CraftBestOfClient(),
+        faithfulness_checker=_StrictHaikuLikeChecker(), candidates=2,
+    )
+    assert served.validation.passed
+    stop1 = " ".join(s.text for s in served.script if s.stop_idx == 1 and s.source_type == "beat")
+    assert _BELL_CLAIM in stop1  # fact kept either way
+    assert "Look up." in stop1, f"best-of-N did not keep the well-written candidate: {stop1!r}"
