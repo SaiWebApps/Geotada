@@ -92,10 +92,18 @@ def main() -> int:
         print("REFUSED: --live needs ONDOWAY_DEMO_APPROVE=1.", file=sys.stderr)
         return 3
 
-    from src.tour.factcheck import HaikuClaimDecomposer, SemanticFactChecker
-    from src.tour.verify import HaikuFaithfulnessChecker
+    from src.tour.factcheck import (
+        HaikuClaimDecomposer,
+        HaikuCoverageJudge,
+        HaikuFaithfulnessJudge,
+        SemanticFactChecker,
+    )
 
-    checker = SemanticFactChecker(entailer=HaikuFaithfulnessChecker(), decomposer=HaikuClaimDecomposer())
+    checker = SemanticFactChecker(
+        entailer=HaikuFaithfulnessJudge(),
+        decomposer=HaikuClaimDecomposer(),
+        coverage_judge=HaikuCoverageJudge(),
+    )
 
     def _report(label, text):
         r = checker.check(text, facts)

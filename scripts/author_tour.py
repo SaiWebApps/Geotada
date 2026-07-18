@@ -107,11 +107,19 @@ def main() -> int:
 
     from src.tour.author import LLMDrafter, author_compose_stop
     from src.tour.compose import COMPOSE_MODEL
-    from src.tour.factcheck import HaikuClaimDecomposer, SemanticFactChecker
-    from src.tour.verify import HaikuFaithfulnessChecker
+    from src.tour.factcheck import (
+        HaikuClaimDecomposer,
+        HaikuCoverageJudge,
+        HaikuFaithfulnessJudge,
+        SemanticFactChecker,
+    )
 
     drafter = LLMDrafter(COMPOSE_MODEL)
-    checker = SemanticFactChecker(entailer=HaikuFaithfulnessChecker(), decomposer=HaikuClaimDecomposer())
+    checker = SemanticFactChecker(
+        entailer=HaikuFaithfulnessJudge(),  # calibrated faithfulness (accepts recombination)
+        decomposer=HaikuClaimDecomposer(),
+        coverage_judge=HaikuCoverageJudge(),
+    )
 
     for stop_idx, poi in enumerate(route.pois):
         if args.stop and args.stop.lower() not in poi.name.lower():
@@ -120,14 +128,27 @@ def main() -> int:
         stitch = " ".join(
             s.text for s in stitched.script if s.stop_idx == stop_idx and s.source_type == "beat")
         src_toks = _distinctive(stitch)
+        trace: list = []
         res = author_compose_stop(facts, poi.name, lens, drafter=drafter, checker=checker,
-                                  stitch_fallback=stitch, max_repairs=2)
+                                  stitch_fallback=stitch, max_repairs=3, trace=trace)
         tag = "GROUNDED-STITCH FALLBACK" if res.grounded_fallback else f"converged in {res.attempts}"
         print(f"\n{'#'*74}\nSTOP {stop_idx} — {poi.name}  [{tag}]")
         print(f"  facts kept: {_retention(src_toks, res.text)*100:.0f}%  |  "
               f"craft {craft_score(res.text):.2f}  |  "
               f"fact-check: {len(res.result.unsupported_claims)} unsupported, "
-              f"{len(res.result.missing_facts)} missing\n{'#'*74}\n{res.text}")
+              f"{len(res.result.missing_facts)} missing")
+        # Convergence trajectory — WHY the author draft passed/failed at each attempt.
+        for i, (draft, verdict) in enumerate(trace):
+            print(f"  -- author attempt {i}: {len(verdict.unsupported_claims)} unsupported, "
+                  f"{len(verdict.missing_facts)} missing  ({len(draft)} chars) --")
+            for c in verdict.unsupported_claims:
+                print(f"       UNSUPPORTED: {c}")
+            for m in verdict.missing_facts:
+                print(f"       MISSING: {m}")
+            print(f"       DRAFT: {draft[:400]}{'...' if len(draft) > 400 else ''}")
+        if res.grounded_fallback:
+            print("\n  [author never reached 0/0 — served grounded stitch]")
+        print(f"{'#'*74}\n{res.text}")
     return 0
 
 

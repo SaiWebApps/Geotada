@@ -11,8 +11,27 @@ flagged). All $0.
 
 from __future__ import annotations
 
-from src.tour.factcheck import FactCheckResult, SemanticFactChecker
+import types
+
+from src.tour.factcheck import (
+    FactCheckResult,
+    HaikuFaithfulnessJudge,
+    SemanticFactChecker,
+)
 from src.tour.generation import split_sentences
+
+
+def _fake_haiku(reply: str):
+    """A stand-in anthropic client that records the last request and returns ``reply`` as the
+    model's text — lets us exercise HaikuFaithfulnessJudge's prompt-formatting + verdict
+    parsing offline (no SDK, no network, no spend)."""
+    box: dict = {}
+
+    def create(**kw):
+        box["kw"] = kw
+        return types.SimpleNamespace(content=[types.SimpleNamespace(text=reply)])
+
+    return types.SimpleNamespace(messages=types.SimpleNamespace(create=create)), box
 
 
 class _SubstringEntailer:
@@ -112,3 +131,78 @@ def test_partition_is_total_over_claims_and_facts():
 
 def test_empty_when_no_claims_and_no_facts():
     assert _checker().check("You are standing here.", ()) == FactCheckResult((), ())
+
+
+class _ParaphraseCoverageJudge:
+    """Fake CoverageJudge: paraphrase-tolerant (always 'conveyed'), and records every
+    (fact, narration) call so we can prove the coverage direction routed THROUGH it and
+    not through the strict entailer."""
+
+    def __init__(self) -> None:
+        self.calls: list[tuple[str, str]] = []
+
+    def conveys(self, fact: str, narration: str) -> bool:
+        self.calls.append((fact, narration))
+        return True
+
+
+# A paraphrase the STRICT substring entailer rejects but a real listener plainly learns —
+# the exact shape (negation reworded) that false-negatived at 62% and blocked convergence.
+_PARAPHRASE_FACT = ("the kings of france never returned to the island",)
+_PARAPHRASE_NARRATION = "No king of France ever came back to this island again."
+
+
+def test_injected_coverage_judge_routes_coverage_and_accepts_paraphrase():
+    """The coverage direction must use the injected CoverageJudge, NOT the strict entailer.
+    The judge is called once, with the SOURCE FACT and the WHOLE narration, and its verdict
+    controls missing_facts — so a paraphrase the entailer would reject is NOT flagged
+    missing. This is the author-engine convergence fix.
+    UNDO: drop the `elif self._coverage is not None` branch in check() (route coverage back
+    through the entailer) -> the paraphrase is wrongly flagged missing -> RED."""
+    judge = _ParaphraseCoverageJudge()
+    checker = SemanticFactChecker(
+        entailer=_SubstringEntailer(), decomposer=_RuleDecomposer(), coverage_judge=judge
+    )
+    r = checker.check(_PARAPHRASE_NARRATION, _PARAPHRASE_FACT)
+    assert len(judge.calls) == 1, judge.calls
+    called_fact, called_narration = judge.calls[0]
+    assert called_fact == _PARAPHRASE_FACT[0]
+    assert "came back to this island" in called_narration  # the WHOLE narration, not a fact
+    assert _PARAPHRASE_FACT[0] not in r.missing_facts, r  # judge accepted the paraphrase
+
+
+def test_coverage_falls_back_to_entailer_without_judge():
+    """Backward-compat + proves the fix IS the judge: with no coverage_judge injected, the
+    SAME paraphrase is flagged missing by the strict substring entailer (the pre-fix
+    behavior the offline substring-fake tests rely on)."""
+    r = SemanticFactChecker(
+        entailer=_SubstringEntailer(), decomposer=_RuleDecomposer()
+    ).check(_PARAPHRASE_NARRATION, _PARAPHRASE_FACT)
+    assert _PARAPHRASE_FACT[0] in r.missing_facts, r
+
+
+def test_faithfulness_judge_formats_prompt_and_parses_verdict():
+    """HaikuFaithfulnessJudge conforms to the FaithfulnessChecker protocol: it renders the
+    key_claims as a bulleted {facts} block and the sentence as {claim}, and maps YES->True /
+    anything-else->False. Exercised with a fake client (no SDK/network/spend)."""
+    client, box = _fake_haiku("YES")
+    judge = HaikuFaithfulnessJudge(client=client)
+    assert judge.entails(("the bell weighs thirteen tons",), "The bell weighs thirteen tons.")
+    assert judge.calls == 1
+    sent = box["kw"]["messages"][0]["content"]
+    assert "- the bell weighs thirteen tons" in sent  # facts bulleted
+    assert "The bell weighs thirteen tons." in sent  # claim substituted
+    assert "{facts}" not in sent and "{claim}" not in sent  # template fully resolved
+
+    no_client, _ = _fake_haiku("NO")
+    assert not HaikuFaithfulnessJudge(client=no_client).entails(("x",), "The bell is bronze.")
+
+
+def test_faithfulness_judge_fails_closed_on_empty_input():
+    """No claim or no facts -> False WITHOUT a model call (nothing to entail, and a bare YES
+    must never pass an empty check)."""
+    client, box = _fake_haiku("YES")
+    judge = HaikuFaithfulnessJudge(client=client)
+    assert not judge.entails((), "some claim")
+    assert not judge.entails(("a fact",), "   ")
+    assert judge.calls == 0 and "kw" not in box  # never called the model
