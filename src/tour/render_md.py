@@ -13,6 +13,12 @@ Pure function on a Script; no Neo4j, no LLM. Used by the
 from __future__ import annotations
 
 from .contract import BeatSequence, Script, Sentence
+from .density import (
+    EMPIRICAL_FILL_BAR,
+    GREEN_ANCHOR_CANDIDATES_MIN,
+    GREEN_CLUSTER_COMPACTNESS_MAX,
+    GREEN_FILL_RATIO_MIN,
+)
 
 
 def render_markdown(
@@ -202,13 +208,34 @@ def _build_sub_lookup(
 
 
 def _yellow_banner(tourability, lenses: list[str] | None = None) -> str:
-    """Top-of-tour warning when density.assess returned YELLOW."""
+    """Top-of-tour warning when density.assess returned YELLOW.
+
+    D9 fix: YELLOW fires for several distinct reasons (density.py's
+    ``_status`` — low fill, thin anchor pool, or a spread-out cluster with
+    otherwise-surplus fill). The banner used to unconditionally print the
+    "below the 70-80% audio-fill bar" sentence, which is a lie when fill is
+    actually at/above target (e.g. a 100%-fill tour that missed GREEN only
+    on anchor count or compactness) — self-contradictory in the field
+    (Louvre 45-min round-trip: "100% audio fill" + "ran below ... bar").
+    Gate that sentence on the SAME fill threshold density.py's GREEN
+    classification uses, and otherwise disclose the true limiting factor.
+    """
     fill_pct = round(tourability.fill_ratio * 100)
-    lines = [
-        f"> **⚠ THIN TOUR (YELLOW) — {fill_pct}% audio fill.**",
-        "> This tour ran below the empirical 70-80% audio-fill bar; expect "
-        "long stretches of silence between stops.",
-    ]
+    lines = [f"> **⚠ THIN TOUR (YELLOW) — {fill_pct}% audio fill.**"]
+    if tourability.fill_ratio < EMPIRICAL_FILL_BAR:
+        lines.append(
+            "> This tour ran below the empirical 70-80% audio-fill bar; expect "
+            "long stretches of silence between stops."
+        )
+    elif tourability.fill_ratio < GREEN_FILL_RATIO_MIN:
+        # Above the empirical bar but short of the GREEN full-fill target —
+        # claiming "below the 70-80% bar" here would be false (e.g. 99% fill).
+        lines.append(
+            f"> Audio fills {fill_pct}% of the full-tour target — close, but "
+            "expect some quiet stretches between stops."
+        )
+    else:
+        lines.append(f"> {_yellow_non_fill_reason(tourability)}")
     # Lens-specific disclosure: two tourists at the same start see the SAME
     # overall fill, so tell each how much of it matches THEIR interest.
     if lenses and tourability.on_lens_fill_ratio is not None:
@@ -228,6 +255,46 @@ def _yellow_banner(tourability, lenses: list[str] | None = None) -> str:
             f"> Or try a one-way ending at {tourability.one_way_alternative_destination!r}."
         )
     return "\n".join(lines)
+
+
+def _yellow_non_fill_reason(tourability) -> str:
+    """Honest reason for a YELLOW tour whose fill is NOT the limiting factor.
+
+    Only called when ``fill_ratio >= GREEN_FILL_RATIO_MIN`` — there's enough
+    audio capacity, so the bottleneck that kept the tour out of GREEN is the
+    walkable area's layout: too few substantial ("anchor") stops within
+    reach, or the ones that exist are spread out rather than clustered.
+    Phrased for a tourist as a capacity-vs-layout distinction, not the
+    engine's internal thresholds.
+    """
+    thin_anchors = tourability.anchor_candidate_count < GREEN_ANCHOR_CANDIDATES_MIN
+    spread_out = tourability.cluster_compactness > GREEN_CLUSTER_COMPACTNESS_MAX
+    stops_phrase = (
+        f"only {tourability.anchor_candidate_count} substantial stop"
+        f"{'s' if tourability.anchor_candidate_count != 1 else ''} within reach"
+    )
+    if thin_anchors and spread_out:
+        return (
+            "This tour has plenty of audio content, but there are "
+            f"{stops_phrase} and they're spread out rather than clustered — "
+            "expect more walking between stops than usual."
+        )
+    if thin_anchors:
+        return (
+            "This tour has plenty of audio content, but there are "
+            f"{stops_phrase} at this start point — a capacity issue with "
+            "nearby stops, not the audio itself."
+        )
+    if spread_out:
+        return (
+            "This tour has plenty of audio content, but the substantial stops "
+            "here are spread out across the walk area rather than clustered "
+            "together — expect more walking between stops than usual."
+        )
+    return (
+        "This tour has plenty of audio content, but the layout of stops at "
+        "this start point falls just short of the usual density bar."
+    )
 
 
 def _footer(

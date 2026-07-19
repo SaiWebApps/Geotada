@@ -44,6 +44,11 @@ from .routing import (
 # §3.7 thresholds — frozen at Phase 6 calibration. These values match
 # the canonical formula in phase-5-quality-audit.md.
 GREEN_FILL_RATIO_MIN: float = 1.0
+# Empirical audio-fill observed on the reference walks (module docstring:
+# "The empirical walks ran 70-80% audio fill"). Display-honesty threshold
+# only — the banner may claim "below the 70-80% bar" solely under this value;
+# classification does NOT use it.
+EMPIRICAL_FILL_BAR: float = 0.70
 GREEN_ANCHOR_CANDIDATES_MIN: int = 4
 GREEN_CLUSTER_COMPACTNESS_MAX: float = 0.6
 
