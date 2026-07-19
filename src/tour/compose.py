@@ -30,6 +30,7 @@ from .claim_dedup import (
     suppress_same_beat_near_duplicates,
     verify_claim_coverage,
 )
+from .compose_correct import CorrectionClient, correct_script
 from .compose_gate import (
     ComposeVerificationError,
     _bad_stops,
@@ -939,6 +940,7 @@ def compose_script_per_chapter(
     chunk_text_by_slug: dict[str, str] | None = None,
     max_workers: int = _PER_CHAPTER_MAX_WORKERS,
     candidates: int = 1,
+    correction_client: CorrectionClient | None = None,
 ) -> Script:
     """Compose each stop in its OWN focused call, in PARALLEL, then verify the
     assembled tour and repair only what still fails.
@@ -1106,6 +1108,50 @@ def compose_script_per_chapter(
         report = verify(composed)
         if report.passed:
             return _served(composed, report, set(), {})
+
+    # CORRECT-DON'T-REJECT (ported from scope2-gate-calibration, 2026-07-19).
+    # Strictly OPT-IN: only when a caller supplies a correction_client. With the
+    # default None, this block is skipped entirely and the proven drop/surgical
+    # ladder below runs byte-identically — so no existing caller changes behaviour.
+    #
+    # Why it goes BEFORE the ladder rather than replacing it (the branch replaces
+    # it): main's repair_composed_surgical is ALREADY sentence-granular, which is
+    # the expensive half. The corrector's added value is one Opus trim/rewrite
+    # attempt to RESCUE a flagged sentence before it degrades to raw stitch — on
+    # the branch's own 9-stop acceptance run that rescued 3 of 13 flagged
+    # sentences (~23%) that would otherwise have floored. Running it first keeps
+    # that upside; falling through on failure keeps main's proven floor.
+    if correction_client is not None:
+        corrected = correct_script(
+            composed,
+            report,
+            stitched=stitched,
+            beat_sequence=beat_sequence,
+            beats_by_id=beats_by_id,
+            checker=checker,
+            correction_client=correction_client,
+            budget=2 * len(stops),
+        )
+        # correct_script records its verified/corrected/floored telemetry on the
+        # returned script's OWN validation. Re-verifying produces a FRESH report
+        # that does not carry it, and _served stores that fresh report — so the
+        # telemetry is silently destroyed on every path unless it is carried
+        # across here. (Found by a judge; the whole contract.py telemetry field
+        # was unreachable dead schema without this.)
+        corr_report = verify(corrected)
+        corr_report = corr_report.model_copy(
+            update={
+                "stop_correction_counts": corrected.validation.stop_correction_counts,
+                "glue_dropped": corrected.validation.glue_dropped,
+                "affirm_reject": corrected.validation.affirm_reject,
+                # corrections_spent is written by correct_script too and was
+                # omitted from the first version of this carry-across — the same
+                # destruction bug, one field narrower.
+                "corrections_spent": corrected.validation.corrections_spent,
+            }
+        )
+        if corr_report.passed:
+            return _served(corrected, corr_report, set(), {}, report)
 
     # Granular repair first: drop just the failing sentences (a stop whose only
     # fault is an embellished reflection keeps all its fused beat prose).

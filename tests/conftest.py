@@ -124,6 +124,23 @@ def _money_guard_no_live_compose(request, monkeypatch):
         _verify_mod, "HaikuFaithfulnessChecker", _verify_mod.MockFaithfulnessChecker
     )
 
+    # CORRECTOR money-guard (mirror compose/author): AnthropicCorrectionClient runs
+    # CORRECTION_MODEL="claude-opus-4-8" — the priciest client in the tree. The arms
+    # above do not cover it, so a test constructing it with client=None would build the
+    # real SDK and bill Opus rates. Product path (client is None) -> the module's own
+    # offline MockCorrectionClient (affirms, returns input unchanged); an injected fake
+    # SDK client stays offline and still exercises the real class.
+    import src.tour.compose_correct as _corr_mod
+
+    _real_corrector = _corr_mod.AnthropicCorrectionClient
+
+    def _guard_corrector(model=None, *, client=None, **kwargs):
+        if client is None:
+            return _corr_mod.MockCorrectionClient()
+        return _real_corrector(model or _corr_mod.CORRECTION_MODEL, client=client, **kwargs)
+
+    monkeypatch.setattr(_corr_mod, "AnthropicCorrectionClient", _guard_corrector)
+
     # REPETITION-JUDGE money-guard (mirror compose/author): HaikuRedundancyJudge is a
     # FIFTH billing client and the arms above do not cover it, so a test constructing it
     # with client=None would build the real SDK and bill. Product path (client is None)

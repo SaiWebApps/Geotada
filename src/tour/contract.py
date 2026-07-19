@@ -420,6 +420,26 @@ class RouteOption(BaseModel):
     lens_coverage_note: str | None = None
 
 
+class StopCorrectionCounts(BaseModel):
+    """Per-stop correct-loop outcome counts (ported from the
+    correct-don't-reject branch, specs/2026-07-13-compose-correct-dont-reject).
+
+    ``verified`` = shipped beat-cited sentences that came through the gate
+    unmodified; ``corrected`` = shipped sentences whose text was rewritten or
+    trimmed by the correction ladder; ``floored`` = beats whose verbatim
+    post-dedup stitch block was floored in; ``floored_audio_seconds`` = the
+    spoken-audio seconds of those floored stitch blocks — how much of the stop's
+    audio degraded to raw stitch. Telemetry only — never part of ``passed``.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    verified: int = 0
+    corrected: int = 0
+    floored: int = 0
+    floored_audio_seconds: int = 0
+
+
 class ValidationReport(BaseModel):
     """Source-traceability + forbidden-phrase + (M7) provenance/faithfulness
     result for a Script. ``passed`` gates serving — a failing report blocks
@@ -440,6 +460,26 @@ class ValidationReport(BaseModel):
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
+
+    # Correct-loop telemetry, ported with the corrector. Additive defaults;
+    # TELEMETRY ONLY — never part of ``passed``.
+    # A TUPLE of (stop_idx, counts) pairs, NOT a dict. ValidationReport is
+    # frozen=True and every other field is a tuple; a dict field silently breaks
+    # ``hash(ValidationReport())`` with "unhashable type: 'dict'" — and the test
+    # bar stays GREEN because nothing in it hashes the model. Use
+    # ``.correction_counts_by_stop`` for dict-style access.
+    stop_correction_counts: tuple[tuple[int, StopCorrectionCounts], ...] = ()
+    glue_dropped: int = 0
+    affirm_reject: int = 0
+    # Correction-ladder CALLS consumed against the per-tour budget (2 x stop_count).
+    # 0 on the offline floor-only path or a clean tour. Telemetry only.
+    corrections_spent: int = 0
+
+    @property
+    def correction_counts_by_stop(self) -> dict[int, StopCorrectionCounts]:
+        """Dict view of ``stop_correction_counts`` for callers that want lookup.
+        The stored form is a tuple so the frozen model stays hashable."""
+        return dict(self.stop_correction_counts)
 
     untraceable_sentences: tuple[Sentence, ...] = ()
     forbidden_phrase_hits: tuple[tuple[Sentence, str], ...] = ()

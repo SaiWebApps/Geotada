@@ -29,7 +29,7 @@ from typing import Protocol
 from rapidfuzz import fuzz
 
 from .contract import BeatRef, BeatSequence, Script, Sentence
-from .generation import GLUE_REFLECTION
+from .generation import GLUE_REFLECTION, split_sentences
 
 # A verbatim passage present in its chunk scores ~100 (partial_ratio is
 # substring-tolerant); 88 leaves headroom for whitespace/punctuation drift
@@ -245,3 +245,34 @@ def verify_faithfulness(
         if support is None or not verdicts.get(i, True):
             failures.append((sentence, reason))
     return failures
+
+
+def passes_sentence_unit_shortcut(text: str, cited: list[BeatRef]) -> bool:
+    """True iff the normalized sentence equals ONE complete sentence-unit, or a
+    CONTIGUOUS run of complete units, of a cited beat's ``script_body``
+    (units per ``generation.split_sentences``).
+
+    Ported from the correct-don't-reject branch, where it replaced a plain
+    substring check: a FRAGMENT of a corpus sentence — a negation-truncation
+    ("[never] named his hotel...") or an attribution-strip ("[According to lore,]
+    Orwell worked here") — IS a substring but is not a complete unit run, so the
+    substring check let it ship unverified. Requiring whole units closes that.
+    """
+    norm = _normalize_for_verbatim(text)
+    if not norm:
+        return False
+    for beat in cited:
+        if not beat.script_body:
+            continue
+        units = [_normalize_for_verbatim(u) for u in split_sentences(beat.script_body)]
+        for i in range(len(units)):
+            acc = units[i]
+            if acc == norm:
+                return True
+            for j in range(i + 1, len(units)):
+                acc = f"{acc} {units[j]}"
+                if acc == norm:
+                    return True
+                if len(acc) > len(norm):
+                    break
+    return False
