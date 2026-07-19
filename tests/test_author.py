@@ -311,3 +311,65 @@ def test_trace_records_each_author_attempt_and_its_verdict():
     for draft, verdict in trace:
         assert draft == "The tower was built in 1250."
         assert any("thirteen tons" in m.lower() for m in verdict.missing_facts)
+
+
+# --- widen-retry fallback policy (Phase C fix #1; PHASE-C-RESULTS.md) ---
+
+_WIDE_TEXT = ("The tower was built in 1250. The bell weighs thirteen tons. "
+              "The clock was added in 1300.")
+_WIDE_FACTS = (*_FACTS, "the clock was added in 1300")
+
+
+def test_widen_retry_converges_when_wider_facts_support_the_draft():
+    """Narrow facts make the drafter's bridging claim ('clock added in 1300') unsupported;
+    the widened window contains it, so the SAME prose passes -> served authored, widened."""
+    drafter = _MockDrafter(write_out=_WIDE_TEXT, rewrite_out=_WIDE_TEXT)
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=1, widen=lambda: _WIDE_FACTS)
+    assert r.result.passed()
+    assert not r.grounded_fallback
+    assert r.widened
+    assert r.text == _WIDE_TEXT
+
+
+def test_widen_called_exactly_once_and_stitch_stays_narrow_on_wide_failure():
+    """Widening that still fails must not loop, and the served floor is the ORIGINAL
+    narrow stitch (never a wider stitch — the acceptance panel's killer diagnostic)."""
+    calls = {"n": 0}
+
+    def widen():
+        calls["n"] += 1
+        # wide set adds a fact the drafter's text never states -> still fails wide
+        return (*_FACTS, "the spire burned in 1666")
+
+    drafter = _MockDrafter(write_out="The tower was built in 1250.",
+                           rewrite_out="The tower was built in 1250.")
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=1, widen=widen)
+    assert calls["n"] == 1
+    assert r.grounded_fallback and not r.widened
+    assert r.text == _STITCH
+
+
+def test_widen_never_called_when_narrow_loop_converges():
+    def widen():
+        raise AssertionError("widen must not be called on a converged narrow pass")
+
+    drafter = _MockDrafter(write_out=_STITCH, rewrite_out=_STITCH)
+    r = author_compose_stop(_FACTS, "Tower", "dark_history", drafter=drafter,
+                           checker=_checker(), stitch_fallback=_STITCH, widen=widen)
+    assert r.result.passed() and not r.grounded_fallback and not r.widened
+
+
+def test_widen_returning_none_spends_nothing_extra():
+    """The money guard: when the wider window adds too little, widen() returns None and
+    the drafter sees zero additional calls beyond the narrow loop."""
+    drafter = _MockDrafter(write_out="The tower was built in 1250.",
+                           rewrite_out="The tower was built in 1250.")
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=2, widen=lambda: None)
+    assert r.grounded_fallback and not r.widened
+    assert drafter.writes == 1 and drafter.rewrites == 2  # narrow loop only

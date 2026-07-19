@@ -21,6 +21,7 @@ fact-complete and corpus-verbatim, so it trivially passes.
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Protocol
@@ -47,6 +48,7 @@ class AuthorResult:
     result: FactCheckResult  # the fact-check verdict on ``text``
     attempts: int  # how many draft/rewrite rounds ran
     grounded_fallback: bool  # True iff we fell back to the grounded stitch
+    widened: bool = False  # True iff the served text came from the widened-fact retry
 
 
 def author_compose_stop(
@@ -59,6 +61,8 @@ def author_compose_stop(
     stitch_fallback: str,
     max_repairs: int = 2,
     trace: list[tuple[str, FactCheckResult]] | None = None,
+    widen: Callable[[], tuple[str, ...] | None] | None = None,
+    wide_max_repairs: int = 1,
 ) -> AuthorResult:
     """Draft the stop, then repair against the semantic fact-check until it is faithful and
     complete, bounded by ``max_repairs``. If repair is exhausted, fall back to the grounded
@@ -73,7 +77,65 @@ def author_compose_stop(
     Each repair rewrites from the BEST draft seen so far (fewest unsupported+missing), not
     the last — a rewrite that makes things worse (a new mis-attribution, or an empty/collapsed
     draft) is DISCARDED rather than fed forward, so the loop cannot thrash a good draft into a
-    worse one. An empty rewrite is treated as a total miss and never adopted."""
+    worse one. An empty rewrite is treated as a total miss and never adopted.
+
+    ``widen`` (optional): called ONCE, only when the narrow loop fails to converge. If it
+    returns a wider fact tuple, the draft/repair loop runs one more bounded round
+    (``wide_max_repairs``) on those facts; the widened prose is served ONLY if it fully
+    passes, else the ORIGINAL narrow ``stitch_fallback`` is served (never a wider stitch).
+    Rationale + live evidence (Phase C, specs/2026-07-18-tour-qa-campaign/PHASE-C-RESULTS.md):
+    fragmentary narrow facts make the author invent bridging connectives the checker rejects;
+    widening put the bridge in the facts and converted 3 of 4 retried fallbacks to authored
+    first-attempt at the same zero-fabrication bar (Big Ben craft 0.08 -> 2.42). One
+    dense-multi-entity stop (Conciergerie) regressed under widening — the retry is bounded
+    (~1.5x Opus on fallback stops only) so that case costs a little and changes nothing."""
+    best_draft, best_result, attempts = _author_loop(
+        facts, poi, lens, drafter=drafter, checker=checker, max_repairs=max_repairs, trace=trace
+    )
+    if best_result.passed():
+        return AuthorResult(
+            text=best_draft, result=best_result, attempts=attempts, grounded_fallback=False
+        )
+    if widen is not None:
+        wide_facts = widen()
+        if wide_facts:
+            wide_draft, wide_result, wide_attempts = _author_loop(
+                wide_facts,
+                poi,
+                lens,
+                drafter=drafter,
+                checker=checker,
+                max_repairs=wide_max_repairs,
+                trace=trace,
+            )
+            attempts += wide_attempts
+            if wide_result.passed():
+                return AuthorResult(
+                    text=wide_draft,
+                    result=wide_result,
+                    attempts=attempts,
+                    grounded_fallback=False,
+                    widened=True,
+                )
+    # Deterministic floor: the grounded stitch is fact-complete and corpus-verbatim, so it
+    # passes the check trivially — fidelity guaranteed even when the author won't converge.
+    floor = checker.check(stitch_fallback, facts)
+    return AuthorResult(
+        text=stitch_fallback, result=floor, attempts=attempts + 1, grounded_fallback=True
+    )
+
+
+def _author_loop(
+    facts: tuple[str, ...],
+    poi: str,
+    lens: str,
+    *,
+    drafter: Drafter,
+    checker: SemanticFactChecker,
+    max_repairs: int,
+    trace: list[tuple[str, FactCheckResult]] | None,
+) -> tuple[str, FactCheckResult, int]:
+    """One draft + bounded repair pass; returns (best_draft, best_result, attempts)."""
     draft = drafter.write(facts, poi, lens)
     result = checker.check(draft, facts)
     if trace is not None:
@@ -93,16 +155,7 @@ def author_compose_stop(
             # never adopt it; the next repair retries from the best draft, not this ruin.
             trace.append((cand, FactCheckResult((), facts)))
         attempts += 1
-    if best_result.passed():
-        return AuthorResult(
-            text=best_draft, result=best_result, attempts=attempts, grounded_fallback=False
-        )
-    # Deterministic floor: the grounded stitch is fact-complete and corpus-verbatim, so it
-    # passes the check trivially — fidelity guaranteed even when the author won't converge.
-    floor = checker.check(stitch_fallback, facts)
-    return AuthorResult(
-        text=stitch_fallback, result=floor, attempts=attempts + 1, grounded_fallback=True
-    )
+    return best_draft, best_result, attempts
 
 
 def _failure_count(result: FactCheckResult) -> int:

@@ -46,6 +46,27 @@ def _retention(source: set[str], out: str) -> float:
     return 1.0 if not source else sum(1 for t in source if t in out) / len(source)
 
 
+def _wide_facts(plan, wide_budget: int, narrow: tuple[str, ...]) -> tuple[str, ...] | None:
+    """Widen-retry fact window: re-partition the PRE-CAP plan at ``wide_budget`` and
+    re-derive facts from the wider core's key_claims (same derivation as ``_facts_for``).
+    Returns None unless the wider set adds >= 2 facts absent from the narrow set — the
+    money guard: identical facts would fail identically, so nothing is spent."""
+    from src.tour.content_budget import partition_poi_content
+
+    cb = partition_poi_content(plan, core_seconds_budget=wide_budget)
+    core_ids = set(cb.core_ids)
+    facts, seen = [], set()
+    for b in plan.beats:
+        if b.id not in core_ids:
+            continue
+        for it in list(b.key_claims) or [p.strip() for p in split_sentences(b.script_body or "")]:
+            if it and it not in seen:
+                seen.add(it)
+                facts.append(it)
+    new = [f for f in facts if f not in set(narrow)]
+    return tuple(facts) if len(new) >= 2 else None
+
+
 def _facts_for(stop_idx, stitched, beats_by_id) -> list[str]:
     facts, seen = [], set()
     for s in stitched.script:
@@ -130,7 +151,11 @@ def main() -> int:
         src_toks = _distinctive(stitch)
         trace: list = []
         res = author_compose_stop(facts, poi.name, lens, drafter=drafter, checker=checker,
-                                  stitch_fallback=stitch, max_repairs=3, trace=trace)
+                                  stitch_fallback=stitch, max_repairs=3, trace=trace,
+                                  widen=lambda i=stop_idx, f=facts: _wide_facts(
+                                      plans[i], args.core_seconds * 2, f))
+        if res.widened:
+            print("  [widen retry] narrow loop failed; wider fact window converged")
         tag = "GROUNDED-STITCH FALLBACK" if res.grounded_fallback else f"converged in {res.attempts}"
         print(f"\n{'#'*74}\nSTOP {stop_idx} — {poi.name}  [{tag}]")
         print(f"  facts kept: {_retention(src_toks, res.text)*100:.0f}%  |  "
