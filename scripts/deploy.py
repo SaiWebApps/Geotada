@@ -62,6 +62,23 @@ def _api_healthy(probe: str) -> bool:
         return False
 
 
+def _transient_api_env() -> dict[str, str]:
+    """Env for the deploy's own short-lived localhost uvicorn.
+
+    WORKBENCH_API_ENABLED is fail-closed (app.py mounts the /nodes CRUD routers
+    only on an explicit truthy value); the areas upload talks to /nodes/Area, so
+    the transient server must opt in — it binds 127.0.0.1 and dies with the
+    deploy, so the unauthenticated surface never faces the network.
+    """
+    return {
+        **os.environ,
+        "WORKBENCH_API_ENABLED": "1",
+        # Never proxy the localhost API round-trip (matches `make api`).
+        "NO_PROXY": "localhost,127.0.0.1,::1",
+        "no_proxy": "localhost,127.0.0.1,::1",
+    }
+
+
 def _port_busy(port: int) -> bool:
     return subprocess.run(
         ["lsof", f"-ti:{port}"], capture_output=True, text=True
@@ -98,12 +115,7 @@ def _upload_areas_step(slug: str, py: str) -> None:
     port = _deploy_api_port()
     if _port_busy(port):
         sys.exit(f"ERROR: :{port} is already in use — deploy manages its own API; free it first.")
-    env = {
-        **os.environ,
-        # Never proxy the localhost API round-trip (matches `make api`).
-        "NO_PROXY": "localhost,127.0.0.1,::1",
-        "no_proxy": "localhost,127.0.0.1,::1",
-    }
+    env = _transient_api_env()
     probe = _api_probe(port)
     api = subprocess.Popen(
         [py, "-m", "uvicorn", "src.api.app:app", "--host", "127.0.0.1", "--port", str(port)],
