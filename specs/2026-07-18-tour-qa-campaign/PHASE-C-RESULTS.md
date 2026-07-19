@@ -254,3 +254,71 @@ rendered by the engine.
 4. Lens-aware core at a realistic budget (the untested half of `2c1f9b2`).
 5. Corpus repairs: Broadway 12-vs-13 miles; the Castle Garden key_claim.
 6. London corpus enrichment (SOURCE-ADAPTER-ARCHITECTURE.md + LONDON-EXTRACTION-FIX.md).
+
+---
+
+# FINAL RUN (23:37, deterministic engine) — REJECTED, with two REGRESSIONS I INTRODUCED
+
+Paris re-authored with the lens-aware core (`2c1f9b2`+`050f63c`) and drafter temperature=0
+(`9e2cd00`). All 4 stops converged, 0 fallbacks. The opus adversary rejected it and found
+two defects CAUSED BY TONIGHT'S FIXES. Both are confirmed from the artifacts.
+
+## REGRESSION 1 — temperature=0 turned the drafter into a photocopier
+Stop 0 is **73.0% 5-gram overlap** with beat `dbsync_e813f39c` + the staging beat, with a
+single **59-word verbatim run**, joined by seven authored words. Baseline was 42.9% / 19-word
+run. Copying always passes the fact-check (`author.py:18` already notes the grounded stitch
+"trivially passes"), so a deterministic drafter converges on transcription. **There is no
+verbatim/copy gate anywhere on the authored path** (grepped src/tour: no ngram/copy_ratio
+guard). "Converged, 0 unsupported" is therefore achievable by regurgitation.
+FIX: reject a draft whose n-gram overlap with its own source beats exceeds a threshold and
+force a re-draft. Determinism is still right — it needs this guard beside it.
+
+## REGRESSION 2 — the lens-aware window DELETED the tour's climax
+Baseline Rue des Rosiers ended: "From a local school, one hundred sixty-five pupils were
+deported under the Occupation. They never came back." This run ends: "A plaque marks the
+spot." The deportation beats are tagged `war_conflict`/`hidden_history`; for a
+`{dark_history, social_change}` ask, `_lens_rank` (content_budget.py) returns `len(order)`
+for off-lens beats and the budget then evicts them. The pre-fix greedy ORDER seated them.
+FIX (adversary's, adopted): the lens window must NEVER evict a POI's highest-gravity beat —
+floor the top-gravity beat regardless of lens, and/or treat lens FAMILIES as in-family
+(war_conflict is plainly in-family with dark_history). Do NOT ship the lens sort again
+without this floor.
+Also flagged same stop: the engine softened "the venerable **Jewish** deli" and "a 1982
+**terrorist** bombing" to "the venerable deli" / "a bombing" while scoring facts-kept 100%.
+
+## CONFIRMED AGAIN — geometry is unchecked (2nd city, 2nd instance)
+Rue de Rivoli narrates "Picture hooves on sand **where you stand**... **On this exact spot**"
+about the manège, which the beat itself places "on the edge of the Tuileries Gardens" —
+computed from `data/paris/poi-raw.json`, **2600 m** from the stop's own coordinates. No. 258
+is ~3 km west. Fact-check: 0 unsupported. Same class as NYC's "Look down Wall Street toward
+1 Liberty Plaza" (345 deg vs a 103/283 deg street). Deixis ("here", "where you stand", "at
+no. N") is never validated against the stop's coordinates.
+NOTE: `Rue de Rivoli` is a 3-km linear POI with ONE coordinate — it needs sub-POI anchors or
+its deictic language must be stripped.
+
+## Other findings
+- Stop-1 craft collapsed 2.24 -> 0.71; stops 1 and 2 now open with the SAME construction
+  ("Picture a woman at a garden table" / "Picture hooves on sand") — temperature=0 collapses
+  the drafter onto a favourite opener. `tour_consistency.py` reported `none`: it does not
+  check opener FORMS. Add that check.
+- Zero of 4 stops clear the rubric's >=8 bar (7/7/9/5).
+- Gold-standard causal chain: 3 of 7 links. The Victor Hugo quote, the duels, Richelieu's
+  ban and the beheadings are all still unseated — the `2c1f9b2` honest-scope caveat holds.
+- Artifacts do not stamp start lat/lng, core-seconds, provider or cost. Add a header stamp.
+- The harness default core budget is 90s; production is MAX_DWELL_AUDIO_SECONDS=420. All
+  tonight's evidence was generated at ~1/4.7 of production's window.
+
+## HONEST BOTTOM LINE
+NYC and Paris are NOT shippable tonight. Tonight's real yield is diagnostic, not delivery:
+the fallback-policy fix (proven), determinism (root-caused and fixed, needs the verbatim
+guard beside it), the lens window (works, must not evict), and TWO independent proofs that
+spatial claims are an uncovered hallucination class. The corrected priority order is below.
+
+## PRIORITY ORDER (revised by this evidence)
+1. Verbatim/copy gate on the authored path (blocks regurgitation-as-convergence).
+2. Gravity floor + lens families in the core window (restores the deportation climax).
+3. Deixis/geometry verification for spatial claims (2 cities, 2 confirmed false cues).
+4. Sub-POI anchors for linear POIs (Rue de Rivoli class).
+5. Opener-form check in tour_consistency; artifact provenance header.
+6. Re-author at the PRODUCTION core budget (420s), not the 90s harness default.
+7. London corpus enrichment (SOURCE-ADAPTER-ARCHITECTURE.md + LONDON-EXTRACTION-FIX.md).
