@@ -790,7 +790,17 @@ class LLMDrafter:
             "system": system,
             "messages": [{"role": "user", "content": user}],
         }
-        if thinking is not None:
+        # DETERMINISM (2026-07-18). All three Haiku judges pin temperature=0 — factcheck.py
+        # says why: "a claim's verdict must not flip between runs". The DRAFTER did not, so
+        # it ran at the API default and wrote different prose every run, which crossed the
+        # fact-check threshold differently, which made whole STOPS converge or fall back at
+        # random. Measured: the same NYC tour authored 35 minutes apart swapped which stops
+        # fell back (Castle Clinton + Wall Street vs Battery Park + Bowling Green), and the
+        # same for Paris. That instability read as "the fix moved the failure" all evening.
+        # Extended thinking rejects temperature, so it is set only on the no-thinking rung.
+        if thinking is None:
+            kwargs["temperature"] = 0
+        else:
             kwargs["thinking"] = thinking
         resp = self._client.messages.create(**kwargs)  # type: ignore[attr-defined]
         return "".join(

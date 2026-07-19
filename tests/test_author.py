@@ -1436,3 +1436,20 @@ def test_threaded_flag_survives_a_corpus_rescue_serve():
     assert r.rescued, "precondition: this must be served via the corpus-rescue path"
     assert not r.grounded_fallback
     assert r.threaded, "a threaded stop served via rescue must report threaded=True"
+
+
+def test_drafter_pins_temperature_zero_on_the_no_thinking_rung():
+    """DETERMINISM (2026-07-18). The three Haiku judges pin temperature=0 ("a claim's verdict
+    must not flip between runs" — factcheck.py) but the DRAFTER did not, so it ran at the API
+    default and wrote different prose each run. Measured live: the same NYC tour authored 35
+    min apart swapped WHICH stops fell back (Castle Clinton + Wall Street one run, Battery
+    Park + Bowling Green the next); same for Paris. Whole-stop quality was effectively random.
+    Extended thinking rejects a temperature, so it is pinned only on the no-thinking rung.
+    UNDO: drop the `kwargs["temperature"] = 0` line -> RED."""
+    client, calls = _fake_anthropic("Prose from the facts.")
+    d = LLMDrafter("claude-opus-4-8", client=client)
+    d._once("sys", "user", thinking=None)
+    assert calls[-1].get("temperature") == 0, "the drafter must not run at the API default"
+
+    d._once("sys", "user", thinking={"type": "enabled", "budget_tokens": 1024})
+    assert "temperature" not in calls[-1], "thinking rung must not send a temperature"
