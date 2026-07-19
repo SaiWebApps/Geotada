@@ -423,13 +423,7 @@ def _green_cluster_records():
     return {"pois": pois, "beats": beats, "areas": _AREA_RECORDS, "adjacency": [], "lenses": []}
 
 
-@pytest.mark.parametrize(
-    ("provider", "expected_provider"),
-    [("openai", "openai"), ("chatgpt", "openai"), ("anthropic", "anthropic"), (None, "anthropic")],
-)
-def test_preview_compose_threads_provider_and_scores_quality(
-    make_client, provider, expected_provider
-):
+def test_preview_always_runs_the_one_algorithm_and_scores_quality(make_client):
     """The workbench Opus-vs-ChatGPT wiring on the wire, hermetic + $0 (the autouse
     money-guard stubs BOTH composers offline, so no live spend): compose=true threads
     the chosen REAL provider through and the response carries ``provider`` +
@@ -437,19 +431,13 @@ def test_preview_compose_threads_provider_and_scores_quality(
     never a mock passthrough label. UNDO: drop the provider/quality block in
     preview_trip, or add a mock provider branch -> these assertions fail."""
     client = make_client(_green_cluster_records())
-    payload = {
-        "center_lat": START[0],
-        "center_lng": START[1],
-        "duration_min": 60,
-        "compose": True,
-    }
-    if provider is not None:
-        payload["provider"] = provider
+    # No flags. The request carries ONLY where and how long.
+    payload = {"center_lat": START[0], "center_lng": START[1], "duration_min": 60}
     r = client.post("/api/v1/trips/preview", json=payload)
     assert r.status_code == 200, r.text
     body = r.json()
     assert body["compose_status"] in {"composed", "composed_partial", "refused"}, body
-    assert body["provider"] == expected_provider, (provider, body["provider"])
+    assert body["provider"] == "anthropic", body["provider"]
     if body["compose_status"] != "refused":
         q = body["narration_quality"]
         assert q is not None, body

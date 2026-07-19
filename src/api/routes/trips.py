@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import threading
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from neo4j import Driver, Session
@@ -19,8 +20,8 @@ from src.api.crud.trips import (
     route_script_to_stops,
 )
 from src.api.dependencies import (
-    get_author_composer,
     get_compose_client,
+    get_correction_client,
     get_driver,
     get_faithfulness_checker,
     get_session,
@@ -40,12 +41,10 @@ from src.tour.beat_select import select_vignette_beats
 from src.tour.compose import (
     ComposeClient,
     ComposeRequest,
-    compose_client_for,
     compose_provider_name,
     compose_script,
     compose_script_per_chapter,
 )
-from src.tour.compose_correct import AnthropicCorrectionClient
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
     BeatSequence,
@@ -60,6 +59,7 @@ from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, vignette_one_liner_text
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option
+from src.tour.quality_rubric import score_tour
 from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
@@ -398,17 +398,25 @@ def generate_trip(
 
 
 class _CountingComposeClient:
-    """Records the attempts consumed so the response can report them —
-    the gate's fire-once/recompose-once flow stays inside compose_script."""
+    """Records the attempts consumed so the response can report them — the gate's
+    fire-once/recompose-once flow stays inside the composer.
+
+    The composer runs one call PER STOP in PARALLEL, so this is written from many
+    threads at once. Report the MAX attempt any stop needed (the worst-case round
+    trips the gate cost us); a plain last-writer-wins assignment would report an
+    arbitrary stop's counter instead. The lock keeps the read-compare-write atomic.
+    """
 
     def __init__(self, inner: ComposeClient):
         self.inner = inner
         self.attempts = 0
+        self._lock = threading.Lock()
 
     def compose(
         self, request: ComposeRequest, attempt: int, prev_report: ValidationReport | None
     ) -> tuple[Sentence, ...]:
-        self.attempts = attempt
+        with self._lock:
+            self.attempts = max(self.attempts, attempt)
         return self.inner.compose(request, attempt, prev_report)
 
 
@@ -420,6 +428,7 @@ def compose_trip(
     driver: Driver = Depends(get_driver),
     compose_client: ComposeClient = Depends(get_compose_client),
     faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
+    correction_client=Depends(get_correction_client),
 ):
     """Second step of the preview/compose split (Phase 4 Step 4.7, spec §5).
 
@@ -519,6 +528,20 @@ def compose_trip(
     )
     stitched = generate(seq, route, tour_input)
 
+    # KNOWN DIVERGENCE (2026-07-19), deliberate and scoped — see
+    # specs/2026-07-19-tour-quality-standard/01-standard.md §"Remaining divergence".
+    # The WORKBENCH (/trips/preview) runs compose_script_per_chapter with best-of-2 +
+    # the corrector. This APP path still runs whole-tour compose_script, so the two
+    # surfaces do not narrate identically yet.
+    #
+    # It was unified and then deliberately reverted, because unifying changes a
+    # PERSISTENCE contract, not just prose: whole-tour compose RAISES on verification
+    # failure -> HTTP 422 -> the trip is left UNMUTATED and another flavour can be
+    # tried. Per-chapter never refuses; it floors to grounded stitch and returns 200,
+    # so replace_trip_stops + mark_trip_composed would run on degraded content, and
+    # TripComposeResponse carries no compose_status for the app to notice. Closing
+    # that gap needs a decided contract (add compose_status, and/or refuse on total
+    # degradation), not a silent swap. Tracked, not forgotten.
     counting = _CountingComposeClient(compose_client)
     try:
         composed = compose_script(
@@ -536,6 +559,7 @@ def compose_trip(
                 "faithfulness": len(exc.report.faithfulness_failures),
             },
         ) from exc
+
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     # KE2: recompute the keep-exploring extras HERE (never trust generate-time
@@ -728,7 +752,7 @@ def preview_trip(
     driver: Driver = Depends(get_driver),
     compose_client: ComposeClient = Depends(get_compose_client),
     faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
-    author_composer=Depends(get_author_composer),
+    correction_client=Depends(get_correction_client),
 ):
     """Web-first preview (Phase 1.5): run the engine and return per-stop narration
     WITHOUT a profile and WITHOUT persisting a Trip/ItineraryItem.
@@ -773,30 +797,45 @@ def preview_trip(
     )
     script = generate(seq, route, tour_input)
 
-    # Opt-in "AI voice": rewrite the stitched narration into one flowing,
-    # de-duplicated story behind the faithfulness + content-loss gates, with
-    # graceful per-stop repair so the workbench ALWAYS shows something good (and
-    # honestly flags which stops fell back). This is ALWAYS the real Opus voice in
-    # the product now (get_compose_client has no mock provider); the hermetic test
-    # suite stubs the client offline so `make test` never spends.
+    # THE ONE ALGORITHM. No flags, no tiers, no per-request narrator choice: every
+    # preview runs the same pipeline — Opus composes each stop, the faithfulness gate
+    # verifies, and the correct-don't-reject corrector repairs (trim -> rewrite) before
+    # anything is allowed to degrade to raw stitch. The grounded stitch is the FLOOR
+    # (what a refused/unrepairable stop falls back to), never a selectable mode. The
+    # hermetic test suite stubs the client offline so `make test` never spends.
     compose_status = "stitched"
-    provider = None
+    provider = compose_provider_name(os.getenv("COMPOSE_PROVIDER"))
     narration_quality = None
-    if body.engine == "author":
-        # OPT-IN AUTHOR ENGINE (strictly costlier than compose; never a deployment
-        # default — a per-request field only). Write each stop FRESH from its facts,
-        # fact-check-and-repair, with the grounded stitch as the per-stop floor: every
-        # served stop is either 0-unsupported/0-missing author prose or the exact stitch,
-        # never a non-converged draft. Reuses the SAME quality scoring as compose.
-        lens = tour_input.lenses[0] if tour_input.lenses else "general"
-        script, fell_back = author_composer(script, seq, route, lens)
-        compose_status = "authored_partial" if any(fell_back.values()) else "authored"
-        provider = "author"
+    try:
+        # Per-chapter: one focused (parallel) call per stop, so the big
+        # repetitive stops fuse without dropping facts (whole-tour compose
+        # reverted them) and the tour composes in ~1 min, not ~19.
+        # Always on: the corrector is part of the algorithm, not an option.
+        composed = compose_script_per_chapter(
+            script,
+            seq,
+            route,
+            client=compose_client,
+            faithfulness_checker=faithfulness_checker,
+            candidates=2,  # best-of-2: extra tickets for the big, dense stops
+            correction_client=correction_client,
+        )
+    except ComposeVerificationError:
+        compose_status = "refused"  # unrepairable — keep the grounded stitch
+    else:
+        compose_status = _compose_status(script, composed)
+        script = composed
+        # Objective quality signals on the composed narration, so tour quality is
+        # MEASURED, not a matter of taste. Score the FULL spoken text (composed
+        # glue/closers/reflections included — that is where moralizing closers
+        # concentrate, the highest-weighted tell).
         narration = " ".join(s.text for s in script.script)
         q = score_narration(narration)
         narration_quality = {
             "stilted_score": q.stilted_score,
             "engagement_score": q.engagement_score,
+            # reliable=False => the composites are noise (short sample); the UI
+            # must flag this and lean on tells_per_100w instead of the deltas.
             "reliable": q.reliable,
             "n_words": q.n_words,
             "burstiness": q.burstiness,
@@ -806,59 +845,14 @@ def preview_trip(
             "look_prompt_rate": q.look_prompt_rate,
             "tells_per_100w": q.per_100w,
         }
-    elif body.compose:
-        # Which REAL narrator writes this tour: the per-request provider (the
-        # workbench's Opus-vs-ChatGPT toggle) overrides the env default; never mock.
-        client = compose_client_for(body.provider) if body.provider else compose_client
-        # Label the ACTUAL narrator. When the request omits a provider we use the
-        # injected default, which honors COMPOSE_PROVIDER — so derive the label from
-        # the SAME source, never from body.provider alone (else a
-        # COMPOSE_PROVIDER=openai deployment would mislabel an omitted-provider tour
-        # as 'anthropic', defeating the point of the comparison).
-        provider = compose_provider_name(body.provider or os.getenv("COMPOSE_PROVIDER"))
-        try:
-            # Per-chapter: one focused (parallel) call per stop, so the big
-            # repetitive stops fuse without dropping facts (whole-tour compose
-            # reverted them) and the tour composes in ~1 min, not ~19.
-            # Opt-in corrector: only when the request asks. None (the default) leaves
-            # the proven drop/surgical repair ladder byte-identical. Built here rather
-            # than injected as a dependency so a deployment cannot flip it on globally
-            # — it costs an extra Opus call per flagged sentence.
-            corrector = AnthropicCorrectionClient() if body.correct else None
-            composed = compose_script_per_chapter(
-                script,
-                seq,
-                route,
-                client=client,
-                faithfulness_checker=faithfulness_checker,
-                candidates=2,  # best-of-2: extra tickets for the big, dense stops
-                correction_client=corrector,
-            )
-        except ComposeVerificationError:
-            compose_status = "refused"  # unrepairable — keep the grounded stitch
-        else:
-            compose_status = _compose_status(script, composed)
-            script = composed
-            # Objective quality signals on the composed narration, so an
-            # Opus-vs-ChatGPT comparison is MEASURED, not a matter of taste.
-            # Score the FULL spoken text (composed glue/closers/reflections included —
-            # that is where moralizing closers concentrate, the highest-weighted tell).
-            narration = " ".join(s.text for s in script.script)
-            q = score_narration(narration)
-            narration_quality = {
-                "stilted_score": q.stilted_score,
-                "engagement_score": q.engagement_score,
-                # reliable=False => the composites are noise (short sample); the UI
-                # must flag this and lean on tells_per_100w instead of the deltas.
-                "reliable": q.reliable,
-                "n_words": q.n_words,
-                "burstiness": q.burstiness,
-                "mean_sentence_words": q.mean_sentence_words,
-                "long_sentence_rate": q.long_sentence_rate,
-                "second_person_per_100w": q.second_person_rate,
-                "look_prompt_rate": q.look_prompt_rate,
-                "tells_per_100w": q.per_100w,
-            }
+
+    # THE QUALITY RUBRIC — runs on EVERY tour, deterministic and $0. The mechanical
+    # floor of specs/2026-07-19-tour-quality-standard/01-standard.md: it catches the
+    # two failures the corpus-vs-render comparison can prove (a rich POI STARVED to a
+    # line, a stop GORGED past the listenable cap) plus repeats, empty stops and
+    # imbalance. Surfaced to the editor rather than silently swallowed — a tour that
+    # breaches the standard is visible in the workbench with the exact check and stop.
+    rubric = score_tour(script, route, snapshot.beats_by_poi, beat_sequence=seq)
 
     stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
@@ -871,6 +865,29 @@ def preview_trip(
         compose_status=compose_status,
         provider=provider,
         narration_quality=narration_quality,
+        quality={
+            "passed": rubric.passed,
+            "summary": rubric.summary(),
+            "blockers": [
+                {
+                    "check": f.check,
+                    "message": f.message,
+                    "stop_idx": f.stop_idx,
+                    "poi_name": f.poi_name,
+                }
+                for f in rubric.blockers
+            ],
+            "warnings": [
+                {
+                    "check": f.check,
+                    "message": f.message,
+                    "stop_idx": f.stop_idx,
+                    "poi_name": f.poi_name,
+                }
+                for f in rubric.warnings
+            ],
+            "stats": rubric.stats,
+        },
     )
 
 

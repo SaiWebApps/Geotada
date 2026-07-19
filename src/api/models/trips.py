@@ -208,34 +208,11 @@ class TripPreviewRequest(BaseModel):
     )
 
     _validate_city = field_validator("city_slug")(_validate_city_slug)
-    # Opt in to the LLM "AI voice" layer: rewrite the stitched narration into one
-    # flowing, de-duplicated story (fusing repeated facts), behind the faithfulness
-    # + content-loss gates with graceful per-stop repair. Off = the fast
-    # deterministic stitch. The workbench sends true to preview the real app voice.
-    compose: bool = False
-    # Which REAL narrator writes the tour when compose=true: None/'anthropic'/'opus'
-    # = Claude Opus (default); 'openai'/'chatgpt' = ChatGPT — the workbench's
-    # Opus-vs-ChatGPT writing comparison. There is NO 'mock' provider (a comparison
-    # is never served the stitcher passthrough). Unknown values fall back to Opus.
-    provider: str | None = None
-    # Opt in to the AUTHOR ENGINE (off by default): instead of fusing stitched
-    # beat-sentences (compose), write each stop FRESH from its facts, then a semantic
-    # fact-check-and-repair loop restores dropped / strips invented facts, falling back
-    # to the grounded stitch when a stop won't converge. Strictly OPT-IN and strictly
-    # costlier than compose (an Opus draft per stop) — an env default could never flip
-    # it on, so it is a per-request field only. ``engine="author"`` turns it on; anything
-    # else (None/'compose') is today's behavior, byte-identical.
-    engine: str | None = None
-    # Opt in to the CORRECT-DON'T-REJECT corrector (off by default, compose-only).
-    # When a composed sentence fails the faithfulness gate, the default path replaces
-    # it immediately with grounded stitch; with this on, the corrector first attempts
-    # up to two Opus repairs (trim, then narrator-voice rewrite) and only floors if
-    # both fail — on the source branch's 9-stop acceptance run that rescued ~23% of
-    # flagged sentences from degrading to raw stitch. Strictly OPT-IN and strictly
-    # costlier (an extra Opus call per flagged sentence), so like ``engine`` it is a
-    # per-request field with NO env default — a deployment can never flip everyone
-    # onto the pricier path. Ignored unless ``compose`` is true.
-    correct: bool = False
+    # NO narration flags. There is ONE algorithm: Opus composes every stop, the
+    # faithfulness gate verifies, and the correct-don't-reject corrector repairs
+    # before anything degrades to raw stitch. Not a tier, not a toggle, not a
+    # per-request narrator choice — deleted 2026-07-19 because 4 flags meant 16
+    # combinations and no single answer to "what does this product do?".
 
 
 class TripPreviewStop(BaseModel):
@@ -306,3 +283,11 @@ class TripPreviewResponse(BaseModel):
     # engagement scores + the per-100-word tells), so the comparison is MEASURED,
     # not vibes. None when not composed. See tour.narration_quality.
     narration_quality: dict | None = None
+    # THE QUALITY RUBRIC verdict for this tour — the mechanical floor of the tour
+    # quality standard (specs/2026-07-19-tour-quality-standard/01-standard.md), run
+    # on EVERY tour at $0. Carries {passed, blockers[], warnings[], stats{}}. A
+    # failing verdict means the tour breached the standard (a rich POI starved to a
+    # line, a stop gorged past the listenable cap, a repeated sentence) and the
+    # workbench shows the editor exactly which check fired and where, instead of
+    # leaving them to notice it by reading. See tour.quality_rubric.
+    quality: dict | None = None

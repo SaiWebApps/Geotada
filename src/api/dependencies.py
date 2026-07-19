@@ -143,35 +143,24 @@ def get_faithfulness_checker() -> FaithfulnessChecker | None:
     return HaikuFaithfulnessChecker()
 
 
-def get_author_composer():
-    """The AUTHOR-ENGINE narrator for the OPT-IN ``engine='author'`` preview path only.
+def get_correction_client():
+    """The correct-don't-reject repair client — part of THE ONE ALGORITHM, used by
+    BOTH compose paths (``POST /trips/preview`` and ``POST /trips/{id}/compose``).
 
-    Returns a callable ``(stitched, beat_sequence, route, lens) -> (Script, fell_back)``
-    that writes each stop fresh from its facts + fact-checks/repairs (calibrated
-    HaikuCoverageJudge + HaikuFaithfulnessJudge), falling back to the grounded stitch on
-    non-convergence. Builds the REAL billing clients (Opus drafter + Haiku judges) LAZILY,
-    referencing the module attributes at call time so the conftest money-guard's monkeypatch
-    swaps them for offline stubs in the (non-``live``) bar — exactly like ``get_compose_client``.
-    Tests that exercise the author path override THIS dependency with an offline fake.
+    When a composed sentence fails the faithfulness gate, this attempts up to two Opus
+    repairs (trim, then narrator-voice rewrite) before the sentence is allowed to
+    degrade to raw grounded stitch.
+
+    Imported INSIDE the function and referenced as a module ATTRIBUTE so the conftest
+    money-guard's monkeypatch swaps it for an offline stub in the (non-``live``) bar —
+    exactly like ``get_compose_client``. This is not stylistic: the route previously
+    held its own ``from src.tour.compose_correct import AnthropicCorrectionClient``
+    binding, which monkeypatch could not reach, so the suite built the REAL Opus client
+    (CORRECTION_MODEL="claude-opus-4-8", the priciest in the tree) on every preview and
+    every compose — and compose_correct swallows client exceptions, so it billed
+    silently and never turned a test red. Guarded by
+    tests/test_compose_corrector_optin.py::test_trips_route_holds_no_unpatchable_corrector_binding.
     """
-    from src.tour.author import LLMDrafter, author_compose_script
-    from src.tour.compose import COMPOSE_MODEL
-    from src.tour.factcheck import (
-        HaikuClaimDecomposer,
-        HaikuCoverageJudge,
-        HaikuFaithfulnessJudge,
-        SemanticFactChecker,
-    )
+    import src.tour.compose_correct as compose_correct
 
-    def _compose(stitched, beat_sequence, route, lens):
-        drafter = LLMDrafter(COMPOSE_MODEL)
-        checker = SemanticFactChecker(
-            entailer=HaikuFaithfulnessJudge(),
-            decomposer=HaikuClaimDecomposer(),
-            coverage_judge=HaikuCoverageJudge(),
-        )
-        return author_compose_script(
-            stitched, beat_sequence, route, lens=lens, drafter=drafter, checker=checker
-        )
-
-    return _compose
+    return compose_correct.AnthropicCorrectionClient()

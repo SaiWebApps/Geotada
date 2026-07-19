@@ -109,6 +109,44 @@ def test_money_guard_covers_the_opus_corrector() -> None:
     )
 
 
+def test_money_guard_covers_the_corrector_the_route_actually_builds() -> None:
+    """The guard must neutralise the corrector on the path the ROUTE takes.
+
+    The test above is a FALSE GREEN on its own: it asserts on the module attribute
+    that conftest patches, while the route held its OWN module-level binding
+    (``from src.tour.compose_correct import AnthropicCorrectionClient``). monkeypatch
+    rebinds the source module, never the importer's copy — so the route constructed
+    the REAL Opus client during `make test`, and compose_correct swallows client
+    exceptions (compose_correct.py:426), so it billed SILENTLY and never turned
+    anything red. Both compose paths construct it unconditionally, so this was every
+    preview AND every compose in the suite.
+
+    UNDO: re-add `from src.tour.compose_correct import AnthropicCorrectionClient` to
+    src/api/routes/trips.py and call it directly -> RED.
+    """
+    from src.api.dependencies import get_correction_client
+
+    client = get_correction_client()
+    assert type(client).__name__ != "AnthropicCorrectionClient", (
+        "the route builds the REAL Opus corrector under the money guard — `make test` bills"
+    )
+
+
+def test_trips_route_holds_no_unpatchable_corrector_binding() -> None:
+    """Structural guard against the from-import that caused the breach above.
+
+    A module-level ``from X import Y`` in the route is invisible to a monkeypatch of
+    X, so the money guard cannot reach it. The corrector must be resolved through the
+    module (or injected) at CALL time, never bound at import time.
+    """
+    import src.api.routes.trips as trips_route
+
+    assert not hasattr(trips_route, "AnthropicCorrectionClient"), (
+        "src/api/routes/trips.py binds AnthropicCorrectionClient at import time — "
+        "the conftest money guard cannot patch it; inject it instead"
+    )
+
+
 # --- integration: telemetry must SURVIVE the compose ladder (judge defect #1) ---
 # Helpers lifted from the branch's own battery so the fixture is its fixture.
 
@@ -290,15 +328,15 @@ def test_correction_telemetry_survives_to_the_served_script() -> None:
     assert served.validation.affirm_reject == 1
 
 
-def test_preview_request_exposes_an_optin_correct_flag_defaulting_off() -> None:
-    """The workbench toggle's contract: per-request, defaulting OFF.
+def test_preview_request_has_no_narration_flags_at_all() -> None:
+    """ONE algorithm. The preview request carries where and how long — nothing else.
 
-    Like ``engine="author"``, this must never have an env default — the corrector
-    costs an extra Opus call per flagged sentence, so a deployment must not be able
-    to flip every user onto it. UNDO: remove the field, or default it True -> RED.
+    Four flags (compose / provider / engine / correct) meant sixteen combinations and
+    no single answer to "what does this product do?". They are deleted. UNDO: add any
+    of them back to TripPreviewRequest -> RED.
     """
     from src.api.models.trips import TripPreviewRequest
 
-    req = TripPreviewRequest(center_lat=48.85, center_lng=2.35)
-    assert req.correct is False, "the corrector must default OFF"
-    assert TripPreviewRequest(center_lat=48.85, center_lng=2.35, correct=True).correct is True
+    banned = {"compose", "provider", "engine", "correct"}
+    present = banned & set(TripPreviewRequest.model_fields)
+    assert not present, f"narration options are back on the preview request: {present}"
