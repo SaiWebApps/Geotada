@@ -46,14 +46,16 @@ def _retention(source: set[str], out: str) -> float:
     return 1.0 if not source else sum(1 for t in source if t in out) / len(source)
 
 
-def _wide_facts(plan, wide_budget: int, narrow: tuple[str, ...]) -> tuple[str, ...] | None:
+def _wide_facts(plan, wide_budget: int, narrow: tuple[str, ...],
+                lenses: list[str] | None = None) -> tuple[str, ...] | None:
     """Widen-retry fact window: re-partition the PRE-CAP plan at ``wide_budget`` and
     re-derive facts from the wider core's key_claims (same derivation as ``_facts_for``).
     Returns None unless the wider set adds >= 2 facts absent from the narrow set — the
     money guard: identical facts would fail identically, so nothing is spent."""
     from src.tour.content_budget import partition_poi_content
 
-    cb = partition_poi_content(plan, core_seconds_budget=wide_budget)
+    cb = partition_poi_content(plan, core_seconds_budget=wide_budget,
+                               interest_lenses=lenses or None)
     core_ids = set(cb.core_ids)
     facts, seen = [], set()
     for b in plan.beats:
@@ -149,7 +151,8 @@ def main() -> int:
         plans.append(select_poi_beats(poi, beats, interest_lenses=ti.lenses))
     capped = []
     for pb in plans:
-        cb = partition_poi_content(pb, core_seconds_budget=args.core_seconds)
+        cb = partition_poi_content(pb, core_seconds_budget=args.core_seconds,
+                                   interest_lenses=lenses or None)
         core = tuple(b for b in pb.beats if b.id in set(cb.core_ids))
         capped.append(pb.model_copy(update={"beats": core or pb.beats[:1]}))
     seq = BeatSequence(poi_beats=tuple(capped))
@@ -216,7 +219,7 @@ def main() -> int:
         res = author_compose_stop(facts, poi.name, lens, drafter=drafter, checker=checker,
                                   stitch_fallback=stitch, max_repairs=3, trace=trace,
                                   widen=lambda i=stop_idx, f=facts: _wide_facts(
-                                      plans[i], args.core_seconds * 2, f),
+                                      plans[i], args.core_seconds * 2, f, lenses),
                                   corpus_facts=lambda p=poi, f=facts: _corpus_facts_for(
                                       p, snap, route, ti.lenses, f),
                                   excise=True)
