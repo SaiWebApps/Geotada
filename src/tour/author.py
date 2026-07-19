@@ -33,14 +33,57 @@ from .generation import split_sentences
 from .narration_quality import craft_score
 
 
+@dataclass(frozen=True)
+class StopContext:
+    """Cross-stop narrative context threaded into ONE stop's draft/rewrite prompt so the
+    author can bridge from the previous stop and pull toward the next — WITHOUT ever
+    licensing a new invented fact (see ``_THREADING_ADDENDUM``). Built by
+    ``author_compose_script``'s serial (``thread=True``) walk; ``None`` (the default
+    everywhere else, incl. the production API path) reproduces today's byte-identical
+    isolated-stop prompt.
+
+    ``prev_summary`` is a single sentence describing what the PREVIOUS content-bearing stop
+    actually SERVED (the converged author prose OR the grounded stitch it fell back to —
+    never a discarded draft). It is PROMPT-ONLY: it must NEVER be admitted into the
+    fact-checker's source facts, or unverified narration would become uncheckable
+    "evidence" for the next stop's claims (see ``test_prev_summary_is_never_admitted_as_a_
+    source_fact``).
+
+    Every field here is actually READ by ``_threading_addendum`` (``prev_summary`` gates and
+    fills the bridge clause; ``next_poi``'s TRUTHINESS gates the pull clause, though its
+    literal name is never spliced into the prompt — see ``_threading_addendum``'s docstring;
+    ``position`` selects the branch). There is no ``prev_poi`` or ``tour_theme`` field: an
+    earlier draft carried both but never read either in the addendum, and a hostile verifier
+    flagged that as dead surface with tests manufacturing false coverage — removed rather
+    than wired to a use that would only duplicate ``prev_summary``'s existing gating."""
+
+    prev_summary: str = ""
+    next_poi: str = ""
+    position: str = "middle"  # "opening" | "middle" | "finale"
+
+
 class Drafter(Protocol):
     """Writes a stop's narration from its facts, and rewrites it against a repair signal.
-    The intelligence (the LLM) lives here; the loop below is pure orchestration."""
+    The intelligence (the LLM) lives here; the loop below is pure orchestration.
 
-    def write(self, facts: tuple[str, ...], poi: str, lens: str) -> str: ...
+    ``context`` (keyword-only, defaults ``None``): optional cross-stop narrative context
+    (see ``StopContext``). Callers MUST pass it only when non-``None`` (never
+    ``context=None`` explicitly) so drafters written before threading existed — which take
+    no ``context`` parameter at all — keep working unmodified."""
+
+    def write(
+        self, facts: tuple[str, ...], poi: str, lens: str, *, context: StopContext | None = None
+    ) -> str: ...
 
     def rewrite(
-        self, facts: tuple[str, ...], draft: str, result: FactCheckResult, poi: str, lens: str
+        self,
+        facts: tuple[str, ...],
+        draft: str,
+        result: FactCheckResult,
+        poi: str,
+        lens: str,
+        *,
+        context: StopContext | None = None,
     ) -> str: ...
 
 
@@ -61,6 +104,9 @@ class AuthorResult:
     # this an operator sees a bare GROUNDED-STITCH FALLBACK and cannot tell a corpus rescue
     # fired at all (only ``rescued``, which is empty whenever nothing was ultimately SERVED
     # under the rescued banner, was previously visible).
+    threaded: bool = False  # True iff a StopContext was passed to this call (attributes a
+    # live regression to the threading track even when it still fell back — mirrors
+    # ``widened``'s shape but answers "was this attempt made under threading", not "did it win")
 
 
 def author_compose_stop(
@@ -78,6 +124,7 @@ def author_compose_stop(
     corpus_facts: Callable[[], tuple[str, ...]] | None = None,
     excise: bool = False,
     min_keep_ratio: float = 0.6,
+    context: StopContext | None = None,
 ) -> AuthorResult:
     """Draft the stop, then repair against the semantic fact-check until it is faithful and
     complete, bounded by ``max_repairs``. If repair is exhausted, fall back to the grounded
@@ -156,13 +203,21 @@ def author_compose_stop(
     still falls back (no excise rung configured, or excision itself aborted), those grounded
     claims are surfaced here even though nothing was ultimately served under the ``rescued``
     banner — so an operator reading the harness output can tell the rescue rung fired at
-    all, instead of seeing a bare GROUNDED-STITCH FALLBACK."""
+    all, instead of seeing a bare GROUNDED-STITCH FALLBACK.
+
+    ``context`` (optional): cross-stop ``StopContext`` forwarded to BOTH the narrow loop and
+    the widened retry, so a widened-but-threaded stop still opens/bridges/pulls correctly.
+    Threading buys ZERO leniency from the fact-check: the checker still runs against exactly
+    ``facts`` (or ``wide_facts``) regardless of ``context``."""
+    threaded = context is not None
     best_draft, best_result, attempts = _author_loop(
-        facts, poi, lens, drafter=drafter, checker=checker, max_repairs=max_repairs, trace=trace
+        facts, poi, lens, drafter=drafter, checker=checker, max_repairs=max_repairs, trace=trace,
+        context=context,
     )
     if best_result.passed():
         return AuthorResult(
-            text=best_draft, result=best_result, attempts=attempts, grounded_fallback=False
+            text=best_draft, result=best_result, attempts=attempts, grounded_fallback=False,
+            threaded=threaded,
         )
 
     rescued_not_served: tuple[str, ...] = ()
@@ -184,6 +239,7 @@ def author_compose_stop(
                 checker=checker,
                 max_repairs=wide_max_repairs,
                 trace=trace,
+                context=context,
             )
             attempts += wide_attempts
             if wide_result.passed():
@@ -193,6 +249,7 @@ def author_compose_stop(
                     attempts=attempts,
                     grounded_fallback=False,
                     widened=True,
+                    threaded=threaded,
                 )
             widened_draft, widened_result, widened_facts = wide_draft, wide_result, wide_facts
 
@@ -231,6 +288,7 @@ def author_compose_stop(
     return AuthorResult(
         text=stitch_fallback, result=floor, attempts=attempts + 1, grounded_fallback=True,
         rescued_not_served=rescued_not_served,
+        threaded=threaded,
     )
 
 
@@ -360,6 +418,26 @@ def _excise(
     return remainder, result, dropped
 
 
+def _draft_write(drafter: Drafter, facts, poi: str, lens: str, context: StopContext | None) -> str:
+    """Calls ``drafter.write`` WITHOUT a ``context`` kwarg when ``context`` is ``None`` — so
+    drafters written before threading existed (no ``context`` parameter at all, e.g. the
+    pre-threading test fakes) never see an unexpected keyword argument and keep working
+    unmodified."""
+    if context is not None:
+        return drafter.write(facts, poi, lens, context=context)
+    return drafter.write(facts, poi, lens)
+
+
+def _draft_rewrite(
+    drafter: Drafter, facts, draft: str, result: FactCheckResult, poi: str, lens: str,
+    context: StopContext | None,
+) -> str:
+    """The ``rewrite`` mirror of ``_draft_write`` — same no-kwarg-unless-present rule."""
+    if context is not None:
+        return drafter.rewrite(facts, draft, result, poi, lens, context=context)
+    return drafter.rewrite(facts, draft, result, poi, lens)
+
+
 def _author_loop(
     facts: tuple[str, ...],
     poi: str,
@@ -369,16 +447,17 @@ def _author_loop(
     checker: SemanticFactChecker,
     max_repairs: int,
     trace: list[tuple[str, FactCheckResult]] | None,
+    context: StopContext | None = None,
 ) -> tuple[str, FactCheckResult, int]:
     """One draft + bounded repair pass; returns (best_draft, best_result, attempts)."""
-    draft = drafter.write(facts, poi, lens)
+    draft = _draft_write(drafter, facts, poi, lens, context)
     result = checker.check(draft, facts)
     if trace is not None:
         trace.append((draft, result))
     best_draft, best_result = draft, result
     attempts = 1
     while not best_result.passed() and attempts <= max_repairs:
-        cand = drafter.rewrite(facts, best_draft, best_result, poi, lens)
+        cand = _draft_rewrite(drafter, facts, best_draft, best_result, poi, lens, context)
         if cand.strip():
             cand_result = checker.check(cand, facts)
             if trace is not None:
@@ -421,6 +500,28 @@ def _facts_for_stop(
     return tuple(facts)
 
 
+def _served_text(sents: list[Sentence]) -> str:
+    """The narration a stop actually SERVED (author prose or the grounded stitch — whichever
+    ``_author_stop`` emitted), joined in order. Glue/transition sentences are excluded: only
+    the beat-cited content is "what the stop said" for threading purposes."""
+    return " ".join(s.text for s in sents if s.source_type == "beat")
+
+
+def _one_sentence_summary(text: str) -> str:
+    """The one-sentence summary threaded forward as ``StopContext.prev_summary``.
+
+    Structural rule (no meaning-inference): the LAST sentence of the served text, via the
+    same ``split_sentences`` splitter used throughout this module. This deliberately departs
+    from "the stop's first sentence" — live evidence (specs/2026-07-18-tour-qa-campaign/
+    PHASE-C-RESULTS.md) shows ``_AUTHOR_SYSTEM`` instructs the drafter to open on a
+    contentless MOMENT and build tension to a late payoff, so authored OPENERS are routinely
+    zero-content ("Listen for hooves.") while CLOSERS are consistently callback-grade ("The
+    kings never came back to the island."). The first sentence would hand the next stop
+    nothing to bridge from; the last is what the walker actually just heard."""
+    sents = [s.strip() for s in split_sentences(text) if s.strip()]
+    return sents[-1] if sents else ""
+
+
 def author_compose_script(
     stitched: Script,
     beat_sequence: BeatSequence,
@@ -431,6 +532,7 @@ def author_compose_script(
     checker: SemanticFactChecker,
     max_repairs: int = 3,
     max_workers: int = 6,
+    thread: bool = False,
 ) -> tuple[Script, dict[int, bool]]:
     """Author-engine counterpart to ``compose_script_per_chapter``: write each dwell stop
     FRESH from its grounded facts (fact-check-and-repair, grounded-stitch floor), then
@@ -442,15 +544,37 @@ def author_compose_script(
     converge serves its grounded stitch (``author_compose_stop``'s floor), so a served stop
     is ALWAYS either 0-unsupported/0-missing author prose or the exact stitch — never a
     non-converged draft. Returns ``(script, grounded_fallback_by_stop)``. The intelligence
-    (Opus drafter + calibrated checker) is injected, so this is fully testable offline."""
+    (Opus drafter + calibrated checker) is injected, so this is fully testable offline.
+
+    ``thread`` (default ``False``, byte-identical to today when unset — the production API
+    path never sets it): when ``True``, stops are authored SERIALLY in ascending order
+    (never via the ``ThreadPoolExecutor`` below) so each stop's ``StopContext`` can carry the
+    PREVIOUS content-bearing stop's one-sentence summary, and the NEXT content-bearing stop's
+    POI (used only to GATE the pull instruction — its literal name is never spliced into the
+    prompt, see ``_threading_addendum``) + this stop's narrative ``position``
+    ("opening"/"middle"/"finale", with a single content stop labelled "finale" since it is
+    the last thing the walker hears). Glue/vignette-only stops (no beat sentences) are
+    transparent to threading: they neither receive nor interrupt the prev/next chain.
+    ``position``/``next_poi`` are computed over the stops that will actually be AUTHORED
+    (those with beat content), never over the raw ``sorted(by_stop)`` keys, so a glue/
+    orientation stop at index 0 does not steal the "opening" label from the first real stop.
+    Threading is strictly a PROMPT addition — the fact-check contract is unchanged, so a
+    threaded bridge that invents a connective fact still fails and still falls back (see
+    ``test_threaded_bridge_that_invents_still_falls_back``)."""
     beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
     poi_name_by_stop = {i: p.name for i, p in enumerate(route.pois)}
     by_stop: dict[int, list[Sentence]] = defaultdict(list)
     for s in stitched.script:
         by_stop[s.stop_idx].append(s)
     stops = sorted(by_stop)
+    # Stops that will actually be AUTHORED/served-with-content (have beat sentences) — the
+    # ONLY stops eligible for a narrative position or a prev/next link. Glue/vignette-only
+    # stops (author.py's own "nothing to author" case below) are invisible to threading.
+    content_stops = [i for i in stops if any(s.source_type == "beat" for s in by_stop[i])]
 
-    def _author_stop(stop_idx: int) -> tuple[int, list[Sentence], bool]:
+    def _author_stop(
+        stop_idx: int, context: StopContext | None = None
+    ) -> tuple[int, list[Sentence], bool]:
         stop_sents = by_stop[stop_idx]
         beat_sents = [s for s in stop_sents if s.source_type == "beat"]
         if not beat_sents:
@@ -462,7 +586,7 @@ def author_compose_script(
         poi = poi_name_by_stop.get(stop_idx, "this stop")
         res = author_compose_stop(
             facts, poi, lens, drafter=drafter, checker=checker,
-            stitch_fallback=stitch, max_repairs=max_repairs,
+            stitch_fallback=stitch, max_repairs=max_repairs, context=context,
         )
         if res.grounded_fallback:
             return stop_idx, list(stop_sents), True  # keep the stitch sentences verbatim
@@ -486,8 +610,37 @@ def author_compose_script(
                 out.append(s)
         return stop_idx, out, False
 
-    with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(stops)))) as pool:
-        results = list(pool.map(_author_stop, stops))
+    if thread:
+        results: list[tuple[int, list[Sentence], bool]] = []
+        prev_summary = ""
+        for stop_idx in stops:
+            ctx: StopContext | None = None
+            if stop_idx in content_stops:
+                i = content_stops.index(stop_idx)
+                # Finale is checked FIRST: a tour with exactly one content stop has
+                # i == 0 == len(content_stops) - 1, and it is the LAST thing the walker
+                # hears, so it must get the closing instruction, not "opening".
+                if i == len(content_stops) - 1:
+                    position = "finale"
+                elif i == 0:
+                    position = "opening"
+                else:
+                    position = "middle"
+                next_poi = (
+                    poi_name_by_stop.get(content_stops[i + 1], "")
+                    if i + 1 < len(content_stops)
+                    else ""
+                )
+                ctx = StopContext(
+                    prev_summary=prev_summary, next_poi=next_poi, position=position,
+                )
+            stop_idx_out, sents, fb = _author_stop(stop_idx, ctx)
+            results.append((stop_idx_out, sents, fb))
+            if stop_idx in content_stops:  # only content stops update the chain
+                prev_summary = _one_sentence_summary(_served_text(sents))
+    else:
+        with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(stops)))) as pool:
+            results = list(pool.map(_author_stop, stops))
     out_by_stop = {i: sents for i, sents, _ in results}
     fell_back = {i: fb for i, _, fb in results}
     out: list[Sentence] = []
@@ -545,6 +698,75 @@ _REWRITE_SYSTEM = (
     "Keep it flowing, second person; vividness from rhythm, not new facts. Return ONLY the "
     "revised narration."
 )
+# Appended (formatted) to either system prompt above ONLY when a StopContext is present —
+# a context=None call (every existing caller, incl. the production API path) formats
+# neither prompt with this text, so the no-context prompts stay byte-identical.
+#
+# KILLER-DEFECT FIX (hostile-verifier must-fix #1): an earlier draft of this addendum
+# instructed the drafter to "open on a brief bridge OR CALLBACK to" the previous stop's
+# content, and separately told it to "call back to something THIS TOUR ALREADY SAID" — both
+# invite a flat declarative restatement of the previous/next stop's content, which
+# factcheck.py's decomposer extracts as an ordinary checkable claim and its
+# _FAITHFULNESS_JUDGE_USER TEST 3 rejects outright (it names an entity / detail absent from
+# THIS stop's FACTS). That is the exact fallback disaster the author engine exists to avoid:
+# an instruction that itself licenses the thing the checker is documented to reject.
+#
+# The fix constrains a bridge/pull to ONLY the forms _DECOMPOSE_SYSTEM's own EXCLUDE list
+# names (second-person address, rhetorical question, sensory/imaginative framing) — forms
+# that structurally carry no checkable proposition, by the decomposer's own contract — and
+# explicitly forbids naming any entity (a place, e.g. the next POI) that is not in THIS
+# stop's FACTS. Restated three ways on purpose, with the ambiguous "callback to what was
+# said" phrasing dropped entirely. The checker is still the backstop of last resort (see
+# test_threaded_bridge_that_invents_still_falls_back): a drafter that ignores this
+# instruction anyway still gets caught and falls back, never smuggled through.
+_THREADING_ADDENDUM = (
+    "\n\nCROSS-STOP CONTINUITY: this narration is the {position} stop of a walking tour — "
+    "it will be heard right after the previous stop and right before the next, not read as "
+    "a stand-alone essay.\n"
+    "{bridge_clause}{pull_clause}"
+    "Any bridge or pull must be RHETORICAL ONLY: a second-person address, a question, or "
+    "sensory/imaginative framing — the exact forms a fact-checker's claim-decomposer already "
+    "excludes from checking, and nothing else. It must NEVER assert a new fact: never "
+    "restate, describe, or name ANY detail (a place, a date, an appearance, a reason, a "
+    "relationship) about the previous or next stop as a flat declarative statement — even a "
+    "detail this tour narrated earlier is not in THIS stop's FACTS, and the fact-checker "
+    "gates every sentence of this stop against exactly those FACTS, nothing more. If a "
+    "bridge or pull cannot be phrased as a question, a second-person address, or sensory "
+    "framing, leave it out and move straight into this stop's own material."
+)
+
+
+def _threading_addendum(context: StopContext) -> str:
+    """Builds the ``_THREADING_ADDENDUM`` fill-ins from ``context``. Pure string assembly —
+    no meaning-inference. The bridge clause surfaces ``prev_summary`` to the model as
+    CONTEXT ONLY (never to be repeated as a stated fact); the pull clause NEVER splices
+    ``next_poi``'s literal name into the prompt text (only its truthiness gates which clause
+    applies) — naming it would itself be the licensed-invention defect this addendum exists
+    to prevent."""
+    bridge_clause = (
+        "For context only (never to be repeated as a stated fact), the previous stop just "
+        f'left the walker with this: "{context.prev_summary}" Gesture at that moment '
+        "rhetorically — a second-person nod or a question — before moving into this stop's "
+        "own material; never restate, describe, or assert it as a declarative sentence.\n"
+        if context.prev_summary
+        else ""
+    )
+    if context.position == "finale":
+        pull_clause = (
+            "This is the FINAL stop of the tour — give it an actual close, not another "
+            "opener.\n"
+        )
+    elif context.next_poi:
+        pull_clause = (
+            "Before you finish, plant a forward pull — a question or a second-person "
+            "gesture toward what's still ahead — never naming or describing the next stop, "
+            "just building anticipation.\n"
+        )
+    else:
+        pull_clause = ""
+    return _THREADING_ADDENDUM.format(
+        position=context.position, bridge_clause=bridge_clause, pull_clause=pull_clause
+    )
 
 
 class LLMDrafter:
@@ -585,13 +807,23 @@ class LLMDrafter:
             text = self._once(system, user, thinking=None)
         return text
 
-    def write(self, facts: tuple[str, ...], poi: str, lens: str) -> str:
-        return self._call(
-            _AUTHOR_SYSTEM.format(poi=poi, lens=lens), "FACTS:\n- " + "\n- ".join(facts)
-        )
+    def write(
+        self, facts: tuple[str, ...], poi: str, lens: str, *, context: StopContext | None = None
+    ) -> str:
+        system = _AUTHOR_SYSTEM.format(poi=poi, lens=lens)
+        if context is not None:
+            system += _threading_addendum(context)
+        return self._call(system, "FACTS:\n- " + "\n- ".join(facts))
 
     def rewrite(
-        self, facts: tuple[str, ...], draft: str, result: FactCheckResult, poi: str, lens: str
+        self,
+        facts: tuple[str, ...],
+        draft: str,
+        result: FactCheckResult,
+        poi: str,
+        lens: str,
+        *,
+        context: StopContext | None = None,
     ) -> str:
         user = (
             "SOURCE FACTS (the only allowed material):\n- " + "\n- ".join(facts)
@@ -601,13 +833,17 @@ class LLMDrafter:
             + ("\n- ".join(result.unsupported_claims) or "(none)")
             + "\n\nDRAFT to revise:\n" + draft
         )
-        return self._call(_REWRITE_SYSTEM.format(poi=poi, lens=lens), user)
+        system = _REWRITE_SYSTEM.format(poi=poi, lens=lens)
+        if context is not None:
+            system += _threading_addendum(context)
+        return self._call(system, user)
 
 
 __all__ = [
     "AuthorResult",
     "Drafter",
     "LLMDrafter",
+    "StopContext",
     "author_compose_script",
     "author_compose_stop",
 ]
