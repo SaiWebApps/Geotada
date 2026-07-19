@@ -206,3 +206,98 @@ def test_faithfulness_judge_fails_closed_on_empty_input():
     assert not judge.entails((), "some claim")
     assert not judge.entails(("a fact",), "   ")
     assert judge.calls == 0 and "kw" not in box  # never called the model
+
+
+# --- full-corpus RECHECK + EXCISION primitives (2026-07-18, PHASE-C tour-killer fix) ---
+
+
+class _StrictNoEntailer:
+    """Always says NO — the strict faithfulness head, for pinning which primitive
+    ``unsupported_against`` must route through."""
+
+    def entails(self, key_claims: tuple[str, ...], sentence_text: str) -> bool:
+        return False
+
+
+class _AlwaysYesCoverageJudge:
+    """Always says the fact IS conveyed — records every call so a test can prove
+    ``unsupported_against`` never touches it."""
+
+    def __init__(self) -> None:
+        self.calls: list[tuple[str, str]] = []
+
+    def conveys(self, fact: str, narration: str) -> bool:
+        self.calls.append((fact, narration))
+        return True
+
+
+def test_unsupported_against_uses_the_strict_entailer_not_the_coverage_judge():
+    """The FULL-CORPUS RECHECK primitive must route through the STRICT entailer, NEVER the
+    paraphrase-tolerant coverage judge — using coverage here would rubber-stamp exactly the
+    overstatement/mis-attribution the strict judge exists to reject. Build a checker whose
+    entailer says NO and whose coverage judge says YES to everything: if
+    ``unsupported_against`` still reports the claim as unsupported, it proves the strict
+    path was used.
+    UNDO: swap the implementation to ``self._coverage.conveys(claim, ' '.join(facts))`` (or
+    any coverage-judge route) -> the always-YES coverage judge rescues the claim ->
+    ``unsupported_against`` returns () -> RED."""
+    coverage = _AlwaysYesCoverageJudge()
+    checker = SemanticFactChecker(
+        entailer=_StrictNoEntailer(), decomposer=_RuleDecomposer(), coverage_judge=coverage
+    )
+    still = checker.unsupported_against(("a claim",), ("some fact",))
+    assert still == ("a claim",), still
+    assert coverage.calls == []  # the coverage judge was NEVER consulted
+
+
+def test_unsupported_against_empty_claims_returns_empty_without_calling_entailer():
+    class _RaisingEntailer:
+        def entails(self, key_claims, sentence_text):
+            raise AssertionError("must not be called for an empty claim tuple")
+
+    checker = SemanticFactChecker(entailer=_RaisingEntailer(), decomposer=_RuleDecomposer())
+    assert checker.unsupported_against((), ("some fact",)) == ()
+
+
+def test_locate_maps_a_claim_to_only_the_sentence_that_conveys_it():
+    """EXCISION's attribution primitive: with a coverage judge injected, ``locate`` must
+    call ``conveys(claim, sentence)`` per (claim, sentence) pair and return the INDICES of
+    the sentences that convey each claim — not a blob-level or substring match.
+    UNDO: pass the WHOLE joined narration instead of one ``sentence`` per call -> every
+    claim maps to every sentence index -> this test's exact-index assertion goes RED."""
+
+    class _ExactMatchCoverageJudge:
+        def conveys(self, fact: str, narration: str) -> bool:
+            return fact.strip().lower() in narration.strip().lower()
+
+    checker = SemanticFactChecker(
+        entailer=_SubstringEntailer(),
+        decomposer=_RuleDecomposer(),
+        coverage_judge=_ExactMatchCoverageJudge(),
+    )
+    sentences = (
+        "The tower was built in 1250.",
+        "A dragon lives inside.",
+        "The bell weighs thirteen tons.",
+    )
+    located = checker.locate(("dragon lives inside",), sentences)
+    assert located == {"dragon lives inside": (1,)}, located
+
+
+def test_locate_falls_back_to_the_entailer_without_a_coverage_judge():
+    """Backward-compat: with no coverage_judge injected, ``locate`` falls back to
+    ``self._entail.entails((sentence,), claim)`` per sentence — the offline substring-fake
+    path (mirrors ``test_coverage_falls_back_to_entailer_without_judge``)."""
+    checker = _checker()  # no coverage_judge
+    sentences = ("The tower was built in 1250.", "The bell weighs thirteen tons.")
+    located = checker.locate(("the bell weighs thirteen tons",), sentences)
+    assert located == {"the bell weighs thirteen tons": (1,)}, located
+
+
+def test_locate_returns_the_empty_tuple_for_a_claim_no_sentence_conveys():
+    """A claim that matches NO sentence (the decomposer's cross-sentence-merge shape) maps
+    to ``()`` — the caller's signal to ABORT excision, never a fuzzy guess."""
+    checker = _checker()
+    sentences = ("The tower was built in 1250.", "The bell weighs thirteen tons.")
+    located = checker.locate(("a dragon lives inside",), sentences)
+    assert located == {"a dragon lives inside": ()}, located

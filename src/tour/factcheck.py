@@ -37,6 +37,7 @@ revert), never treated as an oracle.
 from __future__ import annotations
 
 import json
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Protocol
@@ -336,6 +337,62 @@ class SemanticFactChecker:
         self._entail = entailer
         self._decompose = decomposer
         self._coverage = coverage_judge
+
+    def unsupported_against(
+        self, claims: tuple[str, ...], facts: tuple[str, ...]
+    ) -> tuple[str, ...]:
+        """The FAITHFULNESS half of ``check`` factored out: which of ``claims`` are NOT
+        entailed by ``facts``? Routes through the STRICT ``self._entail`` ONLY — never
+        ``self._coverage`` (the coverage judge is deliberately paraphrase-tolerant and
+        would rubber-stamp an overstatement/mis-attribution the strict judge correctly
+        rejects; using it here would turn the anti-hallucination gate into a rubber
+        stamp). This is the FULL-CORPUS RECHECK primitive: a claim flagged unsupported
+        against a trimmed tour-window fact list may still be entailed by the POI's full
+        beat corpus, in which case it is grounded (a windowing artifact), not invented."""
+        if not claims:
+            return ()
+
+        def _run(claim: str) -> tuple[str, bool]:
+            return claim, self._entail.entails(facts, claim)
+
+        with ThreadPoolExecutor(max_workers=max(1, min(_MAX_WORKERS, len(claims)))) as pool:
+            verdicts = list(pool.map(_run, claims))
+        return tuple(c for c, ok in verdicts if not ok)
+
+    def locate(
+        self, claims: tuple[str, ...], sentences: tuple[str, ...]
+    ) -> dict[str, tuple[int, ...]]:
+        """Claim -> SENTENCE-INDEX attribution: which of ``sentences`` convey each of
+        ``claims``? Uses the paraphrase-tolerant ``self._coverage.conveys(claim, sentence)``
+        when a coverage judge is injected, falling back to
+        ``self._entail.entails((sentence,), claim)`` when ``_coverage is None`` — the same
+        fallback ``check()`` already applies to its coverage direction (below), so the
+        offline substring-fake tests keep working. Used by SURGICAL EXCISION to find which
+        sentence(s) carry a still-unsupported claim so only those may be dropped — never a
+        lexical/substring guess. A claim conveyed by NO sentence maps to ``()``, the
+        caller's signal to abort excision (we cannot prove where an invention lives)."""
+        result: dict[str, tuple[int, ...]] = {c: () for c in claims}
+        if not claims or not sentences:
+            return result
+        jobs = [(c, i, s) for c in claims for i, s in enumerate(sentences)]
+
+        def _run(job: tuple[str, int, str]) -> tuple[str, int, bool]:
+            claim, idx, sent = job
+            if self._coverage is not None:
+                ok = self._coverage.conveys(claim, sent)
+            else:
+                ok = self._entail.entails((sent,), claim)
+            return claim, idx, ok
+
+        with ThreadPoolExecutor(max_workers=max(1, min(_MAX_WORKERS, len(jobs)))) as pool:
+            verdicts = list(pool.map(_run, jobs))
+        hits: dict[str, list[int]] = defaultdict(list)
+        for claim, idx, ok in verdicts:
+            if ok:
+                hits[claim].append(idx)
+        for claim, idxs in hits.items():
+            result[claim] = tuple(idxs)
+        return result
 
     def check(self, narration_text: str, source_facts: tuple[str, ...]) -> FactCheckResult:
         claims = self._decompose.decompose(narration_text)

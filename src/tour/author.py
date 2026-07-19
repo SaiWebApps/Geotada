@@ -20,6 +20,7 @@ fact-complete and corpus-verbatim, so it trivially passes.
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
@@ -29,6 +30,7 @@ from typing import Protocol
 from .contract import BeatSequence, Route, Script, Sentence, ValidationReport
 from .factcheck import FactCheckResult, SemanticFactChecker
 from .generation import split_sentences
+from .narration_quality import craft_score
 
 
 class Drafter(Protocol):
@@ -45,10 +47,20 @@ class Drafter(Protocol):
 @dataclass(frozen=True)
 class AuthorResult:
     text: str
-    result: FactCheckResult  # the fact-check verdict on ``text``
+    result: FactCheckResult  # the fact-check verdict on ``text`` (the SERVED text, always)
     attempts: int  # how many draft/rewrite rounds ran
     grounded_fallback: bool  # True iff we fell back to the grounded stitch
     widened: bool = False  # True iff the served text came from the widened-fact retry
+    rescued: tuple[str, ...] = ()  # claims flagged unsupported by the window, grounded by
+    # the FULL POI corpus and served anyway (a windowing artifact, not an invention)
+    excised: tuple[str, ...] = ()  # sentences SURGICALLY DROPPED from the served text
+    # because they carried a claim entailed by nothing (a true invention)
+    rescued_not_served: tuple[str, ...] = ()  # claims the corpus GROUNDED during a rescue
+    # attempt (narrow or widened) that nonetheless still fell back to the stitch (no excise
+    # rung configured, or excision itself aborted) — auditability only, never behavior: without
+    # this an operator sees a bare GROUNDED-STITCH FALLBACK and cannot tell a corpus rescue
+    # fired at all (only ``rescued``, which is empty whenever nothing was ultimately SERVED
+    # under the rescued banner, was previously visible).
 
 
 def author_compose_stop(
@@ -63,6 +75,9 @@ def author_compose_stop(
     trace: list[tuple[str, FactCheckResult]] | None = None,
     widen: Callable[[], tuple[str, ...] | None] | None = None,
     wide_max_repairs: int = 1,
+    corpus_facts: Callable[[], tuple[str, ...]] | None = None,
+    excise: bool = False,
+    min_keep_ratio: float = 0.6,
 ) -> AuthorResult:
     """Draft the stop, then repair against the semantic fact-check until it is faithful and
     complete, bounded by ``max_repairs``. If repair is exhausted, fall back to the grounded
@@ -79,7 +94,9 @@ def author_compose_stop(
     draft) is DISCARDED rather than fed forward, so the loop cannot thrash a good draft into a
     worse one. An empty rewrite is treated as a total miss and never adopted.
 
-    ``widen`` (optional): called ONCE, only when the narrow loop fails to converge. If it
+    ``widen`` (optional): called ONCE, only when the narrow loop fails to converge, and
+    ALWAYS BEFORE either rescue rung below gets a chance to run (ordering fixed 2026-07-18;
+    see the RATIONALE paragraph after ``excise`` for why this order is load-bearing). If it
     returns a wider fact tuple, the draft/repair loop runs one more bounded round
     (``wide_max_repairs``) on those facts; the widened prose is served ONLY if it fully
     passes, else the ORIGINAL narrow ``stitch_fallback`` is served (never a wider stitch).
@@ -88,7 +105,58 @@ def author_compose_stop(
     widening put the bridge in the facts and converted 3 of 4 retried fallbacks to authored
     first-attempt at the same zero-fabrication bar (Big Ben craft 0.08 -> 2.42). One
     dense-multi-entity stop (Conciergerie) regressed under widening — the retry is bounded
-    (~1.5x Opus on fallback stops only) so that case costs a little and changes nothing."""
+    (~1.5x Opus on fallback stops only) so that case costs a little and changes nothing.
+
+    ``corpus_facts`` (optional, both OFF by default so every existing caller — including the
+    production path, ``author_compose_script``, which passes neither — is byte-identical):
+    called ONLY when the best draft's residual failures are UNSUPPORTED-only (a genuine
+    MISSING fact is a real drop no corpus recheck can repair, so it is never called then),
+    and ONLY after ``widen`` has already had its turn and failed to fully converge. If it
+    returns a non-empty POI FULL-CORPUS fact tuple, every still-unsupported claim is
+    RE-TESTED against it (``checker.unsupported_against``, the STRICT entailer — never the
+    paraphrase-tolerant coverage judge). A claim entailed by the wider corpus was only
+    unsupported because the tour-window trimmed away its source beat (a windowing
+    artifact, not an invention) and is served; a claim entailed by NOTHING stays a true
+    invention. Fully rescued -> serve the draft AS-IS (no cut, no craft gate — see the
+    ``excise`` paragraph's CRAFT FLOOR note), verdict recomputed clean.
+
+    ``excise`` (optional, OFF by default): when claims survive the corpus recheck (or no
+    ``corpus_facts`` was given at all) and the failures are still unsupported-only, try
+    dropping ONLY the sentence(s) that carry them (``_excise``) rather than discarding the
+    whole stop. Surgical excision serves the remainder ONLY if every sentence carrying an
+    unsupported claim was locatable, the surviving prose clears the ``min_keep_ratio``
+    collapse floor, and the remainder independently re-passes the fact-check: the COVERAGE
+    direction against the NARROW ``facts`` (a dropped fact is still a drop, unrelaxed), and
+    the FAITHFULNESS direction's residual unsupported claims are given one more chance
+    through the SAME full-POI ``corpus`` the rescue rung already fetched
+    (``checker.unsupported_against``) — a claim the corpus grounds is not a fresh invention
+    just because the excised remainder's re-decomposition surfaced it again. Without this,
+    a rescued claim whose sentence survives excision (because only the OTHER, truly-invented
+    sentence was dropped) gets re-flagged unsupported against the narrow facts alone and the
+    whole draft wrongly falls through to the stitch — the exact mixed Vert-Galant shape
+    (one windowed-out true claim + one real invention) the whole track exists for. This
+    never relaxes the anti-hallucination guarantee: a claim only ever survives via entailment
+    against facts the POI's own corpus actually states, never a guess.
+    CRAFT FLOOR: ``_excise`` gates a SURGICALLY-CUT remainder on ``craft_score(remainder) >=
+    craft_score(stitch_fallback)`` — dropping a sentence can strand its neighbor (dangling
+    anaphora), so a fact-clean-but-mutilated remainder must still beat the stitch it would
+    replace. The plain corpus-RESCUE path (no cut at all — the draft ships verbatim) applies
+    NO such gate: nothing was mutilated, so there is no register-crash risk to guard against,
+    and the whole premise of the author engine is that its unmutilated prose already beats
+    the mechanical stitch (see ``test_rescue_path_has_no_craft_floor_by_design_unlike_excise``).
+    RATIONALE for widen-before-rescue: the same recheck+excise ladder is applied to the
+    widened draft first if ``widen`` fully failed to converge, and ONLY THEN — if that also
+    fails — is a narrow-draft rescue/excise attempted, since widening is the more expensive
+    rung and must not be preempted by a narrow rescue that would ship lower-craft prose
+    (Phase-C measured widened prose at 2.29-2.42 craft; see
+    ``test_widen_fires_before_any_rescue_attempt_even_when_the_narrow_rescue_would_succeed``).
+
+    ``AuthorResult.rescued_not_served`` (auditability, not a behavior change): whenever a
+    rescue attempt (narrow or widened) grounds SOME claims against the corpus but the stop
+    still falls back (no excise rung configured, or excision itself aborted), those grounded
+    claims are surfaced here even though nothing was ultimately served under the ``rescued``
+    banner — so an operator reading the harness output can tell the rescue rung fired at
+    all, instead of seeing a bare GROUNDED-STITCH FALLBACK."""
     best_draft, best_result, attempts = _author_loop(
         facts, poi, lens, drafter=drafter, checker=checker, max_repairs=max_repairs, trace=trace
     )
@@ -96,6 +164,15 @@ def author_compose_stop(
         return AuthorResult(
             text=best_draft, result=best_result, attempts=attempts, grounded_fallback=False
         )
+
+    rescued_not_served: tuple[str, ...] = ()
+
+    # WIDEN FIRST: the more expensive but higher-craft rung must get its chance to converge
+    # before either rescue rung below is even attempted — a narrow rescue that WOULD succeed
+    # must never preempt it (the 8cc2fb6 regression this reordering fixes).
+    widened_draft: str | None = None
+    widened_result: FactCheckResult | None = None
+    widened_facts: tuple[str, ...] = ()
     if widen is not None:
         wide_facts = widen()
         if wide_facts:
@@ -117,12 +194,170 @@ def author_compose_stop(
                     grounded_fallback=False,
                     widened=True,
                 )
+            widened_draft, widened_result, widened_facts = wide_draft, wide_result, wide_facts
+
+    if widened_draft is not None:
+        served, partial = _rescue_or_excise(
+            widened_draft, widened_result, widened_facts, checker=checker,
+            corpus_facts=corpus_facts, excise=excise, min_keep_ratio=min_keep_ratio,
+            stitch_fallback=stitch_fallback,
+        )
+        rescued_not_served = partial
+        if served is not None:
+            text, result, rescued, excised = served
+            return AuthorResult(
+                text=text, result=result, attempts=attempts, grounded_fallback=False,
+                widened=True, rescued=rescued, excised=excised,
+            )
+
+    # NARROW rescue/excise: only reached once widen (if configured) has already failed to
+    # fully converge AND its own rescue/excise attempt (if any) also failed to serve.
+    served, partial = _rescue_or_excise(
+        best_draft, best_result, facts, checker=checker, corpus_facts=corpus_facts,
+        excise=excise, min_keep_ratio=min_keep_ratio, stitch_fallback=stitch_fallback,
+    )
+    rescued_not_served = rescued_not_served + tuple(
+        c for c in partial if c not in rescued_not_served
+    )
+    if served is not None:
+        text, result, rescued, excised = served
+        return AuthorResult(
+            text=text, result=result, attempts=attempts, grounded_fallback=False,
+            rescued=rescued, excised=excised,
+        )
     # Deterministic floor: the grounded stitch is fact-complete and corpus-verbatim, so it
     # passes the check trivially — fidelity guaranteed even when the author won't converge.
     floor = checker.check(stitch_fallback, facts)
     return AuthorResult(
-        text=stitch_fallback, result=floor, attempts=attempts + 1, grounded_fallback=True
+        text=stitch_fallback, result=floor, attempts=attempts + 1, grounded_fallback=True,
+        rescued_not_served=rescued_not_served,
     )
+
+
+def _rescue_or_excise(
+    draft: str,
+    result: FactCheckResult,
+    facts: tuple[str, ...],
+    *,
+    checker: SemanticFactChecker,
+    corpus_facts: Callable[[], tuple[str, ...]] | None,
+    excise: bool,
+    min_keep_ratio: float,
+    stitch_fallback: str,
+) -> tuple[tuple[str, FactCheckResult, tuple[str, ...], tuple[str, ...]] | None, tuple[str, ...]]:
+    """Try to serve a FAILED draft via full-corpus RECHECK and/or surgical EXCISION,
+    cheapest-and-least-lossy rung first. Returns ``(served, rescued_even_if_not_served)``:
+    ``served`` is ``(served_text, served_result, rescued_claims, excised_sentences)`` on
+    success, else ``None`` (caller falls through to the next rung / the grounded-stitch
+    floor). ``rescued_even_if_not_served`` is populated whenever the corpus grounds ANY
+    claim during THIS attempt — regardless of whether the attempt ultimately served —
+    purely for the caller's ``AuthorResult.rescued_not_served`` auditability field; it never
+    affects control flow. A no-op — returns ``(None, ())`` immediately, with NO extra
+    checker calls — when neither ``corpus_facts`` nor ``excise`` is supplied, so every
+    existing caller stays byte-identical.
+
+    Guard: a genuine MISSING fact is a real drop the corpus recheck cannot repair (the
+    corpus can only ADD support for an unsupported claim, never supply a fact the draft
+    never stated), so this never runs — and ``corpus_facts`` is never even called — when
+    ``result.missing_facts`` is non-empty; a coverage failure always falls through."""
+    if corpus_facts is None and not excise:
+        return None, ()
+    if result.missing_facts or not result.unsupported_claims:
+        return None, ()
+    still = result.unsupported_claims
+    rescued: tuple[str, ...] = ()
+    corpus: tuple[str, ...] = ()
+    if corpus_facts is not None:
+        corpus = corpus_facts()
+        if corpus:
+            still = checker.unsupported_against(result.unsupported_claims, corpus)
+            rescued = tuple(c for c in result.unsupported_claims if c not in still)
+    if not still:
+        return (draft, FactCheckResult((), ()), rescued, ()), rescued
+    if excise:
+        excised_out = _excise(
+            draft, still, facts, checker=checker, min_keep_ratio=min_keep_ratio,
+            stitch_fallback=stitch_fallback, corpus=corpus,
+        )
+        if excised_out is not None:
+            text, res, dropped = excised_out
+            return (text, res, rescued, dropped), rescued
+    return None, rescued
+
+
+def _excise(
+    draft: str,
+    unsupported: tuple[str, ...],
+    facts: tuple[str, ...],
+    *,
+    checker: SemanticFactChecker,
+    min_keep_ratio: float,
+    stitch_fallback: str,
+    corpus: tuple[str, ...] = (),
+) -> tuple[str, FactCheckResult, tuple[str, ...]] | None:
+    """SURGICAL EXCISION: drop ONLY the sentence(s) carrying ``unsupported`` claims, keep
+    the rest of the authored prose VERBATIM, and re-check the remainder — COVERAGE against
+    the NARROW ``facts`` (unrelaxed: a dropped fact is still a drop), FAITHFULNESS with one
+    extra chance through the full-POI ``corpus`` (if given) for any claim the remainder's
+    re-decomposition still flags unsupported. That second chance is NOT a relaxation: a
+    claim only survives it by being entailed by facts the POI's OWN corpus actually states
+    (``checker.unsupported_against``, the same strict entailer, never a guess) — it exists
+    because dropping the invented sentence leaves the REST of the draft intact, including
+    any sentence carrying a claim the corpus rescue already grounded (windowed out of
+    ``facts`` but true), which the narrow-only recheck would otherwise re-flag and wrongly
+    discard the whole excision for (the Vert-Galant shape: one windowed-out true claim next
+    to one real invention). Returns ``(remainder_text, passed_result, dropped_sentences)``
+    on success; ``None`` on any of four ABORT conditions (caller falls through to the
+    grounded stitch):
+      1. a claim maps to ZERO sentences (``checker.locate``) — we cannot prove where the
+         invention lives, so we must not guess (the banned fuzzy/substring-match repair);
+      2. the surviving text breaches the COLLAPSE FLOOR — fewer than
+         ``ceil(min_keep_ratio * n)`` sentences, or fewer than 2 absolute. Phase-C authored
+         stops run 5-12 sentences (~150 words); below the floor the survivor is a fragment,
+         not a stop;
+      3. the remainder still fails the fact-check — either a genuine COVERAGE drop (a
+         required fact rode along with the invention: the Ravaillac shape, one sentence
+         welds an invented modifier to a load-bearing fact) or a FAITHFULNESS residual the
+         corpus does not ground either (a second, un-rescuable invention);
+      4. the remainder's deterministic craft score is WORSE than the stitch it would
+         replace — a grounded-but-mutilated remainder (dangling anaphora: a dropped
+         sentence can strand the next one, e.g. "But their blood soaked his clothes...")
+         passes every fact gate yet still delivers the exact register-crash the stitch
+         fallback exists to avoid, so serving it would be a net loss. (Only the SURGICALLY
+         CUT remainder is gated this way — the plain corpus-rescue rung, which ships the
+         draft unmutilated, is deliberately exempt; see ``author_compose_stop``'s
+         ``excise`` docstring paragraph, CRAFT FLOOR note.)"""
+    sents = [s for s in (p.strip() for p in split_sentences(draft)) if s]
+    if not sents:
+        return None
+    located = checker.locate(unsupported, tuple(sents))
+    drop_idxs: set[int] = set()
+    for claim in unsupported:
+        idxs = located.get(claim, ())
+        if not idxs:
+            return None  # unlocatable -> cannot safely excise -> stitch
+        drop_idxs.update(idxs)
+    kept = [s for i, s in enumerate(sents) if i not in drop_idxs]
+    dropped = tuple(s for i, s in enumerate(sents) if i in drop_idxs)
+    if len(kept) < 2 or len(kept) < math.ceil(min_keep_ratio * len(sents)):
+        return None  # collapse floor breached -> stitch
+    remainder = " ".join(kept)
+    result = checker.check(remainder, facts)
+    if result.missing_facts:
+        return None  # a required fact rode along with the invention -> stitch (unrelaxed)
+    if result.unsupported_claims:
+        residual = (
+            checker.unsupported_against(result.unsupported_claims, corpus)
+            if corpus else result.unsupported_claims
+        )
+        if residual:
+            return None  # a genuine invention the corpus does not ground either -> stitch
+        # every claim the narrow recheck flagged is corpus-grounded (a rescued claim's
+        # sentence surviving alongside the excised one) -> treat the remainder as clean.
+        result = FactCheckResult((), result.missing_facts)
+    if craft_score(remainder) < craft_score(stitch_fallback):
+        return None  # grounded but worse-crafted than the stitch it would replace -> stitch
+    return remainder, result, dropped
 
 
 def _author_loop(
