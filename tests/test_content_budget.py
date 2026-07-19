@@ -118,3 +118,27 @@ def test_partition_is_total_over_the_real_paris_corpus():
         placed = list(cb.all_ids())
         assert sorted(placed) == sorted(b.id for b in beats), poi  # total
         assert len(placed) == len(set(placed)), poi  # disjoint
+
+
+def test_core_window_prefers_the_requested_lens_over_fit_order():
+    """Live defect 2026-07-18 (PHASE-C-RESULTS.md): the core fill is greedy first-fit on the
+    ordered beats, so which beats got SPOKEN was decided by what happened to fit the seconds
+    budget — blind to the tourist's requested lens. A dark_history tour of Place des Vosges
+    seated a parks_gardens bench beat and two social_change beats while the POI's own
+    dark_history beats (Victor Hugo on Montgomery's lance; the duelling ground) sat outside
+    the window across THREE independent generations. UNDO: drop the interest_lenses sort in
+    partition_poi_content -> this goes RED."""
+    open_b = _beat("open", "staging line", secs=20)
+    social = _beat("social", "marais decline", secs=30)
+    dark = _beat("dark", "the duelling ground", secs=30)
+    object.__setattr__(open_b, "lenses", ("parks_gardens",))
+    object.__setattr__(social, "lenses", ("social_change",))
+    object.__setattr__(dark, "lenses", ("dark_history",))
+    plan = _plan(open_b, social, dark)
+
+    blind = partition_poi_content(plan, core_seconds_budget=55)
+    aware = partition_poi_content(plan, core_seconds_budget=55,
+                                  interest_lenses=["dark_history"])
+    assert "open" in blind.core_ids and "open" in aware.core_ids, "staging beat must survive"
+    assert "dark" not in blind.core_ids, "precondition: fit-order excludes the on-lens beat"
+    assert "dark" in aware.core_ids, "the requested lens must reach the spoken window"

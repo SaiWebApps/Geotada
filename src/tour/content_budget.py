@@ -89,6 +89,7 @@ def partition_poi_content(
     plan: POIBeats,
     core_seconds_budget: int,
     leg_walk_seconds: int | None = None,
+    interest_lenses: tuple[str, ...] | list[str] | None = None,
 ) -> ContentBudget:
     """Partition a POI's ORDERED beats into content tiers. Pure; no I/O, no LLM.
 
@@ -102,10 +103,42 @@ def partition_poi_content(
     core: list[str] = []
     remainder: list[BeatRef] = []
     consumed = 0
-    for b in plan.beats:
-        if is_ledger_beat(b):
-            cut.append(b.id)
-            continue
+    candidates = [b for b in plan.beats if not is_ledger_beat(b)]
+    cut = [b.id for b in plan.beats if is_ledger_beat(b)]
+
+    # LENS-AWARE CORE (opt-in; ``interest_lenses`` absent == byte-identical legacy order).
+    # The core fill is greedy first-fit on the ORDERED beats, so which beats survive into
+    # the spoken window was decided purely by what happened to FIT the seconds budget —
+    # blind to what the tourist actually asked for. Live consequence (2026-07-18, three
+    # independent generations): a dark_history tour of Place des Vosges seated a
+    # parks_gardens bench beat and two social_change beats, while the POI's own
+    # dark_history beats — Victor Hugo on "the blow of Montgomery's lance", the duelling
+    # ground, Richelieu's ban — sat outside the window and could never be voiced. Hostile
+    # panel verdict: "a tourist who picked dark history would feel misled at the one stop
+    # that mattered most" (specs/2026-07-18-tour-qa-campaign/PHASE-C-RESULTS.md).
+    # The FIRST beat keeps its position regardless: it is the stop's orientation/staging
+    # ("Find a bench near the children's play area..."), which every stop needs and which
+    # the lens filter must not evict.
+    if interest_lenses:
+        order = {str(x).lower(): i for i, x in enumerate(interest_lenses)}
+
+        def _lens_rank(b: BeatRef) -> int:
+            """Best (lowest) position of this beat's lenses in the REQUESTED order, so a
+            two-lens ask seats its PRIMARY lens first. Off-lens beats sort last."""
+            ranks = [
+                order[x]
+                for x in (str(y).lower() for y in (getattr(b, "lenses", None) or ()))
+                if x in order
+            ]
+            return min(ranks) if ranks else len(order)
+
+        if candidates:
+            head, tail = candidates[:1], candidates[1:]
+            # Stable sort within each rank: on-lens beats keep their relative order, so this
+            # re-PRIORITISES the window without re-ordering arbitrarily.
+            candidates = head + sorted(tail, key=_lens_rank)
+
+    for b in candidates:
         secs = beat_spoken_seconds(b)
         if core and consumed + secs > core_seconds_budget:
             remainder.append(b)
