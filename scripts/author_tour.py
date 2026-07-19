@@ -120,7 +120,16 @@ def main() -> int:
 
     print(f"{args.city.upper()} — {len(route.pois)} stops, {args.duration}min, {lenses or 'none'}")
     if not args.live:
-        print("[DRY RUN] --live + ONDOWAY_DEMO_APPROVE=1 to spend (~$2, output-bounded).")
+        n_selected = (
+            sum(1 for poi in route.pois if args.stop.lower() in poi.name.lower())
+            if args.stop else len(route.pois)
+        )
+        cross_stop_pairs = n_selected * (n_selected - 1) // 2
+        print(
+            "[DRY RUN] --live + ONDOWAY_DEMO_APPROVE=1 to spend (~$2 compose, output-bounded, "
+            f"+ cross-stop pass: {n_selected} decompose + {cross_stop_pairs} judge Haiku calls "
+            "on top)."
+        )
         return 0
     if os.getenv("ONDOWAY_DEMO_APPROVE") != "1":
         print("REFUSED: --live needs ONDOWAY_DEMO_APPROVE=1.", file=sys.stderr)
@@ -134,6 +143,12 @@ def main() -> int:
         HaikuFaithfulnessJudge,
         SemanticFactChecker,
     )
+    from src.tour.tour_consistency import (
+        AuthoredStop,
+        HaikuCrossStopJudge,
+        cross_stop_report,
+        format_cross_stop_report,
+    )
 
     drafter = LLMDrafter(COMPOSE_MODEL)
     checker = SemanticFactChecker(
@@ -141,13 +156,22 @@ def main() -> int:
         decomposer=HaikuClaimDecomposer(),
         coverage_judge=HaikuCoverageJudge(),
     )
+    cross_stop_decomposer = HaikuClaimDecomposer()
+    cross_stop_judge = HaikuCrossStopJudge()
 
+    authored: list[AuthoredStop] = []
     for stop_idx, poi in enumerate(route.pois):
         if args.stop and args.stop.lower() not in poi.name.lower():
             continue
         facts = tuple(_facts_for(stop_idx, stitched, beats_by_id))
         stitch = " ".join(
             s.text for s in stitched.script if s.stop_idx == stop_idx and s.source_type == "beat")
+        # Same stop_idx/source_type filter _facts_for uses above — the source beat ids this
+        # stop actually cites, so a cross-stop contradiction can name both source beats.
+        beat_ids = tuple(dict.fromkeys(
+            s.source_id for s in stitched.script
+            if s.stop_idx == stop_idx and s.source_type == "beat"
+        ))
         src_toks = _distinctive(stitch)
         trace: list = []
         res = author_compose_stop(facts, poi.name, lens, drafter=drafter, checker=checker,
@@ -174,6 +198,11 @@ def main() -> int:
         if res.grounded_fallback:
             print("\n  [author never reached 0/0 — served grounded stitch]")
         print(f"{'#'*74}\n{res.text}")
+        authored.append(
+            AuthoredStop(stop_idx, poi.name, res.text, res.grounded_fallback, beat_ids=beat_ids)
+        )
+    print("\n" + format_cross_stop_report(
+        cross_stop_report(authored, decomposer=cross_stop_decomposer, judge=cross_stop_judge)))
     return 0
 
 

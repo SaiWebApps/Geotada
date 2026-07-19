@@ -174,6 +174,30 @@ def _money_guard_no_live_compose(request, monkeypatch):
 
         monkeypatch.setattr(_fc_mod, _judge_name, _guard_judge)
 
+    # CROSS-STOP CONSISTENCY money-guard (mirrors the author-engine arm above): the
+    # tour_consistency module's HaikuCrossStopJudge is a SEPARATE billing client living in a
+    # module the author-engine guard above never touches (it's report-only, wired only from
+    # scripts/author_tour.py — specs/2026-07-18-tour-qa-campaign cross-stop track). Patch it
+    # the same way: PRODUCT path (client is None) -> offline stub; a unit test that injects a
+    # fake SDK client stays offline and exercises the real class. So `make test` can never
+    # bill the cross-stop judge either.
+    import src.tour.tour_consistency as _tc_mod
+
+    class _OfflineCrossStopJudge:  # offline; the guard only has to prevent billing
+        def compare(self, a_label, a_claims, b_label, b_claims):
+            return ()
+
+    _real_cross_stop_judge = _tc_mod.HaikuCrossStopJudge
+
+    def _guard_cross_stop_judge(model=_fc_mod.FAITHFULNESS_MODEL, *, client=None):
+        return (
+            _OfflineCrossStopJudge()
+            if client is None
+            else _real_cross_stop_judge(model, client=client)
+        )
+
+    monkeypatch.setattr(_tc_mod, "HaikuCrossStopJudge", _guard_cross_stop_judge)
+
 
 # Ports the conftest is allowed to wipe. Update this if your local test
 # instance runs on a different port. Dev/production must NEVER be in here.
