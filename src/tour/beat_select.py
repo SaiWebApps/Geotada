@@ -37,7 +37,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections import defaultdict
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 
 from .contract import POI, BeatRef, BeatSequence, OrderingStrategy, POIBeats, Route
 from .fixtures import sub_location_order_for
@@ -199,7 +199,10 @@ def select_poi_beats(
         else:
             ordered = _cap_spatial_by_score(poi, ordered, interest)
 
-    ordered = _enforce_tone_variety(ordered)
+    # Spatial strategies pass their grouping so rule 19 cannot reorder beats
+    # across sub-anchors (see _enforce_tone_variety); flat stops keep the
+    # whole-stop interleave.
+    ordered = _enforce_tone_variety(ordered, group_of=_tone_group_key(strategy))
     # Flat/narrative stops only: after selection is settled, make the surviving
     # beats flow oldest→newest so a history-dense stop reads in order instead of
     # a chronological jumble. Reorder-only (golden-safe); spatial strategies keep
@@ -1007,7 +1010,23 @@ def _pick_dedup_loser(a: BeatRef, b: BeatRef, interest: frozenset[str]) -> BeatR
     return b if a.id < b.id else a
 
 
-def _enforce_tone_variety(beats: list[BeatRef]) -> list[BeatRef]:
+def _tone_group_key(strategy: OrderingStrategy) -> Callable[[BeatRef], str | None] | None:
+    """The spatial grouping tone-variety must not reorder across, per strategy.
+
+    ``narrative_function`` is not spatially sequenced, so it has no grouping to
+    preserve and keeps the whole-stop interleave (None).
+    """
+    if strategy == "sub_location":
+        return lambda b: b.sub_location
+    if strategy == "trigger_address":
+        return lambda b: b.trigger_address
+    return None
+
+
+def _enforce_tone_variety(
+    beats: list[BeatRef],
+    group_of: Callable[[BeatRef], str | None] | None = None,
+) -> list[BeatRef]:
     """Avoid 3 consecutive somber/reverent beats (rule 19).
 
     Constructive interleave: bucket the beats into somber/reverent vs.
@@ -1018,7 +1037,36 @@ def _enforce_tone_variety(beats: list[BeatRef]) -> list[BeatRef]:
     three consecutive somber/reverent beats whenever relief beats exist to
     break every run — unlike a local-swap heuristic, it cannot ping-pong
     between a leading and a trailing run.
+
+    ``group_of`` (2026-07-19) confines the interleave to one contiguous spatial
+    group at a time. A sub_location / trigger_address plan is sequenced address
+    by address, and the whole-stop interleave reordered beats ACROSS those
+    groups: at the Conciergerie it emitted sub-anchor ``rue-de-paris-cells``
+    twice, non-contiguously, split by marie-antoinette-cell and
+    kitchen-pavilion — walking the listener away from a spot and back to it.
+    Note ``_order_body_chronologically`` is already guarded to the flat strategy
+    for exactly this reason; tone-variety was not.
+
+    Tradeoff, deliberate: a wholly-somber group can still run past two, and a
+    run may join across a group boundary. For a spatially-sequenced stop, walk
+    coherence outranks rule 19 — the alternative is teleporting the listener.
     """
+    if group_of is not None:
+        out: list[BeatRef] = []
+        run_beats: list[BeatRef] = []
+        run_key: object = object()  # sentinel: never equal to a real key
+        for beat in beats:
+            key = group_of(beat)
+            if run_beats and key == run_key:
+                run_beats.append(beat)
+                continue
+            if run_beats:
+                out.extend(_enforce_tone_variety(run_beats))
+            run_beats, run_key = [beat], key
+        if run_beats:
+            out.extend(_enforce_tone_variety(run_beats))
+        return out
+
     somber_registers = {"somber", "reverent"}
 
     def is_somber(b: BeatRef) -> bool:

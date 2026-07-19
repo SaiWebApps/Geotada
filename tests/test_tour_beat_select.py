@@ -1650,3 +1650,152 @@ def test_order_body_chronologically_is_pure_reorder_no_drops():
     out = _order_body_chronologically(beats)
     assert {b.id for b in out} == {b.id for b in beats}  # same set, just reordered
     assert [b.id for b in out] == ["b1500", "b1800", "b2001"]
+
+
+# --- rule 19 must not outrank spatial coherence (2026-07-19) ----------------
+
+
+def _groups_in_order(beats: list[BeatRef]) -> list[str | None]:
+    """The sub_location sequence with consecutive repeats collapsed.
+
+    A sub-anchor visited once contiguously appears exactly once here; a
+    sub-anchor the ordering split into two blocks appears twice.
+    """
+    out: list[str | None] = []
+    for beat in beats:
+        if not out or out[-1] != beat.sub_location:
+            out.append(beat.sub_location)
+    return out
+
+
+def _somber_split_case() -> list[BeatRef]:
+    """A somber-dense stop, already sequenced address-by-address.
+
+    Modelled on the Conciergerie (a prison, so somber-dense, and it uses the
+    sub_location strategy per choose_ordering_strategy's own docstring).
+    """
+    return [
+        _beat("a1", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("a2", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("a3", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("b1", sub_location="kitchen-pavilion", emotional_register="neutral"),
+        _beat("b2", sub_location="kitchen-pavilion", emotional_register="neutral"),
+    ]
+
+
+def test_tone_variety_ungrouped_splits_a_sub_anchor():
+    """MUTATION PROOF: the pre-fix whole-stop interleave DOES split a sub-anchor.
+
+    This pins the defect itself, so the grouped test below cannot pass vacuously.
+    Observed in a real tour (data/paris/tours/pont-neuf-60min-5afc2e.md): the
+    Conciergerie emitted `### rue-de-paris-cells` at two non-contiguous points,
+    separated by marie-antoinette-cell and kitchen-pavilion.
+    """
+    out = _enforce_tone_variety(_somber_split_case())
+    groups = _groups_in_order(out)
+    assert groups.count("rue-de-paris-cells") == 2, (
+        f"expected the ungrouped interleave to split the sub-anchor, got {groups}"
+    )
+
+
+def test_tone_variety_grouped_keeps_each_sub_anchor_contiguous():
+    """Rule 19 confined to one sub-anchor at a time: no teleporting the listener."""
+    out = _enforce_tone_variety(_somber_split_case(), group_of=lambda b: b.sub_location)
+    groups = _groups_in_order(out)
+    assert groups == ["rue-de-paris-cells", "kitchen-pavilion"], groups
+    # Reorder-only: no beat invented, dropped, or duplicated.
+    assert {b.id for b in out} == {"a1", "a2", "a3", "b1", "b2"}
+    assert len(out) == 5
+
+
+def test_tone_variety_grouped_still_breaks_somber_runs_inside_a_group():
+    """Grouping must not neuter rule 19 where relief exists within the group."""
+    beats = [
+        _beat("s1", sub_location="hall", emotional_register="somber"),
+        _beat("s2", sub_location="hall", emotional_register="somber"),
+        _beat("s3", sub_location="hall", emotional_register="somber"),
+        _beat("r1", sub_location="hall", emotional_register="wry"),
+    ]
+    out = _enforce_tone_variety(beats, group_of=lambda b: b.sub_location)
+    assert not _has_three_somber_run([b.emotional_register for b in out])
+    assert _groups_in_order(out) == ["hall"]
+
+
+def test_tone_variety_flat_strategy_behaviour_is_unchanged():
+    """group_of=None is the pre-existing whole-stop interleave, byte-for-byte."""
+    beats = _somber_split_case()
+    assert _enforce_tone_variety(beats, group_of=None) == _enforce_tone_variety(beats)
+
+
+def test_select_poi_beats_keeps_sub_anchors_contiguous_end_to_end():
+    """The integration path: a sub_location-strategy stop emits each anchor once."""
+    poi = POI(
+        id="conciergerie", name="Conciergerie", tier=5, poi_role="stop", lat=48.8560, lng=2.3455
+    )
+    beats = [
+        _beat("c1", sub_location="tour-bonbec", emotional_register="somber"),
+        _beat("c2", sub_location="tour-bonbec", emotional_register="somber"),
+        _beat("c3", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("c4", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("c5", sub_location="kitchen-pavilion", emotional_register="neutral"),
+        _beat("c6", sub_location="kitchen-pavilion", emotional_register="neutral"),
+    ]
+    plan = select_poi_beats_full(poi, beats)
+    assert plan.ordering_strategy == "sub_location", plan.ordering_strategy
+    groups = _groups_in_order(list(plan.beats))
+    assert len(groups) == len(set(groups)), f"a sub-anchor was split: {groups}"
+
+
+def test_governor_seam_preserves_every_beat_and_voiced_contiguity():
+    """The governor seam is where a reorder can silently DEMOTE a voiced beat.
+
+    Regression guard (2026-07-19): the sub-anchor grouping fix reordered the
+    Conciergerie's beats, which moved beat 3e99f26f past govern_poi_beats' audio
+    cut — voiced 9->8, overflow 3->4. That is acceptable (the beat survives as
+    keep-exploring content) but it must never happen SILENTLY, and the prefix cut
+    must not reintroduce a split sub-anchor in the part the listener actually hears.
+
+    Two invariants, both cheap and both currently unguarded by `make test`
+    (pyproject deselects golden/grade/invariants, and those are the only other
+    gates that watch the voiced beat set):
+      1. voiced + overflow == the full plan. Nothing vanishes at the seam.
+      2. the VOICED prefix visits each sub-anchor at most once, contiguously.
+    """
+    poi = POI(
+        id="conciergerie", name="Conciergerie", tier=5, poi_role="stop", lat=48.8560, lng=2.3455
+    )
+    # 3 sub-anchors x 3 beats. The fixture size and allowance are load-bearing:
+    # with only 6 beats there is NO allowance that discriminates — below 240 the
+    # cut truncates the split away before it can be observed, and at 240+ the cut
+    # stops firing at all, so invariant 2 passes even with the fix reverted. At
+    # 9 beats / 280s the cut still fires (keeping invariant 1 meaningful) AND the
+    # mutated ordering's split lands inside the voiced prefix.
+    beats = [
+        _beat("c1", sub_location="tour-bonbec", emotional_register="somber"),
+        _beat("c2", sub_location="tour-bonbec", emotional_register="somber"),
+        _beat("c3", sub_location="tour-bonbec", emotional_register="somber"),
+        _beat("c4", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("c5", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("c6", sub_location="rue-de-paris-cells", emotional_register="somber"),
+        _beat("c7", sub_location="kitchen-pavilion", emotional_register="neutral"),
+        _beat("c8", sub_location="kitchen-pavilion", emotional_register="neutral"),
+        _beat("c9", sub_location="kitchen-pavilion", emotional_register="neutral"),
+    ]
+    plan = select_poi_beats_full(poi, beats)
+    full_ids = [b.id for b in plan.beats]
+
+    # Tight enough that the governor actually cuts, wide enough that a split
+    # would be observable inside the voiced prefix. Both halves matter.
+    capped, overflow = govern_poi_beats(plan, 280)
+    voiced_ids = [b.id for b in capped.beats]
+
+    # 1. Conservation across the seam — demotion is allowed, disappearance is not.
+    assert voiced_ids + list(overflow) == full_ids, (
+        f"beats lost at the governor seam: full={full_ids} "
+        f"voiced={voiced_ids} overflow={list(overflow)}"
+    )
+    # 2. What the listener HEARS must not teleport between sub-anchors.
+    voiced_groups = _groups_in_order(list(capped.beats))
+    assert len(voiced_groups) == len(set(voiced_groups)), (
+        f"the voiced prefix splits a sub-anchor: {voiced_groups}"
+    )
