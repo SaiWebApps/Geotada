@@ -126,6 +126,77 @@ def test_tier_distribution_healthy_shape(city_dir: Path) -> None:
         )
 
 
+# Curated, globally-iconic landmarks (Big-Ben-class fame) per city — a hand
+# check against forced-distribution mis-tiers, not the full corpus. Includes
+# the ones a 2026-07-18 audit fixed (Big Ben) plus existing correct anchors
+# (Palace of Westminster, Eiffel Tower, Notre-Dame, Statue of Liberty) so a
+# future re-onboard demoting ANY of them fails here before it ships.
+MARQUEE_LANDMARKS: dict[str, tuple[str, ...]] = {
+    "paris": (
+        "Eiffel Tower",
+        "Notre-Dame Cathedral",
+        "Louvre Museum",
+        "Arc de Triomphe",
+        "Sacre-Coeur Basilica",
+    ),
+    "london": (
+        "Big Ben",
+        "Palace of Westminster",
+        "Westminster Abbey",
+        "Tower of London",
+        "Buckingham Palace",
+        "Tower Bridge",
+    ),
+    "new_york": (
+        "Statue of Liberty",
+        "Empire State Building",
+        "Brooklyn Bridge",
+        "Central Park",
+        "Times Square",
+    ),
+}
+
+# Matches src/tour/selection.py BAND_LANDMARK_TIER — the tier floor below which
+# a landmark can be silenced (dimmed to vignette/silent) by an off-genre lens.
+MARQUEE_MIN_TIER = 4
+
+
+@pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
+def test_marquee_landmarks_are_anchor_tier(city_dir: Path) -> None:
+    """Curated globally-iconic landmarks must sit at importance_tier >= 4
+    (selection.py's BAND_LANDMARK_TIER) so they can never be silenced.
+
+    Regression guard for the 2026-07-18 Big Ben incident: onboard_auto_v1's
+    rank_quantile_forced_distribution scored Big Ben down to tier 1 (its
+    cross_source_agreement was 1 -- wikidata-only, since the OSM connector
+    never cross-linked its node) despite 88 wikidata sitelinks (2nd-highest
+    in its own Westminster cluster). A hostile verifier proved that tier
+    silently dropped Big Ben from Westminster-start tours. This test fails
+    loudly if a future re-onboard repeats that on any curated marquee
+    landmark, in any city.
+    """
+    curated = MARQUEE_LANDMARKS.get(city_dir.name)
+    if not curated:
+        pytest.skip(f"{city_dir.name}: no curated marquee list yet")
+
+    pois = {p["name"]: p for p in json.loads((city_dir / "poi-raw.json").read_text())}
+    failures: list[str] = []
+    for name in curated:
+        poi = pois.get(name)
+        if poi is None:
+            failures.append(f"  MISSING from corpus: {name!r} (renamed or removed?)")
+            continue
+        tier = poi.get("importance_tier")
+        if tier is None or tier < MARQUEE_MIN_TIER:
+            failures.append(f"  {name!r}: importance_tier={tier!r} < {MARQUEE_MIN_TIER}")
+
+    if failures:
+        pytest.fail(
+            f"{city_dir.name}: marquee landmark(s) below the anchor-tier floor "
+            f"(selection.py BAND_LANDMARK_TIER={MARQUEE_MIN_TIER}):\n" + "\n".join(failures)
+        )
+
+
 def test_distribution_guard_catches_historical_bug() -> None:
     """Proof the shape guard still trips on the failure modes it was born for,
     and still accepts both healthy shapes. Keeps the guard and its rationale

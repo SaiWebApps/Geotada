@@ -4687,7 +4687,7 @@
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "poi_role": "stop",
-    "importance_tier": 1,
+    "importance_tier": 5,
     "_pipeline": {
       "discovery_sources": [
         "wikidata"
@@ -4708,6 +4708,12 @@
         "of": 150,
         "method": "rank_quantile_forced_distribution",
         "scored_at": "2026-07-15"
+      },
+      "tier_correction": {
+        "date": "2026-07-18",
+        "old_tier": 1,
+        "new_tier": 5,
+        "reason": "onboard_auto_v1's rank_quantile_forced_distribution scored Big Ben off cross_source_agreement=1 (wikidata-only; the OSM connector never linked its node to this Wikidata entry, so it lost the (agreement-1) and osm_strong terms that peer landmarks got) despite 88 wikidata sitelinks -- 2nd-highest in the Westminster cluster after Westminster Abbey's 91, ahead of Palace of Westminster's 84. The resulting tier 1 fell below src/tour/selection.py BAND_LANDMARK_TIER=4, so a Westminster-start tour could silently drop Big Ben as a vignette/silent stop. Corrected to tier 5, matching its two immediate Westminster-cluster peers (Westminster Abbey, Palace of Westminster, both tier 5) rather than tier 4, since its sitelink count exceeds Palace of Westminster's. Double-anchor check: Big Ben sits 139m from Palace of Westminster, which is > DEMOTION_PROXIMITY_M (100m), so apply_co_located_demotion (selection.py) never merges the pair regardless of tier chosen -- this mirrors existing accepted close tier5 pairs already in the live corpus (Trafalgar Square/National Gallery 94.6m; Rockefeller Center/Radio City Music Hall 84m), not a new dup-adjacent-stop defect. Root pipeline gap (missing OSM<->Wikidata cross-link for Big Ben) is left for a future onboarding fix; this correction only touches importance_tier."
       }
     }
   },
