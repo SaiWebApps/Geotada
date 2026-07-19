@@ -185,3 +185,72 @@ craft jumps 0.1-0.8 → 2.0-2.4 at the same zero-fabrication bar (Big Ben 0.08�
 6. HARNESS note: author_tour omits nav glue by design (product inserts it); glue ≠ threading — #2 still required.
 
 **Spend ledger:** 4 tour runs + 4 single-stop repairs ≈ $9.30 of the approved $10.00 cap. No further live calls made.
+
+---
+
+# RE-RUN (2026-07-18 ~22:45) — through the fixed engine
+
+Slate re-authored in parallel via `scripts/phase_c_rerun.sh` (~$8, user-approved).
+Engine at `eca0437`+ (widen-retry, corpus-recheck, surgical excision, threading, cross-stop
+consistency). Panels: 1 opus adversary on NYC, 1 sonnet adversary on both Paris tours.
+
+## Fallback counts (stop-header exact)
+
+| tour | baseline | re-run | change |
+|---|---|---|---|
+| Île de la Cité 90 | 6 stops / 2 fallbacks | 6 / **1** | improved (Vert-Galant fixed) |
+| Place des Vosges 60 | 4 / 0 | 4 / 0 | flat (already clean) |
+| NYC Lower Manhattan 90 | 5 / 2 (BOTH bookends) | 5 / 2 (both MID-tour) | moved, not removed |
+| London Westminster 75 | 5 / 3 | 5 / 3 | flat (corpus-bound) |
+
+## Panel verdicts: BOTH REJECTED
+
+**What genuinely improved (verified):**
+- Île Square du Vert-Galant: 310-word third-person biography ending on a stated moral →
+  138 words, second-person present, ends on an image. "The one real, reproducible
+  improvement in this whole rerun" (adversary).
+- NYC bookends: the opener and finale are now AUTHORED, not stitched; the finale's rubric
+  KILL-SWITCH no longer fires (it gained three look-cues and a present-tense spine).
+
+**What did not (and one regression):**
+- NYC: the two stops that were GOOD at baseline (Battery Park craft 2.34, Bowling Green 2.27)
+  are now STITCHES (2.27, **0.07**). Net rubric-passing stops: **1 of 5**. The engine moved
+  which stops it fails on rather than failing less.
+- PdV flagship stop still serves salon gossip, not the requested dark_history — see the
+  lens-aware core fix (`2c1f9b2`) and its honest scope note.
+- Île Conciergerie fallback: byte-identical to baseline.
+- "Oldest bridge in Paris" (Île stops 4/5) and Broadway "thirteen miles" vs "twelve miles"
+  (NYC stops 2/3) both still reach the walker. The new cross-stop module DETECTED both and
+  logged them — it is report-only by design, so nothing was rewritten.
+
+## THE HEADLINE FINDING — an un-covered hallucination class
+
+NYC's re-authored finale opens: **"Look down Wall Street toward 1 Liberty Plaza."**
+Independently verified from `data/new_york/poi-raw.json`: 1 Liberty Plaza lies at bearing
+**345°** (nearly due north) from the Wall Street stop; Wall Street's axis runs ~103°/283°
+(east-west). The walker is aimed ~130° away from the building, down a street it is not on.
+
+The fact-check passed this 0-unsupported because **it validates PROPOSITIONS, not GEOMETRY**.
+Every spatial instruction the engine writes — "look down X toward Y", "turn to your left",
+"on the far side of the square" — is currently unverifiable and unverified. This class is
+newly higher-risk precisely because tonight's fixes make the engine author MORE look-cues.
+
+Also amplified: a corrupted `key_claims` entry on
+`newyork_castle_clinton_social_change_lonely-planet-new-york-city_castle_garden_immigrant_depot`
+("Castle Garden ... alongside Ellis Island") produced a self-contradictory served sentence —
+Castle Garden closed 1890, Ellis Island opened 1892; never concurrent. Corpus defect, faithfully
+rendered by the engine.
+
+## Ranked next work (revised by this evidence)
+
+1. **Spatial-claim verification** — a geometry check for look-cues (bearing/distance from the
+   stop's coords to the named target) before a directional instruction may ship. Highest
+   priority: it is an open hallucination hole in the user's #1 requirement.
+2. **Stop the regression**: understand why Battery Park / Bowling Green (authored at baseline)
+   fell back this run — convergence is partly STOCHASTIC (the adversary found byte-identical
+   drafts receiving different verdicts). Determinism first, then quality.
+3. **Cross-stop consistency: act, don't just report** — the module already detects the repeats
+   and contradictions; wire the resolution.
+4. Lens-aware core at a realistic budget (the untested half of `2c1f9b2`).
+5. Corpus repairs: Broadway 12-vs-13 miles; the Castle Garden key_claim.
+6. London corpus enrichment (SOURCE-ADAPTER-ARCHITECTURE.md + LONDON-EXTRACTION-FIX.md).
