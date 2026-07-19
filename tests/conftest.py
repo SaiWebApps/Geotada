@@ -124,6 +124,28 @@ def _money_guard_no_live_compose(request, monkeypatch):
         _verify_mod, "HaikuFaithfulnessChecker", _verify_mod.MockFaithfulnessChecker
     )
 
+    # REPETITION-JUDGE money-guard (mirror compose/author): HaikuRedundancyJudge is a
+    # FIFTH billing client and the arms above do not cover it, so a test constructing it
+    # with client=None would build the real SDK and bill. Product path (client is None)
+    # -> offline stub that never claims redundancy; an injected fake SDK client stays
+    # offline and still exercises the real class.
+    import src.tour.claim_repetition as _rep_mod
+
+    _real_redundancy = _rep_mod.HaikuRedundancyJudge
+
+    class _OfflineRedundancyJudge:
+        """Never redundant: a stub must not invent verdicts the real judge would make."""
+
+        def same_fact(self, a: str, b: str) -> bool:
+            return False
+
+    def _guard_redundancy(model=None, *, client=None, **kwargs):
+        if client is None:
+            return _OfflineRedundancyJudge()
+        return _real_redundancy(model, client=client, **kwargs)
+
+    monkeypatch.setattr(_rep_mod, "HaikuRedundancyJudge", _guard_redundancy)
+
     # AUTHOR-ENGINE money-guard (mirror compose): the opt-in engine='author' preview path
     # builds an Opus drafter + 3 Haiku judges via get_author_composer. Patch each so the
     # PRODUCT path (client is None) builds an OFFLINE stub, never a billing SDK — a unit
