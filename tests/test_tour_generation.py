@@ -16,9 +16,12 @@ from src.tour.contract import (
     PhysicalCue,
     POIBeats,
     Route,
+    Script,
+    ScriptPOI,
     Sentence,
     TourInput,
     TransitSegment,
+    ValidationReport,
 )
 from src.tour.generation import (
     FORBIDDEN_PHRASES,
@@ -28,6 +31,8 @@ from src.tour.generation import (
     GLUE_PACING,
     SYNTHESIZED_OPENER,
     _area_article,
+    _nav_walk_minutes,
+    _segment_leg_seconds,
     _sum_audio,
     _synth_first_leg_text,
     _template_nav,
@@ -35,6 +40,8 @@ from src.tour.generation import (
     split_sentences,
 )
 from src.tour.glue_client import NO_GLUE_SENTINEL, MockGlueClient
+from src.tour.options import build_route_option
+from src.tour.selection import CorpusSnapshot
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -1409,31 +1416,114 @@ def test_first_leg_text_none_without_stop_name():
 # ---------------------------------------------------------------------------
 
 def test_nav_template_names_both_ends_and_the_walk():
-    text = _template_nav("Palais Garnier", "Galeries Lafayette", 240.0, 1)  # ~3 min
+    text = _template_nav("Palais Garnier", "Galeries Lafayette", 360, 1)  # 360s -> 6 min
     assert "Palais Garnier" in text and "Galeries Lafayette" in text
-    assert "3-minute walk" in text
+    assert "6-minute walk" in text
     assert "Walk to the next stop" not in text
     assert "—" not in text  # no em-dash (TTS-clean)
 
 
 def test_nav_template_short_leg_reads_just_ahead():
-    text = _template_nav("Rue de la Paix", "Place Vendome", 60.0, 2)  # <2 min
+    text = _template_nav("Rue de la Paix", "Place Vendome", 60, 2)  # 60s -> 1 min, <2
     assert "just ahead" in text
     assert "Place Vendome" in text
 
 
 def test_nav_template_varies_between_consecutive_legs():
-    a = _template_nav("A Place", "B Place", 200.0, 1)
-    b = _template_nav("B Place", "C Place", 200.0, 2)
+    a = _template_nav("A Place", "B Place", 200, 1)
+    b = _template_nav("B Place", "C Place", 200, 2)
     assert a.split()[0:3] != b.split()[0:3], "consecutive legs must not read identically"
 
 
 def test_nav_template_final_destination_is_a_graceful_arrival():
-    text = _template_nav("Bourse de Commerce", "Destination", 300.0, 6,
+    text = _template_nav("Bourse de Commerce", "Destination", 300, 6,
                          is_final_destination=True)
     assert "final destination" in text.lower()
     assert "Destination" not in text  # never voice the placeholder POI name
     assert "next stop" not in text.lower()
+
+
+# ---------------------------------------------------------------------------
+# D6-ETA: nav glue minutes must derive from the engine's own leg-seconds
+# budget (routed leg_seconds, else walk_seconds) — NOT a separate
+# round(distance_m / 80) display-pace estimate that can silently diverge
+# from the displayed tour total (specs/2026-07-18-tour-qa-campaign/REPORT.md).
+# ---------------------------------------------------------------------------
+
+
+def test_template_nav_minutes_from_leg_seconds_when_routed():
+    """A routed leg (leg_seconds present) speaks minutes computed from
+    leg_seconds, not the old round(distance_m / 80) haversine-at-80m/min
+    formula. distance_m (240) and leg_seconds (660) intentionally disagree
+    here — a slow, winding routed path easily beats straight-line distance at
+    80 m/min — so a regression to the old formula would read a different
+    (wrong) minute count."""
+    route = Route(
+        pois=(_poi("p", "B Place"),),
+        transits=(TransitSegment(from_poi_id=None, to_poi_id="p", distance_m=240.0,
+                                 walk_seconds=300, leg_seconds=660),),
+        total_walk_distance_m=240.0, total_walk_seconds=300,
+    )
+    leg_seconds = _segment_leg_seconds(route, 0)
+    assert leg_seconds == 660  # the routed figure, never walk_seconds/distance
+    text = _template_nav("A Place", "B Place", leg_seconds, 0)
+    assert "11-minute walk" in text
+    assert "3-minute" not in text  # what round(240/80) would have said
+
+
+def test_template_nav_minutes_fall_back_to_walk_seconds_when_unrouted():
+    """When a leg has no routed leg_seconds (Valhalla unavailable), minutes
+    fall back to walk_seconds — the same fallback options.py's eta_seconds,
+    reflection.py, and audit.py already use for this leg."""
+    route = Route(
+        pois=(_poi("p", "B Place"),),
+        transits=(TransitSegment(from_poi_id=None, to_poi_id="p", distance_m=100.0,
+                                 walk_seconds=480, leg_seconds=None),),
+        total_walk_distance_m=100.0, total_walk_seconds=480,
+    )
+    leg_seconds = _segment_leg_seconds(route, 0)
+    assert leg_seconds == 480
+    text = _template_nav("A Place", "B Place", leg_seconds, 0)
+    assert "8-minute walk" in text
+
+
+def test_nav_minutes_stay_consistent_with_options_eta_accounting():
+    """The 'announced legs sum to the displayed tour total' honesty
+    criterion: the leg-seconds _segment_leg_seconds feeds to _template_nav
+    must be the exact same per-leg figures options.py's build_route_option
+    sums into eta_seconds — one routed leg, one walk_seconds fallback leg."""
+    pois = (
+        POI(id="p1", name="Anchor", tier=5, poi_role="stop", lat=48.85, lng=2.35),
+        POI(id="p2", name="Second", tier=5, poi_role="stop", lat=48.86, lng=2.36),
+    )
+    transits = (
+        TransitSegment(from_poi_id=None, to_poi_id="p1", distance_m=500.0,
+                       walk_seconds=810, leg_seconds=600),  # routed: 600s -> 10 min
+        TransitSegment(from_poi_id="p1", to_poi_id="p2", distance_m=300.0,
+                       walk_seconds=360, leg_seconds=None),  # fallback: 360s -> 6 min
+    )
+    route = Route(pois=pois, transits=transits, total_walk_distance_m=800.0,
+                  total_walk_seconds=1170)
+    script = Script(
+        city_slug="paris", generated_at="2026-07-18T00:00:00Z",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris"),
+        total_audio_seconds=600, total_walking_seconds=1170, total_walk_distance_m=800,
+        total_planned_seconds=1770,
+        selected_pois=(
+            ScriptPOI(id="p1", name="Anchor", tier=5, lat=48.85, lng=2.35, dwell_seconds=300),
+            ScriptPOI(id="p2", name="Second", tier=5, lat=48.86, lng=2.36, dwell_seconds=180),
+        ),
+        lens_coverage={}, script=(), validation=ValidationReport(),
+    )
+    snapshot = CorpusSnapshot(pois=list(pois), beats_by_poi={}, area_types={}, adjacent_areas={})
+    opt = build_route_option(route, script, {}, route_id="rt", snapshot=snapshot)
+
+    leg_seconds_from_generation = [_segment_leg_seconds(route, i) for i in range(len(transits))]
+    dwell_total = sum(sp.dwell_seconds for sp in script.selected_pois)
+    assert sum(leg_seconds_from_generation) + dwell_total == opt.eta_seconds
+
+    announced_minutes = [_nav_walk_minutes(s) for s in leg_seconds_from_generation]
+    assert announced_minutes == [10, 6]
 
 
 def test_generate_nav_glue_names_destinations_not_flat_walk_to_next_stop():

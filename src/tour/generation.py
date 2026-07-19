@@ -557,6 +557,11 @@ def _build_synthesized_opener(
     return out
 
 
+def _minute_article(minutes: int) -> str:
+    """"an" before minute counts that read with a leading vowel (8, 11, 18, 80s)."""
+    return "an" if minutes in (8, 11, 18) or 80 <= minutes <= 89 else "a"
+
+
 def _synth_first_leg_text(first_stop: POIBeats, route: Route) -> str | None:
     """Name the first stop and how far the opening walk is (honest — en route).
 
@@ -582,8 +587,7 @@ def _synth_first_leg_text(first_stop: POIBeats, route: Route) -> str | None:
     minutes = round(secs / 60)
     if minutes <= 1:
         return f"When you're ready, head for {name} — it's just ahead."
-    # "an" before minute counts that read with a leading vowel (8, 11, 18, 80s).
-    article = "an" if minutes in (8, 11, 18) or 80 <= minutes <= 89 else "a"
+    article = _minute_article(minutes)
     return f"When you're ready, head for {name} — about {article} {minutes}-minute walk from here."
 
 
@@ -732,15 +736,22 @@ _NAV_TEMPLATES: tuple[str, ...] = (
 )
 
 
-def _nav_walk_minutes(distance_m: float) -> int:
-    """Whole-minute walking estimate at a relaxed strolling pace (~80 m/min)."""
-    return round(distance_m / 80) if distance_m and distance_m > 0 else 0
+def _nav_walk_minutes(leg_seconds: int) -> int:
+    """Whole-minute walking estimate from the engine's own leg-seconds budget.
+
+    Not a separate display-pace constant — the same leg-seconds the engine
+    budgets everywhere else (routed Valhalla seconds when present, else the
+    pace-corrected haversine fallback; see ``_segment_leg_seconds``). The
+    underlying 3 km/h tourist pace itself stays a tracked open question
+    (specs/2026-06-13-tour-planner-canonical/GOLDEN-GAP-DIAGNOSTIC.md:209-231).
+    """
+    return round(leg_seconds / 60) if leg_seconds and leg_seconds > 0 else 0
 
 
 def _template_nav(
     previous_name: str,
     current_name: str,
-    distance_m: float,
+    leg_seconds: int,
     stop_idx: int,
     *,
     is_final_destination: bool = False,
@@ -750,12 +761,18 @@ def _template_nav(
     Names the destination and gives a sense of the walk, varied by leg — the
     connective tissue between points, replacing the old flat "Walk to the next
     stop." For a pinned beatless endpoint, a graceful arrival (never routes the
-    walker to a placeholder literally named "Destination").
+    walker to a placeholder literally named "Destination"). ``leg_seconds`` is
+    the same figure the engine budgets this leg at elsewhere (options.py's
+    eta_seconds, reflection.py, audit.py) so the announced walk time and the
+    displayed tour total never disagree.
     """
     if is_final_destination:
         return "From here, make your way to your final destination."
-    minutes = _nav_walk_minutes(distance_m)
-    dist = f", about a {minutes}-minute walk away" if minutes >= 2 else ", just ahead"
+    minutes = _nav_walk_minutes(leg_seconds)
+    if minutes >= 2:
+        dist = f", about {_minute_article(minutes)} {minutes}-minute walk away"
+    else:
+        dist = ", just ahead"
     template = _NAV_TEMPLATES[stop_idx % len(_NAV_TEMPLATES)]
     return template.format(prev=previous_name, cur=current_name, dist=dist)
 
@@ -818,9 +835,10 @@ def _build_transit(
         out_sentences = _beat_to_sentences(transit_beat, stop_idx)
     else:
         distance_m = _segment_distance_m(route, stop_idx)
+        leg_seconds = _segment_leg_seconds(route, stop_idx)
         is_final_dest = current.poi_id.startswith(_END_B_SENTINEL_PREFIX)
         template_nav = _template_nav(
-            previous.poi_name, current.poi_name, distance_m, stop_idx,
+            previous.poi_name, current.poi_name, leg_seconds, stop_idx,
             is_final_destination=is_final_dest,
         )
         if is_final_dest:
@@ -889,6 +907,22 @@ def _segment_distance_m(route: Route, stop_idx: int) -> float:
     if 0 <= stop_idx < len(route.transits):
         return float(route.transits[stop_idx].distance_m)
     return 0.0
+
+
+def _segment_leg_seconds(route: Route, stop_idx: int) -> int:
+    """Walking-segment seconds for the transit into stop ``stop_idx``.
+
+    Same routed-first fallback used by options.py's eta_seconds sum,
+    reflection.py's ``_leg_walk_seconds``, and audit.py's
+    ``route_eta_seconds``: prefer the routed ``leg_seconds`` (Valhalla,
+    pinned to PACE_KMH=3.0) and fall back to the pace-corrected haversine
+    ``walk_seconds``. Display must derive from the same budget the engine
+    uses everywhere else so announced legs sum to the displayed tour total.
+    """
+    if 0 <= stop_idx < len(route.transits):
+        t = route.transits[stop_idx]
+        return t.leg_seconds if t.leg_seconds is not None else t.walk_seconds
+    return 0
 
 
 def _find_directional_transit_beat(
