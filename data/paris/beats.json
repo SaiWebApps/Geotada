@@ -33500,8 +33500,8 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "seasoning",
-    "script_body": "Cross the Pont-Neuf for a glimpse of the garden at the tip of the island, the Square du Vert-Galant, just below Henri IV's equestrian statue. The nickname Vert-Galant — the Green Gallant — honours the king's famously amorous career. From the garden, the view of the Hôtel de la Monnaie and the dome of the Institut de France on the left, the Louvre on the right, and the Pont-des-Arts ahead is unforgettable. By night the square is an enchantment.",
-    "script_body_hash": "7028d0f8c888bb0794f89646532c2efc74105bbe04dd01165e6ffdec642c6a9d",
+    "script_body": "The garden at the tip of the island, the Square du Vert-Galant, sits just below Henri IV's equestrian statue on the Pont-Neuf. The nickname Vert-Galant — the Green Gallant — honours the king's famously amorous career. From the garden, the view of the Hôtel de la Monnaie and the dome of the Institut de France on the left, the Louvre on the right, and the Pont-des-Arts ahead is unforgettable. By night the square is an enchantment.",
+    "script_body_hash": "b78dc88c030bdde52df99fa25096d18ea3b5e660292b84edda3064e82b3b078a",
     "duration_sec": 32,
     "kid_friendly": "yes",
     "entities": [
@@ -33548,6 +33548,18 @@
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:07:15Z",
       "city_name": "paris"
+    },
+    "fact_check": {
+      "status": "corrected",
+      "corrections": [
+        {
+          "claim": "script_body opened with an arrival direction ('Cross the Pont-Neuf for a glimpse of the garden')",
+          "correction": "Removed the arrival-navigation framing; kept the statue/garden/view facts (the Pont-Neuf location is preserved as a landmark reference, not a direction).",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     }
   },
   {
@@ -47521,7 +47533,7 @@
     "kid_friendly": "yes",
     "entities": [],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "playful",
     "subject_tag": "Bofinger art nouveau",
@@ -47550,7 +47562,10 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "0d5c917d9e32f13203de80e578ea6241b2b8f979fe82f868fb0a232b4b75cd38"
+    "script_body_hash": "0d5c917d9e32f13203de80e578ea6241b2b8f979fe82f868fb0a232b4b75cd38",
+    "_fixup_notes": [
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)"
+    ]
   },
   {
     "beat_id": "paris_marche_richard_lenoir_historic_markets_frommers_24_great_walks_thursday_sunday_market",
@@ -47762,7 +47777,7 @@
     "kid_friendly": "yes",
     "entities": [],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "playful",
     "subject_tag": "Barrio Latino furniture-showroom",
@@ -47793,7 +47808,8 @@
     },
     "script_body_hash": "cadb71d72f462e8d5ab7a08a2222e444a002fb144bd56667b89fd68c4c75a823",
     "_fixup_notes": [
-      "subject_tag: kebab-hyphenated tail (was 4 words)"
+      "subject_tag: kebab-hyphenated tail (was 4 words)",
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)"
     ]
   },
   {
@@ -47990,7 +48006,7 @@
     "kid_friendly": "yes",
     "entities": [],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "neutral",
     "subject_tag": "viaduct arcade workshops",
@@ -48019,7 +48035,10 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "c9b5398d4d53ef97d5f3b7502fcb441535292f1cc70f91843d1581311f34e9d5"
+    "script_body_hash": "c9b5398d4d53ef97d5f3b7502fcb441535292f1cc70f91843d1581311f34e9d5",
+    "_fixup_notes": [
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)"
+    ]
   },
   {
     "beat_id": "paris_pere_lachaise_cemetery_hidden_history_frommers_24_great_walks_non_consecrated_all_faiths",
@@ -56297,7 +56316,7 @@
       "University of Paris"
     ],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "neutral",
     "subject_tag": "river view tip-garden",
@@ -56335,7 +56354,8 @@
     },
     "script_body_hash": "937992fc9620fceeb50fc9112d123c81ac08ee5faaed664df51668adf4269115",
     "_fixup_notes": [
-      "subject_tag: kebab-hyphenated tail (was 4 words)"
+      "subject_tag: kebab-hyphenated tail (was 4 words)",
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)"
     ]
   },
   {
@@ -58519,7 +58539,7 @@
       "Maupassant"
     ],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "playful",
     "subject_tag": "handkerchief tree path",
@@ -58552,7 +58572,10 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "ff7656d13859f08b67b4215b3fd3e6513dafb1b13708cdf6c9f669255f5c66a9"
+    "script_body_hash": "ff7656d13859f08b67b4215b3fd3e6513dafb1b13708cdf6c9f669255f5c66a9",
+    "_fixup_notes": [
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)"
+    ]
   },
   {
     "beat_id": "paris_parc_monceau_famous_residents_frommers_24_great_walks_maupassant_monument_greed_death",
@@ -61037,7 +61060,7 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "seasoning",
-    "script_body": "Cross the quai Anatole France and then cross the Pont de Solferino, also known as Passerelle Leopold Sedar Senghor. Opened in 1999, the bridge spans the river in a single metal archway measuring 348ft (106m). Its surface is made from rainforest wood, which caused some controversy. Thoughtfully placed benches allow beautiful views along the Seine.",
+    "script_body": "The Pont de Solferino, also known as Passerelle Léopold-Sédar-Senghor, opened in 1999; the bridge spans the river in a single metal archway measuring 348ft (106m). Its surface is made from rainforest wood, which caused some controversy. Thoughtfully placed benches allow beautiful views along the Seine.",
     "duration_sec": 25,
     "kid_friendly": "yes",
     "entities": [
@@ -61081,7 +61104,19 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "c00ce38bee1d0c7d4bbf687c961b1adf9d4678c27d70d635773d1071a99865ee"
+    "script_body_hash": "b062942a9edd65d892bfd3ca81001535248358fe6737c9ece50c7c474761e047",
+    "fact_check": {
+      "status": "corrected",
+      "corrections": [
+        {
+          "claim": "script_body opened with a two-step arrival direction ('Cross the quai Anatole France and then cross the Pont de Solferino')",
+          "correction": "Removed the arrival-navigation prefix; kept the bridge-identity and construction facts.",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
+    }
   },
   {
     "beat_id": "paris_jardin_des_tuileries_hidden_history_frommers_24_great_walks_tile_factories_seine_clay",
@@ -61626,14 +61661,14 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "Leave the cemetery, head for the west wing of the Palais de Chaillot, now a museum, and walk around it to the gardens, then downhill towards the Seine and Pont d'Iéna. These lovely gardens are a labyrinth of meandering pathways and water features. The main fountain basins separate the main garden from the side gardens; when playing, they are mesmerizing, particularly when floodlit at night. The 1937 aquarium on the east side of the garden has been renovated and is spectacular, but the entrance fee is high.",
+    "script_body": "Head for the west wing of the Palais de Chaillot, now a museum, and walk around it to the gardens, then downhill towards the Seine and Pont d'Iéna. These lovely gardens are a labyrinth of meandering pathways and water features. The main fountain basins separate the main garden from the side gardens; when playing, they are mesmerizing, particularly when floodlit at night. The 1937 aquarium on the east side of the garden has been renovated and is spectacular, but the entrance fee is high.",
     "duration_sec": 66,
     "kid_friendly": "yes",
     "entities": [
       "Palais de Chaillot"
     ],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "playful",
     "subject_tag": "Trocadero gardens walk",
@@ -61663,9 +61698,11 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "0aa5c80300e9842c0d6117130aa2e34bd4bd9b7b9f2c1cff309c466fc6006a44",
+    "script_body_hash": "70652d5289c004c91d6634612f42bbffeb05ac4b16ce8f1ded92e39389dc13f2",
     "_fixup_notes": [
-      "beat_length_class: re-classed from 'seasoning' to 'mid' (word_count=87)"
+      "beat_length_class: re-classed from 'seasoning' to 'mid' (word_count=87)",
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)",
+      "script_body: dropped dangling 'Leave the cemetery' opener (no cemetery ever established in this tour) while keeping the real routing facts (Palais de Chaillot west wing, gardens, downhill to Seine/Pont d'Iéna) — tour-qa-campaign-2026-07-18 D2"
     ]
   },
   {
@@ -62104,7 +62141,7 @@
       "UNESCO Headquarters Paris"
     ],
     "sensory_anchor": true,
-    "narrative_function": "scene_setter",
+    "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "playful",
     "subject_tag": "Lowendal to Cler-market",
@@ -62139,7 +62176,8 @@
     },
     "script_body_hash": "01634cca6a177de024487dba2aafe4a9e937a1a1f28e883f6d582d3fd8d0d4c3",
     "_fixup_notes": [
-      "subject_tag: kebab-hyphenated tail (was 4 words)"
+      "subject_tag: kebab-hyphenated tail (was 4 words)",
+      "narrative_function: reclassed from 'scene_setter' to 'transition' (beat_type=transit; was evading the nf-keyed transit filter at generation.py:710 — tour-qa-campaign-2026-07-18 D2)"
     ]
   },
   {
@@ -66173,7 +66211,7 @@
     "topic_slug": "labyrinth_pagoda_cedar",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "From the exit of the Alpine Garden, bearing right, follow the signposted path to the hill leading through a forest of holly trees and evergreens up to the labyrinth with a pagoda at the top. On the way you will pass — near the rue Cuvier entrance — a magnificent cedar of Lebanon; an American sequoia; and in the shade of the forest, the sculpture of Théodore Monod, a lifetime luminary at the Musée National d'Histoire Naturelle, his face and head expressing the visionary intelligence behind this magnificent preserve of nature's diversity.",
+    "script_body": "A forest of holly trees and evergreens climbs the hill to the labyrinth with a pagoda at the top. Near the rue Cuvier entrance stands a magnificent cedar of Lebanon and an American sequoia; in the shade of the forest is the sculpture of Théodore Monod, a lifetime luminary at the Musée National d'Histoire Naturelle, his face and head expressing the visionary intelligence behind this magnificent preserve of nature's diversity.",
     "beat_length_class": "mid",
     "duration_sec": 68,
     "kid_friendly": "yes",
@@ -66224,8 +66262,17 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "unverified",
-      "notes": ""
+      "status": "corrected",
+      "notes": "",
+      "corrections": [
+        {
+          "claim": "script_body opened with an arrival direction ('From the exit of the Alpine Garden, bearing right, follow the signposted path') — beat_type=stop_orientation, which evades the nf-keyed transit filter because the hoist keys on beat_type, not narrative_function (same defect class as D2's NY stop_orientation examples).",
+          "correction": "Removed the arrival-navigation prefix; kept the tree/sculpture facts.",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-02c-arenes-jardin-des-plantes",
@@ -66236,7 +66283,7 @@
       "city_name": "paris"
     },
     "_word_count": 92,
-    "script_body_hash": "aab7f1867294e8676c0609d2689b769f279526bb855127f5baf5e3ec3a8de139"
+    "script_body_hash": "71e15cbc73711d80a9474c4c05f42c437a92dd1526a6015cc33b8afb403b3b12"
   },
   {
     "beat_id": "paris_jardin_des_plantes_science_tech_hidden_gardens_of_paris_grande_galerie_evolution",
@@ -71945,7 +71992,7 @@
     "topic_slug": "debt_evasion_back_door",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "Here on the hillside of once rural Passy, the writer Honoré de Balzac (1799–1850), whose finances were as complicated as the plots of his novels, evaded his creditors and escaped out the back door down into rue Berton when they caught up with him. The walk up the hill from the Passy metro station, 'hidden behind chestnut trees and roses, and the tracks leading towards the Pont de Bir-Hakeim . . . famous from Last Tango in Paris,' leads to rue Raynouard and, after a five-minute walk, to the entrance to Balzac's cottage. Once you descend into the garden you feel as if you've left far behind the city and the monotonous suburb, the sixteenth arrondissement — 'snob Passy' to the protagonist of Alan Furst's novel of Occupied Paris, Red Gold.",
+    "script_body": "Here on the hillside of once rural Passy, the writer Honoré de Balzac (1799–1850), whose finances were as complicated as the plots of his novels, evaded his creditors and escaped out the back door down into rue Berton when they caught up with him. Balzac's cottage on rue Raynouard sits 'hidden behind chestnut trees and roses, and the tracks leading towards the Pont de Bir-Hakeim . . . famous from Last Tango in Paris.' Once you descend into the garden you feel as if you've left far behind the city and the monotonous suburb, the sixteenth arrondissement — 'snob Passy' to the protagonist of Alan Furst's novel of Occupied Paris, Red Gold.",
     "beat_length_class": "mid",
     "duration_sec": 99,
     "kid_friendly": "yes",
@@ -71994,11 +72041,16 @@
           "claim": "Balzac dates given as (1799–1850)",
           "note": "Confirmed correct. Balzac born 20 May 1799, died 18 August 1850.",
           "status": "verified"
+        },
+        {
+          "claim": "script_body opener/nav sentence ('The walk up the hill from the Passy metro station ... leads to rue Raynouard and, after a five-minute walk, to the entrance')",
+          "note": "This was a metro-to-entrance arrival direction (D2 practical-directions leak), not a factual error. Removed the arrival-navigation framing while keeping the quoted atmospheric description and all previously-verified facts (Balzac dates, rue Berton escape route, rue Raynouard address) intact. Status moved from 'verified' to 'corrected' because the verified body text changed; the previously-verified claims (dates, escape route, address) are unaffected by this edit.",
+          "status": "corrected",
+          "sources": []
         }
       ],
-      "status": "verified",
-      "notes": "Rue Berton back-door escape confirmed by multiple sources. Rue Raynouard address confirmed as 47 rue Raynouard. Sources: https://www.francophilesanonymes.com/en/paris/maison-de-balzac/, https://en.wikipedia.org/wiki/Maison_de_Balzac",
-      "verified_body_hash": "6fede03e2cfa9b19ae693e6d3378e6255ce92466416064f5115c12096d333bf4"
+      "status": "corrected",
+      "notes": "Rue Berton back-door escape confirmed by multiple sources. Rue Raynouard address confirmed as 47 rue Raynouard. Sources: https://www.francophilesanonymes.com/en/paris/maison-de-balzac/, https://en.wikipedia.org/wiki/Maison_de_Balzac"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -72009,7 +72061,7 @@
       "city_name": "paris"
     },
     "_word_count": 133,
-    "script_body_hash": "6fede03e2cfa9b19ae693e6d3378e6255ce92466416064f5115c12096d333bf4"
+    "script_body_hash": "52420bb40c81aa0a296545b128e4aee7418525574c590bf11de1475909bf8d21"
   },
   {
     "beat_id": "paris_maison_de_balzac_literary_heritage_hidden_gardens_of_paris_comedie_humaine_secretary_society",
@@ -73193,7 +73245,7 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "Walk east through the Tuileries, past the Louvre and its oldest part, the beautiful Cour Carrée. Cross rue de l'Amiral de Coligny and place du Louvre and a median of tulips and trees to enter the front porch of what used to be the parish church of the royal families, built on the site of a Viking stronghold. From the belfry of Saint-Germain, the church bell — 'la Marie' — rang out the signal to launch the Saint Bartholomew's Day Massacre.",
+    "script_body": "This is the front porch of what used to be the parish church of the royal families, built on the site of a Viking stronghold, near the Louvre's oldest part, the beautiful Cour Carrée. From the belfry of Saint-Germain, the church bell — 'la Marie' — rang out the signal to launch the Saint Bartholomew's Day Massacre.",
     "duration_sec": 52,
     "kid_friendly": "yes",
     "entities": [
@@ -73234,8 +73286,17 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "unverified",
-      "notes": ""
+      "status": "corrected",
+      "notes": "",
+      "corrections": [
+        {
+          "claim": "script_body opened with multi-street arrival directions ('Walk east through the Tuileries ... Cross rue de l'Amiral de Coligny and place du Louvre')",
+          "correction": "Removed the arrival-navigation prefix; kept the church/massacre-bell facts.",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
@@ -73246,7 +73307,7 @@
       "city_name": "paris"
     },
     "_word_count": 82,
-    "script_body_hash": "01d7302fbe5430fa0af4df4f0a7ceaad98c500361474b3a77922c9f1f0a641e4"
+    "script_body_hash": "d51bd00e66fa5950777910749e268c91c249210e52b3e208df5599390b4ad2d3"
   },
   {
     "beat_id": "paris_saint_germain_l_auxerrois_historic_worship_hidden_gardens_of_paris_chapel_stained_glass_esther_judith_deborah",
@@ -74210,7 +74271,7 @@
     "topic_slug": "gardens_walk_dufy",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "Walking west from the Place de la Concorde along avenue Gabriel under a canopy of sycamores, plane trees, pines, magnolias, chestnut trees, with bleeding hearts still blooming in November, you reach the Rond Point des Champs-Élysées. From there, the long walk along opulent avenue Montaigne leads to 11, avenue du Président Wilson and the Museum of Modern Art of the City of Paris, located in one of the two wings of the Palais de Tokyo. The permanent exhibits are superb — especially Dufy's La Fée Électricité (The Good Fairy Electricity), at 250 panels the largest painting in the world, alongside Matisse, Picasso, and Chagall. There's a spacious terrace with palm trees and café service, overlooking the Seine through a screen of plane trees.",
+    "script_body": "Avenue Gabriel runs west from the Place de la Concorde under a canopy of sycamores, plane trees, pines, magnolias, chestnut trees, with bleeding hearts still blooming in November — past the Rond Point des Champs-Élysées and opulent avenue Montaigne to 11, avenue du Président Wilson and the Museum of Modern Art of the City of Paris, in one of the two wings of the Palais de Tokyo. The permanent exhibits are superb — especially Dufy's La Fée Électricité (The Good Fairy Electricity), at 250 panels the largest painting in the world, alongside Matisse, Picasso, and Chagall. There's a spacious terrace with palm trees and café service, overlooking the Seine through a screen of plane trees.",
     "beat_length_class": "mid",
     "duration_sec": 72,
     "kid_friendly": "yes",
@@ -74275,7 +74336,16 @@
         }
       ],
       "status": "disputed",
-      "notes": "Superlative 'largest painting in the world' — never auto-correct per guardrail. Left as extracted."
+      "notes": "Superlative 'largest painting in the world' — never auto-correct per guardrail. Left as extracted.",
+      "corrections": [
+        {
+          "claim": "script_body phrased the avenue Gabriel / Rond Point / avenue Montaigne stretch as second-person walking directions ('Walking west ... you reach ... the long walk along ... leads to')",
+          "correction": "Reworded to third-person geographic description (same facts, same route span) so it no longer reads as turn-by-turn navigation; the pre-existing 'disputed' status is UNCHANGED and left as-is — it covers a separate, unresolved superlative claim ('largest painting in the world') that this edit does not touch per guardrail #4 (never auto-resolve superlatives). This beat remains blocked from upload until that dispute is resolved by human review.",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -74286,7 +74356,7 @@
     "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
     "book_slug": "hidden_gardens_of_paris",
     "_word_count": 125,
-    "script_body_hash": "94d832b60da1eaff161d973d0c2ae518c8499ad16f846ccb7927d51e55d9eaf5"
+    "script_body_hash": "6f2ed1363634743099f65fddb6eae983ee42d109eb58b81ece571591bd597ea8"
   },
   {
     "beat_id": "paris_place_des_vosges_hidden_history_hidden_gardens_of_paris_henri_iv_founding",
@@ -74892,7 +74962,7 @@
     "topic_slug": "neighborhood_square",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "Walking west along rue Saint-Antoine, almost opposite the Church of Saint-Louis–Saint-Paul, turn right into rue Caron, which leads straight into this small neighborhood square facing rue d'Ormesson. Nice bistros and benches under the trees.",
+    "script_body": "Almost opposite the Church of Saint-Louis–Saint-Paul, this small neighborhood square faces rue d'Ormesson at the end of rue Caron. Nice bistros and benches under the trees.",
     "beat_length_class": "seasoning",
     "duration_sec": 14,
     "kid_friendly": "yes",
@@ -74929,8 +74999,17 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "unverified",
-      "notes": ""
+      "status": "corrected",
+      "notes": "",
+      "corrections": [
+        {
+          "claim": "script_body opened with turn-by-turn arrival directions ('Walking west along rue Saint-Antoine ... turn right into rue Caron')",
+          "correction": "Removed the arrival-navigation prefix (the GPS-triggered app already routes the listener); kept the descriptive facts about the square.",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -74941,7 +75020,7 @@
     "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
     "book_slug": "hidden_gardens_of_paris",
     "_word_count": 39,
-    "script_body_hash": "e7e713cddbf194501618a5a9de77c91100e6f11b19a62effb766dd0c8807fe75"
+    "script_body_hash": "bbd3a6a9fca76b99fed94ac18a449ce034cab4e27077f0911e1c169cb052d1dd"
   },
   {
     "beat_id": "paris_musee_carnavalet_architectural_detail_hidden_gardens_of_paris_jean_goujon_seasons_facade",
@@ -81091,7 +81170,7 @@
     "topic_slug": "piaf_birthplace_panorama",
     "sub_location": null,
     "trigger_address": "no. 72 rue de Belleville",
-    "script_body": "Walk from boulevard de Belleville, the bustling, gritty hub of artists, students, and immigrant residents from the Middle East, Africa, and Asia, up the hill of rue de Belleville — no. 72 is the legendary birthplace of Edith Piaf — then turn right into rue Piaf, and keep climbing. Bear right at the top toward the park's welcoming panorama: a higher overview of Paris than from Montmartre. Descending the steep paths and steps, beneath arches of wisteria, you'll come into the lower park meadow, unforgettable in June when the roses are in bloom.",
+    "script_body": "No. 72 rue de Belleville, partway up the hill, is the legendary birthplace of Edith Piaf. Above it, the park's hilltop panorama offers a higher overview of Paris than from Montmartre. Descending the steep paths and steps, beneath arches of wisteria, you come into the lower park meadow, unforgettable in June when the roses are in bloom.",
     "beat_length_class": "mid",
     "duration_sec": 68,
     "kid_friendly": "yes",
@@ -81145,7 +81224,16 @@
         }
       ],
       "status": "corrected",
-      "notes": "PDF extraction produced 'no J2' which pipeline rendered as '12'; correct address is 72 rue de Belleville per 2+ independent sources."
+      "notes": "PDF extraction produced 'no J2' which pipeline rendered as '12'; correct address is 72 rue de Belleville per 2+ independent sources.",
+      "corrections": [
+        {
+          "claim": "script_body opened with multi-street arrival directions ('Walk from boulevard de Belleville ... turn right into rue Piaf, and keep climbing')",
+          "correction": "Removed the arrival-navigation prefix; kept the Piaf-birthplace, panorama, and meadow-descent facts. (Separate from the pre-existing '72 rue de Belleville' address correction already logged above.)",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
@@ -81156,7 +81244,7 @@
       "city_name": "paris"
     },
     "_word_count": 93,
-    "script_body_hash": "d203453db71a127a184c58d3bd020f5cdf3b552fe5d0091d576ee22a332760be"
+    "script_body_hash": "96fcc8d55aaa91d6897eb642a8576098086c660747c399da7875fb2fc660a98c"
   },
   {
     "beat_id": "paris_pere_lachaise_cemetery_sensory_observation_hidden_gardens_of_paris_colette_opening_nature",
@@ -81799,7 +81887,7 @@
     "topic_slug": "ancient_village_charonne",
     "sub_location": null,
     "trigger_address": "111 rue de Bagnolet",
-    "script_body": "From place Gambetta, walk down rue Stendhal and descend the staircase alongside pretty houses; from the square in front of the fifteenth-century church — though the first church on this site dates from the ninth century — you will see the entrance to the cemetery, a bucolic sanctuary on a hill of cherry trees in April as well as flowering shrubbery. You're in the ancient village of Charonne, still a countryside-within-the-city.",
+    "script_body": "In the square in front of the fifteenth-century church — though the first church on this site dates from the ninth century — is the entrance to the cemetery, a bucolic sanctuary on a hill of cherry trees in April as well as flowering shrubbery. You're in the ancient village of Charonne, still a countryside-within-the-city.",
     "beat_length_class": "seasoning",
     "duration_sec": 56,
     "kid_friendly": "yes",
@@ -81840,8 +81928,17 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "unverified",
-      "notes": ""
+      "status": "corrected",
+      "notes": "",
+      "corrections": [
+        {
+          "claim": "script_body opened with arrival directions from Place Gambetta ('walk down rue Stendhal and descend the staircase')",
+          "correction": "Removed the arrival-navigation prefix; kept the church-square and cemetery facts.",
+          "sources": [],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
@@ -81852,7 +81949,7 @@
       "city_name": "paris"
     },
     "_word_count": 74,
-    "script_body_hash": "11d44b2e193caa0fb14d43dfc8523e4b7636abaeca88ea3244f8d21756d9d2ec"
+    "script_body_hash": "7fddff1ff6f9b93185fcfbfc6d39aee97dd70c6011cec276492131c6820b39fe"
   },
   {
     "beat_id": "paris_saint_sulpice_historic_worship_wikipedia_church_identity_and_founding",
@@ -87817,8 +87914,8 @@
     "source_chunk_slug": "notre_dame_cathedral-rev-1355960300",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "On 16 December 2023, the new flèche was put in place, crowned with a gilded cockerel designed by architect Philippe Villeneuve. Inside the new cockerel are the same three relics the old one carried — a tiny piece from the Crown of Thorns, and relics of Saint Denis and Saint Genevieve, patron saints of Paris — placed there in 1935 by Archbishop Jean Verdier to protect the congregation from lightning. The cockerel also contains the names of two thousand people who participated in the reconstruction. To rebuild faithfully, Villeneuve's team scrutinised the journal in which Viollet-le-Duc had recorded every detail of his 19th-century work.",
-    "script_body_hash": "4df184d0fe969baafe6ef68b67ae6194089a94524dfe1531204b2f16d30129ca",
+    "script_body": "The fire of 15 April 2019 destroyed Notre-Dame's roof and its 19th-century flèche. On 16 December 2023, the new flèche was put in place, crowned with a gilded cockerel designed by architect Philippe Villeneuve. Inside the new cockerel are the same three relics the old one carried — a tiny piece from the Crown of Thorns, and relics of Saint Denis and Saint Genevieve, patron saints of Paris — placed there in 1935 by Archbishop Jean Verdier to protect the congregation from lightning. The cockerel also contains the names of two thousand people who participated in the reconstruction. To rebuild faithfully, Villeneuve's team scrutinised the journal in which Viollet-le-Duc had recorded every detail of his 19th-century work.",
+    "script_body_hash": "52a65ef33363cd877eab3743c5ce9ff33ac418863e40ca39d5b951bc95d1fbfe",
     "beat_length_class": "mid",
     "duration_sec": 42,
     "kid_friendly": "yes",
@@ -87844,6 +87941,7 @@
     "inline_foreign_phrases": [],
     "pronunciation": null,
     "key_claims": [
+      "The 2019 fire destroyed the cathedral's roof and 19th-century flèche",
       "New flèche installed 16 December 2023, gilded cockerel by Philippe Villeneuve",
       "Cockerel contains piece of Crown of Thorns, relics of Saint Denis and Saint Geneviève (placed 1935 by Verdier)",
       "Cockerel also contains names of 2,000 reconstruction participants",
@@ -87861,9 +87959,20 @@
     },
     "fact_check": {
       "flagged_claims": [],
-      "status": "unverified",
+      "status": "corrected",
       "extractor_state": "clean",
-      "notes": ""
+      "notes": "",
+      "corrections": [
+        {
+          "claim": "Beat narrates the 2023 flèche re-installation as settled fact with no mention of why a new flèche was needed",
+          "correction": "Prepended a one-sentence establishing clause noting the 15 April 2019 fire destroyed the roof and 19th-century flèche, so the rebuild has its cause (D5). script_body-only prepend — duration_sec and all selection-relevant numeric fields left untouched so this does not change which beats seat.",
+          "sources": [
+            "paris_notre_dame_cathedral_dark_history_wikipedia_fire_2019_alarm_delay"
+          ],
+          "corrected_at": "2026-07-18T00:00:00Z",
+          "corrected_by": "tour-qa-campaign-2026-07-18"
+        }
+      ]
     },
     "new_poi": false,
     "_meta": {

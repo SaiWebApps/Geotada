@@ -5509,7 +5509,7 @@
   "beat_id": "newyork_battery_park_stop_orientation_frommers-nyc-2024_river_view_staging",
   "poi_name": "Battery Park",
   "lens": "waterways_views",
-  "script_body": "From the subway, walk into Battery Park and toward the river. Find a spot where you can see the water — that open view of the harbor is where this walk begins.",
+  "script_body": "Walk into Battery Park and toward the river. Find a spot where you can see the water — that open view of the harbor is where this walk begins.",
   "physical_cues": [
    {
     "cue": "A spot in Battery Park where you can see the river and harbor",
@@ -5552,15 +5552,25 @@
   "confidence": "MEDIUM",
   "related_beats": [],
   "fact_check": {
-   "status": "unverified",
+   "status": "corrected",
    "source_passage_verified": true,
-   "corrections": [],
+   "corrections": [
+    {
+     "field": "script_body",
+     "original": "From the subway, walk into Battery Park and toward the river.",
+     "corrected_to": "Walk into Battery Park and toward the river.",
+     "reason": "Removed the 'From the subway' arrival-direction phrasing (D2 practical-directions leak); kept the staging content (walk toward the river, find a view of the water).",
+     "sources": [],
+     "corrected_by": "tour-qa-campaign-2026-07-18",
+     "corrected_at": "2026-07-18T00:00:00Z"
+    }
+   ],
    "disputes": [],
    "flagged_claims": [],
    "notes": "",
    "checked_at": "2026-06-14T00:00:00Z"
   },
-  "script_body_hash": "158159521d12da860fe538f4f42ffa77829f132b213ead736bcf912e8546ba40"
+  "script_body_hash": "2077529f0d997f6af3401beb263ad2174084e945d8443a935cf6fe8e45d5943b"
  },
  {
   "beat_id": "newyork_harlem_social_change_frommers-nyc-2024_renaissance_lost_to_wrecking_ball",
@@ -68410,7 +68420,7 @@
   "sub_location": null,
   "trigger_address": null,
   "beat_length_class": "mid",
-  "script_body": "Dutch settlers landed here in 1623 and erected a battery of cannon to defend the pocket of land they called New Amsterdam — and it is from that battery of guns that the park takes its name. Today gardens, sculptures, memorials, monuments, and recreation areas fill the twenty-five acres of downtown's largest public space, with waterfront views of the Statue of Liberty across the harbor, and tugboats, barges, and sailboats working the water.",
+  "script_body": "Dutch settlers arrived here in the mid-1620s and, in time, erected a battery of cannon to defend the pocket of land they called New Amsterdam — and it is from that battery of guns that the park takes its name. Today gardens, sculptures, memorials, monuments, and recreation areas fill the twenty-five acres of downtown's largest public space, with waterfront views of the Statue of Liberty across the harbor, and tugboats, barges, and sailboats working the water.",
   "duration_sec": 30,
   "kid_friendly": "yes",
   "entities": [
@@ -68432,8 +68442,8 @@
   "inline_foreign_phrases": [],
   "pronunciation": null,
   "key_claims": [
-   "Dutch settlers landed at Battery Park in 1623",
-   "They built a battery of cannon to defend New Amsterdam",
+   "Dutch settlers arrived at Battery Park in the mid-1620s",
+   "They later built a battery of cannon to defend New Amsterdam",
    "Park is 25 acres, downtown's largest public space"
   ],
   "source_passage": "Dutch settlers landed here in 1623, erecting a battery of cannon to defend the pocket of land they called New Amsterdam. Today, gardens, sculptures, memorials, monuments, and recreation areas fill the 25 acres (10 ha) of downtown's largest public space. Enjoy waterfront views of the Statue of Liberty (see pp. SO-S1), tugboats, barges, and sailboats.",
@@ -68443,7 +68453,22 @@
    "chapter": "Lower Manhattan (Neighborhood Walk)"
   },
   "confidence": "HIGH",
-  "corrections": [],
+  "corrections": [
+   {
+    "field": "script_body",
+    "claim": "'Dutch settlers landed here in 1623 and erected a battery of cannon' — seated adjacent to a Lonely Planet Battery Park beat stating the settlement was founded in 1625 and the battery erected later",
+    "from": "landed here in 1623 and erected a battery of cannon",
+    "to": "arrived here in the mid-1620s and, in time, erected a battery of cannon",
+    "reasoning": "NatGeo's 1623 arrival+immediate-battery framing is the outlier and contradicted, as-seated, the adjacent Lonely Planet Battery Park beat (settlement founded 1625, battery erected later) and the Financial District beat (Dutch West India Company sent settlers in 1624). Reframed to the mid-1620s consensus arrival with the battery erected some time after, matching 2 corroborating corpus beats + nycgovparks.org. The story (Dutch settlers, the battery, the park's name) is kept, not deleted, per guardrail #4.",
+    "sources": [
+     "newyork_financial_district_hidden_history_lonely-planet-new-york-city_new_amsterdam_trading_post_1624",
+     "new_york_battery_park_hidden_history_lonely-planet-new-york-city_first_dutch_settlement_1625",
+     "https://www.nycgovparks.org/parks/battery-park/history"
+    ],
+    "corrected_by": "tour-qa-campaign-2026-07-18",
+    "corrected_at": "2026-07-18T00:00:00Z"
+   }
+  ],
   "disputes": [],
   "_meta": {
    "prompt_version": "unified_v2",
@@ -68451,13 +68476,13 @@
    "city_name": "new_york"
   },
   "fact_check": {
-   "status": "verified",
-   "checked_at": "2026-06-17T00:00:00+00:00",
+   "status": "corrected",
+   "checked_at": "2026-07-18T00:00:00Z",
    "claims_checked": 3,
    "source_passage_verified": true
   },
   "related_beats": [],
-  "script_body_hash": "b2d153b4043f2a5262690488a54f4f511647327a23b47762a77a68c8958b8817"
+  "script_body_hash": "2153dc8ac96216282720a7f17b94166a23dd66e7c3a0029c61152db2a329212e"
  },
  {
   "beat_id": "newyork_battery_park_war_conflict_national-geographic-walking-nyc_castle_clinton_1812_fort",
@@ -82289,7 +82314,7 @@
   "sub_location": null,
   "trigger_address": null,
   "beat_length_class": "seasoning",
-  "script_body": "Take the 4 or 5 train to Bowling Green, or the N/R to Whitehall Street. Begin from inside Bowling Green Park, standing at the bottom of Broadway and facing north — toward the bull. From here, it is remarkable to imagine that over the next twelve miles lies the longest avenue in America. But until the second quarter of the nineteenth century, New York City went no farther than City Hall, a fifteen-minute walk to the north.",
+  "script_body": "Begin from inside Bowling Green Park, standing at the bottom of Broadway and facing north — toward the bull. From here, it is remarkable to imagine that over the next twelve miles lies the longest avenue in America. But until the second quarter of the nineteenth century, New York City went no farther than City Hall, a fifteen-minute walk to the north.",
   "duration_sec": 33,
   "kid_friendly": "yes",
   "entities": [
@@ -82311,7 +82336,7 @@
   "inline_foreign_phrases": [],
   "pronunciation": null,
   "key_claims": [
-   "Start: 4/5 to Bowling Green or N/R to Whitehall, face north facing the bull",
+   "Begin inside Bowling Green Park, facing north up Broadway toward the bull",
    "Broadway runs twelve miles, longest avenue in America",
    "Until the second quarter of the 19th century the city went no farther than City Hall"
   ],
@@ -82322,7 +82347,18 @@
    "chapter": "Wall Street: The Architecture of Capitalism"
   },
   "confidence": "HIGH",
-  "corrections": [],
+  "corrections": [
+   {
+    "field": "script_body",
+    "claim": "script_body opened with a subway-line arrival direction ('Take the 4 or 5 train to Bowling Green, or the N/R to Whitehall Street')",
+    "from": "Take the 4 or 5 train to Bowling Green, or the N/R to Whitehall Street. Begin from inside Bowling Green Park, ...",
+    "to": "Begin from inside Bowling Green Park, ...",
+    "reasoning": "Subway-line arrival directions are a practical-directions leak (D2) — the GPS-triggered app already handles routing to the stop. Removed the subway sentence from script_body and the matching subway-line clause from key_claims[0]; kept the orientation facts (face north, toward the bull, Broadway's length, City Hall history).",
+    "sources": [],
+    "corrected_by": "tour-qa-campaign-2026-07-18",
+    "corrected_at": "2026-07-18T00:00:00Z"
+   }
+  ],
   "disputes": [],
   "_meta": {
    "prompt_version": "unified_v2",
@@ -82330,13 +82366,13 @@
    "city_name": "new_york"
   },
   "fact_check": {
-   "status": "verified",
+   "status": "corrected",
    "checked_at": "2026-06-17T00:00:00+00:00",
    "claims_checked": 3,
    "source_passage_verified": true
   },
   "related_beats": [],
-  "script_body_hash": "37b34f4a660dbc809da3407b145183a97819c8a9683973418f078a5d17bd1709"
+  "script_body_hash": "a57f4c2dac90f63bec05cc02e2cbb7def304edbc7575799b1277afb09ae2713d"
  },
  {
   "beat_id": "newyork_bowling_green_park_hidden_history_big-onion-ten-historic-tours_taxation_recreation_first_park",
@@ -90019,7 +90055,7 @@
   "sub_location": null,
   "trigger_address": null,
   "beat_length_class": "mid",
-  "script_body": "As you walk through Washington Square Park, you're passing over the remains of probably thousands of bodies interred here during its years as a potter's field in the eighteenth century. A yellow fever epidemic in 1822 forced many to flee downtown for the 'village,' and many stayed as the area developed; luxury townhouses appeared on the park's northern edge in the 1830s. The Arch itself was designed by Stanford White in 1892 to replace a papier-mâché antecedent erected in 1889 to celebrate the centennial of George Washington's return to the city after the Revolutionary War.",
+  "script_body": "As you walk through Washington Square Park, you're passing over the remains of probably thousands of bodies interred here during its years as a potter's field in the eighteenth century. A yellow fever epidemic in 1822 forced many to flee downtown for the 'village,' and many stayed as the area developed; luxury townhouses appeared on the park's northern edge in the 1830s. The Arch itself was designed by Stanford White in 1892 to replace a papier-mâché antecedent erected in 1889 to celebrate the centennial of George Washington's inauguration.",
   "duration_sec": 42,
   "kid_friendly": "yes",
   "entities": [
@@ -90051,7 +90087,7 @@
    "A yellow fever epidemic in 1822 drove people to the village",
    "Luxury townhouses appeared on the north edge in the 1830s",
    "Stanford White designed the Arch in 1892",
-   "It replaced a papier-mâché antecedent from 1889 marking Washington's return centennial"
+   "It replaced a papier-mâché antecedent from 1889 marking the centennial of Washington's inauguration"
   ],
   "source_passage": "As you walk through the park, you're passing over the remains of probably thousands of bodies interred here in its years as a potter's field in the eighteenth century. A yellow fever epidemic in 1822 forced many to flee downtown New York City for the \"village.\" In the 1830s, luxury townhouses appeared on the northern edge of the park and some still remain. The Arch itself was designed by Stanford White (see our Four Squares Tour in chapter 4) in 1892 to replace a papier-mâché antecedent erected in 1889 to celebrate the centennial of George Washington's return to the city after the Revolutionary War.",
   "source_attribution": {
@@ -90060,7 +90096,22 @@
    "chapter": "Greenwich Village: A Gay and Lesbian History"
   },
   "confidence": "HIGH",
-  "corrections": [],
+  "corrections": [
+   {
+    "field": "script_body",
+    "claim": "The 1889 temporary arch celebrated 'the centennial of George Washington's return to the city after the Revolutionary War'",
+    "from": "centennial of George Washington's return to the city after the Revolutionary War",
+    "to": "centennial of George Washington's inauguration",
+    "reasoning": "Washington's return to NYC after the Revolutionary War (Evacuation Day) was 25 November 1783 (centennial = 1883). The 1889 temporary arch marked the centennial of Washington's 30 April 1789 inauguration. Corroborated by 3 other corpus beats on this same POI, all correctly attributing the 1889 arch to the inauguration centennial. source_passage left untouched as the audit trail — the error originates in Big Onion's own text.",
+    "sources": [
+     "newyork_washington_square_park_historic_arch_frommers-nyc-2024_stanford_white_marble_arch",
+     "newyork_washington_square_park_historic_arch_lonely-planet-new-york-city_stanford_white_arch_duchamp",
+     "newyork_washington_square_park_historic_arch_national-geographic-walking-nyc_arch_completed_1895_centennial"
+    ],
+    "corrected_by": "tour-qa-campaign-2026-07-18",
+    "corrected_at": "2026-07-18T00:00:00Z"
+   }
+  ],
   "disputes": [],
   "_meta": {
    "prompt_version": "unified_v2",
@@ -90068,13 +90119,13 @@
    "city_name": "new_york"
   },
   "fact_check": {
-   "status": "verified",
-   "checked_at": "2026-06-17T00:00:00+00:00",
+   "status": "corrected",
+   "checked_at": "2026-07-18T00:00:00Z",
    "claims_checked": 5,
    "source_passage_verified": true
   },
   "related_beats": [],
-  "script_body_hash": "4a69bfb15ad1b540104ada06dc6ccc2c45d7d0eaade70dd279ab74156c4b84b7"
+  "script_body_hash": "f7a7691cc8021b18512ea03da6f75b958855b7656f01ad2356578b2ecd2e9166"
  },
  {
   "beat_id": "newyork_23_fifth_avenue_famous_residents_big-onion-ten-historic-tours_mabel_dodge_salon",
