@@ -21,6 +21,7 @@ from src.tour.contract import (
 )
 from src.tour.factcheck import FactCheckResult, SemanticFactChecker
 from src.tour.generation import generate, split_sentences
+from src.tour.narration_quality import craft_score
 
 
 # --- minimal Script/BeatSequence/Route builders for author_compose_script (mirror
@@ -373,3 +374,590 @@ def test_widen_returning_none_spends_nothing_extra():
         stitch_fallback=_STITCH, max_repairs=2, widen=lambda: None)
     assert r.grounded_fallback and not r.widened
     assert drafter.writes == 1 and drafter.rewrites == 2  # narrow loop only
+
+
+# --- full-corpus RECHECK + surgical EXCISION (Phase-C tour-killer fix,
+# specs/2026-07-18-tour-qa-campaign/PHASE-C-RESULTS.md): the fact-checker was throwing away
+# whole GOOD stops because one true claim was sourced from a beat trimmed out of the
+# tour-window (the Square du Vert-Galant / Ravaillac instance). Both rungs are OPT-IN
+# (``corpus_facts=None`` / ``excise=False`` by default) so every existing caller — and the
+# production path, author_compose_script, which passes neither — is byte-identical. ---
+
+_WIDE_CORPUS = (*_FACTS, "the clock was added in 1300")
+
+
+def test_corpus_recheck_rescues_a_windowed_out_true_claim():
+    """A claim TRUE of the POI but sourced from a beat trimmed out of the narrow window
+    (only the tower fact survives the cap here) is flagged unsupported against the narrow
+    facts; the FULL-CORPUS recheck finds it entailed by the wider corpus and RESCUES it —
+    served authored, no fallback, and the verdict on the SERVED text is clean.
+    UNDO: delete the recheck rung from author_compose_stop -> falls through with no widen
+    configured straight to the stitch floor -> RED on both grounded_fallback and text."""
+    drafter = _MockDrafter(
+        write_out="The tower was built in 1250. The bell weighs thirteen tons.",
+        rewrite_out="unused",
+    )
+    r = author_compose_stop(
+        ("the tower was built in 1250",),  # narrow window: the bell fact was tier-capped out
+        "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=0, corpus_facts=lambda: _FACTS,
+    )
+    assert not r.grounded_fallback
+    assert r.result.passed(), r.result
+    assert r.rescued == ("The bell weighs thirteen tons.",), r.rescued
+    assert r.text == "The tower was built in 1250. The bell weighs thirteen tons."  # author prose
+
+
+def test_corpus_recheck_never_rescues_a_claim_entailed_by_nothing():
+    """Same setup, but the drafter ALSO invents a claim absent from BOTH the narrow window
+    AND the full corpus (a dragon). The corpus recheck rescues the windowed-out bell fact
+    but must NOT rescue the dragon — a claim entailed by nothing is a true invention, never
+    served. This is the anti-hallucination pin for the new rung.
+    UNDO: make the rescue unconditional / rescue on ANY non-empty corpus (rather than
+    requiring entailment) -> the dragon ships in served text -> RED."""
+    drafter = _MockDrafter(
+        write_out="The tower was built in 1250. The bell weighs thirteen tons. "
+        "A dragon lives inside.",
+        rewrite_out="unused",
+    )
+    r = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=drafter, checker=_checker(), stitch_fallback=_STITCH, max_repairs=0,
+        corpus_facts=lambda: _FACTS,  # contains the bell fact but NOT the dragon
+    )
+    assert r.grounded_fallback  # the dragon could not be rescued -> the stop still falls back
+    assert r.text == _STITCH
+    assert "dragon" not in r.text.lower()  # the true invention never ships
+    assert r.rescued == ()  # nothing was served under the rescued banner
+
+
+def test_recheck_is_skipped_when_facts_are_missing():
+    """``best_result`` carries a genuine MISSING fact (dropped, never stated) alongside a
+    claim the corpus WOULD rescue. A coverage failure is a real drop the corpus recheck
+    cannot repair (the corpus only adds support for unsupported claims; it can't supply a
+    fact the draft never said), so the stop must still fall back — and ``corpus_facts`` must
+    not even be called.
+    UNDO: drop the ``missing_facts must be empty`` guard -> a fact-dropping stop ships (or
+    corpus_facts is called and this raises) -> RED."""
+
+    def _must_not_be_called():
+        raise AssertionError("corpus_facts must not be called when a fact is missing")
+
+    drafter = _MockDrafter(
+        write_out="The tower was built in 1250. The clock was added in 1300.",  # bell dropped
+        rewrite_out="unused",
+    )
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=0, corpus_facts=_must_not_be_called,
+    )
+    assert r.grounded_fallback
+    assert r.text == _STITCH
+
+
+class _StubChecker:
+    """A checker stand-in for the EXCISION-ladder tests: ``check`` is a lookup table keyed
+    by the EXACT narration text (so a test can prescribe the verdict for the original draft
+    and for the excised remainder independently), ``unsupported_against`` is an identity
+    passthrough (full-corpus recheck is not under test in these cases — every claim stays
+    unsupported), and ``locate`` is a lookup table from claim to sentence indices. Isolates
+    the LADDER's arithmetic (collapse floor, abort-on-zero-match) from
+    substring/entailment semantics, which are pinned separately in test_factcheck.py."""
+
+    def __init__(self, checks: dict, locate_map: dict | None = None) -> None:
+        self._checks = checks
+        self._locate_map = locate_map or {}
+
+    def check(self, narration: str, facts: tuple[str, ...]) -> FactCheckResult:
+        return self._checks[narration]
+
+    def unsupported_against(self, claims: tuple[str, ...], facts: tuple[str, ...]):
+        return tuple(claims)
+
+    def locate(self, claims: tuple[str, ...], sentences: tuple[str, ...]):
+        return {c: self._locate_map.get(c, ()) for c in claims}
+
+
+_FLAT_STITCH = "The tower was built in 1250. The bell weighs thirteen tons."
+# craft_score(_FLAT_STITCH) == 0.109 (two flat, similarly-short declaratives -> no
+# percussion). The excision fixtures below deliberately pair a SHORT (<8-word) sentence
+# with a LONG (>20-word) one to earn the percussion bonus, so a SERVED remainder's craft
+# score is unambiguously higher (measured ~2.2) — the ``_excise`` craft-score gate is not
+# incidentally exercised by these tests, it is satisfied BY DESIGN.
+_STITCH_PASS = {_FLAT_STITCH: FactCheckResult((), ())}  # every StubChecker needs this entry:
+# the ladder's terminating floor always calls ``checker.check(stitch_fallback, facts)``.
+
+
+def test_excision_drops_only_the_inventing_sentence_and_keeps_the_rest():
+    """A 5-sentence draft where exactly ONE sentence carries a claim entailed by nothing;
+    excision must drop ONLY that sentence, keep the other four VERBATIM, and re-check the
+    remainder before serving.
+    UNDO: revert to whole-stop rollback (author_compose_script's pre-2026-07-18 behavior)
+    -> r.text == the grounded stitch -> RED on both the survival and the not-stitch
+    assertions."""
+    s0 = "The tower rose above the square."  # short (<8 words)
+    s1 = ("Built in 1250, it dominated the low rooftops of the old quarter for more than "
+          "six centuries before the great fire changed everything.")  # long (>20 words)
+    s2 = "A dragon lives inside, guarding a hoard of stolen gold."  # the invention
+    s3 = "The bell inside weighs thirteen tons."  # short (<8 words)
+    s4 = "Locals still swap stories of the night the old bell cracked."
+    draft = f"{s0} {s1} {s2} {s3} {s4}"
+    remainder = f"{s0} {s1} {s3} {s4}"
+    checker = _StubChecker(
+        checks={draft: FactCheckResult((s2,), ()), remainder: FactCheckResult((), ()),
+                **_STITCH_PASS},
+        locate_map={s2: (2,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("the tower was built in 1250", "the bell weighs thirteen tons"),
+        "Tower", "dark_history", drafter=drafter, checker=checker,
+        stitch_fallback=_FLAT_STITCH, max_repairs=0, excise=True,
+    )
+    assert not r.grounded_fallback
+    assert r.result.passed(), r.result
+    assert "dragon" not in r.text.lower()
+    assert any("dragon" in e.lower() for e in r.excised), r.excised
+    for kept_sentence in (s0, s1, s3, s4):
+        assert kept_sentence in r.text  # every OTHER sentence survives verbatim
+    assert r.text == remainder
+
+
+def test_excision_aborts_when_a_claim_maps_to_no_sentence():
+    """``locate`` returns an empty index tuple for one of TWO unsupported claims (the
+    cross-sentence-merge shape the real decomposer produces): excision must ABORT
+    ENTIRELY rather than drop only the locatable claim's sentence and guess the rest is
+    fine. Deliberately ISOLATED from the recheck safety net: the stub says the 2-sentence
+    remainder (kept after dropping only the LOCATABLE claim's sentence) is fact-clean, so
+    a version that merely skips the unlocatable claim (instead of aborting) would still
+    serve a remainder that CONTAINS the un-excised invention.
+    UNDO: treat a zero-match claim as 'nothing to excise for THAT claim, drop what you can
+    and proceed' -> the remainder (which still contains the unlocatable invention's
+    sentence) serves -> RED."""
+    s0 = "The tower was built in 1250."
+    s1 = "A dragon lives inside, according to old and unverifiable local legend."  # unlocatable
+    s2 = "A second dragon guards the northern gate."  # cleanly locatable invention
+    draft = f"{s0} {s1} {s2}"
+    remainder_if_partial = f"{s0} {s1}"  # what a "drop only what you can locate" bug would serve
+    checker = _StubChecker(
+        checks={
+            draft: FactCheckResult(("dragon lives inside per legend", s2), ()),
+            remainder_if_partial: FactCheckResult((), ()),  # the recheck would (wrongly) pass
+            **_STITCH_PASS,
+        },
+        locate_map={"dragon lives inside per legend": (), s2: (2,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=checker,
+        stitch_fallback=_FLAT_STITCH, max_repairs=0, excise=True,
+    )
+    assert r.grounded_fallback
+    assert r.text == _FLAT_STITCH
+    assert r.excised == ()
+    assert "dragon" not in r.text.lower()
+
+
+def test_excision_falls_back_when_the_remainder_still_fails_the_recheck():
+    """The Ravaillac shape: one sentence WELDS a true, load-bearing fact to an invented
+    modifier ('...killed him... with a hidden blade'). Excising that whole sentence removes
+    the invention AND the required fact, so the re-check on the remainder comes back
+    MISSING -> the excision must be discarded and the grounded stitch served — this is the
+    common case per the forecast, and it is CORRECT behavior, not a bug. The remainder is
+    deliberately given a HIGH craft score (short + long sentence, well above the stitch's)
+    so the craft-score gate cannot independently explain the fallback — only the recheck
+    failure can.
+    UNDO: serve the remainder without re-checking against ``facts`` -> a fact-dropping stop
+    ships -> RED."""
+    s0 = "The king was seized."  # short (<8 words)
+    s1 = "Francis Ravaillac killed the king with a hidden blade."  # true fact + invented detail
+    s2 = ("The city mourned him bitterly for weeks afterward, and its grief spread through "
+          "every quarter until even the palace itself fell silent.")  # long (>20 words)
+    draft = f"{s0} {s1} {s2}"
+    remainder = f"{s0} {s2}"  # high craft score (percussion), but MISSING the required fact
+    checker = _StubChecker(
+        checks={
+            draft: FactCheckResult((s1,), ()),
+            remainder: FactCheckResult((), ("ravaillac killed the king",)),  # fact lost too
+            **_STITCH_PASS,
+        },
+        locate_map={s1: (1,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("ravaillac killed the king",), "Square", "dark_history",
+        drafter=drafter, checker=checker, stitch_fallback=_FLAT_STITCH,
+        max_repairs=0, excise=True,
+    )
+    assert r.grounded_fallback
+    assert r.text == _FLAT_STITCH
+    assert r.excised == ()  # the discarded excision attempt is never partially credited
+
+
+def test_excision_serves_exactly_at_the_collapse_floor():
+    """BOUNDARY: 5 sentences, 2 dropped -> 3 kept == ceil(0.6 * 5) == 3 -> SERVES (the
+    collapse floor is inclusive at the boundary)."""
+    s0 = "The square opened onto the river at its western tip."  # short-ish
+    s1 = "A dragon lives beneath the cobblestones, hoarding coins."  # invention 1
+    s2 = ("Henri the Fourth loved this stretch of the city so much that he commissioned "
+          "the bridge, the square, and the row of houses that still line it today.")  # long
+    s3 = "A second dragon guards the northern gate at midnight."  # invention 2
+    s4 = "He reigned."  # short (<8 words)
+    draft = f"{s0} {s1} {s2} {s3} {s4}"
+    remainder = f"{s0} {s2} {s4}"
+    checker = _StubChecker(
+        checks={draft: FactCheckResult((s1, s3), ()), remainder: FactCheckResult((), ()),
+                **_STITCH_PASS},
+        locate_map={s1: (1,), s3: (3,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("henri the fourth loved this stretch", "he reigned"),
+        "Square", "dark_history", drafter=drafter, checker=checker,
+        stitch_fallback=_FLAT_STITCH, max_repairs=0, excise=True,
+    )
+    assert not r.grounded_fallback
+    assert r.result.passed()
+    assert r.text == remainder
+
+
+def test_excision_falls_back_one_below_the_collapse_floor():
+    """BOUNDARY: same 5-sentence shape, but 3 dropped -> 2 kept < ceil(0.6 * 5) == 3 ->
+    STITCH. One sentence below the floor must NOT serve, even though 2 >= the absolute
+    2-sentence minimum — the RATIO floor is the binding constraint here.
+    UNDO: remove (or loosen) the ratio check -> this 2-of-5 remainder serves -> RED."""
+    s0, s1, s2, s3, s4 = (
+        "The square opened onto the river at its western tip.",
+        "A dragon lives beneath the cobblestones, hoarding coins.",  # invention 1
+        "A phantom knight patrols the ramparts every full moon.",  # invention 2
+        "A second dragon guards the northern gate at midnight.",  # invention 3
+        "He reigned from fifteen eighty-nine to sixteen ten.",
+    )
+    draft = f"{s0} {s1} {s2} {s3} {s4}"
+    remainder = f"{s0} {s4}"
+    checker = _StubChecker(
+        checks={draft: FactCheckResult((s1, s2, s3), ()), remainder: FactCheckResult((), ()),
+                **_STITCH_PASS},
+        locate_map={s1: (1,), s2: (2,), s3: (3,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("he reigned from 1589 to 1610",), "Square", "dark_history",
+        drafter=drafter, checker=checker, stitch_fallback=_FLAT_STITCH,
+        max_repairs=0, excise=True,
+    )
+    assert r.grounded_fallback
+    assert r.text == _FLAT_STITCH
+
+
+def test_excision_absolute_floor_blocks_a_ratio_passing_single_sentence_survivor():
+    """At the default 0.6 ratio, ``ceil(0.6 * n) >= 2`` for every realistic ``n >= 2``, so
+    the RATIO floor alone would already block every 1-sentence survivor — the absolute
+    ``>= 2`` floor needs its OWN test, ISOLATED from both the ratio floor and the craft-score
+    gate, to prove it does independent work. Configure a lower ``min_keep_ratio`` (0.3) where
+    the RATIO floor would ACCEPT a 1-of-3 survivor (``ceil(0.3 * 3) == 1``), and give that
+    lone survivor a HIGH craft score (well above the stitch's) so the craft gate would not
+    independently block it either — only the absolute floor stands in the way.
+    UNDO: remove the ``len(kept) < 2`` absolute check (keep only the ratio check) -> this
+    1-sentence fragment serves under the lenient ratio -> RED."""
+    s0 = "You stand where the tower has risen since 1250."  # high craft alone (1.111 > 0.109)
+    s1 = "A dragon lives inside the western wall."  # invention 1
+    s2 = "A phantom bell rings only in dense fog."  # invention 2
+    draft = f"{s0} {s1} {s2}"
+    remainder = s0
+    checker = _StubChecker(
+        checks={draft: FactCheckResult((s1, s2), ()), remainder: FactCheckResult((), ()),
+                **_STITCH_PASS},
+        locate_map={s1: (1,), s2: (2,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("the tower has risen since 1250",), "Tower", "dark_history",
+        drafter=drafter, checker=checker, stitch_fallback=_FLAT_STITCH,
+        max_repairs=0, excise=True, min_keep_ratio=0.3,
+    )
+    assert r.grounded_fallback
+    assert r.text == _FLAT_STITCH
+
+
+def test_excision_falls_back_when_the_remainder_would_collapse():
+    """A clear (non-boundary) collapse: 4 sentences, 3 unsupported/unlocated-invention
+    sentences dropped -> 1 kept, breaching BOTH the ratio floor and the absolute >= 2 floor
+    -> STITCH, never a one-sentence fragment.
+    UNDO: remove the ``len(kept) < 2`` absolute floor -> a 1-sentence fragment ships ->
+    RED."""
+    s0, s1, s2, s3 = (
+        "The tower was built in 1250.",
+        "A dragon lives inside the western wall.",
+        "A phantom bell rings only in dense fog.",
+        "A second dragon nests in the belfry.",
+    )
+    draft = f"{s0} {s1} {s2} {s3}"
+    remainder = s0
+    checker = _StubChecker(
+        checks={draft: FactCheckResult((s1, s2, s3), ()), remainder: FactCheckResult((), ()),
+                **_STITCH_PASS},
+        locate_map={s1: (1,), s2: (2,), s3: (3,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=drafter, checker=checker, stitch_fallback=_FLAT_STITCH,
+        max_repairs=0, excise=True,
+    )
+    assert r.grounded_fallback
+    assert r.text == _FLAT_STITCH
+
+
+def test_excision_falls_back_when_the_remainder_scores_worse_than_the_stitch():
+    """A remainder can pass EVERY fact gate (0-unsupported, 0-missing) and still be worse
+    prose than the stitch it would replace — dropping a sentence can strand the next one
+    (dangling anaphora), the exact register-crash Phase C measured (craft 0.08-0.84) that
+    made 8/8 adversaries reject the tours. The deterministic craft-score gate must catch
+    this: a fact-clean but flat/unvaried remainder must NOT be served over a better-crafted
+    stitch.
+    UNDO: remove the ``craft_score(remainder) < craft_score(stitch_fallback)`` check in
+    ``_excise`` -> this flat, fact-clean remainder ships over the better stitch -> RED."""
+    s0 = "The tower was built in 1250."
+    s1 = "A dragon lives inside the western wall."  # the invention
+    s2 = "The bell was old."
+    draft = f"{s0} {s1} {s2}"
+    remainder = f"{s0} {s2}"  # flat, no percussion -> low craft score
+    good_stitch = (
+        "The tower rose above the square. Built in 1250, it dominated the low rooftops "
+        "of the old quarter for more than six centuries before the great fire changed "
+        "everything."
+    )  # short + long sentence -> percussion bonus -> high craft score
+    checker = _StubChecker(
+        checks={
+            draft: FactCheckResult((s1,), ()),
+            remainder: FactCheckResult((), ()),  # fact-clean, but craft-poor
+            good_stitch: FactCheckResult((), ()),
+        },
+        locate_map={s1: (1,)},
+    )
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=drafter, checker=checker, stitch_fallback=good_stitch,
+        max_repairs=0, excise=True,
+    )
+    assert r.grounded_fallback
+    assert r.text == good_stitch  # the better-crafted stitch, not the flat fact-clean remainder
+
+
+def test_absent_callbacks_are_byte_identical_old_behavior():
+    """With ``corpus_facts=None`` and ``excise=False`` (both OFF by default — the
+    production path, ``author_compose_script``, passes neither), a stop that would have
+    fallen back before this change falls back EXACTLY the same way. Mirrors
+    ``test_falls_back_to_grounded_stitch_when_repair_never_converges`` but pins the new
+    kwargs explicitly at their defaults.
+    UNDO: make either new rung fire when its callback is absent/off (e.g. treat
+    ``corpus_facts=None`` as 'always rescue' or ``excise=False`` as 'excise anyway') -> this
+    test and the pre-existing stitch-fallback tests flip -> RED."""
+    drafter = _MockDrafter(
+        write_out="The tower was built in 1250.",  # always drops the bell
+        rewrite_out="The tower was built in 1250.",
+    )
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=2, corpus_facts=None, excise=False,
+    )
+    assert r.grounded_fallback
+    assert r.result.passed()
+    assert r.text == _STITCH
+    assert r.rescued == () and r.excised == ()
+
+
+def test_served_result_reflects_the_served_text():
+    """On BOTH the rescue path and the excision path, ``r.result`` must describe what was
+    actually SHIPPED, not the pre-rescue/pre-excision draft's verdict — else the next QA
+    campaign's evidence (``len(res.result.unsupported_claims)`` printed by
+    scripts/author_tour.py) reads as 'we shipped N hallucinations' when we shipped zero.
+    UNDO: return ``best_result`` unchanged on rescue (or the pre-excision ``result`` on
+    excision) -> a served stop reports non-empty unsupported claims -> RED."""
+    # rescue path
+    drafter = _MockDrafter(
+        write_out="The tower was built in 1250. The bell weighs thirteen tons.",
+        rewrite_out="unused",
+    )
+    r_rescue = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=drafter, checker=_checker(), stitch_fallback=_STITCH, max_repairs=0,
+        corpus_facts=lambda: _FACTS,
+    )
+    assert r_rescue.result.unsupported_claims == ()
+    assert r_rescue.result.passed()
+
+    # excision path
+    s0 = "The tower rose above the square."  # short
+    s1 = "A dragon lives inside the western wall, guarding a hoard of stolen gold."
+    s2 = ("Built in 1250, it dominated the low rooftops of the old quarter for more than "
+          "six centuries before the great fire changed everything.")  # long
+    draft = f"{s0} {s1} {s2}"
+    remainder = f"{s0} {s2}"
+    checker = _StubChecker(
+        checks={draft: FactCheckResult((s1,), ()), remainder: FactCheckResult((), ()),
+                **_STITCH_PASS},
+        locate_map={s1: (1,)},
+    )
+    r_excise = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=_MockDrafter(write_out=draft, rewrite_out="unused"), checker=checker,
+        stitch_fallback=_FLAT_STITCH, max_repairs=0, excise=True,
+    )
+    assert r_excise.result.unsupported_claims == ()
+    assert r_excise.result.passed()
+    assert r_excise.text == remainder
+
+
+def test_recheck_and_excision_spend_nothing_extra_when_the_narrow_loop_converges():
+    """Mirrors ``test_widen_never_called_when_narrow_loop_converges``: a converging draft
+    must never touch ``corpus_facts`` (and, since the checker's ``locate``/
+    ``unsupported_against`` are never invoked either, never spends the extra excision
+    calls) — the live path must not burn Haiku calls on every healthy stop.
+    UNDO: hoist the recheck/excision rungs above the ``best_result.passed()`` early-return
+    -> RED (and the live path would burn Haiku calls on every healthy stop)."""
+
+    def _must_not_be_called():
+        raise AssertionError("corpus_facts must not be called when the narrow loop converges")
+
+    drafter = _MockDrafter(write_out=_STITCH, rewrite_out=_STITCH)
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, corpus_facts=_must_not_be_called, excise=True,
+    )
+    assert r.result.passed() and not r.grounded_fallback
+    assert r.rescued == () and r.excised == ()
+
+
+# --- hostile-verifier regressions: the ONLY configuration any caller ships is
+# corpus_facts + excise TOGETHER (scripts/author_tour.py:183-185), and the widen rung must
+# fire before either rescue attempt, not after (specs/2026-07-18-tour-qa-campaign follow-up
+# QA pass). Both defects were reproduced empirically by the hostile verifier's probes. ---
+
+
+def test_corpus_facts_and_excise_together_rescue_and_excise_in_the_same_draft():
+    """THE SHIPPED CONFIGURATION (corpus_facts AND excise=True together — the only one any
+    caller uses): a draft with ONE windowed-out true claim (rescuable via the full POI
+    corpus) PLUS ONE real invention (never rescuable) — the exact Vert-Galant shape the
+    whole track was built for. The corpus rescue must NOT cancel out excision of the
+    residual invention: the served text must KEEP the rescued sentence and DROP only the
+    invented one.
+    UNDO: revert ``_excise``'s remainder recheck to a plain ``checker.check(remainder,
+    facts)`` that ignores the corpus -> the rescued claim's sentence (still present in the
+    remainder, since only the dragon sentence was excised) is re-flagged unsupported against
+    the NARROW facts alone, the recheck's ``passed()`` is False, excision aborts, and the
+    whole draft falls through to the stitch -> RED (grounded_fallback True, text == stitch,
+    'thirteen tons' absent)."""
+    s0 = "The tower was built in 1250."
+    s1 = "The bell weighs thirteen tons."  # windowed-out true claim -> corpus rescue
+    s2 = "A dragon lives inside, guarding a hoard of stolen gold."  # true invention
+    draft = f"{s0} {s1} {s2}"
+    drafter = _MockDrafter(write_out=draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("the tower was built in 1250",),  # narrow window: bell fact tier-capped out
+        "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_FLAT_STITCH, max_repairs=0,
+        corpus_facts=lambda: _FACTS,  # tower + bell (NOT the dragon)
+        excise=True,
+    )
+    assert not r.grounded_fallback, r.result
+    assert r.result.passed(), r.result
+    assert "dragon" not in r.text.lower()
+    assert "thirteen tons" in r.text.lower()  # the rescued claim SURVIVES, not excised away
+    assert r.rescued == (s1,), r.rescued
+    assert any("dragon" in e.lower() for e in r.excised), r.excised
+
+
+def test_widen_fires_before_any_rescue_attempt_even_when_the_narrow_rescue_would_succeed():
+    """ORDERING PIN for the already-landed, live-proven widen fix (8cc2fb6, Phase-C: craft
+    2.29-2.42, 3-of-4 fallback conversions): a narrow-window failure that the corpus rescue
+    COULD repair must NOT preempt the widen rung. Configure BOTH a ``widen`` that converges
+    AND a ``corpus_facts`` stub that explodes if called — if the narrow rescue ran first (the
+    verifier's Probe B), it would call ``corpus_facts`` and succeed before ``widen`` ever
+    runs. The served text must be the WIDENED draft and ``widen`` must have fired exactly
+    once.
+    UNDO: move ``_rescue_or_excise`` back before the ``if widen is not None`` block -> the
+    narrow rescue calls ``corpus_facts_must_not_be_called`` -> AssertionError (RED) before
+    widen is ever invoked."""
+    widen_calls = {"n": 0}
+
+    def widen():
+        widen_calls["n"] += 1
+        return _WIDE_FACTS
+
+    def corpus_facts_must_not_be_called():
+        raise AssertionError(
+            "the narrow rescue must not run before the widen rung gets a chance to "
+            "converge -- 8cc2fb6 (widen-before-stitch) would be silently regressed"
+        )
+
+    drafter = _MockDrafter(write_out=_WIDE_TEXT, rewrite_out="unused")
+    r = author_compose_stop(
+        _FACTS, "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=_STITCH, max_repairs=0, widen=widen,
+        corpus_facts=corpus_facts_must_not_be_called, excise=True,
+    )
+    assert widen_calls["n"] == 1
+    assert r.result.passed() and not r.grounded_fallback
+    assert r.widened
+    assert r.text == _WIDE_TEXT
+
+
+def test_rescue_path_has_no_craft_floor_by_design_unlike_excise():
+    """DECISION, now documented + pinned: the full-rescue path (``if not still:`` in
+    ``_rescue_or_excise``) serves the COMPLETE, UNMUTILATED authored draft — nothing was
+    cut, so there is no dangling-anaphora/register-crash risk for the craft gate to guard
+    against (unlike ``_excise``'s surgically-cut remainder, which DOES apply the gate — see
+    ``test_excision_falls_back_when_the_remainder_scores_worse_than_the_stitch``). This is
+    now the MAJORITY path (widen fires first; rescue is the common remaining rung), so the
+    exemption needs its own pin: a rescued draft that scores LOWER than the stitch it
+    replaces must still be served, never discarded for craft alone.
+    UNDO: add a craft-score gate to the ``if not still:`` full-rescue branch in
+    ``_rescue_or_excise`` -> this flat-but-fully-rescued draft is discarded for the
+    punchier stitch -> RED (grounded_fallback True, text == punchy_stitch)."""
+    flat_draft = "The tower was built in 1250. The bell weighs thirteen tons."  # flat, low craft
+    punchy_stitch = (
+        "The tower rose above the square. Built in 1250, it dominated the low rooftops "
+        "of the old quarter for more than six centuries before the great fire changed "
+        "everything."
+    )  # short + long sentence -> percussion bonus -> HIGHER craft than the flat rescue
+    assert craft_score(flat_draft) < craft_score(punchy_stitch)  # sanity: rescue is worse-crafted
+    drafter = _MockDrafter(write_out=flat_draft, rewrite_out="unused")
+    r = author_compose_stop(
+        ("the tower was built in 1250",),  # narrow window: bell fact tier-capped out
+        "Tower", "dark_history", drafter=drafter, checker=_checker(),
+        stitch_fallback=punchy_stitch, max_repairs=0, corpus_facts=lambda: _FACTS,
+    )
+    assert not r.grounded_fallback  # served despite being lower-crafted than the stitch
+    assert r.result.passed()
+    assert r.text == flat_draft
+    assert r.rescued == ("The bell weighs thirteen tons.",)
+
+
+def test_rescued_not_served_surfaces_a_partial_rescue_that_still_falls_back():
+    """AUDITABILITY pin: when the corpus rescues SOME claims but the residual invention
+    cannot be safely excised (here: ``excise=False``, so there is no excision rung at all),
+    the stop still falls back to the stitch — but the fact that a rescue DID fire must not
+    be silently lost. ``AuthorResult.rescued`` is correctly ``()`` (nothing was ultimately
+    SERVED under the rescued banner), but ``rescued_not_served`` must carry the bell claim so
+    an operator reading scripts/author_tour.py's output does not conclude the corpus-rescue
+    rung never ran.
+    UNDO: stop threading the partial-rescue tuple out of ``_rescue_or_excise`` on its
+    None-returning paths -> ``rescued_not_served`` reads ``()`` even though the corpus
+    grounded the bell claim -> RED."""
+    drafter = _MockDrafter(
+        write_out="The tower was built in 1250. The bell weighs thirteen tons. "
+        "A dragon lives inside.",
+        rewrite_out="unused",
+    )
+    r = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=drafter, checker=_checker(), stitch_fallback=_STITCH, max_repairs=0,
+        corpus_facts=lambda: _FACTS,  # contains the bell fact but NOT the dragon
+        # excise intentionally OFF: no rung can dispose of the dragon claim
+    )
+    assert r.grounded_fallback
+    assert r.rescued == ()  # nothing was served under the rescued banner
+    assert r.rescued_not_served == ("The bell weighs thirteen tons.",), r.rescued_not_served

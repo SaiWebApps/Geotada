@@ -67,6 +67,45 @@ def _wide_facts(plan, wide_budget: int, narrow: tuple[str, ...]) -> tuple[str, .
     return tuple(facts) if len(new) >= 2 else None
 
 
+def _corpus_facts_for(
+    poi, snap, route, lenses: list[str], narrow: tuple[str, ...], cap: int = 40
+) -> tuple[str, ...]:
+    """FULL-CORPUS fact list for one POI: every ACTIVE beat (``select_poi_beats_full``,
+    apply_cap=False) — NOT ``plans[i]`` (built by plain ``select_poi_beats``, which already
+    applies the per-tier R1 ceiling) and NOT the further core-seconds-budget cap applied
+    into ``capped``. This is the FULL-CORPUS RECHECK primitive (Phase-C tour-killer fix):
+    a claim tier-capped OR budget-capped out of the tour window can still be grounded here.
+
+    Seeded with ``narrow`` (this stop's tour-window facts) FIRST, so ``corpus ⊇ narrow``
+    holds BY CONSTRUCTION: ``select_poi_beats_full``'s own docstring says the capped plan is
+    a prefix for the flat strategy but a SCORE-SELECTED SUBSET for the spatial strategies, so
+    under a spatial strategy a narrow-window beat can sit past index ``cap`` in the full plan
+    and get truncated out of the recheck corpus otherwise — a conservative failure (a
+    rescuable claim fails to rescue) but a real yield loss the seeding removes for free.
+
+    Capped to ``cap`` facts (JUDGE DILUTION mitigation, forecast risk #1): the faithfulness
+    judge was calibrated on tour-window-sized fact lists (~28 items); an unbounded full-POI
+    corpus is 3-10x larger and risks diluting the judge's attention. The cap floats up to
+    ``len(narrow)`` if the narrow window alone exceeds it, so seeding never truncates the
+    very facts it exists to guarantee. Reads the ALREADY-LOADED snapshot/route — no extra DB
+    round-trip, no spend."""
+    from src.tour.beat_select import select_poi_beats_full
+
+    raw_beats = list(snap.beats_for(poi.id)) + list(route.demoted_beats.get(poi.id, ()))
+    full = select_poi_beats_full(poi, raw_beats, interest_lenses=lenses)
+    facts: list[str] = list(dict.fromkeys(narrow))  # seed FIRST, de-duped, order-preserved
+    seen: set[str] = set(facts)
+    effective_cap = max(cap, len(facts))
+    for b in full.beats:
+        for it in (list(b.key_claims) or [p.strip() for p in split_sentences(b.script_body or "")]):
+            if it and it not in seen:
+                seen.add(it)
+                facts.append(it)
+                if len(facts) >= effective_cap:
+                    return tuple(facts)
+    return tuple(facts)
+
+
 def _facts_for(stop_idx, stitched, beats_by_id) -> list[str]:
     facts, seen = [], set()
     for s in stitched.script:
@@ -177,9 +216,28 @@ def main() -> int:
         res = author_compose_stop(facts, poi.name, lens, drafter=drafter, checker=checker,
                                   stitch_fallback=stitch, max_repairs=3, trace=trace,
                                   widen=lambda i=stop_idx, f=facts: _wide_facts(
-                                      plans[i], args.core_seconds * 2, f))
+                                      plans[i], args.core_seconds * 2, f),
+                                  corpus_facts=lambda p=poi, f=facts: _corpus_facts_for(
+                                      p, snap, route, ti.lenses, f),
+                                  excise=True)
         if res.widened:
             print("  [widen retry] narrow loop failed; wider fact window converged")
+        if res.rescued:
+            print(f"  [corpus rescue] {len(res.rescued)} claim(s) grounded in the POI corpus "
+                  "outside the fact window:")
+            for c in res.rescued:
+                print(f"       RESCUED: {c}")
+        if res.excised:
+            print(f"  [excision] dropped {len(res.excised)} sentence(s) carrying a true "
+                  "invention; kept the rest of the authored prose:")
+            for e in res.excised:
+                print(f"       EXCISED: {e}")
+        if res.grounded_fallback and res.rescued_not_served:
+            print(f"  [PARTIAL RESCUE, STILL FELL BACK] the corpus grounded "
+                  f"{len(res.rescued_not_served)} claim(s) below, but the stop still fell "
+                  "back to the stitch (the residual invention could not be safely excised):")
+            for c in res.rescued_not_served:
+                print(f"       RESCUED-BUT-DROPPED: {c}")
         tag = "GROUNDED-STITCH FALLBACK" if res.grounded_fallback else f"converged in {res.attempts}"
         print(f"\n{'#'*74}\nSTOP {stop_idx} — {poi.name}  [{tag}]")
         print(f"  facts kept: {_retention(src_toks, res.text)*100:.0f}%  |  "
