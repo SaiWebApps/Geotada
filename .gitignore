@@ -254,6 +254,7 @@ temp/
 !.claude/commands/
 !.claude/LEARNINGS.md
 !.claude/agents/
+!.claude/ledger/
 !.claude/hooks/
 !.claude/workflows/
 !.claude/settings.json
