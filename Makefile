@@ -478,6 +478,9 @@ deploy: ## One-shot: deploy a city (POIs+beats+areas) from the repo to the ACTIV
 deploy-cloud: ## One-shot: deploy a city from the repo to AURA (additive, audio-safe), then verify parity. Usage: make deploy-cloud CITY=new_york
 	set -a && . .env.cloud && set +a && uv run python -m scripts.aura_ensure_running && uv run python -m scripts.deploy --slug "$(CITY)" --allow-cloud
 
+render-watch: ## Watch the latest Render (ondoway-api) deploy to a terminal state; exit 2 + logs on failure. Also runs automatically after every `git push` via the PostToolUse hook.
+	@RENDER_WATCH_FORCE=1 bash .claude/hooks/render-deploy-watch.sh </dev/null
+
 prune-orphans: ## Delete ACTIVE-graph POIs/beats the repo dropped (the deploy complement). Dry-run unless APPLY=1. Usage: make prune-orphans CITY=new_york [APPLY=1]
 	uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" $(if $(APPLY),--apply,)
 
