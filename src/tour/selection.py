@@ -176,7 +176,20 @@ MIN_DWELL_AUDIO_SECONDS: int = 90
 # recomputes its coverage baseline on the capped stitch, so NO fact is lost. Well
 # above MIN_DWELL_AUDIO_SECONDS so a capped stop never demotes to a vignette.
 # Tunable: raise to let a star dominate longer; lower for tighter stops.
-MAX_DWELL_AUDIO_SECONDS: int = 420
+# DERIVED, not chosen (2026-07-19). This ceiling and the quality standard's per-stop
+# WORD cap were written independently and silently drifted: at 420 s, and with
+# routing.beat_spoken_seconds converting at 150 wpm, this permitted 420*150/60 = 1050
+# words in a single stop -- 40% above the published 750-word cap
+# (src/tour/quality_rubric.py GORGE_MAX_WORDS_PER_STOP, sourced in
+# specs/2026-07-19-tour-quality-standard/01-standard.md from museum-sector practice).
+# Notre-Dame's MEASURED 1038-word stop was therefore the ceiling WORKING AS CONFIGURED,
+# not a cap failure. Tied to the word cap so the two can no longer drift:
+#     750 words / 150 wpm = 5.0 min = 300 s
+# MINUS a MEASURED glue reserve: the ceiling caps BEAT audio, but a rendered stop also
+# carries generation glue (arrival line, look-cue, closer). Measured per-stop glue on
+# the Ile de la Cite tour: 2 / 65 / 16 / 12 / 73 words. Budgeting the worst case
+# (~75 words = 30 s) keeps the RENDERED stop inside the cap instead of landing at 765.
+MAX_DWELL_AUDIO_SECONDS: int = 270
 
 # The five band labels, ordered loudest -> quietest. "silent" means excluded.
 BAND_HEADLINE: str = "headline"
@@ -1386,6 +1399,13 @@ def select_route(
         key = (cand.id, exempt)
         cached = _capped_memo.get(key)
         if cached is None:
+            # An EXEMPT anchor is exempt from the GOVERNOR allowance, not from the
+            # absolute MAX_DWELL_AUDIO_SECONDS ceiling — build_poi_beat_plans_capped
+            # applies that ceiling to every stop including the marquee. Crediting the
+            # greedy with UNCAPPED audio made the planner believe a marquee filled far
+            # more of the audio target than the tour actually delivers, so it stopped
+            # adding stops early — which is why tightening the ceiling alone SHORTENS
+            # a tour instead of spreading it over more stops.
             cached = planned_capped_audio_seconds(
                 cand, snapshot, interest, None if exempt else allowance
             )
@@ -1969,14 +1989,35 @@ def _apply_fill_pass(
     # RESCUE_STOP_FLOOR by seating a stop whose MARGINAL walk is proportional to
     # the audio it delivers (rich nearby stop in, far/thin walk-slog out). Runs on
     # top of Phase 1, so it never displaces a within-budget stop Phase 1 chose.
-    if len(selected) < rescue_floor:
+    move_ceiling = walk_budget / WALK_FRACTION if WALK_FRACTION else float("inf")
+    if rescue_floor > 0 and (len(selected) < rescue_floor or consumed_audio < floor_audio):
         seated = {p.id for p in selected}
         for cand in pool:
-            if cand.id in seated or len(selected) >= rescue_floor:
+            if cand.id in seated or len(selected) >= hard_anchor_cap:
+                continue
+            if len(selected) >= rescue_floor and consumed_audio >= floor_audio:
+                break
+            # LENS FIDELITY. A landmark the lens DIMMED to vignette is kept in the
+            # pool by the lens_dimmed_landmark floor so it never vanishes from the
+            # tour — but it belongs as a walk-past MENTION, not a dwell stop. The
+            # rescue must not promote it: asking for dark_history and being made to
+            # stand in front of an off-genre POI is exactly the failure the band
+            # logic exists to prevent.
+            if interest and not is_dwell_band(
+                band_for_spotlight(
+                    poi_score(cand, spine, interest, snapshot, penalty=score_penalty),
+                    tier=cand.tier,
+                )
+            ):
                 continue
             extra, idx = _insertion(cand, selected)
             cand_audio = capped_audio_fn(cand, exempt=False)
             if extra > RESCUE_MAX_WALK_PER_AUDIO * cand_audio:
+                continue
+            # MOVE CEILING: walking + listening is the tourist's real elapsed time.
+            # Cap it at the engine's own err-short total, or filling to the audio
+            # floor produces a route needing 67.7 min for a 60-min request.
+            if consumed_walk + extra + consumed_audio + cand_audio > move_ceiling:
                 continue
             selected = [*selected[:idx], cand, *selected[idx:]]
             consumed_walk += extra
