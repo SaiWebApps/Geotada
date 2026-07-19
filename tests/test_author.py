@@ -1410,3 +1410,29 @@ def test_default_author_system_prompt_is_pinned():
     from src.tour.author import _AUTHOR_SYSTEM
 
     assert _AUTHOR_SYSTEM == _EXPECTED_AUTHOR_SYSTEM
+
+
+def test_threaded_flag_survives_a_corpus_rescue_serve():
+    """Merge defect caught by the judge 2026-07-18: `threaded=threaded` was set on the three
+    plain return paths but LOST on both _rescue_or_excise serves, so a threaded stop served
+    via corpus rescue misreported threaded=False — defeating the field's whole purpose
+    (attributing a live regression to the threading track). Telemetry-only, never control
+    flow. UNDO: drop `threaded=threaded` from the narrow rescue return -> this goes RED."""
+
+    class _CtxDrafter:
+        def write(self, facts, poi, lens, *, context=None):
+            return "The tower was built in 1250. The bell weighs thirteen tons."
+
+        def rewrite(self, facts, draft, result, poi, lens, *, context=None):
+            return draft
+
+    # narrow facts omit the bell claim -> unsupported; the POI corpus grounds it -> rescue
+    r = author_compose_stop(
+        ("the tower was built in 1250",), "Tower", "dark_history",
+        drafter=_CtxDrafter(), checker=_checker(), stitch_fallback=_STITCH, max_repairs=0,
+        corpus_facts=lambda: _FACTS,
+        context=StopContext(prev_summary="We left the bridge.", next_poi="Abbey"),
+    )
+    assert r.rescued, "precondition: this must be served via the corpus-rescue path"
+    assert not r.grounded_fallback
+    assert r.threaded, "a threaded stop served via rescue must report threaded=True"

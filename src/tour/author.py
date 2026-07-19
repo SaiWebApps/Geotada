@@ -264,7 +264,7 @@ def author_compose_stop(
             text, result, rescued, excised = served
             return AuthorResult(
                 text=text, result=result, attempts=attempts, grounded_fallback=False,
-                widened=True, rescued=rescued, excised=excised,
+                widened=True, rescued=rescued, excised=excised, threaded=threaded,
             )
 
     # NARROW rescue/excise: only reached once widen (if configured) has already failed to
@@ -280,7 +280,7 @@ def author_compose_stop(
         text, result, rescued, excised = served
         return AuthorResult(
             text=text, result=result, attempts=attempts, grounded_fallback=False,
-            rescued=rescued, excised=excised,
+            rescued=rescued, excised=excised, threaded=threaded,
         )
     # Deterministic floor: the grounded stitch is fact-complete and corpus-verbatim, so it
     # passes the check trivially — fidelity guaranteed even when the author won't converge.
