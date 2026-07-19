@@ -29,6 +29,7 @@ from src.tour.generation import (
     GLUE_LABELS,
     GLUE_NAV,
     GLUE_PACING,
+    SENSORY_INVITATION,
     SYNTHESIZED_OPENER,
     _area_article,
     _nav_walk_minutes,
@@ -1587,3 +1588,57 @@ def test_sum_audio_gives_full_credit_when_compose_merges_sentences():
     assert sum(len(m.text.split()) for m in merged) == 9  # words preserved
     assert len(merged) == 2  # fewer sentences than the 3-sentence body
     assert _sum_audio(merged, seq) == 90
+
+
+def test_sensory_invitation_is_not_said_twice_at_the_first_stop():
+    """The cold-open and the staging step must not BOTH emit the invitation.
+
+    Seen in the workbench on a real Île de la Cité preview: "You're starting right at
+    Pont Neuf. Take a moment to take it in. Look up at the Seine quais... Take a moment
+    to take it in." — the same sentence twice, four sentences apart, in the first stop a
+    listener ever hears. `_synth_first_leg` ends with the invitation on the
+    you-are-already-here branch (leg < 20s), and step 4 appended it again on any view cue.
+
+    UNDO: drop the `already_invited` guard in _synthesized_opener -> this goes RED.
+    """
+    poi = _poi("p1", "Pont Neuf")
+    body = _beat_with_cues(
+        "body",
+        poi.id,
+        cues=(
+            PhysicalCue(
+                cue="the Seine quais visible from the bridge",
+                direction="up",
+                feature_type="view",
+            ),
+        ),
+        body="A grounded fact about the bridge.",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=(body,),
+            ),
+        )
+    )
+    route = _route((poi,))
+    # Standing AT the first stop: this is the branch whose copy ends with the invitation.
+    route = route.model_copy(
+        update={
+            "transits": (
+                route.transits[0].model_copy(update={"walk_seconds": 5}),
+                *route.transits[1:],
+            )
+        }
+    )
+
+    script = generate(seq, route, _input(round_trip=True), glue_client=MockGlueClient())
+    texts = [s.text for s in script.script if s.stop_idx == 0]
+
+    said = sum(t.count(SENSORY_INVITATION) for t in texts)
+    assert said <= 1, f"the sensory invitation was said {said} times: {texts}"
+    # And the view cue itself must still be staged — the guard must not swallow step 4.
+    assert any("Seine quais" in t for t in texts), texts

@@ -58,6 +58,9 @@ from .routing import beat_spoken_seconds, compute_dwell_seconds, planned_audio_s
 
 GLUE_NAV: str = "GLUE_NAV"
 GLUE_STAGING: str = "GLUE_STAGING"
+# The one sensory-invitation phrase, shared by the cold-open and the staging step so the
+# two emitters cannot drift apart and re-introduce the duplicate they once produced.
+SENSORY_INVITATION: str = "Take a moment to take it in."
 GLUE_PACING: str = "GLUE_PACING"
 GLUE_CALLBACK: str = "GLUE_CALLBACK"
 GLUE_CLOSING: str = "GLUE_CLOSING"
@@ -544,10 +547,18 @@ def _build_synthesized_opener(
     # 4. Sensory invitation when there's a view to take in. (The old generic
     # "we're going to walk for N minutes" primer is dropped — step 1b now grounds
     # the walk concretely with the first stop and its distance.)
-    if has_view_cue:
+    #
+    # Suppressed when the cold-open already said it (2026-07-19). ``_synth_first_leg``
+    # ends with this exact invitation on the you-are-already-here branch (leg < 20s), so
+    # a first stop that ALSO has a view cue said it twice, four sentences apart. Seen in
+    # the workbench on a real Île de la Cité preview: "You're starting right at Pont Neuf.
+    # Take a moment to take it in. Look up at the Seine quais... Take a moment to take it
+    # in." Both emitters now share SENSORY_INVITATION so this cannot silently re-diverge.
+    already_invited = any(SENSORY_INVITATION in (s.text or "") for s in out)
+    if has_view_cue and not already_invited:
         out.append(
             Sentence(
-                text="Take a moment to take it in.",
+                text=SENSORY_INVITATION,
                 source_id=GLUE_STAGING,
                 source_type="glue",
                 stop_idx=stop_idx,
@@ -583,7 +594,7 @@ def _synth_first_leg_text(first_stop: POIBeats, route: Route) -> str | None:
     if secs < 20:
         # You're already standing at the first stop — don't tell the walker to
         # "head for" a place they're on top of (the Tuileries/Concorde complaint).
-        return f"You're starting right at {name}. Take a moment to take it in."
+        return f"You're starting right at {name}. {SENSORY_INVITATION}"
     minutes = round(secs / 60)
     if minutes <= 1:
         return f"When you're ready, head for {name} — it's just ahead."
