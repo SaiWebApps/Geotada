@@ -2134,6 +2134,8 @@
               </select></div>
             <div class="field-group"><label><input type="checkbox" id="tourCompose" /> Real AI narration</label>
               <div style="color:var(--text-muted);font-size:0.72rem;">OFF by default = the fast deterministic stitch ($0). ON = a live compose that spends real $ on your key (~1 min) — you'll get a confirm before it runs.</div></div>
+            <div class="field-group"><label><input type="checkbox" id="tourCorrect" /> Correct-don't-reject</label>
+              <div style="color:var(--text-muted);font-size:0.72rem;">Compose-only. OFF = a sentence that fails the fact gate is replaced with raw corpus stitch. ON = up to two Opus repair attempts first (trim, then rewrite), floored only if both fail — rescued ~23% of flagged sentences on the source branch's acceptance run. Costs an extra Opus call per flagged sentence.</div></div>
           </div>
           <div class="field-group" style="color:var(--text-muted);font-size:0.8rem;">
             Tip: click the map — 1st click sets the start, 2nd the destination.</div>
@@ -3129,6 +3131,10 @@
     const composeEl = document.getElementById('tourCompose');
     const compose = !!(composeEl && composeEl.checked);  // OFF by default -> $0 stitch
     const provider = (document.getElementById('tourProvider') || {}).value || 'anthropic';
+    const correctEl = document.getElementById('tourCorrect');
+    // Compose-only and OFF by default: the corrector costs an extra Opus call per
+    // flagged sentence, so it can never ride along on the $0 stitch path.
+    const correct = !!(correctEl && correctEl.checked) && compose;
     // Confirm the spend BEFORE clearing/disabling anything, so Cancel is a true no-op
     // that leaves the existing preview intact (D4).
     if (compose && !window.confirm(
@@ -3147,7 +3153,7 @@
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          center_lat: lat, center_lng: lng, duration_min: duration,
+          center_lat: lat, center_lng: lng, duration_min: duration, correct,
           lenses: lenses.length ? lenses : null, round_trip: roundTrip,
           end_lat: endLat, end_lng: endLng,
           compose, provider,

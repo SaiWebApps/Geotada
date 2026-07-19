@@ -226,6 +226,16 @@ class TripPreviewRequest(BaseModel):
     # it on, so it is a per-request field only. ``engine="author"`` turns it on; anything
     # else (None/'compose') is today's behavior, byte-identical.
     engine: str | None = None
+    # Opt in to the CORRECT-DON'T-REJECT corrector (off by default, compose-only).
+    # When a composed sentence fails the faithfulness gate, the default path replaces
+    # it immediately with grounded stitch; with this on, the corrector first attempts
+    # up to two Opus repairs (trim, then narrator-voice rewrite) and only floors if
+    # both fail — on the source branch's 9-stop acceptance run that rescued ~23% of
+    # flagged sentences from degrading to raw stitch. Strictly OPT-IN and strictly
+    # costlier (an extra Opus call per flagged sentence), so like ``engine`` it is a
+    # per-request field with NO env default — a deployment can never flip everyone
+    # onto the pricier path. Ignored unless ``compose`` is true.
+    correct: bool = False
 
 
 class TripPreviewStop(BaseModel):

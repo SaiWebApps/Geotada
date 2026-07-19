@@ -45,6 +45,7 @@ from src.tour.compose import (
     compose_script,
     compose_script_per_chapter,
 )
+from src.tour.compose_correct import AnthropicCorrectionClient
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
     BeatSequence,
@@ -819,6 +820,11 @@ def preview_trip(
             # Per-chapter: one focused (parallel) call per stop, so the big
             # repetitive stops fuse without dropping facts (whole-tour compose
             # reverted them) and the tour composes in ~1 min, not ~19.
+            # Opt-in corrector: only when the request asks. None (the default) leaves
+            # the proven drop/surgical repair ladder byte-identical. Built here rather
+            # than injected as a dependency so a deployment cannot flip it on globally
+            # — it costs an extra Opus call per flagged sentence.
+            corrector = AnthropicCorrectionClient() if body.correct else None
             composed = compose_script_per_chapter(
                 script,
                 seq,
@@ -826,6 +832,7 @@ def preview_trip(
                 client=client,
                 faithfulness_checker=faithfulness_checker,
                 candidates=2,  # best-of-2: extra tickets for the big, dense stops
+                correction_client=corrector,
             )
         except ComposeVerificationError:
             compose_status = "refused"  # unrepairable — keep the grounded stitch

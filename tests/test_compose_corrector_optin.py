@@ -288,3 +288,17 @@ def test_correction_telemetry_survives_to_the_served_script() -> None:
     # regresses again. UNDO: drop corrections_spent from the carry-across -> RED.
     assert served.validation.corrections_spent == 1
     assert served.validation.affirm_reject == 1
+
+
+def test_preview_request_exposes_an_optin_correct_flag_defaulting_off() -> None:
+    """The workbench toggle's contract: per-request, defaulting OFF.
+
+    Like ``engine="author"``, this must never have an env default — the corrector
+    costs an extra Opus call per flagged sentence, so a deployment must not be able
+    to flip every user onto it. UNDO: remove the field, or default it True -> RED.
+    """
+    from src.api.models.trips import TripPreviewRequest
+
+    req = TripPreviewRequest(center_lat=48.85, center_lng=2.35)
+    assert req.correct is False, "the corrector must default OFF"
+    assert TripPreviewRequest(center_lat=48.85, center_lng=2.35, correct=True).correct is True
