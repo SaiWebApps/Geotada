@@ -204,15 +204,17 @@ editor in the workbench.
 |---|---|---|---|---|
 | **C1** | **Starvation** — a POI with plenty of material is not reduced to a line | for each stop: `words_rendered` vs `beats_available` for that POI in the corpus. A stop whose POI has ≥`STARVE_MIN_BEATS` beats must render ≥`STARVE_MIN_WORDS_PER_BEAT × beats` words, unless deliberately a walk-past vignette AND the POI is below tier 4 | see §5 | **BLOCKER** |
 | C2 | Tier inversion | no tier-5 POI is rendered as a vignette while a lower-tier POI is a full anchor | zero inversions | **BLOCKER** |
-| C3 | Thin tour | delivered audio vs requested duration | ≥ the engine's own `FILL_PASS_AUDIO_FLOOR_FRAC × target` | WARN (already disclosed by banner) |
+| **C3** | **Thin tour** | delivered audio vs requested duration | ≥ the engine's own `FILL_PASS_AUDIO_FLOOR_FRAC × target` | **BLOCKER** — a 13-min tour for a 60-min request is not deliverable, so it blocks SERVING; it is loop-INELIGIBLE for compose (§7) because recomposing a stop cannot move `total_audio_seconds` past the seated material's own voiced/body ratio |
 | C4 | Stop balance | no single stop holds a disproportionate share of total words | max stop share ≤ `BALANCE_MAX_SHARE` | WARN |
 | C5 | Verbatim repetition | no sentence repeated within the tour | zero exact dupes | **BLOCKER** |
 | C6 | Empty/glue-only stop | every stop has ≥1 substantive (non-glue) sentence | zero | **BLOCKER** |
-| C7 | Time-budget overrun | walk + listening ≤ the err-short total | within budget | **BLOCKER** |
+| C7 | Time-budget overrun | walk + **stationary** listening ≤ the err-short total | within budget | **BLOCKER** |
+| **C7b** | **Leg audio outruns its walk** | walk-concurrent narration vs the walk it rides | ≤ the walk (the smaller of `total_walk_seconds` / `Σ leg_seconds`) | **BLOCKER** |
 | **C8** | **Gorging** — the inverse of C1 | words per stop | ≤ `GORGE_MAX_WORDS_PER_STOP` (750) | **BLOCKER** |
 | C9 | Sentence length for the ear | `mean_sentence_words` (reuse `narration_quality`) | ≤ 15 (sourced) | WARN |
 | C10 | Opens with a look-cue, not a bare fact | first sentence of each stop prompts observation | every stop | WARN (G1 judges semantically) |
 | C11 | Date density for the ear | `year_density` per 100w (reuse `narration_quality`) | report + WARN on outliers | WARN |
+| C12 | Stops close enough to deserve a human glance | haversine distance between consecutive anchors | ≥ `MIN_STOP_SEPARATION_M` | WARN — demoted from BLOCKER 2026-07-19; see §5, distance alone cannot distinguish "the same place told twice" from two genuinely distinct, adjacent landmarks (the gold-text stops, §1, sit 8.4 m apart). The check that actually catches the former is semantic, G4 |
 
 ### GATE — semantic, model-judged
 
@@ -241,7 +243,47 @@ Nothing is invented and dressed as evidence.**
 | `BALANCE_MAX_SHARE` | 0.60 | **judgement call.** Measured: the 2-stop tour split 1022/915 words (53%/47%) — fine. The failure shape is one stop at 90%+. |
 | audio floor | `FILL_PASS_AUDIO_FLOOR_FRAC = 0.8` | **inherited** from `src/tour/selection.py:343`. Not a new number. |
 | time ceiling | `walk_budget / WALK_FRACTION` | **inherited** — the engine's own err-short total, `src/tour/routing.py:42-43`. |
-| words/sec for audio | existing `_sum_audio` | **inherited** from `src/tour/generation.py`. |
+| words/sec for audio | `SPOKEN_WPM = 150` | **measured + inherited, REWRITTEN 2026-07-19.** `_sum_audio` now returns `voiced_words / 150 * 60` — the words actually spoken, at one documented rate. The old model was **not a measure of audio**: it credited every glue sentence a flat **4 s regardless of length** (a 60-word reflection counted as 4 s, which made walk-leg narration invisible to the tour's own clock) and capped beat credit at the corpus estimate via `min(1.0, voiced/body)`, so richer prose could never raise the number — only dedup could lower it. It measured SEATING VOLUME. 150 is not a new judgement call: `routing.beat_spoken_seconds` already falls back to `word_count / 150 * 60`, density's `word_count / 2.5` is the same figure, and the live Paris corpus's 486 beats with populated `est_spoken_seconds` imply p10 **147** / median **150** / p90 **153**. |
+| `MIN_STOP_SEPARATION_M` | 50 m, **C12 demoted BLOCKER → WARN 2026-07-19** | **judgement call, from a MEASURED absurdity, then demoted by a SECOND measurement.** An acceptance pass on a real Île de la Cité tour found Palais de Justice and Conciergerie seated as separate stops **17 metres apart** — the same building complex — where the second stop opens by describing the spot the listener stood on seconds earlier. RECALIBRATED from 100 m to 50 m: at 100 m this also flagged Sainte-Chapelle at 86 m from the Conciergerie, a FALSE POSITIVE (a genuinely distinct attraction, a real walk in a dense historic quarter). **Then, measured across the full real corpora** (`tests/test_tour_selection.py::test_selection_does_not_filter_close_but_distinct_pois`): Paris' 370 POIs give 48 pairs under 50 m, New York's 402 give 46 — two different populations, not one. True duplicates (corpus geocoding defects) cluster at 0.0–1.7 m; genuinely distinct, walkable landmarks start at ~8 m, including **Hôtel Le Meurice ↔ Angelina at 8.4 m** — the two POIs in the owner's own gold text (§1). Distance cannot tell these apart; a BLOCKER at 50 m makes the gold-standard tour structurally unbuildable. A companion selection-side filter at this same distance was tried and reverted for the identical reason. C12 is therefore WARN: still surfaced to the editor (a short gap deserves a glance), never refuses serving. The real tool for "same place told twice" is semantic, G4. See `src/tour/quality_rubric.py`'s `MIN_STOP_SEPARATION_M` comment for the full measurement. |
+| `OUTLIER_YEAR_DENSITY_MULTIPLE` | 2.0 | **measured, 2026-07-19**, over every composed tour in `data/*/tours/` — **195 tour files: paris 191, london 4. `data/new_york/tours/` does not exist and contributed nothing**, so this is a Paris-dominated sample (paris 485 of 501 stop/tour samples with a nonzero tour mean), NOT a three-city one. Each stop's `year_density` against its own tour's mean has median 0.97, p90 1.67, p95 2.00, max 3.11; 3.4% of samples exceed 2.0×. The constant sits at the measured p95 — a genuine outlier cut, not an invented number. **Provenance caveat:** an earlier revision of this row claimed "paris, london, new_york — 487 samples". That was wrong on both the city list and the count, and it was caught by an adversarial re-read, not by the author. The distribution reproduces exactly; only the stated evidence base was inflated. Re-measure across cities before treating 2.0 as generalising beyond Paris. |
+
+### The time model — audio overlaps walking (product ruling, 2026-07-19)
+
+**The owner's ruling, verbatim: "Audio overlaps the walking. It is a part of the
+tour experience."** This is the reference for C7/C7b and for any future work on
+walk-leg content.
+
+Two kinds of listening, and only one of them costs the tourist minutes:
+
+- **Stationary** — standing at a stop, listening. ADDS to elapsed time. C7 counts it.
+- **Concurrent** — listening while walking a leg. Costs NO elapsed time; it rides a
+  walk that was happening anyway. C7 excludes it; C7b bounds it by the walk's length.
+
+Before this ruling, `C7` summed walk + *all* audio, which models a tourist who walks
+in silence and then stands in silence to listen. That made walk-leg narration
+unscoreable: adding content to a walk appeared to consume the time budget even
+though the tourist finishes at the same moment.
+
+`src/tour/generation.py::is_walk_concurrent` is the single shared predicate — nav
+glue, reflections, and vignette one-liners are walk-concurrent; anchor beats are
+stationary. The rubric and the workbench's `band="leg"` cards both use it, so what
+an editor sees on a leg card is exactly what the rubric scored as free.
+
+**A correction worth recording, because the process caught it and the author did
+not.** An earlier revision of this section justified the change with a worked
+example: "1650 s walk + 1434 s audio = 3084 s against a 2988 s ceiling — closing C3
+necessarily trips C7, BLOCKER for BLOCKER." That arithmetic was wrong. The 1650 s
+was measured while an unrelated, since-reverted selection experiment was applied;
+the real walk on that route is 1087 s, giving 2521 s against 2988 s — 467 s of
+headroom. **No measured tour ever deadlocked.** An adversarial review found this in
+shipped source comments. The ruling stands on its own as a statement about what the
+product IS; it never needed the arithmetic.
+
+**Open, and deliberately not resolved here:** `AUDIO_FRACTION = 0.60` is cited below
+against a Nubart figure that actually says **0.50**, and the 0.8 C3 floor is derived
+from it. Both were set in a walk-in-silence world. Now that leg audio is free, the
+floor should be re-derived — a stop-audio floor and a leg-fill target are arguably
+two different numbers. Do not treat 0.60/0.80 as settled.
 
 ### Externally sourced thresholds (professional audio-guide practice)
 
@@ -336,9 +378,58 @@ def score_tour(script, route, snapshot, *, tour_input) -> RubricReport
 ```
 
 `RubricReport` carries per-check results, the blocker list, and an overall verdict.
-The compose path calls it after composition. **A BLOCKER verdict regenerates the
-script** rather than serving it. WARN results surface in the workbench so an editor
-sees them without being blocked.
+The compose path calls it after composition.
+
+**Two separate predicates, not one.** The naive reading — "a BLOCKER verdict
+regenerates the script" — conflates two different questions:
+
+1. **Is the tour fit to serve?** `RubricReport.passed` — BLOCKER means the tour
+   *should not* be served as-is.
+
+   **As of 2026-07-19 nothing enforces this, and the gap is deliberate to record
+   rather than paper over.** The only production caller is
+   `src/api/routes/trips.py` (`preview_trip`), which serialises `rubric.passed`
+   and the finding lists into the response payload and returns 200. It does not
+   raise, refuse, or regenerate; `src/api/dependencies.py` says so in as many
+   words. `POST /trips/{id}/compose` — the path that actually persists to Neo4j —
+   never calls `score_tour` at all. **So today the rubric is an ADVISORY report
+   surfaced to the editor in the workbench, not a gate.** Any statement that a
+   BLOCKER "is not served" describes intent, not implemented behaviour.
+
+   Closing it is a real change with a real cost, and it needs §7.2 below first:
+   without `compose_fixable` a naive retry loop burns Opus calls on blockers that
+   provably cannot converge. Do not write enforcement language here until a caller
+   actually honours `passed`.
+2. **Is looping the compose step, for one stop, worth the spend?** This is the
+   separate question `src/tour/quality_rubric.py::compose_fixable(finding,
+   material)` answers. A BLOCKER whose defect is upstream of compose — selection
+   picked the wrong POI, ordering chose a bad route, or the audio-seconds formula
+   structurally cannot move — reproduces IDENTICALLY on a recompose. That is
+   spend with zero chance of convergence, not a retry.
+
+   The clearest proof is **C3 (thin tour)**: `src/tour/generation.py:1203-1207`
+   computes the beat-derived share of `total_audio_seconds` from SEATED beats scaled
+   by the voiced-word fraction, `min(1.0, voiced_words / body_words)` — a recompose
+   can only push that ratio TOWARD 1.0, never past it, so writing more BODY words
+   cannot close a C3 gap. This is not literally zero extra audio in every sense:
+   `generation.py:1208` adds `glue_count * 4` seconds on top, uncapped by that
+   ratio, so more glue (navigation/transition) sentences do add a few real seconds
+   — a reward-hacking vector worth naming, not a route to closing a serious gap.
+   C3 stays a BLOCKER for the serving verdict (§4); it is simply never
+   loop-eligible. **C1 (starvation)** is the sharper case: if the seated material
+   for a stop never reached the corpus-derived floor, the rest of the POI's beats
+   are sitting in `overflow_by_poi`, never handed to the composer — telling
+   compose to "write more" invites fabrication, the entailment gate rejects it,
+   and the stop floors to grounded stitch, which is **worse** than the original
+   terse render. Looping there doesn't just waste money, it degrades the tour.
+
+   `compose_fixable` is therefore consulted BEFORE any retry loop spends a
+   recompose call on a BLOCKER, fails closed on every check it has no positive
+   evidence about (an unrecognised id, a WARN, or missing structured context),
+   and is exhaustively unit-tested per check id in `tests/test_tour_quality_rubric.py`.
+
+WARN results never gate serving; they surface in the workbench so an editor sees
+them without the tour being blocked.
 
 The floor runs on every tour, always, at $0. The gate runs where a model call is
 already being made, so it adds no new spend tier.

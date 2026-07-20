@@ -17,21 +17,32 @@ import pytest
 from src.tour.contract import (
     POI,
     BeatRef,
+    BeatSequence,
     Route,
     Script,
     ScriptPOI,
     Sentence,
     TourInput,
+    TransitSegment,
     ValidationReport,
 )
+from src.tour.generation import GLUE_NAV, GLUE_REFLECTION
+from src.tour.narration_quality import score_narration
 from src.tour.quality_rubric import (
     BALANCE_MAX_SHARE,
     GORGE_MAX_WORDS_PER_STOP,
+    MAX_SENTENCE_WORDS,
+    MIN_STOP_SEPARATION_M,
+    OUTLIER_YEAR_DENSITY_MULTIPLE,
     STARVE_MIN_BEATS,
     STARVE_MIN_WORDS_PER_BEAT,
+    Finding,
     Severity,
+    StopMaterial,
+    compose_fixable,
     score_tour,
 )
+from src.tour.routing import haversine_m
 
 # ---------------------------------------------------------------------------
 # Helpers — house style mirrors tests/test_tour_selection.py (_poi / _snap).
@@ -41,6 +52,28 @@ from src.tour.quality_rubric import (
 def _words(n: int, *, prefix: str) -> str:
     """``n`` GLOBALLY-unique words, so a length fixture never trips C5 by accident."""
     return " ".join(f"{prefix}{i}" for i in range(n))
+
+
+def _well_formed(n: int, *, prefix: str) -> str:
+    """``n`` GLOBALLY-unique words, broken into <=10-word sentences and opening
+    with a look-cue — for a fixture that must stay silent on C9 (long sentences)
+    and C10 (missing look-cue) as well as C5, e.g. isolating some OTHER check's
+    BLOCKER from the WARN checks added alongside it.
+
+    Each sentence's first word is capitalised: ``split_sentences``' boundary regex
+    (generation.py's ``_SPLIT_RE``) only splits before an UPPERCASE next word, so an
+    all-lowercase ``"q9. q10"`` never splits and silently stays one long sentence.
+    """
+    words = [f"{prefix}{i}" for i in range(n)]
+    if words:
+        words[0] = "Look"
+    chunks = [words[i : i + 10] for i in range(0, len(words), 10)]
+    sentences = []
+    for chunk in chunks:
+        chunk = [*chunk]
+        chunk[0] = chunk[0].capitalize()
+        sentences.append(" ".join(chunk) + ".")
+    return " ".join(sentences)
 
 
 _POI_SEQ: dict[str, int] = {}
@@ -119,13 +152,16 @@ def _route(
     pois: list[POI] | None = None,
     *,
     vignettes: dict[int, tuple[POI, ...]] | None = None,
+    total_walk_seconds: int = 300,
+    err_short_total_seconds: int = 0,
 ) -> Route:
     return Route(
         pois=tuple(pois or ()),
         transits=(),
         total_walk_distance_m=400.0,
-        total_walk_seconds=300,
+        total_walk_seconds=total_walk_seconds,
         vignettes=vignettes or {},
+        err_short_total_seconds=err_short_total_seconds,
     )
 
 
@@ -293,6 +329,75 @@ def test_c2_does_not_fire_when_the_vignette_is_also_an_anchor() -> None:
 
 
 # ---------------------------------------------------------------------------
+# C12 — stops too close (WARN, demoted from BLOCKER 2026-07-19).
+# ---------------------------------------------------------------------------
+
+
+def test_c12_close_stops_is_a_warn_not_a_blocker() -> None:
+    """GUARDS: the C12 severity demotion (standard §4/§5). MEASURED, 2026-07-19,
+    across the full real Paris/New York corpora: distance alone cannot separate a
+    true duplicate (0.0-1.7 m, a corpus geocoding defect) from a genuinely distinct,
+    adjacent landmark — the product owner's OWN gold-text stops, Hotel Le Meurice
+    and Angelina, sit **8.4 m** apart (standard §1). A BLOCKER at 50 m would refuse
+    to serve the gold-standard tour, which is worse than the defect C12 was written
+    to catch (see tests/test_tour_selection.py::
+    test_selection_does_not_filter_close_but_distinct_pois for the corpus
+    measurement). This fixture places two distinct anchors 20 m apart -- inside
+    MIN_STOP_SEPARATION_M (50 m) -- and asserts the finding surfaces but never
+    blocks serving. UNDO: change C12's severity back to ``Severity.BLOCKER`` and
+    this goes RED (``report.passed`` flips to False).
+    """
+    # ~20 m separation (1 deg latitude =~ 111_320 m; 0.00018 deg =~ 20 m).
+    le_meurice = ScriptPOI(
+        id="le-meurice", name="Hotel Le Meurice", tier=4, lat=48.8656, lng=2.3285
+    )
+    angelina = ScriptPOI(id="angelina", name="Angelina", tier=4, lat=48.86578, lng=2.3285)
+    poi_a = POI(id="le-meurice", name="Hotel Le Meurice", tier=4, poi_role="stop",
+                lat=48.8656, lng=2.3285)
+    poi_b = POI(id="angelina", name="Angelina", tier=4, poi_role="stop",
+                lat=48.86578, lng=2.3285)
+    metres = haversine_m(le_meurice.lat, le_meurice.lng, angelina.lat, angelina.lng)
+    assert metres < MIN_STOP_SEPARATION_M
+    assert metres > 10  # a real, if short, walk -- not a duplicate-coordinate glitch
+
+    report = score_tour(
+        _script(
+            [
+                _sentence(_well_formed(60, prefix="m"), 0),
+                _sentence(_well_formed(60, prefix="n"), 1),
+            ],
+            [le_meurice, angelina],
+        ),
+        _route([poi_a, poi_b]),
+        {},
+    )
+
+    close = [f for f in report.findings if f.check == "C12-stops-too-close"]
+    assert len(close) == 1, _checks(report)
+    assert close[0].severity is Severity.WARN
+    assert close[0].poi_name == "Angelina"
+    assert report.blockers == []
+    assert report.passed is True
+
+
+def test_c12_does_not_fire_on_a_real_walking_separation() -> None:
+    """GUARDS: false positives on POIs a genuine walking distance apart (the
+    default fixture spacing, ~333 m). UNDO: raise MIN_STOP_SEPARATION_M above 333
+    and this goes RED.
+    """
+    report = score_tour(
+        _script(
+            [_sentence(_words(30, prefix="p"), 0), _sentence(_words(30, prefix="q"), 1)],
+            [_spoi("a", tier=3), _spoi("b", tier=3)],
+        ),
+        _route([_poi("a", tier=3), _poi("b", tier=3)]),
+        {},
+    )
+
+    assert "C12-stops-too-close" not in _checks(report)
+
+
+# ---------------------------------------------------------------------------
 # C5 — verbatim repetition (BLOCKER).
 # ---------------------------------------------------------------------------
 
@@ -396,13 +501,14 @@ def test_passed_is_false_with_a_blocker_and_true_with_only_warnings() -> None:
     change ``RubricReport.passed`` to ``not self.findings`` and the WARN half goes
     RED; change it to ``True`` and the BLOCKER half goes RED.
     """
-    # BLOCKER half — an empty third stop. The two full stops split 50/50 so C4 stays
-    # silent and this half isolates the BLOCKER path.
+    # BLOCKER half — an empty third stop. The two full stops split 50/50 (C4 stays
+    # silent) and use _well_formed (short sentences, look-cue opener) so C9/C10
+    # also stay silent — this half isolates the BLOCKER path from every WARN check.
     blocking = score_tour(
         _script(
             [
-                _sentence(_words(40, prefix="q"), 0),
-                _sentence(_words(40, prefix="k"), 1),
+                _sentence(_well_formed(40, prefix="q"), 0),
+                _sentence(_well_formed(40, prefix="k"), 1),
                 _sentence("", 2),
             ],
             [_spoi("a", tier=3), _spoi("b", tier=3), _spoi("c", tier=3)],
@@ -497,3 +603,616 @@ def test_stats_report_word_and_audio_totals(audio_seconds: int, expected_minutes
     assert report.stats["n_stops"] == 2
     assert report.stats["words_by_stop"] == {0: 40, 1: 60}
     assert report.stats["audio_minutes"] == expected_minutes
+
+
+# ---------------------------------------------------------------------------
+# C7 — time-budget overrun (BLOCKER). standard §4, INHERITED from routing.py.
+# ---------------------------------------------------------------------------
+
+
+def test_c7_fires_when_walk_plus_listening_exceeds_the_err_short_total() -> None:
+    """GUARDS: the tour exceeding the ENGINE'S OWN err-short planning ceiling —
+    ``duration_min * ERR_SHORT`` (83% of the request), a deliberately-short PLAN,
+    not the tourist's promised duration (standard §4 C7). The check and the number
+    are correct (they mirror the engine's own move ceiling, commit 6f6bc39); only
+    the message must not claim the tourist "runs over the time they asked for" —
+    a 41.7-min tour against this ceiling can still be comfortably UNDER a 60-min
+    promise. INHERITED, not invented: routing.py:94-95 defines
+    ``err_short_total_seconds = duration_min * ERR_SHORT * 60``; ``summarise_route``
+    (routing.py:290-299) stamps that onto ``Route.err_short_total_seconds``, and
+    score_tour reads it straight off the Route rather than recomputing anything.
+
+    2000s audio + 500s walk = 2500s > the 2400s budget. UNDO: delete the
+    ``if actual_total_s > route.err_short_total_seconds`` block and this goes RED.
+    """
+    poi = _spoi("a", tier=3)
+    report = score_tour(
+        _script([_sentence(_words(40, prefix="a"), 0)], [poi], total_audio_seconds=2000),
+        _route([_poi("a", tier=3)], total_walk_seconds=500, err_short_total_seconds=2400),
+        {},
+    )
+
+    overruns = [f for f in report.findings if f.check == "C7-time-budget"]
+    assert len(overruns) == 1, _checks(report)
+    assert overruns[0].severity is Severity.BLOCKER
+    assert "2500" in overruns[0].message
+    # ARITHMETICALLY FALSE claim a hostile review caught: the ceiling is the
+    # engine's own err-short PLAN (duration * ERR_SHORT), not the tourist's
+    # promised duration, so the message must not claim the tourist "runs over
+    # the time they asked for". UNDO: put that phrase back in the C7 message and
+    # this assertion goes RED.
+    assert "asked for" not in overruns[0].message
+    assert "err-short planning ceiling" in overruns[0].message
+    assert not report.passed
+
+
+def test_c7_does_not_fire_at_exactly_the_budget() -> None:
+    """GUARDS: the C7 boundary — the budget is inclusive (``>``, not ``>=``).
+
+    1900s audio + 500s walk = 2400s == the 2400s budget: on budget, not over it.
+    UNDO: change the comparison to ``actual_total_s >= route.err_short_total_seconds``
+    and this goes RED (an off-by-one that would refuse a tour that finishes on time).
+    """
+    poi = _spoi("a", tier=3)
+    report = score_tour(
+        _script([_sentence(_words(40, prefix="a"), 0)], [poi], total_audio_seconds=1900),
+        _route([_poi("a", tier=3)], total_walk_seconds=500, err_short_total_seconds=2400),
+        {},
+    )
+
+    assert "C7-time-budget" not in _checks(report)
+    assert report.passed
+
+
+def test_c7_skips_when_the_route_carries_no_budget() -> None:
+    """GUARDS: false positives on a Route built without a duration (the field's own
+    unset sentinel, ``0`` — e.g. a bare fixture in another test that never asked for
+    a duration). A huge actual total must not spuriously blocker-fail such a Route.
+
+    UNDO: delete the ``if route.err_short_total_seconds > 0`` guard and this goes RED.
+    """
+    poi = _spoi("a", tier=3)
+    report = score_tour(
+        _script([_sentence(_words(40, prefix="a"), 0)], [poi], total_audio_seconds=100_000),
+        _route([_poi("a", tier=3)], total_walk_seconds=100_000, err_short_total_seconds=0),
+        {},
+    )
+
+    assert "C7-time-budget" not in _checks(report)
+    assert report.passed
+
+
+# ---------------------------------------------------------------------------
+# C9 — sentence length for the ear (WARN). standard §4/§5, CITED (Nubart).
+# ---------------------------------------------------------------------------
+
+
+def test_c9_long_mean_sentence_length_is_a_warn() -> None:
+    """GUARDS: sentences too long to follow by ear (standard §4 C9; CITED
+    MAX_SENTENCE_WORDS=15, §5). REUSES narration_quality.score_narration —
+    does not recompute mean sentence length itself.
+
+    A single 25-word sentence has mean_sentence_words=25, over the 15-word cap.
+    UNDO: delete the ``if nq.mean_sentence_words > MAX_SENTENCE_WORDS`` block and
+    this goes RED.
+    """
+    assert MAX_SENTENCE_WORDS == 15.0
+    poi = _spoi("a", tier=3)
+    long_sentence = _words(25, prefix="w") + "."
+
+    report = score_tour(
+        _script([_sentence(long_sentence, 0)], [poi]),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    warns = [f for f in report.findings if f.check == "C9-long-sentences"]
+    assert len(warns) == 1, _checks(report)
+    assert warns[0].severity is Severity.WARN
+    assert report.blockers == []
+    assert report.passed  # WARN never blocks serving
+
+
+def test_c9_does_not_fire_on_short_punchy_sentences() -> None:
+    """GUARDS: false positives on well-formed short sentences.
+
+    UNDO: flip the comparison to ``<`` and this goes RED.
+    """
+    poi = _spoi("a", tier=3)
+    short_sentences = "Look up. The towers rise high. Builders broke ground long ago."
+
+    report = score_tour(
+        _script([_sentence(short_sentences, 0)], [poi]),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    assert "C9-long-sentences" not in _checks(report)
+
+
+# ---------------------------------------------------------------------------
+# C10 — opens with a look-cue, not a bare fact (WARN, a lexical PROXY for G1).
+# ---------------------------------------------------------------------------
+
+
+def test_c10_fires_when_the_stop_opens_on_a_bare_fact() -> None:
+    """GUARDS: a stop that launches straight into history with no orientation
+    (standard §4 C10 / §2 S1). PROXY for the semantic G1 — stays WARN, never
+    BLOCKER (G1 is what actually judges the meaning).
+
+    UNDO: delete the ``if not opens_with_look_cue`` block and this goes RED.
+    """
+    poi = _spoi("a", tier=3)
+    report = score_tour(
+        _script(
+            [
+                _sentence("Notre-Dame was built in the twelfth century.", 0),
+                _sentence(_words(30, prefix="x"), 0),
+            ],
+            [poi],
+        ),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    warns = [f for f in report.findings if f.check == "C10-no-look-cue"]
+    assert len(warns) == 1, _checks(report)
+    assert warns[0].severity is Severity.WARN
+    assert report.passed
+
+
+def test_c10_fires_when_one_sentence_entry_hides_a_bare_fact_opener() -> None:
+    """GUARDS a FALSE NEGATIVE found by a hostile review: ``texts[0]`` is one
+    Sentence ENTRY, and compose (compose.py:507, no sentence splitting anywhere in
+    that module) can populate a single entry with MULTIPLE grammatical sentences.
+    ``score_narration(text).look_prompt_rate`` is a fraction over ALL sentences in
+    the string handed to it, so scoring the whole entry — a bare-fact sentence
+    followed by a look-cue sentence — measured 0.5, and ``0.5 > 0`` is True, so
+    C10 stayed silent on exactly the shape it exists to catch (a stop opening on a
+    bare fact). UNDO: change ``split_sentences(texts[0])`` back to plain
+    ``texts[0]`` in the C10 block and this goes RED (the finding disappears since
+    the combined-string rate of 0.5 still passes ``> 0``).
+    """
+    two_sentences_one_entry = (
+        "Notre-Dame was completed in 1345 after nearly two centuries of work. "
+        "Look up at the west facade."
+    )
+    # The documented false-negative measurement: scoring the WHOLE entry (the old,
+    # broken behaviour) gives a nonzero rate purely because sentence 2 looks-cues.
+    assert score_narration(two_sentences_one_entry).look_prompt_rate == 0.5
+
+    poi = _spoi("a", tier=3)
+    report = score_tour(
+        _script([_sentence(two_sentences_one_entry, 0)], [poi]),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    warns = [f for f in report.findings if f.check == "C10-no-look-cue"]
+    assert len(warns) == 1, _checks(report)
+    assert warns[0].severity is Severity.WARN
+    assert "Notre-Dame was completed in 1345" in warns[0].message
+    assert report.passed  # WARN never blocks serving
+
+
+def test_c10_does_not_fire_when_the_stop_opens_with_a_look_cue() -> None:
+    """GUARDS: false positive on a properly-oriented opener.
+
+    Reuses narration_quality's own ``look_prompt_rate`` (scored on just the
+    opening sentence) rather than a second regex. UNDO: invert the
+    ``look_prompt_rate > 0`` condition and this goes RED.
+    """
+    poi = _spoi("a", tier=3)
+    report = score_tour(
+        _script(
+            [
+                _sentence("Look up at the towers above you.", 0),
+                _sentence(_words(30, prefix="x"), 0),
+            ],
+            [poi],
+        ),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    assert "C10-no-look-cue" not in _checks(report)
+
+
+# ---------------------------------------------------------------------------
+# C11 — date density for the ear (WARN, RELATIVE to the tour's own mean).
+# ---------------------------------------------------------------------------
+
+
+def test_c11_fires_on_a_stop_far_denser_in_dates_than_its_siblings() -> None:
+    """GUARDS: a stop that reads like a date list against a tour that otherwise
+    speaks dates in prose (standard §4 C11). No absolute cut exists in the
+    standard's §5 provenance table for this one, so the check is RELATIVE to the
+    tour's own mean (OUTLIER_YEAR_DENSITY_MULTIPLE) rather than an invented
+    absolute number.
+
+    Stop 2 packs four years into 18 words (~22.2/100w); stops 0/1 have none, so
+    the tour mean is ~7.4/100w and stop 2 is over 2x that. UNDO: delete the
+    ``if density > outlier_threshold`` loop and this goes RED.
+    """
+    poi_a, poi_b, poi_c = _spoi("a", tier=3), _spoi("b", tier=3), _spoi("c", tier=3)
+    no_dates_1 = "The garden sits beside the river and draws crowds every summer weekend here"
+    no_dates_2 = "The market opened near the square and sold bread every single morning here"
+    dense_dates = (
+        "The chapel opened in 1248, was restored in 1345, and renovated again in "
+        "1862, then again in 1920."
+    )
+
+    report = score_tour(
+        _script(
+            [
+                _sentence(no_dates_1, 0),
+                _sentence(no_dates_2, 1),
+                _sentence(dense_dates, 2),
+            ],
+            [poi_a, poi_b, poi_c],
+        ),
+        _route([_poi("a", tier=3), _poi("b", tier=3), _poi("c", tier=3)]),
+        {},
+    )
+
+    outliers = [f for f in report.findings if f.check == "C11-year-density-outlier"]
+    assert len(outliers) == 1, _checks(report)
+    assert outliers[0].severity is Severity.WARN
+    assert outliers[0].stop_idx == 2
+    assert report.passed
+
+
+def test_c11_does_not_fire_when_date_density_is_even_across_stops() -> None:
+    """GUARDS: false positives on a tour that legitimately speaks a date at every
+    stop, evenly — the measured-good pattern ("born in Malaga in 1881"), not a
+    date-list defect.
+
+    UNDO: drop the ``* OUTLIER_YEAR_DENSITY_MULTIPLE`` (i.e. compare density to the
+    bare mean) and this goes RED — an evenly-dated tour would self-flag.
+    """
+    assert OUTLIER_YEAR_DENSITY_MULTIPLE == 2.0
+    poi_a, poi_b, poi_c = _spoi("a", tier=3), _spoi("b", tier=3), _spoi("c", tier=3)
+    even_1 = "The chapel was consecrated in 1345 after decades of careful construction work nearby."
+    even_2 = "The tower was completed in 1420 after decades of careful construction work nearby."
+    even_3 = "The bridge was finished in 1503 after decades of careful construction work nearby."
+
+    report = score_tour(
+        _script([_sentence(even_1, 0), _sentence(even_2, 1), _sentence(even_3, 2)],
+                [poi_a, poi_b, poi_c]),
+        _route([_poi("a", tier=3), _poi("b", tier=3), _poi("c", tier=3)]),
+        {},
+    )
+
+    assert "C11-year-density-outlier" not in _checks(report)
+
+
+# ---------------------------------------------------------------------------
+# compose_fixable — the loop-eligibility classifier. Exhaustive per check id.
+#
+# This is a SEPARATE predicate from severity/``passed``: it answers whether a
+# targeted recompose of ONE stop could plausibly fix a given BLOCKER finding, not
+# whether the tour may be served. See the standard's §7 amendment.
+# ---------------------------------------------------------------------------
+
+
+def _finding(
+    check: str, *, severity: Severity = Severity.BLOCKER, context: dict | None = None
+) -> Finding:
+    return Finding(check=check, severity=severity, message="fixture", context=context)
+
+
+def test_c6_empty_stop_is_always_fixable() -> None:
+    """GUARDS: C6 rule — ALWAYS True (the model emitted nothing; recompose is the
+    fix), regardless of material. UNDO: change the C6 branch to ``return False``
+    and this goes RED.
+    """
+    assert compose_fixable(_finding("C6-empty-stop"), None) is True
+    assert compose_fixable(_finding("C6-empty-stop"), StopMaterial(0, 0)) is True
+
+
+def test_c5_verbatim_repeat_is_always_fixable() -> None:
+    """GUARDS: C5 rule — True (same-stop dupes already die in compose's own
+    _dedup_composed; a survivor is cross-stop and only a recompose removes it).
+    UNDO: change the C5 branch to ``return False`` and this goes RED.
+    """
+    assert compose_fixable(_finding("C5-verbatim-repeat"), None) is True
+
+
+def test_c8_gorged_is_fixable_only_when_the_composer_expanded() -> None:
+    """GUARDS: the C8 split — True ONLY IF composed_words > seated_body_words (the
+    COMPOSER inflated it). UNDO (true branch): flip the comparison to ``<`` and this
+    goes RED.
+    """
+    expanded = StopMaterial(seated_body_words=200, composed_words=900)
+    assert compose_fixable(_finding("C8-gorged"), expanded) is True
+
+
+def test_c8_gorged_is_not_fixable_when_selection_seated_the_overshoot() -> None:
+    """GUARDS: the C8 split's OTHER branch — False when composed_words <=
+    seated_body_words: govern_poi_beats (beat_select.py:260-288) always keeps the
+    first seated beat even when it alone blows the allowance
+    (beat_select.py:269-271), so trimming in compose only triggers
+    repair_composed_surgical (compose_gate.py:125) splicing the stitch straight
+    back — a PROVEN oscillation. UNDO: delete the ``composed_words >
+    seated_body_words`` comparison (make it unconditional True) and this goes RED.
+    """
+    selection_seated_it_all = StopMaterial(seated_body_words=900, composed_words=900)
+    assert compose_fixable(_finding("C8-gorged"), selection_seated_it_all) is False
+    assert compose_fixable(_finding("C8-gorged"), None) is False
+
+
+def test_c1_starved_is_fixable_when_seated_material_already_cleared_the_floor() -> None:
+    """GUARDS: the C1 split — True ONLY IF seated_body_words >= the SAME floor
+    score_tour computed for this finding (carried in ``finding.context["floor"]``,
+    since compose_fixable's fixed signature has no other channel to a per-POI
+    number). UNDO (true branch): flip the comparison to ``<`` and this goes RED.
+    """
+    finding = _finding("C1-starved", context={"floor": 144.0})
+    composer_under_used_it = StopMaterial(seated_body_words=200, composed_words=9)
+    assert compose_fixable(finding, composer_under_used_it) is True
+
+
+def test_c1_starved_is_not_fixable_when_the_material_was_never_seated() -> None:
+    """GUARDS: the C1 split's OTHER branch — False when seated_body_words < the
+    floor: the rest of the POI's beats sit in overflow_by_poi, never seated, so
+    "write more" invites fabrication the entailment gate then rejects. UNDO: delete
+    the ``material.seated_body_words >= floor`` comparison (make it unconditional
+    True) and this goes RED.
+    """
+    finding = _finding("C1-starved", context={"floor": 144.0})
+    never_seated_enough = StopMaterial(seated_body_words=40, composed_words=9)
+    assert compose_fixable(finding, never_seated_enough) is False
+
+
+def test_c1_starved_fails_closed_without_material_or_floor() -> None:
+    """GUARDS: C1 must fail CLOSED — never guess — when it is missing the data it
+    needs: no material, no context at all, or a context without a ``floor`` key.
+    UNDO: replace any of these guards with a default floor of ``0`` and this goes
+    RED (0 as a floor makes every seated_body_words >= 0, i.e. always True).
+    """
+    finding_with_floor = _finding("C1-starved", context={"floor": 144.0})
+    assert compose_fixable(finding_with_floor, None) is False
+
+    finding_no_context = _finding("C1-starved", context=None)
+    assert compose_fixable(finding_no_context, StopMaterial(200, 9)) is False
+
+    finding_empty_context = _finding("C1-starved", context={})
+    assert compose_fixable(finding_empty_context, StopMaterial(200, 9)) is False
+
+
+@pytest.mark.parametrize(
+    "check",
+    ["C3-thin", "C2-tier-inversion", "C12-stops-too-close", "C7-time-budget"],
+)
+def test_route_and_selection_defects_are_never_loop_eligible(check: str) -> None:
+    """GUARDS: C3/C2/C12/C7 — all False, even with generous material. C3 is
+    PROVEN unfixable (generation.py:1207: total_audio_seconds is scaled SEATED-beat
+    voiced seconds via ``min(1.0, voiced/body)`` — more composed words cannot push
+    it past 1.0). C2/C12 are route/selection decisions a stop-level recompose
+    cannot change. C7 is a routing/selection budget total a recompose cannot move.
+    UNDO: change any one of these branches to ``return True`` and that parametrized
+    case goes RED.
+    """
+    generous_material = StopMaterial(seated_body_words=1000, composed_words=1000)
+    assert compose_fixable(_finding(check), generous_material) is False
+    assert compose_fixable(_finding(check), None) is False
+
+
+def test_any_warn_severity_is_never_loop_eligible() -> None:
+    """GUARDS: the blanket WARN rule — even a check id that IS BLOCKER-fixable
+    elsewhere (e.g. C6) must return False when severity is WARN. Checked first, so
+    it overrides every check-specific branch. UNDO: delete the
+    ``if finding.severity is not Severity.BLOCKER: return False`` guard and this
+    goes RED.
+    """
+    warn_but_normally_fixable_id = _finding("C6-empty-stop", severity=Severity.WARN)
+    assert compose_fixable(warn_but_normally_fixable_id, StopMaterial(0, 0)) is False
+
+    warn_c4 = _finding("C4-imbalance", severity=Severity.WARN)
+    assert compose_fixable(warn_c4, StopMaterial(500, 500)) is False
+
+
+def test_unknown_check_id_fails_closed() -> None:
+    """GUARDS: an unclassified BLOCKER check id must return False, never guess.
+    Money is never spent looping on something this classifier has no evidence
+    about — including a plausible-looking but non-existent id and an empty string.
+    UNDO: change the trailing ``return False`` to ``return True`` and this goes RED.
+    """
+    assert compose_fixable(_finding("C99-not-a-real-check"), StopMaterial(1000, 1000)) is False
+    assert compose_fixable(_finding(""), StopMaterial(1000, 1000)) is False
+
+
+# ---------------------------------------------------------------------------
+# C7 / C7b — audio spoken WHILE WALKING is free (product ruling 2026-07-19)
+# ---------------------------------------------------------------------------
+#
+# "Audio overlaps the walking. It is a part of the tour experience." — the owner.
+#
+# Before this ruling C7 added ALL audio to ALL walking, modelling a tourist who
+# walks in silence and then stands in silence to listen. Under that model, filling
+# a walk with narration APPEARS to consume the time budget even though it costs the
+# tourist no extra minutes, so leg content can never be scored fairly.
+#
+# CORRECTION: an earlier revision of this comment claimed the old model produced a
+# real deadlock on the founding tour ("1650s walk + 1434s audio = 3084s against a
+# 2988s ceiling — BLOCKER for BLOCKER"). THAT WAS WRONG. The 1650s came from a route
+# state produced by a since-reverted selection experiment; the real walk is 1087s,
+# giving 2521s against 2988s — 467s of HEADROOM. No measured tour deadlocked. An
+# adversarial review caught it, not the author.
+#
+# The fixtures below use DELIBERATELY EXTREME synthetic values to exercise the
+# boundary; they are not measurements of any real tour and must not be read as such.
+
+
+def _leg_sentence(text: str, stop_idx: int, source_id: str) -> Sentence:
+    """A sentence spoken on the move (nav glue or a reflection)."""
+    return Sentence(text=text, source_id=source_id, source_type="glue", stop_idx=stop_idx)
+
+
+def _transit(walk_seconds: int, i: int) -> TransitSegment:
+    return TransitSegment(
+        from_poi_id=None if i == 0 else f"p{i - 1}",
+        to_poi_id=f"p{i}",
+        distance_m=100.0,
+        walk_seconds=walk_seconds,
+    )
+
+
+def test_c7_excludes_reflection_audio_spoken_while_walking() -> None:
+    """GUARDS the ruling: a reflection narrated on a leg costs NO elapsed time.
+
+    UNDO TEST: revert C7 to ``route.total_walk_seconds + script.total_audio_seconds``
+    and this goes RED — the tour trips C7 purely because its walking was filled.
+    """
+    pois = [_poi("p0"), _poi("p1")]
+    # 300 words of reflection = 120s at 150 wpm, all spoken while walking.
+    reflection = _leg_sentence(" ".join(f"w{i}" for i in range(300)), 1, GLUE_REFLECTION)
+    stop_words = [_sentence("A grounded fact about this place.", 0)]
+    script = _script([*stop_words, reflection], [], total_audio_seconds=1800)
+    route = Route(
+        pois=tuple(pois),
+        transits=(_transit(0, 0), _transit(900, 1)),
+        total_walk_distance_m=400.0,
+        total_walk_seconds=1650,
+        err_short_total_seconds=2988,
+    )
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+
+    assert report.stats["audio_concurrent_s"] == 120
+    assert report.stats["audio_stationary_s"] == 1800 - 120
+    # walk 1650 + stationary 1680 = 3330 > 2988 -> still over, but on STATIONARY
+    # audio only. The point of this assertion is the arithmetic, below.
+    assert report.stats["time_budget_actual_s"] == 1650 + (1800 - 120)
+
+
+def test_c7_passes_when_the_deficit_is_closed_on_the_legs() -> None:
+    """A tour whose audio all rides the legs must pass C7.
+
+    SYNTHETIC, not a measurement: 1650s of walking is chosen so that walk + audio
+    (1650 + 1434 = 3084) exceeds the 2988s err-short ceiling, which is the condition
+    this check must handle. No real measured tour hit that condition — see the
+    correction in the section comment above. The point here is the SEMANTICS: put
+    the audio on the legs and the tourist's elapsed time is unchanged, so C7 passes
+    however much narration the legs carry.
+    """
+    # 1434s of audio at 150 wpm = 3585 words, ALL on walking legs.
+    leg_audio = _leg_sentence(" ".join(f"w{i}" for i in range(3585)), 1, GLUE_REFLECTION)
+    script = _script([leg_audio], [], total_audio_seconds=1434)
+    route = Route(
+        pois=(_poi("p0"), _poi("p1")),
+        transits=(_transit(0, 0), _transit(1650, 1)),
+        total_walk_distance_m=400.0,
+        total_walk_seconds=1650,
+        err_short_total_seconds=2988,
+    )
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+
+    assert "C7-time-budget" not in _checks(report), (
+        "audio spoken while walking must not consume the time budget"
+    )
+    assert report.stats["time_budget_actual_s"] == 1650
+
+
+def test_c7b_fires_when_leg_narration_outruns_the_walk() -> None:
+    """Concurrent audio is free ONLY while the tourist is still walking.
+
+    Narration longer than its leg either cuts off on arrival or holds the tourist on
+    the pavement, so the free airtime is bounded by the walk itself.
+    """
+    # 1500 words = 600s of leg narration, but only 200s of walking exists.
+    leg_audio = _leg_sentence(" ".join(f"w{i}" for i in range(1500)), 1, GLUE_REFLECTION)
+    script = _script([leg_audio], [], total_audio_seconds=600)
+    route = Route(
+        pois=(_poi("p0"), _poi("p1")),
+        transits=(_transit(0, 0), _transit(200, 1)),
+        total_walk_distance_m=400.0,
+        total_walk_seconds=200,
+        err_short_total_seconds=2988,
+    )
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+    assert "C7b-leg-audio-overruns-walk" in _checks(report)
+
+
+def test_c7b_silent_when_leg_narration_fits_the_walk() -> None:
+    leg_audio = _leg_sentence(" ".join(f"w{i}" for i in range(300)), 1, GLUE_REFLECTION)
+    script = _script([leg_audio], [], total_audio_seconds=120)
+    route = Route(
+        pois=(_poi("p0"), _poi("p1")),
+        transits=(_transit(0, 0), _transit(600, 1)),
+        total_walk_distance_m=400.0,
+        total_walk_seconds=600,
+        err_short_total_seconds=2988,
+    )
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+    assert "C7b-leg-audio-overruns-walk" not in _checks(report)
+
+
+def test_stop_audio_still_counts_against_the_time_budget() -> None:
+    """The ruling frees LEG audio only. Standing at a stop listening still costs
+    the tourist minutes, and C7 must keep saying so."""
+    stop_audio = [_sentence(" ".join(f"w{i}" for i in range(3000)), 0)]
+    script = _script(stop_audio, [], total_audio_seconds=1200)
+    route = Route(
+        pois=(_poi("p0"),),
+        transits=(_transit(0, 0),),
+        total_walk_distance_m=400.0,
+        total_walk_seconds=1900,
+        err_short_total_seconds=2988,
+    )
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+    assert report.stats["audio_concurrent_s"] == 0
+    assert "C7-time-budget" in _checks(report), (
+        "1900s walk + 1200s of STANDING and listening exceeds 2988s and must block"
+    )
+
+
+def test_nav_glue_counts_as_walked_audio() -> None:
+    nav = _leg_sentence(" ".join(f"w{i}" for i in range(150)), 1, GLUE_NAV)
+    script = _script([nav], [], total_audio_seconds=60)
+    route = _route(total_walk_seconds=600, err_short_total_seconds=2988)
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+    assert report.stats["audio_concurrent_s"] == 60
+
+
+def test_missing_beat_sequence_is_conservative_about_vignettes() -> None:
+    """Without a BeatSequence the vignette ids are unknown. Those sentences must
+    count as STATIONARY — the strict direction, which can only make C7 fire more
+    readily, never wrongly pass a tour."""
+    script = _script([_sentence("A walk-past line.", 1)], [], total_audio_seconds=600)
+    route = _route(total_walk_seconds=600, err_short_total_seconds=2988)
+    report = score_tour(script, route, {}, beat_sequence=None)
+    assert report.stats["audio_concurrent_s"] == 0
+    assert report.stats["audio_stationary_s"] == 600
+
+
+def test_c7b_uses_the_smaller_of_the_two_disagreeing_walk_measures() -> None:
+    """C7b must never OVERSTATE the airtime a leg provides.
+
+    route.total_walk_seconds and sum(transits.leg_seconds) are different numbers —
+    measured across six real Paris tours they differ by -119s to +499s, because
+    leg_seconds carries routed road-network values while total_walk_seconds is the
+    pace-corrected haversine the budget math uses. C7 is denominated in
+    total_walk_seconds; C7b is a BLOCKER about whether narration FITS, so it takes
+    the conservative minimum. An adversarial review caught the two checks silently
+    reasoning about different walks.
+
+    UNDO TEST: change C7b back to the bare sum of leg_seconds and this goes RED —
+    narration that overruns the shorter (real budget) walk would be waved through.
+    """
+    # legs claim 600s of walking; the budget currency says only 200s.
+    leg_audio = _leg_sentence(" ".join(f"w{i}" for i in range(750)), 1, GLUE_REFLECTION)
+    script = _script([leg_audio], [], total_audio_seconds=300)
+    route = Route(
+        pois=(_poi("p0"), _poi("p1")),
+        transits=(_transit(0, 0), _transit(600, 1)),
+        total_walk_distance_m=400.0,
+        total_walk_seconds=200,
+        err_short_total_seconds=2988,
+    )
+    report = score_tour(script, route, {}, beat_sequence=BeatSequence(poi_beats=()))
+    assert report.stats["leg_walk_capacity_s"] == 200, (
+        "C7b must use the SMALLER walk measure, not the optimistic one"
+    )
+    assert "C7b-leg-audio-overruns-walk" in _checks(report), (
+        "300s of narration over a 200s real walk must block"
+    )
