@@ -208,6 +208,44 @@ class TripPreviewRequest(BaseModel):
     )
 
     _validate_city = field_validator("city_slug")(_validate_city_slug)
+
+    @field_validator("lenses")
+    @classmethod
+    def validate_lenses(cls, v: list[str] | None) -> list[str] | None:
+        """Reject an unknown lens LOUDLY instead of silently ignoring it.
+
+        MEASURED 2026-07-19: an unrecognised lens string was not an error. It fell
+        through ``_lens_relation`` (``selection.py:2451-2477``), which classifies
+        every POI as a "miss", so ``lens_relevance`` returned the uniform
+        ``LENS_FLOOR`` (0.25) for the whole corpus. Because spotlight is
+        MULTIPLICATIVE, a uniform factor leaves relative ranking IDENTICAL to
+        passing no lens at all — so a typo produced the un-lensed tour with no
+        signal anywhere in the response that the lens had been ignored.
+
+        That is precisely the reported "tours for different lenses don't work":
+        the request looked accepted and the tour looked plausible, while the lens
+        did nothing. Validating here converts a silent no-op into a 422 that names
+        the valid vocabulary.
+
+        Scoped deliberately to the PREVIEW model (the workbench surface where a
+        human types free text). ``TripGenerateRequest`` keeps its permissive
+        ``normalize_lenses`` so no mobile-app request shape changes.
+        """
+        if v is None:
+            return None
+        cleaned = [s.strip() for s in v if s and s.strip()]
+        if not cleaned:
+            return None
+        from src.schema.definitions import TAGGABLE_LENSES
+
+        known = set(TAGGABLE_LENSES)
+        unknown = [s for s in cleaned if s not in known]
+        if unknown:
+            raise ValueError(
+                f"Unknown lens(es): {', '.join(sorted(unknown))}. "
+                f"Valid lenses: {', '.join(sorted(known))}"
+            )
+        return cleaned
     # NO narration flags. There is ONE algorithm: Opus composes every stop, the
     # faithfulness gate verifies, and the correct-don't-reject corrector repairs
     # before anything degrades to raw stitch. Not a tier, not a toggle, not a
@@ -227,7 +265,13 @@ class TripPreviewStop(BaseModel):
     # Phase 3 spotlight model (spec s7). Additive with behavior-preserving
     # defaults: a full dwell stop with a zero score until Step 3.5 wires the
     # spotlight effect into selection.
-    band: Literal["dwell", "vignette"] = "dwell"
+    # "leg" (added 2026-07-19) is narration spoken WHILE WALKING between stops —
+    # navigation lines and reflections. It was always emitted, but folded into the
+    # following dwell stop's narration, so an editor could not see it, could not
+    # play it on its own, and could not tell how much of a 10-minute walk was
+    # actually filled. Per the product ruling ("Audio overlaps the walking. It is a
+    # part of the tour experience.") this is real tour content and gets its own card.
+    band: Literal["dwell", "vignette", "leg"] = "dwell"
     spotlight: float = 0.0
     # KE9: this dwell stop has "keep exploring here" EXTRAS — beats the tour's
     # time budget capped out (poi_id present in overflow_by_poi with non-empty

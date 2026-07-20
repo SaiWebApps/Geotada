@@ -18,11 +18,13 @@ from __future__ import annotations
 
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from .claim_dedup import (
+    _claims_for_coverage,
     candidate_duplicate_pairs,
     claims_realized_by,
     suppress_exact_repeats,
@@ -49,6 +51,7 @@ from .contract import (
     StopVerifyStatus,
     ValidationReport,
 )
+from .factcheck import CoverageJudge
 from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
 from .narration_quality import craft_score
 from .reflection import reflection_slots
@@ -528,9 +531,9 @@ class AnthropicComposeClient:
         self.input_tokens = 0
         self.output_tokens = 0
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import compose_client
 
-            client = anthropic.Anthropic()
+            client = compose_client()
         self._client = client
 
     def compose(
@@ -941,6 +944,8 @@ def compose_script_per_chapter(
     max_workers: int = _PER_CHAPTER_MAX_WORKERS,
     candidates: int = 1,
     correction_client: CorrectionClient | None = None,
+    omission_checker: CoverageJudge | None = None,
+    omission_findings: list[OmissionFinding] | None = None,
 ) -> Script:
     """Compose each stop in its OWN focused call, in PARALLEL, then verify the
     assembled tour and repair only what still fails.
@@ -957,11 +962,46 @@ def compose_script_per_chapter(
     ``candidates`` > 1 turns on BEST-OF-N: each stop is composed that many times
     (in parallel, sampling diversity from the LLM) and the candidate with the
     fewest LOCAL faithfulness + coverage failures is kept — extra lottery tickets
-    for the big, dense stops whose single fusion trips the gate and reverts."""
+    for the big, dense stops whose single fusion trips the gate and reverts.
+
+    ``omission_checker`` — STRICTLY OPT-IN, exactly like ``correction_client``:
+    ``None`` (the default) means every existing caller is byte-identical, zero
+    extra calls. When supplied, an ADVISORY (never blocking, never repairing)
+    coverage-direction pass runs on the SERVED script — see ``find_dropped_facts``
+    — scoped to ``keyless_affected_stops`` (the coverage-coefficient blind spot's
+    proven-worst corpus, and the cost bound this rollout chose: a fully-keyed
+    preview spends nothing extra). Findings are appended to ``omission_findings``
+    if a caller passes a list — an OUT-PARAM, not a return-value change, because
+    ``Script`` is frozen with ``extra=\"forbid\"`` (``contract.py``) and cannot carry
+    ad-hoc advisory data without a schema change outside this change's scope;
+    mirrors ``author.py``'s ``trace`` out-param idiom. A caller that only wants
+    the checker run without collecting individual findings may pass
+    ``omission_checker`` alone; ``omission_findings=None`` just discards them."""
     beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
     beat_stop = {s.source_id: s.stop_idx for s in stitched.script if s.source_type == "beat"}
     tour_context = tuple(p.name for p in route.pois)
-    all_slots = reflection_slots(route, beat_sequence)
+    # FAIL-CLOSED ON EMPTY SLOTS, exactly as ``build_compose_request`` already does
+    # ("Slots whose visited-claims union is empty are DROPPED"). Until 2026-07-19
+    # this per-chapter path did NOT filter, so a slot whose visited beats carry no
+    # ``key_claims`` was still handed to the composer — which is instructed that a
+    # reflection must be supported by that slot's claim list ALONE. With an empty
+    # list the instruction is unsatisfiable: the composer either writes nothing or
+    # writes something unsupported that VERIFY then rejects. Either way the slot is
+    # a guaranteed loss, and it burns an Opus call to discover that.
+    #
+    # MEASURED on the live Paris graph: 1 of 10 slots across six representative
+    # tours — and the one it hits is ``marais_social_60``, whose SINGLE slot sits on
+    # a 10 min 56 s unbroken silence. The tour most in need of leg content had its
+    # only chance guaranteed to fail. Paris is 27.2% keyless (419/1543 beats);
+    # London is 100% keyless, so there every slot is affected.
+    #
+    # This path is the one the WORKBENCH uses (``/trips/preview``); the whole-tour
+    # path had the guard from the start. The asymmetry was the defect.
+    all_slots = tuple(
+        slot
+        for slot in reflection_slots(route, beat_sequence)
+        if _visited_claims(stitched, beats_by_id, slot)
+    )
     visited = {slot: _visited_claims(stitched, beats_by_id, slot) for slot in all_slots}
 
     stops = sorted({s.stop_idx for s in stitched.script})
@@ -1085,8 +1125,14 @@ def compose_script_per_chapter(
         """Attach the passing report AND the per-stop verify_report diagnostic
         (which stops whole-reverted, which were surgically-repaired, + the failing
         report(s) that drove the gate) to the served Script — additive, so no
-        existing behavior changes."""
-        return script.model_copy(
+        existing behavior changes.
+
+        ALSO, iff ``omission_checker`` was supplied: run the ADVISORY coverage-
+        direction pass on the served script (scoped to ``keyless_affected_stops``)
+        and extend ``omission_findings`` with whatever it flags. Read-only — never
+        changes ``script`` or ``passing``; every existing (non-opted-in) caller
+        sees zero extra calls and an identical return value."""
+        served = script.model_copy(
             update={
                 "validation": passing,
                 "verify_report": _per_stop_verify_report(
@@ -1094,6 +1140,13 @@ def compose_script_per_chapter(
                 ),
             }
         )
+        if omission_checker is not None:
+            scope = keyless_affected_stops(served, beats_by_id)
+            if scope:
+                found = find_dropped_facts(served, beats_by_id, omission_checker, only_stops=scope)
+                if omission_findings is not None:
+                    omission_findings.extend(found)
+        return served
 
     _run_best_of_n(stops)  # attempt 1: best-of-N per stop, all in parallel
     composed = _assemble()
@@ -1194,6 +1247,159 @@ def compose_script_per_chapter(
     raise ComposeVerificationError(rep_report, 2)
 
 
+# --- OMISSION DETECTION (advisory) ---------------------------------------------
+#
+# The production coverage gate (claim_dedup.verify_claim_coverage, used inside
+# ``verify`` above) is an OVERLAP-COEFFICIENT match: |a∩b| / min(|a|,|b|). Once
+# compose DELETES material, the composed signature becomes a SUBSET of the claim
+# signature, so min() is the composed side and the ratio is 1.000 BY CONSTRUCTION
+# — no threshold fixes this (measured on a real London beat: dropping "Charing
+# Cross" alone, or "the 1200s" alone, or both, all still read overlap >= 0.667
+# against a 0.34 threshold). This section adds the SEMANTIC coverage direction
+# already calibrated in ``factcheck.py`` (``CoverageJudge`` — 100% acc / 0 FN / 0
+# FP on the labeled bake-off, scripts/coverage_calibrate.py) as a SEPARATE,
+# READ-ONLY report: it never touches ``verify``'s pass/fail, the ladder above, or
+# the served ``Script`` — it is computed, if at all, by the CALLER after a Script
+# is already served (src/api/routes/trips.py's preview call site), strictly
+# opt-in via an injected ``CoverageJudge``. Deliberately NOT the decomposer half
+# of ``factcheck.SemanticFactChecker``: faithfulness (invention) is already
+# checked by the Haiku entailer wired into ``verify`` above, so decomposing the
+# narration again here would double that cost for zero new signal — this adds
+# ONLY the coverage judge calls the compose path was missing.
+
+
+@dataclass(frozen=True)
+class OmissionFinding:
+    """One source fact a stop's composed narration did not convey, per the
+    calibrated ``CoverageJudge`` — the blind spot the overlap-coefficient gate
+    structurally cannot see. Advisory: never blocks/repairs anything."""
+
+    stop_idx: int
+    beat_id: str
+    fact: str
+
+
+_OMISSION_MAX_WORKERS = 8
+# One Haiku call per (stop, fact) pair. A stop's cited beats can carry many
+# key_claims (or, keyless, every body sentence as a pseudo-claim — see
+# claim_dedup._claims_for_coverage), so this bounds a single stop's worst case
+# while still checking every fact on the common 1-2-beat stop.
+_OMISSION_FACT_CAP_PER_STOP = 5
+
+
+def keyless_affected_stops(script: Script, beats_by_id: dict[str, BeatRef]) -> frozenset[int]:
+    """Stop indices whose SERVED narration cites at least one KEYLESS beat (no
+    ``key_claims`` — the corpus falls back to whole body sentences as
+    pseudo-claims). This is where the overlap-coefficient blind spot is proven
+    worst (100% of London's 561/561 beats are keyless; measured 2026-07-19) — the
+    cost-bounding scope a caller can restrict ``find_dropped_facts`` to via its
+    ``only_stops`` argument, so a keyed-corpus preview (Paris/NYC) with no keyless
+    beat in view spends nothing extra at all."""
+    out: set[int] = set()
+    for s in script.script:
+        if s.source_type != "beat":
+            continue
+        beat = beats_by_id.get(s.source_id)
+        if beat is not None and not beat.key_claims:
+            out.add(s.stop_idx)
+    return frozenset(out)
+
+
+def find_dropped_facts(
+    script: Script,
+    beats_by_id: dict[str, BeatRef],
+    checker: CoverageJudge,
+    *,
+    fact_cap_per_stop: int = _OMISSION_FACT_CAP_PER_STOP,
+    only_stops: frozenset[int] | None = None,
+) -> tuple[OmissionFinding, ...]:
+    """ADVISORY: which source facts does ``script``'s composed narration fail to
+    convey, per the calibrated ``CoverageJudge``?
+
+    For each stop (or only those in ``only_stops`` when given), gathers the
+    ``key_claims``-or-body-sentences (``claim_dedup._claims_for_coverage``, the
+    SAME derivation the lexical gate uses, so "what counts as a fact" stays
+    consistent between the two gates) of every beat the stop's SERVED sentences
+    cite, caps them at ``fact_cap_per_stop``, and asks the judge whether the
+    stop's whole composed narration conveys each one — in ANY wording; a
+    reworded/paraphrased fact is NOT a finding, only a genuinely absent one is
+    (see ``factcheck.py``'s ``CoverageJudge`` prompt).
+
+    Pure and read-only: never mutates ``script``, never affects VERIFY. Returns
+    ``()`` with zero judge calls when ``script`` has no qualifying stops (e.g.
+    ``only_stops`` excludes every stop actually served).
+
+    **Never raises — enforced, not merely asserted.** Every judge call is wrapped
+    (see ``_run``); a transient API failure yields "conveyed" for that fact rather
+    than propagating. This is load-bearing: the pass runs AFTER ~18 Opus best-of-2
+    compose calls have already been billed, and ``preview_trip`` catches only
+    ``ComposeVerificationError`` — so an uncaught error here would 500 a request
+    whose expensive work had already succeeded. An earlier revision of this
+    docstring claimed "never raises" while the code could; a judge caught it by
+    simulating a Haiku 529. Do not restore the unguarded form.
+    """
+    by_stop: dict[int, list[Sentence]] = defaultdict(list)
+    for s in script.script:
+        by_stop[s.stop_idx].append(s)
+
+    jobs: list[tuple[int, str, str, str]] = []  # (stop_idx, beat_id, fact, narration)
+    for stop_idx, sents in sorted(by_stop.items()):
+        if only_stops is not None and stop_idx not in only_stops:
+            continue
+        narration = " ".join(s.text for s in sents)
+        if not narration.strip():
+            continue
+        seen_beats: set[str] = set()
+        beat_ids = []
+        for s in sents:
+            if s.source_type == "beat" and s.source_id not in seen_beats:
+                seen_beats.add(s.source_id)
+                beat_ids.append(s.source_id)
+        facts_for_stop: list[tuple[str, str]] = []
+        for bid in beat_ids:
+            beat = beats_by_id.get(bid)
+            if beat is None:
+                continue
+            for fact in _claims_for_coverage(beat):
+                facts_for_stop.append((bid, fact))
+        for bid, fact in facts_for_stop[:fact_cap_per_stop]:
+            jobs.append((stop_idx, bid, fact, narration))
+
+    if not jobs:
+        return ()
+
+    def _run(job: tuple[int, str, str, str]) -> tuple[int, str, str, bool]:
+        j_stop, j_bid, j_fact, j_narration = job
+        try:
+            return j_stop, j_bid, j_fact, checker.conveys(j_fact, j_narration)
+        except Exception:
+            # FAIL QUIET, NOT LOUD. This pass is ADVISORY — it reports facts the
+            # composer may have dropped; it never changes the served script. It runs
+            # AFTER the expensive work: a 9-stop preview has already paid ~18 Opus
+            # best-of-2 compose calls (~$1) by the time we get here.
+            #
+            # Without this guard a transient Haiku 529/429/timeout propagates out of
+            # pool.map -> out of _assemble -> out of compose_script_per_chapter, and
+            # preview_trip catches ONLY ComposeVerificationError — so the request 500s
+            # and the already-billed compose is thrown away. Trading an advisory
+            # finding for a paid, successful tour is never the right trade.
+            #
+            # Treating the fact as CONVEYED (True) is the conservative direction: it
+            # suppresses a finding we could not compute rather than inventing an
+            # omission we never verified. A false "this fact was dropped" would send an
+            # editor hunting for a defect that does not exist.
+            return j_stop, j_bid, j_fact, True
+
+    with ThreadPoolExecutor(max_workers=max(1, min(_OMISSION_MAX_WORKERS, len(jobs)))) as pool:
+        results = list(pool.map(_run, jobs))
+
+    return tuple(
+        OmissionFinding(stop_idx=stop_idx, beat_id=bid, fact=fact)
+        for stop_idx, bid, fact, conveyed in results
+        if not conveyed
+    )
+
+
 __all__ = [
     "COMPOSE_MODEL",
     "OPENAI_COMPOSE_MODEL",
@@ -1201,10 +1407,13 @@ __all__ = [
     "ComposeClient",
     "ComposeRequest",
     "MockComposeClient",
+    "OmissionFinding",
     "OpenAIComposeClient",
     "build_compose_request",
     "compose_client_for",
     "compose_provider_name",
     "compose_script",
     "compose_script_per_chapter",
+    "find_dropped_facts",
+    "keyless_affected_stops",
 ]

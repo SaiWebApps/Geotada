@@ -182,3 +182,101 @@ def test_preview_normalizes_display_em_dashes_to_commas():
     )
     assert em not in stops[0].narration, f"em-dash leaked into display: {stops[0].narration!r}"
     assert "Meurice, grandest of the palace hotels, faced" in stops[0].narration
+
+
+# ---------------------------------------------------------------------------
+# band="leg" — walk-concurrent narration gets its own card
+# ---------------------------------------------------------------------------
+#
+# Product ruling 2026-07-19: "Audio overlaps the walking. It is a part of the tour
+# experience." Navigation lines and reflections are spoken WHILE WALKING the leg
+# INTO stop i, but they carry stop_idx == i, so they were concatenated into that
+# stop's narration. The editor saw one undifferentiated blob: they could not play
+# the walk content on its own, and could not see how much of a long walk was
+# actually filled.
+#
+# MEASURED on the live Paris graph immediately after this change (60-min Ile de la
+# Cite, dark_history):
+#     "Walk to Conciergerie"          4 min walk ->  11 words (4s)
+#     "Walk to Theatre de la Ville"   6 min walk ->  18 words (7s)
+#     whole tour: 54 words = 22s of leg narration against 1650s of walking (1.3%)
+# Surfacing that ratio is the entire point of the card.
+
+
+def _script_with_leg_glue() -> Script:
+    """Two stops where the leg INTO stop 1 carries a GLUE_NAV line."""
+    base = _script_two_stops()
+    return base.model_copy(
+        update={
+            "script": (
+                Sentence(text="Stop zero story.", source_id="GLUE_PACING",
+                         source_type="glue", stop_idx=0),
+                Sentence(text="From Dwell Zero, head on to Dwell One, about a minute away.",
+                         source_id="GLUE_NAV", source_type="glue", stop_idx=1),
+                Sentence(text="Stop one story.", source_id="GLUE_PACING",
+                         source_type="glue", stop_idx=1),
+            )
+        }
+    )
+
+
+def _legs(stops):
+    return [s for s in stops if s.band == "leg"]
+
+
+def test_walk_narration_gets_its_own_leg_card():
+    """UNDO TEST: drop the is_walk_concurrent branch in _preview_stops (so GLUE_NAV
+    falls back into _dwell_sents) and this goes RED — no leg card is emitted."""
+    stops = _preview_stops(_script_with_leg_glue(), _route({}), {}, _snapshot(
+        _poi("v"), BeatRef(id="b", poi_id="v", script_body="x.")), {})
+    legs = _legs(stops)
+    assert len(legs) == 1, [(s.band, s.poi_name) for s in stops]
+    assert legs[0].poi_name == "Walk to Dwell One"
+    assert "head on to Dwell One" in legs[0].narration
+
+
+def test_leg_card_precedes_the_stop_it_walks_to():
+    stops = _preview_stops(_script_with_leg_glue(), _route({}), {}, _snapshot(
+        _poi("v"), BeatRef(id="b", poi_id="v", script_body="x.")), {})
+    order = [(s.band, s.poi_name) for s in stops]
+    i = order.index(("leg", "Walk to Dwell One"))
+    assert order[i + 1] == ("dwell", "Dwell One"), order
+
+
+def test_leg_content_is_removed_from_the_dwell_card_not_duplicated():
+    """No double-voicing: a sentence lives on exactly one card."""
+    stops = _preview_stops(_script_with_leg_glue(), _route({}), {}, _snapshot(
+        _poi("v"), BeatRef(id="b", poi_id="v", script_body="x.")), {})
+    dwell_one = next(s for s in stops if s.band == "dwell" and s.poi_name == "Dwell One")
+    assert "head on to Dwell One" not in dwell_one.narration
+    assert dwell_one.narration == "Stop one story."
+
+
+def test_silent_leg_emits_no_card():
+    """A leg with nothing to say is silence; an empty card would imply content
+    that does not exist. The FIRST leg of a real tour has exactly none."""
+    stops = _preview_stops(_script_two_stops(), _route({}), {}, _snapshot(
+        _poi("v"), BeatRef(id="b", poi_id="v", script_body="x.")), {})
+    assert _legs(stops) == []
+    assert [s.band for s in stops] == ["dwell", "dwell"]
+
+
+def test_leg_card_minutes_report_the_walk_not_the_narration():
+    """The card shows the WALK duration, so a 6-minute walk sits next to 7 seconds
+    of narration — the gap made visible rather than averaged away."""
+    route = _route({})
+    long_walk = route.model_copy(
+        update={
+            "transits": (
+                TransitSegment(from_poi_id=None, to_poi_id="d0", distance_m=100.0,
+                               walk_seconds=0),
+                TransitSegment(from_poi_id="d0", to_poi_id="d1", distance_m=600.0,
+                               walk_seconds=360),
+            )
+        }
+    )
+    stops = _preview_stops(_script_with_leg_glue(), long_walk, {}, _snapshot(
+        _poi("v"), BeatRef(id="b", poi_id="v", script_body="x.")), {})
+    leg = _legs(stops)[0]
+    assert leg.minutes == 6, "leg card must report the 360s walk, not its own length"
+    assert len(leg.narration.split()) < 30

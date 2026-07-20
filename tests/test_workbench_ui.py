@@ -800,6 +800,18 @@ def browser_page(seed_data, reporter):
         browser = p.chromium.launch(**launch_opts)
         context = browser.new_context(viewport={"width": 1440, "height": 900})
         page = context.new_page()
+        # ACCEPT window.confirm. Playwright DISMISSES dialogs by default when no
+        # handler is registered, which silently turned the workbench's live-compose
+        # money gate ("Generate a tour? This ... spends real money") into a Cancel.
+        # generateTourPreview then returns BEFORE its fetch, so every tour-preview
+        # test timed out waiting for a /trips/preview response that was never sent.
+        #
+        # This is a REAL pre-existing failure, not a flake: the confirm landed in
+        # commit 8d8fa9f and the suite has been red since, unnoticed because
+        # test-workbench is --ignore'd out of `make test`. Verified by stashing all
+        # of today's changes and re-running against HEAD — identical timeout.
+        # No real money is at risk: /trips/preview is route-mocked in these tests.
+        page.on("dialog", lambda dialog: dialog.accept())
         yield page, seed_data, reporter
         # Save bug report before closing
         report_path = reporter.save_report()
@@ -1994,6 +2006,78 @@ class TestDetailViewAndEditing:
                 ),
             ),
         )
+
+    def test_leg_cards_render_as_walks_not_stops(self, browser_page):
+        """band='leg' cards must render as WALKS, with no map pin and no stop count.
+
+        REAL-BROWSER PROOF for the three defects an adversarial review found in the
+        first cut of this feature (all confirmed by direct read of review.html):
+
+          1. drawTourRoute plotted every located card, and a leg card carries its
+             DESTINATION stop's lat/lng — so it stacked a duplicate full-size
+             numbered pin exactly on top of the following dwell pin.
+          2. dwellText read `~${s.minutes} min here` for every non-vignette card, so
+             a leg card labelled WALK minutes as time standing still — the precise
+             inversion of what the card exists to show.
+          3. The summary counted leg cards as stops: a 2-stop tour reported 3.
+
+        The payload mirrors the shape measured on the live Paris graph, where a
+        4-minute walk to the Conciergerie carries 11 words (~4 seconds).
+        """
+        page, _seed_data, _reporter = browser_page
+        self._route_tour_preview(
+            page,
+            [
+                {"sort_order": 1, "poi_name": "Sainte-Chapelle", "minutes": 5,
+                 "lat": 48.8554, "lng": 2.3450, "band": "dwell",
+                 "narration": "Look up at the windows. A grounded opening line."},
+                {"sort_order": 2, "poi_name": "Walk to Conciergerie", "minutes": 4,
+                 "lat": 48.8561, "lng": 2.3465, "band": "leg",
+                 "narration": "Leaving Sainte-Chapelle behind, head for the Conciergerie."},
+                {"sort_order": 3, "poi_name": "Conciergerie", "minutes": 5,
+                 "lat": 48.8561, "lng": 2.3465, "band": "dwell",
+                 "narration": "Look at the towers. Another grounded line."},
+            ],
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.select_option("#ttsProviderSelect", "mock")
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
+                page.locator("#tourGenerateBtn").click()
+            assert ri.value.status == 200
+            page.wait_for_timeout(400)
+
+            cards = page.locator("#tourStops .tour-stop")
+            assert cards.count() == 3, f"expected 3 cards, got {cards.count()}"
+
+            leg_text = cards.nth(1).text_content() or ""
+
+            # DEFECT 2: the leg card must describe a WALK, never "min here".
+            assert "min here" not in leg_text, (
+                f"leg card labels walk time as standing time: {leg_text!r}"
+            )
+            assert "walking" in leg_text, f"leg card does not read as a walk: {leg_text!r}"
+
+            # DEFECT 3: the summary counts PLACES, not leg cards.
+            summary = page.locator("#tourStops .tour-summary").first.text_content() or ""
+            assert "2 stops" in summary, f"leg card counted as a stop: {summary!r}"
+            assert "1 narrated walk" in summary, f"walks not surfaced: {summary!r}"
+
+            # DEFECT 1: no map pin for the leg (2 pins for 2 places, not 3).
+            pins = page.evaluate(
+                "() => window.__lastTourRoute && window.__lastTourRoute.stops"
+            )
+            assert pins == 2, f"expected 2 map pins (dwell stops only), got {pins}"
+
+            # Scroll the cards into view so the screenshot shows the leg card
+            # itself, not just the map above it.
+            cards.nth(1).scroll_into_view_if_needed()
+            page.wait_for_timeout(200)
+            _take_screenshot(page, "leg-cards-render-as-walks")
+        finally:
+            page.unroute("**/trips/preview")
 
     def test_tour_stop_audio_caches_on_replay(self, browser_page):
         """Step 5 (edge): replaying a stop reuses the cached blob (no 2nd /audio/preview), and

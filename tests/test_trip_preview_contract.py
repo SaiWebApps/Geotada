@@ -34,11 +34,13 @@ Plumbing (all in-process):
 
 from __future__ import annotations
 
+import inspect
+
 import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
-from src.api.dependencies import get_driver
+from src.api.dependencies import get_claim_repetition_judge, get_driver
 from src.tour.routing import haversine_m, pace_corrected_walk_seconds
 
 START = (48.8568, 2.3414)
@@ -568,3 +570,131 @@ def test_preview_green_but_thin_delivery_carries_tourability(make_client):
     # Density saw the rich pool: 6 anchor candidates cleared the rich-pool gate.
     assert tourability["anchor_candidates"] >= 6
     assert tourability["fill_ratio"] >= 1.5
+
+
+# ---------------------------------------------------------------------------
+# G4 (claim_repetition) route wiring — Defect 3: the conftest money-guard stub
+# ALWAYS returns same_fact=False, so g4_findings is EMPTY across the entire
+# non-live suite and the merge/severity logic in trips.py never executes against
+# a non-empty finding set anywhere else. These tests inject a judge that DOES
+# find a redundancy, so the wiring is exercised for real.
+# ---------------------------------------------------------------------------
+
+
+class _AlwaysRedundantJudge:
+    """Deterministic, offline: rules every candidate pair redundant. Used ONLY to
+    exercise the route's merge-into-response wiring — never a claim about the real
+    judge's accuracy."""
+
+    def same_fact(self, a: str, b: str) -> bool:
+        return True
+
+
+def _cluster_with_shared_entity_records():
+    """A GREEN multi-stop cluster where EVERY beat at EVERY stop declares the same
+    corpus entity — a real G4 candidate pair, cross-stop, once composed.
+    ``MockComposeClient`` (the money guard's offline compose stub) passes
+    ``source_type == "beat"`` sentences through unchanged (see ``compose.py``'s
+    docstring), so whichever beats the selection/corrector pipeline keeps still
+    carry the entity tag and stop_idx exactly as declared here — every beat, not
+    just one per stop, because which beat SURVIVES beat-capping/correction is an
+    internal detail of the engine this test does not own or want to couple to.
+
+    ONLY 2 beats per POI (not 5, unlike ``_green_cluster_records``) — deliberately
+    under ``quality_rubric.STARVE_MIN_BEATS`` (5) so a real rubric PASS is reachable
+    here: this fixture exists to prove G4 stays advisory even when nothing else is
+    wrong with the tour, which a fixture that always trips C1-starved could never
+    discriminate (see the route test below, which needs at least one non-degenerate
+    passing case to catch the Defect-2 mutation)."""
+    offsets = [
+        (0.0004, 0.0),
+        (0.0, 0.0007),
+        (-0.0005, 0.0),
+        (0.0, -0.0009),
+        (0.0007, 0.0003),
+        (-0.0006, -0.0006),
+    ]
+    pois = [
+        _poi_record(
+            f"poi-{i}",
+            name=f"Anchor Number {i}",
+            tier=5,
+            lat=START[0] + dlat,
+            lng=START[1] + dlng,
+            areas=["Île de la Cité"],
+        )
+        for i, (dlat, dlng) in enumerate(offsets)
+    ]
+    beats = [
+        _beat_record(
+            f"poi-{i}-b{j}",
+            f"poi-{i}",
+            body=f"Story {j} about anchor {i} and the Common Landmark. It continues.",
+        )
+        for i in range(len(offsets))
+        for j in range(2)
+    ]
+    for beat in beats:
+        beat["entities"] = ["Common Landmark"]
+    return {"pois": pois, "beats": beats, "areas": _AREA_RECORDS, "adjacency": [], "lenses": []}
+
+
+def test_g4_is_deliberately_dark_and_never_billed(make_client):
+    """DECISION GUARD. G4 (semantic cross-stop repetition) is BUILT and TESTED but is
+    deliberately NOT RUN from preview_trip. It was wired on 2026-07-19 and made dark the
+    same day, on measurement, before it ever billed a real preview.
+
+    Two independent reasons, either one sufficient:
+
+    1. IT DOES NOT DETECT THE DEFECT IT EXISTS FOR. ~1100 candidate pairs per tour force
+       a sampling strategy. Prefix truncation spent the whole budget on stop 0 (0 of 327
+       pairs with a-stop>=1 ever judged). The round-robin stratification that fixed that
+       breadth destroyed within-bucket depth instead: measured on the very tour
+       claim_repetition.py cites as its founding case
+       (data/paris/tours/pont-neuf-60min-5afc2e.json, where "Vert-Galant" is glossed FOUR
+       times in different words), MAX_CANDIDATE_PAIRS=200 recovers **0 of the 15
+       Vert-Galant edges**. A check that reports "no repetition found" on the canonical
+       repetition tour is WORSE than no check.
+    2. THE JUDGE IS UNCALIBRATED. HaikuRedundancyJudge has never executed against a live
+       model; all 32 of its tests inject a hand-labelled stub. Failure-ledger entry
+       FL-2026-111 warned verbatim that "an unproven judge silently gating narration
+       would suppress real facts".
+
+    Cost of leaving it on: the cap is a FLOOR, not a ceiling -- every real tour yields
+    >1100 candidates, so it billed ~200 Haiku calls (~$0.10) on EVERY preview for the
+    recall measured above.
+
+    To re-enable, BOTH must hold: (a) the sampler recovers the Vert-Galant edges at a
+    defensible budget, and (b) a labelled bake-off closes FL-2026-111 (~$0.006/tour, the
+    pattern in scripts/coverage_calibrate.py). See [[founding-case-efficacy-rule]] --
+    recall against the founding case was never measured, which is exactly how a repair
+    that zeroed it passed its own test suite.
+    """
+    import src.api.routes.trips as trips_route
+
+    src = inspect.getsource(trips_route)
+    assert "check_tour_repetition(" not in src, (
+        "G4 must stay dark until it recovers its founding-case edges AND its judge is "
+        "calibrated -- it currently bills ~$0.10/preview for 0 recall on the tour it "
+        "was built for"
+    )
+
+    # An always-True judge must still produce nothing: the check never runs.
+    client = make_client(_cluster_with_shared_entity_records())
+    client.app.dependency_overrides[get_claim_repetition_judge] = lambda: _AlwaysRedundantJudge()
+    try:
+        r = client.post(
+            "/api/v1/trips/preview",
+            json={"center_lat": START[0], "center_lng": START[1], "duration_min": 60},
+        )
+    finally:
+        del client.app.dependency_overrides[get_claim_repetition_judge]
+
+    assert r.status_code == 200, r.text
+    quality = r.json()["quality"]
+    assert quality["g4"]["judge_calls"] == 0, "G4 is dark -- it must never bill a call"
+    assert quality["g4"]["findings"] == []
+    assert quality["passed"] == (len(quality["blockers"]) == 0), (
+        "quality['passed'] must depend only on the deterministic rubric"
+    )
+

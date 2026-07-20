@@ -20,10 +20,12 @@ from src.api.crud.trips import (
     route_script_to_stops,
 )
 from src.api.dependencies import (
+    get_claim_repetition_judge,
     get_compose_client,
     get_correction_client,
     get_driver,
     get_faithfulness_checker,
+    get_omission_checker,
     get_session,
 )
 from src.api.models.trips import (
@@ -38,12 +40,18 @@ from src.api.models.trips import (
     TripPreviewTourability,
 )
 from src.tour.beat_select import select_vignette_beats
+
+# check_tour_repetition / repetition_findings are deliberately NOT imported: the G4
+# check is dark (see the long comment at its call site in preview_trip). RedundancyJudge
+# is still imported for the Depends() signature, which stays so re-enabling is one line.
+from src.tour.claim_repetition import RedundancyJudge
 from src.tour.compose import (
     ComposeClient,
     ComposeRequest,
     compose_provider_name,
     compose_script,
     compose_script_per_chapter,
+    keyless_affected_stops,
 )
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
@@ -56,7 +64,7 @@ from src.tour.contract import (
     ValidationReport,
 )
 from src.tour.density import TourabilityRefusedError
-from src.tour.generation import generate, vignette_one_liner_text
+from src.tour.generation import generate, is_walk_concurrent, vignette_one_liner_text
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option
 from src.tour.quality_rubric import score_tour
@@ -645,14 +653,49 @@ def _preview_stops(
     # "bleed"). _build_transit folds the one-liner in at the arrival dwell stop_idx as
     # a vignette-beat sentence, so drop sentences sourced from a vignette beat.
     vignette_beat_ids = {b.id for beats in vignette_beats.values() for b in beats}
+    # SPLIT WALK-CONCURRENT NARRATION OUT OF THE DWELL CARD (2026-07-19).
+    #
+    # Navigation lines and reflections are spoken WHILE THE TOURIST WALKS the leg
+    # INTO stop i, but they carry stop_idx == i, so they were concatenated into that
+    # stop's narration. The editor therefore saw one undifferentiated blob and could
+    # not tell what the tourist hears on the walk versus standing at the stop, could
+    # not play the walk content on its own, and could not see how much of a long
+    # walk was filled at all.
+    #
+    # That mattered because the walks are where the tour is emptiest. MEASURED on
+    # the live Paris graph, 2026-07-19, on the CURRENT code (an earlier revision of
+    # this comment quoted 1650 s / 959 s / 61%, measured while a since-reverted
+    # selection experiment was applied; those figures were stale and are corrected
+    # here — re-derive rather than carry a number forward):
+    #
+    #   60-min Ile de la Cite / dark_history: 1096 s walking, 710 s spoken.
+    #       60% of elapsed time is silence; 4 leg cards carry 54 words = 22 s,
+    #       filling 2.0% of the walking.
+    #   60-min Le Marais / social_change:     1148 s walking, 345 s spoken.
+    #       76% silence; 1 leg card carries 14 words = 6 s, filling 0.5%.
+    #
+    # ``is_walk_concurrent`` is the SHARED predicate (src/tour/generation.py) that
+    # quality_rubric's C7/C7b time model also uses, so a sentence shown on a leg
+    # card is exactly a sentence the rubric scored as costing no elapsed time.
     _dwell_sents: dict[int, list[str]] = {}
+    _leg_sents: dict[int, list[str]] = {}
     for s in script.script:
         if s.source_type == "beat" and s.source_id in vignette_beat_ids:
-            continue
-        _dwell_sents.setdefault(s.stop_idx, []).append(s.text)
+            continue  # voiced by its own interleaved vignette card, below
+        if is_walk_concurrent(s, vignette_beat_ids):
+            _leg_sents.setdefault(s.stop_idx, []).append(s.text)
+        else:
+            _dwell_sents.setdefault(s.stop_idx, []).append(s.text)
     # Display-normalize dashes so the workbench text reads the way the audio
     # sounds (comma pause, not a dangling em-dash the tourist complained about).
     per_stop = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in _dwell_sents.items()}
+    per_leg = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in _leg_sents.items()}
+    # Walk seconds of the leg ARRIVING at stop i — shown on the leg card so the
+    # editor can see the walk against the narration that fills it. A leg with 600 s
+    # of walking and 20 s of narration is the defect made visible.
+    _leg_walk_s: dict[int, int] = {}
+    for i, t in enumerate(route.transits):
+        _leg_walk_s[i] = int(t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
     # Voice the walk-past one-liner via the SAME helper the audio/script path uses
     # (generation.vignette_one_liner_text) so the workbench text never diverges from
     # what the tourist hears — clause-capped when the beat's first sentence is a long
@@ -673,6 +716,23 @@ def _preview_stops(
 
     out: list[TripPreviewStop] = []
     for i, sp in enumerate(script.selected_pois):
+        # The LEG into this stop, before anything that happens at it. Emitted only
+        # when there is something to hear: a leg with no narration is silence, and
+        # an empty card would imply content that does not exist.
+        leg_text = per_leg.get(i, "").strip()
+        if leg_text:
+            out.append(
+                TripPreviewStop(
+                    sort_order=len(out) + 1,
+                    poi_name=f"Walk to {sp.name}",
+                    lat=sp.lat,
+                    lng=sp.lng,
+                    narration=leg_text,
+                    minutes=round(_leg_walk_s.get(i, 0) / 60),
+                    band="leg",
+                    spotlight=0.0,
+                )
+            )
         for poi in route.vignettes.get(i, ()):
             if poi.id not in one_liner_by_poi:
                 continue  # no voiceable beat -> not voiced, not shown
@@ -753,6 +813,8 @@ def preview_trip(
     compose_client: ComposeClient = Depends(get_compose_client),
     faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
     correction_client=Depends(get_correction_client),
+    claim_repetition_judge: RedundancyJudge = Depends(get_claim_repetition_judge),
+    omission_checker=Depends(get_omission_checker),
 ):
     """Web-first preview (Phase 1.5): run the engine and return per-stop narration
     WITHOUT a profile and WITHOUT persisting a Trip/ItineraryItem.
@@ -806,11 +868,25 @@ def preview_trip(
     compose_status = "stitched"
     provider = compose_provider_name(os.getenv("COMPOSE_PROVIDER"))
     narration_quality = None
+    omitted_facts: list = []
+    omission_stops_checked = 0
     try:
         # Per-chapter: one focused (parallel) call per stop, so the big
         # repetitive stops fuse without dropping facts (whole-tour compose
         # reverted them) and the tour composes in ~1 min, not ~19.
         # Always on: the corrector is part of the algorithm, not an option.
+        #
+        # omission_checker/omission_findings: the ADVISORY coverage-direction pass
+        # (opt-in ONLY at this preview call site — never the persisted /compose
+        # path). The production coverage gate this ladder already runs cannot see
+        # a dropped fact (its overlap COEFFICIENT reads 1.000 once compose
+        # deletes material — measured on a real London beat, CLAUDE.md
+        # 2026-07-19). This runs the calibrated CoverageJudge on the SERVED
+        # script, scoped internally to keyless-beat stops (the blind spot's
+        # proven-worst corpus, 100% of London) — a keyed-corpus preview with no
+        # keyless beat in view spends nothing extra. Read-only: it never affects
+        # compose_status/script above; findings are appended to omitted_facts and
+        # surfaced next to the rubric's, below.
         composed = compose_script_per_chapter(
             script,
             seq,
@@ -819,6 +895,8 @@ def preview_trip(
             faithfulness_checker=faithfulness_checker,
             candidates=2,  # best-of-2: extra tickets for the big, dense stops
             correction_client=correction_client,
+            omission_checker=omission_checker,
+            omission_findings=omitted_facts,
         )
     except ComposeVerificationError:
         compose_status = "refused"  # unrepairable — keep the grounded stitch
@@ -845,6 +923,10 @@ def preview_trip(
             "look_prompt_rate": q.look_prompt_rate,
             "tells_per_100w": q.per_100w,
         }
+        # Bookkeeping only (no judge calls): how many stops the omission pass
+        # above actually looked at, for the "stats" transparency field below.
+        beats_by_id = {b.id: b for plan in seq.poi_beats for b in plan.beats}
+        omission_stops_checked = len(keyless_affected_stops(script, beats_by_id))
 
     # THE QUALITY RUBRIC — runs on EVERY tour, deterministic and $0. The mechanical
     # floor of specs/2026-07-19-tour-quality-standard/01-standard.md: it catches the
@@ -853,6 +935,60 @@ def preview_trip(
     # imbalance. Surfaced to the editor rather than silently swallowed — a tour that
     # breaches the standard is visible in the workbench with the exact check and stop.
     rubric = score_tour(script, route, snapshot.beats_by_poi, beat_sequence=seq)
+
+    # G4 — an ADVISORY, UNCALIBRATED semantic check (standard §4): does any two
+    # narration sentences, ANYWHERE in the tour, restate the same underlying fact in
+    # new words — exactly the gap a lexical/regex pass cannot see (see
+    # claim_repetition.py's docstring for the measured Vert-Galant defect a 4-gram
+    # Jaccard detector missed at 0 hits). Report-only, same as the omission checker
+    # below: the (now-removed) failure-ledger entry FL-2026-111 recorded that
+    # HaikuRedundancyJudge "has never executed against a live model" — still true:
+    # every test in tests/test_claim_repetition.py injects a hand-labelled stub, none
+    # construct the real class with client=None — and warned verbatim "an unproven
+    # judge silently gating narration would suppress real facts". So
+    # this NEVER folds into `quality["passed"]` until a labelled bake-off closes that
+    # entry. Findings surface in the separate `quality["g4"]` block below, severity
+    # WARN, for an editor to see without a non-deterministic judge flipping the
+    # tour's verdict.
+    #
+    # Skipped entirely on the "refused" path: `script` there is still the raw,
+    # never-composed stitch (compose_script_per_chapter raised
+    # ComposeVerificationError and the grounded stitch was kept as the floor) —
+    # spending the full judge-call budget scoring a script nobody will ever compose
+    # again is pure waste, not a check on anything the tourist will hear.
+    # DELIBERATELY NOT RUN as of 2026-07-19. It was wired earlier the same day and
+    # unwired on measurement, before ever billing a real preview.
+    #
+    # Two independent reasons, both measured, either one sufficient:
+    #
+    # 1. IT DOES NOT DETECT THE DEFECT IT EXISTS FOR. The cost cap forced a sampling
+    #    strategy over ~1100 candidate pairs per tour. Prefix truncation spent the
+    #    whole budget on stop 0 (0 of 327 pairs with a-stop >= 1 were ever judged);
+    #    the round-robin stratification that fixed that breadth destroyed
+    #    within-bucket depth instead. Measured on the very tour
+    #    claim_repetition.py's docstring cites as its founding case
+    #    (data/paris/tours/pont-neuf-60min-5afc2e.json, where "Vert-Galant" is
+    #    glossed FOUR times in different words): at MAX_CANDIDATE_PAIRS=200 the
+    #    stratified sample recovers **0 of the 15 Vert-Galant edges**. A check that
+    #    reports "no repetition found" on the canonical repetition tour is worse
+    #    than no check — it tells an editor the tour is clean.
+    #
+    # 2. THE JUDGE IS UNCALIBRATED. HaikuRedundancyJudge has never executed against
+    #    a live model; all 32 tests inject a hand-labelled stub. The (now-removed)
+    #    failure-ledger entry FL-2026-111 warned verbatim: "an unproven judge
+    #    silently gating narration would suppress real facts."
+    #
+    # Cost of leaving it on: the cap is a FLOOR, not a ceiling — every real tour
+    # yields >1100 candidates, so this bills ~200 Haiku calls (~$0.10) on EVERY
+    # preview for the recall measured above.
+    #
+    # To re-enable: (a) fix the sampler so it recovers the Vert-Galant edges at a
+    # defensible budget, and (b) run the labelled bake-off that closes FL-2026-111
+    # (~$0.006/tour, the pattern in scripts/coverage_calibrate.py). Until BOTH are
+    # done this stays dark. The module, its tests, and the response shape below all
+    # remain so re-enabling is a one-line change.
+    repetition = None
+    g4_findings: tuple = ()
 
     stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
@@ -866,6 +1002,11 @@ def preview_trip(
         provider=provider,
         narration_quality=narration_quality,
         quality={
+            # THE DETERMINISTIC, $0 rubric ALONE decides pass/fail. G4's redundancy
+            # judge is uncalibrated (formerly tracked as failure-ledger entry
+            # FL-2026-111, now removed — see the check_tour_repetition docstring) and
+            # must never flip this verdict — see the `g4` block below for its
+            # findings, kept strictly advisory.
             "passed": rubric.passed,
             "summary": rubric.summary(),
             "blockers": [
@@ -885,8 +1026,52 @@ def preview_trip(
                     "poi_name": f.poi_name,
                 }
                 for f in rubric.warnings
+            ]
+            + [
+                {
+                    "check": "coverage_omission",
+                    "message": f"beat {f.beat_id}: possibly dropped fact — {f.fact}",
+                    "stop_idx": f.stop_idx,
+                    "poi_name": None,
+                }
+                for f in omitted_facts
             ],
-            "stats": rubric.stats,
+            "stats": {
+                **rubric.stats,
+                # ADVISORY ONLY — never folded into "passed". omission_stops_checked
+                # is the KEYLESS-beat stop count the coverage judge actually ran on
+                # (0 on a fully-keyed corpus preview, where this feature spends
+                # nothing); omission_findings is how many it flagged as possibly
+                # dropped, for the workbench to point the editor at.
+                "omission_stops_checked": omission_stops_checked,
+                "omission_findings": len(omitted_facts),
+            },
+            # G4 — SEPARATE, clearly-labelled ADVISORY block (standard §4). Severity
+            # is always WARN here, never BLOCKER: `calibrated=False` documents WHY
+            # (see the module docstring above — HaikuRedundancyJudge has never executed
+            # against a live model) so a consumer of
+            # this response cannot mistake it for a proven gate. `judge_calls` /
+            # `candidates_dropped` are 0 on the refused path (skipped — see above),
+            # never on any composed/stitched preview (every real tour measured
+            # exceeds MAX_CANDIDATE_PAIRS, so the cap is a FLAT ~$0.10 cost, not a
+            # ceiling — see claim_repetition.MAX_CANDIDATE_PAIRS).
+            "g4": {
+                "severity": "WARN",
+                "calibrated": False,
+                "findings": [
+                    {
+                        "check": f.check,
+                        "message": f.message,
+                        "stop_idx": f.stop_idx,
+                        "poi_name": None,
+                    }
+                    for f in g4_findings
+                ],
+                "judge_calls": repetition.judge_calls if repetition is not None else 0,
+                "candidates_dropped": (
+                    repetition.candidates_dropped if repetition is not None else 0
+                ),
+            },
         },
     )
 

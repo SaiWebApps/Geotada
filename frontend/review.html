@@ -2120,7 +2120,26 @@
             <div class="field-group"><label>Duration (min)</label>
               <input type="number" id="tourDuration" value="60" min="15" max="240" /></div>
             <div class="field-group"><label>Lenses (comma-separated, optional)</label>
-              <input type="text" id="tourLenses" placeholder="historic_arch, dark_history" /></div>
+              <!-- A free-text lens field silently produced the UN-LENSED tour on any
+                   typo: an unknown lens scores a uniform LENS_FLOOR (0.25) across the
+                   whole corpus, and a uniform multiplicative factor leaves ranking
+                   unchanged. The datalist makes the valid vocabulary discoverable and
+                   typos unlikely; TripPreviewRequest.validate_lenses is the real
+                   guard and 422s on anything not in TAGGABLE_LENSES. -->
+              <input type="text" id="tourLenses" list="tourLensOptions" placeholder="historic_arch, dark_history" />
+              <datalist id="tourLensOptions">
+                <option value="hidden_history"></option><option value="war_conflict"></option>
+                <option value="dark_history"></option><option value="social_change"></option>
+                <option value="historic_arch"></option><option value="modern_design"></option>
+                <option value="music_heritage"></option><option value="visual_art"></option>
+                <option value="street_art"></option><option value="literary_heritage"></option>
+                <option value="film_tv"></option><option value="famous_residents"></option>
+                <option value="local_legends"></option><option value="parks_gardens"></option>
+                <option value="waterways_views"></option><option value="science_tech"></option>
+                <option value="historic_worship"></option><option value="sacred_traditions"></option>
+                <option value="historic_cuisine"></option><option value="markets_street_food"></option>
+                <option value="historic_markets"></option>
+              </datalist></div>
           </div>
           <div class="field-group"><label>Destination B (lat,lng, optional)</label>
             <input type="text" id="tourEnd" placeholder="48.8606,2.3376 — blank = open walk" /></div>
@@ -3131,6 +3150,13 @@
           center_lat: lat, center_lng: lng, duration_min: duration,
           lenses: lenses.length ? lenses : null, round_trip: roundTrip,
           end_lat: endLat, end_lng: endLng,
+          // city_slug was OMITTED here until 2026-07-19, so TripPreviewRequest's
+          // default ("paris") applied to EVERY preview. A London or New York
+          // workbench session therefore previewed the PARIS corpus against a
+          // London/NY start, found nothing reachable, and 422'd — the workbench
+          // "tour generation is horribly broken" report. cityName is the same
+          // canonical key every other fetch on this page already sends.
+          city_slug: cityName || 'paris',
         }),
       });
       if (!resp.ok) {
@@ -3229,7 +3255,13 @@
   function drawTourRoute(stops) {
     if (tourRouteLayer && persistentMap) { persistentMap.removeLayer(tourRouteLayer); }
     tourRouteLayer = null;
-    const located = (stops || []).filter(s => typeof s.lat === 'number' && typeof s.lng === 'number');
+    // band='leg' cards are NARRATION SPOKEN WHILE WALKING, not places. They carry
+    // their destination stop's coordinates (there is no single point for a walk),
+    // so plotting them would stack a duplicate numbered pin exactly on top of the
+    // dwell pin that follows and add a zero-length segment to the polyline. The map
+    // shows PLACES; the leg cards below the map show what is heard between them.
+    const located = (stops || []).filter(s =>
+      s.band !== 'leg' && typeof s.lat === 'number' && typeof s.lng === 'number');
     const pts = located.map(s => [s.lat, s.lng]);
     window.__lastTourRoute = { stops: pts.length, line: pts.length >= 2 };
     if (!persistentMap || pts.length === 0) return;
@@ -3348,7 +3380,13 @@
     const summary = document.createElement('div');
     summary.className = 'tour-summary';
     summary.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
-    summary.textContent = `${tourStops.length} stops · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
+    // Count PLACES as stops. A band='leg' card is narration heard on the way to a
+    // stop, not a stop — counting it made a 4-stop tour report 7. Legs are reported
+    // separately so the editor can see how many walks carry any narration at all.
+    const placeCount = tourStops.filter(s => s.band !== 'leg').length;
+    const legCount = tourStops.length - placeCount;
+    const legNote = legCount ? ` · ${legCount} narrated walk${legCount === 1 ? '' : 's'}` : '';
+    summary.textContent = `${placeCount} stops${legNote} · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
     stopsEl.appendChild(summary);
     // Narrator + objective quality panel: which model wrote this, whether it's the
     // real AI voice or the stitch, and the measured spoken-narration signals.
@@ -3429,7 +3467,17 @@
       // here" extras — flag it with a chip (never on vignette/walk-past stops).
       const deeperDiveTag = (!isVignette && s.has_deeper_dive)
         ? ` <span class="tour-deeper-dive-tag" title="This stop has extra beats — keep exploring here">Keep exploring</span>` : '';
-      const dwellText = isVignette ? 'walk past · 0 min' : `~${s.minutes} min here`;
+      // A leg card's `minutes` is the WALK, not time standing still — labelling it
+      // "min here" would invert the whole point of the card, which exists to show
+      // how much of a walk is filled with narration. Measured on the live Paris
+      // graph: a 4-minute walk to the Conciergerie carries 11 words (4 seconds).
+      const isLeg = s.band === 'leg';
+      const legSecs = Math.round((String(s.narration || '').split(/\s+/).filter(Boolean).length / 150) * 60);
+      const dwellText = isVignette
+        ? 'walk past · 0 min'
+        : isLeg
+          ? `walking · ${s.minutes} min · ${legSecs}s narrated`
+          : `~${s.minutes} min here`;
       el.innerHTML = `
         <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}${bandTag}${deeperDiveTag}</h4>
         <div class="meta">${dwellText}${spot}</div>
