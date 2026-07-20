@@ -26,7 +26,7 @@ from src.tour.contract import (
     TourInput,
     TransitSegment,
 )
-from src.tour.generation import GLUE_NAV, GLUE_REFLECTION, generate
+from src.tour.generation import GLUE_NAV, GLUE_REFLECTION, SPOKEN_WPM, generate
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -267,8 +267,20 @@ def test_compose_script_fires_exactly_once_when_clean():
     assert composed.validation.passed
     reflections = [s for s in composed.script if s.source_id == GLUE_REFLECTION]
     assert len(reflections) == 2
-    # Audio total re-estimated for the composed stream: +4s per glue reflection.
-    assert composed.total_audio_seconds == stitched.total_audio_seconds + 4 * len(reflections)
+    # THE GUARANTEE: the composed stream's audio total grows by exactly what the
+    # added reflections SAY. Until 2026-07-19 this asserted a flat "+4s per glue
+    # reflection" — the founding defect of the audio-clock rewrite. These
+    # reflections are real sentences ("Worth holding onto from what you've seen so
+    # far: Henri IV completed the square in 1612."), so crediting them 4s each made
+    # walk-leg narration invisible to the tour's own clock. Now they are credited
+    # their real spoken length at SPOKEN_WPM.
+    added_words = sum(len(s.text.split()) for s in reflections)
+    assert composed.total_audio_seconds == (
+        stitched.total_audio_seconds + round(added_words / SPOKEN_WPM * 60)
+    )
+    assert composed.total_audio_seconds > stitched.total_audio_seconds + 4 * len(reflections), (
+        "real reflections must be worth more than the old flat 4s-per-glue estimate"
+    )
 
 
 def test_compose_script_recomposes_once_steered_by_the_failing_report():
@@ -633,3 +645,77 @@ def test_best_of_n_picks_the_cleaner_candidate_per_stop():
     assert composed.validation.passed
     assert not any("ALIENS" in s.text for s in composed.script)  # the bad candidate was dropped
     assert client.calls == 2 * len({s.stop_idx for s in stitched.script})  # best-of-2, every stop
+
+
+# ---------------------------------------------------------------------------
+# Empty reflection slots must be dropped on BOTH compose paths
+# ---------------------------------------------------------------------------
+
+
+def test_per_chapter_drops_empty_claim_slots_like_the_whole_tour_path() -> None:
+    """The per-chapter composer (the WORKBENCH path) must fail closed on a slot
+    whose visited beats carry no key_claims — exactly as build_compose_request
+    already did for the whole-tour path.
+
+    A reflection is instructed to be supported by its slot's claim list ALONE. With
+    an empty list that instruction is unsatisfiable: the composer writes nothing, or
+    writes something unsupported that VERIFY rejects. Either way the slot is a
+    guaranteed loss that costs an Opus call to discover.
+
+    MEASURED on the live Paris graph: 1 of 10 slots across six representative tours,
+    and the one it hit was the tour with a 10 min 56 s unbroken silence — the tour
+    most in need of leg content had its only slot guaranteed to fail. London's
+    corpus is 100% keyless, so there it is every slot.
+
+    UNDO TEST: restore ``all_slots = reflection_slots(route, beat_sequence)`` in
+    compose_script_per_chapter and this goes RED.
+    """
+    # Both stops CLAIMLESS -> the leg into stop 1 is an eligible slot by walk
+    # deficit, but its visited-claims union is empty.
+    seq = _seq(
+        [
+            [_claim_beat("b0", "p0", None)],
+            [_claim_beat("b1", "p1", None)],
+        ]
+    )
+    route = _route([10, 400])
+    stitched = generate(seq, route, _input())
+
+    # The slot IS placed (the walk deficit qualifies it) ...
+    from src.tour.reflection import reflection_slots
+
+    assert reflection_slots(route, seq) == (1,), "fixture must produce an eligible slot"
+
+    # ... but it must never be HANDED TO THE COMPOSER.
+    #
+    # Asserting on the composed OUTPUT is not a real test here: MockComposeClient
+    # renders a reflection from its claim tuple, so an empty tuple yields no
+    # sentence either way and the assertion passes with the fix reverted. (That
+    # exact fake guard was written first and caught by its own undo test.) The
+    # observable seam is the ComposeRequest the client actually receives.
+    seen: list[tuple[int, ...]] = []
+
+    class _SpyClient:
+        def __init__(self) -> None:
+            self._inner = MockComposeClient()
+
+        def compose(self, request, attempt, prev_report):
+            seen.append(request.slots)
+            return self._inner.compose(request, attempt, prev_report)
+
+    compose_script_per_chapter(stitched, seq, route, client=_SpyClient())
+
+    assert seen, "the composer must have been called at least once"
+    assert all(s == () for s in seen), (
+        f"an empty-claim slot was handed to the composer: requested slots {seen}. "
+        "It must be dropped fail-closed, as build_compose_request already does."
+    )
+
+
+def test_per_chapter_still_composes_slots_that_do_have_claims() -> None:
+    """The fix must drop ONLY empty slots — a claim-bearing slot still reflects."""
+    seq, route, stitched = _five_stop_setup()
+    composed = compose_script_per_chapter(stitched, seq, route, client=MockComposeClient())
+    reflections = [s for s in composed.script if s.source_id == GLUE_REFLECTION]
+    assert len(reflections) >= 1, "claim-bearing slots must still produce reflections"
+    assert any(CLAIM_A in r.text for r in reflections)

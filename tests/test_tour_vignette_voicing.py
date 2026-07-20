@@ -28,7 +28,7 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
-from src.tour.generation import GLUE_NAV, generate
+from src.tour.generation import GLUE_NAV, SPOKEN_WPM, generate
 from src.tour.glue_client import MockGlueClient
 from src.tour.reflection import reflection_slots
 from src.tour.render_md import stop_narration_text
@@ -170,12 +170,27 @@ def test_empty_vignette_beats_is_todays_script():
     assert all(s.source_id != "vb-fountain" for s in plain.script)
 
 
-def test_vignette_line_counts_flat_glue_estimate_in_total_audio():
-    """The one-liner voices ONE sentence — audio grows by the flat 4s glue
-    estimate, never the beat's whole est_spoken_seconds (100 here)."""
+def test_vignette_line_counts_only_the_sentence_it_actually_voices():
+    """THE GUARANTEE (unchanged across the 2026-07-19 audio-clock rewrite): a
+    walk-past vignette voices ONE sentence, so the tour's audio may grow only by
+    that sentence — never by the vignette beat's whole duration (100 s here).
+    Counting the whole beat would inflate every tour that passes a landmark.
+
+    The arithmetic changed: audio is now the voiced words at SPOKEN_WPM rather
+    than a flat 4 s per non-beat sentence, so the one-liner is credited its real
+    length. The upper bound — well under the whole beat — is what matters and is
+    asserted directly.
+    """
     plain = _generate(_seq())
     with_v = _generate(_seq({1: (_vignette_beat(),)}))
-    assert with_v.total_audio_seconds == plain.total_audio_seconds + 4
+    added = with_v.total_audio_seconds - plain.total_audio_seconds
+
+    voiced = [s for s in with_v.script if s.source_id == "vb-fountain"]
+    assert len(voiced) == 1, "a vignette must voice exactly one sentence"
+    assert added == round(len(voiced[0].text.split()) / SPOKEN_WPM * 60)
+    assert 0 < added < 100, (
+        f"vignette added {added}s; must be its one line, never the whole 100s beat"
+    )
 
 
 # ---------------------------------------------------------------------------

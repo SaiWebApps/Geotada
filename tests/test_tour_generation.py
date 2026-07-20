@@ -29,7 +29,9 @@ from src.tour.generation import (
     GLUE_LABELS,
     GLUE_NAV,
     GLUE_PACING,
+    GLUE_REFLECTION,
     SENSORY_INVITATION,
+    SPOKEN_WPM,
     SYNTHESIZED_OPENER,
     _area_article,
     _nav_walk_minutes,
@@ -1542,12 +1544,18 @@ def test_generate_nav_glue_names_destinations_not_flat_walk_to_next_stop():
     assert any("Place" in t for t in nav)  # destinations are named
 
 
-def test_sum_audio_scales_by_surviving_word_fraction():
-    """#8: a claim-dedup-trimmed beat reports only its SURVIVING share of audio,
-    not the whole beat — an honest tour-minutes total. Sentences here are
-    equal-length, so word-coverage and sentence-fraction agree."""
+def test_sum_audio_drops_when_dedup_suppresses_sentences():
+    """#8's GUARANTEE, preserved across the 2026-07-19 audio-clock rewrite: a
+    claim-dedup-trimmed beat reports only its SURVIVING audio, never the whole
+    beat — so tour minutes stay honest when content is suppressed.
+
+    The arithmetic changed (words / SPOKEN_WPM, not a scaled corpus estimate) but
+    the property is identical, and now falls out directly: suppressed sentences
+    contribute no words, so they contribute no seconds. The old fixture pinned
+    est_spoken_seconds=90 on a 9-word body — 6 words per minute, physically
+    impossible; the live corpus implies 150 wpm tightly (p10 147, p90 153).
+    """
     beat = _beat("b1", "p", body="First fact here. Second fact here. Third fact here.")
-    beat = beat.model_copy(update={"est_spoken_seconds": 90})
     seq = BeatSequence(
         poi_beats=(POIBeats(poi_id="p", poi_name="P", ordering_strategy="narrative_function",
                             beats=(beat,)),)
@@ -1557,22 +1565,28 @@ def test_sum_audio_scales_by_surviving_word_fraction():
         return Sentence(text=text, source_id="b1", source_type="beat", stop_idx=0)
 
     all_three = [_s("First fact here."), _s("Second fact here."), _s("Third fact here.")]
-    assert _sum_audio(all_three, seq) == 90  # nothing dropped -> full beat audio
-
-    # dedup dropped the middle sentence: 6 of 9 words survive -> 2/3 of the audio.
     two = [_s("First fact here."), _s("Third fact here.")]
-    assert _sum_audio(two, seq) == round(90 * 2 / 3)  # 60, not 90
+
+    full = _sum_audio(all_three, seq)
+    trimmed = _sum_audio(two, seq)
+
+    # 9 words at SPOKEN_WPM; 6 words survive the dedup -> two thirds of the audio.
+    assert full == round(9 / SPOKEN_WPM * 60)
+    assert trimmed == round(6 / SPOKEN_WPM * 60)
+    assert trimmed < full, "suppressed content must reduce reported audio"
 
 
 def test_sum_audio_gives_full_credit_when_compose_merges_sentences():
-    """#8 (compose refinement): when the composer legitimately MERGES a beat's
-    sentences into a smaller sentence count while voicing every word, the beat
-    keeps FULL audio credit — the old surviving_sentences/total_sentences model
-    under-reported it (2 emitted / 3 original -> only 2/3 credit) even though no
-    content was dropped. Word coverage lands at ratio 1.0."""
+    """#8 (compose refinement)'s GUARANTEE, preserved across the 2026-07-19 rewrite:
+    a composer that MERGES a beat's sentences while voicing every word keeps FULL
+    audio credit. Re-merging text must never look like losing content.
+
+    Under the words/SPOKEN_WPM clock this is exact rather than approximate: the
+    seconds depend only on the words voiced, so any regrouping of the same words
+    scores identically by construction.
+    """
     body = "First fact here. Second fact here. Third fact here."  # 3 sentences, 9 words
     beat = _beat("b1", "p", body=body)
-    beat = beat.model_copy(update={"est_spoken_seconds": 90})
     seq = BeatSequence(
         poi_beats=(POIBeats(poi_id="p", poi_name="P", ordering_strategy="narrative_function",
                             beats=(beat,)),)
@@ -1581,13 +1595,43 @@ def test_sum_audio_gives_full_credit_when_compose_merges_sentences():
     def _s(text: str) -> Sentence:
         return Sentence(text=text, source_id="b1", source_type="beat", stop_idx=0)
 
-    # Composer merged 3 source sentences into 2, preserving all 9 words. The old
-    # sentence-fraction model would score this 2/3 -> 60s; word coverage keeps
-    # the full 90s because every word is still voiced.
+    unmerged = [_s("First fact here."), _s("Second fact here."), _s("Third fact here.")]
     merged = [_s("First fact here, second fact here."), _s("Third fact here.")]
+
     assert sum(len(m.text.split()) for m in merged) == 9  # words preserved
     assert len(merged) == 2  # fewer sentences than the 3-sentence body
-    assert _sum_audio(merged, seq) == 90
+    assert _sum_audio(merged, seq) == _sum_audio(unmerged, seq), (
+        "a faithful merge must not change the audio clock"
+    )
+    assert _sum_audio(merged, seq) == round(9 / SPOKEN_WPM * 60)
+
+
+def test_sum_audio_credits_glue_by_its_real_length_not_a_flat_estimate():
+    """THE FOUNDING DEFECT of the 2026-07-19 audio-clock rewrite.
+
+    The old model credited EVERY non-beat sentence a flat 4 seconds regardless of
+    length (``total += glue_count * 4``). A 60-word reflection takes ~24 s to speak
+    and was counted as 4 s. That made walk-leg content invisible to the tour's own
+    audio clock: the engine would narrate a leg, refuse to count it, conclude it
+    was short on audio, and respond by seating ANOTHER STOP — producing more
+    walking, hence more silence, which it also would not fill.
+
+    UNDO TEST: restore the flat ``glue_count * 4`` and this goes RED, because a
+    long reflection and a short nav line would score identically.
+    """
+    seq = BeatSequence(poi_beats=())
+
+    def _glue(text: str) -> Sentence:
+        return Sentence(text=text, source_id=GLUE_REFLECTION, source_type="glue", stop_idx=1)
+
+    short = [_glue("Head north.")]  # 2 words
+    long_reflection = [_glue(" ".join(f"word{i}" for i in range(60)))]  # 60 words
+
+    assert _sum_audio(short, seq) == round(2 / SPOKEN_WPM * 60)
+    assert _sum_audio(long_reflection, seq) == round(60 / SPOKEN_WPM * 60)
+    assert _sum_audio(long_reflection, seq) > _sum_audio(short, seq) * 10, (
+        "a 60-word reflection must not be credited the same as a 2-word nav line"
+    )
 
 
 def test_sensory_invitation_is_not_said_twice_at_the_first_stop():

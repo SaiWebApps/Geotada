@@ -50,7 +50,50 @@ from .contract import (
     ValidationReport,
 )
 from .glue_client import NO_GLUE_SENTINEL, GlueClient, MockGlueClient
-from .routing import beat_spoken_seconds, compute_dwell_seconds, planned_audio_seconds
+from .routing import compute_dwell_seconds, planned_audio_seconds
+
+# ---------------------------------------------------------------------------
+# The audio clock
+# ---------------------------------------------------------------------------
+
+#: Glue labels spoken WHILE WALKING rather than standing at a stop. GLUE_NAV is a
+#: leg's navigation line; GLUE_REFLECTION is placed by ``reflection.py`` on a long
+#: WALKING leg by definition. Vignette one-liners are also walk-concurrent but are
+#: beat-sourced, so they are identified by id — see ``is_walk_concurrent``.
+#:
+#: ONE definition, shared by every consumer, so they cannot drift: the quality
+#: rubric's C7/C7b time model and the workbench preview's leg cards must agree on
+#: what "spoken while walking" means, or the editor sees content in a card that the
+#: rubric scored as stationary.
+CONCURRENT_GLUE_LABELS: frozenset[str] = frozenset({"GLUE_NAV", "GLUE_REFLECTION"})
+
+
+def is_walk_concurrent(
+    sentence, vignette_beat_ids: frozenset[str] | set[str] = frozenset()
+) -> bool:
+    """Is this sentence spoken WHILE THE TOURIST WALKS, rather than at a stop?
+
+    Per the 2026-07-19 product ruling ("Audio overlaps the walking. It is a part of
+    the tour experience."), walk-concurrent narration costs no elapsed time — it
+    rides a leg the tourist is walking anyway. Everything else is spoken standing
+    still at a stop and does consume the tour's minutes.
+
+    ``vignette_beat_ids`` identifies walk-past one-liners, which are beat-sourced
+    rather than glue. Omitting it is the CONSERVATIVE direction: those sentences
+    then count as stationary, which can only make a time-budget check stricter.
+    """
+    if sentence.source_id in CONCURRENT_GLUE_LABELS:
+        return True
+    return sentence.source_id in vignette_beat_ids
+
+
+#: Words per minute of narrated speech — the ONE rate the tour's audio clock uses.
+#: NOT a new constant: ``routing.beat_spoken_seconds`` already falls back to
+#: ``word_count / 150 * 60`` and density's ``word_count / 2.5`` is the same figure.
+#: The live Paris corpus's populated ``est_spoken_seconds`` implies it tightly
+#: (486 beats: p10 147, median 150, p90 153). The standard's cited external range
+#: is 130-150 wpm (Nubart, Musa Guide) — 150 is the end this corpus was built at.
+SPOKEN_WPM: int = 150
 
 # ---------------------------------------------------------------------------
 # Whitelisted glue labels — §3.5 of phase-1-design
@@ -1159,54 +1202,51 @@ def _word_count(text: str) -> int:
 
 
 def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> int:
-    """Sum est_spoken_seconds across cited beats, scaled by the fraction of each
-    beat's WORDS that actually survived to be voiced, plus a flat 4 seconds per
-    glue sentence (≈10 spoken words).
+    """Spoken seconds of the tour: the WORDS ACTUALLY VOICED, at ``SPOKEN_WPM``.
 
-    Track B (B.4): a vignette voices only the FIRST sentence of its beat, so
-    counting the whole beat's est_spoken_seconds would overcount — each vignette
-    one-liner gets the same flat per-sentence estimate as glue.
+    REWRITTEN 2026-07-19 because the previous model could not measure the thing it
+    was named for, and an entire day of tuning was spent optimising it before that
+    was noticed. It had two defects, either one disqualifying:
 
-    #8: the #22 claim-dedup drops a beat's repeated sentences while keeping the
-    beat, so counting the whole beat's audio over-reports the tour's minutes.
-    Scale each cited beat by its voiced share so a trimmed beat reports honestly
-    less. #8 (compose refinement): the COMPOSE step may legitimately MERGE a
-    beat's sentences into a different (usually smaller) sentence count while
-    voicing every word, so scaling by ``surviving_sentences / total_sentences``
-    under-reported a faithful merge. Scale by WORD coverage instead — the sum of
-    the composed/emitted beat-sentence word counts vs. the beat's own word count,
-    capped at 1.0. A faithful merge preserves words → ratio ≈ 1.0 → full credit;
-    only genuinely suppressed content (dedup) drops words and reports less.
+    1. **A flat 4 s per glue sentence**, regardless of length. Every reflection,
+       every navigation line, every vignette one-liner counted as 4 s. A 60-word
+       reflection takes ~24 s to speak and was credited 4 s. That made leg content
+       invisible to the tour's own audio clock: the engine would write narration
+       for a walking leg, refuse to count it, conclude it was short on audio, and
+       respond by seating ANOTHER STOP — creating more walking, hence more silence.
+
+    2. **A hard cap at the CORPUS estimate** — ``beat_secs * min(1.0, voiced/body)``.
+       The ratio is capped at 1.0, so richer composed prose could never raise the
+       number; only dedup could lower it. "How much audio does this tour deliver?"
+       was therefore answerable only downward. Measured by an adversarial review:
+       1 862 composed words (~745 s of speech) were credited as 696 s.
+
+    Together these meant ``total_audio_seconds`` measured SEATING VOLUME, not audio.
+    Every figure derived from it — the 0.8 C3 floor comparisons, the fill pass's
+    sense of a deficit — was reading an instrument pointed at the wrong quantity.
+
+    THE NEW MODEL. Sum the words of every voiced sentence and divide by one
+    documented rate. That is all. It needs no per-source special cases: a vignette
+    voices one sentence and is credited that sentence's words; a merged beat is
+    credited exactly the words the merge kept; a composed stop that genuinely says
+    more is credited more. The dedup honesty the old ratio was reaching for falls
+    out for free, because suppressed sentences contribute no words.
+
+    ``SPOKEN_WPM`` is 150 — NOT a new judgement call. It is already this engine's
+    rate: ``routing.beat_spoken_seconds`` falls back to ``word_count / 150 * 60``,
+    density's ``word_count / 2.5`` is the same figure, and the live Paris corpus's
+    own populated ``est_spoken_seconds`` implies it tightly (486 beats: p10 147,
+    median 150, p90 153). The standard's cited external range is 130-150 wpm
+    (Nubart, Musa Guide); 150 is the fast end of it and the end this corpus was
+    built at, so keeping it preserves continuity with every existing estimate.
+
+    ``beat_sequence`` is retained in the signature: callers pass it, and the
+    per-beat identity it carries is still what the CALLERS use for their own
+    accounting. This function no longer needs it, which is itself the point — the
+    audio clock is now a property of the SCRIPT, not of the seating plan.
     """
-    vignette_ids = {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
-    voiced_words_by_beat: Counter[str] = Counter()
-    glue_count = 0
-    for s in sentences:
-        if s.source_type == "beat" and s.source_id not in vignette_ids:
-            voiced_words_by_beat[s.source_id] += _word_count(s.text)
-        else:
-            glue_count += 1
-    by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
-    total = 0
-    for beat_id, voiced_words in voiced_words_by_beat.items():
-        beat = by_id.get(beat_id)
-        if beat is None:
-            continue
-        beat_secs = beat_spoken_seconds(beat)
-        # Denominator: the words the beat itself carries in its script_body,
-        # summed the SAME way emitted beat-sentences are counted (via
-        # split_sentences). This keeps the common un-deduped, un-merged case at
-        # exactly ratio 1.0 (voiced_words == body_words) — identical credit to
-        # the old sentence-fraction model — while a merge that preserves words
-        # still lands at ~1.0 and only real dedup suppression drops below it.
-        # No countable body words → count the whole estimate.
-        body_words = sum(_word_count(sent) for sent in split_sentences(beat.script_body or ""))
-        if body_words <= 0:
-            total += beat_secs
-        else:
-            total += round(beat_secs * min(1.0, voiced_words / body_words))
-    total += glue_count * 4
-    return total
+    voiced_words = sum(_word_count(s.text) for s in sentences)
+    return round(voiced_words / SPOKEN_WPM * 60)
 
 
 __all__ = [
