@@ -99,9 +99,9 @@ class HaikuGlueClient:
 
     def __post_init__(self) -> None:
         # Defer importing anthropic so unit tests don't require the SDK.
-        import anthropic
+        from src.tour.anthropic_client import judge_client
 
-        self._client = anthropic.Anthropic()
+        self._client = judge_client()
         self._prompt = load_glue_prompt()
 
     def stitch(self, category: str, context: str, request: str) -> str:

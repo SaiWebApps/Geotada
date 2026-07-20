@@ -775,9 +775,9 @@ class LLMDrafter:
 
     def __init__(self, model: str, *, client: object = None, max_tokens: int = 4000) -> None:
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import compose_client
 
-            client = anthropic.Anthropic()
+            client = compose_client()
         self._client = client
         self.model = model
         self.max_tokens = max_tokens

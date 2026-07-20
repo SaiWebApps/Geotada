@@ -112,9 +112,9 @@ class HaikuFaithfulnessChecker:
     _client: object = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
-        import anthropic
+        from src.tour.anthropic_client import judge_client
 
-        self._client = anthropic.Anthropic()
+        self._client = judge_client()
 
     def entails(self, key_claims: tuple[str, ...], sentence_text: str) -> bool:
         self.calls += 1

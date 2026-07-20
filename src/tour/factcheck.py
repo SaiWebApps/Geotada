@@ -101,9 +101,9 @@ class HaikuClaimDecomposer:
 
     def __init__(self, model: str = FAITHFULNESS_MODEL, *, client: object = None) -> None:
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import judge_client
 
-            client = anthropic.Anthropic()
+            client = judge_client()
         self._client = client
         self.model = model
         self.calls = 0
@@ -197,9 +197,9 @@ class HaikuCoverageJudge:
 
     def __init__(self, model: str = FAITHFULNESS_MODEL, *, client: object = None) -> None:
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import judge_client
 
-            client = anthropic.Anthropic()
+            client = judge_client()
         self._client = client
         self.model = model
         self.calls = 0
@@ -293,9 +293,9 @@ class HaikuFaithfulnessJudge:
 
     def __init__(self, model: str = FAITHFULNESS_MODEL, *, client: object = None) -> None:
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import judge_client
 
-            client = anthropic.Anthropic()
+            client = judge_client()
         self._client = client
         self.model = model
         self.calls = 0

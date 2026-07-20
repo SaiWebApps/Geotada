@@ -167,7 +167,14 @@ def _extract_json_object(text: str) -> str | None:
 
 
 def _structure_feedback(transcript: str) -> dict:
-    client = anthropic.Anthropic()
+    # BOUNDED, like every tour-engine client (src/tour/anthropic_client.py). A bare
+    # anthropic.Anthropic() inherits the SDK's 600 s timeout x 2 retries — up to 30
+    # minutes on ONE stalled call — and this runs inside a live request-blocking
+    # route, so a stall holds a user's feedback submission open that whole time.
+    # A Haiku call with max_tokens=500 that has not answered in 45 s is not going to.
+    from src.tour.anthropic_client import judge_client
+
+    client = judge_client()
     try:
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",

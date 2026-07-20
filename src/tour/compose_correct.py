@@ -207,9 +207,9 @@ class AnthropicCorrectionClient:
         self.input_tokens = 0
         self.output_tokens = 0
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import compose_client
 
-            client = anthropic.Anthropic()
+            client = compose_client()
         self._client = client
 
     def _render(self, request: CorrectionRequest) -> str:

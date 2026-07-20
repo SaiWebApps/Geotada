@@ -267,9 +267,14 @@ class AnthropicBeatDrafter:
 
     def _get_client(self) -> Any:
         if self._client is None:
-            import anthropic  # imported lazily — never at draft_all's confirm gate
+            # Bounded, like every tour-engine client (src/tour/anthropic_client.py):
+            # a bare anthropic.Anthropic() inherits the SDK's 600 s x 2-retry default,
+            # i.e. up to 30 minutes on one stalled call. Onboarding drafts beats in
+            # bulk, so an unbounded stall silently parks a whole city's run.
+            # Imported lazily — never at draft_all's confirm gate.
+            from src.tour.anthropic_client import compose_client
 
-            self._client = anthropic.Anthropic()
+            self._client = compose_client()
         return self._client
 
     def draft(self, poi_name: str, extract: WikiExtract, city_slug: str) -> list[dict]:
