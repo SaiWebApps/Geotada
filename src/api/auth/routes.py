@@ -6,6 +6,7 @@ import os
 import time
 import uuid
 from collections import deque
+from datetime import UTC, datetime
 from threading import Lock
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -59,6 +60,75 @@ SET u.apple_sub = coalesce(u.apple_sub, $apple_sub)
 """
 
 
+# --- Refresh-token store: rotation + revocation ------------------------------
+# A refresh token is valid for REFRESH_TOKEN_EXPIRE_DAYS (14). Minting one and
+# never recording it means a LEAKED token silently mints fresh access tokens for
+# the whole window, with no denylist, no reuse detection and no logout — the only
+# remedy would be rotating JWT_SECRET_KEY for every user at once. So persist the
+# jti and rotate on every use: presenting an already-consumed jti is the signature
+# of a stolen token being replayed, and the standard response is to revoke the
+# entire token family (both the thief's copy and the victim's).
+#
+# The MERGE key is the jti, a uuid4 minted per token — globally unique, so the
+# key is safe across users and cities.
+_MERGE_REFRESH_TOKEN = """
+MATCH (u:User {id: $user_id})
+MERGE (t:RefreshToken {jti: $jti})
+ON CREATE SET t.sid = $sid,
+              t.family = $family,
+              t.user_id = $user_id,
+              t.issued_at = datetime(),
+              t.expires_at = datetime($expires_at),
+              t.used = false,
+              t.revoked = false
+MERGE (u)-[r:HAS_REFRESH_TOKEN]->(t)
+ON CREATE SET r.id = randomUUID(), r.created_at = datetime()
+"""
+
+_LOOKUP_REFRESH_TOKEN = """
+MATCH (t:RefreshToken {jti: $jti})
+RETURN t.used AS used, t.revoked AS revoked, t.family AS family, t.user_id AS user_id
+"""
+
+_MARK_REFRESH_TOKEN_USED = "MATCH (t:RefreshToken {jti: $jti}) SET t.used = true"
+
+_REVOKE_REFRESH_FAMILY = "MATCH (t:RefreshToken {family: $family}) SET t.revoked = true"
+
+_REVOKE_ALL_FOR_USER = "MATCH (t:RefreshToken {user_id: $user_id}) SET t.revoked = true"
+
+# Expired rows can never authenticate anything, so drop them opportunistically —
+# otherwise the store grows by one node per login for the life of the deployment.
+_DELETE_EXPIRED_REFRESH_TOKENS = """
+MATCH (t:RefreshToken) WHERE t.expires_at < datetime() DETACH DELETE t
+"""
+_REFRESH_CLEANUP_INTERVAL_S = int(os.getenv("REFRESH_TOKEN_CLEANUP_INTERVAL_S", "3600"))
+_last_refresh_cleanup = 0.0
+
+
+def _issue_refresh_token(session: Session, user_id: str, session_id: str, token_family: str) -> str:
+    """Mint a refresh token AND record it, so it can later be rotated/revoked."""
+    global _last_refresh_cleanup
+
+    token = create_refresh_token(user_id, session_id, token_family)
+    payload = verify_token(token, "refresh")
+    expires_at = datetime.fromtimestamp(payload["exp"], UTC).isoformat()
+    session.run(
+        _MERGE_REFRESH_TOKEN,
+        jti=payload["jti"],
+        sid=session_id,
+        family=token_family,
+        user_id=user_id,
+        expires_at=expires_at,
+    )
+
+    now = time.monotonic()
+    if now - _last_refresh_cleanup >= _REFRESH_CLEANUP_INTERVAL_S:
+        _last_refresh_cleanup = now
+        session.run(_DELETE_EXPIRED_REFRESH_TOKENS)
+
+    return token
+
+
 # --- Abuse guard: magic-link request ----------------------------------------
 # /auth/magic-link/request is unauthenticated and each call sends a real email
 # via Resend (billed, and lands in a victim's inbox). Left unguarded, an
@@ -69,61 +139,131 @@ SET u.apple_sub = coalesce(u.apple_sub, $apple_sub)
 # deploy would need a shared store (e.g. Redis) for a hard guarantee.
 _MAGIC_LINK_RATE_LIMIT_MAX = int(os.getenv("MAGIC_LINK_RATE_LIMIT_MAX", "5"))
 _MAGIC_LINK_RATE_LIMIT_WINDOW_S = int(os.getenv("MAGIC_LINK_RATE_LIMIT_WINDOW_S", "60"))
+# Number of trusted reverse-proxy hops in front of the app. On Render there is
+# exactly one edge proxy, so the real client IP is the entry
+# ``_TRUSTED_PROXY_HOPS`` from the RIGHT end of X-Forwarded-For.
+_TRUSTED_PROXY_HOPS = int(os.getenv("AUTH_TRUSTED_PROXY_HOPS", "1"))
+# Optional global fixed-window cap (defense-in-depth). Per-IP limits are
+# inherently bypassable at scale by genuine IP rotation, so also bound the TOTAL
+# accepted magic-link sends per window across all clients. Set <=0 to disable.
+_MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX", "60"))
 _magic_link_rate_state: dict[str, deque[float]] = {}
+_magic_link_global_hits: deque[float] = deque()
 _magic_link_rate_lock = Lock()
+_magic_link_last_sweep = 0.0
 
 
 def _client_ip(request: Request) -> str:
     """Resolve the real client IP for rate-limiting.
 
-    On Render (and any reverse proxy) uvicorn is not started with
-    --forwarded-allow-ips, so ``request.client.host`` is the proxy peer — the
-    SAME address for every external caller. That collapses all clients into a
-    single ``ip:`` bucket, so once any few callers trip the window a legitimate
-    first-time user is locked out of passwordless login (a login-availability
-    DoS) even though their own per-email bucket is empty. Derive the originating
-    client from the leftmost entry of ``X-Forwarded-For`` (the edge appends the
-    real client IP there), falling back to the socket peer when the header is
-    absent (direct connection / local dev). Mirrors
-    src/api/routes/feedback.py::_client_ip."""
+    ``X-Forwarded-For`` is client-controllable: a caller can prepend arbitrary
+    fake entries on the LEFT, so the leftmost hop can NOT be trusted as the
+    identity — trusting it lets an attacker land every request in a fresh
+    ``ip:`` bucket (a new spoofed IP each time), so the per-IP cap never fires
+    and one host can email-bomb unlimited addresses through Resend.
+
+    Instead we trust only our own edge. With ``_TRUSTED_PROXY_HOPS`` proxies in
+    front of the app (1 on Render), the real client is the entry the innermost
+    trusted proxy observed and appended — i.e. counting ``_TRUSTED_PROXY_HOPS``
+    from the RIGHT of the header. Anything to the left of that is
+    attacker-supplied and ignored. Fall back to the socket peer when the header
+    is absent (direct connection / local dev).
+
+    Behind a proxy ``request.client.host`` is the proxy peer — the SAME address
+    for every external caller — so keying on it alone would collapse all
+    clients into one bucket and lock legitimate first-time users out of
+    passwordless login."""
     forwarded = request.headers.get("x-forwarded-for")
     if forwarded:
-        # Leftmost hop is the original client; strip whitespace and ignore
-        # empty segments from a malformed header.
-        for part in forwarded.split(","):
-            candidate = part.strip()
-            if candidate:
-                return candidate
+        parts = [p.strip() for p in forwarded.split(",") if p.strip()]
+        if parts:
+            idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)
+            return parts[idx]
     if request.client:
         return request.client.host
     return "unknown"
 
 
-def _magic_link_rate_limit(request: Request, email: str) -> None:
-    """Per-IP and per-email fixed-window guard. Raises HTTPException(429) when
-    either the caller IP or the target email has exceeded
-    _MAGIC_LINK_RATE_LIMIT_MAX requests within the trailing window."""
-    if _MAGIC_LINK_RATE_LIMIT_MAX <= 0:
+def _sweep_magic_link_state_locked(now: float, cutoff: float) -> None:
+    """Drop every key whose window is empty. Caller must hold the lock.
+
+    The per-request reclaim below only ever revisits the two keys of the current
+    request, so a key left holding a stale-but-non-empty deque (its client never
+    came back) would be retained forever. Sweep the whole table once per window
+    — O(keys) at most once every ``_MAGIC_LINK_RATE_LIMIT_WINDOW_S``."""
+    global _magic_link_last_sweep
+    if now - _magic_link_last_sweep < _MAGIC_LINK_RATE_LIMIT_WINDOW_S:
         return
-    client_ip = _client_ip(request)
-    keys = (f"ip:{client_ip}", f"email:{email.lower()}")
+    _magic_link_last_sweep = now
+    for key in list(_magic_link_rate_state):
+        hits = _magic_link_rate_state[key]
+        while hits and hits[0] <= cutoff:
+            hits.popleft()
+        if not hits:
+            del _magic_link_rate_state[key]
+
+
+def _magic_link_rate_limit(request: Request, email: str) -> None:
+    """Global, per-IP and per-email fixed-window guard. Raises HTTPException(429)
+    when the global cap, the caller IP, or the target email has exceeded its
+    allowance within the trailing window.
+
+    The limiter's own state is attacker-reachable (keys derive from a header and
+    a request body), so every exit path — including the 429 raise — reclaims any
+    key left with an empty window. Without that, each rejected request would leak
+    a permanent dict entry and an unauthenticated caller could grow the worker's
+    RSS until the container is OOM-killed."""
     now = time.monotonic()
     cutoff = now - _MAGIC_LINK_RATE_LIMIT_WINDOW_S
+    client_ip = _client_ip(request)
+    keys = (f"ip:{client_ip}", f"email:{email.lower()}")
     with _magic_link_rate_lock:
-        # Prune both keys first so we never mint a token when either is over cap.
-        for key in keys:
-            hits = _magic_link_rate_state.setdefault(key, deque())
-            while hits and hits[0] <= cutoff:
-                hits.popleft()
-            if len(hits) >= _MAGIC_LINK_RATE_LIMIT_MAX:
-                retry_after = max(1, int(hits[0] + _MAGIC_LINK_RATE_LIMIT_WINDOW_S - now))
+        _sweep_magic_link_state_locked(now, cutoff)
+
+        # Global cap FIRST, before any setdefault: once it trips, a flood cannot
+        # mint further keys at all, which bounds the state under IP rotation.
+        if _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX > 0:
+            while _magic_link_global_hits and _magic_link_global_hits[0] <= cutoff:
+                _magic_link_global_hits.popleft()
+            if len(_magic_link_global_hits) >= _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX:
+                retry_after = max(
+                    1,
+                    int(_magic_link_global_hits[0] + _MAGIC_LINK_RATE_LIMIT_WINDOW_S - now),
+                )
                 raise HTTPException(
                     status_code=429,
-                    detail="Too many magic link requests, please retry later",
+                    detail="Magic link requests are temporarily rate limited, please retry later",
                     headers={"Retry-After": str(retry_after)},
                 )
-        for key in keys:
-            _magic_link_rate_state[key].append(now)
+
+        if _MAGIC_LINK_RATE_LIMIT_MAX <= 0:
+            if _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX > 0:
+                _magic_link_global_hits.append(now)
+            return
+
+        try:
+            # Prune both keys first so we never mint a token when either is over cap.
+            for key in keys:
+                hits = _magic_link_rate_state.setdefault(key, deque())
+                while hits and hits[0] <= cutoff:
+                    hits.popleft()
+                if len(hits) >= _MAGIC_LINK_RATE_LIMIT_MAX:
+                    retry_after = max(1, int(hits[0] + _MAGIC_LINK_RATE_LIMIT_WINDOW_S - now))
+                    raise HTTPException(
+                        status_code=429,
+                        detail="Too many magic link requests, please retry later",
+                        headers={"Retry-After": str(retry_after)},
+                    )
+            for key in keys:
+                _magic_link_rate_state[key].append(now)
+            if _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX > 0:
+                _magic_link_global_hits.append(now)
+        finally:
+            # Reclaim keys this request created but never filled (the 429 path
+            # leaves the not-yet-checked key with an empty deque).
+            for key in keys:
+                if not _magic_link_rate_state.get(key):
+                    _magic_link_rate_state.pop(key, None)
 
 
 @router.get("/me", response_model=UserResponse)
@@ -172,7 +312,7 @@ def magic_link_verify(
 
     return TokenResponse(
         access_token=create_access_token(user_id, email),
-        refresh_token=create_refresh_token(user_id, session_id, token_family),
+        refresh_token=_issue_refresh_token(session, user_id, session_id, token_family),
     )
 
 
@@ -190,6 +330,35 @@ def refresh(
         ) from exc
 
     user_id = payload["sub"]
+    jti = payload.get("jti")
+    family = payload.get("family")
+    session_id = payload.get("sid") or str(uuid.uuid4())
+
+    # A refresh token that carries no jti/family predates the rotation store and
+    # cannot be tracked or revoked — refuse it rather than honour it blindly.
+    if not jti or not family:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token is not rotatable, please sign in again",
+        )
+
+    record = session.run(_LOOKUP_REFRESH_TOKEN, jti=jti).single()
+    if record is None or record["revoked"]:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token is no longer valid",
+        )
+
+    if record["used"]:
+        # Replay of an already-consumed token: either the legitimate client or a
+        # thief holds a copy. We cannot tell which, so revoke the whole family —
+        # the standard reuse-detection response — and force a fresh sign-in.
+        session.run(_REVOKE_REFRESH_FAMILY, family=family)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token reuse detected, session revoked",
+        )
+
     result = session.run("MATCH (u:User {id: $uid}) RETURN u.email AS email", uid=user_id).single()
 
     if not result:
@@ -198,10 +367,45 @@ def refresh(
             detail="User not found",
         )
 
+    session.run(_MARK_REFRESH_TOKEN_USED, jti=jti)
+
     return TokenResponse(
         access_token=create_access_token(user_id, result["email"]),
-        refresh_token=body.refresh_token,
+        # Rotate: same sid + family, fresh jti. Returning the submitted token
+        # would leave a single long-lived secret in flight for 14 days.
+        refresh_token=_issue_refresh_token(session, user_id, session_id, family),
     )
+
+
+@router.post("/logout", status_code=200)
+def logout(
+    body: RefreshRequest,
+    session: Session = Depends(get_session),
+):
+    """Revoke the presented refresh token's family (sign out this device).
+
+    Idempotent and never 401s: a client clearing its local tokens must be able to
+    fire-and-forget this call even when the token it holds is already expired or
+    unknown."""
+    try:
+        payload = verify_token(body.refresh_token, "refresh")
+    except TokenError:
+        return {"message": "Logged out"}
+
+    family = payload.get("family")
+    if family:
+        session.run(_REVOKE_REFRESH_FAMILY, family=family)
+    return {"message": "Logged out"}
+
+
+@router.post("/logout-all", status_code=200)
+def logout_all(
+    current_user: dict = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    """Revoke every refresh token for the authenticated user (stolen-device case)."""
+    session.run(_REVOKE_ALL_FOR_USER, user_id=current_user["id"])
+    return {"message": "All sessions revoked"}
 
 
 @router.post("/google", response_model=TokenResponse)
@@ -238,7 +442,7 @@ def google_auth(
 
     return TokenResponse(
         access_token=create_access_token(user_id, email),
-        refresh_token=create_refresh_token(user_id, session_id, token_family),
+        refresh_token=_issue_refresh_token(session, user_id, session_id, token_family),
     )
 
 
@@ -276,7 +480,7 @@ def apple_auth(
 
     return TokenResponse(
         access_token=create_access_token(user_id, email),
-        refresh_token=create_refresh_token(user_id, session_id, token_family),
+        refresh_token=_issue_refresh_token(session, user_id, session_id, token_family),
     )
 
 

@@ -1,5 +1,9 @@
 # What Makes a Good Ondoway Tour
 
+**Companion document:** `specs/2026-07-19-tour-quality-standard/01-standard.md` —
+the mechanical FLOOR/GATE checks (C1-C12 / G1-G8) and the gold-text example this
+rubric's checklist is validated against.
+
 ## Definition
 
 A good Ondoway stop is a short story told to one walker through earphones at the moment they arrive, not an encyclopedia entry read aloud. It opens on something happening or a question worth answering, aims the walker's eye at a thing they can actually see, carries one strong idea plus one human detail, hangs its names and dates off human stakes (who wanted what, what was at risk, what changed), speaks in second person and present-tense immediacy in plain spoken sentences you can say in one breath, and ends on a fact, an image, or an open thread — never on a stated moral. The failure mode every professional source names, and the one our testers named ("like reading Wikipedia aloud"), is the monotone recital of scripted facts with no voice, no person, no look-cue: correctness without a reason to care.

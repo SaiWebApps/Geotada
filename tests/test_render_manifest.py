@@ -28,16 +28,32 @@ from src.api.app import _workbench_api_enabled
 _RENDER_YAML = Path(__file__).resolve().parents[1] / "render.yaml"
 
 
-def _ondoway_api_env() -> dict[str, str]:
-    """Return the ``ondoway-api`` web service's env-var map from render.yaml."""
+def _ondoway_api_service() -> dict:
+    """Return the ``ondoway-api`` web service block from render.yaml."""
     manifest = yaml.safe_load(_RENDER_YAML.read_text())
     services = manifest["services"]
-    api = next(s for s in services if s.get("name") == "ondoway-api")
+    return next(s for s in services if s.get("name") == "ondoway-api")
+
+
+def _ondoway_api_env() -> dict[str, str]:
+    """Return the ``ondoway-api`` web service's env-var map from render.yaml."""
+    api = _ondoway_api_service()
     return {
         var["key"]: var.get("value")
         for var in api.get("envVars", [])
         if "value" in var
     }
+
+
+def _ondoway_api_declared_keys() -> set[str]:
+    """Every env-var key the manifest declares (pinned, generated, or sync:false).
+
+    A ``sync: false`` entry has no value in the manifest but IS declared — Render
+    requires the operator to supply it, so the service is reproducible from the
+    blueprint. A key that appears nowhere is simply absent in a fresh deploy.
+    """
+    api = _ondoway_api_service()
+    return {var["key"] for var in api.get("envVars", [])}
 
 
 def test_public_render_deploy_gates_workbench_crud_off():
@@ -65,3 +81,102 @@ def test_public_render_deploy_gates_workbench_crud_off():
             os.environ.pop("WORKBENCH_API_ENABLED", None)
         else:
             os.environ["WORKBENCH_API_ENABLED"] = prior
+
+
+# --- Defect: a pinned provider whose credential the manifest never declares ---
+#
+# render.yaml pins TTS_PROVIDER=openai but declared no OPENAI_API_KEY, so a
+# blueprint-provisioned service has no TTS credential at all: every synthesis
+# raises TTSError and surfaces as HTTP 502 "TTS generation failed (openai)"
+# (src/api/routes/audio.py:150-152). The mapping below mirrors
+# audio._provider_available (audio.py:110-116) — whatever a provider needs to
+# be *available* at runtime is exactly what the manifest must declare.
+
+_TTS_PROVIDER_CREDENTIALS = {
+    "openai": ["OPENAI_API_KEY"],
+    "elevenlabs": ["ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID"],
+    "mock": [],
+}
+
+_COMPOSE_PROVIDER_CREDENTIALS = {
+    "anthropic": ["ANTHROPIC_API_KEY"],
+    "claude": ["ANTHROPIC_API_KEY"],
+    "openai": ["OPENAI_API_KEY"],
+    "chatgpt": ["OPENAI_API_KEY"],
+}
+
+
+def test_pinned_tts_provider_credential_is_declared():
+    """Whichever TTS provider render.yaml pins must have its credential declared."""
+    provider = _ondoway_api_env().get("TTS_PROVIDER")
+    if provider is None:
+        return  # not pinned — the app's default applies, nothing to guard here
+    assert provider in _TTS_PROVIDER_CREDENTIALS, (
+        f"render.yaml pins TTS_PROVIDER={provider!r}, which this guard does not know; "
+        "add it to _TTS_PROVIDER_CREDENTIALS (mirror audio._provider_available)"
+    )
+    declared = _ondoway_api_declared_keys()
+    for key in _TTS_PROVIDER_CREDENTIALS[provider]:
+        assert key in declared, (
+            f"render.yaml pins TTS_PROVIDER={provider!r} but never declares {key} "
+            "(not even as `sync: false`), so a service provisioned from this blueprint "
+            "has no TTS credential and every /audio generate call 502s"
+        )
+
+
+def test_pinned_compose_provider_credential_is_declared():
+    """Same guard for the narration composer, so a future pin drags its key along."""
+    provider = _ondoway_api_env().get("COMPOSE_PROVIDER")
+    if provider is None:
+        return
+    assert provider in _COMPOSE_PROVIDER_CREDENTIALS, (
+        f"render.yaml pins COMPOSE_PROVIDER={provider!r}, unknown to this guard; "
+        "add it to _COMPOSE_PROVIDER_CREDENTIALS"
+    )
+    declared = _ondoway_api_declared_keys()
+    for key in _COMPOSE_PROVIDER_CREDENTIALS[provider]:
+        assert key in declared, (
+            f"render.yaml pins COMPOSE_PROVIDER={provider!r} but never declares {key}"
+        )
+
+
+# --- Defect: durable audio URLs written to ephemeral container storage ---
+#
+# AUDIO_STORAGE=local resolves to the container filesystem
+# (src/audio/storage.py:52). On `plan: free` with no `disk:` block that
+# filesystem is ephemeral, so every generated MP3 dies on restart — while
+# beat.audio_url is persisted in Aura (stamped ON CREATE only, so a redeploy
+# never clears it) and the generate routes short-circuit on the sticky URL.
+# Result: a permanent 404 from GET /api/v1/audio/files/{key}. Local storage is
+# only admissible here if the service actually mounts a persistent disk.
+
+_DURABLE_STORAGE_CREDENTIALS = {
+    "r2": ["R2_ENDPOINT_URL", "R2_PUBLIC_URL"],
+    "s3": ["AWS_S3_BUCKET"],
+}
+
+
+def test_audio_storage_is_durable():
+    """Audio must not be written to a filesystem that vanishes on restart."""
+    service = _ondoway_api_service()
+    storage = _ondoway_api_env().get("AUDIO_STORAGE", "local")
+
+    if storage == "local":
+        assert service.get("disk"), (
+            "render.yaml sets AUDIO_STORAGE=local but the ondoway-api service declares "
+            "no `disk:` block, so AUDIO_STORAGE_PATH is the ephemeral container "
+            "filesystem: every generated MP3 is destroyed on restart while audio_url "
+            "stays persisted in Aura, leaving a permanent 404. Use r2/s3, or mount a disk."
+        )
+        return
+
+    assert storage in _DURABLE_STORAGE_CREDENTIALS, (
+        f"render.yaml sets AUDIO_STORAGE={storage!r}, which get_storage() cannot build "
+        "(available: local, s3, r2)"
+    )
+    declared = _ondoway_api_declared_keys()
+    for key in _DURABLE_STORAGE_CREDENTIALS[storage]:
+        assert key in declared, (
+            f"render.yaml sets AUDIO_STORAGE={storage!r} but never declares {key}, "
+            "so the storage provider raises StorageError at startup of the first upload"
+        )

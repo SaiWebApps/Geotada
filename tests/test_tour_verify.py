@@ -273,6 +273,69 @@ def test_verbatim_corpus_sentence_skips_entailment():
     assert checker.calls == []
 
 
+def test_attribution_strip_fragment_is_not_shortcut_but_entailment_checked():
+    """REGRESSION: the verbatim shortcut must require WHOLE sentence-units, not
+    substring containment. Stripping the hedge off a qualified corpus claim
+    ("According to lore, X" -> "X") is a strict substring of script_body but
+    turns a hedged claim into an unqualified assertion — it MUST be checked."""
+    beat = _beat(
+        "b1",
+        script_body="According to lore, the architect died on the day it opened.",
+        key_claims=("lore says the architect died on opening day",),
+    )
+    checker = MockFaithfulnessChecker()
+    stripped = Sentence(
+        text="the architect died on the day it opened.",
+        source_id="b1",
+        source_type="beat",
+        stop_idx=0,
+    )
+    verify_faithfulness(_script([stripped]), {"b1": beat}, checker)
+    assert len(checker.calls) == 1, "hedge-stripped fragment must reach the entailment gate"
+
+
+def test_negation_truncation_fragment_is_entailment_checked():
+    """REGRESSION: a truncation that drops the negation ("He never named the
+    hotel after himself" -> "named the hotel after himself") inverts the claim
+    while remaining a substring — the gate must not short-circuit it."""
+    beat = _beat(
+        "b1",
+        script_body="He never named the hotel after himself.",
+        key_claims=("he did not name the hotel after himself",),
+    )
+    truncated = Sentence(
+        text="named the hotel after himself.",
+        source_id="b1",
+        source_type="beat",
+        stop_idx=0,
+    )
+    checker = MockFaithfulnessChecker()
+    verify_faithfulness(_script([truncated]), {"b1": beat}, checker)
+    assert len(checker.calls) == 1
+
+    rejecting = _RejectingChecker("named")
+    fails = verify_faithfulness(_script([truncated]), {"b1": beat}, rejecting)
+    assert fails == [(truncated, "unfaithful:b1")]
+
+
+def test_full_verbatim_sentence_still_short_circuits():
+    """The shortcut must still hold for a COMPLETE corpus sentence, and for a
+    contiguous run of complete sentences — zero failures, zero checker calls."""
+    beat = _beat(
+        "b1",
+        script_body="Henri IV built the square. It opened in 1612 to great crowds.",
+        key_claims=("Henri IV built it",),
+    )
+    for text in (
+        "It opened in 1612 to great crowds.",
+        "Henri IV built the square. It opened in 1612 to great crowds.",
+    ):
+        checker = MockFaithfulnessChecker()
+        s = Sentence(text=text, source_id="b1", source_type="beat", stop_idx=0)
+        assert verify_faithfulness(_script([s]), {"b1": beat}, checker) == []
+        assert checker.calls == []
+
+
 def test_rewritten_sentence_entails_against_claims_plus_body():
     """An LLM-rewritten beat sentence is checked against key_claims AND the
     beat's script_body — the claims alone are a summary subset."""

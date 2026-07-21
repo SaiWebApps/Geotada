@@ -6,11 +6,16 @@ import json
 import os
 import re
 import threading
+import time
+from collections import deque
+from contextlib import contextmanager
+from threading import Lock
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from neo4j import Driver, Session
 from pydantic import ValidationError
 
+from src.api.auth.dependencies import get_current_user
 from src.api.crud.trips import (
     create_trip_with_stops,
     get_trip_compose_inputs,
@@ -46,8 +51,10 @@ from src.tour.beat_select import select_vignette_beats
 # is still imported for the Depends() signature, which stays so re-enabling is one line.
 from src.tour.claim_repetition import RedundancyJudge
 from src.tour.compose import (
+    AnthropicComposeClient,
     ComposeClient,
     ComposeRequest,
+    OpenAIComposeClient,
     compose_provider_name,
     compose_script,
     compose_script_per_chapter,
@@ -87,6 +94,207 @@ router = APIRouter(tags=["trips"])
 # TourInput.duration_min is required; the request field is optional for
 # back-compat with pre-engine clients that never sent it.
 DEFAULT_DURATION_MIN = 60
+
+
+# --- Upstream LLM provider failures -> 502/503, never a raw 500 ---------------
+# anthropic.RateLimitError / APITimeoutError / APIConnectionError / APIStatusError
+# escaping a compose route surfaced as an HTTP 500 with a stack trace and no
+# Retry-After, so the workbench and the mobile client could not tell a transient
+# upstream throttle from a real server bug and could not back off. feedback.py
+# already maps these exact exceptions to 503/502; the far more expensive compose
+# paths did not. Imported defensively so the module still imports (and the
+# hermetic suite still runs) if the SDK is absent — `except ()` simply never
+# matches, leaving behaviour identical to before.
+try:  # pragma: no cover - exercised both ways only across environments
+    import anthropic as _anthropic
+
+    _PROVIDER_THROTTLE_ERRORS: tuple[type[BaseException], ...] = (_anthropic.RateLimitError,)
+    # APITimeoutError / APIConnectionError / APIStatusError all subclass APIError.
+    _PROVIDER_ERRORS: tuple[type[BaseException], ...] = (_anthropic.APIError,)
+except ImportError:  # pragma: no cover
+    _PROVIDER_THROTTLE_ERRORS = ()
+    _PROVIDER_ERRORS = ()
+
+
+@contextmanager
+def _upstream_provider_errors():
+    """Map Anthropic provider failures onto the HTTP contract the clients expect.
+
+    503 + Retry-After for throttling (retry later, the tour is still buildable),
+    502 for any other provider fault (timeout, connection, unexpected status).
+    HTTPException raised inside the block passes through untouched.
+    """
+    try:
+        yield
+    except _PROVIDER_THROTTLE_ERRORS as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"LLM provider rate limited: {exc}",
+            headers={"Retry-After": "30"},
+        ) from exc
+    except _PROVIDER_ERRORS as exc:
+        raise HTTPException(status_code=502, detail=f"LLM provider error: {exc}") from exc
+
+
+# --- Spend guard for the LLM-billing compose paths ---------------------------
+# POST /trips/preview runs compose_script_per_chapter with candidates=2 (two live
+# Opus drafts PER STOP), Haiku faithfulness verification, up to two Opus
+# (CORRECTION_MODEL) repair passes per flagged sentence, and a Haiku coverage
+# judge — src/tour/compose.py measures a 9-stop preview at ~18 Opus best-of-2
+# calls (~$1). It is deliberately unauthenticated (the public web preview
+# surface), so without a limiter one anonymous caller — or a crawler — can drain
+# the owner's ANTHROPIC_API_KEY at ~$1/request. /feedback was given exactly this
+# guard over ONE Haiku call; the dollars-per-call path had none.
+#
+# Four independent bounds, cheapest first:
+#   1. per-IP fixed window    — stops a naive loop from one host
+#   2. global fixed window    — per-IP falls to IP rotation; this is load-bearing
+#   3. global DAILY ceiling   — a hard per-process spend cap, not just a rate
+#   4. in-flight concurrency  — N simultaneous callers must not each start a ~$1
+#      compose while the window counters are still low (the burst hole a pure
+#      fixed-window counter cannot close, since each compose takes ~1 minute)
+#
+# In-process and per-worker: a multi-worker deploy needs shared state (Redis) to
+# be a true bound, and the counters reset on every Render redeploy. That is why
+# the daily ceiling exists as well, and why this is a floor, not the whole answer.
+_PREVIEW_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_MAX", "2"))
+_PREVIEW_RATE_LIMIT_WINDOW_S = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_WINDOW_S", "3600"))
+_PREVIEW_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_GLOBAL_RATE_LIMIT_MAX", "20"))
+_PREVIEW_DAILY_MAX = int(os.getenv("TRIPS_PREVIEW_DAILY_MAX", "100"))
+_PREVIEW_MAX_CONCURRENCY = int(os.getenv("TRIPS_PREVIEW_MAX_CONCURRENCY", "2"))
+# Trusted reverse-proxy hops in front of the app (exactly one on Render), so the
+# real client is the entry `_TRUSTED_PROXY_HOPS` from the RIGHT of
+# X-Forwarded-For. The LEFT of that header is attacker-supplied: trusting it
+# lands every request in a fresh bucket and defeats the limiter entirely.
+_TRUSTED_PROXY_HOPS = int(os.getenv("TRIPS_TRUSTED_PROXY_HOPS", "1"))
+
+_DAY_S = 86400
+_rate_state: dict[str, deque[float]] = {}
+_global_hits: deque[float] = deque()
+_daily_hits: deque[float] = deque()
+_inflight = 0
+_rate_lock = Lock()
+
+# The ONLY compose clients that actually bill. `get_compose_client` builds one of
+# these in the product — there is no 'mock' provider (src/api/dependencies.py) —
+# so in production the guard is ALWAYS armed. A test double (MockComposeClient,
+# a counting stub, an injected fake) spends nothing, so it is not rate limited:
+# that keeps the hermetic suite's many previews working without an env backdoor
+# that could also disarm the guard on the public deploy.
+_COST_BEARING_COMPOSE_CLIENTS = (AnthropicComposeClient, OpenAIComposeClient)
+
+
+def _client_ip(request: Request) -> str:
+    """Resolve the real client IP for rate limiting (see _TRUSTED_PROXY_HOPS)."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        parts = [p.strip() for p in forwarded.split(",") if p.strip()]
+        if parts:
+            idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)
+            return parts[idx]
+    if request.client:
+        return request.client.host
+    return "unknown"
+
+
+def _too_many(detail: str, retry_after: int) -> HTTPException:
+    return HTTPException(
+        status_code=429, detail=detail, headers={"Retry-After": str(max(1, retry_after))}
+    )
+
+
+def reset_spend_guard() -> None:
+    """Clear all spend-guard counters. For tests; never called by the product."""
+    global _inflight
+    with _rate_lock:
+        _rate_state.clear()
+        _global_hits.clear()
+        _daily_hits.clear()
+        _inflight = 0
+
+
+def _spend_precheck(request: Request, compose_client: object) -> None:
+    """Consume one tour-generation token, or raise 429 before ANY work is done.
+
+    A no-op when the configured compose client cannot bill (see
+    _COST_BEARING_COMPOSE_CLIENTS).
+    """
+    if not isinstance(compose_client, _COST_BEARING_COMPOSE_CLIENTS):
+        return
+
+    now = time.monotonic()
+    cutoff = now - _PREVIEW_RATE_LIMIT_WINDOW_S
+    day_cutoff = now - _DAY_S
+    with _rate_lock:
+        if _PREVIEW_DAILY_MAX > 0:
+            while _daily_hits and _daily_hits[0] <= day_cutoff:
+                _daily_hits.popleft()
+            if len(_daily_hits) >= _PREVIEW_DAILY_MAX:
+                raise _too_many(
+                    "Daily tour-generation ceiling reached, please retry tomorrow",
+                    int(_daily_hits[0] + _DAY_S - now),
+                )
+        if _PREVIEW_GLOBAL_RATE_LIMIT_MAX > 0:
+            while _global_hits and _global_hits[0] <= cutoff:
+                _global_hits.popleft()
+            if len(_global_hits) >= _PREVIEW_GLOBAL_RATE_LIMIT_MAX:
+                raise _too_many(
+                    "Tour generation is temporarily rate limited, please retry later",
+                    int(_global_hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now),
+                )
+        if _PREVIEW_RATE_LIMIT_MAX > 0:
+            hits = _rate_state.setdefault(_client_ip(request), deque())
+            while hits and hits[0] <= cutoff:
+                hits.popleft()
+            if len(hits) >= _PREVIEW_RATE_LIMIT_MAX:
+                raise _too_many(
+                    "Too many tour generations, please retry later",
+                    int(hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now),
+                )
+            hits.append(now)
+        if _PREVIEW_GLOBAL_RATE_LIMIT_MAX > 0:
+            _global_hits.append(now)
+        if _PREVIEW_DAILY_MAX > 0:
+            _daily_hits.append(now)
+
+
+@contextmanager
+def _concurrency_slot(compose_client: object):
+    """Bound simultaneous in-flight composes.
+
+    A compose takes ~1 minute, so N callers can all pass a fixed-window check and
+    then each start a ~$1 compose while the counters are still low. This closes
+    that burst hole. No-op for a non-billing client.
+    """
+    global _inflight
+    if not isinstance(compose_client, _COST_BEARING_COMPOSE_CLIENTS):
+        yield
+        return
+    with _rate_lock:
+        if _PREVIEW_MAX_CONCURRENCY > 0 and _inflight >= _PREVIEW_MAX_CONCURRENCY:
+            raise _too_many("Tour generation is busy, please retry shortly", 30)
+        _inflight += 1
+    try:
+        yield
+    finally:
+        with _rate_lock:
+            _inflight = max(0, _inflight - 1)
+
+
+def _owned_profile_id(session: Session, user_id: str, profile_id: str) -> str | None:
+    """The profile id iff `user_id` owns it, else None.
+
+    Ownership-scoped, NOT existence-scoped: the previous
+    ``MATCH (p:Profile {id: $pid})`` check let any caller read or mutate any
+    profile's trips by guessing a profile id. A miss returns 404 at the call
+    site (never 403) so the endpoint does not confirm foreign profile ids.
+    """
+    record = session.run(
+        "MATCH (u:User {id: $uid})-[:HAS_PROFILE]->(p:Profile {id: $pid}) RETURN p.id AS id",
+        uid=user_id,
+        pid=profile_id,
+    ).single()
+    return record["id"] if record else None
 
 
 def _end_point(end_lat: float | None, end_lng: float | None) -> tuple[float, float] | None:
@@ -212,6 +420,7 @@ def _primary_beat_audio(session: Session, beat_ids: list[str]) -> dict[str, dict
 @router.post("/trips/generate", response_model=TripGenerateResponse, status_code=201)
 def generate_trip(
     body: TripGenerateRequest,
+    current_user: dict = Depends(get_current_user),
     session: Session = Depends(get_session),
     driver: Driver = Depends(get_driver),
 ):
@@ -229,11 +438,10 @@ def generate_trip(
       it belongs to the COMPOSE/audio milestone. The validation report that
       `generate` attaches is non-blocking here for the same reason.
     """
-    profile_check = session.run(
-        "MATCH (p:Profile {id: $pid}) RETURN p.id AS id",
-        pid=body.profile_id,
-    ).single()
-    if profile_check is None:
+    # OWNERSHIP, not existence: an existence-only check let any caller create trips
+    # against any profile id. 404 (not 403) on a foreign profile so the endpoint
+    # never confirms someone else's profile id.
+    if _owned_profile_id(session, current_user["id"], body.profile_id) is None:
         raise HTTPException(404, f"Profile '{body.profile_id}' not found")
 
     lenses = _resolve_lenses(session, body)
@@ -430,8 +638,10 @@ class _CountingComposeClient:
 
 @router.post("/trips/{trip_id}/compose", response_model=TripComposeResponse)
 def compose_trip(
+    request: Request,
     trip_id: str,
     body: TripComposeRequest,
+    current_user: dict = Depends(get_current_user),
     session: Session = Depends(get_session),
     driver: Driver = Depends(get_driver),
     compose_client: ComposeClient = Depends(get_compose_client),
@@ -448,7 +658,22 @@ def compose_trip(
     the narration afterwards, which by then has passed the gate. A refused
     flavour is a structured 422; the trip is left untouched so the client
     can offer another flavour.
+
+    OWNERSHIP-SCOPED: this route destroys the trip's stop ids and burns its
+    one-shot compose budget, so it is authenticated and the trip must hang off a
+    profile of the CALLING user. A trip owned by someone else is reported as 404,
+    never 403 — a 403 would confirm the id exists.
     """
+    owns_trip = session.run(
+        "MATCH (u:User {id: $uid})-[:HAS_PROFILE]->(:Profile)-[:IS_CAPTAIN_OF]"
+        "->(t:Trip {id: $tid}) RETURN t.id AS id",
+        uid=current_user["id"],
+        tid=trip_id,
+    ).single()
+    if owns_trip is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+
+    _spend_precheck(request, compose_client)
     inputs = get_trip_compose_inputs(session, trip_id)
     if inputs is None:
         raise HTTPException(404, f"Trip '{trip_id}' not found")
@@ -552,9 +777,10 @@ def compose_trip(
     # degradation), not a silent swap. Tracked, not forgotten.
     counting = _CountingComposeClient(compose_client)
     try:
-        composed = compose_script(
-            stitched, seq, route, client=counting, faithfulness_checker=faithfulness_checker
-        )
+        with _concurrency_slot(compose_client), _upstream_provider_errors():
+            composed = compose_script(
+                stitched, seq, route, client=counting, faithfulness_checker=faithfulness_checker
+            )
     except ComposeVerificationError as exc:
         raise HTTPException(
             422,
@@ -808,6 +1034,7 @@ def _compose_status(stitched: Script, composed: Script) -> str:
 
 @router.post("/trips/preview", response_model=TripPreviewResponse)
 def preview_trip(
+    request: Request,
     body: TripPreviewRequest,
     driver: Driver = Depends(get_driver),
     compose_client: ComposeClient = Depends(get_compose_client),
@@ -822,7 +1049,13 @@ def preview_trip(
     Lets a web surface (the preview page; later the workbench) show the assembled
     story fast. Audio is fetched per stop by the client via POST /audio/preview on
     each stop's narration text. RED density / no reachable POIs -> 422.
+
+    UNAUTHENTICATED but SPEND-BOUNDED: this is the public web preview surface, and
+    one call is dollars of Opus/Haiku. `_spend_precheck` is the FIRST statement so
+    an anonymous loop is refused with 429 before the corpus is even loaded, let
+    alone before a provider call is made.
     """
+    _spend_precheck(request, compose_client)
     tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
@@ -887,17 +1120,18 @@ def preview_trip(
         # keyless beat in view spends nothing extra. Read-only: it never affects
         # compose_status/script above; findings are appended to omitted_facts and
         # surfaced next to the rubric's, below.
-        composed = compose_script_per_chapter(
-            script,
-            seq,
-            route,
-            client=compose_client,
-            faithfulness_checker=faithfulness_checker,
-            candidates=2,  # best-of-2: extra tickets for the big, dense stops
-            correction_client=correction_client,
-            omission_checker=omission_checker,
-            omission_findings=omitted_facts,
-        )
+        with _concurrency_slot(compose_client), _upstream_provider_errors():
+            composed = compose_script_per_chapter(
+                script,
+                seq,
+                route,
+                client=compose_client,
+                faithfulness_checker=faithfulness_checker,
+                candidates=2,  # best-of-2: extra tickets for the big, dense stops
+                correction_client=correction_client,
+                omission_checker=omission_checker,
+                omission_findings=omitted_facts,
+            )
     except ComposeVerificationError:
         compose_status = "refused"  # unrepairable — keep the grounded stitch
     else:
@@ -1079,9 +1313,19 @@ def preview_trip(
 @router.get("/trips", response_model=list[TripGenerateResponse])
 def list_trips(
     profile_id: str = Query(..., description="Profile ID to list trips for"),
+    current_user: dict = Depends(get_current_user),
     session: Session = Depends(get_session),
 ):
-    """List all saved trips for a profile, including their stops."""
+    """List all saved trips for a profile, including their stops.
+
+    OWNERSHIP-SCOPED: trip names, stop POIs, coordinates, start times and
+    narration of ANY profile used to be readable by guessing a profile id. The
+    ownership check runs BEFORE the read, and a profile the caller does not own
+    is a 404 — indistinguishable from one that does not exist.
+    """
+    if _owned_profile_id(session, current_user["id"], profile_id) is None:
+        raise HTTPException(404, f"Profile '{profile_id}' not found")
+
     result = list_trips_for_profile(session, profile_id)
     if result is None:
         raise HTTPException(404, f"Profile '{profile_id}' not found")

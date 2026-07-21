@@ -5,7 +5,12 @@ found, and (c) be HONEST about what it cannot do (it is content-blind). $0.
 
 from __future__ import annotations
 
-from src.tour.narration_quality import craft_score, score_narration
+from src.tour.narration_quality import (
+    _CAUSAL_CHAIN,
+    _MOTIVATED_TRANSITION,
+    craft_score,
+    score_narration,
+)
 
 # Rick-Steves-style: short varied sentences, second person, sentence-initial look
 # prompt, ends on an image.
@@ -159,6 +164,91 @@ def test_craft_score_ranks_wellwritten_above_flat_and_repetitive():
              "screams carrying across the river.")
     assert craft_score(good) > craft_score(flat)
     assert craft_score(good) > craft_score(repet)
+
+
+def test_craft_score_rewards_motivated_transition_over_bare_adjacency():
+    """G2 proxy (motivated transitions, standard S2): a transition that STATES why the
+    next idea follows ("To understand why...") must outrank the same facts joined by
+    bare-adjacency filler ("Also,"). The two fixtures are IDENTICAL except for that one
+    connective — isolating the G2 signal from confounds (second-person, percussion,
+    burstiness) rather than relying on a large weight to overcome them (a hostile
+    review found the previous 1.5 weight both double-counted with G3 and swamped
+    unrelated axes; G2/G3 are now bounded per-sentence-fraction terms at weight 0.2 —
+    see craft_score's docstring)."""
+    motivated = (
+        "Merchants traded here for centuries. To understand why, picture the noble "
+        "ladies who shopped nearby. Their patronage drew a loyal following who wanted "
+        "the same luxuries at home."
+    )
+    bare = (
+        "Merchants traded here for centuries. Also, picture the noble ladies who "
+        "shopped nearby. Their patronage drew a loyal following who wanted the same "
+        "luxuries at home."
+    )
+    assert craft_score(motivated) > craft_score(bare)
+
+
+def test_craft_score_rewards_causal_chain_over_flat_list():
+    """G3 proxy (causal chain not list, standard S3): facts that EARN each other
+    ("in turn brought...") must outrank the same facts as a flat list. The two
+    fixtures are IDENTICAL except for the connective — isolating the G3 signal from
+    confounds rather than relying on an oversized weight (see the G2 test above for
+    why: the previous 1.5 weight both double-counted with G2's "however" and had to
+    be that large only to swamp unrelated axes)."""
+    chain = (
+        "Jewellers opened here first. Merchants drawing an English clientele set up "
+        "shops nearby. That demand in turn brought the tailors who followed soon "
+        "after."
+    )
+    flat = (
+        "Jewellers opened here first. Also, an English clientele filled these shops. "
+        "Also, the tailors who followed opened soon after."
+    )
+    assert craft_score(chain) > craft_score(flat)
+
+
+def test_however_is_not_double_counted():
+    """DEFECT (hostile review, 2026-07-19): 'however' appeared in BOTH
+    _MOTIVATED_TRANSITION (sentence-initial) and _CAUSAL_CHAIN, so a single
+    sentence-initial 'However,' was scored twice. MEASURED before the fix: adding one
+    'However,' to a 49-word text moved craft_score by +5.99 (base 0.204 -> 6.2) —
+    a reward-hacking vector where best-of-N would favour whichever candidate sprinkles
+    more connectives. MEASURED after the fix: the swing is +0.196 (0.204 -> 0.4).
+    UNDO: reintroduce '|however\\b' into _CAUSAL_CHAIN (double-counting it with
+    _MOTIVATED_TRANSITION again) -> this assertion goes RED."""
+    text = (
+        "Merchants traded in this square for three centuries, selling wool and spice "
+        "to travellers who arrived from every corner of the kingdom, and their stalls "
+        "lined the cobbles where you now stand looking up at the old stone tower that "
+        "still bears their guild mark carved above the door."
+    )
+    base = craft_score(text)
+    with_however = craft_score("However, " + text)
+    swing = round(with_however - base, 3)
+    # Bounded: at most one sentence's worth of motivated_rate (weight 0.2, one sentence
+    # among several) should move the score. A double-counted 'however' swings ~4-6.
+    assert swing < 1.0, swing
+    # Disjointness itself, independent of the bound: a bare "However," sentence must
+    # match ONLY the G2 pattern, never also the G3 pattern (the actual double-count).
+    # UNDO: add '|however\\b' back into _CAUSAL_CHAIN -> this assertion goes RED.
+    assert _MOTIVATED_TRANSITION.search("However, the crowd cheered.")
+    assert not _CAUSAL_CHAIN.search("However, the crowd cheered.")
+
+
+def test_cleft_causal_matches_the_gold_sentence():
+    """DEFECT (hostile review, 2026-07-19): the cleft-causal branch of
+    _MOTIVATED_TRANSITION was documented as 'modelled on the standard's own gold
+    example' but capped the gap between 'here' and 'that' at 60 chars, while the gold
+    sentence (specs/2026-07-19-tour-quality-standard/01-standard.md §1) needs 74:
+    'It was here, supplying Empress Eugenie and the other ladies of the Napoleonic
+    court, that French haute couture was born...'. Widened to 90. UNDO: shrink the cap
+    back to 60 -> this assertion goes RED."""
+    gold_sentence = (
+        "It was here, supplying Empress Eugenie and the other ladies of the "
+        "Napoleonic court, that French haute couture was born in the second half of "
+        "the nineteenth century."
+    )
+    assert _MOTIVATED_TRANSITION.search(gold_sentence) is not None
 
 
 def test_craft_score_penalizes_restatement():

@@ -23,6 +23,7 @@ from neo4j import GraphDatabase
 from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from src.api.app import create_app
+from src.api.auth.tokens import create_access_token
 from src.api.dependencies import get_driver, get_session
 from src.tour.contract import TourInput
 from src.tour.density import TourabilityRefusedError
@@ -34,6 +35,11 @@ from tests.test_tour_golden_pdv import _parse_env_file  # same .env-read-only pa
 LENSED_PROFILE_ID = "m0b-trip-api-test-profile-lensed"
 NOLENS_PROFILE_ID = "m0b-trip-api-test-profile-nolens"
 PROFILE_IDS = [LENSED_PROFILE_ID, NOLENS_PROFILE_ID]
+# The trip routes are ownership-scoped (2026-07-19 IDOR fix): they require a bearer
+# token AND the profile must hang off the calling User. Own both disposable profiles
+# with one disposable User so these tests exercise the authorized path.
+TEST_USER_ID = "m0b-trip-api-test-user"
+TEST_USER_EMAIL = "m0b-trip-api@example.test"
 PROFILE_LENSES = ["hidden_history", "literary_heritage"]
 
 # Same input as fixtures/tour_golden/ile_oneway_90min.json.
@@ -81,6 +87,7 @@ def _delete_test_artifacts(driver) -> None:
             pids=PROFILE_IDS,
         )
         s.run("MATCH (p:Profile) WHERE p.id IN $pids DETACH DELETE p", pids=PROFILE_IDS)
+        s.run("MATCH (u:User {id: $uid}) DETACH DELETE u", uid=TEST_USER_ID)
 
 
 @pytest.fixture(scope="module")
@@ -101,10 +108,17 @@ def test_profiles(live_neo4j):
     """Disposable profiles on the live graph: one lensed, one without lenses."""
     _delete_test_artifacts(live_neo4j)  # clear residue from any crashed prior run
     with live_neo4j.session() as s:
+        s.run(
+            "MERGE (u:User {id: $uid}) SET u.email = $email",
+            uid=TEST_USER_ID,
+            email=TEST_USER_EMAIL,
+        )
         for pid in PROFILE_IDS:
             s.run(
-                "MERGE (p:Profile {id: $pid}) SET p.display_name = 'M0b API Test'",
+                "MERGE (p:Profile {id: $pid}) SET p.display_name = 'M0b API Test' "
+                "WITH p MATCH (u:User {id: $uid}) MERGE (u)-[:HAS_PROFILE]->(p)",
                 pid=pid,
+                uid=TEST_USER_ID,
             )
         linked = s.run(
             "MATCH (p:Profile {id: $pid}) "
@@ -135,6 +149,8 @@ def client(live_neo4j, test_profiles):
     app.dependency_overrides[get_session] = _live_session
     app.dependency_overrides[get_driver] = lambda: live_neo4j
     with TestClient(app) as c:
+        # Ownership-scoped routes: authenticate as the User owning both profiles.
+        c.headers["Authorization"] = f"Bearer {create_access_token(TEST_USER_ID, TEST_USER_EMAIL)}"
         yield c
 
 

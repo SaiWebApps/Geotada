@@ -28,7 +28,12 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 
 from src.tour.contract import BeatSequence, Route, Script
-from src.tour.generation import SPOKEN_WPM, is_walk_concurrent, split_sentences
+from src.tour.generation import (
+    _END_B_SENTINEL_PREFIX,
+    SPOKEN_WPM,
+    is_walk_concurrent,
+    split_sentences,
+)
 from src.tour.narration_quality import score_narration
 from src.tour.routing import AUDIO_FRACTION, ERR_SHORT
 
@@ -257,7 +262,11 @@ def score_tour(
     total_words = sum(words_by_stop.values())
     report.stats = {
         "total_words": total_words,
-        "n_stops": len(words_by_stop),
+        # The stop count is the ROSTER's, not the rendered sentences'. Counting
+        # ``words_by_stop`` UNDER-REPORTS whenever a stop rendered nothing at all —
+        # the exact tour C6 exists to catch — so the editor saw "2 stops" for a
+        # 3-stop tour with one silent stop and had no signal anything was missing.
+        "n_stops": len(script.selected_pois),
         "audio_minutes": round(script.total_audio_seconds / 60, 1),
         "words_by_stop": dict(sorted(words_by_stop.items())),
     }
@@ -397,14 +406,44 @@ def score_tour(
         )
 
     # ── C6: no empty stop ───────────────────────────────────────────────────
-    for stop_idx, words in sorted(words_by_stop.items()):
-        if words == 0:
+    # DRIVEN FROM THE STOP ROSTER, not from the rendered sentences. Iterating
+    # ``words_by_stop`` made this check UNREACHABLE for the exact condition it
+    # names: a stop that rendered NO Sentence at all has no key in that dict, so
+    # the ``words == 0`` branch could only ever fire on a Sentence whose text was
+    # literally empty. A tour routing the walker to a stop where they hear nothing
+    # scored PASS and was served. C1 does not cover it either (it skips POIs with
+    # fewer than STARVE_MIN_BEATS corpus beats).
+    #
+    # ALIGNMENT ASSUMPTION (shared with C1/C8 below, and stated here rather than
+    # left implicit): ``stop_idx`` indexes ``script.selected_pois`` POSITIONALLY.
+    # That holds because both the roster (generation._script_pois, built by walking
+    # ``route.pois`` in order) and every Sentence's ``stop_idx`` are derived from
+    # the same ordered Route. It is NOT keyed on beat_sequence.poi_beats, which is a
+    # lookup BY POI ID inside that walk and may legitimately not cover every POI.
+    #
+    # The pinned-endpoint sentinel (``_END_B_SENTINEL_PREFIX``, generation.py:891)
+    # is skipped: it is a materialised destination with no POI of its own and is
+    # content-free BY DESIGN, so silence there is not a defect.
+    #
+    # A roster entry with NO SEATED PLAN (``beat_sequence.poi_beats`` has no entry
+    # for it, so ``ScriptPOI.beat_ids`` is empty) is deliberately NOT skipped. It is
+    # tempting to treat it as "nothing was seated, so nothing could be said", but
+    # that is the WORST instance of this very defect: the tourist is still routed
+    # there and still hears nothing. It also carries no false-positive risk, because
+    # such a stop normally still receives its arrival/navigation glue line (attached
+    # at ITS stop_idx by ``generation._build_transit``) and so never reaches zero
+    # words. Only a genuinely silent stop fires.
+    for stop_idx, poi in enumerate(script.selected_pois):
+        if poi.id.startswith(_END_B_SENTINEL_PREFIX):
+            continue
+        if words_by_stop.get(stop_idx, 0) == 0:
             report.findings.append(
                 Finding(
                     check="C6-empty-stop",
                     severity=Severity.BLOCKER,
                     message="stop rendered zero words",
                     stop_idx=stop_idx,
+                    poi_name=poi.name,
                 )
             )
 

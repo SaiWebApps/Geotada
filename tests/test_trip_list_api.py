@@ -13,10 +13,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
+from src.api.auth.tokens import create_access_token
 from src.api.crud.trips import create_trip_with_stops
 from src.connection import create_driver, get_database
 from src.schema.constraints import apply_all
 from src.seed.runner import seed_all
+from src.seed.users import TEST_USER_EMAIL as SEED_USER_EMAIL
 from tests.conftest import _assert_test_port, needs_neo4j
 
 
@@ -36,10 +38,26 @@ def seeded_driver():
 
 
 @pytest.fixture(scope="module")
-def client(seeded_driver):
-    """TestClient backed by the real Neo4j database with seed data."""
+def seeded_user_id(seeded_driver):
+    """The seeded User that owns the 'Mom'/'Kid' profiles."""
+    with seeded_driver.session(database=get_database()) as s:
+        return s.run(
+            "MATCH (u:User {email: $email}) RETURN u.id AS id", email=SEED_USER_EMAIL
+        ).single()["id"]
+
+
+@pytest.fixture(scope="module")
+def client(seeded_driver, seeded_user_id):
+    """TestClient backed by the real Neo4j database with seed data.
+
+    GET /trips is ownership-scoped since the 2026-07-19 IDOR fix (it used to
+    serve ANY profile's trips to an anonymous caller), so the client
+    authenticates as the User who owns the seeded profiles.
+    """
     app = create_app()
     with TestClient(app) as c:
+        token = create_access_token(seeded_user_id, SEED_USER_EMAIL)
+        c.headers["Authorization"] = f"Bearer {token}"
         yield c
 
 
@@ -139,6 +157,14 @@ class TestListTripsEndpoint:
                     display_name: 'Empty User'
                 })
                 """
+            )
+            # The route is ownership-scoped: an UNOWNED profile is (correctly)
+            # a 404 now, so link it to the seeded caller to test the
+            # owns-it-but-has-no-trips case this test is actually about.
+            s.run(
+                "MATCH (u:User {email: $email}), (p:Profile {id: 'profile-no-trips'}) "
+                "MERGE (u)-[:HAS_PROFILE]->(p)",
+                email=SEED_USER_EMAIL,
             )
 
         resp = client.get("/api/v1/trips?profile_id=profile-no-trips")

@@ -45,17 +45,63 @@ occurrence to keep, or gate. Not wired into the production pipeline.
 
 from __future__ import annotations
 
+import logging
 import unicodedata
 from collections.abc import Iterable, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Protocol
 
-from .contract import BeatRef
+from .contract import BeatRef, Script
 from .generation import split_sentences
 from .verify import FAITHFULNESS_MODEL
 
+_logger = logging.getLogger(__name__)
+
 _MAX_WORKERS = 8
+
+#: JUDGEMENT, anchored on MEASURED data (2026-07-19, real dev-graph Paris corpus via
+#: ``load_paris_corpus`` — not a synthetic estimate). Unbounded cross-stop
+#: SHARED_ENTITY-only candidates (``pair_sparse=False``) measured 712-1289 on three
+#: real 6-7 stop tours built live off the dev graph (``make tour-build``, MockGlueClient,
+#: $0) and 1107 on the documented Vert-Galant tour itself (``pont-neuf-60min-5afc2e.json``,
+#: the tour this module's docstring cites). WITH the sparse-entity recall arm left on,
+#: cross-stop candidates reach into the thousands on the same tours — unaffordable for a
+#: check meant to run on every preview at ~$0.0005/judge call (this module's own cost
+#: estimate, see ``HaikuRedundancyJudge``). Every ``max_entity_frequency`` threshold tried
+#: also DROPPED the documented repeat's own candidate edges before it cut volume
+#: meaningfully — a threshold low enough to matter blocks "Henri IV" as too-common, which
+#: removes the only link between sentences whose *sole* declared entity IS "Henri IV"
+#: (measured: at ``max_entity_frequency=0.15`` the Vert-Galant cluster's candidate edges
+#: dropped from 15 to 0). So this module does not try to be clever about WHICH entity
+#: link to drop — it caps the number of pairs sent to the judge at this many.
+#:
+#: CORRECTNESS-CRITICAL: the sample under that cap must be COVERAGE-FAIR, not a raw
+#: prefix. A plain ``candidates[:MAX_CANDIDATE_PAIRS]`` prefix of the (a, b)-ascending
+#: sorted list is dominated by whichever stop has the lowest sentence indices — MEASURED
+#: (2026-07-19) on three real dev-graph tours: prefix-200 covered only stops {0,1,2} of 7,
+#: only stops {0,1} of 7, and — worst case — ONLY stop 0 of 6, with ZERO of the 200 sampled
+#: pairs having an a-stop >= 1. G4 is a CROSS-STOP check by design (``check_tour_repetition``
+#: passes ``cross_stop=True``); a sampler that only ever judges stop 0 cannot see the
+#: defect it exists for. ``detect_claim_repetition`` therefore stratifies: candidates are
+#: bucketed by their unordered (stop_a, stop_b) pair and round-robin-sampled one per bucket
+#: per pass (see ``_stratify_candidates``), so every stop pair that has any candidate gets
+#: a share of the budget before any bucket gets a second pick. Re-measured after the fix on
+#: the same three tours: every stop >= 1 is represented in the sample (see
+#: ``test_check_tour_repetition_stratifies_across_all_stops`` for the pinned regression).
+#:
+#: At ~$0.0005/call this bounds one preview's G4 spend to a FLAT ~$0.10 — every real tour
+#: measured produces well over 200 raw candidates, so the cap is hit and 200 calls are
+#: spent on EVERY preview, not merely "up to" 200 (see ``check_tour_repetition``'s
+#: docstring and the refused-path skip in ``src/api/routes/trips.py``, which avoids
+#: spending this on a stitched script nobody composed).
+#:
+#: HONEST LIMIT: this is a real cost/recall trade, not a completeness proof. Within a
+#: single stop-pair bucket, only that bucket's OWN (a, b)-ascending prefix is sampled once
+#: its share of the budget runs out, so a duplicate deep inside a single very
+#: entity-dense stop pair can still be missed. Stratification fixes WHICH STOP PAIRS get a
+#: chance, not how deep into any one pair's candidates the budget reaches.
+MAX_CANDIDATE_PAIRS: int = 200
 
 
 # --------------------------------------------------------------------------------------
@@ -97,6 +143,63 @@ def sentences_from_beats(
                     index=len(out),
                 )
             )
+    return tuple(out)
+
+
+def sentences_from_script(
+    script: Script, beats_by_poi: dict[str, tuple[BeatRef, ...]]
+) -> tuple[NarrationSentence, ...]:
+    """Bridge a COMPOSED tour ``Script`` into this module's own input shape, so G4 runs
+    on exactly what the tourist will hear - the same call shape as
+    ``quality_rubric.score_tour(script, route, snapshot.beats_by_poi, ...)``, so a
+    caller that already has ``snapshot.beats_by_poi`` for the rubric can pass it here
+    unchanged.
+
+    Only ``source_type == "beat"`` sentences are included: glue/arith lines are
+    narrator connective tissue, not claims, so they can never be a repeated FACT and
+    including them would only feed the (measured) candidate-explosion problem for zero
+    recall benefit.
+
+    ``stop_id`` is the sentence's ``stop_idx`` stringified (``str(int)`` round-trips
+    losslessly), not the POI id - this module has no reason to know about POIs, and a
+    caller recovers the stop index with a plain ``int()`` cast (see
+    ``repetition_findings``).
+
+    SILENT RECALL HOLE, made LOUD: a ``source_id`` absent from ``beats_by_poi``
+    (stale/edited corpus, or a caller passing a partial map) degrades to
+    ``entities=()`` rather than raising - correct for robustness, but such a sentence
+    then generates NO candidates under ``pair_sparse=False`` (the production
+    ``check_tour_repetition`` setting), i.e. it is INVISIBLE to G4 with no signal that
+    happened. Logs a WARNING naming the missing beat id(s) so this shows up in
+    operational logs instead of quietly under-checking a tour.
+    """
+    beats_by_id = {ref.id: ref for refs in beats_by_poi.values() for ref in refs}
+    out: list[NarrationSentence] = []
+    missing_beat_ids: list[str] = []
+    for i, sent in enumerate(script.script):
+        if sent.source_type != "beat":
+            continue
+        beat = beats_by_id.get(sent.source_id)
+        if beat is None:
+            missing_beat_ids.append(sent.source_id)
+        out.append(
+            NarrationSentence(
+                text=sent.text,
+                stop_id=str(sent.stop_idx),
+                beat_id=sent.source_id,
+                entities=tuple(beat.entities) if beat is not None else (),
+                index=i,
+            )
+        )
+    if missing_beat_ids:
+        _logger.warning(
+            "G4 sentences_from_script: %d beat sentence(s) referenced a source_id "
+            "absent from beats_by_poi - they carry entities=() and are INVISIBLE to "
+            "candidate generation under pair_sparse=False (the production setting). "
+            "First few missing ids: %s",
+            len(missing_beat_ids),
+            missing_beat_ids[:5],
+        )
     return tuple(out)
 
 
@@ -173,6 +276,10 @@ class RepetitionReport:
     verdicts: tuple[PairVerdict, ...] = ()
     stops: tuple[StopRedundancy, ...] = ()
     judge_calls: int = 0
+    #: How many stage-1 candidates were truncated by ``max_candidates`` before any
+    #: judge call was made. Zero unless the caller passed a cap and hit it. Surfaced so
+    #: a caller can show "N pairs were not checked" rather than silently under-report.
+    candidates_dropped: int = 0
 
     @property
     def redundant_pairs(self) -> tuple[PairVerdict, ...]:
@@ -237,9 +344,9 @@ class HaikuRedundancyJudge:
 
     def __init__(self, model: str = FAITHFULNESS_MODEL, *, client: object = None) -> None:
         if client is None:
-            import anthropic
+            from src.tour.anthropic_client import judge_client
 
-            client = anthropic.Anthropic()
+            client = judge_client()
         self._client = client
         self.model = model
         self.calls = 0
@@ -440,6 +547,55 @@ def _vocabulary(sentences: Sequence[NarrationSentence]) -> tuple[tuple[str, str]
     return tuple(sorted(seen.items()))
 
 
+def _stratify_candidates(
+    candidates: Sequence[CandidatePair],
+    stop_of: dict[int, str],
+    max_candidates: int,
+) -> tuple[tuple[CandidatePair, ...], int]:
+    """Sample down to ``max_candidates`` FAIRLY across stop-pair buckets, instead of
+    truncating a raw (a, b)-sorted prefix. See ``MAX_CANDIDATE_PAIRS`` for the measured
+    failure this replaces: a plain prefix starves every stop after the first one or two,
+    on real tours down to ZERO judged pairs with an a-stop >= 1 out of 200.
+
+    Buckets candidates by their UNORDERED (stop_a, stop_b) pair (looked up from the
+    sentences' own ``stop_id``, not ``CandidatePair.stop_id`` — that field is blanked
+    to ``""`` in cross-stop mode). Buckets are visited in a fixed, deterministic order
+    (sorted by key) and contribute one candidate per pass, round-robin, until the
+    budget is spent or every bucket is exhausted — so every stop pair that has ANY
+    candidate gets a shot at the budget before any one pair gets a second pick. Output
+    is re-sorted to the existing (a, b) order so downstream reporting and the
+    concurrent-judge re-sort stay unaffected by bucket-visit order.
+
+    Returns ``(sample, dropped_count)``, mirroring the raw-prefix call site's contract.
+    """
+    buckets: dict[tuple[str, str], list[CandidatePair]] = {}
+    for cand in candidates:
+        key = tuple(sorted((stop_of.get(cand.a, ""), stop_of.get(cand.b, ""))))
+        buckets.setdefault(key, []).append(cand)
+
+    order = sorted(buckets)
+    cursor = dict.fromkeys(order, 0)
+    kept: list[CandidatePair] = []
+    remaining = len(candidates)
+    while len(kept) < max_candidates and remaining > 0:
+        progressed = False
+        for key in order:
+            if len(kept) >= max_candidates:
+                break
+            bucket = buckets[key]
+            i = cursor[key]
+            if i < len(bucket):
+                kept.append(bucket[i])
+                cursor[key] = i + 1
+                remaining -= 1
+                progressed = True
+        if not progressed:
+            break  # every bucket exhausted before the budget did
+
+    kept_sorted = tuple(sorted(kept, key=lambda c: c.key))
+    return kept_sorted, len(candidates) - len(kept_sorted)
+
+
 def _over_frequent(
     members: Sequence[NarrationSentence],
     keys_by_index: dict[int, frozenset[str]],
@@ -470,6 +626,7 @@ def detect_claim_repetition(
     max_entity_frequency: float = 1.0,
     pair_sparse: bool = True,
     sparse_entity_floor: int = 1,
+    max_candidates: int | None = None,
 ) -> RepetitionReport:
     """Run stage 1 then stage 2 and return the full report.
 
@@ -477,6 +634,16 @@ def detect_claim_repetition(
     this is fully testable offline with a deterministic stub. Judge calls for independent
     pairs run concurrently; results are re-sorted so output order never depends on
     scheduling.
+
+    ``max_candidates`` is a COST cap, not a policy: when stage 1 proposes more than this
+    many pairs, only ``max_candidates`` of them are ever sent to the judge - the rest are
+    dropped before they can cost a call, and the count is reported on
+    ``RepetitionReport.candidates_dropped`` so a caller can see truncation happened
+    rather than silently under-reporting. The sample is COVERAGE-FAIR, not a raw
+    stream-order prefix - see ``_stratify_candidates`` for why a plain prefix starves
+    every stop but the first under this same budget. ``None`` (the default) never
+    truncates, preserving every existing caller's behaviour. See ``MAX_CANDIDATE_PAIRS``
+    for the production value and its measured provenance.
     """
     ordered = _with_indices(sentences)
     candidates = generate_candidates(
@@ -488,6 +655,12 @@ def detect_claim_repetition(
         pair_sparse=pair_sparse,
         sparse_entity_floor=sparse_entity_floor,
     )
+    candidates_dropped = 0
+    if max_candidates is not None and len(candidates) > max_candidates:
+        stop_of = {s.index: s.stop_id for s in ordered}
+        candidates, candidates_dropped = _stratify_candidates(
+            candidates, stop_of, max_candidates
+        )
     by_index = {s.index: s for s in ordered}
 
     verdicts: tuple[PairVerdict, ...] = ()
@@ -513,6 +686,7 @@ def detect_claim_repetition(
         verdicts=verdicts,
         stops=_summarize(ordered, candidates, verdicts, cross_stop=cross_stop),
         judge_calls=len(candidates),
+        candidates_dropped=candidates_dropped,
     )
 
 
@@ -581,6 +755,88 @@ def cluster_pairs(pairs: Iterable[tuple[int, int]]) -> tuple[tuple[int, ...], ..
 
 
 # --------------------------------------------------------------------------------------
+# Production entry point - G4 (specs/2026-07-19-tour-quality-standard/01-standard.md §4)
+# --------------------------------------------------------------------------------------
+
+
+def check_tour_repetition(
+    script: Script,
+    beats_by_poi: dict[str, tuple[BeatRef, ...]],
+    judge: RedundancyJudge,
+    *,
+    max_candidates: int = MAX_CANDIDATE_PAIRS,
+) -> RepetitionReport:
+    """THE production entry point for G4 - an ADVISORY report surfaced alongside, but
+    never folded into, ``quality_rubric.score_tour``'s pass/fail verdict (see
+    ``src/api/routes/trips.py`` - the caller skips this entirely on the
+    ComposeVerificationError "refused" path, where ``script`` is still the
+    never-composed raw stitch and there is nothing yet worth spending the judge
+    budget on).
+
+    Cross-stop, because the standard is explicit that G4 is a cross-stop check (a fact
+    restated in new words ANYWHERE in the tour is the defect, not merely within one
+    stop). The sparse-entity recall arm is OFF here - it is the dominant driver of the
+    measured candidate explosion (see ``MAX_CANDIDATE_PAIRS``) and disabling it is a
+    deliberate, documented recall trade: an entity-less beat restating another
+    entity-less beat's fact (the kind ``pair_sparse`` exists to catch) will not be
+    found cross-stop. It is still found within a single call to ``generate_candidates``
+    with ``pair_sparse=True`` if a caller wants that trade instead - this function does
+    not.
+
+    COST IS FLAT, NOT A CEILING: every real tour measured (see ``MAX_CANDIDATE_PAIRS``)
+    produces well over ``max_candidates`` raw candidates, so this spends the FULL
+    ``max_candidates`` judge calls (~$0.10 at ~$0.0005/call) on EVERY composed/stitched
+    preview - never "up to", always exactly that many, until a corpus is measured that
+    is sparse enough to fall under the cap.
+    """
+    sentences = sentences_from_script(script, beats_by_poi)
+    return detect_claim_repetition(
+        sentences,
+        judge,
+        cross_stop=True,
+        pair_sparse=False,
+        max_candidates=max_candidates,
+    )
+
+
+@dataclass(frozen=True)
+class RepetitionFinding:
+    """One G4 finding - ADVISORY/WARN severity only (see ``check_tour_repetition``'s
+    docstring: the judge is uncalibrated, so this must never be treated as a
+    BLOCKER) - shaped to sit next to ``quality_rubric.Finding`` in an API response -
+    same field names by CONVENTION, not by import: this module takes no dependency on
+    ``quality_rubric``."""
+
+    check: str
+    message: str
+    stop_idx: int | None = None
+
+
+def repetition_findings(report: RepetitionReport) -> tuple[RepetitionFinding, ...]:
+    """Render each transitively-redundant cluster as ONE finding - 'this fact is told N
+    times', anchored at its first stream-order occurrence. Report only: nothing here
+    regenerates anything or decides whether the tour ships - that is the caller's call,
+    same as ``quality_rubric``'s BLOCKER/WARN split."""
+    by_index = {s.index: s for s in report.sentences}
+    out: list[RepetitionFinding] = []
+    for cluster in report.clusters:
+        members = [by_index[i] for i in cluster]
+        stop_idxs = sorted({int(m.stop_id) for m in members if m.stop_id.isdigit()})
+        snippet = members[0].text[:100]
+        out.append(
+            RepetitionFinding(
+                check="G4-repetition",
+                message=(
+                    f"same fact told {len(cluster)} times across stop(s) "
+                    f"{stop_idxs}: “{snippet}…”"
+                ),
+                stop_idx=stop_idxs[0] if stop_idxs else None,
+            )
+        )
+    return tuple(out)
+
+
+# --------------------------------------------------------------------------------------
 # Lexical baseline - DIAGNOSTIC ONLY, never a detector
 # --------------------------------------------------------------------------------------
 
@@ -632,6 +888,7 @@ def lexical_baseline_pairs(
 
 
 __all__ = [
+    "MAX_CANDIDATE_PAIRS",
     "SHARED_ENTITY",
     "SPARSE_ENTITIES",
     "CandidatePair",
@@ -640,13 +897,17 @@ __all__ = [
     "NarrationSentence",
     "PairVerdict",
     "RedundancyJudge",
+    "RepetitionFinding",
     "RepetitionReport",
     "StopRedundancy",
+    "check_tour_repetition",
     "cluster_pairs",
     "detect_claim_repetition",
     "four_gram_jaccard",
     "generate_candidates",
     "lexical_baseline_pairs",
     "normalize_entity",
+    "repetition_findings",
     "sentences_from_beats",
+    "sentences_from_script",
 ]

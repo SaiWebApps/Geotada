@@ -10,6 +10,7 @@ from src.tour.options import dominant_lens
 from src.tour.render_md import stop_narration_text
 
 if TYPE_CHECKING:
+    from neo4j import ManagedTransaction as Transaction
     from neo4j import Session
 
     from src.tour.contract import BeatRef, Script, ScriptPOI
@@ -84,7 +85,13 @@ def create_trip_with_stops(
     tour_input_json: str | None = None,
     options_json: str | None = None,
 ) -> dict[str, Any]:
-    """Create Trip node and ItineraryItem nodes in a single transaction.
+    """Create Trip node and ItineraryItem nodes in a single write transaction.
+
+    The Trip CREATE and every ItineraryItem CREATE run inside one
+    ``session.execute_write`` unit of work, so a mid-loop failure (e.g. a stop
+    citing a beat that is not in the graph) rolls the WHOLE thing back — the
+    profile is never left with a phantom Trip whose stop list is silently
+    truncated.
 
     Creates:
     - Trip node with UUID, name, dates, status='planning'
@@ -122,24 +129,26 @@ def create_trip_with_stops(
         MERGE (profile)-[:IS_CAPTAIN_OF]->(trip)
         RETURN trip.id AS trip_id
     """
-    session.run(
-        create_query,
-        trip_id=trip_id,
-        trip_name=trip_name,
-        profile_id=profile_id,
-        start_date=start_date,
-        end_date=end_date,
-        tour_input_json=tour_input_json,
-        options_json=options_json,
-    )
+    def _create(tx: Transaction) -> None:
+        tx.run(
+            create_query,
+            trip_id=trip_id,
+            trip_name=trip_name,
+            profile_id=profile_id,
+            start_date=start_date,
+            end_date=end_date,
+            tour_input_json=tour_input_json,
+            options_json=options_json,
+        )
+        _create_itinerary_items(tx, trip_id, profile_id, stops)
 
-    _create_itinerary_items(session, trip_id, profile_id, stops)
+    session.execute_write(_create)
 
     return {"trip_id": trip_id, "trip_name": trip_name}
 
 
 def _create_itinerary_items(
-    session: Session,
+    tx: Transaction,
     trip_id: str,
     profile_id: str,
     stops: list[dict[str, Any]],
@@ -177,7 +186,7 @@ def _create_itinerary_items(
     item_ids: list[str] = []
     for stop in stops:
         item_id = str(uuid.uuid4())
-        record = session.run(
+        record = tx.run(
             item_query,
             trip_id=trip_id,
             poi_id=stop["poi_id"],
@@ -216,18 +225,28 @@ def replace_trip_stops(
     carry no audio fields, so stale per-stop audio of the pre-compose
     narration can never be served as composed. Returns the new item ids in
     stop order.
+
+    The captain lookup, the DETACH DELETE and every item CREATE run inside ONE
+    explicit write transaction, so a mid-loop failure (e.g. a stop citing a
+    beat the corpus no longer has) rolls the delete back too: the trip keeps
+    its ORIGINAL itinerary rather than being left permanently truncated and
+    uncomposed. Callers pass a Session; the transaction is opened internally.
     """
-    record = session.run(
-        "MATCH (p:Profile)-[:IS_CAPTAIN_OF]->(t:Trip {id: $tid}) RETURN p.id AS pid",
-        tid=trip_id,
-    ).single()
-    if record is None:
-        raise ValueError(f"Trip {trip_id!r} not found (or has no captain profile)")
-    session.run(
-        "MATCH (:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) DETACH DELETE i",
-        tid=trip_id,
-    )
-    return _create_itinerary_items(session, trip_id, record["pid"], stops)
+
+    def _replace(tx: Transaction) -> list[str]:
+        record = tx.run(
+            "MATCH (p:Profile)-[:IS_CAPTAIN_OF]->(t:Trip {id: $tid}) RETURN p.id AS pid",
+            tid=trip_id,
+        ).single()
+        if record is None:
+            raise ValueError(f"Trip {trip_id!r} not found (or has no captain profile)")
+        tx.run(
+            "MATCH (:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) DETACH DELETE i",
+            tid=trip_id,
+        )
+        return _create_itinerary_items(tx, trip_id, record["pid"], stops)
+
+    return session.execute_write(_replace)
 
 
 def mark_trip_composed(session: Session, trip_id: str, route_id: str) -> None:

@@ -11,6 +11,8 @@ from src.tour.compose import ComposeClient
 if TYPE_CHECKING:
     from neo4j import Driver, Session
 
+    from src.tour.claim_repetition import RedundancyJudge
+    from src.tour.factcheck import CoverageJudge
     from src.tour.verify import FaithfulnessChecker
 
 _driver: Driver | None = None
@@ -164,3 +166,57 @@ def get_correction_client():
     import src.tour.compose_correct as compose_correct
 
     return compose_correct.AnthropicCorrectionClient()
+
+
+def get_omission_checker() -> CoverageJudge:
+    """The ADVISORY coverage-direction checker for the workbench preview's
+    omission-detection report (``src.tour.compose.find_dropped_facts`` — strictly
+    opt-in, called by the route AFTER a Script is already served; it never touches
+    VERIFY's pass/fail or the compose ladder). Catches the blind spot the
+    production coverage gate (``claim_dedup.verify_claim_coverage``'s overlap
+    COEFFICIENT) structurally cannot: once compose deletes material the composed
+    signature is a SUBSET of the claim signature, so the ratio is 1.000 by
+    construction and no threshold fixes it.
+
+    Deliberately just the ``CoverageJudge`` half of ``factcheck.SemanticFactChecker``
+    — NOT the decomposer: faithfulness (invention) is already checked by
+    ``get_faithfulness_checker``'s Haiku entailer, so decomposing the narration again
+    here would double that cost for zero new signal. This wires ONLY the coverage
+    judgements the compose path was missing.
+
+    Imported INSIDE the function and referenced as a module ATTRIBUTE — exactly
+    like ``get_correction_client`` — so the conftest money-guard's existing
+    ``HaikuCoverageJudge`` arm (tests/conftest.py, added for the author-engine path)
+    swaps this for an offline stub (always 'conveyed', never bills) in the
+    (non-``live``) bar.
+    """
+    import src.tour.factcheck as factcheck
+
+    return factcheck.HaikuCoverageJudge()
+
+
+def get_claim_repetition_judge() -> RedundancyJudge:
+    """G4's semantic judge (specs/2026-07-19-tour-quality-standard/01-standard.md §4) —
+    an ADVISORY, UNCALIBRATED check: does any two narration sentences, anywhere in the
+    tour, restate the same underlying fact in new words. NEVER folds into
+    ``quality["passed"]`` (formerly tracked as failure-ledger entry FL-2026-111, now
+    removed: this judge "has never executed against a live model" — every test in
+    tests/test_claim_repetition.py injects a hand-labelled stub. Closing that gap is
+    a prerequisite for any BLOCKER-severity use).
+    ALWAYS the real Haiku judge in production, run alongside — never gating — the
+    rubric on every COMPOSED/STITCHED preview (``src/api/routes/trips.py`` skips this
+    entirely on the ComposeVerificationError "refused" path, where there is no served
+    script yet worth spending the judge budget on). Findings surface in
+    ``quality["g4"]``, severity WARN, separate from the rubric's blockers/warnings.
+
+    Imported INSIDE the function and referenced as a module ATTRIBUTE — exactly like
+    ``get_correction_client`` — so the conftest money-guard's monkeypatch (tests/
+    conftest.py, the "REPETITION-JUDGE money-guard" arm already in place before this
+    dependency existed) swaps it for an offline stub in the (non-``live``) bar. Stage-1
+    candidate generation is $0 and deterministic and runs unconditionally either way;
+    only this judge is ever billing, and it is never constructed with ``client=None``
+    inside pytest.
+    """
+    import src.tour.claim_repetition as claim_repetition
+
+    return claim_repetition.HaikuRedundancyJudge()

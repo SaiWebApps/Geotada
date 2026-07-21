@@ -7,8 +7,10 @@
 set -u
 
 SERVICE_ID="${RENDER_WATCH_SERVICE:-srv-d7qnivjbc2fs73fr6tqg}"  # Ondoway web service
-POLL_SECS=20
-MAX_POLLS=45  # 15 min
+POLL_SECS="${RENDER_WATCH_POLL_SECS:-20}"
+MAX_POLLS="${RENDER_WATCH_MAX_POLLS:-45}"  # 15 min
+# How long to wait for Render to register a deploy for HEAD before giving up.
+MAX_NO_MATCH_POLLS="${RENDER_WATCH_MAX_NO_MATCH_POLLS:-10}"
 
 # Gate: only act on git push (hook fires for every Bash call in this project).
 if [ "${RENDER_WATCH_FORCE:-0}" != "1" ]; then
@@ -25,6 +27,12 @@ if ! command -v render >/dev/null 2>&1; then
 fi
 
 head_sha=$(git rev-parse HEAD 2>/dev/null || echo "")
+# Fail closed: without HEAD we cannot tell the pushed deploy from a stale one,
+# so we must never render a verdict about "the" deploy.
+if [ -z "$head_sha" ]; then
+  echo "could not resolve HEAD — Render deploy NOT monitored; check it manually." >&2
+  exit 2
+fi
 
 latest_deploy() {
   render deploys list "$SERVICE_ID" -o json --confirm 2>/dev/null | python3 -c "
@@ -45,8 +53,14 @@ for i in $(seq 1 "$MAX_POLLS"); do
     continue
   fi
   short_commit=$(printf '%.9s' "$commit")
-  # Until Render registers the pushed commit, keep waiting on the older deploy.
-  if [ -n "$head_sha" ] && [ "$commit" != "$head_sha" ] && [ "$i" -le 6 ]; then
+  # Commit identity is a PRECONDITION for any verdict, never a grace period:
+  # a stale `live` deploy must never be reported as the pushed commit's result.
+  if [ "$commit" != "$head_sha" ]; then
+    no_match=$((${no_match:-0} + 1))
+    if [ "$no_match" -ge "$MAX_NO_MATCH_POLLS" ]; then
+      echo "❌ no Render deploy was created for $head_sha — autoDeploy off, untracked branch, or ignored paths? (latest deploy $dep_id is $short_commit)" >&2
+      exit 2
+    fi
     echo "[render-watch $i/$MAX_POLLS] latest deploy $dep_id ($short_commit) predates push; waiting for $head_sha"
     sleep "$POLL_SECS"
     continue

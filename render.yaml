@@ -46,10 +46,31 @@ services:
         sync: false
       - key: TTS_PROVIDER
         value: openai
+      # OpenAI TTS has no credential of its own in this manifest unless it is
+      # declared here — without it a blueprint-provisioned service 502s with
+      # "TTS generation failed (openai)" on every synthesis. Set the value in
+      # the Render dashboard (no-op for the already-running service).
+      - key: OPENAI_API_KEY
+        sync: false
+      # Audio MUST NOT be written to the container filesystem on this service:
+      # `plan: free` has no `disk:` block, so the filesystem is ephemeral and
+      # every MP3 dies on restart — while beat.audio_url is persisted in Aura
+      # (stamped ON CREATE by scripts/upload_paris.py) and the generate routes
+      # short-circuit on that sticky URL, so the loss is unrecoverable and every
+      # GET /api/v1/audio/files/{key} 404s forever. Durable object storage (R2)
+      # is the only correct backend here; credentials are set in the dashboard.
       - key: AUDIO_STORAGE
-        value: local
-      - key: AUDIO_STORAGE_PATH
-        value: audio_store
+        value: r2
+      - key: R2_ENDPOINT_URL
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_PUBLIC_URL
+        sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: GITHUB_TOKEN

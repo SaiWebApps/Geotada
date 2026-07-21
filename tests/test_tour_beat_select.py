@@ -951,6 +951,36 @@ def test_phase7_closing_reorder_no_op_for_short_stops():
     assert tuple(b.id for b in out.poi_beats[-1].beats) == ("only",)
 
 
+def test_phase7_closing_reorder_skips_beatless_ab_destination_sentinel():
+    """A→B routes append a beatless synthesized-destination sentinel as the LAST
+    plan. Reordering must target the last stop WITH beats (the real terminal),
+    and must preserve the sentinel — otherwise the tour ends mid-fact, the exact
+    Phase-7 defect this function exists to prevent."""
+    real_stop = POIBeats(
+        poi_id="final",
+        poi_name="Final",
+        ordering_strategy="narrative_function",
+        beats=(
+            _beat("c", narrative_function="callback", script_body="A wrap-up sentence."),
+            _beat("a", narrative_function="establishing", script_body="A factoid."),
+            _beat("b", narrative_function="deepen", script_body="Another factoid."),
+        ),
+    )
+    sentinel = POIBeats(
+        poi_id="__end_b__48.860000_2.340000",
+        poi_name="Destination",
+        ordering_strategy="narrative_function",
+        beats=(),
+    )
+    seq = BeatSequence(poi_beats=(real_stop, sentinel))
+    out = reorder_final_stop_for_closing(seq)
+    assert tuple(b.id for b in out.poi_beats[0].beats) == ("a", "b", "c")
+    # The sentinel survives, still last and still beatless.
+    assert len(out.poi_beats) == 2
+    assert out.poi_beats[-1].poi_id == "__end_b__48.860000_2.340000"
+    assert out.poi_beats[-1].beats == ()
+
+
 def test_phase7_b8_lite_does_not_overcollapse_complementary_pdv_addresses():
     """Two PdV addresses with the same lens but distinct content must NOT merge.
 

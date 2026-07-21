@@ -210,11 +210,40 @@ editor in the workbench.
 | C6 | Empty/glue-only stop | every stop has ≥1 substantive (non-glue) sentence | zero | **BLOCKER** |
 | C7 | Time-budget overrun | walk + **stationary** listening ≤ the err-short total | within budget | **BLOCKER** |
 | **C7b** | **Leg audio outruns its walk** | walk-concurrent narration vs the walk it rides | ≤ the walk (the smaller of `total_walk_seconds` / `Σ leg_seconds`) | **BLOCKER** |
-| **C8** | **Gorging** — the inverse of C1 | words per stop | ≤ `GORGE_MAX_WORDS_PER_STOP` (750) | **BLOCKER** |
+| **C8** | **Gorging** — the inverse of C1 | words per stop | ≤ `GORGE_MAX_WORDS_PER_STOP` (750) | **BLOCKER** — the number is the enforced threshold; the principle it approximates is below |
 | C9 | Sentence length for the ear | `mean_sentence_words` (reuse `narration_quality`) | ≤ 15 (sourced) | WARN |
 | C10 | Opens with a look-cue, not a bare fact | first sentence of each stop prompts observation | every stop | WARN (G1 judges semantically) |
 | C11 | Date density for the ear | `year_density` per 100w (reuse `narration_quality`) | report + WARN on outliers | WARN |
 | C12 | Stops close enough to deserve a human glance | haversine distance between consecutive anchors | ≥ `MIN_STOP_SEPARATION_M` | WARN — demoted from BLOCKER 2026-07-19; see §5, distance alone cannot distinguish "the same place told twice" from two genuinely distinct, adjacent landmarks (the gold-text stops, §1, sit 8.4 m apart). The check that actually catches the former is semantic, G4 |
+
+#### C8's number vs. the principle it approximates (2026-07-20)
+
+**The 750-word cap is the enforced threshold and is not changing here.** But
+a live-run finding (`GENERATION-SAMPLES-2026-07-20.md` §3, NYC-A / Washington
+Square, 1340 words in a single stop) surfaced what the number is a proxy
+*for*. Two independent end-user-advocate reviewers did a full listening
+walkthrough of that stop, reconciled by a judge who re-verified every quote
+against the source file. Their finding: word count is the symptom, not the
+disease. The stop's first ~600 words (the park and arch, everything visible
+from where the listener is standing) would pass C8 comfortably on their own;
+what pushes it to 1340 is seven further vignettes, each anchored to a
+different off-site address the listener cannot see and will never walk to,
+narrated from the same fixed GPS point. Trimming prose to fit under 750
+would satisfy the check while leaving that defect intact — the listener
+would still be pointed at unseeable addresses, just in fewer words.
+
+The principle C8's 750-word number approximates: **one stop should
+correspond to one place the walker can actually see, narrated while their
+gaze stays employed** — not multiple physically distant addresses narrated
+from a single fixed point. Word count is a cheap, mechanical stand-in for
+that; it is a real and useful stand-in (it caught this exact stop), but a
+fix aimed only at the number (prose-trimming) is not the same as a fix aimed
+at the principle (graph re-packaging: splitting an over-stuffed stop into a
+short walking route with real legs between the places it covers, per
+`GENERATION-SAMPLES-2026-07-20.md`'s root-cause refinement). Do not read
+this as a reason to raise, lower, or waive the 750 threshold — it stays as
+specified above; this is a note on what future work should fix *toward*
+when a stop trips it.
 
 ### GATE — semantic, model-judged
 
@@ -447,6 +476,20 @@ already being made, so it adds no new spend tier.
 - §6 — `02b-calibration-scorecard.md` and the modules cited.
 
 **External professional practice (Rick Steves, Detour, museum audio-guide style
-guides, broadcast writing-for-the-ear) is NOT yet folded in.** Research is in flight;
-§5 marks exactly which thresholds are waiting on it. This document is honest about
-that gap rather than filling it with plausible-sounding numbers.
+guides, broadcast writing-for-the-ear) already exists, in a sibling folder never
+cross-linked from here until now: `specs/2026-07-16-tour-craft/`.** It was written
+2026-07-17 — three days before this document — and contains a sourced literature
+review (`GOOD-TOURS-RESEARCH.md`: VoiceMap, Tilden, NAI, Ira Glass, Method Writing,
+and others, each claim attributed to a live-fetched source URL), six full,
+attributed, sentence-by-sentence breakdowns of real Rick Steves transcript stops
+(`GREAT-STOP-EXAMPLES.md`), and a 10-point reviewer checklist with a kill-switch
+(`RUBRIC.md`). §5's externally-sourced-thresholds table already draws numbers from
+this research (Musa Guide, Nubart). This document is honest about its own
+provenance (§8) rather than filling gaps with plausible-sounding numbers; the gap
+was in cross-linking, not in the research existing.
+`GENERATION-SAMPLES-2026-07-20.md` (this folder) is a live-generation calibration
+point measured against both this standard and that research — four real, good,
+validated tours (accurate, engaging, zero fabrication found by any reviewer)
+that are the working baseline reference set, with named structural issues
+(not content-quality issues) being iterated on, and short of this document's
+own stricter ≥8/10 bar on both.

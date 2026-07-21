@@ -26,7 +26,7 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
-from src.tour.generation import GLUE_NAV, GLUE_REFLECTION
+from src.tour.generation import _END_B_SENTINEL_PREFIX, GLUE_NAV, GLUE_REFLECTION
 from src.tour.narration_quality import score_narration
 from src.tour.quality_rubric import (
     BALANCE_MAX_SHARE,
@@ -486,6 +486,90 @@ def test_c6_empty_stop_fires_on_a_stop_with_zero_words() -> None:
     assert empties[0].severity is Severity.BLOCKER
     assert empties[0].stop_idx == 1
     assert not report.passed
+
+
+def test_c6_fires_when_the_stop_rendered_no_sentence_at_all() -> None:
+    """GUARDS: the check being UNREACHABLE for the exact condition it names.
+
+    The fixture above renders an EMPTY-TEXT Sentence for stop 1, which is the only
+    shape the old loop could see: it iterated ``words_by_stop``, a dict keyed by the
+    stop_idx of sentences that EXIST. A stop that rendered NO Sentence at all has no
+    key there, so a completely silent stop — the walker routed somewhere and hearing
+    nothing — scored PASS and was served.
+
+    This fixture OMITS stop 1's Sentence entirely (not ``_sentence("", 1)``) and
+    gives that POI 3 corpus beats, below STARVE_MIN_BEATS, so C1 cannot mask the
+    hole by firing in C6's place.
+
+    UNDO: revert the C6 loop to ``for stop_idx, words in sorted(words_by_stop.items())``
+    and this goes RED (zero findings, report.passed True).
+    """
+    assert STARVE_MIN_BEATS == 5  # the fixture's 3 beats must stay under C1's bar
+
+    silent = _spoi("silent-stop", tier=3, name="Silent Stop")
+    report = score_tour(
+        _script(
+            [_sentence(_well_formed(40, prefix="sil"), 0)],  # nothing for stop 1
+            [_spoi("heard", tier=3), silent],
+        ),
+        _route([_poi("heard", tier=3), _poi("silent-stop", tier=3)]),
+        {"heard": _beats("heard", 3), "silent-stop": _beats("silent-stop", 3)},
+    )
+
+    empties = [f for f in report.findings if f.check == "C6-empty-stop"]
+    assert len(empties) == 1, _checks(report)
+    assert empties[0].severity is Severity.BLOCKER
+    assert empties[0].stop_idx == 1
+    assert empties[0].poi_name == "Silent Stop"
+    assert "C1-starved" not in _checks(report), "C1 must not be what caught this"
+    assert not report.passed
+
+
+def test_c6_does_not_fire_on_the_content_free_pinned_endpoint_sentinel() -> None:
+    """GUARDS: a false BLOCKER on the pinned-endpoint sentinel.
+
+    ``selection._materialize_fixed_end_b`` materialises a user-pinned endpoint that
+    has no POI of its own as ``__end_b__<lat>_<lng>`` (generation.py's
+    ``_END_B_SENTINEL_PREFIX``). It is content-free BY DESIGN, so driving C6 off the
+    roster must not turn every pinned-endpoint tour into a BLOCKER.
+
+    UNDO: delete the ``poi.id.startswith(_END_B_SENTINEL_PREFIX)`` skip and this
+    goes RED.
+    """
+    sentinel = _spoi(f"{_END_B_SENTINEL_PREFIX}48.86_2.36", tier=3, name="Destination")
+    report = score_tour(
+        _script(
+            [_sentence(_well_formed(40, prefix="pin"), 0)],  # nothing for the sentinel
+            [_spoi("real-stop", tier=3), sentinel],
+        ),
+        _route([_poi("real-stop", tier=3)]),
+        {},
+    )
+
+    assert "C6-empty-stop" not in _checks(report)
+    assert report.passed
+
+
+def test_stats_n_stops_counts_the_roster_not_the_rendered_stops() -> None:
+    """GUARDS: the editor's only signal that a stop went missing.
+
+    ``n_stops`` was ``len(words_by_stop)``, which under-reports by exactly the stops
+    that rendered nothing — so the one tour where the count matters is the one where
+    it lies. A 2-stop tour with a silent stop must still report 2.
+
+    UNDO: set ``stats["n_stops"] = len(words_by_stop)`` again and this goes RED.
+    """
+    report = score_tour(
+        _script(
+            [_sentence(_well_formed(40, prefix="ns"), 0)],
+            [_spoi("ns-a", tier=3), _spoi("ns-b", tier=3)],
+        ),
+        _route([_poi("ns-a", tier=3), _poi("ns-b", tier=3)]),
+        {},
+    )
+
+    assert report.stats["n_stops"] == 2
+    assert report.stats["words_by_stop"] == {0: 40}
 
 
 # ---------------------------------------------------------------------------

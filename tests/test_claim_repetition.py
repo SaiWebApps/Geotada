@@ -22,20 +22,24 @@ from __future__ import annotations
 import pytest
 
 from src.tour.claim_repetition import (
+    MAX_CANDIDATE_PAIRS,
     SHARED_ENTITY,
     SPARSE_ENTITIES,
     CandidatePair,
     HaikuRedundancyJudge,
     NarrationSentence,
+    check_tour_repetition,
     cluster_pairs,
     detect_claim_repetition,
     four_gram_jaccard,
     generate_candidates,
     lexical_baseline_pairs,
     normalize_entity,
+    repetition_findings,
     sentences_from_beats,
+    sentences_from_script,
 )
-from src.tour.contract import BeatRef
+from src.tour.contract import BeatRef, Script, ScriptPOI, Sentence, TourInput, ValidationReport
 
 # --------------------------------------------------------------------------------------
 # Real defect data - the four Henri IV nickname glosses that shipped in
@@ -578,6 +582,40 @@ def test_module_imports_without_api_key(monkeypatch: pytest.MonkeyPatch) -> None
     assert report.clusters == ((0, 1, 2, 3),)
 
 
+def test_money_guard_covers_the_claim_repetition_judge_dependency() -> None:
+    """The guard must neutralise the judge on the path the ROUTE actually takes:
+    ``src/api/dependencies.py::get_claim_repetition_judge``, not just the module
+    attribute the earlier guard test asserts on directly.
+
+    UNDO: change ``get_claim_repetition_judge`` to construct
+    ``HaikuRedundancyJudge`` via a module-level ``from ... import HaikuRedundancyJudge``
+    binding (invisible to conftest's monkeypatch of the source module, exactly the bug
+    ``test_trips_route_holds_no_unpatchable_corrector_binding`` guards for the
+    corrector) -> this goes RED because the real billing SDK gets constructed.
+    """
+    from src.api.dependencies import get_claim_repetition_judge
+
+    judge = get_claim_repetition_judge()
+    assert type(judge).__name__ != "HaikuRedundancyJudge", (
+        "the route builds the REAL Haiku redundancy judge under the money guard — "
+        "`make test` bills"
+    )
+    assert judge.same_fact("a", "b") is False
+
+
+def test_trips_route_holds_no_unpatchable_redundancy_judge_binding() -> None:
+    """Structural guard against the from-import bug that already bit this codebase
+    once for the corrector (test_compose_corrector_optin.py). A module-level
+    ``from X import HaikuRedundancyJudge`` in the route would be invisible to a
+    monkeypatch of X, so the money guard could never reach it."""
+    import src.api.routes.trips as trips_route
+
+    assert not hasattr(trips_route, "HaikuRedundancyJudge"), (
+        "src/api/routes/trips.py binds HaikuRedundancyJudge at import time — the "
+        "conftest money guard cannot patch it; resolve it through get_claim_repetition_judge"
+    )
+
+
 def test_money_guard_covers_the_redundancy_judge() -> None:
     """The autouse guard in conftest must neutralise this FIFTH billing client.
 
@@ -595,3 +633,287 @@ def test_money_guard_covers_the_redundancy_judge() -> None:
     )
     # The offline stand-in must not invent verdicts.
     assert judge.same_fact("a", "b") is False
+
+
+# --------------------------------------------------------------------------------------
+# The production wiring — Script -> NarrationSentence, the G4 cross-stop entry point,
+# the cost cap, and the API-response-shaped findings. See dependencies.py /
+# routes/trips.py for where these are actually called.
+# --------------------------------------------------------------------------------------
+
+
+def _sentence(text: str, stop_idx: int, source_id: str, *, source_type: str = "beat") -> Sentence:
+    return Sentence(text=text, source_id=source_id, source_type=source_type, stop_idx=stop_idx)
+
+
+def _script(sentences: list[Sentence], n_pois: int = 2) -> Script:
+    """Minimal real Script fixture — mirrors tests/test_tour_quality_rubric.py's
+    ``_script`` helper (same house pattern), sized to whatever stop_idx range the
+    caller's sentences use."""
+    pois = tuple(
+        ScriptPOI(id=f"poi-{i}", name=f"POI {i}", tier=5, lat=48.85 + i * 0.003, lng=2.35)
+        for i in range(n_pois)
+    )
+    return Script(
+        city_slug="paris",
+        generated_at="2026-07-19T00:00:00Z",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris"),
+        total_audio_seconds=1800,
+        total_walking_seconds=300,
+        total_walk_distance_m=400,
+        total_planned_seconds=900,
+        selected_pois=pois,
+        lens_coverage={},
+        script=tuple(sentences),
+        validation=ValidationReport(),
+    )
+
+
+def _beat(bid: str, poi_id: str, entities: tuple[str, ...]) -> BeatRef:
+    return BeatRef(id=bid, poi_id=poi_id, entities=entities)
+
+
+def test_sentences_from_script_keeps_only_beat_sourced_text() -> None:
+    """Glue/arith lines are narrator connective tissue, never a claim - they must never
+    reach candidate generation. UNDO: drop the ``source_type != "beat"`` guard in
+    ``sentences_from_script`` -> the glue line below is included -> this goes RED."""
+    script = _script(
+        [
+            _sentence(VG_1, 0, "b1"),
+            _sentence("Now, let's walk on to the next stop.", 0, "glue-1", source_type="glue"),
+            _sentence(VG_2, 1, "b2"),
+        ]
+    )
+    beats_by_poi = {
+        "poi-0": (_beat("b1", "poi-0", ("Henri IV",)),),
+        "poi-1": (_beat("b2", "poi-1", ("Henri IV", "Vert-Galant")),),
+    }
+
+    sentences = sentences_from_script(script, beats_by_poi)
+
+    assert [s.text for s in sentences] == [VG_1, VG_2]
+    assert all(s.beat_id in ("b1", "b2") for s in sentences)
+
+
+def test_sentences_from_script_maps_entities_and_stringifies_stop_idx() -> None:
+    """Entities come from the corpus BeatRef, looked up by the sentence's source_id -
+    NOT recomputed. stop_id round-trips to the original int stop_idx via ``str``/``int``.
+    UNDO: return ``()`` unconditionally for entities -> this goes RED."""
+    script = _script([_sentence(VG_3, 2, "b3")], n_pois=3)
+    beats_by_poi = {"poi-2": (_beat("b3", "poi-2", ("Vert-Galant",)),)}
+
+    (sentence,) = sentences_from_script(script, beats_by_poi)
+
+    assert sentence.entities == ("Vert-Galant",)
+    assert sentence.stop_id == "2"
+    assert int(sentence.stop_id) == 2
+
+
+def test_sentences_from_script_tolerates_a_beat_id_missing_from_the_corpus_map() -> None:
+    """A sentence whose source_id isn't in beats_by_poi (stale/edited corpus) must not
+    crash - it degrades to no entities rather than raising. UNDO: replace
+    ``beats_by_id.get(...)`` with ``beats_by_id[...]`` -> this raises KeyError -> RED."""
+    script = _script([_sentence(VG_1, 0, "unknown-beat-id")])
+
+    sentences = sentences_from_script(script, {"poi-0": ()})
+
+    assert sentences[0].entities == ()
+
+
+def test_sentences_from_script_logs_loudly_on_a_missing_beat_id(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Defect 5: a beat id absent from beats_by_poi degrades to entities=() SILENTLY
+    otherwise - such a sentence then generates NO candidates at all under
+    pair_sparse=False (the production setting), invisibly under-checking a tour. This
+    must at least show up in the logs. UNDO: delete the ``_logger.warning(...)`` call
+    in ``sentences_from_script`` -> no warning record is emitted -> RED."""
+    script = _script(
+        [_sentence(VG_1, 0, "unknown-beat-id"), _sentence(VG_2, 0, "another-unknown-id")]
+    )
+
+    with caplog.at_level("WARNING", logger="src.tour.claim_repetition"):
+        sentences_from_script(script, {"poi-0": ()})
+
+    warnings = [r for r in caplog.records if r.levelname == "WARNING"]
+    assert warnings, "expected a WARNING log record for the missing beat ids"
+    joined = " ".join(r.getMessage() for r in warnings)
+    assert "unknown-beat-id" in joined
+    assert "2" in joined  # the missing-id count
+
+
+def test_check_tour_repetition_is_genuinely_cross_stop() -> None:
+    """The load-bearing end-to-end regression: two DIFFERENT stops narrate the exact
+    Vert-Galant defect, and ``check_tour_repetition`` must find them as ONE cluster
+    despite them never sharing a stop_idx. UNDO: hardcode ``cross_stop=False`` inside
+    ``check_tour_repetition`` -> the two stops are scored in separate groups, no
+    candidate pair is ever proposed between them, and the cluster disappears -> RED.
+    """
+    script = _script(
+        [
+            _sentence(VG_1, 0, "b1"),
+            _sentence(VG_2, 1, "b2"),  # a DIFFERENT stop_idx, same underlying fact
+        ]
+    )
+    beats_by_poi = {
+        "poi-0": (_beat("b1", "poi-0", ("Henri IV",)),),
+        "poi-1": (_beat("b2", "poi-1", ("Henri IV", "Vert-Galant")),),
+    }
+
+    report = check_tour_repetition(script, beats_by_poi, LabelledStubJudge())
+
+    assert report.clusters == ((0, 1),), report.clusters
+    assert not report.passed()
+
+
+def test_check_tour_repetition_caps_judge_calls_and_reports_the_drop() -> None:
+    """COST: many sentences sharing one entity must never cost more than
+    ``max_candidates`` judge calls, and the drop must be visible on the report - not
+    silently under-checked. UNDO: pass ``max_candidates=None`` (or drop the argument
+    entirely) from ``check_tour_repetition`` -> every one of the 45 candidate pairs
+    below gets judged -> this goes RED."""
+    n = 10  # C(10, 2) = 45 possible pairs, all sharing "Henri IV"
+    sentences = [_sentence(f"Fact number {i} about Henri IV.", i, f"b{i}") for i in range(n)]
+    script = _script(sentences, n_pois=n)
+    beats_by_poi = {f"poi-{i}": (_beat(f"b{i}", f"poi-{i}", ("Henri IV",)),) for i in range(n)}
+
+    class _CountingJudge:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def same_fact(self, a: str, b: str) -> bool:
+            self.calls += 1
+            return False
+
+    judge = _CountingJudge()
+    report = check_tour_repetition(script, beats_by_poi, judge, max_candidates=5)
+
+    assert judge.calls == 5
+    assert report.judge_calls == 5
+    assert report.candidates_dropped == 45 - 5
+
+
+def test_check_tour_repetition_stratifies_across_all_stops() -> None:
+    """THE Defect-1 regression: MEASURED on three real dev-graph tours (2026-07-19,
+    ``make tour-build`` against the live Paris corpus, $0/MockGlueClient), a raw
+    stream-order PREFIX of the candidate list is dominated by the lowest-indexed
+    stop — one real 6-stop tour sampled ZERO of its 200 judged pairs with an a-stop
+    >= 1, all 200 anchored in stop 0. This fixture reproduces that shape: one big
+    "opening" stop (12 sentences, the lowest indices) plus nine small stops (2
+    sentences each), all sharing one entity so every stop pair is a candidate —
+    exactly the entity-dense cross-stop shape that blew up on the real corpus.
+
+    Asserts the FIX (every stop represented in the sample) AND that the fixture
+    actually discriminates: the naive prefix baseline this replaces really would
+    have starved stops on this exact input, so the test cannot pass vacuously.
+
+    UNDO: replace the ``_stratify_candidates`` call in ``detect_claim_repetition``
+    with a raw ``candidates[:max_candidates]`` slice -> ``a_stops_sampled`` collapses
+    to a small low-numbered set and the fix assertion goes RED.
+    """
+    n_stops = 10
+    sentences: list[NarrationSentence] = []
+    idx = 0
+    for stop in range(n_stops):
+        count = 12 if stop == 0 else 2  # stop 0 = the real corpus's dense opening stop
+        for i in range(count):
+            sentences.append(
+                NarrationSentence(
+                    f"Sentence {idx} about the Common Entity, detail {i}.",
+                    stop_id=str(stop),
+                    beat_id=f"b{idx}",
+                    entities=("Common Entity",),
+                    index=idx,
+                )
+            )
+            idx += 1
+    sentences_t = tuple(sentences)
+    stop_of = {s.index: s.stop_id for s in sentences_t}
+
+    # The naive baseline this replaces, run over the SAME raw stage-1 output, must
+    # actually fail to cover every stop — otherwise this fixture doesn't discriminate.
+    raw_candidates = generate_candidates(sentences_t, cross_stop=True, pair_sparse=False)
+    naive_prefix = raw_candidates[:60]
+    naive_a_stops = {int(stop_of[c.a]) for c in naive_prefix}
+    assert naive_a_stops != set(range(n_stops)), (
+        "fixture doesn't discriminate: the naive prefix baseline already covered "
+        "every stop, so it cannot demonstrate the stratification fix"
+    )
+
+    report = detect_claim_repetition(
+        sentences_t, LabelledStubJudge({}), cross_stop=True, pair_sparse=False, max_candidates=60
+    )
+
+    a_stops_sampled = {int(stop_of[c.a]) for c in report.candidates}
+    assert a_stops_sampled == set(range(n_stops)), (
+        f"stops missing from the judged sample entirely: "
+        f"{set(range(n_stops)) - a_stops_sampled}"
+    )
+    assert len(report.candidates) == 60
+    assert report.candidates_dropped == len(raw_candidates) - 60
+
+
+def test_max_candidate_pairs_constant_is_a_real_positive_bound() -> None:
+    """Pins the production constant so a future edit notices it changed: it must stay a
+    small, positive, finite budget - not accidentally reverted to ``None``/unbounded."""
+    assert isinstance(MAX_CANDIDATE_PAIRS, int)
+    assert 0 < MAX_CANDIDATE_PAIRS < 10_000
+
+
+def test_repetition_findings_renders_one_per_cluster_with_count() -> None:
+    """Shapes a RepetitionReport's clusters into API-response-ready findings: one
+    finding per cluster (not per pair), and the check name is the standard's G4 id.
+    ``_vert_galant_stop``'s stop_id ("pont-neuf") isn't digit-shaped, so stop_idx is
+    None here — the digit-recovery path is covered separately below. UNDO: emit one
+    finding per PAIR instead of per CLUSTER -> len() below goes from 1 to 6 -> RED."""
+    sentences = _vert_galant_stop()
+    report = detect_claim_repetition(sentences, LabelledStubJudge())
+
+    findings = repetition_findings(report)
+
+    assert len(findings) == 1
+    finding = findings[0]
+    assert finding.check == "G4-repetition"
+    assert finding.stop_idx is None
+    assert "4 times" in finding.message
+
+
+def test_repetition_findings_recovers_stop_idx_from_stringified_stop_id() -> None:
+    """The production path sets ``stop_id=str(stop_idx)`` (see sentences_from_script) -
+    confirms the round-trip actually recovers an int stop_idx for the API response,
+    across TWO different stops. UNDO: use ``stop_idxs[-1]`` (highest) instead of
+    ``stop_idxs[0]`` -> this asserts 2, not 4 -> RED."""
+    sentences = (
+        NarrationSentence(VG_1, stop_id="4", beat_id="b1", entities=("Henri IV",), index=0),
+        NarrationSentence(
+            VG_2, stop_id="7", beat_id="b2", entities=("Henri IV", "Vert-Galant"), index=1
+        ),
+    )
+    report = detect_claim_repetition(sentences, LabelledStubJudge(), cross_stop=True)
+
+    (finding,) = repetition_findings(report)
+    assert finding.stop_idx == 4
+    assert "stop(s) [4, 7]" in finding.message
+
+
+def test_repetition_findings_is_empty_when_nothing_is_redundant() -> None:
+    """No cluster, no finding - a clean tour must not manufacture a G4 blocker."""
+    sentences = (
+        NarrationSentence(
+            "Henri IV signed the Edict of Nantes in 1598.",
+            stop_id="0",
+            beat_id="b1",
+            entities=("Henri IV",),
+            index=0,
+        ),
+        NarrationSentence(
+            "Henri IV was stabbed by Ravaillac.",
+            stop_id="0",
+            beat_id="b2",
+            entities=("Henri IV",),
+            index=1,
+        ),
+    )
+    report = detect_claim_repetition(sentences, LabelledStubJudge())
+
+    assert repetition_findings(report) == ()

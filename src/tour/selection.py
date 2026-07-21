@@ -1753,10 +1753,26 @@ def apply_co_located_demotion(
     new_selected = [p for p in selected if p.id not in demoted_to_host]
     demoted_beats: dict[str, tuple[BeatRef, ...]] = {}
     for demoted_id, host_id in demoted_to_host.items():
+        # Fold beats into the ULTIMATE survivor, never an intermediate host that is
+        # itself demoted (a 3-way chain would otherwise orphan a POI's whole content:
+        # nothing ever reads demoted_beats for a POI that left the route).
+        survivor_id = _resolve_demotion_host(host_id, demoted_to_host)
         beats = snapshot.beats_for(demoted_id)
-        merged = demoted_beats.get(host_id, ()) + tuple(beats)
-        demoted_beats[host_id] = merged
+        demoted_beats[survivor_id] = demoted_beats.get(survivor_id, ()) + tuple(beats)
     return new_selected, demoted_beats
+
+
+def _resolve_demotion_host(host_id: str, demoted_to_host: dict[str, str]) -> str:
+    """Follow a co-located demotion host-chain to its ultimate survivor — a host that
+    is not itself demoted. With 3+ co-located POIs the pairwise picks can chain
+    (A→B, B→C), so A's beats must land on C, not on the demoted intermediate B.
+    Cycle-safe via ``seen`` (``_pick_demotion_host`` is antisymmetric, so cycles
+    cannot form) — kept for parity with ``_resolve_twin_host``."""
+    seen: set[str] = set()
+    while host_id in demoted_to_host and host_id not in seen:
+        seen.add(host_id)
+        host_id = demoted_to_host[host_id]
+    return host_id
 
 
 def _pick_demotion_host(a: POI, b: POI) -> tuple[POI, POI]:

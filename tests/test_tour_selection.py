@@ -1421,6 +1421,56 @@ def test_demote_co_located_pois():
     )
 
 
+def test_chained_demotion_never_orphans_beats_on_a_demoted_host():
+    """3 co-located POIs whose pairwise picks CHAIN (small→mid, mid→big).
+
+    ``demoted_beats`` is only ever read for POIs still in ``route.pois``
+    (``build_poi_beat_plans`` / ``build_poi_extra_beats``), so a key pointing at
+    an intermediate host that itself got demoted silently deletes that POI's
+    entire content from the tour. Every key must be a survivor.
+    """
+    from src.tour.selection import apply_co_located_demotion
+
+    small = _poi("wisteria", tier=4, lat=48.85550, lng=2.36560, areas=("Le Marais",), beat_count=1)
+    mid = _poi("marigold", tier=4, lat=48.85555, lng=2.36563, areas=("Le Marais",), beat_count=2)
+    big = _poi("thornbury", tier=4, lat=48.85558, lng=2.36566, areas=("Le Marais",), beat_count=3)
+
+    def _beat(bid: str, poi_id: str, sub: str | None = None) -> BeatRef:
+        return BeatRef(
+            id=bid,
+            poi_id=poi_id,
+            sub_location=sub,
+            narrative_function="establishing",
+            active_status="active",
+        )
+
+    snap = _snap(
+        [small, mid, big],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={
+            small.id: [_beat("small-1", small.id)],
+            # The middle POI's beats reference BOTH neighbours, so both pairs
+            # (small, mid) and (mid, big) clear the address-overlap gate.
+            mid.id: [
+                _beat("mid-1", mid.id, "wisteria-annex"),
+                _beat("mid-2", mid.id, "thornbury-wing"),
+            ],
+            big.id: [_beat("big-1", big.id), _beat("big-2", big.id), _beat("big-3", big.id)],
+        },
+    )
+    new_selected, demoted_beats = apply_co_located_demotion([small, mid, big], snap)
+
+    survivors = {p.id for p in new_selected}
+    assert survivors == {"thornbury"}
+    orphans = set(demoted_beats) - survivors
+    assert not orphans, f"demoted_beats keyed on POIs that left the route: {orphans}"
+    merged_ids = {b.id for b in demoted_beats["thornbury"]}
+    assert "small-1" in merged_ids, (
+        f"smallest POI's beat must survive in the ultimate host's pool; got {merged_ids}"
+    )
+    assert {"mid-1", "mid-2"} <= merged_ids
+
+
 def test_no_demotion_when_distance_above_threshold():
     """Same address overlap signal but well past the proximity gate → no demotion."""
     from src.tour.selection import DEMOTION_PROXIMITY_M, apply_co_located_demotion
@@ -2365,3 +2415,108 @@ def test_three_way_name_twins_lose_no_beats():
     survivor_id = new_selected[0].id
     merged_poi_ids = {beat.poi_id for beat in merged.get(survivor_id, ())}
     assert merged_poi_ids == {"a", "c"}, f"a dropped twin's beats were lost: {merged_poi_ids}"
+
+
+# ---------------------------------------------------------------------------
+# C12 enforcement: MIN_STOP_SEPARATION_M guard in select_route's greedy loop.
+# 17m (Palais de Justice / Conciergerie, a MEASURED defect) must never seat
+# both; 86m (Conciergerie / Sainte-Chapelle, a MEASURED legitimate pair) must
+# seat both. Fillers are spaced >50m apart from each other and from the pair
+# so this test isolates the guard itself, not the fill-pass/density-gate
+# interaction (see the SELF-ACCOUNT for that separate, larger finding).
+# ---------------------------------------------------------------------------
+
+_SEP_START = (48.8555, 2.3656)
+_SEP_PAIR_BASE = (_SEP_START[0] - 0.0020, _SEP_START[1])  # ~222m south of start
+_SEP_17M_OFFSET = 0.00015288467300032285  # haversine-calibrated: exactly 17.0m
+_SEP_86M_OFFSET = 0.00077341658108665  # haversine-calibrated: exactly 86.0m
+
+
+def _sep_fillers() -> list[POI]:
+    """4 low-score anchor candidates >50m apart from each other, to clear
+    the Phase 6 density gate without competing with the near/far pair
+    (tier 3, minimal 3 beats — well below the pair's tier 5 / 20 beats)."""
+    return [
+        POI(
+            id=f"sep-filler-{i}",
+            name=f"sep-filler-{i}",
+            tier=3,
+            poi_role="stop",
+            lat=_SEP_START[0] + 0.0005 * (i + 1),
+            lng=_SEP_START[1] + 0.0005 * (i + 1),
+            areas=("Le Marais",),
+            beat_count=3,
+        )
+        for i in range(4)
+    ]
+
+
+def _sep_pair(offset: float) -> tuple[POI, POI]:
+    near_a = _poi(
+        "sep-near-a", tier=5, lat=_SEP_PAIR_BASE[0], lng=_SEP_PAIR_BASE[1],
+        areas=("Le Marais",), beat_count=20,
+    )
+    near_b = _poi(
+        "sep-near-b", tier=5, lat=_SEP_PAIR_BASE[0] + offset, lng=_SEP_PAIR_BASE[1],
+        areas=("Le Marais",), beat_count=20,
+    )
+    return near_a, near_b
+
+
+def test_selection_does_not_filter_close_but_distinct_pois():
+    """REFUTATION GUARD. A minimum stop-separation filter in ``select_route`` was tried
+    on 2026-07-19 and is REFUTED — do not re-add it. Measured against the real corpora:
+    48 Paris pairs and 46 New York pairs sit under 50 m, and they are two different
+    populations. True duplicates cluster at 0.0-1.7 m (NYSE/Wall Street, Place/Square des
+    Abbesses, Flatiron District/Flatiron Building) and are CORPUS geocoding defects.
+    Genuinely distinct landmarks start at ~8 m: Pantheon/Bibliotheque Sainte-Genevieve
+    (14.9 m), Concorde/Jeu de Paume (14.3 m), and -- decisively -- Hotel Le Meurice /
+    Angelina (8.4 m) and Galignani / Angelina (11.8 m).
+
+    Le Meurice and Galignani are the POIs in the product owner's OWN gold text
+    (specs/2026-07-19-tour-quality-standard/01-standard.md section 1, which narrates
+    "At number 224, the English bookshop Galignani..." with Le Meurice at 228). A 50 m
+    filter makes the gold-standard stop structurally unbuildable.
+
+    Two further defects were proven when the guard was live: it is first-come-wins, so it
+    drops the BEST stop rather than the redundant one (a tier-5 POI with 20 beats lost to
+    an arbitrary filler seated first), and it left ``_apply_fill_pass`` /
+    ``_apply_endpoint_pull`` unguarded, so it did not even prevent the defect it targeted.
+
+    The real defect it was written for -- Conciergerie narration describing the Palais de
+    Justice the listener just left -- is SEMANTIC REPETITION (check G4), not proximity.
+    Distance cannot distinguish "one building told twice" from "two institutions on one
+    street"; see [[stop-separation-guard-refuted]].
+    """
+    near_a, near_b = _sep_pair(_SEP_17M_OFFSET)
+    assert haversine_m(near_a.lat, near_a.lng, near_b.lat, near_b.lng) == pytest.approx(
+        17.0, abs=0.01
+    )
+    snap = _snap(
+        [near_a, near_b, *_sep_fillers()], area_types={"Le Marais": "neighborhood"}
+    )
+    inp = TourInput(start=_SEP_START, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    ids = {p.id for p in route.pois}
+    seated = ids & {"sep-near-a", "sep-near-b"}
+    assert seated == {"sep-near-a", "sep-near-b"}, (
+        "selection must NOT silently drop a close-but-distinct POI -- that deletes real "
+        f"landmarks (Le Meurice/Galignani are 8-12 m apart); got {seated}"
+    )
+
+
+def test_min_stop_separation_guard_seats_both_of_an_86m_pair():
+    near_a, near_b = _sep_pair(_SEP_86M_OFFSET)
+    assert haversine_m(near_a.lat, near_a.lng, near_b.lat, near_b.lng) == pytest.approx(
+        86.0, abs=0.01
+    )
+    snap = _snap(
+        [near_a, near_b, *_sep_fillers()], area_types={"Le Marais": "neighborhood"}
+    )
+    inp = TourInput(start=_SEP_START, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    ids = {p.id for p in route.pois}
+    seated = ids & {"sep-near-a", "sep-near-b"}
+    assert seated == {"sep-near-a", "sep-near-b"}, (
+        f"86m pair (legitimate, distinct) must seat BOTH, got {seated}"
+    )

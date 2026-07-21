@@ -214,9 +214,12 @@ def verify_faithfulness(
             continue  # nothing to entail against (support = key_claims + script_body
             # below), so a KEYLESS corpus (e.g. London, key_claims=[]) is still gated
             # against its grounded script_body instead of skipping faithfulness.
-        norm = _normalize_for_verbatim(sentence.text)
-        if any(b.script_body and norm in _normalize_for_verbatim(b.script_body) for b in cited):
-            continue  # canonical corpus text, unchanged — trivially faithful
+        if passes_sentence_unit_shortcut(sentence.text, cited):
+            continue  # canonical corpus text, unchanged — trivially faithful.
+            # WHOLE sentence-units only (never plain substring): a hedge-strip
+            # ("According to lore, X" -> "X") or a negation-truncation ("never
+            # named it after himself" -> "named it after himself") is a substring
+            # of the body but flips its meaning — those must be entailment-checked.
         support = tuple(
             piece
             for b in cited

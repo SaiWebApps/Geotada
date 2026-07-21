@@ -119,6 +119,20 @@ def _script_hash(text: str) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
 
+def _is_stale(stored_hash: str | None, script_body: str | None) -> bool:
+    """Single source of truth for 'this beat's audio needs regenerating'.
+
+    Stale when there is a script to voice AND either no hash was ever stored
+    (legacy audio predating the hash feature) or the stored hash no longer
+    matches the current script_body. Used by check_audio_status, the
+    generate_beat_audio guard, and the generate_batch selector so the status
+    endpoint and the regeneration paths can never disagree.
+    """
+    if not script_body:
+        return False
+    return not stored_hash or stored_hash != _script_hash(script_body)
+
+
 @dataclass
 class AudioStatus:
     """Status of a beat's audio, including staleness detection."""
@@ -146,15 +160,9 @@ def check_audio_status(session: Session, beat_id: str) -> AudioStatus:
     duration_sec = props.get("duration_sec")
 
     # Check staleness
-    is_stale = False
-    if has_audio:
-        stored_hash = props.get("audio_script_hash", "")
-        current_body = props.get("script_body", "")
-        if stored_hash and current_body:
-            is_stale = stored_hash != _script_hash(current_body)
-        elif not stored_hash and current_body:
-            # Audio exists but no hash stored (generated before this feature)
-            is_stale = True
+    is_stale = has_audio and _is_stale(
+        props.get("audio_script_hash", ""), props.get("script_body", "")
+    )
 
     return AudioStatus(
         beat_id=beat_id,
@@ -196,7 +204,7 @@ def generate_beat_audio(
     existing_url = props.get("audio_url", "")
     stored_hash = props.get("audio_script_hash", "")
     current_hash = _script_hash(script_body)
-    is_stale = stored_hash and stored_hash != current_hash
+    is_stale = _is_stale(stored_hash, script_body)
 
     if existing_url and "placeholder" not in existing_url and not force and not is_stale:
         raise PipelineError(
@@ -222,8 +230,14 @@ def generate_beat_audio(
     except TTSError as e:
         raise PipelineError(f"TTS failed for beat '{beat_id}': {e}") from e
 
-    # Step 4: Upload to storage
-    storage = get_storage(storage_name)
+    # Step 4: Upload to storage. get_storage() is inside the try for the same
+    # reason as get_provider(): a misconfigured storage backend (ValueError) or
+    # an unwritable local path (OSError) must become a PipelineError, never an
+    # uncaught 500.
+    try:
+        storage = get_storage(storage_name)
+    except (StorageError, ValueError, OSError) as e:
+        raise PipelineError(f"Storage failed for beat '{beat_id}': {e}") from e
     key = _build_storage_key(beat_id, poi_name)
     try:
         audio_url = storage.upload(audio_bytes, key)
@@ -307,7 +321,12 @@ def generate_stop_audio(
     except TTSError as e:
         raise PipelineError(f"TTS failed for stop '{stop_key}': {e}") from e
 
-    storage = get_storage(storage_name)
+    # get_storage() is inside the try for the same reason as get_provider():
+    # a misconfigured storage backend must surface as a soft per-stop failure.
+    try:
+        storage = get_storage(storage_name)
+    except (StorageError, ValueError, OSError) as e:
+        raise PipelineError(f"Storage failed for stop '{stop_key}': {e}") from e
     key = _build_stop_storage_key(stop_key, poi_name)
     try:
         audio_url = storage.upload(audio_bytes, key)
@@ -372,12 +391,9 @@ def generate_batch(
         url = record["audio_url"] or ""
         if force or not url or "placeholder" in url:
             beat_ids.append(record["id"])
-        elif (
-            record["script_body"]
-            and record["hash"]
-            and record["hash"] != _script_hash(record["script_body"])
-        ):
-            # Also include stale beats
+        elif _is_stale(record["hash"], record["script_body"]):
+            # Also include stale beats (same predicate the status endpoint uses,
+            # so a beat reported stale is always actually regenerated)
             beat_ids.append(record["id"])
 
     skipped = total_found - len(beat_ids)

@@ -93,6 +93,57 @@ def list_cities(session: Session = Depends(get_session)):
     return {"cities": cities}
 
 
+_POI_BEATS_TAIL = (
+    'WHERE b.active_status = "active" '
+    "OPTIONAL MATCH (b)-[:TAGGED_WITH]->(l:Lens) "
+    "WITH b, r, collect(DISTINCT l.name) AS lens_slugs "
+    "RETURN b.id AS id, b.script_body AS script_body, "
+    "b.version AS version, b.active_status AS active_status, "
+    "b.duration_sec AS duration_sec, lens_slugs AS lens_slugs, "
+    "r.sort_order AS sort_order "
+    "ORDER BY r.sort_order"
+)
+
+
+def _rows_to_beats(result) -> list[dict]:
+    return [
+        {
+            "id": r["id"],
+            "script_body": r["script_body"],
+            "version": r["version"],
+            "active_status": r["active_status"],
+            "duration_sec": r["duration_sec"],
+            "lens_slugs": r["lens_slugs"],
+            "lens_slug": r["lens_slugs"][0] if r["lens_slugs"] else None,
+            "sort_order": r["sort_order"],
+        }
+        for r in result
+    ]
+
+
+@router.get("/graph/poi/by-id/{poi_id}/beats")
+def get_poi_beats_by_id(
+    poi_id: str,
+    session: Session = Depends(get_session),
+):
+    """Fetch active beats and their lens tags for exactly ONE POI node, by id.
+
+    The name-keyed sibling below conflates ``force_create``'d same-name POIs in
+    the same city: it returns the union of every same-name node's beats, so the
+    workbench's conflict detection and merge preview attribute a beat to the
+    wrong node (deprecating an unrelated POI's beat, or failing to find the
+    HAS_BEAT edge it is trying to delete). Any caller that already holds the
+    selected node's id must use this route. The projection/aggregation shape is
+    identical, so responses are drop-in compatible.
+    """
+    result = session.run(
+        "MATCH (p:POI {id: $poi_id})-[r:HAS_BEAT]->(b:NarrativeBeat) " + _POI_BEATS_TAIL,
+        poi_id=poi_id,
+    )
+    beats = _rows_to_beats(result)
+    return {"poi_id": poi_id, "beats": beats}
+
+
 @router.get("/graph/poi/{poi_name}/beats")
 def get_poi_beats(
     poi_name: str,
@@ -107,33 +158,19 @@ def get_poi_beats(
     must see them to flag duplicates) and (b) a multi-lens beat produces exactly
     one row (not N duplicate rows that inflate DB-beat counts / hard-match noise).
     ``lens_slug`` is retained as the first slug (or None) for backward compat.
+
+    NOTE: (name, city_name) is NOT unique — ``force_create`` allows duplicate
+    names — so this returns the union across every same-name node. Callers that
+    must operate on one specific node (conflict resolution, merge) must use
+    ``/graph/poi/by-id/{poi_id}/beats`` instead. Retained for viewer.html.
     """
     result = session.run(
         "MATCH (p:POI {name: $name, city_name: $city_name})-[r:HAS_BEAT]->(b:NarrativeBeat) "
-        'WHERE b.active_status = "active" '
-        "OPTIONAL MATCH (b)-[:TAGGED_WITH]->(l:Lens) "
-        "WITH b, r, collect(DISTINCT l.name) AS lens_slugs "
-        "RETURN b.id AS id, b.script_body AS script_body, "
-        "b.version AS version, b.active_status AS active_status, "
-        "b.duration_sec AS duration_sec, lens_slugs AS lens_slugs, "
-        "r.sort_order AS sort_order "
-        "ORDER BY r.sort_order",
+        + _POI_BEATS_TAIL,
         name=poi_name,
         city_name=city_name,
     )
-    beats = [
-        {
-            "id": r["id"],
-            "script_body": r["script_body"],
-            "version": r["version"],
-            "active_status": r["active_status"],
-            "duration_sec": r["duration_sec"],
-            "lens_slugs": r["lens_slugs"],
-            "lens_slug": r["lens_slugs"][0] if r["lens_slugs"] else None,
-            "sort_order": r["sort_order"],
-        }
-        for r in result
-    ]
+    beats = _rows_to_beats(result)
     return {"poi_name": poi_name, "beats": beats}
 
 

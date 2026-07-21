@@ -6,20 +6,26 @@ Claude has repeatedly rushed ahead and caused expensive damage: killed the
 live Valhalla container via an unexamined worktree compose invocation, OOMed
 dockerd by adding an uncapped third database, pruned a sibling session's live
 worktree, and claimed fixes without functional proof. The user does not
-extend trust; it is re-earned per checkpoint. Three mechanisms enforce this:
+extend trust; it is re-earned per checkpoint. Two mechanisms enforce this:
 
-1. **The guard hook** (`.claude/hooks/guard.sh`, wired in
-   `.claude/settings.json`) mechanically BLOCKS high-consequence commands
-   (container/volume/worktree/branch destruction, force-push, hard reset,
-   `rm -rf`, DB wipes) until re-run with an inline `: JUSTIFY: <reason +
-   evidence>;` prefix, which is logged to `.claude/hooks/guard-log.txt` for
-   human audit. Never work around the guard; a justification you cannot fit
-   in one line means the diagnosis is not done.
-2. **The judge agent** (`.claude/agents/judge.md`, runs on opus) MUST be
+**No mechanical command guard exists — do not assume one.** A regex
+PreToolUse hook (`guard.sh`, with a `guard-log.txt` audit trail, both under
+`.claude/hooks/`) once claimed to block high-consequence commands
+(container/volume/worktree/branch destruction, force-push, hard reset,
+`rm -rf`, DB wipes) until re-run with an inline `: JUSTIFY: …;` prefix. It
+was REMOVED in 643d0d9 as measured-ineffective: 0/70 genuinely destructive
+commands blocked, 16/20 harmless ones blocked. Nothing replaced it. No
+destructive command is intercepted, and no audit log is written — an absent
+`guard-log.txt` is NOT a clean record. Destructive-command safety now rests
+entirely on mechanism 1 below, which is therefore load-bearing: the judge
+consult before a state-changing action is the ONLY thing standing between a
+bad command and a live resource. Skipping it has no backstop.
+
+1. **The judge agent** (`.claude/agents/judge.md`, runs on opus) MUST be
    consulted before: any state-changing infra action, every commit, every
    "fixed/done" claim to the user, and every phase transition. It rules
    PROCEED / PROVE-FIRST / STOP. Paste its ruling into the conversation.
-3. **Skeptic panels** (`.claude/agents/skeptic.md`) — for milestone claims,
+2. **Skeptic panels** (`.claude/agents/skeptic.md`) — for milestone claims,
    spawn 2-4 hostile skeptics (different models via the Agent tool's model
    parameter) whose only success condition is refuting the claim. A claim is
    "proven" only after an adversarial panel failed to break it.
@@ -157,6 +163,8 @@ After cherry-picking from a worktree: immediately remove the worktree directory,
 
 - `specs/NORTHSTAR.md` — product north star, locked decisions, Neo4j schema v3
 - Tour-builder design: prior rule-forward design at `Docs/tour-builder/design.md` is DEPRECATED as of 2026-04-22
+- `specs/2026-07-19-tour-quality-standard/01-standard.md` — the tour quality standard: the gold-text example, S1-S10/P1-P7 narrative and prose checks, and the mechanical FLOOR/GATE (C1-C12/G1-G8) checks
+- `specs/2026-07-16-tour-craft/` — externally-researched good-tour examples (Rick Steves transcripts, VoiceMap, Tilden, NAI) backing the standard above
 
 ## Test Infrastructure
 

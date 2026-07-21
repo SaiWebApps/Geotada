@@ -1809,7 +1809,9 @@
       dbSection.className = 'db-section-header';
       const dbCount = cachedPoiList.length;
       const incomingCount = cachedPoiList.filter(p => p._incomingBeats).length;
-      dbSection.innerHTML = `<span>Database POIs (${dbCount})${incomingCount > 0 ? ` \u00B7 ${incomingCount} with incoming` : ''}</span>`;
+      // DEFECT 8: never present a truncated cache as the full graph.
+      const dbCountLabel = poiCacheComplete ? `${dbCount}` : `${dbCount} \u2014 INCOMPLETE`;
+      dbSection.innerHTML = `<span>Database POIs (${dbCountLabel})${incomingCount > 0 ? ` \u00B7 ${incomingCount} with incoming` : ''}</span>`;
       const sortBtn = document.createElement('button');
       sortBtn.className = 'db-sort-toggle';
       sortBtn.textContent = dbSortMode === 'default' ? 'Sort: Incoming first' : 'Sort: A\u2013Z';
@@ -2044,6 +2046,14 @@
       return;
     }
 
+    // DEFECT 6: conflict-detection errors were rendered but never blocked the
+    // upload, so a failed /beats fetch (which reports zero conflicts) let every
+    // incoming beat POST as new. If detection did not run, refuse to upload.
+    if (poi._conflicts && Array.isArray(poi._conflicts.errors) && poi._conflicts.errors.length > 0) {
+      showError('Cannot upload — conflict detection did not complete: ' + poi._conflicts.errors.join('; '));
+      return;
+    }
+
     // Block if POI has no valid coordinates
     if (poi._conflicts && poi._conflicts.missingCoords) {
       showError('POI has no valid coordinates — cannot upload.');
@@ -2091,7 +2101,15 @@
       return;
     } catch (err) {
       poi._status = 'pending';
-      showError('Upload failed: ' + err.message + '. POI reverted to reviewable state.');
+      // DEFECT 9: the old message ("POI reverted to reviewable state") implied
+      // nothing was written and invited a retry that re-POSTs already-created
+      // beats as duplicates. The upload is NOT atomic — say so, and re-run
+      // conflict detection so a retry sees what actually landed.
+      try {
+        const recheck = await detectConflictsForPoi(poi);
+        poi._conflicts = recheck;
+      } catch (e) { /* detection failure is surfaced by the gate on retry */ }
+      showError('Upload failed partway: ' + err.message + '. Some beats may ALREADY be in the database — conflict detection has been re-run; review the beat conflicts before retrying, or you will create duplicates.');
     }
 
     markCompleteBtn.textContent = 'Mark as Complete';
@@ -2102,7 +2120,22 @@
 
   // ── Render detail panel ──
 
+  // DEFECT 5: renderDetail() attaches DELEGATED click listeners to the
+  // long-lived #detailBody element. Every conflict-resolution click calls
+  // renderDetail() again, so the listener count DOUBLED per click (1→2→4→8…)
+  // and each of the N handlers did a full innerHTML rebuild — O(2^clicks),
+  // locking the tab after ~15-20 clicks. Worse, before that: with N stale
+  // listeners a single click on a beat's "Listen" button fired ttsPlayBeat N
+  // times, and all N reached their first await before the cache was populated
+  // — N identical POST /audio/preview calls, i.e. N× real PAID OpenAI TTS for
+  // one click, plus N-1 leaked blob URLs. This AbortController is aborted at
+  // the top of every render, dropping the previous render's listeners, so the
+  // count stays at exactly 1 no matter how many times renderDetail() runs.
+  let detailListeners = null;
+
   function renderDetail() {
+    if (detailListeners) detailListeners.abort();
+    detailListeners = new AbortController();
     // Tour-preview view (Phase 1.5e): generate + audition a walking tour from this corpus.
     // Reuses the workbench's own field/button components and the shared ttsPlay player.
     if (activeSelection.source === 'tour') {
@@ -2375,7 +2408,7 @@
               renderDetail();
             });
           }
-        });
+        }, { signal: detailListeners.signal });  // DEFECT 5: dropped on the next render
       }
 
       return;
@@ -2792,7 +2825,7 @@
             <button class="btn btn-outline btn-sm" data-beat-action="change-lens" data-beat-idx="${bi}">Change Lens</button>
           `;
         }
-      });
+      }, { signal: detailListeners.signal });  // DEFECT 5: dropped on the next render
     }
   }
 
@@ -3042,6 +3075,12 @@
   // with the play-button lifecycle. ONE audio implementation, shared by beat TTS
   // (ttsPlayBeat) and the tour-preview stops. The origText capture/restore stays
   // INSIDE here so any caller's button (with any label) restores correctly.
+  // DEFECT 5: cacheKeys with a POST /audio/preview in flight. The cache alone
+  // cannot deduplicate concurrent callers — they all pass the cache check
+  // before the first response lands, so N callers issue N REAL PAID TTS calls
+  // and leak N-1 blob URLs. Guards duplicate listeners AND plain double-clicks.
+  const ttsInFlight = new Set();
+
   async function ttsPlay({ text, cacheKey, btn, audioEl }) {
     // Check cache
     if (ttsAudioCache.has(cacheKey)) {
@@ -3050,6 +3089,10 @@
       audioEl.play();
       return;
     }
+
+    // DEFECT 5: a request for this exact text is already paid for and pending.
+    if (ttsInFlight.has(cacheKey)) return;
+    ttsInFlight.add(cacheKey);
 
     // Evict oldest if cache is large
     if (ttsAudioCache.size > 100) {
@@ -3084,6 +3127,7 @@
       btn.classList.add('error');
       setTimeout(() => btn.classList.remove('error'), 2000);
     } finally {
+      ttsInFlight.delete(cacheKey);
       btn.classList.remove('loading');
       btn.disabled = false;
       btn.innerHTML = origText;
@@ -3590,6 +3634,10 @@
   let lensSlugSet = new Set();  // { 'hidden_history', ... }
   let lensSlugToId = {};        // { 'hidden_history': 'neo4j-id', ... }
   let cachedPoiList = [];       // cached POI nodes from DB for conflict detection
+  // DEFECT 8: true ONLY after a page-complete, count-verified POI fetch. When
+  // false the cache is not a trustworthy corpus, so nothing may be auto-routed
+  // to "new" (that is how duplicate POI nodes get minted at the same coords).
+  let poiCacheComplete = false;
 
   async function fetchLensesAndPoiList() {
     // Fetch lenses
@@ -3611,18 +3659,39 @@
 
     // Fetch POIs for conflict detection caching (paginate to avoid cap)
     // Then filter to only POIs within the selected city's geofence
+    // DEFECT 8: the pager used to `break` on a non-ok page and swallow every
+    // failure in a no-op catch, so a mid-page error left cachedPoiList holding a
+    // SILENTLY TRUNCATED subset. findProximityMatches is the only guard against
+    // creating duplicate POIs, so every POI in the missing pages read as "no
+    // proximity match" and detectConflicts routed it to newPois — minting a
+    // duplicate node at the same coordinates. Now the pager fails LOUD (retry
+    // once, then throw) and verifies the collected count against the `total`
+    // the API already returns; poiCacheComplete gates the auto-new paths.
+    poiCacheComplete = false;
     try {
       let allPois = [];
       let poiSkip = 0;
+      let reportedTotal = null;
       const poiPageSize = 200;
       while (true) {
-        const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=${poiPageSize}&skip=${poiSkip}`);
-        if (!poiResp.ok) break;
+        const url = `${API_BASE}/nodes/POI?limit=${poiPageSize}&skip=${poiSkip}`;
+        let poiResp = await fetch(url);
+        if (!poiResp.ok) {
+          // One bounded retry before giving up — a transient 5xx must not
+          // silently shrink the duplicate-detection corpus.
+          await new Promise(r => setTimeout(r, 300));
+          poiResp = await fetch(url);
+        }
+        if (!poiResp.ok) throw new Error(`POI page at skip=${poiSkip} failed: HTTP ${poiResp.status}`);
         const poiListData = await poiResp.json();
         const items = poiListData.items || [];
+        if (typeof poiListData.total === 'number') reportedTotal = poiListData.total;
         allPois.push(...items);
         if (items.length < poiPageSize) break;
         poiSkip += poiPageSize;
+      }
+      if (reportedTotal !== null && allPois.length !== reportedTotal) {
+        throw new Error(`POI cache incomplete: fetched ${allPois.length} of ${reportedTotal}`);
       }
       // Filter to geofence — only keep POIs within GEOFENCE_KM of cityCentre
       if (cityCentre) {
@@ -3634,7 +3703,14 @@
       } else {
         cachedPoiList = allPois;
       }
-    } catch (e) { /* non-fatal — conflict detection will work without cache */ }
+      poiCacheComplete = true;
+    } catch (e) {
+      // Fail CLOSED: an unknown POI corpus means duplicate detection did not
+      // run, so no POI may be auto-routed to "new". Surface it to the editor.
+      cachedPoiList = [];
+      poiCacheComplete = false;
+      showError(`POI cache incomplete (${e.message}) — duplicate detection disabled. Reload before uploading.`);
+    }
   }
 
   function resolveLensSlug(lens) {
@@ -3649,18 +3725,74 @@
     return null;
   }
 
+  // DEFECT 2 helper: normalize a name_variations value that may arrive as an
+  // array, as a JSON-encoded string (serialize_neo4j_props), or as absent.
+  function normalizeNameVariations(raw) {
+    if (Array.isArray(raw)) return raw.filter(v => typeof v === 'string');
+    if (typeof raw === 'string' && raw.trim()) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed.filter(v => typeof v === 'string');
+      } catch (e) { /* not JSON — treat as a single variation below */ }
+      return [raw];
+    }
+    return [];
+  }
+
+  // Union of every supplied list, de-duped case-insensitively, with the node's
+  // canonical display name dropped (it is n.name, not a variation).
+  function mergeNameVariations(...lists) {
+    const excludeName = typeof lists[lists.length - 1] === 'string' ? lists.pop() : null;
+    const seen = new Set();
+    if (excludeName) seen.add(excludeName.trim().toLowerCase());
+    const out = [];
+    for (const list of lists) {
+      for (const v of normalizeNameVariations(list)) {
+        const key = v.trim().toLowerCase();
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        out.push(v);
+      }
+    }
+    return out;
+  }
+
   function mapPoiForApi(poi, options = {}) {
+    // DEFECT 1: this used to hardcode importance_tier: 1 and always send a
+    // short_description (empty string when the incoming record had none).
+    // POST /nodes/POI MERGEs on (name_key, city_name) and then SETs every
+    // supplied property, so a "Same place" re-upload onto an existing tier-5
+    // landmark silently DEMOTED it to tier 1 and blanked its description.
+    // selection.py makes tour gravity linear in tier, so the landmark's pull
+    // dropped 5x and it could fall out of generated tours. Carry the existing
+    // node's curated tier through, and omit an empty description entirely.
+    const incomingTier = Number(poi.importance_tier);
+    const existingTier = Number(options.existingImportanceTier);
+    const tier =
+      (Number.isFinite(incomingTier) && incomingTier >= 1 && incomingTier <= 5) ? incomingTier
+      : (Number.isFinite(existingTier) && existingTier >= 1 && existingTier <= 5) ? existingTier
+      : 1;
     const payload = {
       name: options.useExistingName || poi.poi_name,
       city_name: cityName,
-      short_description: poi.short_description || '',
       latitude: poi.latitude,
       longitude: poi.longitude,
-      importance_tier: 1,
+      importance_tier: tier,
       trigger_radius: 10,
       typical_duration_min: 30,
       kid_friendly: 'yes',
     };
+    // Only send a NON-EMPTY short_description. Omitting the key is not enough
+    // on its own — POICreate defaults it to '' and model_dump() sends that to
+    // the MERGE's unconditional SET — so when the incoming record has none we
+    // fall back to the existing node's curated text and rewrite the same value.
+    const desc = (poi.short_description || '').trim();
+    const existingDesc = (options.existingShortDescription || '').trim();
+    if (desc) {
+      payload.short_description = desc;
+    } else if (existingDesc) {
+      payload.short_description = existingDesc;
+    }
     if (options.forceCreate) {
       payload.force_create = true;
     }
@@ -3708,6 +3840,13 @@
       const proxMatches = findProximityMatches(poi, cachedPoiList);
 
       if (proxMatches.length === 0) {
+        // DEFECT 8: "no proximity match" is only meaningful against a COMPLETE
+        // POI corpus. With a truncated/failed cache the same finding is
+        // indistinguishable from "we never looked", so refuse to auto-create.
+        if (!poiCacheComplete) {
+          result.errors.push(`POI "${poi.poi_name}" skipped: POI cache incomplete, duplicate detection could not run. Reload and retry.`);
+          continue;
+        }
         // AC 1, AC 8: Auto-new — no proximity match regardless of name
         result.newPois.push({ poi, beats: poi.beats.map(b => ({ beat: b, action: 'create' })) });
       } else {
@@ -3725,13 +3864,22 @@
           })),
         };
 
-        // Fetch beats from the closest match for beat-level conflict preview
+        // Fetch beats from the closest match for beat-level conflict preview.
+        // DEFECT 7: the status was never checked, so an API error produced
+        // existingBeats=[] — indistinguishable from "this POI has no beats".
+        // Every incoming beat was then planned as `create`, duplicating beats
+        // onto an existing POI while the summary reported zero errors. An
+        // unknown existing-beat set means conflict detection DID NOT RUN, so
+        // the POI is excluded from the upload plan entirely.
         try {
           const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(bestMatch.existingPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
           const data = await resp.json();
-          poiEntry.existingBeats = data.beats || [];
+          if (!Array.isArray(data.beats)) throw new Error('malformed beats response');
+          poiEntry.existingBeats = data.beats;
         } catch (e) {
-          result.errors.push(`Failed to fetch beats for "${bestMatch.existingPoi.properties.name}": ${e.message}`);
+          result.errors.push(`Failed to fetch beats for "${bestMatch.existingPoi.properties.name}": ${e.message}. "${poi.poi_name}" excluded from this upload — beat conflict detection could not run.`);
+          continue;
         }
 
         for (const beat of poi.beats) {
@@ -3802,6 +3950,11 @@
 
     // AC 1, AC 8: No matches within threshold → auto-new
     if (proxMatches.length === 0) {
+      // DEFECT 8: only trustworthy against a verified-complete POI cache.
+      if (!poiCacheComplete) {
+        result.errors.push('POI cache incomplete — duplicate detection could not run. Reload before uploading.');
+        return result;
+      }
       result.isNew = true;
       return result;
     }
@@ -3823,9 +3976,17 @@
   async function runBeatConflictDetection(poi, existingPoiName) {
     const result = { existingBeats: [], beatConflicts: [], beatReviewItems: [], errors: [] };
     try {
+      // DEFECT 6: without these guards an API error (or a well-formed but
+      // shapeless 200) yielded existingBeats=[], so the hard-match and Jaccard
+      // loops iterated nothing and the function returned "zero conflicts, zero
+      // errors". The mark-complete gate then passed VACUOUSLY and every
+      // incoming beat was POSTed as new — two active beats on the same POI and
+      // the same lens_slug, the exact collision this system exists to prevent.
       const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(existingPoiName)}/beats?city_name=${encodeURIComponent(cityName)}`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
-      result.existingBeats = data.beats || [];
+      if (!Array.isArray(data.beats)) throw new Error('malformed beats response');
+      result.existingBeats = data.beats;
     } catch (e) {
       result.errors.push(`Failed to fetch beats for "${existingPoiName}": ${e.message}`);
       return result;
@@ -4077,24 +4238,67 @@
 
   // ── Progressive single-POI upload ──
 
+  // DEFECT 9 (partial): the upload loop validated each beat's lens only when it
+  // reached that beat, so a bad lens on beat 3 threw AFTER beats 1 and 2 were
+  // already committed to Neo4j — a non-atomic partial write the UI then
+  // reported as "nothing uploaded". POST /nodes/NarrativeBeat CREATEs (ids are
+  // deliberately server-generated, never client-supplied — see
+  // src/api/crud/nodes.py), so the invited retry DUPLICATES the beats already
+  // written. Full idempotence needs a backend change; this pre-flight at least
+  // moves every lens failure to BEFORE the first write, where it costs nothing.
+  function preflightBeatLenses(beats, lensMap) {
+    for (let bi = 0; bi < beats.length; bi++) {
+      const beat = beats[bi];
+      const resolution = beat._conflictResolution;
+      if (resolution && resolution.action === 'skip') continue;
+      let beatSlug;
+      if (resolution && resolution.action === 'merge' && resolution.mergedBeat) {
+        beatSlug = resolveLensSlug(resolution.mergedBeat.lens) || resolveLensSlug(beat.lens);
+      } else if (resolution && resolution.action === 'change-lens') {
+        beatSlug = resolution.newLensSlug;
+      } else {
+        const mapped = mapBeatForApi(beat);
+        beatSlug = mapped && mapped.lens_slug;
+      }
+      if (!beatSlug) throw new Error(`Beat ${bi + 1} lens unrecognized. Nothing was uploaded.`);
+      if (!lensMap[beatSlug]) throw new Error(`Lens "${beatSlug}" (beat ${bi + 1}) not found in database. Nothing was uploaded.`);
+    }
+  }
+
   async function uploadSinglePoi(poiIdx) {
     const poi = poiData[poiIdx];
     const lensMap = lensSlugToId;
     const conflicts = poi._conflicts || {};
 
+    // DEFECT 9: fail every lens problem BEFORE the first write.
+    preflightBeatLenses(poi.beats, lensMap);
+
     // Build POI payload based on proximity resolution
     let poiPayload;
     if (conflicts.proximityResolution === 'same' && conflicts.matchedExistingPoi) {
       // "Same place" → use existing POI name so MERGE hits the correct node
-      const existingName = conflicts.matchedExistingPoi.properties.name;
-      poiPayload = mapPoiForApi(poi, { useExistingName: existingName });
-      // Include incoming name in name_variations
-      if (poi.poi_name.toLowerCase() !== existingName.toLowerCase()) {
-        if (!poiPayload.name_variations) poiPayload.name_variations = [];
-        if (!poiPayload.name_variations.some(v => v.toLowerCase() === poi.poi_name.toLowerCase())) {
-          poiPayload.name_variations.push(poi.poi_name);
-        }
-      }
+      const existingProps = conflicts.matchedExistingPoi.properties || {};
+      const existingName = existingProps.name;
+      // DEFECT 1: carry the existing node's curated importance_tier through, so
+      // the MERGE's unconditional SET rewrites the SAME value instead of
+      // demoting a tier-5 landmark to the hardcoded 1.
+      poiPayload = mapPoiForApi(poi, {
+        useExistingName: existingName,
+        existingImportanceTier: existingProps.importance_tier,
+        existingShortDescription: existingProps.short_description,
+      });
+      // DEFECT 2: this flow exists to ADD an alias, but it used to SET
+      // name_variations = [incomingName], destroying every previously-curated
+      // alternative name on the node (unrecoverable, and it breaks alt-name
+      // duplicate detection on later runs). Seed from the existing node's list
+      // first, then append. Existing props may arrive JSON-encoded (see
+      // serialize_neo4j_props), so normalize to an array before spreading.
+      poiPayload.name_variations = mergeNameVariations(
+        existingProps.name_variations,
+        poiPayload.name_variations,
+        [poi.poi_name],
+        existingName,
+      );
     } else if (conflicts.proximityResolution === 'different') {
       // "Different place" → force_create to bypass MERGE on same name
       poiPayload = mapPoiForApi(poi, { forceCreate: true });
@@ -4203,6 +4407,15 @@
     const incomingBeats = dbPoi._incomingBeats;
     const poiName = dbPoi.properties.name;
     const lensMap = lensSlugToId;
+
+    // DEFECT 9: same non-atomic loop as uploadSinglePoi — validate every lens
+    // before the first write so a bad lens on a later beat costs zero writes.
+    try {
+      preflightBeatLenses(incomingBeats, lensMap);
+    } catch (err) {
+      showError(err.message);
+      return;
+    }
 
     markCompleteBtn.disabled = true;
     markCompleteBtn.textContent = 'Uploading...';
@@ -4964,8 +5177,11 @@
     if (marker._beatCountLoaded) return;
     marker._beatCountLoaded = true;
     fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`)
-      .then(r => r.json())
+      // DEFECT 6 (sibling): an unchecked non-200 rendered "0 beats" in the map
+      // popup — a factual claim about the graph derived from a failed request.
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
       .then(data => {
+        if (!Array.isArray(data.beats)) throw new Error('malformed beats response');
         marker._beatCount = (data.beats || []).length;
         marker._beatData = data.beats || [];
         if (marker.isPopupOpen()) {
@@ -5183,21 +5399,36 @@
   async function showMergePreview(targetPoi, sourcePoi) {
     // Fetch beats for both POIs
     let targetBeats = [], sourceBeats = [];
+    // DEFECT 4: these fetches used `.then(r => r.json())` with NO status check,
+    // so a transient HTTP error yielded `{}` → `sourceBeats = []` → the EC4
+    // branch below told the editor "Source POI X has no beats. Merge will
+    // delete it." about a POI that may hold dozens. On OK, executeMerge ran
+    // with an empty beatItems list (no beat transferred) and DELETEd the source
+    // POI, orphaning every one of its beats — then showed a green success
+    // toast. Irrecoverable content loss from a transient error. Any non-200 or
+    // malformed body must now abort the preview, never degrade to [].
+    const fetchBeatsStrict = async (poi, role) => {
+      const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
+      if (!resp.ok) throw new Error(`${role} beats fetch failed: HTTP ${resp.status}`);
+      const body = await resp.json();
+      if (!Array.isArray(body.beats)) throw new Error(`${role} beats response malformed`);
+      return body.beats;
+    };
     try {
-      const [tResp, sResp] = await Promise.all([
-        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`).then(r => r.json()),
-        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`).then(r => r.json()),
+      [targetBeats, sourceBeats] = await Promise.all([
+        fetchBeatsStrict(targetPoi, 'target'),
+        fetchBeatsStrict(sourcePoi, 'source'),
       ]);
-      targetBeats = tResp.beats || [];
-      sourceBeats = sResp.beats || [];
     } catch (e) {
       showError('Failed to fetch beats for merge preview: ' + e.message);
       return;
     }
 
-    // EC4: Zero beats on source
+    // EC4: Zero beats on source — now a VERIFIED zero (the fetch above cannot
+    // return [] on failure), re-checked by node id inside executeMerge before
+    // anything is deleted.
     if (sourceBeats.length === 0) {
-      if (!confirm(`Source POI "${sourcePoi.properties.name}" has no beats. Merge will delete it. Continue?`)) return;
+      if (!confirm(`Source POI "${sourcePoi.properties.name}" returned zero beats. Merge will delete this POI. Continue?`)) return;
       await executeMerge(targetPoi, sourcePoi, []);
       return;
     }
@@ -5378,6 +5609,9 @@
       let maxSortOrder = 0;
       try {
         const tResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
+        // DEFECT 4: non-fatal, but an unchecked non-200 silently reset the
+        // baseline to 0 and collided sort_orders on the target.
+        if (!tResp.ok) throw new Error(`HTTP ${tResp.status}`);
         const tData = await tResp.json();
         for (const b of (tData.beats || [])) {
           if (b.sort_order && b.sort_order > maxSortOrder) maxSortOrder = b.sort_order;
@@ -5388,7 +5622,22 @@
         const beat = item.sourceBeat;
 
         if (item.resolution === 'skip') {
-          console.log(`Skipped beat ${beat.id} (${beat.lens_slug})`);
+          // DEFECT 3: "skip" used to just `continue`. The source POI is
+          // DETACH DELETEd at the end of the merge, removing the only HAS_BEAT
+          // edge to this beat — so the node SURVIVED with active_status
+          // 'active', attached to nothing: unreachable by every POI-scoped
+          // query, yet still counted by node totals and db_parity, and still
+          // picked up by the batch-TTS pass (which filters on audio_url, not
+          // active_status). The UI said "discard" but nothing was discarded.
+          // Deprecate first so the disposal is auditable if the DELETE fails,
+          // then delete the node outright — nothing survives detached.
+          await mustOk(fetch(`${API_BASE}/nodes/NarrativeBeat/${beat.id}`, {
+            method: 'PUT', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
+          }), `Deprecate skipped source beat ${beat.id}`);
+          await mustOk(fetch(`${API_BASE}/nodes/NarrativeBeat/${beat.id}`, { method: 'DELETE' }),
+            `Delete skipped source beat ${beat.id}`);
+          console.log(`Discarded skipped beat ${beat.id} (${beat.lens_slug})`);
           continue;
         }
 
@@ -5450,6 +5699,34 @@
           `Delete old HAS_BEAT edge for beat ${beat.id}`,
         );
         console.log(`Deleted old HAS_BEAT edge from source for beat ${beat.id}`);
+      }
+
+      // DEFECT 4 (part B): positively verify the source POI holds no beats
+      // BEFORE the destructive DELETE, and verify it by NODE ID — the beats
+      // endpoint keys on (name, city_name), the one coordinate that can
+      // silently mismatch (casing, a rename, a duplicate node). This converts
+      // the EC4 "source has no beats" ASSUMPTION into a checked precondition,
+      // so a transient error on the preview fetch can no longer lead to
+      // DETACH DELETEing a POI that actually holds content.
+      const residualResp = await fetch(
+        `${API_BASE}/edges/HAS_BEAT?source_id=${encodeURIComponent(sourcePoi.id)}&limit=200`);
+      if (!residualResp.ok) {
+        throw new Error(`Could not verify source POI has no remaining beats (HTTP ${residualResp.status}) — aborting before delete`);
+      }
+      const residual = await residualResp.json();
+      if (!Array.isArray(residual.items)) {
+        throw new Error('Could not verify source POI has no remaining beats (malformed edges response) — aborting before delete');
+      }
+      // Every beat this merge handled has already been transferred or discarded
+      // above, so its edge is gone; what matters is whether the source holds a
+      // beat the preview NEVER SAW — the exact residue an unread beats response
+      // produces. Anything outside the handled set means we would be deleting
+      // content, so abort.
+      const handledBeatIds = new Set(
+        beatItems.map(it => it.sourceBeat && it.sourceBeat.id).filter(Boolean));
+      const unaccounted = residual.items.filter(e => !handledBeatIds.has(e.target_id));
+      if (unaccounted.length > 0) {
+        throw new Error(`Source POI "${sourcePoi.properties.name}" still holds ${unaccounted.length} beat(s) this merge never saw — refusing to delete it`);
       }
 
       // Delete source POI — DEFECT 6: checked so a failed delete does not fall
@@ -5581,6 +5858,22 @@
   Object.defineProperty(window, 'lensDisplayToSlug', {
     get: () => lensDisplayToSlug,
     set: (v) => { lensDisplayToSlug = v; },
+  });
+  // Regression-test surface for the 2026-07-19 workbench defect batch.
+  window.runBeatConflictDetection = runBeatConflictDetection;
+  window.showMergePreview = showMergePreview;
+  window.detectConflicts = detectConflicts;
+  window.fetchLensesAndPoiList = fetchLensesAndPoiList;
+  window.mergeNameVariations = mergeNameVariations;
+  window.ttsPlay = ttsPlay;
+  window.renderDetail = renderDetail;
+  Object.defineProperty(window, 'poiCacheComplete', {
+    get: () => poiCacheComplete,
+    set: (v) => { poiCacheComplete = v; },
+  });
+  Object.defineProperty(window, 'cityName', {
+    get: () => cityName,
+    set: (v) => { cityName = v; },
   });
 
 })();

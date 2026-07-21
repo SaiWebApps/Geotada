@@ -106,7 +106,10 @@ def get_node(session: Session, label: str, node_id: str) -> dict | None:
 def create_node(session: Session, label: str, properties: dict[str, Any]) -> dict:
     """Create a node with a generated UUID id. Returns the created node.
 
-    For POI and NarrativeBeat, uses MERGE for idempotent upserts.
+    POI and Area use MERGE for idempotent upserts on a natural key.
+    NarrativeBeat always CREATEs a fresh node with a server-generated id —
+    ids are never client-supplied, so re-posting the same beat produces a new
+    node and callers must dedup upstream.
     """
     _validate_label(label)
     _validate_property_keys(properties)
@@ -176,34 +179,29 @@ def create_node(session: Session, label: str, properties: dict[str, Any]) -> dic
         # GLOBAL script_body — two beats with identical narration across
         # different POIs/cities collided into one shared node, so an upload for
         # one POI silently overwrote another's beat. Each beat is now an
-        # independent node keyed on its own id. An explicit id (e.g. from a
-        # re-upload of the same beat) is honoured; otherwise one is generated.
-        beat_id = params.pop("id", None)
-        params["_beat_id"] = beat_id  # None -> randomUUID() via coalesce below
+        # independent node keyed on its own id.
+        #
+        # Beat ids are ALWAYS server-generated (2026-07-19): a client-supplied
+        # `id` is dropped, never used as a MERGE key. `NarrativeBeatCreate`
+        # has no `id` field and pydantic ignores extras, so a client id could
+        # never reach this function through POST /nodes/NarrativeBeat anyway —
+        # the old MERGE-by-id branch was unreachable, and honouring an id here
+        # would hand clients control of the primary key. Callers that need
+        # re-upload idempotence must dedup UPSTREAM (see
+        # scripts/upload_hidden_gardens.py, which matches on script_body_hash
+        # before POSTing). Every create therefore yields a fresh node.
+        params.pop("id", None)
         set_parts = [
-            "n.id = coalesce(n.id, $_beat_id, randomUUID())",
+            "n.id = coalesce(n.id, randomUUID())",
             "n.created_at = coalesce(n.created_at, datetime())",
         ]
-        for key in params:
-            if key != "_beat_id":
-                set_parts.append(f"n.{key} = ${key}")
+        set_parts.extend(f"n.{key} = ${key}" for key in params)
 
-        # MERGE on id (never null): when $_beat_id is provided this upserts the
-        # same beat idempotently; when null, apoc-free `coalesce` in the pattern
-        # is not possible, so route null ids through CREATE to guarantee a fresh
-        # node, and provided ids through MERGE for idempotent re-upload.
-        if beat_id is None:
-            query = (
-                f"CREATE (n:NarrativeBeat) "
-                f"SET {', '.join(set_parts)} "
-                f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
-            )
-        else:
-            query = (
-                f"MERGE (n:NarrativeBeat {{id: $_beat_id}}) "
-                f"SET {', '.join(set_parts)} "
-                f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
-            )
+        query = (
+            f"CREATE (n:NarrativeBeat) "
+            f"SET {', '.join(set_parts)} "
+            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+        )
     elif label == "Area":
         # MERGE on compound key (name, area_type, city_name) for idempotent Area creation
         lat = params.pop("centroid_lat")

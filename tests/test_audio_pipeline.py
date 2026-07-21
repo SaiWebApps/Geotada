@@ -79,11 +79,13 @@ class TestGenerateBeatAudio:
         mock_update.assert_called_once()
 
     def test_skips_existing_audio(self):
+        # Up-to-date audio = url present AND the stored hash matches the script.
+        # (A missing hash means "legacy/unknown" and counts as stale — see
+        # TestStaleInvariant below.)
+        beat = _mock_beat(audio_url="/api/v1/audio/files/real.mp3")
+        beat["properties"]["audio_script_hash"] = _script_hash("Test script.")
         with (
-            patch(
-                "src.audio.pipeline.get_node",
-                return_value=_mock_beat(audio_url="/api/v1/audio/files/real.mp3"),
-            ),
+            patch("src.audio.pipeline.get_node", return_value=beat),
             pytest.raises(PipelineError, match="already has audio"),
         ):
             generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
@@ -473,3 +475,110 @@ class TestScriptHashDeterminism:
         h = _script_hash("test")
         assert len(h) == 64  # SHA-256 = 64 hex chars
         assert all(c in "0123456789abcdef" for c in h)
+
+
+# ── Stale invariant: status and the regeneration paths must agree ──
+
+
+class TestStaleInvariant:
+    """Whatever check_audio_status reports as stale MUST actually regenerate.
+
+    Regression guard for the legacy case: audio_url set, no audio_script_hash
+    stored (audio generated before the hash feature). The status endpoint
+    reported is_stale=True while generate_beat_audio / generate_batch treated a
+    missing hash as "current", so the advertised regenerate-stale behaviour was
+    a no-op for exactly those beats.
+    """
+
+    def test_missing_hash_is_stale_and_regenerates(self):
+        beat = _mock_beat(audio_url="/api/v1/audio/files/legacy.mp3")
+        # No audio_script_hash key at all — legacy audio.
+
+        with patch("src.audio.pipeline.get_node", return_value=beat):
+            status = check_audio_status(MagicMock(), "beat-001")
+        assert status.is_stale is True, "status must flag unhashed legacy audio as stale"
+
+        session = _mock_session_with_poi()
+        with (
+            patch("src.audio.pipeline.get_node", return_value=beat),
+            patch("src.audio.pipeline.update_node") as mock_update,
+        ):
+            # force=False: staleness alone must be enough to regenerate.
+            result = generate_beat_audio(session, "beat-001", provider_name="mock")
+
+        assert result.size_bytes > 0
+        assert mock_update.call_args[0][3]["audio_script_hash"] == _script_hash("Test script.")
+
+    def test_batch_selects_missing_hash_beat(self):
+        class FakeRecord:
+            def __init__(self, bid, url, hash_val=None, script=None):
+                self._data = {
+                    "id": bid,
+                    "audio_url": url,
+                    "hash": hash_val,
+                    "script_body": script,
+                }
+
+            def __getitem__(self, key):
+                return self._data[key]
+
+        session = MagicMock()
+        call_count = [0]
+
+        def smart_run(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                # Real (non-placeholder) URL, no stored hash → stale by the
+                # status endpoint's definition, so batch must pick it up.
+                return [FakeRecord("b1", "/api/v1/audio/files/legacy.mp3", None, "Test script.")]
+            result = MagicMock()
+            poi = MagicMock()
+            poi.__getitem__ = lambda self, k: "Test POI"
+            result.single.return_value = poi
+            return result
+
+        session.run = smart_run
+
+        with (
+            patch(
+                "src.audio.pipeline.get_node",
+                return_value=_mock_beat(beat_id="b1", audio_url="/api/v1/audio/files/legacy.mp3"),
+            ),
+            patch("src.audio.pipeline.update_node"),
+        ):
+            summary = generate_batch(session, provider_name="mock")
+
+        assert summary.skipped == 0, "an unhashed legacy beat must not be silently skipped"
+        assert summary.succeeded == 1
+        assert [r.beat_id for r in summary.results if isinstance(r, GenerationResult)] == ["b1"]
+
+
+# ── Storage misconfiguration must be a soft failure, never a 500 ──
+
+
+class TestStorageConstructionSoftFails:
+    """get_storage() must be inside the guarded block at both call sites.
+
+    StorageError/ValueError are not PipelineError, so an unknown or broken
+    storage backend escaped the `except PipelineError` handlers in
+    src/api/routes/audio.py and surfaced as an uncaught HTTP 500 — violating
+    the documented "TTS failure returns 200 with status=failed (never a 500)"
+    contract.
+    """
+
+    def test_unknown_storage_beat_path_raises_pipeline_error(self, monkeypatch):
+        monkeypatch.setenv("AUDIO_STORAGE", "definitely-not-a-backend")
+        session = _mock_session_with_poi()
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat()),
+            patch("src.audio.pipeline.update_node"),
+            pytest.raises(PipelineError, match="Storage failed for beat"),
+        ):
+            generate_beat_audio(session, "beat-001", provider_name="mock")
+
+    def test_unknown_storage_stop_path_raises_pipeline_error(self, monkeypatch):
+        from src.audio.pipeline import generate_stop_audio
+
+        monkeypatch.setenv("AUDIO_STORAGE", "definitely-not-a-backend")
+        with pytest.raises(PipelineError, match="Storage failed for stop"):
+            generate_stop_audio("Some narration.", stop_key="stop-1", provider_name="mock")

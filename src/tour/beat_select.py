@@ -531,7 +531,21 @@ def reorder_final_stop_for_closing(beat_sequence: BeatSequence) -> BeatSequence:
     """
     if not beat_sequence.poi_beats:
         return beat_sequence
-    last_plan = beat_sequence.poi_beats[-1]
+    # The terminal NARRATED stop is not necessarily poi_beats[-1]: an A→B route
+    # appends a beatless synthesized-destination sentinel. Walk backwards for the
+    # last plan WITH beats, mirroring selection.py's `_keep_final_closing_beat`
+    # caller — the two halves of this protection must agree on the terminal.
+    last_idx = next(
+        (
+            i
+            for i in range(len(beat_sequence.poi_beats) - 1, -1, -1)
+            if beat_sequence.poi_beats[i].beats
+        ),
+        None,
+    )
+    if last_idx is None:
+        return beat_sequence
+    last_plan = beat_sequence.poi_beats[last_idx]
     if len(last_plan.beats) < 2:
         return beat_sequence
     closing_idx = _find_closing_friendly_index(last_plan.beats)
@@ -541,7 +555,11 @@ def reorder_final_stop_for_closing(beat_sequence: BeatSequence) -> BeatSequence:
     moved = beats.pop(closing_idx)
     beats.append(moved)
     new_last = last_plan.model_copy(update={"beats": tuple(beats)})
-    new_poi_beats = (*beat_sequence.poi_beats[:-1], new_last)
+    new_poi_beats = (
+        *beat_sequence.poi_beats[:last_idx],
+        new_last,
+        *beat_sequence.poi_beats[last_idx + 1 :],
+    )
     return beat_sequence.model_copy(update={"poi_beats": new_poi_beats})
 
 
