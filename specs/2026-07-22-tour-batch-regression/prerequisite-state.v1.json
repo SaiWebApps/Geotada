@@ -1,0 +1,33 @@
+{
+  "schema_version": "ondoway-tour-batch-prerequisites-v1",
+  "plan_path": "specs/2026-07-22-tour-batch-regression/execution-plan.v1.md",
+  "plan_sha256": "72c51f944abd9d0da15ec9600956427971c75e3d2c368d28005cd68b7e0fa667",
+  "approved_plan_sha256": "72c51f944abd9d0da15ec9600956427971c75e3d2c368d28005cd68b7e0fa667",
+  "original_plan_execution_allowed": false,
+  "prerequisites": [
+    {
+      "id": "P1",
+      "status": "COMPLETE",
+      "evidence": {
+        "plan_commit": "63bfaf8b80fd2bebca511b06c21cb5c7e8634e87",
+        "approved_plan_sha256": "72c51f944abd9d0da15ec9600956427971c75e3d2c368d28005cd68b7e0fa667",
+        "external_approval_reference": "user chat: APPROVE PLAN 72c51f...667"
+      }
+    },
+    {"id": "P2", "status": "PENDING"},
+    {"id": "P3", "status": "PENDING"},
+    {"id": "P4", "status": "PENDING"},
+    {"id": "P5", "status": "PENDING"},
+    {"id": "P6", "status": "PENDING"},
+    {"id": "P7", "status": "PENDING"},
+    {"id": "P8", "status": "PENDING"},
+    {"id": "P9", "status": "PENDING"},
+    {"id": "P10", "status": "PENDING"}
+  ],
+  "known_external_gaps": {
+    "github_main_branch_protection": "DISABLED",
+    "anthropic_credential_externally_withheld": false,
+    "external_immutable_ledger_anchor": false,
+    "independent_remote_review_required": false
+  }
+}
