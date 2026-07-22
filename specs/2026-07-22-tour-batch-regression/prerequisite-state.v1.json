@@ -28,7 +28,24 @@
         "scope_note": "runner callers only; no raw-shell enforcement"
       }
     },
-    {"id": "P3", "status": "PENDING"},
+    {
+      "id": "P3",
+      "status": "COMPLETE",
+      "evidence": {
+        "implementation_commit": "6cb2836fdf9a462cbb3c45949ac33165cb1a1e8a",
+        "makefile_blob_sha256": "ee8f9c8fb16704377c0a6af5e1c9c04ff8e9f67e4c94850032c5285b5de2d019",
+        "state_source_blob_sha256": "891087f8ccae02811b0d4cdc27b49293be356d5599615a765ec2230eea472df6",
+        "cli_blob_sha256": "4a4d6485d7a20d3e2b5e74ddcc8cad1ad343f1b50cabe8231a8680c3d3f6fd6a",
+        "state_test_blob_sha256": "d1ea619efaa46026375aa82e465f40276ae7051222e82c4da1681a86900b7953",
+        "cli_test_blob_sha256": "81934a5cb9e8fe4fb70b26dbed4c6646838ae35eaa6925eab36c88b6f4ccc9b8",
+        "focused_result": "32 passed",
+        "make_proof": "missing STEP/hash and wrong hash rejected; exact full-hash P3 preflight provider-free",
+        "mutation_result": "5 target/hash cases RED with callback count 1; terminal old indexing RED IndexError; both restored",
+        "lint": "PASS",
+        "full_suite": "Python 2981 passed, Flutter 219 passed, exit 0",
+        "scope_note": "batch dispatcher only; unrestricted shell bypass remains"
+      }
+    },
     {"id": "P4", "status": "PENDING"},
     {"id": "P5", "status": "PENDING"},
     {"id": "P6", "status": "PENDING"},
