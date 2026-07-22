@@ -3,17 +3,24 @@ from __future__ import annotations
 import pytest
 
 from src.tour.batch_regression_state_machine import (
+    APPROVED_PLAN_SHA256,
+    BATCH_MAKE_TARGET,
     PLAN_STEP_IDS,
     PlanExecutionState,
     PlanStep,
     StepOrderError,
     StepStatus,
+    dispatch_plan_step,
     run_next_step,
 )
 
 
 def _state_after_p1() -> PlanExecutionState:
     return PlanExecutionState.from_completed_prefix(("P1",))
+
+
+def _state_after_p2() -> PlanExecutionState:
+    return PlanExecutionState.from_completed_prefix(("P1", "P2"))
 
 
 def test_plan_step_ids_are_the_exact_prerequisite_then_execution_order() -> None:
@@ -116,3 +123,90 @@ def test_all_complete_state_refuses_further_execution_before_side_effect() -> No
 
     assert state.next_step_id is None
     assert calls == []
+
+
+@pytest.mark.parametrize(
+    ("make_target", "plan_sha256"),
+    [
+        ("", APPROVED_PLAN_SHA256),
+        ("wrong-target", APPROVED_PLAN_SHA256),
+        (BATCH_MAKE_TARGET, ""),
+        (BATCH_MAKE_TARGET, APPROVED_PLAN_SHA256[:12]),
+        (BATCH_MAKE_TARGET, "0" * 64),
+    ],
+)
+def test_dispatch_rejects_wrong_target_or_hash_before_side_effect(
+    make_target: str,
+    plan_sha256: str,
+) -> None:
+    calls: list[str] = []
+
+    with pytest.raises(StepOrderError):
+        dispatch_plan_step(
+            _state_after_p2(),
+            requested_step_id="P3",
+            make_target=make_target,
+            plan_sha256=plan_sha256,
+            action=lambda: calls.append("called"),
+        )
+
+    assert calls == []
+
+
+@pytest.mark.parametrize("requested_step_id", ["P4", "P2", "not-a-plan-step"])
+def test_dispatch_rejects_non_next_step_before_side_effect(
+    requested_step_id: str,
+) -> None:
+    calls: list[str] = []
+
+    with pytest.raises(StepOrderError):
+        dispatch_plan_step(
+            _state_after_p2(),
+            requested_step_id=requested_step_id,
+            make_target=BATCH_MAKE_TARGET,
+            plan_sha256=APPROVED_PLAN_SHA256,
+            action=lambda: calls.append("called"),
+        )
+
+    assert calls == []
+
+
+def test_exact_make_target_hash_and_p3_dispatch_once() -> None:
+    state = _state_after_p2()
+    calls: list[str] = []
+
+    result = dispatch_plan_step(
+        state,
+        requested_step_id="P3",
+        make_target=BATCH_MAKE_TARGET,
+        plan_sha256=APPROVED_PLAN_SHA256,
+        action=lambda: calls.append("called") or "preflight",
+    )
+
+    assert calls == ["called"]
+    assert result.value == "preflight"
+    assert result.state.completed_step_ids == ("P1", "P2", "P3")
+    assert result.state.next_step_id == "P4"
+    assert state.next_step_id == "P3"
+
+
+def test_dispatch_callback_exception_cannot_advance_input_state() -> None:
+    class ExpectedDispatchError(RuntimeError):
+        pass
+
+    state = _state_after_p2()
+
+    def fail() -> None:
+        raise ExpectedDispatchError("dispatch failed")
+
+    with pytest.raises(ExpectedDispatchError, match="dispatch failed"):
+        dispatch_plan_step(
+            state,
+            requested_step_id="P3",
+            make_target=BATCH_MAKE_TARGET,
+            plan_sha256=APPROVED_PLAN_SHA256,
+            action=fail,
+        )
+
+    assert state.completed_step_ids == ("P1", "P2")
+    assert state.next_step_id == "P3"

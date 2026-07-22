@@ -29,6 +29,7 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	sync sync-apple requirements env use-local use-cloud which-db \
 	lint format lint-fix flutter-analyze \
 	test test-unit test-file test-file-local test-local test-cloud db-parity \
+	tour-batch-step \
 	test-integration test-functional test-live test-auth test-onboarding \
 	test-workbench test-golden golden-probe golden-diff tour-grade \
 	tour-audio-gate tour-compose-gate test-all audit \
@@ -194,6 +195,11 @@ test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT
 test-file: ## Run ONE pure (no-Neo4j) test file for atomic-step iteration: make test-file FILE=tests/test_x.py. NOT the bar.
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest $(FILE) -v
+
+tour-batch-step: ## Provider-free preflight for one hash-approved batch-regression step.
+	@test -n "$(STEP)" || { echo "ERROR: STEP is required" >&2; exit 2; }
+	@test -n "$(PLAN_SHA256)" || { echo "ERROR: PLAN_SHA256 is required" >&2; exit 2; }
+	@uv run python -m scripts.tour_batch_regression --target tour-batch-step --step "$(STEP)" --plan-sha256 "$(PLAN_SHA256)"
 
 test-collect: ## Collect the WHOLE suite without running it — proves an additive change broke no other file's import/collection. Fast, no Neo4j. NOT the bar.
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true

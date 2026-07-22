@@ -16,6 +16,10 @@ PLAN_STEP_IDS: tuple[str, ...] = (
     *(f"P{index}" for index in range(1, 11)),
     *(str(index) for index in range(1, 48)),
 )
+APPROVED_PLAN_SHA256 = (
+    "72c51f944abd9d0da15ec9600956427971c75e3d2c368d28005cd68b7e0fa667"
+)
+BATCH_MAKE_TARGET = "tour-batch-step"
 
 
 class StepStatus(StrEnum):
@@ -125,4 +129,27 @@ def run_next_step(
     return StepRunResult(
         state=PlanExecutionState.from_completed_prefix(completed),
         value=value,
+    )
+
+
+def dispatch_plan_step(
+    state: PlanExecutionState,
+    *,
+    requested_step_id: str,
+    make_target: str,
+    plan_sha256: str,
+    action: Callable[[], ResultT],
+) -> StepRunResult[ResultT]:
+    """Validate the supported Make boundary and plan seal before dispatch."""
+
+    if make_target != BATCH_MAKE_TARGET:
+        raise StepOrderError(
+            f"batch actions require Make target {BATCH_MAKE_TARGET!r}"
+        )
+    if plan_sha256 != APPROVED_PLAN_SHA256:
+        raise StepOrderError("batch action requires the exact approved plan hash")
+    return run_next_step(
+        state,
+        requested_step_id=requested_step_id,
+        action=action,
     )
