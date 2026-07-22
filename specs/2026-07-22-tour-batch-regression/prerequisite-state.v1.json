@@ -14,7 +14,20 @@
         "external_approval_reference": "user chat: APPROVE PLAN 72c51f...667"
       }
     },
-    {"id": "P2", "status": "PENDING"},
+    {
+      "id": "P2",
+      "status": "COMPLETE",
+      "evidence": {
+        "implementation_commit": "af16b9e11966a3e82d50843673ffb605fae3c47b",
+        "source_blob_sha256": "c7de769833b99390a6f3f8a1a33daa57f6cb06d50f29ae20abc60fe142394ecd",
+        "test_blob_sha256": "248664063f3c4474c9ff8f1cd5cda7b595babd0c04cb98569417ddb1a15895be",
+        "focused_result": "10 passed",
+        "mutation_result": "validation-after-callback produced 4 failures, restored 10 passed",
+        "lint": "PASS",
+        "full_suite": "Python 2959 passed, Flutter 219 passed, exit 0",
+        "scope_note": "runner callers only; no raw-shell enforcement"
+      }
+    },
     {"id": "P3", "status": "PENDING"},
     {"id": "P4", "status": "PENDING"},
     {"id": "P5", "status": "PENDING"},
