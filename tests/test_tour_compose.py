@@ -324,8 +324,10 @@ class _FailStop2Client:
         self.stops_seen.append(idxs)
         base = tuple(self.mock.compose(request, attempt, prev_report))
         if 2 in idxs:
-            return (*base, Sentence(text="Nope.", source_id="ghost",
-                                    source_type="beat", stop_idx=2))
+            return (
+                *base,
+                Sentence(text="Nope.", source_id="ghost", source_type="beat", stop_idx=2),
+            )
         return base
 
 
@@ -405,14 +407,17 @@ def test_per_chapter_verify_report_flags_the_reverted_stop_with_its_reason():
             return any(c in sentence_text for c in key_claims)
 
     composed = compose_script_per_chapter(
-        stitched, seq, route, client=_ParaphraseStop1Client(),
+        stitched,
+        seq,
+        route,
+        client=_ParaphraseStop1Client(),
         faithfulness_checker=_StrictSubstringChecker(),
     )
     by_stop = {r.stop_idx: r for r in composed.verify_report}
     assert by_stop[1].status == "reverted_to_stitched"
     # the exact gate reasons that flattened stop 1 are surfaced
     assert by_stop[1].faithfulness  # the paraphrase failed entailment
-    assert by_stop[1].coverage      # dropping it left the claim uncovered
+    assert by_stop[1].coverage  # dropping it left the claim uncovered
     # every other stop kept its composed narration
     assert all(by_stop[k].status == "composed" for k in by_stop if k != 1)
 
@@ -464,6 +469,9 @@ class _FakeStream:
     def get_final_message(self):
         return self._response
 
+    def close(self):
+        pass
+
 
 class _FakeMessages:
     def __init__(self, payload: str, stop_reason: str = "end_turn"):
@@ -503,13 +511,12 @@ def test_anthropic_client_request_shape_and_parsing():
     request, fake, client = _anthropic_client_setup()
     sentences = client.compose(request, 1, None)
 
-    assert sentences == (
-        Sentence(text="A fact.", source_id="b0", source_type="beat", stop_idx=0),
-    )
+    assert sentences == (Sentence(text="A fact.", source_id="b0", source_type="beat", stop_idx=0),)
     assert client.input_tokens == 120 and client.output_tokens == 45
 
     (call,) = fake.messages.calls
     assert call["model"] == "claude-opus-4-8"
+    assert call["max_tokens"] == 64000
     assert call["thinking"] == {"type": "adaptive"}
     # Structured output: guaranteed-valid JSON against a strict schema.
     schema = call["output_config"]["format"]["schema"]
@@ -532,9 +539,7 @@ def test_anthropic_client_recompose_prompt_carries_the_failure():
     fabricated = Sentence(
         text="A fact from nowhere.", source_id="ghost", source_type="beat", stop_idx=0
     )
-    prev = request.stitched.validation.model_copy(
-        update={"untraceable_sentences": (fabricated,)}
-    )
+    prev = request.stitched.validation.model_copy(update={"untraceable_sentences": (fabricated,)})
     client.compose(request, 2, prev)
     user = fake.messages.calls[-1]["messages"][0]["content"]
     assert "PREVIOUS ATTEMPT FAILED" in user
@@ -590,18 +595,52 @@ def test_anthropic_client_raises_helpful_error_when_no_text_block():
         client.compose(request, 1, None)
 
 
-def test_compose_system_prompt_carries_the_anti_tell_craft_rules():
-    """Prompt v2 encodes the StoryScope-measured AI tells to suppress (the
-    Fable-5 advisor's P0 craft), so attempt 1 leans human, not machine."""
+def test_anthropic_client_closes_a_stream_at_the_absolute_deadline():
+    import time
+
+    request, fake, seeded_client = _anthropic_client_setup()
+
+    class _SlowStream(_FakeStream):
+        def __init__(self):
+            super().__init__(_FakeResponse('{"sentences":[]}'))
+            self.closed = False
+
+        def get_final_message(self):
+            time.sleep(0.02)
+            return self._response
+
+        def close(self):
+            self.closed = True
+
+    stream = _SlowStream()
+    fake.messages.stream = lambda **kw: stream
+    client = type(seeded_client)(client=fake, absolute_deadline_s=0.001)
+    with pytest.raises(TimeoutError, match="absolute deadline"):
+        client.compose(request, 1, None)
+    assert stream.closed is True
+
+
+def test_anthropic_client_preserves_adaptive_thinking_for_one_stop():
+    request, fake, client = _anthropic_client_setup()
+    first_stop = request.stitched.model_copy(
+        update={
+            "script": tuple(
+                sentence for sentence in request.stitched.script if sentence.stop_idx == 0
+            )
+        }
+    )
+    client.compose(request.model_copy(update={"stitched": first_stop}), 1, None)
+    assert fake.messages.calls[-1]["max_tokens"] == 64000
+    assert fake.messages.calls[-1]["thinking"] == {"type": "adaptive"}
+
+
+def test_anthropic_client_sends_the_current_system_prompt():
+    """The client sends the versioned prompt without a second hidden policy."""
     from src.tour.compose import _COMPOSE_SYSTEM
-    s = _COMPOSE_SYSTEM.lower()
-    assert "a testament to" in s and "stands as a symbol of" in s  # moralizing ban
-    assert "never convert a feeling" in s                          # embodied-emotion ban
-    assert "name things" in s                                      # explicit-naming push
-    assert "vary the shape of the stops" in s                      # anti-uniformity
-    assert "fuse repeats boldly" in s                              # in-stop dedup mandate
-    assert "fuse without fear" in s                                # coverage-gate reassurance
-    assert "precise time of day" in s                              # reflection embellishment guard
+
+    request, fake, client = _anthropic_client_setup()
+    client.compose(request, 1, None)
+    assert fake.messages.calls[-1]["system"] == _COMPOSE_SYSTEM
 
 
 def test_best_of_n_picks_the_cleaner_candidate_per_stop():

@@ -30,7 +30,7 @@ roster (303 POIs in Paris) — well under 50 ms.
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import NamedTuple
+from typing import TYPE_CHECKING, NamedTuple
 
 from .contract import POI, BeatRef, TourabilityAssessment, TourInput
 from .routing import (
@@ -40,6 +40,9 @@ from .routing import (
     envelope_radius_m,
     haversine_m,
 )
+
+if TYPE_CHECKING:
+    from .selection import CorpusSnapshot
 
 # §3.7 thresholds — frozen at Phase 6 calibration. These values match
 # the canonical formula in phase-5-quality-audit.md.
@@ -162,10 +165,11 @@ def assess(
     pois: Iterable[POI],
     beats_by_poi: dict[str, tuple[BeatRef, ...]],
 ) -> TourabilityAssessment:
-    """Compute the canonical tourability assessment for a tour input.
+    """Low-level component assessment retained for legacy diagnostics/tests.
 
-    Pure function: no Neo4j, no LLM. Caller passes the same POIs and
-    beats_by_poi dict that selection consumes.
+    Product selection must call :func:`assess_snapshot`, which refuses typed
+    place evidence until the validating materializer has relocated or omitted
+    every beat.  This detached-components form cannot carry that proof.
     """
     start_lat, start_lng = tour_input.start
     duration_min = tour_input.duration_min
@@ -268,6 +272,22 @@ def assess(
         one_way_alternative_destination=one_way_alternative,
         on_lens_fill_ratio=on_lens_fill_ratio,
     )
+
+
+def assess_snapshot(
+    tour_input: TourInput,
+    snapshot: CorpusSnapshot,
+) -> TourabilityAssessment:
+    """Manifest-aware density boundary used by the product algorithm."""
+
+    if snapshot.place_manifest is not None:
+        from .place_materialization import validate_materialized_corpus_snapshot
+        from .selection import MaterializedCorpusSnapshot
+
+        if not isinstance(snapshot, MaterializedCorpusSnapshot):
+            raise ValueError("typed corpus must be materialized before density")
+        validate_materialized_corpus_snapshot(snapshot)
+    return assess(tour_input, snapshot.pois, snapshot.beats_by_poi)  # type: ignore[arg-type]
 
 
 # ---------------------------------------------------------------------------
@@ -434,4 +454,5 @@ __all__ = [
     "TourabilityAssessment",
     "TourabilityRefusedError",
     "assess",
+    "assess_snapshot",
 ]

@@ -190,6 +190,28 @@ def test_summarise_route_round_trip_appends_return_segment():
     assert len(r.transits) == 3
 
 
+def test_summarise_route_totals_use_routed_time_and_distance_when_available():
+    class _Routed:
+        def route(self, *_coords):
+            return (321, 456.5, "encoded-shape")
+
+    r = summarise_route(
+        [_poi("a", 48.86, 2.35)],
+        start_lat=48.85,
+        start_lng=2.35,
+        round_trip=False,
+        duration_min=60,
+        spine_area=None,
+        routing_client=_Routed(),
+    )
+
+    assert r.routed is True
+    assert r.transits[0].leg_seconds == 321
+    assert r.transits[0].leg_distance_m == 456.5
+    assert r.total_walk_seconds == 321
+    assert r.total_walk_distance_m == 456.5
+
+
 # ---------------------------------------------------------------------------
 # insertion_cost_seconds
 # ---------------------------------------------------------------------------

@@ -38,11 +38,7 @@ def _ondoway_api_service() -> dict:
 def _ondoway_api_env() -> dict[str, str]:
     """Return the ``ondoway-api`` web service's env-var map from render.yaml."""
     api = _ondoway_api_service()
-    return {
-        var["key"]: var.get("value")
-        for var in api.get("envVars", [])
-        if "value" in var
-    }
+    return {var["key"]: var.get("value") for var in api.get("envVars", []) if "value" in var}
 
 
 def _ondoway_api_declared_keys() -> set[str]:
@@ -54,6 +50,11 @@ def _ondoway_api_declared_keys() -> set[str]:
     """
     api = _ondoway_api_service()
     return {var["key"] for var in api.get("envVars", [])}
+
+
+def _ondoway_api_env_entry(key: str) -> dict:
+    api = _ondoway_api_service()
+    return next(var for var in api.get("envVars", []) if var.get("key") == key)
 
 
 def test_public_render_deploy_gates_workbench_crud_off():
@@ -138,6 +139,28 @@ def test_pinned_compose_provider_credential_is_declared():
         assert key in declared, (
             f"render.yaml pins COMPOSE_PROVIDER={provider!r} but never declares {key}"
         )
+
+
+def test_premium_preview_is_explicitly_authorized_and_bound_to_private_valhalla():
+    manifest = yaml.safe_load(_RENDER_YAML.read_text())
+    env = _ondoway_api_env()
+    assert env.get("ONDOWAY_ENABLE_PAID_LLM_CALLS") == "1"
+
+    binding = _ondoway_api_env_entry("VALHALLA_URL")["fromService"]
+    assert binding == {
+        "type": "pserv",
+        "name": "ondoway-valhalla",
+        "property": "hostport",
+    }
+    routing = next(
+        service for service in manifest["services"] if service.get("name") == "ondoway-valhalla"
+    )
+    assert routing["type"] == "pserv"
+    assert routing["runtime"] == "image"
+    assert routing["disk"]["mountPath"] == "/custom_files"
+    routing_env = {entry["key"]: entry.get("value") for entry in routing["envVars"]}
+    assert "ile-de-france" in routing_env["tile_urls"]
+    assert "NewYork" in routing_env["tile_urls"]
 
 
 # --- Defect: durable audio URLs written to ephemeral container storage ---

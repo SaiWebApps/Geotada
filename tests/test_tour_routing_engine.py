@@ -15,7 +15,7 @@ import httpx
 import pytest
 
 from src.tour.routing import haversine_m, pace_corrected_walk_seconds
-from src.tour.routing_client import RoutingClient
+from src.tour.routing_client import BASE_URL_ENV, RoutingClient
 
 # Five real Paris points: Eiffel Tower, Louvre, Notre-Dame, Place des Vosges,
 # Sacré-Cœur.
@@ -30,6 +30,14 @@ POINTS = [
 SHAPE = "mock_polyline6_abc123"
 
 
+def test_render_hostport_environment_is_normalized_to_http(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(BASE_URL_ENV, "ondoway-valhalla:8002")
+    with RoutingClient() as client:
+        assert client._client.base_url == httpx.URL("http://ondoway-valhalla:8002")
+
+
 def _routed_meters(d_m: float) -> float:
     return d_m * 1.2
 
@@ -39,6 +47,8 @@ def _routed_seconds(d_m: float) -> int:
 
 
 def _valhalla_handler(request: httpx.Request) -> httpx.Response:
+    if request.url.path == "/status":
+        return httpx.Response(200, json={"version": "3.7.0-test"})
     body = json.loads(request.content)
     if request.url.path == "/route":
         a, b = body["locations"]
@@ -122,6 +132,12 @@ def test_route_parses_documented_response_fields():
     assert seconds == _routed_seconds(d)
     assert meters == pytest.approx(_routed_meters(d))
     assert shape == SHAPE
+
+
+def test_routing_version_comes_from_the_same_client_instance() -> None:
+    with _client(_valhalla_handler) as rc:
+        assert rc.routing_version() == "3.7.0-test"
+        assert rc.routing_version() == "3.7.0-test"
 
 
 def test_isochrone_returns_feature_collection():
@@ -270,6 +286,10 @@ def test_summarise_route_with_client_populates_routed_legs():
     for seg in route.transits:
         assert seg.source == "valhalla"
         assert seg.polyline == SHAPE
+        assert seg.valhalla_receipt is not None
+        assert seg.valhalla_receipt.polyline == seg.polyline
+        assert seg.valhalla_receipt.seconds == seg.leg_seconds
+        assert seg.valhalla_receipt.distance_m == seg.leg_distance_m
         expected = _routed_seconds(seg.distance_m)
         assert seg.leg_seconds == expected
         # budgets stay haversine: walk_seconds untouched by the client
@@ -452,14 +472,13 @@ def test_routed_divisor_lets_cheaper_network_fit_more():
     # real effect is what this now pins: routed fits at least as many, the routed
     # path is USED, and every transit leg arrives enriched (client leg_seconds).
     assert routed_ids >= bare_ids, (
-        f"routed must fit at least as many: bare={sorted(bare_ids)} "
-        f"routed={sorted(routed_ids)}"
+        f"routed must fit at least as many: bare={sorted(bare_ids)} routed={sorted(routed_ids)}"
     )
     assert routed.routed is True
     assert all(seg.leg_seconds is not None for seg in routed.transits)
-    assert any(
-        seg.leg_seconds != seg.walk_seconds for seg in routed.transits
-    ), "at least one leg must be visibly routed"
+    assert any(seg.leg_seconds != seg.walk_seconds for seg in routed.transits), (
+        "at least one leg must be visibly routed"
+    )
 
 
 def test_requests_pin_pedestrian_walking_speed_to_pace_kmh():

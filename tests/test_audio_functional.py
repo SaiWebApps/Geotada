@@ -5,8 +5,8 @@ They are SKIPPED automatically when:
   - OPENAI_API_KEY is not set
   - OpenAI API is unreachable (corporate proxy, no internet)
 
-Run manually (off VPN/proxy):
-    python -m pytest tests/test_audio_functional.py -v -s
+Run explicitly (off VPN/proxy):
+    make test-functional
 """
 
 from __future__ import annotations
@@ -19,6 +19,11 @@ import pytest
 from src.audio.eval import evaluate
 from src.audio.provider import get_provider
 from src.seed.narratives import BEATS
+
+# This module makes real paid OpenAI TTS and transcription calls.  The repository's
+# default test bar excludes the ``live`` marker; keeping the marker at module scope
+# prevents a configured developer machine from spending money during ``make test``.
+pytestmark = pytest.mark.live
 
 
 def _openai_reachable() -> bool:
@@ -43,17 +48,18 @@ def _openai_reachable() -> bool:
             return False
 
 
-needs_openai = pytest.mark.skipif(
-    not _openai_reachable(),
-    reason="OpenAI API not reachable - set OPENAI_API_KEY and ensure "
-    "no proxy blocks api.openai.com",
-)
+@pytest.fixture(scope="module", autouse=True)
+def _require_explicit_live_openai() -> None:
+    """Probe only when live test execution starts, never during collection."""
+    if os.getenv("ONDOWAY_LIVE_TESTS") != "1":
+        pytest.fail("use `make test-functional` to authorize live OpenAI calls")
+    if not _openai_reachable():
+        pytest.fail("OpenAI API is unreachable or OPENAI_API_KEY is unset")
 
 # Extract scripts from seed data
 SCRIPTS = [beat["script_body"] for beat in BEATS]
 
 
-@needs_openai
 class TestOpenAIGeneratesValidMP3:
     """Verify that OpenAI TTS returns valid, non-empty MP3 for each seed script."""
 
@@ -75,7 +81,6 @@ class TestOpenAIGeneratesValidMP3:
         )
 
 
-@needs_openai
 class TestOpenAIAudioMatchesScript:
     """Generate audio, transcribe it back with Whisper, and verify low WER."""
 
@@ -103,7 +108,6 @@ class TestOpenAIAudioMatchesScript:
         )
 
 
-@needs_openai
 class TestEvalEndpoint:
     """Verify the /audio/eval API endpoint works end-to-end with real APIs."""
 

@@ -33,10 +33,10 @@ composer this preview actually uses emits ONE stop of roughly 700 words (~1500
 tokens). 180 s is therefore already several times a healthy per-stop call.
 
 Retries: judges get 2 (they are cheap, and transient 429/529 is the common
-failure), compose gets 1 (an Opus call is expensive; retrying a genuinely stuck
-one twice is how the 30-minute wait was built). Worst-case wall clock per call
-becomes 135 s for a judge and 360 s for a compose, versus 1800 s before — and
-the per-stop pools run these concurrently.
+failure); compose gets zero hidden SDK retries. A fresh complete-tour candidate
+is the only meaningful compose retry because it is visible, bounded, and can be
+re-evaluated as a unit. Compose streams also have a 600 s absolute deadline, so
+periodic streaming bytes cannot evade the SDK's read timeout.
 
 Both are overridable from the environment so an operator can widen them for a
 slow link without a code change; the defaults are what the bar and the workbench
@@ -54,10 +54,26 @@ JUDGE_MAX_RETRIES: int = int(os.getenv("ONDOWAY_JUDGE_MAX_RETRIES", "2"))
 
 #: Opus compose/correction calls (streaming, adaptive thinking). See module docstring.
 COMPOSE_TIMEOUT_S: float = float(os.getenv("ONDOWAY_COMPOSE_TIMEOUT_S", "180"))
-COMPOSE_MAX_RETRIES: int = int(os.getenv("ONDOWAY_COMPOSE_MAX_RETRIES", "1"))
+COMPOSE_MAX_RETRIES: int = int(os.getenv("ONDOWAY_COMPOSE_MAX_RETRIES", "0"))
+# An SDK read timeout is not an elapsed-time bound for streaming: periodic bytes
+# can keep a paid stream alive indefinitely. Compose adapters close the physical
+# stream when this absolute deadline expires.
+COMPOSE_ABSOLUTE_DEADLINE_S: float = float(os.getenv("ONDOWAY_COMPOSE_ABSOLUTE_DEADLINE_S", "600"))
+
+# Certification calls are physical-attempt-budgeted before they reach the SDK.
+# An SDK retry would evade that ledger, so the certification path always uses zero.
+CERTIFICATION_MAX_RETRIES: int = 0
+PAID_CALL_PERMISSION_ENV = "ONDOWAY_ENABLE_PAID_LLM_CALLS"
 
 
-def _build(timeout_s: float, max_retries: int) -> Any:
+def _require_paid_call_permission() -> None:
+    if os.getenv(PAID_CALL_PERMISSION_ENV) != "1":
+        raise RuntimeError(
+            f"paid LLM calls are locked; set {PAID_CALL_PERMISSION_ENV}=1 only after preflight"
+        )
+
+
+def _build(timeout_s: float | None, max_retries: int) -> Any:
     """Construct a real ``anthropic.Anthropic`` with an explicit ceiling.
 
     Imported INSIDE the function, matching the lazy-import idiom every call site
@@ -65,6 +81,8 @@ def _build(timeout_s: float, max_retries: int) -> Any:
     the tour package (the hermetic bar constructs these classes with stub clients
     and never touches the SDK).
     """
+    _require_paid_call_permission()
+
     import anthropic
 
     return anthropic.Anthropic(timeout=timeout_s, max_retries=max_retries)
@@ -80,11 +98,39 @@ def compose_client() -> Any:
     return _build(COMPOSE_TIMEOUT_S, COMPOSE_MAX_RETRIES)
 
 
+def certification_judge_client() -> Any:
+    """Bounded review client whose single physical attempt cannot hide SDK retries."""
+    return _build(JUDGE_TIMEOUT_S, CERTIFICATION_MAX_RETRIES)
+
+
+def certification_compose_client() -> Any:
+    """Bounded compose client whose single physical attempt cannot hide SDK retries."""
+    return _build(COMPOSE_TIMEOUT_S, CERTIFICATION_MAX_RETRIES)
+
+
+def certification_batch_compose_client() -> Any:
+    """Zero-retry compose client for the explicitly polled batch experiment.
+
+    Unlike an interactive preview, the batch is not attached to a UI latency
+    promise.  It therefore has no application-imposed read timeout; durable
+    attempt markers and visible polling provide operational control while the
+    SDK remains forbidden from making hidden retries.
+    """
+
+    return _build(None, CERTIFICATION_MAX_RETRIES)
+
+
 __all__ = [
+    "CERTIFICATION_MAX_RETRIES",
+    "COMPOSE_ABSOLUTE_DEADLINE_S",
     "COMPOSE_MAX_RETRIES",
     "COMPOSE_TIMEOUT_S",
     "JUDGE_MAX_RETRIES",
     "JUDGE_TIMEOUT_S",
+    "PAID_CALL_PERMISSION_ENV",
+    "certification_batch_compose_client",
+    "certification_compose_client",
+    "certification_judge_client",
     "compose_client",
     "judge_client",
 ]

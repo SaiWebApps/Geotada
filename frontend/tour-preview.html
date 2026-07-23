@@ -80,10 +80,15 @@ $("f").addEventListener("submit", async (e) => {
       return;
     }
     const data = await resp.json();
+    const basicTour = data.candidate_eligible === false && data.basic_tour;
+    const activeTour = basicTour || data;
+    const stops = Array.isArray(activeTour.stops) ? activeTour.stops : [];
     $("head").textContent =
-      `${data.stops.length} stops · spine: ${data.spine_area || "—"} · ~${data.total_audio_min} min of audio`;
-    status(`Tour ready. Press “Play narration” on any stop.`);
-    for (const s of data.stops) renderStop(s);
+      `${stops.length} stops · spine: ${data.spine_area || "—"} · ~${activeTour.total_audio_min || 0} min of audio`;
+    status(basicTour
+      ? "Basic grounded guide ready — not Premium and not graded. Play any stop below."
+      : "Premium candidate ready — eligible for certification. Press “Play narration” on any stop.");
+    for (const s of stops) renderStop(s);
   } catch (err) {
     status(`Request failed: ${err}`, true);
   } finally {

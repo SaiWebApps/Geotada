@@ -6,9 +6,10 @@ recompose (re-run COMPOSE with the failing report in hand); still failing
 → refuse the flavour (raise). This is pure control flow over two injected
 callables, so it is exercised end-to-end with deterministic stubs — no LLM.
 
-``verify`` merges all four checks into one report: validation.validate_script
-(traceability + forbidden) + verify.verify_provenance (rapidfuzz) +
-verify.verify_faithfulness (entailment). Build it with ``build_full_verifier``.
+``verify`` merges a caller-selected base validator with provenance,
+faithfulness, and coverage checks.  The legacy lane defaults to
+``validation.validate_script``; certification supplies its structural-only
+validator so prose is judged by meaning rather than lexical vetoes.
 """
 
 from __future__ import annotations
@@ -317,6 +318,7 @@ def build_full_verifier(
     chunk_text_by_slug: dict[str, str] | None = None,
     faithfulness_checker: FaithfulnessChecker | None = None,
     expected_claim_ids: set[tuple[str, int]] | None = None,
+    base_validator: Callable[[Script, BeatSequence], ValidationReport] = validate_script,
 ) -> VerifyFn:
     """A ``verify(script)`` that merges the VERIFY checks into one report.
 
@@ -330,7 +332,7 @@ def build_full_verifier(
     chunks = chunk_text_by_slug or {}
 
     def verify(script: Script) -> ValidationReport:
-        base = validate_script(script, beat_sequence)
+        base = base_validator(script, beat_sequence)
         # No chunk library loaded -> provenance is a genuine no-op. Since the
         # Step-4.0 backfill, live beats DO carry source_passage/chunk_slug;
         # without this guard every one of them would fail at 0.0 against an

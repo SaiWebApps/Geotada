@@ -95,11 +95,28 @@ _SENTENCE_HEAD_WORDS: frozenset[str] = frozenset(
 
 def validate_script(script: Script, beat_sequence: BeatSequence) -> ValidationReport:
     """Run both gates and return the report."""
-    untraceable = _untraceable_sentences(script, beat_sequence)
+    traceability = validate_source_traceability(script, beat_sequence)
     forbidden = _forbidden_phrase_hits(script, beat_sequence)
+    return traceability.model_copy(
+        update={"forbidden_phrase_hits": tuple(forbidden)}
+    )
+
+
+def validate_source_traceability(
+    script: Script,
+    beat_sequence: BeatSequence,
+    *,
+    allowed_derived_source_ids: frozenset[str] | None = None,
+) -> ValidationReport:
+    """Structural provenance only; semantic FACT review owns prose meaning."""
     return ValidationReport(
-        untraceable_sentences=tuple(untraceable),
-        forbidden_phrase_hits=tuple(forbidden),
+        untraceable_sentences=tuple(
+            _untraceable_sentences(
+                script,
+                beat_sequence,
+                allowed_derived_source_ids=allowed_derived_source_ids,
+            )
+        )
     )
 
 
@@ -108,12 +125,22 @@ def validate_script(script: Script, beat_sequence: BeatSequence) -> ValidationRe
 # ---------------------------------------------------------------------------
 
 
-def _untraceable_sentences(script: Script, beat_sequence: BeatSequence) -> list[Sentence]:
+def _untraceable_sentences(
+    script: Script,
+    beat_sequence: BeatSequence,
+    *,
+    allowed_derived_source_ids: frozenset[str] | None = None,
+) -> list[Sentence]:
     # Track B (B.4): the known-id set derives from poi_beats + vignette_beats
     # INTERNALLY — a walk-past one-liner is beat-cited against a vignette
     # beat, which is not a POIBeats entry. The signature does not change.
     known_beat_ids = {b.id for plan in beat_sequence.poi_beats for b in plan.beats}
     known_beat_ids |= {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
+    derived_source_ids = (
+        GLUE_LABELS
+        if allowed_derived_source_ids is None
+        else allowed_derived_source_ids
+    )
     out: list[Sentence] = []
     for sentence in script.script:
         if sentence.source_type == "beat":
@@ -122,7 +149,7 @@ def _untraceable_sentences(script: Script, beat_sequence: BeatSequence) -> list[
             if any(bid not in known_beat_ids for bid in sentence.cited_beat_ids):
                 out.append(sentence)
         elif sentence.source_type in ("glue", "arith"):
-            if sentence.source_id not in GLUE_LABELS:
+            if sentence.source_id not in derived_source_ids:
                 out.append(sentence)
         else:
             out.append(sentence)

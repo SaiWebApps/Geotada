@@ -521,11 +521,22 @@ class TestPreviewTrip:
         )
         assert resp.status_code == 200, resp.text
         data = resp.json()
-        assert data["stops"], "preview should return at least one stop"
-        for stop in data["stops"]:
+        if data["candidate_eligible"]:
+            assert data["narration_kind"] == "llm_candidate"
+            assert data["basic_tour"] is None
+            selected_stops = data["stops"]
+            selected_audio_min = data["total_audio_min"]
+        else:
+            assert data["narration_kind"] == "none"
+            assert data["stops"] == []
+            assert data["basic_tour"] is not None
+            selected_stops = data["basic_tour"]["stops"]
+            selected_audio_min = data["basic_tour"]["total_audio_min"]
+        assert selected_stops, "preview should return narration in exactly one lane"
+        for stop in selected_stops:
             assert stop["poi_name"]
             assert stop["narration"].strip(), "each stop must carry narration text"
-        assert data["total_audio_min"] >= 1
+        assert selected_audio_min >= 1
 
     def test_preview_sparse_origin_422(self, client):
         resp = client.post(
@@ -545,6 +556,8 @@ COMPOSE_MARKER = "COMPOSED-MARKER: the story, retold for you."
 class _MarkerComposeClient:
     """Deterministic composer: prepends a recognizable glue sentence —
     route-independent proof that the COMPOSED output was persisted."""
+
+    cost_bearing = False
 
     def compose(self, request, attempt, prev_report):
         from src.tour.contract import Sentence
@@ -777,8 +790,7 @@ class TestComposeTripEndpoint:
 
             stored = get_trip_compose_inputs(s, trip_id)
         options = stored["options"]
-        if len(options) < 2:
-            pytest.skip("this generation produced a single flavour — nothing to pick")
+        assert len(options) >= 2, "dense Île generation must preserve a second route option"
         resp = client.post(
             f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt2"}
         )

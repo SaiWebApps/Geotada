@@ -3177,12 +3177,12 @@
         return;
       }
     }
-    // ONE algorithm — no narration options. Every preview runs Opus compose + the
-    // correct-don't-reject corrector, so it always spends. Confirm BEFORE clearing
-    // anything, so Cancel leaves the existing preview intact (D4).
+    // One shared Premium algorithm, with one zero-retry authoring call per routed
+    // stop. Certification reviewers are separate and do not run here. Confirm
+    // before clearing anything so Cancel leaves the existing preview intact.
     if (!window.confirm(
-      'Generate a tour? This runs a LIVE compose with Claude Opus and spends real '
-      + 'money on your API key (~1 min).')) {
+      'Generate a Premium candidate? This makes one LIVE Claude Opus authoring call '
+      + 'per routed stop and spends real money on your API key.')) {
       return;
     }
     genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
@@ -3335,11 +3335,12 @@
   }
   function _composeStatusLabel(s) {
     return ({
-      composed: '✓ full AI voice',
+      composed: '✓ Premium candidate — eligible for certification',
       composed_partial: '◐ AI voice — some stops fell back to the grounded stitch',
       refused: '✗ compose refused — showing grounded stitch',
-      // Unreachable with the one algorithm (every preview composes); kept so an
-      // older/legacy response still renders something honest instead of a raw key.
+      basic_available: 'Basic grounded guide — not Premium and not graded',
+      // Kept so an older/legacy response still renders something honest instead
+      // of a raw key.
       stitched: 'grounded stitch only — no AI voice reached this tour',
     })[s] || s || '—';
   }
@@ -3418,7 +3419,11 @@
   function renderTourStops(data, requestedMinutes) {
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
-    tourStops = (data && data.stops) || [];
+    const basicTour = data && data.candidate_eligible === false && data.basic_tour;
+    const activeTour = basicTour || data || {};
+    const isBasic = !!basicTour;
+    tourStops = Array.isArray(activeTour.stops) ? activeTour.stops : [];
+    const activeAudioMinutes = activeTour.total_audio_min || 0;
     drawTourRoute(tourStops);
     stopsEl.innerHTML = '';
     const summary = document.createElement('div');
@@ -3430,18 +3435,23 @@
     const placeCount = tourStops.filter(s => s.band !== 'leg').length;
     const legCount = tourStops.length - placeCount;
     const legNote = legCount ? ` · ${legCount} narrated walk${legCount === 1 ? '' : 's'}` : '';
-    summary.textContent = `${placeCount} stops${legNote} · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
+    summary.textContent = `${placeCount} stops${legNote} · spine: ${(data && data.spine_area) || '—'} · ~${activeAudioMinutes} min of audio`;
     stopsEl.appendChild(summary);
-    // Narrator + objective quality panel: which model wrote this, whether it's the
-    // real AI voice or the stitch, and the measured spoken-narration signals.
-    stopsEl.appendChild(buildNarrationQualityPanel(data));
-    // THE QUALITY RUBRIC verdict — the mechanical floor of the tour quality standard,
-    // run server-side on EVERY tour. Shown to the editor with the exact check and
-    // stop, so a breach (a rich POI starved to a line, a stop gorged past the
-    // listenable cap, a repeated sentence) is VISIBLE rather than something they have
-    // to notice by reading the whole tour.
-    const rubricPanel = buildQualityRubricPanel(data);
-    if (rubricPanel) stopsEl.appendChild(rubricPanel);
+    if (isBasic) {
+      const lane = document.createElement('div');
+      lane.className = 'tour-basic-lane';
+      lane.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
+        + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 10px;';
+      lane.textContent = 'Basic grounded guide — not Premium and not graded. '
+        + 'These grounded stops remain available while Premium narration is ineligible.';
+      stopsEl.appendChild(lane);
+    } else {
+      // Premium narrator and measured spoken-narration signals belong only to the
+      // eligible customer-visible LLM lane.
+      stopsEl.appendChild(buildNarrationQualityPanel(data));
+      const rubricPanel = buildQualityRubricPanel(data);
+      if (rubricPanel) stopsEl.appendChild(rubricPanel);
+    }
     // Phase 6 contract: YELLOW = generate but WARN. Present only for thin areas
     // (e.g. one isolated mega-anchor -> a legitimate single-stop tour); without
     // this banner such tours read as silent bugs. C11a: the engine also attaches
@@ -3482,7 +3492,7 @@
       note.className = 'tour-thin-delivery-note';
       note.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
         + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 8px;';
-      note.textContent = `ⓘ Short tour: ~${data.total_audio_min || 0} min of audio`
+      note.textContent = `ⓘ Short tour: ~${activeAudioMinutes} min of audio`
         + (requestedMinutes ? ` for a ${requestedMinutes}-min request` : '')
         + `. This area is rich, but this route delivers fewer stops than it could — `
         + `an honest thin tour, not a data problem.`;

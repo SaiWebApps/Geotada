@@ -25,12 +25,11 @@ from src.api.crud.trips import (
     route_script_to_stops,
 )
 from src.api.dependencies import (
-    get_claim_repetition_judge,
     get_compose_client,
     get_correction_client,
     get_driver,
     get_faithfulness_checker,
-    get_omission_checker,
+    get_premium_compose_executor,
     get_session,
 )
 from src.api.models.trips import (
@@ -39,32 +38,30 @@ from src.api.models.trips import (
     TripComposeResponse,
     TripGenerateRequest,
     TripGenerateResponse,
+    TripPreviewBasicTour,
     TripPreviewRequest,
     TripPreviewResponse,
     TripPreviewStop,
     TripPreviewTourability,
 )
 from src.tour.beat_select import select_vignette_beats
+from src.tour.candidate_eligibility import (
+    CandidateRejection,
+    CandidateRejectionCode,
+)
 
 # check_tour_repetition / repetition_findings are deliberately NOT imported: the G4
 # check is dark (see the long comment at its call site in preview_trip). RedundancyJudge
 # is still imported for the Depends() signature, which stays so re-enabling is one line.
-from src.tour.claim_repetition import RedundancyJudge
 from src.tour.compose import (
-    AnthropicComposeClient,
     ComposeClient,
     ComposeRequest,
-    OpenAIComposeClient,
-    compose_provider_name,
     compose_script,
-    compose_script_per_chapter,
-    keyless_affected_stops,
 )
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
     BeatSequence,
     Route,
-    Script,
     Sentence,
     TourabilityAssessment,
     TourInput,
@@ -74,17 +71,26 @@ from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, is_walk_concurrent, vignette_one_liner_text
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option
+from src.tour.premium_tour import (
+    EphemeralReceiptSink,
+    PremiumComposeExecutor,
+    PremiumRouteInfeasibleError,
+    execute_premium_plan,
+    finalize_premium_tour,
+    plan_premium_tour,
+    resolve_build_identity,
+)
 from src.tour.quality_rubric import score_tour
 from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
+    CertificationPlanningInfeasibleError,
     build_poi_beat_plans_capped,
     build_poi_extra_beats,
     build_poi_extra_narration,
     load_paris_corpus,
     pick_spine_area,
     select_k_routes,
-    select_route,
     select_vignettes,
 )
 from src.tour.verify import FaithfulnessChecker
@@ -132,19 +138,15 @@ def _upstream_provider_errors():
             detail=f"LLM provider rate limited: {exc}",
             headers={"Retry-After": "30"},
         ) from exc
-    except _PROVIDER_ERRORS as exc:
+    except (*_PROVIDER_ERRORS, TimeoutError) as exc:
         raise HTTPException(status_code=502, detail=f"LLM provider error: {exc}") from exc
 
 
 # --- Spend guard for the LLM-billing compose paths ---------------------------
-# POST /trips/preview runs compose_script_per_chapter with candidates=2 (two live
-# Opus drafts PER STOP), Haiku faithfulness verification, up to two Opus
-# (CORRECTION_MODEL) repair passes per flagged sentence, and a Haiku coverage
-# judge — src/tour/compose.py measures a 9-stop preview at ~18 Opus best-of-2
-# calls (~$1). It is deliberately unauthenticated (the public web preview
-# surface), so without a limiter one anonymous caller — or a crawler — can drain
-# the owner's ANTHROPIC_API_KEY at ~$1/request. /feedback was given exactly this
-# guard over ONE Haiku call; the dollars-per-call path had none.
+# Premium preview makes one zero-retry physical authoring call per routed stop.
+# The exact stop-call count is known only after provider-free planning, so it is
+# reserved atomically immediately before execution. The endpoint is deliberately
+# unauthenticated; without these bounds a crawler could drain the owner's key.
 #
 # Four independent bounds, cheapest first:
 #   1. per-IP fixed window    — stops a naive loop from one host
@@ -157,7 +159,11 @@ def _upstream_provider_errors():
 # In-process and per-worker: a multi-worker deploy needs shared state (Redis) to
 # be a true bound, and the counters reset on every Render redeploy. That is why
 # the daily ceiling exists as well, and why this is a floor, not the whole answer.
-_PREVIEW_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_MAX", "2"))
+# Call-count ceilings, not request-count ceilings. One Premium request can reserve
+# up to eight physical stop calls; 16 therefore preserves the original intent of
+# allowing two maximum-size previews per IP/window. The explicit env name prevents
+# an old request-count override from silently changing units after this migration.
+_PREVIEW_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_CALLS_MAX", "16"))
 _PREVIEW_RATE_LIMIT_WINDOW_S = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_WINDOW_S", "3600"))
 _PREVIEW_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_GLOBAL_RATE_LIMIT_MAX", "20"))
 _PREVIEW_DAILY_MAX = int(os.getenv("TRIPS_PREVIEW_DAILY_MAX", "100"))
@@ -175,13 +181,11 @@ _daily_hits: deque[float] = deque()
 _inflight = 0
 _rate_lock = Lock()
 
-# The ONLY compose clients that actually bill. `get_compose_client` builds one of
-# these in the product — there is no 'mock' provider (src/api/dependencies.py) —
-# so in production the guard is ALWAYS armed. A test double (MockComposeClient,
-# a counting stub, an injected fake) spends nothing, so it is not rate limited:
-# that keeps the hermetic suite's many previews working without an env backdoor
-# that could also disarm the guard on the public deploy.
-_COST_BEARING_COMPOSE_CLIENTS = (AnthropicComposeClient, OpenAIComposeClient)
+
+def _is_cost_bearing(provider: object) -> bool:
+    """Unknown providers are billable; only an explicit offline adapter is $0."""
+
+    return getattr(provider, "cost_bearing", True) is not False
 
 
 def _client_ip(request: Request) -> str:
@@ -213,13 +217,12 @@ def reset_spend_guard() -> None:
         _inflight = 0
 
 
-def _spend_precheck(request: Request, compose_client: object) -> None:
-    """Consume one tour-generation token, or raise 429 before ANY work is done.
+def _spend_precheck(request: Request, compose_client: object, *, planned_calls: int = 1) -> None:
+    """Atomically reserve the exact planned physical-call count."""
 
-    A no-op when the configured compose client cannot bill (see
-    _COST_BEARING_COMPOSE_CLIENTS).
-    """
-    if not isinstance(compose_client, _COST_BEARING_COMPOSE_CLIENTS):
+    if planned_calls < 1:
+        raise ValueError("planned provider call count must be positive")
+    if not _is_cost_bearing(compose_client):
         return
 
     now = time.monotonic()
@@ -229,33 +232,41 @@ def _spend_precheck(request: Request, compose_client: object) -> None:
         if _PREVIEW_DAILY_MAX > 0:
             while _daily_hits and _daily_hits[0] <= day_cutoff:
                 _daily_hits.popleft()
-            if len(_daily_hits) >= _PREVIEW_DAILY_MAX:
+            if len(_daily_hits) + planned_calls > _PREVIEW_DAILY_MAX:
                 raise _too_many(
                     "Daily tour-generation ceiling reached, please retry tomorrow",
-                    int(_daily_hits[0] + _DAY_S - now),
+                    int(_daily_hits[0] + _DAY_S - now) if _daily_hits else _DAY_S,
                 )
         if _PREVIEW_GLOBAL_RATE_LIMIT_MAX > 0:
             while _global_hits and _global_hits[0] <= cutoff:
                 _global_hits.popleft()
-            if len(_global_hits) >= _PREVIEW_GLOBAL_RATE_LIMIT_MAX:
+            if len(_global_hits) + planned_calls > _PREVIEW_GLOBAL_RATE_LIMIT_MAX:
                 raise _too_many(
                     "Tour generation is temporarily rate limited, please retry later",
-                    int(_global_hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now),
+                    (
+                        int(_global_hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now)
+                        if _global_hits
+                        else _PREVIEW_RATE_LIMIT_WINDOW_S
+                    ),
                 )
         if _PREVIEW_RATE_LIMIT_MAX > 0:
             hits = _rate_state.setdefault(_client_ip(request), deque())
             while hits and hits[0] <= cutoff:
                 hits.popleft()
-            if len(hits) >= _PREVIEW_RATE_LIMIT_MAX:
+            if len(hits) + planned_calls > _PREVIEW_RATE_LIMIT_MAX:
                 raise _too_many(
                     "Too many tour generations, please retry later",
-                    int(hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now),
+                    (
+                        int(hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now)
+                        if hits
+                        else _PREVIEW_RATE_LIMIT_WINDOW_S
+                    ),
                 )
-            hits.append(now)
+            hits.extend([now] * planned_calls)
         if _PREVIEW_GLOBAL_RATE_LIMIT_MAX > 0:
-            _global_hits.append(now)
+            _global_hits.extend([now] * planned_calls)
         if _PREVIEW_DAILY_MAX > 0:
-            _daily_hits.append(now)
+            _daily_hits.extend([now] * planned_calls)
 
 
 @contextmanager
@@ -267,7 +278,7 @@ def _concurrency_slot(compose_client: object):
     that burst hole. No-op for a non-billing client.
     """
     global _inflight
-    if not isinstance(compose_client, _COST_BEARING_COMPOSE_CLIENTS):
+    if not _is_cost_bearing(compose_client):
         yield
         return
     with _rate_lock:
@@ -326,9 +337,7 @@ def _build_tour_input(**kwargs) -> TourInput:
             422,
             {
                 "reason": "invalid_tour_input",
-                "errors": [
-                    {"loc": list(e["loc"]), "msg": e["msg"]} for e in exc.errors()
-                ],
+                "errors": [{"loc": list(e["loc"]), "msg": e["msg"]} for e in exc.errors()],
             },
         ) from exc
 
@@ -761,20 +770,11 @@ def compose_trip(
     )
     stitched = generate(seq, route, tour_input)
 
-    # KNOWN DIVERGENCE (2026-07-19), deliberate and scoped — see
-    # specs/2026-07-19-tour-quality-standard/01-standard.md §"Remaining divergence".
-    # The WORKBENCH (/trips/preview) runs compose_script_per_chapter with best-of-2 +
-    # the corrector. This APP path still runs whole-tour compose_script, so the two
-    # surfaces do not narrate identically yet.
-    #
-    # It was unified and then deliberately reverted, because unifying changes a
-    # PERSISTENCE contract, not just prose: whole-tour compose RAISES on verification
-    # failure -> HTTP 422 -> the trip is left UNMUTATED and another flavour can be
-    # tried. Per-chapter never refuses; it floors to grounded stitch and returns 200,
-    # so replace_trip_stops + mark_trip_composed would run on degraded content, and
-    # TripComposeResponse carries no compose_status for the app to notice. Closing
-    # that gap needs a decided contract (add compose_status, and/or refuse on total
-    # degradation), not a silent swap. Tracked, not forgotten.
+    # This persisted app endpoint retains its whole-tour, fail-before-mutation
+    # contract. The non-persisted workbench no longer owns another implementation:
+    # it delegates to the same Premium planner/finalizer as the batch runner. If this
+    # persisted path is migrated later, it must call that shared seam rather than
+    # copying either surface's algorithm again.
     counting = _CountingComposeClient(compose_client)
     try:
         with _concurrency_slot(compose_client), _upstream_provider_errors():
@@ -793,7 +793,6 @@ def compose_trip(
                 "faithfulness": len(exc.report.faithfulness_failures),
             },
         ) from exc
-
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     # KE2: recompute the keep-exploring extras HERE (never trust generate-time
@@ -1017,45 +1016,19 @@ def _tourability_payload(
     )
 
 
-def _compose_status(stitched: Script, composed: Script) -> str:
-    """'composed' (fully AI-voiced) or 'composed_partial' when the graceful
-    per-stop repair reverted at least one stop to the grounded stitch."""
-
-    def _by_stop(s: Script) -> dict[int, tuple[str, ...]]:
-        out: dict[int, list[str]] = {}
-        for sent in s.script:
-            out.setdefault(sent.stop_idx, []).append(sent.text)
-        return {k: tuple(v) for k, v in out.items()}
-
-    st, co = _by_stop(stitched), _by_stop(composed)
-    reverted = any(co.get(k) == v for k, v in st.items())
-    return "composed_partial" if reverted else "composed"
-
-
 @router.post("/trips/preview", response_model=TripPreviewResponse)
 def preview_trip(
     request: Request,
     body: TripPreviewRequest,
     driver: Driver = Depends(get_driver),
-    compose_client: ComposeClient = Depends(get_compose_client),
-    faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
-    correction_client=Depends(get_correction_client),
-    claim_repetition_judge: RedundancyJudge = Depends(get_claim_repetition_judge),
-    omission_checker=Depends(get_omission_checker),
+    premium_executor: PremiumComposeExecutor = Depends(get_premium_compose_executor),
 ):
-    """Web-first preview (Phase 1.5): run the engine and return per-stop narration
-    WITHOUT a profile and WITHOUT persisting a Trip/ItineraryItem.
+    """Build a physically traced Premium candidate without certifying it.
 
-    Lets a web surface (the preview page; later the workbench) show the assembled
-    story fast. Audio is fetched per stop by the client via POST /audio/preview on
-    each stop's narration text. RED density / no reachable POIs -> 422.
-
-    UNAUTHENTICATED but SPEND-BOUNDED: this is the public web preview surface, and
-    one call is dollars of Opus/Haiku. `_spend_precheck` is the FIRST statement so
-    an anonymous loop is refused with 429 before the corpus is even loaded, let
-    alone before a provider call is made.
+    Planning uses the same certification route/request algorithm as the frozen
+    batch runner.  Authoring performs exactly one zero-retry call per planned
+    stop.  Paid FACT/ENJOY reviewers remain outside this interactive endpoint.
     """
-    _spend_precheck(request, compose_client)
     tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
@@ -1067,100 +1040,97 @@ def preview_trip(
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
         with RoutingClient() as routing_client:
-            route = select_route(tour_input, snapshot, routing_client=routing_client)
+            premium_plan = plan_premium_tour(
+                tour_input,
+                snapshot,
+                routing_client=routing_client,
+            )
     except TourabilityRefusedError as exc:
         raise HTTPException(422, _refusal_detail(exc)) from exc
-
-    if not route.pois:
+    except (
+        CertificationPlanningInfeasibleError,
+        PremiumRouteInfeasibleError,
+        ValueError,
+    ) as exc:
         raise HTTPException(
             422,
-            "No tourable POIs reachable from this start for the requested duration.",
-        )
+            {
+                "reason": "premium_route_infeasible",
+                "detail": str(exc),
+                "alternatives": [],
+            },
+        ) from exc
 
-    capped = build_poi_beat_plans_capped(
-        route, snapshot, lenses=tour_input.lenses, end_is_none=tour_input.end is None
-    )
-    plans = tuple(pb for pb, _ in capped)
-    overflow_by_poi = {pb.poi_id: ov for pb, ov in capped if ov}
-    vignette_beats = select_vignette_beats(
-        route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
-    )
-    seq = BeatSequence(
-        poi_beats=tuple(plans),
-        vignette_beats=vignette_beats,
-        overflow_by_poi=overflow_by_poi,
-    )
-    script = generate(seq, route, tour_input)
-
-    # THE ONE ALGORITHM. No flags, no tiers, no per-request narrator choice: every
-    # preview runs the same pipeline — Opus composes each stop, the faithfulness gate
-    # verifies, and the correct-don't-reject corrector repairs (trim -> rewrite) before
-    # anything is allowed to degrade to raw stitch. The grounded stitch is the FLOOR
-    # (what a refused/unrepairable stop falls back to), never a selectable mode. The
-    # hermetic test suite stubs the client offline so `make test` never spends.
-    compose_status = "stitched"
-    provider = compose_provider_name(os.getenv("COMPOSE_PROVIDER"))
-    narration_quality = None
-    omitted_facts: list = []
+    route = premium_plan.route
+    seq = premium_plan.sequence
+    basic_script = premium_plan.source
+    vignette_beats = seq.vignette_beats
+    overflow_by_poi = dict(seq.overflow_by_poi)
+    provider = premium_executor.provider_name
+    omitted_facts: list[object] = []
     omission_stops_checked = 0
     try:
-        # Per-chapter: one focused (parallel) call per stop, so the big
-        # repetitive stops fuse without dropping facts (whole-tour compose
-        # reverted them) and the tour composes in ~1 min, not ~19.
-        # Always on: the corrector is part of the algorithm, not an option.
-        #
-        # omission_checker/omission_findings: the ADVISORY coverage-direction pass
-        # (opt-in ONLY at this preview call site — never the persisted /compose
-        # path). The production coverage gate this ladder already runs cannot see
-        # a dropped fact (its overlap COEFFICIENT reads 1.000 once compose
-        # deletes material — measured on a real London beat, CLAUDE.md
-        # 2026-07-19). This runs the calibrated CoverageJudge on the SERVED
-        # script, scoped internally to keyless-beat stops (the blind spot's
-        # proven-worst corpus, 100% of London) — a keyed-corpus preview with no
-        # keyless beat in view spends nothing extra. Read-only: it never affects
-        # compose_status/script above; findings are appended to omitted_facts and
-        # surfaced next to the rubric's, below.
-        with _concurrency_slot(compose_client), _upstream_provider_errors():
-            composed = compose_script_per_chapter(
-                script,
-                seq,
-                route,
-                client=compose_client,
-                faithfulness_checker=faithfulness_checker,
-                candidates=2,  # best-of-2: extra tickets for the big, dense stops
-                correction_client=correction_client,
-                omission_checker=omission_checker,
-                omission_findings=omitted_facts,
+        build_identity = resolve_build_identity()
+        _spend_precheck(
+            request,
+            premium_executor,
+            planned_calls=len(premium_plan.units),
+        )
+        with _concurrency_slot(premium_executor), _upstream_provider_errors():
+            physical_responses = execute_premium_plan(
+                premium_plan,
+                executor=premium_executor,
+                receipt_sink=EphemeralReceiptSink(),
             )
-    except ComposeVerificationError:
-        compose_status = "refused"  # unrepairable — keep the grounded stitch
-    else:
-        compose_status = _compose_status(script, composed)
-        script = composed
-        # Objective quality signals on the composed narration, so tour quality is
-        # MEASURED, not a matter of taste. Score the FULL spoken text (composed
-        # glue/closers/reflections included — that is where moralizing closers
-        # concentrate, the highest-weighted tell).
-        narration = " ".join(s.text for s in script.script)
-        q = score_narration(narration)
-        narration_quality = {
-            "stilted_score": q.stilted_score,
-            "engagement_score": q.engagement_score,
-            # reliable=False => the composites are noise (short sample); the UI
-            # must flag this and lean on tells_per_100w instead of the deltas.
-            "reliable": q.reliable,
-            "n_words": q.n_words,
-            "burstiness": q.burstiness,
-            "mean_sentence_words": q.mean_sentence_words,
-            "long_sentence_rate": q.long_sentence_rate,
-            "second_person_per_100w": q.second_person_rate,
-            "look_prompt_rate": q.look_prompt_rate,
-            "tells_per_100w": q.per_100w,
-        }
-        # Bookkeeping only (no judge calls): how many stops the omission pass
-        # above actually looked at, for the "stats" transparency field below.
-        beats_by_id = {b.id: b for plan in seq.poi_beats for b in plan.beats}
-        omission_stops_checked = len(keyless_affected_stops(script, beats_by_id))
+            premium_result = finalize_premium_tour(
+                premium_plan,
+                physical_responses,
+                build_identity=build_identity,
+            )
+    except HTTPException:
+        raise
+    except Exception:
+        candidate_rejection = CandidateRejection(
+            code=CandidateRejectionCode.GENERATION_FAILED,
+            detail="Premium authoring did not produce a complete traced blueprint",
+        )
+        basic_stops = _preview_stops(basic_script, route, vignette_beats, snapshot, overflow_by_poi)
+        return TripPreviewResponse(
+            spine_area=route.spine_area,
+            total_audio_min=0,
+            stops=[],
+            candidate_eligible=False,
+            narration_kind="none",
+            basic_tour=TripPreviewBasicTour(
+                reason="llm_generation_failed",
+                total_audio_min=round(basic_script.total_audio_seconds / 60),
+                stops=basic_stops,
+            ),
+            lens_coverage_note=None,
+            tourability=_tourability_payload(route.tourability),
+            compose_status="basic_available",
+            candidate_rejection=candidate_rejection,
+            provider=provider,
+            narration_quality=None,
+            quality=None,
+        )
+
+    script = premium_result.blueprint.script
+    compose_status = "composed"
+    narration = " ".join(s.text for s in script.script)
+    q = score_narration(narration)
+    narration_quality = {
+        "stilted_score": q.stilted_score,
+        "engagement_score": q.engagement_score,
+        "reliable": q.reliable,
+        "n_words": q.n_words,
+        "burstiness": q.burstiness,
+        "mean_sentence_words": q.mean_sentence_words,
+        "long_sentence_rate": q.long_sentence_rate,
+        "second_person_per_100w": q.second_person_rate,
+        "look_prompt_rate": q.look_prompt_rate,
+        "tells_per_100w": q.per_100w,
+    }
 
     # THE QUALITY RUBRIC — runs on EVERY tour, deterministic and $0. The mechanical
     # floor of specs/2026-07-19-tour-quality-standard/01-standard.md: it catches the
@@ -1170,69 +1140,25 @@ def preview_trip(
     # breaches the standard is visible in the workbench with the exact check and stop.
     rubric = score_tour(script, route, snapshot.beats_by_poi, beat_sequence=seq)
 
-    # G4 — an ADVISORY, UNCALIBRATED semantic check (standard §4): does any two
-    # narration sentences, ANYWHERE in the tour, restate the same underlying fact in
-    # new words — exactly the gap a lexical/regex pass cannot see (see
-    # claim_repetition.py's docstring for the measured Vert-Galant defect a 4-gram
-    # Jaccard detector missed at 0 hits). Report-only, same as the omission checker
-    # below: the (now-removed) failure-ledger entry FL-2026-111 recorded that
-    # HaikuRedundancyJudge "has never executed against a live model" — still true:
-    # every test in tests/test_claim_repetition.py injects a hand-labelled stub, none
-    # construct the real class with client=None — and warned verbatim "an unproven
-    # judge silently gating narration would suppress real facts". So
-    # this NEVER folds into `quality["passed"]` until a labelled bake-off closes that
-    # entry. Findings surface in the separate `quality["g4"]` block below, severity
-    # WARN, for an editor to see without a non-deterministic judge flipping the
-    # tour's verdict.
-    #
-    # Skipped entirely on the "refused" path: `script` there is still the raw,
-    # never-composed stitch (compose_script_per_chapter raised
-    # ComposeVerificationError and the grounded stitch was kept as the floor) —
-    # spending the full judge-call budget scoring a script nobody will ever compose
-    # again is pure waste, not a check on anything the tourist will hear.
-    # DELIBERATELY NOT RUN as of 2026-07-19. It was wired earlier the same day and
-    # unwired on measurement, before ever billing a real preview.
-    #
-    # Two independent reasons, both measured, either one sufficient:
-    #
-    # 1. IT DOES NOT DETECT THE DEFECT IT EXISTS FOR. The cost cap forced a sampling
-    #    strategy over ~1100 candidate pairs per tour. Prefix truncation spent the
-    #    whole budget on stop 0 (0 of 327 pairs with a-stop >= 1 were ever judged);
-    #    the round-robin stratification that fixed that breadth destroyed
-    #    within-bucket depth instead. Measured on the very tour
-    #    claim_repetition.py's docstring cites as its founding case
-    #    (data/paris/tours/pont-neuf-60min-5afc2e.json, where "Vert-Galant" is
-    #    glossed FOUR times in different words): at MAX_CANDIDATE_PAIRS=200 the
-    #    stratified sample recovers **0 of the 15 Vert-Galant edges**. A check that
-    #    reports "no repetition found" on the canonical repetition tour is worse
-    #    than no check — it tells an editor the tour is clean.
-    #
-    # 2. THE JUDGE IS UNCALIBRATED. HaikuRedundancyJudge has never executed against
-    #    a live model; all 32 tests inject a hand-labelled stub. The (now-removed)
-    #    failure-ledger entry FL-2026-111 warned verbatim: "an unproven judge
-    #    silently gating narration would suppress real facts."
-    #
-    # Cost of leaving it on: the cap is a FLOOR, not a ceiling — every real tour
-    # yields >1100 candidates, so this bills ~200 Haiku calls (~$0.10) on EVERY
-    # preview for the recall measured above.
-    #
-    # To re-enable: (a) fix the sampler so it recovers the Vert-Galant edges at a
-    # defensible budget, and (b) run the labelled bake-off that closes FL-2026-111
-    # (~$0.006/tour, the pattern in scripts/coverage_calibrate.py). Until BOTH are
-    # done this stays dark. The module, its tests, and the response shape below all
-    # remain so re-enabling is a one-line change.
-    repetition = None
-    g4_findings: tuple = ()
+    # Paid semantic FACT/ENJOY/repetition reviewers are certification concerns and
+    # never run in this interactive candidate endpoint. Keep the stable advisory G4
+    # response shape explicit, empty, and non-gating; deterministic quality remains
+    # the only local diagnostic.
 
     stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
         spine_area=route.spine_area,
         total_audio_min=round(script.total_audio_seconds / 60),
         stops=stops,
+        candidate_eligible=True,
+        candidate_status="premium_candidate_eligible_for_certification",
+        narration_kind="llm_candidate",
+        basic_tour=None,
         # Per-corridor lens coverage note ships later in Phase 3 (REACH).
         lens_coverage_note=None,
         tourability=_tourability_payload(route.tourability),
         compose_status=compose_status,
+        candidate_rejection=None,
         provider=provider,
         narration_quality=narration_quality,
         quality={
@@ -1299,12 +1225,10 @@ def preview_trip(
                         "stop_idx": f.stop_idx,
                         "poi_name": None,
                     }
-                    for f in g4_findings
+                    for f in ()
                 ],
-                "judge_calls": repetition.judge_calls if repetition is not None else 0,
-                "candidates_dropped": (
-                    repetition.candidates_dropped if repetition is not None else 0
-                ),
+                "judge_calls": 0,
+                "candidates_dropped": 0,
             },
         },
     )

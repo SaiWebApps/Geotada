@@ -23,9 +23,10 @@ from __future__ import annotations
 import itertools
 import math
 from collections.abc import Callable, Iterable
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from .contract import POI, BeatRef, Route, TransitSegment
+from .contract import POI, BeatRef, Route, TransitSegment, ValhallaLegReceipt
 
 if TYPE_CHECKING:
     # routing_client imports from this module; type-only import avoids the cycle.
@@ -43,6 +44,128 @@ ERR_SHORT: float = 0.83
 WALK_FRACTION: float = 0.40  # of err-short total
 AUDIO_FRACTION: float = 0.60  # of err-short total
 EARTH_RADIUS_M: float = 6_371_000.0
+MIN_REQUESTED_FRACTION: float = 0.90
+MAX_REQUESTED_FRACTION: float = 1.10
+# Customer durations are selected in whole minutes.  Final ordering/demotion can
+# move a route by a few rounded seconds after the exact bounded repair.  A route
+# within one displayed minute of the frozen band is materially in the same
+# customer timebox; larger misses remain infeasible.
+TIMEBOX_MATERIALITY_TOLERANCE_SECONDS: int = 60
+
+
+@dataclass(frozen=True)
+class RoutePlanningPolicy:
+    """One immutable time currency for every route-selection phase.
+
+    The default policy preserves the legacy 0.83 planner exactly.  A
+    certification caller must construct its policy from its already-frozen
+    contract and provider-call authorization; selection deliberately does not
+    import or duplicate those authorities.
+    """
+
+    policy_id: str
+    minimum_requested_fraction: float
+    maximum_requested_fraction: float
+    max_stops: int | None = None
+
+    def __post_init__(self) -> None:
+        values = (self.minimum_requested_fraction, self.maximum_requested_fraction)
+        if not all(math.isfinite(value) and value > 0 for value in values):
+            raise ValueError("planning fractions must be finite and positive")
+        if self.minimum_requested_fraction > self.maximum_requested_fraction:
+            raise ValueError("minimum planning fraction exceeds maximum")
+        if self.max_stops is not None and not 1 <= self.max_stops <= 8:
+            raise ValueError("certification planning supports one to eight stops")
+
+    @property
+    def nominal_requested_fraction(self) -> float:
+        return (
+            self.minimum_requested_fraction + self.maximum_requested_fraction
+        ) / 2.0
+
+    @property
+    def is_legacy(self) -> bool:
+        return self.policy_id == "legacy-err-short-v1"
+
+    @classmethod
+    def certification(
+        cls,
+        *,
+        minimum_requested_fraction: float,
+        maximum_requested_fraction: float,
+        max_stops: int,
+        policy_id: str,
+    ) -> RoutePlanningPolicy:
+        """Build from the frozen TIME band and authorized compose-stop limit."""
+
+        if not policy_id or policy_id == "legacy-err-short-v1":
+            raise ValueError("certification planning requires its frozen policy id")
+        return cls(
+            policy_id=policy_id,
+            minimum_requested_fraction=minimum_requested_fraction,
+            maximum_requested_fraction=maximum_requested_fraction,
+            max_stops=max_stops,
+        )
+
+
+@dataclass(frozen=True)
+class RoutePlanningBudget:
+    """Duration-specific values derived once from a planning policy."""
+
+    minimum_elapsed_seconds: int
+    nominal_elapsed_seconds: int
+    maximum_elapsed_seconds: int
+    walk_envelope_minutes: float
+    walk_budget_seconds: int
+    audio_target_seconds: int
+    max_stops: int | None
+
+
+LEGACY_ROUTE_PLANNING_POLICY = RoutePlanningPolicy(
+    policy_id="legacy-err-short-v1",
+    minimum_requested_fraction=ERR_SHORT,
+    maximum_requested_fraction=ERR_SHORT,
+)
+
+
+def route_planning_budget(
+    duration_min: int,
+    policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+) -> RoutePlanningBudget:
+    requested_seconds = duration_min * 60
+    nominal_fraction = policy.nominal_requested_fraction
+    return RoutePlanningBudget(
+        minimum_elapsed_seconds=round(
+            requested_seconds * policy.minimum_requested_fraction
+        ),
+        nominal_elapsed_seconds=round(requested_seconds * nominal_fraction),
+        maximum_elapsed_seconds=round(
+            requested_seconds * policy.maximum_requested_fraction
+        ),
+        walk_envelope_minutes=(
+            duration_min * nominal_fraction * WALK_FRACTION
+        ),
+        walk_budget_seconds=round(
+            requested_seconds * nominal_fraction * WALK_FRACTION
+        ),
+        audio_target_seconds=round(
+            requested_seconds * nominal_fraction * AUDIO_FRACTION
+        ),
+        max_stops=policy.max_stops,
+    )
+
+
+def within_planning_timebox(
+    elapsed_seconds: int,
+    budget: RoutePlanningBudget,
+) -> bool:
+    """Whether final active time materially fits the whole-minute product band."""
+
+    return (
+        budget.minimum_elapsed_seconds - TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+        <= elapsed_seconds
+        <= budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    )
 
 # Per-tier dwell defaults (§3.2 + rule 22). Values in seconds.
 DWELL_SECONDS_BY_TIER: dict[int, int] = {
@@ -78,7 +201,12 @@ def pace_corrected_walk_seconds(haversine_distance_m: float) -> int:
     return round(actual_distance_m / speed_m_per_s)
 
 
-def envelope_radius_m(duration_min: int, *, round_trip: bool) -> float:
+def envelope_radius_m(
+    duration_min: int,
+    *,
+    round_trip: bool,
+    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+) -> float:
     """Reachable straight-line radius from the origin under the err-short budget.
 
     Derivation: walk_min = duration x 0.83 x 0.40. Effective straight-line
@@ -86,7 +214,9 @@ def envelope_radius_m(duration_min: int, *, round_trip: bool) -> float:
     """
     if duration_min <= 0:
         return 0.0
-    walk_min = duration_min * ERR_SHORT * WALK_FRACTION
+    walk_min = route_planning_budget(
+        duration_min, planning_policy
+    ).walk_envelope_minutes
     straight_m = (walk_min * PACE_KMH * 1000.0) / 60.0 / HAVERSINE_CORRECTION
     return straight_m / 2.0 if round_trip else straight_m
 
@@ -118,7 +248,10 @@ def walk_budget_seconds(duration_min: int) -> int:
     return round(duration_min * ERR_SHORT * WALK_FRACTION * 60)
 
 
-def smallest_duration_min_for_walk_seconds(target_seconds: int) -> int:
+def smallest_duration_min_for_walk_seconds(
+    target_seconds: int,
+    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+) -> int:
     """Smallest integer duration (minutes) whose walk budget covers ``target_seconds``.
 
     Returns the least ``d >= 1`` with ``walk_budget_seconds(d) >= target_seconds``.
@@ -132,7 +265,7 @@ def smallest_duration_min_for_walk_seconds(target_seconds: int) -> int:
     if target_seconds <= walk_budget_seconds(1):
         return 1
     d = 1
-    while walk_budget_seconds(d) < target_seconds:
+    while route_planning_budget(d, planning_policy).walk_budget_seconds < target_seconds:
         d += 1
     return d
 
@@ -229,25 +362,38 @@ def _transit(
     to_lng: float,
     routing_client: RoutingClient | None,
 ) -> TransitSegment:
-    """One leg: haversine walk_seconds always; routed leg_seconds/polyline
-    when a client is given (a None polyline marks the client's own haversine
-    fallback, so source stays honest when Valhalla is down)."""
+    """Build one leg while retaining planning and routed measurements."""
     d = haversine_m(from_lat, from_lng, to_lat, to_lng)
     secs = pace_corrected_walk_seconds(d)
     leg_seconds: int | None = None
+    leg_distance_m: float | None = None
     polyline: str | None = None
+    receipt: ValhallaLegReceipt | None = None
     source = "haversine"
     if routing_client is not None:
-        leg_seconds, _leg_m, polyline = routing_client.route(from_lat, from_lng, to_lat, to_lng)
+        route_with_receipt = getattr(routing_client, "route_with_receipt", None)
+        if callable(route_with_receipt):
+            leg_seconds, routed_m, polyline, receipt = route_with_receipt(
+                from_lat, from_lng, to_lat, to_lng
+            )
+        else:
+            # Explicit route-only compatibility for injected legacy clients.
+            leg_seconds, routed_m, polyline = routing_client.route(
+                from_lat, from_lng, to_lat, to_lng
+            )
         source = "valhalla" if polyline is not None else "haversine"
+        if source == "valhalla":
+            leg_distance_m = routed_m
     return TransitSegment(
         from_poi_id=from_id,
         to_poi_id=to_id,
         distance_m=d,
         walk_seconds=secs,
         leg_seconds=leg_seconds,
+        leg_distance_m=leg_distance_m,
         polyline=polyline,
         source=source,
+        valhalla_receipt=receipt,
     )
 
 
@@ -260,13 +406,13 @@ def summarise_route(
     duration_min: int,
     spine_area: str | None,
     routing_client: RoutingClient | None = None,
+    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
 ) -> Route:
     """Build a Route from an ordered POI list.
 
-    M2: budgets (walk_seconds totals, audio budget) stay on the pace-corrected
-    haversine numbers regardless of the client — M3 moves scoring onto routed
-    leg_seconds. The client only enriches each TransitSegment with
-    leg_seconds/polyline/source and sets Route.routed.
+    Selection already scores with routed leg seconds when a routing client is
+    available. The final Route therefore reports those same road-network times
+    and distances; haversine remains the explicit fallback when routing degrades.
     """
     ordered = tuple(pois)
     transits: list[TransitSegment] = []
@@ -277,23 +423,31 @@ def summarise_route(
     for poi in ordered:
         seg = _transit(prev_id, poi.id, prev_lat, prev_lng, poi.lat, poi.lng, routing_client)
         transits.append(seg)
-        total_distance += seg.distance_m
+        total_distance += (
+            seg.leg_distance_m if seg.source == "valhalla" else seg.distance_m
+        )
         prev_lat, prev_lng = poi.lat, poi.lng
         prev_id = poi.id
 
     if round_trip and ordered:
         seg = _transit(prev_id, None, prev_lat, prev_lng, start_lat, start_lng, routing_client)
         transits.append(seg)
-        total_distance += seg.distance_m
+        total_distance += (
+            seg.leg_distance_m if seg.source == "valhalla" else seg.distance_m
+        )
 
-    total_walk_seconds = sum(t.walk_seconds for t in transits)
+    total_walk_seconds = sum(
+        int(t.leg_seconds) if t.source == "valhalla" else t.walk_seconds
+        for t in transits
+    )
+    budget = route_planning_budget(duration_min, planning_policy)
     return Route(
         pois=ordered,
         transits=tuple(transits),
         total_walk_distance_m=total_distance,
         total_walk_seconds=total_walk_seconds,
         spine_area=spine_area,
-        target_audio_seconds=target_audio_seconds(duration_min),
-        err_short_total_seconds=err_short_total_seconds(duration_min),
+        target_audio_seconds=budget.audio_target_seconds,
+        err_short_total_seconds=budget.nominal_elapsed_seconds,
         routed=bool(transits) and all(t.source == "valhalla" for t in transits),
     )

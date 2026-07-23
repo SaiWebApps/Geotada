@@ -1,6 +1,6 @@
 # Frozen 4 Paris + 4 NYC Tour Regression Plan — Version 1
 
-Status: **NOT YET APPROVED BY HASH**  
+Status: **NOT YET APPROVED BY HASH**
 Execution rule: prerequisites P1–P10 must be implemented and verified before Step 1.
 
 ## Tour Finish Invariant

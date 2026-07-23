@@ -2,17 +2,16 @@
 
 ## Overview
 
-177 tests covering the Ondoway Neo4j graph backend — schema definitions, data seeding, graph traversals, the full CRUD API, and trip generation.
-
-All tests run with pytest. No Selenium or browser tests; the editor UI is a static HTML file served by FastAPI.
+The repository has pytest, Flutter, Playwright browser, tour-quality, live-provider,
+and cloud-parity test shards. `make test` is the only exhaustive executor.
 
 ## Running Tests
 
-```bash
-make test               # All 177 tests (needs Neo4j running)
-make test-unit          # Unit tests only (no Neo4j needed)
-make test-integration   # Integration tests only (needs Neo4j)
-```
+| Command | Scope |
+|---|---|
+| `make test` | Every test shard; definitive result |
+| `make test-unit` | Focused Python unit diagnostics |
+| `make test-integration` | Focused Neo4j integration diagnostics |
 
 ## Test Breakdown
 

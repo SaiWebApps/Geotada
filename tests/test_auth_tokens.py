@@ -98,7 +98,11 @@ class TestMagicToken:
             "type": "magic",
             "exp": time.time() + 600,
         }
-        token = jwt.encode(payload, "wrong-secret", algorithm=JWT_ALGORITHM)
+        token = jwt.encode(
+            payload,
+            "wrong-secret-that-is-long-enough-for-hs256",
+            algorithm=JWT_ALGORITHM,
+        )
         with pytest.raises(TokenError, match="Invalid magic link"):
             verify_magic_token(token)
 

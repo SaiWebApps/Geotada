@@ -1,0 +1,9 @@
+{
+  "city_slug": "paris",
+  "duration_min": 90,
+  "round_trip": false,
+  "start": [
+    48.8568,
+    2.3414
+  ]
+}

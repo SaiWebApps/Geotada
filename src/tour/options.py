@@ -24,6 +24,7 @@ from .selection import (
     gravity,
     is_dwell_band,
     lens_relevance,
+    require_materialized_snapshot,
     spotlight,
 )
 
@@ -78,6 +79,7 @@ def build_route_option(
     order, and eta_seconds are unchanged: a vignette is a walk-past one-liner
     (minutes=0), not a stop with dwell time.
     """
+    require_materialized_snapshot(snapshot, operation="route-option assembly")
     roles = {p.id: p.poi_role for p in route.pois}
     pois_by_id: dict[str, POI] = {p.id: p for p in route.pois}
     lenses_fs = frozenset(script.inputs.lenses or ())

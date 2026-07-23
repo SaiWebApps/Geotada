@@ -1,5 +1,10 @@
 # Ondoway — GPS-triggered audio tour platform
 
+> **Scope:** This filename is retained for compatibility, but this document applies to
+> every coding agent, model, subagent, reviewer, and orchestrator—not only Claude.
+> `AGENTS.md` supplies the vendor-neutral entry point and the highest-priority Tour
+> Finish Doctrine. For tour-quality work, agents must read and obey both files.
+
 ## Judge Protocol (mandatory — installed 2026-07-02)
 
 Claude has repeatedly rushed ahead and caused expensive damage: killed the
@@ -59,8 +64,8 @@ Roles (each = a real agent or mechanism):
 - **Developer** — general-purpose agent, ONE per file (parallel builders never
   collide; `isolation:'worktree'` only if they'd otherwise conflict).
 - **QA** (`.claude/agents/qa.md`) — the undo-test (mutation: revert the fix →
-  the test must go RED) + `make lint`/`make test` + golden/tour-grade + real
-  workbench/emulator screenshots. Never accepts a green claim on faith.
+  the test must go RED) + `make lint`/`make test` + real workbench/emulator
+  screenshots. Never accepts a green claim on faith.
 - **Skeptics** (`.claude/agents/skeptic.md`) — 2-4 hostile reviewers on
   DIFFERENT models; kill a finding if a majority refute.
 - **Judge** (`.claude/agents/judge.md`) — PROCEED / PROVE-FIRST / STOP before
@@ -112,7 +117,8 @@ If no target exists for what you need, add one to the Makefile first.
 - Never report partial results as success (unit-only is not the bar)
 - Skipped tests are failures in disguise — diagnose why they skip
 - Never split composite targets to work around failures
-- Never use `--ignore` or `-k "not ..."` to exclude tests
+- Never use `--ignore` or `-k "not ..."` to omit tests from `make test`.
+  Environment-specific shard routing is valid only when `make test` invokes every shard.
 - A test that hasn't been run is not a test — always execute after writing
 - Step 0 baseline must be green before starting work
 
@@ -169,19 +175,24 @@ After cherry-picking from a worktree: immediately remove the worktree directory,
 ## Test Infrastructure
 
 ```bash
-make test          # THE bar — test-local + flutter-test (Aura is never wiped)
+make test          # THE definitive executor — every test shard, including live/cloud
 make test-unit     # Python unit only (for quick iteration, NOT the bar)
 make test-local    # Python against local Docker Neo4j (port 7688)
-make test-cloud    # Read-only connectivity smoke against Aura (no writes)
+make test-cloud    # Focused read-only Aura parity shard (also in make test)
 make flutter-test  # Flutter (headless Chrome, foreground only)
 make flutter-ios   # Launch on iOS simulator
 make db-test-up    # Start test Neo4j (port 7688)
 make db-up         # Start dev Neo4j (port 7687)
 make db-workbench-up  # Start workbench Neo4j (port 7689 — test-workbench/api-test only)
-make test-workbench   # Playwright workbench suite (dedicated 7689; NOT in the bar)
+make test-workbench   # Focused Playwright shard on dedicated 7689 (also in make test)
 ```
 
-**Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687, Workbench Neo4j = 7689. 7688 + 7687 must be running for the full suite; 7689 only for `make test-workbench` / `make api-test` (its target starts it automatically).
+`make test` runs, in order: local pytest, Flutter, workbench browser, golden tours,
+tour grade, tour invariants, live-provider tests, and read-only cloud parity. It
+requires the corresponding live credentials and may incur provider cost.
+
+**Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687, Workbench Neo4j = 7689.
+The definitive suite starts each required local service through its shard target.
 
 **Isolation invariant (2026-07-02):** the workbench Playwright suite runs ONLY against the dedicated 7689 instance and pre-wipes it each run. It must never point at 7688: the pytest suite full-wipes 7688 per-module, so any suite asserting exact DB state there is broken by residue or by a concurrent `make test`. Concurrent `make test-workbench` runs are unsupported (:8001 must be free; the suite fails fast).
 
@@ -242,7 +253,7 @@ The project pins **public PyPI** as the default index in `pyproject.toml` (`[[to
 
 ## Pre-commit Checklist
 
-- [ ] `make test` passes (Python local + Flutter); `make test-cloud` is a separate read-only Aura smoke
+- [ ] `make test` passes every local, Flutter, browser, tour, live-provider, and cloud shard
 - [ ] Read the diff (`git diff --staged`) — every change is intentional
 - [ ] No hardcoded colors (use `Theme.of(context).colorScheme.*`)
 - [ ] No fabricated values — every field name, ID, and property comes from a verified source

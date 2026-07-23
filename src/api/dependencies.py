@@ -112,8 +112,7 @@ def get_driver() -> Driver:
 
 
 def get_compose_client() -> ComposeClient:
-    """The narration composer for the CUSTOMER compose paths — POST
-    /trips/{id}/compose (the app + workbench) and POST /trips/preview (workbench).
+    """The legacy persisted-trip composer for POST /trips/{id}/compose.
 
     A REAL fire-once composer — Opus by default, or ChatGPT when
     ``COMPOSE_PROVIDER=openai`` (the Opus-vs-ChatGPT writing comparison). There is
@@ -124,14 +123,21 @@ def get_compose_client() -> ComposeClient:
     ``tests/conftest.py`` patches BOTH ``AnthropicComposeClient`` and
     ``OpenAIComposeClient`` to offline stubs for the whole (non-``live``) bar, so
     ``make test`` can never bill either account; tests that assert on compose also
-    override this dependency directly. Per-request provider selection (for the
-    workbench comparison) goes through ``compose_client_for``.
+    override this dependency directly.
     """
     import os
 
     from src.tour.compose import compose_client_for
 
     return compose_client_for(os.getenv("COMPOSE_PROVIDER"))
+
+
+def get_premium_compose_executor():
+    """Zero-retry, receipt-preserving author for the Premium preview path."""
+
+    import src.tour.premium_tour as premium_tour
+
+    return premium_tour.AnthropicPremiumExecutor()
 
 
 def get_faithfulness_checker() -> FaithfulnessChecker | None:

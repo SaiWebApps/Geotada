@@ -30,7 +30,13 @@ from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.options import build_route_option
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import _jaccard, select_k_routes, select_route
+from src.tour.selection import (
+    DIVERSITY_PENALTY,
+    CertificationPlanningInfeasibleError,
+    _jaccard,
+    select_k_routes,
+    select_route,
+)
 from tests.test_tour_selection import PDV, _poi, _snap
 
 # ---------------------------------------------------------------------------
@@ -163,6 +169,73 @@ def test_k1_is_the_select_route_delegate():
         direct = select_route(_INPUT, snap, routing_client=rc)
     assert len(only) == 1
     assert [p.id for p in only[0].pois] == [p.id for p in direct.pois]
+
+
+def test_optional_infeasible_flavour_preserves_valid_primary(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    from src.tour import selection as selection_module
+
+    primary = Route(
+        pois=(_poi("primary", lat=PDV[0], lng=PDV[1]),),
+        transits=(),
+        total_walk_distance_m=0,
+        total_walk_seconds=0,
+    )
+    calls = 0
+
+    def fake_select_route(*_args, **_kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return primary
+        raise CertificationPlanningInfeasibleError(
+            policy_id="test-policy",
+            minimum_elapsed_seconds=3240,
+            maximum_elapsed_seconds=3960,
+            best_elapsed_seconds=3207,
+            reason="optional penalized flavour cannot reach the band",
+        )
+
+    monkeypatch.setattr(selection_module, "select_route", fake_select_route)
+
+    assert selection_module.select_k_routes(_INPUT, _dense_snap(), 3) == [primary]
+    assert calls == 2
+
+
+def test_overlapping_penalized_flavour_gets_one_strict_exclusion_rerun(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    from src.tour import selection as selection_module
+
+    primary = Route(
+        pois=tuple(_poi(poi_id, lat=PDV[0], lng=PDV[1]) for poi_id in ("a", "b", "c")),
+        transits=(),
+        total_walk_distance_m=0,
+        total_walk_seconds=0,
+    )
+    distinct = Route(
+        pois=tuple(_poi(poi_id, lat=PDV[0], lng=PDV[1]) for poi_id in ("d", "e")),
+        transits=(),
+        total_walk_distance_m=0,
+        total_walk_seconds=0,
+    )
+    penalties = []
+
+    def fake_select_route(*_args, **kwargs):
+        penalty = kwargs.get("score_penalty")
+        penalties.append(penalty)
+        if penalty is None:
+            return primary
+        if set(penalty.values()) == {DIVERSITY_PENALTY}:
+            return primary
+        assert set(penalty.values()) == {0.0}
+        return distinct
+
+    monkeypatch.setattr(selection_module, "select_route", fake_select_route)
+
+    assert selection_module.select_k_routes(_INPUT, _dense_snap(), 2) == [primary, distinct]
+    assert penalties == [None, {"a": 0.3, "b": 0.3, "c": 0.3}, {"a": 0.0, "b": 0.0, "c": 0.0}]
 
 
 def test_flavours_are_deterministic():

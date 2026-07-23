@@ -7,11 +7,15 @@ OUTPUT: Script + Sentence + ValidationReport (§3.6 of phase-1-design).
 
 from __future__ import annotations
 
+import hashlib
+import json
+import math
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from src import city_registry
+from src.tour.corpus_places import CoordinateProvenance
 
 # Cities with a loaded corpus (data/{slug}/ + graph nodes scoped by city_name).
 # The API validates request city_slug against this so an unknown city is a clear
@@ -19,6 +23,21 @@ from src import city_registry
 # (src/cities.json) so runtime onboarding has one writable registration surface;
 # equals the former {"paris", "new_york"} literal exactly today.
 SUPPORTED_CITIES: frozenset[str] = frozenset(city_registry.supported_cities())
+
+GENERIC_OPEN_TOUR_CLOSING = "And that brings our walk to a close."
+GENERIC_TOUR_SIGNOFF = (
+    "Thank you for coming along with me today. When you're ready, "
+    "take your time to keep exploring on your own."
+)
+NONPROPOSITIONAL_GLUE_TEMPLATES: frozenset[str] = frozenset(
+    {
+        "Settle in.",
+        "Take a moment.",
+        "Take a moment to take it in.",
+        GENERIC_OPEN_TOUR_CLOSING,
+        GENERIC_TOUR_SIGNOFF,
+    }
+)
 
 
 class TourInput(BaseModel):
@@ -89,6 +108,20 @@ class POI(BaseModel):
     areas: tuple[str, ...] = ()
     beat_count: int = 0
     matching_lens_beat_count: int = 0
+    # D1 place semantics are additive so legacy corpora remain loadable.  A
+    # typed corpus may enter selection only after place_materialization has
+    # validated these identities against its frozen manifest.
+    canonical_place_id: str | None = Field(default=None, min_length=1)
+    aliases: tuple[str, ...] = ()
+    coordinate_provenance: CoordinateProvenance | None = None
+    requires_dwell: bool = False
+    vignette_eligible: bool = True
+
+    @model_validator(mode="after")
+    def _playback_flags_are_consistent(self) -> POI:
+        if self.requires_dwell and self.vignette_eligible:
+            raise ValueError("a dwell-required POI cannot be vignette eligible")
+        return self
 
 
 class PhysicalCue(BaseModel):
@@ -145,15 +178,133 @@ class BeatRef(BaseModel):
     source_passage: str | None = None
     source_chunk_slug: str | None = None
     key_claims: tuple[str, ...] = ()
+    # ``id`` remains the graph UUID until the D2 upload/API migration.  These
+    # fields carry the durable corpus identity in parallel without breaking
+    # legacy fixtures or persisted trip payloads.
+    stable_beat_id: str | None = Field(default=None, min_length=1)
+    place_plan_id: str | None = Field(default=None, min_length=1)
+    requires_dwell: bool = False
+    vignette_eligible: bool = True
+
+    @model_validator(mode="after")
+    def _playback_flags_are_consistent(self) -> BeatRef:
+        if self.requires_dwell and self.vignette_eligible:
+            raise ValueError("a dwell-required beat cannot be vignette eligible")
+        return self
+
+
+_SHA256_PATTERN = r"^[0-9a-f]{64}$"
+
+
+def _canonical_json(value: object) -> str:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+
+
+def _text_sha256(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+class ValhallaLegReceipt(BaseModel):
+    """Canonical request/result evidence for one successful pedestrian leg.
+
+    ``TransitSegment.source == "valhalla"`` is only a label.  This receipt is
+    the replayable evidence behind that label: exact requested endpoints, the
+    canonical request and response, the routing configuration they used, and
+    the measurements copied into the segment.  Legacy route-only objects may
+    omit it; full geographic certification may not.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    requested_from: tuple[float, float]
+    requested_to: tuple[float, float]
+    request_json: str = Field(..., min_length=2)
+    request_sha256: str = Field(..., pattern=_SHA256_PATTERN)
+    routing_config_json: str = Field(..., min_length=2)
+    routing_config_sha256: str = Field(..., pattern=_SHA256_PATTERN)
+    response_json: str = Field(..., min_length=2)
+    response_sha256: str = Field(..., pattern=_SHA256_PATTERN)
+    seconds: int = Field(..., ge=0)
+    distance_m: float = Field(..., ge=0)
+    polyline: str = Field(..., min_length=1)
+
+    @field_validator("requested_from", "requested_to")
+    @classmethod
+    def _finite_latlng(cls, value: tuple[float, float]) -> tuple[float, float]:
+        lat, lng = value
+        if not math.isfinite(lat) or not -90.0 <= lat <= 90.0:
+            raise ValueError(f"lat out of range: {lat}")
+        if not math.isfinite(lng) or not -180.0 <= lng <= 180.0:
+            raise ValueError(f"lng out of range: {lng}")
+        return value
+
+    @model_validator(mode="after")
+    def _canonical_payloads_match_fields(self) -> ValhallaLegReceipt:
+        parsed: dict[str, object] = {}
+        for name in ("request_json", "routing_config_json", "response_json"):
+            raw = getattr(self, name)
+            try:
+                value = json.loads(raw)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"{name} is not JSON") from exc
+            if not isinstance(value, dict) or _canonical_json(value) != raw:
+                raise ValueError(f"{name} is not a canonical JSON object")
+            parsed[name] = value
+
+        if _text_sha256(self.request_json) != self.request_sha256:
+            raise ValueError("request_sha256 does not match request_json")
+        if _text_sha256(self.routing_config_json) != self.routing_config_sha256:
+            raise ValueError("routing_config_sha256 does not match routing_config_json")
+        if _text_sha256(self.response_json) != self.response_sha256:
+            raise ValueError("response_sha256 does not match response_json")
+
+        request = parsed["request_json"]
+        assert isinstance(request, dict)
+        expected_locations = [
+            {"lat": self.requested_from[0], "lon": self.requested_from[1]},
+            {"lat": self.requested_to[0], "lon": self.requested_to[1]},
+        ]
+        if request.get("locations") != expected_locations:
+            raise ValueError("request_json locations differ from requested endpoints")
+        # ``locations`` is the only per-leg material.  Every other top-level
+        # request field is routing configuration and must therefore participate
+        # in the build-bound hash.  An allowlist here would let a newly added
+        # Valhalla option alter routing while retaining the old config identity.
+        config = {key: value for key, value in request.items() if key != "locations"}
+        if _canonical_json(config) != self.routing_config_json:
+            raise ValueError("routing configuration differs from canonical request")
+
+        response = parsed["response_json"]
+        assert isinstance(response, dict)
+        try:
+            leg = response["trip"]["legs"][0]
+            response_seconds = round(leg["summary"]["time"])
+            response_distance_m = float(leg["summary"]["length"]) * 1000.0
+            response_polyline = leg["shape"]
+        except (KeyError, IndexError, TypeError, ValueError) as exc:
+            raise ValueError("response_json lacks a complete Valhalla leg") from exc
+        if response_seconds != self.seconds:
+            raise ValueError("receipt seconds differ from response_json")
+        if not math.isclose(response_distance_m, self.distance_m, rel_tol=0, abs_tol=1e-6):
+            raise ValueError("receipt distance differs from response_json")
+        if response_polyline != self.polyline:
+            raise ValueError("receipt polyline differs from response_json")
+        return self
 
 
 class TransitSegment(BaseModel):
     """A walking segment between two ordered points along the route.
 
-    M2: ``walk_seconds``/``distance_m`` stay the pace-corrected haversine
-    numbers the budget math uses; ``leg_seconds``/``polyline`` carry the
-    road-network values when a RoutingClient produced them (``source``
-    records their provenance). M3 moves selection scoring onto leg_seconds.
+    ``walk_seconds``/``distance_m`` retain the planning fallback values;
+    ``leg_seconds``/``leg_distance_m``/``polyline`` carry the road-network
+    values when a RoutingClient produced them (``source`` records provenance).
+    Route totals use the routed values whenever they exist.
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -163,8 +314,28 @@ class TransitSegment(BaseModel):
     distance_m: float = Field(..., ge=0)
     walk_seconds: int = Field(..., ge=0)
     leg_seconds: int | None = Field(default=None, ge=0)
+    leg_distance_m: float | None = Field(default=None, ge=0)
     polyline: str | None = None  # encoded polyline (6-digit precision), routed legs only
     source: Literal["valhalla", "haversine"] = "haversine"
+    valhalla_receipt: ValhallaLegReceipt | None = None
+
+    @model_validator(mode="after")
+    def _receipt_matches_segment(self) -> TransitSegment:
+        receipt = self.valhalla_receipt
+        if receipt is None:
+            return self
+        if self.source != "valhalla":
+            raise ValueError("a Valhalla receipt cannot back a fallback leg")
+        if (
+            self.leg_seconds != receipt.seconds
+            or self.leg_distance_m is None
+            or not math.isclose(
+                self.leg_distance_m, receipt.distance_m, rel_tol=0, abs_tol=1e-6
+            )
+            or self.polyline != receipt.polyline
+        ):
+            raise ValueError("Valhalla receipt differs from copied segment fields")
+        return self
 
 
 class TourabilityAssessment(BaseModel):

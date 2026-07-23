@@ -39,6 +39,8 @@ from collections.abc import Iterable
 
 from .claim_dedup import suppress_exact_repeats, suppress_repeated_claims
 from .contract import (
+    GENERIC_OPEN_TOUR_CLOSING,
+    GENERIC_TOUR_SIGNOFF,
     BeatRef,
     BeatSequence,
     POIBeats,
@@ -135,6 +137,12 @@ FORBIDDEN_PHRASES: tuple[str, ...] = ("imagine", "picture this", "envision", "vi
 # ---------------------------------------------------------------------------
 # Sentence splitting
 # ---------------------------------------------------------------------------
+
+# Corpus place assessments bind the exact splitter semantics that produced
+# their sentence indexes/hashes.  Any behavior-changing splitter edit must
+# increment this value and migrate/review the manifest; old evidence may not be
+# silently reinterpreted.
+SENTENCE_SPLITTER_VERSION: str = "ondoway-sentence-splitter-v1"
 
 # Split on .?! followed by whitespace, but never inside common abbreviations.
 # Best-effort — corpus is well-edited prose. Validation catches invention.
@@ -306,6 +314,7 @@ def generate(
     *,
     glue_client: GlueClient | None = None,
     now: _dt.datetime | None = None,
+    validate_output: bool = True,
 ) -> Script:
     """Build the Script from a planned BeatSequence + Route.
 
@@ -412,7 +421,11 @@ def generate(
         script=tuple(sentences),
         validation=ValidationReport(),  # placeholder — replaced below
     )
-    report = validate_script(script, beat_sequence)
+    report = (
+        validate_script(script, beat_sequence)
+        if validate_output
+        else ValidationReport()
+    )
     return script.model_copy(update={"validation": report})
 
 
@@ -514,9 +527,9 @@ def _build_synthesized_opener(
          "Take a moment to take it in."; otherwise the duration
          primer "We're going to walk for about N minutes."
 
-    All composed sentences are marked with SYNTHESIZED_OPENER for
-    source attribution; staging-style sentences additionally trace to
-    GLUE_STAGING in the glue whitelist.
+    Location and walking assertions are marked with SYNTHESIZED_OPENER.
+    Physical directions trace to GLUE_STAGING; the sensory invitation traces
+    to GLUE_PACING because it makes no claim about the listener's surroundings.
     """
     out: list[Sentence] = []
     poi_beats = list(first_stop.beats)
@@ -602,7 +615,7 @@ def _build_synthesized_opener(
         out.append(
             Sentence(
                 text=SENSORY_INVITATION,
-                source_id=GLUE_STAGING,
+                source_id=GLUE_PACING,
                 source_type="glue",
                 stop_idx=stop_idx,
             )
@@ -1050,14 +1063,11 @@ def _build_closing(
     elif tour_input.round_trip:
         text = "And that closes the loop, back where we started."
     else:
-        text = "And that brings our walk to a close."
+        text = GENERIC_OPEN_TOUR_CLOSING
     # A warm sign-off so the tour ENDS rather than just stops (the user's "grand
     # finale + sign off + thank the user" ask). Deterministic — the story-specific
     # tie-off is the LLM /compose layer's job; this guarantees every tour signs off.
-    signoff = (
-        "Thank you for coming along with me today. When you're ready, "
-        "take your time to keep exploring on your own."
-    )
+    signoff = GENERIC_TOUR_SIGNOFF
 
     for t in (text, signoff):
         out.append(Sentence(text=t, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx))

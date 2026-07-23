@@ -59,6 +59,11 @@ TRIGGER_ADDRESS_THRESHOLD: int = 5  # ≥5 distinct values → square circumnav
 # beats while staying under the audio budget for 90-min tours
 # (Île 8 anchors x ~4 extra-beat seconds is well within the 44-min budget).
 DEFAULT_FLAT_MAX: int = 12
+# Spatial stops need a small non-addressed lane for the general context or
+# closing beat that legitimately belongs to the POI as a whole.  This is a
+# minimum, not a separate unlimited quota: additional unlocated beats may win
+# the ordinary score-based remainder, and the overall tier cap still applies.
+SPATIAL_NO_KEY_RESERVE: int = 1
 # Phase 4 calibration (2026-04-29): bumped from 2 to 3. The empirical
 # Vert-Galant pause stop carries 3 beats (establishing + view + tarnished);
 # the prior cap dropped the 'tarnished' deepen.
@@ -440,12 +445,19 @@ def _apply_flat_cap(poi: POI, ordered: list[BeatRef]) -> list[BeatRef]:
 def _cap_spatial_by_score(
     poi: POI, ordered: list[BeatRef], interest: frozenset[str]
 ) -> list[BeatRef]:
-    """Spatial-strategy ceiling (R1): keep the BEST ``_tier_cap`` beats by score,
-    then leave them in walk order. A sub_location / trigger_address plan is
-    sequenced spatially (address by address), so a plain prefix would seat the
-    first cap-many addresses and drop the human's editorial picks later in the
-    walk. Selecting by score first, then preserving the spatial order of the
-    survivors, keeps both the right beats and the walk sequence.
+    """Spatial ceiling: cover the walk's lanes, then fill by editorial score.
+
+    A purely global top-N lets several strong complementary beats at one
+    sub-location crowd every beat from a quieter sub-location out of the voiced
+    tour.  It can also erase all POI-wide context/closing beats merely because
+    they have no spatial key.  Reserve one bounded no-key slot, retain the best
+    primary beat from as many keyed groups as the cap permits, then spend the
+    remaining capacity on the best complementary beats globally.  Finally,
+    filter the original plan so the survivors remain in walk order.
+
+    This is deliberately structural rather than fixture-specific: it applies to
+    both sub-location and trigger-address plans, never names a POI or beat id,
+    and cannot exceed the existing tier cap.
 
     The head beat (index 0) is always kept: after _hoist_orientation and BEFORE
     _enforce_tone_variety (which runs after this cap), index 0 is the hoisted
@@ -456,7 +468,46 @@ def _cap_spatial_by_score(
     cap = _tier_cap(poi)
     if len(ordered) <= cap:
         return ordered
-    keep = {ordered[0].id} | {b.id for b in _top_by_score(ordered[1:], interest, cap - 1)}
+
+    strategy = choose_ordering_strategy(ordered)
+    def key_of(beat: BeatRef) -> str | None:
+        if strategy == "sub_location":
+            return beat.sub_location
+        return beat.trigger_address
+
+    by_key: dict[str, list[BeatRef]] = defaultdict(list)
+    no_key: list[BeatRef] = []
+    for beat in ordered:
+        key = key_of(beat)
+        if key:
+            by_key[key].append(beat)
+        else:
+            no_key.append(beat)
+
+    # Index zero may be a deliberately hoisted orientation beat.  Preserve it
+    # regardless of score, as the previous implementation did.
+    keep = {ordered[0].id}
+
+    def add_best(pool: list[BeatRef], limit: int) -> None:
+        room = cap - len(keep)
+        if room <= 0 or limit <= 0:
+            return
+        available = [beat for beat in pool if beat.id not in keep]
+        keep.update(beat.id for beat in _top_by_score(available, interest, min(limit, room)))
+
+    # One POI-wide lane is guaranteed when present.  More no-key beats can still
+    # earn places during the final complementary fill.
+    add_best(no_key, SPATIAL_NO_KEY_RESERVE)
+
+    # A primary represents each physical group before secondary beats compete.
+    # If there are more groups than slots (e.g. a very dense square), the best
+    # group primaries win deterministically rather than breaching the cap.
+    primaries = [_pick_best(bucket, interest) for bucket in by_key.values()]
+    add_best(primaries, len(primaries))
+
+    # Complementary beats — including additional beats at one sub-location and
+    # additional no-key context — compete together for the bounded remainder.
+    add_best(ordered, cap)
     return [b for b in ordered if b.id in keep]
 
 

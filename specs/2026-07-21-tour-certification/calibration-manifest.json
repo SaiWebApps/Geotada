@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "calibration_id": "tour-calibration-2026-07-21.2",
+  "status": "FROZEN_BEFORE_CANDIDATE_GENERATION",
+  "decision_method": "blind_five_axis_score_and_gold_consensus",
+  "axis_states": ["PASS", "FAIL", "NOT_RUN", "ERROR"],
+  "rules": {
+    "legacy_ten_point_score_is_release_gate": false,
+    "five_axis_score_is_release_gate": true,
+    "five_axis_aggregate_threshold": 7.0,
+    "unanimous_zero_axis_rejects": true,
+    "same_axis_below_weakest_positive_gold_consensus_rejects": true,
+    "provider_supplies_total_or_release_decision": false,
+    "exact_same_item_evidence_required_for_every_axis": true,
+    "axis_labels_are_independent": true,
+    "missing_full_artifact_can_calibrate_model": false
+  },
+  "fact_policy_calibration": {
+    "reference_document_id": "fact_gate_calibration_02b",
+    "precedence": "These exact cases refine the contract's general materiality taxonomy; a licensed gloss changes no checkable underlying fact.",
+    "cases": [
+      {"source_text": "The ladies of the Napoleonic nobility helped make this stretch of rue de Rivoli fashionable, drawing an English clientele to the area.", "candidate_text": "the street bent itself to make them feel at home", "expected_fact": "PASS", "class": "personification_gloss"},
+      {"source_text": "At number 224, the English bookshop Galignani kept the daily newspapers from home. Nearby, the jewellery and clothing shops of rue de Castiglione and Place Vendôme served this fashionable society.", "candidate_text": "Those same ladies wanted more than newspapers", "expected_fact": "PASS", "class": "nonessential_motive_gloss"},
+      {"source_text": "Thackeray and Charles Dickens both stayed here during the nineteenth century.", "candidate_text": "The Meurice drew the writers too", "expected_fact": "PASS", "class": "magnetism_gloss_over_documented_stays"},
+      {"source_text": "He never named the hotel. His biographers have placed it elsewhere in these streets—at the Lotti, just around the corner on rue de Castiglione, or at the Crillon. Paris lore, however, has long pinned the story on Le Meurice.", "candidate_text": "the most famous story attached to this place", "expected_fact": "PASS", "class": "editorial_prominence_not_objective_ranking"},
+      {"source_text": "The ladies of the Napoleonic nobility helped make this stretch of rue de Rivoli fashionable, drawing an English clientele to the area.", "candidate_text": "the ladies of the Napoleonic nobility drew an English clientele", "expected_fact": "PASS", "class": "proposition_preserving_compression"},
+      {"source_text": "The square was destroyed.", "candidate_text": "The square was torn down.", "expected_fact": "PASS", "class": "proposition_preserving_synonym"},
+      {"source_text": "The square was destroyed.", "candidate_text": "The square came down.", "expected_fact": "PASS", "class": "proposition_preserving_compression"},
+      {"source_text": "The square was destroyed.", "candidate_text": "Revolutionaries tore the square down.", "expected_fact": "FAIL", "class": "invented_historical_actor"},
+      {"source_text": "The building was destroyed in 1802.", "candidate_text": "A fire destroyed the building in 1802.", "expected_fact": "FAIL", "class": "invented_historical_cause"},
+      {"source_text": "The hotel opened in 1835.", "candidate_text": "The hotel opened in 1837.", "expected_fact": "FAIL", "class": "changed_date"},
+      {"source_text": "The façade has twelve columns.", "candidate_text": "The façade has eleven columns.", "expected_fact": "FAIL", "class": "changed_number"},
+      {"source_text": "Dickens stayed here while researching A Tale of Two Cities.", "candidate_text": "Thackeray stayed here while researching A Tale of Two Cities.", "expected_fact": "FAIL", "class": "changed_attribution"},
+      {"source_text": "Orwell described the plongeur as ‘the slave of the slave.’", "candidate_text": "Orwell described the plongeur as ‘the servant of servants.’", "expected_fact": "FAIL", "class": "altered_direct_quotation"},
+      {"source_text": "The square is enclosed by brick façades and arcades.", "candidate_text": "For a moment, let the city fall quiet around you.", "expected_fact": "PASS", "class": "nonpropositional_atmospheric_connective"},
+      {"source_text": "‘Vert-Galant,’ meaning a ‘green’ or ‘lusty’ gentleman, is a reference to the king's legendary amorous exploits, and he would no doubt have approved of this tranquil, tree-lined garden, a popular haunt of lovers.", "candidate_text": "A king famous for his lovers would have felt right at home in this garden, still a popular haunt of lovers.", "expected_fact": "PASS", "class": "rhetorical_connective_over_supported_relationship"},
+      {"source_text": "Orwell never named the hotel. His biographers have placed it elsewhere, while Paris lore has long pinned the story on Le Meurice.", "candidate_text": "Orwell worked at Le Meurice.", "expected_fact": "FAIL", "class": "lost_uncertainty"}
+    ],
+    "rule": "colour and loose relational gloss may pass; a changed checkable claim about who caused what may not"
+  },
+  "anchor_slice_rule": "UTF-8 bytes after the unique start_marker plus LF, ending before LF plus end_marker plus LF; null end_marker means EOF. No trimming or normalization.",
+  "anchors": [
+    {
+      "id": "le_meurice_01f",
+      "reference_document_id": "le_meurice_01f_goldenized",
+      "artifact_scope": "byte_slice",
+      "slice": {"start_marker": "## The goldenized text", "end_marker": "## Fact-diff fixtures (two-sided; committed as tests in Scope 3b)", "size_bytes": 2968, "sha256": "9b9fdc74479d5451c84794012c12e3451c09a69cf217ff34f90eaa52e8af82ee"},
+      "expected": {"FACT": "PASS", "GEO": "NOT_RUN", "TIME": "NOT_RUN", "ENJOY": "PASS"},
+      "use": "primary positive: grounded narration with the human-approved character"
+    },
+    {
+      "id": "le_meurice_01e",
+      "reference_document_id": "le_meurice_01e_human_gold",
+      "artifact_scope": "byte_slice",
+      "slice": {"start_marker": "---", "end_marker": null, "size_bytes": 3031, "sha256": "e50c66fb3ff55ea5b28c059506eb63bca24d70a85b24f915c8989d3dce810507"},
+      "expected": {"FACT": "FAIL", "GEO": "NOT_RUN", "TIME": "NOT_RUN", "ENJOY": "PASS"},
+      "use": "style-positive/fact-mixed anchor proving that enjoyment cannot waive grounding"
+    },
+    {
+      "id": "le_meurice_01g",
+      "reference_document_id": "le_meurice_01g_narrative_demo",
+      "artifact_scope": "byte_slice",
+      "slice": {"start_marker": "## A. The demo output (unchecked — never ship this text)", "end_marker": "## B. The human's findings → the mechanism that owns each", "size_bytes": 2827, "sha256": "db3fce5a7a4a98433537aae9ece12ef319a512cde188dae6912066bc2ad6268d"},
+      "expected": {"FACT": "FAIL", "GEO": "NOT_RUN", "TIME": "NOT_RUN", "ENJOY": "PASS"},
+      "use": "human-rated stronger tour-guide voice with documented unsupported causal claims",
+      "label_origin": "human_approved_positive_preserved_under_five_axis_v2",
+      "historical_evidence": "much stronger than the earlier version; sounds like a tour guide speaking at a physical location"
+    }
+  ],
+  "summary_only_positive_labels": [
+    {"id": "paris_a", "reference_document_id": "generation_samples_2026_07_20", "expected_enjoyment": "PASS"},
+    {"id": "paris_b", "reference_document_id": "generation_samples_2026_07_20", "expected_enjoyment": "PASS"},
+    {"id": "nyc_a", "reference_document_id": "generation_samples_2026_07_20", "expected_enjoyment": "PASS"},
+    {"id": "nyc_b", "reference_document_id": "generation_samples_2026_07_20", "expected_enjoyment": "PASS"}
+  ],
+  "summary_only_policy": {
+    "full_artifacts_recovered": false,
+    "eligible_for_model_calibration": false,
+    "label_must_be_preserved": true,
+    "reason": "the investigation records the human labels and legacy scores but not the exact full narration artifacts"
+  }
+}

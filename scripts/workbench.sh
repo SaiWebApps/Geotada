@@ -31,7 +31,8 @@ else
   # into the dev placeholder — a local workbench server is never production.
   # WORKBENCH_API_ENABLED=true: the graph-CRUD gate is now fail-closed (app.py),
   # so the workbench routers this page needs must be opted in explicitly.
-  WORKBENCH_API_ENABLED=true NO_PROXY="$NP" no_proxy="$NP" ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS=1 \
+  WORKBENCH_API_ENABLED=true ONDOWAY_ENABLE_PAID_LLM_CALLS=1 \
+    NO_PROXY="$NP" no_proxy="$NP" ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS=1 \
     uv run uvicorn src.api.app:app --host 127.0.0.1 --port ${PORT} >/tmp/ondoway-workbench-api.log 2>&1 &
   API_PID=$!
   echo "    API PID ${API_PID} (log: /tmp/ondoway-workbench-api.log)"

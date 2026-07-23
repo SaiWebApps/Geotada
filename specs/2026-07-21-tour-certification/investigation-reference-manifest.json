@@ -1,0 +1,298 @@
+{
+  "schema_version": 2,
+  "manifest_id": "tour-reference-set-2026-07-21.1",
+  "apple_proxy_material_allowed": false,
+  "investigation_range": {
+    "base_commit": "34b5ec7ede3942a8845abe6faf6e2675bcb6131c",
+    "head_commit": "1e00088ea5ae7e457f201a8a6f8c78abe38027fd"
+  },
+  "scope": {
+    "investigation_added_markdown": "all Markdown files added by origin/main...investigation",
+    "later_policy_and_results": "only documents materially used to define the certification contract",
+    "investigation_code_and_dependency_changes": "excluded wholesale"
+  },
+  "documents": [
+    {
+      "id": "compose_fusion_fallback_plan",
+      "path": "Docs/bug-reports/2026-07-13-compose-fusion-fallback-PLAN.md",
+      "sha256": "6f6270ec2ff9490d4cb4014e585a5a0efe5ce3a229e3ca00d7609002d3f7b4e9",
+      "source_ref": "investigation",
+      "source_commit": "f97e104c41790731e951eabe55dacfbf622877e4",
+      "classification": "investigation_diagnostic",
+      "source_blob_oid": "cabb884de525888b8be2e8fe7a984bf59fa8361d"
+    },
+    {
+      "id": "compose_fusion_fallback_report",
+      "path": "Docs/bug-reports/2026-07-13-compose-fusion-fallback.md",
+      "sha256": "02adb98a9a1c56763b28700a7ac3ba25429896c003dc685fd9276cbaeedadd87",
+      "source_ref": "investigation",
+      "source_commit": "f97e104c41790731e951eabe55dacfbf622877e4",
+      "classification": "investigation_diagnostic",
+      "source_blob_oid": "27eb6b433c85ab8106f97550d31fd7630d675234"
+    },
+    {
+      "id": "compose_next_steps_handoff",
+      "path": "Docs/bug-reports/2026-07-13-compose-next-steps-handoff.md",
+      "sha256": "8d5e479f71dec3196c65d662317d1362f891c944379beab6625f58519eb9f9ab",
+      "source_ref": "investigation",
+      "source_commit": "933e549b34e2f8a76efe538021236994413d9d7c",
+      "classification": "investigation_decision",
+      "source_blob_oid": "7ac71c91e22e48b942177cda86fb8545f29db050"
+    },
+    {
+      "id": "compose_stop_revert_diagnostic",
+      "path": "Docs/bug-reports/2026-07-13-compose-stop-revert-haiku-ceiling.md",
+      "sha256": "9606ee3f45187567444a2443783216cb61766e0f1af5069dd3ac57da474de431",
+      "source_ref": "investigation",
+      "source_commit": "4abcfcc5e6c4773befc16e6371ffbc7c25c09c45",
+      "classification": "investigation_diagnostic",
+      "source_blob_oid": "aba5fd72dbe07218170d6b56da9510bab197a2b3"
+    },
+    {
+      "id": "correct_dont_reject_scope",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01-scope.md",
+      "sha256": "c87d85bc0d8a23f969bf152f435a7c9f90e2a4dd0fe235550a0604b3bca06c9a",
+      "source_ref": "investigation",
+      "source_commit": "9fb2308a1a844b8aa622b8b5d857f85e394a207a",
+      "classification": "investigation_decision",
+      "source_blob_oid": "74bc00cc072d665c3cee7369989e5ee27c120891"
+    },
+    {
+      "id": "correct_dont_reject_probe_dryrun",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01a-probe-dryrun.md",
+      "sha256": "798a2834f070da6e57b9982e2b75b580f52641543311f6400a8ba7648dd870c8",
+      "source_ref": "investigation",
+      "source_commit": "9fb2308a1a844b8aa622b8b5d857f85e394a207a",
+      "classification": "investigation_diagnostic",
+      "source_blob_oid": "2f7f97be82bd6e1b8b5a6501cadc7a0e8e116ff4"
+    },
+    {
+      "id": "correct_dont_reject_probe_transcript",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01b-probe-transcript.md",
+      "sha256": "9ea0544aec618b06165acbadc2a3355c0317b1f779df04337e0a48144b283f8d",
+      "source_ref": "investigation",
+      "source_commit": "9fb2308a1a844b8aa622b8b5d857f85e394a207a",
+      "classification": "investigation_diagnostic",
+      "source_blob_oid": "8aeb33910d858f8ea990f34f8787894f8d346398"
+    },
+    {
+      "id": "le_meurice_01c",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01c-final-text-demo.md",
+      "sha256": "a3b2a04b21e662fc3289fe9a642bfb3b1fa5a905378096bfa50a5bb2cd5afbc9",
+      "source_ref": "investigation",
+      "source_commit": "9fb2308a1a844b8aa622b8b5d857f85e394a207a",
+      "classification": "calibration_anchor",
+      "source_blob_oid": "3ec01c598b87cb2ee661527915d231642d73f683"
+    },
+    {
+      "id": "gold_text_checker_probe_01d",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01d-gold-text-checker-probe.md",
+      "sha256": "8b937fd71074db75363b48b2ae77bc070dc6cdaa07de42d8cccffc9787941678",
+      "source_ref": "investigation",
+      "source_commit": "a528ae191ca343ba8b8f58d809e2405c9e340f49",
+      "classification": "fact_calibration_evidence",
+      "source_blob_oid": "5802a87e143b4e2d2e6ad19439c0c52fa3f66e92"
+    },
+    {
+      "id": "le_meurice_01e_human_gold",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01e-human-gold-rewrite.md",
+      "sha256": "723cb41ab393620112a1fb2cdab4a676987b577f619ebd0b97b0fd5a3fb21d5d",
+      "source_ref": "investigation",
+      "source_commit": "a528ae191ca343ba8b8f58d809e2405c9e340f49",
+      "classification": "calibration_anchor",
+      "source_blob_oid": "4b6b7e60cdd01255d7ecd5d1432d4cb4c342f6c3"
+    },
+    {
+      "id": "le_meurice_01f_goldenized",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01f-goldenized-acceptance-text.md",
+      "sha256": "3516690f4c1185e75771f09df3aa9b4a075aef5424ccffd5c266df514a50c1e3",
+      "source_ref": "investigation",
+      "source_commit": "15d8adf9e9659929b17c968fdba4c65c7bec9521",
+      "classification": "calibration_anchor",
+      "source_blob_oid": "b111152ac7dc9f0e98e6453d3180b6d3026f56f4"
+    },
+    {
+      "id": "le_meurice_01g_narrative_demo",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/01g-narrative-pass-demo.md",
+      "sha256": "918406773ae49387ee4fecb15f8b94922c5fb2956129a3ee2556389af6d37b14",
+      "source_ref": "investigation",
+      "source_commit": "8a4a3460560430780563b5b1a32de183b11c3afc",
+      "classification": "calibration_anchor",
+      "source_blob_oid": "a2cb0bb0b3e1a5fda0dabe09c7aa636901199bf7"
+    },
+    {
+      "id": "correct_dont_reject_spec",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/02-spec.md",
+      "sha256": "fabcc8507231c30e1bf6ccd18169f0b2ef6e0ca26cdc0bec22c9d124095a5b72",
+      "source_ref": "investigation",
+      "source_commit": "1f50bd23543c8f4c1ebc427967eb58877151ab52",
+      "classification": "historical_spec",
+      "source_blob_oid": "e6dbe4dc7aa5db8510a44845e1eb7cb4e0d14d25"
+    },
+    {
+      "id": "fact_gate_calibration_02b",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/02b-calibration-scorecard.md",
+      "sha256": "f05d4195d41ad8ee1f4deb3153518a224b4a4b4f6f3c4334faedc62b740c8462",
+      "source_ref": "investigation",
+      "source_commit": "b2f030af9f1158e5dcc5f9248298bef2983b4727",
+      "classification": "fact_calibration_evidence",
+      "source_blob_oid": "dc710eac33ba61d873dc64e2e75ce81fa91fe9d3"
+    },
+    {
+      "id": "correct_dont_reject_scopes",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/03-scopes.md",
+      "sha256": "47f3f41b4437986419761c6c641f37978b09705e724a79120d52700cc4c9b1d6",
+      "source_ref": "investigation",
+      "source_commit": "15d8adf9e9659929b17c968fdba4c65c7bec9521",
+      "classification": "historical_plan",
+      "source_blob_oid": "5d3adfdc92b5b03f8a38b472743f58e6b44467fc"
+    },
+    {
+      "id": "correct_dont_reject_red_team",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/04-red-team.md",
+      "sha256": "e355c9ac122f7e5b6f82423a349ca5b25fee25055bf887e91362af897031386c",
+      "source_ref": "investigation",
+      "source_commit": "9fb2308a1a844b8aa622b8b5d857f85e394a207a",
+      "classification": "red_team_record",
+      "superseded_by": "correct_dont_reject_red_team_reopen",
+      "source_blob_oid": "280aa0d7c93e832797ae64efc24dd75397d924c8"
+    },
+    {
+      "id": "correct_dont_reject_red_team_reopen",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/04b-red-team-reopen.md",
+      "sha256": "e8f6de9e78ac15973596ffbaa639241ba6784399796ba26ab35b169e1cca6b49",
+      "source_ref": "investigation",
+      "source_commit": "15d8adf9e9659929b17c968fdba4c65c7bec9521",
+      "classification": "red_team_record",
+      "superseded_by": "correct_dont_reject_plan",
+      "source_blob_oid": "d02636de8068bcc951e312320dfb0e7a46f69774"
+    },
+    {
+      "id": "correct_dont_reject_plan",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/05-plan.md",
+      "sha256": "c1254c632dca6814168db7ad322e7be87f34d232112f1e357f041391972d1555",
+      "source_ref": "investigation",
+      "source_commit": "8a4a3460560430780563b5b1a32de183b11c3afc",
+      "classification": "historical_plan",
+      "superseded_by": "correct_dont_reject_plan_05b",
+      "source_blob_oid": "69f71e65de4bb85ab8864c1b22a6e22f7a7a0d02"
+    },
+    {
+      "id": "correct_dont_reject_plan_05b",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/05b-plan-no3b-scope45.md",
+      "sha256": "8abc93a8d910bcef6fc20a2a7f1f102323e45dd502b66909a6dd352a5fde572c",
+      "source_ref": "investigation",
+      "source_commit": "8d8fc93de48417a14544d38ac172b1ae7a930944",
+      "classification": "historical_plan",
+      "superseded_by": "scope6_acceptance_run",
+      "source_blob_oid": "0f51571fc85014f0c9e1e47a61a2c8640455a43d"
+    },
+    {
+      "id": "scope6_acceptance_run",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/06-acceptance-run.md",
+      "sha256": "17348e21fcceda9383a8c3d8dfcebc47f1852fccfaa3e7387eff2cc5b05076ff",
+      "source_ref": "origin/scope6-acceptance-finding",
+      "source_commit": "0de54b57132a4724e6f20aa9325677bafa3ebc74",
+      "classification": "algorithm_acceptance_failure",
+      "source_blob_oid": "ab270d27dd9de98c020dec09fb25185cacc2e7b8"
+    },
+    {
+      "id": "scope6_state",
+      "path": "specs/2026-07-13-compose-correct-dont-reject/state.json",
+      "sha256": "d7de6d4e37cfcb281ceff76ec51e7784e829e07d4ce4ba5c3345c4a9870b0bef",
+      "source_ref": "origin/scope6-acceptance-finding",
+      "source_commit": "0de54b57132a4724e6f20aa9325677bafa3ebc74",
+      "classification": "latest_investigation_state",
+      "source_blob_oid": "3218d6a69225f0522052856cb7cb103f26bebf18"
+    },
+    {
+      "id": "tour_craft_rubric",
+      "path": "specs/2026-07-16-tour-craft/RUBRIC.md",
+      "sha256": "01c46f0fa172e407f0723c141048e0b9b97338f5a0ee05b593b35bafde89346f",
+      "source_ref": "main",
+      "source_commit": "6805c50cffa5df4a9b1a45b1e8da5ef79107edc3",
+      "classification": "advisory_rubric",
+      "source_blob_oid": "6df256aefb6f9b2c6b6a2bdf446c4b3c383ef7a9"
+    },
+    {
+      "id": "good_tours_research",
+      "path": "specs/2026-07-16-tour-craft/GOOD-TOURS-RESEARCH.md",
+      "sha256": "e491712be2dee2b26b047e7ffbca11542cea443252d73a9441aae0df769ef979",
+      "source_ref": "main",
+      "source_commit": "b3660df8b03fd4410e6ab315c9a9911b477e9c4d",
+      "classification": "research",
+      "source_blob_oid": "d9ca3f52a6c275b06417470f0ea6451b13eb3fe0"
+    },
+    {
+      "id": "phase_c_baseline_table",
+      "path": "specs/2026-07-18-tour-qa-campaign/BASELINE-TABLE.md",
+      "sha256": "84ca5c4e3a76abb66c2cd815aad3255c5f7b780a805625757f1cc742a360972c",
+      "source_ref": "main",
+      "source_commit": "eca0437ddbef1d0f414f05fb2892e41e1fc40f29",
+      "classification": "empirical_report",
+      "source_blob_oid": "406ad0827a143c1fcf40d2d03dab62f3bc3767b1"
+    },
+    {
+      "id": "phase_c_results",
+      "path": "specs/2026-07-18-tour-qa-campaign/PHASE-C-RESULTS.md",
+      "sha256": "1785a978408a6718ebbd0c2cd16dccdb279c29dd6fb877e423b845838af3e948",
+      "source_ref": "main",
+      "source_commit": "5e4289511f3dded0311d546dfc8a0edc161f083d",
+      "classification": "empirical_report",
+      "source_blob_oid": "3f5d0728dff1db400d63007fe7a67518153c57c4"
+    },
+    {
+      "id": "phase_c_report",
+      "path": "specs/2026-07-18-tour-qa-campaign/REPORT.md",
+      "sha256": "83e6a8b26b3bac7495e665620df73ffd8fb1e831e2ae7fb11b7e3d7431060ee8",
+      "source_ref": "main",
+      "source_commit": "3c291b99efcc127120e5d42e5befa5ad1c150c2e",
+      "classification": "empirical_report",
+      "source_blob_oid": "bbf54de1b85c18df2dbe1366106a1c8357de5f9b"
+    },
+    {
+      "id": "tour_quality_standard",
+      "path": "specs/2026-07-19-tour-quality-standard/01-standard.md",
+      "sha256": "4636708fde4a02d2751d5c40396b895b10bcf9ca42da6231372f10caeeecb139",
+      "source_ref": "main",
+      "source_commit": "6805c50cffa5df4a9b1a45b1e8da5ef79107edc3",
+      "classification": "advisory_standard",
+      "source_blob_oid": "687d3fcd6d87b1ee3156a3819325c05365237194"
+    },
+    {
+      "id": "generation_samples_2026_07_20",
+      "path": "specs/2026-07-19-tour-quality-standard/GENERATION-SAMPLES-2026-07-20.md",
+      "sha256": "d6871f159b94c44c585544e576de30379f767c4c85adf5c0213c6648098c1697",
+      "source_ref": "main",
+      "source_commit": "6805c50cffa5df4a9b1a45b1e8da5ef79107edc3",
+      "classification": "working_baseline_label",
+      "source_blob_oid": "b060974f43a2272c2b09c8bb4741379a84139af2"
+    }
+  ],
+  "excluded_investigation_artifacts": [
+    {
+      "path": "specs/2026-07-13-compose-correct-dont-reject/state.json",
+      "sha256": "4479aee5f07e17e3caaf7c41857c3e04174b533956bd1caa14576f06dc459c13",
+      "source_ref": "investigation",
+      "source_commit": "3e5f6acfea55b6aacd985698d643427bc091db07",
+      "reason": "mutable execution state, not a normative or calibration document; the main-branch state is preserved",
+      "source_blob_oid": "377f0d6d297c109e7f031557ab6c55b0acb97791"
+    },
+    {
+      "path": "tests/goldens/compose_per_chapter.json",
+      "sha256": "b31da9a8b7895e118af47199e76db67006ea594c869e580f29771bd5d3e5aa7b",
+      "source_ref": "investigation",
+      "source_commit": "23f52e04d074758af31a10390e36b43122719cd3",
+      "reason": "generic implementation regression fixture, not a human quality anchor",
+      "source_blob_oid": "2e326a187dd9ff4e56f4dd172d401d481416f91a"
+    },
+    {
+      "path": "tests/goldens/compose_whole_tour.json",
+      "sha256": "b31da9a8b7895e118af47199e76db67006ea594c869e580f29771bd5d3e5aa7b",
+      "source_ref": "investigation",
+      "source_commit": "23f52e04d074758af31a10390e36b43122719cd3",
+      "reason": "generic implementation regression fixture, not a human quality anchor",
+      "source_blob_oid": "2e326a187dd9ff4e56f4dd172d401d481416f91a"
+    }
+  ]
+}

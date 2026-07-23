@@ -28,22 +28,36 @@ Plumbing (all in-process):
   deterministic fake (mirrors test_tour_b_materialization.py's
   _DeterministicRoutingClient, plus the context-manager protocol trips.py
   uses via ``with RoutingClient() as ...``). ``isochrone()`` returns None so
-  REACH falls back to the analytic envelope; ``generate()`` defaults to the
-  MockGlueClient — no LLM, no network, no container.
+  REACH falls back to the analytic envelope. The suite-wide money guard injects
+  the explicit offline Premium executor — no LLM, no network, no container.
 """
 
 from __future__ import annotations
 
+import hashlib
 import inspect
+import json
 
 import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
-from src.api.dependencies import get_claim_repetition_judge, get_driver
+from src.api.dependencies import get_driver, get_premium_compose_executor
+from src.tour.contract import ValhallaLegReceipt
+from src.tour.premium_tour import PremiumBuildIdentity
 from src.tour.routing import haversine_m, pace_corrected_walk_seconds
+from src.tour.routing_client import (
+    VALHALLA_ROUTING_CONFIG_JSON,
+    VALHALLA_ROUTING_CONFIG_SHA256,
+)
 
 START = (48.8568, 2.3414)
+
+
+def _available_stops(body: dict) -> list[dict]:
+    if body["candidate_eligible"]:
+        return body["stops"]
+    return body["basic_tour"]["stops"]
 
 
 # ---------------------------------------------------------------------------
@@ -126,6 +140,54 @@ class _FakeRoutingClient:
         d = haversine_m(from_lat, from_lng, to_lat, to_lng)
         return (int(pace_corrected_walk_seconds(d)), d, None)
 
+    def route_with_receipt(self, from_lat: float, from_lng: float, to_lat: float, to_lng: float):
+        seconds = self.leg_seconds(from_lat, from_lng, to_lat, to_lng)
+        distance_m = haversine_m(from_lat, from_lng, to_lat, to_lng)
+        config = json.loads(VALHALLA_ROUTING_CONFIG_JSON)
+        request = {
+            "locations": [
+                {"lat": from_lat, "lon": from_lng},
+                {"lat": to_lat, "lon": to_lng},
+            ],
+            **config,
+        }
+        response = {
+            "trip": {
+                "legs": [
+                    {
+                        "summary": {
+                            "time": seconds,
+                            "length": distance_m / 1000.0,
+                        },
+                        "shape": "test-polyline",
+                    }
+                ]
+            }
+        }
+
+        def canonical(value):
+            return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+
+        request_json = canonical(request)
+        response_json = canonical(response)
+        receipt = ValhallaLegReceipt(
+            requested_from=(from_lat, from_lng),
+            requested_to=(to_lat, to_lng),
+            request_json=request_json,
+            request_sha256=hashlib.sha256(request_json.encode()).hexdigest(),
+            routing_config_json=VALHALLA_ROUTING_CONFIG_JSON,
+            routing_config_sha256=VALHALLA_ROUTING_CONFIG_SHA256,
+            response_json=response_json,
+            response_sha256=hashlib.sha256(response_json.encode()).hexdigest(),
+            seconds=seconds,
+            distance_m=distance_m,
+            polyline="test-polyline",
+        )
+        return seconds, distance_m, "test-polyline", receipt
+
+    def routing_version(self) -> str:
+        return "test-valhalla"
+
     def isochrone(self, lat: float, lng: float, minutes: int) -> None:
         return None
 
@@ -188,6 +250,10 @@ def make_client(monkeypatch):
 
     def _make(records_by_kind: dict[str, list[dict]]) -> TestClient:
         monkeypatch.setattr("src.api.routes.trips.RoutingClient", _FakeRoutingClient)
+        monkeypatch.setattr(
+            "src.api.routes.trips.resolve_build_identity",
+            lambda: PremiumBuildIdentity(commit_sha="1" * 40),
+        )
         app = create_app()
         app.dependency_overrides[get_driver] = lambda: _FakeDriver(records_by_kind)
         # NOT ``with TestClient(app)`` — the context manager runs the lifespan
@@ -202,8 +268,8 @@ def make_client(monkeypatch):
 # ---------------------------------------------------------------------------
 
 
-def test_preview_single_stop_carries_yellow_tourability_on_the_wire(make_client):
-    """A YELLOW 1-stop preview must ship the tourability payload on the wire.
+def test_preview_single_stop_that_cannot_fill_timebox_is_structured_422(make_client):
+    """Premium planning must not disguise a materially underfilled route as Basic.
 
     Fixture = the pinned lone-anchor engine contract
     (test_tour_selection.py::test_isolated_single_anchor_yields_one_stop_with_
@@ -247,25 +313,11 @@ def test_preview_single_stop_carries_yellow_tourability_on_the_wire(make_client)
             "round_trip": False,
         },
     )
-    assert r.status_code == 200, r.text
-    body = r.json()
-
-    dwell = [s for s in body["stops"] if s["band"] == "dwell"]
-    assert len(dwell) == 1
-    # THE wire pin: the YELLOW assessment made it through trips.py intact.
-    tourability = body["tourability"]
-    assert tourability is not None, (
-        "1-stop preview shipped WITHOUT the YELLOW tourability payload — "
-        "thin-area tours are indistinguishable from collapse bugs again"
-    )
-    assert tourability["status"] == "YELLOW"
-    assert tourability["anchor_candidates"] == 1
-    assert 0.5 <= tourability["fill_ratio"] < 1.0  # 1200/1793 rounds to 0.67
-    assert "reachable_poi_count" in tourability
-    # The stop's narration carries real beat text, not just glue.
-    assert "lone anchor" in dwell[0]["narration"]
-    # The class invariant on the wire: multi-stop OR disclosed.
-    assert len(dwell) >= 2 or tourability is not None
+    assert r.status_code == 422, r.text
+    detail = r.json()["detail"]
+    assert detail["reason"] == "premium_route_infeasible"
+    assert "required 3240-3960s" in detail["detail"]
+    assert detail["alternatives"] == []
 
 
 def test_preview_round_trip_plus_end_is_422_not_500(make_client):
@@ -299,7 +351,7 @@ def test_preview_round_trip_plus_end_is_422_not_500(make_client):
             "end_lat": START[0] + 0.01,
             "end_lng": START[1] + 0.01,
             "round_trip": True,
-            "duration_min": 60,
+            "duration_min": 30,
         },
     )
     assert r.status_code == 422, (
@@ -374,14 +426,14 @@ def test_preview_green_multi_stop_has_null_tourability_and_multiple_stops(make_c
         json={
             "center_lat": START[0],
             "center_lng": START[1],
-            "duration_min": 60,
+            "duration_min": 30,
             "round_trip": False,
         },
     )
     assert r.status_code == 200, r.text
     body = r.json()
 
-    dwell = [s for s in body["stops"] if s["band"] == "dwell"]
+    dwell = [s for s in _available_stops(body) if s["band"] == "dwell"]
     assert len(dwell) >= 2, f"GREEN cluster collapsed on the wire: {body['stops']}"
     # The deliberate GREEN-null pin.
     assert body["tourability"] is None, (
@@ -425,49 +477,68 @@ def _green_cluster_records():
     return {"pois": pois, "beats": beats, "areas": _AREA_RECORDS, "adjacency": [], "lenses": []}
 
 
-def test_preview_always_runs_the_one_algorithm_and_scores_quality(make_client):
-    """The workbench Opus-vs-ChatGPT wiring on the wire, hermetic + $0 (the autouse
-    money-guard stubs BOTH composers offline, so no live spend): compose=true threads
-    the chosen REAL provider through and the response carries ``provider`` +
-    objective ``narration_quality``. An unknown/absent provider falls back to Opus —
-    never a mock passthrough label. UNDO: drop the provider/quality block in
-    preview_trip, or add a mock provider branch -> these assertions fail."""
+def test_preview_returns_a_traced_premium_candidate_from_the_shared_path(make_client, monkeypatch):
+    """The wire receives the validated blueprint, not legacy Script metadata."""
     client = make_client(_green_cluster_records())
-    # No flags. The request carries ONLY where and how long.
-    payload = {"center_lat": START[0], "center_lng": START[1], "duration_min": 60}
+    payload = {"center_lat": START[0], "center_lng": START[1], "duration_min": 30}
     r = client.post("/api/v1/trips/preview", json=payload)
     assert r.status_code == 200, r.text
     body = r.json()
-    assert body["compose_status"] in {"composed", "composed_partial", "refused"}, body
-    assert body["provider"] == "anthropic", body["provider"]
-    if body["compose_status"] != "refused":
-        q = body["narration_quality"]
-        assert q is not None, body
-        assert set(q) >= {"stilted_score", "engagement_score", "burstiness", "tells_per_100w"}, q
-        assert 0.0 <= q["stilted_score"] <= 1.0
-        assert 0.0 <= q["engagement_score"] <= 1.0
+    assert body["compose_status"] == "composed", body
+    assert body["provider"] == "offline", body["provider"]
+    assert body["candidate_eligible"] is True
+    assert body["candidate_status"] == "premium_candidate_eligible_for_certification"
+    assert body["stops"]
+    assert body["basic_tour"] is None
+    assert body["narration_quality"] is not None
+    assert body["quality"] is not None
+    assert body["candidate_rejection"] is None
 
 
-def test_preview_labels_env_provider_when_request_omits_it(make_client, monkeypatch):
-    """The response ``provider`` must name the ACTUAL narrator. With
-    COMPOSE_PROVIDER=openai set and NO provider in the request, the injected default
-    resolves to ChatGPT, so the label must say 'openai' — not 'anthropic' derived
-    from the empty request field. $0 (money-guard stubs the client).
-    UNDO: label from body.provider alone -> this reports 'anthropic' -> RED."""
-    monkeypatch.setenv("COMPOSE_PROVIDER", "openai")
-    client = make_client(_green_cluster_records())
-    r = client.post(
-        "/api/v1/trips/preview",
-        json={"center_lat": START[0], "center_lng": START[1], "duration_min": 60, "compose": True},
+def test_preview_never_scores_or_returns_mixed_fallback_as_an_llm_candidate(
+    make_client, monkeypatch
+):
+    """A failed physical unit becomes a separate, ungraded Basic Tour."""
+    from src.api.routes import trips as trips_route
+
+    class FailingExecutor:
+        cost_bearing = False
+        provider_name = "offline"
+
+        def execute(self, _unit):
+            raise ValueError("deliberate physical failure")
+
+    monkeypatch.setattr(
+        trips_route,
+        "score_tour",
+        lambda *_a, **_k: pytest.fail("Basic Tour reached the quality grader"),
     )
-    assert r.status_code == 200, r.text
-    body = r.json()
-    if body["compose_status"] != "refused":
-        assert body["provider"] == "openai", body["provider"]
+    client = make_client(_green_cluster_records())
+    client.app.dependency_overrides[get_premium_compose_executor] = FailingExecutor
+
+    try:
+        response = client.post(
+            "/api/v1/trips/preview",
+            json={"center_lat": START[0], "center_lng": START[1], "duration_min": 30},
+        )
+    finally:
+        del client.app.dependency_overrides[get_premium_compose_executor]
+
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["candidate_eligible"] is False
+    assert body["narration_kind"] == "none"
+    assert body["compose_status"] == "basic_available"
+    assert body["candidate_rejection"]["code"] == "generation_failed"
+    assert body["stops"] == []
+    assert body["quality"] is None
+    assert body["narration_quality"] is None
+    assert body["basic_tour"]["kind"] == "basic_tour"
+    assert body["basic_tour"]["stops"]
 
 
-def test_preview_green_but_thin_delivery_carries_tourability(make_client):
-    """C11a: a GREEN-density pool that DELIVERS thin ships tourability != null.
+def test_preview_green_pool_but_materially_thin_delivery_is_422(make_client):
+    """A rich pool cannot waive the Premium route's active-time lower bound.
 
     This is the engine-side answer to the 2026-07-02 pool-vs-delivered gap: the
     density gate rates the reachable POOL, so a rich area reads GREEN even when
@@ -553,93 +624,13 @@ def test_preview_green_but_thin_delivery_carries_tourability(make_client):
             "round_trip": True,
         },
     )
-    assert r.status_code == 200, r.text
-    body = r.json()
-
-    dwell = [s for s in body["stops"] if s["band"] == "dwell"]
-    # The delivery collapsed: the walk budget affords one edge anchor round-trip.
-    assert len(dwell) == 1, f"expected a thin one-stop delivery, got {body['stops']}"
-    # THE C11a wire pin: GREEN-but-thin is DISCLOSED, not silently GREEN.
-    tourability = body["tourability"]
-    assert tourability is not None, (
-        "GREEN-but-thin delivery shipped WITHOUT tourability — the exact "
-        "pool-vs-delivered silent collapse C11a exists to disclose"
-    )
-    assert tourability["status"] == "GREEN"
-    assert tourability["delivered_thin"] is True
-    # Density saw the rich pool: 6 anchor candidates cleared the rich-pool gate.
-    assert tourability["anchor_candidates"] >= 6
-    assert tourability["fill_ratio"] >= 1.5
+    assert r.status_code == 422, r.text
+    detail = r.json()["detail"]
+    assert detail["reason"] == "premium_route_infeasible"
+    assert "best eligible bounded route 2403s" in detail["detail"]
 
 
-# ---------------------------------------------------------------------------
-# G4 (claim_repetition) route wiring — Defect 3: the conftest money-guard stub
-# ALWAYS returns same_fact=False, so g4_findings is EMPTY across the entire
-# non-live suite and the merge/severity logic in trips.py never executes against
-# a non-empty finding set anywhere else. These tests inject a judge that DOES
-# find a redundancy, so the wiring is exercised for real.
-# ---------------------------------------------------------------------------
-
-
-class _AlwaysRedundantJudge:
-    """Deterministic, offline: rules every candidate pair redundant. Used ONLY to
-    exercise the route's merge-into-response wiring — never a claim about the real
-    judge's accuracy."""
-
-    def same_fact(self, a: str, b: str) -> bool:
-        return True
-
-
-def _cluster_with_shared_entity_records():
-    """A GREEN multi-stop cluster where EVERY beat at EVERY stop declares the same
-    corpus entity — a real G4 candidate pair, cross-stop, once composed.
-    ``MockComposeClient`` (the money guard's offline compose stub) passes
-    ``source_type == "beat"`` sentences through unchanged (see ``compose.py``'s
-    docstring), so whichever beats the selection/corrector pipeline keeps still
-    carry the entity tag and stop_idx exactly as declared here — every beat, not
-    just one per stop, because which beat SURVIVES beat-capping/correction is an
-    internal detail of the engine this test does not own or want to couple to.
-
-    ONLY 2 beats per POI (not 5, unlike ``_green_cluster_records``) — deliberately
-    under ``quality_rubric.STARVE_MIN_BEATS`` (5) so a real rubric PASS is reachable
-    here: this fixture exists to prove G4 stays advisory even when nothing else is
-    wrong with the tour, which a fixture that always trips C1-starved could never
-    discriminate (see the route test below, which needs at least one non-degenerate
-    passing case to catch the Defect-2 mutation)."""
-    offsets = [
-        (0.0004, 0.0),
-        (0.0, 0.0007),
-        (-0.0005, 0.0),
-        (0.0, -0.0009),
-        (0.0007, 0.0003),
-        (-0.0006, -0.0006),
-    ]
-    pois = [
-        _poi_record(
-            f"poi-{i}",
-            name=f"Anchor Number {i}",
-            tier=5,
-            lat=START[0] + dlat,
-            lng=START[1] + dlng,
-            areas=["Île de la Cité"],
-        )
-        for i, (dlat, dlng) in enumerate(offsets)
-    ]
-    beats = [
-        _beat_record(
-            f"poi-{i}-b{j}",
-            f"poi-{i}",
-            body=f"Story {j} about anchor {i} and the Common Landmark. It continues.",
-        )
-        for i in range(len(offsets))
-        for j in range(2)
-    ]
-    for beat in beats:
-        beat["entities"] = ["Common Landmark"]
-    return {"pois": pois, "beats": beats, "areas": _AREA_RECORDS, "adjacency": [], "lenses": []}
-
-
-def test_g4_is_deliberately_dark_and_never_billed(make_client):
+def test_g4_is_deliberately_dark_and_never_billed():
     """DECISION GUARD. G4 (semantic cross-stop repetition) is BUILT and TESTED but is
     deliberately NOT RUN from preview_trip. It was wired on 2026-07-19 and made dark the
     same day, on measurement, before it ever billed a real preview.
@@ -679,22 +670,5 @@ def test_g4_is_deliberately_dark_and_never_billed(make_client):
         "was built for"
     )
 
-    # An always-True judge must still produce nothing: the check never runs.
-    client = make_client(_cluster_with_shared_entity_records())
-    client.app.dependency_overrides[get_claim_repetition_judge] = lambda: _AlwaysRedundantJudge()
-    try:
-        r = client.post(
-            "/api/v1/trips/preview",
-            json={"center_lat": START[0], "center_lng": START[1], "duration_min": 60},
-        )
-    finally:
-        del client.app.dependency_overrides[get_claim_repetition_judge]
-
-    assert r.status_code == 200, r.text
-    quality = r.json()["quality"]
-    assert quality["g4"]["judge_calls"] == 0, "G4 is dark -- it must never bill a call"
-    assert quality["g4"]["findings"] == []
-    assert quality["passed"] == (len(quality["blockers"]) == 0), (
-        "quality['passed'] must depend only on the deterministic rubric"
-    )
-
+    preview_source = inspect.getsource(trips_route.preview_trip)
+    assert "get_claim_repetition_judge" not in preview_source

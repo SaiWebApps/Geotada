@@ -297,3 +297,14 @@ valhalla/custom_files/
 # reproduction output, never committed. Keeping them ignored removes the recurring
 # "git add -A sweeps the scratch corpus into a commit" trap.
 data/*/tours/
+
+# Paid evaluator receipts are local audit/runtime state, never source or fixtures.
+# Keep the authored tour batch (`tour-batch-v1`) visible for regression tests.
+data/certification/tour-batch-review-v*/
+
+# One-off paid text-candidate runs are local runtime/audit state. The checked
+# regression corpus lives in `data/certification/tour-batch-v1` instead.
+data/certification/*/text-candidate-*/
+
+# Paid authoring reservation markers are resumability state, not regression fixtures.
+data/certification/tour-batch-v*/**/attempt-*.json

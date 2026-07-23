@@ -65,10 +65,13 @@ ignore = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Selection for the hermetic `test-local` shard. The definitive `make test`
+# executor runs every routed category below through its environment-specific target.
 addopts = "--ignore=tests/test_workbench_ui.py -m 'not live and not golden and not grade and not invariants'"
 markers = [
-    "live: hits a live external service (e.g. Resend email) and needs real creds. Excluded from the default bar via `-m 'not live'`; run with `make test-live`.",
-    "golden: compares engine tour output against a human-curated ideal tour using the live dev graph (port 7687). Excluded from the default bar; the fixtures are the TARGET to reach as the engine gains walk-by/spine-narration features — do NOT re-baseline them to current output. Run with `make test-golden`.",
-    "grade: M8 CI regression gate — runs the live pipeline against the dev graph (port 7687) and scores each golden with the GRADE rubric, asserting it clears GRADE_BASELINE. Excluded from the default bar; run with `make tour-grade`.",
-    "invariants: live-graph regression gate that generates REAL tours across representative paths (dev graph 7687 + Valhalla) and asserts the workbench-reported defect classes stay dead — no duplicate adjacent stops, no empty/glue-only stops, a closing sign-off, no doubled/mis-cased opener staging, monotonic order, no exact-duplicate sentence within a stop. Excluded from the default bar; run with `make tour-invariants`.",
+    "live: hits live external services with real credentials; routed by `make test` through `make test-live`.",
+    "requires_resend: live test that requires MAGIC_LINK_PROVIDER=resend and RESEND_API_KEY.",
+    "golden: compares live dev-graph tours with the human-curated targets; routed by `make test` through `make test-golden`.",
+    "grade: scores live dev-graph golden tours against GRADE_BASELINE; routed by `make test` through `make tour-grade`.",
+    "invariants: generates live dev-graph tours and checks customer-facing regression invariants; routed by `make test` through `make tour-invariants`.",
 ]

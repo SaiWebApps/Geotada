@@ -104,7 +104,7 @@ def test_the_guard_actually_sweeps_beyond_src_tour() -> None:
         )
 
 
-def test_factory_sets_an_explicit_ceiling() -> None:
+def test_factory_sets_an_explicit_ceiling(monkeypatch: pytest.MonkeyPatch) -> None:
     """The factory must pass BOTH timeout and max_retries, not rely on defaults."""
     captured: dict[str, object] = {}
 
@@ -119,6 +119,7 @@ def test_factory_sets_an_explicit_ceiling() -> None:
     stub.Anthropic = _FakeAnthropic  # type: ignore[attr-defined]
     saved = sys.modules.get("anthropic")
     sys.modules["anthropic"] = stub
+    monkeypatch.setenv(anthropic_client.PAID_CALL_PERMISSION_ENV, "1")
     try:
         anthropic_client.judge_client()
         assert captured["timeout"] == anthropic_client.JUDGE_TIMEOUT_S
@@ -128,11 +129,34 @@ def test_factory_sets_an_explicit_ceiling() -> None:
         anthropic_client.compose_client()
         assert captured["timeout"] == anthropic_client.COMPOSE_TIMEOUT_S
         assert captured["max_retries"] == anthropic_client.COMPOSE_MAX_RETRIES
+
+        captured.clear()
+        anthropic_client.certification_judge_client()
+        assert captured["timeout"] == anthropic_client.JUDGE_TIMEOUT_S
+        assert captured["max_retries"] == 0
+
+        captured.clear()
+        anthropic_client.certification_compose_client()
+        assert captured["timeout"] == anthropic_client.COMPOSE_TIMEOUT_S
+        assert captured["max_retries"] == 0
+
+        captured.clear()
+        anthropic_client.certification_batch_compose_client()
+        assert captured["timeout"] is None
+        assert captured["max_retries"] == 0
     finally:
         if saved is None:
             sys.modules.pop("anthropic", None)
         else:
             sys.modules["anthropic"] = saved
+
+
+def test_factory_fails_closed_without_paid_call_permission(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv(anthropic_client.PAID_CALL_PERMISSION_ENV, raising=False)
+    with pytest.raises(RuntimeError, match="paid LLM calls are locked"):
+        anthropic_client.compose_client()
 
 
 @pytest.mark.parametrize(
@@ -142,9 +166,7 @@ def test_factory_sets_an_explicit_ceiling() -> None:
         ("COMPOSE_TIMEOUT_S", anthropic_client.COMPOSE_TIMEOUT_S, 300.0),
     ],
 )
-def test_timeouts_are_well_under_the_sdk_default(
-    name: str, value: float, ceiling: float
-) -> None:
+def test_timeouts_are_well_under_the_sdk_default(name: str, value: float, ceiling: float) -> None:
     """A ceiling that drifts back toward the 600 s SDK default defeats the purpose."""
     assert 0 < value <= ceiling, (
         f"{name}={value} is not a meaningful bound (SDK default is 600s; "
@@ -159,3 +181,7 @@ def test_retry_counts_bound_worst_case_wall_clock() -> None:
     # The bare-client worst case was 600 * 3 = 1800s. Both must be far below it.
     assert judge_worst <= 300, f"judge worst case {judge_worst}s is too long"
     assert compose_worst <= 600, f"compose worst case {compose_worst}s is too long"
+    assert anthropic_client.COMPOSE_MAX_RETRIES == 0, (
+        "compose retries must be explicit full-candidate retries, not hidden SDK calls"
+    )
+    assert 0 < anthropic_client.COMPOSE_ABSOLUTE_DEADLINE_S <= 600

@@ -24,12 +24,36 @@ from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 
+# Collection happens before per-test fixtures.  On an ordinary test run, reserve
+# paid-provider credentials with empty values BEFORE importing the API or any
+# module that calls ``load_dotenv()``.  An explicit Makefile live target is the
+# only supported way to preserve real credentials in the test process.
+_LIVE_PROVIDER_TESTS = os.getenv("ONDOWAY_LIVE_TESTS") == "1"
+if not _LIVE_PROVIDER_TESTS:
+    for _paid_key in (
+        "ANTHROPIC_API_KEY",
+        "ELEVENLABS_API_KEY",
+        "OPENAI_API_KEY",
+        "RESEND_API_KEY",
+    ):
+        os.environ[_paid_key] = ""
+
 # Load test-specific Neo4j connection BEFORE importing src.connection.
 # connection.py calls load_dotenv() at import time without override=True,
 # so these values will be preserved.
 _test_env = Path(__file__).resolve().parent.parent / ".env.test"
 if _test_env.exists():
     load_dotenv(dotenv_path=_test_env, override=True)
+    # Scrub again after loading the test file so a future accidental provider
+    # key in .env.test cannot reopen collection-time spend.
+    if not _LIVE_PROVIDER_TESTS:
+        for _paid_key in (
+            "ANTHROPIC_API_KEY",
+            "ELEVENLABS_API_KEY",
+            "OPENAI_API_KEY",
+            "RESEND_API_KEY",
+        ):
+            os.environ[_paid_key] = ""
     # (The compose LLM wall is now enforced by the ``_money_guard_no_live_compose``
     # autouse fixture below — get_compose_client() ALWAYS builds the real Opus
     # client in the product, so an env toggle can no longer make it offline.)
@@ -57,8 +81,28 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
+from src.api.auth.config import MAGIC_LINK_PROVIDER, RESEND_API_KEY
 from src.connection import Neo4jConnectionError, create_driver, get_database
 from src.schema.constraints import apply_all
+
+
+def pytest_collection_modifyitems(config, items):
+    """Deselect provider-specific live tests when that provider is unconfigured."""
+    if not _LIVE_PROVIDER_TESTS or (
+        MAGIC_LINK_PROVIDER == "resend" and bool(RESEND_API_KEY)
+    ):
+        return
+
+    selected = []
+    deselected = []
+    for item in items:
+        if item.get_closest_marker("requires_resend"):
+            deselected.append(item)
+        else:
+            selected.append(item)
+    if deselected:
+        config.hook.pytest_deselected(items=deselected)
+        items[:] = selected
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -82,13 +126,19 @@ def _money_guard_no_live_compose(request, monkeypatch):
     provider was removed so a CUSTOMER can never be served the stitcher passthrough
     as if it were the narrator). The hermetic bar must therefore be prevented from
     ever CONSTRUCTING those billing clients: for every non-``live`` test, patch the
-    real classes to their offline stubs. ``make test`` then physically cannot make
-    a paid Anthropic call — the real clients are never instantiated (proven by
+    real classes to their offline stubs. The hermetic ``test-local`` shard then
+    physically cannot make a paid Anthropic call — the real clients are never
+    instantiated (proven by
     ``test_compose_provider.test_money_guard_compose_client_is_offline_stub``).
-    ``@pytest.mark.live`` tests (excluded from ``make test``; only ``make
-    tour-compose-gate`` etc.) intentionally spend and bind the real client by
-    direct import, so they are left untouched."""
+    ``@pytest.mark.live`` tests run in ``make test`` through the dedicated
+    ``test-live`` shard; they intentionally spend and bind the real client by direct
+    import, so they are left untouched."""
     if request.node.get_closest_marker("live"):
+        if not _LIVE_PROVIDER_TESTS:
+            pytest.fail(
+                "live provider test requires ONDOWAY_LIVE_TESTS=1; "
+                "use the explicit Makefile live target"
+            )
         return
     import src.tour.compose as _compose_mod
     import src.tour.verify as _verify_mod
@@ -109,7 +159,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     # Same guard for the OpenAI (ChatGPT) composer: the product path (client=None)
     # would build the billing OpenAI SDK, so hand back the offline stub; a unit test
     # that injects a FAKE sdk client (client=<fake>) stays offline and exercises the
-    # real translation logic. So COMPOSE_PROVIDER=openai can never bill in the bar.
+    # real translation logic. So COMPOSE_PROVIDER=openai cannot bill in `test-local`.
     _real_openai = _compose_mod.OpenAIComposeClient
 
     def _guard_openai(model=None, *, client=None):
@@ -118,6 +168,21 @@ def _money_guard_no_live_compose(request, monkeypatch):
         return _real_openai(model, client=client)
 
     monkeypatch.setattr(_compose_mod, "OpenAIComposeClient", _guard_openai)
+
+    # PREMIUM authoring money-guard: the workbench now uses the same zero-retry,
+    # receipt-preserving physical boundary as certification batches. Product
+    # construction is replaced by the explicit $0 adapter; injected fake
+    # providers still exercise the real executor in unit tests.
+    import src.tour.premium_tour as _premium_mod
+
+    _real_premium = _premium_mod.AnthropicPremiumExecutor
+
+    def _guard_premium(provider=None):
+        if provider is None:
+            return _premium_mod.OfflinePremiumExecutor()
+        return _real_premium(provider)
+
+    monkeypatch.setattr(_premium_mod, "AnthropicPremiumExecutor", _guard_premium)
     # No non-live test constructs the real Haiku checker with a fake SDK, so the
     # billing checker is always swapped for the offline trusting stub.
     monkeypatch.setattr(
@@ -167,7 +232,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     # builds an Opus drafter + 3 Haiku judges via get_author_composer. Patch each so the
     # PRODUCT path (client is None) builds an OFFLINE stub, never a billing SDK — a unit
     # test that injects a fake SDK client (client=<fake>) stays offline and exercises the
-    # real class. So `make test` can never bill the author path.
+    # real class. So `test-local` cannot bill the author path.
     import src.tour.author as _author_mod
     import src.tour.factcheck as _fc_mod
 
@@ -192,8 +257,10 @@ def _money_guard_no_live_compose(request, monkeypatch):
     _real_drafter = _author_mod.LLMDrafter
 
     def _guard_drafter(model, *, client=None, max_tokens=4000):
-        return _OfflineDrafter() if client is None else _real_drafter(
-            model, client=client, max_tokens=max_tokens
+        return (
+            _OfflineDrafter()
+            if client is None
+            else _real_drafter(model, client=client, max_tokens=max_tokens)
         )
 
     monkeypatch.setattr(_author_mod, "LLMDrafter", _guard_drafter)
@@ -218,7 +285,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     # module the author-engine guard above never touches (it's report-only, wired only from
     # scripts/author_tour.py — specs/2026-07-18-tour-qa-campaign cross-stop track). Patch it
     # the same way: PRODUCT path (client is None) -> offline stub; a unit test that injects a
-    # fake SDK client stays offline and exercises the real class. So `make test` can never
+    # fake SDK client stays offline and exercises the real class. So `test-local` cannot
     # bill the cross-stop judge either.
     import src.tour.tour_consistency as _tc_mod
 
@@ -348,6 +415,4 @@ def load_onboard_fixture(city: str, name: str) -> dict:
     typed ``ConnectorResult`` — so the bar drives them from these committed
     fixtures and never touches the network.
     """
-    return json.loads(
-        (Path(__file__).parent / "fixtures" / "onboard" / city / name).read_text()
-    )
+    return json.loads((Path(__file__).parent / "fixtures" / "onboard" / city / name).read_text())

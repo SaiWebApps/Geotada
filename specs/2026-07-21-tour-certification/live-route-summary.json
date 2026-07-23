@@ -1,0 +1,43 @@
+{
+  "legs": [
+    {"distance_m": 32.0, "from": null, "index": 0, "request_sha256": "ed00bc6cd60dcefcaa1a98bef2e59b0e0406a827a6df6ecda3490209574b72f8", "response_sha256": "7b03212837ebdc458bf65b7bb5fc89711ba8a5e13169ebdf6835221e6972ea8a", "seconds": 40, "source": "valhalla", "to": "7c70dd98-af21-447c-a5db-362e08c9fab0"},
+    {"distance_m": 61.0, "from": "7c70dd98-af21-447c-a5db-362e08c9fab0", "index": 1, "request_sha256": "2d6076b8bf6cd4aed5b2278a32325a3d76c60c35782d276a60cb996350f8c366", "response_sha256": "2c6f7ae7866a7b7068502073aaa9099ad81054514aebd7694a9ddb61ca08ea44", "seconds": 74, "source": "valhalla", "to": "951edb7d-c4a6-43d3-9576-3b5f1f3b759f"},
+    {"distance_m": 432.0, "from": "951edb7d-c4a6-43d3-9576-3b5f1f3b759f", "index": 2, "request_sha256": "d98ee26e2909ff439a0d09665b3123053fbcd3401c15d7f137605aed260e78e1", "response_sha256": "d9d46adeffab20dd60402e114885bf7c197c7bd0f7112f724d6a03d7afee7a29", "seconds": 519, "source": "valhalla", "to": "ddb7595a-c763-4fd3-addc-66caf5c4e16e"},
+    {"distance_m": 191.0, "from": "ddb7595a-c763-4fd3-addc-66caf5c4e16e", "index": 3, "request_sha256": "c6bf1d2a3c29326a7b757c66634475479ace42ea805af00481bcb0f8db510e64", "response_sha256": "77333274749ee362a236793fe67ebd906d7b9c80b07ecf11ba202391d26bde96", "seconds": 230, "source": "valhalla", "to": "db22494e-1d0b-4bd1-b72b-b756086b88cb"},
+    {"distance_m": 630.0, "from": "db22494e-1d0b-4bd1-b72b-b756086b88cb", "index": 4, "request_sha256": "e603a8d4ff8d1159dd40a2645fc561064ea170b596a4a6b92875627c69debef7", "response_sha256": "20a56d5f75cd2a529f244c0ad6a8d0927a046b8bb558d929152c0e49c3b708b6", "seconds": 798, "source": "valhalla", "to": "68c8b1fb-0891-4d28-b4c1-6256d7ccf802"},
+    {"distance_m": 329.0, "from": "68c8b1fb-0891-4d28-b4c1-6256d7ccf802", "index": 5, "request_sha256": "eef021b8c2a8efb21d2551358869282e7425f2d5e38f7e967d01c1a95529141b", "response_sha256": "e58b07d6c20a4ed02b58b1a4244c274232a42385de15b339e82237e2bced43f0", "seconds": 429, "source": "valhalla", "to": "ecb6deb5-5725-4cb2-9854-6e9b260cc4d7"},
+    {"distance_m": 339.0, "from": "ecb6deb5-5725-4cb2-9854-6e9b260cc4d7", "index": 6, "request_sha256": "a11d790fae90d1e0bc5f646c4a05015782c3700d3c28afe7f509886aefb45639", "response_sha256": "713b2308a5b18d85cd193e755e3fb1cf418757c5ff4e973701946539322341de", "seconds": 444, "source": "valhalla", "to": "840fb575-2bbc-4565-acdf-e291647b9d94"},
+    {"distance_m": 729.0, "from": "840fb575-2bbc-4565-acdf-e291647b9d94", "index": 7, "request_sha256": "2f288959367ddae047dac0b40f27d465dc80b437c783b09141e177e1c748032f", "response_sha256": "7b6819cea61e1ba735b42f87d800a9197fae9d7b2e452132fb04bf7f907487a5", "seconds": 889, "source": "valhalla", "to": "92b24ff9-380d-4af2-b6a5-4253cecf5863"}
+  ],
+  "maximum_elapsed_seconds": 5940,
+  "minimum_elapsed_seconds": 4860,
+  "per_stop": [
+    {"beats": 7, "name": "Pont Neuf", "narration_seconds": 259, "words": 647},
+    {"beats": 4, "name": "Square du Vert-Galant", "narration_seconds": 231, "words": 580},
+    {"beats": 7, "name": "Conciergerie", "narration_seconds": 269, "words": 673},
+    {"beats": 5, "name": "Sainte-Chapelle", "narration_seconds": 228, "words": 569},
+    {"beats": 4, "name": "Square Jean XXIII", "narration_seconds": 183, "words": 456},
+    {"beats": 10, "name": "Notre-Dame Cathedral", "narration_seconds": 258, "words": 644},
+    {"beats": 2, "name": "Shakespeare and Company", "narration_seconds": 42, "words": 105},
+    {"beats": 6, "name": "The Sorbonne", "narration_seconds": 262, "words": 652}
+  ],
+  "planned_elapsed_seconds": 5155,
+  "planned_additional_dwell_seconds": 0,
+  "planned_source_narration_seconds": 1732,
+  "planning_status": "pre_authoring_capacity_only",
+  "planning_policy": {"max_stops": 8, "maximum_requested_fraction": 1.1, "minimum_requested_fraction": 0.9},
+  "pois": [
+    {"id": "7c70dd98-af21-447c-a5db-362e08c9fab0", "lat": 48.85675, "lng": 2.341033, "name": "Pont Neuf"},
+    {"id": "951edb7d-c4a6-43d3-9576-3b5f1f3b759f", "lat": 48.85717, "lng": 2.341516, "name": "Square du Vert-Galant"},
+    {"id": "ddb7595a-c763-4fd3-addc-66caf5c4e16e", "lat": 48.8558, "lng": 2.3458, "name": "Conciergerie"},
+    {"id": "db22494e-1d0b-4bd1-b72b-b756086b88cb", "lat": 48.855358, "lng": 2.34483, "name": "Sainte-Chapelle"},
+    {"id": "68c8b1fb-0891-4d28-b4c1-6256d7ccf802", "lat": 48.852574, "lng": 2.350971, "name": "Square Jean XXIII"},
+    {"id": "ecb6deb5-5725-4cb2-9854-6e9b260cc4d7", "lat": 48.852966, "lng": 2.349902, "name": "Notre-Dame Cathedral"},
+    {"id": "840fb575-2bbc-4565-acdf-e291647b9d94", "lat": 48.852575, "lng": 2.347112, "name": "Shakespeare and Company"},
+    {"id": "92b24ff9-380d-4af2-b6a5-4253cecf5863", "lat": 48.848643, "lng": 2.342038, "name": "The Sorbonne"}
+  ],
+  "route_sha256": "45d0ad98c0e6b3d0139e2178ea81f6b099038964157321789b5c056efc52d28c",
+  "routed": true,
+  "total_walk_distance_m": 2743.0,
+  "total_walk_seconds": 3423
+}

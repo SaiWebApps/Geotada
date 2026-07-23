@@ -29,10 +29,11 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	sync sync-apple requirements env use-local use-cloud which-db \
 	lint format lint-fix flutter-analyze \
 	test test-unit test-file test-file-local test-local test-cloud db-parity \
-	tour-batch-step \
+	tour-batch-plan tour-batch-live \
+	tour-batch-review-plan tour-batch-review-live \
 	test-integration test-functional test-live test-auth test-onboarding \
 	test-workbench test-golden golden-probe golden-diff tour-grade \
-	tour-audio-gate tour-compose-gate test-all audit \
+	tour-audio-gate tour-compose-gate audit \
 	db-up db-down db-status db-reset \
 	db-test-up db-test-down db-test-reset \
 	db-workbench-up db-workbench-down db-workbench-reset \
@@ -157,37 +158,36 @@ flutter-analyze: ## Run Dart static analysis on Flutter code
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter analyze
 
 # ════════════════════════════════════════════════════════════════════════════
-#  TEST   —   the bar (test) · targeted suites · gates · goldens · grade · test-all
+#  TEST   —   definitive full suite (test) · focused diagnostic targets
 # ════════════════════════════════════════════════════════════════════════════
 ##@ TEST
 
-test: test-local flutter-test ## THE bar before any commit (Python on local Docker 7688 + Flutter). Aura is NEVER wiped; `make test-cloud` is a separate read-only smoke.
-
-test-all: ## Run EVERY suite in sensible order (stops on first failure) — the bar + normally-excluded + live gates
-	@echo "════════ [1] THE BAR — test-local (Python 7688) + flutter-test ════════"
-	@$(MAKE) --no-print-directory test
-	@echo "════════ [2] INTEGRATION — test-integration (needs dev/test Neo4j) ════════"
-	@$(MAKE) --no-print-directory test-integration
-	@echo "════════ [3] GOLDEN — test-golden (dev graph 7687; aspirational RED targets) ════════"
-	@$(MAKE) --no-print-directory test-golden
-	@echo "════════ [4] GRADE — tour-grade (needs Valhalla up for real routing) ════════"
-	@$(MAKE) --no-print-directory tour-grade
-	@echo "════════ [5] WORKBENCH UI — test-workbench (Playwright; needs node/npx + :8001 free) ════════"
+test: ## THE definitive executor: every local, Flutter, browser, tour, live, and cloud test.
+	@printf '%s\n' \
+		'| # | Test shard | Target |' \
+		'|---:|---|---|' \
+		'| 1 | Python local | test-local |' \
+		'| 2 | Flutter | flutter-test |' \
+		'| 3 | Workbench browser | test-workbench |' \
+		'| 4 | Golden tours | test-golden |' \
+		'| 5 | Tour grade | tour-grade |' \
+		'| 6 | Tour invariants | tour-invariants |' \
+		'| 7 | Live providers | test-live |' \
+		'| 8 | Cloud parity | test-cloud |'
+	@$(MAKE) --no-print-directory test-local
+	@$(MAKE) --no-print-directory flutter-test
 	@$(MAKE) --no-print-directory test-workbench
-	@echo "════════ [6] LIVE AUDIO GATE — tour-audio-gate (needs OPENAI_API_KEY + dev graph) ════════"
-	@$(MAKE) --no-print-directory tour-audio-gate
-	@echo "════════ [7] LIVE FUNCTIONAL — test-functional (needs OPENAI_API_KEY + network) ════════"
-	@$(MAKE) --no-print-directory test-functional
-	@echo ""
-	@echo "✓ test-all: every suite passed."
+	@$(MAKE) --no-print-directory test-golden
+	@$(MAKE) --no-print-directory tour-grade
+	@$(MAKE) --no-print-directory tour-invariants
+	@$(MAKE) --no-print-directory test-live
+	@$(MAKE) --no-print-directory test-cloud
+	@printf '%s\n' '| Result | Every test shard passed |'
 
-audit: ## Deterministic health gate: lint + the bar + workbench UI. For the AGGRESSIVE bug-hunt loop (find→verify→fix→repeat until dry) invoke the 'proactive-audit' workflow (.claude/workflows/proactive-audit.js) via Claude Code.
+audit: ## Deterministic health gate: lint + the definitive test executor.
 	@$(MAKE) --no-print-directory lint
 	@$(MAKE) --no-print-directory test
-	@$(MAKE) --no-print-directory test-workbench
-	@echo ""
-	@echo "✓ audit gate green. Proactive bug-hunting: run the 'proactive-audit' workflow"
-	@echo "  (loops red-team find → adversarial verify → fix + regression test until 2 dry rounds)."
+	@printf '%s\n' '| Result | Lint and every test shard passed |'
 
 test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT the bar
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_adapter.py tests/test_trip_lens_resolution.py tests/test_trip_models.py tests/test_feedback.py -v
@@ -196,10 +196,19 @@ test-file: ## Run ONE pure (no-Neo4j) test file for atomic-step iteration: make 
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest $(FILE) -v
 
-tour-batch-step: ## Provider-free preflight for one hash-approved batch-regression step.
-	@test -n "$(STEP)" || { echo "ERROR: STEP is required" >&2; exit 2; }
+tour-batch-plan: db-up valhalla-up ## Build the sealed 4+4 Premium plan without constructing a paid client.
+	uv run python -m scripts.tour_batch_candidate $(if $(CASE),--case "$(CASE)",)
+
+tour-batch-live: db-up valhalla-up ## Run the exact sealed 4+4 Premium plan. Usage: make tour-batch-live PLAN_SHA256=<full dry-plan hash> [MAX_WORKERS=4]
 	@test -n "$(PLAN_SHA256)" || { echo "ERROR: PLAN_SHA256 is required" >&2; exit 2; }
-	@uv run python -m scripts.tour_batch_regression --target tour-batch-step --step "$(STEP)" --plan-sha256 "$(PLAN_SHA256)"
+	ONDOWAY_ENABLE_PAID_LLM_CALLS=1 ONDOWAY_TOUR_BATCH_APPROVED=1 uv run python -m scripts.tour_batch_candidate --live --approve-plan-sha256 "$(PLAN_SHA256)" --max-workers "$(or $(MAX_WORKERS),4)"
+
+tour-batch-review-plan: db-up valhalla-up ## Rebuild the sealed 4+4 semantic review plan without provider calls.
+	uv run python -m scripts.tour_batch_review $(if $(BATCH_ROOT),--batch-root "$(BATCH_ROOT)",) $(if $(REVIEW_ROOT),--review-root "$(REVIEW_ROOT)",)
+
+tour-batch-review-live: db-up valhalla-up ## Run the exact approved 17-unit semantic review plan once.
+	@test -n "$(REVIEW_PLAN_SHA256)" || { echo "ERROR: REVIEW_PLAN_SHA256 is required" >&2; exit 2; }
+	ONDOWAY_ENABLE_PAID_LLM_CALLS=1 ONDOWAY_TOUR_BATCH_REVIEW_APPROVED=1 uv run python -m scripts.tour_batch_review --live --approve-review-plan-sha256 "$(REVIEW_PLAN_SHA256)" --max-workers "$(or $(MAX_WORKERS),4)" $(if $(BATCH_ROOT),--batch-root "$(BATCH_ROOT)",) $(if $(REVIEW_ROOT),--review-root "$(REVIEW_ROOT)",) $(if $(CALIBRATION_REUSE_ROOT),--calibration-reuse-root "$(CALIBRATION_REUSE_ROOT)",)
 
 test-collect: ## Collect the WHOLE suite without running it — proves an additive change broke no other file's import/collection. Fast, no Neo4j. NOT the bar.
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
@@ -226,10 +235,10 @@ test-integration: ## Run integration tests (needs Neo4j)
 	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
 
 test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
-	uv run pytest tests/test_audio_functional.py -v -s
+	ONDOWAY_LIVE_TESTS=1 uv run pytest tests/test_audio_functional.py -o addopts= -m live -v -s
 
-test-live: ## Run live external-service tests (needs real creds, e.g. RESEND_API_KEY) — NOT in the default bar
-	uv run pytest -m live -v
+test-live: ## Run the live-provider shard used by `make test` (needs real credentials and network).
+	ONDOWAY_LIVE_TESTS=1 ONDOWAY_ENABLE_PAID_LLM_CALLS=1 uv run pytest -o addopts= -m live -v
 
 test-auth: ## Run auth tests only (Python)
 	uv run pytest tests/test_auth_*.py -v
@@ -246,12 +255,12 @@ onboard-city: ## Onboard a city (fixture+mock, tmp DATA_ROOT). Usage: make onboa
 	ONBOARD_REGISTRY_PATH=$${ONBOARD_REGISTRY_PATH:-/tmp/ondoway-onboard/cities.json} \
 	uv run python -m src.onboard.cli --city $(CITY) --modes $(MODES) $(if $(DRY_RUN),--dry-run,) $(if $(CONFIRM_COST),--confirm-cost,)
 
-test-workbench: db-up db-workbench-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API on :8001 against the DEDICATED workbench Neo4j (7689) — never the shared 7688, which concurrent `make test` runs full-wipe per-module. Concurrent test-workbench runs are unsupported (:8001 must be free; the suite fails fast if not).
+test-workbench: db-up db-workbench-up ## Run the workbench browser shard used by `make test` against dedicated Neo4j 7689.
 	@cp .env.test.example .env.test
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
 
-test-golden: db-up valhalla-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
+test-golden: db-up valhalla-up ## Run the golden-tour shard used by `make test` against the dev graph and Valhalla.
 	uv run pytest -m golden -v
 
 golden-probe: db-up valhalla-up ## Print ONLY the golden perturbation-probe hit counts (Île/PdV). Run before AND after a selection/emission change: unchanged counts = the change didn't perturb which beats seat; a moved count is a REAL signal (the goldens are aspirational RED targets, never a green/red flip). Requires Valhalla — routed legs reshape the route, so a haversine fallback moves the counts (Île 16->21) and gives a FALSE signal; this target guarantees product-parity routing so the numbers are stable.
@@ -262,17 +271,17 @@ golden-diff: db-up valhalla-up ## Per-POI/beat diagnostic diff vs a golden fixtu
 	@test -n "$(FIXTURE)" || { echo "Usage: make golden-diff FIXTURE=pdv_round_trip_60min | ile_oneway_90min"; exit 2; }
 	uv run python scripts/tour_golden_diff.py $(FIXTURE)
 
-tour-grade: db-up valhalla-up ## M8 GRADE regression gate: score each golden tour against the rubric on the live dev graph (port 7687). Excluded from `make test`. Requires Valhalla — without real routing the engine falls back to haversine (straight lines), which cross water and trip the never-swim-the-Seine audit with a FALSE red.
+tour-grade: db-up valhalla-up ## Run the tour-grade shard used by `make test` against the dev graph and Valhalla.
 	uv run pytest -m grade -v
 
-tour-invariants: db-up valhalla-up ## Live-graph INVARIANT gate: generate REAL tours across representative paths (dev graph 7687 + Valhalla) and assert the 2026-07 workbench-reported defect classes stay dead (no dup adjacent stops, no empty/glue-only stops, closing sign-off, no doubled/mis-cased opener staging, monotonic order, no exact-dup sentence in a stop). Excluded from `make test`.
+tour-invariants: db-up valhalla-up ## Run the live-graph invariant shard used by `make test`.
 	uv run pytest -m invariants -v
 
-tour-audio-gate: db-up ## Live "audio says the story" gate (Step 1.5c): voice a real Paris tour's stitched per-stop narration (OpenAI TTS) + Whisper-eval each vs its narration → WER < 0.15. Live (OpenAI + dev graph 7687); excluded from `make test`. Needs OPENAI_API_KEY in .env.
-	uv run pytest tests/test_audio_says_story.py -m live -v -s
+tour-audio-gate: db-up ## Focused live audio test; also covered by the `make test` live shard.
+	ONDOWAY_LIVE_TESTS=1 uv run pytest tests/test_audio_says_story.py -o addopts= -m live -v -s
 
-tour-compose-gate: db-up ## Live COMPOSE gate (Phase 4 Step 4.5): real Paris tour → fire-once Anthropic compose behind the M7 gate, verified by the REAL Haiku faithfulness checker. Live (Anthropic + dev graph 7687); excluded from `make test`. Needs ANTHROPIC_API_KEY in .env.
-	NO_PROXY=api.anthropic.com,anthropic.com no_proxy=api.anthropic.com,anthropic.com uv run pytest tests/test_tour_compose_live.py -m live -v -s
+tour-compose-gate: db-up ## Focused live compose test; also covered by the `make test` live shard.
+	NO_PROXY=api.anthropic.com,anthropic.com no_proxy=api.anthropic.com,anthropic.com ONDOWAY_LIVE_TESTS=1 ONDOWAY_ENABLE_PAID_LLM_CALLS=1 uv run pytest tests/test_tour_compose_live.py -o addopts= -m live -v -s
 
 # ════════════════════════════════════════════════════════════════════════════
 #  DATABASE   —   dev (7687) · test (7688) · workbench (7689)
@@ -356,8 +365,14 @@ VALHALLA_ROOT = $(shell dirname "$$(git rev-parse --git-common-dir)")
 
 valhalla-up: ## Start the Valhalla routing engine (always anchored to the main checkout's tiles; first start builds tiles from valhalla/custom_files)
 	docker compose -f "$(VALHALLA_ROOT)/docker-compose.yml" --project-directory "$(VALHALLA_ROOT)" up -d valhalla
-	@echo "Valhalla starting on http://localhost:8002 — first start with a new"
-	@echo "PBF builds tiles (minutes). Check readiness: make valhalla-status"
+	@echo "Waiting for receipt-backed Valhalla routing on http://localhost:8002 ..."
+	@for i in $$(seq 1 300); do \
+		if curl -fs --max-time 3 http://localhost:8002/status >/dev/null 2>&1; then \
+			echo "✓ Valhalla ready"; exit 0; \
+		fi; \
+		sleep 2; \
+	done; \
+	echo "ERROR: Valhalla did not become ready within 10 minutes" >&2; exit 1
 
 valhalla-down: ## Stop Valhalla (tiles preserved in valhalla/custom_files)
 	docker compose -f "$(VALHALLA_ROOT)/docker-compose.yml" --project-directory "$(VALHALLA_ROOT)" stop valhalla
@@ -389,7 +404,7 @@ api-test: db-workbench-up ## Start API against the WORKBENCH database (port 8001
 
 run: api ## Alias for `make api` — start the graph API for local development (port 8000)
 
-workbench: db-up ## RUN the editorial workbench: start the API on the dev graph (8000), wait for health, open review.html
+workbench: db-up valhalla-up ## RUN the editorial workbench with receipt-backed Valhalla routing, then start the API and open review.html
 	@bash scripts/workbench.sh
 
 dashboard: ## Start the web dashboard (port 8080)

@@ -530,6 +530,18 @@ def api_server():
             f"`make api-test` server or another `make test-workbench` run — and re-run."
         )
 
+    # Materialize the hermetic registry before the API imports city_registry.
+    # London is already a real registered city, but this test deliberately runs
+    # its London fixture through the *new-city* flow.  Without an existing tmp
+    # registry, city_registry correctly falls back to committed src/cities.json
+    # and the product guard rejects the request as an attempted re-onboard.
+    registry = json.loads((REPO_ROOT / "src" / "cities.json").read_text(encoding="utf-8"))
+    registry.pop("london", None)
+    (_ONBOARD_TMP / "cities.json").write_text(
+        json.dumps(registry, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
     proc = subprocess.Popen(
         [
             sys.executable,
@@ -1938,6 +1950,11 @@ class TestDetailViewAndEditing:
                         ],
                         "spine_area": "Île de la Cité",
                         "total_audio_min": 9,
+                        "candidate_eligible": True,
+                        "candidate_status": "premium_candidate_eligible_for_certification",
+                        "narration_kind": "llm_candidate",
+                        "compose_status": "composed",
+                        "provider": "anthropic",
                     }
                 ),
             ),
@@ -1955,6 +1972,10 @@ class TestDetailViewAndEditing:
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 rendered stops, got {stops.count()}"
             assert "Notre-Dame" in (stops.first.text_content() or ""), "stop name not rendered"
+            assert "Premium candidate" in (page.locator("#tourStops").text_content() or "")
+            assert "eligible for certification" in (
+                page.locator("#tourStops").text_content() or ""
+            )
 
             # Play stop 0 through the shared player -> real POST /audio/preview + real decode.
             with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
@@ -1969,6 +1990,116 @@ class TestDetailViewAndEditing:
             _take_screenshot(page, "step4-tour-generate-play")
         finally:
             page.unroute("**/trips/preview")
+
+    def test_tour_preview_renders_basic_lane_honestly(self, browser_page):
+        """The workbench must render the usable Basic lane when Premium is ineligible."""
+        page, _seed_data, _reporter = browser_page
+        payload = {
+            "stops": [],
+            "spine_area": "Île de la Cité",
+            "total_audio_min": 0,
+            "candidate_eligible": False,
+            "narration_kind": "none",
+            "provider": "anthropic",
+            "compose_status": "basic_available",
+            "quality": {"passed": True},
+            "basic_tour": {
+                "kind": "basic_tour",
+                "reason": "llm_candidate_ineligible",
+                "total_audio_min": 7,
+                "stops": [
+                    {
+                        "sort_order": 1,
+                        "poi_name": "Notre-Dame",
+                        "minutes": 7,
+                        "narration": "A grounded Basic guide to the cathedral square.",
+                    }
+                ],
+            },
+        }
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(payload),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url) as response:
+                page.locator("#tourGenerateBtn").click()
+            assert response.value.status == 200
+            page.wait_for_timeout(300)
+
+            panel = page.locator("#tourStops")
+            assert panel.locator(".tour-stop").count() == 1
+            rendered = panel.text_content() or ""
+            assert "Notre-Dame" in rendered
+            assert "1 stops" in rendered
+            assert "~7 min of audio" in rendered
+            assert "Basic" in rendered
+            assert "not Premium" in rendered
+            assert "not graded" in rendered
+            assert "Claude" not in rendered
+            assert "full AI voice" not in rendered
+            assert "Quality rubric" not in rendered
+            _take_screenshot(page, "step4-tour-basic-lane")
+        finally:
+            page.unroute("**/trips/preview")
+
+    def test_standalone_tour_preview_renders_basic_lane_honestly(self, browser_page):
+        """The public preview page must use the Basic lane's stops and duration."""
+        page, _seed_data, _reporter = browser_page
+        standalone = page.context.new_page()
+        payload = {
+            "stops": [],
+            "spine_area": "Île de la Cité",
+            "total_audio_min": 0,
+            "candidate_eligible": False,
+            "basic_tour": {
+                "kind": "basic_tour",
+                "reason": "llm_candidate_ineligible",
+                "total_audio_min": 7,
+                "stops": [
+                    {
+                        "sort_order": 1,
+                        "poi_name": "Notre-Dame",
+                        "minutes": 7,
+                        "narration": "A grounded Basic guide to the cathedral square.",
+                    }
+                ],
+            },
+        }
+        standalone.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(payload),
+            ),
+        )
+        try:
+            standalone.goto(f"http://localhost:{WORKBENCH_API_PORT}/tour-preview")
+            standalone.wait_for_load_state("networkidle")
+            with standalone.expect_response(lambda r: "/trips/preview" in r.url) as response:
+                standalone.locator("#go").click()
+            assert response.value.status == 200
+            standalone.wait_for_timeout(300)
+
+            assert standalone.locator("#stops .stop").count() == 1
+            rendered = standalone.locator("body").text_content() or ""
+            assert "Notre-Dame" in rendered
+            assert "1 stops" in rendered
+            assert "~7 min of audio" in rendered
+            assert "Basic" in rendered
+            assert "not Premium" in rendered
+            assert "not graded" in rendered
+            _take_screenshot(standalone, "step4-standalone-tour-basic-lane")
+        finally:
+            standalone.close()
 
     def test_tour_preview_untourable_shows_error(self, browser_page):
         """Step 4: a 422 from /trips/preview surfaces an error toast (no silent failure)."""

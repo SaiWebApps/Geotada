@@ -29,6 +29,8 @@ from __future__ import annotations
 
 import re
 
+TTS_NORMALIZATION_VERSION = "ondoway-tts-normalize-v1"
+
 # ── Regnal / papal name-stems that legitimately precede a Roman numeral ──
 # Drawn from the live Paris corpus survey (louis 814x, henri 461x, charles 197x,
 # napoleon 151x, …) plus well-known European sovereigns and popes. Deliberately

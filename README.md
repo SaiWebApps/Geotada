@@ -36,7 +36,7 @@ This single command runs the full pipeline:
 3. **`make install`** — Installs Python dependencies into the venv
 4. **`make db-up`** — Pulls the Neo4j 5 Docker image and starts it on ports 7474 (browser) and 7687 (Bolt)
 5. **`make setup`** — Applies the graph schema (constraints + indexes), seeds test data, and verifies traversals
-6. **`make test`** — Runs all 177 tests
+6. **`make test`** — Runs every local, Flutter, browser, tour, live, and cloud test
 
 If any step fails, see [Troubleshooting](Docs/Markdown%20Docs/TROUBLESHOOTING.md).
 
@@ -81,7 +81,7 @@ source .venv/bin/activate
 | `make db-status`        | Check Neo4j container status                     |
 | `make db-reset`         | Stop Neo4j and wipe all data                     |
 | `make setup`            | Full pipeline: schema + seed + verify            |
-| `make test`             | Run all tests                                    |
+| `make test`             | Run every test shard (the definitive executor)   |
 | `make test-unit`        | Run unit tests (no Neo4j needed)                 |
 | `make test-integration` | Run integration tests (needs Neo4j)              |
 | `make api`              | Start FastAPI on port 8000                       |

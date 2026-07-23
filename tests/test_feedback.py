@@ -470,8 +470,8 @@ class TestMalformedLLMOutput:
 
         # A response with an OPENING fence but no closing fence, wrapped in prose.
         bad_text = "Sure, here you go:\n```json\n{ not valid json at all"
-        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
-            mock_block = mock_anthropic.return_value.messages.create.return_value.content[0]
+        with patch("src.tour.anthropic_client.judge_client") as mock_judge_client:
+            mock_block = mock_judge_client.return_value.messages.create.return_value.content[0]
             mock_block.text = bad_text
 
             resp = client.post(
@@ -479,6 +479,7 @@ class TestMalformedLLMOutput:
                 json={"transcript": "audio cuts out mid tour"},
             )
 
+        mock_judge_client.assert_called_once_with()
         assert resp.status_code == 201
         # Fallback used the transcript, not a crash.
         assert mock_github.call_args.kwargs["body"] == "audio cuts out mid tour"
@@ -492,11 +493,12 @@ class TestMalformedLLMOutput:
             "title": "[Bug] parsed",
         }
         good = 'Here: {"title": "[Bug] parsed", "body": "it works", "labels": ["bug"]} done'
-        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
-            mock_block = mock_anthropic.return_value.messages.create.return_value.content[0]
+        with patch("src.tour.anthropic_client.judge_client") as mock_judge_client:
+            mock_block = mock_judge_client.return_value.messages.create.return_value.content[0]
             mock_block.text = good
             resp = client.post("/api/v1/feedback", json={"transcript": "x"})
 
+        mock_judge_client.assert_called_once_with()
         assert resp.status_code == 201
         assert mock_github.call_args.kwargs["title"] == "[Bug] parsed"
         assert mock_github.call_args.kwargs["body"] == "it works"
@@ -540,14 +542,15 @@ class TestMalformedLLMOutput:
             "issue_number": 8,
             "title": "[Feedback] empty content",
         }
-        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
-            mock_anthropic.return_value.messages.create.return_value.content = []
+        with patch("src.tour.anthropic_client.judge_client") as mock_judge_client:
+            mock_judge_client.return_value.messages.create.return_value.content = []
 
             resp = client.post(
                 "/api/v1/feedback",
                 json={"transcript": "empty content body"},
             )
 
+        mock_judge_client.assert_called_once_with()
         assert resp.status_code == 201
         assert mock_github.call_args.kwargs["body"] == "empty content body"
 
@@ -565,8 +568,8 @@ class TestMalformedLLMOutput:
         class _NonTextBlock:
             """A block with no `text` attribute, like a tool_use content block."""
 
-        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
-            mock_anthropic.return_value.messages.create.return_value.content = [
+        with patch("src.tour.anthropic_client.judge_client") as mock_judge_client:
+            mock_judge_client.return_value.messages.create.return_value.content = [
                 _NonTextBlock()
             ]
 
@@ -575,6 +578,7 @@ class TestMalformedLLMOutput:
                 json={"transcript": "non text block body"},
             )
 
+        mock_judge_client.assert_called_once_with()
         assert resp.status_code == 201
         assert mock_github.call_args.kwargs["body"] == "non text block body"
 
@@ -596,25 +600,27 @@ class TestMalformedLLMOutput:
 class TestProviderErrors:
     """Defect #3: upstream Anthropic failures must return 502/503, not 500."""
 
-    @patch("src.api.routes.feedback.anthropic.Anthropic")
-    def test_connection_error_returns_502(self, mock_anthropic, client):
+    @patch("src.tour.anthropic_client.judge_client")
+    def test_connection_error_returns_502(self, mock_judge_client, client):
         import httpx as _httpx
 
-        mock_anthropic.return_value.messages.create.side_effect = (
+        mock_judge_client.return_value.messages.create.side_effect = (
             anthropic.APIConnectionError(request=_httpx.Request("POST", "https://x"))
         )
         resp = client.post("/api/v1/feedback", json={"transcript": "provider down"})
+        mock_judge_client.assert_called_once_with()
         assert resp.status_code == 502
 
-    @patch("src.api.routes.feedback.anthropic.Anthropic")
-    def test_rate_limit_error_returns_503_with_retry_after(self, mock_anthropic, client):
+    @patch("src.tour.anthropic_client.judge_client")
+    def test_rate_limit_error_returns_503_with_retry_after(self, mock_judge_client, client):
         import httpx as _httpx
 
         response = _httpx.Response(429, request=_httpx.Request("POST", "https://x"))
-        mock_anthropic.return_value.messages.create.side_effect = anthropic.RateLimitError(
+        mock_judge_client.return_value.messages.create.side_effect = anthropic.RateLimitError(
             "rate limited", response=response, body=None
         )
         resp = client.post("/api/v1/feedback", json={"transcript": "throttled"})
+        mock_judge_client.assert_called_once_with()
         assert resp.status_code == 503
         assert resp.headers.get("Retry-After") == "30"
 

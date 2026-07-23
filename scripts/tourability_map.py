@@ -35,7 +35,7 @@ from pathlib import Path
 
 from src.connection import create_driver
 from src.tour.contract import TourInput
-from src.tour.density import assess
+from src.tour.density import assess_snapshot
 from src.tour.routing import haversine_m
 from src.tour.selection import load_paris_corpus
 
@@ -111,7 +111,7 @@ def main() -> int:
                         city_slug=args.city_slug,
                         round_trip=round_trip,
                     )
-                    a = assess(inp, snapshot.pois, snapshot.beats_by_poi)
+                    a = assess_snapshot(inp, snapshot)
                     key = _bucket_key(duration_min, round_trip)
                     cell_record[key] = {
                         "fill_ratio": round(a.fill_ratio, 3),

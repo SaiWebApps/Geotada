@@ -1,0 +1,957 @@
+"""Immutable blueprint and baked-asset contracts for tour certification.
+
+Planning objects are mutable in meaning: routing can be rerun and narration can
+be recomposed.  A certification artifact freezes the resolved request, exact
+route, final served script, playback placement, and byte-bound audio evidence
+under deterministic SHA-256 fingerprints.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+from collections import defaultdict
+from collections.abc import Iterable
+from typing import Literal
+
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
+
+from src.audio.tts_normalize import TTS_NORMALIZATION_VERSION, normalize_for_tts
+
+from .contract import Route, Script, Sentence, TourInput
+
+SHA256_PATTERN = r"^[0-9a-f]{64}$"
+PROBE_VERSION = "ondoway-audio-probe-v1"
+BLUEPRINT_SCHEMA_VERSION = "ondoway-tour-blueprint-v1"
+ARTIFACT_SCHEMA_VERSION = "ondoway-tour-artifact-v1"
+
+Placement = Literal["leg", "stop"]
+ObservationAction = Literal[
+    "look_at_feature",
+    "scan_visible_scene",
+    "compare_visible_features",
+    "trace_visible_feature",
+]
+
+
+def _sha256_text(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _canonical_sha256(value: BaseModel) -> str:
+    payload = json.dumps(
+        value.model_dump(mode="json"),
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def sentences_payload_sha256(sentences: Iterable[Sentence]) -> str:
+    payload = json.dumps(
+        [sentence.model_dump(mode="json") for sentence in sentences],
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+class NarrationChunk(BaseModel):
+    """A nonempty group of final sentences heard in one playback context."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    cue_id: str = Field(..., min_length=1)
+    placement: Placement
+    index: int = Field(..., ge=0)
+    sentence_indexes: tuple[int, ...] = Field(..., min_length=1)
+    text: str = Field(..., min_length=1)
+    narration_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    tts_text: str = Field(..., min_length=1)
+    tts_text_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    normalization_version: Literal["ondoway-tts-normalize-v1"]
+
+    @model_validator(mode="after")
+    def _hash_matches_text(self) -> NarrationChunk:
+        if self.narration_sha256 != _sha256_text(self.text):
+            raise ValueError("narration_sha256 does not match chunk text")
+        if self.tts_text != normalize_for_tts(self.text):
+            raise ValueError("tts_text is not the canonical normalized narration")
+        if self.tts_text_sha256 != _sha256_text(self.tts_text):
+            raise ValueError("tts_text_sha256 does not match normalized narration")
+        if len(set(self.sentence_indexes)) != len(self.sentence_indexes):
+            raise ValueError("a narration chunk repeats a sentence index")
+        return self
+
+
+class PlaybackAssignment(BaseModel):
+    """Explicit final playback context for one exact sentence."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    sentence_index: int = Field(..., ge=0)
+    placement: Placement
+    index: int = Field(..., ge=0)
+
+
+class ExplicitObservation(BaseModel):
+    """A deliberate listener action with a stated duration and cue identity."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    stop_index: int = Field(..., ge=0)
+    sentence_index: int = Field(..., ge=0)
+    sentence_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    instruction: str = Field(..., min_length=1)
+    action: ObservationAction
+    duration_seconds: float = Field(..., gt=0, le=60)
+    cue_id: str = Field(..., min_length=1)
+    cue_boundary: Literal["after_stop_audio"] = "after_stop_audio"
+
+    @model_validator(mode="after")
+    def _instruction_requires_a_spatial_action(self) -> ExplicitObservation:
+        instruction = self.instruction.casefold()
+        spatial_terms = {
+            "look_at_feature": ("look", "notice", "find", "face", "turn"),
+            "scan_visible_scene": ("look", "scan", "view", "take in"),
+            "compare_visible_features": ("compare", "between", "both", "side by side"),
+            "trace_visible_feature": ("trace", "follow", "along"),
+        }
+        if not any(term in instruction for term in spatial_terms[self.action]):
+            raise ValueError("observation instruction does not express its spatial action")
+        if any(term in instruction for term in ("wait", "pause", "reflect", "think about")):
+            raise ValueError("generic waiting or reflection cannot count as an observation")
+        return self
+
+
+PlaceResolutionState = Literal["resolved", "unresolved", "ambiguous"]
+PerceivabilityState = Literal["perceivable", "not_perceivable", "unresolved", "not_applicable"]
+ExperientialPlaceRelation = Literal["primary", "feature_of", "off_site", "directional"]
+DirectionalInstruction = Literal[
+    "north",
+    "northeast",
+    "east",
+    "southeast",
+    "south",
+    "southwest",
+    "west",
+    "northwest",
+    "ahead",
+    "right",
+    "behind",
+    "left",
+    "unknown",
+]
+DirectionalReferenceFrame = Literal["cardinal", "incoming_path", "unsupported"]
+
+
+def _validate_coordinates(value: tuple[float, float]) -> tuple[float, float]:
+    lat, lng = value
+    if not math.isfinite(lat) or not -90 <= lat <= 90:
+        raise ValueError(f"lat out of range: {lat}")
+    if not math.isfinite(lng) or not -180 <= lng <= 180:
+        raise ValueError(f"lng out of range: {lng}")
+    return value
+
+
+class PlaceEvidenceProvenance(BaseModel):
+    """Replayable source identity for place evidence.
+
+    This contract records what authority supplied the evidence and its exact
+    canonical payload.  The M3-E trusted coordinator must additionally enforce
+    that ``authority_id`` is present in the frozen corpus manifest, calibrated
+    provider set, or authorized human-review roster before it constructs a
+    certifiable bundle; a self-asserted authority is not made trustworthy by a
+    hash alone.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    evidence_kind: Literal["corpus_record", "calibrated_provider", "human_authority"]
+    authority_id: str = Field(..., min_length=1)
+    payload_json: str = Field(..., min_length=2)
+    payload_sha256: str = Field(..., pattern=SHA256_PATTERN)
+
+    @model_validator(mode="after")
+    def _payload_is_canonical_and_bound(self) -> PlaceEvidenceProvenance:
+        try:
+            parsed = json.loads(self.payload_json)
+        except json.JSONDecodeError as exc:
+            raise ValueError("place provenance payload is not JSON") from exc
+        canonical = json.dumps(parsed, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        if not isinstance(parsed, dict) or canonical != self.payload_json:
+            raise ValueError("place provenance payload is not a canonical JSON object")
+        if self.payload_sha256 != _sha256_text(canonical):
+            raise ValueError("place provenance hash does not match payload")
+        return self
+
+
+class CanonicalPrimaryPlaceEvidence(BaseModel):
+    """Canonical identity assigned to one exact routed stop."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    stop_index: int = Field(..., ge=0)
+    route_poi_id: str = Field(..., min_length=1)
+    canonical_place_id: str = Field(..., min_length=1)
+    coordinates: tuple[float, float]
+    provenance: PlaceEvidenceProvenance
+    resolution_state: PlaceResolutionState
+    perceivability_state: Literal["perceivable", "not_perceivable", "unresolved"]
+
+    _coordinates_are_valid = field_validator("coordinates")(_validate_coordinates)
+
+
+class PlaceReferenceEvidence(BaseModel):
+    """One typed place reference nested under an exact final sentence."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    reference_id: str = Field(..., min_length=1)
+    sentence_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    reference_kind: Literal["experiential", "contextual_historical"]
+    relation: ExperientialPlaceRelation | None = None
+    canonical_place_id: str | None = Field(default=None, min_length=1)
+    coordinates: tuple[float, float] | None = None
+    feature_of_canonical_place_id: str | None = Field(default=None, min_length=1)
+    directional_instruction: DirectionalInstruction | None = None
+    directional_reference_frame: DirectionalReferenceFrame | None = None
+    directional_origin: Literal["routed_stop"] | None = None
+    directional_playback_context: Literal["stationary_stop"] | None = None
+    provenance: PlaceEvidenceProvenance
+    resolution_state: PlaceResolutionState
+    perceivability_state: PerceivabilityState
+
+    @field_validator("coordinates")
+    @classmethod
+    def _optional_coordinates_are_valid(
+        cls, value: tuple[float, float] | None
+    ) -> tuple[float, float] | None:
+        return None if value is None else _validate_coordinates(value)
+
+    @model_validator(mode="after")
+    def _reference_lane_is_consistent(self) -> PlaceReferenceEvidence:
+        if self.reference_kind == "contextual_historical":
+            if self.relation is not None:
+                raise ValueError("contextual historical references cannot be experiential")
+            if self.feature_of_canonical_place_id is not None:
+                raise ValueError("contextual historical references cannot bind a feature")
+            if any(
+                value is not None
+                for value in (
+                    self.directional_instruction,
+                    self.directional_reference_frame,
+                    self.directional_origin,
+                    self.directional_playback_context,
+                )
+            ):
+                raise ValueError(
+                    "contextual historical references cannot carry directional semantics"
+                )
+            if self.perceivability_state != "not_applicable":
+                raise ValueError(
+                    "contextual historical references must mark perceivability not applicable"
+                )
+            return self
+        if self.relation is None:
+            raise ValueError("experiential references require a typed place relation")
+        if self.canonical_place_id is None or self.coordinates is None:
+            raise ValueError("experiential references require canonical identity and coordinates")
+        if self.perceivability_state == "not_applicable":
+            raise ValueError("experiential references require a perceivability decision")
+        if self.relation == "feature_of":
+            if self.feature_of_canonical_place_id is None:
+                raise ValueError("feature_of references require their canonical primary")
+        elif self.feature_of_canonical_place_id is not None:
+            raise ValueError("only feature_of references may name a canonical parent")
+        directional_values = (
+            self.directional_instruction,
+            self.directional_reference_frame,
+            self.directional_origin,
+            self.directional_playback_context,
+        )
+        if self.relation == "directional":
+            if any(value is None for value in directional_values):
+                raise ValueError(
+                    "directional references require instruction, frame, origin, and context"
+                )
+        elif any(value is not None for value in directional_values):
+            raise ValueError("only directional references may carry directional semantics")
+        return self
+
+
+class SentencePlaceAssessment(BaseModel):
+    """Complete place-claim classification for one exact final sentence."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    sentence_index: int = Field(..., ge=0)
+    sentence_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    assessment: Literal["no_material_place_claim", "place_references"]
+    assessment_provenance: PlaceEvidenceProvenance
+    references: tuple[PlaceReferenceEvidence, ...] = ()
+
+    @model_validator(mode="after")
+    def _assessment_is_complete(self) -> SentencePlaceAssessment:
+        if self.assessment == "no_material_place_claim" and self.references:
+            raise ValueError("no-place-claim assessment cannot contain references")
+        if self.assessment == "place_references" and not self.references:
+            raise ValueError("place-reference assessment cannot be empty")
+        if any(reference.sentence_sha256 != self.sentence_sha256 for reference in self.references):
+            raise ValueError("place reference is bound to a different sentence")
+        reference_ids = tuple(reference.reference_id for reference in self.references)
+        if len(reference_ids) != len(set(reference_ids)):
+            raise ValueError("sentence place assessment repeats a reference identity")
+        return self
+
+
+class PlaceEvidenceBundle(BaseModel):
+    """Typed place semantics frozen into the blueprint before certification.
+
+    M3-C can prove the mechanism against this evidence but cannot make its
+    authorities trustworthy. Production authorization remains explicitly
+    reserved for M3-E's manifest/calibration/human-authority allowlisting.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    authority_scope: Literal["mechanism_only_m3c"] = "mechanism_only_m3c"
+    primary_places: tuple[CanonicalPrimaryPlaceEvidence, ...]
+    sentence_assessments: tuple[SentencePlaceAssessment, ...]
+
+
+class DerivedNarrationEvidence(BaseModel):
+    """Frozen provenance for one non-beat sentence in the final narration.
+
+    The reviewer never infers authority from a glue label.  This binding says
+    which immutable inputs actually licensed the sentence and whether the
+    sentence must contain a fact-checked claim.  M3 will populate corpus-field
+    bindings while assembling the product artifact; route-only bindings can be
+    derived here without trusting model output.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    sentence_index: int = Field(..., ge=0)
+    sentence_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    source_id: str = Field(..., min_length=1)
+    claim_requirement: Literal["MATERIAL", "REVIEW_ALL", "NONPROPOSITIONAL"]
+    evidence_kind: Literal[
+        "route_snapshot",
+        "corpus_field",
+        "visited_claims",
+        "fixed_template",
+    ]
+    payload_json: str = Field(..., min_length=2)
+    payload_sha256: str = Field(..., pattern=SHA256_PATTERN)
+
+    @model_validator(mode="after")
+    def _payload_is_canonical_and_bound(self) -> DerivedNarrationEvidence:
+        try:
+            parsed = json.loads(self.payload_json)
+        except json.JSONDecodeError as exc:
+            raise ValueError("derived narration evidence is not JSON") from exc
+        canonical = json.dumps(parsed, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+        if canonical != self.payload_json:
+            raise ValueError("derived narration evidence is not canonical JSON")
+        if self.payload_sha256 != _sha256_text(canonical):
+            raise ValueError("derived narration evidence hash does not match payload")
+        return self
+
+
+class CompositionTrace(BaseModel):
+    """One compose response and the exact final stop content derived from it."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    unit_id: str = Field(..., pattern=r"^stop:[0-9]+$")
+    stop_index: int = Field(..., ge=0)
+    request_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    response_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    derivation: Literal["provider_response"]
+    authorized_source_sentences: tuple[Sentence, ...] = Field(..., min_length=1)
+    source_sentences: tuple[Sentence, ...] = Field(..., min_length=1)
+    source_payload_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    source_sentence_indexes: tuple[int, ...] = Field(..., min_length=1)
+    sentence_indexes: tuple[int, ...] = Field(..., min_length=1)
+    sentence_sha256s: tuple[str, ...] = Field(..., min_length=1)
+
+    @model_validator(mode="after")
+    def _unit_and_sentences_are_parallel(self) -> CompositionTrace:
+        if self.unit_id != f"stop:{self.stop_index}":
+            raise ValueError("composition trace unit differs from stop index")
+        if len(self.sentence_indexes) != len(self.sentence_sha256s):
+            raise ValueError("composition trace sentence indexes and hashes differ")
+        if len(self.sentence_indexes) != len(self.source_sentence_indexes):
+            raise ValueError("composition trace final and source indexes differ")
+        if len(set(self.sentence_indexes)) != len(self.sentence_indexes):
+            raise ValueError("composition trace repeats a sentence index")
+        authorized_stops = {sentence.stop_idx for sentence in self.authorized_source_sentences}
+        if authorized_stops != {self.stop_index}:
+            raise ValueError("composition trace authorized source spans another stop")
+        if self.source_payload_sha256 != sentences_payload_sha256(self.source_sentences):
+            raise ValueError("composition trace source payload hash is inconsistent")
+        if any(
+            index < 0 or index >= len(self.source_sentences)
+            for index in self.source_sentence_indexes
+        ):
+            raise ValueError("composition trace cites an absent source sentence")
+        if tuple(sorted(self.source_sentence_indexes)) != self.source_sentence_indexes:
+            raise ValueError("composition trace source sentence order is not monotonic")
+        if len(set(self.source_sentence_indexes)) != len(self.source_sentence_indexes):
+            raise ValueError("composition trace repeats a source sentence index")
+        return self
+
+
+class BuildFingerprint(BaseModel):
+    """Exact code/data/model/runtime versions required for offline replay."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    commit_sha: str = Field(..., pattern=r"^[0-9a-f]{40}$")
+    corpus_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    module_version: str = Field(..., min_length=1)
+    prompt_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    compose_model: str = Field(..., min_length=1)
+    policy_version: str = Field(..., min_length=1)
+    routing_engine: Literal["valhalla"]
+    routing_version: str = Field(..., min_length=1)
+    routing_config_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    tts_provider: Literal["openai", "elevenlabs"]
+    tts_model: str = Field(..., min_length=1)
+    tts_voice: str = Field(..., min_length=1)
+    audio_probe_version: Literal["ondoway-audio-probe-v1"] = PROBE_VERSION
+    audio_probe_capability: Literal["structural_duration"] = "structural_duration"
+    tts_normalization_version: Literal["ondoway-tts-normalize-v1"] = TTS_NORMALIZATION_VERSION
+
+
+def partition_final_script(
+    script: Script,
+    route: Route,
+    *,
+    vignette_beat_ids: Iterable[str],
+    playback_assignments: Iterable[PlaybackAssignment],
+) -> tuple[NarrationChunk, ...]:
+    """Assign every final sentence exactly once to its leg or stationary stop."""
+    script_poi_ids = tuple(poi.id for poi in script.selected_pois)
+    route_poi_ids = tuple(poi.id for poi in route.pois)
+    if script_poi_ids != route_poi_ids:
+        raise ValueError("script selected_pois do not match the exact routed POI order")
+    if not route.pois:
+        raise ValueError("a final tour blueprint must contain at least one POI")
+
+    seated_beat_ids = {beat_id for poi in script.selected_pois for beat_id in poi.beat_ids}
+    frozen_vignette_ids = frozenset(vignette_beat_ids)
+    if seated_beat_ids & frozen_vignette_ids:
+        raise ValueError("a beat cannot be both seated narration and a vignette")
+    unknown_beat_sources = {
+        cited_id
+        for sentence in script.script
+        if sentence.source_type == "beat"
+        for cited_id in sentence.cited_beat_ids
+        if cited_id not in seated_beat_ids and cited_id not in frozen_vignette_ids
+    }
+    if unknown_beat_sources:
+        raise ValueError(
+            "final beat sentences are absent from both seated and exact vignette plans: "
+            + ", ".join(sorted(unknown_beat_sources))
+        )
+    for sentence in script.script:
+        cited_ids = set(sentence.cited_beat_ids)
+        if cited_ids & seated_beat_ids and cited_ids & frozen_vignette_ids:
+            raise ValueError("one fused sentence cannot cross stop and leg playback contexts")
+
+    assignments = tuple(playback_assignments)
+    assignment_indexes = [assignment.sentence_index for assignment in assignments]
+    if sorted(assignment_indexes) != list(range(len(script.script))):
+        raise ValueError("playback assignments must cover every final sentence exactly once")
+    assignment_by_sentence = {assignment.sentence_index: assignment for assignment in assignments}
+
+    grouped: dict[tuple[Placement, int], list[tuple[int, str]]] = defaultdict(list)
+    for sentence_index, sentence in enumerate(script.script):
+        if sentence.stop_idx >= len(route.pois):
+            raise ValueError(
+                f"sentence {sentence_index} references absent stop {sentence.stop_idx}"
+            )
+        assignment = assignment_by_sentence[sentence_index]
+        if assignment.index != sentence.stop_idx:
+            raise ValueError("playback assignment index must match sentence stop_idx")
+        if assignment.placement == "leg" and assignment.index >= len(route.transits):
+            raise ValueError(f"sentence {sentence_index} references absent leg {assignment.index}")
+        grouped[(assignment.placement, assignment.index)].append((sentence_index, sentence.text))
+
+    chunks: list[NarrationChunk] = []
+    for stop_index in range(len(route.pois)):
+        for placement in ("leg", "stop"):
+            sentences = grouped.get((placement, stop_index), [])
+            if not sentences:
+                continue
+            text = " ".join(value.strip() for _, value in sentences if value.strip()).strip()
+            if not text:
+                raise ValueError(
+                    f"{placement} {stop_index} has final sentences but empty voiced text"
+                )
+            chunks.append(
+                NarrationChunk(
+                    cue_id=f"{placement}:{stop_index}",
+                    placement=placement,
+                    index=stop_index,
+                    sentence_indexes=tuple(index for index, _ in sentences),
+                    text=text,
+                    narration_sha256=_sha256_text(text),
+                    tts_text=normalize_for_tts(text),
+                    tts_text_sha256=_sha256_text(normalize_for_tts(text)),
+                    normalization_version=TTS_NORMALIZATION_VERSION,
+                )
+            )
+
+    covered = sorted(index for chunk in chunks for index in chunk.sentence_indexes)
+    if covered != list(range(len(script.script))):
+        raise ValueError("final narration partition omitted or duplicated sentences")
+    return tuple(chunks)
+
+
+def derive_playback_assignments(
+    script: Script, *, vignette_beat_ids: Iterable[str]
+) -> tuple[PlaybackAssignment, ...]:
+    """Emit and freeze today's explicit playback policy at generation time."""
+    frozen_vignette_ids = frozenset(vignette_beat_ids)
+    seated_beat_ids = {beat_id for poi in script.selected_pois for beat_id in poi.beat_ids}
+    assignments: list[PlaybackAssignment] = []
+    for sentence_index, sentence in enumerate(script.script):
+        cited_ids = set(sentence.cited_beat_ids)
+        if cited_ids & seated_beat_ids and cited_ids & frozen_vignette_ids:
+            raise ValueError("one fused sentence cannot cross stop and leg playback contexts")
+        placement: Placement = (
+            "leg"
+            if sentence.source_id in {"GLUE_NAV", "GLUE_REFLECTION"}
+            or sentence.source_id in frozen_vignette_ids
+            else "stop"
+        )
+        assignments.append(
+            PlaybackAssignment(
+                sentence_index=sentence_index,
+                placement=placement,
+                index=sentence.stop_idx,
+            )
+        )
+    return tuple(assignments)
+
+
+def remap_provider_playback_assignments(
+    *,
+    source_script: Script,
+    source_assignments: tuple[PlaybackAssignment, ...],
+    provider_script: Script,
+) -> tuple[PlaybackAssignment, ...]:
+    """Carry frozen source placement onto exact provider-authored sentences.
+
+    Placement is explicit plan data, not a decision inferred from a glue label or
+    from final prose. A missing or ambiguous source placement fails closed.
+    """
+
+    if tuple(item.sentence_index for item in source_assignments) != tuple(
+        range(len(source_script.script))
+    ):
+        raise ValueError("source playback assignments must cover every source sentence")
+
+    placement_by_source: dict[tuple[str, int], set[tuple[Placement, int]]] = {}
+    for assignment, sentence in zip(source_assignments, source_script.script, strict=True):
+        if assignment.index != sentence.stop_idx:
+            raise ValueError("source playback assignment differs from its sentence stop")
+        placement_by_source.setdefault((sentence.source_id, sentence.stop_idx), set()).add(
+            (assignment.placement, assignment.index)
+        )
+
+    result: list[PlaybackAssignment] = []
+    for sentence_index, sentence in enumerate(provider_script.script):
+        placements = placement_by_source.get((sentence.source_id, sentence.stop_idx))
+        if placements is None:
+            raise ValueError("provider sentence cites no frozen playback source")
+        if len(placements) != 1:
+            raise ValueError("provider sentence source has ambiguous frozen playback")
+        placement, index = next(iter(placements))
+        if index != sentence.stop_idx:
+            raise ValueError("provider sentence moved its source to another playback index")
+        result.append(
+            PlaybackAssignment(
+                sentence_index=sentence_index,
+                placement=placement,
+                index=index,
+            )
+        )
+    return tuple(result)
+
+
+class FinalTourBlueprint(BaseModel):
+    """Everything fixed before TTS is allowed to bake final assets."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    schema_version: Literal["ondoway-tour-blueprint-v1"] = BLUEPRINT_SCHEMA_VERSION
+    contract_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    reference_manifest_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    calibration_manifest_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    build: BuildFingerprint
+    tour_input: TourInput
+    route: Route
+    script: Script
+    vignette_beat_ids: tuple[str, ...]
+    playback_assignments: tuple[PlaybackAssignment, ...]
+    narration_chunks: tuple[NarrationChunk, ...]
+    observations: tuple[ExplicitObservation, ...] = ()
+    derived_narration_evidence: tuple[DerivedNarrationEvidence, ...]
+    composition_trace: tuple[CompositionTrace, ...] = ()
+    place_evidence: PlaceEvidenceBundle | None = None
+
+    @model_validator(mode="after")
+    def _content_is_self_consistent(self) -> FinalTourBlueprint:
+        if self.script.inputs != self.tour_input:
+            raise ValueError("script inputs do not match blueprint tour_input")
+        receipt_config_hashes = {
+            transit.valhalla_receipt.routing_config_sha256
+            for transit in self.route.transits
+            if transit.valhalla_receipt is not None
+        }
+        if receipt_config_hashes and receipt_config_hashes != {self.build.routing_config_sha256}:
+            raise ValueError(
+                "Valhalla receipt routing configuration differs from build fingerprint"
+            )
+        if len(set(self.vignette_beat_ids)) != len(self.vignette_beat_ids):
+            raise ValueError("vignette_beat_ids contains duplicates")
+        expected = partition_final_script(
+            self.script,
+            self.route,
+            vignette_beat_ids=self.vignette_beat_ids,
+            playback_assignments=self.playback_assignments,
+        )
+        if self.narration_chunks != expected:
+            raise ValueError("narration chunks do not match the exact final script")
+        expected_derived = {
+            index
+            for index, sentence in enumerate(self.script.script)
+            if sentence.source_type in {"glue", "arith"}
+        }
+        actual_derived = [item.sentence_index for item in self.derived_narration_evidence]
+        if len(actual_derived) != len(set(actual_derived)):
+            raise ValueError("derived narration evidence repeats a sentence")
+        if set(actual_derived) != expected_derived:
+            raise ValueError(
+                "derived narration evidence must bind every non-beat sentence exactly once"
+            )
+        for item in self.derived_narration_evidence:
+            sentence = self.script.script[item.sentence_index]
+            if (
+                item.sentence_sha256 != _sha256_text(sentence.text)
+                or item.source_id != sentence.source_id
+            ):
+                raise ValueError("derived narration evidence does not match final narration")
+            if item.claim_requirement != "REVIEW_ALL":
+                raise ValueError(
+                    "derived narration claim requirement differs from the fixed policy"
+                )
+            if item.evidence_kind != "route_snapshot":
+                raise ValueError(
+                    "corpus-backed derived narration evidence is unsupported until M3 "
+                    "can bind it to verified source identities"
+                )
+            expected_payload = _route_evidence_payload(
+                route=self.route,
+                script=self.script,
+                sentence_index=item.sentence_index,
+            )
+            if item.payload_json != expected_payload:
+                raise ValueError(
+                    "route narration evidence differs from the canonical route snapshot"
+                )
+        if self.composition_trace:
+            trace_units = [item.unit_id for item in self.composition_trace]
+            if len(trace_units) != len(set(trace_units)):
+                raise ValueError("composition trace repeats a stop unit")
+            traced_stops = sorted(item.stop_index for item in self.composition_trace)
+            if traced_stops != list(range(len(self.route.pois))):
+                raise ValueError("composition trace must cover every routed stop exactly once")
+            traced_indexes = [
+                index for item in self.composition_trace for index in item.sentence_indexes
+            ]
+            if sorted(traced_indexes) != list(range(len(self.script.script))):
+                raise ValueError("composition trace must bind every final sentence exactly once")
+            for item in self.composition_trace:
+                expected_indexes = tuple(
+                    index
+                    for index, sentence in enumerate(self.script.script)
+                    if sentence.stop_idx == item.stop_index
+                )
+                if item.sentence_indexes != expected_indexes:
+                    raise ValueError(
+                        "composition trace sentence indexes differ from the final stop"
+                    )
+                expected_hashes = tuple(
+                    _sha256_text(self.script.script[index].text) for index in expected_indexes
+                )
+                if item.sentence_sha256s != expected_hashes:
+                    raise ValueError(
+                        "composition trace sentence hashes differ from final narration"
+                    )
+                traced_sentences = tuple(
+                    item.source_sentences[source_index]
+                    for source_index in item.source_sentence_indexes
+                )
+                final_sentences = tuple(self.script.script[index] for index in expected_indexes)
+                if traced_sentences != final_sentences:
+                    raise ValueError("final narration is not the exact traced provider content")
+        stationary_chunk_by_sentence = {
+            sentence_index: chunk
+            for chunk in self.narration_chunks
+            if chunk.placement == "stop"
+            for sentence_index in chunk.sentence_indexes
+        }
+        seen_observation_sentences: set[int] = set()
+        for observation in self.observations:
+            if observation.sentence_index in seen_observation_sentences:
+                raise ValueError("two observations reference the same final sentence")
+            seen_observation_sentences.add(observation.sentence_index)
+            chunk = stationary_chunk_by_sentence.get(observation.sentence_index)
+            if chunk is None:
+                raise ValueError("observation must bind to a stationary final sentence")
+            if observation.sentence_index != chunk.sentence_indexes[-1]:
+                raise ValueError(
+                    "observation must follow the final sentence of its stationary chunk"
+                )
+            sentence = self.script.script[observation.sentence_index]
+            if sentence.stop_idx != observation.stop_index:
+                raise ValueError("observation stop does not match its final sentence")
+            if _sha256_text(sentence.text) != observation.sentence_sha256:
+                raise ValueError("observation sentence hash does not match final narration")
+            if observation.instruction != sentence.text:
+                raise ValueError("observation instruction differs from final narration")
+        if self.place_evidence is not None:
+            for primary in self.place_evidence.primary_places:
+                if primary.stop_index >= len(self.route.pois):
+                    raise ValueError("primary place references an absent route stop")
+                route_poi = self.route.pois[primary.stop_index]
+                if primary.route_poi_id != route_poi.id or primary.coordinates != (
+                    route_poi.lat,
+                    route_poi.lng,
+                ):
+                    raise ValueError("primary place does not bind its exact route stop")
+            for assessment in self.place_evidence.sentence_assessments:
+                if assessment.sentence_index >= len(self.script.script):
+                    raise ValueError("place assessment references an absent sentence")
+                sentence = self.script.script[assessment.sentence_index]
+                if assessment.sentence_sha256 != _sha256_text(sentence.text):
+                    raise ValueError(
+                        "place assessment sentence hash does not match final narration"
+                    )
+        return self
+
+    def fingerprint(self) -> str:
+        return _canonical_sha256(self)
+
+
+class BakedAudioAsset(BaseModel):
+    """Strict probe evidence for bytes baked from exactly one narration chunk."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    asset_id: str = Field(..., min_length=1)
+    audio_url: str = Field(..., min_length=1)
+    blueprint_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    cue_id: str = Field(..., min_length=1)
+    placement: Placement
+    index: int = Field(..., ge=0)
+    narration_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    tts_text_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    normalization_version: Literal["ondoway-tts-normalize-v1"]
+    audio_sha256: str = Field(..., pattern=SHA256_PATTERN)
+    size_bytes: int = Field(..., gt=0)
+    duration_seconds: float = Field(..., gt=0)
+    duration_source: Literal["media_probe"]
+    probe_version: Literal["ondoway-audio-probe-v1"]
+    probe_capability: Literal["structural_duration"]
+    media_container: Literal["wav", "mp3"]
+    media_codec: Literal["pcm", "mp3_layer_iii"]
+    sample_rate_hz: int = Field(..., gt=0)
+    channels: int = Field(..., gt=0)
+    frame_count: int = Field(..., gt=0)
+    provider: str = Field(..., min_length=1)
+    tts_model: str = Field(..., min_length=1)
+    tts_voice: str = Field(..., min_length=1)
+    storage: str = Field(..., min_length=1)
+
+
+class TourArtifact(BaseModel):
+    """One immutable candidate evaluated by every certification gate."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    schema_version: Literal["ondoway-tour-artifact-v1"] = ARTIFACT_SCHEMA_VERSION
+    blueprint: FinalTourBlueprint
+    audio_assets: tuple[BakedAudioAsset, ...]
+
+    def fingerprint(self) -> str:
+        return _canonical_sha256(self)
+
+
+def build_final_blueprint(
+    *,
+    contract_sha256: str,
+    reference_manifest_sha256: str,
+    calibration_manifest_sha256: str,
+    build: BuildFingerprint,
+    tour_input: TourInput,
+    route: Route,
+    script: Script,
+    vignette_beat_ids: Iterable[str],
+    playback_assignments: Iterable[PlaybackAssignment],
+    observations: Iterable[ExplicitObservation] = (),
+    derived_narration_evidence: Iterable[DerivedNarrationEvidence] | None = None,
+    composition_trace: Iterable[CompositionTrace] = (),
+    place_evidence: PlaceEvidenceBundle | None = None,
+) -> FinalTourBlueprint:
+    """Freeze the exact post-compose input to the audio and gate pipeline."""
+    frozen_vignette_ids = tuple(vignette_beat_ids)
+    frozen_assignments = tuple(playback_assignments)
+    chunks = partition_final_script(
+        script,
+        route,
+        vignette_beat_ids=frozen_vignette_ids,
+        playback_assignments=frozen_assignments,
+    )
+    frozen_derived = (
+        tuple(derived_narration_evidence)
+        if derived_narration_evidence is not None
+        else _route_narration_evidence(route=route, script=script)
+    )
+    return FinalTourBlueprint(
+        contract_sha256=contract_sha256,
+        reference_manifest_sha256=reference_manifest_sha256,
+        calibration_manifest_sha256=calibration_manifest_sha256,
+        build=build,
+        tour_input=tour_input,
+        route=route,
+        script=script,
+        vignette_beat_ids=frozen_vignette_ids,
+        playback_assignments=frozen_assignments,
+        narration_chunks=chunks,
+        observations=tuple(observations),
+        derived_narration_evidence=frozen_derived,
+        composition_trace=tuple(composition_trace),
+        place_evidence=place_evidence,
+    )
+
+
+def _route_narration_evidence(
+    *, route: Route, script: Script
+) -> tuple[DerivedNarrationEvidence, ...]:
+    """Build the narrow route evidence available without the source corpus.
+
+    Request prose, theme hints, and pre-bake script estimates are deliberately
+    absent.  Corpus cues, pronunciations, and reflection claims must be supplied
+    explicitly by M3 instead of being silently blessed by this fallback seam.
+    """
+    evidence: list[DerivedNarrationEvidence] = []
+    for sentence_index, sentence in enumerate(script.script):
+        if sentence.source_type == "beat":
+            continue
+        canonical = _route_evidence_payload(
+            route=route, script=script, sentence_index=sentence_index
+        )
+        evidence.append(
+            DerivedNarrationEvidence(
+                sentence_index=sentence_index,
+                sentence_sha256=_sha256_text(sentence.text),
+                source_id=sentence.source_id,
+                claim_requirement="REVIEW_ALL",
+                evidence_kind="route_snapshot",
+                payload_json=canonical,
+                payload_sha256=_sha256_text(canonical),
+            )
+        )
+    return tuple(evidence)
+
+
+def _route_evidence_payload(*, route: Route, script: Script, sentence_index: int) -> str:
+    sentence = script.script[sentence_index]
+    stop_index = sentence.stop_idx
+    stop = route.pois[stop_index] if stop_index < len(route.pois) else None
+    previous = route.pois[stop_index - 1] if 0 < stop_index <= len(route.pois) else None
+    transit = route.transits[stop_index] if stop_index < len(route.transits) else None
+    payload = {
+        "destination_stop": stop.model_dump(mode="json") if stop else None,
+        "incoming_transit": transit.model_dump(mode="json") if transit else None,
+        "previous_stop": previous.model_dump(mode="json") if previous else None,
+        "route": {
+            "routed": route.routed,
+            "spine_area": route.spine_area,
+            "total_walk_distance_m": route.total_walk_distance_m,
+            "total_walk_seconds": route.total_walk_seconds,
+        },
+    }
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+
+
+def validate_blueprint_integrity(blueprint: FinalTourBlueprint) -> str | None:
+    """Revalidate serialized content; never trust constructor history/model_copy."""
+    try:
+        FinalTourBlueprint.model_validate(blueprint.model_dump(mode="python"))
+    except (ValidationError, ValueError) as exc:
+        return str(exc)
+    return None
+
+
+def validate_llm_composed_blueprint(blueprint: FinalTourBlueprint) -> str | None:
+    """Return why a blueprint is ineligible for quality certification.
+
+    A deterministic ``Script`` remains a valid Basic Tour, but it is not an
+    LLM-composed certification candidate.  Certification requires a non-empty
+    physical provider trace covering the final narration.  Revalidating first
+    prevents ``model_copy`` or deserialization tricks from reviving the retired
+    stitched-fallback derivation.
+    """
+    integrity_error = validate_blueprint_integrity(blueprint)
+    if integrity_error:
+        return f"invalid final blueprint: {integrity_error}"
+    if not blueprint.composition_trace:
+        return "basic tour has no LLM provider composition trace"
+    if any(trace.derivation != "provider_response" for trace in blueprint.composition_trace):
+        return "final narration is not derived exclusively from LLM provider responses"
+    return None
+
+
+__all__ = [
+    "ARTIFACT_SCHEMA_VERSION",
+    "BLUEPRINT_SCHEMA_VERSION",
+    "BakedAudioAsset",
+    "BuildFingerprint",
+    "CanonicalPrimaryPlaceEvidence",
+    "CompositionTrace",
+    "DerivedNarrationEvidence",
+    "ExplicitObservation",
+    "FinalTourBlueprint",
+    "NarrationChunk",
+    "ObservationAction",
+    "PlaceEvidenceBundle",
+    "PlaceEvidenceProvenance",
+    "PlaceReferenceEvidence",
+    "PlaybackAssignment",
+    "SentencePlaceAssessment",
+    "TourArtifact",
+    "build_final_blueprint",
+    "derive_playback_assignments",
+    "partition_final_script",
+    "remap_provider_playback_assignments",
+    "sentences_payload_sha256",
+    "validate_blueprint_integrity",
+    "validate_llm_composed_blueprint",
+]

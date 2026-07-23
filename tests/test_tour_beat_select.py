@@ -1652,6 +1652,62 @@ def test_spatial_cap_never_drops_the_cold_open_orientation():
     assert set(ids) <= full_ids
 
 
+def test_spatial_cap_covers_groups_and_no_key_before_complementary_fill():
+    """A dense spatial stop remains a coherent *tour*, not a global top-N list.
+
+    Strong secondary beats at one location may fill spare capacity, but cannot
+    erase every primary from quieter physical groups or all POI-wide context.
+    The ordinary tier cap remains the hard upper bound.
+    """
+    poi = _poi("dense spatial stop")
+    beats = [
+        _beat(
+            f"alpha-{i}",
+            sub_location="alpha",
+            beat_length_class="anchor",
+            word_count=200 + i,
+        )
+        for i in range(12)
+    ]
+    beats.extend(
+        [
+            _beat(
+                "beta-primary",
+                sub_location="beta",
+                beat_length_class="micro",
+                word_count=20,
+            ),
+            _beat(
+                "gamma-primary",
+                sub_location="gamma",
+                beat_length_class="micro",
+                word_count=20,
+            ),
+            _beat(
+                "poi-wide-context",
+                beat_length_class="seasoning",
+                word_count=60,
+            ),
+            _beat(
+                "poi-wide-runner-up",
+                beat_length_class="micro",
+                word_count=10,
+            ),
+        ]
+    )
+
+    plan = select_poi_beats(poi, beats)
+    ids = {beat.id for beat in plan.beats}
+
+    assert plan.ordering_strategy == "sub_location"
+    assert len(plan.beats) == DEFAULT_FLAT_MAX
+    assert {"beta-primary", "gamma-primary", "poi-wide-context"} <= ids
+    assert len([beat_id for beat_id in ids if beat_id.startswith("alpha-")]) > 1, (
+        "remaining capacity should still admit complementary same-location beats"
+    )
+    assert ids <= {beat.id for beat in select_poi_beats_full(poi, beats).beats}
+
+
 def _yr_beat(bid: str, body: str, *, beat_type: str | None = None) -> BeatRef:
     return BeatRef(id=bid, poi_id="p", script_body=body, beat_type=beat_type,
                    narrative_function="establishing", active_status="active")

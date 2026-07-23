@@ -1,0 +1,317 @@
+# paris-pont-neuf-notre-dame-60 — Exact API-authored tour text
+
+Route: Pont Neuf → Square du Vert-Galant → Palais de Justice → Conciergerie → Sainte-Chapelle → Square Jean XXIII → Notre-Dame Cathedral
+
+## 1. Pont Neuf
+
+Settle in.
+
+You're starting on the Île de la Cité, right at the Pont Neuf — take a moment and take it in.
+
+Henri IV was one of Paris's first great town-planners, and he took such an interest in this bridge that he'd come to inspect it himself — once delighting the workmen by taking a flying leap clean over an unfinished arch.
+
+He was building something radical.
+
+Despite its name — Pont Neuf, the New Bridge — it's the oldest bridge still standing in Paris, twelve graceful arches, the first here made of stone and left free of the houses that had crowded every bridge before it.
+
+Halfway across, a statue of the king who built it still marks the spot.
+
+That first statue didn't last.
+
+It was torn down and melted in 1792, during the Revolution.
+
+When the Bourbons came back it was rebuilt in 1818 by public subscription, recast from a surviving mould of the original — the bronze scavenged by melting down a statue of the general Louis Charles Antoine Desaix.
+
+And before the new Henri IV was sealed shut, the sculptor François-Frédéric Lemot slipped four boxes inside it: a history of Henri IV's life, a 17th-century parchment certifying the original statue, a document on how the new one had been commissioned, and the full list of everyone who'd chipped in to pay for it.
+
+He wasn't the only one hiding things — the anti-Royalist who cast the replacement smuggled a little statuette of Napoleon into the horse's belly, found only recently during restoration.
+
+For centuries this was the loudest place in Paris: the semicircular bays along the parapet were market stalls, crowded with teeth-pullers, quack doctors, dog-barbers and flower-sellers, while acrobats and actors worked the passing crowds.
+
+It grew so grand in scale and length that it soon became a symbol of the city itself.
+
+Look along the quais on both banks now, at those rows of green boxes.
+
+Those are the bouquinistes, that quintessentially Parisian way of selling books and prints — and the very first of them set up right here on the Pont Neuf.
+
+Just off the bridge, at the Place Dauphine, there was once an art show worth catching.
+
+Every year on the Petite Fête-Dieu — the 'Small Corpus Christi,' eight days after the main feast — young painters hung their canvases here, between six in the morning and noon.
+
+It was an unofficial salon, a rare chance for unknowns to be noticed, a forerunner of the Salon des Refusés that would later spark the Impressionists.
+
+In 1720 a twenty-two-year-old, the son of the man who kept the king's billiard tables, showed an antique bas-relief.
+
+The painter J.-B. Vanloo stopped, studied it a long while, found real qualities in it, bought it, and took the young man under his wing.
+
+Eight years later that unknown was Vanloo's colleague at the Academy of Painting.
+
+His name was Jean-Baptiste-Siméon Chardin.
+
+Take the steps beside the statue down to the Square du Vert-Galant — a calm spot now, but this is where Jacques de Molay, the last Grand Master of the Templars, was burned at the stake, cursing the kings of France as the flames consumed him.
+
+## 2. Square du Vert-Galant
+
+Leaving Pont Neuf behind, head for Square du Vert-Galant, just ahead.
+
+Take the steps down behind Henri IV's equestrian statue on the Pont-Neuf and you drop into the triangular stern of the island, the Square du Vert-Galant.
+
+This romantic western tip of the boat-shaped Île de la Cité is where Paris began — the original settlement of the Parisii, a Celtic tribe subdued by Caesar, on the island the Romans called Lutetia.
+
+The late Roman emperor Julian, writing in 358 AD, called it Cara Lutetia — "my beloved Lutetia."
+
+As for the name Vert-Galant, it means the Green Gallant, the lusty gentleman — a nod to the king's famously amorous career.
+
+Henri loved this city mightily, and loved its wine, women, and good times just as hard: two wives, at least fifty-six mistresses, and households full of bastards.
+
+Early on, Parisians adored him for it — but the charm faded as he aged, and his serial affairs began to bore and irritate.
+
+The dozens of bastard children scattered through the kingdom stirred real resentment, enough to nearly tip France back into civil strife.
+
+Worse, he meant to marry his favourite, Gabrielle d'Estrées — an outrage to the raison d'état — and only her premature death stopped the infamy.
+
+As Femme Ladoucette wrote to the Queen, in the kingdom of France one separated the sheep from the goats.
+
+As king, from 1589 to 1610, he vowed to make Paris a wonder of the world, and he delivered — the elegant Pont Neuf, whose "new bridge" name hides the fact that it's the oldest in Paris, the Place Dauphine across the water, and the Place Royale, later renamed the Place des Vosges.
+
+Born and raised a Protestant, he converted to Catholicism, the faith of the majority, to end the religious wars that by the close of the sixteenth century had left Paris starving and looking like a bomb site, and then, detesting partisanship, he signed the Edict of Nantes in 1598, writing tolerance for the very religion he'd renounced into law.
+
+The fanatical Catholic who stabbed him to death, Francis Ravaillac, was not persuaded.
+
+And yet Henri IV is still one of France's heroes, named beside Charlemagne, Joan of Arc, and Saint-Louis IX — the king who declared kindness and mercy the first virtues of a prince.
+
+He'd have approved of what became of this spot — a tranquil, tree-lined garden, still a favourite haunt of lovers.
+
+The prime place to stand is the little knoll of trees at the extreme point of the island, and from here you can even hop one of the river boats docking on the north side.
+
+Look out and you'll see why people linger — the Hôtel de la Monnaie and the dome of the Institut de France on your left, the Louvre on your right, the Pont-des-Arts straight ahead, and by night the whole square turns to enchantment.
+
+## 3. Palais de Justice
+
+From Square du Vert-Galant, carry on toward the Palais de Justice — about a nine-minute walk.
+
+You've just left the square du Vert-Galant, where Jacques de Molay, Grand Master of the Templars, was burnt at the stake — cursing the kings of France as the flames took him.
+
+Keep that curse in mind, because the ground ahead of you is where those kings kept court.
+
+In the year 360, on this very spot, a Roman general named Julian stood while his own soldiers hoisted him up and proclaimed him emperor — the man history would come to call Julian the Apostate.
+
+This was the seat of the Roman governors of Lutetia, and later the first residence of the kings of France.
+
+Part of that Roman palace was still standing when Clovis and the first Merovingian kings returned in the 6th century, and the Carolingians who followed — Pépin le Bref, Charlemagne, Louis le Débonnaire, Charles le Chauve — lived here too, until the Norman invasion of the 9th century razed the lot and forced reconstruction to begin again from the ruins.
+
+Centuries later, the moat and drawbridge that were meant to defend this palace proved useless on 22 February 1357.
+
+With King Jean II le Bon of the Valois dynasty held captive in England, the provost of merchants, Etienne Marcel, believed he could topple the monarchy with English help.
+
+That afternoon the young Dauphin, the future Charles V, was sitting with two of his counsellors when Marcel's men burst in and cut them down in front of him.
+
+He wasn't touched. But their blood spattered his clothes, and he never forgot it.
+
+A shrewd politician who earned the name le Sage — the Wise — he slipped out one night by way of the river, took refuge in the remote Hôtel de Saint-Pol in the Marais, and set himself up behind the safer walls of the Louvre from 1368 onward.
+
+The kings of France never came back to the island.
+
+Look across the street from Henri IV's statue, where red-brick seventeenth-century houses flank the entrance to place Dauphine, one of the most secluded and handsome squares in the city.
+
+Now find the arcade on the right of the Cour de Mai — until 1825 that was the way into the Conciergerie.
+
+During the Revolution, 2,278 people condemned by the Revolutionary Tribunal were marched out through it, to the jeers of the tricoteuses — the knitting women gleefully huddled on the perron.
+
+## 4. Conciergerie
+
+From the Palais de Justice, walk on to the Conciergerie, just ahead.
+
+In the fifteenth century, people passing on the quay could still hear the screams of prisoners being tortured inside the Tour Bonbec, the westernmost tower.
+
+When the tower was restored in 1828, workers broke into the basement and found two oubliettes — hidden dungeons spiked with iron points and opening straight onto the river.
+
+You can guess the fate of anyone dropped in.
+
+The tower's name says the rest: bon-bec is old French for prate, a nod to the interrogations on the ground floor, where torturers worked through a whole repertoire to force out confessions and denunciations.
+
+This grim place is one of the last surviving pieces of the old medieval Palais de Justice, and it's Paris's oldest prison.
+
+Step inside and the Gothic halls open up — the vast, vaulted Salle des Gens d'Armes, raised between 1301 and 1315.
+
+Around 1353 a kitchen pavilion went up at the northwest corner, set slightly apart from the rest so a fire wouldn't take the whole palace with it.
+
+It ran on two floors: the royal family and their guests were fed from upstairs, the staff from below.
+
+People come here now for the French history, but those Gothic halls and the great kitchen fireplaces are worth the visit on their own.
+
+Both kitchens worked flat out on the sixth of January, 1378, when Charles V threw the Banquet of the Three Kings for his uncle Charles the Fourth, the Holy Roman Emperor, and his cousin Wenceslaus, King of the Romans.
+
+Three courses of ten dishes each went out to the Grand Hall — to the royal guests and eight hundred German and French knights.
+
+By the Revolution the far end was walled off by an iron grille for the poorest prisoners — the pailleux, who couldn't bribe a guard for a private cell and slept on straw, the paille that gave them their name.
+
+Beyond that ran a corridor where prisoners could wander freely, and a room they've since rebuilt — the salle de toilette, where the condemned had their hair cropped and their collars torn away for the blade.
+
+The list of the doomed here is staggering.
+
+There was Madame Roland, who'd backed the Revolution but threw in with the Girondins at exactly the wrong moment.
+
+And Marie-Antoinette, who sat in a dreary cell from the second of August to the sixteenth of October, 1793, before she was taken to the guillotine on the Place de la Révolution — today's Place de la Concorde.
+
+Later came Danton, Robespierre, and Saint-Just, one after another — Danton and Robespierre in the cells right beside the Queen's.
+
+Upstairs they've mocked up her cell: a crucifix hanging forlornly against peeling fleur-de-lys wallpaper.
+
+North of the halls ran the stretch to the dark cells, called the rue de Paris — after the Great Executioner, Monsieur de Paris.
+
+That title stayed in one family, the Sansons, handed father to son through seven generations, from 1688 to 1847.
+
+Here's the turn.
+
+Shortly before the Revolution, Louis the Sixteenth decided to improve the executioner's lot and granted Charles-Henri Sanson an annual fee of sixteen thousand pounds, plus two thousand crowns to keep up the scaffold and pillory — never dreaming the man would one day become his own executioner.
+
+Charles-Henri was a royalist and wanted no part of it.
+
+On the fifteenth of August, 1792, he was arrested as "the despot's employee," and for each execution he was dispatched from his cell to the Place du Carrousel, where the guillotine then stood, and afterwards taken back.
+
+At first the killings were few, but once the blade was working at full swing his expert hand couldn't be spared, so they let him go.
+
+He retired soon after he'd executed his sovereign.
+
+His son Henri took over, holding the post through the Terror and every shaky regime that followed, right up to 1840, deep into the reign of Louis-Philippe.
+
+## 5. Sainte-Chapelle
+
+Leaving the Conciergerie behind, head for Sainte-Chapelle, about a four-minute walk away.
+
+In August 1239, two Dominican friars reached Paris with a crate carried all the way from Venice, and for the final stretch King Louis took it onto his own shoulders — barefoot, dressed as a penitent.
+
+You can still see that very scene inside, in the Relics of the Passion window on the chapel's south side.
+
+Then he threw a week-long reception to celebrate.
+
+Inside that crate, so the story went, were Christ's crown of thorns, fragments of the True Cross, and a nail from the crucifixion.
+
+Louis had bought them from the bankrupt Byzantine Empire, and the price tells you exactly what mattered to him — 135,000 livres for the relics, another 100,000 for the silver Grand-Chasse to hold them, and just 40,000 to build and glaze the whole chapel around them.
+
+He raised it between 1242 and 1248, and it's the only part of the island's medieval palace to survive whole — its slender spire shoots up above the Palais so steeply it looks like the choir of a cathedral that's been lopped off.
+
+Step inside and there are really two chapels stacked together — a plain lower one built for the servants, and up a spiral staircase, the upper chapel reserved for the king and his court.
+
+Up there the walls are almost nothing but stained glass, and the stone that carries all that weight was deliberately split into clusters of pencil-thin columns so it looks impossibly fragile.
+
+There are 1,113 panels in all, two-thirds of them original, the rest from a nineteenth-century restoration.
+
+Together they run through nearly the whole Bible — Genesis on the north wall, the Passion of Christ at the east end, the relics' own history on the south, and the Apocalypse blazing in the rose window.
+
+The names of the glaziers who filled these walls are all lost.
+
+But the art historian Louis Grodecki teased three separate workshops out of the styles.
+
+The first gave the apse and most of the north wall its supple forms and simplified faces.
+
+The second, the Master of the Ezekiel Window, worked the Ezekiel, Daniel and Kings windows in elongated figures and angular drapery.
+
+The third, the Master of Judith and Esther, added the Job window too, with subtler faces and the feel of an illuminated manuscript.
+
+When the sun pours through, the blues and reds scatter across the interior until you feel wrapped in a swarm of brilliant butterflies.
+
+It's a favourite spot now for classical concerts, and a ticket booked a day or so ahead spares you the long queue.
+
+It hasn't always been treated so tenderly.
+
+During the Revolution it was stripped of its holiness and put to work as a flour warehouse, then sensitively restored in the mid-nineteenth century as one of the great achievements of French High Gothic.
+
+In the Second World War the glass came down and was hidden away for safekeeping.
+
+When it went back up in 1945, workers coated it in varnish to guard against bombing dust and scratches.
+
+Over the decades that varnish darkened, dimming images that were already fading.
+
+So in 2008 a seven-year, ten-million-euro programme set out to undo the damage.
+
+Half the money came from private donors, half from the Villum Foundation.
+
+Crews cleaned and preserved every panel, scrubbed the façade stone, conserved the sculpture, and slipped an innovative layer of thermoformed glass outside the medieval windows to shield them.
+
+The flamboyant west rose window was finished in 2015, timed for the 800th anniversary of Saint Louis's birth.
+
+As for the relics that started all this, they've moved on — kept now in the treasury of Notre-Dame, brought out only a few days a year, including Good Friday.
+
+## 6. Square Jean XXIII
+
+From Sainte-Chapelle, carry on to Square Jean XXIII — about a thirteen-minute walk.
+
+You've walked a long way from where you started.
+
+Remember the Pont Neuf — its statue of Henri IV was melted down in the Revolution, and the anti-royalist replacement smuggled a little Napoleon inside the horse's belly, found only during a later restoration.
+
+Stand here and you're standing on two thousand years — beneath the parvis of Notre-Dame just ahead, a crypt holds Gallo-Roman walls, a riverside quay, a hypocaust and medieval cellars.
+
+Just off the square, the Hôtel-Dieu still runs as the oldest hospital in Paris, founded around the year 651.
+
+This quartier has been sacred ground since the fourth century, when the Emperor Julian presided over a temple to Jupiter right here.
+
+Those same Roman ruins became the foundation of the basilica of Saint-Étienne in 528, and then the first Notre-Dame.
+
+The cathedral you see now, begun in 1163, still stands after centuries of renovation and the fanatical rampages of the Terror — one of the crown jewels of Gothic architecture in all of Europe.
+
+And between the cathedral and the Seine once rose the palace of the archbishop of Paris, until a riot tore it down in 1831.
+
+There's a garden here now, and in April flowering cherry trees bloom along the south porches, screening but never hiding the original medallions carved with scenes of student life.
+
+Beds of daffodils and tulips run the length of the cathedral's southern flank to the eastern end, where the flying buttresses rise over a small square generous with benches and travelers taking their ease.
+
+Henry James knew that pull — his Lambert Strether, in The Ambassadors, sits alone in "the great dim church" and feels its "beneficent action on his nerves," a place of refuge with "a sense of safety, of simplification."
+
+These days, though, the interior means a crush of tourists aiming cameras at the stained glass — so the mood out here in the garden often feels more peaceful.
+
+The square carries one man's name.
+
+Its gardens honour Pope John XXIII — born Angelo Roncalli in Lombardy in 1881, dead in 1963 — the papal nuncio in Paris from 1944 to 1953, later the "good pope" and the driving force behind the Second Vatican Council of 1962 to 1965.
+
+"Jesus came to break down the barriers," he preached; "the central point of his teaching is love."
+
+Parisians still remember his long walks through the city with friends of every stripe — Protestants, Catholics, Jews, agnostics, atheists.
+
+At diplomatic receptions he happily took the champagne and the company of men and women, read French literature, and knew the postwar French intellectuals and theologians he would later invite into the reforms of Vatican II.
+
+A savvy diplomat trusted by the government, he was awarded the Legion of Honor by President Auriol, praised for understanding and respecting "the traditions of justice and tolerance."
+
+When Rome recalled him, he confessed his sadness to a friend: "I love France and I love Paris, and I hoped to stay a little longer. I can't really see myself in Rome."
+
+## 7. Notre-Dame Cathedral
+
+From Square Jean XXIII, make your way on to Notre-Dame, about a seven-minute walk away.
+
+In 1804, Napoleon stood inside these walls and crowned himself emperor — and the walls behind him were so dilapidated they had to be covered with drapes to make a backdrop grand enough for the occasion.
+
+How the great cathedral came to that state is a story worth walking back through, because this is a Gothic masterpiece, rearing up from the Ile de la Cité like a great ship moored by its huge flying buttresses.
+
+Construction began in 1160 under Bishop de Sully and wasn't finished until around 1345, all of it rising over the Merovingian cathedral of St-Etienne — which had itself stood on an old Roman temple to Jupiter.
+
+Its seminaries became an ecclesiastical powerhouse, turning out six popes across the thirteenth and fourteenth centuries, before it slowly lost ground to rival sees like Rheims and St-Denis.
+
+The facade is the cathedral's most impressive feature; the Romanesque influence still shows in its solid H-shape, but what really strikes you is the lightness and grace created by the filigree of the central rose window and the gallery above it.
+
+By then the building had fallen into decline, and when the Revolution came, enthusiasts mistook the Old Testament kings on the facade for the kings of France and tore them down — so the twenty-seven huge figures beneath the rose window, the biblical ancestors of Christ, are all copies.
+
+Now drop your eyes to the portals, and to the most arresting carving of all, above the central door: the Day of Judgement, its lower frieze a whirl of the dead climbing from their graves while Christ presides above, sending the souls on his right to heaven and those on his left to hell.
+
+Look closer at the arch and you'll find alert, mischievous little angels peering out — said to be modelled on the cathedral's own choirboys.
+
+The left portal shows Mary crowned by Christ with scenes of her life below, and the right shows the Virgin enthroned above episodes from the life of her mother, St Anne, and the life of Christ.
+
+They're carved with real cunning — in the nativity, the infant Christ is placed above Mary to mark his higher status, and laid on an altar instead of a crib, a quiet hint at the sacrifice to come.
+
+Step through the door and you're standing right beneath the bell tower, so look up at the vault for the trapdoor the bells were hoisted through, and notice the two pillars carrying the towers' whole weight.
+
+They're massive.
+
+For all that history, Notre-Dame still sits at the heart of Paris and, many will tell you, at the symbolic heart of France.
+
+Out on the pavement by the west door, look down for the small marker in the stone — a brass stud, a bronze star, kilometre zero — which people rub as a wishing stone but which is really the Zero Point of Paris, the spot from which every main-road distance in France is measured.
+
+That wide, windswept square you crossed is the Parvis — from the word paradise — laid out by Haussmann in the 1860s, and the white paving blocks set into it trace the little medieval streets and buildings that once crowded this ground.
+
+One last curiosity before we finish: the remains of Abelard and Heloise have had an extraordinary journey through the centuries.
+
+And that brings our walk to a close.
+
+Thank you for coming along with me today, and when you're ready, take your time to keep exploring on your own.

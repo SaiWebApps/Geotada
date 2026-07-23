@@ -1,0 +1,103 @@
+{
+  "schema_version": "ondoway-tour-batch-requests-v1",
+  "cases": [
+    {
+      "case_id": "paris-ile-open-90",
+      "archetype": "accepted central-landmark open walk",
+      "tour_input": {
+        "start": [48.8568, 2.3414],
+        "duration_min": 90,
+        "city_slug": "paris",
+        "round_trip": false
+      }
+    },
+    {
+      "case_id": "paris-marais-loop-60",
+      "archetype": "dense cultural-neighborhood loop",
+      "tour_input": {
+        "start": [48.8555, 2.3656],
+        "start_label": "Place des Vosges",
+        "duration_min": 60,
+        "city_slug": "paris",
+        "lenses": ["hidden_history", "social_change", "historic_arch"],
+        "round_trip": true
+      }
+    },
+    {
+      "case_id": "paris-pont-neuf-notre-dame-60",
+      "archetype": "fixed-destination central-island history walk",
+      "tour_input": {
+        "start": [48.85675, 2.341033],
+        "start_label": "Pont Neuf",
+        "end": [48.852966, 2.349902],
+        "duration_min": 60,
+        "city_slug": "paris",
+        "lenses": ["hidden_history", "historic_arch", "social_change"],
+        "round_trip": false
+      }
+    },
+    {
+      "case_id": "paris-west-axis-90",
+      "archetype": "fixed-destination monumental corridor",
+      "tour_input": {
+        "start": [48.862725, 2.287592],
+        "start_label": "Trocadero",
+        "end": [48.865608, 2.321038],
+        "duration_min": 90,
+        "city_slug": "paris",
+        "lenses": ["historic_arch", "social_change", "war_conflict"],
+        "round_trip": false
+      }
+    },
+    {
+      "case_id": "nyc-lower-manhattan-90",
+      "archetype": "fixed-destination downtown history corridor",
+      "tour_input": {
+        "start": [40.703564, -74.016678],
+        "start_label": "Battery Park",
+        "end": [40.713282, -74.006978],
+        "duration_min": 90,
+        "city_slug": "new_york",
+        "lenses": ["hidden_history", "historic_arch", "social_change"],
+        "round_trip": false
+      }
+    },
+    {
+      "case_id": "nyc-village-loop-60",
+      "archetype": "literary and music neighborhood loop",
+      "tour_input": {
+        "start": [40.730823, -73.997332],
+        "start_label": "Washington Square Park",
+        "duration_min": 60,
+        "city_slug": "new_york",
+        "lenses": ["social_change", "music_heritage", "literary_heritage"],
+        "round_trip": true
+      }
+    },
+    {
+      "case_id": "nyc-grand-central-times-square-60",
+      "archetype": "fixed-destination Midtown corridor",
+      "tour_input": {
+        "start": [40.752694, -73.977253],
+        "start_label": "Grand Central Terminal",
+        "end": [40.75701, -73.985972],
+        "duration_min": 60,
+        "city_slug": "new_york",
+        "lenses": ["historic_arch", "modern_design", "film_tv"],
+        "round_trip": false
+      }
+    },
+    {
+      "case_id": "nyc-central-park-open-90",
+      "archetype": "open park-topology walk",
+      "tour_input": {
+        "start": [40.774219, -73.971052],
+        "start_label": "Bethesda Terrace",
+        "duration_min": 90,
+        "city_slug": "new_york",
+        "lenses": ["parks_gardens", "visual_art", "local_legends"],
+        "round_trip": false
+      }
+    }
+  ]
+}

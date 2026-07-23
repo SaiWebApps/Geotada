@@ -32,7 +32,7 @@ from src.tour.compose_gate import (
 )
 from src.tour.beat_select import select_vignette_beats
 from src.tour.contract import BeatSequence, Script, TourInput
-from src.tour.density import TourabilityRefusedError, assess
+from src.tour.density import TourabilityRefusedError, assess_snapshot
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
@@ -288,9 +288,7 @@ def main() -> int:
             # SAME structured refusal (actionable alternatives) instead of a bare
             # "no POIs reachable". Reuse the attached assessment, else recompute.
             rt = bool(args.round_trip)
-            assessment = route.tourability or assess(
-                tour_input, snapshot.pois, snapshot.beats_by_poi
-            )
+            assessment = route.tourability or assess_snapshot(tour_input, snapshot)
             lens_note = " for your interest" if lenses else ""
             _print_refusal(
                 assessment,

@@ -506,7 +506,7 @@ def onboarding_complete(
 ):
     if len(body.lens_ids) < 3:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="At least 3 lenses required",
         )
 

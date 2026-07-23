@@ -1024,10 +1024,13 @@ def test_synthesized_opener_view_cue_uses_look_up_verb():
         )
     )
     script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
-    cold_open_texts = [s.text for s in script.script if s.stop_idx == 0]
+    cold_open = [s for s in script.script if s.stop_idx == 0]
+    cold_open_texts = [s.text for s in cold_open]
     assert any("Look up at the gilded statue" in t for t in cold_open_texts)
     # View cues also unlock the "Take a moment to take it in." invitation.
     assert any("Take a moment" in t for t in cold_open_texts)
+    invitation = next(s for s in cold_open if s.text == SENSORY_INVITATION)
+    assert invitation.source_id == GLUE_PACING
 
 
 def test_synthesized_opener_does_not_double_a_cue_that_already_stages():

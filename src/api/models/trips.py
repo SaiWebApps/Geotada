@@ -7,6 +7,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, field_validator
 
 from src import city_registry
+from src.tour.candidate_eligibility import CandidateRejection
 from src.tour.contract import RouteOption
 
 
@@ -246,15 +247,19 @@ class TripPreviewRequest(BaseModel):
                 f"Valid lenses: {', '.join(sorted(known))}"
             )
         return cleaned
-    # NO narration flags. There is ONE algorithm: Opus composes every stop, the
-    # faithfulness gate verifies, and the correct-don't-reject corrector repairs
-    # before anything degrades to raw stitch. Not a tier, not a toggle, not a
-    # per-request narrator choice — deleted 2026-07-19 because 4 flags meant 16
-    # combinations and no single answer to "what does this product do?".
+
+    # No narration flags: every preview uses the shared Premium certification
+    # planner, one immutable zero-retry authoring request per stop, and the pure
+    # traced-blueprint finalizer. Certification reviewers run separately.
 
 
 class TripPreviewStop(BaseModel):
-    """One stop in a preview: ordered, with its stitched narration text."""
+    """One stop in one explicitly typed preview artifact.
+
+    ``TripPreviewResponse.stops`` contains only complete LLM-candidate text.
+    Deterministic grounded narration, when available, lives under the separate
+    ``basic_tour`` object and is never eligible for grading.
+    """
 
     sort_order: int
     poi_name: str
@@ -303,23 +308,43 @@ class TripPreviewTourability(BaseModel):
     one_way_alternative_destination: str | None = None
 
 
+class TripPreviewBasicTour(BaseModel):
+    """Emergency grounded guide, deliberately outside the LLM grading lane."""
+
+    kind: Literal["basic_tour"] = "basic_tour"
+    reason: Literal["llm_generation_failed", "llm_candidate_ineligible"]
+    total_audio_min: int = Field(..., ge=0)
+    stops: list[TripPreviewStop]
+
+
 class TripPreviewResponse(BaseModel):
-    """Per-stop narration for a generated tour — no audio, no persistence. The
-    client fetches audio per stop via POST /audio/preview on the narration text."""
+    """Strict two-lane text preview — no audio and no persistence.
+
+    ``stops`` is gradeable only when ``candidate_eligible`` is true.  A grounded
+    emergency guide is returned under ``basic_tour`` instead of being mixed into
+    those stops or assigned a quality score.
+    """
 
     spine_area: str | None = None
     total_audio_min: int
     stops: list[TripPreviewStop]
+    candidate_eligible: bool = False
+    candidate_status: Literal["premium_candidate_eligible_for_certification"] | None = None
+    narration_kind: Literal["llm_candidate", "none"] = "none"
+    basic_tour: TripPreviewBasicTour | None = None
     # Phase 3 spotlight model (spec s7): per-corridor lens density surfaced to
     # the user. None until REACH measures and fills it (later in Phase 3).
     lens_coverage_note: str | None = None
     # None = GREEN (no warning needed). RED never reaches a 200 response.
     tourability: TripPreviewTourability | None = None
-    # compose outcome when the request opted in: 'composed' (fully AI-voiced),
-    # 'composed_partial' (some stops fell back to the grounded stitch via repair),
-    # 'refused' (compose failed even after repair — stitched shown), or 'stitched'
-    # (compose not requested). None only on legacy paths.
+    # ``composed`` is the only gradeable state. ``basic_available`` means no LLM
+    # candidate crossed the provenance gate; the separate basic_tour may still be
+    # offered to a stranded user. None exists only on legacy serialized payloads.
     compose_status: str | None = None
+    # Present only when a generated artifact was deliberately kept out of the
+    # LLM-candidate lane. This exposes provenance failure without leaking or
+    # grading the discarded mixed narration.
+    candidate_rejection: CandidateRejection | None = None
     # Which narrator actually wrote this tour ('anthropic' | 'openai'), so the
     # workbench can label an Opus-vs-ChatGPT comparison. None when not composed.
     provider: str | None = None

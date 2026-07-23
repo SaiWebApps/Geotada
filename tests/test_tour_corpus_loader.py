@@ -3,6 +3,9 @@ parse, including the M7 provenance fields. No DB."""
 
 from __future__ import annotations
 
+import pytest
+
+from src.tour.corpus_places import CoordinateProvenance
 from src.tour.selection import _snapshot_from_records
 
 
@@ -53,3 +56,46 @@ def test_key_claims_drops_blank_entries():
     rec = _beat_record(key_claims=["real claim", "", "  ", "another"])
     snap = _snapshot_from_records([_POI_RECORD], [rec], [], [], [])
     assert snap.beats_for("p1")[0].key_claims == ("real claim", "another")
+
+
+def test_optional_stable_place_fields_round_trip_without_replacing_graph_ids():
+    coordinates = CoordinateProvenance.build(
+        authority_kind="corpus_record",
+        authority_id="manifest:fixture",
+        source_record_id="wikidata:Q1",
+        coordinates=(48.85, 2.36),
+        source_payload={"label": "Place des Vosges"},
+    )
+    poi_record = {
+        **_POI_RECORD,
+        "canonical_place_id": "paris:place-des-vosges",
+        "aliases": ["Vosges", "Place Royale"],
+        "coordinate_provenance": coordinates.model_dump_json(),
+    }
+    beat_record = _beat_record(
+        stable_beat_id="paris:beat:vosges:1",
+        place_plan_id="paris:place-plan:vosges:1",
+        lenses=["history", "architecture"],
+    )
+    snap = _snapshot_from_records([poi_record], [beat_record], [], [], [])
+    poi = snap.pois[0]
+    beat = snap.beats_for("p1")[0]
+    assert poi.id == "p1"  # D2 migrates graph/API identity; D1 is additive.
+    assert poi.canonical_place_id == "paris:place-des-vosges"
+    assert poi.aliases == ("Place Royale", "Vosges")
+    assert poi.coordinate_provenance == coordinates
+    assert beat.id == "b1"
+    assert beat.stable_beat_id == "paris:beat:vosges:1"
+    assert beat.place_plan_id == "paris:place-plan:vosges:1"
+    assert beat.lenses == ("architecture", "history")
+
+
+def test_present_malformed_coordinate_provenance_is_not_silently_dropped():
+    with pytest.raises(ValueError, match="coordinate_provenance"):
+        _snapshot_from_records(
+            [{**_POI_RECORD, "coordinate_provenance": "not-json"}],
+            [_beat_record()],
+            [],
+            [],
+            [],
+        )

@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "contract_id": "tour-certification-v2",
+  "status": "FROZEN_BEFORE_CANDIDATE_GENERATION",
+  "definitions": {
+    "certified_tour": "one immutable artifact hash passes FACT, GEO, TIME, and ENJOY",
+    "algorithm_release": "the frozen matrix passes through the certified product entrypoint with no manual prose edits"
+  },
+  "gates": {
+    "FACT": {
+      "hard": true,
+      "material_claim_types": [
+        "named_entity_or_role",
+        "attribution",
+        "date_era_or_number",
+        "location_or_direction",
+        "specific_event",
+        "checkable_historical_causation_or_agency_changing_who_did_or_caused_what",
+        "objective_or_source_attributed_superlative_ranking",
+        "certainty_or_dispute_status"
+      ],
+      "allowed_controls": [
+        "synonym",
+        "compression",
+        "clause_reordering",
+        "natural_paraphrase",
+        "non_propositional_colour",
+        "licensed_editorial_prominence_magnetism_motive_or_personification_gloss_that_changes_no_checkable_fact",
+        "transition_gloss_without_a_material_claim"
+      ],
+      "materiality_rule": "A reasonable listener must be able to treat the wording as a checkable claim about an entity, role, date, number, place, event, act, historical cause, attribution, quotation, ranking, or certainty status.",
+      "licensed_gloss_rule": "Recognizable editorial prominence, magnetism, motive, atmosphere, or personification is non-material only when it leaves every checkable underlying entity, act, event, cause, time, place, attribution, quote, and certainty status unchanged.",
+      "precedence_rule": "The exact frozen fact-policy calibration cases refine the general taxonomy. They may license colour but can never waive a changed checkable fact.",
+      "requirements": [
+        "each selected material claim has locatable evidence",
+        "conflicts are reconciled or uncertainty is preserved",
+        "quotes are exact",
+        "no contradiction, misattribution, or entity truncation"
+      ]
+    },
+    "GEO": {
+      "hard": true,
+      "final_route_source": "valhalla",
+      "allow_haversine_for_final_certification": false,
+      "requirements": [
+        "route exact start to first anchor, every anchor leg, and required return leg",
+        "store each route shape, seconds, and distance",
+        "validate deictic and directional narration against geocoded targets",
+        "one stop narrates one place plausibly perceivable from that stop",
+        "off_site_addresses_have_routed_stops",
+        "nearby_distinct_landmarks_are_allowed",
+        "semantic_same_place_duplication_is_rejected"
+      ]
+    },
+    "TIME": {
+      "hard": true,
+      "minimum_requested_fraction": 0.9,
+      "maximum_requested_fraction": 1.1,
+      "requires_final_baked_audio": true,
+      "word_count_can_certify": false,
+      "formula": "sum(max(valhalla_leg_seconds, concurrent_audio_seconds_for_leg)) + sum(stationary_audio_seconds) + sum(explicit_observation_seconds)"
+    },
+    "ENJOY": {
+      "hard": true,
+      "legacy_ten_point_checklist_is_release_gate": false,
+      "requires_calibration_before_candidate": true,
+      "requires_two_independent_reviews": true,
+      "provider_supplies_total_or_release_decision": false,
+      "positive_anchor_policy": "all known positive anchors must classify enjoyable even when their old score is 3-5/10",
+      "axes": {
+        "site_presence": "uses the actual site, surroundings, observable details, or listener actions",
+        "narrative_motion": "develops through setup, discovery, consequence, reveal, or payoff",
+        "human_specificity": "uses people, motives, choices, stakes, and telling particulars",
+        "spoken_voice": "sounds natural aloud, addresses the listener clearly, and controls rhythm",
+        "editorial_control": "selects, paces, emphasizes, and transitions intentionally"
+      },
+      "axis_score_range": [0, 2],
+      "two_reviewer_aggregate_threshold": 7.0,
+      "unanimous_zero_axis_rejects": true,
+      "same_axis_below_weakest_positive_gold_consensus_rejects": true,
+      "single_reviewer_below_gold_or_pairwise_disagreement_is_advisory": true,
+      "evidence_rule": "every reviewer supplies at least one exact same-item passage for every axis; trusted code validates evidence and computes all totals, comparisons, and decisions"
+    }
+  },
+  "provider_budget": {
+    "physical_attempts_per_authorized_unit": 1,
+    "automatic_quality_retries": 0,
+    "batched_fact_review_calls_max": 1,
+    "batched_enjoyment_review_calls_max": 1,
+    "independent_adjudication_calls_max": 1,
+    "total_provider_calls_per_candidate_max": 12,
+    "owner_imposed_static_dollar_cap": null,
+    "cost_authorization_rule": "before call one, trusted code computes and explicitly authorizes the full frozen call plan from its model prices and token ceilings"
+  },
+  "evidence_protocol": {
+    "must_cite_typed_gate_or_axis": true,
+    "must_include_exact_evidence": true,
+    "must_include_reproducer": true,
+    "uncited_feedback_is_advisory": true
+  },
+  "change_protocol": {
+    "change_during_candidate_evaluation": false,
+    "requires_new_contract_version": true,
+    "requires_owner_approval": true,
+    "requires_full_anchor_recalibration": true,
+    "requires_full_candidate_rerun": true
+  },
+  "required_evidence_bundle": [
+    "artifact_sha256",
+    "contract_sha256",
+    "reference_manifest_sha256",
+    "calibration_manifest_sha256",
+    "input_start_duration_lenses",
+    "commit_corpus_module_prompt_model_policy_routing_tts_versions",
+    "exact_narration",
+    "final_audio_and_measured_durations",
+    "poi_and_subpoi_coordinates",
+    "valhalla_requests_results_and_shapes",
+    "audio_concurrency_placement",
+    "material_claim_to_source_evidence",
+    "conflict_decisions",
+    "four_gate_reports",
+    "complete_judge_outputs",
+    "provider_call_and_cost_ledger",
+    "offline_replay"
+  ]
+}

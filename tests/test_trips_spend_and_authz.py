@@ -3,9 +3,9 @@
 Four confirmed defects, all on ``src/api/routes/trips.py``:
 
 1. POST /trips/preview was unauthenticated AND un-rate-limited while spending
-   dollars of Opus/Haiku per call (best-of-2 compose per stop + the Opus
-   correction ladder + Haiku judges), against the owner's ANTHROPIC_API_KEY on a
-   public Render service. An anonymous loop drained the balance at ~$1/request.
+   against the owner's ANTHROPIC_API_KEY on a public Render service. The current
+   Premium path performs one Opus authoring call per routed stop, so the limiter
+   must atomically reserve the exact planned stop count before any physical call.
    /feedback already had exactly this guard over ONE Haiku call.
 2. GET /trips and POST /trips/{id}/compose had NO authentication — a classic
    IDOR: any profile's trips were readable, and /compose destroyed a victim's
@@ -29,9 +29,14 @@ from fastapi.testclient import TestClient
 
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
-from src.api.dependencies import get_compose_client, get_driver, get_session
+from src.api.dependencies import (
+    get_compose_client,
+    get_driver,
+    get_premium_compose_executor,
+    get_session,
+)
 from src.api.routes import trips as trips_route
-from src.tour.compose import COMPOSE_MODEL, AnthropicComposeClient
+from src.tour.premium_tour import OfflinePremiumExecutor, PremiumBuildIdentity
 
 # Reuse the proven hermetic corpus fakes rather than re-deriving them.
 from tests.test_trip_preview_contract import (
@@ -44,7 +49,7 @@ from tests.test_trip_preview_contract import (
 PREVIEW_BODY = {
     "center_lat": START[0],
     "center_lng": START[1],
-    "duration_min": 60,
+    "duration_min": 30,
     "city_slug": "paris",
 }
 
@@ -54,41 +59,30 @@ PREVIEW_BODY = {
 # ---------------------------------------------------------------------------
 
 
-class _SpendError(RuntimeError):
-    """Raised by the fake SDK. Reaching it at all means money WOULD have moved."""
+class _CountingPremiumExecutor:
+    """Billable-boundary double returning explicit offline provider bytes."""
 
-
-class _CountingSDK:
-    """Stands in for the Anthropic SDK inside a REAL AnthropicComposeClient.
-
-    Using the real client class matters: the spend guard arms itself on the
-    cost-bearing client types, so a plain stub would (correctly) not be limited.
-    """
+    cost_bearing = True
+    provider_name = "anthropic"
 
     def __init__(self) -> None:
         self.calls = 0
-        self.messages = self
 
-    def stream(self, **kwargs):
-        # AnthropicComposeClient.compose() opens `self._client.messages.stream(...)`
-        # as a context manager — counting HERE is counting the billable request.
+    def execute(self, unit):
         self.calls += 1
-        return self
-
-    def __enter__(self):
-        raise _SpendError("a paid compose call was made")
-
-    def __exit__(self, *exc):
-        return False
+        return OfflinePremiumExecutor().execute(unit)
 
 
-class _RaisingComposeClient:
-    """Non-billing stub whose compose() raises a given provider exception."""
+class _RaisingPremiumExecutor:
+    """Explicit non-billing stub whose physical call raises an exception."""
+
+    cost_bearing = False
+    provider_name = "offline"
 
     def __init__(self, exc: BaseException):
         self.exc = exc
 
-    def compose(self, request, attempt, prev_report):
+    def execute(self, _unit):
         raise self.exc
 
 
@@ -141,11 +135,16 @@ def _clean_spend_guard():
 def preview_client(monkeypatch):
     """(compose_client) -> TestClient for POST /trips/preview, fully hermetic."""
 
-    def _make(compose_client) -> TestClient:
+    def _make(premium_executor) -> TestClient:
         monkeypatch.setattr(trips_route, "RoutingClient", _FakeRoutingClient)
+        monkeypatch.setattr(
+            trips_route,
+            "resolve_build_identity",
+            lambda: PremiumBuildIdentity(commit_sha="1" * 40),
+        )
         app = create_app()
         app.dependency_overrides[get_driver] = lambda: _FakeDriver(_green_cluster_records())
-        app.dependency_overrides[get_compose_client] = lambda: compose_client
+        app.dependency_overrides[get_premium_compose_executor] = lambda: premium_executor
         # raise_server_exceptions=False so an unmapped 500 is observable as a
         # status code — that is exactly what defect 4 is about.
         return TestClient(app, raise_server_exceptions=False)
@@ -161,9 +160,7 @@ def auth_client():
         app = create_app()
         app.dependency_overrides[get_session] = lambda: _FakeAuthSession(user_id, owns=owns)
         app.dependency_overrides[get_driver] = lambda: _FakeDriver(_green_cluster_records())
-        app.dependency_overrides[get_compose_client] = lambda: _RaisingComposeClient(
-            AssertionError("compose must never run for an unauthorized caller")
-        )
+        app.dependency_overrides[get_compose_client] = object
         return TestClient(app, raise_server_exceptions=False)
 
     return _make
@@ -183,27 +180,74 @@ def test_anonymous_preview_burst_is_429_before_a_second_compose_is_ever_billed(
     of preview_trip -> the second POST composes again and this goes RED on both
     the status code AND the call count.
     """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 1)
-    sdk = _CountingSDK()
-    client = preview_client(AnthropicComposeClient(COMPOSE_MODEL, client=sdk))
+    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 8)
+    executor = _CountingPremiumExecutor()
+    client = preview_client(executor)
 
     first = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
     assert first.status_code != 429, "the FIRST call must be allowed through"
-    billed_once = sdk.calls
+    billed_once = executor.calls
     assert billed_once > 0, "fixture never reached the compose path — the test is vacuous"
+    assert billed_once == 5, "fixture must reserve and execute one physical call per stop"
 
     second = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
     assert second.status_code == 429, "an over-limit anonymous preview must be refused"
     assert second.headers.get("Retry-After"), "a 429 must tell the client when to retry"
-    assert sdk.calls == billed_once, (
+    assert executor.calls == billed_once, (
         "the refused request still reached the provider — the guard is not "
         "preventing spend, only decorating the response"
     )
 
 
-def test_spoofed_x_forwarded_for_cannot_win_a_fresh_rate_limit_bucket(
-    preview_client, monkeypatch
-):
+def test_exact_stop_call_count_is_reserved_atomically(preview_client, monkeypatch):
+    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 4)
+    executor = _CountingPremiumExecutor()
+    response = preview_client(executor).post("/api/v1/trips/preview", json=PREVIEW_BODY)
+    assert response.status_code == 429
+    assert executor.calls == 0
+
+
+def test_default_per_ip_budget_admits_one_maximum_size_premium_plan():
+    assert trips_route._PREVIEW_RATE_LIMIT_MAX >= 8
+
+
+def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, monkeypatch):
+    executor = _CountingPremiumExecutor()
+    client = preview_client(executor)
+    monkeypatch.setattr(
+        trips_route,
+        "resolve_build_identity",
+        lambda: (_ for _ in ()).throw(ValueError("dirty build")),
+    )
+
+    response = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["candidate_eligible"] is False
+    assert body["compose_status"] == "basic_available"
+    assert executor.calls == 0
+
+
+def test_unknown_provider_defaults_to_cost_bearing(preview_client, monkeypatch):
+    class UnknownExecutor:
+        provider_name = "unknown"
+
+        def __init__(self):
+            self.calls = 0
+
+        def execute(self, unit):
+            self.calls += 1
+            return OfflinePremiumExecutor().execute(unit)
+
+    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 4)
+    executor = UnknownExecutor()
+    response = preview_client(executor).post("/api/v1/trips/preview", json=PREVIEW_BODY)
+    assert response.status_code == 429
+    assert executor.calls == 0
+
+
+def test_spoofed_x_forwarded_for_cannot_win_a_fresh_rate_limit_bucket(preview_client, monkeypatch):
     """X-Forwarded-For is client-controllable on the LEFT.
 
     Trusting the leftmost hop would land every request in a new bucket and fully
@@ -211,10 +255,10 @@ def test_spoofed_x_forwarded_for_cannot_win_a_fresh_rate_limit_bucket(
     our own edge observed) may be trusted.
     UNDO: change ``idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)`` to ``0`` -> RED.
     """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 1)
+    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 8)
     monkeypatch.setattr(trips_route, "_TRUSTED_PROXY_HOPS", 1)
-    sdk = _CountingSDK()
-    client = preview_client(AnthropicComposeClient(COMPOSE_MODEL, client=sdk))
+    executor = _CountingPremiumExecutor()
+    client = preview_client(executor)
 
     first = client.post(
         "/api/v1/trips/preview",
@@ -236,19 +280,19 @@ def test_global_cap_bounds_spend_even_under_ip_rotation(preview_client, monkeypa
     UNDO: remove the _global_hits block from _spend_precheck -> RED.
     """
     monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 100)
-    monkeypatch.setattr(trips_route, "_PREVIEW_GLOBAL_RATE_LIMIT_MAX", 1)
-    sdk = _CountingSDK()
-    client = preview_client(AnthropicComposeClient(COMPOSE_MODEL, client=sdk))
+    monkeypatch.setattr(trips_route, "_PREVIEW_GLOBAL_RATE_LIMIT_MAX", 8)
+    executor = _CountingPremiumExecutor()
+    client = preview_client(executor)
 
     client.post(
         "/api/v1/trips/preview", json=PREVIEW_BODY, headers={"X-Forwarded-For": "203.0.113.1"}
     )
-    billed = sdk.calls
+    billed = executor.calls
     rotated = client.post(
         "/api/v1/trips/preview", json=PREVIEW_BODY, headers={"X-Forwarded-For": "198.51.100.9"}
     )
     assert rotated.status_code == 429, "a rotated source IP bypassed the spend bound"
-    assert sdk.calls == billed, "the rotated request still billed the provider"
+    assert executor.calls == billed, "the rotated request still billed the provider"
 
 
 def test_daily_ceiling_is_a_hard_spend_stop(preview_client, monkeypatch):
@@ -258,15 +302,15 @@ def test_daily_ceiling_is_a_hard_spend_stop(preview_client, monkeypatch):
     """
     monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 100)
     monkeypatch.setattr(trips_route, "_PREVIEW_GLOBAL_RATE_LIMIT_MAX", 100)
-    monkeypatch.setattr(trips_route, "_PREVIEW_DAILY_MAX", 1)
-    sdk = _CountingSDK()
-    client = preview_client(AnthropicComposeClient(COMPOSE_MODEL, client=sdk))
+    monkeypatch.setattr(trips_route, "_PREVIEW_DAILY_MAX", 8)
+    executor = _CountingPremiumExecutor()
+    client = preview_client(executor)
 
     client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    billed = sdk.calls
+    billed = executor.calls
     over = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
     assert over.status_code == 429
-    assert sdk.calls == billed
+    assert executor.calls == billed
 
 
 def test_hermetic_suite_stubs_are_not_rate_limited(preview_client, monkeypatch):
@@ -277,7 +321,7 @@ def test_hermetic_suite_stubs_are_not_rate_limited(preview_client, monkeypatch):
     it is not limited. UNDO: make _spend_precheck limit every client -> RED.
     """
     monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 1)
-    client = preview_client(_RaisingComposeClient(_SpendError("stub")))
+    client = preview_client(OfflinePremiumExecutor())
     for _ in range(4):
         assert client.post("/api/v1/trips/preview", json=PREVIEW_BODY).status_code != 429
 
@@ -294,8 +338,8 @@ def _http_request() -> httpx.Request:
 def test_provider_throttle_is_503_with_retry_after(preview_client):
     """anthropic.RateLimitError must not surface as a 500.
 
-    UNDO: drop the ``_upstream_provider_errors()`` wrapper from the
-    compose_script_per_chapter call -> RED at 500 with no Retry-After.
+    UNDO: drop the ``_upstream_provider_errors()`` wrapper from Premium execution
+    -> RED at 500 with no Retry-After.
     """
     anthropic = pytest.importorskip("anthropic")
     exc = anthropic.RateLimitError(
@@ -303,7 +347,7 @@ def test_provider_throttle_is_503_with_retry_after(preview_client):
         response=httpx.Response(429, request=_http_request()),
         body=None,
     )
-    resp = preview_client(_RaisingComposeClient(exc)).post(
+    resp = preview_client(_RaisingPremiumExecutor(exc)).post(
         "/api/v1/trips/preview", json=PREVIEW_BODY
     )
     assert resp.status_code == 503, f"expected 503 for an upstream throttle, got {resp.status_code}"
@@ -317,7 +361,7 @@ def test_provider_timeout_is_502(preview_client):
     """
     anthropic = pytest.importorskip("anthropic")
     exc = anthropic.APITimeoutError(request=_http_request())
-    resp = preview_client(_RaisingComposeClient(exc)).post(
+    resp = preview_client(_RaisingPremiumExecutor(exc)).post(
         "/api/v1/trips/preview", json=PREVIEW_BODY
     )
     assert resp.status_code == 502, f"expected 502 for a provider fault, got {resp.status_code}"

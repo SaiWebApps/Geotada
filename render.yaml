@@ -73,5 +73,37 @@ services:
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
+      # Premium preview is an intentional paid product path. The client factory
+      # fails closed without this explicit deployment authorization.
+      - key: ONDOWAY_ENABLE_PAID_LLM_CALLS
+        value: "1"
+      # Receipt-backed Premium routing comes from the Blueprint-managed private
+      # Valhalla service below. RoutingClient adds the http:// scheme to Render's
+      # private-network host:port value.
+      - key: VALHALLA_URL
+        fromService:
+          type: pserv
+          name: ondoway-valhalla
+          property: hostport
       - key: GITHUB_TOKEN
         sync: false
+
+  - type: pserv
+    name: ondoway-valhalla
+    runtime: image
+    plan: starter
+    image:
+      url: ghcr.io/valhalla/valhalla-scripted:latest
+    disk:
+      name: valhalla-data
+      mountPath: /custom_files
+      sizeGB: 10
+    envVars:
+      - key: tile_urls
+        value: "https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf https://download.bbbike.org/osm/bbbike/NewYork/NewYork.osm.pbf"
+      - key: use_tiles_ignore_pbf
+        value: "False"
+      - key: build_tar
+        value: "True"
+      - key: server_threads
+        value: "2"

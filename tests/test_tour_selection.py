@@ -17,8 +17,10 @@ from src.tour.selection import (
     build_poi_beat_plans,
     build_poi_beat_plans_capped,
     build_poi_extra_beats,
+    choose_discrete_route,
     pick_spine_area,
     poi_score,
+    route_has_container_identity_stop,
     select_route,
 )
 
@@ -92,6 +94,32 @@ def _snap(
 
 PDV = (48.8555, 2.3656)
 PONT_NEUF = (48.85675, 2.341033)
+
+
+def test_container_identity_is_context_not_a_fictional_stop() -> None:
+    container = POI(
+        id="container",
+        name="Ile de la Cite",
+        tier=5,
+        poi_role="setting",
+        lat=48.85,
+        lng=2.35,
+        areas=("Île de la Cité", "Paris"),
+    )
+    discrete = container.model_copy(
+        update={"id": "square", "name": "Square Jean XXIII"}
+    )
+    container_route = Route(
+        pois=(container,),
+        transits=(),
+        total_walk_distance_m=0,
+        total_walk_seconds=0,
+    )
+    discrete_route = container_route.model_copy(update={"pois": (discrete,)})
+
+    assert route_has_container_identity_stop(container_route)
+    assert not route_has_container_identity_stop(discrete_route)
+    assert choose_discrete_route([container_route, discrete_route]) == discrete_route
 
 
 def _density_fillers(
@@ -607,6 +635,24 @@ def test_select_route_deterministic_under_input_shuffle():
     assert [p.id for p in route_a.pois] == [p.id for p in route_b.pois]
 
 
+def test_explicit_legacy_planning_policy_is_byte_identical_to_default():
+    """Threading the policy must be a strict no-op for every existing caller."""
+    from src.tour.routing import LEGACY_ROUTE_PLANNING_POLICY
+
+    pois = _density_fillers(PDV)
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
+
+    implicit = select_route(inp, snap)
+    explicit = select_route(
+        inp,
+        snap,
+        planning_policy=LEGACY_ROUTE_PLANNING_POLICY,
+    )
+
+    assert explicit.model_dump(mode="json") == implicit.model_dump(mode="json")
+
+
 def test_select_route_prefers_spine_area():
     # Two POIs equidistant; one in spine area, one in non-adjacent area.
     in_marais = _poi(
@@ -725,6 +771,33 @@ def test_select_route_empty_when_no_candidates_in_envelope():
         select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     assert excinfo.value.assessment.status == "RED"
     assert excinfo.value.assessment.reachable_poi_count == 0
+
+
+def test_fixed_end_red_start_circle_defers_to_routed_fixed_end_checks():
+    from src.tour.density import TourabilityRefusedError, assess_snapshot
+
+    close_end = (PDV[0], PDV[1] + 0.001)
+    destination = _poi(
+        "destination",
+        lat=close_end[0],
+        lng=close_end[1],
+        beat_count=1,
+    )
+    snap = _snap([destination])
+    viable = TourInput(
+        start=PDV,
+        end=close_end,
+        duration_min=60,
+        city_slug="paris",
+    )
+    assert assess_snapshot(viable, snap).status == "RED"
+
+    route = select_route(viable, snap)
+    assert route.fixed_end_poi_id == destination.id
+
+    impossible = viable.model_copy(update={"end": (PDV[0], PDV[1] + 0.1)})
+    with pytest.raises(TourabilityRefusedError, match="Destination unreachable"):
+        select_route(impossible, snap)
 
 
 # ---------------------------------------------------------------------------
@@ -1177,6 +1250,218 @@ def test_phase7_fill_pass_does_not_run_when_already_above_floor():
     # The greedy/anchor-cap gates terminate well before the fill pass needs to fire.
     # The assertion is "no spurious additions beyond the natural greedy result".
     assert len(route.pois) <= 6  # max_anchors = 60 // 10 = 6
+
+
+def test_fixed_end_fill_uses_emitted_audio_and_adds_safe_content(monkeypatch):
+    """A→B fill must not over-credit thin landmarks with tier dwell proxies.
+
+    Six on-corridor landmarks each emit 105 seconds.  The old fixed-end
+    currency counted each as 300 seconds, concluded that six stops cleared the
+    fill floor, and left the seventh safe on-path stop unused.  Emission voices
+    the capped beat plans, so selection must use those same seconds.  Rich
+    off-corridor anchors keep the density pre-check GREEN without being eligible
+    for this A→B route.
+    """
+    from src.tour.routing import planned_audio_seconds, walk_budget_seconds
+
+    start = PDV
+    end = (start[0], start[1] + 0.006)
+    on_path = [
+        _poi(
+            f"on-path-{i}",
+            tier=5,
+            lat=start[0],
+            lng=start[1] + 0.0006 * (i + 1),
+            areas=("Test Corridor",),
+            beat_count=3,
+        )
+        for i in range(7)
+    ]
+    density_only = [
+        _poi(
+            f"off-corridor-{i}",
+            tier=5,
+            lat=start[0] + 0.004 + 0.0001 * i,
+            lng=start[1] + 0.0001 * i,
+            areas=("Test Corridor",),
+            beat_count=3,
+        )
+        for i in range(4)
+    ]
+    beats_by_poi = {
+        poi.id: [
+            BeatRef(
+                id=f"{poi.id}-b{j}",
+                poi_id=poi.id,
+                est_spoken_seconds=35 if poi in on_path else 240,
+                active_status="active",
+            )
+            for j in range(3)
+        ]
+        for poi in [*on_path, *density_only]
+    }
+    snap = _snap(
+        [*on_path, *density_only],
+        area_types={"Test Corridor": "corridor"},
+        beats_by_poi=beats_by_poi,
+    )
+
+    def endpoint_pull_must_not_run(*args, **kwargs):
+        raise AssertionError("a fixed destination supersedes open-walk endpoint pull")
+
+    monkeypatch.setattr(
+        "src.tour.selection._apply_endpoint_pull", endpoint_pull_must_not_run
+    )
+
+    route = select_route(
+        TourInput(start=start, end=end, duration_min=60, city_slug="paris"), snap
+    )
+    selected_ids = {poi.id for poi in route.pois}
+
+    assert {poi.id for poi in on_path} <= selected_ids, (
+        "the emitted-audio deficit should admit the seventh safe on-path stop"
+    )
+    assert selected_ids.isdisjoint(poi.id for poi in density_only)
+    capped = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=False)
+    emitted_audio = sum(planned_audio_seconds(plan.beats) for plan, _ in capped)
+    assert route.total_walk_seconds <= walk_budget_seconds(60)
+    assert route.total_walk_seconds + emitted_audio <= route.err_short_total_seconds
+
+
+def test_fixed_end_insertion_currency_includes_bare_destination():
+    """A fixed B contributes to the empty base route and every insertion delta."""
+    from src.tour.selection import (
+        _full_route_walk_seconds,
+        _insertion_cost_with_fixed_end,
+    )
+
+    start = (0.0, 0.0)
+    end = (0.0, 10.0)
+    candidate = _poi("candidate", lat=1.0, lng=5.0, beat_count=3)
+
+    def routed(lat1, lng1, lat2, lng2):
+        return round(math.hypot(lat2 - lat1, lng2 - lng1) * 100)
+
+    base = _full_route_walk_seconds(
+        [],
+        start_lat=start[0],
+        start_lng=start[1],
+        round_trip=False,
+        leg_seconds_fn=routed,
+        fixed_end=end,
+    )
+    extra, idx = _insertion_cost_with_fixed_end(
+        candidate,
+        [],
+        start_lat=start[0],
+        start_lng=start[1],
+        fixed_end=end,
+        leg_seconds_fn=routed,
+    )
+
+    assert base == routed(*start, *end)
+    assert idx == 0
+    assert base + extra == routed(*start, candidate.lat, candidate.lng) + routed(
+        candidate.lat, candidate.lng, *end
+    )
+
+
+def test_fixed_end_elapsed_rescue_considers_corridor_failure_but_rejects_over_ceiling():
+    """Rescue uses exact pinned-B elapsed currency, not a corridor tolerance."""
+    from src.tour.selection import _apply_fill_pass, _full_route_walk_seconds
+
+    start = (0.0, 0.0)
+    end = (0.0, 10.0)
+    base = _poi("base", tier=5, lat=0.0, lng=5.0, beat_count=3)
+    near = _poi("a-near", tier=5, lat=1.0, lng=5.0, beat_count=3)
+    far = _poi("z-far", tier=5, lat=10.0, lng=5.0, beat_count=3)
+    snap = _snap([base, near, far])
+
+    def routed(lat1, lng1, lat2, lng2):
+        return round(math.hypot(lat2 - lat1, lng2 - lng1) * 100)
+
+    walk_budget = 1000
+    assert routed(*start, near.lat, near.lng) + routed(near.lat, near.lng, *end) > walk_budget
+    added: list[str] = []
+    selected = _apply_fill_pass(
+        [base],
+        [base],
+        spine=None,
+        interest=frozenset(),
+        snapshot=snap,
+        start_lat=start[0],
+        start_lng=start[1],
+        round_trip=False,
+        walk_budget=walk_budget,
+        audio_budget=1000,
+        hard_anchor_cap=12,
+        capped_audio_fn=lambda poi, *, exempt: 100,
+        exempt_anchor_id=None,
+        rescue_floor=2,
+        leg_seconds_fn=routed,
+        fixed_end=end,
+        rescue_candidates=[near, far],
+        rescue_added_ids=added,
+    )
+
+    reversed_added: list[str] = []
+    reversed_selected = _apply_fill_pass(
+        [base],
+        [base],
+        spine=None,
+        interest=frozenset(),
+        snapshot=snap,
+        start_lat=start[0],
+        start_lng=start[1],
+        round_trip=False,
+        walk_budget=walk_budget,
+        audio_budget=1000,
+        hard_anchor_cap=12,
+        capped_audio_fn=lambda poi, *, exempt: 100,
+        exempt_anchor_id=None,
+        rescue_floor=2,
+        leg_seconds_fn=routed,
+        fixed_end=end,
+        rescue_candidates=[far, near],
+        rescue_added_ids=reversed_added,
+    )
+
+    assert {poi.id for poi in selected} == {"base", "a-near"}
+    assert added == ["a-near"]
+    assert [poi.id for poi in reversed_selected] == [poi.id for poi in selected]
+    assert reversed_added == added
+    pinned_walk = _full_route_walk_seconds(
+        selected,
+        start_lat=start[0],
+        start_lng=start[1],
+        round_trip=False,
+        leg_seconds_fn=routed,
+        fixed_end=end,
+    )
+    assert pinned_walk > walk_budget, "rescue may exceed the walking allocation"
+    assert pinned_walk + 200 <= walk_budget / 0.4, "but not the elapsed ceiling"
+
+
+def test_fixed_end_final_exact_elapsed_guard_catches_post_order_drift(monkeypatch):
+    """The returned fixed-B route is guarded after final routing and beat caps."""
+    from src.tour import selection as selection_module
+    from src.tour.density import TourabilityRefusedError
+
+    start = PDV
+    end = (start[0], start[1] + 0.001)
+    pois = _density_fillers(start)
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    real_summarise = selection_module.summarise_route
+
+    def drifted_summarise(*args, **kwargs):
+        route = real_summarise(*args, **kwargs)
+        return route.model_copy(update={"total_walk_seconds": 100_000})
+
+    monkeypatch.setattr(selection_module, "summarise_route", drifted_summarise)
+    with pytest.raises(TourabilityRefusedError, match="elapsed-time ceiling after final routing"):
+        select_route(
+            TourInput(start=start, end=end, duration_min=30, city_slug="paris"), snap
+        )
 
 
 def test_phase7_fill_pass_respects_hard_anchor_cap():
@@ -1951,6 +2236,46 @@ def test_keep_final_closing_beat_splices_a_trimmed_callback():
     # coverage-safe: kept + overflow == the full plan, no duplicates, none lost
     assert kept_ids | set(new_ov) == {b.id for b in full.beats}
     assert len(new_kept.beats) + len(new_ov) == len(full.beats)
+
+
+def test_final_long_callback_swaps_within_absolute_cap_without_losing_facts():
+    """The terminal callback is a bounded swap, never an extra-beat overshoot."""
+    from src.tour.routing import planned_audio_seconds
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
+
+    poi = _poi("terminal", tier=5, lat=PDV[0], lng=PDV[1], beat_count=7)
+    body = [
+        BeatRef(
+            id=f"body-{i}",
+            poi_id=poi.id,
+            est_spoken_seconds=40,
+            narrative_function="establishing",
+            active_status="active",
+        )
+        for i in range(6)
+    ]
+    callback = BeatRef(
+        id="long-callback",
+        poi_id=poi.id,
+        est_spoken_seconds=120,
+        narrative_function="callback",
+        active_status="active",
+    )
+    snap = _snap([poi], beats_by_poi={poi.id: [*body, callback]})
+    route = Route(
+        pois=(poi,), transits=(), total_walk_distance_m=0.0, total_walk_seconds=0
+    )
+
+    ((kept, overflow),) = build_poi_beat_plans_capped(
+        route, snap, lenses=None, end_is_none=False
+    )
+    kept_ids = {beat.id for beat in kept.beats}
+
+    assert "long-callback" in kept_ids
+    assert planned_audio_seconds(kept.beats) <= MAX_DWELL_AUDIO_SECONDS
+    assert kept_ids.isdisjoint(overflow)
+    assert kept_ids | set(overflow) == {beat.id for beat in [*body, callback]}
+    assert len(kept.beats) + len(overflow) == len(body) + 1
 
 
 def test_keep_final_closing_beat_is_a_noop_when_nothing_was_trimmed():
