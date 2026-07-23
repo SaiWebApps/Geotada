@@ -4,8 +4,8 @@ Since M0b the endpoint runs the real tour engine (src/tour), whose density
 gate refuses sparse areas (needs >=4 anchor candidates). The conftest test
 instance (port 7688) only carries toy seed data (3 POIs / 5 beats), so these
 tests run against the LIVE local Paris dev graph (port 7687) the way
-tests/test_tour_golden_*.py do — parsing .env read-only (never mutating
-os.environ) and overriding the app's session/driver dependencies.
+tests/test_tour_golden_*.py do—through a separate, localhost-only dev-graph
+profile and overridden app session/driver dependencies.
 
 Unlike the goldens these tests WRITE to the dev graph: a disposable test
 Profile and the Trips/ItineraryItems the endpoint persists. Setup and
@@ -19,8 +19,6 @@ from __future__ import annotations
 
 import pytest
 from fastapi.testclient import TestClient
-from neo4j import GraphDatabase
-from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
@@ -30,7 +28,7 @@ from src.tour.density import TourabilityRefusedError
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_k_routes, select_route
 from tests.conftest import needs_neo4j
-from tests.test_tour_golden_pdv import _parse_env_file  # same .env-read-only pattern
+from tests.live_graph import open_dev_driver
 
 LENSED_PROFILE_ID = "m0b-trip-api-test-profile-lensed"
 NOLENS_PROFILE_ID = "m0b-trip-api-test-profile-nolens"
@@ -48,32 +46,8 @@ ILE_DURATION_MIN = 90
 
 
 def _live_driver():
-    """Driver to the .env Neo4j (port 7687); None if unreachable.
-
-    Bypasses the conftest test-instance fixture so the live Paris corpus is
-    queried, not the toy-seeded test instance.
-    """
-    from pathlib import Path
-    from urllib.parse import urlparse
-
-    project_root = Path(__file__).resolve().parent.parent
-    env = _parse_env_file(project_root / ".env")
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    password = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and password):
-        return None
-    # Unlike the read-only goldens, this module WRITES through the driver.
-    # If .env is in cloud mode (make use-cloud -> Aura), refuse: these tests
-    # may only ever touch the local dev instance.
-    if urlparse(uri).hostname not in ("localhost", "127.0.0.1"):
-        return None
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, password))
-        d.verify_connectivity()
-        return d
-    except (ServiceUnavailable, AuthError, Exception):
-        return None
+    """Open only the localhost:7687 graph; this module writes disposable data."""
+    return open_dev_driver()
 
 
 def _delete_test_artifacts(driver) -> None:
@@ -95,9 +69,9 @@ def live_neo4j():
     d = _live_driver()
     if d is None:
         pytest.skip(
-            "Local Paris dev Neo4j unreachable (or .env points at a non-local "
-            "database — these tests write, so they refuse anything but "
-            "localhost). Start the dev instance with `make db-up`."
+            "Local Paris dev Neo4j unreachable. These tests write disposable "
+            "records and refuse anything but localhost:7687. Run through "
+            "`make test` or `make test-file FILE=tests/test_trip_api.py`."
         )
     yield d
     d.close()

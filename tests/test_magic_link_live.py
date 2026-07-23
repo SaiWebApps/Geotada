@@ -1,7 +1,7 @@
 """Live integration test: magic link email delivery via Resend.
 
 Requires:
-- RESEND_API_KEY set in .env
+- RESEND_API_KEY fetched fresh from Render by ``make test-live``
 - MAGIC_LINK_PROVIDER=resend
 - MAGIC_LINK_FROM_EMAIL set to a verified domain
 - Network access to api.resend.com (proxy bypass configured)
@@ -11,14 +11,12 @@ from __future__ import annotations
 
 import pytest
 
-from src.api.auth.config import MAGIC_LINK_PROVIDER, RESEND_API_KEY
 from src.api.auth.email import EmailDeliveryError, send_magic_link
 from src.api.auth.tokens import create_magic_token
 
 # Live external-service tests: excluded from the default bar via `-m 'not live'`
-# (pyproject addopts). The live shard deselects this provider-specific module
-# when Resend is not configured, avoiding a skip that the suite correctly treats
-# as a failed non-run.
+# (pyproject addopts). The live shard fails collection when Resend is not
+# configured; credentials are never converted into a deselection.
 pytestmark = [pytest.mark.live, pytest.mark.requires_resend]
 
 

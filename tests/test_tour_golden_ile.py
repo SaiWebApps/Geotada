@@ -5,7 +5,7 @@ and runs the live selection → beat_select → generation pipeline against the
 production Paris Neo4j. Guards the established beat-ID overlap baseline while
 reporting the 90% empirical target, plus spine area + validation gates.
 
-Skips gracefully if the production Neo4j (NEO4J_URI in .env) is unreachable.
+Missing populated local dev Neo4j is a hard failure.
 """
 
 from __future__ import annotations
@@ -14,16 +14,15 @@ import json
 from pathlib import Path
 
 import pytest
-from neo4j import GraphDatabase
-from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.generation import generate
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
+from tests.live_graph import open_dev_driver
 
 # Quality-comparison gate against a human-curated ideal tour; excluded from the
-# default `make test` bar (run via `make test-golden`). See pyproject markers.
+# definitive `make test` bar (routed through its internal golden shard).
 pytestmark = pytest.mark.golden
 
 FIXTURE_PATH = (
@@ -33,44 +32,8 @@ OVERLAP_TARGET = 0.90
 OVERLAP_REGRESSION_FLOOR = 20 / 47
 
 
-def _parse_env_file(path: Path) -> dict[str, str]:
-    """Parse a KEY=VALUE .env file without mutating os.environ.
-
-    The conftest fixture sets os.environ to the test Neo4j (port 7688) and
-    wipes that DB. Mutating os.environ here would risk pointing the test
-    driver at the dev DB on port 7687 → disastrous wipe. Stay read-only.
-    """
-    out: dict[str, str] = {}
-    if not path.exists():
-        return out
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k, v = line.split("=", 1)
-        out[k.strip()] = v.strip().strip('"').strip("'")
-    return out
-
-
 def _live_driver():
-    """Driver to the production .env Neo4j (port 7687); None if unreachable.
-
-    Bypasses the conftest test-instance fixture so the live Paris corpus is
-    queried, not the test instance which gets wiped per session.
-    """
-    project_root = Path(__file__).resolve().parent.parent
-    env = _parse_env_file(project_root / ".env")
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    password = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and password):
-        return None
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, password))
-        d.verify_connectivity()
-        return d
-    except (ServiceUnavailable, AuthError, Exception):
-        return None
+    return open_dev_driver()
 
 
 @pytest.fixture(scope="module")

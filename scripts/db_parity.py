@@ -5,7 +5,7 @@ single source of truth; every graph (local dev, test, Aura) is DERIVED from them
 Because those graphs are loaded by hand at different times, they drift silently —
 this is the gate that makes drift LOUD instead of discovered-by-accident.
 
-For every city it compares, against whatever DB ``.env`` points at:
+For every city it compares, against the profile injected by Make:
   - POIs        : name_key set (in-bbox, from poi-raw.json) vs POI nodes
   - beats       : beat_id set (uploadable AND linkable) vs POI-reachable beats
   - areas       : name set (areas.json) vs Area nodes
@@ -17,9 +17,9 @@ can gate a deploy. Repo beats that are blocked (disputed/no-poi) or unlinkable
 correctly absent from the graph.
 
 Usage:
-    make db-parity                 # against the active .env DB (local by default)
+    make db-parity                 # local dev graph
     make db-parity CITY=new_york   # one city
-    make test-cloud                # this, sourced against Aura
+    make db-parity TARGET=cloud    # read-only Aura session
 """
 
 from __future__ import annotations
@@ -29,6 +29,8 @@ import os
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
+
+from neo4j import READ_ACCESS
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -77,9 +79,7 @@ def _expected(slug: str) -> dict:
     beats = _load(ddir / "beats.json")
     uploadable = [b for b in beats if b.get("beat_id") and not _beat_blocked(b)]
     linkable = {b["beat_id"] for b in uploadable if b.get("poi_name") in poi_names}
-    unlinkable = sorted(
-        b["beat_id"] for b in uploadable if b.get("poi_name") not in poi_names
-    )
+    unlinkable = sorted(b["beat_id"] for b in uploadable if b.get("poi_name") not in poi_names)
     blocked = sum(1 for b in beats if b.get("beat_id") and _beat_blocked(b))
 
     areas = _load(ddir / "areas.json")
@@ -104,9 +104,7 @@ def _expected(slug: str) -> dict:
 def _actual(session, slug: str) -> dict:
     q = lambda c, **kw: session.run(c, city=slug, **kw)  # noqa: E731
     poi_keys = {
-        r["k"]
-        for r in q("MATCH (p:POI {city_name:$city}) RETURN p.name_key AS k")
-        if r["k"]
+        r["k"] for r in q("MATCH (p:POI {city_name:$city}) RETURN p.name_key AS k") if r["k"]
     }
     beat_ids = {
         r["b"]
@@ -115,9 +113,7 @@ def _actual(session, slug: str) -> dict:
             "WHERE b.beat_id IS NOT NULL RETURN DISTINCT b.beat_id AS b"
         )
     }
-    area_names = {
-        r["n"] for r in q("MATCH (a:Area {city_name:$city}) RETURN a.name AS n")
-    }
+    area_names = {r["n"] for r in q("MATCH (a:Area {city_name:$city}) RETURN a.name AS n")}
     p2a = {
         (r["p"], r["a"])
         for r in q(
@@ -153,18 +149,24 @@ def main() -> int:
     host = urlparse(os.getenv("NEO4J_URI", "")).hostname or ""
     is_local = host in ("localhost", "127.0.0.1", "::1")
     label = "local" if is_local else f"cloud ({host})"
-    print(f"\n{'='*66}\n  DB PARITY — repo (source of truth) vs [{label}]\n{'='*66}")
+    print(f"\n{'=' * 66}\n  DB PARITY — repo (source of truth) vs [{label}]\n{'=' * 66}")
     registry = load_registry()
     total_drift: dict[str, list] = {}
-    with d.session(database=db) as s:
+    session_kwargs = {"database": db}
+    if not is_local:
+        # Aura parity is structurally read-only even if the configured service
+        # account has broader privileges. No pytest fixture ever receives Aura
+        # credentials, and this session is routed in READ mode.
+        session_kwargs["default_access_mode"] = READ_ACCESS
+    with d.session(**session_kwargs) as s:
         for slug in cities:
             # On a CLOUD target, a city onboarded + uploaded LOCALLY but not yet
             # deployed to Aura (cloud_deployed:false) is legitimately absent from
             # the cloud graph — skip it so it does not read as drift and turn
-            # `make test-cloud` RED. Local targets check every city as before.
+            # cloud parity RED. Local targets check every city as before.
             if not is_local and not registry.get(slug, {}).get("cloud_deployed", True):
                 print(f"\n  {slug}:")
-                print("    [SKIP] local-only (cloud_deployed:false) — not yet deployed to Aura")
+                print("    [N/A ] local-only (cloud_deployed:false)—outside the Aura contract")
                 continue
             exp, act = _expected(slug), _actual(s, slug)
             print(f"\n  {slug}:")
@@ -173,7 +175,10 @@ def main() -> int:
             _cmp("beats (beat_id)", exp["beat_ids"], act["beat_ids"], drift)
             _cmp("areas (name)", exp["area_names"], act["area_names"], drift)
             _cmp(
-                "POI->Area edges", exp["p2a"], act["p2a"], drift,
+                "POI->Area edges",
+                exp["p2a"],
+                act["p2a"],
+                drift,
                 sample=lambda t: f"{t[0]} -> {t[1]}",
             )
             if exp["blocked"] or exp["unlinkable"]:
@@ -184,15 +189,15 @@ def main() -> int:
             if drift:
                 total_drift[slug] = drift
     d.close()
-    print(f"\n{'='*66}")
+    print(f"\n{'=' * 66}")
     if total_drift:
         print("  PARITY FAIL — drift detected:")
         for slug, ds in total_drift.items():
             print(f"    {slug}: {', '.join(ds)}")
-        print(f"{'='*66}\n")
+        print(f"{'=' * 66}\n")
         return 1
     print("  PARITY OK — every city matches the repo source of truth.")
-    print(f"{'='*66}\n")
+    print(f"{'=' * 66}\n")
     return 0
 
 

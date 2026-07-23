@@ -26,17 +26,12 @@ git clone <repo-url> && cd ondoway
 ### 2. Bootstrap everything
 
 ```bash
-make all
+make bootstrap
 ```
 
-This single command runs the full pipeline:
-
-1. **`make venv`** — Creates a Python virtual environment at `.venv/`
-2. **`make env`** — Copies `.env.example` to `.env` (won't overwrite an existing `.env`)
-3. **`make install`** — Installs Python dependencies into the venv
-4. **`make db-up`** — Pulls the Neo4j 5 Docker image and starts it on ports 7474 (browser) and 7687 (Bolt)
-5. **`make setup`** — Applies the graph schema (constraints + indexes), seeds test data, and verifies traversals
-6. **`make test`** — Runs every local, Flutter, browser, tour, live, and cloud test
+This installs dependencies, starts the three isolated local Neo4j services and
+Valhalla, and additively provisions the committed city data. It never touches
+Aura.
 
 If any step fails, see [Troubleshooting](Docs/Markdown%20Docs/TROUBLESHOOTING.md).
 
@@ -52,13 +47,12 @@ Then open:
 - **API docs (Swagger)**: http://localhost:8000/docs — interactive API explorer
 - **Read-only dashboard**: run `make dashboard` for a dashboard at http://localhost:8080
 
-### 4. (Optional) Activate the venv for manual commands
+### 4. Configure Render access
 
-All `make` targets use the venv automatically. To run Python commands directly:
-
-```bash
-source .venv/bin/activate
-```
+Commands that need provider credentials fetch the complete current Render
+environment on every run. Store the API key once with `make render-auth-setup`
+and verify it with `make config-status`. Secrets are not copied into project
+files.
 
 ## Documentation
 
@@ -74,21 +68,21 @@ source .venv/bin/activate
 
 | Command                 | Description                                      |
 |-------------------------|--------------------------------------------------|
-| `make all`              | Full bootstrap: venv + install + db + setup + test |
-| `make install`          | Install dependencies (creates venv + .env)       |
-| `make db-up`            | Start Neo4j in Docker                            |
-| `make db-down`          | Stop Neo4j                                       |
+| `make bootstrap`        | Provision a complete local development environment |
+| `make sync`             | Install Python dependencies                      |
+| `make db-up DB=dev`     | Start dev Neo4j on 7687                          |
+| `make db-up DB=test`    | Start test Neo4j on 7688                         |
+| `make db-up DB=workbench` | Start workbench Neo4j on 7689                 |
+| `make db-down DB=...`   | Stop one selected local Neo4j                    |
 | `make db-status`        | Check Neo4j container status                     |
-| `make db-reset`         | Stop Neo4j and wipe all data                     |
-| `make setup`            | Full pipeline: schema + seed + verify            |
+| `make db-reset DB=...`  | Delete only one selected local database volume   |
 | `make test`             | Run every test shard (the definitive executor)   |
-| `make test-unit`        | Run unit tests (no Neo4j needed)                 |
-| `make test-integration` | Run integration tests (needs Neo4j)              |
+| `make test-file FILE=...` | Run one focused test file safely               |
+| `make test-live`        | Run the standalone live-provider shard           |
 | `make api`              | Start FastAPI on port 8000                       |
 | `make dashboard`        | Start read-only dashboard on port 8080           |
 | `make lint`             | Run ruff linter                                  |
 | `make format`           | Auto-format code                                 |
-| `make clean-db`         | Wipe all nodes and relationships                 |
 | `make help`             | Show all available commands                      |
 
 ## Project Structure

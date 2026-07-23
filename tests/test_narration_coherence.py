@@ -6,18 +6,15 @@ cold-open, closes with closing glue, each stop carries beat narration, and the
 validation gate passes. Catches stitcher regressions (dropped sentences, empty
 or glue-only stops, missing open/close) WITHOUT mobile or a human listen.
 
-Live-graph, golden-style (excluded from the hermetic `make test`; run via
-`make test-golden`). Skips gracefully if the dev Neo4j is unreachable.
+Live-graph, golden-style, routed through the internal golden shard in
+``make test``. Missing dev Neo4j is a failure.
 """
 
 from __future__ import annotations
 
 from collections import Counter
-from pathlib import Path
 
 import pytest
-from neo4j import GraphDatabase
-from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, TourInput
@@ -25,39 +22,13 @@ from src.tour.generation import GLUE_CLOSING, generate
 from src.tour.render_md import stop_narration_text
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
+from tests.live_graph import open_dev_driver
 
 pytestmark = pytest.mark.golden
 
 
-def _parse_env_file(path: Path) -> dict[str, str]:
-    """Read KEY=VALUE from .env WITHOUT mutating os.environ (the conftest fixture
-    points os.environ at the test instance 7688; we must query the dev graph 7687
-    read-only and never risk pointing a wipe at it)."""
-    out: dict[str, str] = {}
-    if not path.exists():
-        return out
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k, v = line.split("=", 1)
-        out[k.strip()] = v.strip().strip('"').strip("'")
-    return out
-
-
 def _live_driver():
-    env = _parse_env_file(Path(__file__).resolve().parent.parent / ".env")
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    pw = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and pw):
-        return None
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, pw))
-        d.verify_connectivity()
-        return d
-    except (ServiceUnavailable, AuthError, Exception):
-        return None
+    return open_dev_driver()
 
 
 @pytest.fixture(scope="module")

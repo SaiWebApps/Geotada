@@ -56,7 +56,7 @@ line-length = 100
 select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "RUF"]
 ignore = [
     "B008",    # Depends() in FastAPI defaults is the correct pattern
-    "E402",    # conftest.py must load .env.test before imports
+    "E402",    # conftest.py must pin/scrub process env before imports
     "E741",    # `l` for Lens in Cypher queries is clear in context
 ]
 
@@ -65,13 +65,25 @@ ignore = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# Selection for the hermetic `test-local` shard. The definitive `make test`
-# executor runs every routed category below through its environment-specific target.
-addopts = "--ignore=tests/test_workbench_ui.py -m 'not live and not golden and not grade and not invariants'"
+# Dedicated files are ignored—not marker-deselected—in the hermetic Python
+# shard. `make test` runs each explicit manifest through its own target.
+addopts = """
+--ignore=tests/test_workbench_ui.py
+--ignore=tests/test_audio_functional.py
+--ignore=tests/test_audio_says_story.py
+--ignore=tests/test_magic_link_live.py
+--ignore=tests/test_tour_compose_live.py
+--ignore=tests/test_narration_coherence.py
+--ignore=tests/test_tour_golden_ile.py
+--ignore=tests/test_tour_golden_pdv.py
+--ignore=tests/test_tour_audit.py
+--ignore=tests/test_tour_grade.py
+--ignore=tests/test_tour_invariants_live.py
+"""
 markers = [
     "live: hits live external services with real credentials; routed by `make test` through `make test-live`.",
     "requires_resend: live test that requires MAGIC_LINK_PROVIDER=resend and RESEND_API_KEY.",
-    "golden: compares live dev-graph tours with the human-curated targets; routed by `make test` through `make test-golden`.",
-    "grade: scores live dev-graph golden tours against GRADE_BASELINE; routed by `make test` through `make tour-grade`.",
-    "invariants: generates live dev-graph tours and checks customer-facing regression invariants; routed by `make test` through `make tour-invariants`.",
+    "golden: compares live dev-graph tours with the human-curated targets; routed internally by `make test`.",
+    "grade: scores live dev-graph golden tours against GRADE_BASELINE; routed internally by `make test`.",
+    "invariants: generates live dev-graph tours and checks customer-facing regression invariants; routed internally by `make test`.",
 ]

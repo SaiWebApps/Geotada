@@ -1,8 +1,7 @@
 """Ondoway Neo4j setup — create schema, seed data, verify traversals.
 
 Usage:
-    make setup          # full setup + seed + verify
-    make verify         # verify only (no schema changes)
+    make bootstrap      # provisions local schema, seed, and committed city data
 """
 
 from __future__ import annotations

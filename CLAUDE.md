@@ -175,16 +175,16 @@ After cherry-picking from a worktree: immediately remove the worktree directory,
 ## Test Infrastructure
 
 ```bash
-make test          # THE definitive executor — every test shard, including live/cloud
-make test-unit     # Python unit only (for quick iteration, NOT the bar)
-make test-local    # Python against local Docker Neo4j (port 7688)
-make test-cloud    # Focused read-only Aura parity shard (also in make test)
-make flutter-test  # Flutter (headless Chrome, foreground only)
-make flutter-ios   # Launch on iOS simulator
-make db-test-up    # Start test Neo4j (port 7688)
-make db-up         # Start dev Neo4j (port 7687)
-make db-workbench-up  # Start workbench Neo4j (port 7689 — test-workbench/api-test only)
-make test-workbench   # Focused Playwright shard on dedicated 7689 (also in make test)
+make test                         # THE definitive executor — every shard
+make test-file FILE=tests/test_x.py
+make test-live                    # Standalone live-provider shard
+make test-workbench               # Standalone Playwright shard on 7689
+make flutter-test
+make flutter-ios
+make db-up DB=dev                 # 7687
+make db-up DB=test                # 7688
+make db-up DB=workbench           # 7689
+make db-parity TARGET=cloud       # Read-only Aura parity
 ```
 
 `make test` runs, in order: local pytest, Flutter, workbench browser, golden tours,
@@ -196,13 +196,23 @@ The definitive suite starts each required local service through its shard target
 
 **Isolation invariant (2026-07-02):** the workbench Playwright suite runs ONLY against the dedicated 7689 instance and pre-wipes it each run. It must never point at 7688: the pytest suite full-wipes 7688 per-module, so any suite asserting exact DB state there is broken by residue or by a concurrent `make test`. Concurrent `make test-workbench` runs are unsupported (:8001 must be free; the suite fails fast).
 
-**Common issue:** Tests skip unexpectedly → stale `__pycache__` caches a False result for `_neo4j_available()`. Fix: `make test-local` (clears cache automatically) or manually `find tests src -name __pycache__ -exec rm -rf {} +`.
+Skips and credential-based deselections are test failures. The supported test
+targets clear stale Python caches before collection.
 
 ## Config Layering
 
-Precedence: shell environment → process environment → `load_dotenv()` → defaults.
+Make owns configuration. Never source or copy `.env*` files. Local non-secret
+profiles are committed under `config/profiles/`. Targets that need credentials
+fetch the complete Render service environment fresh for each process and then
+atomically overlay the exact local profile.
 
-Shell env vars override `.env` file values. Changing `.env.test` alone does not help if the shell already has a stale export. `pytest.mark.skipif` conditions are cached in `.pyc` files — changing .env.test does NOT re-evaluate them without clearing `__pycache__`.
+The Render API key is stored in macOS Keychain under service
+`ondoway-render-api-key`, label `ondoway-dev`. Use `make render-auth-status` to
+validate it or `make render-auth-setup` to replace it.
+
+Aura is never passed to pytest and cannot be selected by `db-reset`. Cloud
+parity is read-only. A cloud data write requires both `TARGET=cloud` and
+`CONFIRM_CLOUD_WRITE=1`.
 
 ## Python Dependency Index (regular vs Apple)
 
@@ -227,7 +237,7 @@ The project pins **public PyPI** as the default index in `pyproject.toml` (`[[to
 - **Imports:** isort order. No unused (F401). No `import *` (F403).
 - **Modern Python (UP):** `dict` not `Dict`, `list` not `List`, `X | None` not `Optional[X]`, f-strings not `.format()`.
 - **Bugbear (B):** No mutable default args, no bare `except:`, no `assert` outside tests.
-- **Ignored:** B008 (FastAPI `Depends()`), E402 (conftest env loading), E741 (`l` for Lens in Cypher).
+- **Ignored:** B008 (FastAPI `Depends()`), E402 (conftest import ordering), E741 (`l` for Lens in Cypher).
 
 ## Deployment
 

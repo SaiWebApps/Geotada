@@ -13,9 +13,9 @@ Steps:
                                                script starts and always stops)
   3. Parity         <- scripts.db_parity      (repo vs graph; non-zero on drift)
 
-Target selection follows .env exactly like every other tool:
-  make deploy CITY=x         -> active graph (local by default)
-  make deploy-cloud CITY=x   -> Aura (.env.cloud sourced + --allow-cloud)
+Target selection is owned by Make:
+  make deploy CITY=x
+  make deploy CITY=x TARGET=cloud CONFIRM_CLOUD_WRITE=1
 """
 
 from __future__ import annotations

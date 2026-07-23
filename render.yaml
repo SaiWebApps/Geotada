@@ -26,6 +26,15 @@ services:
         sync: false
       - key: NEO4J_DATABASE
         sync: false
+      # Aura control-plane credentials are fetched by the local test runner only
+      # when a read-only cloud check needs to wake a paused instance. They are
+      # never used by a destructive pytest fixture.
+      - key: AURA_CLIENT_ID
+        sync: false
+      - key: AURA_CLIENT_SECRET
+        sync: false
+      - key: AURA_INSTANCE_ID
+        sync: false
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: MAGIC_LINK_SECRET_KEY

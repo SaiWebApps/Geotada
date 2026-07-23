@@ -8,10 +8,6 @@ import sys
 import time
 from collections.abc import Callable
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 # Minimum acceptable length (in characters) for HS256 signing secrets. A short
 # or empty secret makes JWTs trivially forgeable; render.yaml provisions these
 # with generateValue:true, which is comfortably longer than this floor.

@@ -8,7 +8,7 @@ for the duration of the module.
 Usage:
     make test-workbench   # starts the workbench Neo4j container automatically
 
-Requires: playwright, pytest, workbench Neo4j (`make db-workbench-up`)
+Requires: Playwright and pytest; ``make test-workbench`` provisions Neo4j 7689.
 """
 
 from __future__ import annotations
@@ -98,7 +98,7 @@ DUP_INPUT = 'input[data-dup-idx="{}"]'
 WORKBENCH_API_PORT = 8001
 API_BASE = f"http://localhost:{WORKBENCH_API_PORT}/api/v1"
 # The ONLY Neo4j this suite may touch: the DEDICATED workbench instance
-# (docker service neo4j-workbench, `make db-workbench-up`). Deliberately NOT
+# (docker service neo4j-workbench, ``make db-up DB=workbench``). Deliberately NOT
 # the shared test DB (7688): the pytest suite full-wipes 7688 per-module
 # (conftest._wipe, test_seed/test_traversals autouse fixtures), so a concurrent
 # `make test` deletes any seeds this suite plants there mid-run — no naming
@@ -107,7 +107,7 @@ API_BASE = f"http://localhost:{WORKBENCH_API_PORT}/api/v1"
 # session's data if it pointed at 7688. The api_server fixture starts uvicorn
 # with NEO4J_URI pinned to the literal below and /healthz-verifies the running
 # server; the guard and the wipe both derive from this ONE literal, never from
-# os.environ (conftest pins the pytest process env to 7688 via .env.test, so an
+# os.environ (the test profile pins the pytest process to 7688, so an
 # env-derived guard would misfire).
 WORKBENCH_NEO4J_PORT = 7689
 WORKBENCH_NEO4J_URI = f"bolt://localhost:{WORKBENCH_NEO4J_PORT}"
@@ -504,7 +504,7 @@ def _assert_server_is_workbench_db(api_base: str, *, source: str, retries: int =
             f"API on :{WORKBENCH_API_PORT} ({source}) points at the workbench port "
             f"{WORKBENCH_NEO4J_PORT} but reports neo4j_connected="
             f"{data.get('neo4j_connected')!r} — the workbench Neo4j is not answering. "
-            f"Start it with `make db-workbench-up`, then re-run `make test-workbench`."
+            f"Start it with `make db-up DB=workbench`, then re-run `make test-workbench`."
         )
 
 
@@ -518,8 +518,7 @@ def api_server():
     would let two concurrent test-workbench runs DETACH-DELETE each other's
     seeds mid-run (the exact cross-run interference class this suite's dedicated
     DB exists to kill). The uvicorn subprocess gets NEO4J_* pinned explicitly to
-    the workbench literals (src.connection's plain load_dotenv() never overrides
-    a set env var, so the pin survives the subprocess's import-time dotenv), and
+    the workbench literals, independent of the parent test profile, and
     /healthz must then prove it is live on 7689 before any seeding.
     """
     if _port_open("127.0.0.1", WORKBENCH_API_PORT):
@@ -616,7 +615,7 @@ def _wipe_workbench_db() -> None:
     into this run's exact-count or proximity assertions. The connection and the
     guard both derive from the WORKBENCH_NEO4J_URI literal — never os.environ
     and never src.connection.create_driver(), because conftest pins the pytest
-    process env to the SHARED test DB (7688) via .env.test, and wiping that
+    process env to the SHARED test DB (7688) via the test profile, and wiping that
     instance would destroy a concurrent `make test` session's data.
     """
     port = urllib.parse.urlparse(WORKBENCH_NEO4J_URI).port
@@ -924,7 +923,7 @@ class TestApiServerGuard:
         # a message that names the fix, instead of generic seeding errors.
         server, base = _stub_healthz_server(WORKBENCH_NEO4J_PORT, connected=False)
         try:
-            with pytest.raises(RuntimeError, match="db-workbench-up"):
+            with pytest.raises(RuntimeError, match="db-up DB=workbench"):
                 _assert_server_is_workbench_db(base, source="managed")
         finally:
             server.shutdown()

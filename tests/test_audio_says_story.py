@@ -10,22 +10,17 @@ not just an isolated beat — is faithfully voiced end-to-end.
 Distinct from ``test_audio_functional.py`` (which voices isolated seed beats): this
 is the TOUR-level gate over real-corpus stitched narration.
 
-Live (OpenAI TTS + Whisper, ~cents/run) AND live-graph. Marked ``live`` (excluded
-from the hermetic ``make test``). Run via ``make tour-audio-gate`` (brings up the dev
-graph + shows the per-stop WER). The precondition guards below ``pytest.skip`` — which
-the conftest skip->fail policy turns into a loud FAILURE — so a missing key/graph never
-passes silently; in the intended run env (key in .env, graph up) they never fire.
+Live (OpenAI TTS + Whisper, ~cents/run) AND live-graph. Marked ``live`` and run
+through ``make test-live`` (also part of ``make test``). Missing Render
+credentials, provider access, or local graph data are hard failures.
 """
 
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
 import httpx
 import pytest
-from neo4j import GraphDatabase
-from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from src.audio.eval import evaluate
 from src.audio.provider import get_provider
@@ -35,6 +30,7 @@ from src.tour.generation import generate
 from src.tour.render_md import stop_narration_text
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
+from tests.live_graph import open_dev_driver
 
 pytestmark = pytest.mark.live
 
@@ -44,43 +40,6 @@ WER_THRESHOLD = 0.15
 
 # Bound the live spend: voice only the first N stops (~cents/run at this size).
 SAMPLE_STOPS = 3
-
-ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
-
-
-def _parse_env_file(path: Path) -> dict[str, str]:
-    """Read KEY=VALUE from .env WITHOUT mutating os.environ.
-
-    The conftest fixture points os.environ at the TEST instance (7688); we must
-    read the dev graph (7687) and the real OPENAI_API_KEY straight from .env so we
-    never risk pointing a wipe at the dev data, and so the live key (absent from
-    .env.test) is available.
-    """
-    out: dict[str, str] = {}
-    if not path.exists():
-        return out
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k, v = line.split("=", 1)
-        out[k.strip()] = v.strip().strip('"').strip("'")
-    return out
-
-
-def _live_driver(env: dict[str, str]):
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    pw = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and pw):
-        return None
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, pw))
-        d.verify_connectivity()
-        return d
-    except (ServiceUnavailable, AuthError, Exception):
-        return None
-
 
 def _openai_reachable() -> bool:
     """Can we reach the OpenAI API (key set + network/proxy clear)?"""
@@ -98,49 +57,34 @@ def _openai_reachable() -> bool:
 
 @pytest.fixture(scope="module")
 def voiced_tour():
-    """Generate a real Paris tour's per-stop narration; ensure the OpenAI key is set.
+    """Generate a real Paris tour using the Make-injected environment."""
+    if not os.getenv("OPENAI_API_KEY"):
+        pytest.fail("OPENAI_API_KEY missing from fresh Render environment")
+    if not _openai_reachable():
+        pytest.fail("OpenAI API unreachable—check Render credential/network")
 
-    Reads the key from .env and installs it in os.environ for the provider + eval
-    (both read ``os.getenv("OPENAI_API_KEY")`` internally), restoring it after.
-    """
-    env = _parse_env_file(ENV_PATH)
-    api_key = env.get("OPENAI_API_KEY", "")
-    if not api_key:
-        pytest.skip("OPENAI_API_KEY not in .env — needed for live TTS + Whisper.")
-
-    prev = os.environ.get("OPENAI_API_KEY")
-    os.environ["OPENAI_API_KEY"] = api_key
+    driver = open_dev_driver()
+    if driver is None:
+        pytest.fail("Local dev Neo4j (7687) unreachable after live-test provisioning")
     try:
-        if not _openai_reachable():
-            pytest.skip("OpenAI API unreachable — check OPENAI_API_KEY / proxy.")
-
-        driver = _live_driver(env)
-        if driver is None:
-            pytest.skip("Live Paris Neo4j (7687) unreachable — start it with `make db-up`.")
-        try:
-            snapshot = load_paris_corpus(driver, city_slug="paris")
-        finally:
-            driver.close()
-
-        tour_input = TourInput(
-            start=(48.852966, 2.349902),  # Notre-Dame / Île de la Cité (dense)
-            duration_min=60,
-            city_slug="paris",
-            lenses=["historic_arch"],
-        )
-        with RoutingClient() as rc:
-            route = select_route(tour_input, snapshot, routing_client=rc)
-        assert route.pois, "expected a tourable route from a dense central-Paris start"
-
-        plans = [select_poi_beats(p, snapshot.beats_for(p.id)) for p in route.pois]
-        script = generate(BeatSequence(poi_beats=tuple(plans)), route, tour_input)
-        per_stop = stop_narration_text(script)
-        yield per_stop, route
+        snapshot = load_paris_corpus(driver, city_slug="paris")
     finally:
-        if prev is None:
-            os.environ.pop("OPENAI_API_KEY", None)
-        else:
-            os.environ["OPENAI_API_KEY"] = prev
+        driver.close()
+
+    tour_input = TourInput(
+        start=(48.852966, 2.349902),  # Notre-Dame / Île de la Cité (dense)
+        duration_min=60,
+        city_slug="paris",
+        lenses=["historic_arch"],
+    )
+    with RoutingClient() as rc:
+        route = select_route(tour_input, snapshot, routing_client=rc)
+    assert route.pois, "expected a tourable route from a dense central-Paris start"
+
+    plans = [select_poi_beats(p, snapshot.beats_for(p.id)) for p in route.pois]
+    script = generate(BeatSequence(poi_beats=tuple(plans)), route, tour_input)
+    per_stop = stop_narration_text(script)
+    yield per_stop, route
 
 
 def test_stitched_stop_audio_says_the_story(voiced_tour):

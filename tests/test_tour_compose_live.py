@@ -1,20 +1,17 @@
-"""Phase 4 Step 4.5 — the LIVE compose gate (`make tour-compose-gate`).
+"""Phase 4 Step 4.5—the LIVE compose gate (``make test-live``).
 
 Generates a real Paris tour from the dev graph (7687), stitches it, then runs
 the REAL fire-once Anthropic compose behind the M7 gate with the REAL
 HaikuFaithfulnessChecker (never the Mock — the gate must have teeth). Live
-Anthropic key required; excluded from the hermetic ``make test``.
+Anthropic key required; fetched fresh from Render by the definitive suite.
 """
 
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
 import httpx
 import pytest
-from neo4j import GraphDatabase
-from neo4j.exceptions import AuthError, ServiceUnavailable
 
 from src.tour.beat_select import select_poi_beats
 from src.tour.compose import AnthropicComposeClient, compose_script
@@ -25,43 +22,13 @@ from src.tour.render_md import stop_narration_text
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
 from src.tour.verify import HaikuFaithfulnessChecker
+from tests.live_graph import open_dev_driver
 
 pytestmark = pytest.mark.live
-
-ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 
 # Bound the live spend: a modest tour → one Opus compose + one Haiku
 # entailment call per beat-cited sentence.
 TOUR_DURATION_MIN = 45
-
-
-def _parse_env_file(path: Path) -> dict[str, str]:
-    """Read KEY=VALUE from .env WITHOUT mutating os.environ (the conftest
-    fixture points os.environ at the TEST instance; the gate reads dev)."""
-    out: dict[str, str] = {}
-    if not path.exists():
-        return out
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k, v = line.split("=", 1)
-        out[k.strip()] = v.strip().strip('"').strip("'")
-    return out
-
-
-def _live_driver(env: dict[str, str]):
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    pw = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and pw):
-        return None
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, pw))
-        d.verify_connectivity()
-        return d
-    except (ServiceUnavailable, AuthError, Exception):
-        return None
 
 
 def _anthropic_reachable() -> bool:
@@ -76,19 +43,18 @@ def _anthropic_reachable() -> bool:
 
 
 def test_live_compose_gate_serves_verified_or_refuses_safely():
-    env = _parse_env_file(ENV_PATH)
-    api_key = env.get("ANTHROPIC_API_KEY", "")
+    api_key = os.getenv("ANTHROPIC_API_KEY", "")
     if not api_key:
-        pytest.skip("ANTHROPIC_API_KEY not in .env — needed for the live compose.")
+        pytest.fail("ANTHROPIC_API_KEY missing from fresh Render environment")
 
     prev = os.environ.get("ANTHROPIC_API_KEY")
     os.environ["ANTHROPIC_API_KEY"] = api_key
     try:
         if not _anthropic_reachable():
-            pytest.skip("Anthropic API unreachable — check ANTHROPIC_API_KEY / proxy.")
-        driver = _live_driver(env)
+            pytest.fail("Anthropic API unreachable—check Render credential/network")
+        driver = open_dev_driver()
         if driver is None:
-            pytest.skip("Live Paris Neo4j (7687) unreachable — start it with `make db-up`.")
+            pytest.fail("Local dev Neo4j (7687) unreachable after live-test provisioning")
         try:
             snapshot = load_paris_corpus(driver, city_slug="paris")
         finally:

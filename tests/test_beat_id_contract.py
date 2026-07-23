@@ -10,7 +10,7 @@ Red-first: against the pre-fix code, `test_crud_ignores_supplied_id` returns
 the caller's id (MERGE branch) and `test_crud_supplied_id_never_upserts`
 upserts onto a single node instead of creating two.
 
-Requires a running Neo4j instance (port 7688 — `make db-test-up`).
+Requires test Neo4j on port 7688; the owning Make target starts it.
 """
 
 from __future__ import annotations

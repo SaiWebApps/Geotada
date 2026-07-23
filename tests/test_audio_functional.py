@@ -1,12 +1,10 @@
 """Functional smoke tests — real OpenAI TTS + Whisper round-trip.
 
 These tests hit live APIs and cost ~$0.02 per run.
-They are SKIPPED automatically when:
-  - OPENAI_API_KEY is not set
-  - OpenAI API is unreachable (corporate proxy, no internet)
+Missing credentials, exhausted quota, or an unreachable API are hard failures.
 
-Run explicitly (off VPN/proxy):
-    make test-functional
+Run explicitly with a fresh Render environment:
+    make test-live
 """
 
 from __future__ import annotations
@@ -21,8 +19,8 @@ from src.audio.provider import get_provider
 from src.seed.narratives import BEATS
 
 # This module makes real paid OpenAI TTS and transcription calls.  The repository's
-# default test bar excludes the ``live`` marker; keeping the marker at module scope
-# prevents a configured developer machine from spending money during ``make test``.
+# hermetic Python shard excludes the ``live`` marker; ``make test`` routes the
+# module through the explicit live shard.
 pytestmark = pytest.mark.live
 
 
@@ -52,9 +50,10 @@ def _openai_reachable() -> bool:
 def _require_explicit_live_openai() -> None:
     """Probe only when live test execution starts, never during collection."""
     if os.getenv("ONDOWAY_LIVE_TESTS") != "1":
-        pytest.fail("use `make test-functional` to authorize live OpenAI calls")
+        pytest.fail("use `make test-live` to authorize live OpenAI calls")
     if not _openai_reachable():
         pytest.fail("OpenAI API is unreachable or OPENAI_API_KEY is unset")
+
 
 # Extract scripts from seed data
 SCRIPTS = [beat["script_body"] for beat in BEATS]

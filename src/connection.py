@@ -11,7 +11,6 @@ import sys
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
-from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from neo4j.exceptions import AuthError, ServiceUnavailable
 
@@ -19,8 +18,6 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
     from neo4j import Driver
-
-load_dotenv()
 
 
 class Neo4jConnectionError(RuntimeError):
@@ -43,7 +40,7 @@ def _read_env() -> tuple[str, str, str]:
     if missing:
         raise Neo4jConnectionError(
             f"Missing environment variables: {', '.join(missing)}. "
-            "Copy .env.example to .env and fill in your credentials."
+            "Run the command through its Make target so the validated profile is injected."
         )
     return uri, user, password
 
@@ -84,7 +81,7 @@ def create_driver(*, verify: bool = True) -> Driver:
     except AuthError as exc:
         raise Neo4jConnectionError(
             f"Authentication failed for user '{user}' at {uri}.\n"
-            "  Check NEO4J_USER and NEO4J_PASSWORD in your .env file.\n"
+            "  Run `make config-status` and retry through the owning Make target.\n"
             f"  Original error: {exc}"
         ) from exc
 

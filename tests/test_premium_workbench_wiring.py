@@ -37,6 +37,9 @@ def test_batch_policy_delegates_to_the_shared_policy_factory() -> None:
 
 def test_manual_workbench_starts_routing_and_authorizes_paid_preview() -> None:
     makefile = (ROOT / "Makefile").read_text()
-    assert "workbench: db-up valhalla-up" in makefile
+    target = makefile.split("\nworkbench:", 1)[1].split("\n\ndashboard:", 1)[0]
+    assert "_ensure-dev-data" in target
+    assert "valhalla-up" in target
+    assert "$(RENDER_LOCAL_EXEC)" in target
     script = (ROOT / "scripts" / "workbench.sh").read_text()
     assert "ONDOWAY_ENABLE_PAID_LLM_CALLS=1" in script

@@ -118,7 +118,7 @@ def get_compose_client() -> ComposeClient:
     ``COMPOSE_PROVIDER=openai`` (the Opus-vs-ChatGPT writing comparison). There is
     NO 'mock' provider in the product: a customer/comparison must never be served
     the deterministic stitcher passthrough as if it were the narrator. Opus needs
-    ANTHROPIC_API_KEY; ChatGPT needs OPENAI_API_KEY (both in .env locally, Render for
+    ANTHROPIC_API_KEY; ChatGPT needs OPENAI_API_KEY (both injected from Render for
     prod). The hermetic test suite NEVER reaches these live clients —
     ``tests/conftest.py`` patches BOTH ``AnthropicComposeClient`` and
     ``OpenAIComposeClient`` to offline stubs for the whole (non-``live``) bar, so

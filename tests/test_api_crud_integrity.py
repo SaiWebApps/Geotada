@@ -3,7 +3,7 @@
 Each test class targets one confirmed defect in src/api/crud/{nodes,edges}.py.
 All are red-first: they fail against the pre-fix code and pass after the fix.
 
-Requires a running Neo4j instance (port 7688 — `make db-test-up`).
+Requires test Neo4j on port 7688; the owning Make target starts it.
 Uses the module-scoped `client` fixture from conftest (clean DB, no seed).
 """
 

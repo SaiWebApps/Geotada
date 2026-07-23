@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Literal, Mapping, TypedDict
 
-from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from scripts.tour_batch_candidate import DEFAULT_OUTPUT_ROOT, MANIFEST_PATH, _batch_plan
@@ -1012,7 +1011,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--review-root", type=Path, default=DEFAULT_REVIEW_ROOT)
     parser.add_argument("--calibration-reuse-root", type=Path, default=LEGACY_REVIEW_ROOT)
     args = parser.parse_args(argv)
-    load_dotenv(ROOT / ".env", override=False)
     context = build_provider_free_review_context(batch_root=args.batch_root)
     if not args.live:
         print(_canonical_bytes(context.review_plan).decode("utf-8"))

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ast
+import re
 import runpy
 import urllib.request
 from pathlib import Path
@@ -60,7 +61,7 @@ def test_audio_functional_collection_never_probes_the_network(
 
 
 def test_default_conftest_scrubs_paid_keys_before_importing_the_api() -> None:
-    """Collection-time imports cannot reload real keys from root ``.env``."""
+    """Collection-time imports cannot retain paid credentials."""
     source = (REPO / "tests" / "conftest.py").read_text(encoding="utf-8")
     scrub = source.index('os.environ[_paid_key] = ""')
     api_import = source.index("from src.api.app import create_app")
@@ -75,19 +76,16 @@ def test_default_conftest_scrubs_paid_keys_before_importing_the_api() -> None:
         assert f'"{key}"' in source[:api_import]
 
 
-def test_makefile_live_targets_enable_live_collection() -> None:
+def test_makefile_live_target_fetches_render_and_enables_live_collection() -> None:
     source = (REPO / "Makefile").read_text(encoding="utf-8")
-    functional = source.split("test-functional:", 1)[1].split("\n\n", 1)[0]
     live = source.split("test-live:", 1)[1].split("\n\n", 1)[0]
-    audio_gate = source.split("tour-audio-gate:", 1)[1].split("\n\n", 1)[0]
-    compose_gate = source.split("tour-compose-gate:", 1)[1].split("\n\n", 1)[0]
 
-    for target in (functional, live, audio_gate, compose_gate):
-        assert "ONDOWAY_LIVE_TESTS=1" in target
-        assert "-o addopts=" in target
-        assert "-m live" in target
+    assert "$(RENDER_TEST_EXEC)" in live
+    assert "$(LIVE_TEST_FILES)" in live
+    assert "ONDOWAY_LIVE_TESTS=1" in live
+    assert "-o addopts=" in live
+    assert "-m live" in live
     assert "ONDOWAY_ENABLE_PAID_LLM_CALLS=1" in live
-    assert "ONDOWAY_ENABLE_PAID_LLM_CALLS=1" in compose_gate
 
 
 def test_make_test_is_the_only_exhaustive_executor() -> None:
@@ -95,15 +93,71 @@ def test_make_test_is_the_only_exhaustive_executor() -> None:
     test_target = source.split("\ntest:", 1)[1].split("\n\naudit:", 1)[0]
 
     shards = (
-        "test-local",
+        "_test-python",
         "flutter-test",
         "test-workbench",
-        "test-golden",
-        "tour-grade",
-        "tour-invariants",
+        "_test-golden",
+        "_test-grade",
+        "_test-invariants",
         "test-live",
-        "test-cloud",
+        "_test-cloud",
     )
     for shard in shards:
         invocation = f"@$(MAKE) --no-print-directory {shard}"
         assert test_target.count(invocation) == 1
+
+
+def test_makefile_has_no_legacy_environment_or_split_database_targets() -> None:
+    source = (REPO / "Makefile").read_text(encoding="utf-8")
+    assert "-include .env" not in source
+    for removed in (
+        "use-local:",
+        "use-cloud:",
+        "test-local:",
+        "test-cloud:",
+        "test-golden:",
+        "tour-grade:",
+        "tour-invariants:",
+        "db-test-up:",
+        "db-workbench-up:",
+        "deploy-cloud:",
+        "prune-orphans-cloud:",
+    ):
+        assert f"\n{removed}" not in source
+
+
+def test_database_reset_cannot_address_cloud_or_all_compose_volumes() -> None:
+    source = (REPO / "Makefile").read_text(encoding="utf-8")
+    reset = source.split("\ndb-reset:", 1)[1].split("\n\ndb-parity:", 1)[0]
+    assert "docker compose down" not in reset
+    assert "neo4j_data" in reset
+    assert "neo4j_test_data" in reset
+    assert "neo4j_workbench_data" in reset
+    assert "Aura is unreachable here" in reset
+
+
+def test_every_make_target_is_phony_and_documented() -> None:
+    source = (REPO / "Makefile").read_text(encoding="utf-8")
+    targets = set(re.findall(r"^([A-Za-z_][A-Za-z0-9_-]*):", source, re.MULTILINE))
+    phony_block = source.split(".PHONY:", 1)[1].split("\n\n", 1)[0]
+    phony = set(phony_block.replace("\\", " ").split())
+    inventory = (REPO / "Docs" / "MAKE_TARGETS.md").read_text(encoding="utf-8")
+    documented = set(re.findall(r"^\| `([^`]+)` \|", inventory, re.MULTILINE))
+
+    assert phony == targets
+    assert documented == targets
+
+
+def test_testflight_bumps_before_building_the_uploaded_ipa() -> None:
+    source = (REPO / "Makefile").read_text(encoding="utf-8")
+    target = source.split("\ntestflight:", 1)[1].split("\n\nrender-watch:", 1)[0]
+
+    assert "testflight: flutter-ipa" not in source
+    assert target.index("agvtool next-version") < target.index("flutter-ipa")
+    assert target.index("flutter-ipa") < target.index("altool --upload-app")
+
+
+def test_core_configuration_never_loads_dotenv() -> None:
+    for relative in ("src/connection.py", "src/api/auth/config.py"):
+        source = (REPO / relative).read_text(encoding="utf-8")
+        assert "load_dotenv" not in source

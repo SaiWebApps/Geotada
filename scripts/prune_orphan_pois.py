@@ -11,7 +11,7 @@ prune reaches true parity.
 SAFETY:
   - Dry-run by default; nothing is deleted without ``--apply``.
   - Refuses a non-local (Aura) target unless ``--allow-cloud`` (same guard as
-    upload_paris), so an accidental `.env`-in-cloud run can't touch production.
+    upload_paris), so an accidental raw run cannot touch production.
   - Aborts if the orphan POI set exceeds a sanity cap (a name_key-normalization
     bug must never turn this into a graph wipe) unless ``--force``.
   - Beats are detected via the POI edge, NOT a `city_name` property (beats carry
@@ -21,7 +21,7 @@ SAFETY:
 Usage:
   make prune-orphans CITY=new_york              # dry-run against the active graph
   make prune-orphans CITY=new_york APPLY=1      # local delete
-  make prune-orphans-cloud CITY=new_york APPLY=1  # Aura delete (sources .env.cloud)
+  make prune-orphans CITY=new_york TARGET=cloud CONFIRM_CLOUD_WRITE=1 APPLY=1
 """
 
 from __future__ import annotations

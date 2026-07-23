@@ -4,7 +4,7 @@ Generates REAL tours across representative start/duration/lens/end paths on the
 dev graph (7687) + Valhalla, and asserts the workbench-reported 2026-07 defect
 classes stay dead. Each is a bug a real tester hit; a regression flips this RED.
 
-Run: ``make tour-invariants`` (starts db-up + valhalla-up).
+Run as part of ``make test``; its internal shard provisions dev data and Valhalla.
 
 Design notes
 ------------
@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import re
 from collections import defaultdict
-from pathlib import Path
 
 import pytest
 
@@ -80,22 +79,11 @@ _SNAPSHOTS: dict[str, object] = {}
 @pytest.fixture(scope="module", autouse=True)
 def _live_snapshot():
     """Load each fixture city's live corpus once; skip if the dev graph is down."""
-    from neo4j import GraphDatabase
-    from neo4j.exceptions import AuthError, ServiceUnavailable
-
     from src.tour.selection import load_paris_corpus
-    from tests.test_tour_golden_pdv import _parse_env_file
+    from tests.live_graph import open_dev_driver
 
-    env = _parse_env_file(Path(__file__).resolve().parent.parent / ".env")
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    pw = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and pw):
-        pytest.skip("live dev Neo4j creds not in .env")
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, pw))
-        d.verify_connectivity()
-    except (ServiceUnavailable, AuthError, Exception):
+    d = open_dev_driver()
+    if d is None:
         pytest.skip("live dev Neo4j unreachable — start it with `make db-up`")
     for city in {c for _, c, *_ in _PATHS} | set(_GENERALITY_STARTS):
         _SNAPSHOTS[city] = load_paris_corpus(d, city_slug=city)

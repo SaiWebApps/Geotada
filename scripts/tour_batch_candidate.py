@@ -15,8 +15,6 @@ from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 from scripts.tour_text_candidate import (
     INPUT_USD_PER_MILLION_TOKENS,
     OUTPUT_USD_PER_MILLION_TOKENS,
@@ -396,7 +394,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--case")
     args = parser.parse_args(argv)
-    load_dotenv(ROOT / ".env", override=False)
     manifest = load_frozen_tour_batch(MANIFEST_PATH)
     driver = create_driver()
     try:

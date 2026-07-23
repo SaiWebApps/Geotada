@@ -5,7 +5,7 @@ If Neo4j is unreachable, integration tests are skipped automatically.
 
 Tests connect to a dedicated test Neo4j instance (bolt://localhost:7688)
 so that production data in the dev instance is never touched.
-Start it with: make db-test-up
+Start it with: make db-up DB=test
 
 Phase 4.5 hardening (2026-04-29): _wipe() hard-asserts the connected URI's
 port belongs to _TEST_PORT_ALLOWLIST before running DETACH DELETE. Stops a
@@ -22,8 +22,6 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse
 
-from dotenv import load_dotenv
-
 # Collection happens before per-test fixtures.  On an ordinary test run, reserve
 # paid-provider credentials with empty values BEFORE importing the API or any
 # module that calls ``load_dotenv()``.  An explicit Makefile live target is the
@@ -38,71 +36,18 @@ if not _LIVE_PROVIDER_TESTS:
     ):
         os.environ[_paid_key] = ""
 
-# Load test-specific Neo4j connection BEFORE importing src.connection.
-# connection.py calls load_dotenv() at import time without override=True,
-# so these values will be preserved.
-_test_env = Path(__file__).resolve().parent.parent / ".env.test"
-if _test_env.exists():
-    load_dotenv(dotenv_path=_test_env, override=True)
-    # Scrub again after loading the test file so a future accidental provider
-    # key in .env.test cannot reopen collection-time spend.
-    if not _LIVE_PROVIDER_TESTS:
-        for _paid_key in (
-            "ANTHROPIC_API_KEY",
-            "ELEVENLABS_API_KEY",
-            "OPENAI_API_KEY",
-            "RESEND_API_KEY",
-        ):
-            os.environ[_paid_key] = ""
-    # (The compose LLM wall is now enforced by the ``_money_guard_no_live_compose``
-    # autouse fixture below — get_compose_client() ALWAYS builds the real Opus
-    # client in the product, so an env toggle can no longer make it offline.)
-    # Force the mock onboarding beat-drafter so the bar
-    # (and src/onboard/cli.py) can NEVER make a live Anthropic call.
-    os.environ["ONBOARD_PROVIDER"] = "mock"
-    # The workbench API gate is now FAIL-CLOSED (src/api/app.py: mounts the
-    # unauthenticated graph-CRUD + onboard routers ONLY on an explicit truthy
-    # value). Opt the suite in so every in-process TestClient test — and the
-    # uvicorn subprocess that tests/test_workbench_ui.py launches with
-    # env={**os.environ, ...} — sees the workbench routers mounted. setdefault
-    # (not plain assignment) so a shell `WORKBENCH_API_ENABLED=` export can still
-    # force fail-closed for a run (CLAUDE.md: shell env wins).
-    os.environ.setdefault("WORKBENCH_API_ENABLED", "true")
-else:
-    import pytest as _pytest
-
-    _pytest.exit(
-        f"FATAL: {_test_env} not found. "
-        "Tests would fall back to production .env and could destroy data. "
-        "Copy .env.test.example to .env.test first."
-    )
+# Make owns the test environment.  There is deliberately no dotenv fallback:
+# a raw pytest invocation with missing/wrong values is rejected by
+# ``pytest_configure`` below before a fixture can open a driver.
+os.environ["ONBOARD_PROVIDER"] = "mock"
+os.environ.setdefault("WORKBENCH_API_ENABLED", "true")
 
 import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
-from src.api.auth.config import MAGIC_LINK_PROVIDER, RESEND_API_KEY
 from src.connection import Neo4jConnectionError, create_driver, get_database
 from src.schema.constraints import apply_all
-
-
-def pytest_collection_modifyitems(config, items):
-    """Deselect provider-specific live tests when that provider is unconfigured."""
-    if not _LIVE_PROVIDER_TESTS or (
-        MAGIC_LINK_PROVIDER == "resend" and bool(RESEND_API_KEY)
-    ):
-        return
-
-    selected = []
-    deselected = []
-    for item in items:
-        if item.get_closest_marker("requires_resend"):
-            deselected.append(item)
-        else:
-            selected.append(item)
-    if deselected:
-        config.hook.pytest_deselected(items=deselected)
-        items[:] = selected
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -126,7 +71,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     provider was removed so a CUSTOMER can never be served the stitcher passthrough
     as if it were the narrator). The hermetic bar must therefore be prevented from
     ever CONSTRUCTING those billing clients: for every non-``live`` test, patch the
-    real classes to their offline stubs. The hermetic ``test-local`` shard then
+    real classes to their offline stubs. The hermetic Python shard then
     physically cannot make a paid Anthropic call — the real clients are never
     instantiated (proven by
     ``test_compose_provider.test_money_guard_compose_client_is_offline_stub``).
@@ -159,7 +104,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     # Same guard for the OpenAI (ChatGPT) composer: the product path (client=None)
     # would build the billing OpenAI SDK, so hand back the offline stub; a unit test
     # that injects a FAKE sdk client (client=<fake>) stays offline and exercises the
-    # real translation logic. So COMPOSE_PROVIDER=openai cannot bill in `test-local`.
+    # real translation logic. So COMPOSE_PROVIDER=openai cannot bill in the Python shard.
     _real_openai = _compose_mod.OpenAIComposeClient
 
     def _guard_openai(model=None, *, client=None):
@@ -232,7 +177,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     # builds an Opus drafter + 3 Haiku judges via get_author_composer. Patch each so the
     # PRODUCT path (client is None) builds an OFFLINE stub, never a billing SDK — a unit
     # test that injects a fake SDK client (client=<fake>) stays offline and exercises the
-    # real class. So `test-local` cannot bill the author path.
+    # real class. So the hermetic Python shard cannot bill the author path.
     import src.tour.author as _author_mod
     import src.tour.factcheck as _fc_mod
 
@@ -285,7 +230,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     # module the author-engine guard above never touches (it's report-only, wired only from
     # scripts/author_tour.py — specs/2026-07-18-tour-qa-campaign cross-stop track). Patch it
     # the same way: PRODUCT path (client is None) -> offline stub; a unit test that injects a
-    # fake SDK client stays offline and exercises the real class. So `test-local` cannot
+    # fake SDK client stays offline and exercises the real class. The Python shard cannot
     # bill the cross-stop judge either.
     import src.tour.tour_consistency as _tc_mod
 
@@ -337,9 +282,18 @@ def pytest_configure(config):
     own ``create_driver()``, bypassing ``_wipe()``'s per-call guard. Rather than
     guard each one, we hard-stop the entire run when ``NEO4J_URI`` is not an
     allowlisted test port. The cloud (Aura) database is the single persistent
-    store and must NEVER be wiped by tests — cloud connectivity is checked
-    read-only via ``make test-cloud`` (which does not invoke pytest).
+    store and must NEVER be wiped by tests—cloud connectivity is checked
+    read-only by the definitive suite or ``make db-parity TARGET=cloud``.
     """
+    if _LIVE_PROVIDER_TESTS and (
+        os.getenv("MAGIC_LINK_PROVIDER") != "resend" or not os.getenv("RESEND_API_KEY")
+    ):
+        pytest.exit(
+            "Live provider tests require MAGIC_LINK_PROVIDER=resend and a non-empty "
+            "RESEND_API_KEY. `make test-live` fetches both from Render; missing "
+            "credentials are a failure, never a deselection."
+        )
+
     uri = os.getenv("NEO4J_URI", "")
     port = urlparse(uri).port
     if port not in _TEST_PORT_ALLOWLIST:
@@ -347,8 +301,8 @@ def pytest_configure(config):
             f"Refusing to run the test suite against NEO4J_URI={uri!r} (port={port}). "
             f"The suite contains destructive fixtures; it may only run against the test "
             f"database on port {sorted(_TEST_PORT_ALLOWLIST)}. The cloud DB is the single "
-            f"persistent store and is never wiped by tests — use the read-only "
-            f"`make test-cloud` smoke for a cloud check."
+            f"persistent store and is never wiped by tests—use "
+            f"`make db-parity TARGET=cloud` for a read-only cloud check."
         )
 
 
@@ -363,7 +317,7 @@ def _neo4j_available() -> bool:
 
 needs_neo4j = pytest.mark.skipif(
     not _neo4j_available(),
-    reason="Neo4j not available — start it with `make db-up`",
+    reason="Neo4j not available—run through the owning Make test target",
 )
 
 

@@ -1136,33 +1136,16 @@ def test_notre_dame_in_ile_not_latin_quarter():
     """Live-data regression against the **production** Paris corpus.
 
     Asserts the §1.8 polygon-overshoot bug has been fixed: Notre-Dame
-    sits in Île de la Cité, not Latin Quarter. Reads the production
-    .env directly because conftest re-points create_driver() at the
-    disposable test DB. Skipped when prod Neo4j is unreachable or the
-    Paris corpus hasn't been loaded.
+    sits in Île de la Cité, not Latin Quarter. Uses the separately pinned
+    localhost dev-graph profile because pytest's destructive fixtures use the
+    disposable test DB.
     """
-    from pathlib import Path
 
-    from dotenv import dotenv_values
+    from tests.live_graph import open_dev_driver
 
-    pytest.importorskip("neo4j")
-    from neo4j import GraphDatabase
-
-    prod_env = Path(__file__).resolve().parent.parent / ".env"
-    if not prod_env.exists():
-        pytest.skip("production .env not present")
-    cfg = dotenv_values(prod_env)
-    uri = cfg.get("NEO4J_URI")
-    user = cfg.get("NEO4J_USER")
-    password = cfg.get("NEO4J_PASSWORD")
-    if not (uri and user and password):
-        pytest.skip("production Neo4j credentials missing")
-
-    try:
-        driver = GraphDatabase.driver(uri, auth=(user, password))
-        driver.verify_connectivity()
-    except Exception:
-        pytest.skip("production Neo4j unreachable")
+    driver = open_dev_driver()
+    if driver is None:
+        pytest.skip("local dev Neo4j unreachable")
     try:
         with driver.session() as s:
             r = s.run(
@@ -1591,27 +1574,11 @@ def test_phase7_fill_pass_concorde_smoke_real_corpus():
     Champs-Elysees), 41-min walk, 9-min audio. Phase 7 fill pass must
     add at least one anchor when the route is below the audio floor.
     """
-    from pathlib import Path
+    from tests.live_graph import open_dev_driver
 
-    from dotenv import dotenv_values
-
-    pytest.importorskip("neo4j")
-    from neo4j import GraphDatabase
-
-    prod_env = Path(__file__).resolve().parent.parent / ".env"
-    if not prod_env.exists():
-        pytest.skip("production .env not present")
-    cfg = dotenv_values(prod_env)
-    uri = cfg.get("NEO4J_URI")
-    user = cfg.get("NEO4J_USER")
-    password = cfg.get("NEO4J_PASSWORD")
-    if not (uri and user and password):
-        pytest.skip("production Neo4j credentials missing")
-    try:
-        driver = GraphDatabase.driver(uri, auth=(user, password))
-        driver.verify_connectivity()
-    except Exception:
-        pytest.skip("production Neo4j unreachable")
+    driver = open_dev_driver()
+    if driver is None:
+        pytest.skip("local dev Neo4j unreachable")
     try:
         from src.tour.selection import load_paris_corpus
         from src.tour.selection import select_route as live_select_route

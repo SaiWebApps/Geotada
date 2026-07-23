@@ -11,15 +11,6 @@ import os
 import sys
 from pathlib import Path
 
-# Load .env if present
-env_path = Path(__file__).resolve().parent.parent / ".env"
-if env_path.exists():
-    for line in env_path.read_text().splitlines():
-        line = line.strip()
-        if line and not line.startswith("#") and "=" in line:
-            key, _, val = line.partition("=")
-            os.environ.setdefault(key.strip(), val.strip())
-
 
 def _check(label: str, passed: bool, fix: str) -> bool:
     if passed:
@@ -40,7 +31,7 @@ def main() -> int:
     all_ok &= _check(
         "OPENAI_API_KEY is set",
         bool(openai_key) and not openai_key.startswith("sk-REPLACE"),
-        "Add OPENAI_API_KEY=sk-... to your .env file (get one at https://platform.openai.com/api-keys)",
+        "Configure OPENAI_API_KEY on Render, then run `make setup-audio`.",
     )
 
     # 2. Optional: ELEVENLABS_API_KEY
@@ -51,7 +42,7 @@ def main() -> int:
         _check(
             "ELEVENLABS_VOICE_ID is set",
             bool(el_voice),
-            "Add ELEVENLABS_VOICE_ID=... to your .env file",
+            "Configure ELEVENLABS_VOICE_ID on Render.",
         )
     else:
         print("  - ELEVENLABS_API_KEY not set (optional — only needed for ElevenLabs provider)")
@@ -109,7 +100,7 @@ def main() -> int:
 
     # 5. httpx installed
     try:
-        import httpx  # noqa: F811
+        import httpx
 
         all_ok &= _check("httpx installed", True, "")
     except ImportError:
@@ -122,7 +113,7 @@ def main() -> int:
     print()
     if all_ok:
         print("All checks passed! You can run functional tests:")
-        print("  python -m pytest tests/test_audio_functional.py -v -s")
+        print("  make test-live")
     else:
         print("Some checks failed. Fix the issues above and re-run:")
         print("  make setup-audio")

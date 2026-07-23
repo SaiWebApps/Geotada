@@ -1,9 +1,7 @@
-"""M8 GRADE — rubric unit tests (default bar) + live regression gate (marked).
+"""M8 GRADE—rubric checks plus the live regression gate.
 
-The pure rubric is unit-tested offline; the ``grade``-marked tests run the
-real pipeline against the dev graph (port 7687) and assert each golden
-clears GRADE_BASELINE, plus the PROVE: a deliberately-broken expectation
-grades BELOW the baseline (so make tour-grade catches a regression).
+The grade shard owns this entire file. It runs the pure rubric checks and the
+real dev-graph gate together, with no marker deselections.
 """
 
 from __future__ import annotations
@@ -14,6 +12,8 @@ from pathlib import Path
 import pytest
 
 from src.tour.grade import GRADE_BASELINE, grade_tour
+
+pytestmark = pytest.mark.grade
 
 # ---------------------------------------------------------------------------
 # Pure rubric (runs in the default bar)
@@ -136,29 +136,17 @@ _SNAPSHOT = None  # module-level cache set by the fixture below
 def _live_snapshot():
     """Load the live Paris corpus once; skip the grade tests if it's down."""
     global _SNAPSHOT
-    from neo4j import GraphDatabase
-    from neo4j.exceptions import AuthError, ServiceUnavailable
-
     from src.tour.selection import load_paris_corpus
-    from tests.test_tour_golden_pdv import _parse_env_file
+    from tests.live_graph import open_dev_driver
 
-    env = _parse_env_file(Path(__file__).resolve().parent.parent / ".env")
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    pw = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and pw):
-        pytest.skip("live dev Neo4j creds not in .env")
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, pw))
-        d.verify_connectivity()
-    except (ServiceUnavailable, AuthError, Exception):
+    d = open_dev_driver()
+    if d is None:
         pytest.skip("live dev Neo4j unreachable — start it with `make db-up`")
     _SNAPSHOT = load_paris_corpus(d, city_slug="paris")
     d.close()
     yield
 
 
-@pytest.mark.grade
 @pytest.mark.parametrize("name", _GOLDENS)
 def test_live_golden_clears_grade_baseline(name):
     fixture = json.loads((_FIXTURE_DIR / f"{name}.json").read_text())
@@ -166,7 +154,6 @@ def test_live_golden_clears_grade_baseline(name):
     assert g.passed, f"{name} regressed: {g.breakdown()}"
 
 
-@pytest.mark.grade
 def test_broken_golden_drops_below_baseline():
     """PROVE: corrupt a golden's expectations and the SAME live output grades
     below baseline — the gate genuinely catches a regression, not a tautology."""

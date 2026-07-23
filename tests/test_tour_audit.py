@@ -1,9 +1,7 @@
-"""M8 audit gate — Seine-crossing geometry (hermetic) + flagship route (marked).
+"""M8 audit gate—Seine geometry plus the flagship routed regression.
 
-The geometry checks use the committed real-OSM fixtures and synthetic
-polylines, so they run in the default bar. The ``grade``-marked flagship
-test routes the real Île tour through live Valhalla and asserts 0 m in the
-Seine.
+The grade shard owns this entire file so its pure geometry checks and its
+live-Valhalla flagship check stay together without marker deselections.
 """
 
 from __future__ import annotations
@@ -20,6 +18,8 @@ from src.tour.audit import (
     eta_error,
     seine_crossing_metres,
 )
+
+pytestmark = pytest.mark.grade
 
 _GEO = Path(__file__).resolve().parent / "fixtures" / "geo"
 
@@ -120,26 +120,14 @@ def test_eta_error_basic():
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.grade
 def test_flagship_route_never_swims_the_seine():
-    from neo4j import GraphDatabase
-    from neo4j.exceptions import AuthError, ServiceUnavailable
-
     from src.tour.contract import TourInput
     from src.tour.routing_client import RoutingClient
     from src.tour.selection import load_paris_corpus, select_route
-    from tests.test_tour_golden_pdv import _parse_env_file
+    from tests.live_graph import open_dev_driver
 
-    env = _parse_env_file(Path(__file__).resolve().parent.parent / ".env")
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    pw = env.get("NEO4J_PASSWORD", "")
-    if not (uri and user and pw):
-        pytest.skip("live dev Neo4j creds not in .env")
-    try:
-        d = GraphDatabase.driver(uri, auth=(user, pw))
-        d.verify_connectivity()
-    except (ServiceUnavailable, AuthError, Exception):
+    d = open_dev_driver()
+    if d is None:
         pytest.skip("live dev Neo4j unreachable — `make db-up`")
     snap = load_paris_corpus(d, city_slug="paris")
     d.close()
