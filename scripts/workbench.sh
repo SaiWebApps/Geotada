@@ -23,7 +23,19 @@ if curl -fs --max-time 2 "$HEALTH" >/dev/null 2>&1; then
   API_PID=""
 else
   # Free the port in case a stale uvicorn is lingering (matches make flutter-ios).
-  lsof -ti:${PORT} 2>/dev/null | xargs kill 2>/dev/null || true
+  # LISTEN-scoped only: bare `lsof -i:PORT` also matches CLIENT sockets
+  # (ESTABLISHED/CLOSED/TIME_WAIT) belonging to unrelated processes merely
+  # talking to this port from the other side (measured: the user's Claude
+  # desktop app held two CLOSED client sockets to :8000 and was getting
+  # killed by this line). Only a LISTEN-state socket is a stale server.
+  PORT_KILL_PIDS=$(lsof -tiTCP:${PORT} -sTCP:LISTEN 2>/dev/null || true)
+  if [ -n "$PORT_KILL_PIDS" ]; then
+    for pid in $PORT_KILL_PIDS; do
+      cmd=$(ps -p "$pid" -o comm= 2>/dev/null | tail -1)
+      echo "    Freeing :${PORT} — killing stale listener PID ${pid} (${cmd:-unknown})"
+    done
+    kill $PORT_KILL_PIDS 2>/dev/null || true
+  fi
   cd "$ROOT"
   # The auth signing-secret guard (src/api/auth/config.py) fails closed on an
   # empty/short secret. A direct `bash scripts/workbench.sh` (not via `make
@@ -65,5 +77,5 @@ fi
 echo ""
 echo "Workbench is live. The API is on http://localhost:${PORT} (dev graph 7687)."
 if [ -n "$API_PID" ]; then
-  echo "Stop the API when done:  kill ${API_PID}   (or: lsof -ti:${PORT} | xargs kill)"
+  echo "Stop the API when done:  kill ${API_PID}   (or: lsof -tiTCP:${PORT} -sTCP:LISTEN | xargs kill)"
 fi

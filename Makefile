@@ -361,7 +361,14 @@ flutter-ios: ## Run the Flutter app in an iOS simulator with a local API.
 	@$(MAKE) --no-print-directory _ensure-dev-data
 	@xcrun simctl boot "$(SIM_TARGET)" 2>/dev/null || true
 	@open -a Simulator 2>/dev/null || true
-	@lsof -ti:8000 | xargs kill 2>/dev/null || true
+	@PORT_KILL_PIDS=$$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null); \
+	if [ -n "$$PORT_KILL_PIDS" ]; then \
+		for pid in $$PORT_KILL_PIDS; do \
+			cmd=$$(ps -p $$pid -o comm= 2>/dev/null | tail -1); \
+			echo "    Freeing :8000 — killing stale listener PID $$pid ($${cmd:-unknown})"; \
+		done; \
+		kill $$PORT_KILL_PIDS 2>/dev/null || true; \
+	fi
 	@$(RENDER_LOCAL_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
 	@sleep 2

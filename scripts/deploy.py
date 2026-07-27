@@ -80,8 +80,18 @@ def _transient_api_env() -> dict[str, str]:
 
 
 def _port_busy(port: int) -> bool:
+    """Whether a real SERVER is listening on ``port``.
+
+    LISTEN-scoped deliberately. A bare ``lsof -ti:PORT`` also matches CLIENT sockets
+    -- any process merely talking TO this port from the other side, including ones
+    already in ESTABLISHED/CLOSED/TIME_WAIT. Measured 2026-07-26: the user's Claude
+    desktop app held two CLOSED client sockets to :8000, so this returned True with
+    nothing listening, and ``_upload_areas_step`` hard-exited ("':8000 is already in
+    use'") *after* the POI/beat upload had already written -- a partial deploy, and
+    the first of two shields that kept ``make workbench`` from ever starting.
+    """
     return subprocess.run(
-        ["lsof", f"-ti:{port}"], capture_output=True, text=True
+        ["lsof", f"-tiTCP:{port}", "-sTCP:LISTEN"], capture_output=True, text=True
     ).stdout.strip() != ""
 
 
