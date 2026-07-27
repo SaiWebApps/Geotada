@@ -551,14 +551,23 @@ def _place_identity_key(value: str) -> str:
     ).casefold()
 
 
+def is_container_identity_poi(poi: POI) -> bool:
+    """Whether this POI *is* one of its own containing areas — a neighbourhood or
+    district standing in as if it were a findable place.
+
+    Measured on the live Paris graph (2026-07-26): exactly ONE POI qualifies —
+    ``Les Halles``, which exists both as an Area and as a tier-5 POI with
+    ``poi_role='setting'``. A tourist told to "go to Les Halles" while standing in
+    Les Halles has been given no destination.
+    """
+
+    return _place_identity_key(poi.name) in {_place_identity_key(area) for area in poi.areas}
+
+
 def route_has_container_identity_stop(route: Route) -> bool:
     """Return whether a neighborhood or area was used as a fictional stop."""
 
-    return any(
-        _place_identity_key(poi.name)
-        in {_place_identity_key(area) for area in poi.areas}
-        for poi in route.pois
-    )
+    return any(is_container_identity_poi(poi) for poi in route.pois)
 
 
 def choose_discrete_route(routes: list[Route]) -> Route:
@@ -1588,6 +1597,22 @@ def select_route(
             # a dwell anchor. Its poi_score is 0, so admitting it would let the
             # greedy insert a content-less stop (0 > -inf) -- keep it out of the
             # dwell pool explicitly.
+            continue
+        if is_container_identity_poi(poi):
+            # A POI that IS one of its own areas is not a destination. It was already
+            # rejected downstream by choose_discrete_route -- but only AFTER routing,
+            # and that guard kills the WHOLE route, so a single such POI in every
+            # bounded candidate refused the tour outright with
+            # "bounded candidates contain no route with all-discrete stops".
+            #
+            # That is a genuine contradiction between two live rules:
+            # ELIGIBLE_POI_ROLES (density.py) admits poi_role='setting' as stoppable,
+            # while choose_discrete_route rejects a setting whose name matches its
+            # area. MEASURED 2026-07-26: `Les Halles` is the only Paris POI that is
+            # both, and it alone made the 90-min Ile de la Cite preview return 422.
+            # Excluding it from the DWELL POOL resolves the contradiction at the
+            # right layer -- it stays available as a walk-past vignette, which is
+            # what a neighbourhood actually is.
             continue
         if not poi.requires_dwell and _is_filler_stub(poi, snapshot, interest or None):
             # Too thin for a dedicated stop — keep it OUT of the greedy's dwell
