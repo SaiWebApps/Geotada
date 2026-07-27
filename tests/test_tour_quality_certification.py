@@ -13,6 +13,7 @@ from src.tour.artifact import (
     CompositionTrace,
     build_final_blueprint,
     derive_playback_assignments,
+    remap_provider_playback_assignments,
     sentences_payload_sha256,
     validate_llm_composed_blueprint,
 )
@@ -1100,6 +1101,64 @@ def test_llm_candidate_rejects_a_final_sentence_unbound_to_provider_payload() ->
             ),
             composition_trace=blueprint.composition_trace,
         )
+
+
+def _remap_with_added_glue(source_id: str, **kwargs):
+    """Remap a provider script that ADDED one sentence the frozen source lacks."""
+    source = _blueprint().script
+    added = Sentence(text="Now carry on toward the square.", source_id=source_id,
+                     source_type="glue", stop_idx=0)
+    provider = source.model_copy(update={"script": (*source.script, added)})
+    return remap_provider_playback_assignments(
+        source_script=source,
+        source_assignments=derive_playback_assignments(source, vignette_beat_ids=()),
+        provider_script=provider,
+        **kwargs,
+    )
+
+
+def test_added_provider_sentence_fails_closed_by_default() -> None:
+    """The strict default is what certification replay depends on — it must not move.
+
+    MUTATION that must turn this red: make ``derivable_leg_source_ids`` default to a
+    non-None value in ``remap_provider_playback_assignments``.
+    """
+    with pytest.raises(ValueError, match="cites no frozen playback source"):
+        _remap_with_added_glue("GLUE_NAV")
+
+
+def test_added_glue_sentence_is_placeable_when_the_caller_opts_in() -> None:
+    """The interactive preview opts in so one added transition cannot bin a whole tour.
+
+    Measured 2026-07-26: the composer legitimately emits a transition sentence, and the
+    frozen stitch has no ``(source_id, stop_idx)`` pair for it, so a fully authored
+    6-stop Paris tour was discarded whole. Placement is a PURE FUNCTION of source_id
+    (``derive_playback_assignments``), so the derived value equals what the freeze
+    would have produced — nothing is read from prose.
+
+    MUTATION that must turn this red: delete the ``placements is None and
+    derivable_leg_source_ids is not None`` branch.
+    """
+    out = _remap_with_added_glue("GLUE_NAV", derivable_leg_source_ids=frozenset({"GLUE_NAV"}))
+    assert len(out) == 2, "the added sentence did not receive an assignment"
+    assert out[-1].placement == "leg", (
+        f"a concurrent glue label must play on the leg, got {out[-1].placement!r}"
+    )
+    assert out[-1].index == 0
+
+
+def test_opting_in_still_rejects_an_invented_source_id() -> None:
+    """The opt-in is a narrow allowance, NOT a bypass.
+
+    An id that is neither a recognised glue label nor a beat the frozen source cites is
+    invented provenance and must still fail closed, or the relaxation would launder
+    hallucinated citations into a certifiable artifact.
+
+    MUTATION that must turn this red: drop the membership test and place any sentence
+    whose pair is missing.
+    """
+    with pytest.raises(ValueError, match="cites no frozen playback source"):
+        _remap_with_added_glue("GLUE_INVENTED", derivable_leg_source_ids=frozenset({"GLUE_NAV"}))
 
 
 def test_exact_enjoyment_anchor_slices_load_and_preserve_labels() -> None:

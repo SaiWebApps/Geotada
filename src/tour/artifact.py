@@ -553,11 +553,35 @@ def remap_provider_playback_assignments(
     source_script: Script,
     source_assignments: tuple[PlaybackAssignment, ...],
     provider_script: Script,
+    derivable_leg_source_ids: frozenset[str] | None = None,
 ) -> tuple[PlaybackAssignment, ...]:
     """Carry frozen source placement onto exact provider-authored sentences.
 
     Placement is explicit plan data, not a decision inferred from a glue label or
     from final prose. A missing or ambiguous source placement fails closed.
+
+    ``derivable_leg_source_ids`` is a NARROW, OPT-IN relaxation of the "missing"
+    half, defaulting to None = fail closed exactly as before. When supplied, a
+    provider sentence whose ``(source_id, stop_idx)`` pair is absent from the frozen
+    source may still be placed -- but ONLY when its ``source_id`` is in that set (the
+    concurrent glue labels plus this tour's vignette beat ids) or is a beat id the
+    frozen source cites somewhere. Anything else, including an invented label, still
+    raises.
+
+    Why this is not "inferring placement from a glue label": ``derive_playback_assignments``
+    computes placement as a PURE FUNCTION of ``source_id`` -- "leg" for a concurrent
+    glue label or a vignette beat, "stop" otherwise -- and index as ``stop_idx``
+    verbatim. So for a recognised source_id the derived value is identical to what the
+    freeze would have produced had the composer emitted that sentence at plan time.
+    Nothing is read from prose.
+
+    Why it is opt-in: the interactive preview (``finalize_premium_tour``, the ONLY
+    caller) discards this artifact via EphemeralReceiptSink, whereas the certification
+    batch runner reaches ``finalize_premium_composition`` directly and never enters
+    this function. Keeping the default fail-closed means certification replay cannot
+    be loosened by this change even accidentally. Measured 2026-07-26: the composer
+    legitimately adds a transition sentence, and without this every such tour was
+    discarded whole -- a 6-stop authored Paris tour thrown away for one sentence.
     """
 
     if tuple(item.sentence_index for item in source_assignments) != tuple(
@@ -576,13 +600,47 @@ def remap_provider_playback_assignments(
     result: list[PlaybackAssignment] = []
     for sentence_index, sentence in enumerate(provider_script.script):
         placements = placement_by_source.get((sentence.source_id, sentence.stop_idx))
+        if placements is None and derivable_leg_source_ids is not None:
+            # Recognised provenance at a position the freeze did not contain. Derive
+            # with derive_playback_assignments' EXACT rule (pure function of
+            # source_id), never from prose. An id the frozen source never cites at
+            # all is NOT recognised and falls through to the raise below.
+            cited_source_ids = {s.source_id for s in source_script.script}
+            if sentence.source_id in derivable_leg_source_ids or (
+                sentence.source_type == "beat" and sentence.source_id in cited_source_ids
+            ):
+                placements = {
+                    (
+                        "leg" if sentence.source_id in derivable_leg_source_ids else "stop",
+                        sentence.stop_idx,
+                    )
+                }
         if placements is None:
-            raise ValueError("provider sentence cites no frozen playback source")
+            # NAME THE OFFENDER. This fails an entire authored tour, and the bare
+            # message made the cause unrecoverable: the reader cannot tell an added
+            # glue sentence from a beat cited at the wrong stop, and the provider
+            # script is not persisted. The pair is provenance metadata (a glue label
+            # or a beat id) and a stop index -- not narration prose -- so it is safe
+            # to name here; callers still must not put it on the wire.
+            raise ValueError(
+                "provider sentence cites no frozen playback source "
+                f"(source_id={sentence.source_id!r}, stop_idx={sentence.stop_idx}, "
+                f"source_type={sentence.source_type!r}); the frozen source has no "
+                f"sentence with that (source_id, stop_idx) pair"
+            )
         if len(placements) != 1:
-            raise ValueError("provider sentence source has ambiguous frozen playback")
+            raise ValueError(
+                "provider sentence source has ambiguous frozen playback "
+                f"(source_id={sentence.source_id!r}, stop_idx={sentence.stop_idx}, "
+                f"candidates={sorted(placements)})"
+            )
         placement, index = next(iter(placements))
         if index != sentence.stop_idx:
-            raise ValueError("provider sentence moved its source to another playback index")
+            raise ValueError(
+                "provider sentence moved its source to another playback index "
+                f"(source_id={sentence.source_id!r}, frozen_index={index}, "
+                f"sentence_stop_idx={sentence.stop_idx})"
+            )
         result.append(
             PlaybackAssignment(
                 sentence_index=sentence_index,

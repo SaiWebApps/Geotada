@@ -59,7 +59,7 @@ from .compose import (
     finalize_certification_composition,
 )
 from .contract import BeatSequence, Route, Script, TourInput
-from .generation import generate
+from .generation import CONCURRENT_GLUE_LABELS, generate
 from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .routing import MAX_REQUESTED_FRACTION, MIN_REQUESTED_FRACTION, RoutePlanningPolicy
 from .routing_client import VALHALLA_ROUTING_CONFIG_SHA256, RoutingClient
@@ -552,16 +552,23 @@ def finalize_premium_tour(
 
     composition = finalize_premium_composition(plan, responses)
     identity = build_identity or resolve_build_identity()
+    vignette_beat_ids = frozenset(
+        beat.id for beats in plan.sequence.vignette_beats.values() for beat in beats
+    )
     source_assignments = derive_playback_assignments(
         plan.source,
-        vignette_beat_ids=(
-            beat.id for beats in plan.sequence.vignette_beats.values() for beat in beats
-        ),
+        vignette_beat_ids=vignette_beat_ids,
     )
+    # The composer legitimately emits a transition sentence the frozen stitch did not
+    # contain. Placement for a RECOGNISED source_id is a pure function of that id, so
+    # it is derived rather than discarding the whole authored tour; an unrecognised or
+    # invented id still fails closed. Certification never reaches this function (it
+    # calls finalize_premium_composition directly), so the strict default stands there.
     assignments = remap_provider_playback_assignments(
         source_script=plan.source,
         source_assignments=source_assignments,
         provider_script=composition.script,
+        derivable_leg_source_ids=CONCURRENT_GLUE_LABELS | vignette_beat_ids,
     )
     build = BuildFingerprint(
         commit_sha=identity.commit_sha,
