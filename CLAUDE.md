@@ -189,7 +189,9 @@ If no target exists for what you need, add one to the Makefile first.
 
 ### Zero Lint Errors
 
-`make lint` must produce ZERO errors before ANY commit, agent spawn, or declaration of done. "Pre-existing" is not an exemption. The lint-enforcer hook mechanically blocks operations when lint is dirty. Never pipe `make lint` through `tail` or `head`.
+`make lint` must produce ZERO errors before ANY commit, agent spawn, or declaration of done. "Pre-existing" is not an exemption. Never pipe `make lint` through `tail` or `head`.
+
+**This rule is NOT mechanically enforced — do not assume it is.** A "lint-enforcer hook" was documented here for months and never existed in `.claude/settings.json` or `.claude/hooks/`; the claim was removed 2026-07-25. The only hooks that exist are `render-deploy-watch.sh` (PostToolUse/Bash) and `team-gate.sh` (PreToolUse/Agent), and neither checks lint. Running `make lint` yourself is the whole enforcement.
 
 ### No Guessing
 

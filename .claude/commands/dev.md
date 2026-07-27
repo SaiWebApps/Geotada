@@ -2,11 +2,25 @@ You are the orchestrator for a multi-agent development workflow. Your job is to 
 
 The user's request: **$ARGUMENTS**
 
-## MECHANICAL ENFORCEMENT — HOOKS AND STATE TRACKING
+## MECHANICAL ENFORCEMENT — DOES NOT EXIST. READ THIS FIRST.
 
-This workflow is enforced by two external mechanisms that you CANNOT bypass:
+**Corrected 2026-07-25: neither mechanism described below exists.** `~/.claude/hooks/`
+is not a directory on this machine — `dev-agent-guard.sh` and `dev-state.sh` are both
+phantom, and `~/.claude/settings.json` has no `hooks` key at all. Every
+`bash ~/.claude/hooks/dev-state.sh …` line in this file is a no-op that will fail with
+"No such file or directory"; the checkpoint gates and loop counters they imply are NOT
+enforced, and no agent spawn is inspected or blocked. The two hooks that DO exist are
+`.claude/hooks/render-deploy-watch.sh` (PostToolUse/Bash) and `.claude/hooks/team-gate.sh`
+(PreToolUse/Agent, narrow: it only refuses agents pointed at an unapproved `/team` ledger).
 
-1. **Agent Guard Hook** (`~/.claude/hooks/dev-agent-guard.sh`) — A PreToolUse hook on Agent calls that inspects your prompt. It BLOCKS agent spawns that:
+Treat everything below as a DISCIPLINE you must follow yourself, not a rail that catches
+you. That distinction is load-bearing: believing in a guard that isn't there is how work
+ships unverified. (`/team` replaces this workflow's caps with real ones
+enforced in JS — see CLAUDE.md.)
+
+The two mechanisms this file was written to assume:
+
+1. **Agent Guard Hook** (`~/.claude/hooks/dev-agent-guard.sh` — DOES NOT EXIST) — was to be a PreToolUse hook on Agent calls inspecting your prompt, blocking agent spawns that:
    - Have prompts under 1500 chars (you summarized instead of copying)
    - Are missing LEARNINGS.md content (the actual text, not a reference)
    - Are missing plan IDs (F1, T1, AC1) for Developer/Tester/QA agents
@@ -17,7 +31,7 @@ This workflow is enforced by two external mechanisms that you CANNOT bypass:
 
    If the hook blocks you, it means you were being lazy. Re-read the source files and paste verbatim.
 
-2. **State Tracker** (`~/.claude/hooks/dev-state.sh`) — A state machine that gates each step. You MUST run checkpoint commands between steps. The commands are embedded in each step below. If you skip a checkpoint, the gate command at the next step will block you.
+2. **State Tracker** (`~/.claude/hooks/dev-state.sh` — DOES NOT EXIST) — was to be a state machine gating each step via checkpoint commands embedded below. Those commands fail harmlessly; nothing blocks you if you skip one. The loop caps this file cites (`DEV_TEST_LOOPS >= 3`, `QA_REWORK_LOOPS >= 2` at the Guardrails section) therefore have no counter behind them — you must track iterations yourself, or use `/team`, whose engine enforces the equivalent caps as real `for`-loop bounds.
 
 ## ZERO-TOLERANCE RULES — READ BEFORE ANYTHING ELSE
 
@@ -763,7 +777,9 @@ bash ~/.claude/hooks/dev-state.sh status
 
 ## GUARDRAILS — NON-NEGOTIABLE
 
-1. **Copy-paste, never summarize.** Agent prompts can handle large inputs — the "too long" case almost never applies. LEARNINGS.md is ~90 lines, Planner output is ~100 lines, Developer reports are ~50 lines. These all fit. If you believe content must be trimmed, state the exact content size, the limit you believe exists, and why it won't fit. "It's really long" is not justification. The ACCEPTANCE CRITERIA, FILES TO MODIFY, and TESTS TO WRITE sections must ALWAYS be pasted in full.
+1. **Never summarize the task-specific payload; share stable context by path.** Two different things, do not conflate them.
+   - **Always paste in full, inline:** the ACCEPTANCE CRITERIA, FILES TO MODIFY, and TESTS TO WRITE sections, and the exact command the agent must run. This is the material an agent will otherwise *invent*, it is small, and "it's really long" is never justification for trimming it. If you believe it must be cut, state the exact size, the limit you believe exists, and why it won't fit.
+   - **Share by path, not by paste:** run-wide material identical for every agent — LEARNINGS.md, the acceptance-criteria list, tier/decisions/baseline. Write it once to a run-context file and reference that path in each prompt. Pasting the same ~90 lines into nine prompts buys nothing and is the single largest avoidable cost in a fan-out. `/team` does this via `specs/{date}-{slug}/run-context.md`; `.claude/commands/pipeline-batch.md` does it via `.pipeline-context.txt` ("avoids duplicating large lists across N agent prompts").
 
 2. **Testers never fix source code.** They diagnose and report. Developers fix. The Tester must run `git diff --name-only` after their work and verify no files outside `tests/` were modified.
 

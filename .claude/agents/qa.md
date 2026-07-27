@@ -32,7 +32,8 @@ Run the actual bar through Makefile targets (never raw `uv run pytest` /
 - `make lint` (must be zero errors), `make test` (full bar: Python local +
   Flutter; 0 failed, 0 skipped — a skip is a failure in disguise, diagnose why).
 - For tour-engine changes: `make golden-probe` (confirm Valhalla tiles are
-  READY first — haversine fallback gives false numbers) + `make tour-grade`.
+  READY first — haversine fallback gives false numbers) + `make _test-grade`.
+  (`make tour-grade` does NOT exist — never invoke it.)
 - For workbench/UI or any user-facing behavior claim: a REAL-runtime run —
   `make test-workbench` (Playwright) or emulator/device — WITH screenshots.
   Code reading and unit tests alone do NOT satisfy a "the UI now does X" claim
