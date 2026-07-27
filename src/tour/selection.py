@@ -617,6 +617,7 @@ RETURN
   b.beat_length_class   AS beat_length_class,
   b.est_spoken_seconds  AS est_spoken_seconds,
   b.script_body         AS script_body,
+  b.audio_url           AS audio_url,
   b.entities            AS entities,
   b.subject_tag         AS subject_tag,
   b.active_status       AS active_status,
@@ -679,6 +680,28 @@ def _lens_neighbor_map(lens_records: list[dict]) -> dict[str, frozenset[str]]:
     return {k: frozenset(v) for k, v in acc.items()}
 
 
+# src/seed/narratives.py:95 stamps every seeded beat with this audio prefix.
+# A seeded beat that was later adopted into the corpus carries a real
+# ``beat_id``; the un-adopted twin left behind by re-seeding does not, and
+# is invisible to db_parity.py:113 and prune_orphan_pois.py:48 (both filter
+# ``beat_id IS NOT NULL``). Excluding it here is the only thing keeping
+# placeholder audio out of a tour.
+_PLACEHOLDER_AUDIO_PREFIX = "s3://ondoway-audio/placeholder/"
+
+
+def _is_unadopted_placeholder_beat(record: dict) -> bool:
+    """True for a seed-artifact beat: no stable beat_id AND placeholder audio.
+
+    The conjunction is deliberate. Real corpus beats awaiting TTS still point
+    at the placeholder prefix, and hermetic callers legitimately omit
+    ``stable_beat_id``; neither half alone may exclude a beat.
+    """
+    if _clean(record.get("stable_beat_id")) is not None:
+        return False
+    audio_url = record.get("audio_url")
+    return isinstance(audio_url, str) and audio_url.startswith(_PLACEHOLDER_AUDIO_PREFIX)
+
+
 def _snapshot_from_records(
     poi_records: list[dict],
     beat_records: list[dict],
@@ -691,6 +714,8 @@ def _snapshot_from_records(
     beats_by_poi_acc: dict[str, list[BeatRef]] = {}
 
     for r in beat_records:
+        if _is_unadopted_placeholder_beat(r):
+            continue
         body = r.get("script_body")
         ref = BeatRef(
             id=r["id"],
