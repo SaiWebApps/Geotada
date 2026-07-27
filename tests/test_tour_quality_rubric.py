@@ -12,6 +12,9 @@ Hermetic: no Neo4j, no network, no LLM. Fixtures are the real pydantic contracts
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
 from src.tour.contract import (
@@ -31,14 +34,17 @@ from src.tour.narration_quality import score_narration
 from src.tour.quality_rubric import (
     BALANCE_MAX_SHARE,
     GORGE_MAX_WORDS_PER_STOP,
+    MAX_COMPOSED_STOPS,
     MAX_SENTENCE_WORDS,
     MIN_STOP_SEPARATION_M,
     OUTLIER_YEAR_DENSITY_MULTIPLE,
     STARVE_MIN_BEATS,
     STARVE_MIN_WORDS_PER_BEAT,
+    WORDS_PER_MINUTE,
     Finding,
     Severity,
     StopMaterial,
+    c3_audio_floor_seconds,
     compose_fixable,
     score_tour,
 )
@@ -128,9 +134,10 @@ def _script(
     sentences: list[Sentence],
     pois: list[ScriptPOI],
     *,
-    # Default ABOVE the C3-thin floor (0.8 x 0.83 x 0.60 x 60 min = 23.9 min) so a
-    # fixture aimed at some OTHER check does not trip C3 as a side effect. A test
-    # about C3 passes a deliberately low value.
+    # Default ABOVE the C3-thin floor (MIN_AUDIO_FRAC_OF_REQUESTED x 60 min = 11.4 min)
+    # so a fixture aimed at some OTHER check does not trip C3 as a side effect. A test
+    # about C3 passes a deliberately low value. Was 23.9 min while C3 derived its floor
+    # from the retired disjoint walk/audio split.
     total_audio_seconds: int = 1800,
 ) -> Script:
     return Script(
@@ -1300,3 +1307,245 @@ def test_c7b_uses_the_smaller_of_the_two_disagreeing_walk_measures() -> None:
     assert "C7b-leg-audio-overruns-walk" in _checks(report), (
         "300s of narration over a 200s real walk must block"
     )
+
+
+# ---------------------------------------------------------------------------
+# CALIBRATION ANCHORS — the tracked, real-Opus certification batch.
+#
+# Every threshold test above this line uses SYNTHETIC fixtures built to sit either
+# side of a constant, which proves a check's LOGIC but never its THRESHOLD. These
+# anchors close that gap: they are the eight authored tours already committed under
+# data/certification/tour-batch-v1/ (model claude-opus-4-8, provenance
+# provider_response, self-verifying artifact/response/customer_text sha256s), so a
+# threshold can be calibrated against tours this project actually accepted instead
+# of against another engine constant.
+#
+# Deliberately NOT data/*/tours/ — .gitignore:301 marks that "machine-local
+# reproduction output, never committed", so an anchor there would pass here and
+# vanish on a fresh clone.
+# ---------------------------------------------------------------------------
+
+_CERTIFIED_BATCH = (
+    Path(__file__).resolve().parents[1] / "data" / "certification" / "tour-batch-v1"
+)
+
+#: MEASURED 2026-07-26 off the tracked artifacts at SPOKEN_WPM=150. Pinned as EVIDENCE,
+#: independent of any threshold: if a loader change moves these numbers, every
+#: calibration below is measuring something else and must be re-derived.
+_EXPECTED_AUDIO_MIN: dict[str, float] = {
+    "nyc-central-park-open-90": 22.4,
+    "nyc-grand-central-times-square-60": 17.2,
+    "nyc-lower-manhattan-90": 20.5,
+    "nyc-village-loop-60": 18.7,
+    "paris-ile-open-90": 30.9,
+    "paris-marais-loop-60": 16.6,
+    "paris-pont-neuf-notre-dame-60": 25.6,
+    "paris-west-axis-90": 5.0,
+}
+
+#: The corpus's own negative pole: 2 stops and 5.0 min of speech for a 90-min request
+#: (ratio 0.056), produced by the real engine. A thinness floor that passes this is
+#: broken in the other direction.
+_STARVED_CASE = "paris-west-axis-90"
+
+
+def _certified_cases() -> list[tuple[str, Script, Route]]:
+    """Reconstruct each tracked certified tour as a scoreable (case_id, Script, Route).
+
+    ``beats_by_poi`` is passed EMPTY by callers and every POI is seated at tier 5, so
+    C1-starved and C2-tier-inversion are inert here — these anchors calibrate the
+    audio-volume checks (C3, C8), not the corpus-shape ones.
+
+    ``err_short_total_seconds=0`` so C7 is skipped: the artifact does not record the
+    planning budget its route was stamped with, and guessing one would make C7's
+    verdict a property of this loader.
+    """
+    cases: list[tuple[str, Script, Route]] = []
+    for tour_path in sorted(_CERTIFIED_BATCH.glob("*/*/tour.json")):
+        payload = json.loads(tour_path.read_text(encoding="utf-8"))
+        duration_min = payload["tour_input"]["duration_min"]
+        raw_pois = payload["route"]["pois"]
+
+        sentences: list[Sentence] = []
+        words = 0
+        for stop in payload["stops"]:
+            stop_idx = stop["stop_index"]
+            for order, text in enumerate(stop["sentences"]):
+                words += len(text.split())
+                sentences.append(
+                    Sentence(
+                        text=text,
+                        source_id=f"{tour_path.parent.name}-{stop_idx}-{order}",
+                        source_type="beat",
+                        stop_idx=stop_idx,
+                    )
+                )
+
+        script = Script(
+            city_slug=payload["tour_input"]["city_slug"],
+            generated_at="2026-07-26T00:00:00Z",
+            inputs=TourInput(
+                start=tuple(payload["tour_input"]["start"]),
+                duration_min=duration_min,
+                city_slug=payload["tour_input"]["city_slug"],
+            ),
+            total_audio_seconds=round(words / WORDS_PER_MINUTE * 60),
+            total_walking_seconds=payload["route"]["total_walk_seconds"],
+            total_walk_distance_m=payload["route"]["total_walk_distance_m"],
+            total_planned_seconds=duration_min * 60,
+            selected_pois=tuple(
+                ScriptPOI(id=p["id"], name=p["name"], tier=5, lat=p["lat"], lng=p["lng"])
+                for p in raw_pois
+            ),
+            lens_coverage={},
+            script=tuple(sentences),
+            validation=ValidationReport(),
+        )
+        route = Route(
+            pois=tuple(
+                POI(
+                    id=p["id"],
+                    name=p["name"],
+                    tier=5,
+                    poi_role="stop",
+                    lat=p["lat"],
+                    lng=p["lng"],
+                )
+                for p in raw_pois
+            ),
+            transits=(),
+            total_walk_distance_m=payload["route"]["total_walk_distance_m"],
+            total_walk_seconds=payload["route"]["total_walk_seconds"],
+            vignettes={},
+            err_short_total_seconds=0,
+        )
+        cases.append((payload["case_id"], script, route))
+    return cases
+
+
+def test_certification_corpus_reconstructs_as_scoreable_tours() -> None:
+    """GUARDS the EVIDENCE the calibrations below rest on, not any threshold itself.
+
+    UNDO: change the word-count or the WPM in ``_certified_cases`` and this goes RED,
+    which is the point — every threshold below is derived from these exact minutes.
+    """
+    cases = _certified_cases()
+    assert len(cases) == len(_EXPECTED_AUDIO_MIN), [c for c, _, _ in cases]
+
+    measured = {
+        case_id: round(script.total_audio_seconds / 60, 1) for case_id, script, _ in cases
+    }
+    assert measured == _EXPECTED_AUDIO_MIN
+
+    # AC-9: anchors must live in a git-tracked location, never machine-local output.
+    assert _CERTIFIED_BATCH.is_dir()
+    for tour_path in _CERTIFIED_BATCH.glob("*/*/tour.json"):
+        assert "tours" not in tour_path.parts, f"{tour_path} is machine-local output"
+
+    # Every anchor must actually carry narration and stops, or it proves nothing.
+    for case_id, script, route in cases:
+        assert script.script, case_id
+        assert route.pois, case_id
+
+
+def test_c8_clears_the_widest_stop_in_the_certification_corpus() -> None:
+    """GUARDS: the gorge cap must not brand real accepted anchors as bloated.
+
+    MEASURED widest-stop population across the eight tracked tours:
+    661 / 662 / 664 / 673 / 679 / 757 / 761 / 808. At the old 750 cap, THREE accepted
+    tours were BLOCKED. UNDO: restore ``GORGE_MAX_WORDS_PER_STOP = 750`` and this goes
+    RED on paris-ile-open-90 (808), paris-marais-loop-60 (761) and
+    nyc-lower-manhattan-90 (757).
+    """
+    for case_id, script, route in _certified_cases():
+        report = score_tour(script, route, {})
+        gorged = [f for f in report.findings if f.check == "C8-gorged"]
+        assert gorged == [], f"{case_id}: {[f.message for f in gorged]}"
+
+    # And the defect the cap exists for is STILL caught — this is what stops the
+    # recalibration becoming a blanket amnesty.
+    poi = _spoi("notre-dame", tier=5, name="Notre-Dame")
+    report = score_tour(
+        _script([_sentence(_words(1038, prefix="n"), 0)], [poi]),
+        _route([_poi("notre-dame", tier=5)]),
+        {"notre-dame": _beats("notre-dame", 59)},
+    )
+    assert [f.check for f in report.findings if f.check == "C8-gorged"] == ["C8-gorged"]
+
+
+def test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour() -> None:
+    """GUARDS the thinness floor from BOTH directions — the whole point of C3.
+
+    MEASURED audio/duration ratios on the tracked batch: healthy population
+    0.227-0.426 (nyc-lower-manhattan-90 is the worst good tour at 0.227), starved pole
+    0.056. The old floor demanded 0.398 and therefore BLOCKED 7 of 8 tours this
+    project itself certified.
+
+    UNDO (pass side): restore the old
+    ``duration_min * ERR_SHORT * AUDIO_FRACTION * 60 * AUDIO_FLOOR_FRAC`` floor and
+    this goes RED on seven cases.
+    UNDO (block side): delete the C3 block entirely and this goes RED on
+    paris-west-axis-90 and on the 9.4-min run below.
+    """
+    for case_id, script, route in _certified_cases():
+        report = score_tour(script, route, {})
+        thin = [f for f in report.findings if f.check == "C3-thin"]
+        if case_id == _STARVED_CASE:
+            assert len(thin) == 1, f"{case_id} is starved (0.056) and MUST be blocked"
+            assert thin[0].severity is Severity.BLOCKER
+        else:
+            assert thin == [], f"{case_id}: {[f.message for f in thin]}"
+
+    # The documented starved run the C3 check was written for: 2 stops, 60-min
+    # request, 9.4 min of audio (ratio 0.157). It must still block.
+    poi = _spoi("a", tier=5, name="A")
+    starved = score_tour(
+        _script([_sentence(_words(60, prefix="s"), 0)], [poi], total_audio_seconds=564),
+        _route([_poi("a", tier=5)]),
+        {},
+    )
+    thin = [f for f in starved.findings if f.check == "C3-thin"]
+    assert len(thin) == 1 and thin[0].severity is Severity.BLOCKER, _checks(starved)
+
+
+def test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration() -> None:
+    """GUARDS satisfiability: C3 and C8 must never contradict each other.
+
+    The floor is LINEAR in duration; word capacity is BOUNDED at
+    ``MAX_COMPOSED_STOPS x GORGE_MAX_WORDS_PER_STOP``. TourInput allows durations up to
+    600 min (contract.py), so an uncapped linear floor becomes physically
+    unsatisfiable — at 240 min the old floor asked for 14 340 words from a tour that
+    may hold at most 6 800. UNDO: drop the ``min(...)`` cap term from the C3 floor and
+    this goes RED from ~120 min upward.
+    """
+    capacity_words = MAX_COMPOSED_STOPS * GORGE_MAX_WORDS_PER_STOP
+    for duration_min in range(1, 601):
+        floor_words = c3_audio_floor_seconds(duration_min) / 60 * WORDS_PER_MINUTE
+        assert floor_words <= capacity_words, (
+            f"{duration_min} min: floor {floor_words:.0f} words exceeds the "
+            f"{capacity_words}-word ceiling C8 permits"
+        )
+
+
+def test_c7_message_states_the_ceiling_the_route_was_actually_planned_to() -> None:
+    """GUARDS: C7's message must not misreport the budget it measured against.
+
+    It interpolated ``ERR_SHORT`` (83%) as a literal, but the premium/certification
+    lane plans at a nominal fraction of 1.00 — so for every premium tour the message
+    was wrong by 20 points while the ARITHMETIC used the route's own stamped total.
+    UNDO: re-hardcode the percentage from ERR_SHORT and this goes RED.
+    """
+    poi = _spoi("a", tier=5, name="A")
+    report = score_tour(
+        _script([_sentence(_words(40, prefix="w"), 0)], [poi], total_audio_seconds=3000),
+        _route(
+            [_poi("a", tier=5)],
+            total_walk_seconds=3000,
+            err_short_total_seconds=3600,  # a 60-min request planned at 1.00
+        ),
+        {},
+    )
+    over = [f for f in report.findings if f.check == "C7-time-budget"]
+    assert len(over) == 1, _checks(report)
+    assert "100%" in over[0].message, over[0].message
+    assert "83%" not in over[0].message

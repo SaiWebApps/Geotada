@@ -35,7 +35,6 @@ from src.tour.generation import (
     split_sentences,
 )
 from src.tour.narration_quality import score_narration
-from src.tour.routing import AUDIO_FRACTION, ERR_SHORT
 
 # ── thresholds ──────────────────────────────────────────────────────────────
 # Provenance for every value is in the standard, §5. Summary of KIND:
@@ -53,10 +52,18 @@ STARVE_MIN_BEATS: int = 5
 #: Deliberately permissive: this catches 9-words-for-12-beats (0.75), not terseness.
 STARVE_MIN_WORDS_PER_BEAT: float = 12.0
 
-#: CITED (adapted). Museum practice caps a station at 250 words (~2 min). A walking-tour
-#: anchor with a 5-min dwell is not a museum station, so we adapt to 750 words ≈ 5 min
-#: at 150 wpm. The standard states plainly that this is an adaptation, not a citation.
-GORGE_MAX_WORDS_PER_STOP: int = 750
+#: MEASURED 2026-07-26, superseding the earlier CITED-adapted 750. Museum practice caps
+#: a station at 250 words (~2 min); a walking-tour anchor with a 5-min dwell is not a
+#: museum station, so the number was adapted rather than cited — but it was adapted by
+#: reasoning, not measurement, and it was WRONG. Widest-stop population across the eight
+#: authored tours in data/certification/tour-batch-v1/:
+#:     661 / 662 / 664 / 673 / 679 / 757 / 761 / 808
+#: At 750 this check BLOCKED three tours this project itself certified
+#: (nyc-lower-manhattan-90, paris-marais-loop-60, paris-ile-open-90). 850 clears the
+#: real ceiling (808) at 1.05x while still catching the defect it exists for — the
+#: measured Notre-Dame wall of 1022-1038 words — at 1.20x.
+#: Guarded by test_c8_clears_the_widest_stop_in_the_certification_corpus.
+GORGE_MAX_WORDS_PER_STOP: int = 850
 
 #: CITED. Nubart / Musa Guide: keep sentences to 10-15 words for the ear.
 MAX_SENTENCE_WORDS: float = 15.0
@@ -109,9 +116,42 @@ MIN_STOP_SEPARATION_M: float = 50.0
 #: at the C1 check for the Notre-Dame arithmetic that forced this.
 STARVE_FLOOR_MAX_SHARE_OF_CAP: float = 0.5
 
-#: INHERITED from src/tour/selection.py FILL_PASS_AUDIO_FLOOR_FRAC. Not a new number:
-#: the engine's own fill pass already treats 0.8 of the audio target as the floor.
-AUDIO_FLOOR_FRAC: float = 0.8
+#: MEASURED 2026-07-26. The minimum share of the REQUESTED duration that must arrive as
+#: spoken audio. Replaces the old derivation
+#: ``ERR_SHORT(0.83) x AUDIO_FRACTION(0.60) x AUDIO_FLOOR_FRAC(0.8) = 0.398``, which was
+#: self-referential (it inherited the PLANNER's aim as the SERVING verdict) and wrong.
+#:
+#: routing.py declares WALK_FRACTION 0.40 + AUDIO_FRACTION 0.60 = 1.00 — a DISJOINT
+#: walk-XOR-listen model, i.e. the tourist stands still for 60% of the hour. The product
+#: ruling of 2026-07-19 ("audio overlaps the walking… it costs no time", commit 4cbb94c)
+#: retired that model, and C7/C7b were updated for it. C3 was not. 0.398 is a fossil.
+#:
+#: MEASURED audio/duration on the eight tracked certified tours:
+#:     0.227 nyc-lower-manhattan-90   <- worst tour this project ACCEPTED
+#:     0.249 nyc-central-park-open-90
+#:     0.277 paris-marais-loop-60
+#:     0.286 nyc-grand-central-times-square-60
+#:     0.311 nyc-village-loop-60
+#:     0.343 paris-ile-open-90
+#:     0.426 paris-pont-neuf-notre-dame-60
+#:     ----
+#:     0.056 paris-west-axis-90       <- genuinely starved: 2 stops, 5.0 min for 90 min
+#: At 0.398, SEVEN of the eight were BLOCKED. The check was also inverted in practice:
+#: a verbose ONE-STOP tour passed while an 11-stop tour did not.
+#:
+#: 0.19 is the geometric midpoint of the two poles it must separate — the documented
+#: starved run (9.4 min for 60 min = 0.157) and the worst accepted tour (0.227) — giving
+#: a symmetric 1.21x block margin and 1.19x pass margin. It is NOT a target: the engine
+#: still AIMS at AUDIO_FRACTION; this is the floor below which a tour is not deliverable.
+#: Guarded from both sides by
+#: test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour.
+MIN_AUDIO_FRAC_OF_REQUESTED: float = 0.19
+
+#: INHERITED. The engine composes at most eight stops — premium_tour.py (``max_stops=8``)
+#: and routing.py ("certification planning supports one to eight stops"). Named here so
+#: the C3 floor can be capped by what a tour may PHYSICALLY hold; see
+#: ``c3_audio_floor_seconds``.
+MAX_COMPOSED_STOPS: int = 8
 
 #: MEASURED, 2026-07-19, over every real composed tour in ``data/*/tours/`` — 195 tour
 #: files: **paris 191, london 4. ``data/new_york/tours/`` DOES NOT EXIST** and
@@ -183,6 +223,34 @@ class RubricReport:
             f"{head} — {len(self.blockers)} blocker(s), {len(self.warnings)} warning(s): "
             + "; ".join(f"{f.check}:{f.message}" for f in self.findings[:6])
         )
+
+
+def c3_audio_floor_seconds(duration_min: int) -> float:
+    """The C3 thinness floor, in seconds of spoken audio, for a requested duration.
+
+    Two terms, and the ``min`` is the load-bearing half:
+
+    1. ``MIN_AUDIO_FRAC_OF_REQUESTED`` — MEASURED against the tracked certified tours.
+    2. A CAP at what a tour may physically contain:
+       ``MAX_COMPOSED_STOPS x GORGE_MAX_WORDS_PER_STOP x STARVE_FLOOR_MAX_SHARE_OF_CAP``.
+
+    Term 1 alone is LINEAR in duration while capacity is CONSTANT, so an uncapped floor
+    becomes physically unsatisfiable on long tours: ``TourInput`` accepts up to 600 min,
+    where the old 0.398 floor demanded ~35 800 words from a tour that may hold at most
+    ``8 x 850 = 6800``. No choice of fraction fixes that — only the cap does. This is
+    exactly the contradiction ``STARVE_FLOOR_MAX_SHARE_OF_CAP`` already exists to
+    prevent between C1 and C8; C3 needed the same treatment.
+
+    Exposed (rather than inlined in ``score_tour``) so the satisfiability claim is
+    directly testable at every offered duration — see
+    ``test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration``.
+    """
+    linear_s = MIN_AUDIO_FRAC_OF_REQUESTED * duration_min * 60
+    capacity_words = (
+        MAX_COMPOSED_STOPS * GORGE_MAX_WORDS_PER_STOP * STARVE_FLOOR_MAX_SHARE_OF_CAP
+    )
+    capacity_s = capacity_words / WORDS_PER_MINUTE * 60
+    return min(linear_s, capacity_s)
 
 
 def _words(text: str) -> int:
@@ -271,18 +339,15 @@ def score_tour(
         "words_by_stop": dict(sorted(words_by_stop.items())),
     }
 
-    # ── C3: thin tour — delivered audio against the engine's own target ─────
-    # INHERITED thresholds, not new ones: the engine plans to ERR_SHORT (0.83) of the
-    # requested duration and targets AUDIO_FRACTION (0.60) of that as spoken audio;
-    # its own fill pass treats FILL_PASS_AUDIO_FLOOR_FRAC (0.8) of that target as the
-    # floor. A tour under the floor is one the tourist walks in silence — the very
-    # defect that made a 60-min request deliver 13.3 min. Without this the rubric
-    # BLESSES a starved tour, which it did on a 2-stop / 9.4-min run.
+    # ── C3: thin tour — delivered audio against a MEASURED floor ────────────
+    # The floor is MIN_AUDIO_FRAC_OF_REQUESTED, calibrated against the tracked
+    # certification batch (see that constant for the full population). It is CAPPED by
+    # what a tour may physically hold, so C3 can never demand what C8 forbids — the
+    # same construction, and the same reason, as C1's cap at the starvation check.
+    # Without C3 the rubric BLESSES a starved tour, which it did on a 2-stop/9.4-min run.
     duration_min = getattr(script.inputs, "duration_min", 0) or 0
     if duration_min:
-        target_s = duration_min * ERR_SHORT * AUDIO_FRACTION * 60
-        floor_s = target_s * AUDIO_FLOOR_FRAC
-        report.stats["audio_target_min"] = round(target_s / 60, 1)
+        floor_s = c3_audio_floor_seconds(duration_min)
         report.stats["audio_floor_min"] = round(floor_s / 60, 1)
         if script.total_audio_seconds < floor_s:
             report.findings.append(
@@ -291,8 +356,8 @@ def score_tour(
                     severity=Severity.BLOCKER,
                     message=(
                         f"{script.total_audio_seconds / 60:.1f} min of audio for a "
-                        f"{duration_min}-min request (floor {floor_s / 60:.1f} min, "
-                        f"target {target_s / 60:.1f} min) — the tourist walks in silence"
+                        f"{duration_min}-min request (floor {floor_s / 60:.1f} min) — "
+                        f"the tourist walks in silence"
                     ),
                 )
             )
@@ -348,6 +413,18 @@ def score_tour(
         actual_total_s = route.total_walk_seconds + stationary_s
         report.stats["time_budget_actual_s"] = actual_total_s
         report.stats["time_budget_ceiling_s"] = route.err_short_total_seconds
+        # The ceiling percentage is DERIVED FROM THE ROUTE, never from a planning
+        # constant. This message used to interpolate ERR_SHORT (83%) as a literal, but
+        # the premium/certification lane plans at a nominal fraction of 1.00, so on
+        # every premium tour the sentence said "83% of the requested duration" while
+        # the arithmetic above correctly used the route's own stamped total. The number
+        # a reader is shown must be the one the check actually measured against.
+        ceiling_note = (
+            f" ({route.err_short_total_seconds / (duration_min * 60):.0%} of the "
+            f"requested duration)"
+            if duration_min
+            else ""
+        )
         if actual_total_s > route.err_short_total_seconds:
             report.findings.append(
                 Finding(
@@ -359,8 +436,8 @@ def score_tour(
                         f"({route.total_walk_seconds}s walk + "
                         f"{stationary_s}s stationary listening; {concurrent_s}s more is "
                         f"spoken while walking and costs no time) — over the engine's own "
-                        f"err-short planning ceiling ({ERR_SHORT:.0%} of the requested "
-                        f"duration), not necessarily over the requested duration itself"
+                        f"err-short planning ceiling{ceiling_note}, not necessarily over "
+                        f"the requested duration itself"
                     ),
                 )
             )
