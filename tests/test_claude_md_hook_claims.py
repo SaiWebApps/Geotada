@@ -33,8 +33,19 @@ _SETTINGS = _REPO_ROOT / ".claude" / "settings.json"
 _DOC_PATHS = [_REPO_ROOT / "CLAUDE.md", *sorted((_REPO_ROOT / ".claude" / "agents").glob("*.md"))]
 
 # Project-relative hook references only: a leading "~" or "$HOME" means the
-# user's own config directory, which this repo does not own.
+# user's own config directory, which this repo does not own. In PROSE the path is
+# written bare, so any "/" before it means a longer path we do not own either.
 _HOOK_REF = re.compile(r"(?<![~\w/])\.claude/hooks/([\w.-]+)")
+
+# The SAME path inside a settings.json command is legitimately preceded by "/",
+# because the registration form is `"$CLAUDE_PROJECT_DIR"/.claude/hooks/<file>`.
+# Reusing _HOOK_REF here (as this module did until 2026-07-26) made
+# _wired_hook_files() return the EMPTY SET for every correctly-registered hook —
+# measured against both real registrations, team-gate.sh and
+# render-deploy-watch.sh. The guard was therefore inverted: it could never confirm
+# a hook was wired, only ever accuse a correctly-wired one, and it did exactly that
+# to team-gate.sh. Only the user-home form is excluded here.
+_WIRED_HOOK_REF = re.compile(r"(?<!~/)\.claude/hooks/([\w.-]+)")
 
 
 def _referenced_hooks(doc: Path) -> set[str]:
@@ -52,7 +63,7 @@ def _wired_hook_files() -> set[str]:
         for matcher in matchers
         for hook in matcher.get("hooks", [])
     ]
-    return {name for cmd in commands for name in _HOOK_REF.findall(cmd)}
+    return {name for cmd in commands for name in _WIRED_HOOK_REF.findall(cmd)}
 
 
 @pytest.mark.parametrize("doc", _DOC_PATHS, ids=lambda p: p.name)
