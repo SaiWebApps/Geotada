@@ -406,6 +406,139 @@ Generates a trip by running the tour engine (`src/tour`) end to end: corpus load
 
 **Response 422:** The density gate refused the area (too sparse for a tour of the requested length), or no tourable POIs are reachable from the start.
 
+### What Actually Runs — Implementation Trace (corrected 2026-07-24, after a hostile line-by-line re-audit)
+
+This section names the exact functions and files behind "runs the tour engine
+(`src/tour`) end to end" above. The prior 2026-07-23 version of this section
+was re-checked claim-by-claim by independent reviewers instructed to find
+flaws; several claims held up and several did not, including two that
+reversed the original's own conclusions. Corrections are marked explicitly
+below rather than silently folded in.
+
+**1. Route is live and unconditionally mounted.** `generate_trip()`
+(decorator at `src/api/routes/trips.py:429`, signature/body from `:430`) is
+registered via `app.include_router(trips.router, prefix="/api/v1")` in
+`src/api/app.py:177` (import at `src/api/app.py:17`), with **no** feature
+flag — unlike the workbench CRUD routers, which are gated behind
+`_workbench_api_enabled()` starting at `src/api/app.py:188`. This mount runs
+the same way in dev, test, and the production Render deployment
+(`Dockerfile:22` runs `uvicorn src.api.app:app`, the same `app` object).
+
+**2. Corpus load — real Neo4j reads.** `generate_trip` calls
+`load_paris_corpus(driver, city_slug=...)` (`src/tour/selection.py:655-666`),
+which runs 5 real Cypher queries (`LOAD_PARIS_POIS_CYPHER`,
+`LOAD_PARIS_BEATS_CYPHER`, `LOAD_AREA_TYPES_CYPHER`,
+`LOAD_AREA_ADJACENCY_CYPHER`, `LOAD_LENS_HIERARCHY_CYPHER`) against the
+injected driver.
+
+**3. Route selection — real algorithm, not a stub.** `select_k_routes()`
+(`src/tour/selection.py:2082-2145`) delegates to `select_route()`
+(`:1323`, density gate at `:1372-1374`, Valhalla-or-haversine `leg_fn` at
+`:1368`) for the first flavour. **Corrected:** it does not simply call
+`select_route` "up to two more times." Each additional flavour slot (the
+2nd and 3rd, for the default k=3) can itself cost up to 2 calls — one
+initial attempt, plus one stricter zero-penalty retry if that candidate
+overlaps an existing flavour too much (Jaccard ≥ 0.60, `:2138-2140`). So
+reaching 3 flavours can take anywhere from 3 to 5 total `select_route`
+calls, not a flat "two more." `select_route` is real
+tourability/feasibility/greedy-selection logic, not a placeholder.
+
+**4. Beat plan capping.** Per flavour, `build_poi_beat_plans_capped()`
+(`src/tour/selection.py:1199-1262`) applies the "C9 governor v4" domination
+cap and the `MAX_DWELL_AUDIO_SECONDS` ceiling — real content-shaping logic,
+not a passthrough.
+
+**5. Vignette beat selection.** `select_vignette_beats()`
+(`src/tour/beat_select.py:685-736`) picks at most one voiceable `BeatRef`
+per walk-past vignette POI using `active_status`/`script_body`/
+lens-preference filtering (zero beats for a POI with none voiceable).
+**Separately flagged, not a doc-accuracy correction — a code behavior worth
+knowing:** this filter does not check the corpus's own
+`vignette_eligible`/`requires_dwell` flags, so a beat the corpus explicitly
+marks unfit for walk-past voicing can still be selected here.
+
+**6. Script assembly — deterministic template, and deliberately so.**
+`generate_trip` calls `generate()` (`src/tour/generation.py:310+`) once per
+flavour; a separate call to the same function happens inside the different
+`compose_trip` handler (`:771`) — not as a second call from `generate_trip`
+itself. Neither call site passes a `glue_client` argument, so `generate()`'s
+`client = glue_client or MockGlueClient()` (`:328`) always resolves to
+`MockGlueClient` (class at `src/tour/glue_client.py:64-81`; the dict at
+`:51-61` immediately above it is a separate, unrelated constant).
+**Corrected — this is documented as deliberate design, not undocumented
+tech debt:** `scripts/tour_build.py`'s own docstring states "Defaults to the
+deterministic MockGlueClient so this works without ANTHROPIC_API_KEY. Pass
+`--haiku` to switch on the real Haiku glue stitch." **Corrected — the
+cold-open text is not simply unmodified `script_body`:** it always prepends
+a fixed "Settle in." glue line, and in the common case (most tier-5 anchors,
+which lack a `stop_orientation` beat) falls through to a synthesized-
+template opener built from the route's area name and beat metadata, not
+from any beat's `script_body`. Only the `GLUE_NAV` category actually routes
+through `client.stitch()`; the other glue categories never touch the
+mock/real distinction at all. **Most significant correction:** the
+`/trips/generate` HTTP response does not return this stitched text at
+all — `GeneratedStop.narration` stays `None` for this endpoint. The only
+beat-derived text actually returned is one primary beat's raw `script_body`,
+via `_primary_beat_audio`.
+
+**7. Persistence.** `route_script_to_stops()` (`src/api/crud/trips.py:19-75`,
+pure, no DB) builds the stop dicts, and `create_trip_with_stops()`
+(`:78-147`) opens one `session.execute_write` transaction that creates the
+`:Trip` node, one `:ItineraryItem` node per stop, and the
+`HAS_STOP`/`ASSIGNED_TO`/`AT_POI`/`PLAYS_BEAT` edges. **Corrected:** the
+standalone seeder `src/seed/trips.py:107-117` orchestrates MERGE-based
+Cypher defined in module-level constants (via four helper functions it
+calls) — it does not embed Cypher directly in its own body. It is **not**
+reachable "only" via `make bootstrap`; roughly 19 Makefile targets
+transitively reach it, and pytest test fixtures reach it through a separate
+mechanism entirely. All of these paths remain localhost/test-gated; none is
+the live production API path, so the original reassurance still holds even
+though the "only" wording did not.
+
+**8. Real narration composition happens on two separate endpoints, and both
+are permission-gated.** The `/trips/generate` response above is corpus text
+plus mock glue only, not composed narration. Actual Opus-or-ChatGPT-authored
+prose is produced by `POST /trips/{trip_id}/compose` (`compose_trip`,
+`src/api/routes/trips.py:648-659,778-783`) via `Depends(get_compose_client)`
+(`src/api/dependencies.py:114-132`; defaults to `AnthropicComposeClient`, or
+`OpenAIComposeClient` when `COMPOSE_PROVIDER=openai`). **Corrected — this is
+not the only such endpoint:** `POST /trips/preview` also reaches a real
+Anthropic call, through a completely separate path —
+`Depends(get_premium_compose_executor)` (`src/api/dependencies.py:135-140`)
+returns `AnthropicPremiumExecutor` (`src/tour/premium_tour.py:378`), whose
+`execute_premium_plan` (`:419`) is called at
+`src/api/routes/trips.py:1080`. `generate_trip` itself never reaches either
+path. **New finding, not in the prior version:** both real-compose paths are
+gated by `_require_paid_call_permission()`
+(`src/tour/anthropic_client.py:69`, checked at `:84`), which requires the
+env var `ONDOWAY_ENABLE_PAID_LLM_CALLS` (`:66`) — without it, a real call
+raises rather than silently falling back to a stub. **Corrected —
+`tests/conftest.py` is not the only offline-stub site:**
+`tests/conftest.py:91,102,108,115` patches these classes for the general
+test bar, but `tests/test_compose_provider.py` independently patches them
+again for its own tests.
+
+**Net effect for API consumers:** calling `/trips/generate` alone returns a
+structurally complete, correctly-selected, correctly-persisted trip whose
+only beat-derived text is one raw primary-beat `script_body` — not composed
+narration. Getting composed narration requires a separate, explicitly
+permission-gated call to `/trips/{trip_id}/compose` or `/trips/preview`.
+This is deliberate, documented staged design (see item 6), not an
+undocumented gap.
+
+**Resolved from the prior version's open questions:**
+- Test coverage for the generate-then-compose chain **does exist**:
+  `tests/test_trip_api.py`'s `TestComposeTripEndpoint` class chains a
+  `fresh_trip` fixture (which calls `/trips/generate`) into
+  `/trips/{trip_id}/compose` across at least 7 test methods.
+- Whether the mobile app can show the pre-compose text directly:
+  `mobile/lib/pages/trip_itinerary_page.dart` populates its stop list
+  directly from the `/trips/generate` response, and composing is a
+  separate, user-initiated action (a flavour picker), not an automatic
+  follow-up call. This lead was not independently re-verified to the same
+  3-reviewer standard as the rest of this section — treat it as a starting
+  point for a dedicated mobile-subsystem review, not a settled fact.
+
 ---
 
 ## Graph Visualization — `/api/v1/graph`
