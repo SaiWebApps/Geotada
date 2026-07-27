@@ -212,6 +212,18 @@ def test_default_per_ip_budget_admits_one_maximum_size_premium_plan():
 
 
 def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, monkeypatch):
+    """AC-16/AC-18: an unresolvable build fingerprint is a distinct, pre-spend fault.
+
+    ``resolve_build_identity`` runs at trips.py before ``_spend_precheck`` — this
+    must be provable at ZERO paid calls. The generic ``except Exception`` around the
+    physical-authoring call must not swallow this into ``llm_generation_failed`` /
+    ``generation_failed``: that reports "the LLM tried and failed" for a fault where
+    the LLM was never even reached, and hides an environment/config problem behind a
+    provider-authoring error message.
+    UNDO: catch resolve_build_identity()'s ValueError with the same generic
+    ``except Exception`` block used for premium-authoring failures -> this test goes
+    RED on both the rejection code and the basic_tour reason.
+    """
     executor = _CountingPremiumExecutor()
     client = preview_client(executor)
     monkeypatch.setattr(
@@ -226,7 +238,27 @@ def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, mo
     body = response.json()
     assert body["candidate_eligible"] is False
     assert body["compose_status"] == "basic_available"
-    assert executor.calls == 0
+    assert executor.calls == 0, "a build-fingerprint fault must never reach the provider"
+
+    assert body["basic_tour"]["reason"] != "llm_generation_failed", (
+        "an environment/config fault must not be reported as an LLM generation failure"
+    )
+    rejection = body["candidate_rejection"]
+    assert rejection["code"] == "build_fingerprint_unavailable"
+    assert "dirty build" in rejection["detail"], (
+        "the detail must carry the raised message, not a generic authoring string"
+    )
+
+    # A genuine provider-authoring failure must still produce the OLD code/reason,
+    # and the two payloads must not be byte-identical.
+    other = preview_client(_RaisingPremiumExecutor(RuntimeError("boom"))).post(
+        "/api/v1/trips/preview", json=PREVIEW_BODY
+    )
+    other_body = other.json()
+    assert other_body["candidate_rejection"]["code"] == "generation_failed"
+    assert other_body["basic_tour"]["reason"] == "llm_generation_failed"
+    assert other_body["candidate_rejection"] != rejection
+    assert other_body["basic_tour"]["reason"] != body["basic_tour"]["reason"]
 
 
 def test_unknown_provider_defaults_to_cost_bearing(preview_client, monkeypatch):

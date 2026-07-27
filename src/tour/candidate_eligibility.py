@@ -22,6 +22,7 @@ class CandidateRejectionCode(StrEnum):
     SENTENCE_FLOOR_PRESENT = "sentence_floor_present"
     QUALITY_REJECTED = "quality_rejected"
     CANCELLED = "cancelled"
+    BUILD_FINGERPRINT_UNAVAILABLE = "build_fingerprint_unavailable"
 
 
 class CandidateRejection(BaseModel):

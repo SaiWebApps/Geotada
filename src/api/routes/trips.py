@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
+import sys
 import threading
 import time
 from collections import deque
@@ -1069,8 +1071,48 @@ def preview_trip(
     provider = premium_executor.provider_name
     omitted_facts: list[object] = []
     omission_stops_checked = 0
+
+    def _basic_tour_fallback(
+        *, reason: str, rejection: CandidateRejection
+    ) -> TripPreviewResponse:
+        basic_stops = _preview_stops(basic_script, route, vignette_beats, snapshot, overflow_by_poi)
+        return TripPreviewResponse(
+            spine_area=route.spine_area,
+            total_audio_min=0,
+            stops=[],
+            candidate_eligible=False,
+            narration_kind="none",
+            basic_tour=TripPreviewBasicTour(
+                reason=reason,
+                total_audio_min=round(basic_script.total_audio_seconds / 60),
+                stops=basic_stops,
+            ),
+            lens_coverage_note=None,
+            tourability=_tourability_payload(route.tourability),
+            compose_status="basic_available",
+            candidate_rejection=rejection,
+            provider=provider,
+            narration_quality=None,
+            quality=None,
+        )
+
+    # Resolved BEFORE any spend precheck / physical call: an unresolvable build
+    # fingerprint (dirty local tree, malformed deploy SHA) is an environment/config
+    # fault, not an LLM authoring failure — it must never be folded into the generic
+    # provider-failure branch below, which would both mislabel the cause and hide
+    # that ZERO provider spend happened.
     try:
         build_identity = resolve_build_identity()
+    except Exception as exc:
+        return _basic_tour_fallback(
+            reason="llm_candidate_ineligible",
+            rejection=CandidateRejection(
+                code=CandidateRejectionCode.BUILD_FINGERPRINT_UNAVAILABLE,
+                detail=str(exc),
+            ),
+        )
+
+    try:
         _spend_precheck(
             request,
             premium_executor,
@@ -1090,29 +1132,43 @@ def preview_trip(
     except HTTPException:
         raise
     except Exception:
-        candidate_rejection = CandidateRejection(
-            code=CandidateRejectionCode.GENERATION_FAILED,
-            detail="Premium authoring did not produce a complete traced blueprint",
+        # LOG BEFORE SWALLOWING. This catch-all collapses every post-planning failure
+        # -- provider error, traceability rejection, verification refusal -- into one
+        # opaque string, and the response deliberately does not leak provider prose.
+        # With no log record the cause was unrecoverable at every layer at once, so a
+        # tester's only channel was to guess. The traceback goes to the server log
+        # (/tmp/ondoway-workbench-api.log for the workbench); the wire keeps the
+        # stable, non-leaking contract below.
+        _log = logging.getLogger("ondoway.api")
+        _log.exception(
+            "Premium authoring failed after planning; returning the Basic lane "
+            "(city=%s duration=%s stops_planned=%s)",
+            body.city_slug,
+            body.duration_min,
+            len(premium_plan.units),
         )
-        basic_stops = _preview_stops(basic_script, route, vignette_beats, snapshot, overflow_by_poi)
-        return TripPreviewResponse(
-            spine_area=route.spine_area,
-            total_audio_min=0,
-            stops=[],
-            candidate_eligible=False,
-            narration_kind="none",
-            basic_tour=TripPreviewBasicTour(
-                reason="llm_generation_failed",
-                total_audio_min=round(basic_script.total_audio_seconds / 60),
-                stops=basic_stops,
+        # A VERIFY refusal names counts only ("1 untraceable"), which is not enough to
+        # act on: traceability fails for three structurally different reasons (unknown
+        # cited beat id, a glue label outside GLUE_LABELS, or an unrecognised
+        # source_type -- src/tour/validation.py:145-157). Log the offending sentences'
+        # PROVENANCE so one run identifies the rule instead of costing another paid
+        # preview per guess. Sentence TEXT is truncated and stays server-side only.
+        _report = getattr(sys.exc_info()[1], "report", None)
+        for _s in getattr(_report, "untraceable_sentences", ()) or ():
+            _log.error(
+                "  UNTRACEABLE stop=%s source_type=%r source_id=%r cited=%r text=%.120r",
+                getattr(_s, "stop_idx", None),
+                getattr(_s, "source_type", None),
+                getattr(_s, "source_id", None),
+                tuple(getattr(_s, "cited_beat_ids", ()) or ()),
+                getattr(_s, "text", ""),
+            )
+        return _basic_tour_fallback(
+            reason="llm_generation_failed",
+            rejection=CandidateRejection(
+                code=CandidateRejectionCode.GENERATION_FAILED,
+                detail="Premium authoring did not produce a complete traced blueprint",
             ),
-            lens_coverage_note=None,
-            tourability=_tourability_payload(route.tourability),
-            compose_status="basic_available",
-            candidate_rejection=candidate_rejection,
-            provider=provider,
-            narration_quality=None,
-            quality=None,
         )
 
     script = premium_result.blueprint.script
