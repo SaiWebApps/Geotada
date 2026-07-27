@@ -6,6 +6,7 @@ Check whether this machine has the prerequisites to run the Ondoway project, and
 2. **Docker** — run `docker --version` and verify it's installed
 3. **Docker daemon running** — run `docker info` and check it responds (not "Cannot connect to the Docker daemon")
 4. **Docker context** — run `docker context ls` and verify the active context (marked with `*`) is NOT "vessel". If it is, switch to "desktop-linux" with `docker context use desktop-linux`
+5. **Node.js 18+ (agent tooling only, NOT needed for `make test`)** — run `node --version` and verify >= 18. (`.claude/team-engine.js` uses optional chaining and `??`, which need Node 14+; 18 is the oldest maintained LTS.) It is needed only to run `node .claude/team-engine.test.js`, the standalone regression guard for the `/team` execution engine. Without node that guard cannot run, but the product suite is unaffected — report it as a warning, not a blocker.
 
 ## Audio Pipeline Prerequisites
 
@@ -23,6 +24,7 @@ Check whether this machine has the prerequisites to run the Ondoway project, and
   - Docker: `brew install --cask docker` (installs Docker Desktop)
   - Docker not running: `open -a Docker` to start Docker Desktop
   - Wrong Docker context: `docker context use desktop-linux`
+  - Missing Node: `brew install node`
   - Missing OPENAI_API_KEY: Guide user to https://platform.openai.com/api-keys, then add to `.env`
   - OpenAI unreachable: Check proxy settings, try `curl -I https://api.openai.com`
   - Missing httpx: `pip install httpx`

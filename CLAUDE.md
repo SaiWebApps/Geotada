@@ -21,7 +21,9 @@ PreToolUse hook (`guard.sh`, with a `guard-log.txt` audit trail, both under
 was REMOVED in 643d0d9 as measured-ineffective: 0/70 genuinely destructive
 commands blocked, 16/20 harmless ones blocked. Nothing replaced it. No
 destructive command is intercepted, and no audit log is written — an absent
-`guard-log.txt` is NOT a clean record. Destructive-command safety now rests
+`guard-log.txt` is NOT a clean record. (`.claude/hooks/team-gate.sh` is NOT a
+command guard: it only checks that a `/team` ledger is human-approved before an
+agent spawn, and it fails open. It intercepts no Bash command whatsoever.) Destructive-command safety now rests
 entirely on mechanism 1 below, which is therefore load-bearing: the judge
 consult before a state-changing action is the ONLY thing standing between a
 bad command and a live resource. Skipping it has no backstop.
@@ -53,8 +55,71 @@ human reviews verdicts with evidence, never raw candidates.
 The Judge Protocol above is the BACK half (QA/Skeptic/Judge — stops us shipping
 a broken thing). The full team adds a FRONT half (Product Owner/Planner — stops
 us confidently building the WRONG thing) and sizes rigor to the change so
-quality never means slow. Entry point: `/team <task>` (`.claude/commands/team.md`).
-No one blesses their own work.
+quality never means slow. No one blesses their own work.
+
+**`/team <task>` is the ONLY command the user types.** The approval gate is a
+turn boundary in chat, not a second command:
+
+1. **`/team <task>`** (`.claude/commands/team.md`) — Product Owner + Planner
+   produce an atomic step ledger at `specs/{date}-{slug}/state.json` (contract:
+   `specs/_templates/team-state.schema.json`) with `approved_by_human: false`,
+   present the plan + cost estimate, and **end the turn**. ~3 agents, no code.
+2. **The human says "go" in chat** (or asks for changes — amend and re-present).
+3. **The same session** transcribes that approval into the ledger and invokes
+   `.claude/team-engine.js` via the Workflow tool. Per step: Build → $0
+   Gate (undo-test) → tier-sized skeptic panel → Judge → persist. It **refuses
+   to fan out** while `approved_by_human` is not true, and it never commits.
+
+The engine registers as `team-engine-internal`. **Never tell the user to invoke
+it**, and never ask them to hand-edit `state.json` — direct invocation exists
+only for resuming a partially-run ledger (`retryBlocked: true`). A Workflow
+script cannot pause mid-run for input; that constrains the *script*, not the
+user-facing command surface — the main agent is what waits.
+
+Rules the back half enforces in JS rather than prose, because prose caps were
+tried and died (`/dev`'s loop counters call a `dev-state.sh` hook that does not
+exist):
+
+- **Atomic step** = one file-scoped change proven by exactly ONE executable
+  command that goes RED before and GREEN after. `make test-file
+  FILE="tests/test_x.py::TestY::test_z"` — a pytest **node id**, never `-k`
+  (`Makefile:139-149` has no `$(PYTEST_ARGS)` passthrough, so make eats `-k` as
+  `--keep-going` and the selector becomes a make goal).
+- **The cost ladder.** Per step: derived lint + the step's own node-id test +
+  the mutation test (seconds, no provider spend). Per phase: `_test-python`,
+  `flutter-test`, `test-workbench`, `_test-golden` — **serial**, they share the
+  7688 DB, dev data and Valhalla. Run close: `make audit` **exactly once** (that
+  is the only paid command; `test-live` sets `ONDOWAY_ENABLE_PAID_LLM_CALLS=1`).
+  Never run the paid bar inside a loop.
+- **"$0" means zero provider spend, NOT read-only.** `make test-file` pulls in
+  `_ensure-test-db`/`_ensure-dev-data`/`valhalla-up` (`Makefile:144-146`), so
+  even the cheapest rung starts the shared Neo4j containers, **writes to the
+  shared 7687 dev graph**, and `docker compose up`s Valhalla. The engine
+  therefore assumes exclusive use of the local containers — never run it
+  alongside `make test` or a sibling session's suite.
+- Skeptics run in parallel, so they may only execute `make lint` and
+  `make flutter-analyze` themselves; any container-touching reproduction is
+  *proposed* and re-run once by a single serial verifier. Otherwise two panel
+  members racing on 7688 or :8001 manufacture phantom blockers from a collision
+  the design caused.
+- **An objection blocks only with a verified reproduction** it actually ran, on
+  an allowlisted cheap target. No repro → advisory, logged, no rework cycle.
+  This is what stops the skeptic panel spinning forever.
+- Hard caps: per-step `maxAttempts` (default 2), a FAKE mutation is terminal,
+  empty diffs short-circuit, ping-pong detection, one phase-repair per run, an
+  infra circuit breaker, and a weighted agent budget printed **before** any
+  fan-out (`estimateOnly: true` prints it and spawns nothing).
+- `.claude/hooks/team-gate.sh` (PreToolUse/Agent) is a *second* gate, and it
+  covers **main-agent spawns only**. Measured 2026-07-25 both ways: it DOES
+  refuse a real main-agent Agent call naming an unapproved ledger, and it does
+  NOT fire for agents spawned inside the Workflow runtime. It is deliberately narrow
+  (it fires only when a prompt names a `specs/` dir whose `state.json` says
+  `approved_by_human: false`) and fails open, because the removed `guard.sh`
+  proved a broad hook blocks harmless work. The load-bearing check is
+  the engine's own preflight.
+
+For open-ended "find + fix whatever's wrong" use `Skill(proactive-audit)`
+instead — `/team` needs a defined change.
 
 Roles (each = a real agent or mechanism):
 - **Product Owner** (`.claude/agents/product-owner.md`) — request → smallest
@@ -190,6 +255,30 @@ make db-parity TARGET=cloud       # Read-only Aura parity
 `make test` runs, in order: local pytest, Flutter, workbench browser, golden tours,
 tour grade, tour invariants, live-provider tests, and read-only cloud parity. It
 requires the corresponding live credentials and may incur provider cost.
+
+**The `/team` engine's guard is NOT in `make test`** — it is agent tooling, not product,
+so it does not live in `tests/` and Node.js is not a `make test` prerequisite. Run it
+yourself after touching `.claude/team-engine.js`:
+
+```bash
+node .claude/team-engine.test.js
+```
+
+It loads the real engine and drives its control flow with stubbed agents across 17
+pathological shapes, guarding the termination caps, the paid-bar one-shot, the
+`depends_on` live-status resolution, and the pre-fan-out gate ORDER (an estimate must be
+answerable on the still-unapproved ledger `/team` prices, while a real run on it is still
+refused). Hermetic — no DB, no container, no provider, ~50ms — and it exits nonzero with
+a named failing check. The header lists, per guard, the exact mutation that must turn it
+red; adding a cap means adding its row.
+
+**You are not the only thing that runs it.** Because it is outside `make test`, the engine
+runs it ITSELF: preflight executes it and sets `infra.engine_guard`, and the engine aborts
+`engine_guard_red` rather than fan out on caps it cannot prove still hold. The gate is
+`!== true`, so an unanswered guard counts as a failed one. That is the last point before
+fan-out where a broken cap still costs nothing — and it catches breakage the current
+session never saw (a sibling session's edit, a hand edit, a fresh clone). Never edit the
+guard to make it pass.
 
 **Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687, Workbench Neo4j = 7689.
 The definitive suite starts each required local service through its shard target.

@@ -258,7 +258,10 @@ temp/
 !.claude/hooks/
 !.claude/workflows/
 !.claude/settings.json
+!.claude/team-engine.js
+!.claude/team-engine.test.js
 .claude/hooks/guard-log.txt
+.claude/hooks/team-gate-log.txt
 
 # Keep .env.example and .env.test.example but ignore .env and .env.test
 !.env.example
