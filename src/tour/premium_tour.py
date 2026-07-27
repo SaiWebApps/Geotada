@@ -12,6 +12,7 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import logging
 import os
 import re
 import subprocess
@@ -499,16 +500,36 @@ def finalize_premium_composition(
     )
 
 
+ALLOW_DIRTY_LOCAL_BUILD_ENV = "ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD"
+
+
 @dataclass(frozen=True)
 class PremiumBuildIdentity:
     commit_sha: str
     tts_provider: str = "openai"
     tts_model: str = OpenAITTSProvider.DEFAULT_MODEL
     tts_voice: str = OpenAITTSProvider.DEFAULT_VOICE
+    # True only for a LOCAL workbench build authored off a dirty tree. commit_sha then
+    # names HEAD, which the working tree does NOT match — so this build is reproducible
+    # only by whoever ran it, and is never certification-eligible.
+    local_dirty_tree: bool = False
 
 
 def resolve_build_identity() -> PremiumBuildIdentity:
-    """Resolve a deploy commit or a clean local HEAD; reject dirty local trees."""
+    """Resolve a deploy commit or a clean local HEAD; reject dirty local trees.
+
+    One narrow local concession: with ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1`` a dirty tree
+    yields HEAD's sha tagged ``local_dirty_tree=True`` instead of raising. Without it the
+    editorial workbench is unusable during normal development — every developer tree has
+    uncommitted work, so EVERY local Premium preview degraded to the Basic lane, and the
+    reason was reported as an LLM failure. See scripts/workbench.sh.
+
+    Deliberately NOT reusing GIT_COMMIT_SHA for this: that variable means "the deploy is
+    this commit" (its own error message below calls it a deployment fingerprint), so
+    setting it locally would assert clean provenance process-wide and silently. A
+    separate, explicitly-named opt-in keeps the lie from being told at all. It is fenced
+    to refuse whenever RENDER_GIT_COMMIT is present, so it can never fire on Render.
+    """
 
     deployed = os.getenv("RENDER_GIT_COMMIT") or os.getenv("GIT_COMMIT_SHA")
     if deployed:
@@ -523,7 +544,26 @@ def resolve_build_identity() -> PremiumBuildIdentity:
         text=True,
     ).stdout
     if status.strip():
-        raise ValueError("Premium fingerprint requires a clean local git tree")
+        if os.getenv(ALLOW_DIRTY_LOCAL_BUILD_ENV, "").strip() != "1":
+            raise ValueError("Premium fingerprint requires a clean local git tree")
+        if os.getenv("RENDER_GIT_COMMIT"):
+            raise ValueError("dirty-tree local builds are never permitted on a deployment")
+        head = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=REPO_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        if not re.fullmatch(r"[0-9a-f]{40}", head):
+            raise ValueError("local commit fingerprint is not a full lowercase SHA")
+        logging.getLogger("ondoway.api").warning(
+            "Premium build authored from a DIRTY local tree at %s — %s=1 is set. "
+            "This build is not reproducible from the commit and is not certifiable.",
+            head,
+            ALLOW_DIRTY_LOCAL_BUILD_ENV,
+        )
+        return PremiumBuildIdentity(commit_sha=head, local_dirty_tree=True)
     commit = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=REPO_ROOT,
