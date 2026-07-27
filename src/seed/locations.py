@@ -40,7 +40,7 @@ PARIS_POIS: list[dict] = [
         "kid_friendly": "yes",
     },
     {
-        "name": "Café de Flore",
+        "name": "Cafe de Flore",
         "city_name": "paris",
         "short_description": "Legendary Left Bank café, haunt of Sartre and de Beauvoir.",
         "lat": 48.854000,

@@ -66,7 +66,7 @@ STOPS: list[dict] = [
         "duration_min": 90,
     },
     {
-        "poi_name": "Café de Flore",
+        "poi_name": "Cafe de Flore",
         "city_name": "paris",
         "sort_order": 2,
         "start_time": "11:00",

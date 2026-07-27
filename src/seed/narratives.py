@@ -43,7 +43,7 @@ BEATS: list[dict] = [
         "importance_tier": 5,
     },
     {
-        "poi_name": "Café de Flore",
+        "poi_name": "Cafe de Flore",
         "script_body": (
             "This corner table — yes, this exact one — is where Sartre scribbled "
             "Being and Nothingness while chain-smoking Gauloises. De Beauvoir sat "
@@ -54,7 +54,7 @@ BEATS: list[dict] = [
         "importance_tier": 3,
     },
     {
-        "poi_name": "Café de Flore",
+        "poi_name": "Cafe de Flore",
         "script_body": (
             "During the Occupation, Café de Flore became an unlikely resistance "
             "hub. The Nazis preferred the Deux Magots next door — which made Flore "

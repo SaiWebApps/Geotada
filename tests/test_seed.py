@@ -52,7 +52,7 @@ class TestSeeding:
     def test_cafe_de_flore_has_two_beats(self, driver):
         with driver.session() as session:
             count = session.run(
-                "MATCH (p:POI {name: 'Café de Flore'})-[:HAS_BEAT]->(b) RETURN count(b) AS c"
+                "MATCH (p:POI {name: 'Cafe de Flore'})-[:HAS_BEAT]->(b) RETURN count(b) AS c"
             ).single()["c"]
         assert count == 2
 
