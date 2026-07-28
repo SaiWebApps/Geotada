@@ -21,16 +21,21 @@ port = int(sys.argv[1])
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(("127.0.0.1", port))
-s.listen(1)
+# Backlog 16, not 1. Nothing ever calls accept(), so connections stay queued and the
+# readiness probe below occupies a slot before the client arrives. PRECAUTIONARY — see
+# the honest note on the wait loop; this was NOT shown to be the cause.
+s.listen(16)
 while True:
     time.sleep(1)
 """
 
 _CLIENT_SRC = """
-import socket, sys, time
+import pathlib, socket, sys, time
 port = int(sys.argv[1])
+ready = pathlib.Path(sys.argv[2])
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1", port))
+ready.write_text("established")  # written ONLY once the socket is ESTABLISHED
 while True:
     time.sleep(1)
 """
@@ -86,10 +91,38 @@ def test_launchers_kill_only_listening_sockets(tmp_path) -> None:
         else:
             raise RuntimeError("listener fixture never came up")
 
-        client = subprocess.Popen([sys.executable, str(client_file), str(port)])
-        # Let the client's connection settle into ESTABLISHED before we run the
-        # launcher's port-freeing step against it.
-        time.sleep(0.5)
+        # WAIT ON THE CONDITION, NEVER ON THE CLOCK. This was `time.sleep(0.5)`.
+        #
+        # HONEST STATUS (2026-07-27): this test WAS flaky — it failed 1 of 3 runs in
+        # isolation, with the client exiting rc=1 on ConnectionRefusedError, which made
+        # the assertion below report "a client/ESTABLISHED socket must never be
+        # signalled" and blame the launcher for a fixture fault. After this change it
+        # passed 8 of 8. But the ROOT CAUSE IS NOT ESTABLISHED, and two hypotheses were
+        # tested and REFUTED rather than assumed:
+        #   - "0.5 s is too short for interpreter startup" — measured: the client reaches
+        #     ESTABLISHED in 23-32 ms over 10 runs, 0/10 anywhere near the budget.
+        #   - "listen(1)'s backlog is exhausted by the readiness probe" — measured:
+        #     0/15 connect failures at backlog 1, and 0/15 at 16.
+        # So waiting on the ready file is a genuine robustness improvement and the right
+        # shape regardless, but do NOT record this flake as diagnosed. If it recurs,
+        # start from the port-freeing snippet itself — the one part neither experiment
+        # exercised — and capture the client's stderr, which is currently discarded.
+        ready_file = tmp_path / "client-established"
+        client = subprocess.Popen(
+            [sys.executable, str(client_file), str(port), str(ready_file)]
+        )
+        for _ in range(100):  # up to 10s
+            if ready_file.exists():
+                break
+            if not _alive(client):
+                raise RuntimeError(
+                    f"client exited (rc={client.returncode}) before connecting — a "
+                    "fixture fault, not a failure of the launcher under test"
+                )
+            time.sleep(0.1)
+        else:
+            raise RuntimeError("client never reached ESTABLISHED within 10s")
+
         assert _alive(listener)
         assert _alive(client)
 
