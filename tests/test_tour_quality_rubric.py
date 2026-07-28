@@ -779,15 +779,19 @@ def test_c7_skips_when_the_route_carries_no_budget() -> None:
 
 
 def test_c9_long_mean_sentence_length_is_a_warn() -> None:
-    """GUARDS: sentences too long to follow by ear (standard §4 C9; CITED
-    MAX_SENTENCE_WORDS=15, §5). REUSES narration_quality.score_narration —
-    does not recompute mean sentence length itself.
+    """GUARDS: sentences too long to follow by ear (standard §4 C9, §5). REUSES
+    narration_quality.score_narration — does not recompute mean sentence length itself.
 
-    A single 25-word sentence has mean_sentence_words=25, over the 15-word cap.
+    A single 25-word sentence has mean_sentence_words=25, over the 20-word cap.
     UNDO: delete the ``if nq.mean_sentence_words > MAX_SENTENCE_WORDS`` block and
     this goes RED.
+
+    The cap was 15.0, CITED to Nubart's museum-station range, until 2026-07-27. It is
+    now 20.0, a JUDGEMENT anchored on the gold text's measured 19.11 — see
+    ``test_c9_cap_admits_the_owners_own_gold_text`` for why, and the constant's own
+    docstring for the measurement.
     """
-    assert MAX_SENTENCE_WORDS == 15.0
+    assert MAX_SENTENCE_WORDS == 20.0
     poi = _spoi("a", tier=3)
     long_sentence = _words(25, prefix="w") + "."
 
@@ -802,6 +806,68 @@ def test_c9_long_mean_sentence_length_is_a_warn() -> None:
     assert warns[0].severity is Severity.WARN
     assert report.blockers == []
     assert report.passed  # WARN never blocks serving
+
+
+def test_c9_cap_admits_the_owners_own_gold_text() -> None:
+    """THE CALIBRATION, made executable: the north star must pass its own bar.
+
+    ``specs/2026-07-19-tour-quality-standard/01-standard.md`` §1 is the passage the owner
+    hand-wrote and from which S1-S10 were derived. At the old cap of 15 it FAILED C9 —
+    the standard's own gold text could not pass the standard's own check, and neither
+    could any of 191 real tours.
+
+    This is the guard against re-tightening the cap on cited authority that describes
+    something other than a narrative walking tour. If it goes RED, either the cap moved
+    below the gold or the gold changed; in both cases a human decides, and lowering the
+    cap to silence this test is the wrong answer.
+
+    NOT a tautology: the gold's measured 19.11 sits BELOW the cap of 20.0 with real
+    margin, and 32 of 38 measured machine stops still fail — so the cap discriminates.
+    ``test_c9_long_mean_sentence_length_is_a_warn`` covers the firing side.
+
+    "C9 did not fire" is vacuously true in several states, so the guards are split.
+    MEASURED, not assumed — each row below was reproduced by mutating the real constant:
+
+    ==================================== ==========================================
+    failure                              what catches it
+    ==================================== ==========================================
+    cap lowered below the gold           THIS test's C9 assertion (verified at 15.0)
+    §1 replaced with short text          THIS test's band, lower bound (a 3.5-word
+                                         mean fails 18.0)
+    cap widened until C9 cannot fire     the companion test (verified at 999.0)
+    C9 deleted from the rubric           the companion test
+    ==================================== ==========================================
+
+    The band's upper bound is the cap itself, so it deliberately does NOT catch a widened
+    cap — that is the companion's job, and it does it. Do not add coverage here that
+    already exists there; do remove nothing.
+    """
+    from scripts.score_gold_text import extract_gold_text
+    from src.tour.narration_quality import score_narration
+
+    gold = extract_gold_text()
+    poi = _spoi("a", tier=3)
+
+    measured = score_narration(gold).mean_sentence_words
+    assert 18.0 <= measured < MAX_SENTENCE_WORDS, (
+        f"the gold measures {measured} words/sentence, outside the [18.0, "
+        f"{MAX_SENTENCE_WORDS}) band this calibration assumes. Either §1 changed or the "
+        "cap did. This test is only meaningful while the gold is long prose sitting just "
+        "under the cap — re-derive the cap from the gold, do not widen this band to fit."
+    )
+
+    report = score_tour(
+        _script([_sentence(gold, 0)], [poi]),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    assert "C9-long-sentences" not in _checks(report), (
+        "the owner's gold text now FAILS the sentence-length cap "
+        f"(MAX_SENTENCE_WORDS={MAX_SENTENCE_WORDS}). A bar the north star cannot clear "
+        "measures nothing — it fired on 100% of 191 real tours when this last happened. "
+        "Do not lower the gold to fit; re-derive the cap from it."
+    )
 
 
 def test_c9_does_not_fire_on_short_punchy_sentences() -> None:

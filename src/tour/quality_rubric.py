@@ -65,8 +65,35 @@ STARVE_MIN_WORDS_PER_BEAT: float = 12.0
 #: Guarded by test_c8_clears_the_widest_stop_in_the_certification_corpus.
 GORGE_MAX_WORDS_PER_STOP: int = 850
 
-#: CITED. Nubart / Musa Guide: keep sentences to 10-15 words for the ear.
-MAX_SENTENCE_WORDS: float = 15.0
+#: JUDGEMENT, anchored on a MEASUREMENT of the gold text. Was 15.0, CITED to Nubart /
+#: Musa Guide ("keep sentences to 10-15 words for the ear"). That citation describes
+#: MUSEUM STATION copy, and it does not survive contact with this project's own north
+#: star: the owner's hand-written gold (standard §1) measures `mean_sentence_words`
+#: **19.11** and so FAILED its own bar at 15, as did every one of 191 saved tours.
+#:
+#: WHAT THIS RETUNE DID AND DID NOT FIX. It moved the STOP-level pass rate from 0/38 to
+#: 6/38, and it admits the gold. At TOUR level the rate barely moves — 9/9 of cohort A
+#: and 176/182 of cohort B still trip C9 — because one over-long stop flags a whole tour.
+#: So "a check that never passes discriminates nothing" is only half-answered here: the
+#: cap is no longer unreachable, but most real tours genuinely do ramble. Do not read a
+#: 100% tour-level rate in the scorer output as evidence the retune failed.
+#:
+#: The check itself is SOUND and was nearly deleted by mistake. C9 fires PER STOP;
+#: aggregating whole-tour compresses machine figures toward the gold and hides the
+#: ordering. Measured per stop across the post-audio-fix cohort: gold 19.11 against 38
+#: machine stops at min 16.9 / median 23.2 / max 34.3. The gold reads shorter than 34 of
+#: 38 — C9 ranks the hand-written text above machine output correctly. Only the constant
+#: was wrong.
+#:
+#: THE RULE FOR THE NUMBER: the smallest round number strictly above the anchor. Not
+#: 19.11 itself — `score_narration` rounds to 2dp, so `19.11 > 19.11` is False by nothing
+#: at all, and one word added to a 509-word passage flips it. Margin is needed for a
+#: second reason too: the gold's mean is taken over 27 sentences while a real stop's is
+#: taken over 5-6, so the cap judges a noisier statistic than the one it was calibrated
+#: on. Nothing hinges on the exact choice — 19.5 fails 33 of 38 machine stops, 20 fails
+#: 32, 21 fails 31 — so the rule matters more than the value.
+#: Guarded by test_c9_cap_admits_the_owners_own_gold_text — the calibration, executable.
+MAX_SENTENCE_WORDS: float = 20.0
 
 #: CITED. 130-150 words per minute of spoken narration.
 WORDS_PER_MINUTE: float = 150.0
@@ -669,9 +696,10 @@ def score_tour(
             continue  # C6 already reports the empty stop; nothing to score here
         nq = score_narration(stop_text)
 
-        # C9: sentence length for the ear. CITED (MAX_SENTENCE_WORDS, standard §5,
-        # Nubart: keep sentences to 10-15 words). WARN — a long mean is a craft
-        # smell surfaced to the editor, not grounds to refuse serving the tour.
+        # C9: sentence length for the ear. The cap is a JUDGEMENT anchored on the gold
+        # text's own measured 19.11 (see MAX_SENTENCE_WORDS), NOT on the Nubart 10-15
+        # museum-copy range it used to cite — the gold failed that range. WARN — a long
+        # mean is a craft smell surfaced to the editor, not grounds to refuse serving.
         if nq.mean_sentence_words > MAX_SENTENCE_WORDS:
             report.findings.append(
                 Finding(
