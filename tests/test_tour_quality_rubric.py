@@ -915,7 +915,9 @@ def test_openers_are_unchecked_since_c10_was_deleted() -> None:
     body = _words(30, prefix="x")
     poi = _spoi("a", tier=3)
 
-    def _findings(opener: str) -> set[str]:
+    def _findings(opener: str) -> list[str]:
+        # _checks returns a LIST, and the comparison below is on lists — stricter than
+        # sets (it also catches a duplicate finding) and deliberately kept that way.
         report = score_tour(
             _script([_sentence(opener, 0), _sentence(body, 0)], [poi]),
             _route([_poi("a", tier=3)]),
@@ -928,13 +930,14 @@ def test_openers_are_unchecked_since_c10_was_deleted() -> None:
 
     assert bare_fact == look_cue, (
         "the rubric now distinguishes a bare-fact opener from an oriented one — "
-        f"bare-only findings: {sorted(bare_fact - look_cue)}. If G1 (or any successor "
-        "opener check) has been built, the gap this test pins is CLOSED: delete this "
-        "test rather than relaxing it."
+        f"bare-only findings: {sorted(set(bare_fact) - set(look_cue))}. If G1 (or any "
+        "successor opener check) has been built, the gap this test pins is CLOSED: "
+        "delete this test rather than relaxing it."
     )
     assert "C10-no-look-cue" not in bare_fact, "C10 was deleted; it must not return"
 
 
+# ---------------------------------------------------------------------------
 # C11 — date density for the ear (WARN, RELATIVE to the tour's own mean).
 # ---------------------------------------------------------------------------
 

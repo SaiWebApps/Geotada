@@ -199,6 +199,21 @@ MIN_DWELL_AUDIO_SECONDS: int = 90
 # Notre-Dame's MEASURED 1038-word stop was therefore the ceiling WORKING AS CONFIGURED,
 # not a cap failure. Tied to the word cap so the two can no longer drift:
 #     750 words / 150 wpm = 5.0 min = 300 s
+#
+# THEY DRIFTED AGAIN. GORGE_MAX_WORDS_PER_STOP moved 750 -> 850 in a069efd (measured:
+# the widest stop in the certified corpus is 808 words, and 750 was BLOCKING three
+# tours this project itself certified). This constant did not move with it, and the
+# "can no longer drift" above is therefore false as written. Re-derived against 850 it
+# would be 850/150*60 - 30 = 310 s.
+#
+# LEFT AT 270 DELIBERATELY, PENDING AN OWNER DECISION (2026-07-27). Raising it is not a
+# bookkeeping fix — it lets every stop grow by up to 100 rendered words, which changes
+# what every tourist hears. The consequence of leaving it is equally real and must not
+# be misread: at 270 s a stop renders at most 675 beat words + ~75 glue = ~750, so
+# **C8 cannot fire on anything the engine builds today**. The 113/182 gorged tours in
+# `make score-saved-tours` are all OLDER output. If a future session sees C8 clean on
+# fresh tours, the honest reading is "this ceiling did it", NOT "the recalibration
+# worked".
 # MINUS a MEASURED glue reserve: the ceiling caps BEAT audio, but a rendered stop also
 # carries generation glue (arrival line, look-cue, closer). Measured per-stop glue on
 # the Ile de la Cite tour: 2 / 65 / 16 / 12 / 73 words. Budgeting the worst case

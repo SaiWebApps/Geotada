@@ -6,6 +6,13 @@ WHY
 sentence length) and C10 (look-cue opener) — firing on **100%** of them. A check that never
 passes discriminates nothing.
 
+BOTH ARE NOW RESOLVED, and in OPPOSITE directions (2026-07-27) — this script is what
+settled which was which. C9's cap was retuned 15 -> 20, because C9 ranked the gold above
+34 of 38 machine stops and only its threshold was wrong. C10 was DELETED, because it was a
+regex over 18 sentence-initial verbs that rated the gold's own opener "a bare fact".
+Openers are now UNCHECKED until G1 ships — see
+tests/test_tour_quality_rubric.py::test_openers_are_unchecked_since_c10_was_deleted.
+
 There are two possible explanations demanding opposite fixes:
 
   1. every generated tour really is worse than the bar, or
@@ -45,7 +52,7 @@ listed as NOT APPLICABLE rather than reported as passes:
   * C2-tier-inversion, C12-stops-too-close, C11-year-density-outlier — need >1 stop or POI
 
 What genuinely IS measured: **C5** (verbatim repetition), **C6** (empty stop), **C8**
-(gorging) — and **C9** and **C10**, which are the point of the exercise.
+(gorging) and **C9**. C10 no longer exists.
 
 The gold text is extracted STRUCTURALLY — the markdown blockquote under the §1 heading,
 matched on line prefixes, never a pattern match. See ``extract_gold_text``.
