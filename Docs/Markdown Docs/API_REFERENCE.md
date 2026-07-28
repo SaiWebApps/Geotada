@@ -526,6 +526,21 @@ permission-gated call to `/trips/{trip_id}/compose` or `/trips/preview`.
 This is deliberate, documented staged design (see item 6), not an
 undocumented gap.
 
+**9. The two compose paths do NOT fail the same way, and the difference is
+not cosmetic.** `compose_script` (`src/tour/compose.py:1341`, reached from
+`/trips/generate`) **splices and reverts** around an offending sentence — the
+tour survives. `finalize_certification_composition` (`:890`, reached from
+`/trips/preview`) *"never splices or reverts"* (`:904`) — **one** offending
+sentence fails the **whole** tour, and the caller gets HTTP 200 with
+`candidate_eligible: false`. The workbench Generate button hits the strict
+one. Two further consequences are written up in
+`Docs/bug-reports/2026-07-27-preview-failure-observability-salvage.md`: five
+distinct causes still collapse into a single `generation_failed` code (§2),
+and the certification path silently skips the forbidden-phrase scan, so the
+`"forbidden"` counter at `src/api/routes/trips.py:793` reads 0 by
+construction (§1, pinned by
+`tests/test_compose_gate_forbidden_scan.py`).
+
 **Resolved from the prior version's open questions:**
 - Test coverage for the generate-then-compose chain **does exist**:
   `tests/test_trip_api.py`'s `TestComposeTripEndpoint` class chains a
