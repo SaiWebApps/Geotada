@@ -26,6 +26,8 @@ process—never a cached or filtered subset.
 | `test-workbench` | Test/workbench DBs | No; providers are stubbed | Yes |
 | `golden-probe` | Test/dev DBs, dev data, Valhalla | No | Yes |
 | `golden-diff` | Dev DB/data and Valhalla | No | Yes, with `FIXTURE` |
+| `score-saved-tours` | None; reads `data/{city}/tours/` only | No | Yes; $0, no DB or container |
+| `score-gold-text` | None; reads the quality standard only | No | Yes; $0, no DB or container |
 | `tour-batch-plan` | Dev DB/data and Valhalla | No | Yes |
 | `tour-batch-live` | Dev DB/data and Valhalla | Yes | Yes, with approved hash |
 | `tour-batch-review-plan` | Dev DB/data and Valhalla | No | Yes |

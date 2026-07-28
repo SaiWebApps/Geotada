@@ -28,6 +28,7 @@ TARGET ?= local
 	help doctor bootstrap render-auth-setup render-auth-status config-status \
 	sync sync-apple requirements lint format flutter-analyze \
 	test audit test-file test-live test-workbench golden-probe golden-diff \
+	score-saved-tours score-gold-text \
 	tour-batch-plan tour-batch-live tour-batch-review-plan tour-batch-review-live \
 	db-up db-down db-status db-reset db-parity \
 	valhalla-up valhalla-down valhalla-status valhalla-build-tiles \
