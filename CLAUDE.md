@@ -352,9 +352,26 @@ The project pins **public PyPI** as the default index in `pyproject.toml` (`[[to
 - Never create empty placeholder nodes — only when content exists
 - poi-raw.json is the canonical POI source of truth per city
 
+## Clean Up After Yourself (owner ruling, 2026-07-27)
+
+Finishing a piece of work includes deleting its scaffolding. A stale document is worse
+than no document — the next session reads it as current and acts on it. A document that
+contradicts the shipped code is an active trap, and a dead `specs/` folder also arms
+`team-gate.sh` against any agent prompt that names its path.
+
+- Delete scratch output, probe scripts and resolved-output dumps you generated. They are
+  yours; do not ask the owner to adjudicate obvious rubbish.
+- Before deleting a folder that once held a plan: check what of it actually shipped,
+  carry any live un-shipped gap forward in a sentence or two, then delete the folder.
+  Do not keep a whole document for two live lines inside it.
+- Untracked files are not recoverable from git — judge-consult first and state what is
+  being lost. Tracked files are recoverable, so the bar is lower.
+- A doc that contradicts the code gets corrected or deleted. Never left.
+
 ## Pre-commit Checklist
 
 - [ ] `make test` passes every local, Flutter, browser, tour, live-provider, and cloud shard
 - [ ] Read the diff (`git diff --staged`) — every change is intentional
 - [ ] No hardcoded colors (use `Theme.of(context).colorScheme.*`)
 - [ ] No fabricated values — every field name, ID, and property comes from a verified source
+- [ ] No scaffolding left behind — scratch files, superseded specs, stale docs are deleted
