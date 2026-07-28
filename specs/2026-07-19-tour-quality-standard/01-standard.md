@@ -204,21 +204,21 @@ editor in the workbench.
 |---|---|---|---|---|
 | **C1** | **Starvation** — a POI with plenty of material is not reduced to a line | for each stop: `words_rendered` vs `beats_available` for that POI in the corpus. A stop whose POI has ≥`STARVE_MIN_BEATS` beats must render ≥`STARVE_MIN_WORDS_PER_BEAT × beats` words, unless deliberately a walk-past vignette AND the POI is below tier 4 | see §5 | **BLOCKER** |
 | C2 | Tier inversion | no tier-5 POI is rendered as a vignette while a lower-tier POI is a full anchor | zero inversions | **BLOCKER** |
-| **C3** | **Thin tour** | delivered audio vs requested duration | ≥ the engine's own `FILL_PASS_AUDIO_FLOOR_FRAC × target` | **BLOCKER** — a 13-min tour for a 60-min request is not deliverable, so it blocks SERVING; it is loop-INELIGIBLE for compose (§7) because recomposing a stop cannot move `total_audio_seconds` past the seated material's own voiced/body ratio |
+| **C3** | **Thin tour** | delivered audio vs requested duration | ≥ `c3_audio_floor_seconds(duration)` = **min**(`MIN_AUDIO_FRAC_OF_REQUESTED` (0.19) × requested, a CAP at what a tour can physically hold). **Corrected 2026-07-27** — was stated as the engine's `FILL_PASS_AUDIO_FLOOR_FRAC × target`, i.e. 0.398 × duration, which commit a069efd replaced. The `min` is load-bearing: term 1 is LINEAR in duration while capacity is CONSTANT, so an uncapped floor is unsatisfiable on long tours | **BLOCKER** — a 13-min tour for a 60-min request is not deliverable, so it blocks SERVING; it is loop-INELIGIBLE for compose (§7) because recomposing a stop cannot move `total_audio_seconds` past the seated material's own voiced/body ratio |
 | C4 | Stop balance | no single stop holds a disproportionate share of total words | max stop share ≤ `BALANCE_MAX_SHARE` | WARN |
 | C5 | Verbatim repetition | no sentence repeated within the tour | zero exact dupes | **BLOCKER** |
 | C6 | Empty/glue-only stop | every stop has ≥1 substantive (non-glue) sentence | zero | **BLOCKER** |
 | C7 | Time-budget overrun | walk + **stationary** listening ≤ the err-short total | within budget | **BLOCKER** |
 | **C7b** | **Leg audio outruns its walk** | walk-concurrent narration vs the walk it rides | ≤ the walk (the smaller of `total_walk_seconds` / `Σ leg_seconds`) | **BLOCKER** |
-| **C8** | **Gorging** — the inverse of C1 | words per stop | ≤ `GORGE_MAX_WORDS_PER_STOP` (750) | **BLOCKER** — the number is the enforced threshold; the principle it approximates is below |
+| **C8** | **Gorging** — the inverse of C1 | words per stop | ≤ `GORGE_MAX_WORDS_PER_STOP` (**850**, corrected 2026-07-27 — see §5) | **BLOCKER** — the number is the enforced threshold; the principle it approximates is below |
 | C9 | Sentence length for the ear | `mean_sentence_words` (reuse `narration_quality`) | ≤ 20 (anchored on the §1 gold, see §5) | WARN |
-| C10 | Opens with a look-cue, not a bare fact | first sentence of each stop prompts observation | every stop | WARN (G1 judges semantically) |
+| ~~C10~~ | ~~Opens with a look-cue~~ | **DELETED 2026-07-27, NOT REPLACED — opener quality is currently UNCHECKED.** It asked a MEANING question with a word list (`narration_quality._LOOK_INITIAL`, a regex over 18 sentence-initial verbs). The §1 gold opens *"Here, at the corner of rue de Castiglione and rue de Rivoli, stands the Hotel Le Meurice"* — the clearest orientation-before-history line in this document, the sentence S1 was derived FROM — and C10 rated it "a bare fact, not a look-cue". It fired on 100% of 191 saved tours AND on the north star, so it separated nothing. Extending the word list is the same shortcut with more words. The replacement is G1, below, and **G1 is not built** | — | none |
 | C11 | Date density for the ear | `year_density` per 100w (reuse `narration_quality`) | report + WARN on outliers | WARN |
 | C12 | Stops close enough to deserve a human glance | haversine distance between consecutive anchors | ≥ `MIN_STOP_SEPARATION_M` | WARN — demoted from BLOCKER 2026-07-19; see §5, distance alone cannot distinguish "the same place told twice" from two genuinely distinct, adjacent landmarks (the gold-text stops, §1, sit 8.4 m apart). The check that actually catches the former is semantic, G4 |
 
 #### C8's number vs. the principle it approximates (2026-07-20)
 
-**The 750-word cap is the enforced threshold and is not changing here.** But
+**The cap is 850 as of 2026-07-26 (this section was written when it was 750, and its "not changing here" was true only of that day's slice — see §5 for the widest-stop measurement that moved it). The principle below is unaffected by the number.** But
 a live-run finding (`GENERATION-SAMPLES-2026-07-20.md` §3, NYC-A / Washington
 Square, 1340 words in a single stop) surfaced what the number is a proxy
 *for*. Two independent end-user-advocate reviewers did a full listening
@@ -232,7 +232,8 @@ narrated from the same fixed GPS point. Trimming prose to fit under 750
 would satisfy the check while leaving that defect intact — the listener
 would still be pointed at unseeable addresses, just in fewer words.
 
-The principle C8's 750-word number approximates: **one stop should
+The principle C8's word cap approximates (750 at the time of writing, 850 today —
+the principle does not depend on the number): **one stop should
 correspond to one place the walker can actually see, narrated while their
 gaze stays employed** — not multiple physically distant addresses narrated
 from a single fixed point. Word count is a cheap, mechanical stand-in for
@@ -241,15 +242,16 @@ fix aimed only at the number (prose-trimming) is not the same as a fix aimed
 at the principle (graph re-packaging: splitting an over-stuffed stop into a
 short walking route with real legs between the places it covers, per
 `GENERATION-SAMPLES-2026-07-20.md`'s root-cause refinement). Do not read
-this as a reason to raise, lower, or waive the 750 threshold — it stays as
-specified above; this is a note on what future work should fix *toward*
-when a stop trips it.
+this as a reason to raise, lower, or waive the threshold on the strength of
+this argument; this is a note on what future work should fix *toward* when a
+stop trips it. (The cap did later move, 750 -> 850, but on a widest-stop
+MEASUREMENT — see §5 — not on the reasoning in this section.)
 
 ### GATE — semantic, model-judged
 
 | id | check | judged on | severity |
 |---|---|---|---|
-| G1 | Orientation before history (S1) | does the stop open by placing the listener physically? | WARN |
+| G1 | Orientation before history (S1) | does the stop open by placing the listener physically? | WARN — **NOT BUILT. Since C10's deletion on 2026-07-27 this is the ONLY opener coverage specified, so openers are unchecked until it ships.** Pinned by `test_openers_are_unchecked_since_c10_was_deleted`, which fails the moment any opener check returns |
 | G2 | Motivated transitions (S2) | are transitions caused, or bare adjacency? | WARN |
 | G3 | Causal chain not list (S3) | do facts earn each other? | WARN |
 | G4 | Semantic repetition (S5/P3) | same fact restated in new words anywhere in the tour | **BLOCKER** |
@@ -270,7 +272,7 @@ Nothing is invented and dressed as evidence.**
 | `STARVE_MIN_BEATS` | 5 | **judgement call.** Measured context: on the Île de la Cité 60-min tour, Sainte-Chapelle (tier 5, **12 beats**) rendered as 9 words while Palais de Justice (tier 4, **3 beats**) was a full anchor. 5 sits above the 3-beat thin POIs and below the 12-beat starved one. Revisit with more data. |
 | `STARVE_MIN_WORDS_PER_BEAT` | 12 | **judgement call**, anchored on measurement: the gold Le Meurice stop runs ~560 words; healthy measured stops ran 1022 words / 59 beats ≈ 17 w/b and 915 / 23 ≈ 40 w/b. 12 is deliberately permissive — it catches 9-words-for-12-beats (0.75 w/b), not merely terse stops. |
 | `BALANCE_MAX_SHARE` | 0.60 | **judgement call.** Measured: the 2-stop tour split 1022/915 words (53%/47%) — fine. The failure shape is one stop at 90%+. |
-| audio floor | `FILL_PASS_AUDIO_FLOOR_FRAC = 0.8` | **inherited** from `src/tour/selection.py:343`. Not a new number. |
+| audio floor | `MIN_AUDIO_FRAC_OF_REQUESTED = 0.19`, under a capacity cap | **MEASURED, replacing the inherited 0.8, 2026-07-27 doc correction of commit a069efd.** The old row said the floor was `FILL_PASS_AUDIO_FLOOR_FRAC = 0.8` inherited from selection.py — that produced `ERR_SHORT(0.83) × AUDIO_FRACTION(0.60) × 0.8 = 0.398 × duration`, which **7 of this project's own 8 certified tours failed**, and which no choice of fraction can fix above ~100 min because the floor is linear while word capacity is bounded. The rubric no longer derives a serving verdict from the engine's planning constants at all. |
 | time ceiling | `walk_budget / WALK_FRACTION` | **inherited** — the engine's own err-short total, `src/tour/routing.py:42-43`. |
 | words/sec for audio | `SPOKEN_WPM = 150` | **measured + inherited, REWRITTEN 2026-07-19.** `_sum_audio` now returns `voiced_words / 150 * 60` — the words actually spoken, at one documented rate. The old model was **not a measure of audio**: it credited every glue sentence a flat **4 s regardless of length** (a 60-word reflection counted as 4 s, which made walk-leg narration invisible to the tour's own clock) and capped beat credit at the corpus estimate via `min(1.0, voiced/body)`, so richer prose could never raise the number — only dedup could lower it. It measured SEATING VOLUME. 150 is not a new judgement call: `routing.beat_spoken_seconds` already falls back to `word_count / 150 * 60`, density's `word_count / 2.5` is the same figure, and the live Paris corpus's 486 beats with populated `est_spoken_seconds` imply p10 **147** / median **150** / p90 **153**. |
 | `MIN_STOP_SEPARATION_M` | 50 m, **C12 demoted BLOCKER → WARN 2026-07-19** | **judgement call, from a MEASURED absurdity, then demoted by a SECOND measurement.** An acceptance pass on a real Île de la Cité tour found Palais de Justice and Conciergerie seated as separate stops **17 metres apart** — the same building complex — where the second stop opens by describing the spot the listener stood on seconds earlier. RECALIBRATED from 100 m to 50 m: at 100 m this also flagged Sainte-Chapelle at 86 m from the Conciergerie, a FALSE POSITIVE (a genuinely distinct attraction, a real walk in a dense historic quarter). **Then, measured across the full real corpora** (`tests/test_tour_selection.py::test_selection_does_not_filter_close_but_distinct_pois`): Paris' 370 POIs give 48 pairs under 50 m, New York's 402 give 46 — two different populations, not one. True duplicates (corpus geocoding defects) cluster at 0.0–1.7 m; genuinely distinct, walkable landmarks start at ~8 m, including **Hôtel Le Meurice ↔ Angelina at 8.4 m** — the two POIs in the owner's own gold text (§1). Distance cannot tell these apart; a BLOCKER at 50 m makes the gold-standard tour structurally unbuildable. A companion selection-side filter at this same distance was tried and reverted for the identical reason. C12 is therefore WARN: still surfaced to the editor (a short gap deserves a glance), never refuses serving. The real tool for "same place told twice" is semantic, G4. See `src/tour/quality_rubric.py`'s `MIN_STOP_SEPARATION_M` comment for the full measurement. |
@@ -323,7 +325,7 @@ Researched 2026-07-19. These are **cited**, not invented.
 | `WORDS_PER_MINUTE` | 130–150 | [Musa Guide](https://www.musa.guide/en/resources/how-to-write-audio-guide-script), [Nubart](https://www.nubart.eu/audio-guides/content-production/writing-museum-guide-scripts.html) ("one minute of speaking time in English corresponds to about 130 words") |
 | `MAX_SENTENCE_WORDS` | **20** | **JUDGEMENT anchored on a MEASUREMENT of §1, revised 2026-07-27.** Was 15, cited to Nubart ("keep sentences ≤10–15 words… sentences difficult to read aloud become three times more difficult for the visitor to hear"). That range describes museum-station copy and **the §1 gold text fails it**: the gold measures `mean_sentence_words` **19.11**, as did all 191 saved tours. The check itself is sound and was nearly deleted by mistake: measured PER STOP (which is how C9 fires), the gold's 19.11 sits against 38 machine stops at min 16.9 / median 23.2 / max 34.3, so the gold reads shorter than **34 of 38** — C9 ranks the hand-written text above machine output correctly, and only the constant was wrong. **What the retune did and did not fix:** stop-level passes go 0/38 → 6/38 and the gold is admitted, but at TOUR level the rate barely moves (9/9 of cohort A, 176/182 of cohort B still trip it) because one over-long stop flags a whole tour — most real tours genuinely do ramble. The number is the **smallest round number strictly above the anchor**: not 19.11 itself, since `score_narration` rounds to 2dp and one word added to a 509-word passage would flip it, and since the gold's mean is taken over 27 sentences while a stop's is taken over 5-6 — a noisier statistic than the one it was calibrated on. Nothing hinges on the exact value (19.5 fails 33/38, 20 fails 32, 21 fails 31); the rule matters more. Guarded by `test_c9_cap_admits_the_owners_own_gold_text`. Re-derive from §1 if §1 changes; never lower §1 to fit the cap. |
 | `MAX_WORDS_PER_STATION` | 250 (museum station) | Nubart: "Maximum 250 words per station (approximately 2 minutes of audio)" |
-| `GORGE_MAX_WORDS_PER_STOP` | 750 | **adapted, stated as such.** A walking-tour anchor with a 5-min dwell is not a museum station; 750 words ≈ 5 min at 150 wpm, which is the engine's own tier-5 `DWELL_SECONDS_BY_TIER` of 300 s plus listening slack. The museum 250 is the floor of the evidence, 750 the walking-tour adaptation. **Measured violation:** Notre-Dame rendered **1022 words** in one stop — over even the adapted cap. |
+| `GORGE_MAX_WORDS_PER_STOP` | **850** (was 750; corrected 2026-07-27) | **adapted, stated as such.** A walking-tour anchor with a 5-min dwell is not a museum station; 750 words ≈ 5 min at 150 wpm, which is the engine's own tier-5 `DWELL_SECONDS_BY_TIER` of 300 s plus listening slack. The museum 250 is the floor of the evidence, 750 the walking-tour adaptation. **Measured violation:** Notre-Dame rendered **1022 words** in one stop — over even the adapted cap. |
 | audio ≈ half total visit | 0.5 | Nubart: "Total guide length should be roughly half the average visit time." **Corroborates the engine's own `AUDIO_FRACTION = 0.60`** — the existing target was never wrong. |
 | attention ceiling | ~30 min | Nubart: concentration degrades after ~30 minutes. |
 

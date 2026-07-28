@@ -32,7 +32,6 @@ from src.tour.generation import (
     _END_B_SENTINEL_PREFIX,
     SPOKEN_WPM,
     is_walk_concurrent,
-    split_sentences,
 )
 from src.tour.narration_quality import score_narration
 
@@ -685,7 +684,7 @@ def score_tour(
         else:
             seen[key] = sentence.stop_idx
 
-    # ── C9/C10/C11: narration-quality reuse, per stop ───────────────────────
+    # ── C9/C11: narration-quality reuse, per stop (C10 deleted 2026-07-27) ──
     # REUSE narration_quality.score_narration — the standard (§5/§6) says the rubric
     # reuses those metrics and, until now, imported nothing from that module. No new
     # lexical logic is added below; only score_narration's own numbers are read.
@@ -713,36 +712,22 @@ def score_tour(
                 )
             )
 
-        # C10: opens with a look-cue, not a bare fact. This is a PROXY for the real,
-        # semantic check — G1 ("does the stop open by placing the listener
-        # physically?"). Per feedback-no-lexical-shortcuts, word-matching stands in
-        # for MEANING only as a banned shortcut; a look-cue opener, though, is a
-        # STRUCTURAL property (does sentence 1 read as an imperative to look/move?),
-        # so a conservative lexical proxy is acceptable HERE — but it stays WARN,
-        # never BLOCKER, and G1 is what actually judges the semantics. Reuses
-        # narration_quality's own look_prompt_rate, but ONLY on the first
-        # GRAMMATICAL sentence: ``texts[0]`` is one Sentence ENTRY, and compose
-        # (compose.py:507, no sentence splitting anywhere in that module) can
-        # populate a single entry with multiple grammatical sentences — e.g. "X was
-        # completed in 1345. Look up at the west facade." score_narration's
-        # look_prompt_rate is a fraction over ALL sentences in the string handed to
-        # it, so scoring the whole entry made a bare-fact-then-look-cue stop read as
-        # rate 0.5 (> 0 == True) and this check never fired on exactly the case it
-        # exists to catch. split_sentences (generation.py, the house helper) gives
-        # the true first grammatical sentence; score_narration on THAT string alone
-        # makes the rate exactly 1.0 or 0.0.
-        first_grammatical_sentences = split_sentences(texts[0])
-        first_sentence = first_grammatical_sentences[0] if first_grammatical_sentences else ""
-        opens_with_look_cue = score_narration(first_sentence).look_prompt_rate > 0
-        if not opens_with_look_cue:
-            report.findings.append(
-                Finding(
-                    check="C10-no-look-cue",
-                    severity=Severity.WARN,
-                    message=f"opens with a bare fact, not a look-cue: {first_sentence[:70]!r}",
-                    stop_idx=stop_idx,
-                )
-            )
+        # C10 (opens with a look-cue) WAS HERE. DELETED 2026-07-27, and NOT replaced —
+        # opener quality is currently UNCHECKED. See
+        # tests/...::test_openers_are_unchecked_since_c10_was_deleted, which pins the gap.
+        #
+        # It asked a MEANING question with a word list. narration_quality._LOOK_INITIAL
+        # is a regex matching 18 sentence-initial verbs (look|notice|spot|glance|watch|
+        # turn|cross|walk|stop|pause|head|carry on|step|face|find). The owner's own gold
+        # text opens "Here, at the corner of rue de Castiglione and rue de Rivoli, stands
+        # the Hotel Le Meurice" — the clearest instance of orientation-before-history in
+        # the whole standard, and the sentence S1 was derived FROM — and C10 rated it
+        # "a bare fact, not a look-cue". It fired on 100% of 191 saved tours and on the
+        # north star itself, so it separated nothing.
+        #
+        # It cannot be fixed by extending the word list; that is the same shortcut with
+        # more words. The standard specifies the replacement — G1, judged semantically —
+        # and the honest state is that G1 does not exist yet.
 
         stop_year_densities[stop_idx] = nq.per_100w["year_density"]
 
@@ -788,7 +773,8 @@ def score_tour(
     #
     # A missed cue costs nothing. A false accusation actively degrades the tour --
     # it tells an editor a true sentence is wrong, and the standard explicitly
-    # rewards concrete look-cues (C10/G1), so this check would fight the very
+    # rewards concrete look-cues (G1 — C10, its lexical proxy, was deleted
+    # 2026-07-27 and G1 is not built), so this check would fight the very
     # property we are trying to increase. Precision must be ~100% on real data
     # before this is wired at ANY severity, including WARN.
     #

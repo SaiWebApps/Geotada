@@ -843,7 +843,6 @@ def test_c9_cap_admits_the_owners_own_gold_text() -> None:
     already exists there; do remove nothing.
     """
     from scripts.score_gold_text import extract_gold_text
-    from src.tour.narration_quality import score_narration
 
     gold = extract_gold_text()
     poi = _spoi("a", tier=3)
@@ -888,94 +887,54 @@ def test_c9_does_not_fire_on_short_punchy_sentences() -> None:
 
 
 # ---------------------------------------------------------------------------
-# C10 — opens with a look-cue, not a bare fact (WARN, a lexical PROXY for G1).
+# OPENERS — UNCHECKED. C10 was deleted 2026-07-27; G1 was never built.
 # ---------------------------------------------------------------------------
 
 
-def test_c10_fires_when_the_stop_opens_on_a_bare_fact() -> None:
-    """GUARDS: a stop that launches straight into history with no orientation
-    (standard §4 C10 / §2 S1). PROXY for the semantic G1 — stays WARN, never
-    BLOCKER (G1 is what actually judges the meaning).
+def test_openers_are_unchecked_since_c10_was_deleted() -> None:
+    """PINS AN ACCEPTED GAP so it cannot be quietly forgotten: nothing in the rubric
+    judges how a stop opens.
 
-    UNDO: delete the ``if not opens_with_look_cue`` block and this goes RED.
+    C10 asked a MEANING question with a word list. ``narration_quality._LOOK_INITIAL``
+    is a regex over 18 sentence-initial verbs, and the owner's own gold text — "Here, at
+    the corner of rue de Castiglione and rue de Rivoli, stands the Hotel Le Meurice",
+    the clearest orientation-before-history line in the standard and the sentence S1 was
+    derived FROM — was rated "a bare fact, not a look-cue". It fired on 100% of 191 saved
+    tours and on the north star itself, so it separated nothing. Extending the word list
+    is the same shortcut with more words; the standard's answer is G1, judged
+    semantically, and G1 does not exist.
+
+    HOW THIS TEST WORKS. It scores two stops that differ ONLY in their opener — one bare
+    fact, one look-cue — and asserts the rubric returns the SAME findings for both. That
+    is precisely the statement "the rubric cannot tell them apart".
+
+    WHEN G1 IS BUILT THIS TEST FAILS, because the bare-fact stop will pick up a finding
+    the oriented one does not. That failure is the alarm and the whole point. Delete this
+    test then — do not weaken the comparison to keep it green.
     """
+    body = _words(30, prefix="x")
     poi = _spoi("a", tier=3)
-    report = score_tour(
-        _script(
-            [
-                _sentence("Notre-Dame was built in the twelfth century.", 0),
-                _sentence(_words(30, prefix="x"), 0),
-            ],
-            [poi],
-        ),
-        _route([_poi("a", tier=3)]),
-        {},
+
+    def _findings(opener: str) -> set[str]:
+        report = score_tour(
+            _script([_sentence(opener, 0), _sentence(body, 0)], [poi]),
+            _route([_poi("a", tier=3)]),
+            {},
+        )
+        return _checks(report)
+
+    bare_fact = _findings("Notre-Dame was built in the twelfth century.")
+    look_cue = _findings("Look up at the towers above you.")
+
+    assert bare_fact == look_cue, (
+        "the rubric now distinguishes a bare-fact opener from an oriented one — "
+        f"bare-only findings: {sorted(bare_fact - look_cue)}. If G1 (or any successor "
+        "opener check) has been built, the gap this test pins is CLOSED: delete this "
+        "test rather than relaxing it."
     )
-
-    warns = [f for f in report.findings if f.check == "C10-no-look-cue"]
-    assert len(warns) == 1, _checks(report)
-    assert warns[0].severity is Severity.WARN
-    assert report.passed
+    assert "C10-no-look-cue" not in bare_fact, "C10 was deleted; it must not return"
 
 
-def test_c10_fires_when_one_sentence_entry_hides_a_bare_fact_opener() -> None:
-    """GUARDS a FALSE NEGATIVE found by a hostile review: ``texts[0]`` is one
-    Sentence ENTRY, and compose (compose.py:507, no sentence splitting anywhere in
-    that module) can populate a single entry with MULTIPLE grammatical sentences.
-    ``score_narration(text).look_prompt_rate`` is a fraction over ALL sentences in
-    the string handed to it, so scoring the whole entry — a bare-fact sentence
-    followed by a look-cue sentence — measured 0.5, and ``0.5 > 0`` is True, so
-    C10 stayed silent on exactly the shape it exists to catch (a stop opening on a
-    bare fact). UNDO: change ``split_sentences(texts[0])`` back to plain
-    ``texts[0]`` in the C10 block and this goes RED (the finding disappears since
-    the combined-string rate of 0.5 still passes ``> 0``).
-    """
-    two_sentences_one_entry = (
-        "Notre-Dame was completed in 1345 after nearly two centuries of work. "
-        "Look up at the west facade."
-    )
-    # The documented false-negative measurement: scoring the WHOLE entry (the old,
-    # broken behaviour) gives a nonzero rate purely because sentence 2 looks-cues.
-    assert score_narration(two_sentences_one_entry).look_prompt_rate == 0.5
-
-    poi = _spoi("a", tier=3)
-    report = score_tour(
-        _script([_sentence(two_sentences_one_entry, 0)], [poi]),
-        _route([_poi("a", tier=3)]),
-        {},
-    )
-
-    warns = [f for f in report.findings if f.check == "C10-no-look-cue"]
-    assert len(warns) == 1, _checks(report)
-    assert warns[0].severity is Severity.WARN
-    assert "Notre-Dame was completed in 1345" in warns[0].message
-    assert report.passed  # WARN never blocks serving
-
-
-def test_c10_does_not_fire_when_the_stop_opens_with_a_look_cue() -> None:
-    """GUARDS: false positive on a properly-oriented opener.
-
-    Reuses narration_quality's own ``look_prompt_rate`` (scored on just the
-    opening sentence) rather than a second regex. UNDO: invert the
-    ``look_prompt_rate > 0`` condition and this goes RED.
-    """
-    poi = _spoi("a", tier=3)
-    report = score_tour(
-        _script(
-            [
-                _sentence("Look up at the towers above you.", 0),
-                _sentence(_words(30, prefix="x"), 0),
-            ],
-            [poi],
-        ),
-        _route([_poi("a", tier=3)]),
-        {},
-    )
-
-    assert "C10-no-look-cue" not in _checks(report)
-
-
-# ---------------------------------------------------------------------------
 # C11 — date density for the ear (WARN, RELATIVE to the tour's own mean).
 # ---------------------------------------------------------------------------
 
