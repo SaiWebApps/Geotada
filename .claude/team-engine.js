@@ -17,7 +17,17 @@ export const meta = {
 // hardcoded home directory hands a fresh clone (or a sibling checkout) a path
 // that does not exist. CLAUDE_PROJECT_DIR is set by the harness; cwd is the
 // fallback for a bare `node .claude/team-engine.test.js` run from the repo root.
-const REPO = process.env.CLAUDE_PROJECT_DIR ?? process.cwd()
+//
+// `process` EXISTS under node (the guard) but NOT in the workflow runtime, which
+// provides no Node API at all. Reading it unguarded threw `process is not defined`
+// on load — before preflight, before any agent — every time the engine was invoked
+// as a workflow, which is its only real execution path. It had done so since the
+// engine's first commit, and the guard cannot see it: the guard runs under node,
+// where this line works. Resolve to null here and take args.repo below instead.
+const REPO_FROM_NODE =
+  (typeof process !== 'undefined' && process && process.env)
+    ? (process.env.CLAUDE_PROJECT_DIR ?? process.cwd())
+    : null
 
 // ── BLAST RADIUS — read before changing the cost ladder ──────────────────────
 // "$0" in this file means ZERO PROVIDER SPEND. It does NOT mean read-only.
@@ -218,6 +228,12 @@ const A = (typeof args === 'string')
 if (A.__parse_error) return { aborted: 'bad_args', detail: `args was a string that is not valid JSON: ${A.__parse_error}` }
 if (!A.spec) return { aborted: 'missing_args', detail: 'args.spec is required, e.g. {spec: "specs/2026-07-25-slug", now: "<ISO-8601>"}.' }
 if (!A.now) return { aborted: 'missing_args', detail: 'args.now (ISO-8601) is required — Date.now()/new Date() are forbidden in workflow scripts.' }
+
+// Same shape as args.now: refuse loudly rather than guess. A wrong repo path is
+// silently poisonous — it is interpolated into every agent prompt, so agents would
+// cd into nothing and report failures that are really a bad path.
+const REPO = REPO_FROM_NODE ?? A.repo
+if (!REPO) return { aborted: 'missing_args', detail: 'args.repo (absolute path to the checkout) is required — process.env/process.cwd() do not exist in the workflow runtime.' }
 
 const SPEC = A.spec
 const MAX_ATTEMPTS = A.maxAttempts ?? 2
