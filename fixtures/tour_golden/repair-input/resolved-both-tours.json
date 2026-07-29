@@ -1,0 +1,286 @@
+{
+  "ile_oneway_90min": {
+    "abelard_heloise": {
+      "beat_id": "paris_notre_dame_cathedral_literary_heritage_rough_guide_paris_abelard_heloise_school_for_scandal",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.917
+    },
+    "bell_trapdoor_pillars": {
+      "beat_id": "paris_notre_dame_cathedral_historic_arch_frommers_24_great_walks_bell_trapdoor_pillars",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "bouquinistes_seasoning": {
+      "beat_id": "paris_pont_neuf_literary_heritage_around_and_about_paris_bouquinistes_origin",
+      "poi": "Pont Neuf",
+      "similarity": 0.805
+    },
+    "capacity_rose_windows_organ": {
+      "beat_id": "paris_notre_dame_cathedral_historic_arch_frommers_24_great_walks_capacity_rose_windows_organ",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.909
+    },
+    "cavaille_coll_organ": {
+      "beat_id": "paris_notre_dame_cathedral_historic_arch_frommers_24_great_walks_capacity_rose_windows_organ",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.909
+    },
+    "central_portal_day_of_judgement": {
+      "beat_id": "paris_notre_dame_cathedral_historic_worship_rough_guide_paris_central_portal_day_of_judgement",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "commune_fire": {
+      "beat_id": "dbsync_cba106af",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.907
+    },
+    "conciergerie_pailleux": {
+      "beat_id": "paris_conciergerie_dark_history_rough_guide_paris_pailleux_iron_grille",
+      "poi": "Conciergerie",
+      "similarity": 1.0
+    },
+    "coronations": {
+      "beat_id": "dbsync_5d388783",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "crypte": {
+      "beat_id": "paris_crypte_archeologique_de_l_ile_de_la_cite_hidden_history_frommers_24_great_walks_gallo_roman_remains",
+      "poi": "Crypte Archeologique de l'Ile de la Cite",
+      "similarity": 0.778
+    },
+    "crypte_archeologique": {
+      "beat_id": "paris_crypte_archeologique_de_l_ile_de_la_cite_hidden_history_frommers_24_great_walks_gallo_roman_remains",
+      "poi": "Crypte Archeologique de l'Ile de la Cite",
+      "similarity": 0.778
+    },
+    "dauphine_signoret_montand": {
+      "beat_id": "paris_place_dauphine_famous_residents_around_and_about_paris_signoret_montand_residence",
+      "poi": "Place Dauphine",
+      "similarity": 1.0
+    },
+    "emmanuel_silent_since_liberation": {
+      "beat_id": "paris_notre_dame_cathedral_music_heritage_frommers_24_great_walks_emanuel_bell_silent_since_liberation",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.996
+    },
+    "fluctuat_nec_mergitur": {
+      "beat_id": "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_unsinkable_ship_motto",
+      "poi": "Ile de la Cite",
+      "similarity": 1.0
+    },
+    "flying_buttresses_great_height": {
+      "beat_id": "paris_notre_dame_cathedral_historic_arch_frommers_24_great_walks_flying_buttresses_great_height",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "hugo_petition_viollet_le_duc": {
+      "beat_id": "paris_notre_dame_cathedral_literary_heritage_rough_guide_paris_hugo_petition_viollet_le_duc",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "hugo_quasimodo_gargoyles": {
+      "beat_id": "paris_notre_dame_cathedral_literary_heritage_frommers_24_great_walks_hugo_quasimodo_gargoyles",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.842
+    },
+    "interior_nave_rose_windows": {
+      "beat_id": "paris_notre_dame_cathedral_historic_arch_rough_guide_paris_interior_nave_rose_windows",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "judgement_day_central_portal": {
+      "beat_id": "paris_notre_dame_cathedral_historic_worship_rough_guide_paris_central_portal_day_of_judgement",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "kilometre_zero_parvis": {
+      "beat_id": "paris_notre_dame_cathedral_hidden_history_rough_guide_paris_kilometre_zero_parvis",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.993
+    },
+    "kings_of_judah_destroyed": {
+      "beat_id": "paris_notre_dame_cathedral_dark_history_frommers_24_great_walks_kings_of_judah_mistaken_destroyed",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.851
+    },
+    "marie_antoinette_cell_mockup": {
+      "beat_id": "paris_conciergerie_dark_history_rough_guide_paris_marie_antoinette_cell_mockup",
+      "poi": "Conciergerie",
+      "similarity": 1.0
+    },
+    "memorial_pardonne_noublie_pas": {
+      "beat_id": "paris_memorial_des_martyrs_de_la_deportation_war_conflict_rough_guide_paris_pardonne_noublie_pas",
+      "poi": "Memorial des Martyrs de la Deportation",
+      "similarity": 0.807
+    },
+    "nearly_sold": {
+      "beat_id": "dbsync_31a8a30c",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "notorious_prisoners_cartouche": {
+      "beat_id": "paris_conciergerie_dark_history_around_and_about_paris_cartouche_cutpurse_bells",
+      "poi": "Conciergerie",
+      "similarity": 0.94
+    },
+    "parisii_settlement": {
+      "beat_id": "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_parisii_lutetia_origin",
+      "poi": "Ile de la Cite",
+      "similarity": 1.0
+    },
+    "place_dauphine_henri_iv": {
+      "beat_id": "paris_place_dauphine_historic_arch_around_and_about_paris_place_dauphine_1607_henri_iv_salon_exhibition",
+      "poi": "Place Dauphine",
+      "similarity": 1.0
+    },
+    "polyphony_leonin_perotin": {
+      "beat_id": "dbsync_82f97ef9",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.956
+    },
+    "pont_neuf_henri_iv_flying_leap": {
+      "beat_id": "paris_pont_neuf_historic_arch_rough_guide_paris_oldest_bridge_henri_iv",
+      "poi": "Pont Neuf",
+      "similarity": 1.0
+    },
+    "pont_neuf_history": {
+      "beat_id": "paris_pont_neuf_hidden_history_frommers_24_great_walks_oldest_new_bridge_irony",
+      "poi": "Pont Neuf",
+      "similarity": 0.897
+    },
+    "renoir_executioner_friendship": {
+      "beat_id": "paris_conciergerie_famous_residents_around_and_about_paris_renoir_tailor_two_good_workmen",
+      "poi": "Conciergerie",
+      "similarity": 1.0
+    },
+    "revolution_prisoners": {
+      "beat_id": "paris_conciergerie_hidden_history_around_and_about_paris_marie_antoinette_cell_1793",
+      "poi": "Conciergerie",
+      "similarity": 1.0
+    },
+    "sainte_chapelle_communards_petrol": {
+      "beat_id": "paris_sainte_chapelle_war_conflict_around_and_about_paris_communards_petrol_1871",
+      "poi": "Sainte-Chapelle",
+      "similarity": 1.0
+    },
+    "sainte_chapelle_full_history": {
+      "beat_id": "paris_sainte_chapelle_historic_worship_around_and_about_paris_crown_of_thorns_baudouin_ii_sale",
+      "poi": "Sainte-Chapelle",
+      "similarity": 0.937
+    },
+    "sainte_chapelle_lopped_choir": {
+      "beat_id": "paris_sainte_chapelle_historic_arch_rough_guide_paris_louis_ix_relics_construction",
+      "poi": "Sainte-Chapelle",
+      "similarity": 0.888
+    },
+    "sanson_dynasty": {
+      "beat_id": "paris_conciergerie_dark_history_around_and_about_paris_sanson_dynasty_louis_xvi_raise",
+      "poi": "Conciergerie",
+      "similarity": 1.0
+    },
+    "side_portals_mary_st_anne": {
+      "beat_id": "paris_notre_dame_cathedral_historic_worship_rough_guide_paris_side_portals_mary_st_anne",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "statue_napoleon_hidden": {
+      "beat_id": "paris_pont_neuf_hidden_history_frommers_24_great_walks_oldest_new_bridge_irony",
+      "poi": "Pont Neuf",
+      "similarity": 0.897
+    },
+    "tour_bonbec_oubliettes": {
+      "beat_id": "paris_conciergerie_dark_history_around_and_about_paris_tour_bonbec_oubliettes",
+      "poi": "Conciergerie",
+      "similarity": 0.86
+    },
+    "tour_bonbec_screams": {
+      "beat_id": "paris_conciergerie_dark_history_frommers_24_great_walks_tour_bonbec_torture_screams",
+      "poi": "Conciergerie",
+      "similarity": 0.948
+    },
+    "transit_chanoinesse_to_garden": {
+      "beat_id": "paris_memorial_des_martyrs_de_la_deportation_transit_frommers_24_great_walks_chanoinesse_to_garden",
+      "poi": "Memorial des Martyrs de la Deportation",
+      "similarity": 1.0
+    },
+    "transit_garden_to_memorial": {
+      "beat_id": "paris_memorial_des_martyrs_de_la_deportation_transit_frommers_24_great_walks_garden_to_memorial_steps",
+      "poi": "Memorial des Martyrs de la Deportation",
+      "similarity": 1.0
+    },
+    "transit_lutece_to_parvis": {
+      "beat_id": "paris_notre_dame_cathedral_transit_frommers_24_great_walks_lutece_to_parvis",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "transit_pont_neuf_to_palais": {
+      "beat_id": "paris_conciergerie_transit_frommers_24_great_walks_pont_neuf_to_palais",
+      "poi": "Conciergerie",
+      "similarity": 1.0
+    },
+    "upper_chapel_butterflies": {
+      "beat_id": "paris_sainte_chapelle_historic_arch_rough_guide_paris_upper_chapel_stained_glass",
+      "poi": "Sainte-Chapelle",
+      "similarity": 1.0
+    },
+    "upper_chapel_glass_panels": {
+      "beat_id": "paris_sainte_chapelle_historic_worship_rough_guide_paris_1113_panels_bible_cycle",
+      "poi": "Sainte-Chapelle",
+      "similarity": 1.0
+    },
+    "vandalism": {
+      "beat_id": "dbsync_31a8a30c",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 1.0
+    },
+    "vert_galant_molay_curse": {
+      "beat_id": "paris_pont_neuf_dark_history_frommers_24_great_walks_jacques_de_molay_burnt_curse",
+      "poi": "Pont Neuf",
+      "similarity": 1.0
+    },
+    "vert_galant_tarnished": {
+      "beat_id": "paris_square_du_vert_galant_famous_residents_around_and_about_paris_vert_galant_nickname_bastards_gabrielle",
+      "poi": "Square du Vert-Galant",
+      "similarity": 0.85
+    },
+    "wishing_stone": {
+      "beat_id": "paris_notre_dame_cathedral_hidden_history_frommers_24_great_walks_zero_point_wishing_stone",
+      "poi": "Notre-Dame Cathedral",
+      "similarity": 0.927
+    }
+  },
+  "pdv_round_trip_60min": {
+    "no_16": {
+      "beat_id": "paris_place_des_vosges_famous_residents_pariswalks_no_16_quart_decu_wife",
+      "poi": "Place des Vosges",
+      "similarity": 1.0
+    },
+    "no_1_bis": {
+      "beat_id": "paris_place_des_vosges_literary_heritage_pariswalks_sevigne_birthplace_hotel_coulanges",
+      "poi": "Place des Vosges",
+      "similarity": 1.0
+    },
+    "no_2_coconnas": {
+      "beat_id": "paris_place_des_vosges_historic_cuisine_pariswalks_coconnas_poule_au_pot",
+      "poi": "Place des Vosges",
+      "similarity": 1.0
+    },
+    "no_5": {
+      "beat_id": "paris_place_des_vosges_science_tech_pariswalks_no_5_factory_rails",
+      "poi": "Place des Vosges",
+      "similarity": 1.0
+    },
+    "pavillon_de_la_reine": {
+      "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_pavillon_de_la_reine_medici_sun",
+      "poi": "Place des Vosges",
+      "similarity": 1.0
+    },
+    "sit_in_the_garden": {
+      "beat_id": "paris_place_des_vosges_parks_gardens_pariswalks_sit_in_the_garden",
+      "poi": "Place des Vosges",
+      "similarity": 1.0
+    }
+  }
+}
