@@ -12,6 +12,7 @@ Hermetic: no Neo4j, no network, no LLM. Fixtures are the real pydantic contracts
 
 from __future__ import annotations
 
+import functools
 import json
 from pathlib import Path
 
@@ -1577,3 +1578,227 @@ def test_c7_message_states_the_ceiling_the_route_was_actually_planned_to() -> No
     assert len(over) == 1, _checks(report)
     assert "100%" in over[0].message, over[0].message
     assert "83%" not in over[0].message
+
+
+# ---------------------------------------------------------------------------
+# CALIBRATION AGAINST THE HUMAN-AUTHORED REFERENCE TOURS
+#
+# ``test_c9_cap_admits_the_owners_own_gold_text`` above calibrates ONE check
+# against ONE 509-word passage. ``Docs/tour-builder/empirical-tours/`` holds two
+# COMPLETE human-written tours; ``scripts/human_reference_tours.py`` loads them
+# at BOTH granularities the documents support (declared stop / standing
+# position) and these tests pin what the real rubric measures on them.
+#
+# Honesty about coverage: these tours exercise C3, C5, C8 (blockers) and C4,
+# C9, C11 (warns). C1/C2/C6/C7/C7b/C12 are STRUCTURALLY SILENT here — the
+# loader's docstring says exactly why each one cannot fire. Nothing in this
+# section calibrates them.
+# ---------------------------------------------------------------------------
+
+
+@functools.lru_cache(maxsize=1)
+def _reference_tours() -> tuple:
+    from scripts.human_reference_tours import load_human_reference_tours
+
+    return tuple(load_human_reference_tours())
+
+
+def test_the_blocking_floor_admits_the_human_reference_at_position_granularity() -> None:
+    """THE CALIBRATION, at the unit where a tourist actually stands and listens.
+
+    A position is the deepest heading that owns narration — one standing spot.
+    MEASURED 2026-07-29: the human reference never puts more than 367 words at a
+    single position (PdV widest 239, Ile widest 367) against a C8 cap of 850, and
+    the blocking floor admits both tours in full.
+
+    If this goes RED, either a threshold was tightened past human-approved
+    practice, or the parser collapsed (the scale guards catch that separately).
+    Re-derive the threshold from the reference; do not edit the reference.
+
+    NOT the whole story: at DECLARED-STOP granularity two Ile stops exceed the
+    cap — the companion test below pins that contradiction. Read both.
+
+    UNDO: lower ``GORGE_MAX_WORDS_PER_STOP`` below 367 and this goes RED.
+    """
+    tours = _reference_tours()
+    assert len(tours) == 2, "expected both reference tours"
+
+    for tour in tours:
+        positions = tour.positions
+        # Scale guards FIRST: a broken parser must fail loudly, never pass by
+        # scoring an empty tour. Bands, not exact counts, so an editorial tweak
+        # to a document does not redden the suite — but a parse collapse does.
+        assert 20 <= len(positions) <= 40, (
+            f"{tour.key} parsed {len(positions)} positions from "
+            f"{tour.document.name}; expected 20-40. Either the document was "
+            "restructured or the parser broke — do not widen this band to fit."
+        )
+        assert 2_500 <= tour.narration_words <= 6_000, (
+            f"{tour.key} parsed {tour.narration_words} narration words; expected "
+            "2500-6000. A collapsed parse scores an empty tour and passes "
+            "everything vacuously."
+        )
+        widest = max(p.words for p in positions)
+        assert 150 <= widest <= 500, (
+            f"{tour.key}'s widest position is {widest} words; measured 239/367 "
+            "on 2026-07-29. Outside [150, 500] the parser is grouping "
+            "differently and every claim below is about different objects."
+        )
+
+        script, route = tour.script_by_position()
+        report = score_tour(script, route, beats_by_poi={})
+
+        assert report.blockers == [], (
+            f"the human reference {tour.key} FAILS the blocking floor at "
+            f"position granularity: {[f.check for f in report.blockers]}. A bar "
+            "the reference cannot clear measures nothing. Re-derive the "
+            "threshold from the reference; do not edit the reference."
+        )
+        assert report.passed, f"{tour.key} did not pass despite zero blockers"
+
+
+def test_c8_contradicts_the_human_reference_at_declared_stop_granularity() -> None:
+    """PINS A MEASURED CONTRADICTION so it cannot be resolved silently.
+
+    The Ile document declares 8 ``## STOP`` sections (its golden fixture records
+    the same 8 POIs). Grouped the document's own way, two stops exceed the C8
+    cap: Conciergerie at 901 words and Notre-Dame at 1595 against a cap of 850.
+    Yet no single POSITION inside them exceeds 367 — the tourist walks between
+    rooms and portals while listening.
+
+    So C8's verdict depends entirely on its unit. On machine output a stop is a
+    POI at one GPS trigger, and C8's founding case was 1038 words at ONE spot;
+    the human reference shows a POI legitimately carrying 1595 words ACROSS
+    spots. Whether the engine should learn sub-location stops, or the cap should
+    move, is a product decision. This test forces it to be made by a human: it
+    goes RED the moment C8 stops firing here.
+
+    This is also the LOADER's regression guard: a parser that shreds stops back
+    into positions (the first version's defect, caught by a judge consult)
+    produces zero C8 findings here and goes RED.
+
+    UNDO: raise ``GORGE_MAX_WORDS_PER_STOP`` above 1595 and this goes RED.
+    """
+    tour = next(t for t in _reference_tours() if t.key == "ile_oneway_90min")
+    assert tour.has_stop_markers, "the Ile document lost its STOP markers"
+    assert 10 <= len(tour.stops) <= 14, (
+        f"parsed {len(tour.stops)} declared stops; the document has 12 level-2 "
+        "sections (8 STOP + OPEN/ANCHOR/TRANSIT/CLOSE)."
+    )
+
+    script, route = tour.script_by_stop()
+    report = score_tour(script, route, beats_by_poi={})
+    gorged = sorted(f.poi_name for f in report.blockers if f.check == "C8-gorged")
+
+    assert len(gorged) == 2 and "Conciergerie" in gorged[0] and "Notre-Dame" in gorged[1], (
+        f"C8 fired on {gorged or 'nothing'} at declared-stop granularity; "
+        "measured 2026-07-29 it fires on exactly Conciergerie (901 words) and "
+        "Notre-Dame (1595). If C8 was deliberately recalibrated from the human "
+        "reference, update this test in the same change and say so. If not, "
+        "either the loader is shredding stops again or the cap drifted."
+    )
+
+
+def test_pdv_has_no_declared_stops_so_each_position_is_its_stop() -> None:
+    """PINS THE GRANULARITY RULE for the document that does not declare stops.
+
+    The Ile document marks stops explicitly and is scored at level-2. The PdV
+    document does not: it is a circumnavigation of one square, and its level-2
+    sections are narrative phases, not places — read at level-2 it has a
+    2744-word ``CIRCUMNAVIGATION`` section that would be a third C8 blocker.
+    That read is wrong (22 house-by-house pauses of ~125 words each, nobody
+    stands at a section heading), so the loader treats each position as the
+    stop. This test pins that branch, because it hangs on one boolean.
+
+    If someone later adds ``## STOP`` headings to the PdV document — a plausible
+    tidy-up, since the Ile document has them — the boolean flips, PdV starts
+    scoring at level-2, and the 2744-word section becomes a blocker no other
+    test watches. This goes RED first, and the human doing the tidy-up decides
+    with eyes open.
+
+    UNDO: force ``has_markers = True`` in the loader and this goes RED.
+    """
+    by_key = {t.key: t for t in _reference_tours()}
+
+    assert by_key["ile_oneway_90min"].has_stop_markers, (
+        "the Ile document lost its STOP markers; the declared-stop tests above "
+        "are now scoring a different segmentation."
+    )
+    pdv = by_key["pdv_round_trip_60min"]
+    assert not pdv.has_stop_markers, (
+        "the PdV document now declares STOP headings, so the loader scores it "
+        "at level-2 — where its 2744-word CIRCUMNAVIGATION section is a C8 "
+        "blocker nothing else pins. If the headings were added deliberately, "
+        "decide what its stops are and update this test in the same change."
+    )
+    assert len(pdv.stops) == len(pdv.positions), (
+        "PdV's two granularities diverged; the no-markers branch is supposed "
+        "to make them identical."
+    )
+
+
+def test_the_blocking_floor_still_fires_when_a_reference_tour_is_degraded() -> None:
+    """GUARDS the position-granularity test against going vacuous.
+
+    "No blocker fired" is trivially true if the floor is broken or disabled.
+    This takes the SAME human prose, collapses all 3,265 words of the Place des
+    Vosges tour onto a single stop, and requires C8 to catch it. The band
+    between the widest real position (367) and the cap (850) is probed by the
+    declared-stop test above, whose real values 901 and 1595 straddle the cap.
+
+    UNDO: raise ``GORGE_MAX_WORDS_PER_STOP`` above 3265 and this goes RED.
+    """
+    tour = next(t for t in _reference_tours() if t.key == "pdv_round_trip_60min")
+    script, _ = tour.script_by_position()
+    every_word = " ".join(s.text for s in script.script)
+
+    report = score_tour(
+        _script([_sentence(every_word, 0)], [_spoi("a", tier=3)]),
+        _route([_poi("a", tier=3)]),
+        {},
+    )
+
+    assert "C8-gorged" in _checks(report), (
+        f"{len(every_word.split())} words on one stop did not trip C8 "
+        f"(cap={GORGE_MAX_WORDS_PER_STOP}). The blocking floor cannot fire, so "
+        "the calibration above is vacuous."
+    )
+
+
+def test_c9_fires_on_most_stops_of_the_human_authored_reference_tours() -> None:
+    """PINS A MEASURED MISCALIBRATION so it cannot be mistaken for a quality signal.
+
+    C9 is a WARN, so it blocks nothing — but at position granularity it fires on
+    24 of 25 positions (96%) of one human-approved tour and 19 of 29 (66%) of
+    the other. A check that flags almost all human-approved prose is not
+    discriminating quality, and tuning machine output against it would push
+    tours AWAY from the reference.
+
+    Recorded rather than deleted because C9 still ORDERS correctly — the gold
+    passage measures 19.11 words/sentence against a machine median of 23.2. The
+    cap is the problem, not the metric.
+
+    DECISION FORCER: if someone recalibrates C9 from the reference tours, this
+    goes RED and a human confirms the new intent. Do not silence it by widening
+    the cap without also updating ``test_c9_cap_admits_the_owners_own_gold_text``.
+
+    UNDO: recalibrate ``MAX_SENTENCE_WORDS`` upward from the reference tours and
+    this goes RED, on purpose.
+    """
+    for tour in _reference_tours():
+        script, route = tour.script_by_position()
+        report = score_tour(script, route, beats_by_poi={})
+        hits = [f for f in report.findings if f.check == "C9-long-sentences"]
+        share = len(hits) / len(tour.positions)
+
+        assert share >= 0.5, (
+            f"C9 now fires on only {share:.0%} of {tour.key}'s positions (was "
+            "96% and 66% when measured 2026-07-29). If C9 was recalibrated from "
+            "the human reference this is the intended outcome — delete this "
+            "test in the same change and say so. If it moved for another "
+            "reason, that is a regression in the calibration."
+        )
+        assert all(f.severity is Severity.WARN for f in hits), (
+            "C9 escalated above WARN while still firing on most positions of a "
+            "human-approved tour — that would refuse to serve the reference."
+        )

@@ -28,6 +28,7 @@ process—never a cached or filtered subset.
 | `golden-diff` | Dev DB/data and Valhalla | No | Yes, with `FIXTURE` |
 | `score-saved-tours` | None; reads `data/{city}/tours/` only | No | Yes; $0, no DB or container |
 | `score-gold-text` | None; reads the quality standard only | No | Yes; $0, no DB or container |
+| `score-human-tours` | None; reads `Docs/tour-builder/empirical-tours/` only | No | Yes; $0, no DB or container |
 | `tour-batch-plan` | Dev DB/data and Valhalla | No | Yes |
 | `tour-batch-live` | Dev DB/data and Valhalla | Yes | Yes, with approved hash |
 | `tour-batch-review-plan` | Dev DB/data and Valhalla | No | Yes |

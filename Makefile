@@ -28,7 +28,7 @@ TARGET ?= local
 	help doctor bootstrap render-auth-setup render-auth-status config-status \
 	sync sync-apple requirements lint format flutter-analyze \
 	test audit test-file test-live test-workbench golden-probe golden-diff \
-	score-saved-tours score-gold-text \
+	score-saved-tours score-gold-text score-human-tours \
 	tour-batch-plan tour-batch-live tour-batch-review-plan tour-batch-review-live \
 	db-up db-down db-status db-reset db-parity \
 	valhalla-up valhalla-down valhalla-status valhalla-build-tiles \
@@ -105,14 +105,14 @@ lint: ## Run the Python linter.
 	uv run ruff check src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 		scripts/db_parity.py scripts/check_audio_setup.py \
 		scripts/tour_batch_candidate.py scripts/score_saved_tours.py \
-		scripts/score_gold_text.py
+		scripts/score_gold_text.py scripts/human_reference_tours.py
 
 format: ## Format Python and apply safe lint fixes.
 	uv run ruff format src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
-		scripts/db_parity.py scripts/check_audio_setup.py \
+		scripts/db_parity.py scripts/check_audio_setup.py scripts/human_reference_tours.py \
 		scripts/tour_batch_candidate.py
 	uv run ruff check --fix-only src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
-		scripts/db_parity.py scripts/check_audio_setup.py \
+		scripts/db_parity.py scripts/check_audio_setup.py scripts/human_reference_tours.py \
 		scripts/tour_batch_candidate.py
 
 flutter-analyze: ## Run Dart static analysis.
@@ -181,6 +181,9 @@ score-saved-tours: ## Score every saved tour artifact against the current rubric
 
 score-gold-text: ## Score the owner's own gold text against the rubric — calibration. $0, no DB.
 	@$(LOCAL_EXEC) uv run python scripts/score_gold_text.py --compare
+
+score-human-tours: ## Score the two human-authored reference tours against the rubric. $0, no DB.
+	@$(LOCAL_EXEC) uv run python -m scripts.human_reference_tours
 
 golden-diff: ## Diff one golden fixture. Usage: make golden-diff FIXTURE=pdv_round_trip_60min.
 	@test -n "$(FIXTURE)" || { echo "ERROR: FIXTURE is required." >&2; exit 2; }
