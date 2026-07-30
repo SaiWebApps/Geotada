@@ -253,11 +253,11 @@
     {
       "id": "tour_quality_standard",
       "path": "specs/2026-07-19-tour-quality-standard/01-standard.md",
-      "sha256": "bfe6cd56d0207ffe9fb0581829908686f54997bb3cd820972899e1cdf579a0b0",
+      "sha256": "0b118f55d77d0debcac7c44135507eb9414f9f64c40df70e0062dfad054e09eb",
       "source_ref": "main",
-      "source_commit": "3399af4e9e07892c19de3f82860fbc09636e2104",
+      "source_commit": "ca02868e83e55613ff4f252a45b0f3e51f9062e1",
       "classification": "advisory_standard",
-      "source_blob_oid": "b1aadc983dcb15b0f67468c3fa8d8cf0f0a9562f"
+      "source_blob_oid": "26d1671e68e21587132b64353cc895a3dda5f4cf"
     },
     {
       "id": "generation_samples_2026_07_20",
