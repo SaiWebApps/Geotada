@@ -10,9 +10,14 @@ gate anywhere (flutter shards still run at phase gates and close, inside `make a
 
 ## Approval state
 
-**approved_by_human: false** (verbatim from state.json). This ledger has NOT been approved.
-The engine must refuse a real run until the owner says go in chat and the flag is
-transcribed by the same session. This run-context write does not change that flag.
+**approved_by_human: true** (verbatim from state.json). `approved_at`:
+`2026-07-30T02:24:53Z`. `approval_note` (verbatim): "Owner said 'go' in chat after the full
+presentation (both ledgers, step tables, cost estimates, rubric rulings, explicit losses,
+run order B-then-A). The go bundles the recommended rulings: C8 stays 850 with the standing-
+position unit ruling, C9 unchanged, C11 demoted to stat, golden floors at 85% of resolved
+overlap, and the 6 explicit losses in D9." (Superseded from an earlier preflight of this same
+file that reported `false` — the human approved in the interim; re-read from the live
+`state.json`, not inferred.)
 
 ## Supersession
 
@@ -151,13 +156,25 @@ scoreboard — ~9 src/tour modules and ~17 test files — leaving ONE algorithm 
 
 ## Baseline (verbatim from state.json, re-confirmed 2026-07-29)
 
-- `make lint -> All checks passed!` — re-ran during this preflight, still clean.
-- Commit: `a4043112` (dirty: specs/2026-07-26-tour-engine-convergence/run-context.md
-  modified; that folder is deleted by step A10).
-- `make _test-golden` is RED at HEAD (golden fixtures pin per-DB ephemeral UUIDs; 0/65 exist
-  in data/paris/beats.json). That is the SIBLING ledger's job
-  (specs/2026-07-29-tour-rubric-truth), which runs AFTER this one from a worktree branched
-  off this ledger's final commit. No step here cites _test-golden.
+- `lint`: "make lint -> All checks passed! (2026-07-29)" — re-ran during THIS preflight too,
+  still clean (`uv run ruff check src/ tests/ scripts/{dev_env,ensure_dev_data,db_parity,
+  check_audio_setup,tour_batch_candidate,score_saved_tours,score_gold_text,
+  human_reference_tours,tour_golden_diff}.py` -> "All checks passed!").
+- `commit` (verbatim): "ca02868e on main, clean tree. PRECONDITION NOW SATISFIED: the sibling
+  ledger specs/2026-07-29-tour-rubric-truth ran first and merged, so make _test-golden is
+  GREEN (9 passed) where it was RED at plan time. That matters mechanically: the engine's
+  phase gates hard-run _test-golden every 3 steps, and on the old baseline this run would
+  have aborted phase_gate_red after step A3 for a failure it does not own." HEAD at THIS
+  preflight is `2df206e3` ("plan(tour-engine): record that Track A's green-golden
+  precondition is satisfied"), one commit ahead of the pinned `ca02868e`, tree clean
+  (`git status --short` empty) — the delta is exactly the plan-doc commit recording the
+  precondition state.json already asserts; no code drifted underneath this ledger.
+- `note` (verbatim): "Verified on the merged tree: make lint clean, _test-python 2591 passed,
+  _test-golden 9 passed, _test-grade 15 passed. Every shard this ledger's phase gates run is
+  green before step A1 begins." NOT independently re-run this preflight (those are
+  minutes-long shards that write to the shared 7688 DB) — taken on the ledger's own word,
+  cross-checked only for internal consistency (the RED->GREEN _test-golden claim matches the
+  sibling ledger's existence and its "runs AFTER this one" ordering below).
 
 ## Infra probe (read-only, this preflight)
 
@@ -167,7 +184,7 @@ scoreboard — ~9 src/tour modules and ~17 test files — leaving ONE algorithm 
 - `make lint`: `All checks passed!`
 - `node .claude/team-engine.test.js`: exit 0, "all 91 checks passed across 17 pathological
   shapes" — the engine's own termination-cap / paid-bar-one-shot / pre-fan-out-gate-order
-  guard is currently green.
+  guard is currently green. `infra.engine_guard = true`.
 - Caveat honestly: container-up is not proof of routing (a service answering `docker ps` is
   not necessarily one `make test-file` can reach through env/port config) — this was not
   independently re-verified beyond the containers being healthy and lint/engine-guard
@@ -210,3 +227,27 @@ ledger), not an atomic step outcome, so no step lists it.
   step here cites it, and no agent may "fix" the golden fixtures in this run.
 - Read this file by path — it is the substitute for having the full ledger pasted into every
   agent's prompt.
+
+## BASELINE CAVEAT — read this before diagnosing any red shard
+
+The commit this ledger starts from (`2df206e3`, on top of the rubric merge `ca02868e`)
+has NOT had the full `make test` bar run on it at the time this ledger was launched.
+What IS verified on it: `make lint` clean, `make _test-python` 2591 passed and
+`make _test-grade` 15 passed (one commit earlier, and `pyproject.toml` --ignores the
+three golden/grade modules the later edits touched, so those edits were outside that
+shard's collection), `make _test-golden` 9 passed, `make golden-probe` exit 0.
+
+NOT verified on this tree: `make test-workbench` (Playwright), `make test-live` (paid),
+`make _test-cloud` (Aura parity), `make flutter-test` since the rubric merge.
+
+SO: if a phase gate or the close gate goes red in one of those shards, FIRST establish
+whether it is pre-existing on the baseline before attributing it to a step of this
+ledger. `git stash` the step's work and re-run the failing shard, or check out
+`2df206e3` in a scratch worktree. Misattributing a baseline failure to a step is the
+named top risk for this run, and the engine allows exactly ONE phase-repair — spending
+it on someone else's bug is how a run dies with nothing shipped.
+
+A previous version of the commit message for `2df206e3` claimed the "green-golden
+precondition is satisfied" without qualification. What is actually proven is the
+`-m golden` shard on `GOLDEN_TEST_FILES` (Île 18/31, PdV 4/21, `golden-probe` exit 0),
+plus lint and four targeted modules. Not the full bar.

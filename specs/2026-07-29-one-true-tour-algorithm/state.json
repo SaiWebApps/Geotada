@@ -67,10 +67,6 @@
     {
       "id": "AC-10",
       "text": "Given the docs and config after Track A, then Docs/Markdown Docs/API_REFERENCE.md describes the per-stop compose engine, standard 01-standard.md's \u00a76b (whole-tour-vs-per-chapter divergence) is deleted, specs/2026-07-26-tour-engine-convergence/ and specs/2026-07-26-tour-rubric-recalibration/ are deleted, render.yaml's OPENAI_API_KEY and test_render_manifest's openai entries and pyproject's openai dependency are removed (iff zero remaining importers), and make tour-build runs the $0 stitch+render harness."
-    },
-    {
-      "id": "AC-11",
-      "text": "Given make audit at the close (run exactly once), then every shard \u2014 lint, python, Flutter, workbench, golden, grade, invariants, live, cloud parity \u2014 is green with 0 failures and 0 skips. paid_gate_runs == 1."
     }
   ],
   "steps": [
@@ -329,8 +325,7 @@
       "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_superseded_specs_and_config_are_gone\"",
       "criterion_ids": [
         "AC-1",
-        "AC-10",
-        "AC-11"
+        "AC-10"
       ],
       "files": [
         "Docs/Markdown Docs/API_REFERENCE.md",
@@ -354,6 +349,13 @@
       "depends_on": [
         "A9"
       ]
+    }
+  ],
+  "close_gate_criteria": [
+    {
+      "id": "CG-1",
+      "text": "Given make audit at the close (run exactly once), then every shard \u2014 lint, python, Flutter, workbench, golden, grade, invariants, live, cloud parity \u2014 is green with 0 failures and 0 skips. paid_gate_runs == 1.",
+      "why_not_a_step": "No step can prove it: `make audit` is paid and minutes-long, and the engine explicitly forbids it in a per-step gate. It was briefly listed under step A10's criterion_ids to satisfy the mechanical coverage check; the preflight agent correctly judged that a fudge and aborted criteria_uncovered. It is the engine's own close gate that proves this, run exactly once, and paid_gate_runs must be 1."
     }
   ]
 }
