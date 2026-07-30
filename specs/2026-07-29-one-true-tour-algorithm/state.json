@@ -1,0 +1,119 @@
+{
+  "topic": "one-true-tour-algorithm",
+  "created": "2026-07-29",
+  "tier": 3,
+  "approved_by_human": true,
+  "approved_at": "2026-07-30T02:24:53Z",
+  "approval_note": "Owner said 'go' in chat after the full presentation (both ledgers, step tables, cost estimates, rubric rulings, explicit losses, run order B-then-A). The go bundles the recommended rulings: C8 stays 850 with the standing-position unit ruling, C9 unchanged, C11 demoted to stat, golden floors at 85% of resolved overlap, and the 6 explicit losses in D9.",
+  "baseline": {
+    "lint": "make lint -> All checks passed! (2026-07-29)",
+    "commit": "a4043112 (dirty: specs/2026-07-26-tour-engine-convergence/run-context.md modified; that folder is deleted by step A10)",
+    "note": "ORDER: the SIBLING ledger (specs/2026-07-29-tour-rubric-truth) runs FIRST and merges before this one starts. Reason (found at estimate time): the engine's phase gates hard-run make _test-golden every 3 steps, and the golden fixtures are RED at today's HEAD — a Track A run on today's main would abort at its first phase gate for a failure it does not own (plausibly the mechanism behind the repudiated ledger's dead runs). This ledger therefore starts from a baseline where _test-golden is already green."
+  },
+  "decisions": {
+    "D1-endpoint-shape": "POST /trips/{id}/compose KEEPS its exact wire contract (200 fresh stop ids + extra_narration; 409 already_composed; 404; 422 detail {reason: compose_verification_failed, attempts}) and swaps only its engine to the per-stop path via a new author-a-prebuilt-route seam. The phone parses detail['attempts'] (mobile/test/services/trip_service_test.dart:453,467). Zero mobile/ changes; the flavour picker survives (flavours are route planning, which is shared). The prior owner-repudiated ledger's facade/firewall/rename/SHADOW machinery is explicitly NOT built.",
+    "D2-422-stays": "Authoring failure on the persisted path stays a 422 refusal, never a 200-with-stitch: the 422 is the only thing keeping a failed tour out of Neo4j (a 2026-07-19 unification that returned 200 was reverted same-day for persisting degraded tours marked composed). The phone's existing fallback UX (refused flavour -> try another -> generate-time stitch narration) is preserved unchanged. /trips/preview keeps its labeled Basic-tour 200 fallback unchanged.",
+    "D3-gate-parity": "The persisted path keeps the anti-hallucination gates it has today: real HaikuFaithfulnessChecker entailment + claims_realized_by coverage baseline + full validate_script (forbidden-phrase/proper-noun/year scan), wired as injectable params into the per-stop finalize. /trips/preview stays structural-only (offline speed, editor sees rubric warnings). Cross-stop echo dedup (_dedup_composed port) runs on BOTH surfaces. Parity with today only — NO new checks (anti-spin).",
+    "D4-extraction-before-deletion": "premium_tour.py imports 12 names from compose.py; provider_text_review.py, scripts/tour_batch_candidate.py, scripts/tour_batch_review.py, scripts/tour_text_candidate.py, scripts/tour_text_candidate_review.py and 3 test files import moved names too. They are extracted BYTE-IDENTICALLY into src/tour/authoring.py first (premium_authoring_policy_sha256 must not move), then compose.py is deleted as a file. A1's gate asserts the only remaining src.tour.compose importers are {compose.py, src/api/dependencies.py, src/api/routes/trips.py} so a missed importer fails at A1, not A8.",
+    "D5-seam-tolerances": "The author-a-prebuilt-route seam must accept what persisted trips actually contain: round-trip transit shape (len(transits)==len(pois)+1), 1..15 stops (the 8-stop pins in authoring._certification_compose_requests and candidate_authoring.AuthoringCandidatePlan/ResponseSet are relaxed to 15 = selection.HARD_ANCHOR_CAP), and receiptless/haversine-degraded legs (authoring needs no Valhalla receipts; the compose path stops at Script level and never builds the certification blueprint).",
+    "D6-deletion-order": "Deletions are sequenced so the suite COLLECTS at every step: author-engine track (minus factcheck.py) at A6; compose scoreboard (compose_metrics + its eval + tools/compose_snapshot.py + craft_score) at A7 BEFORE compose_gate's _bad_stops dies; compose.py + factcheck.py + compose_gate ladder + their tests + Makefile LIVE_TEST_FILES at A8 in one step; corrector + dark G4 + dead scaffolding at A9. conftest arms: :91-115 (compose clients) out at A8, :137-152 (corrector) out at A9, :117-135 (premium executor + faithfulness) UNTOUCHED, author/factcheck/tour_consistency arms out at A6/A8. tests/test_compose_gate_forbidden_scan.py is repointed at A1 and deleted at A4 (its own docstring orders deletion when the gate is fixed).",
+    "D7-tour-build": "scripts/tour_build.py (make tour-build, the /tour-build skill) is stripped to the $0 deterministic stitch + render_markdown editorial harness; its whole-tour compose stage dies with compose_script. The skill doc is updated to match.",
+    "D8-kept-modules": "Explicitly KEPT and untouched: selection.py, generation.py (+glue_client.py, a hard dependency of generate()), beat_select.py, density.py, ordering.py, options.py, fixtures.py, render_md.py, validation.py, verify.py (HaikuFaithfulnessChecker is reused by D3), claim_dedup.py, routing.py, routing_client.py, anthropic_client.py, certification_provider.py, quality_certification.py, quality_requests.py, provider_text_review.py, grade.py, audit.py, batch_regression_manifest.py, quality_rubric.py (sibling ledger's file), contract.py (minus the dead verify_report/StopVerifyStatus), artifact.py, corpus_places.py, place_materialization.py, premium_tour.py, candidate_authoring.py (cap relax only), premium_authorities.py, scripts/tour_text_candidate.py (load-bearing, D5 of the old ledger still true).",
+    "D9-explicit-losses": "Deliberate losses the owner consents to by approving: (1) Opus-vs-ChatGPT compose comparison (OpenAIComposeClient + COMPOSE_PROVIDER + render.yaml OPENAI_API_KEY); (2) the whole-tour narrative-arc ceiling (per-stop authoring never sees sibling stops' text); (3) the never-shipped author-engine track incl. its calibrated factcheck judges; (4) compose_certification_candidate (the C3/C8 calibration-anchor generator; the anchor DATA stays committed); (5) the compose-metrics scoreboard + craft_score + /report-tour-issue skill; (6) compose response attempts becomes constant 1."
+  },
+  "acceptance_criteria": [
+    { "id": "AC-1", "text": "Given the tree after Track A, then src/tour/compose.py, compose_correct.py, verify_gate.py, author.py, content_budget.py, tour_consistency.py, factcheck.py, claim_repetition.py, compose_metrics.py, scripts/author_tour.py, scripts/tour_text_candidate_review.py, tools/compose_snapshot.py and .claude/commands/report-tour-issue.md are absent from git ls-files, and the one-engine boundary test is green: no compose_script/compose_script_per_chapter import edge anywhere in src/ or scripts/, and in src/ the only narration-provider construction is the premium executor path.", "negative": true },
+    { "id": "AC-2", "text": "Given the A1 extraction, then premium_authoring_policy_sha256() equals the value recorded from the live tree BEFORE the move (byte-identical prompt/schema/model constants), and the only remaining importers of src.tour.compose are exactly {src/tour/compose.py, src/api/dependencies.py, src/api/routes/trips.py}." },
+    { "id": "AC-3", "text": "Given POST /trips/{id}/compose after cutover, then it returns 200 with fresh stop ids and persisted extra_narration, 409 {reason: already_composed}, 404 on unknown trip/route, and 422 whose detail carries BOTH reason == compose_verification_failed AND attempts — and git diff --stat mobile/ is empty across all of Track A." },
+    { "id": "AC-4", "text": "Given the author-a-prebuilt-route seam driven by a counting offline executor, then select_k_routes is never called, exactly one authoring unit is built per dwell stop, and a round-trip-shaped route, a 15-stop route, and a receiptless (haversine-degraded) route each author successfully.", "negative": true },
+    { "id": "AC-5", "text": "Given an injected unfaithful or coverage-losing mock authoring output on the persisted path, then compose returns 422 and the trip's stops in Neo4j are byte-unchanged — the real faithfulness checker, the coverage baseline, and full validate_script provably run per-stop.", "negative": true },
+    { "id": "AC-6", "text": "Given an injected cross-stop duplicate sentence, then it is suppressed in the assembled output of BOTH /trips/{id}/compose and /trips/preview.", "negative": true },
+    { "id": "AC-7", "text": "Given the rewritten compose route, then the spend precheck reserves planned_calls == n_stops and runs AFTER the 409 already_composed check (a duplicate compose is 409 with zero provider calls and zero reservation), and the conftest money-guards still arm: the non-live suite makes zero paid calls.", "negative": true },
+    { "id": "AC-8", "text": "Given /trips/preview after Track A, then tests/test_premium_workbench_wiring.py and tests/test_trip_preview_contract.py are green, and the only behavior change on the preview surface is the documented echo-dedup pass." },
+    { "id": "AC-9", "text": "Given tests/conftest.py after Track A, then the compose-client arm (:91-115) and corrector arm (:137-152) and author/factcheck/tour_consistency arms are gone, the premium-executor + faithfulness arm (:117-135) is byte-untouched, and src/api/dependencies.py holds no get_compose_client, get_correction_client, get_omission_checker, or get_claim_repetition_judge.", "negative": true },
+    { "id": "AC-10", "text": "Given the docs and config after Track A, then Docs/Markdown Docs/API_REFERENCE.md describes the per-stop compose engine, standard 01-standard.md's §6b (whole-tour-vs-per-chapter divergence) is deleted, specs/2026-07-26-tour-engine-convergence/ and specs/2026-07-26-tour-rubric-recalibration/ are deleted, render.yaml's OPENAI_API_KEY and test_render_manifest's openai entries and pyproject's openai dependency are removed (iff zero remaining importers), and make tour-build runs the $0 stitch+render harness." },
+    { "id": "AC-11", "text": "Given make audit at the close (run exactly once), then every shard — lint, python, Flutter, workbench, golden, grade, invariants, live, cloud parity — is green with 0 failures and 0 skips. paid_gate_runs == 1." }
+  ],
+  "steps": [
+    {
+      "id": "A1", "name": "Extract the authoring primitives out of compose.py, byte-identical, and pin the remaining importer set",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_authoring_extraction.py::test_premium_imports_authoring_not_compose\"",
+      "criterion_ids": ["AC-2"],
+      "files": ["src/tour/authoring.py", "src/tour/compose.py", "src/tour/premium_tour.py", "src/tour/provider_text_review.py", "scripts/tour_batch_candidate.py", "scripts/tour_batch_review.py", "scripts/tour_text_candidate.py", "scripts/tour_text_candidate_review.py", "tests/test_tour_authoring_extraction.py", "tests/test_tour_batch_candidate_runner.py", "tests/test_tour_certification_compose_replay.py", "tests/test_compose_gate_forbidden_scan.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "high", "maxAttempts": 3, "attempts": 0, "depends_on": []
+    },
+    {
+      "id": "A2", "name": "Author-a-prebuilt-route seam: no re-planning, 1..15 stops, round-trip and receiptless tolerated",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_authoring_from_route.py::test_prebuilt_route_authors_without_replanning\"",
+      "criterion_ids": ["AC-4"],
+      "files": ["src/tour/authoring.py", "src/tour/candidate_authoring.py", "tests/test_tour_authoring_from_route.py", "tests/test_tour_candidate_authoring.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "high", "maxAttempts": 3, "attempts": 0, "depends_on": ["A1"]
+    },
+    {
+      "id": "A3", "name": "Cut POST /trips/{id}/compose over to the seam, wire contract preserved, spend precheck fixed",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_trip_api.py::test_compose_authors_per_stop_and_keeps_the_wire_contract\"",
+      "criterion_ids": ["AC-3", "AC-7"],
+      "files": ["src/api/routes/trips.py", "tests/test_trip_api.py", "tests/test_trips_spend_and_authz.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "high", "maxAttempts": 3, "attempts": 0, "depends_on": ["A2"]
+    },
+    {
+      "id": "A4", "name": "Gate parity on the persisted path (real faithfulness + coverage + full validate_script, injectable); the forbidden-scan pin test is deleted per its own docstring",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_authoring_gates.py::test_unfaithful_output_is_refused_and_trip_untouched\"",
+      "criterion_ids": ["AC-5"],
+      "files": ["src/tour/authoring.py", "src/api/routes/trips.py", "tests/test_tour_authoring_gates.py", "tests/test_compose_gate_forbidden_scan.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "high", "maxAttempts": 3, "attempts": 0, "depends_on": ["A3"]
+    },
+    {
+      "id": "A5", "name": "Port the cross-stop echo dedup into per-stop assembly, both surfaces",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_authoring_gates.py::test_cross_stop_echo_is_suppressed\"",
+      "criterion_ids": ["AC-6", "AC-8"],
+      "files": ["src/tour/authoring.py", "tests/test_tour_authoring_gates.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "normal", "maxAttempts": 2, "attempts": 0, "depends_on": ["A4"]
+    },
+    {
+      "id": "A6", "name": "DELETE the author-engine track (author.py, content_budget.py, tour_consistency.py, scripts/author_tour.py; factcheck.py waits for A8)",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_author_engine_track_is_gone\"",
+      "criterion_ids": ["AC-1", "AC-9"],
+      "files": ["src/tour/author.py", "src/tour/content_budget.py", "src/tour/tour_consistency.py", "scripts/author_tour.py", "tests/test_author.py", "tests/test_content_budget.py", "tests/test_tour_consistency.py", "tests/conftest.py", "tests/test_tour_one_engine.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "normal", "maxAttempts": 3, "attempts": 0, "depends_on": ["A5"]
+    },
+    {
+      "id": "A7", "name": "DELETE the compose scoreboard (compose_metrics, its eval + snapshot tool, craft_score, the /report-tour-issue skill) BEFORE its compose_gate imports die",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_compose_scoreboard_is_gone\"",
+      "criterion_ids": ["AC-1"],
+      "files": ["src/tour/compose_metrics.py", "tests/test_compose_metrics.py", "tests/test_compose_quality_eval.py", "tools/compose_snapshot.py", ".claude/commands/report-tour-issue.md", "src/tour/narration_quality.py", "tests/test_narration_quality.py", "tests/test_tour_one_engine.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "normal", "maxAttempts": 2, "attempts": 0, "depends_on": ["A6"]
+    },
+    {
+      "id": "A8", "name": "DELETE the whole-tour composer: compose.py gone as a file, compose_gate reduced to ComposeVerificationError + build_full_verifier, factcheck.py + omission machinery gone, Makefile LIVE_TEST_FILES pruned, tour-build stripped to $0 stitch+render",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_whole_tour_composer_is_gone\"",
+      "criterion_ids": ["AC-1", "AC-9", "AC-10"],
+      "files": ["src/tour/compose.py", "src/tour/compose_gate.py", "src/tour/factcheck.py", "src/api/dependencies.py", "tests/conftest.py", "Makefile", "scripts/tour_build.py", "tests/test_tour_compose.py", "tests/test_tour_compose_live.py", "tests/test_openai_compose.py", "tests/test_compose_provider.py", "tests/test_tour_recompose.py", "tests/test_compose_repair_dedup.py", "tests/test_compose_revert_asymmetry.py", "tests/test_compose_corrector_optin.py", "tests/test_compose_omission_detection.py", "tests/test_factcheck.py", "tests/test_tour_one_engine.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "high", "maxAttempts": 3, "attempts": 0, "depends_on": ["A7"]
+    },
+    {
+      "id": "A9", "name": "DELETE the corrector, the dark G4, and the dead scaffolding (compose_correct, verify_gate, claim_repetition, dead deps hooks, empty g4/omission response blocks, composed_partial + ChatGPT labels, 3 dead eligibility functions, dead contract fields)",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_corrector_and_dark_g4_are_gone\"",
+      "criterion_ids": ["AC-1", "AC-9"],
+      "files": ["src/tour/compose_correct.py", "src/tour/verify_gate.py", "src/tour/claim_repetition.py", "src/tour/candidate_eligibility.py", "src/tour/contract.py", "src/api/dependencies.py", "src/api/routes/trips.py", "frontend/review.html", "tests/conftest.py", "tests/test_claim_repetition.py", "tests/test_tour_candidate_eligibility.py", "tests/test_trip_preview_contract.py", "tests/test_tour_one_engine.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "high", "maxAttempts": 3, "attempts": 0, "depends_on": ["A8"]
+    },
+    {
+      "id": "A10", "name": "Docs, specs and config truth-up: API_REFERENCE, standard §6b, both superseded 2026-07-26 spec folders deleted, openai remnants (render.yaml, manifest test, pyproject) removed, stale pyproject ignore pruned, dead review-runner script deleted. Completing this final step hands the run to the close gate, whose single `make audit` is AC-11's proof.",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_superseded_specs_and_config_are_gone\"",
+      "criterion_ids": ["AC-1", "AC-10", "AC-11"],
+      "files": ["Docs/Markdown Docs/API_REFERENCE.md", "specs/2026-07-19-tour-quality-standard/01-standard.md", "specs/2026-07-26-tour-engine-convergence", "specs/2026-07-26-tour-rubric-recalibration", "render.yaml", "tests/test_render_manifest.py", "pyproject.toml", "uv.lock", "scripts/tour_text_candidate_review.py", "tests/test_tour_text_candidate_review_runner.py", "Docs/bug-reports/2026-07-27-preview-failure-observability-salvage.md", "tests/test_tour_one_engine.py"],
+      "cost_class": "$0", "cost": "$0", "complexity": "normal", "maxAttempts": 3, "attempts": 0, "depends_on": ["A9"]
+    }
+  ]
+}
