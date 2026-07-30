@@ -943,16 +943,25 @@ def test_openers_are_unchecked_since_c10_was_deleted() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_c11_fires_on_a_stop_far_denser_in_dates_than_its_siblings() -> None:
-    """GUARDS: a stop that reads like a date list against a tour that otherwise
-    speaks dates in prose (standard §4 C11). No absolute cut exists in the
-    standard's §5 provenance table for this one, so the check is RELATIVE to the
-    tour's own mean (OUTLIER_YEAR_DENSITY_MULTIPLE) rather than an invented
-    absolute number.
+def test_c11_reports_a_stat_but_emits_no_finding() -> None:
+    """C11 IS REPORT-ONLY, ruled 2026-07-30. It records outliers; it accuses nobody.
 
-    Stop 2 packs four years into 18 words (~22.2/100w); stops 0/1 have none, so
-    the tour mean is ~7.4/100w and stop 2 is over 2x that. UNDO: delete the
-    ``if density > outlier_threshold`` loop and this goes RED.
+    The detector still works and this test still proves it: stop 2 packs four years
+    into 18 words (~22.2/100w) while stops 0/1 have none, so the tour mean is
+    ~7.4/100w and stop 2 is over 2x it. What changed is the OUTPUT — the outlier
+    lands in ``stats["year_density_outliers"]`` and NOT in ``findings``.
+
+    WHY, measured: C11 fired on 100% of the human-vetted reference tours (5 of 25
+    Place des Vosges positions, 6 of 29 Ile) and on only 8-11% of machine tours. The
+    multiple needed to admit the human references is 3.82/4.19, above the machine
+    maximum of 3.11 — so no threshold clears the humans and still bites. A check that
+    accuses this project's own north-star text while passing the output it polices is
+    pointing the wrong way. Kept as a stat because the signal is real when you are
+    diagnosing one stop; demoted because as a WARN it was pure noise.
+
+    UNDO (two ways, both must go RED): delete the
+    ``stats["year_density_outliers"]`` assignment, or re-add a
+    ``report.findings.append`` for the outlier.
     """
     poi_a, poi_b, poi_c = _spoi("a", tier=3), _spoi("b", tier=3), _spoi("c", tier=3)
     no_dates_1 = "The garden sits beside the river and draws crowds every summer weekend here"
@@ -975,17 +984,23 @@ def test_c11_fires_on_a_stop_far_denser_in_dates_than_its_siblings() -> None:
         {},
     )
 
-    outliers = [f for f in report.findings if f.check == "C11-year-density-outlier"]
-    assert len(outliers) == 1, _checks(report)
-    assert outliers[0].severity is Severity.WARN
-    assert outliers[0].stop_idx == 2
-    assert report.passed
+    # The stat is present and names the right stop...
+    assert report.stats["year_density_outliers"] == {2: 22.2}, report.stats
+    # ...and NOTHING is emitted as a finding, at any severity.
+    assert [f for f in report.findings if f.check == "C11-year-density-outlier"] == [], (
+        "C11 was demoted to a report-only stat on 2026-07-30 and must emit no Finding; "
+        + _checks(report)
+    )
+    assert report.passed and report.warnings == []
 
 
 def test_c11_does_not_fire_when_date_density_is_even_across_stops() -> None:
     """GUARDS: false positives on a tour that legitimately speaks a date at every
     stop, evenly — the measured-good pattern ("born in Malaga in 1881"), not a
     date-list defect.
+
+    Since the 2026-07-30 demotion this checks the STAT stays empty rather than that
+    no finding fires — an evenly-dated tour must not even be reported as an outlier.
 
     UNDO: drop the ``* OUTLIER_YEAR_DENSITY_MULTIPLE`` (i.e. compare density to the
     bare mean) and this goes RED — an evenly-dated tour would self-flag.
@@ -1004,6 +1019,54 @@ def test_c11_does_not_fire_when_date_density_is_even_across_stops() -> None:
     )
 
     assert "C11-year-density-outlier" not in _checks(report)
+    assert report.stats.get("year_density_outliers") == {}, (
+        "an evenly-dated tour must not even be REPORTED as an outlier: "
+        f"{report.stats.get('year_density_outliers')}"
+    )
+
+
+def test_c8_cannot_fire_on_engine_output_and_the_unit_ruling_is_recorded() -> None:
+    """C8's cap stays 850, and the reason a clean C8 proves nothing is pinned here.
+
+    THE UNIT RULING (owner, 2026-07-30). C8's calibration unit is the STANDING
+    POSITION, not the declared stop. Measured on the two human-vetted reference
+    tours: no single position exceeds 367 words, so 850 is generous and every human
+    position passes. The declared-stop aggregates that DO exceed it — Conciergerie
+    901, Notre-Dame 1595 — are eye-prose spans covering many positions with walking
+    in between, which is not a stop this engine builds. That closes the open
+    C8-unit question; the cap does not move and the engine is not changed.
+
+    THE TRAP THIS PINS. ``selection.MAX_DWELL_AUDIO_SECONDS`` caps one stop's audio,
+    so at ``SPOKEN_WPM`` the widest stop the engine can render is far below 850 —
+    C8 CANNOT FIRE on anything built today. Every gorged stop in the saved-tour
+    corpus predates that ceiling. So "C8 is clean" is evidence about the dwell cap,
+    never evidence that quality improved, and selection.py's own comment warns about
+    exactly this misreading. Computed from the live constants, so if either moves
+    this test re-derives instead of going stale.
+
+    UNDO: raise MAX_DWELL_AUDIO_SECONDS above ~340s (or drop the cap) and the
+    headroom assertion goes RED, correctly reporting that C8 became reachable.
+    """
+    from src.tour.generation import SPOKEN_WPM
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
+
+    assert GORGE_MAX_WORDS_PER_STOP == 850, (
+        "the C8 cap was ruled UNCHANGED at 850 on 2026-07-30; 750 was rejected on "
+        "measurement because the certified-good corpus carries stops at 757/761/808"
+    )
+
+    # The most words a single stop's dwell audio can carry, plus the documented
+    # ~75-word glue reserve that rides along with it.
+    renderable_words = MAX_DWELL_AUDIO_SECONDS * SPOKEN_WPM / 60
+    widest_possible_stop = renderable_words + 75
+
+    assert widest_possible_stop < GORGE_MAX_WORDS_PER_STOP, (
+        f"C8 has become REACHABLE: a stop can now render up to "
+        f"{widest_possible_stop:.0f} words ({MAX_DWELL_AUDIO_SECONDS}s at {SPOKEN_WPM} "
+        f"wpm + 75 glue) against a cap of {GORGE_MAX_WORDS_PER_STOP}. That is not a "
+        "failure — but the cap's unreachability was load-bearing for how C8 results "
+        "are read, so re-measure the gorged population before trusting a clean C8."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1669,9 +1732,16 @@ def test_c8_contradicts_the_human_reference_at_declared_stop_granularity() -> No
     So C8's verdict depends entirely on its unit. On machine output a stop is a
     POI at one GPS trigger, and C8's founding case was 1038 words at ONE spot;
     the human reference shows a POI legitimately carrying 1595 words ACROSS
-    spots. Whether the engine should learn sub-location stops, or the cap should
-    move, is a product decision. This test forces it to be made by a human: it
-    goes RED the moment C8 stops firing here.
+    spots.
+
+    RULED 2026-07-30 (owner): the calibration unit is the STANDING POSITION. These
+    two declared-stop hits are therefore EXPECTED and correct — a declared stop in a
+    guidebook walk is an eye-prose span over many positions, not a thing the engine
+    builds — and the cap stays 850. This test no longer forces a decision; it pins
+    the measurement the decision rests on, and still goes RED if C8 stops firing
+    here, which would mean the loader is shredding stops again or the cap drifted.
+    See test_c8_cannot_fire_on_engine_output_and_the_unit_ruling_is_recorded for the
+    other half: on ENGINE output the cap is unreachable anyway.
 
     This is also the LOADER's regression guard: a parser that shreds stops back
     into positions (the first version's defect, caught by a judge consult)
@@ -1693,9 +1763,9 @@ def test_c8_contradicts_the_human_reference_at_declared_stop_granularity() -> No
     assert len(gorged) == 2 and "Conciergerie" in gorged[0] and "Notre-Dame" in gorged[1], (
         f"C8 fired on {gorged or 'nothing'} at declared-stop granularity; "
         "measured 2026-07-29 it fires on exactly Conciergerie (901 words) and "
-        "Notre-Dame (1595). If C8 was deliberately recalibrated from the human "
-        "reference, update this test in the same change and say so. If not, "
-        "either the loader is shredding stops again or the cap drifted."
+        "Notre-Dame (1595), and the 2026-07-30 ruling keeps that expected (the unit "
+        "is the standing position; a declared stop is an eye-prose span). So this "
+        "means the loader is shredding stops again, or the cap drifted."
     )
 
 
@@ -1766,21 +1836,27 @@ def test_the_blocking_floor_still_fires_when_a_reference_tour_is_degraded() -> N
 
 
 def test_c9_fires_on_most_stops_of_the_human_authored_reference_tours() -> None:
-    """PINS A MEASURED MISCALIBRATION so it cannot be mistaken for a quality signal.
+    """PINS WHY C9 FIRES ON THE HUMAN REFERENCES **BY DESIGN**, ruled 2026-07-30.
 
-    C9 is a WARN, so it blocks nothing — but at position granularity it fires on
-    24 of 25 positions (96%) of one human-approved tour and 19 of 29 (66%) of
-    the other. A check that flags almost all human-approved prose is not
-    discriminating quality, and tuning machine output against it would push
-    tours AWAY from the reference.
+    C9 is a WARN, so it blocks nothing — and at position granularity it fires on 24
+    of 25 positions (96%) of one human-approved tour and 19 of 29 (66%) of the other.
+    That reads like a miscalibration and was very nearly "fixed" as one. It is not.
 
-    Recorded rather than deleted because C9 still ORDERS correctly — the gold
-    passage measures 19.11 words/sentence against a machine median of 23.2. The
-    cap is the problem, not the metric.
+    THE RULING (owner, 2026-07-30): C9 stays exactly as it is, cap 20, unchanged.
+    Two measurements decide it. First, C9 ORDERS CORRECTLY on the thing this project
+    actually calls its north star: the owner's hand-written gold measures 19.11
+    words/sentence and PASSES, against a machine median of 23.2 that does not — the
+    gold reads shorter than 34 of 38 machine stops. Second, the cap matches the
+    external ear-prose guidance (12-18 words) that the online reference set
+    contributes. The two empirical walk documents fire it because they are
+    transcribed GUIDEBOOK prose — text for the EYE, medians 25.7 and 23.2 — while
+    C9 measures fitness for the EAR. Firing on eye-prose is the check working.
 
-    DECISION FORCER: if someone recalibrates C9 from the reference tours, this
-    goes RED and a human confirms the new intent. Do not silence it by widening
-    the cap without also updating ``test_c9_cap_admits_the_owners_own_gold_text``.
+    So this test is no longer a decision forcer; it records a settled reading. It
+    still goes RED on any recalibration, which is what keeps the reading honest:
+    anyone who widens the cap must also break
+    ``test_c9_cap_admits_the_owners_own_gold_text`` and say why the gold no longer
+    anchors the number.
 
     UNDO: recalibrate ``MAX_SENTENCE_WORDS`` upward from the reference tours and
     this goes RED, on purpose.

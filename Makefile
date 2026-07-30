@@ -105,7 +105,8 @@ lint: ## Run the Python linter.
 	uv run ruff check src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 		scripts/db_parity.py scripts/check_audio_setup.py \
 		scripts/tour_batch_candidate.py scripts/score_saved_tours.py \
-		scripts/score_gold_text.py scripts/human_reference_tours.py
+		scripts/score_gold_text.py scripts/human_reference_tours.py \
+		scripts/tour_golden_diff.py
 
 format: ## Format Python and apply safe lint fixes.
 	uv run ruff format src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
@@ -173,8 +174,8 @@ golden-probe: ## Print golden overlap counts using provisioned dev data and Valh
 	@$(MAKE) --no-print-directory _ensure-dev-data
 	@$(MAKE) --no-print-directory valhalla-up
 	@set -o pipefail; $(TEST_EXEC) uv run pytest $(GOLDEN_TEST_FILES) \
-		-o addopts= -m golden -q 2>&1 | \
-		grep -oE "(Île|PdV) golden overlap [0-9.]+% .* Hit [0-9]+/[0-9]+"
+		-o addopts= -m golden -q -s 2>&1 | \
+		grep -oE "GOLDEN-OVERLAP .*"
 
 score-saved-tours: ## Score every saved tour artifact against the current rubric. $0, no DB, no containers.
 	@$(LOCAL_EXEC) uv run python scripts/score_saved_tours.py $(SCORE_ARGS)

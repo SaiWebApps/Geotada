@@ -21,6 +21,7 @@ from src.tour.generation import generate
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
 from tests.live_graph import open_dev_driver
+from tests.test_tour_golden_consistency import generated_stable_beat_ids
 
 # Quality-comparison gate against a human-curated ideal tour; excluded from the
 # definitive `make test` bar (routed through its internal golden shard).
@@ -33,7 +34,46 @@ FIXTURE_PATH = (
     / "pdv_round_trip_60min.json"
 )
 OVERLAP_TARGET = 0.90
-OVERLAP_REGRESSION_FLOOR = 5 / 18
+# AN ABSOLUTE HIT COUNT, NOT A RATIO — see the longer note in test_tour_golden_ile.py.
+#
+# THIS FLOOR WENT DOWN, from 5 required hits to 3. It is the weakest number in this
+# ledger and the one to argue with.
+#
+# A PREVIOUS VERSION OF THIS COMMENT DEFENDED IT WITH A FALSEHOOD — that 27.8% "was never
+# met and never could be". A hostile review refuted that from the repo's own records: this
+# gate was live and PASSING at PdV 12/18 = 66.7% (2026-06-13,
+# specs/2026-06-13-tour-planner-canonical/GOLDEN-GAP-DIAGNOSTIC.md) and 10/18 = 55.6%
+# after the pace pin (tests/test_tour_beat_select.py). The bar was earned, twice. Anyone
+# reading this must not repeat the retracted claim.
+#
+# THE TRUE REASON THE OLD NUMBER IS NOT A BASELINE FOR THIS ONE: the 18-id expectation it
+# was measured against did not encode this document. Measured 2026-07-30, only 8 of the
+# old fixture's 25 tag keys exist verbatim in
+# Docs/tour-builder/empirical-tours/01-place-des-vosges.md — the rest named tags the
+# document does not contain. So 12/18 was scored against a partly fabricated expectation,
+# while today's 4/21 is scored against 24 of 25 real document tags, every one verified
+# against the corpus. The measurements are not comparable, and the honest move is to say
+# so rather than to claim the gate never worked.
+#
+# THE NUMBER IS 4, NOT 85% OF 4. Decision D6 says 'floor = 85% of the measurement', which
+# is right for Ile (85% of 18 = 15, tolerating a 3-hit regression) but DEGENERATES at n=4:
+# 85% of 4 rounds to 3, i.e. a floor that shrugs at a 25% regression on a 4-hit
+# measurement. A judge consult flagged it as near-vacuous, and there is no headroom to
+# buy: this gate is deterministic by construction (src/tour/selection.py orders POIs by
+# p.id specifically so two loads of the same graph cannot drift). So the floor IS the
+# measurement — lose a single hit and this goes red, which is what a regression floor is
+# for. If it ever flakes, the fix is to name the non-determinism here, not to add slack.
+#
+# WHY ONLY 19%: the human document is a deep walk of ONE square, narrating the Place des
+# Vosges arcade address by address (no 3, no 16, no 20, no 23, no 24, Pavillon de la
+# Reine, Coconnas, Ma Bourgogne, Hotel de Chaulnes). Measured via `make golden-diff`, the
+# engine selects FOUR beats at Place des Vosges and spends the rest of the time budget on
+# Musee Carnavalet and Hotel de Sully; all 17 misses are arcade addresses at that one
+# square. MAX_DWELL_AUDIO_SECONDS=270 caps one stop near 675 words, so a 21-beat
+# single-square walk is not a tour this engine can build. Closing the gap means teaching
+# it sub-location stops — the same standing-position-vs-POI question decision D4 rules on
+# for C8 — NOT moving this number.
+OVERLAP_MIN_HITS = 4
 
 
 def _live_driver():
@@ -96,17 +136,30 @@ def test_pdv_golden_overlap(snapshot, fixture):
     """Beat-ID overlap must not regress below the established routed baseline."""
     script, route, _seq = _generated_beat_ids(snapshot, fixture)
 
-    expected: set[str] = set(fixture["expected_beat_ids"])
-    generated_ids: set[str] = {s.source_id for s in script.script if s.source_type == "beat"}
+    expected: set[str] = set(fixture["expected_stable_beat_ids"])
+    generated_ids, untranslated = generated_stable_beat_ids(script, _seq)
+    assert not untranslated, (
+        f"{len(untranslated)} emitted beats carry no stable_beat_id: {untranslated[:5]}"
+    )
 
     overlap = len(expected & generated_ids)
     overlap_pct = overlap / len(expected) if expected else 0.0
     missing = sorted(expected - generated_ids)
 
-    assert overlap_pct >= OVERLAP_REGRESSION_FLOOR, (
-        f"PdV golden overlap {overlap_pct:.1%} below regression floor "
-        f"{OVERLAP_REGRESSION_FLOOR:.1%} (empirical target {OVERLAP_TARGET:.0%}). "
-        f"Hit {overlap}/{len(expected)} expected beats. "
+    # Emitted UNCONDITIONALLY for `make golden-probe`. The probe used to grep this
+    # number out of pytest's ASSERTION text, so it only ever produced output while
+    # the gate was RED — the moment the goldens went green the probe returned nothing
+    # and failed under pipefail. A gate's reporting must not depend on the gate
+    # failing. Guarded by test_golden_probe_marker_is_emitted_by_both_goldens.
+    print(
+        f"GOLDEN-OVERLAP PdV {overlap}/{len(expected)} "
+        f"({overlap_pct:.1%}) floor {OVERLAP_MIN_HITS} hits"
+    )
+
+    assert overlap >= OVERLAP_MIN_HITS, (
+        f"PdV golden overlap {overlap}/{len(expected)} ({overlap_pct:.1%}) below the "
+        f"regression floor of {OVERLAP_MIN_HITS} hits (empirical target "
+        f"{OVERLAP_TARGET:.0%}). "
         f"Missing: {missing[:10]}{'…' if len(missing) > 10 else ''}. "
         f"Generated POIs: {[p.name for p in route.pois]}. "
         f"Spine: {route.spine_area}."

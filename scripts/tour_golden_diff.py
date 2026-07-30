@@ -28,7 +28,6 @@ from src.tour.generation import generate
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
 
-
 FIXTURE_DIR = ROOT / "fixtures" / "tour_golden"
 
 
@@ -42,7 +41,7 @@ def main(name: str) -> int:
 
     fixture = json.loads(fixture_path.read_text())
     inp = fixture["input"]
-    expected = set(fixture["expected_beat_ids"])
+    expected = set(fixture["expected_stable_beat_ids"])
 
     driver = create_driver()
     snapshot = load_paris_corpus(driver, city_slug=inp["city_slug"])
@@ -86,7 +85,28 @@ def main(name: str) -> int:
     print(f"Expected POIs: {fixture.get('expected_pois')}")
     print()
 
-    generated_ids: set[str] = {s.source_id for s in script.script if s.source_type == "beat"}
+    # Fixtures pin the DURABLE corpus slug (`stable_beat_id`), while a Script's
+    # `source_id` is the per-database UUID. Translate before comparing, or every
+    # overlap reads 0% — the exact defect the re-key exists to remove. The gate's
+    # copy of this mapping lives in tests/test_tour_golden_consistency.py, which
+    # scripts/ may not import (tests/ is .dockerignore'd out of the image), so it is
+    # repeated here and guarded by test_golden_diff_cli_reads_the_durable_key.
+    stable_for: dict[str, str] = {
+        beat.id: beat.stable_beat_id
+        for poi in seq.poi_beats
+        for beat in poi.beats
+        if beat.stable_beat_id
+    }
+    for beats in seq.vignette_beats.values():
+        for beat in beats:
+            if beat.stable_beat_id:
+                stable_for[beat.id] = beat.stable_beat_id
+
+    generated_ids: set[str] = {
+        stable_for[s.source_id]
+        for s in script.script
+        if s.source_type == "beat" and s.source_id in stable_for
+    }
 
     poi_by_id = {p.id: p for p in route.pois}
     print("Per-POI breakdown:")
@@ -94,7 +114,7 @@ def main(name: str) -> int:
         poi = poi_by_id.get(plan.poi_id)
         name_str = poi.name if poi else plan.poi_id
         tier_str = f"t{poi.tier}" if poi else "t?"
-        plan_ids = {b.id for b in plan.beats}
+        plan_ids = {b.stable_beat_id for b in plan.beats if b.stable_beat_id}
         n_in_fix = len(plan_ids & expected)
         n_voiced = len(plan_ids & generated_ids)
         print(f"  {name_str} ({tier_str}): "
@@ -113,7 +133,7 @@ def main(name: str) -> int:
         with driver.session() as s:
             for bid in missing[:25]:
                 rec = s.run(
-                    "MATCH (p:POI)-[:HAS_BEAT]->(b:NarrativeBeat {id: $bid}) "
+                    "MATCH (p:POI)-[:HAS_BEAT]->(b:NarrativeBeat {beat_id: $bid}) "
                     "RETURN p.name AS poi, b.sub_location AS sub, "
                     "b.narrative_function AS nf, b.script_body AS body",
                     bid=bid,
@@ -121,7 +141,7 @@ def main(name: str) -> int:
                 if rec:
                     r = rec[0]
                     body = (r.get("body") or "")[:60].replace("\n", " ")
-                    print(f"  {bid[:8]} | {r['poi']:35s} | "
+                    print(f"  {bid[-38:]} | {r['poi']:35s} | "
                           f"sub={(r.get('sub') or '')[:25]:25s} | "
                           f"nf={(r.get('nf') or '')[:14]:14s} | {body!r}")
         if len(missing) > 25:

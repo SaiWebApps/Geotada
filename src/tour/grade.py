@@ -50,9 +50,7 @@ class GradeResult:
 
 
 def _recall(expected: set[str], got: set[str]) -> float:
-    """|expected ∩ got| / |expected|; 1.0 when nothing is expected."""
-    if not expected:
-        return 1.0
+    """|expected ∩ got| / |expected|. Callers must reject an empty expectation."""
     return len(expected & got) / len(expected)
 
 
@@ -67,15 +65,54 @@ def grade_tour(
 ) -> GradeResult:
     """Score a generated tour against a golden ``fixture`` dict.
 
-    Reads the fixture's ``expected_pois``/``expected_beat_ids``/
+    Reads the fixture's ``expected_pois``/``expected_stable_beat_ids``/
     ``expected_spine_area``; the engine output is passed in (the caller runs
     the pipeline), so this stays pure and unit-testable.
+
+    Beats are keyed by the DURABLE corpus slug (``expected_stable_beat_ids``).
+    The old ``expected_beat_ids`` held the per-database UUIDs Neo4j mints at
+    upload, which rotate on every re-seed; a fixture keyed that way can never
+    match real output.
+
+    An empty expectation is a BROKEN FIXTURE, not a perfect tour. This used to
+    read a key the re-key had deleted and fall through to a 1.0 recall, so a
+    tour that reproduced NOTHING scored ``beat_overlap=1.00`` and passed the
+    baseline. Refuse loudly instead: a silent 1.0 launders exactly the
+    regression this gate exists to catch.
     """
-    poi_recall = _recall(set(fixture.get("expected_pois", [])), set(generated_poi_names))
-    beat_overlap = _recall(set(fixture.get("expected_beat_ids", [])), set(generated_beat_ids))
-    spine_match = (
-        1.0 if generated_spine_area == fixture.get("expected_spine_area") else 0.0
-    )
+    expected_pois = set(fixture.get("expected_pois") or ())
+    expected_beats = set(fixture.get("expected_stable_beat_ids") or ())
+    empty = [
+        name
+        for name, value in (
+            ("expected_pois", expected_pois),
+            ("expected_stable_beat_ids", expected_beats),
+        )
+        if not value
+    ]
+    if empty:
+        raise ValueError(
+            "golden fixture declares no "
+            + " and no ".join(empty)
+            + " — cannot be graded (an empty expectation would score a perfect "
+            "recall and hide a total regression)"
+        )
+
+    poi_recall = _recall(expected_pois, set(generated_poi_names))
+    beat_overlap = _recall(expected_beats, set(generated_beat_ids))
+
+    # SAME FAIL-OPEN CLASS AS THE BEATS AXIS ABOVE, and it survived the first repair of
+    # it: a fixture with no `expected_spine_area` and an engine that produced no spine
+    # compared None == None and scored a free 1.0 — 0.20 of a 0.65 baseline for declaring
+    # nothing. Caught by hostile review 2026-07-30. An absent expectation is a broken
+    # fixture on every axis, not just the one that happened to be reported.
+    expected_spine = fixture.get("expected_spine_area")
+    if not expected_spine:
+        raise ValueError(
+            "golden fixture declares no expected_spine_area — cannot be graded (a null "
+            "expectation would match a null result and score a free 0.20)"
+        )
+    spine_match = 1.0 if generated_spine_area == expected_spine else 0.0
     validation = 1.0 if validation_passed else 0.0
 
     score = (

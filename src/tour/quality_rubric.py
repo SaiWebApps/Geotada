@@ -738,20 +738,26 @@ def score_tour(
         report.stats["year_density_by_stop"] = dict(sorted(stop_year_densities.items()))
         mean_density = sum(stop_year_densities.values()) / len(stop_year_densities)
         if mean_density > 0:
+            # C11 IS REPORT-ONLY. It records the outliers as a stat and emits NO
+            # Finding. Ruled 2026-07-30 on measurement, not taste: C11 fired on
+            # 100% of the human-vetted reference tours (5 of 25 Place des Vosges
+            # positions, 6 of 29 Ile) and on only 8-11% of machine tours. A check
+            # that accuses the hand-written text this project calls its north star,
+            # while passing the output it is meant to police, is pointing the wrong
+            # way — and the multiple needed to admit the references (3.82 PdV /
+            # 4.19 Ile) sits ABOVE the machine maximum ratio of 3.11, so no
+            # threshold exists that clears the humans and still bites. Deleting it
+            # would throw away a real signal; emitting it as a WARN spends reader
+            # attention on noise. So the densities stay visible in
+            # `stats["year_density_outliers"]` for anyone diagnosing a date-list
+            # stop, and nothing is blocked or warned. Pinned by
+            # test_c11_reports_a_stat_but_emits_no_finding.
             outlier_threshold = mean_density * OUTLIER_YEAR_DENSITY_MULTIPLE
-            for stop_idx, density in sorted(stop_year_densities.items()):
-                if density > outlier_threshold:
-                    report.findings.append(
-                        Finding(
-                            check="C11-year-density-outlier",
-                            severity=Severity.WARN,
-                            message=(
-                                f"{density:.1f} dates/100w vs a {mean_density:.1f} tour "
-                                f"mean — reads as a date list, not spoken narration"
-                            ),
-                            stop_idx=stop_idx,
-                        )
-                    )
+            report.stats["year_density_outliers"] = {
+                stop_idx: round(density, 1)
+                for stop_idx, density in sorted(stop_year_densities.items())
+                if density > outlier_threshold
+            }
 
     # ── S1: spatial claim geometry — DELIBERATELY NOT WIRED ─────────────────
     # `src/tour/spatial_check.py` exists and is tested, but it is NOT called here.

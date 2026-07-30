@@ -21,7 +21,7 @@ pytestmark = pytest.mark.grade
 
 _FIXTURE = {
     "expected_pois": ["A", "B", "C", "D"],
-    "expected_beat_ids": ["b1", "b2", "b3", "b4", "b5"],
+    "expected_stable_beat_ids": ["b1", "b2", "b3", "b4", "b5"],
     "expected_spine_area": "Le Marais",
 }
 
@@ -81,15 +81,32 @@ def test_wrong_spine_and_failed_validation_dock_their_weights():
     assert g.validation == 0.0
 
 
-def test_empty_expectations_recall_is_one():
-    g = grade_tour(
-        generated_poi_names=[],
-        generated_beat_ids=[],
-        generated_spine_area=None,
-        validation_passed=True,
-        fixture={"expected_pois": [], "expected_beat_ids": [], "expected_spine_area": None},
-    )
-    assert g.poi_recall == 1.0 and g.beat_overlap == 1.0
+def test_an_empty_expectation_is_refused_not_scored_perfect():
+    """A fixture that expects nothing is broken, and must never grade 1.0.
+
+    Regression guard, measured 2026-07-30: grade_tour read ``expected_beat_ids``
+    after the fixtures were re-keyed to ``expected_stable_beat_ids``, so the set
+    came back empty and ``_recall`` returned 1.0 — the re-keyed Ile fixture
+    scored beat_overlap=1.00 with ZERO generated beats and PASSED the baseline.
+    """
+    for broken in (
+        {"expected_pois": [], "expected_stable_beat_ids": ["b1"], "expected_spine_area": "X"},
+        {"expected_pois": ["A"], "expected_stable_beat_ids": [], "expected_spine_area": "X"},
+        # the exact shape of the defect: the durable key absent entirely
+        {"expected_pois": ["A"], "expected_beat_ids": ["b1"], "expected_spine_area": "X"},
+        # the SPINE axis had the same hole two lines below the first repair: a null
+        # expectation matched a null result for a free 0.20 of the baseline.
+        {"expected_pois": ["A"], "expected_stable_beat_ids": ["b1"], "expected_spine_area": None},
+        {"expected_pois": ["A"], "expected_stable_beat_ids": ["b1"]},
+    ):
+        with pytest.raises(ValueError, match="declares no"):
+            grade_tour(
+                generated_poi_names=[],
+                generated_beat_ids=[],
+                generated_spine_area=None,
+                validation_passed=True,
+                fixture=broken,
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -102,12 +119,18 @@ _GOLDENS = ["ile_oneway_90min", "pdv_round_trip_60min"]
 
 def _live_graded(fixture: dict):
     """Run the real pipeline for a fixture's input and grade it. Skips (→ fails
-    under conftest) only handled by the caller via the live driver helper."""
+    under conftest) only handled by the caller via the live driver helper.
+
+    The fixtures pin durable corpus slugs, while the runtime keys beats by the
+    per-database UUID. ``grade_tour`` is left untouched: the harness translates both
+    sides onto the slug before handing them over.
+    """
     from src.tour.beat_select import select_poi_beats
     from src.tour.contract import BeatSequence, TourInput
     from src.tour.generation import generate
     from src.tour.routing_client import RoutingClient
     from src.tour.selection import select_route
+    from tests.test_tour_golden_consistency import generated_stable_beat_ids
 
     inp = fixture["input"]
     tour_input = TourInput(
@@ -118,11 +141,15 @@ def _live_graded(fixture: dict):
     with RoutingClient() as rc:
         route = select_route(tour_input, snapshot, routing_client=rc)
     plans = [select_poi_beats(p, snapshot.beats_for(p.id)) for p in route.pois]
-    script = generate(BeatSequence(poi_beats=tuple(plans)), route, tour_input)
-    gen_beats = [s.source_id for s in script.script if s.source_type == "beat"]
+    seq = BeatSequence(poi_beats=tuple(plans))
+    script = generate(seq, route, tour_input)
+    gen_beats, untranslated = generated_stable_beat_ids(script, seq)
+    assert not untranslated, (
+        f"{len(untranslated)} emitted beats carry no stable_beat_id: {untranslated[:5]}"
+    )
     return route, grade_tour(
         generated_poi_names=[p.name for p in route.pois],
-        generated_beat_ids=gen_beats,
+        generated_beat_ids=sorted(gen_beats),
         generated_spine_area=route.spine_area,
         validation_passed=script.validation.passed,
         fixture=fixture,
@@ -163,7 +190,7 @@ def test_broken_golden_drops_below_baseline():
 
     broken = dict(fixture)
     broken["expected_pois"] = ["Eiffel Tower", "Sacre-Coeur", "Louvre", "Arc de Triomphe"]
-    broken["expected_beat_ids"] = ["nonexistent-1", "nonexistent-2", "nonexistent-3"]
+    broken["expected_stable_beat_ids"] = ["nonexistent-1", "nonexistent-2", "nonexistent-3"]
     broken["expected_spine_area"] = "Montmartre"
     _route2, broken_grade = _live_graded(broken)
     assert not broken_grade.passed, f"broken golden should fail: {broken_grade.breakdown()}"

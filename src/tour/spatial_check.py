@@ -31,9 +31,12 @@ Two layers, mirroring ``quality_rubric.py``:
   A target that does not resolve is UNKNOWN, never a violation: silence beats a false
   accusation.
 
-WARN ONLY (see ``check_script_spatial_claims``): wired into ``quality_rubric.score_tour``
-as WARN-severity findings, never BLOCKER. A conservative extractor plus a brand-new
-geometry check has not earned blocker status yet.
+NOT WIRED INTO ANY GATE. ``check_script_spatial_claims`` is exercised only by
+``tests/test_spatial_check.py``; ``quality_rubric.score_tour`` deliberately does NOT call
+it, and a test greps this module's name out of that module's source to keep it that way.
+It was wired on 2026-07-19 and UNWIRED the same day on measurement. This docstring
+claimed the opposite until 2026-07-30 — a conservative extractor plus a brand-new
+geometry check has not earned any severity yet, let alone blocker.
 
 HONEST STATUS, post 2026-07-19 hostile-review repair (see ``resolve_street_axis_deg``'s
 docstring for the exact numbers): a false-accusation bug (distance short-circuiting before
@@ -515,9 +518,10 @@ def check_script_spatial_claims(
     """Run the spatial check over every sentence in a composed ``Script``.
 
     Only IMPLAUSIBLE claims produce a finding — PLAUSIBLE and UNKNOWN are both
-    silent, per the "silence beats a false accusation" rule. WARN severity only;
-    the caller (``quality_rubric.score_tour``) wires these in as WARN findings,
-    never BLOCKER (see module docstring).
+    silent, per the "silence beats a false accusation" rule. Nothing in the
+    shipped gate calls this: ``quality_rubric.score_tour`` does NOT wire these in
+    at any severity (see the module docstring). Findings surface only to a caller
+    that asks for them directly, which today means the tests.
 
     ``city_pois`` is an injection seam for tests; production wiring omits it and
     loads ``data/{script.city_slug}/poi-raw.json`` via the cached loader.

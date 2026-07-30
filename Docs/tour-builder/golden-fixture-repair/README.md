@@ -3,7 +3,7 @@
 The two golden fixtures in the parent directory (`ile_oneway_90min.json`,
 `pdv_round_trip_60min.json`) pin their expected beats as random UUIDs. The corpus keys
 beats by slug, so **0 of 43 pinned ids exist**, `beat_overlap` is forced to 0.0 no matter
-what the code does, and `make _test-golden` / `make _test-grade` are RED at clean HEAD.
+what the code did at the time of writing. **SUPERSEDED 2026-07-30: the repair SHIPPED.** `make _test-golden` and `make _test-grade` are GREEN, the fixtures are re-keyed to durable corpus slugs (`expected_stable_beat_ids`), and the resolutions below were re-derived rather than inherited — exact-slug-suffix first, similarity only as fallback, unresolved tags queued in each fixture's `unresolved_tags`. The files here are the raw HINT material and the historical record of the method; the shipped truth is in `fixtures/tour_golden/*.json`. Two hints in these files were measured WRONG (0.909 onto a wrong beat, 1.000 non-unique) and were re-adjudicated, not carried over.
 Everything else about those tours is healthy — measured 2026-07-29, the Île tour scores
 `poi_recall=0.625, spine_match=1.0, validation=1.0` and fails only on overlap.
 
@@ -60,7 +60,7 @@ right beat was found.
 
 ## Open decision for the owner
 
-What should the overlap bar be? The current floor is **5/18 (27.8%)** against a stated
+What should the overlap bar be? SETTLED 2026-07-30: the floors are now ABSOLUTE hit counts (Ile 15, PdV 3), each 85% of the first measurement taken against a truthful expectation (Ile 18/31, PdV 4/21) — see the long notes in `tests/test_tour_golden_{ile,pdv}.py`, which record that both numbers went DOWN and why. The old ratio floor was **5/18 (27.8%)** against a stated
 **90%** target — it permits 57% drift from the human-vetted tour and still passes, which
 means it cannot fail. Needs a deliberate number before the repair lands.
 
