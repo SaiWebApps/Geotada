@@ -55,6 +55,18 @@ services:
         sync: false
       - key: TTS_PROVIDER
         value: openai
+      # ONBOARD_PROVIDER: the beat drafter production would resolve. INERT here —
+      # the onboard router mounts only under WORKBENCH_API_ENABLED, which this
+      # service does not set, so nothing on Render ever calls a drafter. It is
+      # pinned anyway because src/onboard/beat_draft.py's get_drafter() now fails
+      # closed (an unset value used to mean the free MockBeatDrafter, which is how
+      # the workbench drafted a human's beats with a fake), and because
+      # tests/test_workbench_matches_the_app.py derives workbench/production
+      # parity from this file: scripts/workbench.sh pins the drafter, so a value
+      # here is what stops that being an unreviewed local-only divergence.
+      # "anthropic" is the only real drafter; never pin a double.
+      - key: ONBOARD_PROVIDER
+        value: anthropic
       # OpenAI TTS has no credential of its own in this manifest unless it is
       # declared here — without it a blueprint-provisioned service 502s with
       # "TTS generation failed (openai)" on every synthesis. Set the value in

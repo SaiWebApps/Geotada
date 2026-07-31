@@ -277,17 +277,15 @@
 
 </div>
 
-<!-- ── Cost confirmation modal ── -->
-<div id="costModal" class="overlay hidden">
-  <div class="overlay-card">
-    <h2>Confirm beat-drafting cost</h2>
-    <p id="costModalBody">This run will call the model to draft beats.</p>
-    <div class="overlay-actions">
-      <button class="btn btn-outline" id="costCancelBtn">Cancel</button>
-      <button class="btn btn-primary" id="costConfirmBtn">Draft beats (confirm cost)</button>
-    </div>
-  </div>
-</div>
+<!-- OWNER RULING 2026-07-31: no spend dialog on the workbench, here either. The
+     cost-confirmation modal that used to sit here made Draft Beats a two-step
+     confirm. It is removed for the same reason generateTourPreview's
+     window.confirm was (see tests/test_workbench_preview_wiring.py): the
+     workbench replicates the tourist's app experience as closely as possible,
+     and a tourist is never asked to approve spend. The page now confirms on the
+     operator's behalf in draftBeats(). The API's confirm_cost contract is
+     deliberately left intact for non-workbench callers. Do not reintroduce a
+     spend dialog on this page. -->
 
 <script>
 'use strict';
@@ -307,8 +305,6 @@ const poiPane = document.getElementById('poiPane');
 const poiCount = document.getElementById('poiCount');
 const beatPane = document.getElementById('beatPane');
 const uploadResult = document.getElementById('uploadResult');
-const costModal = document.getElementById('costModal');
-const costModalBody = document.getElementById('costModalBody');
 
 let jobId = null;
 
@@ -474,31 +470,31 @@ document.getElementById('onboardStartBtn').addEventListener('click', async () =>
   };
 });
 
-// ── Beats: cost-gated draft ──
-async function draftBeats(confirm) {
+// ── Beats: draft, no spend dialog ──
+// OWNER RULING 2026-07-31: never ask the operator to approve spend here. This
+// used to POST with confirm_cost:false, catch the API's 409 cost estimate, and
+// raise a modal. The workbench mirrors the tourist's app experience, and a
+// tourist is never asked to approve spend — the same ruling that removed the
+// window.confirm from generateTourPreview in review.html.
+//
+// The API's confirm_cost contract is UNCHANGED and still defends every other
+// caller; the page simply confirms on the operator's behalf. The drafter itself
+// is real (scripts/workbench.sh pins ONBOARD_PROVIDER=anthropic) and fails
+// closed if unpinned, so what comes back is genuinely model-drafted or a loud
+// error — never the silent MockBeatDrafter this replaced.
+async function draftBeats() {
   if (!jobId) return;
   let resp;
   try {
-    resp = await postJSON(`/onboard/jobs/${jobId}/draft-beats`, { confirm_cost: confirm });
+    resp = await postJSON(`/onboard/jobs/${jobId}/draft-beats`, { confirm_cost: true });
   } catch (err) {
     beatPane.innerHTML = '';
     beatPane.appendChild(Object.assign(document.createElement('p'), { className: 'result-err', textContent: `draft failed: ${err}` }));
     return;
   }
 
-  if (resp.status === 409 && !confirm) {
-    // Cost gate: show the estimate and wait for explicit confirmation.
-    const body = await resp.json();
-    const est = (body.detail && body.detail.estimate) || {};
-    costModalBody.textContent =
-      `Drafting ${est.beats} beat(s) with ${est.model} will cost about $${est.est_usd}. Proceed?`;
-    costModal.classList.remove('hidden');
-    return;
-  }
-
   if (resp.ok) {
     const body = await resp.json();
-    costModal.classList.add('hidden');
     beatPane.textContent = `${body.beats_count} beats drafted`;
     return;
   }
@@ -513,9 +509,7 @@ async function draftBeats(confirm) {
   beatPane.appendChild(p);
 }
 
-document.getElementById('draftBeatsBtn').addEventListener('click', () => draftBeats(false));
-document.getElementById('costConfirmBtn').addEventListener('click', () => draftBeats(true));
-document.getElementById('costCancelBtn').addEventListener('click', () => costModal.classList.add('hidden'));
+document.getElementById('draftBeatsBtn').addEventListener('click', () => draftBeats());
 
 // ── Upload (local) ──
 document.getElementById('uploadLocalBtn').addEventListener('click', async () => {
