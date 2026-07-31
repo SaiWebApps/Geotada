@@ -11,8 +11,9 @@ Each test here is red-first against a specific defect:
    exists() passes for a directory.
 3. /audio/files/{key:path} 500'd (leaking the absolute storage path) on an empty
    key or a directory key, for the same exists()-vs-is_file() reason.
-4. /audio/preview was an uncapped anonymous paid-TTS amplifier: no rate limit,
-   no cache, and a 20000-char body that fans out into five billed chunk calls.
+4. /audio/preview had no cache and a 20000-char body that fans out into five
+   billed chunk calls. (The rate limit this file also used to guard was DELETED
+   on 2026-07-31 by owner order, along with its tests.)
 5. /audio/compare's on-disk cache was bounded only by AGE, so a caller could
    fill the container's ephemeral disk within the retention window.
 """
@@ -37,16 +38,6 @@ def _temp_audio_storage(monkeypatch, tmp_path):
     monkeypatch.setenv("AUDIO_STORAGE", "local")
 
 
-@pytest.fixture(autouse=True)
-def _reset_rate_limiter():
-    """The limiter is in-process module state; isolate every test from it."""
-    audio_routes._audio_rate_state.clear()
-    audio_routes._audio_global_hits.clear()
-    audio_routes._preview_cache.clear()
-    yield
-    audio_routes._audio_rate_state.clear()
-    audio_routes._audio_global_hits.clear()
-    audio_routes._preview_cache.clear()
 
 
 def _client() -> TestClient:
@@ -184,82 +175,7 @@ class TestPathHandling500s:
 
 
 class TestPreviewSpendBounds:
-    def test_preview_rate_limits_the_paid_provider(self, prod_client, monkeypatch):
-        """An anonymous loop must not be able to spend without bound."""
-        monkeypatch.setattr(audio_routes, "_AUDIO_RATE_LIMIT_MAX", 2)
-        monkeypatch.setattr(audio_routes, "_AUDIO_GLOBAL_RATE_LIMIT_MAX", 0)
 
-        calls: list[str] = []
-
-        class _FakePaid:
-            name = "openai"
-
-            def generate(self, text, voice_id=None):
-                calls.append(text)
-                return b"mp3"
-
-        with patch.object(audio_routes, "get_provider", return_value=_FakePaid()):
-            codes = [
-                prod_client.post(
-                    "/api/v1/audio/preview",
-                    json={"text": f"unique text {i}", "provider": "openai"},
-                ).status_code
-                for i in range(4)
-            ]
-
-        assert codes == [200, 200, 429, 429], codes
-        assert len(calls) == 2, "rate-limited requests must never reach the paid provider"
-
-    def test_preview_global_cap_survives_ip_rotation(self, prod_client, monkeypatch):
-        """Per-IP alone is defeated by trivial IP rotation; the GLOBAL cap is
-        what actually bounds the bill."""
-        monkeypatch.setattr(audio_routes, "_AUDIO_RATE_LIMIT_MAX", 1000)
-        monkeypatch.setattr(audio_routes, "_AUDIO_GLOBAL_RATE_LIMIT_MAX", 2)
-
-        class _FakePaid:
-            name = "openai"
-
-            def generate(self, text, voice_id=None):
-                return b"mp3"
-
-        with patch.object(audio_routes, "get_provider", return_value=_FakePaid()):
-            codes = []
-            for i in range(4):
-                resp = prod_client.post(
-                    "/api/v1/audio/preview",
-                    json={"text": f"unique text {i}", "provider": "openai"},
-                    # A fresh spoofed client IP on every request.
-                    headers={"X-Forwarded-For": f"10.0.0.{i}, 172.16.0.1"},
-                )
-                codes.append(resp.status_code)
-
-        assert codes == [200, 200, 429, 429], codes
-
-    def test_preview_rate_limits_every_provider_name(self, prod_client, monkeypatch):
-        """The anonymous abuse guard must have no per-name exemption.
-
-        This REPLACES ``test_preview_does_not_rate_limit_the_free_mock_provider``,
-        which asserted the hole rather than a property: ``_audio_rate_limit``
-        returned early whenever the name was ``"mock"``, so an anonymous caller
-        could defeat both the per-IP and the global cap just by naming the fake.
-
-        The exemption was reasoned from COST ("the mock is free"), but this cap
-        bounds REQUEST VOLUME on a public unauthenticated route, not only spend.
-        And because a pytest interpreter registers ``"mock"``
-        (``tests/conftest.py``), the guard was switched off precisely where it
-        runs — untested is bad, self-disabling is worse.
-
-        UNDO TEST: restore ``if provider_name == "mock": return`` -> RED.
-        """
-        monkeypatch.setattr(audio_routes, "_AUDIO_RATE_LIMIT_MAX", 2)
-        monkeypatch.setattr(audio_routes, "_AUDIO_GLOBAL_RATE_LIMIT_MAX", 0)
-        codes = []
-        for i in range(4):
-            resp = prod_client.post(
-                "/api/v1/audio/preview", json={"text": f"free {i}", "provider": "mock"}
-            )
-            codes.append(resp.status_code)
-        assert codes == [200, 200, 429, 429], codes
 
     def test_preview_caps_text_below_the_20000_model_limit(self, prod_client, monkeypatch):
         """20000 chars = five billed 4000-char chunk calls per anonymous

@@ -510,11 +510,12 @@ route through the author-a-prebuilt-route seam in `src/tour/authoring.py` and
 returns `AnthropicPremiumExecutor` (`src/tour/premium_tour.py:378`), whose
 `execute_premium_plan` (`:419`) is called at
 `src/api/routes/trips.py:1080`. `generate_trip` itself never reaches either
-path. **New finding, not in the prior version:** both real-compose paths are
-gated by `_require_paid_call_permission()`
-(`src/tour/anthropic_client.py:69`, checked at `:84`), which requires the
-env var `ONDOWAY_ENABLE_PAID_LLM_CALLS` (`:66`) — without it, a real call
-raises rather than silently falling back to a stub. **Corrected —
+path. **Updated 2026-07-31:** both real-compose paths were once gated by
+`_require_paid_call_permission()` in `src/tour/anthropic_client.py`, requiring
+`ONDOWAY_ENABLE_PAID_LLM_CALLS`. That gate was DELETED by owner order — it
+raised deep at SDK-client construction, so it surfaced as "paid LLM calls are
+locked" inside unrelated fixtures. Nothing gates a real call now; the hermetic
+suite stays free by blanking the provider keys (`tests/conftest.py`). **Corrected —
 `tests/conftest.py` is not the only offline-stub site:**
 `tests/conftest.py:91,102,108,115` patches these classes for the general
 test bar, but `tests/test_compose_provider.py` independently patches them

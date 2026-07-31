@@ -16,29 +16,15 @@ the undo-test) and GREEN with it.
 
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
 
-from src.api.auth import routes as auth_routes
 from src.api.auth.tokens import create_refresh_token, verify_token
 from tests.conftest import needs_neo4j
 
 REQUEST_URL = "/api/v1/auth/magic-link/request"
-
-
-@pytest.fixture(autouse=True)
-def _reset_rate_limit():
-    """The limiter keeps module-level in-process state that would otherwise bleed
-    across tests (and across test files — they share one worker)."""
-    auth_routes._magic_link_rate_state.clear()
-    auth_routes._magic_link_global_hits.clear()
-    auth_routes._magic_link_last_sweep = 0.0
-    yield
-    auth_routes._magic_link_rate_state.clear()
-    auth_routes._magic_link_global_hits.clear()
-    auth_routes._magic_link_last_sweep = 0.0
 
 
 @pytest.fixture()
@@ -60,133 +46,7 @@ def nodb_client():
 # --- Defect 1: spoofable X-Forwarded-For -------------------------------------
 
 
-@patch("src.api.auth.routes.send_magic_link", new_callable=AsyncMock)
-def test_spoofed_forwarded_for_cannot_bypass_the_per_ip_cap(mock_send, nodb_client, monkeypatch):
-    """One host rotating a fake LEFTMOST hop must still be capped.
-
-    The header is ``<rotating spoof>, <fixed real edge-observed IP>``. Only the
-    rightmost entry was appended by our own edge, so that is the identity.
-
-    Undo-test: restore the leftmost-hop scan in ``_client_ip`` and every request
-    lands in a fresh bucket — all 6 return 200 and 6 real Resend emails go out.
-    """
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_RATE_LIMIT_MAX", 3)
-
-    statuses = []
-    for i in range(6):
-        resp = nodb_client.post(
-            REQUEST_URL,
-            json={"email": f"victim{i}@example.com"},
-            headers={"X-Forwarded-For": f"198.51.100.{i}, 203.0.113.9"},
-        )
-        statuses.append(resp.status_code)
-
-    assert statuses == [200, 200, 200, 429, 429, 429]
-    # The throttled calls never reached the billed email send.
-    assert mock_send.call_count == 3
-
-
-@patch("src.api.auth.routes.send_magic_link", new_callable=AsyncMock)
-def test_global_cap_bounds_total_sends_under_genuine_ip_rotation(
-    mock_send, nodb_client, monkeypatch
-):
-    """Per-IP limits are bypassable at scale by rotating GENUINE source IPs, so a
-    global fixed-window cap must bound total sends.
-
-    Every request here has a distinct real client IP and a distinct target email,
-    so both per-key buckets are empty — only the global cap can stop it.
-
-    Undo-test: set ``_MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX`` to 0 (or remove the
-    global check) and all 20 return 200.
-    """
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_RATE_LIMIT_MAX", 5)
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX", 8)
-
-    statuses = []
-    for i in range(20):
-        resp = nodb_client.post(
-            REQUEST_URL,
-            json={"email": f"rotate{i}@example.com"},
-            headers={"X-Forwarded-For": f"203.0.113.{i}"},
-        )
-        statuses.append(resp.status_code)
-
-    assert statuses.count(200) == 8
-    assert statuses[8:] == [429] * 12
-    assert mock_send.call_count == 8
-    # The global 429 carries a usable Retry-After, like the per-key one.
-    throttled = nodb_client.post(REQUEST_URL, json={"email": "x@example.com"})
-    assert int(throttled.headers["Retry-After"]) >= 1
-
-
 # --- Defect 2: unbounded limiter state ---------------------------------------
-
-
-@patch("src.api.auth.routes.send_magic_link", new_callable=AsyncMock)
-def test_rejected_requests_do_not_leak_rate_limit_keys(mock_send, nodb_client, monkeypatch):
-    """Bombing ONE victim from many client IPs must not grow the limiter forever.
-
-    Each request mints a fresh ``ip:`` key, then trips the ``email:`` cap and is
-    rejected — leaving that ``ip:`` bucket empty. Without reclaim those empty
-    entries are never revisited and accumulate permanently in the worker.
-
-    The global cap is disabled here on purpose so the test isolates the RECLAIM
-    mechanism rather than passing because the flood was short-circuited.
-
-    Undo-test: drop the ``finally:`` reclaim block in ``_magic_link_rate_limit``
-    and the state grows to 2001 entries (2000 empty ip: keys + 1 email: key).
-    """
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_RATE_LIMIT_MAX", 3)
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX", 0)
-
-    victim = "victim@example.com"
-    for i in range(2000):
-        nodb_client.post(
-            REQUEST_URL,
-            json={"email": victim},
-            headers={"X-Forwarded-For": f"10.{i // 256}.{i % 256}.1"},
-        )
-
-    # Bounded by the CAP, not by the request count: the 3 accepted requests
-    # legitimately keep their own ip: bucket, plus the victim's email: bucket.
-    # Every one of the other 1997 rejected requests must leave nothing behind.
-    assert len(auth_routes._magic_link_rate_state) <= 4
-    assert mock_send.call_count == 3
-
-
-@patch("src.api.auth.routes.send_magic_link", new_callable=AsyncMock)
-def test_periodic_sweep_drops_stale_non_empty_keys(mock_send, nodb_client, monkeypatch):
-    """A one-shot caller leaves a NON-empty bucket that the per-request reclaim
-    can never free (it only revisits the current request's two keys). A periodic
-    full sweep must drop those once their window has elapsed.
-
-    Undo-test: remove the ``_sweep_magic_link_state_locked`` call and the state
-    stays at 120 entries forever.
-    """
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_RATE_LIMIT_MAX", 5)
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX", 0)
-
-    for i in range(60):
-        nodb_client.post(
-            REQUEST_URL,
-            json={"email": f"oneshot{i}@example.com"},
-            headers={"X-Forwarded-For": f"192.0.2.{i}"},
-        )
-    # 60 ip: keys + 60 email: keys, each holding one live hit.
-    assert len(auth_routes._magic_link_rate_state) == 120
-
-    # Collapse the window so every recorded hit is now stale, and re-arm the sweep.
-    monkeypatch.setattr(auth_routes, "_MAGIC_LINK_RATE_LIMIT_WINDOW_S", 0)
-    monkeypatch.setattr(auth_routes, "_magic_link_last_sweep", 0.0)
-
-    nodb_client.post(
-        REQUEST_URL,
-        json={"email": "later@example.com"},
-        headers={"X-Forwarded-For": "192.0.2.200"},
-    )
-
-    # Everything stale was reclaimed; only the final request's own keys remain.
-    assert len(auth_routes._magic_link_rate_state) <= 2
 
 
 # --- Defect 3: refresh tokens are not rotated or revocable -------------------

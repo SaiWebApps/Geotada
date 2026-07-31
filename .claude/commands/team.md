@@ -87,7 +87,8 @@ A pytest **node id inside FILE**. A bare `-k` is invalid and will not run:
 `--keep-going` and the selector becomes a make goal — verified:
 `make: *** No rule to make target 'test_y'.` `FILE` is quoted in the recipe, so
 `::` survives. Never `LIVE=1`: that routes to `test-live`, which sets
-`ONDOWAY_ENABLE_PAID_LLM_CALLS=1`.
+`ONDOWAY_LIVE_TESTS=1`. (The `ONDOWAY_ENABLE_PAID_LLM_CALLS` gate was deleted
+2026-07-31 by owner order — it no longer exists.)
 
 Every Make target you write into a step must exist in the **live** Makefile —
 grep it. The engine's preflight re-validates and aborts the whole run on any

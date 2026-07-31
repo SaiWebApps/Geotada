@@ -75,13 +75,15 @@ os.environ.setdefault("TTS_PROVIDER", "mock")
 # paid Anthropic client and the money guard refuses AT FIXTURE SETUP: whole
 # modules error out instead of running.
 #
-# Bind the double HERE, the same one door the audio seam uses, and ONLY while
-# paid calls are locked. `make test-live` sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1
-# and therefore keeps the real client — so this can never quietly stand in for a
-# live run, which is the failure mode the never-mock-as-default rule exists to
-# prevent. Product code keeps no fallback: outside this interpreter the real
-# client is the only one.
-if os.getenv("ONDOWAY_ENABLE_PAID_LLM_CALLS") != "1":
+# Bind the double HERE, the same one door the audio seam uses, and ONLY outside
+# the live shard. `make test-live` sets ONDOWAY_LIVE_TESTS=1 and therefore keeps
+# the real client — so this can never quietly stand in for a live run, which is
+# the failure mode the never-mock-as-default rule exists to prevent. Product code
+# keeps no fallback: outside this interpreter the real client is the only one.
+#
+# Keyed on ONDOWAY_LIVE_TESTS since the ONDOWAY_ENABLE_PAID_LLM_CALLS gate was
+# removed 2026-07-31 — see src/tour/anthropic_client.py for why.
+if os.getenv("ONDOWAY_LIVE_TESTS") != "1":
     import src.tour.generation as _generation
     from src.tour.glue_client import MockGlueClient as _MockGlueClient
 

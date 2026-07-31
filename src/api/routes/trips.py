@@ -4,13 +4,9 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import re
 import sys
-import time
-from collections import deque
 from contextlib import contextmanager
-from threading import Lock
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from neo4j import Driver, Session
@@ -56,6 +52,7 @@ from src.tour.contract import (
     TourabilityAssessment,
     TourInput,
 )
+from src.tour.degradations import degradation_scope, summarize
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, is_walk_concurrent, vignette_one_liner_text
 from src.tour.narration_quality import score_narration
@@ -132,164 +129,18 @@ def _upstream_provider_errors():
         raise HTTPException(status_code=502, detail=f"LLM provider error: {exc}") from exc
 
 
-# --- Spend guard for the LLM-billing compose paths ---------------------------
-# Premium preview makes one zero-retry physical authoring call per routed stop.
-# The exact stop-call count is known only after provider-free planning, so it is
-# reserved atomically immediately before execution. The endpoint is deliberately
-# unauthenticated; without these bounds a crawler could drain the owner's key.
+# RATE LIMITING REMOVED 2026-07-31 (owner order, twice stated). The preview and
+# compose paths carried four bounds — per-IP window, global window, daily ceiling
+# and an in-flight concurrency slot. All four are DELETED, not disabled: no
+# constants, no counters, no env knobs, nothing to switch back on by accident.
 #
-# Four independent bounds, cheapest first:
-#   1. per-IP fixed window    — stops a naive loop from one host
-#   2. global fixed window    — per-IP falls to IP rotation; this is load-bearing
-#   3. global DAILY ceiling   — a hard per-process spend cap, not just a rate
-#   4. in-flight concurrency  — N simultaneous callers must not each start a ~$1
-#      compose while the window counters are still low (the burst hole a pure
-#      fixed-window counter cannot close, since each compose takes ~1 minute)
-#
-# In-process and per-worker: a multi-worker deploy needs shared state (Redis) to
-# be a true bound, and the counters reset on every Render redeploy. That is why
-# the daily ceiling exists as well, and why this is a floor, not the whole answer.
-# Call-count ceilings, not request-count ceilings. The explicit env name prevents
-# an old request-count override from silently changing units after that migration.
-#
-# CEILING DECISION (2026-07-30, the /trips/{id}/compose cutover). Both authoring
-# surfaces now reserve one call per dwell stop, and the seam accepts up to
-# ``authoring.AUTHORING_MAX_STOPS`` (15, == selection.HARD_ANCHOR_CAP) of them —
-# not the eight an earlier version of this comment assumed. So 16 no longer means
-# "two maximum-size requests per IP/window"; at the maximum size it admits ONE,
-# and the second is a 429 with nothing spent. The numbers below are DELIBERATELY
-# left where they are: they are a spend ceiling, and the honest reading is now
-# "one worst-case tour per IP per hour, 20 worst-case-ish calls globally, 100 a
-# day". Typical tours seat far fewer than 15 stops, so the practical throughput
-# is several tours per window. Raise these only with a spend budget to point at.
-_PREVIEW_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_CALLS_MAX", "16"))
-_PREVIEW_RATE_LIMIT_WINDOW_S = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_WINDOW_S", "3600"))
-_PREVIEW_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_GLOBAL_RATE_LIMIT_MAX", "20"))
-_PREVIEW_DAILY_MAX = int(os.getenv("TRIPS_PREVIEW_DAILY_MAX", "100"))
-_PREVIEW_MAX_CONCURRENCY = int(os.getenv("TRIPS_PREVIEW_MAX_CONCURRENCY", "2"))
-# Trusted reverse-proxy hops in front of the app (exactly one on Render), so the
-# real client is the entry `_TRUSTED_PROXY_HOPS` from the RIGHT of
-# X-Forwarded-For. The LEFT of that header is attacker-supplied: trusting it
-# lands every request in a fresh bucket and defeats the limiter entirely.
-_TRUSTED_PROXY_HOPS = int(os.getenv("TRIPS_TRUSTED_PROXY_HOPS", "1"))
-
-_DAY_S = 86400
-_rate_state: dict[str, deque[float]] = {}
-_global_hits: deque[float] = deque()
-_daily_hits: deque[float] = deque()
-_inflight = 0
-_rate_lock = Lock()
-
-
-def _is_cost_bearing(provider: object) -> bool:
-    """Unknown providers are billable; only an explicit offline adapter is $0."""
-
-    return getattr(provider, "cost_bearing", True) is not False
-
-
-def _client_ip(request: Request) -> str:
-    """Resolve the real client IP for rate limiting (see _TRUSTED_PROXY_HOPS)."""
-    forwarded = request.headers.get("x-forwarded-for")
-    if forwarded:
-        parts = [p.strip() for p in forwarded.split(",") if p.strip()]
-        if parts:
-            idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)
-            return parts[idx]
-    if request.client:
-        return request.client.host
-    return "unknown"
-
-
-def _too_many(detail: str, retry_after: int) -> HTTPException:
-    return HTTPException(
-        status_code=429, detail=detail, headers={"Retry-After": str(max(1, retry_after))}
-    )
-
-
-def reset_spend_guard() -> None:
-    """Clear all spend-guard counters. For tests; never called by the product."""
-    global _inflight
-    with _rate_lock:
-        _rate_state.clear()
-        _global_hits.clear()
-        _daily_hits.clear()
-        _inflight = 0
-
-
-def _spend_precheck(request: Request, compose_client: object, *, planned_calls: int = 1) -> None:
-    """Atomically reserve the exact planned physical-call count."""
-
-    if planned_calls < 1:
-        raise ValueError("planned provider call count must be positive")
-    if not _is_cost_bearing(compose_client):
-        return
-
-    now = time.monotonic()
-    cutoff = now - _PREVIEW_RATE_LIMIT_WINDOW_S
-    day_cutoff = now - _DAY_S
-    with _rate_lock:
-        if _PREVIEW_DAILY_MAX > 0:
-            while _daily_hits and _daily_hits[0] <= day_cutoff:
-                _daily_hits.popleft()
-            if len(_daily_hits) + planned_calls > _PREVIEW_DAILY_MAX:
-                raise _too_many(
-                    "Daily tour-generation ceiling reached, please retry tomorrow",
-                    int(_daily_hits[0] + _DAY_S - now) if _daily_hits else _DAY_S,
-                )
-        if _PREVIEW_GLOBAL_RATE_LIMIT_MAX > 0:
-            while _global_hits and _global_hits[0] <= cutoff:
-                _global_hits.popleft()
-            if len(_global_hits) + planned_calls > _PREVIEW_GLOBAL_RATE_LIMIT_MAX:
-                raise _too_many(
-                    "Tour generation is temporarily rate limited, please retry later",
-                    (
-                        int(_global_hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now)
-                        if _global_hits
-                        else _PREVIEW_RATE_LIMIT_WINDOW_S
-                    ),
-                )
-        if _PREVIEW_RATE_LIMIT_MAX > 0:
-            hits = _rate_state.setdefault(_client_ip(request), deque())
-            while hits and hits[0] <= cutoff:
-                hits.popleft()
-            if len(hits) + planned_calls > _PREVIEW_RATE_LIMIT_MAX:
-                raise _too_many(
-                    "Too many tour generations, please retry later",
-                    (
-                        int(hits[0] + _PREVIEW_RATE_LIMIT_WINDOW_S - now)
-                        if hits
-                        else _PREVIEW_RATE_LIMIT_WINDOW_S
-                    ),
-                )
-            hits.extend([now] * planned_calls)
-        if _PREVIEW_GLOBAL_RATE_LIMIT_MAX > 0:
-            _global_hits.extend([now] * planned_calls)
-        if _PREVIEW_DAILY_MAX > 0:
-            _daily_hits.extend([now] * planned_calls)
-
-
-@contextmanager
-def _concurrency_slot(compose_client: object):
-    """Bound simultaneous in-flight composes.
-
-    A compose takes ~1 minute, so N callers can all pass a fixed-window check and
-    then each start a ~$1 compose while the counters are still low. This closes
-    that burst hole. No-op for a non-billing client.
-    """
-    global _inflight
-    if not _is_cost_bearing(compose_client):
-        yield
-        return
-    with _rate_lock:
-        if _PREVIEW_MAX_CONCURRENCY > 0 and _inflight >= _PREVIEW_MAX_CONCURRENCY:
-            raise _too_many("Tour generation is busy, please retry shortly", 30)
-        _inflight += 1
-    try:
-        yield
-    finally:
-        with _rate_lock:
-            _inflight = max(0, _inflight - 1)
-
+# Stated once, plainly: /trips/preview is anonymous and authors one paid call per
+# routed stop, so nothing now bounds what an unauthenticated caller can spend.
+# If a bound is wanted later it must key on the AUTHENTICATED user rather than
+# the client IP — mobile carriers put thousands of subscribers behind a handful
+# of addresses, so the per-IP cap throttled real tour groups sharing a hotel or a
+# carrier while barely inconveniencing a determined caller. It also fired on the
+# owner's own workbench at three previews an hour.
 
 def _owned_profile_id(session: Session, user_id: str, profile_id: str) -> str | None:
     """The profile id iff `user_id` owns it, else None.
@@ -769,8 +620,7 @@ def compose_trip(
         # The spend reservation is the REAL number of calls this compose will make
         # (one per dwell stop), and it happens HERE — after the already-composed 409
         # above, so a duplicate compose reserves nothing and calls nobody.
-        _spend_precheck(request, premium_executor, planned_calls=len(plan.units))
-        with _concurrency_slot(premium_executor), _upstream_provider_errors():
+        with _upstream_provider_errors():
             # GATE PARITY (D3). The per-stop finalizer was built for the
             # certification replay and defaults to structural checks only; this
             # path PERSISTS an unreviewed tour, so it keeps the exact three gates
@@ -1050,6 +900,29 @@ def preview_trip(
     driver: Driver = Depends(get_driver),
     premium_executor: PremiumComposeExecutor = Depends(get_premium_compose_executor),
 ):
+    """Build the preview, and hand back everything that quietly degraded doing it.
+
+    OWNER RULING 2026-07-31: "Don't just log errors. Actually show them in the
+    workbench UI. Otherwise, they're invisible." A soft failure that only reaches
+    a log file is indistinguishable from success to the person looking at the
+    screen — which is how canned transitions shipped as the default for months.
+
+    The real work is ``_preview_trip_impl``; this wrapper owns the collection
+    scope so the implementation never has to thread a collector through, and so a
+    threaded compose fan-out cannot leak one request's degradations into another.
+    """
+    with degradation_scope() as collected:
+        result = _preview_trip_impl(request, body, driver, premium_executor)
+        rows = summarize(collected)
+    return result.model_copy(update={"degradations": rows}) if rows else result
+
+
+def _preview_trip_impl(
+    request: Request,
+    body: TripPreviewRequest,
+    driver: Driver,
+    premium_executor: PremiumComposeExecutor,
+):
     """Build a physically traced Premium candidate without certifying it.
 
     Planning uses the same certification route/request algorithm as the frozen
@@ -1136,12 +1009,7 @@ def preview_trip(
         )
 
     try:
-        _spend_precheck(
-            request,
-            premium_executor,
-            planned_calls=len(premium_plan.units),
-        )
-        with _concurrency_slot(premium_executor), _upstream_provider_errors():
+        with _upstream_provider_errors():
             physical_responses = execute_premium_plan(
                 premium_plan,
                 executor=premium_executor,

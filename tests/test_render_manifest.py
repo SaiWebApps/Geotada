@@ -141,11 +141,8 @@ def test_pinned_compose_provider_credential_is_declared():
         )
 
 
-def test_premium_preview_is_explicitly_authorized_and_bound_to_private_valhalla():
+def test_premium_preview_is_bound_to_the_private_valhalla_service():
     manifest = yaml.safe_load(_RENDER_YAML.read_text())
-    env = _ondoway_api_env()
-    assert env.get("ONDOWAY_ENABLE_PAID_LLM_CALLS") == "1"
-
     binding = _ondoway_api_env_entry("VALHALLA_URL")["fromService"]
     assert binding == {
         "type": "pserv",

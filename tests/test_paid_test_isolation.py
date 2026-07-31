@@ -85,7 +85,6 @@ def test_makefile_live_target_fetches_render_and_enables_live_collection() -> No
     assert "ONDOWAY_LIVE_TESTS=1" in live
     assert "-o addopts=" in live
     assert "-m live" in live
-    assert "ONDOWAY_ENABLE_PAID_LLM_CALLS=1" in live
 
 
 def test_make_test_is_the_only_exhaustive_executor() -> None:

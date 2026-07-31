@@ -35,7 +35,6 @@ from src.api.dependencies import (
     get_session,
 )
 from src.api.routes import trips as trips_route
-from src.tour.authoring import AUTHORING_MAX_STOPS
 from src.tour.premium_tour import (
     AnthropicPremiumExecutor,
     OfflinePremiumExecutor,
@@ -127,12 +126,6 @@ class _Single:
 # ---------------------------------------------------------------------------
 
 
-@pytest.fixture(autouse=True)
-def _clean_spend_guard():
-    """The guard's counters are module-global; never let them leak between tests."""
-    trips_route.reset_spend_guard()
-    yield
-    trips_route.reset_spend_guard()
 
 
 @pytest.fixture()
@@ -181,55 +174,6 @@ def auth_client():
 # ---------------------------------------------------------------------------
 
 
-def test_anonymous_preview_burst_is_429_before_a_second_compose_is_ever_billed(
-    preview_client, monkeypatch
-):
-    """An anonymous loop must be refused BEFORE the provider is touched again.
-
-    UNDO: delete the ``_spend_precheck(request, compose_client)`` call at the top
-    of preview_trip -> the second POST composes again and this goes RED on both
-    the status code AND the call count.
-    """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 8)
-    executor = _CountingPremiumExecutor()
-    client = preview_client(executor)
-
-    first = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    assert first.status_code != 429, "the FIRST call must be allowed through"
-    billed_once = executor.calls
-    assert billed_once > 0, "fixture never reached the compose path — the test is vacuous"
-    assert billed_once == 5, "fixture must reserve and execute one physical call per stop"
-
-    second = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    assert second.status_code == 429, "an over-limit anonymous preview must be refused"
-    assert second.headers.get("Retry-After"), "a 429 must tell the client when to retry"
-    assert executor.calls == billed_once, (
-        "the refused request still reached the provider — the guard is not "
-        "preventing spend, only decorating the response"
-    )
-
-
-def test_exact_stop_call_count_is_reserved_atomically(preview_client, monkeypatch):
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 4)
-    executor = _CountingPremiumExecutor()
-    response = preview_client(executor).post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    assert response.status_code == 429
-    assert executor.calls == 0
-
-
-def test_default_per_ip_budget_admits_one_maximum_size_premium_plan():
-    """The per-IP window must still fit ONE worst-case authoring plan end to end.
-
-    The ceiling is a call count, and the worst case is now the seam's own limit
-    (``AUTHORING_MAX_STOPS`` == 15 == ``selection.HARD_ANCHOR_CAP``), not the eight
-    stops the pre-cutover comment assumed. Pinned against the constant rather than a
-    literal so raising the seam's stop cap without raising the budget — which would
-    make the largest legal tour permanently un-authorable, a 429 nobody could clear —
-    fails HERE instead of in production.
-    """
-    assert trips_route._PREVIEW_RATE_LIMIT_MAX >= AUTHORING_MAX_STOPS
-
-
 def test_product_authoring_factory_is_offline_in_the_non_live_suite():
     """AC-7, third clause: the conftest money-guard actually arms this boundary.
 
@@ -255,9 +199,9 @@ def test_product_authoring_factory_is_offline_in_the_non_live_suite():
         f"non-live suite: {type(executor).__module__}.{type(executor).__qualname__}"
     )
     assert executor.cost_bearing is False
-    # And the spend guard's own predicate must agree, or a "$0" executor would
-    # still burn the rate-limit budget the paid path depends on.
-    assert trips_route._is_cost_bearing(executor) is False
+    # (A _is_cost_bearing() assertion sat here so the deleted rate limiter agreed
+    # the offline executor was free. Both are gone; `cost_bearing` above is still
+    # the flag the offline swap sets, so the guarantee is unchanged.)
     # The swap is what makes it free — the class the factory names is billable.
     assert AnthropicPremiumExecutor.cost_bearing is True
 
@@ -265,7 +209,7 @@ def test_product_authoring_factory_is_offline_in_the_non_live_suite():
 def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, monkeypatch):
     """AC-16/AC-18: an unresolvable build fingerprint is a distinct, pre-spend fault.
 
-    ``resolve_build_identity`` runs at trips.py before ``_spend_precheck`` — this
+    ``resolve_build_identity`` runs before any provider work — this
     must be provable at ZERO paid calls. The generic ``except Exception`` around the
     physical-authoring call must not swallow this into ``llm_generation_failed`` /
     ``generation_failed``: that reports "the LLM tried and failed" for a fault where
@@ -310,103 +254,6 @@ def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, mo
     assert other_body["basic_tour"]["reason"] == "llm_generation_failed"
     assert other_body["candidate_rejection"] != rejection
     assert other_body["basic_tour"]["reason"] != body["basic_tour"]["reason"]
-
-
-def test_unknown_provider_defaults_to_cost_bearing(preview_client, monkeypatch):
-    class UnknownExecutor:
-        provider_name = "unknown"
-
-        def __init__(self):
-            self.calls = 0
-
-        def execute(self, unit):
-            self.calls += 1
-            return OfflinePremiumExecutor().execute(unit)
-
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 4)
-    executor = UnknownExecutor()
-    response = preview_client(executor).post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    assert response.status_code == 429
-    assert executor.calls == 0
-
-
-def test_spoofed_x_forwarded_for_cannot_win_a_fresh_rate_limit_bucket(preview_client, monkeypatch):
-    """X-Forwarded-For is client-controllable on the LEFT.
-
-    Trusting the leftmost hop would land every request in a new bucket and fully
-    defeat the limiter. Only the entry _TRUSTED_PROXY_HOPS from the RIGHT (what
-    our own edge observed) may be trusted.
-    UNDO: change ``idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)`` to ``0`` -> RED.
-    """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 8)
-    monkeypatch.setattr(trips_route, "_TRUSTED_PROXY_HOPS", 1)
-    executor = _CountingPremiumExecutor()
-    client = preview_client(executor)
-
-    first = client.post(
-        "/api/v1/trips/preview",
-        json=PREVIEW_BODY,
-        headers={"X-Forwarded-For": "1.1.1.1, 203.0.113.7"},
-    )
-    assert first.status_code != 429
-    second = client.post(
-        "/api/v1/trips/preview",
-        json=PREVIEW_BODY,
-        headers={"X-Forwarded-For": "2.2.2.2, 203.0.113.7"},
-    )
-    assert second.status_code == 429, "a spoofed leftmost hop bought a fresh bucket"
-
-
-def test_global_cap_bounds_spend_even_under_ip_rotation(preview_client, monkeypatch):
-    """Per-IP limits fall to IP rotation; the global cap is the load-bearing one.
-
-    UNDO: remove the _global_hits block from _spend_precheck -> RED.
-    """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 100)
-    monkeypatch.setattr(trips_route, "_PREVIEW_GLOBAL_RATE_LIMIT_MAX", 8)
-    executor = _CountingPremiumExecutor()
-    client = preview_client(executor)
-
-    client.post(
-        "/api/v1/trips/preview", json=PREVIEW_BODY, headers={"X-Forwarded-For": "203.0.113.1"}
-    )
-    billed = executor.calls
-    rotated = client.post(
-        "/api/v1/trips/preview", json=PREVIEW_BODY, headers={"X-Forwarded-For": "198.51.100.9"}
-    )
-    assert rotated.status_code == 429, "a rotated source IP bypassed the spend bound"
-    assert executor.calls == billed, "the rotated request still billed the provider"
-
-
-def test_daily_ceiling_is_a_hard_spend_stop(preview_client, monkeypatch):
-    """A rate is not a ceiling. The daily cap fails closed on total spend.
-
-    UNDO: remove the _daily_hits block from _spend_precheck -> RED.
-    """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 100)
-    monkeypatch.setattr(trips_route, "_PREVIEW_GLOBAL_RATE_LIMIT_MAX", 100)
-    monkeypatch.setattr(trips_route, "_PREVIEW_DAILY_MAX", 8)
-    executor = _CountingPremiumExecutor()
-    client = preview_client(executor)
-
-    client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    billed = executor.calls
-    over = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
-    assert over.status_code == 429
-    assert executor.calls == billed
-
-
-def test_hermetic_suite_stubs_are_not_rate_limited(preview_client, monkeypatch):
-    """The guard arms on the COST-BEARING client types only.
-
-    This is why the bar's many previews still work without an env backdoor that
-    could also disarm the guard on the public deploy: a stub spends nothing, so
-    it is not limited. UNDO: make _spend_precheck limit every client -> RED.
-    """
-    monkeypatch.setattr(trips_route, "_PREVIEW_RATE_LIMIT_MAX", 1)
-    client = preview_client(OfflinePremiumExecutor())
-    for _ in range(4):
-        assert client.post("/api/v1/trips/preview", json=PREVIEW_BODY).status_code != 429
 
 
 # ---------------------------------------------------------------------------

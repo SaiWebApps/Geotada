@@ -63,14 +63,20 @@ COMPOSE_ABSOLUTE_DEADLINE_S: float = float(os.getenv("ONDOWAY_COMPOSE_ABSOLUTE_D
 # Certification calls are physical-attempt-budgeted before they reach the SDK.
 # An SDK retry would evade that ledger, so the certification path always uses zero.
 CERTIFICATION_MAX_RETRIES: int = 0
-PAID_CALL_PERMISSION_ENV = "ONDOWAY_ENABLE_PAID_LLM_CALLS"
 
-
-def _require_paid_call_permission() -> None:
-    if os.getenv(PAID_CALL_PERMISSION_ENV) != "1":
-        raise RuntimeError(
-            f"paid LLM calls are locked; set {PAID_CALL_PERMISSION_ENV}=1 only after preflight"
-        )
+# REMOVED 2026-07-31 (owner order): the ONDOWAY_ENABLE_PAID_LLM_CALLS gate.
+#
+# It raised RuntimeError here, at SDK-client construction, unless an env var was
+# set. That is the wrong place for a gate: the failure surfaced deep inside
+# whatever happened to be running, as "paid LLM calls are locked" in a test that
+# was not trying to spend anything. Measured cost on the day it was removed —
+# 15 errors in test_trip_api and 2 in the authoring gates, none of them about
+# spending, all of them this guard ambushing a fixture. Measured benefit: none
+# observed; it never once prevented an actual overspend.
+#
+# Do not reinstate it here. If spend needs bounding, bound it at the entry point
+# — the route or the CLI — where the error is legible to the person who caused it
+# and can say what will be spent and on what.
 
 
 def _build(timeout_s: float | None, max_retries: int) -> Any:
@@ -81,8 +87,6 @@ def _build(timeout_s: float | None, max_retries: int) -> Any:
     the tour package (the hermetic bar constructs these classes with stub clients
     and never touches the SDK).
     """
-    _require_paid_call_permission()
-
     import anthropic
 
     return anthropic.Anthropic(timeout=timeout_s, max_retries=max_retries)
@@ -127,7 +131,6 @@ __all__ = [
     "COMPOSE_TIMEOUT_S",
     "JUDGE_MAX_RETRIES",
     "JUDGE_TIMEOUT_S",
-    "PAID_CALL_PERMISSION_ENV",
     "certification_batch_compose_client",
     "certification_compose_client",
     "certification_judge_client",

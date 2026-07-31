@@ -5,9 +5,6 @@ from __future__ import annotations
 import json
 import os
 import re
-import time
-from collections import deque
-from threading import Lock
 
 import anthropic
 import httpx
@@ -20,92 +17,10 @@ router = APIRouter(tags=["feedback"])
 _GITHUB_REPO = "SaiWebApps/Ondoway"
 _GITHUB_API = "https://api.github.com"
 
-# --- Abuse guard (Defect #1) -------------------------------------------------
-# The endpoint is intentionally unauthenticated (mobile beta testers, some not
-# logged in) but each call spends real money: one Anthropic Haiku completion AND
-# a real GitHub issue POST. An anonymous attacker could loop it to burn LLM
-# credits and flood the issue tracker. We cap requests per client IP with a
-# simple in-process fixed-window counter so a single caller cannot fan out.
-_RATE_LIMIT_MAX = int(os.getenv("FEEDBACK_RATE_LIMIT_MAX", "5"))
-_RATE_LIMIT_WINDOW_S = int(os.getenv("FEEDBACK_RATE_LIMIT_WINDOW_S", "60"))
-# Number of trusted reverse-proxy hops in front of the app. On Render there is
-# exactly one edge proxy, so the real client IP is the LAST entry the trusted
-# edge appended (i.e. the entry `_TRUSTED_PROXY_HOPS` from the right end).
-_TRUSTED_PROXY_HOPS = int(os.getenv("FEEDBACK_TRUSTED_PROXY_HOPS", "1"))
-# Optional global fixed-window cap (defense-in-depth). Per-IP limits are
-# inherently bypassable at scale by rotating source IPs, so also bound the
-# TOTAL accepted requests per window across all clients. Set <=0 to disable.
-_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("FEEDBACK_GLOBAL_RATE_LIMIT_MAX", "60"))
-_rate_state: dict[str, deque[float]] = {}
-_global_hits: deque[float] = deque()
-_rate_lock = Lock()
-
-
-def _client_ip(request: Request) -> str:
-    """Resolve the real client IP for rate-limiting.
-
-    ``X-Forwarded-For`` is client-controllable: a caller can prepend arbitrary
-    fake entries on the LEFT, so the leftmost hop can NOT be trusted as the
-    identity — trusting it lets an attacker land every request in a fresh bucket
-    (a new spoofed IP each time), fully defeating the limiter.
-
-    Instead we trust only our own edge. With ``_TRUSTED_PROXY_HOPS`` proxies in
-    front of the app (1 on Render), the real client is the entry that the
-    innermost trusted proxy observed and appended — i.e. counting
-    ``_TRUSTED_PROXY_HOPS`` from the RIGHT of the header. Anything to the left of
-    that is attacker-supplied and ignored. Fall back to the socket peer when the
-    header is absent (direct connection / local dev)."""
-    forwarded = request.headers.get("x-forwarded-for")
-    if forwarded:
-        parts = [p.strip() for p in forwarded.split(",") if p.strip()]
-        if parts:
-            # The rightmost entry was appended by our edge and records the peer
-            # it saw. With N trusted hops, the true client sits N positions from
-            # the right; clamp to the leftmost real entry for short headers.
-            idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)
-            return parts[idx]
-    if request.client:
-        return request.client.host
-    return "unknown"
-
-
-def _rate_limit(request: Request) -> None:
-    """Per-IP fixed-window guard. Raises HTTPException(429) when the caller has
-    exceeded _RATE_LIMIT_MAX requests within the trailing _RATE_LIMIT_WINDOW_S
-    seconds. In-process only (single worker) — enough to stop a naive loop from
-    one host from draining LLM credits / spamming issues."""
-    client_ip = _client_ip(request)
-    now = time.monotonic()
-    cutoff = now - _RATE_LIMIT_WINDOW_S
-    with _rate_lock:
-        # Defense-in-depth global cap: bound TOTAL accepted requests per window
-        # so IP rotation can't spend unbounded LLM credits / GitHub issues.
-        if _GLOBAL_RATE_LIMIT_MAX > 0:
-            while _global_hits and _global_hits[0] <= cutoff:
-                _global_hits.popleft()
-            if len(_global_hits) >= _GLOBAL_RATE_LIMIT_MAX:
-                retry_after = max(1, int(_global_hits[0] + _RATE_LIMIT_WINDOW_S - now))
-                raise HTTPException(
-                    status_code=429,
-                    detail="Feedback is temporarily rate limited, please retry later",
-                    headers={"Retry-After": str(retry_after)},
-                )
-
-        if _RATE_LIMIT_MAX > 0:
-            hits = _rate_state.setdefault(client_ip, deque())
-            while hits and hits[0] <= cutoff:
-                hits.popleft()
-            if len(hits) >= _RATE_LIMIT_MAX:
-                retry_after = max(1, int(hits[0] + _RATE_LIMIT_WINDOW_S - now))
-                raise HTTPException(
-                    status_code=429,
-                    detail="Too many feedback submissions, please retry later",
-                    headers={"Retry-After": str(retry_after)},
-                )
-            hits.append(now)
-
-        if _GLOBAL_RATE_LIMIT_MAX > 0:
-            _global_hits.append(now)
+# RATE LIMITING REMOVED 2026-07-31 (owner order: all limiters). /feedback is
+# unauthenticated and each call spends an Anthropic Haiku completion AND opens a
+# real GitHub issue, so nothing now bounds either the spend or the volume of
+# issues an anonymous caller can create. Deleted, not disabled.
 
 
 _SYSTEM_PROMPT = (
@@ -278,7 +193,6 @@ def _create_github_issue(title: str, body: str, labels: list[str]) -> dict:
 @router.post("/feedback", response_model=FeedbackResponse, status_code=201)
 def submit_feedback(request: Request, body: FeedbackRequest):
     """Accept raw voice transcript, structure it via LLM, and create a GitHub issue."""
-    _rate_limit(request)
     metadata_lines = []
     if body.user_email:
         metadata_lines.append(f"**Reporter:** {body.user_email}")

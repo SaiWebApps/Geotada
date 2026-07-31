@@ -94,10 +94,6 @@ services:
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
-      # Premium preview is an intentional paid product path. The client factory
-      # fails closed without this explicit deployment authorization.
-      - key: ONDOWAY_ENABLE_PAID_LLM_CALLS
-        value: "1"
       # Receipt-backed Premium routing comes from the Blueprint-managed private
       # Valhalla service below. RoutingClient adds the http:// scheme to Render's
       # private-network host:port value.

@@ -5,9 +5,7 @@ from __future__ import annotations
 import os
 import time
 import uuid
-from collections import deque
 from datetime import UTC, datetime
-from threading import Lock
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from neo4j import Session
@@ -129,141 +127,16 @@ def _issue_refresh_token(session: Session, user_id: str, session_id: str, token_
     return token
 
 
-# --- Abuse guard: magic-link request ----------------------------------------
-# /auth/magic-link/request is unauthenticated and each call sends a real email
-# via Resend (billed, and lands in a victim's inbox). Left unguarded, an
-# attacker can email-bomb any address and burn the Resend quota. Mirror the
-# /feedback rate limiter: a fixed-window counter keyed by BOTH the caller IP
-# (stops one host fanning out to many victims) AND the target email (stops many
-# IPs bombing one victim). In-process only (per worker); a multi-worker Render
-# deploy would need a shared store (e.g. Redis) for a hard guarantee.
-_MAGIC_LINK_RATE_LIMIT_MAX = int(os.getenv("MAGIC_LINK_RATE_LIMIT_MAX", "5"))
-_MAGIC_LINK_RATE_LIMIT_WINDOW_S = int(os.getenv("MAGIC_LINK_RATE_LIMIT_WINDOW_S", "60"))
-# Number of trusted reverse-proxy hops in front of the app. On Render there is
-# exactly one edge proxy, so the real client IP is the entry
-# ``_TRUSTED_PROXY_HOPS`` from the RIGHT end of X-Forwarded-For.
-_TRUSTED_PROXY_HOPS = int(os.getenv("AUTH_TRUSTED_PROXY_HOPS", "1"))
-# Optional global fixed-window cap (defense-in-depth). Per-IP limits are
-# inherently bypassable at scale by genuine IP rotation, so also bound the TOTAL
-# accepted magic-link sends per window across all clients. Set <=0 to disable.
-_MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX", "60"))
-_magic_link_rate_state: dict[str, deque[float]] = {}
-_magic_link_global_hits: deque[float] = deque()
-_magic_link_rate_lock = Lock()
-_magic_link_last_sweep = 0.0
-
-
-def _client_ip(request: Request) -> str:
-    """Resolve the real client IP for rate-limiting.
-
-    ``X-Forwarded-For`` is client-controllable: a caller can prepend arbitrary
-    fake entries on the LEFT, so the leftmost hop can NOT be trusted as the
-    identity — trusting it lets an attacker land every request in a fresh
-    ``ip:`` bucket (a new spoofed IP each time), so the per-IP cap never fires
-    and one host can email-bomb unlimited addresses through Resend.
-
-    Instead we trust only our own edge. With ``_TRUSTED_PROXY_HOPS`` proxies in
-    front of the app (1 on Render), the real client is the entry the innermost
-    trusted proxy observed and appended — i.e. counting ``_TRUSTED_PROXY_HOPS``
-    from the RIGHT of the header. Anything to the left of that is
-    attacker-supplied and ignored. Fall back to the socket peer when the header
-    is absent (direct connection / local dev).
-
-    Behind a proxy ``request.client.host`` is the proxy peer — the SAME address
-    for every external caller — so keying on it alone would collapse all
-    clients into one bucket and lock legitimate first-time users out of
-    passwordless login."""
-    forwarded = request.headers.get("x-forwarded-for")
-    if forwarded:
-        parts = [p.strip() for p in forwarded.split(",") if p.strip()]
-        if parts:
-            idx = max(0, len(parts) - _TRUSTED_PROXY_HOPS)
-            return parts[idx]
-    if request.client:
-        return request.client.host
-    return "unknown"
-
-
-def _sweep_magic_link_state_locked(now: float, cutoff: float) -> None:
-    """Drop every key whose window is empty. Caller must hold the lock.
-
-    The per-request reclaim below only ever revisits the two keys of the current
-    request, so a key left holding a stale-but-non-empty deque (its client never
-    came back) would be retained forever. Sweep the whole table once per window
-    — O(keys) at most once every ``_MAGIC_LINK_RATE_LIMIT_WINDOW_S``."""
-    global _magic_link_last_sweep
-    if now - _magic_link_last_sweep < _MAGIC_LINK_RATE_LIMIT_WINDOW_S:
-        return
-    _magic_link_last_sweep = now
-    for key in list(_magic_link_rate_state):
-        hits = _magic_link_rate_state[key]
-        while hits and hits[0] <= cutoff:
-            hits.popleft()
-        if not hits:
-            del _magic_link_rate_state[key]
-
-
-def _magic_link_rate_limit(request: Request, email: str) -> None:
-    """Global, per-IP and per-email fixed-window guard. Raises HTTPException(429)
-    when the global cap, the caller IP, or the target email has exceeded its
-    allowance within the trailing window.
-
-    The limiter's own state is attacker-reachable (keys derive from a header and
-    a request body), so every exit path — including the 429 raise — reclaims any
-    key left with an empty window. Without that, each rejected request would leak
-    a permanent dict entry and an unauthenticated caller could grow the worker's
-    RSS until the container is OOM-killed."""
-    now = time.monotonic()
-    cutoff = now - _MAGIC_LINK_RATE_LIMIT_WINDOW_S
-    client_ip = _client_ip(request)
-    keys = (f"ip:{client_ip}", f"email:{email.lower()}")
-    with _magic_link_rate_lock:
-        _sweep_magic_link_state_locked(now, cutoff)
-
-        # Global cap FIRST, before any setdefault: once it trips, a flood cannot
-        # mint further keys at all, which bounds the state under IP rotation.
-        if _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX > 0:
-            while _magic_link_global_hits and _magic_link_global_hits[0] <= cutoff:
-                _magic_link_global_hits.popleft()
-            if len(_magic_link_global_hits) >= _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX:
-                retry_after = max(
-                    1,
-                    int(_magic_link_global_hits[0] + _MAGIC_LINK_RATE_LIMIT_WINDOW_S - now),
-                )
-                raise HTTPException(
-                    status_code=429,
-                    detail="Magic link requests are temporarily rate limited, please retry later",
-                    headers={"Retry-After": str(retry_after)},
-                )
-
-        if _MAGIC_LINK_RATE_LIMIT_MAX <= 0:
-            if _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX > 0:
-                _magic_link_global_hits.append(now)
-            return
-
-        try:
-            # Prune both keys first so we never mint a token when either is over cap.
-            for key in keys:
-                hits = _magic_link_rate_state.setdefault(key, deque())
-                while hits and hits[0] <= cutoff:
-                    hits.popleft()
-                if len(hits) >= _MAGIC_LINK_RATE_LIMIT_MAX:
-                    retry_after = max(1, int(hits[0] + _MAGIC_LINK_RATE_LIMIT_WINDOW_S - now))
-                    raise HTTPException(
-                        status_code=429,
-                        detail="Too many magic link requests, please retry later",
-                        headers={"Retry-After": str(retry_after)},
-                    )
-            for key in keys:
-                _magic_link_rate_state[key].append(now)
-            if _MAGIC_LINK_GLOBAL_RATE_LIMIT_MAX > 0:
-                _magic_link_global_hits.append(now)
-        finally:
-            # Reclaim keys this request created but never filled (the 429 path
-            # leaves the not-yet-checked key with an empty deque).
-            for key in keys:
-                if not _magic_link_rate_state.get(key):
-                    _magic_link_rate_state.pop(key, None)
+# RATE LIMITING REMOVED 2026-07-31 (owner order: "I said rip out all limiters.
+# ALL limiters."). /auth/magic-link/request carried a per-IP + per-email + global
+# fixed-window guard. Deleted, not disabled.
+#
+# Stated plainly, because this one differs in kind from the others: the endpoint
+# is unauthenticated and each call sends a REAL email through Resend to whatever
+# address the body names. With no cap, anyone who finds the URL can make this
+# domain mail arbitrary strangers without limit — that risks the Resend account
+# and the sending domain's reputation, and the people mailed are not users of
+# this product. The owner was told this twice and directed the removal anyway.
 
 
 @router.get("/me", response_model=UserResponse)
@@ -273,7 +146,6 @@ def me(current_user: dict = Depends(get_current_user)):
 
 @router.post("/magic-link/request", status_code=200)
 async def magic_link_request(request: Request, body: MagicLinkRequest):
-    _magic_link_rate_limit(request, body.email)
     token = create_magic_token(body.email)
     try:
         await send_magic_link(body.email, token)

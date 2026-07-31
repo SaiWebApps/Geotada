@@ -408,9 +408,30 @@ def _stubbed_audio_preview(page: Page):
     class still exists, it is simply unreachable from any server. It runs HERE,
     in the test process, and never reaches a human.
 
+    ALSO stubs ``GET /audio/providers`` to report the real provider AVAILABLE.
+    That is not cosmetic. ``/audio/providers`` reports availability by probing the
+    credential each provider needs, and this suite's server runs with a blanked
+    ``OPENAI_API_KEY`` (conftest), so it honestly answers "openai (unavail)".
+    Since 2026-07-31 the page refuses to play an unavailable voice BEFORE issuing
+    a request — a real fix, because it replaces a bare "TTS failed (502)" with a
+    message naming the missing key. But it also means these tests never fire the
+    request they stub, and they time out waiting for it.
+    So: a test that wants to exercise the audio path must say so by presenting a
+    server where the voice exists. Stubbing the availability probe states that
+    premise explicitly instead of leaving it to a blank credential.
+
     Yields the list of parsed request bodies, newest last.
     """
     from src.audio.provider import MockTTSProvider
+
+    def _providers_handler(route) -> None:
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body=json.dumps({"providers": [{"name": "openai", "available": True}]}),
+        )
+
+    page.route("**/audio/providers", _providers_handler)
 
     calls: list[dict] = []
 
@@ -429,6 +450,7 @@ def _stubbed_audio_preview(page: Page):
         yield calls
     finally:
         page.unroute("**/audio/preview")
+        page.unroute("**/audio/providers")
 
 
 def _declared_audio_registry() -> dict[str, str]:
@@ -5127,3 +5149,288 @@ class TestBugReport:
         assert "Issues found:" in content
 
         _take_screenshot(page, "final-state")
+
+
+# ── Real tour generation, UNSTUBBED ─────────────────────────────────────────
+#
+# Every other tour test in this file answers its own /trips/preview with a canned
+# payload, so none of them can notice that the workbench cannot build a tour.
+# That is not hypothetical: on 2026-07-31 the whole suite was green while the UI
+# produced nothing. tests/test_suite_honesty.py fails if this class disappears.
+#
+# The original stub's excuse was accurate — "the test DB's tier-1 fixture POIs
+# can't produce a tour". Two things made it impossible, both fixed here:
+#   1. the density gate needs tier >= 3 POIs carrying >= 3 active beats
+#      (src/tour/density.py ANCHOR_CANDIDATE_TIER_MIN / _BEAT_COUNT_MIN), and the
+#      shared fixture creates tier 1;
+#   2. the corpus loader matches `city_name` against the SLUG ('paris'), while
+#      the shared fixture writes 'Paris' — so its POIs were invisible regardless.
+#
+# So this seeds a real Ile de la Cite slice exported from the live corpus
+# (tests/fixtures/ile_de_la_cite_tourable.json) into the dedicated 7689 graph,
+# and removes it again.
+#
+# IT COSTS NOTHING, and here is the actual mechanism now that the
+# ONDOWAY_ENABLE_PAID_LLM_CALLS gate has been removed (2026-07-31): conftest.py
+# blanks ANTHROPIC_API_KEY (and the other paid keys) for every non-live run, and
+# the api_server subprocess inherits that environment. The premium executor is
+# therefore constructed but cannot authenticate, so it fails and the response is
+# the Basic grounded lane — real route, real stops, real corpus prose, no billable
+# call. Proving the PREMIUM lane needs a real key and belongs in a live shard.
+
+TOURABLE_FIXTURE = Path(__file__).parent / "fixtures" / "ile_de_la_cite_tourable.json"
+
+
+@pytest.fixture()
+def tourable_corpus(api_server):
+    """Seed a tour-capable Paris corpus into 7689, then remove it.
+
+    Function-scoped with cleanup because the shared ``seed_data`` fixture carries
+    exact-count assertions ("exactly 13 worklist rows"); leaving these POIs behind
+    would break them.
+    """
+    payload = json.loads(TOURABLE_FIXTURE.read_text(encoding="utf-8"))
+    assert payload, f"{TOURABLE_FIXTURE} is empty — this test would prove nothing"
+
+    driver = GraphDatabase.driver(WORKBENCH_NEO4J_URI, auth=WORKBENCH_NEO4J_AUTH)
+    marker = "tourable-fixture"
+    try:
+        with driver.session(database=WORKBENCH_NEO4J_DATABASE) as session:
+            for entry in payload:
+                poi = dict(entry["poi"])
+                lat, lng = poi.pop("latitude"), poi.pop("longitude")
+                session.run(
+                    "CREATE (p:POI $props) "
+                    "SET p.id = randomUUID(), p.seed_marker = $marker, "
+                    "    p.location = point({latitude: $lat, longitude: $lng})",
+                    props=poi, marker=marker, lat=lat, lng=lng,
+                )
+                for beat in entry["beats"]:
+                    session.run(
+                        "MATCH (p:POI {name: $name, seed_marker: $marker}) "
+                        "CREATE (p)-[:HAS_BEAT]->(b:NarrativeBeat $props) "
+                        "SET b.id = randomUUID(), b.seed_marker = $marker",
+                        name=poi["name"], marker=marker, props=beat,
+                    )
+        yield payload
+    finally:
+        with driver.session(database=WORKBENCH_NEO4J_DATABASE) as session:
+            session.run(
+                "MATCH (n) WHERE n.seed_marker = $marker DETACH DELETE n", marker=marker
+            )
+        driver.close()
+
+
+class TestRealTourGeneration:
+    """The one test in this file that lets the workbench actually build a tour."""
+
+    def test_workbench_generates_a_real_tour_unstubbed(self, browser_page, tourable_corpus):
+        """Press Generate and let the real endpoint answer. No route interception.
+
+        Asserts the stops that render came from the SEEDED corpus, not from a
+        fixture in this file — a canned payload cannot satisfy it, because the
+        POI names are read back out of the JSON the database was seeded from.
+
+        UNDO TEST: stub **/trips/preview in this test -> the rendered names stop
+        matching the seed and it goes RED. Drop the seeded corpus and the engine
+        finds no anchors, so it goes RED too.
+        """
+        page, _seed, _reporter = browser_page
+        seeded_names = {entry["poi"]["name"] for entry in tourable_corpus}
+
+        page.goto(WORKBENCH_URL)
+        page.wait_for_load_state("networkidle")
+
+        # Pick the seeded city, then open the preview panel.
+        picker = page.locator("#citySelect")
+        picker.wait_for(state="visible", timeout=15000)
+        # Resolve the Paris option from the LIVE list rather than assuming a
+        # label: the picker is built from the API and its text carries a POI
+        # count that changes with the seed.
+        paris_value = page.evaluate(
+            "() => [...document.getElementById('citySelect').options]"
+            ".filter(o => o.textContent.trim().toLowerCase().startsWith('paris'))"
+            ".map(o => o.value)[0] ?? null"
+        )
+        assert paris_value is not None, (
+            "the city picker offers no Paris option, so the seeded corpus never "
+            "reached the workbench graph"
+        )
+        picker.select_option(value=paris_value)
+        page.locator("#citySubmitBtn").click()
+        page.locator("#tourPreviewBtn").click()
+
+        page.locator("#tourStart").fill("48.852966,2.349902")
+        # 60, and NOT less. Measured on this fixture: at 60 min the engine sees
+        # anchor_candidates=4, compactness=0.34; at 30 min it sees
+        # anchor_candidates=1, compactness=0.00 and a WORSE fill_ratio. The walk
+        # radius scales with the timebox, so a shorter tour reaches fewer POIs —
+        # shrinking the ask starves the gate instead of satisfying it. The fix
+        # for fill_ratio is more beats per POI (the fixture carries 12 each),
+        # not a smaller timebox.
+        page.locator("#tourDuration").fill("60")
+
+        # THE POINT: no page.route here. The server really answers.
+        with page.expect_response(
+            lambda r: "/trips/preview" in r.url, timeout=180000
+        ) as caught:
+            page.locator("#tourGenerateBtn").click()
+        response = caught.value
+
+        assert response.status == 200, (
+            f"the workbench could not generate a tour: HTTP {response.status} "
+            f"{response.text()[:400]}"
+        )
+        _take_screenshot(page, "real-tour-generated-unstubbed")
+
+        body = response.json()
+        # A tour arrives in ONE OF TWO LANES and the stops live in different
+        # places. Premium puts them at the top level; the Basic grounded lane
+        # nests them under `basic_tour`. This test runs without a usable
+        # ANTHROPIC_API_KEY (conftest blanks it), so it lands in the Basic lane —
+        # which is the point: it proves the engine really routed and narrated
+        # from the seeded corpus, at zero cost. Accept either lane, because what
+        # is under test is that a tour was BUILT, not which lane served it.
+        lane_stops = body.get("stops") or []
+        basic = body.get("basic_tour") or {}
+        stops = lane_stops or (basic.get("stops") or [])
+        assert stops, (
+            f"the endpoint answered 200 but produced no stops in EITHER lane "
+            f"(premium={len(lane_stops)}, basic={len(basic.get('stops') or [])}): "
+            f"{str(body)[:400]}"
+        )
+
+        rendered = page.locator(".tour-stop")
+        rendered.first.wait_for(state="visible", timeout=20000)
+        assert rendered.count() >= 1, "stops came back over the wire but none rendered"
+
+        page_text = page.locator("#tourStops").inner_text()
+        matched = {name for name in seeded_names if name in page_text}
+        assert matched, (
+            f"none of the SEEDED POIs appear in the rendered tour, so this did not come "
+            f"from the corpus under test. Seeded: {sorted(seeded_names)}. "
+            f"Rendered: {page_text[:400]}"
+        )
+
+    def test_a_degraded_tour_shows_the_problem_panel_with_a_copy_button(
+        self, browser_page, tourable_corpus
+    ):
+        """OWNER RULING 2026-07-31: "Don't just log errors. Actually show them in
+        the workbench UI. Otherwise, they're invisible."
+
+        This is that ruling's proof. The whole degradation feature shipped once
+        with no test at all — a judge caught it, and a feature whose purpose is
+        "stop trusting that a problem was noticed" is the last thing that should
+        be taken on trust.
+
+        The degrade is REAL, not injected: this shard runs with a blanked
+        ANTHROPIC_API_KEY (conftest), so HaikuGlueClient cannot authenticate and
+        every walk transition falls back to a template. That used to be a silent
+        log line; it must now be on screen.
+
+        UNDO TEST: delete the buildDegradationPanel(...) call from
+        frontend/review.html's renderTourStops -> RED (no panel).
+        """
+        page, _seed, _reporter = browser_page
+        page.goto(WORKBENCH_URL)
+        page.wait_for_load_state("networkidle")
+
+        paris_value = page.evaluate(
+            "() => [...document.getElementById('citySelect').options]"
+            ".filter(o => o.textContent.trim().toLowerCase().startsWith('paris'))"
+            ".map(o => o.value)[0] ?? null"
+        )
+        assert paris_value is not None, "the seeded corpus never reached the graph"
+        page.locator("#citySelect").select_option(value=paris_value)
+        page.locator("#citySubmitBtn").click()
+        page.locator("#tourPreviewBtn").click()
+        page.locator("#tourStart").fill("48.852966,2.349902")
+        page.locator("#tourDuration").fill("60")
+
+        with page.expect_response(
+            lambda r: "/trips/preview" in r.url, timeout=180000
+        ) as caught:
+            page.locator("#tourGenerateBtn").click()
+        body = caught.value.json()
+
+        # The API must report the degrade at all — panel or no panel.
+        rows = body.get("degradations") or []
+        assert rows, (
+            "the narrator was unreachable and every transition fell back to a "
+            "template, but the response reported NO degradations — the failure is "
+            f"invisible again. lane={body.get('narration_kind')!r}"
+        )
+        assert any(r.get("kind") == "glue_call_failed" for r in rows), rows
+
+        # And it must be ON SCREEN, which is what the owner actually asked for.
+        panel = page.locator(".tour-degradations")
+        panel.first.wait_for(state="visible", timeout=20000)
+        _take_screenshot(page, "degradation-panel-visible")
+
+        panel_text = panel.first.inner_text()
+        assert "problem" in panel_text.lower(), panel_text
+        # Plain English for the human...
+        assert "narrator" in panel_text or "template" in panel_text, panel_text
+        # ...and the technical half for whoever fixes it.
+        assert "HaikuGlueClient" in panel_text, panel_text
+        # ...and the one-click handoff.
+        assert page.locator(".tour-degradations button").count() >= 1, (
+            "the panel renders no 'Copy report for Claude' button, so the report "
+            "cannot be handed over in one action"
+        )
+
+    def test_an_unavailable_voice_refuses_before_spending_a_request(
+        self, browser_page, tourable_corpus
+    ):
+        """Pressing Listen on a voice the server cannot serve must fail FAST and
+        SAY WHY, without issuing a doomed request.
+
+        Before this, the page fired the request anyway and showed a bare
+        "TTS failed (502)" with no cause. This shard's server runs with a blanked
+        OPENAI_API_KEY, so /audio/providers honestly reports openai unavailable —
+        the exact condition. Note this test must NOT use the
+        ``_stubbed_audio_preview`` fixture, which stubs the availability probe to
+        report the voice available and would route around the branch under test.
+
+        UNDO TEST: delete the availability refusal from ttsPlay -> a request is
+        issued and `asked` becomes non-empty -> RED.
+        """
+        page, _seed, _reporter = browser_page
+        page.goto(WORKBENCH_URL)
+        page.wait_for_load_state("networkidle")
+
+        paris_value = page.evaluate(
+            "() => [...document.getElementById('citySelect').options]"
+            ".filter(o => o.textContent.trim().toLowerCase().startsWith('paris'))"
+            ".map(o => o.value)[0] ?? null"
+        )
+        page.locator("#citySelect").select_option(value=paris_value)
+        page.locator("#citySubmitBtn").click()
+        page.locator("#tourPreviewBtn").click()
+        page.locator("#tourStart").fill("48.852966,2.349902")
+        page.locator("#tourDuration").fill("60")
+        with page.expect_response(lambda r: "/trips/preview" in r.url, timeout=180000):
+            page.locator("#tourGenerateBtn").click()
+
+        # Record every preview request the page issues from here on.
+        asked: list[str] = []
+        page.on("request", lambda r: asked.append(r.url) if "/audio/preview" in r.url else None)
+
+        listen = page.locator(".tts-play-btn[data-tour-stop]")
+        listen.first.wait_for(state="visible", timeout=20000)
+        listen.first.click()
+
+        toast = page.locator("#errorToast")
+        toast.wait_for(state="visible", timeout=15000)
+        message = toast.inner_text()
+        _take_screenshot(page, "unavailable-voice-refused")
+
+        assert "not available" in message.lower(), message
+        assert "api key" in message.lower(), (
+            f"the refusal does not name the CAUSE, so the editor cannot act on "
+            f"it: {message!r}"
+        )
+        assert not asked, (
+            f"the page issued {len(asked)} /audio/preview request(s) it already "
+            f"knew would fail: {asked}"
+        )

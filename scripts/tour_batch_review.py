@@ -16,7 +16,6 @@ from pydantic import BaseModel
 from scripts.tour_batch_candidate import DEFAULT_OUTPUT_ROOT, MANIFEST_PATH, _batch_plan
 from scripts.tour_text_candidate import _private_write_new
 from src.connection import create_driver
-from src.tour.anthropic_client import PAID_CALL_PERMISSION_ENV
 from src.tour.authoring import COMPOSE_MODEL
 from src.tour.batch_regression_manifest import load_frozen_tour_batch
 from src.tour.certification_provider import (
@@ -909,8 +908,6 @@ def gate_batch_review_execution(
         return review_plan
     if approved_review_plan_sha256 != sealed_hash:
         raise ValueError("approved review-plan hash must exactly match the sealed plan")
-    if os.environ.get(PAID_CALL_PERMISSION_ENV) != "1":
-        raise ValueError(f"live review requires {PAID_CALL_PERMISSION_ENV}=1")
     if os.environ.get(LIVE_REVIEW_APPROVAL_ENV) != "1":
         raise ValueError(f"live review requires {LIVE_REVIEW_APPROVAL_ENV}=1")
     client_factory()

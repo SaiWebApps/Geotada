@@ -52,6 +52,7 @@ from .contract import (
     Sentence,
     ValidationReport,
 )
+from .degradations import in_current_context
 from .generation import GLUE_REFLECTION, _sum_audio
 from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .reflection import reflection_slots
@@ -959,8 +960,10 @@ def author_prebuilt_route(
 
     if not 1 <= max_workers <= 8:
         raise ValueError("prebuilt-route authoring supports one to eight workers")
+    # in_current_context: see src/tour/degradations.py — a pooled worker cannot
+    # see the request's collection scope without it, so failures vanish.
     with ThreadPoolExecutor(max_workers=min(max_workers, len(plan.units))) as pool:
-        responses = tuple(pool.map(executor.execute, plan.units))
+        responses = tuple(pool.map(in_current_context(executor.execute), plan.units))
 
     authoring_responses: list[AuthoringStopResponse] = []
     completed: list[CompletedCertificationComposeUnit] = []

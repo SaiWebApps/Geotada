@@ -3042,12 +3042,30 @@
 
   // ── TTS state & helpers ──
   const ttsAudioCache = new Map();
+  // The last /trips/preview body, for the degradation report (see buildDegradationPanel).
+  let lastTourPreviewRequest = null;
   let ttsProvider = 'openai';
+  // name -> bool, from GET /audio/providers. Empty until that call lands.
+  let ttsProviderAvailable = {};
 
   function ttsTextHash(str) {
     let h = 0;
     for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
     return h.toString(36);
+  }
+
+  // Refresh ONLY the availability map, leaving the dropdown and the editor's
+  // selection alone. loadTtsProviders() rebuilds the <select>, which would throw
+  // away a deliberate choice mid-session; this is the read-only half of it.
+  async function refreshProviderAvailability() {
+    try {
+      const resp = await fetch(`${API_BASE}/audio/providers`);
+      if (!resp.ok) return;
+      const data = await resp.json();
+      const next = {};
+      for (const p of data.providers || []) next[p.name] = !!p.available;
+      ttsProviderAvailable = next;
+    } catch (e) { /* keep the previous map; the caller refuses on it */ }
   }
 
   async function loadTtsProviders() {
@@ -3056,7 +3074,13 @@
       if (!resp.ok) return;
       const data = await resp.json();
       ttsProviderSelect.innerHTML = '';
+      // Remember availability. Rendering "(unavail)" in the label is not enough:
+      // the pinned provider is selected regardless of availability (that pin is
+      // deliberate, see below), so without this the page happily fires a doomed
+      // request and the editor gets a raw HTTP error with no idea why.
+      ttsProviderAvailable = {};
       for (const p of data.providers) {
+        ttsProviderAvailable[p.name] = !!p.available;
         const opt = document.createElement('option');
         opt.value = p.name;
         opt.textContent = p.name + (p.available ? '' : ' (unavail)');
@@ -3101,6 +3125,33 @@
       audioEl.src = ttsAudioCache.get(cacheKey);
       audioEl.classList.add('visible');
       audioEl.play();
+      return;
+    }
+
+    // REFUSE EARLY on a provider the server cannot serve. GET /audio/providers
+    // reports availability by probing the credential each one needs, and the
+    // dropdown renders "(unavail)" and disables the option — but the selection
+    // is PINNED to the production provider regardless of availability (that pin
+    // is deliberate: the workbench must resolve what production resolves). So
+    // without this the page fired a request it knew would fail and showed the
+    // editor a bare "TTS failed (502)" with no cause. Say what is wrong and what
+    // to do about it, and spend no request finding out.
+    if (ttsProviderAvailable && ttsProviderAvailable[ttsProvider] === false) {
+      // RE-PROBE before refusing. Availability was read once at page load, and a
+      // stale "unavailable" is its own trap: set the missing key, restart the
+      // API, and this page would keep refusing until someone reloaded it. One
+      // cheap GET removes that whole class of "it's configured, why won't it
+      // play". Only if it is STILL unavailable do we refuse.
+      await refreshProviderAvailability();
+    }
+    if (ttsProviderAvailable && ttsProviderAvailable[ttsProvider] === false) {
+      showError(
+        `Cannot play audio: the "${ttsProvider}" voice is not available on this server. `
+        + `Its API key is missing or empty — set it and restart the workbench. `
+        + `(The provider list is served by GET /audio/providers.)`
+      );
+      btn.classList.add('error');
+      setTimeout(() => btn.classList.remove('error'), 2000);
       return;
     }
 
@@ -3200,6 +3251,14 @@
     genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
     stopsEl.innerHTML = ''; tourStops = []; drawTourRoute([]);  // clear map unconditionally (D5a)
     try {
+      // Remembered so the degradation panel's "Copy report for Claude" can say
+      // WHAT WAS ASKED FOR. Without it the first reply to any pasted report is
+      // always "what request produced this?", which costs a whole round trip.
+      lastTourPreviewRequest = {
+        center_lat: lat, center_lng: lng, duration_min: duration,
+        lenses: lenses.length ? lenses : null, round_trip: roundTrip,
+        end_lat: endLat, end_lng: endLng, city_slug: cityName || 'paris',
+      };
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -3405,6 +3464,86 @@
     return wrap;
   }
 
+  // ── What quietly went wrong while building this tour ──────────────────────
+  // OWNER RULING 2026-07-31: errors must be VISIBLE here, not buried in a log,
+  // and must serve two readers at once — the human ("what did I lose?") and
+  // Claude ("what do I fix?"). So each row shows plain English, and one button
+  // copies a complete, self-contained report to the clipboard.
+  function buildDegradationPanel(data) {
+    const rows = (data && data.degradations) || [];
+    if (!rows.length) return null;
+
+    const panel = document.createElement('div');
+    panel.className = 'tour-degradations';
+    panel.style.cssText = 'background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.55);'
+      + 'border-radius:6px;padding:10px 12px;margin:0 0 10px;font-size:0.85rem;color:#f5b183;';
+
+    const head = document.createElement('div');
+    head.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:6px;';
+    const title = document.createElement('strong');
+    title.textContent = rows.length === 1
+      ? 'This tour was built with 1 problem'
+      : `This tour was built with ${rows.length} problems`;
+    title.style.color = '#fb923c';
+    head.appendChild(title);
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'btn btn-sm btn-outline';
+    copyBtn.textContent = 'Copy report for Claude';
+    copyBtn.title = 'Copies a complete description of every problem, ready to paste';
+    copyBtn.style.marginLeft = 'auto';
+    copyBtn.addEventListener('click', () => {
+      // A SELF-CONTAINED report. Whoever reads this has none of the context on
+      // this screen, so the request, the lane and the full error text all travel
+      // with it — otherwise the first reply is always "what were you doing?".
+      const lines = [
+        'Ondoway workbench — tour built with problems',
+        '',
+        `Request : ${JSON.stringify(lastTourPreviewRequest || {})}`,
+        `Lane    : ${(data && data.narration_kind) || 'unknown'}`
+          + `${data && data.provider ? ' via ' + data.provider : ''}`,
+        `Stops   : ${((data && data.stops) || []).length}`,
+        '',
+        'Problems:',
+      ];
+      rows.forEach((r, i) => {
+        lines.push('');
+        lines.push(`${i + 1}. ${r.human}`);
+        lines.push(`   kind      : ${r.kind}${r.count > 1 ? ` (happened ${r.count} times)` : ''}`);
+        lines.push(`   component : ${r.component}`);
+        if (r.error_type) lines.push(`   error     : ${r.error_type}: ${r.error_message}`);
+        const ctx = r.context && Object.keys(r.context).length ? JSON.stringify(r.context) : '';
+        if (ctx) lines.push(`   context   : ${ctx}`);
+      });
+      const report = lines.join('\n');
+      navigator.clipboard.writeText(report).then(
+        () => { copyBtn.textContent = '✓ Copied'; setTimeout(() => { copyBtn.textContent = 'Copy report for Claude'; }, 2000); },
+        () => { copyBtn.textContent = 'Copy failed'; }
+      );
+    });
+    head.appendChild(copyBtn);
+    panel.appendChild(head);
+
+    rows.forEach((r) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'margin-top:6px;padding-top:6px;border-top:1px solid rgba(249,115,22,0.25);';
+      // Plain English first and largest — this is the line a human reads.
+      const human = document.createElement('div');
+      human.textContent = r.human;
+      human.style.cssText = 'color:#fed7aa;margin-bottom:3px;';
+      row.appendChild(human);
+      // The technical half, quieter, but present and complete.
+      const tech = document.createElement('div');
+      tech.style.cssText = 'font-family:monospace;font-size:0.75rem;color:#c2836a;word-break:break-word;';
+      const times = r.count > 1 ? ` · happened ${r.count} times` : '';
+      tech.textContent = `${r.component}${times}`
+        + (r.error_type ? ` — ${r.error_type}: ${r.error_message}` : '');
+      row.appendChild(tech);
+      panel.appendChild(row);
+    });
+    return panel;
+  }
+
   function buildNarrationQualityPanel(data) {
     const wrap = document.createElement('div');
     wrap.style.cssText = 'background:rgba(120,140,255,0.08);border:1px solid rgba(120,140,255,0.35);'
@@ -3451,6 +3590,13 @@
     const legNote = legCount ? ` · ${legCount} narrated walk${legCount === 1 ? '' : 's'}` : '';
     summary.textContent = `${placeCount} stops${legNote} · spine: ${(data && data.spine_area) || '—'} · ~${activeAudioMinutes} min of audio`;
     stopsEl.appendChild(summary);
+    // OWNER RULING 2026-07-31: "Don't just log errors. Actually show them in the
+    // workbench UI. Otherwise, they're invisible." Anything that quietly degraded
+    // while building this tour arrives on `degradations` and is rendered HERE,
+    // above the stops, where it cannot be missed. A soft failure that only
+    // reaches a server log looks exactly like success on this screen.
+    const degradePanel = buildDegradationPanel(data);
+    if (degradePanel) stopsEl.appendChild(degradePanel);
     if (isBasic) {
       const lane = document.createElement('div');
       lane.className = 'tour-basic-lane';

@@ -53,7 +53,7 @@ const PANEL_MODELS = { 0: [], 1: [], 2: ['opus', 'sonnet'], 3: ['opus', 'sonnet'
 // ALLOWED_REPRO is consulted only when deciding whether a RETURNED finding counts
 // (wellFormed / verifyRepros). It cannot stop a command from running: skeptic agents
 // have Bash, so one that runs `make test` really does spend the money
-// (Makefile sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1) and this regex merely declines to
+// (Makefile sets ONDOWAY_LIVE_TESTS=1) and this regex merely declines to
 // reward the finding afterward. The prompt is the only thing ASKING an agent not to,
 // and no hook can back it up — PreToolUse was measured NOT to fire inside the
 // Workflow runtime. Treat this as "refuses to pay attention", never "refuses to run".
@@ -248,7 +248,7 @@ const L = await call('sonnet', { label: 'preflight', phase: 'Preflight', schema:
 2. For EACH step, validate test_command and set command_valid:
    - It MUST be exactly \`make test-file FILE="<path>::<pytest node id>"\`.
    - REJECT any command containing a bare \`-k\`: Makefile:139-149 is \`$(TEST_EXEC) uv run pytest "$(FILE)" -o addopts= -v\` with NO $(PYTEST_ARGS) passthrough, so make consumes -k as --keep-going and the selector becomes a make goal ("No rule to make target"). Verified behaviour, not theory.
-   - REJECT LIVE=1 (routes to test-live -> ONDOWAY_ENABLE_PAID_LLM_CALLS=1, real money).
+   - REJECT LIVE=1 (routes to test-live -> ONDOWAY_LIVE_TESTS=1, real money).
    - REJECT any Make target absent from the LIVE ${REPO}/Makefile. \`make test-local\` and \`make test-collect\` are cited in older ledgers and NO LONGER EXIST.
    Put the reason in command_problem.
 3. Derive gate_commands from each step's files[]: \`make lint\` for src/|tests/|scripts/ (it covers ONLY those — Makefile:103-106); \`make flutter-analyze\` for mobile/ (it is in NEITHER make lint NOR make test, so without this a Dart error survives the whole ladder); a targeted \`make test-file FILE="tests/test_workbench_ui.py::..."\` for frontend/. Never put \`make test\`, \`make audit\`, \`make test-live\` or \`make test-workbench\` (minutes-long) in a per-step gate.
@@ -634,7 +634,7 @@ if (anyCompleted && !stopped && !paidGateRun) {
   paidGateRun = true // structural one-shot: the paid bar can never run twice
   close = await call('haiku', { label: 'close-gate', phase: 'Close', schema: GATE_RESULT, agentType: 'general-purpose', effort: 'low' },
     `Repo ${REPO}. Run \`make audit\` ONCE. That is \`make lint\` then \`make test\` (Makefile:135-137) — closing on \`make test\` alone would certify green with a dirty linter, since \`test\` does not include \`lint\`.
-This is the ONLY paid command of the entire run: test-live sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1 and _test-cloud resumes Aura. Run it EXACTLY once. Do NOT re-run it on failure, do NOT run individual shards to "check", do NOT retry a flake — an intermittent failure is a real signal to report, not to re-roll.
+This is the ONLY paid command of the entire run: test-live sets ONDOWAY_LIVE_TESTS=1 and _test-cloud resumes Aura. Run it EXACTLY once. Do NOT re-run it on failure, do NOT run individual shards to "check", do NOT retry a flake — an intermittent failure is a real signal to report, not to re-roll.
 Also run \`make flutter-analyze\` (it is in neither \`lint\` nor \`test\`, so a Dart analyzer error would otherwise survive the whole ladder).
 Report every shard's result verbatim, including any skips (a skip is a failure in disguise — say which and why). Fix NOTHING. Set mutation.verdict="NOT_RUN".`)
 } else if (!anyCompleted) {

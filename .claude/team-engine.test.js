@@ -302,7 +302,7 @@ function runChecks(results) {
 
     check(`paid-bar-at-most-once:${r.mode}`, r.paid_runs <= 1,
       `ran the paid close gate ${r.paid_runs} times — the paidGateRun one-shot is broken. ` +
-      '`make test` inside it sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1.')
+      '`make test` inside it sets ONDOWAY_LIVE_TESTS=1.')
 
     check(`paid-only-on-shipped-work:${r.mode}`, !(r.completed === 0 && r.paid_runs > 0),
       'completed no steps yet still spent money on the close gate.')

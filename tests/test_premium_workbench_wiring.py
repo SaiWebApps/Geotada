@@ -179,7 +179,12 @@ def test_launchers_kill_only_listening_sockets(tmp_path) -> None:
 
 
 def test_preview_uses_shared_premium_plan_and_finalizer() -> None:
-    source = inspect.getsource(trips.preview_trip)
+    # Read the IMPLEMENTATION, not the route wrapper. ``preview_trip`` is now a
+    # thin shell that opens the degradation-collection scope and delegates; the
+    # planning it must not reimplement lives in ``_preview_trip_impl``. Reading
+    # the wrapper would pass vacuously the moment anything else moves behind an
+    # indirection, which is the failure this whole file exists to catch.
+    source = inspect.getsource(trips._preview_trip_impl)
     assert "plan_premium_tour(" in source
     assert "finalize_premium_tour(" in source
     assert "compose_script_per_chapter(" not in source
@@ -202,11 +207,9 @@ def test_batch_policy_delegates_to_the_shared_policy_factory() -> None:
     assert "RoutePlanningPolicy.certification(" not in source
 
 
-def test_manual_workbench_starts_routing_and_authorizes_paid_preview() -> None:
+def test_manual_workbench_starts_routing_for_the_preview() -> None:
     makefile = (ROOT / "Makefile").read_text()
     target = makefile.split("\nworkbench:", 1)[1].split("\n\ndashboard:", 1)[0]
     assert "_ensure-dev-data" in target
     assert "valhalla-up" in target
     assert "$(RENDER_LOCAL_EXEC)" in target
-    script = (ROOT / "scripts" / "workbench.sh").read_text()
-    assert "ONDOWAY_ENABLE_PAID_LLM_CALLS=1" in script

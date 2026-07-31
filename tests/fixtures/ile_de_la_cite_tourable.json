@@ -1,0 +1,1382 @@
+[
+  {
+    "poi": {
+      "name": "Notre-Dame Cathedral",
+      "city_name": "paris",
+      "importance_tier": 5,
+      "poi_role": "stop",
+      "short_description": "Gothic cathedral on Ile de la Cite whose construction began in 1163, reopened after restoration following the 2019 fire",
+      "trigger_radius": 10,
+      "kid_friendly": "yes",
+      "latitude": 48.852966,
+      "longitude": 2.349902
+    },
+    "beats": [
+      {
+        "script_body": "Notre-Dame endured centuries of vandalism before the Revolution even began. The medieval chancel screen was destroyed in 1699 to make way for a more fashionable baroque interior. The original stained glass windows — except for the three great rose windows — were ripped out and replaced with plain white glass to 'let in more light.'",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "entities": [],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Eugene Viollet-le-Duc began his controversial restoration of Notre-Dame in 1844, guided by his famous principle: 'To restore a building is not to maintain it, repair it, or rebuild it; it is to re-establish it in a complete state which may never have existed at any given moment.' He added the spire, the gargoyles, and much of what the world came to think of as 'original' medieval decoration.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "entities": [
+          "Eugene",
+          "Viollet-le-Duc"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "In Rabelais's tale, the giant Gargantua visited Notre-Dame and, followed and gawked at by Parisians, climbed the church tower and urinated on the crowd below, drowning 260,418 people (exclusive of women and children). In Rabelais's version, the city of Lutetia became known as Paris — from 'par rie' (for a laugh) — in recognition of Gargantua's jest.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "entities": [
+          "Gargantua",
+          "Lutetia",
+          "Rabelais"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Victor Hugo's 1831 novel The Hunchback of Notre-Dame was written partly as a plea to save the crumbling cathedral. The book ignited a wave of public passion for the medieval monument and directly led to the campaign for its restoration — proof that a novel can save a building.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "entities": [
+          "Victor Hugo"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Notre-Dame hosted only two coronations, both controversial: Henry VI of England, who had conquered France, and Emperor Napoleon. The legitimate French dynasties always used the cathedral of Reims. Henri IV's conversion to Catholicism was celebrated here in 1593 with a Te Deum, though the conversion ceremony itself took place at Saint-Denis.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "entities": [
+          "Catholicism",
+          "Emperor Napoleon",
+          "Henri IV",
+          "Henry VI",
+          "Te Deum"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Notre-Dame was the birthplace of polyphonic music in Europe. In the 12th and 13th centuries, the composers Leonin and Perotin developed the art of organum — music in multiple voices — at the cathedral's choir school. Their innovations laid the foundations for all Western harmony.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "entities": [
+          "Leonin",
+          "Perotin",
+          "Western"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Beneath Notre-Dame's chancel, vestiges of a pillar-shaped monument dedicated to Jupiter were found in 1711 — the Pilier des Nautes, erected by the corporation of water merchants (Nautae Parisiaci). Inscriptions date it to the reign of Emperor Tiberius (AD 14-37), making it the oldest sculpted monument found in the capital. The merchants engraved their own gods alongside those of Rome. The pillar is now displayed in the Musee National du Moyen Age at the Hotel de Cluny.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "entities": [
+          "Emperor Tiberius",
+          "Hotel de Cluny",
+          "Inscriptions",
+          "Jupiter",
+          "Musee National du Moyen Age",
+          "Nautae Parisiaci",
+          "Pilier des Nautes"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Notre-Dame's great bell, known today as Emmanuel, has a dramatic history. The original bell, called Jacqueline, was recast in 1680 and renamed Emmanuel. According to tradition, the ladies of the court threw their jewellery into the molten metal, which is said to give the bell its exceptionally pure tone.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic",
+        "entities": [
+          "According"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "During the Paris Commune in May 1871, Communards attempted to burn Notre-Dame by piling chairs and furniture against the doors and setting them alight. Doctors and staff from the neighbouring Hotel-Dieu rushed across and extinguished the flames, saving the cathedral from destruction.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Dieu",
+          "Doctors",
+          "Paris Commune"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "The 28 statues of the Kings of Judah on the west facade were torn down by Revolutionaries who mistook them for the Kings of France. The heads were discovered in 1977 during construction work near the Opera and are now displayed at the Musee de Cluny.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "entities": [
+          "Judah",
+          "Kings",
+          "Musee de Cluny",
+          "Opera",
+          "Revolutionaries"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Between 1163 and 1330, anonymous artisans carved Notre-Dame from stone, slipping imperceptibly from the Romanesque to the Gothic style yet sustaining architectural unity. Bishop Maurice de Sully initiated the project, commissioning a monument to transcend every other in the kingdom.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "entities": [
+          "Bishop Maurice de Sully"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "During the Revolution, Notre-Dame was nearly lost forever. Stripped of its treasures and rededicated to the Cult of Reason, it was put up for sale as building material. A certain Citoyen Simon nearly purchased the cathedral — one of the closest brushes with destruction in the building's history.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "entities": [
+          "Citoyen Simon",
+          "Cult",
+          "Stripped"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      }
+    ]
+  },
+  {
+    "poi": {
+      "name": "Sainte-Chapelle",
+      "city_name": "paris",
+      "importance_tier": 5,
+      "poi_role": "stop",
+      "short_description": "13th-century Gothic royal chapel with 15 stained-glass windows depicting 1,113 biblical scenes across 600 square metres",
+      "trigger_radius": 10,
+      "kid_friendly": "yes",
+      "latitude": 48.855358,
+      "longitude": 2.34483
+    },
+    "beats": [
+      {
+        "script_body": "The only part of the Ile de la Cite's old palace that remains in its entirety is the Sainte-Chapelle, its fragile-looking spire soaring above the Palais buildings, its excessive height in relation to its length giving it the appearance of a lopped-off cathedral choir. Though damaged in the Revolution — when it was used as a flour warehouse — it was sensitively restored in the mid-nineteenth century, and remains one of the finest achievements of French High Gothic, renowned for its exquisite stained glass. It was built by Louis IX in 1242 to 1248 to house a collection of holy relics bought at an extortionate price — far more than the chapel itself cost — from the bankrupt Byzantine Empire. The relics, supposedly Christ's crown of thorns and fragments of the True Cross and a nail of the crucifixion, are now in Notre-Dame's treasury, displayed only on certain days, including Good Friday.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "louis ix relics",
+        "entities": [
+          "Louis IX",
+          "Byzantine Empire",
+          "Christ",
+          "Notre-Dame"
+        ],
+        "key_claims": [
+          "Only intact survivor of the medieval palace",
+          "Used as flour warehouse during the Revolution",
+          "Restored mid-nineteenth century",
+          "Built 1242-48 by Louis IX",
+          "Built to house Crown of Thorns, True Cross fragments and a crucifixion nail bought from bankrupt Byzantium",
+          "Relics now in Notre-Dame's treasury, shown on Good Friday"
+        ],
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "The only part of the Ile de la Cite's old palace that remains in its entirety is the Sainte-Chapelle, its fragile-looking spire soaring above the Palais buildings and its excessive height in relation to its length giving it the appearance of a lopped-off cathedral choir. Though damaged in the Revolution, during which it was used as a flour warehouse, it was sensitively restored in the mid-nineteenth century, and remains one of the finest achievements of French High Gothic, renowned for its exquisite stained-glass windows. It was built by Louis IX in 1242–48 to house a collection of holy relics bought at an extortionate price – far more than it cost to build the Sainte-Chapelle – from the bankrupt Byzantium Empire. The relics, supposedly Christ's crown of thorns and fragments of the True Cross and a nail of the crucifixion, are now in Notre-Dame's treasury, displayed only on certain days, including Good Friday.",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "The Sainte-Chapelle actually consists of two chapels: the simple lower chapel was intended for the servants, and the upper chapel, reached via a spiral staircase, was reserved for the court. The upper chapel is dazzling — its walls made almost entirely of stained glass held up by powerful supports that the medieval builders cleverly crafted to appear delicate and fragile by dividing them into clusters of pencil-thin columns. When the sun streams through, the glowing blues and reds of the stained glass dapple the interior and you feel like you're surrounded by myriad brilliant butterflies.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "upper chapel glass",
+        "entities": [],
+        "key_claims": [
+          "Two chapels: lower for servants, upper for the court",
+          "Upper chapel reached by spiral staircase",
+          "Walls almost entirely stained glass",
+          "Supports disguised as pencil-thin columns to appear delicate",
+          "Sunlight throws blue and red onto the interior"
+        ],
+        "sub_location": "upper-chapel",
+        "duration_sec": 39,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "The Sainte-Chapelle actually consists of two chapels: the simple lower chapel was intended for the servants, and the upper chapel, reached via a spiral staircase, was reserved for the court. The latter is dazzling, its walls made almost entirely of stained glass held up by powerful supports, which the medieval builders cleverly crafted to appear delicate and fragile by dividing them into clusters of pencil-thin columns. When the sun streams through, the glowing blues and reds of the stained glass dapple the interior and you feel like you're surrounded by myriad brilliant butterflies.",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "In 2008, a seven-year, ten-million-euro programme of restoration began. It cleaned and preserved all the stained glass, cleaned the façade stonework, and conserved sculpture. Half the funding came from private donors; the other half from the Villum Foundation. An innovative thermoformed glass layer was added outside the medieval windows for protection. The flamboyant rose window on the west façade was completed in 2015 — in time for the 800th anniversary of the birth of St. Louis.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "beat_length_class": "seasoning",
+        "subject_tag": "2008-2015 restoration",
+        "entities": [
+          "Villum Foundation"
+        ],
+        "key_claims": [
+          "2008-2015: seven-year, €10M restoration",
+          "Cleaned + preserved all stained glass; cleaned façade stonework; conserved sculpture",
+          "Half funding from private donors, half from Villum Foundation",
+          "Innovative thermoformed glass layer applied outside windows for protection",
+          "West rose window restoration completed 2015 for 800th anniversary of St Louis's birth"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "In 2008, a more comprehensive seven-year programme of restoration began, costing some €10 million to clean and preserve all the stained glass, clean the facade stonework and conserve and repair some of the sculptures. Half of the funding was provided by private donors, the other half coming from the Villum Foundation. Included in the restoration was an innovative thermoformed glass layer applied outside the stained-glass windows for added protection. The restoration of the flamboyant rose window on the west facade was completed in 2015 in time for the 800th anniversary of the birth of St. Louis.",
+        "source_chunk_slug": "sainte_chapelle-rev-1354169735"
+      },
+      {
+        "script_body": "Louis's chapel became a template. As his saintly status grew across European aristocracies, the building's design migrated: Karlštejn Castle near Prague (around 1360), the Hofburgkapelle in Vienna (consecrated 1449), the Collegiate Church of the Holy Cross and St. Bartholomew in Wrocław (around 1350), and even Exeter College, Oxford (1860). Each was a sacred space and a piece of soft diplomacy in one.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "beat_length_class": "seasoning",
+        "subject_tag": "saintes-chapelles europe",
+        "entities": [
+          "Karlštejn Castle",
+          "Hofburgkapelle",
+          "Wrocław",
+          "Exeter College"
+        ],
+        "key_claims": [
+          "Karlštejn Castle near Prague (c. 1360) modelled on Sainte-Chapelle",
+          "Hofburgkapelle in Vienna consecrated 1449",
+          "Collegiate Church of the Holy Cross and St Bartholomew, Wrocław (c. 1350)",
+          "Exeter College, Oxford (1860)",
+          "Such chapels worked as diplomatic tools as well as piety"
+        ],
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "As the status of Saint Louis grew among Europe's aristocracy, the influence of his famous chapel also extended beyond France, with important copies at Karlštejn Castle near Prague (c. 1360), the Hofburgkapelle in Vienna (consecrated 1449), Collegiate Church of the Holy Cross and St. Bartholomew, Wrocław (c. 1350) and Exeter College, Oxford (1860).\nFor the patrons, such chapels served not only as public expressions of personal piety but also as valuable diplomatic tools, encouraging important visitors to come and venerate their relics and showing their connection to the French crown.",
+        "source_chunk_slug": "sainte_chapelle-rev-1354169735"
+      },
+      {
+        "script_body": "The Sainte-Chapelle was built by Saint Louis to house a piece of the Holy Cross and the Crown of Thorns, which he bought from Baudouin II, the last Emperor of Constantinople, who was in desperate need of funds to defend his city. The architects — Pierre de Montreuil, or perhaps Jean de Chelles — were set an unusual brief: design a chapel to have the light, lacy aspect of a reliquary. The result was stunningly beyond expectation. It took barely five years. The silver and gold reliquary that originally held the Crown of Thorns was sent to the Mint during the Revolution, but its contents — genuine or not — miraculously survived and are kept today at Notre-Dame. Even the standard-bearers of the Revolutionary ideal, it seems, did not dare to tamper with the most holy of Christian symbols. The chapel itself was shown no such consideration: it served as a flour store, then as a depot for court archives, growing so dilapidated that in 1847 it still bore an inscription reading 'National property, for sale.' Fortunately enlightened souls called on Viollet-le-Duc, Lassus, and others to restore the church, and 720 of the 1,134 original stained-glass scenes were preserved.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "Crown of Thorns",
+        "entities": [
+          "Saint Louis",
+          "Baudouin II",
+          "Pierre de Montreuil",
+          "Jean de Chelles"
+        ],
+        "duration_sec": 80,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "the Sainte-Chapelle, built by Saint Louis to house a piece of the Holy Cross and the Crown of Thorns. He had bought them from Baudouin II, the last Emperor of Constantinople, who was in desperate need of funds to defend his city. The chapel was therefore designed to have the light, lacy aspect of a reliquary. The result was stunningly beyond expectation. It took its architect (Pierre de Montreuil or, perhaps, Jean de Chelles) barely five years to build a masterpiece of harmonious proportions [...]. Although the silver and gold reliquary containing the crown of thorns was dispatched to the Mint during the Revolution, its contents (whether genuine or not) have miraculously survived and are now kept at Notre-Dame. Is it that even the standard-bearers of the Revolutionary ideal did not dare to tamper with the most holy of Christian symbols? The chapel was not shown the same consideration and was used first to store flour, then as a depot for the court house archives; by which time it was so dilapidated that it was put on the market for sale and demolition. In 1847 it still bore an inscription which read: 'National property, for sale'. Fortunately, some enlightened souls [...] called upon Viollet-le-Duc, Lassus and other artists to restore the church to its ancient beauty. [...] 720 of the 1,134 original scenes having been preserved.",
+        "source_chunk_slug": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+      },
+      {
+        "script_body": "A combined ticket can be purchased for visiting both the museum and the Sainte-Chapelle, built in the 1240s. The stained glass windows here are the finest in Paris, being intended for the private chapel of the King. St Louis had the chapel built to house the Crown of Thorns and other precious holy relics that can now be seen in Notre-Dame.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "royal relic chapel",
+        "entities": [
+          "St Louis",
+          "Crown of Thorns",
+          "Notre-Dame"
+        ],
+        "key_claims": [
+          "Sainte-Chapelle was built in the 1240s",
+          "Stained glass windows are the finest in Paris, made for the King's private chapel",
+          "St Louis built the chapel to house the Crown of Thorns and other relics now in Notre-Dame"
+        ],
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "A combined ticket can be purchased for visiting both the museum and the Sainte-Chapelle, built in the 1240s. The stained glass windows here are the finest in Paris, being intended for the private chapel of the King. St Louis had the chapel built to house the Crown of Thorns and other precious holy relics that can now be seen in Notre-Dame.",
+        "source_chunk_slug": "chunk-01-birthplace-of-the-city"
+      },
+      {
+        "script_body": "There are 1,113 glass panels in the upper chapel, two-thirds of them original — the rest date from the nineteenth-century restoration. Together they tell virtually the entire story of the Bible: starting on the north side with Genesis, continuing with the Passion of Christ at the east end and the history of the Sainte-Chapelle relics on the south side, and ending with the Apocalypse in the rose window. The chapel is frequently used for classical concerts; tickets bought a day or so in advance avoid long queues.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "bible cycle glass",
+        "entities": [
+          "Christ",
+          "Genesis",
+          "Apocalypse"
+        ],
+        "key_claims": [
+          "1,113 panels total, two-thirds original",
+          "Cycle: Genesis north, Passion east, relic history south, Apocalypse in rose window",
+          "Used as a classical concert venue"
+        ],
+        "sub_location": "upper-chapel",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "There are 1113 glass panels, two-thirds of which are original (the others date from the nineteenth-century restoration); they tell virtually the entire story of the Bible, beginning on the north side with Genesis, continuing with the Passion of Christ (east end) and the history of the Sainte-Chapelle relics (on the south side), and ending with the Apocalypse in the rose window. The chapel is frequently used for classical concerts – buy tickets a day or so in advance to avoid long queues.",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "After the Revolution, the Crown of Thorns left Sainte-Chapelle. A new gold and crystal reliquary was made for it, and from the Concordat of 1801 onward it was displayed in the treasury of Notre-Dame. On 15 April 2019, when fire broke out at Notre-Dame, the crown was rescued. It was kept temporarily at the Louvre during the long restoration, and returned to Notre-Dame in December 2024 — eight centuries after Louis carried it barefoot through Paris.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "beat_length_class": "seasoning",
+        "subject_tag": "crown survived fire",
+        "entities": [
+          "Notre-Dame Cathedral",
+          "Louvre Museum"
+        ],
+        "key_claims": [
+          "After the Revolution, a new gold and crystal reliquary was made for the Crown of Thorns",
+          "From Concordat of 1801 it lived in the treasury of Notre-Dame",
+          "Saved from the Notre-Dame fire 15 April 2019",
+          "Kept temporarily at the Louvre, returned to Notre-Dame December 2024"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "During the French Revolution, the Chasse and the vessels holding the relics were taken apart and melted down for their jewels and precious metals. The fragment of the cross was transferred first in 1793 to a collection of antiquities, then given to the Bishop of Paris. A new reliquary of gold and crystal was made for the crown of thorns. Since the Concordat of 1801, it was displayed in the treasury of the cathedral of Notre Dame de Paris, but it was saved from the Notre-Dame de Paris fire on 15 April 2019 and was kept temporarily in the Louvre Museum. It returned to the cathedral in December of 2024.",
+        "source_chunk_slug": "sainte_chapelle-rev-1354169735"
+      },
+      {
+        "script_body": "The relics arrived in Paris in August 1239, carried from Venice by two Dominican friars. King Louis hosted a week-long celebratory reception. For the final stage of the journey he carried the relics himself, barefoot and dressed as a penitent — a scene shown in the Relics of the Passion window on the south side of the chapel. The numbers reveal what kind of priority this was: Louis paid 135,000 livres for the relics, then a further 100,000 livres for the silver Grand-Chasse to hold them. The chapel itself cost 40,000 livres to build and glaze.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "louis barefoot relics",
+        "entities": [
+          "Louis IX",
+          "Baldwin II",
+          "Grand-Chasse"
+        ],
+        "key_claims": [
+          "August 1239: relics carried from Venice to Paris by two Dominican friars",
+          "Louis carried them himself for the final stage, barefoot and dressed as a penitent",
+          "Depicted in the Relics of the Passion window on the south side",
+          "Relics cost 135,000 livres, Grand-Chasse 100,000 livres, the chapel itself only 40,000 livres"
+        ],
+        "sub_location": "south-side-relics-of-passion-window",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "Louis purchased his Passion relics from Baldwin II, the Latin emperor at Constantinople, for the sum of 135,000 livres. This money was paid to the Venetians to whom the relics had been pawned. \nThe relics arrived in Paris in August 1239, carried from Venice by two Dominican friars. Upon arrival, King Louis hosted a week-long celebratory reception for the relics. For the final stage of their journey they were carried by Louis IX himself, barefoot and dressed as a penitent, a scene depicted in the Relics of the Passion window on the south side of the chapel. The relics were stored in a large and elaborate silver chest, the Grand-Chasse, on which Louis spent a further 100,000 livres. \nThe entire chapel, by contrast, cost 40,000 livres to build and glaze.",
+        "source_chunk_slug": "sainte_chapelle-rev-1354169735"
+      },
+      {
+        "script_body": "The names of the master glaziers who built these windows between 1242 and 1248 have all been lost. But art historian Louis Grodecki identified three different workshops by style. The first made the apse windows and most of the north wall — supple forms, simplified features. The second, the Master of the Ezekiel Window, made the Ezekiel, Daniel and Kings windows — elongated figures, angular drapery. The third, the Master of Judith and Esther, made those two windows and the window of Job — subtler faces, the feel of an illuminated manuscript.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "three workshops grodecki",
+        "entities": [
+          "Louis Grodecki",
+          "Master of the Ezekiel Window",
+          "Master of Judith and Esther"
+        ],
+        "key_claims": [
+          "Windows installed 1242-1248; glaziers' names lost",
+          "Louis Grodecki identified three workshops by style",
+          "Workshop 1: apse + most of north wall — supple forms, simplified features",
+          "Workshop 2 (Master of Ezekiel): Ezekiel, Daniel, Kings — elongated forms, angular drapery",
+          "Workshop 3 (Master of Judith and Esther): plus Job — subtle faces, illuminated-manuscript feel"
+        ],
+        "sub_location": "upper-chapel-windows",
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "Most of the windows were put into place between 1242 and 1248. The names of the glass artists are unknown, but the art historian Louis Grodecki identified what appear to be three different ateliers with different styles. The windows in the apse and most of the windows on the north wall of the nave are made by one workshop. These works are known for supple forms and costumes, with simplified features. The second workshop, named by Grodecki as Master of the Ezekiel window, made the Ezekiel and Daniel windows, as well as the window of the Kings. That work is characterized by elongated forms, and more elaborate and angular draperies. The third artist or workshop is called the Master of Judith and Esther, for the distinct style of those windows, as well as the window of Job. They are distinguished by more subtle details in the faces, and a resemblance to the figures in illuminated manuscripts.",
+        "source_chunk_slug": "sainte_chapelle-rev-1354169735"
+      },
+      {
+        "script_body": "On 24 May 1871, barely four years after the full restoration was complete, the Communards poured petrol over the Sainte-Chapelle and only failed to set it on fire for lack of time. Everything you see inside is what they almost burned.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "beat_length_class": "seasoning",
+        "subject_tag": "Communards petrol",
+        "entities": [
+          "Communards"
+        ],
+        "duration_sec": 16,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "on 24 May 1871, barely four years after the completion of the restoration, the Communards had poured petrol over the Sainte-Chapelle, and only failed to set it on fire for lack of time.",
+        "source_chunk_slug": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+      },
+      {
+        "script_body": "The stained glass was removed and placed in safe storage during World War II. When it was reinstalled in 1945, a layer of external varnish was applied to protect it from the dust and scratches of wartime bombing. Over the decades, that protective varnish gradually darkened, making the already-fading images even harder to see — one of the problems the 2008-2015 restoration would have to solve.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "beat_length_class": "seasoning",
+        "subject_tag": "wwii varnish darkened",
+        "entities": [],
+        "key_claims": [
+          "Stained glass removed during WWII, returned and varnish applied 1945",
+          "Varnish meant to protect from bombing dust + scratches",
+          "Varnish gradually darkened, making the images harder to see",
+          "Problem addressed by the 2008-2015 restoration"
+        ],
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "The stained glass was removed and placed into safe storage during World War II. In 1945 a layer of external varnish had been applied to protect the glass from the dust and scratches of wartime bombing. This had gradually darkened, making the already fading images even harder to see. In 2008, a more comprehensive seven-year programme of restoration began",
+        "source_chunk_slug": "sainte_chapelle-rev-1354169735"
+      }
+    ]
+  },
+  {
+    "poi": {
+      "name": "Conciergerie",
+      "city_name": "paris",
+      "importance_tier": 5,
+      "poi_role": "stop",
+      "short_description": "Medieval royal palace turned Revolutionary prison where Marie Antoinette and over 2,700 inmates were held during the Reign of Terror",
+      "trigger_radius": 10,
+      "kid_friendly": "yes",
+      "latitude": 48.8558,
+      "longitude": 2.3458
+    },
+    "beats": [
+      {
+        "script_body": "Among the notorious prisoners of the Conciergerie were Ravaillac, the assassin of Henri IV; the mass poisoner La Marquise de Brinvilliers (1630-1676), who had eliminated the better part of her numerous household; and Cartouche (1693-1721), the most notorious bandit of his age and the terror of Paris. To be admitted into Cartouche's prestigious gang, a candidate had to prove himself an expert cutpurse. Candidates were made to practise on dummies covered with little bells until they could strip them clean without the slightest tinkling. All three prisoners awaited execution at the Conciergerie.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Candidates",
+          "Henri IV",
+          "La Marquise de Brinvilliers"
+        ],
+        "key_claims": [
+          "Ravaillac held at Conciergerie",
+          "Marquise de Brinvilliers mass poisoner 1630-1676",
+          "Cartouche notorious bandit 1693-1721 terror of Paris",
+          "Gang candidates practised on dummies with bells"
+        ],
+        "duration_sec": 40,
+        "kid_friendly": "no",
+        "fact_status": "verified",
+        "confidence": "HIGH",
+        "source_passage": "Candidates were made to practise on dummies covered with little bells, until they could strip them without the slightest tinkling",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "At no. 1 quai de l'Horloge stands the entrance to the Conciergerie — originally the seat of the governor of the King's palace, hence its name. It became a prison in 1391 and remained so until 1934. Not unlike a modern concierge supplementing his income, the Palace concierge profited from vendors who leased the many shops within the Palace walls. But the prison's reality was far darker. In the 15th century, passers-by could still hear the screams of tortured prisoners in the Tour Bonbec — the most westerly tower. The name 'bon-bec' (meaning 'prate' in the Middle Ages) probably alluded to the interrogations on the ground floor: a varied spectrum of torture methods was devised to make victims confess and denounce their accomplices. During a restoration in 1828, two oubliettes were found in the tower's basement, communicating with the river and spiked with iron points — needless to dwell on the fate of the prisoners.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "entities": [
+          "Horloge",
+          "Middle Ages",
+          "Palace",
+          "Tour Bonbec"
+        ],
+        "key_claims": [
+          "Originally seat of palace governor hence name Conciergerie",
+          "Prison from 1391 to 1914",
+          "Tour Bonbec screams of tortured prisoners 15th century",
+          "Bon-bec means prate alluding to forced confessions",
+          "Two oubliettes with iron spikes found 1828 communicating with river"
+        ],
+        "duration_sec": 64,
+        "kid_friendly": "no",
+        "fact_status": "corrected",
+        "confidence": "HIGH",
+        "source_passage": "the passer-by could still hear the screams of tortured prisoners in the Tour Bonbec... two oubliettes, communicating with the river and spiked with iron points, were found in its basement",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "During the Revolution, the Conciergerie boasted an impressive list of illustrious prisoners awaiting their deaths. Madame Roland, who had supported the Revolution but sided with the Girondins at the wrong time. Marie-Antoinette, who occupied a dreary cell from 2 August to 16 October 1793, when she was taken to the guillotine on Place de la Révolution. Then Danton, Robespierre and Saint-Just were detained here in their turn — Danton and Robespierre occupying the cells adjacent to the Queen's. In all, some 2,780 victims of the Revolutionary Tribunal passed through the arcade entrance to the jeers of delighted tricoteuses huddled on the perron.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "entities": [
+          "Girondins",
+          "Madame Roland",
+          "Marie-Antoinette",
+          "Place de la Révolution",
+          "Revolutionary Tribunal",
+          "Robespierre",
+          "Then Danton"
+        ],
+        "key_claims": [
+          "Madame Roland sided with Girondins",
+          "Marie-Antoinette cell 2 August to 16 October 1793",
+          "Danton and Robespierre in cells adjacent to queen's",
+          "~2780 victims condemned passed through arcade to tricoteuses"
+        ],
+        "duration_sec": 44,
+        "kid_friendly": "no",
+        "fact_status": "corrected",
+        "confidence": "HIGH",
+        "source_passage": "Marie-Antoinette, who occupied a dreary cell from 2 August to 16 October 1793... Danton and Robespierre occupying the cells adjacent to the queen's",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "North of the Conciergerie's Gothic halls was a section of the prison leading to the dark cells, known as 'rue de Paris' — named after the Great Executioner, Monsieur de Paris. This post was held by seven successive generations of the Sanson family, from 1688 to 1847, transmitted from father to son. Shortly before the Revolution, Louis XVI had set his heart on improving their plight and granted Charles-Henri Sanson an annual fee of 16,000 pounds plus 2,000 crowns for the upkeep of the scaffold and pillory — never suspecting he would become his own executioner. Being a royalist, Charles-Henri had no desire to carry out that deed. On 15 August 1792 he was arrested as 'the despot's employee'; with each execution he would be dispatched from his cell to Place du Carrousel, where the guillotine stood, and afterwards taken back. When the guillotine began to work at full swing and his expert hand could not be dispensed with, he was released — but retired soon after executing his sovereign. His son Henri held the position during the Terror and beyond, until 1840. The film-maker Jean Renoir marvelled that his own grandfather — the painter's father, a tailor from Limoges — had known Henri's chief assistant during the Terror: a man who 'may have passed Voltaire and Benjamin Franklin in the street, heard Mozart play the harpsichord.' Old Renoir befriended the assistant, and as Jean Renoir observed: 'After all, they were two good workmen: one cut out cloth, the other cut off heads just as conscientiously.'",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Being",
+          "Benjamin Franklin",
+          "Great Executioner",
+          "Henri Sanson",
+          "Jean Renoir",
+          "Louis XVI",
+          "Monsieur de Paris",
+          "Mozart",
+          "North",
+          "Old Renoir",
+          "Place du Carrousel",
+          "Shortly",
+          "Terror",
+          "Voltaire"
+        ],
+        "key_claims": [
+          "Rue de Paris named after Great Executioner",
+          "Sanson family 7 generations 1688-1847",
+          "Louis XVI granted Charles-Henri Sanson 16000 pounds for scaffold",
+          "Charles-Henri arrested as despot's employee then forced to execute king",
+          "Jean Renoir's grandfather knew the chief assistant during Terror",
+          "One cut cloth the other cut off heads"
+        ],
+        "duration_sec": 96,
+        "kid_friendly": "no",
+        "fact_status": "verified",
+        "confidence": "HIGH",
+        "source_passage": "After all, they were two good workmen: one cut out cloth, the other cut off heads just as conscientiously",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "At no. 115 rue Saint-Honoré stood the pharmacy where the Swedish Marshal Fersen is believed to have obtained the invisible ink for his secret correspondence with Marie-Antoinette during her sequestration at the Conciergerie. A close friend of the royal family, Fersen had tried to help them escape from France. Evidence of the existence of the pharmacy goes back to 1715, making it one of the oldest in Paris.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent",
+        "entities": [
+          "Evidence",
+          "Honoré",
+          "Marie-Antoinette",
+          "Swedish Marshal Fersen"
+        ],
+        "key_claims": [
+          "Pharmacy at 115 rue Saint-Honoré",
+          "Fersen obtained invisible ink there",
+          "Correspondence with Marie-Antoinette during Conciergerie sequestration",
+          "Fersen tried to help royal family escape",
+          "Pharmacy dates to 1715"
+        ],
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "fact_status": "verified",
+        "confidence": "MEDIUM",
+        "source_passage": "the pharmacy where the Swedish Marshal Fersen is believed to have obtained the invisible ink for his correspondence with Marie-Antoinette during her sequestration at the Conciergerie",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Among the notorious prisoners held here in later centuries were Ravaillac — the assassin of Henri IV — the mass poisoner La Marquise de Brinvilliers, who had eliminated the better part of her own household, and Cartouche (1693–1721), the most notorious bandit of his age. To be admitted into Cartouche's gang you had to prove yourself an expert cutpurse: candidates practised on dummies hung with little bells, and had to strip the dummies without the slightest tinkling. All three awaited execution here.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "beat_length_class": "mid",
+        "subject_tag": "Cartouche bandit",
+        "entities": [
+          "Cartouche",
+          "Ravaillac",
+          "La Marquise de Brinvilliers"
+        ],
+        "duration_sec": 33,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "Among the notorious prisoners of the Conciergerie in later years were Ravaillac, the assassin of Henri IV; the mass poisoner La Marquise de Brinvilliers (1630-1676), who had eliminated the better part of her numerous household; and Cartouche (1693-1721), the most notorious bandit of his age, the terror of Paris. In order to be admitted into his prestigious gang one had to be proved an expert cutpurse. Candidates were made to practise on dummies covered with little bells, until they could strip them without the slightest tinkling. All three prisoners awaited execution at the Conciergerie.",
+        "source_chunk_slug": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+      },
+      {
+        "script_body": "North of the Gothic halls ran a section of the prison leading to the dark cells, known as rue de Paris — named after the Great Executioner, Monsieur de Paris. That post was held by seven successive generations of the Sanson family, from 1688 to 1847, transmitted from father to son. Shortly before the Revolution, Louis XVI had set his heart on improving the executioners' plight and granted Charles-Henri Sanson an annual fee of 16,000 pounds plus 2,000 crowns for the upkeep of the scaffold and pillory — never suspecting he would become his own executioner. Being a royalist, Charles-Henri had no desire to carry out that deed. On 15 August 1792 he was arrested as \"the despot's employee\"; with each execution he was dispatched from his cell to the Place du Carrousel, where the guillotine then stood, and afterwards taken back. Early on executions were few, but once the guillotine began to work at full swing and his expert hand could not be spared, he was released. He retired soon after he had executed his sovereign. His son Henri held the position through the Terror and the precarious regimes that followed, until 1840 — well into the reign of Louis-Philippe.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic",
+        "beat_length_class": "anchor",
+        "subject_tag": "Sanson dynasty",
+        "entities": [
+          "Charles-Henri Sanson",
+          "Louis XVI",
+          "Henri Sanson",
+          "Monsieur de Paris"
+        ],
+        "sub_location": "rue-de-paris-cells",
+        "duration_sec": 80,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "North of these halls was located a section of the prison leading to the dark prison cells, known as 'rue de Paris', so named after the Great Executioner, Monsieur de Paris. This post was held by seven successive generations of the Sanson family, from 1688 to 1847, transmitted from father to son. Shortly before the Revolution Louis XVI had set his heart on improving their plight and granted Charles-Henri Sanson an annual fee of 16,000 pounds plus 2,000 crowns for the upkeep of the scaffold and pillory, undoubting he would become his own executioner! Being a royalist, Charles-Henri had no desire to carry out that deed. On 15 August 1792 he had been arrested as 'the despot's employee'; with each execution he would be dispatched to Place du Carrousel, where the guillotine was then erected, and afterwards would be taken back to his cell. At first, executions were few, but when the guillotine began to work at full swing and his expert hand could not be dispensed with, he was released. However, he retired soon after he had executed his sovereign. His son Henri held the position during the Terror, and throughout the following precarious regimes, until 1840, well into the reign of Louis-Philippe.",
+        "source_chunk_slug": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+      },
+      {
+        "script_body": "In the 15th century passers-by could still hear the screams of tortured prisoners from the Tour Bonbec — the westernmost tower of the Conciergerie. During the tower's restoration in 1828, workers found two oubliettes in the basement: concealed dungeons spiked with iron points and connected to the river. Needless to dwell on the fate of the prisoners dropped into them. The name bon-bec — medieval French for prate — probably alluded to the interrogations on the ground floor, where a varied spectrum of torture methods was devised to extract confessions and denunciations.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "beat_length_class": "mid",
+        "subject_tag": "Tour Bonbec oubliettes",
+        "entities": [],
+        "sub_location": "tour-bonbec",
+        "duration_sec": 37,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "In the 15th century the passer-by could still hear the screams of tortured prisoners in the Tour Bonbec (the most westerly one). During its restoration in 1828, two oubliettes, communicating with the river and spiked with iron points, were found in its basement: needless to dwell on the fate of the prisoners. The name bon-bec ('prate' in the Middle Ages) probably alluded to the interrogations that took place on the ground floor: a varied spectrum of torture methods was devised to make the victim confess and denounce his accomplices.",
+        "source_chunk_slug": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+      },
+      {
+        "script_body": "The westernmost tower facing the Seine is where prisoners were tortured. Since their screams could be heard across the river, it is called the Tour Bonbec, meaning 'Good Talker Tower'.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "beat_length_class": "mid",
+        "subject_tag": "bonbec torture",
+        "entities": [
+          "Tour Bonbec"
+        ],
+        "key_claims": [
+          "Westernmost tower facing the Seine was the torture tower",
+          "Prisoners' screams could be heard across the river, giving the tower its name Tour Bonbec — 'Big Mouth Tower'"
+        ],
+        "sub_location": "tour-bonbec",
+        "duration_sec": 12,
+        "kid_friendly": "no",
+        "fact_status": "corrected",
+        "confidence": "",
+        "source_passage": "The westernmost tower facing the Seine is where prisoners were tortured. Since their screams could be heard across the river, it is called the Tour Bon Bec, meaning 'Big Mouth Tower'.",
+        "source_chunk_slug": "chunk-01-birthplace-of-the-city"
+      },
+      {
+        "script_body": "On the upper storey is a mock-up of Marie-Antoinette's cell, in which the condemned queen's crucifix hangs forlornly against peeling fleur-de-lys wallpaper.",
+        "active_status": "active",
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "somber",
+        "beat_length_class": "seasoning",
+        "subject_tag": "marie-antoinette cell",
+        "entities": [
+          "Marie-Antoinette"
+        ],
+        "key_claims": [
+          "Upper-storey mock-up of Marie-Antoinette's cell",
+          "Crucifix against peeling fleur-de-lys wallpaper"
+        ],
+        "sub_location": "marie-antoinette-cell-mockup",
+        "duration_sec": 11,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "On the upper storey is a mock-up of Marie-Antoinette's cell in which the condemned queen's crucifix hangs forlornly against peeling fleur-de-lys wallpaper.",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "The Conciergerie is one of the few remaining vestiges of the old medieval Palais de Justice and is Paris's oldest prison — where Marie-Antoinette and the leading figures of the Revolution were incarcerated before execution. Inside are several splendid, vaulted Gothic halls, including the Salle des Gens d'Armes, built in 1301 to 1315. The far end is separated off by an iron grille; during the Revolution this area was reserved for the pailleux, prisoners who couldn't afford to bribe a guard for their own cell and had to sleep on straw (paille).",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "beat_length_class": "mid",
+        "subject_tag": "pailleux grille",
+        "entities": [
+          "Marie-Antoinette",
+          "Salle des Gens d'Armes",
+          "pailleux"
+        ],
+        "key_claims": [
+          "Vestige of the old medieval Palais de Justice",
+          "Paris's oldest prison",
+          "Marie-Antoinette and Revolutionary leaders held here",
+          "Salle des Gens d'Armes built 1301-15",
+          "Iron grille at the far end set off the pailleux who slept on straw"
+        ],
+        "sub_location": "salle-des-gens-darmes",
+        "duration_sec": 38,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "The Conciergerie is one of the few remaining vestiges of the old medieval Palais de Justice and is Paris's oldest prison, where Marie-Antoinette and the leading figures of the Revolution were incarcerated before execution. Inside are several splendid, vaulted Gothic halls, including the Salle des Gens d'Armes, built in 1301–15. The far end is separated off by an iron grille; during the Revolution this area was reserved for the pailleux, prisoners who couldn't afford to bribe a guard for their own cell and had to sleep on straw (paille).",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "Beyond is a corridor where prisoners were allowed to wander freely. Among the reconstructed rooms here is the salle de toilette, where the condemned had their hair cropped and shirt collars ripped off in preparation for the guillotine.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "beat_length_class": "seasoning",
+        "subject_tag": "guillotine prep room",
+        "entities": [],
+        "key_claims": [
+          "Corridor where prisoners wandered freely",
+          "Reconstructed salle de toilette: hair cropped, collars ripped before the guillotine"
+        ],
+        "sub_location": "salle-de-toilette",
+        "duration_sec": 16,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "Beyond is a corridor where prisoners were allowed to wander freely. There are a number of reconstructed rooms here, such as the \"salle de toilette\", where the condemned had their hair cropped and shirt collars ripped in preparation for the guillotine.",
+        "source_chunk_slug": "chunk-01-islands"
+      }
+    ]
+  },
+  {
+    "poi": {
+      "name": "Pont Neuf",
+      "city_name": "paris",
+      "importance_tier": 5,
+      "poi_role": "stop",
+      "short_description": "Oldest surviving bridge in Paris built in 1578, the first stone bridge without houses on it, with 381 carved grotesque faces",
+      "trigger_radius": 10,
+      "kid_friendly": "yes",
+      "latitude": 48.85675,
+      "longitude": 2.341033
+    },
+    "beats": [
+      {
+        "script_body": "Steps beside the statue lead down to the square du Vert Galant, where Jacques de Molay, Grand Master of the Templars, was burnt at the stake, cursing the kings as he was consumed by the flames.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "beat_length_class": "mid",
+        "subject_tag": "templar curse",
+        "entities": [
+          "Jacques de Molay",
+          "Templars"
+        ],
+        "key_claims": [
+          "Jacques de Molay, Grand Master of the Templars, was burnt at the stake at the square du Vert Galant",
+          "He cursed the kings as he was consumed by the flames"
+        ],
+        "sub_location": "square-du-vert-galant",
+        "duration_sec": 14,
+        "kid_friendly": "no",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "Steps beside the statue lead down to the square du Vert Galant, where Jacques de Molay, Grand Master of the Templars, was burnt at the stake, cursing the kings as he was consumed by the flames.",
+        "source_chunk_slug": "chunk-01-birthplace-of-the-city"
+      },
+      {
+        "script_body": "The original statue of Henry IV was melted down during the Revolution. The anti-Royalist who replaced it secretly hid a statuette of Napoleon in the horse's belly; this was recently discovered during restoration work.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "beat_length_class": "mid",
+        "subject_tag": "horse belly napoleon",
+        "entities": [
+          "Henry IV",
+          "Napoleon"
+        ],
+        "key_claims": [
+          "Original Henry IV statue was melted down during the Revolution",
+          "Anti-Royalist replacement smuggled a Napoleon statuette inside the horse's belly",
+          "Hidden statuette discovered during restoration work"
+        ],
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "The original statue of Henry IV was melted down during the Revolution. The anti-Royalist who replaced it secretly hid a statuette of Napoleon in the horse's belly; this was recently discovered during restoration work.",
+        "source_chunk_slug": "chunk-01-birthplace-of-the-city"
+      },
+      {
+        "script_body": "Pont Neuf means New Bridge, but, ironically, it is the oldest in Paris and was the first to be built of stone and to be free of houses. The semicircular side bays were originally market stalls used by teeth-pullers, quack doctors and other merchants.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "beat_length_class": "mid",
+        "subject_tag": "oldest new bridge",
+        "entities": [],
+        "key_claims": [
+          "Pont Neuf means New Bridge but is actually the oldest bridge in Paris",
+          "First Paris bridge built of stone and free of houses",
+          "Semicircular side bays were originally market stalls for teeth-pullers, quack doctors and merchants"
+        ],
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "Pont Neuf means New Bridge, but, ironically, it is the oldest in Paris and was the first to be built of stone and to be free of houses. The semicircular side bays were originally market stalls used by teeth-pullers, quack doctors and other merchants.",
+        "source_chunk_slug": "chunk-01-birthplace-of-the-city"
+      },
+      {
+        "script_body": "The large green standing boxes full of books and prints that line the quais on both banks of the Seine — les bouquinistes, the quintessentially Parisian version of bookselling — had their first location here on the Pont Neuf.",
+        "active_status": "active",
+        "narrative_function": "factoid",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "beat_length_class": "seasoning",
+        "subject_tag": "bouquinistes Pont Neuf",
+        "entities": [],
+        "key_claims": [
+          "Les bouquinistes — the large green standing boxes full of books and prints — line quais on both banks",
+          "The first bouquinistes were located on Pont Neuf"
+        ],
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "HIGH",
+        "source_passage": "LES BOUQUINISTES The quintessentially Parisian version of bookselling. The large green standing boxes full of books and prints line the quais on both banks of the Seine. The first ones were located on Pont Neuf.",
+        "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani"
+      },
+      {
+        "script_body": "The original equestrian statue of Henry IV at the heart of the bridge was destroyed in 1792. When the Bourbons returned, the statue was rebuilt in 1818 — by public subscription. Bronze for the new statue was obtained by melting down a statue of Louis Charles Antoine Desaix. The new cast was made from a surviving mould of the original. Before the new Henri IV was sealed, the sculptor François-Frédéric Lemot hid four boxes inside it: a history of the life of Henri IV, a 17th-century parchment certifying the original statue, a document describing how the new statue had been commissioned, and a list of the people who had contributed to the public subscription.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "four boxes statue",
+        "entities": [
+          "François-Frédéric Lemot",
+          "Henry IV",
+          "Louis Charles Antoine Desaix",
+          "Giambologna"
+        ],
+        "key_claims": [
+          "Original statue (1614) destroyed 1792, rebuilt 1818 by public subscription",
+          "Bronze obtained by melting down a statue of Louis Charles Antoine Desaix",
+          "Lemot put 4 boxes inside the new statue:",
+          "(1) history of Henry IV's life, (2) 17th-c parchment certifying original, (3) document on how new statue was commissioned, (4) list of public-subscription contributors"
+        ],
+        "sub_location": "henry-iv-statue",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "At the point where the bridge crosses the Île de la Cité, there stands a bronze equestrian statue of king Henry IV, originally commissioned from Giambologna under the orders of Marie de Médicis, Henri's widow and Regent of France. After his death, Giambologna's assistant Pietro Tacca completed the statue, which was erected on its pedestal by Pietro Francavilla, in 1614. It was destroyed in 1792 during the French Revolution, but was rebuilt in 1818, following the restoration of the Bourbon monarchy. Commissioned from public donations, bronze for the new statue was obtained from a statue of Louis Charles Antoine Desaix and melted down. The new statue was cast from a mold made using a surviving cast of the original. Inside the statue, the new sculptor François-Frédéric Lemot put four boxes, containing a history of the life of Henry IV, a 17th-century parchment certifying the original statue, a document describing how the new statue was commissioned, and a list of people who contributed to a public subscription.",
+        "source_chunk_slug": "pont_neuf-rev-1356503820"
+      },
+      {
+        "script_body": "The graceful, twelve-arched Pont-Neuf — despite its name, meaning New Bridge — is Paris's oldest surviving bridge. It was built by Henri IV, who is commemorated with a statue halfway across. Made of stone and free of the usual medieval complement of houses, it was a radical departure from previous structures, hence its name. Henri IV, one of the capital's first great town-planners, took much interest in the Pont-Neuf's progress and would sometimes come to inspect it, on one occasion delighting the workmen by taking a flying leap over an incomplete arch.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "beat_length_class": "mid",
+        "subject_tag": "oldest bridge",
+        "entities": [
+          "Henri IV"
+        ],
+        "key_claims": [
+          "Twelve arches",
+          "Paris's oldest surviving bridge despite its name",
+          "Built by Henri IV",
+          "Statue of Henri IV at midpoint",
+          "Stone, no houses on it — radical for its day",
+          "Henri IV jumped over an incomplete arch"
+        ],
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "A popular approach to the Ile de la Cite is via the graceful, twelve-arched Pont-Neuf, which, despite its name (\"New Bridge\"), is Paris's oldest surviving bridge, built by Henri IV, who is commemorated with a statue halfway across. Made of stone and free of the usual medieval complement of houses, it was a radical departure from previous structures, hence its name. Henri IV, one of the capital's first great town-planners, took much interest in the Pont-Neuf's progress and would sometimes come to inspect it, delighting the workmen on one occasion by taking a flying leap over an incomplete arch.",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "Between 1712 and 1719, a large pump house stood on the bridge — fitted with a carillon and decorated with an image of the Samaritan woman at the well. The name stuck: La Samaritaine. The pump house was torn down in 1813. But the name lived on: years later, on the same site, the merchant Ernest Cognacq set up a stand and gradually grew his business into the department store La Samaritaine in 1869.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "beat_length_class": "seasoning",
+        "subject_tag": "samaritaine pump origin",
+        "entities": [
+          "La Samaritaine",
+          "Ernest Cognacq"
+        ],
+        "key_claims": [
+          "1712-1719: pump house with carillon built on the bridge, decorated with image of Samaritan woman at the well",
+          "Pump house named La Samaritaine",
+          "Torn down 1813",
+          "Ernest Cognacq later set up a stand on the site, grew it into department store La Samaritaine in 1869"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "Between 1712 and 1719, replacing an earlier one, a large pump house was built on the bridge. It was decorated with an image of the Samaritan woman at the well. As a result, the structure (which included a carillon) was named La Samaritaine. Years after it was torn down (in 1813), Ernest Cognacq, a 19th-century merchant, set up a stand on the site and gradually grew his business to what became, in 1869, the department store La Samaritaine.",
+        "source_chunk_slug": "pont_neuf-rev-1356503820"
+      },
+      {
+        "script_body": "The picturesque green bookstalls of the bouquinistes along the quais are a remnant of the days when the Pont-Neuf was a world of its own, crowded with strollers, pedlars, acrobats, prostitutes, and riff-raff. When the bridge was cleaned up in the late 18th century, its hucksters spilled over to the quais and eventually settled into the book trade.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "beat_length_class": "seasoning",
+        "subject_tag": "bouquinistes origin",
+        "entities": [],
+        "duration_sec": 23,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "retrace your steps along the picturesque green bookstalls of the bouquinistes. These are a remnant from the time when the Pont-Neuf was a world of its own, crowded with strollers, pedlars, acrobats, prostitutes and riff-raff. When the bridge was cleaned up in the late 18th century, its hucksters spilled over to the quais, eventually settling into the book trade.",
+        "source_chunk_slug": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+      },
+      {
+        "script_body": "Louis Daguerre's 1838 daguerreotype of the Boulevard du Temple is the picture usually called the first photograph in which a human being can be seen. But two years earlier, between 1836 and 1837, Daguerre was running outdoor tests of his new technique — and one of those tests pointed at the Pont Neuf. It captured the bridge and the equestrian statue of Henry IV. On the lower-left of the image, in the shadow of the statue, what appears to be a worker — perhaps two — can be seen lying against the fence. If the dating holds, that figure may be the first human ever photographed.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "daguerre first human",
+        "entities": [
+          "Louis Daguerre",
+          "Henry IV"
+        ],
+        "key_claims": [
+          "1838 Boulevard du Temple daguerreotype usually called first photo of a human",
+          "1836-37: Daguerre ran outdoor tests of his new technique",
+          "One surviving test shows Pont Neuf + equestrian Henry IV statue",
+          "Lower-left of image: what appears to be a worker (or two) lying against fence, in statue's shadow",
+          "If dating holds, may be the first human ever photographed"
+        ],
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "In 1838, Louis Daguerre produced his famous daguerreotype portrait of the View of the Boulevard du Temple, widely considered the first photograph where a human can be seen. However, between 1836 and 1837, Daguerre made several tests, in order to experiment with and perfect the new technique in an outdoor environment. One surviving example is an image of the Pont Neuf and the equestrian statue of Henry IV, made possibly as early as 1836. On the lower-left side of the image, what appears to be a worker, or perhaps two, can be seen lying against the fence, in the shadow of the statue.",
+        "source_chunk_slug": "pont_neuf-rev-1356503820"
+      },
+      {
+        "script_body": "So impressive was the bridge in scale and length that it soon became symbolic of the city itself, drawing large crowds. Pedlars, secondhand book- and flower-sellers, dog-barbers and tooth-pullers set up stalls, while acrobats and actors entertained passers-by.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "beat_length_class": "seasoning",
+        "subject_tag": "bridge street life",
+        "entities": [],
+        "key_claims": [
+          "Pont-Neuf became symbolic of the city",
+          "Pedlars, booksellers, flower-sellers, dog-barbers, tooth-pullers worked the bridge",
+          "Acrobats and actors entertained crowds"
+        ],
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "So impressive was the bridge in scale and length that it soon became symbolic of the city itself, drawing large crowds; pedlars, secondhand book- and flower-sellers, dog-barbers and tooth-pullers set up stalls, while acrobats and actors entertained passers-by.",
+        "source_chunk_slug": "chunk-01-islands"
+      },
+      {
+        "script_body": "Leave Pont Neuf Metro station and cross the bridge, admiring the magnificent views. Stop halfway, at the statue.",
+        "active_status": "active",
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "beat_length_class": "seasoning",
+        "subject_tag": "metro to bridge",
+        "entities": [],
+        "key_claims": [
+          "Walking instruction: leave Pont Neuf Metro station, cross the bridge, stop halfway at the statue"
+        ],
+        "duration_sec": 7,
+        "kid_friendly": "yes",
+        "fact_status": "",
+        "confidence": "",
+        "source_passage": "Leave Pont Neuf Metro station and cross the bridge, admiring the magnificent views. Stop halfway, at the statue.",
+        "source_chunk_slug": "chunk-01-birthplace-of-the-city"
+      },
+      {
+        "script_body": "Three hundred and eighty-one carved stone faces decorate the bridge — each one different from the others. They are heads of forest and field divinities from ancient mythology, plus satyrs and sylvains, copies of originals attributed to the French Renaissance sculptor Germain Pilon — who also carved the tomb of Henry II and Catherine de'Medici at Saint-Denis. The Pilon originals lasted until 1851-1854, when the bridge was completely rebuilt. Six were sent to the Musée Carnavalet, eight others to the Cluny — they are now at the Musée National de la Renaissance at Château d'Écouen. The new copies were carved by Hippolyte Maindron, Hubert Lavigne, Antoine-Louis Barye and Fontenelle — Fontenelle alone made 61, on the upstream side between the right bank and the Île de la Cité.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "beat_length_class": "mid",
+        "subject_tag": "381 mascarons",
+        "entities": [
+          "Germain Pilon",
+          "Hippolyte Maindron",
+          "Hubert Lavigne",
+          "Antoine-Louis Barye",
+          "Fontenelle"
+        ],
+        "key_claims": [
+          "381 mascarons decorate the bridge, each different",
+          "Originals attributed to Germain Pilon, who carved Henry II + Catherine de Medici's tomb at Saint-Denis",
+          "Originals replaced 1851-54 when bridge was rebuilt",
+          "6 originals to Musée Carnavalet, 8 to Cluny → now at Musée de la Renaissance, Château d'Écouen",
+          "Replacements by Maindron, Lavigne, Barye, Fontenelle",
+          "Fontenelle made 61, on upstream side between right bank and Île de la Cité"
+        ],
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "",
+        "source_passage": "The mascarons are 381 stone masks, each different from the others, which decorate the sides of the bridge. They represent the heads of forest and field divinities from ancient mythology, as well as satyrs and sylvains. They are copies of the originals attributed to the French Renaissance sculptor Germain Pilon (1525–1590), who also sculpted the tomb of King Henry II of France and Queen Catherine de'Medici in the Basilica of St Denis, five kilometers north of Paris. The mascarons remained in place until 1851–1854, when the bridge was completely rebuilt. At that time six of the original mascarons from the 16th century were placed in the Musée Carnavalet, along with eight molds of other originals. Eight other originals were first placed in the Musée de Cluny – Musée national du Moyen Âge, and are now in the French National Museum of the Renaissance in the Château d'Écouen. During their reconstruction, the Renaissance masks were replaced with copies made by noted 19th-century sculptors, including Hippolyte Maindron, Hubert Lavigne, Antoine-Louis Barye and Fontenelle. Fontenelle made 61 masks, which are found on the upstream side of the bridge between the right bank and the Île de la Cité.",
+        "source_chunk_slug": "pont_neuf-rev-1356503820"
+      }
+    ]
+  },
+  {
+    "poi": {
+      "name": "Hotel de Ville",
+      "city_name": "paris",
+      "importance_tier": 5,
+      "poi_role": "stop",
+      "short_description": "Neo-Renaissance Paris City Hall that served as Revolution headquarters where Robespierre was arrested in 1794",
+      "trigger_radius": 30,
+      "kid_friendly": "yes",
+      "latitude": 48.856373,
+      "longitude": 2.35221
+    },
+    "beats": [
+      {
+        "script_body": "Place de Greve hosted the fete de la Saint-Jean on 24 June, when a 10-metre-high bonfire celebrated the birth of John the Baptist. Occasionally the King himself would come to light the fire, heralded by trumpets.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Jean",
+          "John",
+          "Occasionally",
+          "Place de Greve"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "The anti-bourgeois proletarian Commune burnt down the Hotel de Ville in 1871. The victorious bourgeois government of the Third Republic rebuilt it at once in its old style, to brush off this incident and demonstrate that its possession was irrevocable.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Third Republic"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "The municipality of Paris grew from the corporation of water merchants who bought the strand (greve) from Louis VII in the 12th century. A tribunal of commerce was set up on Place de Greve, becoming the embryo of the municipality. The corporation's seal, inherited from the ancient Nautae Parisiaci, remains the coat of arms of Paris with only minor changes a thousand years later.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "entities": [
+          "Louis VII",
+          "Nautae Parisiaci",
+          "Place de Greve"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Etienne Marcel, provost of Paris, was the first to settle the city government in a town hall on Place de Greve, buying a two-storeyed house from the king on behalf of the city in 1357. Known as La Maison des Piliers for its row of arcades, it was eventually replaced by a magnificent Renaissance building begun under Francois I.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "entities": [
+          "Etienne Marcel",
+          "Francois I",
+          "Known",
+          "La Maison des Piliers",
+          "Place de Greve"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "After the Commune burned the original Hotel de Ville in 1871, the Third Republic rebuilt it with lavish interiors designed to project the permanence and grandeur of the new regime. Inside you'll find a bust by Rodin and magnificent murals by Puvis de Chavannes — some of the finest civic decorations in Paris.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "entities": [
+          "Puvis de Chavannes",
+          "Rodin",
+          "Third Republic"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Place de Greve was where people gathered in early morning to seek work, a practice called 'faire la greve.' The expression survives in modern French but now means 'to go on strike' — the opposite of its original meaning of seeking employment.",
+        "active_status": "active",
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "entities": [
+          "Place de Greve"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "On Friday 17 July 1676, Madame de Sevigne watched the Marquise de Brinvilliers carried to Place de Greve. The Marquise had poisoned her father (requiring ten attempts) and two brothers. Her lover Godin de Sainte-Croix had learned the art of poison from an Italian named Exili while imprisoned in the Bastille. Sevigne wrote: 'At last, it is all over, the Brinvilliers is in the air.'",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Croix",
+          "Exili",
+          "Godin",
+          "Madame de Sevigne",
+          "Marquise de Brinvilliers",
+          "Place de Greve"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Place de Greve served as Paris's main place of public executions, with gallows as a permanent fixture. Notable executions included Cartouche, the terror of early 18th-century Paris; Ravaillac, assassin of Henri IV; and the Marquise de Brinvilliers, mass poisoner.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "entities": [
+          "Henri IV",
+          "Marquise de Brinvilliers",
+          "Notable",
+          "Place de Greve"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "unverified",
+        "confidence": "HIGH",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "On Friday 17 July 1676, Madame de Sevigne watched the Marquise de Brinvilliers carried to Place de Greve. The Marquise had poisoned her father (ten attempts) and two brothers. Sevigne wrote: 'At last, it is all over, the Brinvilliers is in the air.'",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "entities": [
+          "Madame de Sevigne",
+          "Marquise de Brinvilliers",
+          "Place de Greve"
+        ],
+        "key_claims": [
+          "17 July 1676",
+          "Brinvilliers poisoned father and brothers",
+          "Sevigne witnessed"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "verified",
+        "confidence": "HIGH",
+        "source_passage": "On Friday 17 July 1676, Madame de Sévigné watched the Marquise de Brinvilliers",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Place de Greve served as Paris's main place of public executions. Notable executions included Cartouche, Ravaillac, and the Marquise de Brinvilliers.",
+        "active_status": "active",
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "entities": [
+          "Marquise de Brinvilliers",
+          "Notable",
+          "Place de Greve"
+        ],
+        "key_claims": [
+          "Main execution site",
+          "Cartouche executed",
+          "Ravaillac executed",
+          "Brinvilliers executed"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "verified",
+        "confidence": "HIGH",
+        "source_passage": "the Place de Gréve is remembered above all as the main place of public executions",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "Etienne Marcel bought a two-storeyed house from the king in 1357, known as La Maison des Piliers. It was eventually replaced by a Renaissance building begun under Francois I.",
+        "active_status": "active",
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "entities": [
+          "Etienne Marcel",
+          "Francois I",
+          "La Maison des Piliers"
+        ],
+        "key_claims": [
+          "Etienne Marcel bought house 1357",
+          "La Maison des Piliers",
+          "Replaced under Francois I"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "verified",
+        "confidence": "HIGH",
+        "source_passage": "Etienne Marcel was the first provost to settle in a town hall",
+        "source_chunk_slug": "legacy_ambiguous"
+      },
+      {
+        "script_body": "The municipality grew from the corporation of water merchants who bought the strand from Louis VII. Their seal, inherited from the ancient Nautae Parisiaci, remains the coat of arms of Paris.",
+        "active_status": "active",
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "entities": [
+          "Louis VII",
+          "Nautae Parisiaci"
+        ],
+        "key_claims": [
+          "Water merchants bought strand from Louis VII",
+          "Seal from Nautae Parisiaci",
+          "Coat of arms of Paris"
+        ],
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "fact_status": "verified",
+        "confidence": "HIGH",
+        "source_passage": "the strand was an invaluable asset to the corporation of water merchants",
+        "source_chunk_slug": "legacy_ambiguous"
+      }
+    ]
+  }
+]

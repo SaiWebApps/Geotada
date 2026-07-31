@@ -1,0 +1,155 @@
+"""Everything that silently made a tour worse, collected so a human can SEE it.
+
+WHY THIS EXISTS (owner ruling 2026-07-31). ``HaikuGlueClient`` was made to fail
+soft — a provider hiccup on one transition sentence falls back to a template
+instead of destroying the whole tour. The first version only wrote a log line,
+and the owner's answer was immediate and correct: *"Don't just log errors.
+Actually show them in the workbench UI. Otherwise, they're invisible."*
+
+He is right, and the project has the scars. A degrade nobody sees is
+indistinguishable from success — that is exactly how canned transitions shipped
+as the default for months, how a silent WAV passed for narration, and how a
+validation report read "clean" having verified nothing. Logging moves the lie
+from the product into a file nobody opens.
+
+So: whatever degrades, RECORD it here, and the API hands it to the page.
+
+THE TWO AUDIENCES, both required by the ruling:
+
+1. **A human** reads ``human`` and knows what they lost, in plain words, with no
+   identifiers: "The walking directions between stops were written from a
+   template, not by the narrator."
+2. **Claude** reads ``detail`` and can act without a conversation: the exception
+   type, the message, the component and the operation. The page pastes the whole
+   thing as one block.
+
+Request-scoped via ``contextvars`` so a threaded compose fan-out cannot leak one
+request's degradations into another's response.
+"""
+
+from __future__ import annotations
+
+import contextvars
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass, field
+
+_ACTIVE: contextvars.ContextVar[list[Degradation] | None] = contextvars.ContextVar(
+    "ondoway_degradations", default=None
+)
+
+
+@dataclass(frozen=True)
+class Degradation:
+    """One thing that quietly went wrong, in both registers."""
+
+    #: Stable machine key, e.g. "glue_call_failed". Groups repeats.
+    kind: str
+    #: Plain English, no identifiers. What the reader actually lost.
+    human: str
+    #: What produced it, e.g. "HaikuGlueClient.stitch".
+    component: str
+    #: Exception class name, when there was one.
+    error_type: str = ""
+    #: Exception message, untruncated — this is what gets pasted to Claude.
+    error_message: str = ""
+    #: Anything else worth pasting (category, stop index...).
+    context: dict[str, str] = field(default_factory=dict)
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "kind": self.kind,
+            "human": self.human,
+            "component": self.component,
+            "error_type": self.error_type,
+            "error_message": self.error_message,
+            "context": dict(self.context),
+        }
+
+
+@contextmanager
+def degradation_scope() -> Iterator[list[Degradation]]:
+    """Collect degradations recorded inside this block.
+
+    Each request gets its own list. Outside a scope, ``record`` is a no-op — so
+    the engine never accumulates unbounded state in a long-lived process, and a
+    unit test that does not care is unaffected.
+    """
+    collected: list[Degradation] = []
+    token = _ACTIVE.set(collected)
+    try:
+        yield collected
+    finally:
+        _ACTIVE.reset(token)
+
+
+def in_current_context(fn: Callable[..., object]) -> Callable[..., object]:
+    """Wrap ``fn`` so a worker thread still sees the caller's collection scope.
+
+    MEASURED, and this is why the wrapper is not optional: ``contextvars`` do NOT
+    propagate into ``ThreadPoolExecutor`` workers. Recording from a pooled thread
+    silently found no active scope and dropped the degradation on the floor —
+
+        recorded kinds: ['same_thread']
+        WORKER DEGRADATIONS LOST: True
+
+    An earlier version of this module's docstring asserted "safe to call from
+    anywhere, including threads". It was false, in the one module written to stop
+    invisible failures. ``copy_context().run`` carries the scope across, so the
+    two compose fan-outs (``premium_tour.execute_premium_plan`` and
+    ``authoring``) can report what went wrong inside them.
+    """
+    ctx = contextvars.copy_context()
+
+    def _run(*args: object, **kwargs: object) -> object:
+        return ctx.run(fn, *args, **kwargs)
+
+    return _run
+
+
+def record(
+    *,
+    kind: str,
+    human: str,
+    component: str,
+    error: BaseException | None = None,
+    **context: str,
+) -> None:
+    """Record one degradation.
+
+    A no-op outside a scope. From a worker thread it only works if the callable
+    was wrapped with :func:`in_current_context` — see that function for why.
+    """
+    active = _ACTIVE.get()
+    if active is None:
+        return
+    active.append(
+        Degradation(
+            kind=kind,
+            human=human,
+            component=component,
+            error_type=type(error).__name__ if error is not None else "",
+            error_message=str(error) if error is not None else "",
+            context={k: str(v) for k, v in context.items()},
+        )
+    )
+
+
+def summarize(degradations: list[Degradation]) -> list[dict[str, object]]:
+    """Collapse repeats into one row each, carrying a count and one example.
+
+    A five-stop tour whose narrator is unreachable produces four identical glue
+    failures. Showing them four times buries the signal; showing one with
+    "happened 4 times" is the same information a person can act on.
+    """
+    grouped: dict[str, dict[str, object]] = {}
+    for item in degradations:
+        row = grouped.get(item.kind)
+        if row is None:
+            grouped[item.kind] = {**item.as_dict(), "count": 1}
+        else:
+            row["count"] = int(row["count"]) + 1  # type: ignore[arg-type]
+    return list(grouped.values())
+
+
+__all__ = ["Degradation", "degradation_scope", "in_current_context", "record", "summarize"]

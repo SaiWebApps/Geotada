@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Protocol
 
 from src.audio.provider import OpenAITTSProvider
+from src.tour.degradations import in_current_context
 
 from .artifact import (
     BuildFingerprint,
@@ -436,8 +437,10 @@ def execute_premium_plan(
         receipt_sink.after_call(unit, response)
         return response
 
+    # in_current_context: contextvars do NOT cross into pool workers, so without
+    # this a degradation recorded inside a compose call is silently dropped.
     with ThreadPoolExecutor(max_workers=min(max_workers, len(plan.units))) as pool:
-        return tuple(pool.map(invoke, plan.units))
+        return tuple(pool.map(in_current_context(invoke), plan.units))
 
 
 def finalize_premium_composition(

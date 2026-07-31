@@ -95,7 +95,16 @@ class TestGetProviders:
 
 
 class TestPreviewAudio:
-    def test_mock_returns_wav(self, client):
+    def test_preview_declares_the_one_media_type_it_serves(self, client):
+        """Every registered provider sends text to a real speech service and
+        returns MP3, so the route declares audio/mpeg unconditionally.
+
+        This used to branch on ``provider.name == "mock"`` to answer audio/wav.
+        That branch was DELETED 2026-07-31 (owner order: zero mock references in
+        production code). The test-only double still returns WAV bytes inside a
+        pytest process, but the wire contract is the real one — asserting the
+        double's format here would re-encode the removed branch in a test.
+        """
         resp = client.post(
             "/api/v1/audio/preview",
             json={
@@ -104,8 +113,8 @@ class TestPreviewAudio:
             },
         )
         assert resp.status_code == 200
-        assert resp.headers["content-type"] == "audio/wav"
-        assert len(resp.content) > 100  # Should be a non-trivial WAV
+        assert resp.headers["content-type"] == "audio/mpeg"
+        assert len(resp.content) > 100
 
     def test_unknown_provider_400(self, client):
         resp = client.post(
@@ -137,7 +146,12 @@ class TestPreviewAudio:
         )
         assert resp.status_code == 200
         assert "content-disposition" in resp.headers
-        assert "preview-mock.wav" in resp.headers["content-disposition"]
+        # The filename names the provider that produced the bytes — that is what
+        # makes a downloaded preview self-identifying. The extension is .mp3 for
+        # every provider now: the mock-specific ".wav" branch was deleted with
+        # the rest of the production mock references (2026-07-31).
+        disposition = resp.headers["content-disposition"]
+        assert "preview-mock.mp3" in disposition, disposition
 
 
 # ── POST /audio/compare ──

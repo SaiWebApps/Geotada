@@ -348,6 +348,14 @@ class TripPreviewResponse(BaseModel):
     # Which narrator actually wrote this tour ('anthropic' | 'openai'), so the
     # workbench can label an Opus-vs-ChatGPT comparison. None when not composed.
     provider: str | None = None
+    # EVERYTHING THAT SILENTLY DEGRADED while building this tour (owner ruling
+    # 2026-07-31: "Don't just log errors. Actually show them in the workbench UI.
+    # Otherwise, they're invisible."). Each row carries BOTH registers — `human`
+    # is plain English with no identifiers, `error_type`/`error_message`/
+    # `component`/`context` are what gets pasted to Claude to fix it. Empty list
+    # means nothing degraded, which is a real statement rather than an absence.
+    # See src/tour/degradations.py.
+    degradations: list[dict] = Field(default_factory=list)
     # Objective spoken-narration quality signals for the composed tour (stilted vs
     # engagement scores + the per-100-word tells), so the comparison is MEASURED,
     # not vibes. None when not composed. See tour.narration_quality.

@@ -63,7 +63,10 @@ else
   # drafter now fails closed, and this is the pin that makes the button real. It
   # SPENDS: one Opus call per drafted beat, and the owner removed the cost dialog
   # (frontend/onboard.html), so a click drafts a whole city's beats immediately.
-  WORKBENCH_API_ENABLED=true ONDOWAY_ENABLE_PAID_LLM_CALLS=1 \
+  # (Rate limiters used to be disabled here with five env vars. The limiters
+  # themselves were DELETED from src/api/routes/{trips,audio}.py on 2026-07-31,
+  # so there is nothing left to switch off.)
+  WORKBENCH_API_ENABLED=true \
     TTS_PROVIDER=openai \
     ONBOARD_PROVIDER=anthropic \
     ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1 \

@@ -20,6 +20,7 @@ the caller treats as "fall back to a templated default").
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
@@ -110,11 +111,51 @@ class HaikuGlueClient:
             .replace("{{CONTEXT}}", context.strip() or "(no surrounding context)")
             .replace("{{REQUEST}}", request.strip() or "(no specific request)")
         )
-        response = self._client.messages.create(  # type: ignore[attr-defined]
-            model=self.model,
-            max_tokens=self.max_output_tokens,
-            messages=[{"role": "user", "content": rendered}],
-        )
+        # FAIL SOFT. Glue is one decorative sentence between stops; the tour is
+        # the stops. This call had no exception handling at all until 2026-07-31,
+        # so ANY provider failure propagated out of generate() and destroyed the
+        # whole tour — measured with a blank ANTHROPIC_API_KEY, where the SDK
+        # raises TypeError("Could not resolve authentication method") and
+        # POST /trips/preview answered HTTP 500 in 3.3s. The route's Basic-lane
+        # fallback never ran, because this happens during PLANNING, before the
+        # try block that degrades.
+        #
+        # NO_GLUE_SENTINEL is the engine's existing "no transition available"
+        # value: callers already replace it with a deterministic template
+        # sentence (_coerce_glue_output(out, default=template_nav)). So a failure
+        # here costs one nicety and keeps every stop. Logged with the traceback,
+        # never silent — an unnoticed degrade is how canned transitions shipped
+        # as the default for months.
+        try:
+            response = self._client.messages.create(  # type: ignore[attr-defined]
+                model=self.model,
+                max_tokens=self.max_output_tokens,
+                messages=[{"role": "user", "content": rendered}],
+            )
+        except Exception as exc:
+            logging.getLogger(__name__).warning(
+                "glue call failed for category=%r; falling back to the template "
+                "transition. The tour keeps all its stops.",
+                category,
+                exc_info=True,
+            )
+            # A log line is invisible (owner ruling 2026-07-31). Record it so the
+            # API can hand it to the workbench and the editor SEES that these
+            # transitions were not written by the narrator.
+            from src.tour.degradations import record as _record_degradation
+
+            _record_degradation(
+                kind="glue_call_failed",
+                human=(
+                    "The short walking directions between stops were written from "
+                    "a fixed template, not by the narrator, because the narration "
+                    "model could not be reached."
+                ),
+                component="HaikuGlueClient.stitch",
+                error=exc,
+                glue_category=category,
+            )
+            return NO_GLUE_SENTINEL
         usage = getattr(response, "usage", None)
         if usage is not None:
             self.input_tokens += int(getattr(usage, "input_tokens", 0) or 0)

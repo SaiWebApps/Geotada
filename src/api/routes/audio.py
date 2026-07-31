@@ -6,7 +6,7 @@ import hashlib
 import os
 import tempfile
 import time
-from collections import OrderedDict, deque
+from collections import OrderedDict
 from pathlib import Path
 from threading import Lock
 
@@ -48,10 +48,6 @@ from src.audio.pipeline import (
 )
 from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
-
-# Reuse the ALREADY-HARDENED client-IP resolver from the feedback route rather
-# than duplicating its X-Forwarded-For spoofing analysis (see feedback._client_ip).
-from src.api.routes.feedback import _client_ip  # isort: skip
 
 router = APIRouter(tags=["audio"])
 
@@ -104,20 +100,16 @@ def require_audio_admin() -> None:
         raise HTTPException(404, "Not Found")
 
 
-# ── Abuse guard for the PUBLIC paid-TTS routes ────────────────────────────
+# RATE LIMITING REMOVED 2026-07-31 (owner order, twice stated). The audio routes
+# used to carry a per-IP + global fixed-window guard. It is deleted, not disabled:
+# no constants, no counters, no env knobs, nothing to re-enable by accident.
 #
-# /audio/preview must stay anonymous (frontend/tour-preview.html calls it with
-# no credentials), but every call against a real provider spends the owner's
-# OpenAI credit. Bound it the same way the feedback route bounds its Anthropic
-# spend: a per-IP fixed window PLUS a global fixed window (per-IP alone is
-# defeated by trivial IP rotation, and the global cap is what actually bounds
-# the bill). EVERY provider name is limited — see _audio_rate_limit.
-_AUDIO_RATE_LIMIT_MAX = int(os.getenv("AUDIO_RATE_LIMIT_MAX", "20"))
-_AUDIO_RATE_LIMIT_WINDOW_S = int(os.getenv("AUDIO_RATE_LIMIT_WINDOW_S", "60"))
-_AUDIO_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("AUDIO_GLOBAL_RATE_LIMIT_MAX", "120"))
-_audio_rate_state: dict[str, deque[float]] = {}
-_audio_global_hits: deque[float] = deque()
-_audio_rate_lock = Lock()
+# What that means, stated once: /audio/preview is anonymous, so nothing now
+# bounds how much an unauthenticated caller can spend against the configured TTS
+# key. If a bound is wanted later it should key on the AUTHENTICATED user, not
+# the client IP — mobile carriers put thousands of users behind one address, so
+# the old per-IP cap throttled real tourists in groups while barely slowing a
+# determined caller.
 
 # Cap on the text a single PUBLIC preview request may voice. The provider chunks
 # at MAX_TTS_CHARS (4000) internally, so the old 20000 model cap meant ONE
@@ -146,52 +138,6 @@ _COMPARE_MAX_FILES = int(os.getenv("AUDIO_COMPARE_MAX_FILES", "100"))
 
 # Local audio URLs produced by LocalStorageProvider.upload().
 _LOCAL_AUDIO_URL_PREFIX = "/api/v1/audio/files/"
-
-
-def _audio_rate_limit(request: Request, provider_name: str) -> None:
-    """Per-IP + global fixed-window guard for the public TTS routes. 429 when
-    exceeded. Applies to EVERY provider name, with no exemption.
-
-    This used to return early whenever the name was ``"mock"``, reasoned from
-    cost: the fake is free, so limiting it "would only make the test/dev path
-    flaky". Two things were wrong with that. The cap bounds REQUEST VOLUME on a
-    public unauthenticated route, not only spend — so a name-based exemption let
-    an anonymous caller defeat both windows by naming the fake. And a pytest
-    interpreter is the one place ``"mock"`` is registered
-    (``tests/conftest.py``), so the exemption disabled the guard exactly where it
-    ran. A suite that trips the limit must reset the module state (see the
-    ``_reset_rate_limiter`` fixture) or raise the caps — never re-add a bypass.
-    """
-    client_ip = _client_ip(request)
-    now = time.monotonic()
-    cutoff = now - _AUDIO_RATE_LIMIT_WINDOW_S
-    with _audio_rate_lock:
-        if _AUDIO_GLOBAL_RATE_LIMIT_MAX > 0:
-            while _audio_global_hits and _audio_global_hits[0] <= cutoff:
-                _audio_global_hits.popleft()
-            if len(_audio_global_hits) >= _AUDIO_GLOBAL_RATE_LIMIT_MAX:
-                retry_after = max(1, int(_audio_global_hits[0] + _AUDIO_RATE_LIMIT_WINDOW_S - now))
-                raise HTTPException(
-                    status_code=429,
-                    detail="Audio generation is temporarily rate limited, please retry later",
-                    headers={"Retry-After": str(retry_after)},
-                )
-
-        if _AUDIO_RATE_LIMIT_MAX > 0:
-            hits = _audio_rate_state.setdefault(client_ip, deque())
-            while hits and hits[0] <= cutoff:
-                hits.popleft()
-            if len(hits) >= _AUDIO_RATE_LIMIT_MAX:
-                retry_after = max(1, int(hits[0] + _AUDIO_RATE_LIMIT_WINDOW_S - now))
-                raise HTTPException(
-                    status_code=429,
-                    detail="Too many audio requests, please retry later",
-                    headers={"Retry-After": str(retry_after)},
-                )
-            hits.append(now)
-
-        if _AUDIO_GLOBAL_RATE_LIMIT_MAX > 0:
-            _audio_global_hits.append(now)
 
 
 def _preview_cache_get(key: str) -> bytes | None:
@@ -323,8 +269,6 @@ def _provider_available(name: str) -> bool:
         get_provider(name)
     except Exception:
         return False
-    if name == "mock":
-        return True
     if name == "openai":
         return bool(os.getenv("OPENAI_API_KEY"))
     if name == "elevenlabs":
@@ -343,21 +287,20 @@ def get_providers():
 
 @router.post("/audio/preview")
 def preview_audio(body: AudioPreviewRequest, request: Request):
-    """Generate a TTS audio preview from raw text.
-
-    Returns audio bytes directly (audio/wav for mock, audio/mpeg for real providers).
+    """Generate a TTS audio preview from raw text. Returns audio/mpeg bytes.
 
     This route is deliberately anonymous — the public tour-preview page calls it
-    with no credentials — so the spend it can cause is bounded three ways: a
-    per-IP + global rate limit, a text cap well under the old 20000-char model
-    limit, and a content-hash cache so a replayed payload is never re-billed.
+    with no credentials. Its rate limit was DELETED on 2026-07-31 by owner order,
+    so the only things now bounding what an anonymous caller can spend are a text
+    cap well under the model limit and a content-hash cache that stops a replayed
+    payload being re-billed. This docstring ships in the OpenAPI schema; keep it
+    honest.
     """
     try:
         provider = get_provider(body.provider)
     except ValueError as e:
         raise HTTPException(400, str(e)) from None
 
-    _audio_rate_limit(request, provider.name)
 
     # Bound the per-request fan-out: the provider chunks at 4000 chars, so an
     # uncapped 20000-char body becomes five billed calls.
@@ -374,9 +317,9 @@ def preview_audio(body: AudioPreviewRequest, request: Request):
             raise HTTPException(502, f"TTS generation failed ({provider.name}): {e}") from None
         _preview_cache_put(cache_key, audio_bytes)
 
-    # Mock returns WAV, real providers return MP3
-    media_type = "audio/wav" if provider.name == "mock" else "audio/mpeg"
-    ext = "wav" if provider.name == "mock" else "mp3"
+    # Every registered provider sends text to a real speech service and returns MP3.
+    media_type = "audio/mpeg"
+    ext = "mp3"
 
     return Response(
         content=audio_bytes,
@@ -410,7 +353,6 @@ def compare_providers(body: CompareRequest, request: Request):
     # ["openai"] * 5 multiplied the bill 5x for one text. Dedupe, preserving
     # the caller's order.
     for provider_name in dict.fromkeys(body.providers):
-        _audio_rate_limit(request, provider_name)
         try:
             provider = get_provider(provider_name)
         except ValueError as e:
@@ -436,7 +378,7 @@ def compare_providers(body: CompareRequest, request: Request):
             )
             continue
 
-        ext = "wav" if provider_name == "mock" else "mp3"
+        ext = "mp3"
         filename = f"{text_hash}-{provider_name}.{ext}"
         filepath = _COMPARE_DIR / filename
         filepath.write_bytes(audio_bytes)
@@ -514,12 +456,11 @@ def eval_audio(body: EvalRequest, request: Request):
 
     # One eval request costs up to 3 paid TTS syntheses AND 3 paid Whisper
     # transcriptions, so it is limited even though it is admin-gated.
-    _audio_rate_limit(request, provider.name)
 
     # Steps 1-2: Generate audio then transcribe + evaluate, retrying past a
     # transient degraded generation (see _EVAL_DEGRADED_WER above).
-    ext = "wav" if provider.name == "mock" else "mp3"
-    max_attempts = 1 if provider.name == "mock" else _EVAL_MAX_ATTEMPTS
+    ext = "mp3"
+    max_attempts = _EVAL_MAX_ATTEMPTS
     result = None
     for _ in range(max_attempts):
         # A transient failure on a LATER attempt must not discard a good result
@@ -1043,20 +984,10 @@ def keep_exploring_stop_audio(
             duration_sec=rec["ke_dur"],
         )
 
-    # Resolve the provider NAME only to decide whether this is a billed path.
-    # An unknown provider must keep its existing soft-fail contract (200 with
-    # status='failed' from generate_stop_audio below), never a 400 from here.
-    try:
-        resolved_provider = get_provider(provider_name).name
-    except ValueError:
-        # Unknown name keeps its soft-fail contract (200 + status='failed' from
-        # generate_stop_audio below), but it must still be COUNTED. This used to
-        # relabel it "mock", which _audio_rate_limit then exempted — so any
-        # unrecognised string was a free pass through the guard on a public
-        # route. The exemption is gone; pass the name through as sent.
-        resolved_provider = provider_name or "unresolved"
-    _audio_rate_limit(request, resolved_provider)
-
+    # (A provider-name resolution used to sit here purely to tell the rate
+    # limiter whether this was a billed path. The limiter is gone, so it is too.
+    # An unknown provider still keeps its soft-fail contract below: 200 with
+    # status='failed' from generate_stop_audio, never a 400 from here.)
     try:
         gen = generate_stop_audio(
             narration,

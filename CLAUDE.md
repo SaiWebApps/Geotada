@@ -89,7 +89,8 @@ exist):
   the mutation test (seconds, no provider spend). Per phase: `_test-python`,
   `flutter-test`, `test-workbench`, `_test-golden` — **serial**, they share the
   7688 DB, dev data and Valhalla. Run close: `make audit` **exactly once** (that
-  is the only paid command; `test-live` sets `ONDOWAY_ENABLE_PAID_LLM_CALLS=1`).
+  is the only paid command; `test-live` sets `ONDOWAY_LIVE_TESTS=1`). The
+  `ONDOWAY_ENABLE_PAID_LLM_CALLS` gate was DELETED 2026-07-31 by owner order.
   Never run the paid bar inside a loop.
 - **"$0" means zero provider spend, NOT read-only.** `make test-file` pulls in
   `_ensure-test-db`/`_ensure-dev-data`/`valhalla-up` (`Makefile:144-146`), so

@@ -341,7 +341,7 @@ def get_drafter(name: str | None = None) -> MockBeatDrafter | AnthropicBeatDraft
 
     ``"mock"`` stays SELECTABLE and free, because callers opt into it explicitly
     and must keep working at $0 — ``Makefile``'s ``onboard-city`` passes
-    ``ONBOARD_PROVIDER="${ONBOARD_PROVIDER:-mock}"``, ``tests/conftest.py`` sets
+    ``ONBOARD_PROVIDER`` (now REQUIRED — no default), ``tests/conftest.py`` sets
     it, and the CLI documents the free path. What is gone is the silent fallback
     a caller got without asking for it.
 

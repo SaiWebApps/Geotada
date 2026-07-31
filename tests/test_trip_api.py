@@ -26,7 +26,6 @@ from fastapi.testclient import TestClient
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
 from src.api.dependencies import get_driver, get_session
-from src.api.routes import trips as trips_route
 from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import TourInput
@@ -716,8 +715,10 @@ def test_compose_authors_per_stop_and_keeps_the_wire_contract(client, live_neo4j
     assert detail["untraceable"] > 0, "the hallucinated citation must be the named cause"
     assert trip_row() == (before_items, None), "a refusal must leave the trip untouched"
 
-    # --- 200: one physical call per dwell stop, exact reservation ----------
-    trips_route.reset_spend_guard()
+    # --- 200: one physical call per dwell stop ----------------------------
+    # (A reset_spend_guard() call sat here to clear the rate limiter's counters
+    # between phases. The limiter was deleted 2026-07-31 by owner order, so there
+    # is nothing to reset.)
     executor = _PerStopCountingExecutor()
     target = _override_dep(client, "get_premium_compose_executor", executor)
     try:
@@ -731,9 +732,10 @@ def test_compose_authors_per_stop_and_keeps_the_wire_contract(client, live_neo4j
             "compose did not author the persisted route stop-by-stop through the "
             f"injected seam (calls: {sorted(executor.stop_calls)})"
         )
-        # AC-7: the reservation is the REAL call count, not the old flat 1.
-        assert len(trips_route._global_hits) == n_stops
-        assert len(trips_route._daily_hits) == n_stops
+        # (AC-7 asserted here that the rate limiter reserved one unit per dwell
+        # stop rather than a flat 1. The limiter was DELETED 2026-07-31 by owner
+        # order, so there is no reservation to check. The per-stop authoring
+        # itself is still proven, by the stop_calls assertion directly above.)
 
         # The wire contract the phone and the workbench read.
         assert data["trip_id"] == trip_id
@@ -767,13 +769,8 @@ def test_compose_authors_per_stop_and_keeps_the_wire_contract(client, live_neo4j
         assert executor.stop_calls == calls_after_success, (
             "the already-composed trip still reached the provider"
         )
-        assert len(trips_route._global_hits) == n_stops, (
-            "the 409 reserved spend — the precheck still runs before the "
-            "already_composed check"
-        )
     finally:
         _clear_dep(client, target)
-        trips_route.reset_spend_guard()
 
 
 @needs_neo4j

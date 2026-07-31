@@ -119,7 +119,6 @@ def test_factory_sets_an_explicit_ceiling(monkeypatch: pytest.MonkeyPatch) -> No
     stub.Anthropic = _FakeAnthropic  # type: ignore[attr-defined]
     saved = sys.modules.get("anthropic")
     sys.modules["anthropic"] = stub
-    monkeypatch.setenv(anthropic_client.PAID_CALL_PERMISSION_ENV, "1")
     try:
         anthropic_client.judge_client()
         assert captured["timeout"] == anthropic_client.JUDGE_TIMEOUT_S
@@ -149,14 +148,6 @@ def test_factory_sets_an_explicit_ceiling(monkeypatch: pytest.MonkeyPatch) -> No
             sys.modules.pop("anthropic", None)
         else:
             sys.modules["anthropic"] = saved
-
-
-def test_factory_fails_closed_without_paid_call_permission(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    monkeypatch.delenv(anthropic_client.PAID_CALL_PERMISSION_ENV, raising=False)
-    with pytest.raises(RuntimeError, match="paid LLM calls are locked"):
-        anthropic_client.compose_client()
 
 
 @pytest.mark.parametrize(

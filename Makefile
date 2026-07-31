@@ -157,7 +157,7 @@ test-live: ## Run every live-provider test with a fresh full Render environment.
 	@$(MAKE) --no-print-directory valhalla-up
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@$(RENDER_TEST_EXEC) env \
-		ONDOWAY_LIVE_TESTS=1 ONDOWAY_ENABLE_PAID_LLM_CALLS=1 \
+		ONDOWAY_LIVE_TESTS=1 \
 		NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest $(or $(FILE),$(LIVE_TEST_FILES)) -o addopts= -m live -v $(PYTEST_ARGS)
 
@@ -225,7 +225,7 @@ tour-batch-live: ## Execute an approved Premium plan with fresh Render credentia
 	@test -n "$(PLAN_SHA256)" || { echo "ERROR: PLAN_SHA256 is required." >&2; exit 2; }
 	@$(MAKE) --no-print-directory _ensure-dev-data
 	@$(MAKE) --no-print-directory valhalla-up
-	@$(RENDER_LOCAL_EXEC) env ONDOWAY_ENABLE_PAID_LLM_CALLS=1 ONDOWAY_TOUR_BATCH_APPROVED=1 \
+	@$(RENDER_LOCAL_EXEC) env ONDOWAY_TOUR_BATCH_APPROVED=1 \
 		uv run python -m scripts.tour_batch_candidate --live \
 		--approve-plan-sha256 "$(PLAN_SHA256)" --max-workers "$(or $(MAX_WORKERS),4)"
 
@@ -240,7 +240,7 @@ tour-batch-review-live: ## Execute an approved semantic-review plan with fresh R
 	@test -n "$(REVIEW_PLAN_SHA256)" || { echo "ERROR: REVIEW_PLAN_SHA256 is required." >&2; exit 2; }
 	@$(MAKE) --no-print-directory _ensure-dev-data
 	@$(MAKE) --no-print-directory valhalla-up
-	@$(RENDER_LOCAL_EXEC) env ONDOWAY_ENABLE_PAID_LLM_CALLS=1 ONDOWAY_TOUR_BATCH_REVIEW_APPROVED=1 \
+	@$(RENDER_LOCAL_EXEC) env ONDOWAY_TOUR_BATCH_REVIEW_APPROVED=1 \
 		uv run python -m scripts.tour_batch_review --live \
 		--approve-review-plan-sha256 "$(REVIEW_PLAN_SHA256)" \
 		--max-workers "$(or $(MAX_WORKERS),4)" \
@@ -481,7 +481,7 @@ measure-governor: ## Compare uncapped and governed emitted audio.
 	@$(LOCAL_EXEC) uv run python scripts/measure_governor.py $(ARGS)
 
 onboard-city: ## Onboard a fixture-backed city. Usage: make onboard-city CITY=x MODES=x.
-	@$(LOCAL_EXEC) env ONBOARD_PROVIDER="$${ONBOARD_PROVIDER:-mock}" \
+	@$(LOCAL_EXEC) env ONBOARD_PROVIDER="$${ONBOARD_PROVIDER:?set ONBOARD_PROVIDER=anthropic (real) — there is no default}" \
 		ONDOWAY_ONBOARD_HTTP="$${ONDOWAY_ONBOARD_HTTP:-fixture}" \
 		ONBOARD_DATA_ROOT="$${ONBOARD_DATA_ROOT:-/tmp/ondoway-onboard}" \
 		ONBOARD_REGISTRY_PATH="$${ONBOARD_REGISTRY_PATH:-/tmp/ondoway-onboard/cities.json}" \

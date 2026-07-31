@@ -430,7 +430,7 @@ def test_get_drafter_fails_closed_when_no_provider_is_pinned(monkeypatch) -> Non
 
     ``"mock"`` deliberately stays SELECTABLE, because several callers opt into it
     explicitly and must keep working for $0: ``Makefile``'s ``onboard-city``
-    (``ONBOARD_PROVIDER="${ONBOARD_PROVIDER:-mock}"``), ``tests/conftest.py``,
+    (``ONBOARD_PROVIDER`` (now REQUIRED — no default)), ``tests/conftest.py``,
     and the CLI's documented free path. What is removed is the DEFAULT — the
     silent fallback that a caller gets without asking.
 
