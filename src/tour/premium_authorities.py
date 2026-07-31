@@ -19,7 +19,7 @@ class PremiumAuthorityHashes:
 
 PREMIUM_AUTHORITIES = PremiumAuthorityHashes(
     contract_sha256="a7250bada7cb09ad9a47e159b9a89f6385046555dbd3e5d99ccf31d581f3a82d",
-    reference_manifest_sha256="0baecbe2a8a8841958f51c908d4833a1850540589c1e91becdc1d597dfc28da1",
+    reference_manifest_sha256="dfb7cc205422473dad2e3c168c471aa5c4060c73c2cc450be0665ead6db98378",
     calibration_manifest_sha256="d4548864786d11ec44a00c2bfd753cc9d42909bdda511c819f144efe1646f56a",
 )
 
