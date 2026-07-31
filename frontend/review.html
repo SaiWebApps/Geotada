@@ -1052,7 +1052,7 @@
             <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
           </div>
           <h2 id="detailTitle"></h2>
-          <select id="ttsProviderSelect" class="tts-provider-select" title="TTS Provider"><option value="openai">openai</option><option value="mock">mock (silent)</option></select>
+          <select id="ttsProviderSelect" class="tts-provider-select" title="TTS Provider"><option value="openai">openai</option></select>
           <button class="btn btn-outline btn-sm" id="deferBtn" style="color:var(--yellow);border-color:var(--yellow);">Defer</button>
           <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
         </div>
@@ -3063,8 +3063,22 @@
         opt.disabled = !p.available;
         ttsProviderSelect.appendChild(opt);
       }
-      const mockOpt = [...ttsProviderSelect.options].find(o => o.value === 'mock');
-      if (mockOpt) mockOpt.selected = true;
+      // OWNER RULING 2026-07-31: the workbench replicates the tourist's app
+      // experience as closely as possible, so it defaults to REAL audio. This
+      // block used to force-select 'mock' here, silently overriding the 'openai'
+      // default declared above and in the static <select>, so every workbench
+      // "play" was a silent WAV that an editor could mistake for real narration.
+      // That is the audio twin of the standing never-mock-in-the-workbench rule,
+      // which until now had only ever been applied to narration.
+      // 'openai' is the key the deployed API is pinned to (render.yaml
+      // TTS_PROVIDER=openai) and a real provider in src/audio/provider.py's
+      // registry. Since 2026-07-31 that registry holds ONLY providers that
+      // really speak — the silent double is no longer registered, so this list
+      // physically cannot contain a fake and this page is not what keeps it out.
+      // The Playwright audio tests stub POST /audio/preview in the browser
+      // instead of asking the server for a fake (tests/test_workbench_ui.py).
+      const realOpt = [...ttsProviderSelect.options].find(o => o.value === 'openai');
+      if (realOpt) realOpt.selected = true;
       ttsProvider = ttsProviderSelect.value;
     } catch (e) { console.warn('TTS providers fetch failed:', e); }
   }
@@ -3178,13 +3192,11 @@
       }
     }
     // One shared Premium algorithm, with one zero-retry authoring call per routed
-    // stop. Certification reviewers are separate and do not run here. Confirm
-    // before clearing anything so Cancel leaves the existing preview intact.
-    if (!window.confirm(
-      'Generate a Premium candidate? This makes one LIVE Claude Opus authoring call '
-      + 'per routed stop and spends real money on your API key.')) {
-      return;
-    }
+    // stop. Certification reviewers are separate and do not run here.
+    // NO spend confirmation here, ever. The owner ordered the cost dialog removed
+    // on 2026-07-31: the workbench must replicate the tourist's app experience as
+    // closely as possible, and a tourist is never asked to approve spend. Do not
+    // reintroduce a spend dialog in this function.
     genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
     stopsEl.innerHTML = ''; tourStops = []; drawTourRoute([]);  // clear map unconditionally (D5a)
     try {
@@ -3328,15 +3340,17 @@
     persistentMap.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
   }
 
+  // ONE narrator engine: the premium Opus authoring path. The second narrator label
+  // this used to carry went with the deleted Opus-vs-alternate-provider compose
+  // comparison (D9 loss 1); the 'openai' the workbench still speaks of elsewhere is
+  // the TTS voice, not a narrator.
   function _providerLabel(p) {
-    if (p === 'openai') return 'ChatGPT (OpenAI)';
     if (p === 'anthropic') return 'Claude Opus 4.8';
     return p || '—';
   }
   function _composeStatusLabel(s) {
     return ({
       composed: '✓ Premium candidate — eligible for certification',
-      composed_partial: '◐ AI voice — some stops fell back to the grounded stitch',
       refused: '✗ compose refused — showing grounded stitch',
       basic_available: 'Basic grounded guide — not Premium and not graded',
       // Kept so an older/legacy response still renders something honest instead

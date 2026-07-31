@@ -7,7 +7,6 @@ import logging
 import os
 import re
 import sys
-import threading
 import time
 from collections import deque
 from contextlib import contextmanager
@@ -27,8 +26,6 @@ from src.api.crud.trips import (
     route_script_to_stops,
 )
 from src.api.dependencies import (
-    get_compose_client,
-    get_correction_client,
     get_driver,
     get_faithfulness_checker,
     get_premium_compose_executor,
@@ -46,28 +43,18 @@ from src.api.models.trips import (
     TripPreviewStop,
     TripPreviewTourability,
 )
+from src.tour.authoring import author_prebuilt_route, plan_prebuilt_route_authoring
 from src.tour.beat_select import select_vignette_beats
 from src.tour.candidate_eligibility import (
     CandidateRejection,
     CandidateRejectionCode,
 )
-
-# check_tour_repetition / repetition_findings are deliberately NOT imported: the G4
-# check is dark (see the long comment at its call site in preview_trip). RedundancyJudge
-# is still imported for the Depends() signature, which stays so re-enabling is one line.
-from src.tour.compose import (
-    ComposeClient,
-    ComposeRequest,
-    compose_script,
-)
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
     BeatSequence,
     Route,
-    Sentence,
     TourabilityAssessment,
     TourInput,
-    ValidationReport,
 )
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, is_walk_concurrent, vignette_one_liner_text
@@ -80,6 +67,7 @@ from src.tour.premium_tour import (
     execute_premium_plan,
     finalize_premium_tour,
     plan_premium_tour,
+    premium_authoring_policy_sha256,
     resolve_build_identity,
 )
 from src.tour.quality_rubric import score_tour
@@ -161,10 +149,19 @@ def _upstream_provider_errors():
 # In-process and per-worker: a multi-worker deploy needs shared state (Redis) to
 # be a true bound, and the counters reset on every Render redeploy. That is why
 # the daily ceiling exists as well, and why this is a floor, not the whole answer.
-# Call-count ceilings, not request-count ceilings. One Premium request can reserve
-# up to eight physical stop calls; 16 therefore preserves the original intent of
-# allowing two maximum-size previews per IP/window. The explicit env name prevents
-# an old request-count override from silently changing units after this migration.
+# Call-count ceilings, not request-count ceilings. The explicit env name prevents
+# an old request-count override from silently changing units after that migration.
+#
+# CEILING DECISION (2026-07-30, the /trips/{id}/compose cutover). Both authoring
+# surfaces now reserve one call per dwell stop, and the seam accepts up to
+# ``authoring.AUTHORING_MAX_STOPS`` (15, == selection.HARD_ANCHOR_CAP) of them —
+# not the eight an earlier version of this comment assumed. So 16 no longer means
+# "two maximum-size requests per IP/window"; at the maximum size it admits ONE,
+# and the second is a 429 with nothing spent. The numbers below are DELIBERATELY
+# left where they are: they are a spend ceiling, and the honest reading is now
+# "one worst-case tour per IP per hour, 20 worst-case-ish calls globally, 100 a
+# day". Typical tours seat far fewer than 15 stops, so the practical throughput
+# is several tours per window. Raise these only with a spend budget to point at.
 _PREVIEW_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_CALLS_MAX", "16"))
 _PREVIEW_RATE_LIMIT_WINDOW_S = int(os.getenv("TRIPS_PREVIEW_RATE_LIMIT_WINDOW_S", "3600"))
 _PREVIEW_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("TRIPS_PREVIEW_GLOBAL_RATE_LIMIT_MAX", "20"))
@@ -624,27 +621,12 @@ def generate_trip(
     )
 
 
-class _CountingComposeClient:
-    """Records the attempts consumed so the response can report them — the gate's
-    fire-once/recompose-once flow stays inside the composer.
-
-    The composer runs one call PER STOP in PARALLEL, so this is written from many
-    threads at once. Report the MAX attempt any stop needed (the worst-case round
-    trips the gate cost us); a plain last-writer-wins assignment would report an
-    arbitrary stop's counter instead. The lock keeps the read-compare-write atomic.
-    """
-
-    def __init__(self, inner: ComposeClient):
-        self.inner = inner
-        self.attempts = 0
-        self._lock = threading.Lock()
-
-    def compose(
-        self, request: ComposeRequest, attempt: int, prev_report: ValidationReport | None
-    ) -> tuple[Sentence, ...]:
-        with self._lock:
-            self.attempts = max(self.attempts, attempt)
-        return self.inner.compose(request, attempt, prev_report)
+# The per-stop authoring seam fires exactly ONE physical call per dwell stop and
+# never retries (src/tour/authoring.py::author_prebuilt_route), so the attempt count
+# the response has always carried is now a constant rather than a counter — there is
+# no recompose round trip left to report. The field stays on the wire because the
+# phone reads it out of the 422 detail (mobile/lib/services/trip_service.dart:229).
+COMPOSE_ATTEMPTS = 1
 
 
 @router.post("/trips/{trip_id}/compose", response_model=TripComposeResponse)
@@ -655,20 +637,20 @@ def compose_trip(
     current_user: dict = Depends(get_current_user),
     session: Session = Depends(get_session),
     driver: Driver = Depends(get_driver),
-    compose_client: ComposeClient = Depends(get_compose_client),
+    premium_executor: PremiumComposeExecutor = Depends(get_premium_compose_executor),
     faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
-    correction_client=Depends(get_correction_client),
 ):
     """Second step of the preview/compose split (Phase 4 Step 4.7, spec §5).
 
     Rebuilds the user's PICK from the poi ids persisted at generate time —
     NEVER re-running selection, so corpus/routing drift cannot swap the
-    route — then runs the fire-once compose behind the M7 VERIFY gate and
-    re-persists the trip's stops with the composed narration (fresh item
-    ids, no audio fields). NO TTS here: /audio/generate-trip-stops voices
-    the narration afterwards, which by then has passed the gate. A refused
-    flavour is a structured 422; the trip is left untouched so the client
-    can offer another flavour.
+    route — then authors that prebuilt route ONE STOP AT A TIME through the
+    same seam /trips/preview and the batch runner use, and re-persists the
+    trip's stops with the authored narration (fresh item ids, no audio
+    fields). NO TTS here: /audio/generate-trip-stops voices the narration
+    afterwards, which by then has passed the gate. A refused flavour is a
+    structured 422; the trip is left untouched so the client can offer
+    another flavour.
 
     OWNERSHIP-SCOPED: this route destroys the trip's stop ids and burns its
     one-shot compose budget, so it is authenticated and the trip must hang off a
@@ -684,7 +666,6 @@ def compose_trip(
     if owns_trip is None:
         raise HTTPException(404, f"Trip '{trip_id}' not found")
 
-    _spend_precheck(request, compose_client)
     inputs = get_trip_compose_inputs(session, trip_id)
     if inputs is None:
         raise HTTPException(404, f"Trip '{trip_id}' not found")
@@ -772,16 +753,36 @@ def compose_trip(
     )
     stitched = generate(seq, route, tour_input)
 
-    # This persisted app endpoint retains its whole-tour, fail-before-mutation
-    # contract. The non-persisted workbench no longer owns another implementation:
-    # it delegates to the same Premium planner/finalizer as the batch runner. If this
-    # persisted path is migrated later, it must call that shared seam rather than
-    # copying either surface's algorithm again.
-    counting = _CountingComposeClient(compose_client)
+    # ONE ALGORITHM. This persisted endpoint no longer owns a whole-tour composer:
+    # it authors the route it just rebuilt through the same per-stop seam that
+    # /trips/preview and the batch runner use, and keeps its fail-before-mutation
+    # contract (nothing below this block writes until authoring has passed VERIFY).
+    # Planning is provider-free, so the exact physical call count is known before a
+    # single call is billed.
     try:
-        with _concurrency_slot(compose_client), _upstream_provider_errors():
-            composed = compose_script(
-                stitched, seq, route, client=counting, faithfulness_checker=faithfulness_checker
+        plan = plan_prebuilt_route_authoring(
+            stitched,
+            seq,
+            route,
+            authoring_policy_sha256=premium_authoring_policy_sha256(),
+        )
+        # The spend reservation is the REAL number of calls this compose will make
+        # (one per dwell stop), and it happens HERE — after the already-composed 409
+        # above, so a duplicate compose reserves nothing and calls nobody.
+        _spend_precheck(request, premium_executor, planned_calls=len(plan.units))
+        with _concurrency_slot(premium_executor), _upstream_provider_errors():
+            # GATE PARITY (D3). The per-stop finalizer was built for the
+            # certification replay and defaults to structural checks only; this
+            # path PERSISTS an unreviewed tour, so it keeps the exact three gates
+            # the whole-tour composer ran for it — real entailment, the
+            # stitch-derived coverage baseline, and the full validate_script scan.
+            # Parity, not escalation: no check here that was not here before.
+            composed = author_prebuilt_route(
+                plan,
+                executor=premium_executor,
+                faithfulness_checker=faithfulness_checker,
+                enforce_claim_coverage=True,
+                scan_glue_for_invention=True,
             )
     except ComposeVerificationError as exc:
         raise HTTPException(
@@ -793,6 +794,30 @@ def compose_trip(
                 "forbidden": len(exc.report.forbidden_phrase_hits),
                 "provenance": len(exc.report.provenance_failures),
                 "faithfulness": len(exc.report.faithfulness_failures),
+            },
+        ) from exc
+    except ValueError as exc:
+        # The seam refuses a shape it cannot author (a stop the stitch dropped, a
+        # route past the anchor cap) and a provider payload it cannot parse by
+        # raising ValueError. On THIS path that is still a refusal, not a server
+        # fault: the trip is untouched either way, and a 500 would strand the phone
+        # instead of letting it offer another flavour (D2). Logged in full, because
+        # the wire deliberately keeps the stable non-leaking shape below.
+        logging.getLogger("ondoway.api").exception(
+            "Per-stop authoring could not run for trip=%s route=%s stops=%s",
+            trip_id,
+            body.route_id,
+            len(picked),
+        )
+        raise HTTPException(
+            422,
+            {
+                "reason": "compose_verification_failed",
+                "attempts": COMPOSE_ATTEMPTS,
+                "untraceable": 0,
+                "forbidden": 0,
+                "provenance": 0,
+                "faithfulness": 0,
             },
         ) from exc
 
@@ -850,7 +875,7 @@ def compose_trip(
     return TripComposeResponse(
         trip_id=trip_id,
         route_id=body.route_id,
-        attempts=counting.attempts,
+        attempts=COMPOSE_ATTEMPTS,
         stops=stops_out,
     )
 
@@ -1069,8 +1094,6 @@ def preview_trip(
     vignette_beats = seq.vignette_beats
     overflow_by_poi = dict(seq.overflow_by_poi)
     provider = premium_executor.provider_name
-    omitted_facts: list[object] = []
-    omission_stops_checked = 0
 
     def _basic_tour_fallback(
         *, reason: str, rejection: CandidateRejection
@@ -1196,10 +1219,11 @@ def preview_trip(
     # breaches the standard is visible in the workbench with the exact check and stop.
     rubric = score_tour(script, route, snapshot.beats_by_poi, beat_sequence=seq)
 
-    # Paid semantic FACT/ENJOY/repetition reviewers are certification concerns and
-    # never run in this interactive candidate endpoint. Keep the stable advisory G4
-    # response shape explicit, empty, and non-gating; deterministic quality remains
-    # the only local diagnostic.
+    # Paid semantic FACT/ENJOY/repetition reviewers are certification concerns and never
+    # run in this interactive candidate endpoint. The advisory G4 and coverage-omission
+    # blocks this response used to carry are GONE rather than empty: their judges are
+    # deleted, so a permanently-`[]` "findings" list advertised a check that could not
+    # fire. Deterministic quality is the only local diagnostic.
 
     stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
@@ -1218,11 +1242,7 @@ def preview_trip(
         provider=provider,
         narration_quality=narration_quality,
         quality={
-            # THE DETERMINISTIC, $0 rubric ALONE decides pass/fail. G4's redundancy
-            # judge is uncalibrated (formerly tracked as failure-ledger entry
-            # FL-2026-111, now removed — see the check_tour_repetition docstring) and
-            # must never flip this verdict — see the `g4` block below for its
-            # findings, kept strictly advisory.
+            # THE DETERMINISTIC, $0 rubric ALONE decides pass/fail.
             "passed": rubric.passed,
             "summary": rubric.summary(),
             "blockers": [
@@ -1242,50 +1262,8 @@ def preview_trip(
                     "poi_name": f.poi_name,
                 }
                 for f in rubric.warnings
-            ]
-            + [
-                {
-                    "check": "coverage_omission",
-                    "message": f"beat {f.beat_id}: possibly dropped fact — {f.fact}",
-                    "stop_idx": f.stop_idx,
-                    "poi_name": None,
-                }
-                for f in omitted_facts
             ],
-            "stats": {
-                **rubric.stats,
-                # ADVISORY ONLY — never folded into "passed". omission_stops_checked
-                # is the KEYLESS-beat stop count the coverage judge actually ran on
-                # (0 on a fully-keyed corpus preview, where this feature spends
-                # nothing); omission_findings is how many it flagged as possibly
-                # dropped, for the workbench to point the editor at.
-                "omission_stops_checked": omission_stops_checked,
-                "omission_findings": len(omitted_facts),
-            },
-            # G4 — SEPARATE, clearly-labelled ADVISORY block (standard §4). Severity
-            # is always WARN here, never BLOCKER: `calibrated=False` documents WHY
-            # (see the module docstring above — HaikuRedundancyJudge has never executed
-            # against a live model) so a consumer of
-            # this response cannot mistake it for a proven gate. `judge_calls` /
-            # `candidates_dropped` are 0 on the refused path (skipped — see above),
-            # never on any composed/stitched preview (every real tour measured
-            # exceeds MAX_CANDIDATE_PAIRS, so the cap is a FLAT ~$0.10 cost, not a
-            # ceiling — see claim_repetition.MAX_CANDIDATE_PAIRS).
-            "g4": {
-                "severity": "WARN",
-                "calibrated": False,
-                "findings": [
-                    {
-                        "check": f.check,
-                        "message": f.message,
-                        "stop_idx": f.stop_idx,
-                        "poi_name": None,
-                    }
-                    for f in ()
-                ],
-                "judge_calls": 0,
-                "candidates_dropped": 0,
-            },
+            "stats": dict(rubric.stats),
         },
     )
 

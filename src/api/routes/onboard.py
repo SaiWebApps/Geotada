@@ -319,6 +319,13 @@ def draft_beats(job_id: str, body: DraftBeatsRequest) -> dict:
         beats = draft_all(assembled.pois, assembled.wiki_extracts, confirm=True)
     except CostNotConfirmed as exc:  # defensive — confirm=True never raises this
         raise HTTPException(409, detail={"error": str(exc), "estimate": exc.estimate}) from exc
+    except ValueError as exc:
+        # get_drafter() now fails closed on an unset/unknown ONBOARD_PROVIDER
+        # rather than silently drafting with the free mock. Surface that as a
+        # specific, actionable 409 — a 500 would be loud but tell the operator
+        # nothing, and the whole point of failing closed is that the human
+        # LEARNS the pin is missing instead of receiving fake beats.
+        raise HTTPException(409, detail={"error": str(exc)}) from exc
 
     art.beats = beats
     job.result = {**job.result, "beats_count": len(beats)}

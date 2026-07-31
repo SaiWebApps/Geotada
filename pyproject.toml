@@ -17,7 +17,6 @@ dependencies = [
     "google-auth>=2.29",
     "slowapi>=0.1.9",
     "email-validator>=2.1",
-    "openai>=1.40",
 ]
 
 [project.optional-dependencies]
@@ -72,7 +71,6 @@ addopts = """
 --ignore=tests/test_audio_functional.py
 --ignore=tests/test_audio_says_story.py
 --ignore=tests/test_magic_link_live.py
---ignore=tests/test_tour_compose_live.py
 --ignore=tests/test_narration_coherence.py
 --ignore=tests/test_tour_golden_ile.py
 --ignore=tests/test_tour_golden_pdv.py

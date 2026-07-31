@@ -25,13 +25,9 @@ import uuid
 from pathlib import Path
 
 from src.connection import create_driver
-from src.tour.compose_gate import (
-    ComposeVerificationError,
-    build_full_verifier,
-    compose_and_verify,
-)
 from src.tour.beat_select import select_vignette_beats
-from src.tour.contract import BeatSequence, Script, TourInput
+from src.tour.compose_gate import build_full_verifier
+from src.tour.contract import BeatSequence, TourInput
 from src.tour.density import TourabilityRefusedError, assess_snapshot
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
@@ -231,6 +227,14 @@ def main() -> int:
         help="Use real Haiku for glue (requires ANTHROPIC_API_KEY)",
     )
     parser.add_argument(
+        "--canned",
+        action="store_true",
+        help=(
+            "Use the deterministic MockGlueClient for glue: transitions are fixed "
+            "strings, not written by a model. Free, and must be asked for."
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         default=None,
         help="Override output dir (default: data/{city_slug}/tours/)",
@@ -241,6 +245,26 @@ def main() -> int:
         help="JSON only (skip the markdown render).",
     )
     args = parser.parse_args()
+
+    # WHO WRITES THE TRANSITIONS — decided here, before any work, because a
+    # refusal that arrives after selection and routing has already spent the
+    # user's time. Fails closed like get_provider / get_drafter /
+    # build_full_verifier: MockGlueClient used to be the SILENT default, so a
+    # tour the owner read could be part fixed-string prose under a
+    # "validation: PASS" header with nothing naming it.
+    if args.haiku and args.canned:
+        parser.error(
+            "--haiku and --canned contradict: one uses a real model for the "
+            "transitions and the other uses fixed strings. Pass exactly one."
+        )
+    if not (args.haiku or args.canned):
+        parser.error(
+            "refusing to write a tour without saying who wrote the transitions. "
+            "Pass --haiku for real Haiku glue (spends money), or --canned for "
+            "the deterministic fixed-string glue (free). There is no default: "
+            "canned transitions presented as a finished tour is the defect this "
+            "replaces."
+        )
 
     project_root = Path(__file__).resolve().parent.parent
     out_dir = Path(args.output_dir) if args.output_dir else project_root / "data" / args.city_slug / "tours"
@@ -319,6 +343,16 @@ def main() -> int:
             )
             cost_kind = "measured"
         else:
+            # CANNED GLUE, and it must be ASKED FOR. Every transition sentence in
+            # the tour this prints comes from MockGlueClient's fixed table
+            # (src/tour/glue_client.py), not from a model. This used to be the
+            # silent default, so a tour the owner read could be part canned prose
+            # under a "validation: PASS" header with nothing naming it — the same
+            # shape of lie as reporting a faithfulness pass that never ran.
+            #
+            # Reached only with an explicit --canned; the guard after
+            # parse_args() has already refused the no-flag case. The summary
+            # below still prints which implementation produced the prose.
             t_gen = time.perf_counter()
             script = generate(beat_sequence, route, tour_input, glue_client=MockGlueClient())
             t_gen = time.perf_counter() - t_gen
@@ -328,31 +362,26 @@ def main() -> int:
             )
             cost_kind = "projected"
 
-        # M7 gate: COMPOSE -> VERIFY (traceability + forbidden + rapidfuzz
-        # provenance + faithfulness) -> exactly one bounded recompose ->
-        # serve or refuse. With the deterministic MockGlueClient a recompose
-        # repeats; with --haiku it re-calls Haiku and can steer off the prior
-        # failure. Chunk text isn't loaded here, so provenance is a no-op
-        # until the corpus backfills source_passage; faithfulness uses the
-        # offline Mock (trusts the corpus).
+        # VERIFY the deterministic stitch (traceability + forbidden + rapidfuzz
+        # provenance + faithfulness) and attach the merged report. There is no
+        # recompose ladder here any more: this harness renders the $0 stitch, and
+        # the whole-tour composer it used to re-run died with compose.py. A failing
+        # report is reported and exits 1 rather than re-rolling the same
+        # deterministic stitch. Chunk text isn't loaded here, so provenance is a
+        # no-op until the corpus backfills source_passage.
+        #
+        # FAITHFULNESS IS NOT CHECKED HERE, and that is now stated rather than
+        # implied. This call used to pass no checker at all, and the gate quietly
+        # substituted the trusting Mock — so the "validation: PASS" line below
+        # announced a pass on a check that never ran, on the very script the
+        # owner reads. The opt-out is explicit, and the printed summary says
+        # UNVERIFIED. Wiring the real Haiku checker here is a deliberate spend
+        # decision, not something this harness should do by default.
         beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
-        verify = build_full_verifier(beat_sequence, beats_by_id)
-        first_script = script
-
-        def _compose(attempt: int, prev: object) -> Script:
-            if attempt == 1:
-                return first_script
-            client = HaikuGlueClient() if args.haiku else MockGlueClient()
-            return generate(beat_sequence, route, tour_input, glue_client=client)
-
-        try:
-            script = compose_and_verify(_compose, verify)
-        except ComposeVerificationError as exc:
-            print(
-                f"✗ VERIFY refused this tour after {exc.attempts} compose "
-                f"attempt(s): {exc}"
-            )
-            return 1
+        verify = build_full_verifier(
+            beat_sequence, beats_by_id, allow_unverified_faithfulness=True
+        )
+        script = script.model_copy(update={"validation": verify(script)})
 
         wall_clock = t_select + t_beats + t_gen
 
@@ -397,6 +426,29 @@ def main() -> int:
             f"  validation:  {'PASS' if passed else 'FAIL'} "
             f"(untraceable={len(script.validation.untraceable_sentences)}, "
             f"forbidden={len(script.validation.forbidden_phrase_hits)})"
+        )
+        # Say plainly which checks actually ran, and what wrote the prose. "PASS"
+        # above covers traceability and forbidden phrases; it has never covered
+        # faithfulness on this path, and printing only PASS is what made an
+        # unverified tour read as verified. The same applies to the transitions:
+        # without --haiku they are canned strings, and a reader judging the tour
+        # deserves to know which sentences no model wrote.
+        print(
+            "  faithfulness: "
+            + (
+                "CHECKED"
+                if script.validation.faithfulness_checked
+                else "NOT CHECKED — no entailment pass ran on this tour"
+            )
+        )
+        print(
+            "  glue:        "
+            + (
+                "REAL (Haiku)"
+                if args.haiku
+                else "CANNED — transitions are fixed strings from MockGlueClient, "
+                "not written by a model; pass --haiku for real ones"
+            )
         )
         if route.tourability is not None and route.tourability.status == "YELLOW":
             tb = route.tourability

@@ -35,10 +35,23 @@ class _Resp:
 
 class TestProviderRegistry:
     def test_list_providers_returns_all(self):
+        """The real providers ship registered; the silent double is registered
+        by tests/conftest.py and by nothing else.
+
+        OWNER RULING 2026-07-31: ``_PROVIDERS`` is the workbench's dropdown and
+        the set of values POST /audio/preview honours, so ``MockTTSProvider`` is
+        no longer in it. conftest calls ``register_provider`` at import, which is
+        why "mock" resolves in a pytest interpreter — and does not in any uvicorn
+        one. ``test_workbench_matches_the_app`` proves that second half by
+        probing a real server-shaped subprocess.
+        """
         names = list_providers()
-        assert "mock" in names
         assert "openai" in names
         assert "elevenlabs" in names
+        assert "mock" in names, (
+            "tests/conftest.py registers the silent double for the pytest "
+            "process; without it the whole audio suite would need paid TTS"
+        )
 
     def test_get_provider_mock(self):
         p = get_provider("mock")
@@ -59,10 +72,20 @@ class TestProviderRegistry:
         with pytest.raises(ValueError, match="Unknown TTS provider"):
             get_provider("nonexistent")
 
-    def test_default_provider_is_mock(self, monkeypatch):
+    def test_an_unpinned_process_refuses_to_pick_a_provider(self, monkeypatch):
+        """FAIL CLOSED. An unset TTS_PROVIDER must raise, not choose silently.
+
+        This test used to assert the opposite ("the default provider is mock"),
+        which pinned the defect the owner found on 2026-07-31: the workbench
+        server set no TTS_PROVIDER, inherited that "mock" default, and answered
+        every /audio request with a SILENT WAV an editor could mistake for real
+        narration. A server that is misconfigured must say so.
+
+        UNDO TEST: restore a default in ``get_provider`` -> RED.
+        """
         monkeypatch.delenv("TTS_PROVIDER", raising=False)
-        p = get_provider()
-        assert p.name == "mock"
+        with pytest.raises(ValueError, match="No TTS provider selected"):
+            get_provider()
 
     def test_env_var_selects_provider(self, monkeypatch):
         monkeypatch.setenv("TTS_PROVIDER", "openai")

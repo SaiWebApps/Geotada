@@ -27,13 +27,13 @@ from scripts.tour_text_candidate import (
 )
 from src.connection import create_driver
 from src.tour.anthropic_client import certification_batch_compose_client
+from src.tour.authoring import COMPOSE_MODEL, _sentences_from_json
 from src.tour.batch_regression_manifest import (
     FrozenTourBatchManifest,
     FrozenTourCase,
     load_frozen_tour_batch,
 )
 from src.tour.certification_provider import PhysicalProviderResponse
-from src.tour.compose import COMPOSE_MODEL, _sentences_from_json
 from src.tour.premium_tour import (
     certification_planning_policy,
     finalize_premium_composition,

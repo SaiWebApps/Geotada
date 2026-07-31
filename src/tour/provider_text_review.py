@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-from .compose import COMPOSE_MODEL
+from .authoring import COMPOSE_MODEL
 from .contract import Sentence
 from .quality_certification import (
     EnjoymentItem,

@@ -658,6 +658,18 @@ class ValidationReport(BaseModel):
     faithfulness_failures: tuple[tuple[Sentence, str], ...] = ()
     coverage_failures: tuple[tuple[str, str], ...] = ()
 
+    # Did the faithfulness pass actually RUN? An empty ``faithfulness_failures``
+    # used to mean both "checked and clean" and "never checked", and
+    # ``build_full_verifier`` quietly substituted a checker that approves
+    # everything when the caller passed none — so a report could read as
+    # verified having verified nothing. ``scripts/tour_build.py`` did exactly
+    # that, which is how tours the owner read carried clean-looking reports.
+    # Defaults False: a report that does not say it was checked was not.
+    # TELEMETRY/HONESTY only — deliberately NOT part of ``passed``, because an
+    # unchecked tour is not thereby a FAILING tour; it is an unverified one, and
+    # conflating the two would block every offline path.
+    faithfulness_checked: bool = False
+
     @property
     def passed(self) -> bool:
         return not (

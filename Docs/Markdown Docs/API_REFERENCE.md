@@ -498,12 +498,14 @@ though the "only" wording did not.
 **8. Real narration composition happens on two separate endpoints, and both
 are permission-gated.** The `/trips/generate` response above is corpus text
 plus mock glue only, not composed narration. Actual Opus-or-ChatGPT-authored
-prose is produced by `POST /trips/{trip_id}/compose` (`compose_trip`,
-`src/api/routes/trips.py:648-659,778-783`) via `Depends(get_compose_client)`
-(`src/api/dependencies.py:114-132`; defaults to `AnthropicComposeClient`, or
-`OpenAIComposeClient` when `COMPOSE_PROVIDER=openai`). **Corrected — this is
-not the only such endpoint:** `POST /trips/preview` also reaches a real
-Anthropic call, through a completely separate path —
+prose is produced by `POST /trips/{trip_id}/compose`. **REWRITTEN 2026-07-31 —
+the whole-tour composer this paragraph described NO LONGER EXISTS.** The
+consolidation deleted `src/tour/compose.py`, `compose_script`,
+`AnthropicComposeClient`, `OpenAIComposeClient`, `get_compose_client` and the
+`COMPOSE_PROVIDER` toggle outright. Both endpoints now author through the SAME
+per-stop engine: `/trips/{trip_id}/compose` builds the user's already-chosen
+route through the author-a-prebuilt-route seam in `src/tour/authoring.py` and
+`POST /trips/preview` reaches the same executor —
 `Depends(get_premium_compose_executor)` (`src/api/dependencies.py:135-140`)
 returns `AnthropicPremiumExecutor` (`src/tour/premium_tour.py:378`), whose
 `execute_premium_plan` (`:419`) is called at
@@ -526,14 +528,20 @@ permission-gated call to `/trips/{trip_id}/compose` or `/trips/preview`.
 This is deliberate, documented staged design (see item 6), not an
 undocumented gap.
 
-**9. The two compose paths do NOT fail the same way, and the difference is
-not cosmetic.** `compose_script` (`src/tour/compose.py:1341`, reached from
-`/trips/generate`) **splices and reverts** around an offending sentence — the
-tour survives. `finalize_certification_composition` (`:890`, reached from
-`/trips/preview`) *"never splices or reverts"* (`:904`) — **one** offending
-sentence fails the **whole** tour, and the caller gets HTTP 200 with
-`candidate_eligible: false`. The workbench Generate button hits the strict
-one. Two further consequences are written up in
+**9. The two compose paths no longer differ, because there is only one.**
+**REWRITTEN 2026-07-31.** This item used to contrast `compose_script`
+(`src/tour/compose.py:1341`) with `finalize_certification_composition`. That
+file is deleted and that contrast is gone: both `/trips/{trip_id}/compose` and
+`/trips/preview` now assemble per-stop output through
+`finalize_certification_composition` in `src/tour/authoring.py`, which never
+splices or reverts — one offending sentence fails the whole tour. The two
+surfaces still differ in what they do with that failure, deliberately:
+`/trips/{trip_id}/compose` refuses with HTTP 422
+(`reason: compose_verification_failed`) so a failed tour is never written to
+Neo4j, while `/trips/preview` returns HTTP 200 with `candidate_eligible: false`
+and a labelled Basic tour. The persisted path also runs the real faithfulness
+checker, the coverage baseline and the full forbidden-phrase scan; preview
+runs the structural validator only. Two further consequences are written up in
 `Docs/bug-reports/2026-07-27-preview-failure-observability-salvage.md`: five
 distinct causes still collapse into a single `generation_failed` code (§2),
 and the certification path silently skips the forbidden-phrase scan, so the

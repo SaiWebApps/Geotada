@@ -25,13 +25,7 @@ from dotenv import load_dotenv
 from src.connection import create_driver
 from src.tour.anthropic_client import certification_compose_client
 from src.tour.artifact import sentences_payload_sha256
-from src.tour.candidate_authoring import (
-    AuthoringCandidateIdentity,
-    AuthoringCandidatePlan,
-    AuthoringStopRequest,
-)
-from src.tour.certification_provider import AnthropicCertificationProvider, CallPurpose
-from src.tour.compose import (
+from src.tour.authoring import (
     CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
     COMPOSE_MODEL,
     _certification_compose_requests,
@@ -39,6 +33,12 @@ from src.tour.compose import (
     candidate_compose_request_envelope,
     compose_input_sha256,
 )
+from src.tour.candidate_authoring import (
+    AuthoringCandidateIdentity,
+    AuthoringCandidatePlan,
+    AuthoringStopRequest,
+)
+from src.tour.certification_provider import AnthropicCertificationProvider, CallPurpose
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.generation import generate
 from src.tour.premium_authorities import PREMIUM_AUTHORITIES

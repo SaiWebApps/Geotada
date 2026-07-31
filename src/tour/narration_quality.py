@@ -353,24 +353,27 @@ def craft_score(text: str) -> float:
       - compose.py:~1067 — a RANKER only: best-of-N tie-break among candidates that
         already tied on fact-safety (``_local_penalty``). Losing here means a
         differently-drafted-but-equally-fact-safe candidate ships instead; no content
-        is deleted.
-      - author.py:416 — a COMPARATIVE GATE: ``_excise`` ships a surgically-cut,
-        fact-clean remainder only if ``craft_score(remainder) >= craft_score(stitch_fallback)``;
-        otherwise the remainder is DISCARDED and the mechanical stitch ships instead.
-        Changing this function's weights changes what prose ships on that path.
+        is deleted. This is craft_score's ONLY surviving caller as of Track A step A6
+        (2026-07-30): the never-shipped author-engine track — including the
+        ``author.py:416`` COMPARATIVE GATE this docstring used to also describe — was
+        deleted at A6, and ``compose.py`` itself is scheduled for deletion at A8, after
+        which this function has zero production callers.
     BOUNDING THE GATE RISK: the G2/G3 terms below are deliberately kept small relative
-    to the rest of the score so they cannot flip that comparison on their own. Each of
+    to the rest of the score so they cannot flip a close comparison on their own. Each of
     motivated_rate/causal_chain_rate/bare_adjacency_rate is a per-SENTENCE fraction
     (0..1, same shape as ``look_prompt_rate``, not an unbounded per-100-words rate), and
     each is weighted at 0.2 — so the combined best-case G2+G3 swing from one sentence
     (+0.2 motivated, +0.2 causal, both firing on the same sentence) is at most 0.4,
     below the 0.5 ceiling of the smallest pre-existing bounded positive term
     (``look_prompt_rate``, weight 0.5 x max rate 1.0) and far below percussion (1.5) or
-    the redundancy penalty (-1.5/pair). This bounds, but does not eliminate, the gate
-    risk: on a remainder vs. stitch_fallback comparison that is otherwise a near-tie,
-    a 0.2-0.4 swing from phrasing alone COULD still be the deciding factor — that is
-    inherent to any composite score used as a gate, and is called out here rather than
-    hidden. See test_however_is_not_double_counted for the measured before/after swing.
+    the redundancy penalty (-1.5/pair). This bounds, but does not eliminate, the risk on
+    a near-tie best-of-N comparison: a 0.2-0.4 swing from phrasing alone COULD still be
+    the deciding factor — that is inherent to any composite score used to break ties, and
+    is called out here rather than hidden. (The larger "remainder vs. stitch_fallback"
+    hard-gate risk this section originally bounded belonged to the author-engine track's
+    ``_excise``, deleted at Track A step A6 — see the caller note above; only the lower-
+    stakes best-of-N ranker in compose.py remains.) See test_however_is_not_double_counted
+    for the measured before/after swing.
     """
     q = score_narration(text)
     sents = [s for s in (p.strip() for p in split_sentences(text)) if s]

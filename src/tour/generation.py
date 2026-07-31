@@ -51,7 +51,7 @@ from .contract import (
     TourInput,
     ValidationReport,
 )
-from .glue_client import NO_GLUE_SENTINEL, GlueClient, MockGlueClient
+from .glue_client import NO_GLUE_SENTINEL, GlueClient, HaikuGlueClient
 from .routing import compute_dwell_seconds, planned_audio_seconds
 
 # ---------------------------------------------------------------------------
@@ -325,7 +325,18 @@ def generate(
     from .beat_select import reorder_final_stop_for_closing  # avoid cycles
     from .validation import validate_script  # avoid import cycle
 
-    client = glue_client or MockGlueClient()
+    # REAL BY DEFAULT (owner ruling 2026-07-31). This line used to read
+    # `glue_client or MockGlueClient()`, which made the CANNED client the default on
+    # every live path — trips.py generate_trip, trips.py compose_trip and
+    # premium_tour.plan_premium_tour all call generate() without a client, so every
+    # transition sentence in every tour the owner has ever read was a fixed string
+    # ("Stand here.", "Take a moment.", "End the walk here."). HaikuGlueClient, the real
+    # implementation, had ZERO call sites in product code. Tests were green throughout,
+    # because the tests were the code using the mock.
+    #
+    # The fake is no longer the default. A caller that wants a double must pass one
+    # explicitly; production passes nothing and gets the real thing.
+    client = glue_client if glue_client is not None else HaikuGlueClient()
     sentences: list[Sentence] = []
 
     # Phase 7 Fix 5: ensure the final stop's last beat is closing-friendly

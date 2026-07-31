@@ -10,15 +10,15 @@ import pytest
 
 from scripts import tour_batch_candidate as runner
 from src.tour.artifact import sentences_payload_sha256
-from src.tour.batch_regression_manifest import FrozenTourCase, load_frozen_tour_batch
-from src.tour.candidate_authoring import AuthoringCandidateIdentity, AuthoringStopRequest
-from src.tour.compose import (
+from src.tour.authoring import (
     COMPOSE_MODEL,
     ComposeRequest,
     _sentences_from_json,
     candidate_compose_request_envelope,
     compose_input_sha256,
 )
+from src.tour.batch_regression_manifest import FrozenTourCase, load_frozen_tour_batch
+from src.tour.candidate_authoring import AuthoringCandidateIdentity, AuthoringStopRequest
 from src.tour.contract import (
     Script,
     ScriptPOI,

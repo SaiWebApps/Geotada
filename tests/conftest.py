@@ -46,6 +46,47 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
+from src.audio.provider import MockTTSProvider, register_provider
+
+# ── The $0 audio seam (OWNER RULING 2026-07-31: no fake provider is ever served)
+#
+# src/audio/provider.py deliberately does NOT register MockTTSProvider, because
+# that registry IS the workbench's provider dropdown and the set of values
+# POST /audio/preview honours. Registering it HERE puts the silent-WAV double in
+# the pytest interpreter and nowhere else: the workbench server, the Playwright
+# suite's uvicorn subprocess and the Render deployment all import
+# src.audio.provider without ever importing this file, so none of them can offer
+# or serve it. The whole audio suite keeps costing $0 and no human can be shown
+# a fake.
+register_provider("mock", MockTTSProvider)
+# get_provider() now fails closed on an unset TTS_PROVIDER (it used to fall back
+# to "mock" — the defect). Pin the test process to the double it just registered
+# so provider-less calls in the suite keep their free path. setdefault, so
+# `make test-live` or a deliberate override still wins.
+os.environ.setdefault("TTS_PROVIDER", "mock")
+
+# ── The $0 glue seam (same principle, the narration side)
+#
+# src/tour/generation.py now builds a REAL HaikuGlueClient when no client is
+# passed. That was the right fix — the canned client had been the silent default
+# on every live path, so every transition sentence in every tour the owner ever
+# read was a fixed string. But POST /trips/generate exposes no seam to inject a
+# client, so every hermetic test that goes through that route now constructs a
+# paid Anthropic client and the money guard refuses AT FIXTURE SETUP: whole
+# modules error out instead of running.
+#
+# Bind the double HERE, the same one door the audio seam uses, and ONLY while
+# paid calls are locked. `make test-live` sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1
+# and therefore keeps the real client — so this can never quietly stand in for a
+# live run, which is the failure mode the never-mock-as-default rule exists to
+# prevent. Product code keeps no fallback: outside this interpreter the real
+# client is the only one.
+if os.getenv("ONDOWAY_ENABLE_PAID_LLM_CALLS") != "1":
+    import src.tour.generation as _generation
+    from src.tour.glue_client import MockGlueClient as _MockGlueClient
+
+    _generation.HaikuGlueClient = _MockGlueClient
+
 from src.connection import Neo4jConnectionError, create_driver, get_database
 from src.schema.constraints import apply_all
 
@@ -66,15 +107,15 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.fixture(autouse=True)
 def _money_guard_no_live_compose(request, monkeypatch):
-    """HARD money-guard. The product now ALWAYS builds the real Opus composer +
-    Haiku checker (``get_compose_client`` / ``get_faithfulness_checker`` — the mock
-    provider was removed so a CUSTOMER can never be served the stitcher passthrough
+    """HARD money-guard. The product ALWAYS builds the real Opus author + Haiku
+    checker (``get_premium_compose_executor`` / ``get_faithfulness_checker`` — there
+    is no mock provider, so a CUSTOMER can never be served the stitcher passthrough
     as if it were the narrator). The hermetic bar must therefore be prevented from
     ever CONSTRUCTING those billing clients: for every non-``live`` test, patch the
     real classes to their offline stubs. The hermetic Python shard then
     physically cannot make a paid Anthropic call — the real clients are never
-    instantiated (proven by
-    ``test_compose_provider.test_money_guard_compose_client_is_offline_stub``).
+    instantiated (the armed set is pinned structurally by
+    ``test_tour_one_engine.test_whole_tour_composer_is_gone``).
     ``@pytest.mark.live`` tests run in ``make test`` through the dedicated
     ``test-live`` shard; they intentionally spend and bind the real client by direct
     import, so they are left untouched."""
@@ -85,34 +126,12 @@ def _money_guard_no_live_compose(request, monkeypatch):
                 "use the explicit Makefile live target"
             )
         return
-    import src.tour.compose as _compose_mod
     import src.tour.verify as _verify_mod
 
-    _real_compose = _compose_mod.AnthropicComposeClient
-
-    def _guard_compose(model=_compose_mod.COMPOSE_MODEL, *, client=None):
-        # client is None == the PRODUCT get_compose_client() path, which would build
-        # the real billing SDK — hand back the offline stitcher stub instead. A
-        # direct unit test that injects a FAKE sdk client (client=<fake>) is already
-        # offline, so let it exercise the REAL composer class.
-        if client is None:
-            return _compose_mod.MockComposeClient()
-        return _real_compose(model, client=client)
-
-    monkeypatch.setattr(_compose_mod, "AnthropicComposeClient", _guard_compose)
-
-    # Same guard for the OpenAI (ChatGPT) composer: the product path (client=None)
-    # would build the billing OpenAI SDK, so hand back the offline stub; a unit test
-    # that injects a FAKE sdk client (client=<fake>) stays offline and exercises the
-    # real translation logic. So COMPOSE_PROVIDER=openai cannot bill in the Python shard.
-    _real_openai = _compose_mod.OpenAIComposeClient
-
-    def _guard_openai(model=None, *, client=None):
-        if client is None:
-            return _compose_mod.MockComposeClient()
-        return _real_openai(model, client=client)
-
-    monkeypatch.setattr(_compose_mod, "OpenAIComposeClient", _guard_openai)
+    # isort: split
+    # The arm below is pinned BYTE-FOR-BYTE by AC-9 (tests/test_tour_one_engine.py::
+    # test_whole_tour_composer_is_gone), so the import inside it may not be folded into
+    # the sorted block above. Do not reflow it.
 
     # PREMIUM authoring money-guard: the workbench now uses the same zero-retry,
     # receipt-preserving physical boundary as certification batches. Product
@@ -133,121 +152,6 @@ def _money_guard_no_live_compose(request, monkeypatch):
     monkeypatch.setattr(
         _verify_mod, "HaikuFaithfulnessChecker", _verify_mod.MockFaithfulnessChecker
     )
-
-    # CORRECTOR money-guard (mirror compose/author): AnthropicCorrectionClient runs
-    # CORRECTION_MODEL="claude-opus-4-8" — the priciest client in the tree. The arms
-    # above do not cover it, so a test constructing it with client=None would build the
-    # real SDK and bill Opus rates. Product path (client is None) -> the module's own
-    # offline MockCorrectionClient (affirms, returns input unchanged); an injected fake
-    # SDK client stays offline and still exercises the real class.
-    import src.tour.compose_correct as _corr_mod
-
-    _real_corrector = _corr_mod.AnthropicCorrectionClient
-
-    def _guard_corrector(model=None, *, client=None, **kwargs):
-        if client is None:
-            return _corr_mod.MockCorrectionClient()
-        return _real_corrector(model or _corr_mod.CORRECTION_MODEL, client=client, **kwargs)
-
-    monkeypatch.setattr(_corr_mod, "AnthropicCorrectionClient", _guard_corrector)
-
-    # REPETITION-JUDGE money-guard (mirror compose/author): HaikuRedundancyJudge is a
-    # FIFTH billing client and the arms above do not cover it, so a test constructing it
-    # with client=None would build the real SDK and bill. Product path (client is None)
-    # -> offline stub that never claims redundancy; an injected fake SDK client stays
-    # offline and still exercises the real class.
-    import src.tour.claim_repetition as _rep_mod
-
-    _real_redundancy = _rep_mod.HaikuRedundancyJudge
-
-    class _OfflineRedundancyJudge:
-        """Never redundant: a stub must not invent verdicts the real judge would make."""
-
-        def same_fact(self, a: str, b: str) -> bool:
-            return False
-
-    def _guard_redundancy(model=None, *, client=None, **kwargs):
-        if client is None:
-            return _OfflineRedundancyJudge()
-        return _real_redundancy(model, client=client, **kwargs)
-
-    monkeypatch.setattr(_rep_mod, "HaikuRedundancyJudge", _guard_redundancy)
-
-    # AUTHOR-ENGINE money-guard (mirror compose): the opt-in engine='author' preview path
-    # builds an Opus drafter + 3 Haiku judges via get_author_composer. Patch each so the
-    # PRODUCT path (client is None) builds an OFFLINE stub, never a billing SDK — a unit
-    # test that injects a fake SDK client (client=<fake>) stays offline and exercises the
-    # real class. So the hermetic Python shard cannot bill the author path.
-    import src.tour.author as _author_mod
-    import src.tour.factcheck as _fc_mod
-
-    class _OfflineDrafter:  # empty draft -> author_compose_stop falls back to the stitch
-        def write(self, *a, **k):
-            return ""
-
-        def rewrite(self, *a, **k):
-            return ""
-
-    class _OfflineDecomposer:
-        def decompose(self, narration):
-            return ()
-
-    class _TrustingJudge:  # offline; the guard only has to prevent billing
-        def conveys(self, fact, narration):
-            return True
-
-        def entails(self, key_claims, sentence_text):
-            return True
-
-    _real_drafter = _author_mod.LLMDrafter
-
-    def _guard_drafter(model, *, client=None, max_tokens=4000):
-        return (
-            _OfflineDrafter()
-            if client is None
-            else _real_drafter(model, client=client, max_tokens=max_tokens)
-        )
-
-    monkeypatch.setattr(_author_mod, "LLMDrafter", _guard_drafter)
-
-    _real_dec = _fc_mod.HaikuClaimDecomposer
-
-    def _guard_dec(model=_fc_mod.FAITHFULNESS_MODEL, *, client=None):
-        return _OfflineDecomposer() if client is None else _real_dec(model, client=client)
-
-    monkeypatch.setattr(_fc_mod, "HaikuClaimDecomposer", _guard_dec)
-
-    for _judge_name in ("HaikuCoverageJudge", "HaikuFaithfulnessJudge"):
-        _real_judge = getattr(_fc_mod, _judge_name)
-
-        def _guard_judge(model=_fc_mod.FAITHFULNESS_MODEL, *, client=None, _real=_real_judge):
-            return _TrustingJudge() if client is None else _real(model, client=client)
-
-        monkeypatch.setattr(_fc_mod, _judge_name, _guard_judge)
-
-    # CROSS-STOP CONSISTENCY money-guard (mirrors the author-engine arm above): the
-    # tour_consistency module's HaikuCrossStopJudge is a SEPARATE billing client living in a
-    # module the author-engine guard above never touches (it's report-only, wired only from
-    # scripts/author_tour.py — specs/2026-07-18-tour-qa-campaign cross-stop track). Patch it
-    # the same way: PRODUCT path (client is None) -> offline stub; a unit test that injects a
-    # fake SDK client stays offline and exercises the real class. The Python shard cannot
-    # bill the cross-stop judge either.
-    import src.tour.tour_consistency as _tc_mod
-
-    class _OfflineCrossStopJudge:  # offline; the guard only has to prevent billing
-        def compare(self, a_label, a_claims, b_label, b_claims):
-            return ()
-
-    _real_cross_stop_judge = _tc_mod.HaikuCrossStopJudge
-
-    def _guard_cross_stop_judge(model=_fc_mod.FAITHFULNESS_MODEL, *, client=None):
-        return (
-            _OfflineCrossStopJudge()
-            if client is None
-            else _real_cross_stop_judge(model, client=client)
-        )
-
-    monkeypatch.setattr(_tc_mod, "HaikuCrossStopJudge", _guard_cross_stop_judge)
 
 
 # Ports the conftest is allowed to wipe. Update this if your local test

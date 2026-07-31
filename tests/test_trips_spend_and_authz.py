@@ -30,13 +30,17 @@ from fastapi.testclient import TestClient
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
 from src.api.dependencies import (
-    get_compose_client,
     get_driver,
     get_premium_compose_executor,
     get_session,
 )
 from src.api.routes import trips as trips_route
-from src.tour.premium_tour import OfflinePremiumExecutor, PremiumBuildIdentity
+from src.tour.authoring import AUTHORING_MAX_STOPS
+from src.tour.premium_tour import (
+    AnthropicPremiumExecutor,
+    OfflinePremiumExecutor,
+    PremiumBuildIdentity,
+)
 
 # Reuse the proven hermetic corpus fakes rather than re-deriving them.
 from tests.test_trip_preview_contract import (
@@ -160,7 +164,13 @@ def auth_client():
         app = create_app()
         app.dependency_overrides[get_session] = lambda: _FakeAuthSession(user_id, owns=owns)
         app.dependency_overrides[get_driver] = lambda: _FakeDriver(_green_cluster_records())
-        app.dependency_overrides[get_compose_client] = object
+        # Both trip compose paths now author through the premium executor, so THAT
+        # is the boundary a foreign caller must never reach. It raises rather than
+        # returning a stub: if the ownership check ever stops short-circuiting, the
+        # test fails loudly instead of quietly composing a victim's trip.
+        app.dependency_overrides[get_premium_compose_executor] = lambda: _RaisingPremiumExecutor(
+            AssertionError("an unauthorized caller reached the authoring provider")
+        )
         return TestClient(app, raise_server_exceptions=False)
 
     return _make
@@ -208,7 +218,48 @@ def test_exact_stop_call_count_is_reserved_atomically(preview_client, monkeypatc
 
 
 def test_default_per_ip_budget_admits_one_maximum_size_premium_plan():
-    assert trips_route._PREVIEW_RATE_LIMIT_MAX >= 8
+    """The per-IP window must still fit ONE worst-case authoring plan end to end.
+
+    The ceiling is a call count, and the worst case is now the seam's own limit
+    (``AUTHORING_MAX_STOPS`` == 15 == ``selection.HARD_ANCHOR_CAP``), not the eight
+    stops the pre-cutover comment assumed. Pinned against the constant rather than a
+    literal so raising the seam's stop cap without raising the budget — which would
+    make the largest legal tour permanently un-authorable, a 429 nobody could clear —
+    fails HERE instead of in production.
+    """
+    assert trips_route._PREVIEW_RATE_LIMIT_MAX >= AUTHORING_MAX_STOPS
+
+
+def test_product_authoring_factory_is_offline_in_the_non_live_suite():
+    """AC-7, third clause: the conftest money-guard actually arms this boundary.
+
+    Every paid call either surface can make now goes through ONE product factory,
+    ``get_premium_compose_executor()``. Nothing else in the non-live suite asserts
+    that the factory is neutered, and the only executable money-guard pin that used
+    to cover the old whole-tour compose client is deleted later in this ledger — so
+    without this test the hermetic suite could start billing real Opus and every
+    other test would stay green, because they all inject their own doubles and never
+    touch the product path.
+
+    Hermetic and $0: it constructs the product executor and asserts what it IS,
+    without executing it.
+
+    UNDO: delete the PREMIUM authoring money-guard arm in tests/conftest.py (the
+    ``AnthropicPremiumExecutor`` monkeypatch) -> the factory hands back the real
+    billing executor and this goes RED.
+    """
+    executor = get_premium_compose_executor()
+
+    assert isinstance(executor, OfflinePremiumExecutor), (
+        "the product authoring factory built a real provider client in the "
+        f"non-live suite: {type(executor).__module__}.{type(executor).__qualname__}"
+    )
+    assert executor.cost_bearing is False
+    # And the spend guard's own predicate must agree, or a "$0" executor would
+    # still burn the rate-limit budget the paid path depends on.
+    assert trips_route._is_cost_bearing(executor) is False
+    # The swap is what makes it free — the class the factory names is billable.
+    assert AnthropicPremiumExecutor.cost_bearing is True
 
 
 def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, monkeypatch):

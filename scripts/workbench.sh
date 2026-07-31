@@ -49,7 +49,23 @@ else
   # concession is local-only and self-announcing (the server logs a WARNING naming
   # the commit); it refuses outright if RENDER_GIT_COMMIT is set, so it cannot reach
   # a deployment. Not GIT_COMMIT_SHA — that one asserts deploy provenance.
+  # TTS_PROVIDER=openai: OWNER RULING 2026-07-31 — the workbench must resolve the
+  # SAME real implementations production resolves. Without this line the server
+  # inherited get_provider()'s "mock" fallback (src/audio/provider.py), so any
+  # /audio request that omitted an explicit provider was answered with a SILENT
+  # WAV that an editor could mistake for real narration. render.yaml pins
+  # TTS_PROVIDER=openai for production; this keeps the two in parity, which
+  # tests/test_workbench_matches_the_app.py now verifies by derivation.
+  # ONBOARD_PROVIDER=anthropic: OWNER DECISION 2026-07-31 — the same rule, applied
+  # to the editorial side. get_drafter() (src/onboard/beat_draft.py) used to return
+  # the free MockBeatDrafter for an unset value, and this script pinned nothing, so
+  # the workbench's Draft Beats button showed a human beats a fake had written. The
+  # drafter now fails closed, and this is the pin that makes the button real. It
+  # SPENDS: one Opus call per drafted beat, and the owner removed the cost dialog
+  # (frontend/onboard.html), so a click drafts a whole city's beats immediately.
   WORKBENCH_API_ENABLED=true ONDOWAY_ENABLE_PAID_LLM_CALLS=1 \
+    TTS_PROVIDER=openai \
+    ONBOARD_PROVIDER=anthropic \
     ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1 \
     NO_PROXY="$NP" no_proxy="$NP" ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS=1 \
     uv run uvicorn src.api.app:app --host 127.0.0.1 --port ${PORT} >/tmp/ondoway-workbench-api.log 2>&1 &

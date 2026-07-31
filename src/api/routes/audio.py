@@ -111,7 +111,7 @@ def require_audio_admin() -> None:
 # OpenAI credit. Bound it the same way the feedback route bounds its Anthropic
 # spend: a per-IP fixed window PLUS a global fixed window (per-IP alone is
 # defeated by trivial IP rotation, and the global cap is what actually bounds
-# the bill). The free mock provider is never limited.
+# the bill). EVERY provider name is limited — see _audio_rate_limit.
 _AUDIO_RATE_LIMIT_MAX = int(os.getenv("AUDIO_RATE_LIMIT_MAX", "20"))
 _AUDIO_RATE_LIMIT_WINDOW_S = int(os.getenv("AUDIO_RATE_LIMIT_WINDOW_S", "60"))
 _AUDIO_GLOBAL_RATE_LIMIT_MAX = int(os.getenv("AUDIO_GLOBAL_RATE_LIMIT_MAX", "120"))
@@ -149,13 +149,19 @@ _LOCAL_AUDIO_URL_PREFIX = "/api/v1/audio/files/"
 
 
 def _audio_rate_limit(request: Request, provider_name: str) -> None:
-    """Per-IP + global fixed-window guard for paid TTS. 429 when exceeded.
+    """Per-IP + global fixed-window guard for the public TTS routes. 429 when
+    exceeded. Applies to EVERY provider name, with no exemption.
 
-    Only applies to real (billed) providers — the deterministic mock costs
-    nothing, so limiting it would only make the test/dev path flaky.
+    This used to return early whenever the name was ``"mock"``, reasoned from
+    cost: the fake is free, so limiting it "would only make the test/dev path
+    flaky". Two things were wrong with that. The cap bounds REQUEST VOLUME on a
+    public unauthenticated route, not only spend — so a name-based exemption let
+    an anonymous caller defeat both windows by naming the fake. And a pytest
+    interpreter is the one place ``"mock"`` is registered
+    (``tests/conftest.py``), so the exemption disabled the guard exactly where it
+    ran. A suite that trips the limit must reset the module state (see the
+    ``_reset_rate_limiter`` fixture) or raise the caps — never re-add a bypass.
     """
-    if provider_name == "mock":
-        return
     client_ip = _client_ip(request)
     now = time.monotonic()
     cutoff = now - _AUDIO_RATE_LIMIT_WINDOW_S
@@ -1043,7 +1049,12 @@ def keep_exploring_stop_audio(
     try:
         resolved_provider = get_provider(provider_name).name
     except ValueError:
-        resolved_provider = "mock"
+        # Unknown name keeps its soft-fail contract (200 + status='failed' from
+        # generate_stop_audio below), but it must still be COUNTED. This used to
+        # relabel it "mock", which _audio_rate_limit then exempted — so any
+        # unrecognised string was a free pass through the guard on a public
+        # route. The exemption is gone; pass the name through as sent.
+        resolved_provider = provider_name or "unresolved"
     _audio_rate_limit(request, resolved_provider)
 
     try:

@@ -384,6 +384,179 @@ def _api_delete(path: str) -> dict | list | None:
     return _api_request("DELETE", path)
 
 
+@contextlib.contextmanager
+def _stubbed_audio_preview(page: Page):
+    """Answer ``POST /audio/preview`` inside the BROWSER, and record every ask.
+
+    OWNER RULING 2026-07-31 — no fake audio provider is ever offered to a human.
+    These tests used to press ``page.select_option("#ttsProviderSelect", "mock")``
+    to stay $0, which required the API to keep serving a silent-WAV provider that
+    the editor's dropdown then listed too. ``src/audio/provider.py`` no longer
+    registers that double at all, so the option does not exist and the server
+    would refuse the name.
+
+    The $0 path moved to where a $0 path belongs: this test's own browser
+    context. Everything the workbench is responsible for is still measured for
+    real — the click, the fetch, the request payload, the blob URL, the decode,
+    the cache, the single delegated listener. What is stubbed is only the paid
+    synthesis, and the stub is STRICTER than the old mock provider: it records
+    the exact JSON the page sent, so each caller can assert the workbench asked
+    for a provider the live API actually serves (i.e. a real one) instead of
+    silently sending a fake name.
+
+    The bytes are a genuine decodable WAV produced by ``MockTTSProvider`` — the
+    class still exists, it is simply unreachable from any server. It runs HERE,
+    in the test process, and never reaches a human.
+
+    Yields the list of parsed request bodies, newest last.
+    """
+    from src.audio.provider import MockTTSProvider
+
+    calls: list[dict] = []
+
+    def _handler(route) -> None:
+        body = json.loads(route.request.post_data or "{}")
+        calls.append(body)
+        route.fulfill(
+            status=200,
+            content_type="audio/wav",
+            headers={"Content-Disposition": 'attachment; filename="preview.wav"'},
+            body=MockTTSProvider().generate(body.get("text", "")),
+        )
+
+    page.route("**/audio/preview", _handler)
+    try:
+        yield calls
+    finally:
+        page.unroute("**/audio/preview")
+
+
+def _declared_audio_registry() -> dict[str, str]:
+    """The provider registry ``src/audio/provider.py`` DECLARES, read from source.
+
+    Structural, no names: the module-level dict literal whose keys are string
+    constants and whose values are classes defined in that same module. Compared
+    against what the live server offers, this is what catches an import-time
+    ``register_provider(...)`` — the registry's own unguarded mutation door —
+    putting something back that the source never declared.
+    """
+    import ast
+
+    path = REPO_ROOT / "src" / "audio" / "provider.py"
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    classes = {n.name: n for n in tree.body if isinstance(n, ast.ClassDef)}
+    found: dict[str, str] = {}
+    for node in tree.body:
+        if not (
+            (isinstance(node, ast.AnnAssign) and node.value is not None)
+            or isinstance(node, ast.Assign)
+        ):
+            continue
+        value = node.value
+        if not isinstance(value, ast.Dict) or not value.keys:
+            continue
+        if not all(isinstance(k, ast.Constant) and isinstance(k.value, str) for k in value.keys):
+            continue
+        if not all(isinstance(v, ast.Name) and v.id in classes for v in value.values):
+            continue
+        found.update(
+            {k.value: v.id for k, v in zip(value.keys, value.values, strict=True)}
+        )
+    assert found, (
+        f"found no name->class registry in {path}; this derivation is broken, so "
+        f"comparing it against the served list would prove nothing"
+    )
+    return found
+
+
+def _class_declares_a_routable_upstream(class_name: str) -> bool:
+    """Does this provider class name an endpoint on a globally routable host?
+
+    Classified by ADDRESS, never by a list of forbidden host names: an IP literal
+    is judged by :mod:`ipaddress`, a hostname is resolved and every address it
+    resolves to must be globally routable. Loopback in all its spellings
+    (``127.0.0.2``, ``::1``, ``tts.localhost``), RFC1918 and link-local all fall
+    out with nothing to maintain.
+
+    DELIBERATELY SHALLOW: this asks whether the class NAMES a real upstream, not
+    whether its output came from one. The deep, behavioural version — the
+    endpoint must reach a transport in the URL position and every return must be
+    data-dependent on the response — lives in
+    tests/test_workbench_matches_the_app.py, which also drives a real socket-
+    denied request. What this adds is that the check is applied to the list the
+    LIVE SERVER offers a human, not to the static markup that server replaces.
+    """
+    import ast
+    import ipaddress
+    import socket
+    from urllib.parse import urlparse
+
+    tree = ast.parse((REPO_ROOT / "src" / "audio" / "provider.py").read_text(encoding="utf-8"))
+    node = next(
+        (n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == class_name), None
+    )
+    assert node is not None, f"{class_name} is not defined at module level in src/audio/provider.py"
+
+    for stmt in node.body:
+        if not isinstance(stmt, ast.Assign) or not isinstance(stmt.value, ast.Constant):
+            continue
+        value = stmt.value.value
+        if not isinstance(value, str) or "://" not in value:
+            continue
+        parsed = urlparse(value)
+        if parsed.scheme not in ("http", "https") or not parsed.hostname:
+            continue
+        try:
+            if ipaddress.ip_address(parsed.hostname).is_global:
+                return True
+            continue
+        except ValueError:
+            pass
+        try:
+            infos = socket.getaddrinfo(parsed.hostname, None)
+        except OSError as exc:
+            raise AssertionError(
+                f"cannot classify {parsed.hostname!r}: name resolution failed ({exc}). "
+                f"An unresolvable upstream is an UNPROVEN one, never a proven one — "
+                f"check the network before touching this test."
+            ) from exc
+        if infos and all(ipaddress.ip_address(i[4][0]).is_global for i in infos):
+            return True
+    return False
+
+
+def _served_provider_names() -> list[str]:
+    """The provider names the LIVE workbench API offers, straight from the API.
+
+    This is the same call ``loadTtsProviders()`` makes to build the dropdown, so
+    it is the true list a human can pick from — not the static markup, which the
+    page throws away on load.
+    """
+    payload = _api_get("/audio/providers")
+    assert isinstance(payload, dict) and payload.get("providers"), (
+        f"GET /audio/providers did not answer with a provider list: {payload!r}"
+    )
+    return [p["name"] for p in payload["providers"]]
+
+
+def _assert_asked_for_a_served_provider(calls: list[dict]) -> None:
+    """Every /audio/preview the page sent named a provider the API really serves.
+
+    The API only serves providers that reach a real speech service
+    (``tests/test_workbench_matches_the_app.py`` proves that against a live
+    server-shaped subprocess), so this is the workbench end of the same
+    invariant: the page must not be sending a name no server would honour.
+    """
+    assert calls, "the page never POSTed /audio/preview"
+    served = _served_provider_names()
+    asked = sorted({c.get("provider") for c in calls})
+    assert set(asked) <= set(served), (
+        f"the workbench asked /audio/preview for {asked}, but the live API only "
+        f"serves {sorted(served)}. A provider the server will not honour means "
+        f"the editor is either getting an error or, worse, something fake."
+    )
+
+
 def _take_screenshot(page: Page, name: str) -> str:
     """Capture a screenshot and return the file path."""
     SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
@@ -565,6 +738,25 @@ def api_server():
             # start (src/api/auth/config.py). Opt into the dev placeholder — a
             # local test server is never a production deploy.
             "ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS": "1",
+            # Resolve the SAME provider production resolves (render.yaml pins
+            # TTS_PROVIDER=openai, and so does scripts/workbench.sh). This server
+            # is what the browser talks to, so it must be shaped like the real
+            # workbench server, not like the pytest process that starts it: the
+            # parent process registers the silent double for its own $0 use
+            # (tests/conftest.py) and would otherwise leak TTS_PROVIDER=mock in
+            # here through the inherited environment — naming a provider this
+            # interpreter deliberately cannot resolve.
+            "TTS_PROVIDER": "openai",
+            # ONBOARD_PROVIDER: this shard drives the real Draft Beats button in a
+            # real browser, and get_drafter() (src/onboard/beat_draft.py) now FAILS
+            # CLOSED on an unset value — an unset drafter used to silently mean the
+            # free mock, which is what put fake beats in front of a human. So the
+            # pin has to be explicit. It is "mock" here and ONLY here: unlike
+            # TTS_PROVIDER above, this shard must not spend, and scripts/workbench.sh
+            # pins "anthropic" for the workbench a human actually uses. Naming the
+            # double in a test's own subprocess env is the sanctioned opt-in; what
+            # was forbidden was getting it without asking.
+            "ONBOARD_PROVIDER": "mock",
             # Step-7 onboarding: point the panel's write + deploy at a module-scoped
             # tmp dir so the London upload->deploy round-trip is HERMETIC — it writes
             # data/london/ + cities.json under the tmp root and NEVER touches the
@@ -812,16 +1004,20 @@ def browser_page(seed_data, reporter):
         context = browser.new_context(viewport={"width": 1440, "height": 900})
         page = context.new_page()
         # ACCEPT window.confirm. Playwright DISMISSES dialogs by default when no
-        # handler is registered, which silently turned the workbench's live-compose
-        # money gate ("Generate a tour? This ... spends real money") into a Cancel.
-        # generateTourPreview then returns BEFORE its fetch, so every tour-preview
-        # test timed out waiting for a /trips/preview response that was never sent.
+        # handler is registered, so any confirm() in review.html silently becomes
+        # a Cancel and the flow under test never runs at all.
         #
-        # This is a REAL pre-existing failure, not a flake: the confirm landed in
-        # commit 8d8fa9f and the suite has been red since, unnoticed because
-        # test-workbench is --ignore'd out of `make test`. Verified by stashing all
-        # of today's changes and re-running against HEAD — identical timeout.
-        # No real money is at risk: /trips/preview is route-mocked in these tests.
+        # HISTORY: added for the tour-preview spend gate ("Generate a Premium
+        # candidate? ... spends real money"), which had turned every tour-preview
+        # test into a timeout — generateTourPreview returned BEFORE its fetch.
+        # The owner ordered that dialog DELETED on 2026-07-31, because the
+        # workbench must replicate the tourist's app experience and a tourist is
+        # never asked to approve spend. Its absence is now pinned by
+        # tests/test_workbench_preview_wiring.py (section 4).
+        #
+        # The handler still belongs here: review.html confirms ELSEWHERE, and
+        # that one is load-bearing — the zero-beat branch of showMergePreview
+        # deletes the source POI when the editor clicks OK.
         page.on("dialog", lambda dialog: dialog.accept())
         yield page, seed_data, reporter
         # Save bug report before closing
@@ -1854,12 +2050,112 @@ class TestDetailViewAndEditing:
 
         _take_screenshot(page, "ac11-beat-edit")
 
+    def test_the_audio_dropdown_a_human_sees_offers_no_fake_provider(self, browser_page):
+        """OWNER RULING 2026-07-31: the workbench cannot offer a fake voice.
+
+        This is the owner's original complaint, checked where they saw it: in a
+        real browser, against a real server. The static ``<select>`` markup is
+        NOT the dropdown — ``loadTtsProviders()`` does ``innerHTML = ''`` and
+        rebuilds the list from ``GET /audio/providers`` — so this reads the
+        options the page actually rendered and requires them to be exactly the
+        set the live API serves. ``src/audio/provider.py`` no longer registers
+        the silent double, so that set contains only providers which really
+        speak (proven behaviourally, in a server-shaped subprocess, by
+        tests/test_workbench_matches_the_app.py).
+
+        Three derived assertions, each of which a different spoof breaks:
+
+        1. the rendered options are exactly what the live API serves — the page
+           neither adds nor hides anything;
+        2. the served list is exactly the registry ``src/audio/provider.py``
+           DECLARES in source, which is what catches an import-time
+           ``register_provider(...)`` putting a fake back into a running server
+           while every source file still reads correctly; and
+        3. every declared entry names an upstream on a globally routable host —
+           so re-adding the silent double to the registry literal fails too.
+
+        It also pins the SELECTED value to what render.yaml pins for production,
+        derived from the manifest rather than typed in here, so a workbench that
+        drifts off the deployed voice fails.
+
+        UNDO TEST: add ``"mock": MockTTSProvider`` back to ``_PROVIDERS`` -> RED
+        on (3). Call ``register_provider("mock", MockTTSProvider)`` at import in
+        any module the API loads -> RED on (2).
+        """
+        page, _seed_data, _reporter = browser_page
+
+        page.wait_for_function(
+            "() => { const el = document.getElementById('ttsProviderSelect');"
+            " return !!el && el.options.length > 0; }",
+            timeout=15000,
+        )
+        rendered = page.eval_on_selector(
+            "#ttsProviderSelect", "el => [...el.options].map(o => o.value)"
+        )
+        assert rendered, "the audio provider dropdown rendered zero options"
+
+        served = _served_provider_names()
+        assert sorted(rendered) == sorted(served), (
+            f"the dropdown a human sees ({sorted(rendered)}) is not the list the "
+            f"API serves ({sorted(served)})"
+        )
+
+        declared = _declared_audio_registry()
+        assert sorted(served) == sorted(declared), (
+            f"the running server offers {sorted(served)} but src/audio/provider.py "
+            f"declares {sorted(declared)}. Something registered (or removed) a "
+            f"provider after import, so the registry every source-level guard "
+            f"audits is NOT the one this human's dropdown was built from."
+        )
+
+        fakes = sorted(
+            name
+            for name, class_name in declared.items()
+            if not _class_declares_a_routable_upstream(class_name)
+        )
+        assert not fakes, (
+            f"the workbench dropdown offers {fakes}, whose implementation names no "
+            f"upstream on a routable host — it cannot be speaking to a real voice "
+            f"service, whatever it is called. The workbench exists so the owner can "
+            f"judge what a TOURIST hears; one click on that option and every 'play' "
+            f"is canned. Remove it from the registry in src/audio/provider.py; a "
+            f"$0 test path belongs behind register_provider() in tests/conftest.py."
+        )
+
+        production_pin = None
+        for line_no, raw in enumerate(
+            (REPO_ROOT / "render.yaml").read_text(encoding="utf-8").splitlines()
+        ):
+            if raw.strip() == "- key: TTS_PROVIDER":
+                following = (
+                    REPO_ROOT / "render.yaml"
+                ).read_text(encoding="utf-8").splitlines()[line_no + 1].strip()
+                assert following.startswith("value:"), (
+                    f"render.yaml pins TTS_PROVIDER with {following!r}, not a literal value"
+                )
+                production_pin = following[len("value:") :].strip().strip("\"'")
+                break
+        assert production_pin, "render.yaml does not pin TTS_PROVIDER at all"
+
+        selected = page.eval_on_selector("#ttsProviderSelect", "el => el.value")
+        assert selected == production_pin, (
+            f"the workbench is sitting on the {selected!r} voice while production "
+            f"is deployed on {production_pin!r} — the editor is judging something "
+            f"no tourist will hear"
+        )
+        _take_screenshot(page, "audio-provider-dropdown-is-real")
+
     def test_beat_tts_play_decodes_audio(self, browser_page):
         """Characterize beat-TTS BEFORE the COMPOSE-era refactor: clicking a beat's
-        Listen button POSTs /audio/preview (mock provider) and the <audio> actually
-        DECODES (readyState>=2) from a blob: URL. Pins ttsPlayBeat's real behavior so
+        Listen button POSTs /audio/preview and the <audio> actually DECODES
+        (readyState>=2) from a blob: URL. Pins ttsPlayBeat's real behavior so
         the later ttsPlay-core extraction provably preserves it. Hard asserts (this
-        must bite); real browser + real network, no string-grep."""
+        must bite); real browser, real click, real fetch, real decode.
+
+        The paid synthesis is answered in the browser (``_stubbed_audio_preview``)
+        rather than by selecting a fake provider — the API no longer serves one
+        (OWNER RULING 2026-07-31). The request the page sent is asserted instead,
+        which is strictly more than the old version proved."""
         page, _seed_data, _reporter = browser_page
 
         # Select the multi-lens POI that carries 4 beats with non-empty scripts
@@ -1874,9 +2170,6 @@ class TestDetailViewAndEditing:
                 break
         assert selected, "expected the 'UI Test — Les Halles Multi-Lens' POI in the worklist"
 
-        # Use the deterministic offline 'mock' provider (silent WAV, no API key).
-        page.select_option("#ttsProviderSelect", "mock")
-
         # First beat whose Listen button is enabled (non-empty script_body).
         play_buttons = page.locator(f"{BEAT_CARD} .tts-play-btn:not([disabled])")
         assert play_buttons.count() > 0, "expected at least one beat with a playable script"
@@ -1884,24 +2177,28 @@ class TestDetailViewAndEditing:
         beat_idx = btn.get_attribute("data-beat-tts")
         audio_sel = f'.tts-audio[data-beat-audio="{beat_idx}"]'
 
-        # Clicking Listen must hit /audio/preview for real (cache is empty — no prior
-        # test plays TTS); a 200 proves the fetch fired (and is non-vacuous — a cache
-        # replay or error would not produce this request).
-        with page.expect_response(lambda r: "/audio/preview" in r.url) as resp_info:
-            btn.click()
-        resp = resp_info.value
-        assert resp.status == 200, f"/audio/preview returned {resp.status}"
+        with _stubbed_audio_preview(page) as audio_calls:
+            # Clicking Listen must hit /audio/preview for real (cache is empty — no
+            # prior test plays TTS); a 200 proves the fetch fired (and is non-vacuous
+            # — a cache replay or error would not produce this request).
+            with page.expect_response(lambda r: "/audio/preview" in r.url) as resp_info:
+                btn.click()
+            resp = resp_info.value
+            assert resp.status == 200, f"/audio/preview returned {resp.status}"
 
-        # preload='none' => the browser only fetches+decodes after play(); assert the
-        # element reaches a blob: src AND HAVE_CURRENT_DATA via polling (this also proves
-        # the audio bytes were non-empty + decodable — stronger than reading the raw body,
-        # which Playwright can't retrieve once the page has consumed the stream).
-        page.wait_for_function(
-            "sel => { const el = document.querySelector(sel);"
-            " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
-            arg=audio_sel,
-            timeout=15000,
-        )
+            # preload='none' => the browser only fetches+decodes after play(); assert
+            # the element reaches a blob: src AND HAVE_CURRENT_DATA via polling (this
+            # also proves the audio bytes were non-empty + decodable — stronger than
+            # reading the raw body, which Playwright can't retrieve once the page has
+            # consumed the stream).
+            page.wait_for_function(
+                "sel => { const el = document.querySelector(sel);"
+                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                arg=audio_sel,
+                timeout=15000,
+            )
+            assert audio_calls[0].get("text"), "the page sent no narration text to voice"
+            _assert_asked_for_a_served_provider(audio_calls)
         _take_screenshot(page, "beat-tts-decode")
 
     def test_tour_preview_view_opens(self, browser_page):
@@ -1930,9 +2227,10 @@ class TestDetailViewAndEditing:
 
     def test_tour_preview_generates_and_plays(self, browser_page):
         """Step 4: Generate POSTs /trips/preview, renders the stops, and each stop plays via the
-        shared ttsPlay (real /audio/preview decode). /trips/preview is mocked (its own API tests
-        cover it; the test DB's tier-1 fixture POIs can't produce a tour) — the form->request,
-        the render, and the mock-provider audio decode are all REAL."""
+        shared ttsPlay (real fetch + real blob decode). /trips/preview is stubbed (its own
+        API tests cover it; the test DB's tier-1 fixture POIs can't produce a tour), and the
+        paid synthesis is answered in the browser — the form->request, the render, the audio
+        fetch and the decode are all REAL."""
         page, _seed_data, _reporter = browser_page
         page.route(
             "**/trips/preview",
@@ -1961,7 +2259,6 @@ class TestDetailViewAndEditing:
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
-            page.select_option("#ttsProviderSelect", "mock")
             page.locator("#tourStart").fill("48.8566,2.3522")
             with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
                 page.locator("#tourGenerateBtn").click()
@@ -1977,15 +2274,17 @@ class TestDetailViewAndEditing:
             )
 
             # Play stop 0 through the shared player -> real POST /audio/preview + real decode.
-            with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
-                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
-            assert ar.value.status == 200
-            page.wait_for_function(
-                "sel => { const el = document.querySelector(sel);"
-                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
-                arg='.tts-audio[data-tour-stop-audio="0"]',
-                timeout=15000,
-            )
+            with _stubbed_audio_preview(page) as audio_calls:
+                with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
+                    stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+                assert ar.value.status == 200
+                page.wait_for_function(
+                    "sel => { const el = document.querySelector(sel);"
+                    " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                    arg='.tts-audio[data-tour-stop-audio="0"]',
+                    timeout=15000,
+                )
+                _assert_asked_for_a_served_provider(audio_calls)
             _take_screenshot(page, "step4-tour-generate-play")
         finally:
             page.unroute("**/trips/preview")
@@ -2172,7 +2471,6 @@ class TestDetailViewAndEditing:
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
-            page.select_option("#ttsProviderSelect", "mock")
             page.locator("#tourStart").fill("48.8566,2.3522")
             with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
                 page.locator("#tourGenerateBtn").click()
@@ -2230,7 +2528,6 @@ class TestDetailViewAndEditing:
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
-            page.select_option("#ttsProviderSelect", "mock")
             page.locator("#tourStart").fill("48.8566,2.3522")
             # Generate TWICE — the second re-render must not duplicate the delegated listener.
             for _ in range(2):
@@ -2240,29 +2537,38 @@ class TestDetailViewAndEditing:
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 stops after re-generate, got {stops.count()}"
 
-            # First play of stop 0 -> exactly ONE /audio/preview (proves no stacked listener).
-            with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
-                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
-            assert ar.value.status == 200
-            page.wait_for_function(
-                "sel => { const el = document.querySelector(sel);"
-                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
-                arg='.tts-audio[data-tour-stop-audio="0"]', timeout=15000)
-            first_src = page.locator('.tts-audio[data-tour-stop-audio="0"]').get_attribute("src")
-            assert len(audio_calls) == 1, f"expected 1 /audio/preview, got {len(audio_calls)} (listener stacked?)"
+            with _stubbed_audio_preview(page) as stubbed:
+                # First play of stop 0 -> exactly ONE /audio/preview (no stacked listener).
+                with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
+                    stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+                assert ar.value.status == 200
+                page.wait_for_function(
+                    "sel => { const el = document.querySelector(sel);"
+                    " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                    arg='.tts-audio[data-tour-stop-audio="0"]', timeout=15000)
+                first_src = page.locator('.tts-audio[data-tour-stop-audio="0"]').get_attribute("src")
+                assert len(audio_calls) == 1, f"expected 1 /audio/preview, got {len(audio_calls)} (listener stacked?)"
 
-            # Replay stop 0 -> cache hit: same blob, NO new /audio/preview.
-            stops.first.locator('.tts-play-btn[data-tour-stop]').click()
-            page.wait_for_timeout(800)
-            assert len(audio_calls) == 1, f"replay refetched ({len(audio_calls)} calls) — cache miss"
-            assert page.locator('.tts-audio[data-tour-stop-audio="0"]').get_attribute("src") == first_src
+                # Replay stop 0 -> cache hit: same blob, NO new /audio/preview.
+                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+                page.wait_for_timeout(800)
+                assert len(audio_calls) == 1, f"replay refetched ({len(audio_calls)} calls) — cache miss"
+                assert page.locator('.tts-audio[data-tour-stop-audio="0"]').get_attribute("src") == first_src
+                # The stub saw exactly the one request the browser reported, so the
+                # cache-hit assertion above is measuring the same thing twice over.
+                assert len(stubbed) == 1, f"the server was asked {len(stubbed)} times, not once"
+                _assert_asked_for_a_served_provider(stubbed)
             _take_screenshot(page, "step5-tour-cache-replay")
         finally:
             page.unroute("**/trips/preview")
 
     def test_tour_stop_long_narration_plays(self, browser_page):
         """Step 5 (edge): a long stop narration (> the 4096 TTS cap) plays through the chunked
-        /audio/preview path and decodes — the UI passes the full text, no client truncation."""
+        /audio/preview path and decodes — the UI passes the full text, no client truncation.
+
+        The no-truncation property is now asserted DIRECTLY on the outbound request body
+        (the browser stub records it) instead of being inferred from a 200; the server's
+        own acceptance of a 6000-char body is covered by tests/test_audio_provider.py."""
         page, _seed_data, _reporter = browser_page
         long_narration = ("Settle in by the river. " * 260).strip()  # ~6000 chars, > 4096 cap
         assert len(long_narration) > 4096
@@ -2274,20 +2580,26 @@ class TestDetailViewAndEditing:
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
-            page.select_option("#ttsProviderSelect", "mock")
             page.locator("#tourStart").fill("48.8566,2.3522")
             with page.expect_response(lambda r: "/trips/preview" in r.url):
                 page.locator("#tourGenerateBtn").click()
             page.wait_for_timeout(300)
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 1
-            with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
-                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
-            assert ar.value.status == 200, "long narration should chunk + return 200, not 422"
-            page.wait_for_function(
-                "sel => { const el = document.querySelector(sel);"
-                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
-                arg='.tts-audio[data-tour-stop-audio="0"]', timeout=20000)
+            with _stubbed_audio_preview(page) as audio_calls:
+                with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
+                    stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+                assert ar.value.status == 200, "long narration should play, not error"
+                page.wait_for_function(
+                    "sel => { const el = document.querySelector(sel);"
+                    " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                    arg='.tts-audio[data-tour-stop-audio="0"]', timeout=20000)
+                sent = audio_calls[0].get("text", "")
+                assert sent == long_narration, (
+                    f"the workbench truncated the narration client-side: sent "
+                    f"{len(sent)} of {len(long_narration)} chars"
+                )
+                _assert_asked_for_a_served_provider(audio_calls)
             _take_screenshot(page, "step5-tour-long-narration")
         finally:
             page.unroute("**/trips/preview")
@@ -4697,29 +5009,26 @@ class TestOnboardPanel:
         assert poi_n >= 30, f"expected >= 30 merged POIs (36), got {poi_n} from {poi_text!r}"
         _take_screenshot(page, "onboard-03-pois-rendered")
 
-        # (e) The cost gate: a modal with a $ estimate and the MULTI-BEAT count.
-        # NOTE: the drafter now splits each POI's lead into ~3 verbatim spans, so
-        # the estimate is sized off planned_beat_count (~3 beats/POI), NOT the POI
-        # count. The modal therefore shows a beat count GREATER than #poiCount (the
-        # one-beat era would have shown ~poi_n). Assert the $ estimate + the
-        # multi-beat property, never a magic literal.
-        page.locator("#draftBeatsBtn").click()
-        expect(page.locator("#costModal")).to_be_visible(timeout=15000)
-        modal_text = page.locator("#costModal").text_content() or ""
-        assert "$" in modal_text, f"cost modal shows no dollar estimate: {modal_text!r}"
-        modal_match = re.search(r"(\d+)\s+beat", modal_text)
-        assert modal_match, f"cost modal shows no beat count: {modal_text!r}"
-        modal_beats = int(modal_match.group(1))
-        assert modal_beats > poi_n, (
-            f"cost estimate must be multi-beat (> {poi_n} POIs), got {modal_beats}: {modal_text!r}"
+        # (e) Draft beats — ONE click, no spend dialog. OWNER DECISION 2026-07-31:
+        # the workbench replicates the tourist's app experience, and a tourist is
+        # never asked to approve spend, so the cost-confirmation modal that used to
+        # sit between these two steps is gone (the same ruling that removed
+        # generateTourPreview's window.confirm). The page sends confirm_cost:true
+        # itself; the API's contract is unchanged for other callers.
+        # tests/test_workbench_preview_wiring.py::test_drafting_beats_shows_no_spend_confirmation
+        # guards the page source; this is the end-to-end half.
+        assert page.locator("#costModal").count() == 0, (
+            "the cost-confirmation modal is back in the onboard page — the "
+            "workbench must never ask a human to approve spend"
         )
-        _take_screenshot(page, "onboard-04-cost-modal")
+        page.locator("#draftBeatsBtn").click()
+        _take_screenshot(page, "onboard-04-drafting-no-dialog")
 
-        # (f) Confirm the cost -> beats drafted. The pane shows "<N> beats drafted";
-        # with ~3 beats/POI that N is > #poiCount (the one-beat era drafted < poi_n
-        # because a POI without a Wikipedia extract yields none). Wait for that
-        # multi-beat drafted state, not a stale literal.
-        page.locator("#costConfirmBtn").click()
+        # (f) Beats drafted directly. The pane shows "<N> beats drafted"; the
+        # drafter splits each POI's lead into ~3 verbatim spans, so that N is
+        # > #poiCount (the one-beat era drafted < poi_n because a POI without a
+        # Wikipedia extract yields none). Wait for that multi-beat drafted state,
+        # not a stale literal.
         page.wait_for_function(
             """(minBeats) => {
                 const el = document.querySelector('#beatPane');

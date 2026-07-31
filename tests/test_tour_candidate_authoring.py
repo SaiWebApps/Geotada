@@ -6,6 +6,7 @@ import pytest
 from pydantic import ValidationError
 
 from src.tour.candidate_authoring import (
+    MAX_CANDIDATE_STOPS,
     AuthoringCandidateIdentity,
     AuthoringCandidatePlan,
     AuthoringCandidateResponseSet,
@@ -160,3 +161,42 @@ def test_candidate_response_set_rejects_missing_or_cross_candidate_stops() -> No
                 _response(plan_b.stop_requests[1]),
             ),
         )
+
+
+def _wide_plan(stop_count: int) -> AuthoringCandidatePlan:
+    candidate = _identity("A")
+    return AuthoringCandidatePlan(
+        candidate=candidate,
+        stop_requests=tuple(
+            AuthoringStopRequest.create(
+                candidate=candidate,
+                stop_index=index,
+                compose_input_sha256=f"{index % 16:x}" * 64,
+            )
+            for index in range(stop_count)
+        ),
+    )
+
+
+def test_candidate_plan_covers_every_stop_selection_can_seat() -> None:
+    """The identity layer caps at HARD_ANCHOR_CAP, not at certification's 8.
+
+    A persisted trip carries whatever the planner seated. Refusing a 9-to-15-stop
+    plan HERE would reject a route the same engine had already built and stored,
+    at the point where the request identities are minted — long after the only
+    place a stop budget belongs (the PLANNING policy in routing.py).
+    """
+    assert MAX_CANDIDATE_STOPS == 15
+    plan = _wide_plan(MAX_CANDIDATE_STOPS)
+
+    assert len(plan.stop_requests) == 15
+    response_set = AuthoringCandidateResponseSet(
+        plan=plan,
+        responses=tuple(_response(request) for request in plan.stop_requests),
+    )
+    assert len(response_set.responses) == 15
+
+
+def test_candidate_plan_still_refuses_more_stops_than_the_cap() -> None:
+    with pytest.raises(ValidationError, match="at most 15 items"):
+        _wide_plan(MAX_CANDIDATE_STOPS + 1)

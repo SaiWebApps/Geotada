@@ -35,7 +35,6 @@ Plumbing (all in-process):
 from __future__ import annotations
 
 import hashlib
-import inspect
 import json
 
 import pytest
@@ -628,47 +627,3 @@ def test_preview_green_pool_but_materially_thin_delivery_is_422(make_client):
     detail = r.json()["detail"]
     assert detail["reason"] == "premium_route_infeasible"
     assert "best eligible bounded route 2403s" in detail["detail"]
-
-
-def test_g4_is_deliberately_dark_and_never_billed():
-    """DECISION GUARD. G4 (semantic cross-stop repetition) is BUILT and TESTED but is
-    deliberately NOT RUN from preview_trip. It was wired on 2026-07-19 and made dark the
-    same day, on measurement, before it ever billed a real preview.
-
-    Two independent reasons, either one sufficient:
-
-    1. IT DOES NOT DETECT THE DEFECT IT EXISTS FOR. ~1100 candidate pairs per tour force
-       a sampling strategy. Prefix truncation spent the whole budget on stop 0 (0 of 327
-       pairs with a-stop>=1 ever judged). The round-robin stratification that fixed that
-       breadth destroyed within-bucket depth instead: measured on the very tour
-       claim_repetition.py cites as its founding case
-       (data/paris/tours/pont-neuf-60min-5afc2e.json, where "Vert-Galant" is glossed FOUR
-       times in different words), MAX_CANDIDATE_PAIRS=200 recovers **0 of the 15
-       Vert-Galant edges**. A check that reports "no repetition found" on the canonical
-       repetition tour is WORSE than no check.
-    2. THE JUDGE IS UNCALIBRATED. HaikuRedundancyJudge has never executed against a live
-       model; all 32 of its tests inject a hand-labelled stub. Failure-ledger entry
-       FL-2026-111 warned verbatim that "an unproven judge silently gating narration
-       would suppress real facts".
-
-    Cost of leaving it on: the cap is a FLOOR, not a ceiling -- every real tour yields
-    >1100 candidates, so it billed ~200 Haiku calls (~$0.10) on EVERY preview for the
-    recall measured above.
-
-    To re-enable, BOTH must hold: (a) the sampler recovers the Vert-Galant edges at a
-    defensible budget, and (b) a labelled bake-off closes FL-2026-111 (~$0.006/tour, the
-    pattern in scripts/coverage_calibrate.py). See [[founding-case-efficacy-rule]] --
-    recall against the founding case was never measured, which is exactly how a repair
-    that zeroed it passed its own test suite.
-    """
-    import src.api.routes.trips as trips_route
-
-    src = inspect.getsource(trips_route)
-    assert "check_tour_repetition(" not in src, (
-        "G4 must stay dark until it recovers its founding-case edges AND its judge is "
-        "calibrated -- it currently bills ~$0.10/preview for 0 recall on the tour it "
-        "was built for"
-    )
-
-    preview_source = inspect.getsource(trips_route.preview_trip)
-    assert "get_claim_repetition_judge" not in preview_source

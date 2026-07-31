@@ -17,13 +17,13 @@ from scripts.tour_batch_candidate import DEFAULT_OUTPUT_ROOT, MANIFEST_PATH, _ba
 from scripts.tour_text_candidate import _private_write_new
 from src.connection import create_driver
 from src.tour.anthropic_client import PAID_CALL_PERMISSION_ENV
+from src.tour.authoring import COMPOSE_MODEL
 from src.tour.batch_regression_manifest import load_frozen_tour_batch
 from src.tour.certification_provider import (
     AnthropicCertificationProvider,
     CallPurpose,
     PhysicalProviderResponse,
 )
-from src.tour.compose import COMPOSE_MODEL
 from src.tour.contract import Sentence
 from src.tour.provider_text_review import (
     build_enjoyment_item,

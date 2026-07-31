@@ -17,12 +17,18 @@ metro, 90 min, one-way) — a known-GREEN multi-stop start on the live corpus.
 
 from __future__ import annotations
 
+import json
+import threading
+
 import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
 from src.api.dependencies import get_driver, get_session
+from src.api.routes import trips as trips_route
+from src.tour.authoring import COMPOSE_MODEL
+from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.routing_client import RoutingClient
@@ -527,27 +533,247 @@ class TestPreviewTrip:
 COMPOSE_MARKER = "COMPOSED-MARKER: the story, retold for you."
 
 
-class _MarkerComposeClient:
-    """Deterministic composer: prepends a recognizable glue sentence —
-    route-independent proof that the COMPOSED output was persisted."""
+class _MarkerAuthoringExecutor:
+    """Deterministic author: opens the first stop with a recognizable phrase —
+    route-independent proof that the AUTHORED output (not the stitch) was persisted.
+
+    It edits sentence TEXT only and leaves every citation alone, so the marker is
+    the single variable: anything that fails afterwards is a real gate finding, not
+    the double inventing an untraceable sentence.
+    """
 
     cost_bearing = False
+    provider_name = "offline"
 
-    def compose(self, request, attempt, prev_report):
-        from src.tour.contract import Sentence
-        from src.tour.generation import GLUE_PACING
+    def execute(self, unit) -> PhysicalProviderResponse:
+        sentences = [s.model_dump(mode="json") for s in unit.authorized_request.stitched.script]
+        if unit.stop_index == 0:
+            sentences[0] = {
+                **sentences[0],
+                "text": f"{COMPOSE_MARKER} {sentences[0]['text']}",
+            }
+        return _offline_response(unit, sentences)
 
-        marker = Sentence(
-            text=COMPOSE_MARKER, source_id=GLUE_PACING, source_type="glue", stop_idx=0
+
+def _provider_bytes(sentences: list[dict]) -> bytes:
+    """The exact JSON envelope the per-stop authoring seam parses back."""
+    return json.dumps(
+        {"sentences": sentences},
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+
+
+def _offline_response(unit, sentences: list[dict]) -> PhysicalProviderResponse:
+    return PhysicalProviderResponse(
+        body=_provider_bytes(sentences),
+        input_tokens=0,
+        output_tokens=0,
+        latency_ms=0,
+        model=COMPOSE_MODEL,
+        provider_request_id=f"offline-{unit.stop_index}",
+        stop_reason="end_turn",
+    )
+
+
+class _PerStopCountingExecutor:
+    """A COST-BEARING physical-boundary double for the per-stop authoring seam.
+
+    It records which dwell stop each physical call was made for and echoes the
+    grounded stitch straight back, so the assertions are on the number of calls the
+    endpoint actually made — not on a status code that could be green with the old
+    whole-tour composer still doing the work. ``cost_bearing`` is True on purpose:
+    the spend guard only arms for billable providers, so a $0 stub could never
+    prove the reservation.
+    """
+
+    cost_bearing = True
+    provider_name = "anthropic"
+
+    def __init__(self) -> None:
+        self.stop_calls: list[int] = []
+        self._lock = threading.Lock()
+
+    def execute(self, unit) -> PhysicalProviderResponse:
+        with self._lock:
+            self.stop_calls.append(unit.stop_index)
+        return _offline_response(
+            unit,
+            [s.model_dump(mode="json") for s in unit.authorized_request.stitched.script],
         )
-        return (marker, *request.stitched.script)
 
 
-class _RejectAllChecker:
-    """Fails every entailment — forces the gate to refuse the flavour."""
+class _HallucinatingExecutor:
+    """Authors one sentence citing a beat that is not in the grounded source.
 
-    def entails(self, key_claims, sentence_text):
-        return False
+    That is the untraceable-citation half of VERIFY, so the per-stop finalizer must
+    refuse the whole tour. $0 and non-billing, so it reserves nothing and the spend
+    assertions in the same test stay about the paid path.
+    """
+
+    cost_bearing = False
+    provider_name = "offline"
+
+    def execute(self, unit) -> PhysicalProviderResponse:
+        sentences = [s.model_dump(mode="json") for s in unit.authorized_request.stitched.script]
+        sentences[0] = {
+            **sentences[0],
+            "source_id": "beat-that-was-never-in-the-corpus",
+            "source_type": "beat",
+            "also_cites": [],
+        }
+        return _offline_response(unit, sentences)
+
+
+def _override_dep(client, dep: str, value):
+    """Swap a FastAPI dependency for a test double; returns the override key."""
+    from src.api import dependencies
+
+    target = getattr(dependencies, dep)
+    client.app.dependency_overrides[target] = lambda: value
+    return target
+
+
+def _clear_dep(client, target) -> None:
+    client.app.dependency_overrides.pop(target, None)
+
+
+@pytest.fixture()
+def cutover_trip(client):
+    """One freshly generated, not-yet-composed trip on the live corpus."""
+    resp = client.post("/api/v1/trips/generate", json=_body(NOLENS_PROFILE_ID))
+    assert resp.status_code == 201, resp.text
+    return resp.json()
+
+
+@needs_neo4j
+def test_compose_authors_per_stop_and_keeps_the_wire_contract(client, live_neo4j, cutover_trip):
+    """AC-3 + AC-7 — the pinned gate for the compose cutover.
+
+    Every clause lives in this one node id on purpose, because each of them is
+    a way the cutover could go wrong while the endpoint still looked healthy:
+
+    * the ENGINE is the per-stop authoring seam — proven by counting physical
+      calls at the injected provider boundary (one per dwell stop), not by the
+      status code, which the old whole-tour composer would also return 200 for;
+    * the WIRE CONTRACT the phone parses is unchanged — 200 with fresh stop ids
+      and persisted extra_narration, 409 already_composed, 404 for an unknown
+      trip and for an unknown route_id, and a 422 whose detail carries BOTH
+      ``reason == "compose_verification_failed"`` and ``attempts``
+      (mobile/lib/services/trip_service.dart:227-229 reads exactly those two);
+    * the SPEND PRECHECK reserves the real call count (n_stops, not 1) and runs
+      AFTER the already-composed check, so a duplicate compose is a 409 that
+      reserves nothing and calls nobody.
+    """
+    trip_id = cutover_trip["trip_id"]
+    n_stops = len(cutover_trip["stops"])
+    assert n_stops > 1, "a one-stop trip cannot tell per-stop authoring from whole-tour"
+    generated_stop_ids = {st["stop_id"] for st in cutover_trip["stops"]}
+
+    def trip_row():
+        with live_neo4j.session() as s:
+            items = s.run(
+                "MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) "
+                "RETURN i.id AS id, i.narration AS narration, "
+                "i.extra_narration AS extra_narration, i.audio_url AS audio "
+                "ORDER BY i.sort_order",
+                tid=trip_id,
+            ).data()
+            composed_route = s.run(
+                "MATCH (t:Trip {id: $tid}) RETURN t.composed_route_id AS rid", tid=trip_id
+            ).single()["rid"]
+        return items, composed_route
+
+    # --- 404: unknown trip, and an unknown route_id on a real trip ---------
+    assert (
+        client.post(
+            "/api/v1/trips/no-such-trip/compose", json={"route_id": "no-such-trip-opt1"}
+        ).status_code
+        == 404
+    )
+    assert (
+        client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt99"}
+        ).status_code
+        == 404
+    )
+
+    # --- 422: an unauthorable flavour is refused, and nothing is persisted --
+    before_items, before_route = trip_row()
+    assert before_route is None
+    target = _override_dep(client, "get_premium_compose_executor", _HallucinatingExecutor())
+    try:
+        refused = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+    finally:
+        _clear_dep(client, target)
+    assert refused.status_code == 422, refused.text
+    detail = refused.json()["detail"]
+    assert detail["reason"] == "compose_verification_failed"
+    assert detail["attempts"] >= 1, "the phone reads detail['attempts'] and must find it"
+    assert detail["untraceable"] > 0, "the hallucinated citation must be the named cause"
+    assert trip_row() == (before_items, None), "a refusal must leave the trip untouched"
+
+    # --- 200: one physical call per dwell stop, exact reservation ----------
+    trips_route.reset_spend_guard()
+    executor = _PerStopCountingExecutor()
+    target = _override_dep(client, "get_premium_compose_executor", executor)
+    try:
+        resp = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+        assert resp.status_code == 200, resp.text
+        data = resp.json()
+        # THE CUTOVER ITSELF: one authoring call per dwell stop, at the seam.
+        assert sorted(executor.stop_calls) == list(range(n_stops)), (
+            "compose did not author the persisted route stop-by-stop through the "
+            f"injected seam (calls: {sorted(executor.stop_calls)})"
+        )
+        # AC-7: the reservation is the REAL call count, not the old flat 1.
+        assert len(trips_route._global_hits) == n_stops
+        assert len(trips_route._daily_hits) == n_stops
+
+        # The wire contract the phone and the workbench read.
+        assert data["trip_id"] == trip_id
+        assert data["route_id"] == f"{trip_id}-opt1"
+        assert data["attempts"] >= 1
+        assert len(data["stops"]) == n_stops
+        assert not ({st["stop_id"] for st in data["stops"]} & generated_stop_ids), (
+            "compose must re-persist the stops under FRESH item ids"
+        )
+        items, composed_route = trip_row()
+        assert composed_route == f"{trip_id}-opt1"
+        assert [i["id"] for i in items] == [st["stop_id"] for st in data["stops"]]
+        assert all(i["audio"] is None for i in items), "compose voices nothing"
+        assert all(st["narration"] for st in data["stops"]), "every stop is narrated"
+        # extra_narration is persisted, and exactly for the stops that have extras.
+        assert any(i["extra_narration"] for i in items), (
+            "the dense Île walk overflows at least one stop, so /compose must "
+            "persist its keep-exploring narration"
+        )
+        for stop, item in zip(data["stops"], items, strict=True):
+            assert stop["extra_narration"] == item["extra_narration"]
+            assert bool(item["extra_narration"]) == bool(stop["extra_beat_ids"])
+
+        # --- 409: a duplicate compose costs nothing ------------------------
+        calls_after_success = list(executor.stop_calls)
+        second = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+        assert second.status_code == 409
+        assert second.json()["detail"]["reason"] == "already_composed"
+        assert executor.stop_calls == calls_after_success, (
+            "the already-composed trip still reached the provider"
+        )
+        assert len(trips_route._global_hits) == n_stops, (
+            "the 409 reserved spend — the precheck still runs before the "
+            "already_composed check"
+        )
+    finally:
+        _clear_dep(client, target)
+        trips_route.reset_spend_guard()
 
 
 @needs_neo4j
@@ -559,20 +785,19 @@ class TestComposeTripEndpoint:
         return resp.json()
 
     def _override(self, client, dep, value):
-        from src.api import dependencies
-
-        target = getattr(dependencies, dep)
-        client.app.dependency_overrides[target] = lambda: value
-        return target
+        return _override_dep(client, dep, value)
 
     def _clear(self, client, target):
-        client.app.dependency_overrides.pop(target, None)
+        _clear_dep(client, target)
+
 
     def test_compose_persists_marker_narration_with_fresh_stop_ids(
         self, client, live_neo4j, fresh_trip
     ):
         trip_id = fresh_trip["trip_id"]
-        target = self._override(client, "get_compose_client", _MarkerComposeClient())
+        target = self._override(
+            client, "get_premium_compose_executor", _MarkerAuthoringExecutor()
+        )
         try:
             resp = client.post(
                 f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
@@ -704,6 +929,19 @@ class TestComposeTripEndpoint:
     def test_refused_flavour_is_422_and_leaves_trip_untouched(
         self, client, live_neo4j, fresh_trip
     ):
+        """A flavour VERIFY refuses must never reach Neo4j.
+
+        The refusal is triggered through the gate the per-stop path runs TODAY —
+        source traceability, via an authored sentence citing a beat that is not in
+        the grounded source. It used to be triggered through the entailment checker,
+        which the whole-tour composer took as an injected dependency; the per-stop
+        finalizer does not accept one yet, so injecting a rejecting checker here
+        would assert nothing at all. Restoring the real faithfulness entailment and
+        the coverage baseline on this path is the NEXT step of the ledger (A4,
+        AC-5), and until it lands the persisted path's anti-hallucination gate is
+        the structural half only. What this test pins either way is the part that
+        matters most: a refusal costs the trip nothing.
+        """
         trip_id = fresh_trip["trip_id"]
 
         def narrations():
@@ -715,7 +953,9 @@ class TestComposeTripEndpoint:
                 ).data()
 
         before = narrations()
-        target = self._override(client, "get_faithfulness_checker", _RejectAllChecker())
+        target = self._override(
+            client, "get_premium_compose_executor", _HallucinatingExecutor()
+        )
         try:
             resp = client.post(
                 f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
@@ -725,8 +965,9 @@ class TestComposeTripEndpoint:
         assert resp.status_code == 422, resp.text
         detail = resp.json()["detail"]
         assert detail["reason"] == "compose_verification_failed"
-        assert detail["attempts"] == 2
-        assert detail["faithfulness"] > 0
+        # One physical call per stop and no retry, so the count the phone reads is 1.
+        assert detail["attempts"] == 1
+        assert detail["untraceable"] > 0
         # The refusal left the trip exactly as generated — same items, same
         # narration, and no composed_route_id (another flavour can be tried).
         assert narrations() == before

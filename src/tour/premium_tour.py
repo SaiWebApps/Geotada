@@ -32,20 +32,7 @@ from .artifact import (
     sentences_payload_sha256,
     validate_llm_composed_blueprint,
 )
-from .beat_select import select_vignette_beats
-from .candidate_authoring import (
-    AuthoringCandidateIdentity,
-    AuthoringCandidatePlan,
-    AuthoringCandidateResponseSet,
-    AuthoringStopRequest,
-    AuthoringStopResponse,
-)
-from .certification_provider import (
-    AnthropicCertificationProvider,
-    CallPurpose,
-    PhysicalProviderResponse,
-)
-from .compose import (
+from .authoring import (
     _COMPOSE_OUTPUT_SCHEMA,
     _COMPOSE_SYSTEM,
     CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
@@ -58,6 +45,19 @@ from .compose import (
     candidate_compose_request_envelope,
     compose_input_sha256,
     finalize_certification_composition,
+)
+from .beat_select import select_vignette_beats
+from .candidate_authoring import (
+    AuthoringCandidateIdentity,
+    AuthoringCandidatePlan,
+    AuthoringCandidateResponseSet,
+    AuthoringStopRequest,
+    AuthoringStopResponse,
+)
+from .certification_provider import (
+    AnthropicCertificationProvider,
+    CallPurpose,
+    PhysicalProviderResponse,
 )
 from .contract import BeatSequence, Route, Script, TourInput
 from .generation import CONCURRENT_GLUE_LABELS, generate

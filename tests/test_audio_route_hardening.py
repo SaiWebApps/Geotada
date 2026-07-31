@@ -235,14 +235,31 @@ class TestPreviewSpendBounds:
 
         assert codes == [200, 200, 429, 429], codes
 
-    def test_preview_does_not_rate_limit_the_free_mock_provider(self, prod_client, monkeypatch):
-        monkeypatch.setattr(audio_routes, "_AUDIO_RATE_LIMIT_MAX", 1)
-        monkeypatch.setattr(audio_routes, "_AUDIO_GLOBAL_RATE_LIMIT_MAX", 1)
-        for i in range(5):
+    def test_preview_rate_limits_every_provider_name(self, prod_client, monkeypatch):
+        """The anonymous abuse guard must have no per-name exemption.
+
+        This REPLACES ``test_preview_does_not_rate_limit_the_free_mock_provider``,
+        which asserted the hole rather than a property: ``_audio_rate_limit``
+        returned early whenever the name was ``"mock"``, so an anonymous caller
+        could defeat both the per-IP and the global cap just by naming the fake.
+
+        The exemption was reasoned from COST ("the mock is free"), but this cap
+        bounds REQUEST VOLUME on a public unauthenticated route, not only spend.
+        And because a pytest interpreter registers ``"mock"``
+        (``tests/conftest.py``), the guard was switched off precisely where it
+        runs — untested is bad, self-disabling is worse.
+
+        UNDO TEST: restore ``if provider_name == "mock": return`` -> RED.
+        """
+        monkeypatch.setattr(audio_routes, "_AUDIO_RATE_LIMIT_MAX", 2)
+        monkeypatch.setattr(audio_routes, "_AUDIO_GLOBAL_RATE_LIMIT_MAX", 0)
+        codes = []
+        for i in range(4):
             resp = prod_client.post(
                 "/api/v1/audio/preview", json={"text": f"free {i}", "provider": "mock"}
             )
-            assert resp.status_code == 200
+            codes.append(resp.status_code)
+        assert codes == [200, 200, 429, 429], codes
 
     def test_preview_caps_text_below_the_20000_model_limit(self, prod_client, monkeypatch):
         """20000 chars = five billed 4000-char chunk calls per anonymous

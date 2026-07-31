@@ -369,34 +369,38 @@ Researched 2026-07-19. These are **cited**, not invented.
 
 ---
 
-## 6b. Remaining divergence — the app compose path
+## 6b. CLOSED 2026-07-31 — the app and the workbench now share one composer
 
-**The workbench and the app do not yet narrate identically, and that is a known,
-scoped gap rather than an oversight.**
+**This section used to record a known divergence. It is closed: the two surfaces run
+the SAME engine.** The whole-tour composer it described — `compose_script`,
+`compose_script_per_chapter` and the whole of `src/tour/compose.py` — has been deleted.
 
-| surface | endpoint | composer | best-of-2 | corrector | on gate failure |
-|---|---|---|---|---|---|
-| workbench | `POST /trips/preview` | `compose_script_per_chapter` | yes | yes | floors to stitch, returns 200 + `compose_status` |
-| mobile app | `POST /trips/{id}/compose` | `compose_script` (whole-tour) | no | no | raises → **HTTP 422, trip left UNMUTATED** |
+| surface | endpoint | composer | on gate failure |
+|---|---|---|---|
+| workbench | `POST /trips/preview` | per-stop authoring (`src/tour/authoring.py`) | HTTP 200 + labelled Basic tour |
+| mobile app | `POST /trips/{id}/compose` | per-stop authoring, via the author-a-prebuilt-route seam | raises → **HTTP 422, trip left UNMUTATED** |
 
-They were unified on 2026-07-19 and the unification was **deliberately reverted the
-same day**. The reason is not prose, it is persistence:
+**The persistence argument that forced the 2026-07-19 revert still holds, and is
+honoured rather than overridden.** `/trips/{id}/compose` writes to Neo4j
+(`replace_trip_stops` + `mark_trip_composed`) and the audio flow voices whatever is
+stored, so that path still **refuses loudly** with HTTP 422
+(`reason: compose_verification_failed`) instead of persisting a degraded tour. The
+guard that protects it,
+`tests/test_trip_api.py::test_refused_flavour_is_422_and_leaves_trip_untouched`, is
+still green. What changed is the ENGINE underneath, not the refusal contract: the
+2026-07-19 attempt failed because swapping in a composer that never refuses would have
+persisted degraded content silently. This consolidation kept the refusal.
 
-- `/trips/{id}/compose` **writes to Neo4j** (`replace_trip_stops` + `mark_trip_composed`)
-  and the audio flow then voices whatever is stored.
-- Whole-tour compose refuses loudly on verification failure, so a bad tour is never
-  persisted and another flavour can be tried. That is what
-  `tests/test_trip_api.py::test_refused_flavour_is_422_and_leaves_trip_untouched`
-  protects.
-- Per-chapter never refuses — it floors to grounded stitch and returns 200. Swapping
-  it in silently means degraded content gets persisted and marked "composed", and
-  `TripComposeResponse` carries **no `compose_status`**, so the app cannot tell the
-  difference.
+The two surfaces still differ deliberately in gate depth, which is the honest remaining
+asymmetry: the persisted path runs the real faithfulness checker, the coverage baseline
+and the full `validate_script` forbidden-phrase scan; `/trips/preview` runs the
+structural validator only, so an interactive editor preview stays fast and offline.
 
-**To close it properly** (a decided change, not a swap): add `compose_status` to
-`TripComposeResponse` so the app knows what it received, and/or refuse when the compose
-*wholly* degraded. Both need a product ruling on whether a partially-stitched tour
-should be persisted at all.
+The old "to close it properly" note — add `compose_status` to `TripComposeResponse` —
+was NOT done and is NOT needed for the unification: the app distinguishes outcomes by
+status code (200 vs 422), which is the contract `mobile/lib/services/trip_service.dart`
+already branches on. It remains available if a future product ruling wants per-stop
+provenance on the phone.
 
 ---
 

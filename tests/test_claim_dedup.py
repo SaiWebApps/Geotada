@@ -544,7 +544,9 @@ def test_full_verifier_coverage_gate_blocks_deletion():
         _s("The arch was built between 1806 and 1808 by Napoleon.", "A"),
     )
     expected = claims_realized_by(stitched, bbi)
-    verify = build_full_verifier(seq, bbi, expected_claim_ids=expected)
+    verify = build_full_verifier(
+        seq, bbi, expected_claim_ids=expected, allow_unverified_faithfulness=True
+    )
     # a faithful passthrough passes coverage; a deletion fails it.
     assert verify(stitched).passed
     lossy = _script_of(_s("Napoleon set four horses from Saint Mark atop the arch.", "A"))

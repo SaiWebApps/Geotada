@@ -7,8 +7,7 @@ import hashlib
 import pytest
 
 from src.tour.artifact import sentences_payload_sha256
-from src.tour.candidate_authoring import AuthoringCandidateIdentity, AuthoringStopRequest
-from src.tour.compose import (
+from src.tour.authoring import (
     COMPOSE_MODEL,
     CompletedCertificationComposeUnit,
     ComposeRequest,
@@ -16,6 +15,7 @@ from src.tour.compose import (
     compose_input_sha256,
     finalize_certification_composition,
 )
+from src.tour.candidate_authoring import AuthoringCandidateIdentity, AuthoringStopRequest
 from src.tour.contract import (
     POI,
     BeatSequence,

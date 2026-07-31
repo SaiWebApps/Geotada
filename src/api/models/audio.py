@@ -11,7 +11,7 @@ class AudioPreviewRequest(BaseModel):
     # Long per-stop narration is chunked by the provider (provider._split_for_tts),
     # so the cap is generous; it only guards absurd payloads, not real stops.
     text: str = Field(..., min_length=1, max_length=20000)
-    provider: str = "mock"
+    provider: str | None = None
     voice_id: str | None = None
 
 
@@ -71,7 +71,7 @@ class EvalRequest(BaseModel):
     """Request body for evaluating TTS output against source text."""
 
     text: str = Field(..., min_length=1, max_length=5000)
-    provider: str = "mock"
+    provider: str | None = None
     voice_id: str | None = None
 
 
@@ -91,7 +91,7 @@ class EvalResponse(BaseModel):
 class GenerateRequest(BaseModel):
     """Request body for generating audio for a NarrativeBeat."""
 
-    provider: str = "mock"
+    provider: str | None = None
     voice_id: str | None = None
     force: bool = Field(False, description="Force regeneration even if audio already exists")
 
@@ -109,7 +109,7 @@ class GenerateResponse(BaseModel):
 class BatchGenerateRequest(BaseModel):
     """Request body for batch audio generation."""
 
-    provider: str = "mock"
+    provider: str | None = None
     voice_id: str | None = None
     force: bool = False
 

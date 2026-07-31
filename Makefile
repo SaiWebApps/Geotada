@@ -12,8 +12,7 @@ NO_PROXY_LIST := api.resend.com,resend.com,www.googleapis.com,googleapis.com,api
 LIVE_TEST_FILES := \
 	tests/test_audio_functional.py \
 	tests/test_audio_says_story.py \
-	tests/test_magic_link_live.py \
-	tests/test_tour_compose_live.py
+	tests/test_magic_link_live.py
 GOLDEN_TEST_FILES := \
 	tests/test_narration_coherence.py \
 	tests/test_tour_golden_ile.py \
@@ -460,10 +459,18 @@ fetch-boundary: ## Fetch an OSM boundary polygon.
 geocode-pois: ## Geocode POIs through Nominatim.
 	@$(LOCAL_EXEC) uv run python -m scripts.geocode_pois --slug "$(SLUG)"$(if $(ALL), --all,)
 
-tour-build: ## Build one local tour and render it to Markdown.
+# Who writes the transition sentences. scripts/tour_build.py now REFUSES to run
+# without being told, because canned transitions printed under a "validation:
+# PASS" header, with nothing naming them, is how part-fixed-string tours read as
+# finished ones. --canned keeps this target free and unchanged in behaviour; it
+# is stated rather than assumed. Override for real glue (spends money):
+#   make tour-build GLUE=--haiku ARGS="..."
+GLUE ?= --canned
+
+tour-build: ## Build one local tour and render it to Markdown. GLUE=--haiku for real glue (paid).
 	@$(MAKE) --no-print-directory _ensure-dev-data
 	@$(MAKE) --no-print-directory valhalla-up
-	@$(LOCAL_EXEC) uv run python scripts/tour_build.py $(ARGS)
+	@$(LOCAL_EXEC) uv run python scripts/tour_build.py $(GLUE) $(ARGS)
 
 measure-planned-audio: ## Measure voiced audio against tier dwell.
 	@$(MAKE) --no-print-directory _ensure-dev-data

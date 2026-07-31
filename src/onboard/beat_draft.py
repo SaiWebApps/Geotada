@@ -46,9 +46,10 @@ from src.onboard.assemble import WikiExtract
 
 MODEL = "claude-opus-4-8"
 
-# Provider selection. Default is the free, deterministic mock; "anthropic" opts
-# into paid drafting (still gated behind confirm=True in draft_all).
-ONBOARD_PROVIDER = os.getenv("ONBOARD_PROVIDER", "mock")
+# Provider selection. There is NO default — get_drafter() fails closed on an
+# unset or unknown value. "anthropic" opts into paid drafting (still gated
+# behind confirm=True in draft_all); "mock" must be selected EXPLICITLY.
+ONBOARD_PROVIDER = os.getenv("ONBOARD_PROVIDER")
 
 # Cost model for claude-opus-4-8: $5 / 1M input tokens, $25 / 1M output tokens.
 # Per BEAT (a POI now yields ~3 beats), so draft_all's confirm gate estimates the
@@ -317,12 +318,55 @@ def _response_text(message: Any) -> str:
     return " ".join(getattr(b, "text", "") for b in blocks if getattr(b, "text", "")).strip()
 
 
-def get_drafter() -> MockBeatDrafter | AnthropicBeatDrafter:
-    """The configured drafter. Default (and any non-"anthropic" value) is the
-    free mock; "anthropic" selects the paid drafter."""
-    if os.getenv("ONBOARD_PROVIDER", ONBOARD_PROVIDER) == "anthropic":
-        return AnthropicBeatDrafter()
-    return MockBeatDrafter()
+_DRAFTERS: dict[str, type] = {
+    "mock": MockBeatDrafter,
+    "anthropic": AnthropicBeatDrafter,
+}
+
+
+def get_drafter(name: str | None = None) -> MockBeatDrafter | AnthropicBeatDrafter:
+    """Return the drafter by name, else by the ONBOARD_PROVIDER pin.
+
+    FAILS CLOSED — there is deliberately no default.
+
+    This used to read ``os.getenv("ONBOARD_PROVIDER", ONBOARD_PROVIDER)`` and
+    return ``MockBeatDrafter()`` for an unset value AND for every unrecognised
+    one. ``scripts/workbench.sh`` pins no drafter, so the workbench's Draft Beats
+    button — a workbench-only route (``src/api/app.py`` mounts it only under
+    ``WORKBENCH_API_ENABLED``) — drafted every beat with the fake and showed a
+    human the result as drafted content. A typo in the pin did the same thing
+    silently. That is the editorial twin of the silent-WAV TTS default, and the
+    same fix applies: a misconfigured process must say so loudly rather than look
+    fine and be fake.
+
+    ``"mock"`` stays SELECTABLE and free, because callers opt into it explicitly
+    and must keep working at $0 — ``Makefile``'s ``onboard-city`` passes
+    ``ONBOARD_PROVIDER="${ONBOARD_PROVIDER:-mock}"``, ``tests/conftest.py`` sets
+    it, and the CLI documents the free path. What is gone is the silent fallback
+    a caller got without asking for it.
+
+    Mirrors ``src/audio/provider.py``'s ``get_provider()`` exactly, including the
+    optional ``name`` argument. That argument is not decoration: the registry
+    audit in ``tests/test_workbench_matches_the_app.py`` derives a registry's
+    resolver structurally as "a module-level function that reads the registry,
+    TAKES AN ARGUMENT, and returns a constructed object", then probes a real
+    server process to confirm each key resolves to the class the source maps it
+    to. A resolver that only reads the environment is invisible to that audit, so
+    the registry would look dead and the audit would silently cover nothing.
+    """
+    name = name or os.getenv("ONBOARD_PROVIDER")
+    available = ", ".join(sorted(_DRAFTERS))
+    if not name:
+        raise ValueError(
+            "No beat drafter selected: set ONBOARD_PROVIDER. "
+            f"Available: {available}. (There is no default — silently drafting "
+            f"with the free mock is exactly the defect this fail-closed check "
+            f"replaces.)"
+        )
+    cls = _DRAFTERS.get(name)
+    if cls is None:
+        raise ValueError(f"Unknown beat drafter {name!r}. Available: {available}")
+    return cls()
 
 
 # ---------------------------------------------------------------------------

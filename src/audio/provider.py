@@ -4,8 +4,30 @@ All providers implement the TTSProvider protocol. Real providers use httpx
 for HTTP calls (no SDK dependencies required).
 
 Usage:
-    provider = get_provider("openai")   # or "elevenlabs", "mock"
+    provider = get_provider("openai")   # or "elevenlabs"
     audio_bytes = provider.generate("Hello, welcome to Paris.")
+
+OWNER RULING, 2026-07-31 — NO FAKE PROVIDER IS EVER SERVED
+----------------------------------------------------------
+``MockTTSProvider`` returns a silent WAV. It exists so the test suite can drive
+the whole audio pipeline for $0. It is therefore DEFINED here but deliberately
+NOT REGISTERED: ``_PROVIDERS`` holds only implementations that send the text to
+a real speech service.
+
+That single fact is what makes the workbench honest. The editorial workbench
+builds its provider dropdown from ``GET /audio/providers`` -> ``list_providers()``
+(``frontend/review.html``'s ``loadTtsProviders`` wipes the static markup and
+repopulates it), so anything in this registry is one click away from a human who
+is trying to judge what a TOURIST will hear. A silent WAV offered there is the
+exact lie the never-mock-in-the-workbench rule exists to prevent — and hiding it
+in the page instead of here would leave ``POST /audio/preview {"provider":
+"mock"}`` answering with canned bytes anyway.
+
+The ONLY way a fake becomes resolvable is ``register_provider()``, called
+in-process. ``tests/conftest.py`` is its one caller, so the fake is present in a
+pytest interpreter and absent from every uvicorn one (the workbench server, the
+Playwright test server, and Render). No environment variable, no request body and
+no config layer can put it back.
 """
 
 from __future__ import annotations
@@ -119,7 +141,13 @@ def _split_for_tts(text: str, max_chars: int = MAX_TTS_CHARS) -> list[str]:
 
 
 class MockTTSProvider:
-    """Returns a short silent WAV for testing without API keys."""
+    """Returns a short silent WAV for testing without API keys.
+
+    NOT REGISTERED in ``_PROVIDERS`` (see the module docstring). A process that
+    wants it must call ``register_provider()`` itself; ``tests/conftest.py``
+    does, so the whole pytest suite keeps its $0 audio path while no server
+    process can offer or serve it.
+    """
 
     # Ceiling on the synthesized silent-WAV duration, independent of input size.
     # The mock is NOT run through _split_for_tts, so without this the WAV grows
@@ -255,27 +283,49 @@ class ElevenLabsTTSProvider:
 
 # ── Provider registry ──
 
+# Only implementations that actually send the text to a speech service. See the
+# module docstring: this registry IS the workbench's dropdown and the set of
+# values POST /audio/preview will honour, so a fake in here is a fake in front of
+# a human. MockTTSProvider is deliberately absent.
 _PROVIDERS: dict[str, type] = {
-    "mock": MockTTSProvider,
     "openai": OpenAITTSProvider,
     "elevenlabs": ElevenLabsTTSProvider,
 }
 
 
 def register_provider(name: str, cls: type) -> None:
-    """Register a new TTS provider class."""
+    """Register a TTS provider class in THIS interpreter only.
+
+    This is the one door through which a non-serving implementation (the silent
+    ``MockTTSProvider``) can be reached, and it can only be opened by code that
+    runs inside the process — never by an env var, a config profile, a request
+    body or a deploy manifest. ``tests/conftest.py`` calls it so the pytest
+    suite has a $0 audio path; no server startup path calls it, so no server can
+    offer or serve a fake.
+    """
     _PROVIDERS[name] = cls
 
 
 def get_provider(name: str | None = None) -> TTSProvider:
-    """Return an instantiated provider by name.
+    """Return an instantiated provider by name, else by the TTS_PROVIDER pin.
 
-    Falls back to TTS_PROVIDER env var, then to 'mock'.
+    FAILS CLOSED. There is deliberately no default provider: an unset
+    TTS_PROVIDER raises instead of quietly selecting something. The old default
+    was ``"mock"``, which is how the workbench server spent months answering
+    every unpinned /audio request with a SILENT WAV that an editor could mistake
+    for real narration (owner-found, 2026-07-31). A misconfigured server must
+    now say so loudly rather than sound fine and be fake.
     """
-    provider_name = name or os.getenv("TTS_PROVIDER", "mock")
+    provider_name = name or os.getenv("TTS_PROVIDER")
+    available = ", ".join(sorted(_PROVIDERS))
+    if not provider_name:
+        raise ValueError(
+            "No TTS provider selected: pass a name or set TTS_PROVIDER. "
+            f"Available: {available}. (There is no default — a silent fallback "
+            f"provider is exactly the defect this fail-closed check replaces.)"
+        )
     cls = _PROVIDERS.get(provider_name)
     if cls is None:
-        available = ", ".join(sorted(_PROVIDERS))
         msg = f"Unknown TTS provider '{provider_name}'. Available: {available}"
         raise ValueError(msg)
     return cls()

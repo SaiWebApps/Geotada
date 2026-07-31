@@ -411,3 +411,51 @@ def test_estimate_cost_scales_and_is_positive() -> None:
     assert one["est_output_tokens"] == 350
     assert two["beats"] == 2
     assert two["est_usd"] == pytest.approx(2 * one["est_usd"], rel=0.01)
+
+
+# ---------------------------------------------------------------------------
+# 5. The drafter fails closed — an unpinned provider never means "the fake".
+# ---------------------------------------------------------------------------
+
+
+def test_get_drafter_fails_closed_when_no_provider_is_pinned(monkeypatch) -> None:
+    """An unset ``ONBOARD_PROVIDER`` must RAISE, never quietly hand back the fake.
+
+    ``get_drafter()`` used to return ``MockBeatDrafter`` for an unset value and
+    for any unrecognised one. ``scripts/workbench.sh`` pins no drafter, so the
+    workbench's Draft Beats button — a workbench-only route, mounted only under
+    ``WORKBENCH_API_ENABLED`` — silently drafted every beat with the fake and
+    presented the result to a human as drafted content. That is the same defect
+    class as the silent-WAV TTS provider, on the editorial side.
+
+    ``"mock"`` deliberately stays SELECTABLE, because several callers opt into it
+    explicitly and must keep working for $0: ``Makefile``'s ``onboard-city``
+    (``ONBOARD_PROVIDER="${ONBOARD_PROVIDER:-mock}"``), ``tests/conftest.py``,
+    and the CLI's documented free path. What is removed is the DEFAULT — the
+    silent fallback that a caller gets without asking.
+
+    This mirrors ``src/audio/provider.py``'s ``get_provider()``, which was made
+    to fail closed for exactly the same reason.
+
+    UNDO TEST: restore the ``"mock"`` fallback in ``get_drafter()`` -> RED.
+    """
+    import src.onboard.beat_draft as beat_draft
+
+    # Unset -> refuse, and say what to set.
+    monkeypatch.delenv("ONBOARD_PROVIDER", raising=False)
+    with pytest.raises(ValueError) as exc:
+        beat_draft.get_drafter()
+    assert "ONBOARD_PROVIDER" in str(exc.value), (
+        f"the refusal must name the missing pin so an operator can fix it; got: {exc.value}"
+    )
+
+    # An unrecognised name must also refuse, not fall through to the fake.
+    monkeypatch.setenv("ONBOARD_PROVIDER", "definitely-not-a-drafter")
+    with pytest.raises(ValueError):
+        beat_draft.get_drafter()
+
+    # The explicit opt-ins keep working, both directions.
+    monkeypatch.setenv("ONBOARD_PROVIDER", "mock")
+    assert isinstance(beat_draft.get_drafter(), MockBeatDrafter)
+    monkeypatch.setenv("ONBOARD_PROVIDER", "anthropic")
+    assert isinstance(beat_draft.get_drafter(), AnthropicBeatDrafter)

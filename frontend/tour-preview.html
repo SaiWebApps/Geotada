@@ -43,7 +43,12 @@
     <label>Minutes<input type="number" id="dur" value="60" min="15" max="240" /></label>
     <label>Lenses (comma)<input type="text" id="lenses" value="historic_arch" /></label>
     <label class="chk"><input type="checkbox" id="rt" /> round-trip</label>
-    <label>Voice<select id="prov"><option value="openai">openai</option><option value="mock">mock (silent)</option></select></label>
+    <!-- OWNER RULING 2026-07-31: no fake provider is ever offered to a human. The
+         'mock (silent)' option used to sit right here on the PUBLIC preview page,
+         one click from anyone judging what a tourist hears. src/audio/provider.py
+         no longer registers the silent double at all, so this list holds only
+         providers that really speak. -->
+    <label>Voice<select id="prov"><option value="openai">openai</option></select></label>
     <button type="submit" id="go">Generate preview</button>
   </form>
 

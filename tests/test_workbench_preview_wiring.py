@@ -17,6 +17,18 @@ to a human pressing the button:
 3. The lens input offered its vocabulary only as a ``placeholder`` — which is not
    a value — so the default request sent NO lenses.
 
+TWO OWNER RULINGS (2026-07-31), both the same principle — the workbench must
+replicate the tourist's app experience as closely as possible:
+
+4. ``generateTourPreview`` opened a ``window.confirm`` spend warning before every
+   preview. A tourist is never asked to approve spend, so the workbench must not
+   ask either. Removed; section 4 below keeps it removed.
+
+5. ``loadTtsProviders`` force-selected the ``mock`` TTS provider after fetching
+   the provider list, silently overriding the ``openai`` default. Every workbench
+   "play" was therefore a silent WAV that an editor could mistake for real
+   narration — the audio twin of the standing never-mock-in-the-workbench rule.
+
 These tests are cheap, hermetic and $0.
 """
 
@@ -143,4 +155,242 @@ def test_lens_input_is_wired_to_the_datalist() -> None:
     assert 'list="tourLensOptions"' in tag.group(0), (
         "#tourLenses is not bound to the datalist, so the vocabulary stays "
         "invisible and typos stay easy."
+    )
+
+
+# --------------------------------------------------------------------------
+# 4 & 5. the workbench behaves like the app (owner rulings, 2026-07-31)
+# --------------------------------------------------------------------------
+
+
+def _js_function_body(html: str, declaration: str) -> str:
+    """Return one JS function's source, located by plain brace matching.
+
+    Deliberately NOT a regex: a regex that matches nothing returns a plausible
+    empty string, and an "absence" assertion over an empty string passes
+    vacuously — it would report the defect as fixed no matter what the file
+    says. This raises instead, and every caller additionally asserts a known
+    anchor is present before asserting anything is absent.
+    """
+    start = html.find(declaration)
+    if start == -1:
+        raise AssertionError(f"{declaration!r} is missing from review.html")
+    open_brace = html.index("{", start)
+    depth = 0
+    for i in range(open_brace, len(html)):
+        if html[i] == "{":
+            depth += 1
+        elif html[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return html[open_brace : i + 1]
+    raise AssertionError(f"{declaration!r} is never closed in review.html")
+
+
+def test_generate_tour_preview_shows_no_spend_confirmation() -> None:
+    """OWNER RULING (2026-07-31): the cost dialog is removed and stays removed.
+
+    ``generateTourPreview`` used to open ``window.confirm('Generate a Premium
+    candidate? ... spends real money on your API key.')`` and return early on
+    Cancel. The owner ordered it gone: the workbench exists to replicate the
+    tourist's app experience, and a tourist never sees a spend prompt.
+
+    UNDO TEST: paste any ``confirm(...)`` back into the function -> RED.
+    """
+    body = _js_function_body(REVIEW_HTML.read_text(), "async function generateTourPreview()")
+    # Prove we sliced the real function, so an absence is a real absence.
+    assert "/trips/preview" in body and "renderTourStops(" in body, (
+        "the extracted generateTourPreview body is not the real function"
+    )
+    assert "confirm(" not in body, (
+        "generateTourPreview must never show a spend-confirmation dialog. The "
+        "owner ordered it removed on 2026-07-31 so the workbench matches the "
+        "experience a tourist gets in the app."
+    )
+
+
+def test_workbench_defaults_to_the_real_tts_provider_not_mock() -> None:
+    """OWNER RULING (2026-07-31): the workbench plays REAL audio by default.
+
+    ``loadTtsProviders`` rebuilt the dropdown from GET /audio/providers and then
+    force-selected ``mock``, overriding the ``openai`` default declared both in
+    the static <select> and in ``let ttsProvider``. Every workbench "play" was a
+    silent mock WAV an editor could mistake for real narration — the audio twin
+    of the never-mock-in-the-workbench rule, which had only covered narration.
+
+    ``mock`` deliberately stays in the dropdown: the Playwright audio tests
+    ``page.select_option("#ttsProviderSelect", "mock")`` to stay $0. What is
+    forbidden is selecting it FOR the human.
+
+    UNDO TEST: restore the ``mockOpt.selected = true`` line -> RED.
+    """
+    body = _js_function_body(REVIEW_HTML.read_text(), "async function loadTtsProviders()")
+    assert "/audio/providers" in body and "ttsProviderSelect" in body, (
+        "the extracted loadTtsProviders body is not the real function"
+    )
+    assert "o.value === 'mock'" not in body, (
+        "loadTtsProviders must not select the mock TTS provider for the editor; "
+        "a silent WAV that looks like real narration is the exact lie the "
+        "never-mock-in-the-workbench rule exists to prevent."
+    )
+    assert "o.value === 'openai'" in body, (
+        "loadTtsProviders must explicitly select the real provider. The list is "
+        "sorted, so without this the first option ('elevenlabs') would win by "
+        "accident rather than by the deployed TTS_PROVIDER=openai pin."
+    )
+
+
+def test_openai_is_a_real_registered_tts_provider() -> None:
+    """The default the workbench picks must actually exist in the registry.
+
+    Guards the pair: if ``openai`` were ever renamed or dropped from
+    ``src/audio/provider.py``, the test above would still pass while the
+    workbench silently fell through to whatever option happened to be first.
+    """
+    from src.audio.provider import list_providers
+
+    providers = list_providers()
+    assert "openai" in providers, (
+        f"the workbench defaults to the 'openai' TTS provider, which is not "
+        f"registered; available: {providers}"
+    )
+
+
+ONBOARD_HTML = REPO / "frontend" / "onboard.html"
+
+
+def test_drafting_beats_shows_no_spend_confirmation() -> None:
+    """OWNER DECISION (2026-07-31): no spend dialog on the workbench, here either.
+
+    ``draftBeats`` used to POST with ``confirm_cost: false``, catch the API's 409
+    cost estimate, and raise a modal the operator had to accept. That is the same
+    two-step confirm the owner removed from ``generateTourPreview`` above, for the
+    same reason: the workbench replicates the tourist's app experience, and a
+    tourist is never asked to approve spend.
+
+    The page now confirms on the operator's behalf. The API's ``confirm_cost``
+    contract is deliberately UNCHANGED — this asserts the dialog is gone from the
+    page, not that the server stopped defending other callers.
+
+    Spend note, stated rather than hidden: with the modal gone, one click drafts a
+    whole city's beats against the real Opus drafter that
+    ``scripts/workbench.sh`` now pins. That is the owner's explicit decision.
+
+    UNDO TEST: put any confirm/modal back into ``draftBeats`` -> RED.
+    """
+    html = ONBOARD_HTML.read_text()
+    body = _js_function_body(html, "async function draftBeats(")
+
+    # Non-vacuity: prove we extracted the real function before asserting absence.
+    assert "draft-beats" in body, (
+        "the extracted draftBeats body does not contain the /draft-beats POST, so "
+        "this guard is not reading the drafting code and would pass regardless"
+    )
+
+    assert "confirm_cost: true" in body, (
+        "draftBeats must confirm on the operator's behalf; sending false is what "
+        "made the API answer 409 and the page raise a cost modal"
+    )
+    # NOT a ban on "409": draftBeats legitimately reports a 409 in its
+    # generic-failure branch ("not assembled yet"), and banning the number would
+    # fail on correct code — measured, it did. What must be absent is the modal
+    # itself and any interactive confirmation.
+    for banned in ("costModal", "confirm(", "costConfirmBtn"):
+        assert banned not in body, (
+            f"draftBeats still references {banned!r} — the spend-confirmation "
+            f"flow is back. The workbench must never ask a human to approve "
+            f"spend; that is the tourist-parity ruling."
+        )
+    assert "costModal" not in html, (
+        "the cost-confirmation modal markup is still in onboard.html; remove the "
+        "element too, or a later change can wire it back up unnoticed"
+    )
+
+
+def _js_function_body_after_params(html: str, declaration: str) -> str:
+    """Return one JS function's body, skipping a DESTRUCTURED parameter list.
+
+    ``_js_function_body`` above takes the first ``{`` after the declaration,
+    which is right only for ``function f() {``. ``ttsPlay`` is declared
+    ``async function ttsPlay({ text, cacheKey, btn, audioEl }) {``, so that first
+    ``{`` is the PARAMETER object: brace matching closes on it immediately and
+    yields the 32-character parameter list, which contains no request at all. A
+    guard built on it passes vacuously while the defect is live — the very
+    failure the sibling helper's docstring exists to prevent, arriving through a
+    door that docstring did not anticipate. Using the full declaration line as
+    the anchor does not help; the parameter brace is still first.
+
+    So walk parenthesis depth from the declaration to the ``)`` that closes the
+    parameter list, and only then brace-match. Still no regex.
+    """
+    start = html.find(declaration)
+    if start == -1:
+        raise AssertionError(f"{declaration!r} is missing from review.html")
+    i = html.index("(", start)
+    depth = 0
+    while True:
+        if html[i] == "(":
+            depth += 1
+        elif html[i] == ")":
+            depth -= 1
+            if depth == 0:
+                break
+        i += 1
+        if i >= len(html):
+            raise AssertionError(f"{declaration!r} has an unclosed parameter list")
+    open_brace = html.index("{", i)
+    depth = 0
+    for j in range(open_brace, len(html)):
+        if html[j] == "{":
+            depth += 1
+        elif html[j] == "}":
+            depth -= 1
+            if depth == 0:
+                return html[open_brace : j + 1]
+    raise AssertionError(f"{declaration!r} is never closed in review.html")
+
+
+def test_ttsplay_sends_the_resolved_provider_not_a_literal() -> None:
+    """The Play button must ask for the provider the editor actually chose.
+
+    ``loadTtsProviders`` only decides which option is SELECTED. ``ttsPlay`` is
+    what issues ``POST /audio/preview``, and it is the ONE shared TTS path for
+    both beat playback and the tour-preview stops. A literal provider name here
+    makes the dropdown decorative: whatever the editor picks, the request is a
+    constant.
+
+    That is exactly how ``provider: 'mock'`` reached the working tree while
+    ``test_workbench_defaults_to_the_real_tts_provider_not_mock`` stayed green in
+    0.03s — that test reads the dropdown builder, this one reads the request.
+
+    A literal is rejected whatever it names. Pinning ``'openai'`` in the page
+    would be the same defect: the editor's choice silently ignored.
+
+    UNDO TEST: put ``provider: 'mock'`` back in ``ttsPlay``'s fetch -> RED.
+    """
+    html = REVIEW_HTML.read_text()
+    body = _js_function_body_after_params(html, "async function ttsPlay")
+
+    # Non-vacuity first: prove we extracted the request-issuing code before
+    # asserting anything is absent from it.
+    assert "/audio/preview" in body, (
+        "the extracted ttsPlay body contains no /audio/preview fetch, so this "
+        "guard is not reading the request-issuing code and would pass no "
+        "matter what review.html says"
+    )
+
+    marker = "provider:"
+    at = body.find(marker)
+    assert at != -1, "ttsPlay's request body names no provider at all"
+    value = body[at + len(marker) : body.index("}", at)].strip().rstrip(",").strip()
+
+    assert not value.startswith(("'", '"', "`")), (
+        f"ttsPlay hardcodes the TTS provider as the literal {value} instead of "
+        f"sending the one the editor selected. The dropdown is then decorative "
+        f"— every play asks for {value} whatever the human picked."
+    )
+    assert value == "ttsProvider", (
+        f"ttsPlay sends {value!r}; it must send the 'ttsProvider' variable the "
+        f"page keeps in sync with the dropdown and already uses in both audio "
+        f"cache keys."
     )
