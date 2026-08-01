@@ -5,7 +5,9 @@ from __future__ import annotations
 import os
 import time
 import uuid
+from collections import deque
 from datetime import UTC, datetime
+from threading import Lock
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from neo4j import Session
@@ -127,16 +129,93 @@ def _issue_refresh_token(session: Session, user_id: str, session_id: str, token_
     return token
 
 
-# RATE LIMITING REMOVED 2026-07-31 (owner order: "I said rip out all limiters.
-# ALL limiters."). /auth/magic-link/request carried a per-IP + per-email + global
-# fixed-window guard. Deleted, not disabled.
+# --- Abuse ceiling for magic-link sends -------------------------------------
 #
-# Stated plainly, because this one differs in kind from the others: the endpoint
-# is unauthenticated and each call sends a REAL email through Resend to whatever
-# address the body names. With no cap, anyone who finds the URL can make this
-# domain mail arbitrary strangers without limit — that risks the Resend account
-# and the sending domain's reputation, and the people mailed are not users of
-# this product. The owner was told this twice and directed the removal anyway.
+# THE PER-IP KEY IS GONE AND IS NOT COMING BACK. Every limiter in this codebase
+# was deleted on 2026-07-31 because they were keyed on the CLIENT IP, and per-IP
+# throttling punishes exactly the wrong people: mobile carriers put thousands of
+# subscribers behind a handful of addresses, a hotel is one address, and the
+# owner's own workbench is one address. That key is the defect, and nothing here
+# reintroduces it.
+#
+# What is left is unauthenticated and sends a REAL email through Resend to
+# whatever address the body names — the endpoint is both login AND signup, since
+# ``/magic-link/verify`` is what MERGEs the user. Uncapped, anyone who finds the
+# URL can bomb one victim's inbox or fan out across strangers, and Resend
+# enforces its abuse policy by SUSPENDING the account. That failure mode does not
+# cost money; it takes login away from everybody, including the owner.
+#
+# So the ceiling is keyed on the two things a legitimate person can never trip:
+#
+#   1. THE TARGET EMAIL. Counts sends *to* an address. A real person asks for a
+#      link to their own inbox a handful of times; an attacker hits one address
+#      hundreds of times. You are never the address being bombed.
+#   2. A GLOBAL CEILING. One person logging in is a rounding error against a
+#      whole-window total; a fan-out across thousands of addresses is not.
+#
+# Both defaults are deliberately LOOSE. They are an abuse ceiling, not a quota —
+# the intent is that only an attack ever touches them. Set either to 0 to
+# disable it; that is a knob, not a removal.
+_MAGIC_LINK_PER_EMAIL_MAX = int(os.getenv("MAGIC_LINK_PER_EMAIL_MAX", "30"))
+_MAGIC_LINK_GLOBAL_MAX = int(os.getenv("MAGIC_LINK_GLOBAL_MAX", "500"))
+_MAGIC_LINK_WINDOW_S = int(os.getenv("MAGIC_LINK_WINDOW_S", "3600"))
+_magic_link_by_email: dict[str, deque[float]] = {}
+_magic_link_global: deque[float] = deque()
+_magic_link_lock = Lock()
+
+
+def reset_magic_link_ceiling() -> None:
+    """Clear the counters. For tests; never called by the product."""
+    with _magic_link_lock:
+        _magic_link_by_email.clear()
+        _magic_link_global.clear()
+
+
+def _magic_link_ceiling(email: str) -> None:
+    """Raise 429 if this ADDRESS, or the deployment as a whole, is being flooded.
+
+    Never considers the caller's IP — see the block above for why.
+
+    Memory: the per-email keys derive from an attacker-supplied request body, so
+    every exit path (including the 429) drops keys whose window has emptied.
+    Without that, each rejected request would leak a permanent dict entry and an
+    unauthenticated caller could grow the worker's RSS until it is OOM-killed.
+    """
+    now = time.monotonic()
+    cutoff = now - _MAGIC_LINK_WINDOW_S
+    key = email.strip().lower()
+    with _magic_link_lock:
+        for stale in [k for k, v in _magic_link_by_email.items() if not v or v[-1] <= cutoff]:
+            del _magic_link_by_email[stale]
+
+        if _MAGIC_LINK_GLOBAL_MAX > 0:
+            while _magic_link_global and _magic_link_global[0] <= cutoff:
+                _magic_link_global.popleft()
+            if len(_magic_link_global) >= _MAGIC_LINK_GLOBAL_MAX:
+                retry = max(1, int(_magic_link_global[0] + _MAGIC_LINK_WINDOW_S - now))
+                raise HTTPException(
+                    status_code=429,
+                    detail="Too many magic-link requests right now, please retry shortly",
+                    headers={"Retry-After": str(retry)},
+                )
+
+        if _MAGIC_LINK_PER_EMAIL_MAX > 0:
+            hits = _magic_link_by_email.setdefault(key, deque())
+            while hits and hits[0] <= cutoff:
+                hits.popleft()
+            if len(hits) >= _MAGIC_LINK_PER_EMAIL_MAX:
+                retry = max(1, int(hits[0] + _MAGIC_LINK_WINDOW_S - now))
+                if not hits:
+                    _magic_link_by_email.pop(key, None)
+                raise HTTPException(
+                    status_code=429,
+                    detail="Too many magic links requested for this address, please retry later",
+                    headers={"Retry-After": str(retry)},
+                )
+            hits.append(now)
+
+        if _MAGIC_LINK_GLOBAL_MAX > 0:
+            _magic_link_global.append(now)
 
 
 @router.get("/me", response_model=UserResponse)
@@ -146,6 +225,7 @@ def me(current_user: dict = Depends(get_current_user)):
 
 @router.post("/magic-link/request", status_code=200)
 async def magic_link_request(request: Request, body: MagicLinkRequest):
+    _magic_link_ceiling(body.email)
     token = create_magic_token(body.email)
     try:
         await send_magic_link(body.email, token)
