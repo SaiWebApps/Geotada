@@ -8,8 +8,11 @@ process—never a cached or filtered subset.
 | Target | Self-provisioned prerequisites | Fresh Render | Standalone contract |
 |---|---|---:|---|
 | `help` | None | No | Yes |
-| `doctor` | None; diagnostic | No | Yes |
-| `bootstrap` | Python/Flutter deps, all local DBs, Valhalla, dev data | No | Yes, with host toolchain |
+| `doctor` | None; reports every requirement, starts nothing | No | Yes |
+| `setup` | Alias for `bootstrap`; the name most people reach for first | No | Yes |
+| `preflight` | Checks every requirement and repairs what is repairable | No | Yes |
+| `preflight-list` | None; describes the requirement vocabulary | No | Yes |
+| `bootstrap` | Python/Flutter deps, all local DBs, Valhalla, dev data, Playwright browser | No | Yes, with host toolchain |
 | `render-auth-setup` | Interactive macOS Keychain entry | API auth only | Yes |
 | `render-auth-status` | Keychain lookup and service access check | API auth only | Yes |
 | `config-status` | Three exact local-profile assertions | Yes | Yes |
@@ -74,10 +77,6 @@ process—never a cached or filtered subset.
 | `aura-resume-proof` | Explicit cloud profile | Yes | Yes; no graph writes |
 | `flutter-test` | Project hang detector | No | Yes |
 | `clean` | None | No | Yes; no databases |
-| `_ensure-dev-db` | `db-up DB=dev` | No | Internal helper |
-| `_ensure-test-db` | `db-up DB=test` | No | Internal helper |
-| `_ensure-workbench-db` | `db-up DB=workbench` | No | Internal helper |
-| `_ensure-dev-data` | Dev DB, additive provisioning, final parity | No | Internal helper |
 | `_test-python` | Test/dev DBs, dev data, Valhalla | No | Internal shard |
 | `_test-golden` | Test/dev DBs, dev data, Valhalla | No | Internal shard |
 | `_test-grade` | Test/dev DBs, dev data, Valhalla | No | Internal shard |

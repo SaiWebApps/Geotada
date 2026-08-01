@@ -92,12 +92,14 @@ exist):
   is the only paid command; `test-live` sets `ONDOWAY_LIVE_TESTS=1`). The
   `ONDOWAY_ENABLE_PAID_LLM_CALLS` gate was DELETED 2026-07-31 by owner order.
   Never run the paid bar inside a loop.
-- **"$0" means zero provider spend, NOT read-only.** `make test-file` pulls in
-  `_ensure-test-db`/`_ensure-dev-data`/`valhalla-up` (`Makefile:144-146`), so
-  even the cheapest rung starts the shared Neo4j containers, **writes to the
-  shared 7687 dev graph**, and `docker compose up`s Valhalla. The engine
-  therefore assumes exclusive use of the local containers — never run it
-  alongside `make test` or a sibling session's suite.
+- **"$0" means zero provider spend, NOT read-only.** `make test-file` declares
+  the `PRE_PYTEST` prerequisite set (`db-test db-dev dev-data valhalla`), so even
+  the cheapest rung starts the shared Neo4j containers, **writes to the shared
+  7687 dev graph**, and `docker compose up`s Valhalla. The engine therefore
+  assumes exclusive use of the local containers — never run it alongside
+  `make test` or a sibling session's suite. `PREFLIGHT_AUTOFIX=0` makes any
+  target report-only instead of starting anything, which is the safe mode for a
+  parallel agent that must not touch shared containers.
 - Skeptics run in parallel, so they may only execute `make lint` and
   `make flutter-analyze` themselves; any container-touching reproduction is
   *proposed* and re-run once by a single serial verifier. Otherwise two panel
@@ -177,6 +179,53 @@ Every command must go through Makefile targets. Never use raw `uv run pytest`, `
 
 If no target exists for what you need, add one to the Makefile first.
 
+**Every target declares its prerequisites, and adding one MUST declare them too.**
+A target opens with `@$(PREFLIGHT) --label <name> <requirements...>`.
+`scripts/preflight.py` resolves that list in dependency order, probes each
+capability for real, starts or installs what it may, and refuses to run the
+recipe otherwise, naming the exact remedy. Requirement vocabulary:
+`make preflight-list`. Reusable sets (`PRE_PY`, `PRE_LOCAL_GRAPH`, `PRE_TOUR`,
+`PRE_PYTEST`, `PRE_FLUTTER`, `PRE_FULL_SUITE`) are defined at the top of the
+Makefile.
+
+This is enforced, not conventional: `tests/test_preflight.py` fails if a
+`##`-documented target has no preflight line, names a requirement that does not
+exist, or fetches Render credentials without declaring `render-key`. All three
+guards are mutation-proven — see the file header for the exact edit that turns
+each one red.
+
+**A probe must report the evidence it observed; it may never infer success from
+another command's silence.** This mechanism exists because the hand-rolled
+`_ensure-*` helpers it replaced were a single backslash-continued shell chain
+whose last statement was the success message: with the Docker daemon down,
+`make db-up` printed `✓ neo4j ready at bolt://localhost:7687` and **exited 0**,
+and the real failure surfaced two steps later disguised as a data problem.
+Readiness for a database is a real Cypher query returning 0, never
+`docker ps | grep`. A probe also searches only the real PATH — never a widened
+one — because a tool preflight can see but the recipe cannot is the same lie.
+
+**Every requirement must be able to restore itself (OWNER RULING 2026-07-31).**
+Failing with advice is a last resort, not a design: it makes the developer
+research what the build already knows, which is pure friction. New requirements
+get a `repair`; `tests/test_preflight.py` fails on any that does not, unless it
+is justified in `REQUIREMENTS_THAT_CANNOT_SELF_REPAIR`. Repairs install
+toolchains (uv, Docker/Colima, Flutter, the Render CLI), create a correctly
+sized Colima VM, download map extracts, start containers and provision data.
+Mark a slow one with `announce` (it still runs, it just says what it will
+spend). Mark one needing a human with `interactive` — those are skipped without
+a TTY rather than hanging, and are limited to the Render credential paste, the
+Render CLI sign-in, and Xcode.
+
+`PREFLIGHT_AUTOFIX=0` turns any target report-only — nothing is started or
+installed. Use it for parallel agents that must not touch shared containers.
+
+**Two different Render credentials, easily confused.** The Keychain API key
+(`render-key`) is fetched over the REST API and supplies every provider secret;
+`RENDER_API_KEY` in the environment is the documented fallback for Linux and CI,
+which the Keychain-only path previously locked out entirely. The Render **CLI**
+(`render-cli` + `render-cli-auth`) has its own browser sign-in and is used by
+exactly one thing: `make render-watch`.
+
 ### Test Discipline
 
 - The bar is `make test` — full suite, 0 failures, 0 skipped
@@ -243,17 +292,25 @@ After cherry-picking from a worktree: immediately remove the worktree directory,
 ## Test Infrastructure
 
 ```bash
+make doctor                       # Every prerequisite; starts/installs nothing
+make preflight                    # Check everything, repair what is repairable
+make preflight-list               # Requirement vocabulary a target may declare
 make test                         # THE definitive executor — every shard
 make test-file FILE=tests/test_x.py
 make test-live                    # Standalone live-provider shard
 make test-workbench               # Standalone Playwright shard on 7689
 make flutter-test
 make flutter-ios
-make db-up DB=dev                 # 7687
+make db-up DB=dev                 # 7687 — proven by a real Cypher query
 make db-up DB=test                # 7688
 make db-up DB=workbench           # 7689
 make db-parity TARGET=cloud       # Read-only Aura parity
 ```
+
+`make test` declares the whole union of prerequisites up front (`PRE_FULL_SUITE`),
+so a missing Render credential or Playwright browser fails in seconds rather than
+twenty minutes into the run. Every shard re-declares its own set, so running one
+standalone is equally safe.
 
 `make test` runs, in order: local pytest, Flutter, workbench browser, golden tours,
 tour grade, tour invariants, live-provider tests, and read-only cloud parity. It

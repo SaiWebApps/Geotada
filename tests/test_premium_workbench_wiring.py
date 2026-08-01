@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 import inspect
 import re
 import socket
@@ -14,6 +15,25 @@ from scripts import tour_batch_candidate
 from src.api.routes import trips
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _declared_requirements(target: str):
+    """What a Make target declares, read by the code preflight itself uses.
+
+    preflight lives outside the importable package tree and must stay runnable on
+    the system interpreter, so it is loaded by path.  It must be registered in
+    sys.modules BEFORE it executes: @dataclass resolves annotations through
+    sys.modules[cls.__module__].
+    """
+    name = "ondoway_preflight"
+    module = sys.modules.get(name)
+    if module is None:
+        spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / "preflight.py")
+        assert spec and spec.loader
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+    return module.declared_requirements(target)
 
 _LISTENER_SRC = """
 import socket, sys, time
@@ -208,8 +228,19 @@ def test_batch_policy_delegates_to_the_shared_policy_factory() -> None:
 
 
 def test_manual_workbench_starts_routing_for_the_preview() -> None:
+    """The workbench preview routes, so the target must provision routing itself.
+
+    Asserted against the requirements the target DECLARES, resolved by the same
+    code preflight acts on (`scripts/preflight.py`), rather than against literal
+    text in the recipe: a preview that silently lost its dev graph or its routing
+    engine is the failure this pins, and that is a property of the declaration,
+    not of how it happens to be spelled.
+    """
+    declared = _declared_requirements("workbench")
+    assert declared is not None, "the workbench target declares no prerequisites at all"
+    assert "dev-data" in declared, "the preview would run against an unprovisioned graph"
+    assert "valhalla" in declared, "the preview could not route"
+
     makefile = (ROOT / "Makefile").read_text()
     target = makefile.split("\nworkbench:", 1)[1].split("\n\ndashboard:", 1)[0]
-    assert "_ensure-dev-data" in target
-    assert "valhalla-up" in target
     assert "$(RENDER_LOCAL_EXEC)" in target

@@ -65,27 +65,55 @@ def _keychain_account() -> str:
 
 
 def keychain_api_key() -> str:
-    """Read the Render API key without echoing it."""
-    result = subprocess.run(
-        [
-            "security",
-            "find-generic-password",
-            "-a",
-            _keychain_account(),
-            "-s",
-            KEYCHAIN_SERVICE,
-            "-w",
-        ],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    key = result.stdout.strip()
-    if result.returncode != 0 or not key:
-        raise EnvironmentError(
-            "Render API key is not configured. Run `make render-auth-setup` once."
+    """Read the Render API key without echoing it.
+
+    The macOS Keychain is preferred: the secret stays in the OS credential store
+    and never appears in a shell history, a process listing, or a file.
+
+    ``RENDER_API_KEY`` in the environment is accepted as a fallback so that Linux
+    workstations and CI runners -- which have no Keychain, and on which every
+    Render-backed target was previously unreachable -- can supply the credential
+    the usual way. It is deliberately second, so a successful Keychain lookup
+    always wins over a stale exported variable.
+
+    Note the honest limit of that ordering: precedence is decided by whether the
+    lookup SUCCEEDS, not by whether an entry exists. If the Keychain is locked or
+    the prompt is cancelled, a stale ``RENDER_API_KEY`` is used instead of
+    raising. The failure is visible -- Render rejects a dead key on the next
+    call -- but it surfaces as an API error, not as "your Keychain is locked".
+    """
+    if sys.platform == "darwin":
+        result = subprocess.run(
+            [
+                "security",
+                "find-generic-password",
+                "-a",
+                _keychain_account(),
+                "-s",
+                KEYCHAIN_SERVICE,
+                "-w",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
         )
-    return key
+        key = result.stdout.strip()
+        if result.returncode == 0 and key:
+            return key
+
+    environment_key = os.environ.get("RENDER_API_KEY", "").strip()
+    if environment_key:
+        return environment_key
+
+    if sys.platform == "darwin":
+        raise EnvironmentError(
+            "Render API key is not configured. Run `make render-auth-setup` once, "
+            "or export RENDER_API_KEY."
+        )
+    raise EnvironmentError(
+        "Render API key is not configured. This platform has no macOS Keychain, "
+        "so export RENDER_API_KEY with a key that can read the ondoway-api service."
+    )
 
 
 def setup_keychain() -> None:
