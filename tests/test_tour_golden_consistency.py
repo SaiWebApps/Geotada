@@ -192,21 +192,34 @@ def test_pinned_set_growth_forces_the_overlap_floor_to_be_rederived():
 
 
 def test_golden_probe_marker_is_emitted_by_both_goldens():
-    """`make golden-probe` parses a marker string; keep the two ends in sync.
+    """`make golden-probe` filters stdout for a marker; keep the two ends in sync.
 
-    The recipe greps stdout for GOLDEN-OVERLAP. Rename or drop that string in either
-    golden module and the grep matches nothing, which under `set -o pipefail` exits 1 —
-    so the probe fails with NO output exactly when a golden regresses. That is how it
-    broke on 2026-07-30, and the comments in both golden modules claimed this test
-    guarded it before the test existed. It exists now.
+    Rename or drop that string in either golden module and the filter matches
+    nothing. That is how it broke on 2026-07-30: the recipe used `grep -oE`, and
+    grep exits 1 on zero matches, so under `set -o pipefail` the probe failed
+    with NO OUTPUT exactly when a golden regressed — indistinguishable from the
+    tests themselves failing.
+
+    The recipe no longer uses grep (a regex, which this repo bans outright); it
+    filters with a plain string comparison and exits with a SENTENCE when nothing
+    matched. So this asserts the two properties that matter — both ends use the
+    same marker, and an empty result is reported rather than silent — instead of
+    pinning the tool that happens to do it.
     """
-    marker = "GOLDEN-OVERLAP "
+    marker = "GOLDEN-OVERLAP"
     for name in ("test_tour_golden_ile.py", "test_tour_golden_pdv.py"):
         source = (Path(__file__).resolve().parent / name).read_text()
-        assert f'f"{marker}' in source, f"{name} no longer prints the {marker!r} marker"
-    recipe = (REPO_ROOT / "Makefile").read_text()
-    assert f'grep -oE "{marker.strip()} .*"' in recipe, (
-        "the golden-probe recipe no longer greps the GOLDEN-OVERLAP marker"
+        assert f'f"{marker} ' in source, f"{name} no longer prints the {marker!r} marker"
+
+    makefile = (REPO_ROOT / "Makefile").read_text()
+    recipe = makefile.split("\ngolden-probe:", 1)[1].split("\n\n", 1)[0]
+    assert marker in recipe, "the golden-probe recipe no longer filters for the marker"
+    assert "grep" not in recipe, (
+        "golden-probe went back to grep: zero matches exit 1, which made a passing "
+        "run with no overlap lines look identical to a failing one"
+    )
+    assert "sys.exit(0 if lines else" in recipe, (
+        "the recipe no longer reports an empty result as a sentence"
     )
 
 

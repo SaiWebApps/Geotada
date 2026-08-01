@@ -25,9 +25,14 @@ read as text and lexed with ``shlex``; nothing here starts anything.
 
 from __future__ import annotations
 
+import http.server
 import importlib.util
+import inspect
+import socket
 import subprocess
 import sys
+import threading
+import time
 from pathlib import Path
 
 import pytest
@@ -78,6 +83,20 @@ def test_every_requirement_resolves_without_a_cycle():
             satisfied.add(requirement.name)
 
 
+def test_a_port_instruction_names_its_own_port():
+    """The reusable variant's instruction read a leaked loop variable, so
+    `make workbench` blocked on :8000 told the developer to free :8080."""
+    for name, requirement in preflight.REGISTRY.items():
+        if not name.startswith("port-"):
+            continue
+        # LIMIT: this asserts the digits appear, not that they are the port the
+        # command actually frees. It catches a leaked variable, not a typo.
+        number = name.split("-")[1]
+        assert number in requirement.instruction, (
+            f"{name}'s instruction does not mention port {number}: {requirement.instruction!r}"
+        )
+
+
 def test_every_requirement_carries_an_instruction():
     """Whatever the repair does, a human must be told what to run if it fails.
 
@@ -95,7 +114,13 @@ def test_every_requirement_carries_an_instruction():
 # brought to that state without a human decision. The list is the argument: an
 # empty one means every requirement can restore itself. Adding a name here is a
 # claim that must be justified in the comment beside it.
-REQUIREMENTS_THAT_CANNOT_SELF_REPAIR: dict = {}
+REQUIREMENTS_THAT_CANNOT_SELF_REPAIR: dict = {
+    # Xcode is a multi-gigabyte App Store product tied to an Apple ID. The repair
+    # triggers the command-line-tools installer, which is the automatable part,
+    # and then reports what remains -- so it has no success path of its own, and
+    # claiming otherwise was the third instance of a guard trusting a comment.
+    "xcode": "the App Store cannot be driven from a build system",
+}
 
 
 def test_every_requirement_can_restore_itself():
@@ -115,6 +140,25 @@ def test_every_requirement_can_restore_itself():
         "these requirements only report a failure instead of fixing it: "
         f"{sorted(missing)}. Give each a repair, or justify it in "
         "REQUIREMENTS_THAT_CANNOT_SELF_REPAIR."
+    )
+
+    # Having a repair attribute is not having a repair. `_repair_xcode` returned
+    # Probe(False, ...) on every one of its paths, so the registry looked fully
+    # self-repairing while one entry could never succeed. A repair must be able
+    # to report success: either it returns one, or it re-probes.
+    # LIMIT: this reads the repair's SOURCE TEXT, so a repair whose comment
+    # merely mentions a probe defeats it. It catches the honest mistake (advice
+    # only), not a determined one.
+    hollow = []
+    for name, requirement in preflight.REGISTRY.items():
+        if requirement.repair is None or name in REQUIREMENTS_THAT_CANNOT_SELF_REPAIR:
+            continue
+        body = inspect.getsource(requirement.repair)
+        if "Probe(True" not in body and "_probe" not in body and "_after_install" not in body:
+            hollow.append(name)
+    assert not hollow, (
+        f"these repairs can never report success: {sorted(hollow)} -- they only "
+        "print advice, so the registry claims a self-repair it does not have"
     )
 
 
@@ -241,7 +285,10 @@ def test_delegating_targets_really_do_delegate():
     target out of the mechanism entirely.
     """
     body = MAKEFILE.read_text(encoding="utf-8").split("\nsetup:", 1)[1].split("\n\n", 1)[0]
-    assert "bootstrap" in body, "setup no longer delegates to bootstrap"
+    # Recipe lines only. The doc comment on the same rule contains the word
+    # "bootstrap", so scanning the whole block passed even with the recipe gutted.
+    recipe = [line for line in body.splitlines() if line.startswith("\t")]
+    assert any("bootstrap" in line for line in recipe), "setup no longer delegates to bootstrap"
     assert _declared_requirements("bootstrap"), "bootstrap itself declares nothing"
 
 
@@ -249,7 +296,7 @@ def test_every_documented_target_declares_its_prerequisites():
     undeclared = [
         target
         for target in _documented_targets()
-        if target not in NO_PREREQUISITES and _declared_requirements(target) is None
+        if target not in NO_PREREQUISITES and not (_declared_requirements(target) or [])
     ]
     assert not undeclared, (
         "these targets run without declaring what they need, so they can fail "
@@ -282,10 +329,17 @@ def test_targets_needing_render_credentials_declare_them():
         if line and not line.startswith((" ", "\t", "#")) and ":" in line:
             name = line.split(":", 1)[0].strip()
             current = name if name and not name.startswith(".") else None
-        elif current and line.startswith("\t") and "--render" not in line:
-            for marker in ("RENDER_LOCAL_EXEC", "RENDER_TEST_EXEC", "CLOUD_EXEC"):
-                if f"$({marker})" in line and current not in render_targets:
-                    render_targets.append(current)
+        elif current and line.startswith("\t"):
+            # Three macros AND the inline form. Excluding lines containing
+            # "--render" skipped `$(ENV_EXEC) --profile workbench --render --`,
+            # which is exactly a Render fetch -- the guard was blind to the one
+            # spelling already used in this file.
+            fetches = any(
+                f"$({marker})" in line
+                for marker in ("RENDER_LOCAL_EXEC", "RENDER_TEST_EXEC", "CLOUD_EXEC")
+            ) or ("$(ENV_EXEC)" in line and "--render" in line)
+            if fetches and current not in render_targets:
+                render_targets.append(current)
 
     assert render_targets, "no Render-backed targets found -- this guard would be vacuous"
     missing = [
@@ -359,8 +413,19 @@ def test_a_repair_that_does_not_work_is_reported_as_failure(isolated_registry):
 
 
 def test_a_repair_that_works_passes(isolated_registry):
-    isolated_registry["thing"] = _requirement(
-        "thing", ok=False, repair=lambda: preflight.Probe(True, "started")
+    """A real repair changes what the probe observes, so the stub must too.
+
+    check() re-probes after every repair, so a fixture whose probe is frozen at
+    False is asserting that a repair can override the evidence -- which is
+    exactly what must not happen (see the lying-repair test below).
+    """
+    state = {"fixed": False}
+    isolated_registry["thing"] = preflight.Requirement(
+        name="thing",
+        summary="thing",
+        probe=lambda: preflight.Probe(state["fixed"], "started" if state["fixed"] else "absent"),
+        repair=lambda: (state.update(fixed=True), preflight.Probe(True, "started"))[1],
+        instruction="do the thing",
     )
     assert preflight.check(["thing"], autofix=True, label="unit", colour=False) == 0
 
@@ -432,6 +497,112 @@ def test_a_completed_map_download_is_moved_into_place(monkeypatch, tmp_path):
     assert not list(tiles.glob("*.partial"))
 
 
+def test_a_foreign_process_holding_a_port_is_named_not_killed(monkeypatch):
+    """Claiming a port by killing an unidentified process is collateral damage.
+
+    This repo has the precedent: a broader match once killed the user's desktop
+    app, which merely held client sockets to the same port. A repair may only
+    stop a listener it can identify as this project's own server.
+    """
+    monkeypatch.setattr(
+        preflight,
+        "_port_listeners",
+        lambda port: [preflight.PortHolder(4242, "/usr/bin/postgres -D /db")],
+    )
+
+    def refuse_to_kill(argv, **kwargs):
+        assert argv[0] != "kill", "preflight tried to kill a process it did not recognise"
+        return subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(preflight, "_run", refuse_to_kill)
+    result = preflight._repair_port(8080)()
+
+    assert result.ok is False
+    assert "4242" in result.detail, "the holding process must be named so it can be dealt with"
+
+
+def test_this_projects_own_stale_server_is_stopped(monkeypatch):
+    """A leftover server from a previous run is ours to clean up."""
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app --port 8000"
+    holders = [preflight.PortHolder(99, ours)]
+    killed = []
+
+    def listeners(port):
+        return list(holders)
+
+    def run(argv, **kwargs):
+        if argv[0] == "kill":
+            killed.append(argv[1])
+            holders.clear()
+        return subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_run", run)
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
+
+    result = preflight._repair_port(8000)()
+    assert killed == ["99"], "our own stale server should have been stopped"
+    assert result.ok is True
+
+
+def test_a_port_already_serving_this_project_counts_as_satisfied(monkeypatch):
+    """`make workbench` reuses a healthy API rather than restarting it."""
+    monkeypatch.setattr(
+        preflight,
+        "_port_listeners",
+        lambda port: [preflight.PortHolder(7, f"{preflight.ROOT}/ uvicorn src.api.app:app")],
+    )
+    monkeypatch.setattr(preflight, "_serves_this_project", lambda port: True)
+    assert preflight._probe_port(8000, reuse_ok=True)().ok is True, "workbench must reuse"
+    assert preflight._probe_port(8000)().ok is False, (
+        "a target that BINDS the port must not treat an occupied port as satisfied"
+    )
+
+
+def test_every_server_target_declares_the_port_it_binds():
+    """Otherwise the failure is "address already in use", which names no remedy."""
+    for target, port in (
+        ("api", "port-8000"),
+        ("workbench", "port-8000-reusable"),
+        ("dashboard", "port-8080"),
+        ("flutter-ios", "port-8000"),
+        ("test-workbench", "port-8001"),
+    ):
+        declared = _declared_requirements(target) or []
+        assert port in declared, f"{target} binds {port} but does not declare it"
+
+
+def test_every_target_that_reaches_routing_declares_it():
+    """The API serves generated tours, which route.
+
+    `workbench` declared routing and `api` did not, though they run the SAME
+    application -- a gap found by auditing each target's real import closure
+    rather than trusting the declaration.
+    """
+    for target in (
+        "api",
+        "workbench",
+        "flutter-ios",
+        "tour-build",
+        "measure-planned-audio",
+        "measure-governor",
+        "test-workbench",
+    ):
+        declared = _declared_requirements(target) or []
+        assert "valhalla" in declared, f"{target} reaches routing but does not declare valhalla"
+
+
+def test_a_failed_repair_does_not_promise_that_setup_will_fix_it(isolated_registry, capsys):
+    """Naming a command that cannot help costs another wasted run to find out."""
+    isolated_registry["thing"] = _requirement(
+        "thing", ok=False, repair=lambda: preflight.Probe(False, "held by someone else")
+    )
+    preflight.check(["thing"], autofix=True, label="unit", colour=False)
+    output = capsys.readouterr().out
+    assert "`make setup` installs and starts all of this" not in output
+    assert "cannot fix them" in output
+
+
 def test_the_diagnostic_says_so_when_nothing_is_missing(isolated_registry, capsys):
     isolated_registry["thing"] = _requirement("thing", ok=True)
     code = preflight.check(
@@ -447,7 +618,7 @@ def test_an_unknown_requirement_is_rejected_rather_than_ignored(isolated_registr
 
 
 def test_an_unanswerable_docker_query_is_not_reported_as_a_missing_container(monkeypatch):
-    """"I could not ask" and "it is not there" are different answers.
+    """ "I could not ask" and "it is not there" are different answers.
 
     Measured 2026-07-31: under a burst of rapid checks one `docker ps` failed
     while the container had been up 36 hours. Collapsing that into False called a
@@ -465,14 +636,18 @@ def test_an_unanswerable_docker_query_is_not_reported_as_a_missing_container(mon
 
 def test_a_present_container_is_still_reported_present(monkeypatch):
     """The retry must not mask a genuine answer in either direction."""
-    listing = '{"Names":"ondoway-neo4j","State":"running"}\n'
+    # Only the -test container runs. A substring match would report the DEV
+    # container present too, which is the direction that actually hurts.
+    listing = '{"Names":"ondoway-neo4j-test","State":"running"}\n'
     monkeypatch.setattr(
         preflight,
         "_run",
         lambda *a, **k: subprocess.CompletedProcess([], returncode=0, stdout=listing, stderr=""),
     )
-    assert preflight._container_running("ondoway-neo4j") is True
-    assert preflight._container_running("ondoway-neo4j-test") is False
+    assert preflight._container_running("ondoway-neo4j-test") is True
+    assert preflight._container_running("ondoway-neo4j") is False, (
+        "a running -test container must not satisfy the dev container's probe"
+    )
 
 
 # ── the module must stay runnable on the system interpreter ──────────────────
@@ -493,3 +668,1025 @@ def test_preflight_runs_on_the_system_interpreter():
     )
     assert result.returncode == 0, f"preflight failed under python3:\n{result.stderr}"
     assert "docker-daemon" in result.stdout, "the requirement table did not render"
+
+
+# ── 4. the mechanism cannot be switched off ─────────────────────────────────
+# A hostile review ran 24 mutations against the guards above; 21 passed. These
+# close the holes it found. Each names the mutation it exists to catch.
+
+
+# Preflight may legitimately sit inside a shell conditional only where the target
+# branches on a variable and each branch declares its own list. Anything else is
+# a call that can be skipped.
+CONDITIONAL_PREFLIGHT_IS_INTENDED = {
+    "test-file",  # LIVE=1 hands off to test-live, which declares its own
+    "tour-build",  # GLUE=--haiku additionally needs a provider key
+    "db-parity",  # TARGET=local|cloud need different things
+    "deploy",  # TARGET=local|cloud: the cloud path additionally needs render-key
+    "prune-orphans",  # same local|cloud split
+}
+
+
+def _every_rule_with_a_recipe() -> list[str]:
+    """Every target defined in the Makefile, documented or not.
+
+    The documented-only view left the five `_test-*` shards -- what `make test`
+    actually runs -- outside every guard. Deleting `_test-python`'s preflight
+    line entirely was green.
+    """
+    names = []
+    lines = MAKEFILE.read_text(encoding="utf-8").splitlines()
+    for number, line in enumerate(lines):
+        if line.startswith((" ", "\t", "#")) or ":" not in line or line.startswith(".PHONY"):
+            continue
+        if ":=" in line or "=" in line.split(":", 1)[0]:
+            continue  # a variable assignment, not a rule
+        name = line.split(":", 1)[0].strip()
+        if not name or name.startswith(".") or "=" in name or " " in name:
+            continue
+        # `foo: ; @cmd` is a valid recipe on the rule's own line. Without this a
+        # shard written that way is invisible to every guard below.
+        if ";" in line.split(":", 1)[1]:
+            names.append(name)
+            continue
+        # Scan past blank and comment lines: a `# note` between the rule and its
+        # recipe used to drop the target from every guard that iterates this list.
+        cursor = number + 1
+        while cursor < len(lines) and (
+            not lines[cursor].strip() or lines[cursor].lstrip().startswith("#")
+        ):
+            cursor += 1
+        if cursor < len(lines) and lines[cursor].startswith("\t"):
+            names.append(name)
+    return names
+
+
+def test_the_internal_shards_declare_prerequisites_too():
+    """`make test` runs these; nothing documented-only ever checked them."""
+    shards = [n for n in _every_rule_with_a_recipe() if n.startswith("_test-")]
+    assert len(shards) >= 5, f"expected the internal shards, found {shards}"
+    for shard in shards:
+        assert _declared_requirements(shard), f"{shard} runs in `make test` and declares nothing"
+
+
+def test_no_target_runs_preflight_in_report_mode_except_the_diagnostic():
+    """`--report` makes preflight print and return 0 whatever it finds.
+
+    Adding that one flag to a recipe turns the whole mechanism into a printout
+    for that target. The parser used to strip flags, so every guard stayed green.
+    """
+    offenders = []
+    for target in _every_rule_with_a_recipe():
+        declaration = preflight.declare(target)
+        if declaration is None or target == "doctor":
+            continue
+        if not declaration.enforcing:
+            offenders.append(target)
+    assert not offenders, (
+        f"these run preflight in report mode, so it can never block them: {offenders}"
+    )
+
+
+def test_preflight_is_the_recipes_own_first_line_not_a_skippable_branch():
+    """A call nested in a conditional can be arranged never to run."""
+    offenders = []
+    for target in _every_rule_with_a_recipe():
+        declaration = preflight.declare(target)
+        if declaration is None or target in CONDITIONAL_PREFLIGHT_IS_INTENDED:
+            continue
+        if not declaration.unconditional:
+            offenders.append(target)
+    assert not offenders, (
+        "these wrap their preflight call in a conditional, so it can be skipped: "
+        f"{offenders}. Add to CONDITIONAL_PREFLIGHT_IS_INTENDED only with a reason."
+    )
+
+
+# The reusable sets are the declaration for dozens of targets at once. Gutting
+# `PRE_FULL_SUITE := uv` passed every guard, including the claim in CLAUDE.md
+# that `make test` checks the whole union up front.
+REQUIRED_IN_SETS = {
+    "PRE_PY": {"uv", "python-deps"},
+    "PRE_LOCAL_GRAPH": {"uv", "python-deps", "db-dev", "dev-data"},
+    "PRE_TOUR": {"uv", "python-deps", "db-dev", "dev-data", "valhalla"},
+    "PRE_PYTEST": {"uv", "python-deps", "db-test", "db-dev", "dev-data", "valhalla"},
+    "PRE_FLUTTER": {"flutter", "flutter-deps"},
+    "PRE_FULL_SUITE": {
+        "uv",
+        "python-deps",
+        "db-test",
+        "db-dev",
+        "db-workbench",
+        "dev-data",
+        "valhalla",
+        "playwright-browser",
+        "flutter",
+        "flutter-deps",
+        "render-key",
+    },
+}
+
+
+def test_the_reusable_prerequisite_sets_still_contain_what_they_promise():
+    sets = preflight._prerequisite_sets(MAKEFILE.read_text(encoding="utf-8").splitlines())
+    for name, required in REQUIRED_IN_SETS.items():
+        assert name in sets, f"{name} disappeared from the Makefile"
+        actual = set(sets[name].split())
+        missing = required - actual
+        assert not missing, f"{name} no longer contains {sorted(missing)}"
+
+
+def test_the_full_suite_declares_everything_its_shards_need():
+    """The up-front union is only worth anything if it is actually the union.
+
+    It was missing port-8001 -- contended by test-workbench twenty minutes in,
+    which is precisely the late failure the union exists to prevent.
+    """
+    shard_union: set = set()
+    for shard in (
+        "_test-python",
+        "flutter-test",
+        "test-workbench",
+        "_test-golden",
+        "_test-grade",
+        "_test-invariants",
+        "test-live",
+        "_test-cloud",
+    ):
+        shard_union |= set(_declared_requirements(shard) or [])
+    declared = set(_declared_requirements("test") or [])
+    missing = shard_union - declared
+    assert not missing, (
+        f"`make test` checks up front but its shards also need {sorted(missing)}; "
+        "that failure would surface late, which the up-front check exists to prevent"
+    )
+
+
+def test_db_up_resolves_every_database_not_just_the_default():
+    """Only DB=dev was ever exercised; DB=test and DB=workbench went unchecked."""
+    text = MAKEFILE.read_text(encoding="utf-8")
+    assert "db-$(DB)" in text, "db-up no longer resolves its requirement from DB="
+    for spec in preflight.DATABASES:
+        assert f"db-{spec.key}" in preflight.REGISTRY, (
+            f"DB={spec.key} would resolve to a requirement that does not exist"
+        )
+
+
+def test_the_container_query_is_scoped_to_listening_sockets(monkeypatch):
+    """Dropping -sTCP:LISTEN is the exact regression the port docstring cites.
+
+    A bare `lsof -i:PORT` also matches CLIENT sockets, so an unrelated process
+    merely talking to the port from the other side gets killed. Measured here
+    once already.
+    """
+    seen: list = []
+
+    def capture(argv, **kwargs):
+        seen.append(list(argv))
+        return subprocess.CompletedProcess([], returncode=1, stdout="", stderr="")
+
+    monkeypatch.setattr(preflight, "_run", capture)
+    preflight._port_listeners(8000)
+    assert seen, "the port was never queried"
+    assert "-sTCP:LISTEN" in seen[0], (
+        "the port query is not scoped to LISTEN, so it can match client sockets "
+        "belonging to unrelated processes"
+    )
+
+
+def test_only_this_projects_own_servers_match_the_kill_filter():
+    """Widening the marker list to 'python' made any python script killable."""
+    assert "python" not in preflight.SERVER_MARKERS, (
+        "'python' matches any script, which defeats the identity check entirely"
+    )
+    innocent = "/usr/bin/python3 /Users/someone/their-own-server.py"
+    assert not any(marker in innocent for marker in preflight.SERVER_MARKERS)
+    ours = "python -m uvicorn src.api.app:app --port 8000"
+    assert any(marker in ours for marker in preflight.SERVER_MARKERS)
+
+
+def _stub_port_repair(monkeypatch, calls_until_free):
+    """A holder that releases the port after `calls_until_free` observations."""
+    state = {"n": 0}
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+
+    def listeners(port):
+        state["n"] += 1
+        return [] if state["n"] > calls_until_free else [preflight.PortHolder(99, ours)]
+
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_serves_this_project", lambda port: False)
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda *a, **k: subprocess.CompletedProcess([], returncode=0, stdout="", stderr=""),
+    )
+
+
+def test_a_process_given_a_moment_to_exit_is_waited_for(monkeypatch):
+    """Signalled processes do not die instantly.
+
+    Without the release wait the repair re-probes immediately, still sees the
+    dying process, and reports failure for a port that was about to be free.
+    """
+    _stub_port_repair(monkeypatch, calls_until_free=2)
+    assert preflight._repair_port(8000)().ok is True, (
+        "the repair did not wait for the process it signalled to actually exit"
+    )
+
+
+def test_a_process_that_ignores_the_stop_is_reported_not_assumed_gone(monkeypatch):
+    """A port that never frees must never be reported as claimed."""
+    _stub_port_repair(monkeypatch, calls_until_free=10**6)
+    assert preflight._repair_port(8000)().ok is False, (
+        "the port was never released, so this must not report success"
+    )
+
+
+def test_an_interrupted_download_is_caught_by_the_temporary_name(monkeypatch, tmp_path):
+    """The previous test made curl RETURN 1, which runs the cleanup line.
+
+    A real interrupt never returns to Python at all, and only the write-to-temp
+    then rename saves you. Writing straight to the final path passed both of the
+    earlier download tests.
+    """
+    tiles = tmp_path / "custom_files"
+    tiles.mkdir()
+    monkeypatch.setattr(preflight, "_tile_directory", lambda: tiles)
+
+    def interrupted(argv, **kwargs):
+        Path(argv[argv.index("-o") + 1]).write_bytes(b"truncated")
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(preflight, "_stream", interrupted)
+    with pytest.raises(KeyboardInterrupt):
+        preflight._repair_valhalla_tiles()
+
+    assert preflight._probe_valhalla_tiles().ok is False, (
+        "a truncated extract was reported as usable map data"
+    )
+
+
+def test_check_never_runs_an_interactive_repair_without_a_terminal(monkeypatch, isolated_registry):
+    """The old test called the helper directly and never drove check().
+
+    Removing the guard from check() itself left it green while an unattended
+    build would block forever on a browser sign-in.
+    """
+    ran: list = []
+    isolated_registry["guided"] = preflight.Requirement(
+        name="guided",
+        summary="guided",
+        probe=lambda: preflight.Probe(False, "absent"),
+        repair=lambda: (ran.append(1), preflight.Probe(True, "done"))[1],
+        interactive=True,
+        instruction="do it yourself",
+    )
+    monkeypatch.setattr(preflight.sys.stdin, "isatty", lambda: False, raising=False)
+    monkeypatch.setattr(preflight.sys.stdout, "isatty", lambda: False, raising=False)
+
+    code = preflight.check(["guided"], autofix=True, label="unit", colour=False)
+    assert not ran, "an interactive repair ran with no terminal attached"
+    assert code != 0
+
+
+def test_a_repair_that_claims_success_without_fixing_anything_is_caught(isolated_registry, capsys):
+    """A repair does not get to grade itself.
+
+    check() used to trust the repair's return value, so `lambda: Probe(True,
+    "trust me")` on a permanently broken requirement printed FIX and exited 0 --
+    the exact silent success this module exists to prevent.
+    """
+    isolated_registry["liar"] = preflight.Requirement(
+        name="liar",
+        summary="liar",
+        probe=lambda: preflight.Probe(False, "still broken"),
+        repair=lambda: preflight.Probe(True, "trust me"),
+        instruction="fix it by hand",
+    )
+    code = preflight.check(["liar"], autofix=True, label="unit", colour=False)
+    output = capsys.readouterr().out
+    assert code != 0, "a repair that fixed nothing reported success"
+    assert "still broken" in output, "the probe's real verdict was not shown"
+
+
+# ── 5. false greens a second panel found ────────────────────────────────────
+# All three were the SAME family as the bug this module exists to kill, just
+# relocated: an unanswerable query read as "nothing there".
+
+
+def test_an_unanswerable_port_query_is_not_reported_as_a_free_port(monkeypatch):
+    """`lsof` exits 1 when the port is free and 127 when it could not run.
+
+    Collapsing those certified a port FREE that something was holding, and the
+    server then failed to bind with "address already in use" -- the error the
+    port requirement exists to prevent.
+    """
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda *a, **k: subprocess.CompletedProcess(
+            [], returncode=127, stdout="", stderr="timeout"
+        ),
+    )
+    monkeypatch.setattr(preflight.time, "sleep", lambda _: None)
+    assert preflight._port_listeners(8000) == preflight.UNKNOWN
+    assert preflight._probe_port(8000)().ok is False, (
+        "an unanswerable query certified the port free"
+    )
+
+
+def test_a_genuinely_free_port_is_still_reported_free(monkeypatch):
+    """The three-way answer must not turn lsof's normal 'no match' into a failure."""
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda *a, **k: subprocess.CompletedProcess([], returncode=1, stdout="", stderr=""),
+    )
+    assert preflight._port_listeners(8000) == []
+    assert preflight._probe_port(8000)().ok is True
+
+
+def test_another_projects_server_is_not_mistaken_for_ours():
+    """`uvicorn` and `src.server` are ecosystem conventions, not identity.
+
+    Another repo's dev server on the same port matched the marker list and was
+    killed as "our stale one".
+    """
+    strangers = [
+        "/Users/dev/other-startup/.venv/bin/python -m uvicorn app.main:app --port 8000",
+        "/opt/homebrew/bin/python3.11 -m src.server --port 8080",
+        "python -m uvicorn src.api.app:app",  # right shape, no path to this checkout
+        # A sibling worktree: its path CONTAINS this checkout's directory name,
+        # which is why a bare name match let the main checkout kill it. This repo
+        # has a recorded incident of a session destroying a sibling worktree.
+        f"{preflight.ROOT}-wt1/.venv/bin/python -m uvicorn src.api.app:app",
+        f"{preflight.ROOT}-scope2/.venv/bin/python -m uvicorn src.api.app:app",
+    ]
+    for command in strangers:
+        assert not preflight._is_our_server(command), (
+            f"another project's server would be killed: {command}"
+        )
+
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app --port 8000"
+    assert preflight._is_our_server(ours), "this checkout's own server is no longer recognised"
+
+
+def test_a_stray_dotfile_does_not_make_an_empty_tile_directory_look_populated(
+    monkeypatch, tmp_path
+):
+    """Opening the folder in Finder drops a .DS_Store into it.
+
+    `any(iterdir())` was true for that alone, so an empty tile directory
+    certified the routing engine's map data and the failure resurfaced later as
+    an obscure runtime error.
+    """
+    tiles = tmp_path / "custom_files"
+    (tiles / "valhalla_tiles").mkdir(parents=True)
+    (tiles / "valhalla_tiles" / ".DS_Store").write_bytes(b"")
+    monkeypatch.setattr(preflight, "_tile_directory", lambda: tiles)
+
+    assert preflight._probe_valhalla_tiles().ok is False, "a .DS_Store passed as map data"
+
+    (tiles / "valhalla_tiles" / "2").mkdir()
+    assert preflight._probe_valhalla_tiles().ok is True, "real tiles are no longer recognised"
+
+
+def test_dev_data_refuses_to_certify_a_comparison_it_never_made(monkeypatch, tmp_path):
+    """The parity check reports OK when its city loop is empty.
+
+    A leaked ONBOARD_DATA_ROOT from an earlier hermetic run pointed it at an
+    empty tree, so it compared nothing and passed.
+    """
+    monkeypatch.setattr(preflight, "_venv_python", lambda: Path(__file__))  # any real file
+    monkeypatch.setattr(preflight, "_committed_cities", lambda: [])
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda *a, **k: pytest.fail("parity was run despite there being nothing to compare"),
+    )
+    result = preflight._probe_dev_data()
+    assert result.ok is False
+    assert "nothing to compare" in result.detail
+
+
+def test_a_leaked_data_root_cannot_redirect_the_parity_check(monkeypatch):
+    monkeypatch.setenv("ONBOARD_DATA_ROOT", "/tmp/somewhere-else")
+    monkeypatch.setenv("ONBOARD_REGISTRY_PATH", "/tmp/somewhere-else/cities.json")
+    env = preflight._local_profile_env()
+    assert "ONBOARD_DATA_ROOT" not in env, "a leaked data root would redirect the comparison"
+    assert "ONBOARD_REGISTRY_PATH" not in env
+
+
+def test_the_dev_data_repair_is_given_the_environment_it_requires():
+    """It refuses outright without NEO4J_URI, so a bare invocation never worked.
+
+    The probe passed the local profile and the repair did not -- so the most
+    load-bearing self-repair in the system was dead on every machine, and it
+    looked fine only because an already-provisioned graph means it never runs.
+    """
+    source = PREFLIGHT_PATH.read_text(encoding="utf-8")
+    repair = source.split("def _repair_dev_data", 1)[1].split("\ndef ", 1)[0]
+    assert "_local_profile_env()" in repair, (
+        "the dev-data repair runs ensure_dev_data.py without the profile, which "
+        "makes it refuse: 'REFUSING local data provisioning ... got \\'\\''"
+    )
+
+
+def test_every_listening_process_is_stopped_not_just_the_first(monkeypatch):
+    """`lsof -t` prints one PID per line; a reloading uvicorn listens from two.
+
+    Reading only the first signalled half the server, then blamed the PID that
+    had already exited.
+    """
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    listing = "4001\n4002\n"
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: subprocess.CompletedProcess(
+            [], returncode=0, stdout=(listing if argv[0] == "lsof" else ours), stderr=""
+        ),
+    )
+    holders = preflight._port_listeners(8000)
+    assert [h.pid for h in holders] == [4001, 4002], "only one of two listening processes was seen"
+
+
+# ── 6. the mechanism itself cannot be swapped out ───────────────────────────
+
+
+def test_the_preflight_command_is_what_it_claims_to_be():
+    """Every other guard checks a recipe MENTIONS $(PREFLIGHT). None checked
+    what that expands to.
+
+    Setting `PREFLIGHT := true` makes all 70 targets call /usr/bin/true: all
+    enforcement, all repairs and the whole "no silent success" property vanish
+    at once, and the entire suite stays green. That is a strictly worse edit
+    than any single-target evasion, and it was the last one open.
+    """
+    lines = MAKEFILE.read_text(encoding="utf-8").splitlines()
+    definitions = [line for line in lines if line.startswith("PREFLIGHT") and ":=" in line]
+    assert len(definitions) == 1, f"expected exactly one PREFLIGHT definition, got {definitions}"
+    value = definitions[0].split(":=", 1)[1].strip()
+    assert value == "python3 scripts/preflight.py", (
+        f"PREFLIGHT is bound to {value!r}. Every target's prerequisite check runs "
+        "through this; anything else silently disables the mechanism everywhere."
+    )
+    assert (ROOT / "scripts" / "preflight.py").is_file()
+
+
+# Tokens that mean a recipe needs something provisioned. An exempt target may
+# use none of them -- that is what "needs nothing" has to mean mechanically,
+# rather than a comment asserting it.
+NEEDS_SOMETHING = (
+    "uv run",
+    "docker ",
+    "flutter ",
+    "xcrun",
+    "agvtool",
+    "$(LOCAL_EXEC)",
+    "$(TEST_EXEC)",
+    "$(WORKBENCH_EXEC)",
+    "$(ENV_EXEC)",
+    "$(RENDER_LOCAL_EXEC)",
+    "$(RENDER_TEST_EXEC)",
+    "$(CLOUD_EXEC)",
+)
+
+
+def test_an_exempt_target_really_does_need_nothing():
+    """NO_PREREQUISITES is a plain literal beside a comment claiming a reason.
+
+    Nothing checked the reason, so deleting a target's preflight line and adding
+    its name to the list -- in the same edit -- passed every guard. Check the
+    claim mechanically instead of trusting the comment.
+    """
+    for target in sorted(NO_PREREQUISITES):
+        if target == "setup":
+            continue  # a pure delegator; covered by its own test
+        recipe = "\n".join(line for line in _recipe_lines(target) if "$(PREFLIGHT)" not in line)
+        used = [token for token in NEEDS_SOMETHING if token in recipe]
+        assert not used, (
+            f"{target} is exempted from declaring prerequisites but its recipe uses "
+            f"{used} -- the exemption is not justified"
+        )
+
+
+def test_a_conditional_preflight_target_really_branches():
+    """CONDITIONAL_PREFLIGHT_IS_INTENDED is the other self-certifying list.
+
+    Wrapping a single call in `if true; then ...; fi` and adding the name here
+    passed. A genuine branch declares a DIFFERENT list per branch, so it calls
+    preflight more than once.
+    """
+    for target in sorted(CONDITIONAL_PREFLIGHT_IS_INTENDED):
+        recipe = _recipe_lines(target)
+        calls = sum(line.count("$(PREFLIGHT)") for line in recipe)
+        if calls >= 2:
+            continue  # a genuine branch: a different list per path
+
+        # The other legitimate shape: one branch delegates to another target,
+        # which declares its own prerequisites. Prove the delegate really does.
+        delegated = [
+            word.strip('"')
+            for line in recipe
+            if "$(MAKE)" in line
+            for word in line.split()
+            if word.strip('"') in _every_rule_with_a_recipe()
+        ]
+        assert delegated, (
+            f"{target} is allowed a conditional preflight call but makes {calls} of "
+            "them and delegates to nothing -- a single call in a conditional is "
+            "just a skippable call"
+        )
+        for other in delegated:
+            assert _declared_requirements(other), (
+                f"{target} delegates to {other}, which declares no prerequisites"
+            )
+
+
+def _recipe_lines(target: str) -> list[str]:
+    """The recipe lines of one rule, joined across backslash continuations."""
+    lines = MAKEFILE.read_text(encoding="utf-8").splitlines()
+    start = next(n for n, line in enumerate(lines) if line.startswith(target + ":"))
+    body, pending = [], ""
+    for line in lines[start + 1 :]:
+        if line.startswith("\t"):
+            pending += line.rstrip()
+            if pending.endswith("\\"):
+                pending = pending[:-1] + " "
+                continue
+            body.append(pending)
+            pending = ""
+        elif line.strip() and not line.startswith("#"):
+            break
+    if pending:
+        body.append(pending)
+    return body
+
+
+def test_a_dependency_cycle_is_refused(isolated_registry):
+    """resolve()'s cycle branch had never once been proven to fire."""
+    for name, needs in (("a", ("b",)), ("b", ("a",))):
+        isolated_registry[name] = preflight.Requirement(
+            name=name,
+            summary=name,
+            probe=lambda: preflight.Probe(True, "ok"),
+            needs=needs,
+            instruction="x",
+        )
+    with pytest.raises(SystemExit) as raised:
+        preflight.resolve(["a"])
+    assert "cycle" in str(raised.value)
+
+
+def test_the_command_line_resolves_a_target_and_honours_the_autofix_switch(monkeypatch):
+    """--target and PREFLIGHT_AUTOFIX were never driven through main()."""
+    seen = {}
+
+    def fake_check(names, *, autofix, label, colour, report_only=False):
+        seen.update(names=list(names), autofix=autofix, label=label)
+        return 0
+
+    monkeypatch.setattr(preflight, "check", fake_check)
+
+    monkeypatch.delenv("PREFLIGHT_AUTOFIX", raising=False)
+    assert preflight.main(["--target", "lint"]) == 0
+    assert seen["names"] == ["uv", "python-deps"], seen["names"]
+    assert seen["autofix"] is True
+    assert "lint" in seen["label"]
+
+    monkeypatch.setenv("PREFLIGHT_AUTOFIX", "0")
+    preflight.main(["--target", "lint"])
+    assert seen["autofix"] is False, "PREFLIGHT_AUTOFIX=0 did not disable repairs"
+
+
+def test_an_unknown_target_on_the_command_line_fails_cleanly(monkeypatch):
+    monkeypatch.setattr(preflight, "check", lambda *a, **k: 0)
+    assert preflight.main(["--target", "no-such-target"]) == 2
+
+
+class _FakeResponse:
+    """Just enough of an HTTP response for the healthz check."""
+
+    def __init__(self, status: int, body: str) -> None:
+        self.status = status
+        self._body = body.encode("utf-8")
+
+    def read(self) -> bytes:
+        return self._body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+
+class _FakeOpener:
+    def __init__(self, response) -> None:
+        self._response = response
+
+    def open(self, url, timeout=None):
+        if isinstance(self._response, Exception):
+            raise self._response
+        return self._response
+
+
+def test_a_reusable_port_must_be_our_server_on_the_expected_graph(monkeypatch):
+    """A 2xx on /healthz only proves SOMETHING answered.
+
+    The endpoint reports which graph it is connected to precisely so callers can
+    tell "a server" from "the right server". Accepting the status code alone let
+    another project's server on the same convention, or ours pointed at the wrong
+    database, count as a reusable instance. The earlier test stubbed this whole
+    function out, so the real parsing was never exercised.
+    """
+
+    def use(body: str, status: int = 200):
+        monkeypatch.setattr(preflight, "_DIRECT", _FakeOpener(_FakeResponse(status, body)))
+
+    use('{"status":"ok","neo4j_uri":"bolt://localhost:7687","neo4j_connected":true}')
+    assert preflight._serves_this_project(8000) is True
+
+    # Ours, but pointed at the workbench graph -- not the dev graph a reusing
+    # target expects.
+    use('{"status":"ok","neo4j_uri":"bolt://localhost:7689","neo4j_connected":true}')
+    assert preflight._serves_this_project(8000) is False, "the wrong graph was accepted"
+
+    # Answers 200 on the path, but is not us.
+    use('{"hello":"i am a different service"}')
+    assert preflight._serves_this_project(8000) is False, "a foreign 2xx was accepted as ours"
+
+    use('{"neo4j_uri":"bolt://localhost:7687","neo4j_connected":false}')
+    assert preflight._serves_this_project(8000) is False, "a disconnected server was accepted"
+
+    use("not json at all")
+    assert preflight._serves_this_project(8000) is False
+
+    monkeypatch.setattr(preflight, "_DIRECT", _FakeOpener(OSError("refused")))
+    assert preflight._serves_this_project(8000) is False
+
+
+def _scratch_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.bind(("127.0.0.1", 0))
+        return probe.getsockname()[1]
+
+
+class _OnlyStatus(http.server.BaseHTTPRequestHandler):
+    """The dashboard's shape: one route, and it is not healthz."""
+
+    def do_GET(self):
+        self.send_response(200 if self.path == "/api/status" else 404)
+        self.end_headers()
+
+    def log_message(self, *args):
+        pass
+
+
+class _SlowHealthz(http.server.BaseHTTPRequestHandler):
+    """A healthy API whose healthz does a graph round-trip on a loaded machine."""
+
+    def do_GET(self):
+        time.sleep(3)
+        self.send_response(200)
+        self.end_headers()
+
+    def log_message(self, *args):
+        pass
+
+
+def _serving(handler):
+    port = _scratch_port()
+    server = http.server.HTTPServer(("127.0.0.1", port), handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    return port, server
+
+
+def test_liveness_does_not_depend_on_one_route_answering_fast():
+    """Drives REAL listeners. The previous version stubbed `_responding` to a
+    constant, so it proved the branch and never the predicate -- and the
+    predicate was the thing that was wrong.
+
+    Two live servers were being read as dead and killed: `make dashboard`
+    (src/server.py serves only /api/status, it has no healthz at all), and a
+    healthy API whose healthz answers in 3s under load.
+    """
+    for label, handler in (("no healthz route", _OnlyStatus), ("slow healthz", _SlowHealthz)):
+        port, server = _serving(handler)
+        try:
+            assert preflight._responding(port) is True, (
+                f"a live server ({label}) was read as dead, which permits killing it"
+            )
+        finally:
+            server.shutdown()
+
+    assert preflight._responding(_scratch_port()) is False, (
+        "a port with nothing on it must read as stale, or nothing is ever cleaned up"
+    )
+
+
+def test_a_live_server_of_this_checkout_is_not_stopped(monkeypatch):
+    """Ownership is not disuse.
+
+    The kill filter proves a server belongs to this checkout. It cannot prove
+    nobody is using it -- a live server on :8001 is a sibling session's browser
+    suite mid-run, and this repo's incident history is exactly that: a resource
+    destroyed by a session that merely had the right to.
+    """
+    port, server = _serving(_OnlyStatus)
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app --port {port}"
+    monkeypatch.setattr(preflight, "_port_listeners", lambda p: [preflight.PortHolder(555, ours)])
+    killed: list = []
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            killed.append(argv)
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    try:
+        result = preflight._repair_port(port)()
+    finally:
+        server.shutdown()
+
+    assert result.ok is False
+    assert not any("kill" in str(a) for a in killed), (
+        "a live server was stopped -- that is a sibling session's suite, not a stale process"
+    )
+    assert "LIVE server" in result.detail
+
+
+def test_a_port_whose_process_has_gone_is_still_cleaned_up(monkeypatch):
+    """The conservative rule must not make the repair inert."""
+    port = _scratch_port()  # nothing listening
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    monkeypatch.setattr(preflight, "_port_listeners", lambda p: [preflight.PortHolder(555, ours)])
+    killed: list = []
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            killed.append(argv)
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: True)
+    monkeypatch.setattr(
+        preflight, "_probe_port", lambda *a, **k: lambda: preflight.Probe(True, "free")
+    )
+    preflight._repair_port(port)()
+    assert any("kill" in str(a) for a in killed), (
+        "a genuinely dead listener was left in place, so nothing is ever cleaned up"
+    )
+
+
+def test_a_failed_question_is_never_read_as_a_dead_server(monkeypatch):
+    """The checker's own failure is not evidence about the server.
+
+    Only an active refusal -- the kernel saying nothing is bound -- may count as
+    dead. A timeout, a dropped SYN, or a local resource failure is the question
+    failing, and this is the KILL path, so ambiguity must spare.
+
+    THE ERRORS HERE ARE INJECTED, not provoked: `socket.create_connection` is
+    replaced with a stub that raises. No socket is opened and no listener is
+    bound. That is deliberate -- genuinely exhausting file descriptors takes
+    ~245,000 open files, and this suite shares a machine with sibling sessions,
+    so provoking it in-process would be reckless.
+
+    It was measured out of band instead, against a real listening socket with
+    file descriptors really exhausted (245,754 opens, errno 24): the old
+    `except OSError -> False` reported the LIVE port dead and would have sent it
+    SIGKILL, while this rule reports it alive. This test pins that rule; it does
+    not reproduce the measurement.
+    """
+    for error in (
+        OSError(24, "Too many open files"),
+        TimeoutError(),
+        OSError(65, "No route to host"),
+        PermissionError(1, "Operation not permitted"),
+    ):
+
+        def refuse_to_answer(*args, _error=error, **kwargs):
+            raise _error
+
+        monkeypatch.setattr(preflight.socket, "create_connection", refuse_to_answer)
+        assert preflight._responding(9999) is True, (
+            f"{type(error).__name__} was read as 'nothing is there', which permits a kill"
+        )
+
+
+def test_only_an_actual_refusal_counts_as_a_dead_port(monkeypatch):
+    """...and the conservative rule must still let a dead port be cleaned up."""
+
+    def refused(*args, **kwargs):
+        raise ConnectionRefusedError(61, "Connection refused")
+
+    monkeypatch.setattr(preflight.socket, "create_connection", refused)
+    monkeypatch.setattr(preflight.time, "sleep", lambda _: None)
+    assert preflight._responding(9999) is False
+
+    # One refusal among answers that did not refuse is still not proof of death.
+    calls = {"n": 0}
+
+    def mixed(*args, **kwargs):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise ConnectionRefusedError(61, "Connection refused")
+        raise TimeoutError()
+
+    monkeypatch.setattr(preflight.socket, "create_connection", mixed)
+    assert preflight._responding(9999) is True
+
+
+def test_an_unanswerable_release_check_does_not_escalate_to_sigkill(monkeypatch):
+    """`UNKNOWN != []` also fails the release wait.
+
+    Letting a failed question drive a SIGKILL is the same mistake as reading it
+    as "the port is free", pointed at the more destructive outcome.
+    """
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    # First call (identity) sees the holder; the release check cannot be answered.
+    state = {"n": 0}
+
+    def listeners(port):
+        state["n"] += 1
+        if state["n"] == 1:
+            return [preflight.PortHolder(555, ours)]
+        return preflight.UNKNOWN
+
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", lambda port, **k: False)
+    signals: list = []
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            signals.append(list(argv))
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
+
+    result = preflight._repair_port(8001)()
+    assert result.ok is False
+    assert not any("-9" in str(s) for s in signals), (
+        "an unanswerable release check escalated to SIGKILL"
+    )
+    assert "refusing to escalate" in result.detail
+
+
+def test_a_port_that_frees_itself_is_never_force_killed(monkeypatch):
+    """SIGKILL requires a FRESH look that still shows the port held.
+
+    The release wait can time out at the exact moment the server exits. Escalating
+    on "not UNKNOWN" then treated an observed-FREE port as permission, and signalled
+    the ORIGINAL snapshot -- PIDs that had already exited, which the OS may have
+    reissued to something else. A SIGKILL to an innocent process, silent and
+    untraceable to this code.
+    """
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    looks = {"n": 0}
+
+    def listeners(port):
+        looks["n"] += 1
+        # 1: identity. 2: the release wait, still held (so the wait fails).
+        # 3: the fresh look -- it went free in the meantime.
+        return [preflight.PortHolder(555, ours)] if looks["n"] <= 2 else []
+
+    signals: list = []
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", lambda port, **k: False)
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            signals.append(list(argv))
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
+    monkeypatch.setattr(
+        preflight, "_probe_port", lambda *a, **k: lambda: preflight.Probe(True, "free")
+    )
+
+    preflight._repair_port(8001)()
+    assert not any("-9" in str(s) for s in signals), (
+        "a port observed FREE was force-killed anyway, using a stale PID snapshot"
+    )
+
+
+def test_force_kill_targets_only_the_processes_still_holding_the_port(monkeypatch):
+    """And when it does escalate, it signals the fresh list, not the snapshot."""
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    original = [preflight.PortHolder(101, ours), preflight.PortHolder(102, ours)]
+    survivor = [preflight.PortHolder(102, ours)]
+    looks = {"n": 0}
+
+    def listeners(port):
+        looks["n"] += 1
+        if looks["n"] <= 2:
+            return original  # identity, then the failed release wait
+        if looks["n"] == 3:
+            return survivor  # the fresh look: only 102 is left
+        return []
+
+    signals: list = []
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", lambda port, **k: False)
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            signals.append(list(argv))
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
+    monkeypatch.setattr(
+        preflight, "_probe_port", lambda *a, **k: lambda: preflight.Probe(True, "free")
+    )
+
+    preflight._repair_port(8001)()
+    forced = [s[-1] for s in signals if "-9" in s]
+    assert forced == ["102"], (
+        f"SIGKILL went to {forced}; PID 101 had already exited and its number may "
+        "have been reissued to an unrelated process"
+    )
+
+
+def test_a_process_that_took_the_port_during_the_wait_is_never_force_killed(monkeypatch):
+    """The two gates must run again on the CURRENT holders, not the first look.
+
+    Ownership and liveness were checked on the opening snapshot only. Between
+    SIGTERM and the escalation there is a 20-second window, and binding a
+    just-freed port is ordinary. Measured: a sibling worktree's live server took
+    :8000 mid-wait and was SIGKILLed -- a process this code's own rule calls a
+    stranger, that it never asked whether anything was using.
+    """
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    stranger = f"{preflight.ROOT}-wt1/.venv/bin/python -m uvicorn src.api.app:app"
+    looks = {"n": 0}
+
+    def listeners(port):
+        looks["n"] += 1
+        if looks["n"] <= 2:  # identity, then the release wait
+            return [preflight.PortHolder(100, ours)]
+        return [preflight.PortHolder(999, stranger)]  # someone else took it
+
+    signals: list = []
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", lambda port, **k: False)
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            signals.append(list(argv))
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
+
+    result = preflight._repair_port(8000)()
+    assert result.ok is False
+    assert not any("-9" in str(s) for s in signals), (
+        "a stranger that took the port during the wait was force-killed"
+    )
+    assert "999" in result.detail, "the new holder was not named"
+
+
+def test_a_live_server_that_took_the_port_during_the_wait_is_never_force_killed(monkeypatch):
+    """Same window, the liveness gate: ours, but now in use by another session."""
+    ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
+    looks = {"n": 0}
+
+    def listeners(port):
+        looks["n"] += 1
+        return [preflight.PortHolder(100 if looks["n"] <= 2 else 777, ours)]
+
+    alive = {"n": 0}
+
+    def responding(port, **kwargs):
+        alive["n"] += 1
+        return alive["n"] > 1  # dead at the opening look, alive by the escalation
+
+    signals: list = []
+    monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", responding)
+    monkeypatch.setattr(
+        preflight,
+        "_run",
+        lambda argv, **k: (
+            signals.append(list(argv))
+            or subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
+        ),
+    )
+    monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
+
+    result = preflight._repair_port(8001)()
+    assert result.ok is False
+    assert not any("-9" in str(s) for s in signals), (
+        "a live server that took the port during the wait was force-killed"
+    )

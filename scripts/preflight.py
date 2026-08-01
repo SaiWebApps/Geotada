@@ -28,10 +28,12 @@ exit codes.  Never match text out of another tool's human-readable output.
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
 import os
 import shlex
 import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -58,6 +60,10 @@ PLAYWRIGHT_CACHE = Path.home() / "Library" / "Caches" / "ms-playwright"
 MIN_COLIMA_MEMORY_BYTES = 8 * 1024**3
 COLIMA_MEMORY_GIB = 8
 COLIMA_CPUS = 4
+
+# Ports this project's own servers bind: the API/workbench, the workbench test
+# shard's managed server, the dashboard, and the Flutter web dev server.
+SERVER_PORTS = (3000, 8000, 8001, 8080)
 
 DAEMON_WAIT_SECONDS = 180
 DATABASE_WAIT_SECONDS = 180
@@ -144,10 +150,31 @@ def _run(
         return subprocess.CompletedProcess(list(argv), returncode=127, stdout="", stderr=str(exc))
 
 
-def _stream(argv: Sequence[str], *, cwd: Path | None = None) -> int:
-    """Run a command with its output visible; a repair is never silent."""
+def _stream(
+    argv: Sequence[str],
+    *,
+    cwd: Path | None = None,
+    timeout: int = 1800,
+    env: dict | None = None,
+) -> int:
+    """Run a command with its output visible; a repair is never silent.
+
+    Always bounded. A repair with no timeout is a build that hangs forever with
+    one line printed and no way to tell progress from a stall -- `render login`
+    waiting on a browser approval nobody is there to give, or a curl against a
+    network that blackholes rather than refuses.
+    """
     try:
-        return subprocess.run(list(argv), check=False, cwd=str(cwd) if cwd else None).returncode
+        return subprocess.run(
+            list(argv),
+            check=False,
+            cwd=str(cwd) if cwd else None,
+            timeout=timeout,
+            env=env,
+        ).returncode
+    except subprocess.TimeoutExpired:
+        print(f"    timed out after {timeout}s: {' '.join(argv[:3])}", file=sys.stderr)
+        return 124
     except OSError as exc:
         print(f"    {exc}", file=sys.stderr)
         return 127
@@ -191,9 +218,15 @@ def _read_profile(name: str) -> dict:
     return values
 
 
+# Every probe here targets localhost. urllib would still send it to a configured
+# HTTP proxy and resolve the PROXY's hostname, so on a proxied machine a healthy
+# local service reports dead. An explicit empty ProxyHandler opts out.
+_DIRECT = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+
 def _http_ok(url: str, timeout: int = 3) -> bool:
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as response:  # localhost only
+        with _DIRECT.open(url, timeout=timeout) as response:  # localhost, never proxied
             return 200 <= response.status < 300
     except (urllib.error.URLError, OSError, ValueError):
         return False
@@ -324,7 +357,12 @@ def _probe_docker_cli() -> Probe:
 
 def _repair_docker_cli() -> Probe:
     if not _brew():
-        return Probe(False, "Homebrew is not installed, so this cannot be installed for you")
+        return Probe(
+            False,
+            "Homebrew is not installed, so this cannot be installed for you -- "
+            'install it first: /bin/bash -c "$(curl -fsSL '
+            'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        )
     print("    -> brew install colima docker docker-compose")
     _stream(["brew", "install", "colima", "docker", "docker-compose"])
     return _after_install("docker", _probe_docker_cli)
@@ -378,11 +416,16 @@ def _repair_docker_daemon() -> Probe:
         # to find a number this file already knows.
         print(f"    -> colima start --cpu {COLIMA_CPUS} --memory {COLIMA_MEMORY_GIB}")
         print("       (no Colima VM existed; creating one sized for this project)")
-        _stream([
-            "colima", "start",
-            "--cpu", str(COLIMA_CPUS),
-            "--memory", str(COLIMA_MEMORY_GIB),
-        ])
+        _stream(
+            [
+                "colima",
+                "start",
+                "--cpu",
+                str(COLIMA_CPUS),
+                "--memory",
+                str(COLIMA_MEMORY_GIB),
+            ]
+        )
     elif sys.platform == "darwin" and Path("/Applications/Docker.app").exists():
         print("    -> open -a Docker")
         _stream(["open", "-a", "Docker"])
@@ -448,8 +491,15 @@ def _cypher_answers(spec: DatabaseSpec) -> bool:
         return False
     result = _run(
         _compose(
-            "exec", "-T", spec.service,
-            "cypher-shell", "-u", "neo4j", "-p", password, "RETURN 1",
+            "exec",
+            "-T",
+            spec.service,
+            "cypher-shell",
+            "-u",
+            "neo4j",
+            "-p",
+            password,
+            "RETURN 1",
         ),
         timeout=30,
     )
@@ -503,14 +553,32 @@ def _repair_database(spec: DatabaseSpec) -> Callable[[], Probe]:
 
 def _local_profile_env() -> dict:
     env = dict(os.environ)
+    # A leaked ONBOARD_DATA_ROOT from an earlier hermetic run redirects the parity
+    # check at an empty tree, where it compares nothing and reports OK.
+    for leaked in ("ONBOARD_DATA_ROOT", "ONBOARD_REGISTRY_PATH"):
+        env.pop(leaked, None)
     env.update(_read_profile("local"))
     return env
+
+
+def _committed_cities() -> list:
+    """City directories the parity check is supposed to compare."""
+    data = ROOT / "data"
+    if not data.is_dir():
+        return []
+    return sorted(d.name for d in data.iterdir() if d.is_dir() and (d / "poi-raw.json").is_file())
 
 
 def _probe_dev_data() -> Probe:
     python = _venv_python()
     if not python.is_file():
         return Probe(False, "no .venv")
+    # The parity check loops over cities and reports OK when the loop is empty,
+    # so a zero-city run "passes" having compared nothing. Establish there is
+    # something to compare before believing the result.
+    cities = _committed_cities()
+    if not cities:
+        return Probe(False, "no committed city data found under data/ -- nothing to compare")
     result = _run(
         [str(python), "-m", "scripts.db_parity"],
         timeout=300,
@@ -519,12 +587,17 @@ def _probe_dev_data() -> Probe:
     )
     if result.returncode != 0:
         return Probe(False, "dev graph does not match the committed city data")
-    return Probe(True, "dev graph matches the committed city data")
+    return Probe(True, f"dev graph matches {len(cities)} committed cities")
 
 
 def _repair_dev_data() -> Probe:
     print("    -> scripts/ensure_dev_data.py   (WRITES to the shared dev graph on 7687)")
-    if _stream([str(_venv_python()), "scripts/ensure_dev_data.py"], cwd=ROOT):
+    # The same environment the probe uses. Without it the script refuses outright.
+    if _stream(
+        [str(_venv_python()), "scripts/ensure_dev_data.py"],
+        cwd=ROOT,
+        env=_local_profile_env(),
+    ):
         return Probe(False, "provisioning failed -- see the output above")
     return _probe_dev_data()
 
@@ -540,8 +613,13 @@ def _probe_valhalla_tiles() -> Probe:
     tiles = _tile_directory()
     if (tiles / "valhalla_tiles.tar").is_file():
         return Probe(True, "valhalla_tiles.tar present")
-    if (tiles / "valhalla_tiles").is_dir() and any((tiles / "valhalla_tiles").iterdir()):
-        return Probe(True, "valhalla_tiles/ populated")
+    built = tiles / "valhalla_tiles"
+    if built.is_dir():
+        # Count real tiles, not "any file": a .DS_Store dropped in by Finder is
+        # enough to make an empty directory look populated.
+        real = [entry for entry in built.iterdir() if not entry.name.startswith(".")]
+        if real:
+            return Probe(True, f"valhalla_tiles/ has {len(real)} entries")
     extracts = sorted(tiles.glob("*.osm.pbf")) if tiles.is_dir() else []
     if extracts:
         return Probe(True, f"{len(extracts)} OSM extract(s); tiles build on first start")
@@ -576,7 +654,10 @@ def _repair_valhalla_tiles() -> Probe:
             continue
         partial = tiles / (filename + ".partial")
         print(f"    -> downloading {filename}")
-        if _stream(["curl", "-L", "--fail", "-o", str(partial), url]):
+        if _stream(
+            ["curl", "-L", "--fail", "--connect-timeout", "20", "-o", str(partial), url],
+            timeout=3600,
+        ):
             partial.unlink(missing_ok=True)
             return Probe(False, f"could not download {filename}")
         partial.replace(target)
@@ -594,10 +675,15 @@ def _repair_valhalla() -> Probe:
     print("    -> docker compose up -d valhalla")
     started = _stream(
         [
-            "docker", "compose",
-            "-f", str(root / "docker-compose.yml"),
-            "--project-directory", str(root),
-            "up", "-d", "valhalla",
+            "docker",
+            "compose",
+            "-f",
+            str(root / "docker-compose.yml"),
+            "--project-directory",
+            str(root),
+            "up",
+            "-d",
+            "valhalla",
         ],
         cwd=root,
     )
@@ -605,10 +691,21 @@ def _repair_valhalla() -> Probe:
         return Probe(False, "compose could not start valhalla")
     print("    waiting for the routing endpoint (a first start builds tiles)...")
     if not _wait_for(lambda: _http_ok(VALHALLA_STATUS_URL), VALHALLA_WAIT_SECONDS):
+        # Still building is not the same as dead, and saying "failed" for the
+        # former sends the developer to read container logs that show healthy
+        # progress. The announcement says this takes over an hour; the wait
+        # cannot, so distinguish the two states instead of guessing.
+        if _container_running("ondoway-valhalla"):
+            return Probe(
+                False,
+                "still building map tiles after "
+                f"{VALHALLA_WAIT_SECONDS // 60} min. This takes over an hour on a "
+                "first run and is proceeding normally -- leave it running and "
+                "repeat this command later (watch: make valhalla-status)",
+            )
         return Probe(
             False,
-            f"no healthy endpoint within {VALHALLA_WAIT_SECONDS}s -- "
-            "check: docker compose logs valhalla",
+            "the routing container is not running -- check: docker compose logs valhalla",
         )
     return _probe_valhalla()
 
@@ -625,7 +722,7 @@ def _probe_render_key() -> Probe:
     mechanism exists to remove.
     """
     if sys.platform == "darwin":
-        account = os.environ.get("USER") or ""
+        account = os.environ.get("USER") or getpass.getuser()
         result = _run(
             ["security", "find-generic-password", "-a", account, "-s", KEYCHAIN_SERVICE],
             timeout=30,
@@ -677,7 +774,12 @@ def _probe_render_cli() -> Probe:
 
 def _repair_render_cli() -> Probe:
     if not _brew():
-        return Probe(False, "Homebrew is not installed, so this cannot be installed for you")
+        return Probe(
+            False,
+            "Homebrew is not installed, so this cannot be installed for you -- "
+            'install it first: /bin/bash -c "$(curl -fsSL '
+            'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        )
     print("    -> brew install render")
     _stream(["brew", "install", "render"])
     return _after_install("render", _probe_render_cli)
@@ -687,7 +789,7 @@ def _probe_render_cli_auth() -> Probe:
     config = Path.home() / ".render" / "cli.yaml"
     if not config.is_file() or config.stat().st_size == 0:
         return Probe(False, "the Render CLI has not been signed in")
-    return Probe(True, "signed in (config present)")
+    return Probe(True, "CLI config present (session validity not checked)")
 
 
 def _repair_render_cli_auth() -> Probe:
@@ -702,6 +804,253 @@ def _repair_render_cli_auth() -> Probe:
     return _probe_render_cli_auth()
 
 
+# ── ports ────────────────────────────────────────────────────────────────────
+# A server target cannot start if something else already holds its port, and the
+# failure ("address already in use") says nothing about what to do. So the port
+# is a declared requirement like any other.
+#
+# "Satisfied" means free OR already serving THIS project -- `make workbench`
+# deliberately reuses a healthy API on :8000 rather than restarting it, so a
+# blanket "must be free" would break the reuse it was designed around.
+#
+# The repair frees only a listener it can identify as this project's own server.
+# A foreign process is named and left alone: killing an unidentified process to
+# claim a port is not self-sufficiency, it is collateral damage. Measured
+# precedent in this repo: a broader match once killed the user's desktop app,
+# which merely held client sockets to the same port.
+
+SERVER_MARKERS = ("uvicorn", "src.api.app", "src.server")
+
+
+def _is_our_server(command: str) -> bool:
+    """Is this command line one of THIS checkout's servers?
+
+    The generic marker is necessary but nowhere near sufficient: `uvicorn` and
+    `src.server` are conventions shared across the Python ecosystem, so another
+    project's dev server on the same port matched and was killed as "our stale
+    one". The command must also name this checkout.
+    """
+    if not any(marker in command for marker in SERVER_MARKERS):
+        return False
+    # Full path with a trailing separator. A bare directory-name match makes
+    # "ondoway" a substring of "ondoway-wt1", so the main checkout would identify
+    # a sibling worktree's server as its own and kill it.
+    return f"{ROOT}/" in command
+
+
+class PortHolder(NamedTuple):
+    pid: int
+    command: str
+
+
+UNKNOWN = "unknown"  # the query could not be answered -- never "nothing there"
+
+
+def _port_listeners(port: int) -> list | str:
+    """Every process LISTENing on this port.
+
+    Three answers, not two: a list of holders (possibly empty, meaning the port
+    is free) and UNKNOWN for "lsof could not be asked". lsof exits 1 legitimately
+    when the port is free and _run reports 127 when the command timed out or is
+    missing -- collapsing those certified a port FREE that something was holding,
+    and the server then failed to bind.
+
+    Every PID, not the first: `lsof -t` prints one per line, and a reloading
+    uvicorn (which is what `make api` runs) listens from parent AND child. Taking
+    only the first signalled half the server, then blamed the PID that had
+    already exited.
+    """
+    for attempt in range(3):
+        result = _run(["lsof", "-tiTCP:" + str(port), "-sTCP:LISTEN"], timeout=30)
+        if result.returncode == 0:
+            pids = sorted({int(tok) for tok in result.stdout.split() if tok.isdigit()})
+            return [
+                PortHolder(
+                    pid, _run(["ps", "-p", str(pid), "-o", "command="], timeout=30).stdout.strip()
+                )
+                for pid in pids
+            ]
+        if result.returncode == 1:  # lsof's documented "no match"
+            return []
+        if attempt < 2:
+            time.sleep(1.0)
+    return UNKNOWN
+
+
+DEV_GRAPH_PORT = 7687
+
+
+def _responding(port: int, *, attempts: int = 3) -> bool:
+    """Is ANYTHING alive on this port?  Liveness, never identity.
+
+    Dead means one thing only: every attempt was actively REFUSED. Connection
+    refused is the kernel saying nothing is bound. Any other outcome -- a
+    timeout, a dropped SYN, the checker running out of file descriptors -- is
+    the question failing, not an answer, and it must never be read as "nothing
+    is there". Measured: with fds exhausted against a live, accepting server,
+    a bare `except OSError -> False` classified it stale and sent it SIGKILL.
+
+    Asking one FastAPI route was not liveness either: `make dashboard`
+    (src/server.py) serves only /api/status and has no healthz, and a healthy
+    API whose healthz does a graph round-trip answers in ~3s under load. Both
+    read as dead and were killed.
+
+    This mirrors `_port_listeners`, which retries and returns UNKNOWN rather
+    than guess -- for the same reason, biased the same way. The dangerous
+    direction must never have less rigour than the safe one.
+
+    ASSUMES every server here binds 127.0.0.1: a ``::1``-only listener is seen
+    by lsof but refuses on IPv4, so it would read as dead. True at all three
+    call sites today (Makefile's uvicorn `--host 127.0.0.1`, src/server.py), and
+    nothing enforces it -- so if a server ever binds v6-only, fix this first.
+    """
+    refusals = 0
+    for attempt in range(attempts):
+        try:
+            with socket.create_connection(("127.0.0.1", port), timeout=3):
+                return True
+        except ConnectionRefusedError:
+            refusals += 1
+        except OSError:
+            return True  # the question failed; that is not evidence of absence
+        if attempt + 1 < attempts:
+            time.sleep(0.5)
+    return refusals < attempts
+
+
+def _serves_this_project(port: int, *, graph_port: int = DEV_GRAPH_PORT) -> bool:
+    """Is the server on this port OURS, on the graph we expect?
+
+    A 2xx on /healthz only proves something answered. The body names the graph,
+    which is the whole reason the endpoint reports it -- without checking it,
+    another project's server on the same convention, or ours pointed at the
+    wrong database, passed as a reusable instance.
+    """
+    try:
+        with _DIRECT.open(f"http://localhost:{port}/api/v1/healthz", timeout=2) as response:
+            if not 200 <= response.status < 300:
+                return False
+            body = json.loads(response.read().decode("utf-8"))
+    except (urllib.error.URLError, OSError, ValueError, json.JSONDecodeError):
+        return False
+    if not isinstance(body, dict) or not body.get("neo4j_connected"):
+        return False
+    return f":{graph_port}" in str(body.get("neo4j_uri", ""))
+
+
+def _probe_port(port: int, *, reuse_ok: bool = False) -> Callable[[], Probe]:
+    """`reuse_ok` is opt-in, and only `workbench` opts in.
+
+    An occupied port that answers our health check is fine for the workbench,
+    which deliberately reuses a running API. Every other server target BINDS the
+    port, so treating "something of ours is already there" as satisfied certified
+    a port that cannot be bound -- and the failure then surfaced late, which is
+    exactly what declaring the port up front was meant to prevent.
+    """
+
+    def probe() -> Probe:
+        holders = _port_listeners(port)
+        if holders == UNKNOWN:
+            return Probe(False, f"could not determine what is using port {port}")
+        if not holders:
+            return Probe(True, f"port {port} is free")
+        if reuse_ok and _serves_this_project(port):
+            return Probe(True, f"port {port} already serving this project")
+        first = holders[0]
+        summary = first.command.split()[0] if first.command else "unknown"
+        extra = f" and {len(holders) - 1} more" if len(holders) > 1 else ""
+        return Probe(False, f"port {port} held by PID {first.pid} ({summary}){extra}")
+
+    return probe
+
+
+def _repair_port(port: int, *, reuse_ok: bool = False) -> Callable[[], Probe]:
+    def repair() -> Probe:
+        holders = _port_listeners(port)
+        if holders == UNKNOWN:
+            return Probe(False, f"could not determine what is using port {port}")
+        if not holders:
+            return _probe_port(port, reuse_ok=reuse_ok)()
+        strangers = [h for h in holders if not _is_our_server(h.command)]
+        if strangers:
+            held = strangers[0]
+            return Probe(
+                False,
+                f"port {port} is held by PID {held.pid}, which is not one of this "
+                f"checkout's servers -- stop it yourself: {held.command[:60]}",
+            )
+        # Ours is not the same as idle. A server that still answers is a server
+        # somebody is using -- a sibling session's `make test-workbench` on :8001,
+        # or a workbench the owner has open. Killing it because the command line
+        # matches is the incident family CLAUDE.md records (a live container
+        # destroyed by a checkout that merely had the right to). Only a server
+        # that has stopped answering is stale enough to stop.
+        if _responding(port):
+            return Probe(
+                False,
+                f"port {port} is held by a LIVE server of this checkout (PID "
+                f"{holders[0].pid}). It is accepting connections, so another "
+                "session is probably using it -- stop it yourself if it is yours: "
+                f"kill {holders[0].pid}",
+            )
+        for holder in holders:
+            print(f"    -> stopping this checkout's stale server on :{port} (PID {holder.pid})")
+            _run(["kill", str(holder.pid)], timeout=30)
+        if not _wait_for(lambda: _port_listeners(port) == [], 20, interval=1.0):
+            # Escalation needs a FRESH look, taken once and used for everything
+            # below. Three distinct answers, and only one of them is permission:
+            #   UNKNOWN -> the question failed; refuse, as everywhere else here.
+            #   []      -> it went free during the wait; there is nothing to kill.
+            #   holders -> still held; SIGKILL exactly the PIDs still listed.
+            # Signalling the ORIGINAL snapshot instead re-signals processes that
+            # have already exited, and the OS may have reissued those PIDs to
+            # something else by then -- a SIGKILL to an innocent process, silent
+            # and untraceable to this code.
+            remaining = _port_listeners(port)
+            if remaining == UNKNOWN:
+                return Probe(
+                    False,
+                    f"could not confirm port {port} was released -- refusing to "
+                    "escalate on an unanswered query",
+                )
+            if remaining:
+                # BOTH gates again, on the CURRENT holders. They ran on the first
+                # snapshot only, so whatever took the port during the 20s wait was
+                # force-killed unexamined -- and binding a just-freed port is
+                # ordinary, not rare. Measured: a sibling worktree's live server
+                # bound :8000 mid-wait and was SIGKILLed, though this code's own
+                # rule classifies it a stranger and never asked if it was alive.
+                strangers_now = [h for h in remaining if not _is_our_server(h.command)]
+                if strangers_now:
+                    held = strangers_now[0]
+                    return Probe(
+                        False,
+                        f"port {port} was taken during the wait by PID {held.pid}, "
+                        f"which is not this checkout's -- leaving it alone: "
+                        f"{held.command[:60]}",
+                    )
+                if _responding(port):
+                    return Probe(
+                        False,
+                        f"port {port} was taken during the wait by a LIVE server "
+                        f"(PID {remaining[0].pid}) -- leaving it alone",
+                    )
+                for holder in remaining:
+                    print(f"    -> forcing PID {holder.pid} off :{port}")
+                    _run(["kill", "-9", str(holder.pid)], timeout=30)
+                # SIGTERM gets 20s to take effect; SIGKILL got none, so a
+                # successful force-kill could report "still held" simply because
+                # the kernel had not torn the socket down yet -- a phantom failure.
+                _wait_for(lambda: _port_listeners(port) == [], 10, interval=0.5)
+                still = _port_listeners(port)
+                if still == UNKNOWN or still:
+                    pids = ", ".join(str(h.pid) for h in remaining)
+                    return Probe(False, f"port {port} still held after stopping PID(s) {pids}")
+        return _probe_port(port, reuse_ok=reuse_ok)()
+
+    return repair
+
+
 # ── mobile toolchain ─────────────────────────────────────────────────────────
 
 
@@ -713,7 +1062,12 @@ def _probe_flutter() -> Probe:
 
 def _repair_flutter() -> Probe:
     if not _brew():
-        return Probe(False, "Homebrew is not installed, so this cannot be installed for you")
+        return Probe(
+            False,
+            "Homebrew is not installed, so this cannot be installed for you -- "
+            'install it first: /bin/bash -c "$(curl -fsSL '
+            'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        )
     print("    -> brew install --cask flutter")
     _stream(["brew", "install", "--cask", "flutter"])
     return _after_install("flutter", _probe_flutter)
@@ -730,10 +1084,7 @@ def _repair_flutter_deps() -> Probe:
     env = dict(os.environ)
     env["NO_PROXY"] = "pub.dev,*.pub.dev"
     env["no_proxy"] = "pub.dev,*.pub.dev"
-    result = subprocess.run(
-        ["flutter", "pub", "get"], cwd=str(ROOT / "mobile"), env=env, check=False
-    )
-    if result.returncode:
+    if _stream(["flutter", "pub", "get"], cwd=ROOT / "mobile", env=env, timeout=900):
         return Probe(False, "flutter pub get failed")
     return _probe_flutter_deps()
 
@@ -803,143 +1154,195 @@ def _build_registry() -> dict:
     def add(requirement: Requirement) -> None:
         registry[requirement.name] = requirement
 
-    add(Requirement(
-        name="uv",
-        summary="Python toolchain",
-        probe=_probe_uv,
-        repair=_repair_uv,
-        instruction="install uv:  curl -LsSf https://astral.sh/uv/install.sh | sh",
-    ))
-    add(Requirement(
-        name="python-deps",
-        summary="Python packages",
-        probe=_probe_python_deps,
-        needs=("uv",),
-        repair=_repair_python_deps,
-        instruction="make sync",
-    ))
-    add(Requirement(
-        name="docker",
-        summary="Docker CLI",
-        probe=_probe_docker_cli,
-        repair=_repair_docker_cli,
-        announce="installing the Docker CLI and Colima through Homebrew",
-        instruction="install Docker Desktop, or:  brew install colima docker docker-compose",
-    ))
-    add(Requirement(
-        name="docker-daemon",
-        summary="Docker daemon",
-        probe=_probe_docker_daemon,
-        needs=("docker",),
-        repair=_repair_docker_daemon,
-        instruction=(
-            "start the container runtime.  Colima, sized for this project:  "
-            "colima start --cpu 4 --memory 8      -- or open Docker Desktop"
-        ),
-    ))
+    add(
+        Requirement(
+            name="uv",
+            summary="Python toolchain",
+            probe=_probe_uv,
+            repair=_repair_uv,
+            instruction="install uv:  curl -LsSf https://astral.sh/uv/install.sh | sh",
+        )
+    )
+    add(
+        Requirement(
+            name="python-deps",
+            summary="Python packages",
+            probe=_probe_python_deps,
+            needs=("uv",),
+            repair=_repair_python_deps,
+            instruction="make sync   (on a network that blocks public PyPI: make sync-apple)",
+        )
+    )
+    add(
+        Requirement(
+            name="docker",
+            summary="Docker CLI",
+            probe=_probe_docker_cli,
+            repair=_repair_docker_cli,
+            announce="installing the Docker CLI and Colima through Homebrew",
+            instruction="install Docker Desktop, or:  brew install colima docker docker-compose",
+        )
+    )
+    add(
+        Requirement(
+            name="docker-daemon",
+            summary="Docker daemon",
+            probe=_probe_docker_daemon,
+            needs=("docker",),
+            repair=_repair_docker_daemon,
+            instruction=(
+                "start the container runtime.  Colima, sized for this project:  "
+                "colima start --cpu 4 --memory 8      -- or open Docker Desktop"
+            ),
+        )
+    )
 
     for spec in DATABASES:
-        add(Requirement(
-            name=f"db-{spec.key}",
-            summary=f"Neo4j {spec.key} graph (:{spec.port})",
-            probe=_probe_database(spec),
-            needs=("docker-daemon",),
-            repair=_repair_database(spec),
-            instruction=f"make db-up DB={spec.key}",
-        ))
+        add(
+            Requirement(
+                name=f"db-{spec.key}",
+                summary=f"Neo4j {spec.key} graph (:{spec.port})",
+                probe=_probe_database(spec),
+                needs=("docker-daemon",),
+                repair=_repair_database(spec),
+                instruction=f"make db-up DB={spec.key}",
+            )
+        )
 
-    add(Requirement(
-        name="dev-data",
-        summary="committed city data",
-        probe=_probe_dev_data,
-        needs=("python-deps", "db-dev"),
-        repair=_repair_dev_data,
-        instruction="run scripts/ensure_dev_data.py under the local profile",
-    ))
-    add(Requirement(
-        name="valhalla-tiles",
-        summary="routing map data",
-        probe=_probe_valhalla_tiles,
-        repair=_repair_valhalla_tiles,
-        announce=(
-            "downloading the Ile-de-France and New York OSM extracts -- several hundred "
-            "MB. The first routing start then builds tiles from them, which can take well "
-            "over an hour. Set PREFLIGHT_AUTOFIX=0 to skip and do this later"
-        ),
-        instruction="make valhalla-build-tiles",
-    ))
-    add(Requirement(
-        name="valhalla",
-        summary="routing engine",
-        probe=_probe_valhalla,
-        needs=("docker-daemon", "valhalla-tiles"),
-        repair=_repair_valhalla,
-        instruction="make valhalla-up",
-    ))
-    add(Requirement(
-        name="render-key",
-        summary="Render credential",
-        probe=_probe_render_key,
-        repair=_repair_render_key,
-        interactive=True,
-        instruction=(
-            "make render-auth-setup        -- needs a Render API key whose account can read "
-            "the ondoway-api service.  Provider secrets (Anthropic, OpenAI, Resend) are "
-            "fetched from Render at run time and are never stored in this repo, so no .env "
-            "file can substitute for this.  Off macOS, or in CI: export RENDER_API_KEY"
-        ),
-    ))
-    add(Requirement(
-        name="render-cli",
-        summary="Render CLI",
-        probe=_probe_render_cli,
-        repair=_repair_render_cli,
-        instruction="brew install render        -- or see https://render.com/docs/cli",
-    ))
-    add(Requirement(
-        name="render-cli-auth",
-        summary="Render CLI sign-in",
-        probe=_probe_render_cli_auth,
-        needs=("render-cli",),
-        repair=_repair_render_cli_auth,
-        interactive=True,
-        instruction="render login        -- separate from the API key; approve it in the browser",
-    ))
-    add(Requirement(
-        name="flutter",
-        summary="Flutter SDK",
-        probe=_probe_flutter,
-        repair=_repair_flutter,
-        announce="installing the Flutter SDK through Homebrew -- this is a large download",
-        instruction="install the Flutter SDK:  https://docs.flutter.dev/get-started/install",
-    ))
-    add(Requirement(
-        name="flutter-deps",
-        summary="Flutter packages",
-        probe=_probe_flutter_deps,
-        needs=("flutter",),
-        repair=_repair_flutter_deps,
-        instruction="make flutter-pub-get",
-    ))
-    add(Requirement(
-        name="xcode",
-        summary="iOS toolchain",
-        probe=_probe_xcode,
-        repair=_repair_xcode,
-        # The repair triggers the command-line-tools installer, which opens a
-        # macOS dialog someone has to accept; Xcode proper is an App Store
-        # product tied to an Apple ID and cannot be installed from here at all.
-        interactive=True,
-        instruction="install Xcode and its command-line tools:  xcode-select --install",
-    ))
-    add(Requirement(
-        name="playwright-browser",
-        summary="Chromium for Playwright",
-        probe=_probe_playwright_browser,
-        needs=("python-deps",),
-        repair=_repair_playwright_browser,
-        instruction="uv run playwright install chromium",
-    ))
+    add(
+        Requirement(
+            name="dev-data",
+            summary="committed city data",
+            probe=_probe_dev_data,
+            needs=("python-deps", "db-dev"),
+            repair=_repair_dev_data,
+            instruction="run scripts/ensure_dev_data.py under the local profile",
+        )
+    )
+    add(
+        Requirement(
+            name="valhalla-tiles",
+            summary="routing map data",
+            probe=_probe_valhalla_tiles,
+            repair=_repair_valhalla_tiles,
+            announce=(
+                "downloading the Ile-de-France and New York OSM extracts -- several hundred "
+                "MB. The first routing start then builds tiles from them, which can take well "
+                "over an hour. Set PREFLIGHT_AUTOFIX=0 to skip and do this later"
+            ),
+            instruction="make valhalla-build-tiles",
+        )
+    )
+    add(
+        Requirement(
+            name="valhalla",
+            summary="routing engine",
+            probe=_probe_valhalla,
+            needs=("docker-daemon", "valhalla-tiles"),
+            repair=_repair_valhalla,
+            instruction="make valhalla-up",
+        )
+    )
+    add(
+        Requirement(
+            name="render-key",
+            summary="Render credential",
+            probe=_probe_render_key,
+            repair=_repair_render_key,
+            interactive=True,
+            instruction=(
+                "make render-auth-setup        -- needs a Render API key whose account can read "
+                "the ondoway-api service.  Provider secrets (Anthropic, OpenAI, Resend) are "
+                "fetched from Render at run time and are never stored in this repo, so no .env "
+                "file can substitute for this.  Off macOS, or in CI: export RENDER_API_KEY"
+            ),
+        )
+    )
+    add(
+        Requirement(
+            name="render-cli",
+            summary="Render CLI",
+            probe=_probe_render_cli,
+            repair=_repair_render_cli,
+            instruction="brew install render        -- or see https://render.com/docs/cli",
+        )
+    )
+    add(
+        Requirement(
+            name="render-cli-auth",
+            summary="Render CLI sign-in",
+            probe=_probe_render_cli_auth,
+            needs=("render-cli",),
+            repair=_repair_render_cli_auth,
+            interactive=True,
+            instruction=("render login   -- separate from the API key; approve it in the browser"),
+        )
+    )
+    add(
+        Requirement(
+            name="flutter",
+            summary="Flutter SDK",
+            probe=_probe_flutter,
+            repair=_repair_flutter,
+            announce="installing the Flutter SDK through Homebrew -- this is a large download",
+            instruction="install the Flutter SDK:  https://docs.flutter.dev/get-started/install",
+        )
+    )
+    add(
+        Requirement(
+            name="flutter-deps",
+            summary="Flutter packages",
+            probe=_probe_flutter_deps,
+            needs=("flutter",),
+            repair=_repair_flutter_deps,
+            instruction="make flutter-pub-get",
+        )
+    )
+    add(
+        Requirement(
+            name="xcode",
+            summary="iOS toolchain",
+            probe=_probe_xcode,
+            repair=_repair_xcode,
+            # The repair triggers the command-line-tools installer, which opens a
+            # macOS dialog someone has to accept; Xcode proper is an App Store
+            # product tied to an Apple ID and cannot be installed from here at all.
+            interactive=True,
+            instruction="install Xcode and its command-line tools:  xcode-select --install",
+        )
+    )
+    for port in SERVER_PORTS:
+        add(
+            Requirement(
+                name=f"port-{port}",
+                summary=f"TCP port {port}",
+                probe=_probe_port(port),
+                repair=_repair_port(port),
+                instruction=f"free port {port}:  lsof -tiTCP:{port} -sTCP:LISTEN | xargs kill",
+            )
+        )
+    # The workbench reuses a healthy API rather than restarting it, so for that
+    # one target an occupied-but-ours port is satisfied.
+    add(
+        Requirement(
+            name="port-8000-reusable",
+            summary="TCP port 8000 (reusable)",
+            probe=_probe_port(8000, reuse_ok=True),
+            repair=_repair_port(8000, reuse_ok=True),
+            instruction="free port 8000:  lsof -tiTCP:8000 -sTCP:LISTEN | xargs kill",
+        )
+    )
+
+    add(
+        Requirement(
+            name="playwright-browser",
+            summary="Chromium for Playwright",
+            probe=_probe_playwright_browser,
+            needs=("python-deps",),
+            repair=_repair_playwright_browser,
+            instruction="uv run playwright install chromium",
+        )
+    )
     return registry
 
 
@@ -984,23 +1387,39 @@ def _expand(text: str, variables: dict) -> str:
     return text
 
 
-def declared_requirements(target: str, *, makefile: Path | None = None) -> list | None:
-    """Every requirement name ``target``'s recipe passes to preflight.
+class Declaration(NamedTuple):
+    """What a target's recipe says about its prerequisites.
 
-    Returns None when the recipe never invokes preflight at all -- which is a
-    real answer ("this target declares nothing"), distinct from an empty list
-    ("this target declares --all").
+    ``names`` alone is not enough to trust a declaration. A call running in
+    report mode returns 0 whatever it finds, so the target proceeds regardless;
+    and a call nested in a shell conditional can be skipped entirely. Both are
+    one-token edits that silently disable the mechanism for that target, so both
+    are reported here and asserted against in tests/test_preflight.py.
     """
+
+    names: list
+    enforcing: bool  # blocks the recipe when a requirement is missing
+    unconditional: bool  # the call is the recipe's own line, not nested in a conditional
+
+
+REPORT_ONLY_FLAGS = ("--report", "--no-fix")
+
+
+def declare(target: str, *, makefile: Path | None = None) -> Declaration | None:
+    """Read a target's full declaration, or None if it never invokes preflight."""
     lines = _makefile_lines(makefile)
     variables = _prerequisite_sets(lines)
 
-    start = None
-    for number, line in enumerate(lines):
-        if line.startswith(target + ":"):
-            start = number + 1
-            break
-    if start is None:
+    # A target may appear more than once (prerequisite-only lines, or an
+    # accidental redefinition). Take the rule that carries the recipe, and refuse
+    # to guess when several do -- picking the first silently read the WRONG rule.
+    starts = [n for n, line in enumerate(lines) if line.startswith(target + ":")]
+    if not starts:
         raise KeyError(f"no target {target!r} in the Makefile")
+    with_recipe = [n for n in starts if n + 1 < len(lines) and lines[n + 1].startswith("\t")]
+    if len(with_recipe) > 1:
+        raise KeyError(f"target {target!r} is defined with a recipe more than once")
+    start = (with_recipe[0] if with_recipe else starts[-1]) + 1
 
     body = []
     for line in lines[start:]:
@@ -1027,8 +1446,27 @@ def declared_requirements(target: str, *, makefile: Path | None = None) -> list 
     if not any("$(PREFLIGHT)" in line for line in recipe):
         return None
 
+    enforcing = True
+    unconditional = False
     names: list = []
     for line in recipe:
+        if "$(PREFLIGHT)" not in line:
+            continue
+        stripped = line.strip()
+        # The call owns its recipe line: not wrapped in if/case/&&, and not
+        # prefixed with `-` (which tells Make to ignore a non-zero exit).
+        if stripped.startswith(("@$(PREFLIGHT)", "$(PREFLIGHT)")):
+            unconditional = True
+        if any(flag in line for flag in REPORT_ONLY_FLAGS):
+            enforcing = False
+        # A call whose failure is swallowed enforces nothing. Measured in real
+        # make: `$(PREFLIGHT) ... || true` let the recipe run with a requirement
+        # missing, and both flags stayed True.
+        after_call = line.split("$(PREFLIGHT)", 1)[1].split(";", 1)[0]
+        if any(swallow in after_call for swallow in ("|| true", "|| exit 0", "|| :")):
+            enforcing = False
+        if stripped.startswith("-@$(PREFLIGHT)") or stripped.startswith("-$(PREFLIGHT)"):
+            enforcing = False  # Make's `-` prefix ignores the exit status
         # EVERY occurrence, not just the first.  A `case` over TARGET=local|cloud
         # collapses to one logical line with a preflight call per branch, and
         # reading only the first silently drops the cloud branch's `render-key`.
@@ -1047,7 +1485,25 @@ def declared_requirements(target: str, *, makefile: Path | None = None) -> list 
                 if token.startswith("-"):
                     continue
                 names.append(token)
-    return names
+    return Declaration(names=names, enforcing=enforcing, unconditional=unconditional)
+
+
+def declared_requirements(target: str, *, makefile: Path | None = None) -> list | None:
+    """Just the requirement names, for callers that do not care how they are run."""
+    declaration = declare(target, makefile=makefile)
+    return None if declaration is None else declaration.names
+
+
+def _machine_wide(include_ports: bool = False) -> list:
+    """Everything --all should check: prerequisites of the machine, not of a run.
+
+    Port availability is a property of this moment and this target, not of the
+    installation. Including it made `make preflight` and `make doctor` report a
+    perfectly good machine as broken because something unrelated held :8080.
+    """
+    if include_ports:
+        return sorted(REGISTRY)
+    return sorted(name for name in REGISTRY if not name.startswith("port-"))
 
 
 def resolve(names: Iterable[str]) -> list:
@@ -1140,6 +1596,7 @@ def check(
     print(header)
 
     blocked: list = []
+    tried_and_failed: set = set()
     unsatisfied: set = set()
 
     for requirement in plan:
@@ -1156,12 +1613,17 @@ def check(
             print(f"  .. {requirement.name}: {result.detail} -- fixing")
             if requirement.announce:
                 print(f"     {requirement.announce}")
-            result = requirement.repair()
+            claimed = requirement.repair()
+            # The repair does not get to grade itself.
+            result = requirement.probe() if claimed.ok else claimed
+            if claimed.ok and not result.ok:
+                result = Probe(False, f"repair reported success but {result.detail}")
             if result.ok:
                 reporter.fixed(requirement.name, result.detail)
             else:
                 reporter.failed(requirement.name, result.detail)
                 blocked.append(requirement)
+                tried_and_failed.add(requirement.name)
                 unsatisfied.add(requirement.name)
         else:
             if requirement.repair is not None and not _repair_is_possible(requirement):
@@ -1180,7 +1642,17 @@ def check(
             print("Everything this project needs is present.")
         return 0
 
-    fixable = [r for r in blocked if r.repair is not None and not r.interactive]
+    # Only offer `make setup` for things it would genuinely fix. A repair that ran
+    # and failed will fail again there, and a requirement needing a human never
+    # runs unattended. Promising a command that cannot help is worse than silence:
+    # it costs the developer another wasted run to find that out.
+    setup_would_fix = [
+        r
+        for r in blocked
+        if r.repair is not None and not r.interactive and r.name not in tried_and_failed
+    ]
+    needs_you = [r for r in blocked if r.name not in {x.name for x in setup_would_fix}]
+
     print("")
     if report_only:
         print(f"{len(blocked)} of {len(plan)} prerequisites are missing:")
@@ -1190,10 +1662,13 @@ def check(
         print(f"  * {requirement.summary}  [{requirement.name}]")
         print(f"      {requirement.instruction or 'no automatic remedy is available'}")
     print("")
-    if fixable:
+    if setup_would_fix and not needs_you:
         print("`make setup` installs and starts all of this for you.")
+    elif setup_would_fix:
+        names = ", ".join(r.name for r in needs_you)
+        print(f"`make setup` handles the rest; these need you: {names}")
     else:
-        print("`make setup` handles everything it can; the above need you.")
+        print("The above need you -- `make setup` cannot fix them.")
     print("")
     return 0 if report_only else 1
 
@@ -1211,15 +1686,16 @@ def repair_kind(requirement: Requirement) -> str:
 
 def _describe() -> int:
     print("Requirements a Make target can declare:")
-    print("  auto = fixed silently | auto (slow) = fixed, announced first | "
-          "guided = needs you at the keyboard")
+    print(
+        "  auto = fixed silently | auto (slow) = fixed, announced first | "
+        "guided = needs you at the keyboard"
+    )
     print("")
     for name in sorted(REGISTRY):
         requirement = REGISTRY[name]
         needs = ", ".join(requirement.needs) if requirement.needs else "-"
         print(
-            f"  {name:<20} {requirement.summary:<28} "
-            f"needs: {needs:<28} {repair_kind(requirement)}"
+            f"  {name:<20} {requirement.summary:<28} needs: {needs:<28} {repair_kind(requirement)}"
         )
     return 0
 
@@ -1250,6 +1726,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.list:
         return _describe()
 
+    # In report mode nothing can be blocked, so the ports can be surfaced without
+    # the false red that took them out of --all in the first place.
+    include_ports = bool(args.report)
+
     label = args.label
     if args.target:
         try:
@@ -1260,23 +1740,19 @@ def main(argv: Sequence[str] | None = None) -> int:
         if declared is None:
             print(f"make {args.target} declares no prerequisites.")
             return 0
-        names = declared or sorted(REGISTRY)
+        names = declared or _machine_wide(include_ports)
         label = label or f"make {args.target}"
     else:
-        names = sorted(REGISTRY) if args.all else args.requirements
+        names = _machine_wide(include_ports) if args.all else args.requirements
 
     if not names:
         parser.error("name at least one requirement, or pass --all/--list/--target")
 
     autofix = (
-        not args.no_fix
-        and not args.report
-        and os.environ.get("PREFLIGHT_AUTOFIX", "1") != "0"
+        not args.no_fix and not args.report and os.environ.get("PREFLIGHT_AUTOFIX", "1") != "0"
     )
     colour = sys.stdout.isatty() and not os.environ.get("NO_COLOR")
-    return check(
-        names, autofix=autofix, label=label, colour=colour, report_only=args.report
-    )
+    return check(names, autofix=autofix, label=label, colour=colour, report_only=args.report)
 
 
 if __name__ == "__main__":

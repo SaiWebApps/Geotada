@@ -12,7 +12,7 @@ process—never a cached or filtered subset.
 | `setup` | Alias for `bootstrap`; the name most people reach for first | No | Yes |
 | `preflight` | Checks every requirement and repairs what is repairable | No | Yes |
 | `preflight-list` | None; describes the requirement vocabulary | No | Yes |
-| `bootstrap` | Python/Flutter deps, all local DBs, Valhalla, dev data, Playwright browser | No | Yes, with host toolchain |
+| `bootstrap` | Python/Flutter deps, all local DBs, dev data, Playwright browser, and the routing MAP DATA (not the engine: its first start builds tiles for over an hour, so a routing target starts it) | No | Yes, with host toolchain |
 | `render-auth-setup` | Interactive macOS Keychain entry | API auth only | Yes |
 | `render-auth-status` | Keychain lookup and service access check | API auth only | Yes |
 | `config-status` | Three exact local-profile assertions | Yes | Yes |
@@ -26,7 +26,7 @@ process—never a cached or filtered subset.
 | `audit` | Lint and `test` | Where required | Yes |
 | `test-file` | Test/dev DBs, dev data, Valhalla | Only with `LIVE=1` | Yes, with `FILE` |
 | `test-live` | Render auth, test/dev DBs, dev data, Valhalla | Yes | Yes |
-| `test-workbench` | Test/workbench DBs | No; providers are stubbed | Yes |
+| `test-workbench` | Test/workbench DBs, Valhalla, :8001 | No; the shard pins mock providers | Yes; one test drives the real tour pipeline (hence Valhalla), still on mock providers |
 | `golden-probe` | Test/dev DBs, dev data, Valhalla | No | Yes |
 | `golden-diff` | Dev DB/data and Valhalla | No | Yes, with `FIXTURE` |
 | `score-saved-tours` | None; reads `data/{city}/tours/` only | No | Yes; $0, no DB or container |
@@ -45,8 +45,8 @@ process—never a cached or filtered subset.
 | `valhalla-down` | Main-checkout compose path | No | Yes |
 | `valhalla-status` | None | No | Yes |
 | `valhalla-build-tiles` | Destination directory | No | Yes, with network/disk |
-| `api` | Dev DB/data | Yes | Yes; foreground server |
-| `workbench` | Dev DB/data and Valhalla | Yes | Yes; foreground server |
+| `api` | Dev DB/data, Valhalla, :8000 | Yes | Yes; foreground server |
+| `workbench` | Dev DB/data, Valhalla, :8000 (reuses a healthy API rather than restarting it) | Yes | Yes; foreground server |
 | `dashboard` | Dev DB/data | No | Yes; foreground server |
 | `flutter-web` | None | No | Yes, with Flutter/Chrome |
 | `flutter-ios` | Dev DB/data, simulator boot, local API | Yes | Yes, with Xcode |
@@ -86,3 +86,11 @@ process—never a cached or filtered subset.
 Cloud safety is structural: no pytest command receives the cloud profile,
 `db-reset` accepts only three fixed local services, and cloud data mutations
 require `TARGET=cloud CONFIRM_CLOUD_WRITE=1`.
+
+**Switch variables take the literal `1`, and nothing else.** `APPLY`, `FORCE`,
+`ALL`, `DRY_RUN` and `CONFIRM_COST` are armed by `APPLY=1`, never by `APPLY=true`
+or `APPLY=yes` — those now read as off. Make's `$(if ...)` tests for a non-empty
+value, so `APPLY=0` and `APPLY=false` previously ARMED the flag: the command a
+careful person types to preview a cloud prune deleted records instead. Erring
+towards off is the deliberate trade; a mistyped switch does nothing rather than
+something irreversible.

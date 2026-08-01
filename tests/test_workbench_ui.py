@@ -787,7 +787,7 @@ def api_server():
             # areas-upload API off :8001/:8000 (London has no areas, so it is skipped).
             "ONBOARD_DATA_ROOT": str(_ONBOARD_TMP / "data"),
             "ONBOARD_REGISTRY_PATH": str(_ONBOARD_TMP / "cities.json"),
-            "ONBOARD_DEPLOY_API_PORT": "8002",
+            "ONBOARD_DEPLOY_API_PORT": "8004",  # NOT 8002: that is Valhalla, which this shard starts
         },
     )
 

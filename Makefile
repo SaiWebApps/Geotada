@@ -51,7 +51,22 @@ PRE_FLUTTER := flutter flutter-deps
 # The full union `make test` will need, checked once up front so a missing Render
 # credential fails in seconds rather than twenty minutes into the suite.
 PRE_FULL_SUITE := uv python-deps db-test db-dev db-workbench dev-data valhalla \
-	playwright-browser flutter flutter-deps render-key
+	playwright-browser flutter flutter-deps render-key port-8001
+
+LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
+	scripts/preflight.py scripts/db_parity.py scripts/check_audio_setup.py \
+	scripts/tour_batch_candidate.py scripts/score_saved_tours.py \
+	scripts/score_gold_text.py scripts/human_reference_tours.py \
+	scripts/tour_golden_diff.py
+
+# Reports a missing credential or a wrong endpoint as a sentence. This was a bare
+# `assert` inside `python -c`, so the answer to "is my config right?" was a stack trace.
+CHECK_PROFILE := import os,sys; \
+name,port=sys.argv[1],sys.argv[2]; \
+uri=os.environ.get("NEO4J_URI",""); \
+sys.exit(f"{name}: NEO4J_URI is {uri!r}, expected bolt://localhost:{port}") if uri!=f"bolt://localhost:{port}" else None; \
+sys.exit(f"{name}: RESEND_API_KEY is absent -- the Render fetch returned an incomplete environment") if not os.environ.get("RESEND_API_KEY") else None; \
+print(f"{name}: localhost:{port} + fresh Render credentials")
 
 DB ?= dev
 TARGET ?= local
@@ -103,10 +118,19 @@ setup: ## Set up everything from a fresh clone (same as bootstrap).
 
 bootstrap: ## Provision a complete local development environment from a fresh clone.
 	@$(PREFLIGHT) --label bootstrap uv python-deps docker-daemon \
-		db-dev db-test db-workbench dev-data valhalla-tiles valhalla \
+		db-dev db-test db-workbench dev-data valhalla-tiles \
 		flutter flutter-deps playwright-browser render-key
 	@echo ""
 	@echo "✓ Local development environment is ready."
+	@echo "  Routing is NOT started here. The map data is downloaded, but building"
+	@echo "  tiles from it takes well over an hour, so the first target that needs"
+	@echo "  routing (test, api, workbench, tour-build) starts it and waits."
+	@echo "  To get it building now, in the background:  make valhalla-up"
+	@echo ""
+	@echo "  Two toolchains are NOT installed here, because they are large and only"
+	@echo "  some workflows need them:"
+	@echo "    iOS builds (flutter-ios, flutter-ipa, testflight):  make preflight-list"
+	@echo "    deploy watching (render-watch):                     brew install render && render login"
 
 # ════════════════════════════════════════════════════════════════════════════
 #  CONFIGURATION
@@ -123,9 +147,9 @@ render-auth-status: ## Validate the Keychain Render API key against ondoway-api.
 
 config-status: ## Fetch Render fresh and validate the final local/test/workbench boundaries.
 	@$(PREFLIGHT) --label config-status $(PRE_PY) render-key
-	@$(RENDER_LOCAL_EXEC) python -c 'import os; assert os.environ["NEO4J_URI"] == "bolt://localhost:7687"; assert os.environ.get("RESEND_API_KEY"); print("local: localhost:7687 + fresh Render credentials")'
-	@$(RENDER_TEST_EXEC) python -c 'import os; assert os.environ["NEO4J_URI"] == "bolt://localhost:7688"; assert os.environ.get("RESEND_API_KEY"); print("test: localhost:7688 + fresh Render credentials")'
-	@$(ENV_EXEC) --profile workbench --render -- python -c 'import os; assert os.environ["NEO4J_URI"] == "bolt://localhost:7689"; assert os.environ.get("RESEND_API_KEY"); print("workbench: localhost:7689 + fresh Render credentials")'
+	@$(RENDER_LOCAL_EXEC) python -c '$(CHECK_PROFILE)' local 7687
+	@$(RENDER_TEST_EXEC) python -c '$(CHECK_PROFILE)' test 7688
+	@$(ENV_EXEC) --profile workbench --render -- python -c '$(CHECK_PROFILE)' workbench 7689
 
 sync: ## Install Python dependencies from public PyPI.
 	@$(PREFLIGHT) --label sync uv
@@ -135,14 +159,20 @@ sync-apple: ## Install dependencies from Apple's mirror while preserving the pub
 	@$(PREFLIGHT) --label sync-apple uv
 	@curl -sI --max-time 5 https://pypi.apple.com/simple/ >/dev/null 2>&1 || \
 		{ echo "ERROR: pypi.apple.com unreachable; use make sync." >&2; exit 1; }
-	@cp uv.lock /tmp/ondoway-uv-lock-public
-	@UV_DEFAULT_INDEX=https://pypi.apple.com/simple uv sync --extra test --extra dev --extra aws; ec=$$?; \
-		cp /tmp/ondoway-uv-lock-public uv.lock; rm -f /tmp/ondoway-uv-lock-public; exit $$ec
+	@backup=$$(mktemp -t ondoway-uv-lock) && cp uv.lock "$$backup" && \
+	{ UV_DEFAULT_INDEX=https://pypi.apple.com/simple uv sync --extra test --extra dev --extra aws; ec=$$?; \
+		cp "$$backup" uv.lock || { echo "ERROR: could not restore the public uv.lock from $$backup" >&2; ec=1; }; \
+		rm -f "$$backup"; exit $$ec; }
 
 requirements: ## Regenerate requirements.txt from uv.lock.
 	@$(PREFLIGHT) --label requirements $(PRE_PY)
 	uv export --no-dev --no-editable --no-emit-project -o requirements.txt
-	@! grep -q "pypi.apple.com" requirements.txt
+	@if grep -q "pypi.apple.com" requirements.txt; then \
+		rm -f requirements.txt; \
+		echo "ERROR: Apple index URLs leaked into requirements.txt. Re-run where" >&2; \
+		echo "       public PyPI is reachable so the committed lock stays public." >&2; \
+		exit 1; \
+	fi
 
 # ════════════════════════════════════════════════════════════════════════════
 #  CODE QUALITY
@@ -151,23 +181,12 @@ requirements: ## Regenerate requirements.txt from uv.lock.
 
 lint: ## Run the Python linter.
 	@$(PREFLIGHT) --label lint $(PRE_PY)
-	uv run ruff check src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
-		scripts/preflight.py \
-		scripts/db_parity.py scripts/check_audio_setup.py \
-		scripts/tour_batch_candidate.py scripts/score_saved_tours.py \
-		scripts/score_gold_text.py scripts/human_reference_tours.py \
-		scripts/tour_golden_diff.py
+	uv run ruff check $(LINT_PATHS)
 
 format: ## Format Python and apply safe lint fixes.
 	@$(PREFLIGHT) --label format $(PRE_PY)
-	uv run ruff format src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
-		scripts/preflight.py \
-		scripts/db_parity.py scripts/check_audio_setup.py scripts/human_reference_tours.py \
-		scripts/tour_batch_candidate.py
-	uv run ruff check --fix-only src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
-		scripts/preflight.py \
-		scripts/db_parity.py scripts/check_audio_setup.py scripts/human_reference_tours.py \
-		scripts/tour_batch_candidate.py
+	uv run ruff format $(LINT_PATHS)
+	uv run ruff check --fix-only $(LINT_PATHS)
 
 flutter-analyze: ## Run Dart static analysis.
 	@$(PREFLIGHT) --label flutter-analyze $(PRE_FLUTTER)
@@ -214,12 +233,12 @@ test-live: ## Run every live-provider test with a fresh full Render environment.
 		NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest $(or $(FILE),$(LIVE_TEST_FILES)) -o addopts= -m live -v $(PYTEST_ARGS)
 
-# Deliberately does NOT declare `valhalla`: this shard drives review.html against the
-# isolated 7689 graph and never asks for a route, so requiring map tiles here would
-# block a fresh clone from running it. If a workbench test ever needs routing, add
-# `valhalla` to this line rather than relying on a sibling shard having started it.
+# Declares `valhalla` because this shard really does route: test_workbench_ui.py
+# contains an unstubbed tour-generation section, and relying on a sibling shard to
+# have started routing first is what made it pass while producing nothing.
+# It also declares port-8001, the port its managed server binds.
 test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 7689.
-	@$(PREFLIGHT) --label test-workbench uv python-deps db-test db-workbench playwright-browser
+	@$(PREFLIGHT) --label test-workbench uv python-deps db-test db-workbench valhalla playwright-browser port-8001
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
@@ -227,8 +246,11 @@ test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 768
 golden-probe: ## Print golden overlap counts using provisioned dev data and Valhalla.
 	@$(PREFLIGHT) --label golden-probe $(PRE_PYTEST)
 	@set -o pipefail; $(TEST_EXEC) uv run pytest $(GOLDEN_TEST_FILES) \
-		-o addopts= -m golden -q -s 2>&1 | \
-		grep -oE "GOLDEN-OVERLAP .*"
+		-o addopts= -m golden -q -s 2>&1 | tee /dev/stderr | \
+		python3 -c 'import sys; \
+lines=[l for l in sys.stdin if l.lstrip().startswith("GOLDEN-OVERLAP")]; \
+sys.stdout.writelines(lines); \
+sys.exit(0 if lines else "no GOLDEN-OVERLAP lines were printed (see the run above)")'
 
 score-saved-tours: ## Score every saved tour artifact against the current rubric. $0, no DB, no containers.
 	@$(PREFLIGHT) --label score-saved-tours $(PRE_PY)
@@ -334,7 +356,7 @@ db-reset: ## Delete exactly one local Neo4j volume. Usage: make db-reset DB=dev|
 	@case "$(DB)" in dev|test|workbench) ;; \
 		*) echo "ERROR: DB must be dev, test, or workbench; Aura is unreachable here." >&2; exit 2 ;; esac
 	@$(PREFLIGHT) --label "db-reset DB=$(DB)" docker-daemon
-	@case "$(DB)" in \
+	@set -e; case "$(DB)" in \
 		dev) service=neo4j; volume=ondoway_neo4j_data ;; \
 		test) service=neo4j-test; volume=ondoway_neo4j_test_data ;; \
 		workbench) service=neo4j-workbench; volume=ondoway_neo4j_workbench_data ;; \
@@ -373,7 +395,9 @@ valhalla-down: ## Stop Valhalla without deleting tiles.
 		--project-directory "$(VALHALLA_ROOT)" stop valhalla
 
 valhalla-status: ## Check the Valhalla health endpoint.
-	@curl -fs --max-time 3 http://localhost:8002/status >/dev/null && echo "✓ Valhalla healthy."
+	@curl -fs --noproxy '*' --max-time 3 http://localhost:8002/status >/dev/null \
+		&& echo "✓ Valhalla healthy." \
+		|| { echo "Valhalla is not answering on :8002. Start it: make valhalla-up" >&2; exit 1; }
 
 # Download to a temporary name and move into place only on success. Writing
 # straight to the final path meant that interrupting this at 50 MB of 465 MB left
@@ -401,41 +425,49 @@ valhalla-build-tiles: ## Download Paris and New York OSM extracts for tile build
 ##@ RUN
 
 api: ## Start the local API with dev data and fresh Render provider credentials.
-	@$(PREFLIGHT) --label api $(PRE_LOCAL_GRAPH) render-key
+	@$(PREFLIGHT) --label api $(PRE_TOUR) render-key port-8000
 	@$(RENDER_LOCAL_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 workbench: ## Start the local editorial workbench with dev data and fresh Render credentials.
-	@$(PREFLIGHT) --label workbench $(PRE_TOUR) render-key
+	@$(PREFLIGHT) --label workbench $(PRE_TOUR) render-key port-8000-reusable
 	@$(RENDER_LOCAL_EXEC) bash scripts/workbench.sh
 
 dashboard: ## Start the local dashboard with the validated dev profile.
-	@$(PREFLIGHT) --label dashboard $(PRE_LOCAL_GRAPH)
+	@$(PREFLIGHT) --label dashboard $(PRE_LOCAL_GRAPH) port-8080
 	@$(LOCAL_EXEC) uv run python -m src.server
 
 flutter-web: ## Run the Flutter web app on port 3000.
-	@$(PREFLIGHT) --label flutter-web $(PRE_FLUTTER)
+	@$(PREFLIGHT) --label flutter-web $(PRE_FLUTTER) port-3000
 	cd mobile && flutter run -d chrome --web-port=3000
 
-SIM ?= 46F0E608-943E-48F4-9EDB-8925855D0069
-SIM_BOOTED = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-Fa-f-]{36}' | head -1)
-SIM_TARGET = $(if $(filter command line,$(origin SIM)),$(SIM),$(if $(SIM_BOOTED),$(SIM_BOOTED),$(SIM)))
+# Pick a simulator that exists on THIS machine: a booted one if there is one,
+# else the newest available iPhone. Override with `make flutter-ios SIM=<udid>`.
+SIM_PICK = xcrun simctl list devices -j 2>/dev/null | python3 -c 'import json,sys;\
+d=json.load(sys.stdin).get("devices",{});\
+c=[v for r in sorted(d) for v in d[r] if v.get("isAvailable")];\
+b=[v["udid"] for v in c if v.get("state")=="Booted"];\
+i=[v["udid"] for v in c if "iPhone" in v.get("name","")];\
+print(next(iter(b or i or [""])))' 2>/dev/null
+SIM_TARGET = $(if $(filter command line,$(origin SIM)),$(SIM),$(shell $(SIM_PICK)))
 
 flutter-ios: ## Run the Flutter app in an iOS simulator with a local API.
-	@$(PREFLIGHT) --label flutter-ios $(PRE_LOCAL_GRAPH) render-key $(PRE_FLUTTER) xcode
+	@$(PREFLIGHT) --label flutter-ios $(PRE_TOUR) render-key port-8000 $(PRE_FLUTTER) xcode
+	@test -n "$(SIM_TARGET)" || { \
+		echo "ERROR: no iOS simulator found on this machine." >&2; \
+		echo "       Open Xcode > Settings > Components and install a simulator runtime," >&2; \
+		echo "       or name one yourself:  make flutter-ios SIM=<udid>" >&2; \
+		exit 2; }
 	@xcrun simctl boot "$(SIM_TARGET)" 2>/dev/null || true
 	@open -a Simulator 2>/dev/null || true
-	@PORT_KILL_PIDS=$$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null); \
-	if [ -n "$$PORT_KILL_PIDS" ]; then \
-		for pid in $$PORT_KILL_PIDS; do \
-			cmd=$$(ps -p $$pid -o comm= 2>/dev/null | tail -1); \
-			echo "    Freeing :8000 — killing stale listener PID $$pid ($${cmd:-unknown})"; \
-		done; \
-		kill $$PORT_KILL_PIDS 2>/dev/null || true; \
-	fi
 	@$(RENDER_LOCAL_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
-	@sleep 2
+	@for i in $$(seq 1 30); do \
+		curl -fs --noproxy '*' --max-time 2 http://127.0.0.1:8000/api/v1/healthz >/dev/null 2>&1 && break; \
+		sleep 1; \
+	done; \
+	curl -fs --noproxy '*' --max-time 2 http://127.0.0.1:8000/api/v1/healthz >/dev/null 2>&1 || \
+		{ echo "ERROR: the API did not become healthy on :8000 within 30s." >&2; exit 1; }
 	cd mobile && flutter run -d "$(SIM_TARGET)"
 
 flutter-device: ## Run the Flutter app on a physical device against production.
@@ -469,7 +501,7 @@ backfill-provenance: ## Backfill beat provenance on the local dev graph.
 	@$(LOCAL_EXEC) uv run python -m scripts.upload_paris --provenance-only
 
 backfill-poi-role: ## Apply reviewed POI roles. ARGS="--apply --neo4j" writes locally.
-	@$(PREFLIGHT) --label backfill-poi-role $(PRE_PY)
+	@$(PREFLIGHT) --label backfill-poi-role $(PRE_PY) db-dev
 	@$(LOCAL_EXEC) uv run python scripts/backfill_poi_role.py $(ARGS)
 
 backfill-name-key: ## Backfill missing POI name keys on the local dev graph.
@@ -507,23 +539,23 @@ prune-orphans: ## Find or delete orphaned records. Cloud requires explicit TARGE
 	@case "$(TARGET)" in \
 		local) $(PREFLIGHT) --label "prune-orphans TARGET=local" uv python-deps db-dev && \
 			$(LOCAL_EXEC) uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" \
-				$(if $(APPLY),--apply,) ;; \
+				$(if $(filter 1,$(APPLY)),--apply,) ;; \
 		cloud) test "$(CONFIRM_CLOUD_WRITE)" = "1" || \
 			{ echo "ERROR: add CONFIRM_CLOUD_WRITE=1 for Aura." >&2; exit 2; }; \
 			$(PREFLIGHT) --label "prune-orphans TARGET=cloud" $(PRE_PY) render-key && \
 			$(CLOUD_EXEC) uv run python -m scripts.prune_orphan_pois --slug "$(CITY)" \
-				--allow-cloud $(if $(APPLY),--apply,) ;; \
+				--allow-cloud $(if $(filter 1,$(APPLY)),--apply,) ;; \
 		*) echo "ERROR: TARGET must be local or cloud." >&2; exit 2 ;; \
 	esac
 
 fetch-boundary: ## Fetch an OSM boundary polygon.
 	@$(PREFLIGHT) --label fetch-boundary $(PRE_PY)
 	@$(LOCAL_EXEC) uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" \
-		--relation "$(RELATION)"$(if $(FORCE), --force,)
+		--relation "$(RELATION)"$(if $(filter 1,$(FORCE)), --force,)
 
 geocode-pois: ## Geocode POIs through Nominatim.
 	@$(PREFLIGHT) --label geocode-pois $(PRE_PY)
-	@$(LOCAL_EXEC) uv run python -m scripts.geocode_pois --slug "$(SLUG)"$(if $(ALL), --all,)
+	@$(LOCAL_EXEC) uv run python -m scripts.geocode_pois --slug "$(SLUG)"$(if $(filter 1,$(ALL)), --all,)
 
 # Who writes the transition sentences. scripts/tour_build.py now REFUSES to run
 # without being told, because canned transitions printed under a "validation:
@@ -533,26 +565,31 @@ geocode-pois: ## Geocode POIs through Nominatim.
 #   make tour-build GLUE=--haiku ARGS="..."
 GLUE ?= --canned
 
-tour-build: ## Build one local tour and render it to Markdown. GLUE=--haiku for real glue (paid).
-	@$(PREFLIGHT) --label tour-build $(PRE_TOUR)
+tour-build: ## Build a local tour. ARGS="--start X --duration N"; GLUE=--haiku for real glue (paid).
+	@test -n "$(ARGS)" || { echo 'ERROR: ARGS is required, e.g. ARGS="--start \"Pont Neuf\" --duration 60".' >&2; exit 2; }
+	@if [ -n "$(findstring haiku,$(GLUE))" ]; then \
+		$(PREFLIGHT) --label tour-build $(PRE_TOUR) render-key; \
+	else \
+		$(PREFLIGHT) --label tour-build $(PRE_TOUR); \
+	fi
 	@$(LOCAL_EXEC) uv run python scripts/tour_build.py $(GLUE) $(ARGS)
 
 measure-planned-audio: ## Measure voiced audio against tier dwell.
-	@$(PREFLIGHT) --label measure-planned-audio $(PRE_LOCAL_GRAPH)
+	@$(PREFLIGHT) --label measure-planned-audio $(PRE_TOUR)
 	@$(LOCAL_EXEC) uv run python scripts/measure_planned_audio.py $(ARGS)
 
 measure-governor: ## Compare uncapped and governed emitted audio.
-	@$(PREFLIGHT) --label measure-governor $(PRE_LOCAL_GRAPH)
+	@$(PREFLIGHT) --label measure-governor $(PRE_TOUR)
 	@$(LOCAL_EXEC) uv run python scripts/measure_governor.py $(ARGS)
 
 onboard-city: ## Onboard a fixture-backed city. Usage: make onboard-city CITY=x MODES=x.
-	@$(PREFLIGHT) --label onboard-city $(PRE_PY)
-	@$(LOCAL_EXEC) env ONBOARD_PROVIDER="$${ONBOARD_PROVIDER:?set ONBOARD_PROVIDER=anthropic (real) — there is no default}" \
+	@$(PREFLIGHT) --label onboard-city $(PRE_PY) render-key
+	@$(RENDER_LOCAL_EXEC) env ONBOARD_PROVIDER="$${ONBOARD_PROVIDER:?set ONBOARD_PROVIDER=anthropic (real) — there is no default}" \
 		ONDOWAY_ONBOARD_HTTP="$${ONDOWAY_ONBOARD_HTTP:-fixture}" \
 		ONBOARD_DATA_ROOT="$${ONBOARD_DATA_ROOT:-/tmp/ondoway-onboard}" \
 		ONBOARD_REGISTRY_PATH="$${ONBOARD_REGISTRY_PATH:-/tmp/ondoway-onboard/cities.json}" \
 		uv run python -m src.onboard.cli --city "$(CITY)" --modes "$(MODES)" \
-		$(if $(DRY_RUN),--dry-run,) $(if $(CONFIRM_COST),--confirm-cost,)
+		$(if $(filter 1,$(DRY_RUN)),--dry-run,) $(if $(filter 1,$(CONFIRM_COST)),--confirm-cost,)
 
 # ════════════════════════════════════════════════════════════════════════════
 #  DEPLOYMENT AND DIAGNOSTICS

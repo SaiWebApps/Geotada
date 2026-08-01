@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import importlib.util
 import inspect
-import re
 import socket
 import subprocess
 import sys
@@ -34,6 +33,7 @@ def _declared_requirements(target: str):
         sys.modules[name] = module
         spec.loader.exec_module(module)
     return module.declared_requirements(target)
+
 
 _LISTENER_SRC = """
 import socket, sys, time
@@ -185,14 +185,25 @@ def test_launchers_kill_only_listening_sockets(tmp_path) -> None:
                 proc.kill()
                 proc.wait(timeout=5)
 
-    # Same defect class, same fix, in the flutter-ios launcher's port kill.
+    # Same defect class in the flutter-ios launcher. It no longer frees the port
+    # itself: it declares the `port-8000` requirement, and preflight both scopes
+    # the query to LISTEN sockets AND refuses to signal a process it cannot
+    # identify as this project's own server -- neither of which the inlined shell
+    # kill ever did. So the requirement here is that flutter-ios does not
+    # hand-roll a kill at all; if it ever does again, it must be LISTEN-scoped.
     makefile = (ROOT / "Makefile").read_text()
     flutter_ios_target = makefile.split("\nflutter-ios:", 1)[1].split(
         "\n\nflutter-device:", 1
     )[0]
-    assert re.search(r"lsof\s+-tiTCP:8000\s+-sTCP:LISTEN", flutter_ios_target), (
-        "flutter-ios's port kill must be LISTEN-scoped too"
-    )
+    if "lsof" in flutter_ios_target:
+        assert "-sTCP:LISTEN" in flutter_ios_target, (
+            "flutter-ios re-introduced a port kill that is not LISTEN-scoped"
+        )
+    else:
+        assert "port-8000" in _declared_requirements("flutter-ios"), (
+            "flutter-ios neither frees :8000 itself nor declares the requirement "
+            "that does it safely"
+        )
     assert "-ti:8000" not in flutter_ios_target.replace("-tiTCP:8000", ""), (
         "no unscoped lsof -ti:PORT kill should remain"
     )

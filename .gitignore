@@ -311,3 +311,8 @@ data/certification/*/text-candidate-*/
 
 # Paid authoring reservation markers are resumability state, not regression fixtures.
 data/certification/tour-batch-v*/**/attempt-*.json
+
+# Vendored third-party skill bundles dropped in by tooling. Not this project's
+# code, carry their own licences, and 146 files would otherwise be swept in by
+# any `git add -A`.
+.agents/
