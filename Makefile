@@ -51,7 +51,7 @@ PRE_FLUTTER := flutter flutter-deps
 # The full union `make test` will need, checked once up front so a missing Render
 # credential fails in seconds rather than twenty minutes into the suite.
 PRE_FULL_SUITE := uv python-deps db-test db-dev db-workbench dev-data valhalla \
-	playwright-browser flutter flutter-deps render-key port-8001
+	playwright-browser flutter flutter-deps render-key
 
 LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 	scripts/preflight.py scripts/db_parity.py scripts/check_audio_setup.py \
@@ -238,7 +238,7 @@ test-live: ## Run every live-provider test with a fresh full Render environment.
 # have started routing first is what made it pass while producing nothing.
 # It also declares port-8001, the port its managed server binds.
 test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 7689.
-	@$(PREFLIGHT) --label test-workbench uv python-deps db-test db-workbench valhalla playwright-browser port-8001
+	@$(PREFLIGHT) --label test-workbench uv python-deps db-test db-workbench valhalla playwright-browser
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short

@@ -343,11 +343,10 @@ guard to make it pass.
 **Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687, Workbench Neo4j = 7689.
 The definitive suite starts each required local service through its shard target.
 
-**Isolation invariant (2026-07-02):** the workbench Playwright suite runs ONLY against the dedicated 7689 instance and pre-wipes it each run. It must never point at 7688: the pytest suite full-wipes 7688 per-module, so any suite asserting exact DB state there is broken by residue or by a concurrent `make test`. Concurrent `make test-workbench` runs are unsupported. :8001 must be free, and the
-newcomer fails fast rather than taking the port: preflight will not stop a server
-that is still answering, even one it can prove belongs to this checkout, because
-ownership is not the same as disuse — a live server on :8001 is a sibling session's
-suite mid-run.
+**Isolation invariant (2026-07-02):** the workbench Playwright suite runs ONLY against the dedicated 7689 instance and pre-wipes it each run. It must never point at 7688: the pytest suite full-wipes 7688 per-module, so any suite asserting exact DB state there is broken by residue or by a concurrent `make test`. Concurrent `make test-workbench` runs still collide on the 7689 graph (the suite
+wipes it), but no longer on a port: the shard's API takes an OS-assigned free port
+and `review.html` is told it via `?apiPort=`. The old fixed :8001 bought nothing —
+no human opens that server — and blocked a sibling session for no reason.
 
 Skips and credential-based deselections are test failures. The supported test
 targets clear stale Python caches before collection.

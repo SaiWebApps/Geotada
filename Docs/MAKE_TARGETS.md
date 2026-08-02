@@ -26,7 +26,7 @@ process—never a cached or filtered subset.
 | `audit` | Lint and `test` | Where required | Yes |
 | `test-file` | Test/dev DBs, dev data, Valhalla | Only with `LIVE=1` | Yes, with `FILE` |
 | `test-live` | Render auth, test/dev DBs, dev data, Valhalla | Yes | Yes |
-| `test-workbench` | Test/workbench DBs, Valhalla, :8001 | No; the shard pins mock providers | Yes; one test drives the real tour pipeline (hence Valhalla), still on mock providers |
+| `test-workbench` | Test/workbench DBs, Valhalla; its API takes a free port | No; the shard pins mock providers | Yes; one test drives the real tour pipeline (hence Valhalla), still on mock providers |
 | `golden-probe` | Test/dev DBs, dev data, Valhalla | No | Yes |
 | `golden-diff` | Dev DB/data and Valhalla | No | Yes, with `FIXTURE` |
 | `score-saved-tours` | None; reads `data/{city}/tours/` only | No | Yes; $0, no DB or container |

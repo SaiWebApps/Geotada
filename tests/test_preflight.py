@@ -566,7 +566,6 @@ def test_every_server_target_declares_the_port_it_binds():
         ("workbench", "port-8000-reusable"),
         ("dashboard", "port-8080"),
         ("flutter-ios", "port-8000"),
-        ("test-workbench", "port-8001"),
     ):
         declared = _declared_requirements(target) or []
         assert port in declared, f"{target} binds {port} but does not declare it"

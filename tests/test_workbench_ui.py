@@ -91,11 +91,23 @@ DUP_INPUT = 'input[data-dup-idx="{}"]'
 # Configuration
 # ---------------------------------------------------------------------------
 
-# The workbench test API runs on 8001 — NOT the dev workbench's 8000 — so a dev
-# `make api` (8000) and `make test-workbench` (8001) coexist: the dev workbench
-# never goes down during a test run and there is no :8000 contention. review.html
-# reads ?apiPort= to point at the matching port.
-WORKBENCH_API_PORT = 8001
+# The workbench test API takes whatever free port the OS hands out, and review.html
+# is TOLD that port via ?apiPort= — so nothing here needs a fixed number.
+#
+# It used to be a hardcoded 8001, which bought nothing (no human ever opens this
+# server; only the test talks to it) and cost real friction: a sibling session
+# running this same suite, or anything else that happened to want 8001, blocked
+# the run. Asking the OS removes the collision instead of arbitrating it.
+#
+# Still never the dev workbench's 8000, so a developer's `make api` keeps running
+# untouched through a test run.
+def _pick_free_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.bind(("127.0.0.1", 0))
+        return probe.getsockname()[1]
+
+
+WORKBENCH_API_PORT = _pick_free_port()
 API_BASE = f"http://localhost:{WORKBENCH_API_PORT}/api/v1"
 # The ONLY Neo4j this suite may touch: the DEDICATED workbench instance
 # (docker service neo4j-workbench, ``make db-up DB=workbench``). Deliberately NOT
@@ -787,7 +799,10 @@ def api_server():
             # areas-upload API off :8001/:8000 (London has no areas, so it is skipped).
             "ONBOARD_DATA_ROOT": str(_ONBOARD_TMP / "data"),
             "ONBOARD_REGISTRY_PATH": str(_ONBOARD_TMP / "cities.json"),
-            "ONBOARD_DEPLOY_API_PORT": "8004",  # NOT 8002: that is Valhalla, which this shard starts
+            # Also OS-assigned. It was 8002 — the shared Valhalla container's port,
+            # which this shard now starts — and moving it to another fixed guess
+            # would only relocate the collision.
+            "ONBOARD_DEPLOY_API_PORT": str(_pick_free_port()),
         },
     )
 
