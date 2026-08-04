@@ -50,6 +50,25 @@ _PATHS = [
     # Point-to-point (the Test-3/Test-4 shape): a generous budget so the path is
     # feasible — an over-budget fixed end is a separate (cruise-mode) concern.
     ("garnier-leshalles-p2p", "paris", (48.8719, 2.3316), 180, None, (48.8626, 2.3449)),
+    # THE REPORTED DEFECT (owner, 2026-08-04): Rue Royale -> Notre-Dame, 300 min. The
+    # workbench built a route that ran ~5 km PAST its own destination to Parc de la
+    # Villette and came back. The A->B corridor here is a straight 2.5 km east along the
+    # Seine, so a stop in the north-east is not a detour on the way — it is a round trip
+    # bolted onto a one-way walk.
+    #
+    # COORDINATES ARE RESOLVED, NOT TYPED. Rue Royale carries no POI of its own (it is a
+    # street), so the start is the midpoint of its two ends as the graph holds them:
+    # Place de la Concorde (48.865608, 2.321038) and La Madeleine (48.870202, 2.325391).
+    # The end is Notre-Dame Cathedral's exact graph coordinate — the same one 11 archived
+    # tours already start from.
+    #
+    # WHY 300 AND NOT LESS: the engine prices this 2563 m straight line at 4153 s of
+    # walking (3 km/h under the x1.35 haversine correction), and walking may claim only
+    # WALK_FRACTION of the budget, so ``smallest_duration_min_for_walk_seconds`` puts the
+    # feasibility floor at 209 min. Below that the request is refused outright and the
+    # defect cannot reproduce. 300 is the owner's actual request.
+    ("rue-royale-notredame-p2p", "paris", (48.867905, 2.323215), 300, None,
+     (48.852966, 2.349902)),
     # New York (see note above) — the two dry-run-clean scenarios.
     ("nyc-lower-manhattan-150", "new_york", (40.7069, -74.0113), 150, None, None),
     ("nyc-greenwich-village-150-hidden", "new_york", (40.7336, -74.0027), 150,
@@ -59,6 +78,61 @@ _PATHS = [
 # A seated dwell stop must voice at least this much narration — the "empty
 # second stop that just says 'Walk to the next stop.'" bug floor.
 _MIN_DWELL_NARRATION_CHARS = 80
+
+# INV8 — no small run of consecutive stops forces an illogical out-and-back
+# detour relative to what a direct walk between its own flanking stops costs.
+#
+# The 2026-08-04 owner-reported defect (Rue Royale -> Notre-Dame, 300 min): the
+# workbench built a route that ran ~5 km PAST its own destination, out to Parc
+# de la Villette, and back. The first version of this check ("no single leg
+# may eat more than 25% of the tour's whole walking budget") MISSED that exact
+# case — the ~5 km round trip splits into two legs of roughly 2.5 km each,
+# neither one alone crossing a whole-tour budget share — while it flagged 8 of
+# the file's other 8 routes (every one of the 9 fixtures in `_PATHS` except
+# the defect fixture itself), which are simply long because the tour itself
+# covers a lot of ground. Sharing a budget was the wrong shape of check: a
+# spread-out route and a there-and-back detour both produce "long legs"; only
+# the detour produces a leg PAIR that costs far more than a direct walk
+# between the same two neighbours would have.
+#
+# The SECOND version measured only a single stop against its immediate
+# neighbours (leg p->i plus i->n vs. the direct p->n walk). That is blind to a
+# CLUSTER: two adjacent far-away stops sit close to EACH OTHER, so each one's
+# immediate neighbour is the other far stop, not a near one — the single-stop
+# ratio never spikes even though the pair, taken together, is the identical
+# commute-shaped detour. This version instead slides a window of 1 to
+# ``_MAX_DETOUR_WINDOW`` CONSECUTIVE stops and compares the cost of walking
+# through the whole window against the direct walk between whatever sits
+# immediately before and after it — catching a lone detour stop and a small
+# detour cluster the same way. The window is capped deliberately: a run of
+# many consecutive stops is what an ordinary multi-stop tour looks like (it is
+# EXPECTED to cost much more than a straight line across itself, because
+# visiting things is the point), so growing the window without bound would
+# flag good, ordinary tours. A cluster larger than the cap is a real
+# possibility this check does not cover — a known, stated limitation, not a
+# silent one.
+#
+# Both a ratio AND an absolute-minutes floor must trip together, so two stops
+# that merely sit close together (a tiny, easily-inflated direct distance)
+# cannot false-positive on ratio alone.
+#
+# CALIBRATION (2026-08-04, against this file's own 9 live `_PATHS` fixtures):
+# a first pass at a 600s (10 min) floor still flagged 4 routes whose detour
+# reaches as high as 1377s (23 min) of real extra walking, at a single stop —
+# Luxembourg Gardens, inserted between the Pantheon and the Sorbonne on a
+# 3-stop, 120-minute tour, where it is 40% of that tour's ENTIRE walk. That
+# is a real, substantial detour by any absolute measure, not "a few hundred
+# metres" — it is kept OUT of this check's flagged set on the judgment call
+# that a park matching the tour's own requested lens (parks_gardens) is worth
+# a real detour, not because its size is negligible. The reported Villette
+# defect costs roughly 130 minutes of extra walking at the engine's pace for
+# its ~5 km round trip — a full order of magnitude past Luxembourg Gardens.
+# 1800s (30 min) draws the line between them; it is an empirical line fit to
+# this file's fixtures, not a principled worthiness threshold, and Task 4 may
+# need to move it once more real routes exercise this check.
+_MAX_STOP_DETOUR_RATIO = 2.0  # via-this-window cost vs. the direct walk around it
+_MIN_DETOUR_EXTRA_SECONDS = 1800  # ...and at least 30 real minutes of pure detour
+_MAX_DETOUR_WINDOW = 3  # check runs of 1, 2, and 3 consecutive stops as one unit
 
 # GENERALITY CONTRACT (any city, current + future): for every neighbourhood start
 # x duration, select_route must EITHER serve a non-empty tour OR raise
@@ -179,6 +253,61 @@ def _check_invariants(route, script) -> list[str]:
             if re.search(r"\b(?:look up at|notice)\s+The\s+[a-z]", s.text):
                 v.append(f"INV5 mis-cased staging ('at The <noun>') in stop {idx}: {s.text[:60]!r}")
 
+    # INV8 — no run of 1..``_MAX_DETOUR_WINDOW`` consecutive stops forces an
+    # illogical out-and-back detour (design note above the constants). Reads
+    # leg cost the way summarise_route totals it (routing.py:439-442): routed
+    # seconds when Valhalla answered, the haversine fallback otherwise. The
+    # "skip this window" comparison is necessarily haversine — there is no
+    # routed leg between two POIs that were never walked directly — corrected
+    # by the same pace formula the engine uses everywhere else, so the two
+    # sides are on equal footing.
+    from src.tour.routing import haversine_m, pace_corrected_walk_seconds
+
+    name_by_id = {p.id: p.name for p in route.pois}
+    coord_by_id = {p.id: (p.lat, p.lng) for p in route.pois}
+    start_coord = tuple(script.inputs.start)
+
+    def _coord(poi_id: str | None) -> tuple[float, float]:
+        return coord_by_id[poi_id] if poi_id is not None else start_coord
+
+    def _label(poi_id: str | None) -> str:
+        return name_by_id.get(poi_id, "the start")
+
+    def _leg_cost_seconds(t) -> int:
+        return int(t.leg_seconds) if t.source == "valhalla" else t.walk_seconds
+
+    transits = route.transits
+    n = len(route.pois)
+    for start_i in range(n):
+        for width in range(1, min(_MAX_DETOUR_WINDOW, n - start_i) + 1):
+            end_i = start_i + width - 1
+            leg_out_idx = end_i + 1
+            if leg_out_idx >= len(transits):
+                continue  # runs off the walk's true terminus — not a detour
+            leg_in, leg_out = transits[start_i], transits[leg_out_idx]
+            prev_lat, prev_lng = _coord(leg_in.from_poi_id)
+            next_lat, next_lng = _coord(leg_out.to_poi_id)
+            direct_seconds = pace_corrected_walk_seconds(
+                haversine_m(prev_lat, prev_lng, next_lat, next_lng)
+            )
+            if direct_seconds <= 0:
+                continue  # flanking points coincide — nothing to compare
+            via_seconds = sum(
+                _leg_cost_seconds(transits[k]) for k in range(start_i, leg_out_idx + 1)
+            )
+            extra_seconds = via_seconds - direct_seconds
+            ratio = via_seconds / direct_seconds
+            if ratio > _MAX_STOP_DETOUR_RATIO and extra_seconds > _MIN_DETOUR_EXTRA_SECONDS:
+                window_names = " -> ".join(p.name for p in route.pois[start_i:end_i + 1])
+                v.append(
+                    f"INV8 illogical detour at stop(s) {start_i}-{end_i} "
+                    f"({window_names}): {_label(leg_in.from_poi_id)} -> {window_names} -> "
+                    f"{_label(leg_out.to_poi_id)} costs {via_seconds}s, {ratio:.1f}x the "
+                    f"{direct_seconds}s direct walk between its flanking stops "
+                    f"({extra_seconds}s of pure detour; "
+                    f"cap {_MAX_STOP_DETOUR_RATIO:.1f}x / {_MIN_DETOUR_EXTRA_SECONDS}s)"
+                )
+
     # INV3 — the LAST stop carries a closing sign-off that thanks the walker.
     if stop_idxs:
         last = " ".join(s.text for s in by_stop[stop_idxs[-1]])
@@ -202,6 +331,123 @@ def test_generated_tour_holds_invariants(label, city, start, duration, lenses, e
     assert not violations, (
         f"\n{label}: {len(violations)} invariant violation(s):\n  " + "\n  ".join(violations)
     )
+
+
+def _synthetic_route_and_script(pois, waypoint_lls, *, start_ll, duration_min=300):
+    """Build a real ``Route``/``Script`` pair from plain (lat, lng) waypoints,
+    pricing every leg with the engine's OWN haversine + pace formula
+    (``src.tour.routing``) rather than hand-picked numbers, so a synthetic
+    fixture cannot silently disagree with how the engine actually prices a
+    walk. ``waypoint_lls`` is the full ordered path INCLUDING the start
+    point and excluding nothing — i.e. ``[start, *pois-in-order]``.
+    """
+    from src.tour.contract import Route, Script, TourInput, TransitSegment, ValidationReport
+    from src.tour.routing import haversine_m, pace_corrected_walk_seconds
+
+    ids = [None, *(p.id for p in pois)]
+    assert len(ids) == len(waypoint_lls), "one waypoint per POI, plus the start"
+    transits = []
+    total = 0
+    for k in range(len(waypoint_lls) - 1):
+        lat1, lng1 = waypoint_lls[k]
+        lat2, lng2 = waypoint_lls[k + 1]
+        d = haversine_m(lat1, lng1, lat2, lng2)
+        secs = pace_corrected_walk_seconds(d)
+        transits.append(
+            TransitSegment(
+                from_poi_id=ids[k], to_poi_id=ids[k + 1], distance_m=d, walk_seconds=secs
+            )
+        )
+        total += secs
+    route = Route(
+        pois=tuple(pois), transits=tuple(transits),
+        total_walk_distance_m=sum(t.distance_m for t in transits), total_walk_seconds=total,
+    )
+    inputs = TourInput(
+        start=start_ll, duration_min=duration_min, city_slug="paris",
+        round_trip=False, end=waypoint_lls[-1],
+    )
+    script = Script(
+        city_slug="paris", generated_at="2026-01-01T00:00:00Z", inputs=inputs,
+        total_audio_seconds=0, total_walking_seconds=total,
+        total_walk_distance_m=int(sum(t.distance_m for t in transits)),
+        total_planned_seconds=total, selected_pois=(), lens_coverage={}, script=(),
+        validation=ValidationReport(),
+    )
+    return route, script
+
+
+def test_inv8_flags_a_synthetic_single_stop_detour():
+    """None of this file's live fixtures currently reproduce the reported
+    defect shape (the engine no longer routes rue-royale-notredame-p2p through
+    Parc de la Villette today), so INV8's true-positive path has no live case
+    to exercise it. This builds the defect shape directly — ONE stop several
+    kilometres off the direct line between its two flanking stops — using the
+    engine's real pace model (see `_synthetic_route_and_script`), and proves
+    INV8 still catches it. Paired with the 9 live cases in `_PATHS` all coming
+    back clean, this is the evidence the check measures the right thing: it
+    is silent on genuine sightseeing routes and loud on an illogical detour.
+    """
+    from src.tour.contract import POI
+
+    start_ll = (48.868, 2.323)
+    p_near_1 = POI(id="a", name="Near Start", tier=3, poi_role="anchor", lat=48.865, lng=2.330)
+    p_far = POI(id="b", name="Far Detour Stop", tier=3, poi_role="anchor", lat=48.896, lng=2.387)
+    p_near_2 = POI(id="c", name="Near End", tier=3, poi_role="anchor", lat=48.860, lng=2.340)
+    route, script = _synthetic_route_and_script(
+        [p_near_1, p_far, p_near_2],
+        [start_ll, (48.865, 2.330), (48.896, 2.387), (48.860, 2.340)],
+        start_ll=start_ll,
+    )
+    violations = _check_invariants(route, script)
+    inv8 = [x for x in violations if x.startswith("INV8")]
+    assert inv8, f"INV8 did not fire on a synthetic single-stop detour: {violations}"
+
+
+def test_inv8_flags_a_synthetic_two_stop_cluster_detour():
+    """The single-stop version of this check (measuring one stop against its
+    immediate neighbours) is blind to a CLUSTER: two adjacent far-away stops
+    sit close to EACH OTHER, so each one's nearest neighbour is the other far
+    stop, not a near one — the per-stop ratio never spikes even though the
+    pair, walked together, is the identical commute-shaped detour as the
+    single-stop case above. This builds exactly that shape — two stops ~150m
+    apart, both several kilometres off the direct line between the tour's
+    real near stops — and proves the windowed check (``_MAX_DETOUR_WINDOW``)
+    still catches it as a unit.
+    """
+    from src.tour.contract import POI
+
+    start_ll = (48.868, 2.323)
+    p_near_1 = POI(id="a", name="Near Start", tier=3, poi_role="anchor", lat=48.865, lng=2.330)
+    p_far_1 = POI(id="b", name="Far Stop 1", tier=3, poi_role="anchor", lat=48.896, lng=2.387)
+    p_far_2 = POI(id="c", name="Far Stop 2", tier=3, poi_role="anchor", lat=48.897, lng=2.389)
+    p_near_2 = POI(id="d", name="Near End", tier=3, poi_role="anchor", lat=48.860, lng=2.340)
+    route, script = _synthetic_route_and_script(
+        [p_near_1, p_far_1, p_far_2, p_near_2],
+        [start_ll, (48.865, 2.330), (48.896, 2.387), (48.897, 2.389), (48.860, 2.340)],
+        start_ll=start_ll,
+    )
+    # Confirm the blind spot is real before trusting the fix for it: at
+    # window width 1 alone, neither far stop's immediate neighbours are near
+    # stops, so the ratio should NOT spike.
+    from src.tour.routing import haversine_m, pace_corrected_walk_seconds
+
+    single_stop_ratios = []
+    for i in (1, 2):  # the two far stops, 0-indexed into route.pois
+        leg_in, leg_out = route.transits[i], route.transits[i + 1]
+        prev_poi, next_poi = route.pois[i - 1], route.pois[i + 1]
+        direct = pace_corrected_walk_seconds(
+            haversine_m(prev_poi.lat, prev_poi.lng, next_poi.lat, next_poi.lng)
+        )
+        via = int(leg_in.walk_seconds) + int(leg_out.walk_seconds)
+        single_stop_ratios.append(via / direct if direct else float("inf"))
+    assert all(r < _MAX_STOP_DETOUR_RATIO for r in single_stop_ratios), (
+        f"fixture no longer demonstrates the single-stop blind spot: {single_stop_ratios}"
+    )
+
+    violations = _check_invariants(route, script)
+    inv8 = [x for x in violations if x.startswith("INV8")]
+    assert inv8, f"INV8 did not fire on a synthetic two-stop cluster detour: {violations}"
 
 
 @pytest.mark.parametrize("city", sorted(_GENERALITY_STARTS))
