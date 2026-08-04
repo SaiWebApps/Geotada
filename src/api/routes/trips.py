@@ -142,6 +142,7 @@ def _upstream_provider_errors():
 # carrier while barely inconveniencing a determined caller. It also fired on the
 # owner's own workbench at three previews an hour.
 
+
 def _owned_profile_id(session: Session, user_id: str, profile_id: str) -> str | None:
     """The profile id iff `user_id` owns it, else None.
 
@@ -899,6 +900,7 @@ def preview_trip(
     body: TripPreviewRequest,
     driver: Driver = Depends(get_driver),
     premium_executor: PremiumComposeExecutor = Depends(get_premium_compose_executor),
+    faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
 ):
     """Build the preview, and hand back everything that quietly degraded doing it.
 
@@ -912,7 +914,7 @@ def preview_trip(
     threaded compose fan-out cannot leak one request's degradations into another.
     """
     with degradation_scope() as collected:
-        result = _preview_trip_impl(request, body, driver, premium_executor)
+        result = _preview_trip_impl(request, body, driver, premium_executor, faithfulness_checker)
         rows = summarize(collected)
     return result.model_copy(update={"degradations": rows}) if rows else result
 
@@ -922,6 +924,7 @@ def _preview_trip_impl(
     body: TripPreviewRequest,
     driver: Driver,
     premium_executor: PremiumComposeExecutor,
+    faithfulness_checker: FaithfulnessChecker | None,
 ):
     """Build a physically traced Premium candidate without certifying it.
 
@@ -968,9 +971,7 @@ def _preview_trip_impl(
     overflow_by_poi = dict(seq.overflow_by_poi)
     provider = premium_executor.provider_name
 
-    def _basic_tour_fallback(
-        *, reason: str, rejection: CandidateRejection
-    ) -> TripPreviewResponse:
+    def _basic_tour_fallback(*, reason: str, rejection: CandidateRejection) -> TripPreviewResponse:
         basic_stops = _preview_stops(basic_script, route, vignette_beats, snapshot, overflow_by_poi)
         return TripPreviewResponse(
             spine_area=route.spine_area,
@@ -1018,6 +1019,7 @@ def _preview_trip_impl(
             premium_result = finalize_premium_tour(
                 premium_plan,
                 physical_responses,
+                faithfulness_checker=faithfulness_checker,
                 build_identity=build_identity,
             )
     except HTTPException:
@@ -1054,6 +1056,21 @@ def _preview_trip_impl(
                 tuple(getattr(_s, "cited_beat_ids", ()) or ()),
                 getattr(_s, "text", ""),
             )
+        # FAITHFULNESS and COVERAGE were counted and then thrown away, for the same
+        # reason traceability was: "27 faithfulness" names a number, not a defect, so
+        # the only way to see WHICH sentences failed was another paid preview per
+        # guess. Both carry a (subject, reason) pair the counts discard.
+        for _s, _reason in getattr(_report, "faithfulness_failures", ()) or ():
+            _log.error(
+                "  UNFAITHFUL stop=%s reason=%r source_id=%r cited=%r text=%.160r",
+                getattr(_s, "stop_idx", None),
+                _reason,
+                getattr(_s, "source_id", None),
+                tuple(getattr(_s, "cited_beat_ids", ()) or ()),
+                getattr(_s, "text", ""),
+            )
+        for _bid, _claim in getattr(_report, "coverage_failures", ()) or ():
+            _log.error("  DROPPED-FACT beat=%r claim=%.160r", _bid, _claim)
         return _basic_tour_fallback(
             reason="llm_generation_failed",
             rejection=CandidateRejection(

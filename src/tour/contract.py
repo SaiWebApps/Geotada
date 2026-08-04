@@ -672,12 +672,39 @@ class ValidationReport(BaseModel):
 
     @property
     def passed(self) -> bool:
+        """Structural failures BLOCK. Entailment and dropped-fact reports ADVISE.
+
+        OWNER RULING 2026-08-03. Measured that day on a real Paris tour, the first ever
+        run with these two wired to the workbench: ``0 untraceable, 1 forbidden, 0
+        provenance, 28 faithfulness, 6 coverage``. Of the 28, exactly ONE was a verified
+        invention. Sampled false alarms included "Look hard at the façade, because it's
+        a manifesto of Art Nouveau" — the corpus's own sentence with two words changed —
+        and a dropped-fact report for "Square named for Henri IV" on a tour that says
+        precisely that in different words, because ``verify_claim_coverage`` counts
+        shared WORDS and a paraphrase therefore reads as a deletion.
+
+        A check that fires on a fifth of a good tour cannot decide whether to ship it,
+        and while these two gated, EVERY tour was refused. The rule: a check may BLOCK
+        only when it can NAME the specific thing that is wrong; a check that can only
+        say "I don't know" RECORDS.
+
+        This is a DEMOTION, not a removal. Both still run, both stay on this report, and
+        both are logged per-sentence by the preview route, so the evidence a human needs
+        is strictly better than before. ``faithfulness_checked`` still distinguishes
+        "checked and clean" from "never checked".
+
+        They return to blocking when the scored replacement lands: per-CLAIM scores
+        carrying the unsupported SPAN, bands rather than an average, and a repair pass
+        before anything is cut. See the run-context addendum in
+        ``specs/2026-08-03-premium-tour-crash-never-silent/``.
+
+        The three that remain are cheap, exact, and name their subject: an unknown cited
+        beat id, a banned phrase, a source passage that does not match its chunk.
+        """
         return not (
             self.untraceable_sentences
             or self.forbidden_phrase_hits
             or self.provenance_failures
-            or self.faithfulness_failures
-            or self.coverage_failures
         )
 
 

@@ -189,8 +189,20 @@ def _module_functions(tree: ast.Module) -> dict[str, ast.FunctionDef]:
     return {n.name: n for n in tree.body if isinstance(n, ast.FunctionDef)}
 
 
+@cache
 def _environment_accessors(tree: ast.Module) -> tuple[frozenset[str], frozenset[str]]:
     """How THIS module spells "read the environment", from its own imports.
+
+    MEMOISED PER MODULE, and that is not an optimisation nicety — it is the
+    difference between this file finishing and the python shard being killed.
+    The answer depends only on the module's own import statements, but it was
+    recomputed by walking the WHOLE module tree again for EVERY node the
+    callers below visit, which made ``_implementation_dispatchers`` quadratic in
+    module size: MEASURED at 185s per call, three calls in this file, ~9 minutes
+    of a shard that is killed at 15. Cached it is ~1s per call. The key is the
+    parsed module object itself, which ``_source_modules`` already hands out
+    once and keeps, so identity is stable and the cache is bounded by the number
+    of modules under ``src/``. Same inputs, same answer — nothing is skipped.
 
     Returns the call-form spellings (``os.getenv``, ``environ.get``, a bare
     ``getenv``) and the subscript-form ones (``os.environ[...]``). Derived per
@@ -1020,8 +1032,7 @@ def test_the_registry_the_guard_audited_is_the_one_the_server_dispatches_on() ->
             if variable in _expression_names(func)
             and (func.args.args or func.args.posonlyargs)
             and any(
-                isinstance(n, ast.Return) and isinstance(n.value, ast.Call)
-                for n in ast.walk(func)
+                isinstance(n, ast.Return) and isinstance(n.value, ast.Call) for n in ast.walk(func)
             )
         ]
         assert resolvers, (
@@ -1473,11 +1484,7 @@ def test_the_workbench_does_not_tune_the_audio_path_behind_productions_back() ->
     assert steering, "found no environment reads on the audio path — scope is broken"
 
     overrides = _workbench_overrides()
-    unpinned = sorted(
-        name
-        for name in steering & set(overrides)
-        if name not in production_env
-    )
+    unpinned = sorted(name for name in steering & set(overrides) if name not in production_env)
     assert not unpinned, (
         f"the workbench sets {unpinned} on the audio path, and render.yaml pins "
         f"no value for any of them — so the owner is judging audio produced under "
@@ -1536,9 +1543,7 @@ def test_every_implementation_uses_the_payload_it_is_handed() -> None:
                     continue
                 payload = params[0]
                 checked += 1
-                used = any(
-                    isinstance(n, ast.Name) and n.id == payload for n in ast.walk(method)
-                )
+                used = any(isinstance(n, ast.Name) and n.id == payload for n in ast.walk(method))
                 assert used, (
                     f"{class_node.name}.{method.name} never reads its {payload!r} "
                     f"argument. It answers with something it did not derive from "
@@ -1683,13 +1688,13 @@ def test_no_request_handler_lets_anything_but_the_request_choose_the_response() 
         ):
             registered = ast.unparse(node.args[0])
             assert registered not in local_names, (
-                    f"src/api/app.py registers the in-repo middleware {registered}. "
-                    f"Middleware sits above every route and can answer a request "
-                    f"from its headers alone — review.html's file:// origin is "
-                    f"distinguishable from the mobile app's. If this middleware is "
-                    f"genuinely needed, prove here that it cannot vary the response "
-                    f"by request metadata."
-                )
+                f"src/api/app.py registers the in-repo middleware {registered}. "
+                f"Middleware sits above every route and can answer a request "
+                f"from its headers alone — review.html's file:// origin is "
+                f"distinguishable from the mobile app's. If this middleware is "
+                f"genuinely needed, prove here that it cannot vary the response "
+                f"by request metadata."
+            )
         if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef):
             decorated = any(
                 isinstance(dec, ast.Call)

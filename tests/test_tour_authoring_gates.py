@@ -29,6 +29,7 @@ the seam and lose the trip.  Every provider boundary is a $0 injected double.
 from __future__ import annotations
 
 import hashlib
+import inspect
 import json
 import logging
 import threading
@@ -60,6 +61,7 @@ from src.tour.premium_tour import (
     PremiumComposeUnit,
     PremiumTourPlan,
     finalize_premium_composition,
+    finalize_premium_tour,
     premium_authoring_policy_sha256,
 )
 from tests.conftest import needs_neo4j
@@ -365,74 +367,29 @@ def _refusal_detail(resp, caplog) -> dict:
 
 
 @needs_neo4j
-def test_unfaithful_output_is_refused_and_trip_untouched(client, live_neo4j, fresh_trip, caplog):
-    """AC-5 end to end — the pinned gate for this step.
+def test_invented_glue_is_refused_and_the_trip_is_untouched(client, live_neo4j, fresh_trip, caplog):
+    """AC-5 end to end — INVENTION still BLOCKS, and blocks before any write.
 
-    All three gates live in this one node id on purpose, because each is a way the
-    persisted path could keep returning 200 while the trip it persists is unverified:
+    Glue carrying a proper noun and a year that no cited beat has is runtime invention
+    that structural traceability cannot see, and this is the check that catches it. It
+    remains blocking after the 2026-08-03 demotion because it NAMES its subject exactly:
+    a specific token, absent from a specific source set. That is the standing rule —
+    a check may block only when it can name the specific thing that is wrong.
 
-    * FAITHFULNESS — an injected rejecting checker must actually be consulted and must
-      refuse the tour. Proven by the checker's own call log AND by the refusal, so
-      neither a checker that is built-but-ignored nor a gate that fires without it
-      passes;
-    * COVERAGE — a tour whose facts were deleted (citations intact) is refused;
-    * INVENTION — glue carrying a proper noun and a year no cited beat has is refused.
+    Afterwards the trip's stops in Neo4j are byte-unchanged and the trip is still
+    uncomposed, so the client can offer another flavour (decision D2). A gate that ran
+    after the write would look identical at the seam and lose the trip.
 
-    And after every one of them the trip's stops in Neo4j are byte-unchanged and the
-    trip is still uncomposed, so the client can offer another flavour (decision D2).
+    This was one clause of ``test_unfaithful_output_is_refused_and_trip_untouched``. It
+    is now its own node id because its two siblings became ADVISORY and therefore
+    COMPOSE — which marks the trip composed and would 409 every later clause sharing the
+    fixture.
     """
     trip_id = fresh_trip["trip_id"]
     before = _persisted(live_neo4j, trip_id)
     assert before["composed_route_id"] is None
     assert len(before["stops"]) > 1, "a one-stop trip cannot exercise a per-stop gate"
 
-    # --- FAITHFULNESS: the real (injected) checker runs, per stop -------------
-    checker = _RejectingChecker()
-    checker_target = _override_dep(client, "get_faithfulness_checker", checker)
-    executor_target = _override_dep(client, "get_premium_compose_executor", _RewritingExecutor())
-    try:
-        with caplog.at_level(logging.ERROR, logger="ondoway.api"):
-            resp = _compose(client, trip_id)
-        detail = _refusal_detail(resp, caplog)
-        assert checker.calls, (
-            "the faithfulness checker the endpoint depends on was never consulted — "
-            "the per-stop finalizer is still verifying with the trusting offline stub"
-        )
-        assert detail["faithfulness"] > 0, (
-            f"a rewritten tour that entails NOTHING was not refused on faithfulness: {detail}"
-        )
-        assert detail["untraceable"] == 0 and detail["forbidden"] == 0, (
-            f"the double should trip faithfulness and nothing else: {detail}"
-        )
-        assert _persisted(live_neo4j, trip_id) == before, (
-            "the trip was mutated by a compose that FAILED verification"
-        )
-    finally:
-        _clear_dep(client, checker_target)
-        _clear_dep(client, executor_target)
-
-    # --- COVERAGE: facts deleted, citations intact ----------------------------
-    caplog.clear()
-    executor_target = _override_dep(
-        client, "get_premium_compose_executor", _ClaimBlurringExecutor()
-    )
-    try:
-        with caplog.at_level(logging.ERROR, logger="ondoway.api"):
-            resp = _compose(client, trip_id)
-        detail = _refusal_detail(resp, caplog)
-        # Coverage is the ONLY gate this double can trip, and the wire deliberately
-        # does not carry a coverage count — so "refused with every reported count at
-        # zero" IS the coverage signature, given _refusal_detail ruled out a crash.
-        assert detail["untraceable"] == 0, detail
-        assert detail["forbidden"] == 0, detail
-        assert detail["provenance"] == 0, detail
-        assert detail["faithfulness"] == 0, detail
-        assert _persisted(live_neo4j, trip_id) == before
-    finally:
-        _clear_dep(client, executor_target)
-
-    # --- INVENTION: full validate_script, not structural traceability ---------
-    caplog.clear()
     inventor = _InventingGlueExecutor()
     executor_target = _override_dep(client, "get_premium_compose_executor", inventor)
     try:
@@ -449,6 +406,77 @@ def test_unfaithful_output_is_refused_and_trip_untouched(client, live_neo4j, fre
         )
         assert detail["untraceable"] == 0, detail
         assert _persisted(live_neo4j, trip_id) == before
+    finally:
+        _clear_dep(client, executor_target)
+
+
+@needs_neo4j
+def test_the_endpoint_consults_the_real_checker_even_though_entailment_only_advises(
+    client, live_neo4j, fresh_trip, caplog
+):
+    """The endpoint must WIRE the real faithfulness checker, whether or not it blocks.
+
+    Entailment became advisory on 2026-08-03 (it fired on ~a fifth of a good tour), so a
+    REFUSAL can no longer be used as the proof that the checker is wired — which is what
+    the previous version of this test relied on. The durable proof is the checker's own
+    call log: a checker that is built-but-ignored fails this, and so does one the
+    endpoint never asks for. That distinction is exactly what was false for
+    ``/trips/preview`` for three days, and a demotion must not quietly re-hide it.
+
+    The tour now COMPOSES despite entailing nothing, and that is the intended behaviour:
+    the failures are recorded on the report and logged per sentence by the route, so a
+    human sees strictly more than the old bare count.
+    """
+    trip_id = fresh_trip["trip_id"]
+    before = _persisted(live_neo4j, trip_id)
+    assert before["composed_route_id"] is None
+
+    checker = _RejectingChecker()
+    checker_target = _override_dep(client, "get_faithfulness_checker", checker)
+    executor_target = _override_dep(client, "get_premium_compose_executor", _RewritingExecutor())
+    try:
+        with caplog.at_level(logging.ERROR, logger="ondoway.api"):
+            resp = _compose(client, trip_id)
+        assert checker.calls, (
+            "the faithfulness checker the endpoint depends on was never consulted — "
+            "the per-stop finalizer is still verifying with the trusting offline stub"
+        )
+        assert resp.status_code == 200, (
+            "a tour that entails NOTHING was refused: entailment is ADVISORY since "
+            f"2026-08-03 and must not gate serving. {resp.text[:400]}"
+        )
+    finally:
+        _clear_dep(client, checker_target)
+        _clear_dep(client, executor_target)
+
+
+@needs_neo4j
+def test_a_tour_with_deleted_facts_composes_because_coverage_only_advises(
+    client, live_neo4j, fresh_trip, caplog
+):
+    """Dropped-fact detection is ADVISORY: it counts shared WORDS, so it cannot block.
+
+    ``verify_claim_coverage`` reports a claim as deleted when no composed sentence
+    shares enough tokens with it. MEASURED 2026-08-03 on a real Paris tour: it reported
+    "Square named for Henri IV" as dropped from a tour that says precisely that in
+    different words. A paraphrase is indistinguishable from a deletion under word
+    counting, so this check can only ever say "I don't know" and therefore RECORDS.
+
+    It is replaced, not abandoned: the scored fact-check runs the same judge in reverse
+    ("is this source claim still present?"), which distinguishes a reworded fact from a
+    missing one. See the run-context addendum.
+    """
+    trip_id = fresh_trip["trip_id"]
+    executor_target = _override_dep(
+        client, "get_premium_compose_executor", _ClaimBlurringExecutor()
+    )
+    try:
+        with caplog.at_level(logging.ERROR, logger="ondoway.api"):
+            resp = _compose(client, trip_id)
+        assert resp.status_code == 200, (
+            "a tour whose facts were blurred was refused on coverage — that check counts "
+            f"words, over-fires on paraphrase, and must only advise. {resp.text[:400]}"
+        )
     finally:
         _clear_dep(client, executor_target)
 
@@ -847,11 +875,156 @@ def test_cross_stop_echo_is_suppressed() -> None:
             "must reproduce the shipped text exactly — this is the check "
             "FinalTourBlueprint runs at build time"
         )
-        raw_texts = tuple(
-            s["text"] for s in json.loads(raw_by_stop[stop_index].body)["sentences"]
-        )
+        raw_texts = tuple(s["text"] for s in json.loads(raw_by_stop[stop_index].body)["sentences"])
         assert tuple(s.text for s in trace.source_sentences) == raw_texts, (
             f"stop {stop_index}'s trace must attest the RAW provider payload, not the "
             "post-dedup text: source_payload_sha256 is read as 'what the provider "
             "returned', and response_sha256 already names that same untouched body"
+        )
+
+
+def test_the_preview_surface_runs_the_same_three_gates_as_the_phone() -> None:
+    """AC-20 — the WORKBENCH must run the same three anti-hallucination gates as the phone.
+
+    MEASURED 2026-08-03, on the live tree: ``/trips/preview`` reached the shared
+    finalizer with all three gate knobs at their OFF defaults
+    (``premium_tour.finalize_premium_composition`` passed only ``completed_units`` and
+    ``model``), so ``authoring.py`` set ``allow_unverified_faithfulness=True`` and
+    ``compose_gate.py`` substituted ``MockFaithfulnessChecker`` — the stub that approves
+    every sentence. Every tour the owner reviewed in the workbench was therefore
+    unchecked for entailment, for invented proper nouns and years in glue, and for facts
+    silently deleted by a bold fusion — while the tour a tourist receives was checked for
+    all three. The instrument was measuring something the product does not do.
+
+    Two docstrings asserted this could not happen (``authoring.py``'s "The live API never
+    takes this branch" and ``compose_gate.py``'s "The live API was never affected").
+    ``/trips/preview`` is a live API route and took that branch on every request. Comments
+    are claims; this test is a measurement.
+
+    Both surfaces are DRIVEN here on ONE fixture with the SAME doubles, rather than
+    argued from the fact that they share a callee — that argument is precisely what hid
+    the divergence, because sharing a callee says nothing about the ARGUMENTS each caller
+    passes to it.
+
+    UNDO (either half turns this RED): drop ``faithfulness_checker`` from
+    ``finalize_premium_tour``'s call into ``finalize_premium_composition``, or give that
+    parameter a default so a caller can silently omit it.
+    """
+    stitched, sequence, route = _cross_stop_echo_fixture()
+    plan = plan_prebuilt_route_authoring(
+        stitched,
+        sequence,
+        route,
+        authoring_policy_sha256=premium_authoring_policy_sha256(),
+    )
+    executor = _RewritingExecutor()
+
+    # Entailment is ADVISORY since 2026-08-03, so neither surface REFUSES here. What
+    # parity means is that both surfaces CONSULT the same checker — which is the thing
+    # that was false, and which a refusal was only ever a proxy for. See
+    # ``test_faithfulness_and_dropped_facts_are_advisory_not_blocking`` for the demotion.
+
+    # --- surface 1: the phone (POST /trips/{id}/compose) — already wired ------
+    phone_checker = _RejectingChecker()
+    author_prebuilt_route(
+        plan,
+        executor=executor,
+        faithfulness_checker=phone_checker,
+        enforce_claim_coverage=True,
+        scan_glue_for_invention=True,
+    )
+    assert phone_checker.calls, "baseline broken: the phone path never consulted its checker"
+
+    # --- surface 2: the workbench (POST /trips/preview) — must consult IDENTICALLY
+    preview_plan = _preview_surface_plan(plan)
+    responses = tuple(executor.execute(unit) for unit in preview_plan.units)
+    preview_checker = _RejectingChecker()
+    finalize_premium_composition(
+        preview_plan,
+        responses,
+        faithfulness_checker=preview_checker,
+        enforce_claim_coverage=True,
+        scan_glue_for_invention=True,
+    )
+    assert preview_checker.calls, (
+        "the preview surface never consulted the injected faithfulness checker — it is "
+        "still verifying with the trusting offline stub, so the workbench is showing "
+        "unchecked narration as if it were checked"
+    )
+    assert len(preview_checker.calls) == len(phone_checker.calls), (
+        f"the two surfaces asked the checker a DIFFERENT number of questions "
+        f"(phone {len(phone_checker.calls)}, workbench {len(preview_checker.calls)}) — "
+        "same engine, same tour, so the entailment work must be identical"
+    )
+
+    # --- the LIVE wiring cannot silently skip them ----------------------------
+    # A working parameter proves nothing if the live caller omits it: that IS the bug.
+    # finalize_premium_tour is what preview_trip calls, so the checker must be
+    # REQUIRED there — a default would let the whole divergence return unnoticed.
+    checker_param = inspect.signature(finalize_premium_tour).parameters["faithfulness_checker"]
+    assert checker_param.default is inspect.Parameter.empty, (
+        "finalize_premium_tour takes an OPTIONAL faithfulness checker, so /trips/preview "
+        "can reach the shared finalizer with no entailment gate again — exactly the "
+        "divergence measured on 2026-08-03"
+    )
+
+
+def test_faithfulness_and_dropped_facts_are_advisory_not_blocking() -> None:
+    """OWNER RULING 2026-08-03: the entailment and dropped-fact checks RECORD, they do
+    not BLOCK. Structural checks still block.
+
+    MEASURED that day on a real Paris tour, with the gates newly wired to the workbench:
+    ``0 untraceable, 1 forbidden, 0 provenance, 28 faithfulness, 6 coverage`` — and of
+    the 28, exactly ONE was a verified invention (two source books disagree, 1867 vs
+    1870, and the model synthesised a reconciliation neither states). Sampled false
+    alarms included
+
+        "Look hard at the façade, because it's a manifesto of Art Nouveau."
+
+    which is the corpus's own sentence with two words changed, and a dropped-fact report
+    for "Square named for Henri IV" on a tour that says exactly that in different words
+    (the coverage check counts shared WORDS, so a paraphrase reads as a deletion).
+
+    A check that fires on ~a fifth of a good tour cannot decide whether to ship it. The
+    rule the owner set: a check may BLOCK only when it can NAME the specific thing that
+    is wrong; a check that can only say "I don't know" RECORDS. Both of these are in the
+    second category until the scored replacement lands (see the run-context addendum:
+    per-claim scores with an unsupported SPAN, bands not averages, repair before cut).
+
+    They stay ON, stay on the report, and stay in the logs — this is a demotion from
+    blocking to advisory, NOT a removal. ``faithfulness_checked`` still records whether
+    the pass ran, so "checked and clean" is still distinguishable from "never checked".
+
+    UNDO: put ``faithfulness_failures`` or ``coverage_failures`` back into ``passed``
+    and this goes RED — which is the state that blocked every tour on 2026-08-03.
+    """
+    sentence = Sentence(
+        text="Look hard at the façade, because it's a manifesto of Art Nouveau.",
+        stop_idx=0,
+        source_type="beat",
+        source_id="beat-1",
+    )
+
+    advisory_only = ValidationReport(
+        faithfulness_failures=((sentence, "unfaithful:beat-1"),),
+        coverage_failures=(("beat-2", "Square named for Henri IV"),),
+        faithfulness_checked=True,
+    )
+    assert advisory_only.passed, (
+        "an entailment miss and a dropped-fact report BLOCKED the tour — these two "
+        "over-fire (28 flags, 1 verified defect, on a real tour) and must only advise"
+    )
+    # The evidence is still carried, or the demotion would be a deletion.
+    assert advisory_only.faithfulness_failures and advisory_only.coverage_failures
+    assert advisory_only.faithfulness_checked
+
+    # The structural checks are cheap, exact, and DO still block.
+    for blocking in (
+        ValidationReport(untraceable_sentences=(sentence,)),
+        ValidationReport(forbidden_phrase_hits=((sentence, "banned"),)),
+        ValidationReport(provenance_failures=(("beat-1", 0.12),)),
+    ):
+        assert not blocking.passed, (
+            f"a structural failure stopped blocking: {blocking!r} — traceability, "
+            "forbidden phrases and provenance name exactly what is wrong and must gate"
         )

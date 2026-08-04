@@ -95,14 +95,28 @@ def in_current_context(fn: Callable[..., object]) -> Callable[..., object]:
 
     An earlier version of this module's docstring asserted "safe to call from
     anywhere, including threads". It was false, in the one module written to stop
-    invisible failures. ``copy_context().run`` carries the scope across, so the
-    two compose fan-outs (``premium_tour.execute_premium_plan`` and
+    invisible failures. Copying the caller's context carries the scope across, so
+    the two compose fan-outs (``premium_tour.execute_premium_plan`` and
     ``authoring``) can report what went wrong inside them.
+
+    ONE ENTERABLE CONTEXT PER CALL, and the ``.copy()`` is the whole point. Both
+    fan-outs wrap ONCE and hand the single returned closure to a thread pool, so
+    several workers run ``_run`` at the same instant. A ``Context`` object cannot
+    be entered by two threads at once — running the wrap-time snapshot directly
+    raised ``RuntimeError: cannot enter context: ... is already entered`` on every
+    tour with two or more stops, for three days, because real units are slow
+    provider calls and the overlap is guaranteed rather than probabilistic.
+
+    The snapshot must still be taken HERE, at wrap time, on the caller's thread:
+    that is what carries the caller's collection scope. Calling
+    ``contextvars.copy_context()`` inside ``_run`` instead would copy the WORKER's
+    empty context and silently drop every degradation — the same invisibility,
+    wearing a fix's clothes.
     """
-    ctx = contextvars.copy_context()
+    snapshot = contextvars.copy_context()
 
     def _run(*args: object, **kwargs: object) -> object:
-        return ctx.run(fn, *args, **kwargs)
+        return snapshot.copy().run(fn, *args, **kwargs)
 
     return _run
 

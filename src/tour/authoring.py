@@ -52,7 +52,7 @@ from .contract import (
     Sentence,
     ValidationReport,
 )
-from .degradations import in_current_context
+from .degradations import in_current_context, record
 from .generation import GLUE_REFLECTION, _sum_audio
 from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .reflection import reflection_slots
@@ -438,9 +438,7 @@ def candidate_compose_request_envelope(
         "max_tokens": CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
         "thinking": {"type": "adaptive"},
         "system": _COMPOSE_SYSTEM,
-        "output_config": {
-            "format": {"type": "json_schema", "schema": _COMPOSE_OUTPUT_SCHEMA}
-        },
+        "output_config": {"format": {"type": "json_schema", "schema": _COMPOSE_OUTPUT_SCHEMA}},
         "messages": [{"role": "user", "content": user}],
     }
     return (
@@ -669,9 +667,7 @@ def finalize_certification_composition(
         if sentence.source_type != "beat"
     ) | ({GLUE_REFLECTION} if any(request.slots for request in requests.values()) else set())
 
-    def validate_authorized_sources(
-        script: Script, sequence: BeatSequence
-    ) -> ValidationReport:
+    def validate_authorized_sources(script: Script, sequence: BeatSequence) -> ValidationReport:
         report = validate_source_traceability(
             script,
             sequence,
@@ -875,9 +871,7 @@ def plan_prebuilt_route_authoring(
     would close an import cycle.
     """
 
-    _beats_by_id, stops, requests = _certification_compose_requests(
-        source, beat_sequence, route
-    )
+    _beats_by_id, stops, requests = _certification_compose_requests(source, beat_sequence, route)
     if stops[-1] >= len(route.pois):
         raise ValueError("the stitched script names a stop the prebuilt route lacks")
     # Exactly ONE unit per dwell stop. ``stops`` comes from the stitched script's
@@ -960,10 +954,31 @@ def author_prebuilt_route(
 
     if not 1 <= max_workers <= 8:
         raise ValueError("prebuilt-route authoring supports one to eight workers")
+
+    def _execute_unit(unit: PrebuiltRouteComposeUnit) -> PhysicalProviderResponse:
+        # AC-4: a unit that fails inside the fan-out must be recorded —
+        # exception type, message and stop index, in the CALLER's scope —
+        # before it is re-raised. A partial premium tour must abort, never
+        # ship half-narrated, so this never swallows the exception.
+        try:
+            return executor.execute(unit)
+        except Exception as exc:
+            record(
+                kind="authoring_unit_failed",
+                human=(
+                    "A stop failed to compose, so the tour was stopped rather than "
+                    "shipped half-narrated."
+                ),
+                component="author_prebuilt_route._execute_unit",
+                error=exc,
+                stop_index=str(unit.stop_index),
+            )
+            raise
+
     # in_current_context: see src/tour/degradations.py — a pooled worker cannot
     # see the request's collection scope without it, so failures vanish.
     with ThreadPoolExecutor(max_workers=min(max_workers, len(plan.units))) as pool:
-        responses = tuple(pool.map(in_current_context(executor.execute), plan.units))
+        responses = tuple(pool.map(in_current_context(_execute_unit), plan.units))
 
     authoring_responses: list[AuthoringStopResponse] = []
     completed: list[CompletedCertificationComposeUnit] = []

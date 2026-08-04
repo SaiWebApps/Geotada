@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Protocol
 
 from src.audio.provider import OpenAITTSProvider
-from src.tour.degradations import in_current_context
+from src.tour.degradations import in_current_context, record
 
 from .artifact import (
     BuildFingerprint,
@@ -72,6 +72,7 @@ from .selection import (
     choose_discrete_route,
     select_k_routes,
 )
+from .verify import FaithfulnessChecker
 
 PREMIUM_MODULE_VERSION = "ondoway-premium-tour-v1"
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -433,7 +434,24 @@ def execute_premium_plan(
         receipt_sink.before_call(unit)
 
     def invoke(unit: PremiumComposeUnit) -> PhysicalProviderResponse:
-        response = executor.execute(unit)
+        # AC-4: a unit that fails inside the fan-out must be recorded — exception
+        # type, message and stop index, in the CALLER's scope — before it is
+        # re-raised. A partial premium tour must abort, never ship
+        # half-narrated, so this never swallows the exception.
+        try:
+            response = executor.execute(unit)
+        except Exception as exc:
+            record(
+                kind="premium_unit_failed",
+                human=(
+                    "A stop failed to compose, so the tour was stopped rather than "
+                    "shipped half-narrated."
+                ),
+                component="execute_premium_plan.invoke",
+                error=exc,
+                stop_index=str(unit.stop_index),
+            )
+            raise
         receipt_sink.after_call(unit, response)
         return response
 
@@ -446,8 +464,26 @@ def execute_premium_plan(
 def finalize_premium_composition(
     plan: PremiumTourPlan,
     responses: tuple[PhysicalProviderResponse, ...],
+    *,
+    faithfulness_checker: FaithfulnessChecker | None = None,
+    enforce_claim_coverage: bool = False,
+    scan_glue_for_invention: bool = False,
 ) -> CertificationComposition:
-    """Purely bind physical response bytes and run the certification finalizer."""
+    """Purely bind physical response bytes and run the certification finalizer.
+
+    THE THREE GATES ARE FORWARDED, and the defaults are for the CERTIFICATION REPLAY
+    ONLY (``scripts/tour_batch_candidate.py``), whose judgement of prose is semantic and
+    owned by factual review. Every LIVE surface must pass all three — see
+    ``finalize_premium_tour``, which requires the checker and hard-codes both booleans.
+
+    MEASURED 2026-08-03: this function called the shared finalizer with only
+    ``completed_units`` and ``model``, so ``/trips/preview`` ran NO entailment check, NO
+    coverage baseline and NO invented-noun/year scan, while ``POST /trips/{id}/compose``
+    ran all three. ``authoring.py`` then set ``allow_unverified_faithfulness=True`` and
+    ``compose_gate.py`` substituted ``MockFaithfulnessChecker``, which approves every
+    sentence. The editorial workbench — the instrument used to judge tour quality — was
+    reviewing narration nothing had checked, and hiding refusals the phone would raise.
+    """
 
     if len(responses) != len(plan.units):
         raise ValueError("physical responses differ from the planned stop count")
@@ -500,6 +536,9 @@ def finalize_premium_composition(
         plan.route,
         completed_units=tuple(completed),
         model=COMPOSE_MODEL,
+        faithfulness_checker=faithfulness_checker,
+        enforce_claim_coverage=enforce_claim_coverage,
+        scan_glue_for_invention=scan_glue_for_invention,
     )
 
 
@@ -589,11 +628,30 @@ def finalize_premium_tour(
     plan: PremiumTourPlan,
     responses: tuple[PhysicalProviderResponse, ...],
     *,
+    faithfulness_checker: FaithfulnessChecker,
     build_identity: PremiumBuildIdentity | None = None,
 ) -> PremiumTourResult:
-    """Pure finalization into a validated, certification-eligible blueprint."""
+    """Pure finalization into a validated, certification-eligible blueprint.
 
-    composition = finalize_premium_composition(plan, responses)
+    ``faithfulness_checker`` is REQUIRED and deliberately has NO default. This is the
+    function ``/trips/preview`` calls, and an optional checker is exactly how the
+    workbench came to run no entailment gate at all for three days while the phone ran
+    one: nothing at the call site had to say "skip the fact-checking", it simply never
+    mentioned it, and an omission is invisible to code review. Making it required means
+    the divergence cannot come back silently — a caller that forgets fails loudly at the
+    call, not quietly in the output.
+
+    The two boolean gates are NOT parameters here for the same reason: a live surface
+    does not get to choose whether facts are checked. They are hard-coded ON.
+    """
+
+    composition = finalize_premium_composition(
+        plan,
+        responses,
+        faithfulness_checker=faithfulness_checker,
+        enforce_claim_coverage=True,
+        scan_glue_for_invention=True,
+    )
     identity = build_identity or resolve_build_identity()
     vignette_beat_ids = frozenset(
         beat.id for beats in plan.sequence.vignette_beats.values() for beat in beats
