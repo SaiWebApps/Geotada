@@ -533,7 +533,16 @@ def test_coverage_allows_paraphrase_merge_but_catches_dropped_distinct_fact():
     assert verify_claim_coverage(lossy, expected, bbi), "dropping a distinct fact must fail"
 
 
-def test_full_verifier_coverage_gate_blocks_deletion():
+def test_full_verifier_coverage_gate_reports_deletion():
+    """The dropped-fact check must NAME the beat whose fact compose deleted.
+
+    It reports rather than refuses: the coverage check counts shared WORDS, so a
+    paraphrase reads to it as a deletion, and it was demoted to advisory by owner
+    ruling on 2026-08-03 (``ValidationReport.passed``; pinned by
+    test_tour_authoring_gates.py::test_faithfulness_and_dropped_facts_are_advisory_not_blocking).
+    What still has teeth is detection: a faithful passthrough is clean, and a real
+    deletion appears on the report against beat "A".
+    """
     from src.tour.compose_gate import build_full_verifier
     beat = _beat("A", ("Napoleon placed four horses from Saint Mark on the arch",
                        "The arch was built between 1806 and 1808"))
@@ -547,9 +556,10 @@ def test_full_verifier_coverage_gate_blocks_deletion():
     verify = build_full_verifier(
         seq, bbi, expected_claim_ids=expected, allow_unverified_faithfulness=True
     )
-    # a faithful passthrough passes coverage; a deletion fails it.
-    assert verify(stitched).passed
+    # a faithful passthrough is clean; a deletion is caught and named.
+    passthrough = verify(stitched)
+    assert passthrough.passed
+    assert passthrough.coverage_failures == (), "a legal passthrough reported a dropped fact"
     lossy = _script_of(_s("Napoleon set four horses from Saint Mark atop the arch.", "A"))
     report = verify(lossy)
-    assert not report.passed
     assert report.coverage_failures and report.coverage_failures[0][0] == "A"

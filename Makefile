@@ -23,9 +23,19 @@ SHELL := /bin/bash
 # can still report that uv or Docker is missing on a machine with nothing set up.
 PREFLIGHT := python3 scripts/preflight.py
 
+# Which pytest graph this invocation talks to.  Defaults to the canonical `test`
+# profile (:7688).  A concurrent worktree overrides it — `make test-file
+# TEST_PROFILE=test2` — so two agents cannot wipe each other's fixtures: the
+# pytest suite full-wipes its graph per-module, so a shared graph produces
+# phantom failures, not a slow queue.  It moves the preflight requirement too
+# (PRE_PYTEST below), so the override cannot silently run against a graph that
+# was never started.  `make test` and `make audit` are deliberately NOT
+# parameterised: the definitive bar always runs on the canonical graph.
+TEST_PROFILE ?= test
+
 ENV_EXEC := uv run python scripts/dev_env.py exec
 LOCAL_EXEC := $(ENV_EXEC) --profile local --
-TEST_EXEC := $(ENV_EXEC) --profile test --
+TEST_EXEC := $(ENV_EXEC) --profile $(TEST_PROFILE) --
 WORKBENCH_EXEC := $(ENV_EXEC) --profile workbench --
 RENDER_LOCAL_EXEC := $(ENV_EXEC) --profile local --render --
 RENDER_TEST_EXEC := $(ENV_EXEC) --profile test --render --
@@ -46,7 +56,7 @@ INVARIANT_TEST_FILES := tests/test_tour_invariants_live.py
 PRE_PY := uv python-deps
 PRE_LOCAL_GRAPH := uv python-deps db-dev dev-data
 PRE_TOUR := uv python-deps db-dev dev-data valhalla
-PRE_PYTEST := uv python-deps db-test db-dev dev-data valhalla
+PRE_PYTEST := uv python-deps db-$(TEST_PROFILE) db-dev dev-data valhalla
 PRE_FLUTTER := flutter flutter-deps
 # The full union `make test` will need, checked once up front so a missing Render
 # credential fails in seconds rather than twenty minutes into the suite.
@@ -335,30 +345,33 @@ tour-batch-review-live: ## Execute an approved semantic-review plan with fresh R
 # Starting a database IS the preflight requirement `db-<name>`: it starts the
 # service if needed and then proves readiness by running a real Cypher query
 # inside the container. It cannot report success on a database that is absent.
-db-up: ## Start one local Neo4j service. Usage: make db-up DB=dev|test|workbench.
-	@case "$(DB)" in dev|test|workbench) ;; \
-		*) echo "ERROR: DB must be dev, test, or workbench; never cloud." >&2; exit 2 ;; esac
+db-up: ## Start one local Neo4j service. Usage: make db-up DB=dev|test|test2|test3|workbench.
+	@case "$(DB)" in dev|test|test2|test3|workbench) ;; \
+		*) echo "ERROR: DB must be dev, test, test2, test3 or workbench; never cloud." >&2; exit 2 ;; esac
 	@$(PREFLIGHT) --label "db-up DB=$(DB)" db-$(DB)
 
 db-down: ## Stop one local Neo4j service without deleting data. Usage: make db-down DB=...
-	@case "$(DB)" in dev|test|workbench) ;; \
-		*) echo "ERROR: DB must be dev, test, or workbench; never cloud." >&2; exit 2 ;; esac
+	@case "$(DB)" in dev|test|test2|test3|workbench) ;; \
+		*) echo "ERROR: DB must be dev, test, test2, test3 or workbench; never cloud." >&2; exit 2 ;; esac
 	@$(PREFLIGHT) --label "db-down DB=$(DB)" docker-daemon
 	@case "$(DB)" in dev) service=neo4j ;; test) service=neo4j-test ;; \
+		test2) service=neo4j-test2 ;; test3) service=neo4j-test3 ;; \
 		workbench) service=neo4j-workbench ;; esac; \
 	docker compose stop "$${service}"
 
 db-status: ## Show all local Neo4j service states.
 	@$(PREFLIGHT) --label db-status docker-daemon
-	@docker compose ps neo4j neo4j-test neo4j-workbench
+	@docker compose ps neo4j neo4j-test neo4j-test2 neo4j-test3 neo4j-workbench
 
-db-reset: ## Delete exactly one local Neo4j volume. Usage: make db-reset DB=dev|test|workbench.
-	@case "$(DB)" in dev|test|workbench) ;; \
-		*) echo "ERROR: DB must be dev, test, or workbench; Aura is unreachable here." >&2; exit 2 ;; esac
+db-reset: ## Delete exactly one local Neo4j volume. Usage: make db-reset DB=dev|test|test2|test3|workbench.
+	@case "$(DB)" in dev|test|test2|test3|workbench) ;; \
+		*) echo "ERROR: DB must be dev, test, test2, test3 or workbench; Aura is unreachable here." >&2; exit 2 ;; esac
 	@$(PREFLIGHT) --label "db-reset DB=$(DB)" docker-daemon
 	@set -e; case "$(DB)" in \
 		dev) service=neo4j; volume=ondoway_neo4j_data ;; \
 		test) service=neo4j-test; volume=ondoway_neo4j_test_data ;; \
+		test2) service=neo4j-test2; volume=ondoway_neo4j_test2_data ;; \
+		test3) service=neo4j-test3; volume=ondoway_neo4j_test3_data ;; \
 		workbench) service=neo4j-workbench; volume=ondoway_neo4j_workbench_data ;; \
 	esac; \
 	docker compose stop "$${service}"; \

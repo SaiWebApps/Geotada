@@ -39,7 +39,6 @@ from src.api.models.trips import (
     TripPreviewStop,
     TripPreviewTourability,
 )
-from src.tour.authoring import author_prebuilt_route, plan_prebuilt_route_authoring
 from src.tour.beat_select import select_vignette_beats
 from src.tour.candidate_eligibility import (
     CandidateRejection,
@@ -58,13 +57,16 @@ from src.tour.generation import generate, is_walk_concurrent, vignette_one_liner
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option
 from src.tour.premium_tour import (
+    PREMIUM_MODULE_VERSION,
     EphemeralReceiptSink,
     PremiumComposeExecutor,
     PremiumRouteInfeasibleError,
+    certification_planning_policy,
+    exact_snapshot_sha256,
     execute_premium_plan,
     finalize_premium_tour,
+    plan_premium_authoring,
     plan_premium_tour,
-    premium_authoring_policy_sha256,
     resolve_build_identity,
 )
 from src.tour.quality_rubric import score_tour
@@ -474,7 +476,7 @@ def generate_trip(
 
 
 # The per-stop authoring seam fires exactly ONE physical call per dwell stop and
-# never retries (src/tour/authoring.py::author_prebuilt_route), so the attempt count
+# never retries (src/tour/premium_tour.py::execute_premium_plan), so the attempt count
 # the response has always carried is now a constant rather than a counter — there is
 # no recompose round trip left to report. The field stays on the wire because the
 # phone reads it out of the 422 detail (mobile/lib/services/trip_service.dart:229).
@@ -566,7 +568,38 @@ def compose_trip(
     picked = [pois_by_id[pid] for pid in poi_ids]
 
     spine = pick_spine_area(tour_input.start[0], tour_input.start[1], picked, snapshot)
+    # The SAME certification walk budget the phone and the workbench plan with
+    # (0.90-1.10, nominal 1.00). Rebuilding the persisted pick with no policy is the
+    # third route into the legacy 0.83 flat budget, which step 6 deletes outright.
+    planning_policy = certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
     with RoutingClient() as routing_client:
+        # Captured INSIDE the block: RoutingClient is a context manager, and the
+        # authoring plan needs this value after it closes.
+        #
+        # GUARDED, because this is the one call on this path that a Valhalla outage
+        # can hard-fail. Every walking leg below independently falls back to a
+        # straight-line estimate when the container is unreachable, but the routing
+        # VERSION is provenance -- it binds the authored tour to the engine that
+        # measured it -- so routing_client.routing_version() does a live GET /status
+        # and treats a missing or malformed answer as an error (routing_client.py:183-200).
+        # ondoway-valhalla is a real network dependency that cold-starts and rebuilds
+        # tiles (render.yaml:98-124). Left bare, an outage escapes as a generic 500
+        # (transport error) or, worse, is swept up by the ValueError branch far below
+        # and relabelled compose_verification_failed -- a code that means "the narrator
+        # wrote something untraceable", which would blame the writer for a container
+        # that is simply still booting. Named, retryable 503 instead, exactly like the
+        # build fingerprint below, and raised before any provider call is billed.
+        try:
+            routing_version = routing_client.routing_version()
+        except Exception as exc:
+            logging.getLogger("ondoway.api").exception(
+                "Compose could not read a routing version for trip=%s", trip_id
+            )
+            raise HTTPException(
+                503,
+                {"reason": "routing_version_unavailable", "detail": str(exc)},
+                headers={"Retry-After": "30"},
+            ) from exc
         route = summarise_route(
             picked,
             start_lat=tour_input.start[0],
@@ -575,6 +608,7 @@ def compose_trip(
             duration_min=tour_input.duration_min,
             spine_area=spine,
             routing_client=routing_client,
+            planning_policy=planning_policy,
         )
 
     # Track B: re-tag walk-past vignettes on the rebuilt route (pure fn over
@@ -605,36 +639,61 @@ def compose_trip(
     )
     stitched = generate(seq, route, tour_input)
 
-    # ONE ALGORITHM. This persisted endpoint no longer owns a whole-tour composer:
-    # it authors the route it just rebuilt through the same per-stop seam that
-    # /trips/preview and the batch runner use, and keeps its fail-before-mutation
-    # contract (nothing below this block writes until authoring has passed VERIFY).
-    # Planning is provider-free, so the exact physical call count is known before a
-    # single call is billed.
+    # ONE ALGORITHM, ONE SEAM. This persisted endpoint authors the route it just
+    # rebuilt through the SAME Block-2 seam /trips/preview and the batch runner use:
+    # plan_premium_authoring -> execute_premium_plan -> finalize_premium_tour. It
+    # keeps its fail-before-mutation contract (nothing below this block writes until
+    # authoring has passed VERIFY). Planning is provider-free, so the exact physical
+    # call count is known before a single call is billed.
+    #
+    # The three anti-hallucination gates are no longer this call site's to choose:
+    # finalize_premium_tour hard-codes enforce_claim_coverage and
+    # scan_glue_for_invention ON and gives faithfulness_checker no default, so a live
+    # surface cannot silently omit one. Same three gates, same arguments as before.
+    #
+    # Resolved BEFORE the try and before any spend: an unresolvable build fingerprint
+    # (dirty local tree, malformed deploy SHA) is an environment fault, not an
+    # authoring failure, and must never be relabelled compose_verification_failed —
+    # that code means "the narrator wrote something untraceable" and would blame the
+    # writer for an engine fault. Same reasoning as /trips/preview.
     try:
-        plan = plan_prebuilt_route_authoring(
+        build_identity = resolve_build_identity()
+    except Exception as exc:
+        logging.getLogger("ondoway.api").exception(
+            "Compose could not resolve a build fingerprint for trip=%s", trip_id
+        )
+        raise HTTPException(
+            503,
+            {"reason": "build_fingerprint_unavailable", "detail": str(exc)},
+            headers={"Retry-After": "30"},
+        ) from exc
+
+    try:
+        plan = plan_premium_authoring(
             stitched,
             seq,
             route,
-            authoring_policy_sha256=premium_authoring_policy_sha256(),
+            snapshot=snapshot,
+            snapshot_sha256=exact_snapshot_sha256(snapshot),
+            routing_version=routing_version,
+            policy_version=planning_policy.policy_id,
         )
-        # The spend reservation is the REAL number of calls this compose will make
-        # (one per dwell stop), and it happens HERE — after the already-composed 409
-        # above, so a duplicate compose reserves nothing and calls nobody.
+        # The physical calls are the REAL number this compose will make (one per
+        # dwell stop), and they happen HERE — after the already-composed 409 above,
+        # so a duplicate compose reserves nothing and calls nobody.
         with _upstream_provider_errors():
-            # GATE PARITY (D3). The per-stop finalizer was built for the
-            # certification replay and defaults to structural checks only; this
-            # path PERSISTS an unreviewed tour, so it keeps the exact three gates
-            # the whole-tour composer ran for it — real entailment, the
-            # stitch-derived coverage baseline, and the full validate_script scan.
-            # Parity, not escalation: no check here that was not here before.
-            composed = author_prebuilt_route(
+            physical_responses = execute_premium_plan(
                 plan,
                 executor=premium_executor,
-                faithfulness_checker=faithfulness_checker,
-                enforce_claim_coverage=True,
-                scan_glue_for_invention=True,
+                receipt_sink=EphemeralReceiptSink(),
             )
+            premium_result = finalize_premium_tour(
+                plan,
+                physical_responses,
+                faithfulness_checker=faithfulness_checker,
+                build_identity=build_identity,
+            )
+            composed = premium_result.blueprint.script
     except ComposeVerificationError as exc:
         raise HTTPException(
             422,

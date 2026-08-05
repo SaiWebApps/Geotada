@@ -1,0 +1,789 @@
+{
+  "topic": "unify-tour-algorithm",
+  "created": "2026-08-04",
+  "tier": 2,
+  "approved_by_human": true,
+  "approved_at": "2026-08-04T22:06:21Z",
+  "decisions": {
+    "phase": "Phase 1 of 2 \u2014 algorithm only. Workbench auth and persistence are Phase 2.",
+    "target_shape": "Two shared blocks in src/tour. BLOCK 1 PLAN: start (required) + end (optional) + lenses + timing -> K=3 route options, no LLM, no spend; its output IS the preview. BLOCK 2 AUTHOR: one chosen option -> per-stop scripts + audio, paid, never re-plans.",
+    "block_2_seam": "premium_tour.py's execute_premium_plan + finalize_premium_tour. authoring.py:805-1038 is deleted because finalize_premium_tour hard-codes enforce_claim_coverage and scan_glue_for_invention and gives faithfulness_checker no default, so a caller cannot omit the gates; author_prebuilt_route defaulted all three OFF.",
+    "flavour_definition": "A different route through different POIs for the SAME lens, duration, start and end (selection.py:246-247, DIVERSITY_PENALTY 0.3, JACCARD_OVERLAP_MAX 0.60). Not a lens. Three shown on both surfaces.",
+    "param_1_stop_cap": "NONE. Duration is the only product bound. max_stops removed from the policy, the selection clamp, and the authoring compose-request guard. OPEN: Q1 \u2014 whether HARD_ANCHOR_CAP survives purely as a Held-Karp tractability bound.",
+    "param_2_walk_budget": "Certification 0.90-1.10, nominal 1.00. LEGACY_ROUTE_PLANNING_POLICY (routing.py:124-128, 0.83 flat) deleted, not made optional. OPEN: Q2 \u2014 whether ERR_SHORT's four un-policied helpers are re-pointed too.",
+    "param_3_audio_char_cap": "Deleted. _PREVIEW_MAX_CHARS and its call site removed from the preview path. It was an abuse bound on an anonymous paid endpoint, not a quality setting. Phase 2 closes that exposure via authenticated /audio/generate-trip-stops.",
+    "param_4_valhalla_receipt_bar": "RESOLVED BY THE PLANNER-MANAGER 2026-08-04 to LABELLED DEGRADATION, not hard refusal. Evidence: render.yaml:98-124 deploys ondoway-valhalla as a production Render private service (type pserv, plan starter, 10GB valhalla-data disk, Geofabrik Ile-de-France tiles) wired to the API via VALHALLA_URL fromService property hostport. It is a real network dependency that can cold-start, restart or rebuild tiles, so a hard refusal would take tour generation down for every user during an outage. Implemented on the existing degradations channel (src/tour/degradations.py record/degradation_scope/summarize, threaded at trips.py:916-919). No new refusal type, no new module. Structural refusals (empty route, transit-count mismatch) stay hard refusals.",
+    "param_5_audio_staleness": "Per-stop audio path gains a content hash so edited narration invalidates its audio, matching per-beat audio_script_hash (pipeline.py:122) and keep-exploring keep_exploring_audio_hash (audio.py:972-974). It is the only generation path without one.",
+    "out_of_scope": "Workbench auth; workbench persistence; ensure_dev_data.py _assert_local_dev accepting 7689; any replacement spend bound on the anonymous audio path; /audio/compare, /audio/eval, /audio/generate-batch, checkAudioStatus; everything downstream of finalize_premium_tour (resolve_build_identity, derive_playback_assignments, remap_provider_playback_assignments, BuildFingerprint, build_final_blueprint, validate_llm_composed_blueprint); lens defaulting behaviour (_resolve_lenses, trips.py:224); new modules and new Makefile targets.",
+    "q1_ordering_RESOLVED_BY_MEASUREMENT": "ANSWERED, no longer an open question. The caps contract MEASURED the exact orderer rather than estimating it: 2^n*n^2 at ~34ns per transition and ~40 bytes per slot. n=16 -> 0.555s / 76MB; n=17 -> 1.22s / 123MB (past the sub-second guard); n=21 -> 31.6s / 1.75GB; n=25 -> ~12min / ~33GB. Worse, the certification timebox repair calls it once per incumbent-by-candidate pair, so the NUMBER of exponential calls also grows with stop count. CONTRACT: introduce ORDERING_EXACT_MAX = 16 and an order_stops dispatcher inside the EXISTING src/tour/ordering.py; above the threshold fall back to cheapest insertion built on the existing routing.insertion_cost_seconds primitive (measured 10ms at n=40, 0.51s at n=150). No stop is ever dropped \u2014 only optimality is traded. No cheaper orderer already exists, but the primitive does, so this is an extension, not a new module. This fully honours parameter 1: duration remains the only bound on how many stops a tour has.",
+    "q2_RETRACTED": "My original Q2 premise was WRONG and is withdrawn. I claimed the quality rubric still judged tours against the legacy 0.83 figure so unified tours would breach their own ceiling. Both the judge and the caps contract disproved it: the C7 ceiling reads route.err_short_total_seconds, stamped at routing.py:451 from budget.nominal_elapsed_seconds, so it is policy-derived. At nominal 1.00 the 60-minute ceiling RISES from 2988 to 3600 seconds and nothing can breach. THE REAL GAP, which no one had listed: src/tour/density.py. After step 6 its envelope radius follows the new default (737.8 -> 888.9m) while its audio target stays a bare ERR_SHORT expression at 1793s against the planner's 2160s. Both errors OVERSTATE feasibility, so the tourability gate would read GREEN on a POI pool holding roughly half the audio the planner will then try to fill. density.py is now in step 6's file scope.",
+    "q3_RESOLVED_AND_WORSE_THAN_FRAMED": "ANSWERED. My framing was that the phone would lose its try-a-shorter-walk alternatives. The contract found the alternatives are NOT lost \u2014 the refusal that carries them survives on both arms. Two worse things are true instead. First, the certification infeasibility error escapes the app's trip-generation route UNCAUGHT: that is a 500, not a 422, so a traveller whose request cannot fit currently gets a server error rather than a refusal. Second, the phone never parsed the alternatives at all \u2014 its detail extractor casts a map to a string, throws, and shows raw JSON \u2014 and the surface that DOES render them is the workbench, which today displays the literal internal identifier premium_route_infeasible to a human being. CONTRACT: give the certification error the gap-minutes and alternatives payload, generalise the existing refusal-detail helper, catch it on the generate route, and replace the identifier with plain English. All inside src/ \u2014 no workbench edit, so this needs no browser gate.",
+    "b1_repair_trial_bound": "OPEN, low severity, flagged not hidden. The caps contract specifies TIMEBOX_REPAIR_MAX_TRIALS = 4000 so the repair loop cannot bind on anything reachable today, but it could not measure the real eligible-pool size without starting the graph. If that pool exceeds roughly 500, the constant would silently truncate repair on tours that pass today. Verify against the live dev graph during step 5 rather than at plan time.",
+    "b2_a_seventh_stop_ceiling": "FOUND BY THE CAPS CONTRACT \u2014 the brief named three enforcement points for the stop ceiling and the plan later found five; this is a SEVENTH. quality_rubric.MAX_COMPOSED_STOPS = 8 caps stops in the quality rubric. The contract deliberately KEEPS the value and corrects only its now-false comment, on the reasoning that raising it changes which tours the C3 check blocks \u2014 that is a rubric-calibration decision, not a consequence of removing a planning cap. RECOMMENDATION: accept that reasoning for Phase 1 and treat the rubric ceiling as a separate, deliberate decision the owner can revisit. Flagged here so it is a choice rather than an oversight.",
+    "unbound_changes_must_be_remedied": "The caps contract identified changes in steps 5 and 6 that their proving test could not bind \u2014 meaning a developer could revert them and the gate would stay green. Each has a named one-assertion remedy in findings/contracts-caps-and-policy.md. Those remedies are MANDATORY, not optional: an unbound change is a change nobody proved, and the undo-test is this ledger's entire cost model.",
+    "OWNER_RULING_1_planning_shows_places_only": "OWNER RULING 2026-08-04, supersedes Q8 entirely. During route planning, on BOTH the workbench and the app, the options show THE PLACES ALONE \u2014 POI names, order, walking times, ETA. NO descriptive text of any kind: no LLM glue, no vignette one-liners, no teaser text, no narration. All prose arrives only at script generation, after a route has been picked. CONSEQUENCES: (a) step 7 passes the glue client OFF when planning options, so Block 1 is genuinely free as the brief always claimed; (b) step 8's merged build_route_option must NOT carry narration or vignette one-liner text into the preview payload \u2014 the contract at findings/contracts-block1-and-options.md was written before this ruling and its behaviour table folds vignette text and narration cards into the preview; THAT PART IS SUPERSEDED. Vignette SELECTION may still inform which POIs are chosen, but no vignette PROSE reaches a preview card. (c) AC-13 is satisfied by construction and its ambiguity (BA-2) is closed: no per-stop text of any kind is present in a plan-only response. (d) The three option cards must therefore be told apart by places, order and walking time alone \u2014 the workbench card design in findings/contracts-web-surfaces.md must be re-checked against this and must not rely on any prose field.",
+    "OWNER_RULING_2_workbench_never_asks_a_human_to_log_in": "OWNER RULING 2026-08-04, answers Q4. The workbench must NEVER require a human login. The Phase 2 design is that it initialises a login in the BACKGROUND and uses that identity silently. So the anonymous route added in step 11 is a stopgap for that same background identity, not a permanent anonymous surface, and Phase 2 replaces the stopgap rather than adding a login screen. The user-facing trigger is a 'Select / Build this tour' button on EACH of the three option cards \u2014 that button is how the operator marks which option proceeds to script generation. Step 12's contract must implement that button per card.",
+    "OWNER_RULING_3_delete_the_poc_page": "OWNER RULING 2026-08-04, answers Q6. frontend/tour-preview.html is DELETED, not re-pointed. Step 13 becomes a deletion proof: its test_command and files are changed accordingly, and tests/test_workbench_ui.py's standalone-preview test is removed with it. The deletion contract is already written in findings/contracts-web-surfaces.md.",
+    "OWNER_RULING_4_keep_the_build_stamp_fix_the_tests": "OWNER ASKED whether the clean-tree check makes sense; the planner-manager READ it (premium_tour.py:545-615) and answers that it does, correcting an earlier recommendation to bypass it. The check stamps every generated tour with the exact commit that built it, and refuses when the working tree has uncommitted edits because the stamp would then name a commit the running code does not match \u2014 an unreproducible, untraceable tour. It already has the right escape hatch: ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1 yields HEAD tagged local_dirty_tree=True and logs a warning that the build is not certifiable, and scripts/workbench.sh already sets it. It is fenced to refuse whenever RENDER_GIT_COMMIT is present, so it can never fire on a deployment. RULING: KEEP the check unchanged. Step 3 fixes the real problem, which is that the pytest suite runs on developer trees and does not declare itself a local build \u2014 the test setup sets the existing opt-in, exactly as the workbench script does. No product change, traceability retained. This closes Q7's first half. Q7's second half stands: an unresolvable build fingerprint on the compose path should return a 503 with a named reason rather than a generic 500.",
+    "OWNER_RULING_5_no_limits_period": "OWNER RULING 2026-08-04, answers B2. 'No limits. Period. We want good tours first and foremost.' The SEVENTH ceiling, quality_rubric.MAX_COMPOSED_STOPS = 8, is REMOVED along with the other six. The caps contract recommended keeping it on the reasoning that it is a scoring-calibration decision rather than a planning cap; the owner has overruled that. src/tour/quality_rubric.py and tests/test_tour_quality_rubric.py join step 5.5's file scope. Note the consequence honestly: the C3 quality check will stop flagging long tours as over-length, so tour length is governed by the time budget alone on every surface, including the scorer.",
+    "q8_block_one_is_not_actually_free": "RAISED BY THE BLOCK 1 CONTRACT, 2026-08-04 \u2014 contradicts the brief's own premise and needs an owner ruling before step 7 runs. The target shape says BLOCK 1 PLAN is 'NO LLM, NO spend' and that its output IS the preview. But the route-stitching call inside planning defaults to a real paid Haiku glue client, by a previous owner ruling. Planning three flavours instead of one therefore TRIPLES that spend, on the very step whose value proposition is that it costs nothing, and on an endpoint that Phase 1 leaves anonymous and unbounded (parameter 3 deletes the character cap; Phase 2 is what re-bounds it). Three ways out: (a) plan the three options with the glue client OFF and accept plainer connective text on the preview cards, restoring it only in AUTHOR \u2014 this makes Block 1 genuinely free as the brief states; (b) keep the paid glue on all three and accept 3x the current per-preview cost on an anonymous endpoint; (c) generate glue for the chosen option only, at author time, which keeps previews free but changes what the operator reads on the cards versus the final tour. The contract threads an explicit glue_client parameter defaulting to today's behaviour so the decision is a one-line change, and does not pick. RECOMMENDATION: (a) \u2014 the brief is unambiguous that the preview is free, and an unbounded anonymous paid endpoint is exactly the exposure Phase 2 exists to close. Acceptance criterion AC-13 should then read 'no LLM-authored narration', which (a) satisfies cleanly.",
+    "degradation_panel_gap": "FOUND BY THE BLOCK 1 CONTRACT, 2026-08-04. The workbench degradation panel renders only the human-readable line, the component, a count and error fields; the stable kind and the context payload are clipboard-only, so the OPERATOR-FACING CAUSE agreed in the wording ruling would not actually appear on screen. The exact six-line fix is specified in findings/contracts-block1-and-options.md and belongs to STEP 12, whose own contract currently marks that panel function UNCHANGED. Step 12 must adopt it, or acceptance criterion AC-21 fails on a technicality: the row is present in the response but invisible to the human it was written for.",
+    "endpoint_name_ruling": "PINNED BY THE PLANNER-MANAGER 2026-08-04. The new anonymous route added in step 11 is POST /trips/preview/author, NOT /trips/preview/compose. Two contract agents named it differently; 'author' is chosen because it matches the owner's own BLOCK 2 = AUTHOR vocabulary, and because 'compose' is already the name of the authenticated persisted-trip route (/trips/{trip_id}/compose) \u2014 reusing it for an anonymous stateless route would make two different things share a name. The workbench step (12) MUST call /trips/preview/author; the web-surfaces contract at findings/contracts-web-surfaces.md was written before this ruling and says 'compose' in places, which is superseded. The option selector is route_id, a 12-hex plan fingerprint; a request whose fingerprint no longer matches a freshly rebuilt plan is refused 409 plan_changed rather than authoring a tour the operator never saw.",
+    "q7_dirty_tree_build_fingerprint": "RAISED BY THE BLOCK 2 CONTRACT, 2026-08-04 \u2014 highest implementation risk in the ledger. finalize_premium_tour resolves a git build fingerprint that the compose path has never needed, and it REFUSES a dirty local working tree unless ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1, which only scripts/workbench.sh sets. If step 3 routes compose through that finalizer with no handling, every compose test in make test fails on any normal developer checkout, and the failure arrives disguised as a narration refusal rather than a build-identity refusal. Step 3 MUST specify the handling explicitly. A second, smaller question rides with it: what HTTP shape an unresolvable build fingerprint gets on compose \u2014 the contract recommends a 503 with a named reason rather than a generic 500.",
+    "open_questions": "Q1 Held-Karp tractability vs literal no-cap. Q2 ERR_SHORT's four un-policied 0.83 helpers and the quality rubric that judges against them. Q3 refusal-type change on fixed-destination over-ceiling costs the phone its alternatives payload. Q4 a second anonymous paid route for the Phase-1 window. Q5 the ally test test_preview_uses_shared_premium_plan_and_finalizer cannot stay green verbatim and is re-pointed. Q6 whether frontend/tour-preview.html is re-pointed or deleted. Recommendations recorded in run-context.md; the human answers these with their go-ahead.",
+    "tier_rationale": "Tier 2 by the path-glob table: the work touches src/tour/, src/api/routes/, frontend/ and mobile/. It touches no Makefile, .claude/, deploy, DB/data or .github path, so it does not reach Tier 3. P=2 skeptics, acceptance runs. The brief separately requires a real-browser run with screenshots for any workbench behaviour claim."
+  },
+  "baseline": {
+    "lint": "make lint \u2014 All checks passed! (ruff over src/ tests/ scripts/{9 files}), 2026-08-04",
+    "commit": "a7df218c",
+    "note": "Step 0 of the team skill was skipped by explicit owner instruction; the owner's brief at 00-brief.md IS the research and is verified at a7df218c. The planner independently re-verified every line reference the brief cites and found all of them still hold, with one drift: tests/test_trip_api.py does NOT structurally read Dart source (it only mentions trip_service.dart in a comment); tests/test_no_doubles_on_human_surfaces.py is the only Python test that does. Engine cap guard green: node .claude/team-engine.test.js \u2014 all 91 checks passed across 17 pathological shapes."
+  },
+  "run": {
+    "last_run": "2026-08-04T22:06:21Z",
+    "agents": 37,
+    "budget_units": "96/801",
+    "stopped_because": "phase_gate_red",
+    "paid_gate_runs": 0,
+    "panel_findings_unverified_infra": 0,
+    "phase_gates": [
+      {
+        "after_steps": 3,
+        "passed": false,
+        "checks": [
+          {
+            "command": "make _test-python",
+            "exit_code": 1,
+            "summary": "Python test suite failed",
+            "output_excerpt": "FAILED tests/test_claim_dedup.py::test_full_verifier_coverage_gate_blocks_deletion - AssertionError: assert not True; ValidationReport shows coverage_failures but passed=True when it should be False. Also failed: test_preflight.py::test_this_projects_own_stale_server_is_stopped, test_preflight.py::test_a_process_given_a_moment_to_exit_is_waited_for, test_tour_verify.py::test_validation_report_passed_gates_on_new_teeth. Result: 4 failed, 2627 passed in 899.23s"
+          }
+        ]
+      },
+      {
+        "after_steps": 3,
+        "retry": true,
+        "passed": false,
+        "checks": [
+          {
+            "command": "make _test-python",
+            "exit_code": 0,
+            "summary": "Python test shard passed"
+          },
+          {
+            "command": "make flutter-test",
+            "exit_code": 0,
+            "summary": "Flutter test shard passed"
+          },
+          {
+            "command": "make test-workbench",
+            "exit_code": 2,
+            "summary": "Workbench test shard failed"
+          },
+          {
+            "command": "make _test-golden",
+            "exit_code": 0,
+            "summary": "Golden test shard passed"
+          }
+        ]
+      }
+    ],
+    "close_gate": null,
+    "acceptance": null
+  },
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "text": "Given the repository at the end of this slice, when the module graph of src/tour is parsed, then exactly one callable produces the K=3 route options (the PLAN block) and exactly one seam authors a chosen option (execute_premium_plan + finalize_premium_tour in premium_tour.py), and no second implementation of either exists."
+    },
+    {
+      "id": "AC-2",
+      "text": "Given a corpus snapshot and a TourInput with a start, no end, one lens and a duration, when the PLAN block is called with a stub routing client and a provider that raises on any call, then it returns 3 RouteOptions and the provider is never invoked."
+    },
+    {
+      "id": "AC-3",
+      "text": "Given the same input, when PLAN returns its 3 options, then no two options have a Jaccard stop-set overlap above JACCARD_OVERLAP_MAX (0.60, selection.py:246-247) and all 3 share the same lens, duration, start and end."
+    },
+    {
+      "id": "AC-4",
+      "text": "Given a live FastAPI test client, when POST /trips/generate is called, then its options field contains 3 options produced by the PLAN block and the call passes the certification policy, so select_k_routes is no longer reached at trips.py:325 with no planning_policy."
+    },
+    {
+      "id": "AC-5",
+      "text": "Given the workbench Tour Preview view opened in a real browser, when the operator fills the form (frontend/review.html:2149-2185) and presses generate, then the page issues exactly one network POST, renders 3 selectable options, and issues zero audio or authoring requests until an option is clicked."
+    },
+    {
+      "id": "AC-6",
+      "text": "Given that state, when the operator clicks one option, then the page issues exactly one further POST to the author endpoint carrying that option's identifier, and the rendered stops are the stops of the option the operator clicked \u2014 same POI ids in the same order."
+    },
+    {
+      "id": "AC-7",
+      "text": "Given identical inputs (start, end, lenses, duration, city), when the app path and the workbench path each run PLAN, then the two produce the same ordered stop sets and the same eta_seconds per option."
+    },
+    {
+      "id": "AC-8",
+      "text": "Given a plan whose chosen option is handed to the AUTHOR block, when authoring completes, then the composed route's POI ids, order, eta_seconds, vignettes and tourability are identical to the chosen option's \u2014 no re-derivation and no hand-restore, replacing trips.py:583-590 and the always-None tourability."
+    },
+    {
+      "id": "AC-9",
+      "text": "Given the AUTHOR block's source, when its import and call graph is parsed, then it names no member of _PLANNING_CALLS (select_k_routes, choose_discrete_route, plan_premium_tour, certification_planning_policy, route_planning_budget, summarise_route, insertion_cost_seconds, generate) and imports no planning module.",
+      "negative": true
+    },
+    {
+      "id": "AC-10",
+      "text": "Given the compose path, when its call graph is parsed, then it obtains no UN-POLICIED route summary: any route it rebuilds passes the certification policy explicitly, so no call reaches the legacy 0.83 budget. NOTE: narrowed from the original wording (which demanded summarise_route vanish entirely) after the Block 2 contract proved the letter unachievable in Phase 1 \u2014 compose persists only POI ids, so it must rebuild a route and cannot simply stop summarising one. The criterion's REASON, no un-policied 0.83 budget on the compose path, is delivered in full; only the mechanism differs.",
+      "negative": true
+    },
+    {
+      "id": "AC-11",
+      "text": "Given the whole repository, when authoring.py is parsed, then PrebuiltRouteComposeUnit, PrebuiltRouteAuthoringPlan, PrebuiltRouteExecutor, prebuilt_route_sha256 and author_prebuilt_route are absent, AUTHORING_MAX_STOPS is absent from __all__, and a repository-wide search for each returns zero hits; the five already-shared helpers (_certification_compose_requests, candidate_compose_request_envelope, compose_input_sha256, _sentences_from_json, finalize_certification_composition) must still exist.",
+      "negative": true
+    },
+    {
+      "id": "AC-12",
+      "text": "Given the deleted Dart code, when mobile/ is searched, then BeatAudioPlayer and TripService.confirmTripAudio return zero hits, including in mobile/test/widgets/beat_audio_player_test.dart and mobile/test/services/trip_service_test.dart which exercise them today and must be deleted with them, with make flutter-test and make flutter-analyze green.",
+      "negative": true
+    },
+    {
+      "id": "AC-13",
+      "text": "Given a POST to the plan-only preview, when it returns 200, then the response contains no LLM-authored narration: narration_kind is not llm_candidate and no per-stop script text is present, because planning no longer authors.",
+      "negative": true
+    },
+    {
+      "id": "AC-14",
+      "text": "Given the whole src/ tree, when it is searched, then the symbols LEGACY_ROUTE_PLANNING_POLICY and RoutePlanningPolicy.is_legacy return zero hits, every parameter that defaulted to the legacy policy either requires an explicit policy or defaults to certification at 0.90/1.10 nominal 1.00, and no planning, tourability or quality path can obtain a 0.83-derived walk or audio budget. NOTE: this is a symbol-and-behaviour check, NOT a grep for the literal 0.83 \u2014 the ERR_SHORT constant at routing.py:43 has six live callers (routing.py:225,229,248 and density.py:38,303,400) whose fate is settled by step 6, so a literal grep could never pass.",
+      "negative": true
+    },
+    {
+      "id": "AC-15",
+      "text": "Given the whole src/ tree, when it is searched, then no stop-count ceiling survives: max_stops=8 gone from certification_planning_policy, the min(HARD_ANCHOR_CAP, duration // ANCHOR_CAP_DIVISOR) clamp gone, the 1 <= len(stops) <= AUTHORING_MAX_STOPS guard gone, and the planning_budget.max_stops or HARD_ANCHOR_CAP fallbacks at selection.py:1879 and :1907 gone with them.",
+      "negative": true
+    },
+    {
+      "id": "AC-16",
+      "text": "Given a duration long enough that the time budget seats more than 15 stops in a dense start area, when PLAN runs, then it returns an option with more than 15 dwell stops and the AUTHOR block accepts it without raising. The acceptance agent reports the observed paid-call count, since duration alone now bounds it."
+    },
+    {
+      "id": "AC-17",
+      "text": "Given the whole src/ tree, when it is searched, then _preview_stops returns zero hits and build_route_option (src/tour/options.py:51) is the only interleave implementation.",
+      "negative": true
+    },
+    {
+      "id": "AC-18",
+      "text": "Given a plan whose transits have no Valhalla receipt and no measured leg seconds, when the response is serialised on either surface, then it carries an explicit degradation row naming routing as the cause (a Degradation with a stable kind, plain-English human text, and component, per src/tour/degradations.py:44-67), and there is no code path on which such a route is returned with an empty degradations list.",
+      "negative": true
+    },
+    {
+      "id": "AC-19",
+      "text": "Given the character cap removed from the preview audio path, when a 12,000-character narration is posted to /audio/preview with a stub provider, then the provider receives all 12,000 characters \u2014 the text is not truncated.",
+      "negative": true
+    },
+    {
+      "id": "AC-20",
+      "text": "Given a routing client injected to fail every request, simulating ondoway-valhalla cold-starting or rebuilding tiles, when PLAN runs, then it returns 200 with 3 options built on estimated legs AND a routing degradation row; it must NOT raise PremiumRouteInfeasibleError, must NOT return 422, and must NOT return the route unlabelled. The routing client is stubbed in-process \u2014 the shared Valhalla container is never stopped.",
+      "negative": true
+    },
+    {
+      "id": "AC-21",
+      "text": "Given that same failure injected behind the workbench, when the operator generates a tour, then the page visibly shows the routing degradation in the existing degradation panel with plain-English text and no identifiers, before the operator can click an option."
+    },
+    {
+      "id": "AC-22",
+      "text": "Given a chosen option whose transits are estimated legs with no receipt, when it is handed to the AUTHOR block, then authoring proceeds and produces one script per dwell stop \u2014 the receipt bar lives in PLAN, never in AUTHOR.",
+      "negative": true
+    },
+    {
+      "id": "AC-23",
+      "text": "Given a request with a start and no end, when PLAN runs, then it returns 3 options with no 4xx and no KeyError or None dereference, exercising the endpoint-pull reservation logic on the end-is-None side."
+    },
+    {
+      "id": "AC-24",
+      "text": "Given a duration too short to seat any tourable stop from the given start, when PLAN runs, then it returns a structured 422 whose body has the reason/gap_minutes/alternatives shape of _refusal_detail with a reason naming the time budget; it must NOT return 200 with zero stops and must NOT return a bare string body.",
+      "negative": true
+    },
+    {
+      "id": "AC-25",
+      "text": "Given a trip whose itinerary item already has an audio_url and whose narration is then edited, when the per-stop audio generation is called without force, then that stop's result status is generated, not skipped, matching the per-beat staleness contract."
+    },
+    {
+      "id": "AC-26",
+      "text": "Given the same trip with narration unchanged and its stored hash current, when the same call is made without force, then the stop's status is skipped with reason already has audio and the TTS provider is invoked zero times; the existing self-heal when the artifact is missing must still fire.",
+      "negative": true
+    },
+    {
+      "id": "AC-27",
+      "text": "Given the finished slice, when the ally tests are run, then they pass without a weakened assertion: test_tour_authoring_gates.py::test_the_preview_surface_runs_the_same_three_gates_as_the_phone and test_tour_authoring_gates.py::test_cross_stop_echo_is_suppressed unchanged, and test_premium_workbench_wiring.py::test_preview_uses_shared_premium_plan_and_finalizer re-pointed at the split rather than deleted."
+    },
+    {
+      "id": "AC-28",
+      "text": "Given the finished slice, when make lint is run unpiped and in full, then it prints zero errors."
+    },
+    {
+      "id": "AC-29",
+      "text": "Given the finished slice, when make test is run once, then every shard reports 0 failed and 0 skipped. A deselect, --ignore, or -k exclusion is a failed criterion."
+    },
+    {
+      "id": "AC-30",
+      "text": "Given the finished slice, when the diff is read, then no new module file under src/tour/ and no new Makefile target were added \u2014 existing ones carry the change.",
+      "negative": true
+    }
+  ],
+  "steps": [
+    {
+      "id": "1",
+      "name": "Delete the two unreferenced mobile audio surfaces and the tests that exercise them",
+      "status": "completed",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_the_unreferenced_mobile_audio_surfaces_are_gone\"",
+      "criterion_ids": [
+        "AC-12"
+      ],
+      "files": [
+        "mobile/lib/widgets/beat_audio_player.dart",
+        "mobile/lib/services/trip_service.dart",
+        "mobile/test/widgets/beat_audio_player_test.dart",
+        "mobile/test/services/trip_service_test.dart",
+        "mobile/test/pages/trip_itinerary_page_test.dart",
+        "tests/test_tour_one_engine.py"
+      ],
+      "gate_commands": [
+        "make lint",
+        "make flutter-analyze",
+        "make flutter-test"
+      ],
+      "depends_on": [],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "low",
+      "maxAttempts": 2,
+      "attempts": 2,
+      "proof": "AC-12 proven: `grep -rn` over the whole mobile/ tree returns zero hits for BeatAudioPlayer and confirmTripAudio (wider than the test's lib+test sweep); beat_audio_player.dart (-232) and beat_audio_player_test.dart (-177) are staged D and absent from `git ls-files`, trip_service.dart -28 drops confirmTripAudio and re-words its dangling doc link, trip_service_test.dart -56 keeps all 15 live confirmTripStopAudio/composeTrip/generateDeeperDiveAudio tests; judge re-ran every gate itself with PREFLIGHT_AUTOFIX=0 \u2014 `make flutter-test` 00:18 +206 All tests passed (refuting the \"never executed\" advisory), `make flutter-analyze` No issues found, `make lint` All checks passed, `make test-file FILE=\"tests/test_tour_one_engine.py::test_the_unreferenced_mobile_audio_surfaces_are_gone\"` 1 passed in 0.05s; mutation REAL twice over \u2014 QA's source-only revert reds the on-disk assert at tests/test_tour_one_engine.py:888, and the judge's own probe (one `// BeatAudioPlayer` comment appended to mobile/lib/pages/trip_itinerary_page.dart, then `git checkout --` restored byte-identical) reds the text-sweep assert at :897; diff equals step 1's declared files[] exactly, nothing committed, rollback is `git checkout HEAD -- mobile/ tests/test_tour_one_engine.py`; carry forward: tests/test_trip_api.py:663 still cites trip_service.dart:227-229, now :201-203.",
+      "commit": "pending"
+    },
+    {
+      "id": "2",
+      "name": "Lift the prebuilt-route plan construction into premium_tour.py as a shared PremiumTourPlan builder",
+      "status": "completed",
+      "test_command": "make test-file FILE=\"tests/test_premium_workbench_wiring.py::test_plan_premium_tour_builds_its_units_through_the_shared_prebuilt_seam\"",
+      "criterion_ids": [
+        "AC-1"
+      ],
+      "files": [
+        "src/tour/premium_tour.py",
+        "tests/test_premium_workbench_wiring.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 2,
+      "proof": "Block-2 plan construction now has exactly ONE construction site \u2014 `plan_premium_authoring` (src/tour/premium_tour.py:230-321), with `plan_premium_tour` delegating to it at :393 \u2014 pinned by an AST sweep of the whole module asserting `PremiumComposeUnit` is built in exactly one function; judge re-ran every gate itself under PREFLIGHT_AUTOFIX=0 (no container started, no 7687/7688 write, test hermetic at 0.03s): `make lint` All checks passed, pinned node id 1 passed, whole module 6 passed in 0.50s with AC-27's ally test unweakened, and the three other consumers of the changed seam green (test_tour_authoring_from_route 7, test_tour_batch_candidate_runner 8, test_never_silent_failures 2); mutation REAL three ways, each surgical rather than QA's whole-file revert which proved only an ImportError \u2014 neutering `stops[-1] >= len(route.pois)` reds the out-of-range refusal, neutering `len(stops) != len(route.pois)` reds with DID NOT RAISE (nothing downstream catches a dropped TAIL stop; candidate_authoring.py:162 already caught a dropped middle one), and a second PremiumComposeUnit builder reds the single-site assert \u2014 src/tour/premium_tour.py restored byte-identical after each (sha256 2ae340c9\u2026); the lift's one substantive substitution, `tour_input=source.inputs`, is behaviour-preserving because generation.py:423 writes `inputs=tour_input` verbatim; diff equals step 2's declared files[] exactly (148/50 + 227 = 325/50), nothing committed, rollback `git checkout --` on two tracked files at a7df218c. AC-1 is NOT yet satisfied repo-wide: this step delivers only its Block-2 single-builder clause, the parallel authoring seam and the K=3 PLAN clause remain open on steps 4/7/11, and three items are carried forward \u2014 the docstring's not-yet-existent compose caller (step 3), the `stops[-1]`-before-length-check IndexError that AC-15 arms (fix in step 5, which already owns this file), and AC-9's `_PLANNING_CALLS` guard which must be scoped to the AUTHOR functions, never the premium_tour module.",
+      "commit": "pending"
+    },
+    {
+      "id": "3",
+      "name": "Route the persisted compose endpoint through Block 2, and let the test suite declare itself a local build",
+      "status": "completed",
+      "test_command": "make test-file FILE=\"tests/test_trip_api.py::test_compose_plans_and_authors_through_the_shared_premium_seam\"",
+      "criterion_ids": [
+        "AC-8",
+        "AC-10"
+      ],
+      "files": [
+        "src/api/routes/trips.py",
+        "tests/test_trip_api.py",
+        "tests/conftest.py",
+        "tests/test_tour_authoring_gates.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "2"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 1,
+      "proof": "AC-10 CLOSED, AC-8 half-closed BY DESIGN. Pinned test green: make test-file FILE=\"tests/test_trip_api.py::test_compose_plans_and_authors_through_the_shared_premium_seam\" -> 1 passed in 49.19s (run twice, concurrently, on two isolated pytest graphs :7690 and :7691). AC-10: compose now passes certification_planning_policy explicitly into summarise_route (trips.py:611), so no un-policied 0.83 budget is reachable on this path. Compose authors through the ONE Block-2 seam: plan_premium_authoring -> execute_premium_plan -> finalize_premium_tour, replacing author_prebuilt_route; the three anti-hallucination gates are no longer the call site's to choose. Build fingerprint and routing version each resolve in their own try, before any spend, as named retryable 503s rather than being relabelled compose_verification_failed. AC-8 is DELIBERATELY not claimed closed here: findings/contracts-block2-seam.md:727-734 states step 3 delivers only half, that identical eta_seconds/vignettes/tourability needs the persisted-option work in steps 9-11, and verbatim 'do not claim AC-8 closed'; state.json assigns AC-8 to step 3 AND step 11. Two hostile skeptics marked AC-8 REFUTED \u2014 correct on the facts, and consistent with the contract they did not cite. The remaining re-derivation (trips.py:603-612), vignette hand-restore (:616-619), anchor hand-restore (:623-624) and always-None tourability are itemised with a concrete change list in ACTION-ITEMS.md A3, owned by steps 9-11. Skeptic N3 (unguarded Valhalla call causing a 500) is REFUTED against the current tree: the call sits inside the try at trips.py:592-602. It does contradict the locked labelled-degradation decision, recorded as ACTION-ITEMS.md A1 for step 14. Nothing committed by the step itself.",
+      "commit": null
+    },
+    {
+      "id": "4",
+      "name": "Delete the second authoring seam and re-point every test that imported it",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_the_second_authoring_seam_is_gone\"",
+      "criterion_ids": [
+        "AC-1",
+        "AC-9",
+        "AC-11",
+        "AC-22",
+        "AC-27",
+        "AC-28",
+        "AC-29"
+      ],
+      "files": [
+        "src/tour/authoring.py",
+        "tests/test_tour_authoring_from_route.py",
+        "tests/test_tour_authoring_gates.py",
+        "tests/test_never_silent_failures.py",
+        "tests/test_tour_one_engine.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "3"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "5",
+      "name": "Remove the planner-side stop ceiling and make route ordering degrade instead of hanging",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_workbench_matches_the_app.py::test_duration_is_the_only_stop_bound_on_the_planning_path\"",
+      "criterion_ids": [
+        "AC-15",
+        "AC-16"
+      ],
+      "files": [
+        "src/tour/routing.py",
+        "src/tour/premium_tour.py",
+        "src/tour/selection.py",
+        "src/tour/ordering.py",
+        "tests/test_workbench_matches_the_app.py",
+        "tests/test_tour_selection.py",
+        "tests/test_tour_ordering_heldkarp.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "4"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "5.5",
+      "name": "Remove the authoring-side and quality-scorer stop ceilings",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_candidate_authoring.py::test_no_authoring_surface_imposes_a_stop_ceiling\"",
+      "criterion_ids": [
+        "AC-15",
+        "AC-16"
+      ],
+      "files": [
+        "src/tour/authoring.py",
+        "src/tour/candidate_authoring.py",
+        "src/tour/quality_rubric.py",
+        "tests/test_tour_candidate_authoring.py",
+        "tests/test_tour_authoring_from_route.py",
+        "tests/test_tour_quality_rubric.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "5"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "6",
+      "name": "Delete the legacy flat planning policy and collapse every legacy branch onto certification",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_the_legacy_err_short_planner_is_gone\"",
+      "criterion_ids": [
+        "AC-14",
+        "AC-28",
+        "AC-29"
+      ],
+      "files": [
+        "src/tour/routing.py",
+        "src/tour/selection.py",
+        "src/tour/density.py",
+        "src/tour/quality_rubric.py",
+        "tests/test_tour_selection.py",
+        "tests/test_tour_flavours.py",
+        "tests/test_tour_density.py",
+        "tests/test_tour_one_engine.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "5"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "6.5",
+      "name": "Re-point the saved-tour scorer and the stale rubric comments at the new planning ceiling",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_quality_rubric.py::test_the_saved_tour_scorer_reconstructs_the_current_planning_ceiling\"",
+      "criterion_ids": [
+        "AC-14"
+      ],
+      "files": [
+        "scripts/score_saved_tours.py",
+        "src/tour/quality_rubric.py",
+        "tests/test_tour_quality_rubric.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "6"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "low",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "7",
+      "name": "Block 1 returns three genuinely free plans instead of one, with no paid glue call",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_premium_workbench_wiring.py::test_block_one_returns_three_priced_free_plans\"",
+      "criterion_ids": [
+        "AC-1",
+        "AC-2",
+        "AC-3",
+        "AC-23"
+      ],
+      "files": [
+        "src/tour/premium_tour.py",
+        "tests/test_premium_workbench_wiring.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "2",
+        "6"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "8",
+      "name": "Fold the preview builder into the shared options builder, places-only, and delete the fourth copy",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_flavours.py::test_build_route_option_carries_the_leg_and_vignette_narration_cards\"",
+      "criterion_ids": [
+        "AC-17",
+        "AC-30"
+      ],
+      "files": [
+        "src/tour/options.py",
+        "src/tour/contract.py",
+        "src/api/routes/trips.py",
+        "tests/test_tour_flavours.py",
+        "tests/test_trip_preview_vignettes.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "6"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "9",
+      "name": "The app generate endpoint plans through Block 1",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_trip_api.py::test_generate_plans_through_the_shared_block_one\"",
+      "criterion_ids": [
+        "AC-4",
+        "AC-7"
+      ],
+      "files": [
+        "src/api/routes/trips.py",
+        "tests/test_trip_api.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "7",
+        "8"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "10",
+      "name": "The preview endpoint becomes plan-only and spends nothing",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_trip_preview_contract.py::test_preview_returns_three_options_and_spends_nothing\"",
+      "criterion_ids": [
+        "AC-13",
+        "AC-24",
+        "AC-27"
+      ],
+      "files": [
+        "src/api/routes/trips.py",
+        "src/api/models/trips.py",
+        "tests/test_trip_preview_contract.py",
+        "tests/test_premium_workbench_wiring.py",
+        "tests/test_trip_api.py",
+        "tests/test_trip_models.py",
+        "tests/test_trips_spend_and_authz.py",
+        "tests/test_workbench_matches_the_app.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "9"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "11",
+      "name": "A sibling anonymous route authors exactly the option the operator chose",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_trip_preview_contract.py::test_preview_compose_authors_only_the_chosen_option\"",
+      "criterion_ids": [
+        "AC-1",
+        "AC-8",
+        "AC-30"
+      ],
+      "files": [
+        "src/api/routes/trips.py",
+        "src/api/models/trips.py",
+        "tests/test_trip_preview_contract.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "10"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "12",
+      "name": "The workbench tour view becomes a two-step flow with three places-only option cards, each with a Select / Build this tour button",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_workbench_preview_wiring.py::test_generate_tour_options_is_a_separate_call_from_authoring\"",
+      "criterion_ids": [
+        "AC-5",
+        "AC-6",
+        "AC-7",
+        "AC-21",
+        "AC-29"
+      ],
+      "files": [
+        "frontend/review.html",
+        "tests/test_workbench_preview_wiring.py",
+        "tests/test_workbench_ui.py",
+        "tests/test_workbench_matches_the_app.py"
+      ],
+      "gate_commands": [
+        "make lint",
+        "make test-workbench"
+      ],
+      "depends_on": [
+        "11"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "high",
+      "maxAttempts": 3,
+      "attempts": 0
+    },
+    {
+      "id": "13",
+      "name": "Delete the duplicate standalone preview page (owner ruling)",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_tour_one_engine.py::test_the_standalone_preview_poc_is_gone\"",
+      "criterion_ids": [
+        "AC-13",
+        "AC-29"
+      ],
+      "files": [
+        "frontend/tour-preview.html",
+        "tests/test_workbench_ui.py",
+        "tests/test_tour_one_engine.py"
+      ],
+      "gate_commands": [
+        "make lint",
+        "make test-workbench"
+      ],
+      "depends_on": [
+        "12"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "14",
+      "name": "Estimated walking legs become a labelled degradation instead of a silent substitution or a refusal",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_trip_preview_contract.py::test_estimated_legs_are_labelled_not_silently_shipped\"",
+      "criterion_ids": [
+        "AC-18",
+        "AC-20",
+        "AC-22"
+      ],
+      "files": [
+        "src/tour/premium_tour.py",
+        "tests/test_trip_preview_contract.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "11"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "15",
+      "name": "The generate and compose responses report what degraded, like the preview already does",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_trip_api.py::test_generate_and_compose_report_what_degraded\"",
+      "criterion_ids": [
+        "AC-18"
+      ],
+      "files": [
+        "src/api/routes/trips.py",
+        "src/api/models/trips.py",
+        "tests/test_trip_api.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [
+        "14"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "16",
+      "name": "The phone shows the estimated-legs warning rather than dropping it",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_no_doubles_on_human_surfaces.py::test_the_app_shows_what_degraded_rather_than_dropping_it\"",
+      "criterion_ids": [
+        "AC-18"
+      ],
+      "files": [
+        "mobile/lib/models/trip.dart",
+        "mobile/lib/services/trip_service.dart",
+        "mobile/lib/pages/trip_itinerary_page.dart",
+        "mobile/test/services/trip_service_test.dart",
+        "mobile/test/pages/trip_itinerary_page_test.dart",
+        "tests/test_no_doubles_on_human_surfaces.py"
+      ],
+      "gate_commands": [
+        "make lint",
+        "make flutter-analyze",
+        "make flutter-test"
+      ],
+      "depends_on": [
+        "15"
+      ],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "17",
+      "name": "Delete the preview audio character cap so the workbench judges the whole narration",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_audio_route_hardening.py::TestPreviewSpendBounds::test_preview_voices_the_whole_narration_uncapped\"",
+      "criterion_ids": [
+        "AC-19"
+      ],
+      "files": [
+        "src/api/routes/audio.py",
+        "tests/test_audio_route_hardening.py",
+        "tests/test_workbench_matches_the_app.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "low",
+      "maxAttempts": 2,
+      "attempts": 0
+    },
+    {
+      "id": "18",
+      "name": "Add the missing content hash so edited narration invalidates its stop audio",
+      "status": "pending",
+      "test_command": "make test-file FILE=\"tests/test_audio_stop_trip_api.py::TestGenerateTripStopAudio::test_edited_narration_invalidates_its_stop_audio\"",
+      "criterion_ids": [
+        "AC-25",
+        "AC-26"
+      ],
+      "files": [
+        "src/api/routes/audio.py",
+        "tests/test_audio_stop_trip_api.py"
+      ],
+      "gate_commands": [
+        "make lint"
+      ],
+      "depends_on": [],
+      "cost_class": "$0",
+      "cost": "$0",
+      "complexity": "normal",
+      "maxAttempts": 2,
+      "attempts": 0
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import importlib.util
 import inspect
 import socket
@@ -10,8 +11,25 @@ import sys
 import time
 from pathlib import Path
 
+import pytest
+
 from scripts import tour_batch_candidate
 from src.api.routes import trips
+from src.tour import premium_tour
+from src.tour.contract import (
+    POI,
+    BeatRef,
+    BeatSequence,
+    POIBeats,
+    Route,
+    Script,
+    ScriptPOI,
+    Sentence,
+    TourInput,
+    TransitSegment,
+    ValidationReport,
+)
+from src.tour.premium_tour import plan_premium_authoring
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -255,3 +273,212 @@ def test_manual_workbench_starts_routing_for_the_preview() -> None:
     makefile = (ROOT / "Makefile").read_text()
     target = makefile.split("\nworkbench:", 1)[1].split("\n\ndashboard:", 1)[0]
     assert "$(RENDER_LOCAL_EXEC)" in target
+
+
+# --- A persisted-trip-shaped fixture, deliberately local to this file. -------------
+# It is NOT imported from tests/test_tour_authoring_from_route.py even though that
+# module has an equivalent one today: that module exists to exercise
+# ``author_prebuilt_route``/``plan_prebuilt_route_authoring``, which AC-11 deletes, so
+# importing across would tie this pin's life to a module scheduled for removal.
+
+
+def _prebuilt(
+    stop_count: int, *, sentences_per_stop: int = 1
+) -> tuple[Script, BeatSequence, Route]:
+    """A (stitched script, beat sequence, route) triple shaped like a persisted trip.
+
+    ``sentences_per_stop > 1`` gives a stop several sentences, which is what makes
+    "one unit per DWELL STOP" a different claim from "one unit per sentence".
+    The route is a round trip, so it has one more transit leg than it has stops.
+    """
+    pois = tuple(
+        POI(
+            id=f"p{index}",
+            name=f"Stop {index}",
+            tier=3,
+            poi_role="anchor",
+            lat=48.85 + index / 1000,
+            lng=2.35 + index / 1000,
+        )
+        for index in range(stop_count)
+    )
+    leg_count = stop_count + 1
+    transits = tuple(
+        TransitSegment(
+            from_poi_id=None if index == 0 else pois[index - 1].id,
+            to_poi_id=pois[index].id if index < stop_count else pois[0].id,
+            distance_m=120.0,
+            walk_seconds=100,
+            leg_seconds=110,
+            leg_distance_m=130.0,
+            source="haversine",
+        )
+        for index in range(leg_count)
+    )
+    route = Route(
+        pois=pois,
+        transits=transits,
+        total_walk_distance_m=120.0 * leg_count,
+        total_walk_seconds=100 * leg_count,
+    )
+    beats_by_stop = {
+        index: tuple(
+            BeatRef(
+                id=f"b{index}_{part}",
+                poi_id=f"p{index}",
+                script_body=(
+                    f"The stone here was cut in the year of the flood, "
+                    f"stop {index} part {part}."
+                ),
+                key_claims=(f"stop {index} part {part} has cut stone",),
+            )
+            for part in range(sentences_per_stop)
+        )
+        for index in range(stop_count)
+    }
+    sequence = BeatSequence(
+        poi_beats=tuple(
+            POIBeats(
+                poi_id=f"p{index}",
+                poi_name=f"Stop {index}",
+                ordering_strategy="narrative_function",
+                beats=beats_by_stop[index],
+            )
+            for index in range(stop_count)
+        )
+    )
+    stitched = Script(
+        city_slug="paris",
+        generated_at="2026-07-30T00:00:00Z",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris"),
+        total_audio_seconds=stop_count * 12,
+        total_walking_seconds=100 * leg_count,
+        total_walk_distance_m=120.0 * leg_count,
+        total_planned_seconds=3600,
+        selected_pois=tuple(
+            ScriptPOI(
+                id=poi.id,
+                name=poi.name,
+                tier=poi.tier,
+                lat=poi.lat,
+                lng=poi.lng,
+                beat_ids=tuple(beat.id for beat in beats_by_stop[index]),
+            )
+            for index, poi in enumerate(pois)
+        ),
+        lens_coverage={},
+        script=tuple(
+            Sentence(
+                text=beat.script_body or "",
+                source_id=beat.id,
+                source_type="beat",
+                stop_idx=index,
+            )
+            for index in range(stop_count)
+            for beat in beats_by_stop[index]
+        ),
+        validation=ValidationReport(),
+    )
+    return stitched, sequence, route
+
+
+def _drop_stop(stitched: Script, stop_index: int) -> Script:
+    """The stitched script a dwell stop fell out of — no sentence carries it."""
+    return stitched.model_copy(
+        update={
+            "script": tuple(
+                sentence for sentence in stitched.script if sentence.stop_idx != stop_index
+            )
+        }
+    )
+
+
+def _renumber_stop(stitched: Script, stop_index: int, new_index: int) -> Script:
+    """The stitched script a stop was mis-numbered in — it names a stop off the route.
+
+    This is reachable in production, not a synthetic shape: the compose path derives
+    its stop list from raw ``sentence.stop_idx`` values and never range-checks them
+    against ``route.pois`` (``src/tour/authoring.py`` ``_certification_compose_requests``),
+    so a script naming stop 7 on a four-stop route arrives at the plan builder intact.
+    Kept the same LENGTH as the route's stop count on purpose, so it trips the
+    out-of-range refusal and not the one-unit-per-dwell-stop count refusal.
+    """
+    return stitched.model_copy(
+        update={
+            "script": tuple(
+                sentence.model_copy(update={"stop_idx": new_index})
+                if sentence.stop_idx == stop_index
+                else sentence
+                for sentence in stitched.script
+            )
+        }
+    )
+
+
+def _plan_kwargs() -> dict[str, object]:
+    return {
+        "snapshot": None,
+        "snapshot_sha256": "0" * 64,
+        "routing_version": "offline-test",
+        "policy_version": "offline-test",
+    }
+
+
+def test_plan_premium_tour_builds_its_units_through_the_shared_prebuilt_seam() -> None:
+    """AC-1 — ONE Block-2 plan builder, and plan_premium_tour goes through it.
+
+    Every claim below is bound to a specific edit that turns it RED:
+
+    * delete ``if stops[-1] >= len(route.pois):`` in ``plan_premium_authoring``
+      (or weaken it to ``if False:``) and the out-of-range refusal fails;
+    * delete ``if len(stops) != len(route.pois):`` likewise and the missing-tail-stop
+      refusal fails;
+    * re-inline the ``PremiumComposeUnit`` loop into ``plan_premium_tour`` and the
+      single-construction-site assertion fails.
+    """
+    # 1. The shared builder produces a REAL PremiumTourPlan from a prebuilt route.
+    stitched, sequence, route = _prebuilt(4, sentences_per_stop=2)
+    assert len(route.transits) == len(route.pois) + 1
+
+    plan = plan_premium_authoring(stitched, sequence, route, **_plan_kwargs())
+    assert isinstance(plan, premium_tour.PremiumTourPlan)
+    assert plan.route is route
+    assert plan.source is stitched
+    assert plan.sequence is sequence
+    assert plan.tour_input is stitched.inputs
+    assert [unit.stop_index for unit in plan.units] == [0, 1, 2, 3]
+    assert [unit.poi_name for unit in plan.units] == [poi.name for poi in route.pois]
+    assert len(plan.authoring.stop_requests) == len(route.pois)
+    # The candidate binds the SAME route hash the plan record reports.
+    assert plan.candidate.route_sha256 == plan.route_record["route_sha256"]
+
+    # 2a. A script naming a stop the route does not have is refused, not authored.
+    off_route = _renumber_stop(stitched, len(route.pois) - 1, len(route.pois) + 3)
+    assert {sentence.stop_idx for sentence in off_route.script} == {0, 1, 2, 7}
+    with pytest.raises(ValueError, match="names a stop the prebuilt route lacks"):
+        plan_premium_authoring(off_route, sequence, route, **_plan_kwargs())
+
+    # 2b. A script that silently lost its LAST stop is refused too. It passes every
+    # other bar — in order, starts at 0, highest index in range — so without this the
+    # trip would persist with its final stop never authored.
+    with pytest.raises(ValueError, match="one authoring unit per dwell stop"):
+        plan_premium_authoring(
+            _drop_stop(stitched, len(route.pois) - 1), sequence, route, **_plan_kwargs()
+        )
+
+    # 3. ONE construction site. plan_premium_tour must delegate, not re-inline.
+    module = ast.parse(inspect.getsource(premium_tour))
+    builders = {
+        node.name
+        for node in ast.walk(module)
+        if isinstance(node, ast.FunctionDef)
+        for call in ast.walk(node)
+        if isinstance(call, ast.Call)
+        and isinstance(call.func, ast.Name)
+        and call.func.id == "PremiumComposeUnit"
+    }
+    assert builders == {"plan_premium_authoring"}, (
+        "PremiumComposeUnit is constructed in more than one place, so the Block-2 "
+        f"plan builder has been duplicated again: {sorted(builders)}"
+    )
+    assert "plan_premium_authoring(" in inspect.getsource(premium_tour.plan_premium_tour)

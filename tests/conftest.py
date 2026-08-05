@@ -42,6 +42,27 @@ if not _LIVE_PROVIDER_TESTS:
 os.environ["ONBOARD_PROVIDER"] = "mock"
 os.environ.setdefault("WORKBENCH_API_ENABLED", "true")
 
+# ── A local test run IS a local build (says so out loud, changes no check)
+#
+# Authoring a tour stamps it with a build fingerprint, and
+# ``src.tour.premium_tour.resolve_build_identity`` refuses a dirty local git tree
+# unless the caller opts in with ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1`` — the way
+# ``scripts/workbench.sh`` already does. Every developer tree has uncommitted work,
+# so without this every test that composes or previews a real tour fails on a normal
+# checkout, and it fails as an environment fault (a 503, or the Basic-lane fallback)
+# that looks nothing like whatever change is actually under test.
+#
+# This asserts nothing false. The tour is genuinely authored off a dirty tree, and
+# the identity it gets is tagged ``local_dirty_tree=True``, which is what makes it
+# non-certifiable. The refusal itself is untouched: nothing here weakens the check,
+# widens it to a deploy (it is fenced to refuse whenever RENDER_GIT_COMMIT is set),
+# or hides a failure — it only stops the suite lying to itself about being CI.
+#
+# ``setdefault``, so a deliberate override still wins, and a no-op on the clean tree
+# CI and Render builds run from. The literal is bound to the constant it must match
+# by tests/test_trip_api.py::test_compose_plans_and_authors_through_the_shared_premium_seam.
+os.environ.setdefault("ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD", "1")
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -158,7 +179,14 @@ def _money_guard_no_live_compose(request, monkeypatch):
 
 # Ports the conftest is allowed to wipe. Update this if your local test
 # instance runs on a different port. Dev/production must NEVER be in here.
-_TEST_PORT_ALLOWLIST: set[int] = {7688}
+#
+# 7690 and 7691 are the per-worktree pytest graphs (docker-compose.yml,
+# `make test-file TEST_PROFILE=test2`). They are dedicated, disposable and
+# identical in role to 7688 — one per concurrent worktree, precisely so that
+# this module-scoped wipe cannot destroy a sibling agent's fixtures. Dev
+# (7687), workbench (7689) and Aura stay out: the workbench suite asserts exact
+# state on 7689 and would be broken by a wipe it did not perform.
+_TEST_PORT_ALLOWLIST: set[int] = {7688, 7690, 7691}
 
 
 def _assert_test_port() -> None:

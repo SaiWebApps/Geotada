@@ -17,7 +17,9 @@ metro, 90 min, one-way) — a known-GREEN multi-stop start on the live corpus.
 
 from __future__ import annotations
 
+import inspect
 import json
+import os
 import threading
 
 import pytest
@@ -26,10 +28,12 @@ from fastapi.testclient import TestClient
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
 from src.api.dependencies import get_driver, get_session
+from src.api.routes import trips
 from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import TourInput
 from src.tour.density import TourabilityRefusedError
+from src.tour.premium_tour import ALLOW_DIRTY_LOCAL_BUILD_ENV
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_k_routes, select_route
 from tests.conftest import needs_neo4j
@@ -625,6 +629,65 @@ class _HallucinatingExecutor:
         return _offline_response(unit, sentences)
 
 
+class _RewritingCountingExecutor(_PerStopCountingExecutor):
+    """Counts physical calls like its parent, but REWRITES instead of echoing.
+
+    The corpus is canonical: a sentence copied verbatim out of the beat it cites is
+    trivially faithful and never reaches the entailment checker at all
+    (src/tour/verify.py:181-187, 217). A pure echo therefore proves nothing about
+    whether the fact-checking gate ran. Prefixing each stop's first beat-cited
+    sentence — the same edit ``_MarkerAuthoringExecutor`` makes — is what gives the
+    gate a question to ask, and it leaves every citation alone so any later refusal
+    is a real finding rather than this double inventing an untraceable sentence.
+    """
+
+    def execute(self, unit) -> PhysicalProviderResponse:
+        with self._lock:
+            self.stop_calls.append(unit.stop_index)
+        sentences = [s.model_dump(mode="json") for s in unit.authorized_request.stitched.script]
+        for i, sentence in enumerate(sentences):
+            if sentence.get("source_type") == "beat":
+                sentences[i] = {**sentence, "text": f"{COMPOSE_MARKER} {sentence['text']}"}
+                break
+        return _offline_response(unit, sentences)
+
+
+class _CountingChecker:
+    """Records every entailment question asked, and approves all of them.
+
+    It changes no verdict, so it cannot make a failing tour pass; it only proves the
+    gate CONSULTED a checker. Mirrors src/tour/verify.py's FaithfulnessChecker
+    protocol exactly — ``entails(key_claims, sentence_text)``.
+    """
+
+    def __init__(self) -> None:
+        self.calls: list[tuple[tuple[str, ...], str]] = []
+
+    def entails(self, key_claims: tuple[str, ...], sentence_text: str) -> bool:
+        self.calls.append((key_claims, sentence_text))
+        return True
+
+
+class _ColdStartingRoutingClient:
+    """A routing client that answers walking legs but has no version to report.
+
+    This is what ``ondoway-valhalla`` looks like while it cold-starts or rebuilds
+    tiles (render.yaml:98-124): the process is reachable enough to be constructed,
+    but ``GET /status`` does not come back. Standing in for the class rather than
+    stopping the container keeps the shared :8002 instance every other test and
+    every sibling session depends on completely untouched.
+    """
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info) -> bool:
+        return False
+
+    def routing_version(self) -> str:
+        raise RuntimeError("valhalla is cold-starting")
+
+
 def _override_dep(client, dep: str, value):
     """Swap a FastAPI dependency for a test double; returns the override key."""
     from src.api import dependencies
@@ -644,6 +707,161 @@ def cutover_trip(client):
     resp = client.post("/api/v1/trips/generate", json=_body(NOLENS_PROFILE_ID))
     assert resp.status_code == 201, resp.text
     return resp.json()
+
+
+@needs_neo4j
+def test_compose_plans_and_authors_through_the_shared_premium_seam(
+    client, live_neo4j, cutover_trip, monkeypatch
+) -> None:
+    """AC-10 — the saved-trip compose path rebuilds no route without a stated policy.
+
+    Composing a saved trip used to run a second, separate authoring engine of its
+    own. It now goes through the single shared seam the workbench preview and the
+    batch runner already use: build the per-stop requests, fire exactly one call per
+    stop, finalize. Four things are checked, each with its own one-line undo:
+
+    1. the handler names the shared seam and no longer names the second one, and the
+       route it rebuilds is measured against the certification walking-time budget
+       (0.90-1.10 of the requested duration, nominal 1.00) rather than the old flat
+       0.83 one -- which is AC-10's whole reason;
+    2. the suite declares itself a local build, so authoring off a developer tree
+       with uncommitted work is not mistaken for a broken product;
+    3. the two environment dependencies the shared seam newly adds -- a resolvable
+       build fingerprint, and a routing-engine version read live from Valhalla --
+       each refuse as a NAMED 503 the caller can retry, never a bare 500 and never
+       ``compose_verification_failed`` (which means "the narrator wrote something
+       untraceable" and would blame the writer for a container that is cold-starting);
+    4. the fact-checking gate is consulted, which only the shared finalizer makes
+       impossible to omit.
+
+    NOT AC-8, deliberately. AC-8 wants the authored route's ids, order, eta_seconds,
+    vignettes and tourability to be IDENTICAL to the option the traveller chose, with
+    no re-derivation. This endpoint cannot deliver that and never could: generate
+    persists a chosen option's POI ids and anchor ids only (``trips.py`` route_id
+    lookup), never its eta_seconds, vignettes or tourability, so compose has to
+    rebuild a route -- which is the same concession AC-10's own note records. The
+    surface where a chosen option is genuinely handed over intact is the anonymous
+    author endpoint, and that endpoint plus the response field AC-8 needs
+    (``tourability`` on the compose/author response model) are step 11's, which is
+    scoped to ``src/api/models/trips.py``. Claiming AC-8 here would be claiming a
+    check this test does not make.
+
+    UNDO -- each turns exactly one numbered block RED, and all four were run:
+      * delete the ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD`` line from tests/conftest.py -> 2
+      * collapse the build-fingerprint ``503`` branch to a bare ``raise`` -> 3a
+      * delete the ``routing_version_unavailable`` try/except in ``compose_trip`` -> 3b
+      * change ``faithfulness_checker=faithfulness_checker`` to ``=None`` -> 4
+    """
+    # 1. STRUCTURAL: the handler's own source names the shared seam and nothing else.
+    source = inspect.getsource(trips.compose_trip)
+    assert "plan_premium_authoring(" in source
+    assert "execute_premium_plan(" in source
+    assert "finalize_premium_tour(" in source
+    assert "author_prebuilt_route(" not in source
+    assert "plan_prebuilt_route_authoring(" not in source
+
+    # AC-10 proper: the rebuild is handed a policy explicitly, and that policy is
+    # really the certification one. The two greps say a policy is passed; the value
+    # assertions below say WHICH, so swapping in the flat legacy budget behind the
+    # same argument name cannot pass. 0.83 is the legacy figure this must never be.
+    assert "planning_policy=planning_policy" in source
+    assert "certification_planning_policy(" in source
+    policy = trips.certification_planning_policy(policy_id=trips.PREMIUM_MODULE_VERSION)
+    assert not policy.is_legacy, "compose rebuilt its route on the legacy 0.83 budget"
+    assert policy.minimum_requested_fraction == pytest.approx(0.90)
+    assert policy.maximum_requested_fraction == pytest.approx(1.10)
+    assert policy.nominal_requested_fraction == pytest.approx(1.00)
+
+    # 2. The suite says out loud that it is a local build, ONCE, for every module.
+    #    conftest.py has to spell the variable as a literal (it runs before the tour
+    #    package is importable), so bind that literal to the constant here: rename the
+    #    constant without updating conftest and this goes RED, instead of every compose
+    #    test in the suite going RED with a 503 that looks like a product bug.
+    assert os.environ.get(ALLOW_DIRTY_LOCAL_BUILD_ENV) == "1", (
+        "the test suite has not declared itself a local build, so authoring a tour "
+        "off any tree with uncommitted work will fail as an environment fault"
+    )
+
+    trip_id = cutover_trip["trip_id"]
+    n_stops = len(cutover_trip["stops"])
+    assert n_stops > 1
+
+    # 3a. The seam demands a build fingerprint the old compose path never needed. When
+    #     it cannot be resolved that is an ENVIRONMENT fault — 503 with a name a caller
+    #     can branch on, never a generic 500 and never compose_verification_failed.
+    #     Checked BEFORE the successful compose below, because this refusal happens
+    #     before any write and leaves the trip composable.
+    unreachable = _PerStopCountingExecutor()
+    exec_target = _override_dep(client, "get_premium_compose_executor", unreachable)
+    monkeypatch.setattr(
+        trips,
+        "resolve_build_identity",
+        lambda: (_ for _ in ()).throw(ValueError("dirty build")),
+    )
+    try:
+        refused = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+    finally:
+        _clear_dep(client, exec_target)
+    assert refused.status_code == 503, refused.text
+    detail = refused.json()["detail"]
+    assert detail["reason"] == "build_fingerprint_unavailable", detail
+    assert "dirty build" in detail["detail"], detail
+    assert unreachable.stop_calls == [], (
+        "a build-fingerprint fault must be raised before any paid authoring call"
+    )
+    monkeypatch.undo()
+
+    # 3b. The seam's OTHER new environment dependency, and the one nothing else on
+    #     this path has: it stamps the tour with the routing engine's version, which
+    #     is a live GET /status against ondoway-valhalla. Every walking leg already
+    #     degrades to a straight-line estimate when that container is down, so this
+    #     one call is the only thing on the compose path an outage can hard-fail —
+    #     and left bare it surfaces as a 500 (transport error) or, worse, as a 422
+    #     compose_verification_failed via the malformed-status ValueError. Same
+    #     treatment as the fingerprint: a named, retryable 503, and no spend.
+    #     The routing client is stubbed IN-PROCESS; the shared container is untouched.
+    unreachable = _PerStopCountingExecutor()
+    exec_target = _override_dep(client, "get_premium_compose_executor", unreachable)
+    monkeypatch.setattr(trips, "RoutingClient", _ColdStartingRoutingClient)
+    try:
+        refused = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+    finally:
+        _clear_dep(client, exec_target)
+    assert refused.status_code == 503, refused.text
+    detail = refused.json()["detail"]
+    assert detail["reason"] == "routing_version_unavailable", detail
+    assert "valhalla is cold-starting" in detail["detail"], detail
+    assert unreachable.stop_calls == [], (
+        "a routing-version fault must be raised before any paid authoring call"
+    )
+    monkeypatch.undo()
+
+    # 4. BEHAVIOURAL: composing consults the injected faithfulness checker. Only
+    #    finalize_premium_tour makes that non-optional, so this is what proves the
+    #    endpoint went through it rather than round a gate-optional seam.
+    checker = _CountingChecker()
+    executor = _RewritingCountingExecutor()
+    exec_target = _override_dep(client, "get_premium_compose_executor", executor)
+    check_target = _override_dep(client, "get_faithfulness_checker", checker)
+    try:
+        resp = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+    finally:
+        _clear_dep(client, exec_target)
+        _clear_dep(client, check_target)
+    assert resp.status_code == 200, resp.text
+    assert sorted(executor.stop_calls) == list(range(n_stops))
+    assert checker.calls, (
+        "compose never consulted the injected faithfulness checker — it is not "
+        "going through finalize_premium_tour, which is the only thing that makes "
+        "the checker impossible to omit"
+    )
+    assert len(resp.json()["stops"]) == n_stops
 
 
 @needs_neo4j

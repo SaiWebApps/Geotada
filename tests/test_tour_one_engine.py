@@ -823,3 +823,94 @@ def test_corrector_and_dark_g4_are_gone() -> None:
     assert not stale_labels, (
         f"frontend/review.html still labels {stale_labels}, for engines Track A deleted."
     )
+
+
+# ---- AC-12 — the unreferenced mobile audio surfaces are gone (unify-tour-algorithm, step 1)
+#
+# Two pieces of phone code were dead: an audio-player widget no screen ever put on the
+# page (``mobile/lib/widgets/beat_audio_player.dart``) and a service method that called a
+# server endpoint nobody called (``TripService.confirmTripAudio``). Both are deleted along
+# with the tests that were their only users.
+#
+# This is a filesystem-and-text sweep over the Dart tree, not an ``ast`` walk, because
+# Dart is not Python. It is hermetic: no fixture, no database, no provider.
+
+#: Dart identifiers that must not survive anywhere under ``mobile/``. ``beat_audio_player``
+#: catches prose cross-references to the deleted file as well as its import path.
+DEAD_MOBILE_AUDIO_TOKENS = ("BeatAudioPlayer", "beat_audio_player")
+
+#: The dead service method. The substring must be the WHOLE name: the live per-stop method
+#: ``confirmTripStopAudio`` contains ``confirmTrip``, so a shorter needle would be a false
+#: positive. ``"confirmTripAudio" in "confirmTripStopAudio"`` is False, so this is safe.
+DEAD_MOBILE_SERVICE_METHOD = "confirmTripAudio"
+
+#: Files deleted whole by this step. Checked on disk AND in git's index — a file removed
+#: from disk but still tracked is not deleted.
+DELETED_MOBILE_FILES = (
+    "mobile/lib/widgets/beat_audio_player.dart",
+    "mobile/test/widgets/beat_audio_player_test.dart",
+)
+
+#: Live neighbours of the deleted surfaces. These share a name-shape or a file with what
+#: is being removed, so they are what an over-eager deletion takes with it.
+SURVIVING_MOBILE_NEIGHBOURS = (
+    ("mobile/lib/services/trip_service.dart", "confirmTripStopAudio"),
+    ("mobile/lib/pages/trip_itinerary_page.dart", "checkAudioStatus"),
+)
+
+
+def _mentions(
+    dart_files: list[pathlib.Path], needles: tuple[str, ...]
+) -> dict[str, tuple[int, str]]:
+    """Map ``repo-relative path`` -> ``(line number, matched needle)`` for every hit."""
+    offenders: dict[str, tuple[int, str]] = {}
+    for path in dart_files:
+        lines = path.read_text(encoding="utf-8").splitlines()
+        for line_no, line in enumerate(lines, 1):
+            hit = next((needle for needle in needles if needle in line), None)
+            if hit is not None:
+                offenders[str(path.relative_to(REPO_ROOT))] = (line_no, hit)
+                break
+    return offenders
+
+
+def test_the_unreferenced_mobile_audio_surfaces_are_gone() -> None:
+    # 1. Non-vacuity FIRST. A wrong root would make every absence assertion below pass
+    #    for free, so prove the sweep actually reads Dart source before trusting it.
+    mobile_lib = sorted((REPO_ROOT / "mobile" / "lib").rglob("*.dart"))
+    mobile_test = sorted((REPO_ROOT / "mobile" / "test").rglob("*.dart"))
+    assert mobile_lib, "mobile/lib has no .dart files; this sweep is vacuous."
+    assert mobile_test, "mobile/test has no .dart files; this sweep is vacuous."
+    dart_files = mobile_lib + mobile_test
+
+    # 2/3. Both deleted files are gone from disk...
+    on_disk = [f for f in DELETED_MOBILE_FILES if (REPO_ROOT / f).exists()]
+    assert not on_disk, f"{on_disk} still exist on disk; step 1 deletes them outright."
+
+    # ...and gone from git's index, so a `git rm --cached`-shaped half-deletion fails too.
+    tracked = _tracked_files()
+    still_tracked = [f for f in DELETED_MOBILE_FILES if f in tracked]
+    assert not still_tracked, f"{still_tracked} are still tracked by git; `git rm` them."
+
+    # 4. No surviving mention of the widget anywhere under mobile/ — code OR comment.
+    widget_offenders = _mentions(dart_files, DEAD_MOBILE_AUDIO_TOKENS)
+    assert not widget_offenders, (
+        f"{widget_offenders} still mention the deleted audio-player widget "
+        f"(path -> line number, matched text); AC-12 requires zero hits."
+    )
+
+    # 5. No surviving mention of the dead service method.
+    method_offenders = _mentions(dart_files, (DEAD_MOBILE_SERVICE_METHOD,))
+    assert not method_offenders, (
+        f"{method_offenders} still mention {DEAD_MOBILE_SERVICE_METHOD}; "
+        f"AC-12 requires zero hits."
+    )
+
+    # 6. Anti-over-deletion: the live neighbours must still be there. This is what stops a
+    #    deletion that took the whole file, or the live per-stop method, from passing.
+    missing = [
+        f"{relative} no longer contains {symbol}"
+        for relative, symbol in SURVIVING_MOBILE_NEIGHBOURS
+        if symbol not in (REPO_ROOT / relative).read_text(encoding="utf-8")
+    ]
+    assert not missing, f"{missing}; step 1 removes only the two dead surfaces."

@@ -32,6 +32,9 @@ PAGE_LIMIT = 100
 _LOCAL_PROFILE_PORTS = {
     "local": 7687,
     "test": 7688,
+    # One pytest graph per concurrent worktree (make test-file TEST_PROFILE=test2).
+    "test2": 7690,
+    "test3": 7691,
     "workbench": 7689,
 }
 
@@ -340,7 +343,14 @@ def _parser() -> argparse.ArgumentParser:
     run = sub.add_parser("exec")
     run.add_argument(
         "--profile",
-        choices=("local", "test", "workbench", "cloud"),
+        # Derived from what is actually committed under config/profiles/ rather
+        # than restated, so adding a profile file cannot leave this list behind.
+        # "cloud" is appended because it has no committed file by design — it is
+        # fetched fresh from Render.
+        choices=(
+            *sorted(p.name for p in PROFILE_DIR.iterdir() if p.is_file() and p.name[0] != "."),
+            "cloud",
+        ),
         required=True,
     )
     run.add_argument("--render", action="store_true")

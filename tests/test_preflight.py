@@ -522,7 +522,14 @@ def test_a_foreign_process_holding_a_port_is_named_not_killed(monkeypatch):
 
 
 def test_this_projects_own_stale_server_is_stopped(monkeypatch):
-    """A leftover server from a previous run is ours to clean up."""
+    """A leftover server from a previous run is ours to clean up.
+
+    ``_responding`` must be stubbed along with ``_port_listeners``: the repair asks
+    "ours, but is it STALE?" by opening a real socket to 127.0.0.1:<port>. With a
+    developer's own ``make api`` listening on 8000 the real probe answers True, the
+    repair takes the leave-a-live-server-alone branch, and this test reads the
+    machine it runs on instead of the code it is meant to pin.
+    """
     ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app --port 8000"
     holders = [preflight.PortHolder(99, ours)]
     killed = []
@@ -537,6 +544,7 @@ def test_this_projects_own_stale_server_is_stopped(monkeypatch):
         return subprocess.CompletedProcess([], returncode=0, stdout="", stderr="")
 
     monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", lambda port, **k: False)
     monkeypatch.setattr(preflight, "_run", run)
     monkeypatch.setattr(preflight, "_wait_for", lambda fn, *a, **k: fn())
 
@@ -790,7 +798,12 @@ def test_the_reusable_prerequisite_sets_still_contain_what_they_promise():
     sets = preflight._prerequisite_sets(MAKEFILE.read_text(encoding="utf-8").splitlines())
     for name, required in REQUIRED_IN_SETS.items():
         assert name in sets, f"{name} disappeared from the Makefile"
-        actual = set(sets[name].split())
+        # Expanded, not raw: a set may name a requirement through an overridable
+        # default (PRE_PYTEST declares `db-$(TEST_PROFILE)` so a worktree on its
+        # own pytest graph preflights that graph). What must hold is what the
+        # requirement RESOLVES to by default, which is what preflight itself acts
+        # on -- comparing raw text would fail on a variable that expands correctly.
+        actual = set(preflight._expand(sets[name], sets).split())
         missing = required - actual
         assert not missing, f"{name} no longer contains {sorted(missing)}"
 
@@ -865,7 +878,13 @@ def test_only_this_projects_own_servers_match_the_kill_filter():
 
 
 def _stub_port_repair(monkeypatch, calls_until_free):
-    """A holder that releases the port after `calls_until_free` observations."""
+    """A holder that releases the port after `calls_until_free` observations.
+
+    ``_responding`` is stubbed dead alongside the listener table. The repair only
+    signals a holder it has established is STALE, and it establishes that by opening
+    a real socket to 127.0.0.1:<port>. Leaving it live makes every caller of this
+    helper depend on whether the developer happens to have ``make api`` running.
+    """
     state = {"n": 0}
     ours = f"{preflight.ROOT}/.venv/bin/python -m uvicorn src.api.app:app"
 
@@ -874,6 +893,7 @@ def _stub_port_repair(monkeypatch, calls_until_free):
         return [] if state["n"] > calls_until_free else [preflight.PortHolder(99, ours)]
 
     monkeypatch.setattr(preflight, "_port_listeners", listeners)
+    monkeypatch.setattr(preflight, "_responding", lambda port, **k: False)
     monkeypatch.setattr(preflight, "_serves_this_project", lambda port: False)
     monkeypatch.setattr(
         preflight,

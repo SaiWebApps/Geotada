@@ -120,6 +120,9 @@ class DatabaseSpec(NamedTuple):
 DATABASES = (
     DatabaseSpec("dev", "local", "neo4j", "ondoway-neo4j", 7687),
     DatabaseSpec("test", "test", "neo4j-test", "ondoway-neo4j-test", 7688),
+    # One pytest graph per concurrent worktree; see docker-compose.yml.
+    DatabaseSpec("test2", "test2", "neo4j-test2", "ondoway-neo4j-test2", 7690),
+    DatabaseSpec("test3", "test3", "neo4j-test3", "ondoway-neo4j-test3", 7691),
     DatabaseSpec("workbench", "workbench", "neo4j-workbench", "ondoway-neo4j-workbench", 7689),
 )
 DATABASE_BY_KEY = {spec.key: spec for spec in DATABASES}
@@ -1361,7 +1364,17 @@ def _makefile_lines(makefile: Path | None = None) -> list:
 
 
 def _prerequisite_sets(lines: list) -> dict:
-    """Read the reusable ``PRE_*`` definitions, joining backslash continuations."""
+    """Read the reusable ``PRE_*`` definitions, joining backslash continuations.
+
+    Also reads plain ``NAME ?= value`` overridable defaults (``TEST_PROFILE``,
+    ``DB``, ``TARGET``, ``GLUE``). A ``PRE_*`` set may be written in terms of one
+    -- ``PRE_PYTEST`` names ``db-$(TEST_PROFILE)`` so that a worktree running on
+    its own pytest graph preflights THAT graph rather than the canonical one --
+    and without the default in hand the expansion below leaves a literal
+    ``db-$(TEST_PROFILE)``, which is not a requirement name and would read as a
+    target declaring something that does not exist. Only literal defaults are
+    taken (no ``$(`` on the right), so this cannot start a substitution chain.
+    """
     variables: dict = {}
     index = 0
     while index < len(lines):
@@ -1373,6 +1386,10 @@ def _prerequisite_sets(lines: list) -> dict:
                 index += 1
                 collected = collected[:-1] + " " + lines[index].strip()
             variables[name.strip()] = collected.strip()
+        elif "?=" in line and not line.startswith(("\t", " ", "#")):
+            name, _, value = line.partition("?=")
+            if name.strip().isidentifier() and "$(" not in value:
+                variables.setdefault(name.strip(), value.strip())
         index += 1
     return variables
 

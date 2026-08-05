@@ -136,36 +136,10 @@ class TripService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// POST /audio/generate-trip/{tripId} — trigger backend audio generation.
-  ///
-  /// Returns the generation response with counts of generated/skipped/failed.
-  Future<Map<String, dynamic>> confirmTripAudio(
-    String tripId,
-    String accessToken,
-  ) async {
-    final response = await _httpClient.post(
-      Uri.parse('$baseUrl/audio/generate-trip/$tripId'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    } else if (response.statusCode == 404) {
-      throw TripServiceException('Trip not found');
-    } else {
-      throw TripServiceException(
-        'Audio generation failed (${response.statusCode}): ${response.body}',
-      );
-    }
-  }
-
   /// POST /audio/generate-trip-stops/{tripId} — trigger PER-STOP narration audio
   /// (Phase 1, Step 1.4d). Voices each stop's stitched narration (cold-open →
   /// beats → transit → closing), keyed by ItineraryItem id — the per-stop
-  /// replacement for [confirmTripAudio]'s per-primary-beat generation.
+  /// replacement for the retired per-primary-beat generation.
   ///
   /// Returns the generation response with counts of generated/skipped/failed.
   Future<Map<String, dynamic>> confirmTripStopAudio(

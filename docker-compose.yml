@@ -40,6 +40,55 @@ services:
       timeout: 5s
       retries: 30
 
+  # Parallel-lane pytest graphs. Same role as neo4j-test (:7688), one per
+  # concurrent worktree, so two agents running `make test-file` at once cannot
+  # wipe each other's fixtures: the pytest suite full-wipes its graph per-module,
+  # which turns a shared graph into phantom failures rather than a slow queue.
+  # Heap is capped below the uncapped :7688 default because these run alongside
+  # it plus dev, workbench and Valhalla in one 8GiB Colima VM (a third uncapped
+  # Neo4j killed dockerd on 2026-07-02) — 768m/256m leaves headroom while still
+  # seating a full pytest fixture corpus, which the workbench's 512m/128m would
+  # not.
+  neo4j-test2:
+    image: neo4j:5
+    container_name: ondoway-neo4j-test2
+    ports:
+      - "7477:7474"  # HTTP browser (lane 2)
+      - "7690:7687"  # Bolt protocol (lane 2)
+    environment:
+      NEO4J_AUTH: neo4j/ondoway_test2_2026
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 768m
+      NEO4J_server_memory_pagecache_size: 256m
+    volumes:
+      - neo4j_test2_data:/data
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test2_2026", "RETURN 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  neo4j-test3:
+    image: neo4j:5
+    container_name: ondoway-neo4j-test3
+    ports:
+      - "7478:7474"  # HTTP browser (lane 3)
+      - "7691:7687"  # Bolt protocol (lane 3)
+    environment:
+      NEO4J_AUTH: neo4j/ondoway_test3_2026
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 768m
+      NEO4J_server_memory_pagecache_size: 256m
+    volumes:
+      - neo4j_test3_data:/data
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test3_2026", "RETURN 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
   # Dedicated instance for the Playwright workbench suite (make test-workbench)
   # and the manual workbench API (make api-test). NEVER shared with the pytest
   # suite: `make test`/`make test-local` full-wipe 7688 per-module, so any suite
@@ -92,4 +141,6 @@ services:
 volumes:
   neo4j_data:
   neo4j_test_data:
+  neo4j_test2_data:
+  neo4j_test3_data:
   neo4j_workbench_data:

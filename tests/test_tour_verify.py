@@ -241,11 +241,23 @@ def test_reflection_with_no_claims_anywhere_fails_closed():
 
 
 def test_validation_report_passed_gates_on_new_teeth():
+    """Provenance BLOCKS; the entailment miss RECORDS.
+
+    Both teeth used to block. The entailment one was demoted to advisory by owner
+    ruling on 2026-08-03 (it fired on ~a fifth of a good tour, so it could not decide
+    whether to ship one) — see ``ValidationReport.passed`` and
+    test_tour_authoring_gates.py::test_faithfulness_and_dropped_facts_are_advisory_not_blocking.
+    The demotion is not a deletion, so the report must still CARRY the finding.
+    """
     base = ValidationReport()
     assert base.passed
     assert not ValidationReport(provenance_failures=(("b1", 12.0),)).passed
     s = Sentence(text="x", source_id="b1", source_type="beat", stop_idx=0)
-    assert not ValidationReport(faithfulness_failures=((s, "unfaithful:b1"),)).passed
+    unfaithful = ValidationReport(faithfulness_failures=((s, "unfaithful:b1"),))
+    assert unfaithful.passed, "the entailment check advises, it does not block"
+    assert unfaithful.faithfulness_failures == ((s, "unfaithful:b1"),), (
+        "advisory must still mean recorded — the finding vanished from the report"
+    )
 
 
 # ---------------------------------------------------------------------------

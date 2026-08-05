@@ -60,8 +60,7 @@ class _FakeSecureStorage extends FlutterSecureStorage {
 }
 
 /// Records play calls without booting a real just_audio engine (which never
-/// completes on the headless-web runner and hangs finalize). Mirrors the fake
-/// in beat_audio_player_test.dart.
+/// completes on the headless-web runner and hangs finalize).
 class _FakeAudioService extends AudioService {
   _FakeAudioService({required super.httpClient});
 

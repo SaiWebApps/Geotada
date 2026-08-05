@@ -227,6 +227,99 @@ class PremiumTourPlan:
         return {**core, "tour_plan_sha256": _sha256(_canonical_bytes(core))}
 
 
+def plan_premium_authoring(
+    source: Script,
+    beat_sequence: BeatSequence,
+    route: Route,
+    *,
+    snapshot: CorpusSnapshot,
+    snapshot_sha256: str,
+    routing_version: str,
+    policy_version: str,
+    authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
+) -> PremiumTourPlan:
+    """Build every per-stop authoring request for an ALREADY-PLANNED route.
+
+    THE ONE Block-2 plan builder. Pure and provider-free: no routing client, no
+    selection, no LLM. It is called by ``plan_premium_tour`` (which plans the route
+    first) and by ``POST /trips/{trip_id}/compose`` (whose route is already persisted),
+    so the two surfaces cannot drift into separate per-stop request shapes again.
+
+    ``tour_input`` is taken from ``source.inputs`` rather than accepted separately:
+    ``generate`` writes it there verbatim (src/tour/generation.py:424), and
+    ``FinalTourBlueprint`` refuses a script whose inputs differ from the blueprint's
+    tour_input (src/tour/artifact.py:677-678), so a separate parameter could only ever
+    introduce a mismatch.
+    """
+
+    _beats_by_id, stops, requests = _certification_compose_requests(source, beat_sequence, route)
+    if stops[-1] >= len(route.pois):
+        raise ValueError("the stitched script names a stop the prebuilt route lacks")
+    # Exactly ONE unit per dwell stop. ``stops`` comes from the stitched script's
+    # sentences, so a stop the stitch dropped simply would not appear — and a
+    # missing TAIL stop passes every other bar: it is in order, it starts at 0,
+    # and its highest index is in range. The plan would then hold fewer units
+    # than the route has stops, a caller would reserve and spend for those, and
+    # the trip would persist with its last stop never authored at all.
+    if len(stops) != len(route.pois):
+        raise ValueError("the prebuilt route needs one authoring unit per dwell stop")
+    summary = route_summary(route)
+    candidate = AuthoringCandidateIdentity.create(
+        candidate_slot="A",
+        contract_sha256=authorities.contract_sha256,
+        reference_manifest_sha256=authorities.reference_manifest_sha256,
+        calibration_manifest_sha256=authorities.calibration_manifest_sha256,
+        grounded_source_sha256=sentences_payload_sha256(source.script),
+        route_sha256=str(summary["route_sha256"]),
+        authoring_policy_sha256=premium_authoring_policy_sha256(),
+    )
+    authoring = AuthoringCandidatePlan(
+        candidate=candidate,
+        stop_requests=tuple(
+            AuthoringStopRequest.create(
+                candidate=candidate,
+                stop_index=stop_index,
+                compose_input_sha256=compose_input_sha256(requests[stop_index]),
+            )
+            for stop_index in stops
+        ),
+    )
+    units: list[PremiumComposeUnit] = []
+    for stop_request in authoring.stop_requests:
+        stop_index = stop_request.stop_index
+        envelope, sdk_request = candidate_compose_request_envelope(
+            requests[stop_index], stop_request, model=COMPOSE_MODEL
+        )
+        encoded = envelope.encode("utf-8")
+        units.append(
+            PremiumComposeUnit(
+                stop_index=stop_index,
+                poi_name=route.pois[stop_index].name,
+                authorized_request=requests[stop_index],
+                authoring_request=stop_request,
+                request_sha256=_sha256(encoded),
+                input_byte_count=len(encoded),
+                output_token_ceiling=CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
+                sdk_request=sdk_request,
+            )
+        )
+    return PremiumTourPlan(
+        tour_input=source.inputs,
+        snapshot=snapshot,
+        snapshot_sha256=snapshot_sha256,
+        route=route,
+        route_record=summary,
+        sequence=beat_sequence,
+        source=source,
+        candidate=candidate,
+        authoring=authoring,
+        units=tuple(units),
+        routing_version=routing_version,
+        policy_version=policy_version,
+        authorities=authorities,
+    )
+
+
 def certification_planning_policy(*, policy_id: str) -> RoutePlanningPolicy:
     return RoutePlanningPolicy.certification(
         minimum_requested_fraction=MIN_REQUESTED_FRACTION,
@@ -297,58 +390,12 @@ def plan_premium_tour(
         now=generation_time or dt.datetime.now(dt.UTC),
         validate_output=False,
     )
-    _beats, stops, requests = _certification_compose_requests(source, sequence, route)
-    summary = route_summary(route)
-    candidate = AuthoringCandidateIdentity.create(
-        candidate_slot="A",
-        contract_sha256=authorities.contract_sha256,
-        reference_manifest_sha256=authorities.reference_manifest_sha256,
-        calibration_manifest_sha256=authorities.calibration_manifest_sha256,
-        grounded_source_sha256=sentences_payload_sha256(source.script),
-        route_sha256=str(summary["route_sha256"]),
-        authoring_policy_sha256=premium_authoring_policy_sha256(),
-    )
-    authoring = AuthoringCandidatePlan(
-        candidate=candidate,
-        stop_requests=tuple(
-            AuthoringStopRequest.create(
-                candidate=candidate,
-                stop_index=stop_index,
-                compose_input_sha256=compose_input_sha256(requests[stop_index]),
-            )
-            for stop_index in stops
-        ),
-    )
-    units: list[PremiumComposeUnit] = []
-    for stop_request in authoring.stop_requests:
-        stop_index = stop_request.stop_index
-        envelope, sdk_request = candidate_compose_request_envelope(
-            requests[stop_index], stop_request, model=COMPOSE_MODEL
-        )
-        encoded = envelope.encode("utf-8")
-        units.append(
-            PremiumComposeUnit(
-                stop_index=stop_index,
-                poi_name=route.pois[stop_index].name,
-                authorized_request=requests[stop_index],
-                authoring_request=stop_request,
-                request_sha256=_sha256(encoded),
-                input_byte_count=len(encoded),
-                output_token_ceiling=CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
-                sdk_request=sdk_request,
-            )
-        )
-    return PremiumTourPlan(
-        tour_input=tour_input,
+    return plan_premium_authoring(
+        source,
+        sequence,
+        route,
         snapshot=snapshot,
         snapshot_sha256=exact_snapshot_sha256(snapshot),
-        route=route,
-        route_record=summary,
-        sequence=sequence,
-        source=source,
-        candidate=candidate,
-        authoring=authoring,
-        units=tuple(units),
         routing_version=routing_version,
         policy_version=policy.policy_id,
         authorities=authorities,
@@ -722,6 +769,7 @@ __all__ = [
     "execute_premium_plan",
     "finalize_premium_composition",
     "finalize_premium_tour",
+    "plan_premium_authoring",
     "plan_premium_tour",
     "premium_authoring_policy_sha256",
     "resolve_build_identity",
