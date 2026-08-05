@@ -144,8 +144,10 @@ STARVE_FLOOR_MAX_SHARE_OF_CAP: float = 0.5
 
 #: MEASURED 2026-07-26. The minimum share of the REQUESTED duration that must arrive as
 #: spoken audio. Replaces the old derivation
-#: ``ERR_SHORT(0.83) x AUDIO_FRACTION(0.60) x AUDIO_FLOOR_FRAC(0.8) = 0.398``, which was
+#: ``0.83 x AUDIO_FRACTION(0.60) x AUDIO_FLOOR_FRAC(0.8) = 0.398``, which was
 #: self-referential (it inherited the PLANNER's aim as the SERVING verdict) and wrong.
+#: The 0.83 in that derivation was the flat legacy planning fraction, deleted from the
+#: engine on 2026-08-04; it is quoted here as HISTORY, not as a live constant.
 #:
 #: routing.py declares WALK_FRACTION 0.40 + AUDIO_FRACTION 0.60 = 1.00 — a DISJOINT
 #: walk-XOR-listen model, i.e. the tourist stands still for 60% of the hour. The product
@@ -172,12 +174,6 @@ STARVE_FLOOR_MAX_SHARE_OF_CAP: float = 0.5
 #: Guarded from both sides by
 #: test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour.
 MIN_AUDIO_FRAC_OF_REQUESTED: float = 0.19
-
-#: INHERITED. The engine composes at most eight stops — premium_tour.py (``max_stops=8``)
-#: and routing.py ("certification planning supports one to eight stops"). Named here so
-#: the C3 floor can be capped by what a tour may PHYSICALLY hold; see
-#: ``c3_audio_floor_seconds``.
-MAX_COMPOSED_STOPS: int = 8
 
 #: MEASURED, 2026-07-19, over every real composed tour in ``data/*/tours/`` — 195 tour
 #: files: **paris 191, london 4. ``data/new_york/tours/`` DOES NOT EXIST** and
@@ -254,29 +250,28 @@ class RubricReport:
 def c3_audio_floor_seconds(duration_min: int) -> float:
     """The C3 thinness floor, in seconds of spoken audio, for a requested duration.
 
-    Two terms, and the ``min`` is the load-bearing half:
+    LINEAR in the requested duration: ``MIN_AUDIO_FRAC_OF_REQUESTED``, measured against
+    the tracked certified tours. A 300-minute tour must carry twice the audio of a
+    150-minute one, because that is what the traveller asked for.
 
-    1. ``MIN_AUDIO_FRAC_OF_REQUESTED`` — MEASURED against the tracked certified tours.
-    2. A CAP at what a tour may physically contain:
-       ``MAX_COMPOSED_STOPS x GORGE_MAX_WORDS_PER_STOP x STARVE_FLOOR_MAX_SHARE_OF_CAP``.
+    CHANGED 2026-08-04 (OWNER RULING 5, "no stop limits, period"). This used to be
+    ``min(linear, MAX_COMPOSED_STOPS x GORGE_MAX_WORDS_PER_STOP x
+    STARVE_FLOOR_MAX_SHARE_OF_CAP)`` — a cap at what an EIGHT-stop tour could hold,
+    inherited from a planning ceiling that no longer exists. The cap was there because
+    the floor was linear while capacity was CONSTANT, so a long tour could be asked for
+    more words than it could physically contain. Capacity is no longer constant:
+    duration is now the only bound on stop count, so a longer tour holds proportionally
+    more stops and the contradiction is gone.
 
-    Term 1 alone is LINEAR in duration while capacity is CONSTANT, so an uncapped floor
-    becomes physically unsatisfiable on long tours: ``TourInput`` accepts up to 600 min,
-    where the old 0.398 floor demanded ~35 800 words from a tour that may hold at most
-    ``8 x 850 = 6800``. No choice of fraction fixes that — only the cap does. This is
-    exactly the contradiction ``STARVE_FLOOR_MAX_SHARE_OF_CAP`` already exists to
-    prevent between C1 and C8; C3 needed the same treatment.
-
-    Exposed (rather than inlined in ``score_tour``) so the satisfiability claim is
-    directly testable at every offered duration — see
-    ``test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration``.
+    Removing it makes C3 STRICTER on long tours, and that is the point. With the cap in
+    place the floor flattened at roughly 22.7 minutes of audio, so a thin 300-minute
+    tour was judged against the same word budget as a 120-minute one and passed. See
+    ``test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration``
+    for the replacement satisfiability proof, which is now duration-INDEPENDENT: the
+    engine caps one stop at ``MAX_DWELL_AUDIO_SECONDS`` of audio, so the stops needed to
+    meet this floor each carry well under ``GORGE_MAX_WORDS_PER_STOP``.
     """
-    linear_s = MIN_AUDIO_FRAC_OF_REQUESTED * duration_min * 60
-    capacity_words = (
-        MAX_COMPOSED_STOPS * GORGE_MAX_WORDS_PER_STOP * STARVE_FLOOR_MAX_SHARE_OF_CAP
-    )
-    capacity_s = capacity_words / WORDS_PER_MINUTE * 60
-    return min(linear_s, capacity_s)
+    return MIN_AUDIO_FRAC_OF_REQUESTED * duration_min * 60
 
 
 def _words(text: str) -> int:
@@ -389,10 +384,12 @@ def score_tour(
             )
 
     # ── C7: time-budget overrun — walk + STATIONARY listening vs the engine's total ─
-    # INHERITED ceiling, nothing new computed. routing.py:94-95 defines
-    # err_short_total_seconds(duration) = duration_min * ERR_SHORT * 60, and
-    # summarise_route (routing.py:290-299) stamps it onto the Route, so this reads
-    # the field straight off ``route``. Skipped when the Route carries no total
+    # INHERITED ceiling, nothing new computed. ``Route.err_short_total_seconds`` is a
+    # POLICY-STAMPED field, not a 0.83 derivation: ``summarise_route`` writes the
+    # planning budget's own ``nominal_elapsed_seconds`` onto it, so this reads the
+    # ceiling the route was actually planned to straight off ``route``. (The field name
+    # is historical — the nominal fraction has been 1.00 since 2026-08-04, when the flat
+    # 0.83 policy was deleted.) Skipped when the Route carries no total
     # (the field's own unset sentinel, 0 — e.g. a Route built directly in a test).
     #
     # AUDIO SPOKEN WHILE WALKING IS FREE (product ruling, 2026-07-19: "Audio
@@ -440,7 +437,7 @@ def score_tour(
         report.stats["time_budget_actual_s"] = actual_total_s
         report.stats["time_budget_ceiling_s"] = route.err_short_total_seconds
         # The ceiling percentage is DERIVED FROM THE ROUTE, never from a planning
-        # constant. This message used to interpolate ERR_SHORT (83%) as a literal, but
+        # constant. This message used to interpolate the flat 0.83 as a literal, but
         # the premium/certification lane plans at a nominal fraction of 1.00, so on
         # every premium tour the sentence said "83% of the requested duration" while
         # the arithmetic above correctly used the route's own stamped total. The number

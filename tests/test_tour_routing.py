@@ -9,19 +9,18 @@ import pytest
 from src.tour.contract import POI, BeatRef
 from src.tour.routing import (
     AUDIO_FRACTION,
-    ERR_SHORT,
     HAVERSINE_CORRECTION,
     PACE_KMH,
     WALK_FRACTION,
     beat_spoken_seconds,
     compute_dwell_seconds,
     envelope_radius_m,
-    err_short_total_seconds,
     governor_allowance_seconds,
     haversine_m,
     insertion_cost_seconds,
     pace_corrected_walk_seconds,
     planned_audio_seconds,
+    planned_total_seconds,
     summarise_route,
     target_audio_seconds,
     walk_budget_seconds,
@@ -81,7 +80,6 @@ def test_pace_corrected_500m_haversine():
 def test_pace_constants_lock():
     assert PACE_KMH == 3.0
     assert HAVERSINE_CORRECTION == 1.35
-    assert ERR_SHORT == 0.83
     assert math.isclose(WALK_FRACTION + AUDIO_FRACTION, 1.0)
 
 
@@ -90,19 +88,20 @@ def test_pace_constants_lock():
 # ---------------------------------------------------------------------------
 
 
-def test_err_short_60min():
-    # 60 x 0.83 = 49.8 min x 60 = 2988s.
-    assert err_short_total_seconds(60) == 2988
+def test_planned_total_60min():
+    # The nominal fraction is 1.00 since 2026-08-04, so a 60-minute request is planned
+    # to 60 minutes of active time. It was 2988s (0.83) under the deleted flat policy.
+    assert planned_total_seconds(60) == 3600
 
 
 def test_walk_budget_60min():
-    # 60 x 0.83 x 0.40 x 60 = 1195.2s → 1195.
-    assert walk_budget_seconds(60) == 1195
+    # 60 x 1.00 x 0.40 x 60 = 1440s. Was 1195 under the deleted flat 0.83.
+    assert walk_budget_seconds(60) == 1440
 
 
 def test_audio_budget_60min():
-    # 60 x 0.83 x 0.60 x 60 = 1792.8s → 1793.
-    assert target_audio_seconds(60) == 1793
+    # 60 x 1.00 x 0.60 x 60 = 2160s. Was 1793 under the deleted flat 0.83.
+    assert target_audio_seconds(60) == 2160
 
 
 def test_envelope_round_trip_is_half_of_one_way():
@@ -112,9 +111,10 @@ def test_envelope_round_trip_is_half_of_one_way():
 
 
 def test_envelope_60min_one_way_paris():
-    # walk_min ≈ 19.92, x3 km/h / 1.35 → ~738m.
+    # walk_min = 60 x 1.00 x 0.40 = 24.0, x3 km/h / 1.35 -> ~889 m. It was ~738 m under
+    # the deleted flat 0.83 policy.
     r = envelope_radius_m(60, round_trip=False)
-    assert 730 < r < 745
+    assert 880 < r < 895
 
 
 def test_envelope_zero_duration():
@@ -306,9 +306,10 @@ def test_governor_allowance_is_budget_over_three_for_normal_durations(d: int):
 
 
 def test_governor_allowance_concrete_values():
-    # 30-min budget 896 -> 298s (~5 min); 90-min budget 2689 -> 896s (~15 min).
-    assert governor_allowance_seconds(30) == 298
-    assert governor_allowance_seconds(90) == 896
+    # 30-min budget 1080 -> 360s (6 min); 90-min budget 3240 -> 1080s (18 min). Both
+    # moved with the nominal fraction from 0.83 to 1.00 (they were 298 and 896).
+    assert governor_allowance_seconds(30) == 360
+    assert governor_allowance_seconds(90) == 1080
 
 
 def test_governor_allowance_divisor_floors_for_short_durations():

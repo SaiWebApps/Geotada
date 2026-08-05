@@ -82,6 +82,7 @@ class _FakeAudioService extends AudioService {
 GeneratedTrip _sampleTrip({
   String id = 'trip-1',
   String name = 'Paris Day Trip',
+  List<String> degradationNotices = const [],
 }) {
   return GeneratedTrip(
     tripId: id,
@@ -91,6 +92,7 @@ GeneratedTrip _sampleTrip({
     totalDurationMin: 90,
     anchorCount: 1,
     flavourCount: 6,
+    degradationNotices: degradationNotices,
     stops: const [
       ItineraryStop(
         sortOrder: 1,
@@ -426,6 +428,75 @@ void main() {
       await tester.pump();
 
       expect(find.text('Trip not found'), findsOneWidget);
+    });
+
+    // What quietly went worse while the tour was built has to REACH the
+    // traveller. A field parsed but never rendered is the same silence the
+    // dropped field was.
+    const estimatedLegsNotice =
+        'Walking times between stops are estimates, not measured routes, so '
+        'the tour may run a little longer or shorter than it says.';
+
+    testWidgets('shows the degradation notice the backend reported',
+        (tester) async {
+      final trip = _sampleTrip(
+        degradationNotices: const [estimatedLegsNotice],
+      );
+      tripService.saveTrip(trip);
+
+      await tester.pumpWidget(_buildTestWidget(
+        tripService: tripService,
+        audioService: audioService,
+        tripId: trip.tripId,
+      ));
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text(estimatedLegsNotice), findsOneWidget);
+      expect(find.byIcon(Icons.info_outline), findsOneWidget);
+    });
+
+    testWidgets('shows every degradation notice, not only the first',
+        (tester) async {
+      final trip = _sampleTrip(
+        degradationNotices: const [
+          estimatedLegsNotice,
+          'Some of the narration was written from a template.',
+        ],
+      );
+      tripService.saveTrip(trip);
+
+      await tester.pumpWidget(_buildTestWidget(
+        tripService: tripService,
+        audioService: audioService,
+        tripId: trip.tripId,
+      ));
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text(estimatedLegsNotice), findsOneWidget);
+      expect(
+        find.text('Some of the narration was written from a template.'),
+        findsOneWidget,
+      );
+      // One card holding both sentences, not one card each.
+      expect(find.byIcon(Icons.info_outline), findsOneWidget);
+    });
+
+    testWidgets('shows no degradation card when nothing degraded',
+        (tester) async {
+      final trip = _sampleTrip();
+      tripService.saveTrip(trip);
+
+      await tester.pumpWidget(_buildTestWidget(
+        tripService: tripService,
+        audioService: audioService,
+        tripId: trip.tripId,
+      ));
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.byIcon(Icons.info_outline), findsNothing);
     });
 
     group('flavour picker (Phase 4 Step 4.10)', () {

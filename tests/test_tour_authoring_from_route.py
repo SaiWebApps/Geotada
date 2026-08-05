@@ -1,24 +1,32 @@
-"""AC-4 — the author-a-prebuilt-route seam.
+"""AC-4 / AC-9 / AC-22 — the AUTHOR block (Block 2) never re-plans a route.
 
 A persisted trip already HAS its route: /trips/{id}/compose must author that exact
-route, never re-plan one. These guards pin the four properties the seam is defined
-by (ledger decision D5):
+route, never re-plan one. There is now exactly ONE seam that does this —
+``plan_premium_authoring`` -> ``execute_premium_plan`` -> ``finalize_premium_composition``
+in ``src/tour/premium_tour.py``. The second implementation that used to live in
+``src/tour/authoring.py`` was deleted on 2026-08-04; these guards moved with the claim.
 
-* it never reaches the planner — proven STRUCTURALLY (the seam's own import and
-  call graph may not name a planning module or entry point) as well as at
-  runtime, because a module-level ``from .selection import select_k_routes``
-  binds at import time and a monkeypatch on the ``selection`` module can no
-  longer see it;
+The four properties the AUTHOR block is defined by (ledger decision D5):
+
+* it never reaches the planner — proven STRUCTURALLY as well as at runtime, because a
+  module-level ``from .selection import select_k_routes`` binds at import time and a
+  monkeypatch on the ``selection`` module can no longer see it. The structural guard is
+  **FUNCTION-SCOPED**: ``premium_tour.py`` as a whole legitimately imports the planner for
+  ``plan_premium_tour`` (which is BLOCK 1, and whose job IS to plan), so a module-scope
+  check here would be vacuously red forever. Only the four Block-2 function bodies are
+  read, and a function-local import inside one of them is exactly the shape that check
+  exists to catch;
 * it builds exactly ONE authoring unit per dwell stop — not one per sentence, and
   never zero for a stop the stitched script forgot — so a caller's spend precheck
   can reserve ``len(units)`` calls and be right;
 * it tolerates what real persisted trips actually contain — a round-trip transit
   shape (``len(transits) == len(pois) + 1``), 1..15 stops, and receiptless
-  haversine-degraded legs, all of which ``plan_premium_tour`` refuses outright.
+  haversine-degraded legs, all of which ``plan_premium_tour``'s PLANNING bars refuse
+  outright. Those bars live in Block 1 and are not part of Block 2 (AC-22).
 
-``test_prebuilt_route_authors_without_replanning`` is the ledger's pinned gate for
-this step, so it carries every one of those clauses itself: reverting ANY of them
-in ``src/tour/authoring.py`` must turn that one node id red.
+``test_the_author_block_never_replans`` is the ledger's pinned gate for this step, so it
+carries every one of those clauses itself: reverting ANY of them must turn that one node
+id red.
 """
 
 from __future__ import annotations
@@ -30,12 +38,7 @@ from pathlib import Path
 import pytest
 
 from src.tour import selection
-from src.tour.authoring import (
-    AUTHORING_MAX_STOPS,
-    COMPOSE_MODEL,
-    author_prebuilt_route,
-    plan_prebuilt_route_authoring,
-)
+from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import (
     POI,
@@ -50,9 +53,27 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
-from src.tour.premium_tour import premium_authoring_policy_sha256
+from src.tour.premium_tour import (
+    EphemeralReceiptSink,
+    execute_premium_plan,
+    finalize_premium_composition,
+    plan_premium_authoring,
+)
 
-_SEAM_PATH = Path(__file__).resolve().parents[1] / "src" / "tour" / "authoring.py"
+_SEAM_PATH = Path(__file__).resolve().parents[1] / "src" / "tour" / "premium_tour.py"
+
+#: The Block-2 functions. Everything the AUTHOR block is allowed to be, by name.
+#: The module as a whole legitimately imports the planner for ``plan_premium_tour``,
+#: so a module-scope guard here would be vacuously red. The prohibition is therefore
+#: FUNCTION-SCOPED: these bodies, and nothing else.
+_BLOCK_TWO_FUNCTIONS = frozenset(
+    {
+        "plan_premium_authoring",
+        "execute_premium_plan",
+        "finalize_premium_composition",
+        "finalize_premium_tour",
+    }
+)
 
 #: Modules that PLAN a route. The seam authors a route it is handed; if any of
 #: these appears anywhere in its import graph — including inside a function body —
@@ -85,41 +106,53 @@ _PLANNING_CALLS = frozenset(
 )
 
 
-def _seam_import_and_call_graph() -> tuple[set[str], set[str]]:
-    """Every name the seam imports and every name it calls, parsed — not matched.
+def _block_two_import_and_call_graph() -> tuple[set[str], set[str]]:
+    """Every name the Block-2 function BODIES import and call, parsed — not matched.
 
-    ``ast`` is used deliberately: a text search over the file would silently
-    return an empty match on any shape it did not anticipate and the guard would
-    pass by accident.
+    ``ast`` is used deliberately: a text search over the file would silently return
+    an empty match on any shape it did not anticipate and the guard would pass by
+    accident. Nested function definitions inside a Block-2 body (``invoke`` inside
+    ``execute_premium_plan``) are walked too, because that is where a fan-out worker
+    would reach a planner from.
     """
     tree = ast.parse(_SEAM_PATH.read_text(encoding="utf-8"), filename=str(_SEAM_PATH))
+    bodies = [
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.FunctionDef) and node.name in _BLOCK_TWO_FUNCTIONS
+    ]
+    assert {node.name for node in bodies} == _BLOCK_TWO_FUNCTIONS, (
+        "a Block-2 function was renamed or removed, so this guard now watches less "
+        f"than it claims: found {sorted(node.name for node in bodies)}"
+    )
     imported: set[str] = set()
     called: set[str] = set()
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                imported.update(alias.name.split("."))
-        elif isinstance(node, ast.ImportFrom):
-            imported.update((node.module or "").split("."))
-            for alias in node.names:
-                imported.add(alias.name)
-        elif isinstance(node, ast.Call):
-            func = node.func
-            if isinstance(func, ast.Name):
-                called.add(func.id)
-            elif isinstance(func, ast.Attribute):
-                called.add(func.attr)
+    for body in bodies:
+        for node in ast.walk(body):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    imported.update(alias.name.split("."))
+            elif isinstance(node, ast.ImportFrom):
+                imported.update((node.module or "").split("."))
+                for alias in node.names:
+                    imported.add(alias.name)
+            elif isinstance(node, ast.Call):
+                func = node.func
+                if isinstance(func, ast.Name):
+                    called.add(func.id)
+                elif isinstance(func, ast.Attribute):
+                    called.add(func.attr)
     return imported, called
 
 
 def _assert_the_seam_cannot_reach_the_planner() -> None:
-    imported, called = _seam_import_and_call_graph()
+    imported, called = _block_two_import_and_call_graph()
     assert not imported & _PLANNING_MODULES, (
-        "the prebuilt-route seam imports a route-PLANNING module: "
+        "a Block-2 function imports a route-PLANNING module: "
         f"{sorted(imported & _PLANNING_MODULES)}"
     )
     assert not called & _PLANNING_CALLS, (
-        "the prebuilt-route seam calls a route-PLANNING entry point: "
+        "a Block-2 function calls a route-PLANNING entry point: "
         f"{sorted(called & _PLANNING_CALLS)}"
     )
 
@@ -274,12 +307,26 @@ def _drop_stop(stitched: Script, stop_index: int) -> Script:
 
 
 def _plan(stitched: Script, sequence: BeatSequence, route: Route):
-    return plan_prebuilt_route_authoring(
+    return plan_premium_authoring(
         stitched,
         sequence,
         route,
-        authoring_policy_sha256=premium_authoring_policy_sha256(),
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
+
+
+def _author(plan, executor) -> Script:
+    """Block 2's execute-then-finalize, returning the Script the old seam returned.
+
+    ``finalize_premium_composition`` rather than ``finalize_premium_tour``: the
+    latter builds a certification blueprint and resolves a git build fingerprint,
+    neither of which this file's claim (the AUTHOR block never re-plans) involves.
+    """
+    responses = execute_premium_plan(plan, executor=executor, receipt_sink=EphemeralReceiptSink())
+    return finalize_premium_composition(plan, responses).script
 
 
 def _forbid_planning(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -290,7 +337,7 @@ def _forbid_planning(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(selection, "choose_discrete_route", _explode)
 
 
-def test_prebuilt_route_authors_without_replanning(
+def test_the_author_block_never_replans(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """AC-4 end to end — the pinned gate for this step.
@@ -298,6 +345,9 @@ def test_prebuilt_route_authors_without_replanning(
     Every clause lives here on purpose: reverting the no-replanning boundary, the
     one-unit-per-dwell-stop rule, the round-trip tolerance, the 15-stop cap or the
     receiptless tolerance each turns THIS node id red.
+
+    The structural half is FUNCTION-SCOPED over ``src/tour/premium_tour.py``: the four
+    Block-2 bodies, not the module, because the module also holds Block 1's planner.
     """
     _forbid_planning(monkeypatch)
     _assert_the_seam_cannot_reach_the_planner()
@@ -317,7 +367,7 @@ def test_prebuilt_route_authors_without_replanning(
     assert plan.route is route
 
     executor = CountingOfflineExecutor()
-    script = author_prebuilt_route(plan, executor=executor)
+    script = _author(plan, executor)
 
     # Exactly one call per dwell stop (the stops run in parallel, so order is
     # not part of the contract — the COUNT is what a spend precheck reserves).
@@ -334,12 +384,11 @@ def test_prebuilt_route_authors_without_replanning(
     with pytest.raises(ValueError, match="one authoring unit per dwell stop"):
         _plan(_drop_stop(stitched, len(route.pois) - 1), sequence, route)
 
-    # --- 15 stops, the real HARD_ANCHOR_CAP (the old pin refused 9+) -------
-    assert AUTHORING_MAX_STOPS == selection.HARD_ANCHOR_CAP == 15
+    # --- 15 stops (the old pin refused 9+) --------------------------------
     wide_plan = _plan(*_prebuilt(15))
     assert len(wide_plan.units) == 15
     wide_executor = CountingOfflineExecutor()
-    wide_script = author_prebuilt_route(wide_plan, executor=wide_executor)
+    wide_script = _author(wide_plan, wide_executor)
     assert sorted(wide_executor.stop_calls) == list(range(15))
     assert len({s.stop_idx for s in wide_script.script}) == 15
 
@@ -348,14 +397,13 @@ def test_prebuilt_route_authors_without_replanning(
     assert all(transit.valhalla_receipt is None for transit in bare[2].transits)
     assert all(transit.leg_seconds is None for transit in bare[2].transits)
     bare_executor = CountingOfflineExecutor()
-    bare_script = author_prebuilt_route(_plan(*bare), executor=bare_executor)
+    bare_script = _author(_plan(*bare), bare_executor)
     assert sorted(bare_executor.stop_calls) == [0, 1, 2]
     assert len(bare_script.script) == 3
 
 
 def test_prebuilt_route_authors_fifteen_stops(monkeypatch: pytest.MonkeyPatch) -> None:
-    """1..15 stops, the real HARD_ANCHOR_CAP — the old 8-stop pin refused 9+."""
-    assert AUTHORING_MAX_STOPS == selection.HARD_ANCHOR_CAP == 15
+    """1..15 stops — the old 8-stop pin refused 9+."""
     _forbid_planning(monkeypatch)
     stitched, sequence, route = _prebuilt(15)
 
@@ -363,7 +411,7 @@ def test_prebuilt_route_authors_fifteen_stops(monkeypatch: pytest.MonkeyPatch) -
     assert len(plan.units) == 15
 
     executor = CountingOfflineExecutor()
-    script = author_prebuilt_route(plan, executor=executor)
+    script = _author(plan, executor)
     assert sorted(executor.stop_calls) == list(range(15))
     assert len({s.stop_idx for s in script.script}) == 15
 
@@ -373,7 +421,7 @@ def test_prebuilt_route_authors_a_single_stop(monkeypatch: pytest.MonkeyPatch) -
     stitched, sequence, route = _prebuilt(1)
 
     executor = CountingOfflineExecutor()
-    script = author_prebuilt_route(_plan(stitched, sequence, route), executor=executor)
+    script = _author(_plan(stitched, sequence, route), executor)
     assert sorted(executor.stop_calls) == [0]
     assert len(script.script) == 1
 
@@ -388,7 +436,7 @@ def test_prebuilt_route_authors_receiptless_haversine_legs(
     assert all(transit.leg_seconds is None for transit in route.transits)
 
     executor = CountingOfflineExecutor()
-    script = author_prebuilt_route(_plan(stitched, sequence, route), executor=executor)
+    script = _author(_plan(stitched, sequence, route), executor)
     assert sorted(executor.stop_calls) == [0, 1, 2]
     assert len(script.script) == 3
 
@@ -412,7 +460,21 @@ def test_prebuilt_route_refuses_a_gap_in_the_middle_of_the_stitch() -> None:
         _plan(_drop_stop(stitched, 1), sequence, route)
 
 
-def test_prebuilt_route_refuses_more_than_the_anchor_cap() -> None:
+def test_the_author_block_authors_past_the_deleted_fifteen_stop_ceiling() -> None:
+    """INVERTED 2026-08-04 (OWNER RULING 5, "no stop limits, period").
+
+    This test used to assert that a 16-stop route was REFUSED with "one to fifteen
+    stops". That ceiling sat behind the planner and rejected routes the same engine
+    had already built, so it was deleted along with every other stop cap; duration
+    is now the only bound on how many stops a tour has. The claim is therefore
+    inverted rather than dropped — 16 stops must author cleanly, one script per
+    dwell stop, all the way through the seam.
+    """
     stitched, sequence, route = _prebuilt(16)
-    with pytest.raises(ValueError, match="one to fifteen stops"):
-        _plan(stitched, sequence, route)
+    plan = _plan(stitched, sequence, route)
+    assert len(plan.units) == 16
+
+    executor = CountingOfflineExecutor()
+    script = _author(plan, executor)
+    assert sorted(executor.stop_calls) == list(range(16))
+    assert len({s.stop_idx for s in script.script}) == 16

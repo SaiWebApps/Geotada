@@ -22,21 +22,13 @@ from __future__ import annotations
 import hashlib
 import json
 from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
-from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from .artifact import CompositionTrace, sentences_payload_sha256
 from .candidate_authoring import (
-    AuthoringCandidateIdentity,
-    AuthoringCandidatePlan,
-    AuthoringCandidateResponseSet,
     AuthoringStopRequest,
-    AuthoringStopResponse,
 )
-from .certification_provider import PhysicalProviderResponse
 from .claim_dedup import (
     claims_realized_by,
     suppress_exact_repeats,
@@ -52,9 +44,7 @@ from .contract import (
     Sentence,
     ValidationReport,
 )
-from .degradations import in_current_context, record
 from .generation import GLUE_REFLECTION, _sum_audio
-from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .reflection import reflection_slots
 from .validation import validate_script, validate_source_traceability
 from .verify import FaithfulnessChecker, _visited_claims
@@ -123,17 +113,6 @@ COMPOSE_MAX_OUTPUT_TOKENS = 64000
 # Certification preserves the branch-proven adaptive-thinking allowance. The
 # frozen full-call-plan preflight—not a smaller hidden ceiling—controls spend.
 CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS = COMPOSE_MAX_OUTPUT_TOKENS
-
-#: Most stops one authoring pass may cover. Mirrors ``selection.HARD_ANCHOR_CAP``
-#: (15) — the most anchors the planner can ever seat — and is deliberately NOT
-#: imported from there: ``selection`` is a heavyweight module that would make this
-#: leaf import half the tour engine. ``tests/test_tour_authoring_from_route.py``
-#: pins the two values equal. It was 8 until the persisted-trip seam landed, which
-#: is the cap certification PLANNING still applies (``routing.py``); a persisted
-#: trip carries whatever the planner seated, and refusing to author a 9-stop tour
-#: the same engine had already routed was a limit with no reason behind it.
-AUTHORING_MAX_STOPS = 15
-
 
 # The LOCKED narrator voice (specs/2026-06-14-compose-narrator/): ONE warm,
 # second-person narrator; the newcomer's curiosity captured as STRUCTURE;
@@ -320,7 +299,6 @@ def _compose_user_prompt(
     request: ComposeRequest, attempt: int, prev_report: ValidationReport | None
 ) -> str:
     """Render one compose attempt's user message (deterministic, testable)."""
-    import json
 
     stitched = [
         {
@@ -399,7 +377,6 @@ def _compose_user_prompt(
 
 def compose_input_sha256(request: ComposeRequest) -> str:
     """Canonical hash of the exact typed input before provider-envelope metadata."""
-    import json
 
     payload = json.dumps(
         request.model_dump(mode="json"),
@@ -417,7 +394,6 @@ def candidate_compose_request_envelope(
     model: str = COMPOSE_MODEL,
 ) -> tuple[str, dict[str, object]]:
     """Build one adaptive, 64K, candidate-bound physical authoring request."""
-    import json
 
     stops = {sentence.stop_idx for sentence in request.stitched.script}
     if stops != {authoring_request.stop_index}:
@@ -498,8 +474,14 @@ def _certification_compose_requests(
     for sentence in stitched.script:
         by_stop[sentence.stop_idx].append(sentence)
     stops = sorted(by_stop)
-    if not 1 <= len(stops) <= AUTHORING_MAX_STOPS:
-        raise ValueError("authoring supports one to fifteen stops")
+    # The UPPER bound was deleted 2026-08-04 (OWNER RULING 5): duration alone
+    # decides how many stops a route has, and refusing to author one the same
+    # engine had already planned was a limit with no reason behind it. The LOWER
+    # bound stays: ``requests`` below is keyed by stop index, so an empty stitch
+    # would silently yield an empty authoring plan that a caller would then
+    # "author" for zero stops and persist as a tour.
+    if not stops:
+        raise ValueError("authoring requires at least one stop")
     all_slots = tuple(
         slot
         for slot in reflection_slots(route, beat_sequence)
@@ -782,277 +764,14 @@ def finalize_certification_composition(
     raise ComposeVerificationError(report, 1)
 
 
-# ---------------------------------------------------------------------------
-# The author-a-prebuilt-route seam
-# ---------------------------------------------------------------------------
-#
-# ``plan_premium_tour`` PLANS a route and then authors it.  A persisted trip
-# already HAS its route — the user picked it at /trips/generate — so composing it
-# must author that exact route and never re-plan.  Everything below is the second
-# half of the Premium path with the planning half removed, and with the three
-# admission bars that only make sense for a freshly planned certification route
-# left out (D5 of the one-true-tour-algorithm ledger):
-#
-# 1. ``len(transits) == len(pois)``.  A round-trip persisted route carries a
-#    closing leg home, so it has one transit MORE than it has stops.
-# 2. Complete receipt-backed Valhalla legs.  A trip planned while Valhalla was
-#    unavailable persists haversine-degraded legs; authoring reads none of that
-#    evidence, and this path stops at ``Script`` — it never builds the
-#    certification blueprint the receipts exist to underwrite.
-# 3. Eight stops.  Selection may seat up to ``AUTHORING_MAX_STOPS``.
-
-
-@dataclass(frozen=True)
-class PrebuiltRouteComposeUnit:
-    """One stop's immutable, fully-rendered physical authoring request."""
-
-    stop_index: int
-    poi_name: str
-    authorized_request: ComposeRequest
-    authoring_request: AuthoringStopRequest
-    request_sha256: str
-    input_byte_count: int
-    output_token_ceiling: int
-    sdk_request: dict[str, object]
-
-
-@dataclass(frozen=True)
-class PrebuiltRouteAuthoringPlan:
-    """Everything authoring a prebuilt route needs, precomputed and provider-free.
-
-    ``units`` is one per dwell stop, so a caller can reserve exactly
-    ``len(units)`` provider calls BEFORE spending anything.
-    """
-
-    route: Route
-    sequence: BeatSequence
-    source: Script
-    candidate: AuthoringCandidateIdentity
-    authoring: AuthoringCandidatePlan
-    units: tuple[PrebuiltRouteComposeUnit, ...]
-
-
-class PrebuiltRouteExecutor(Protocol):
-    """The injected provider seam; the offline adapter keeps tests at $0."""
-
-    cost_bearing: bool
-    provider_name: str
-
-    def execute(self, unit: PrebuiltRouteComposeUnit) -> PhysicalProviderResponse: ...
-
-
-def prebuilt_route_sha256(route: Route) -> str:
-    """Canonical route hash, identical to the Premium plan's ``route_sha256``."""
-
-    payload = json.dumps(
-        route.model_dump(mode="json"),
-        ensure_ascii=False,
-        allow_nan=False,
-        separators=(",", ":"),
-        sort_keys=True,
-    ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()
-
-
-def plan_prebuilt_route_authoring(
-    source: Script,
-    beat_sequence: BeatSequence,
-    route: Route,
-    *,
-    authoring_policy_sha256: str,
-    authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
-) -> PrebuiltRouteAuthoringPlan:
-    """Build every per-stop authoring request for an ALREADY-PLANNED route.
-
-    Pure and provider-free: no routing client, no corpus snapshot, no selection.
-    ``authoring_policy_sha256`` is injected rather than computed here because the
-    policy hash is owned by ``premium_tour.premium_authoring_policy_sha256`` and
-    is baked into committed certification data; importing it back into this leaf
-    would close an import cycle.
-    """
-
-    _beats_by_id, stops, requests = _certification_compose_requests(source, beat_sequence, route)
-    if stops[-1] >= len(route.pois):
-        raise ValueError("the stitched script names a stop the prebuilt route lacks")
-    # Exactly ONE unit per dwell stop. ``stops`` comes from the stitched script's
-    # sentences, so a stop the stitch dropped simply would not appear — and a
-    # missing TAIL stop passes every other bar: it is in order, it starts at 0,
-    # and its highest index is in range. The plan would then hold fewer units
-    # than the route has stops, a caller would reserve and spend for those, and
-    # the trip would persist with its last stop never authored at all.
-    if len(stops) != len(route.pois):
-        raise ValueError("the prebuilt route needs one authoring unit per dwell stop")
-    candidate = AuthoringCandidateIdentity.create(
-        candidate_slot="A",
-        contract_sha256=authorities.contract_sha256,
-        reference_manifest_sha256=authorities.reference_manifest_sha256,
-        calibration_manifest_sha256=authorities.calibration_manifest_sha256,
-        grounded_source_sha256=sentences_payload_sha256(source.script),
-        route_sha256=prebuilt_route_sha256(route),
-        authoring_policy_sha256=authoring_policy_sha256,
-    )
-    authoring = AuthoringCandidatePlan(
-        candidate=candidate,
-        stop_requests=tuple(
-            AuthoringStopRequest.create(
-                candidate=candidate,
-                stop_index=stop_index,
-                compose_input_sha256=compose_input_sha256(requests[stop_index]),
-            )
-            for stop_index in stops
-        ),
-    )
-    units: list[PrebuiltRouteComposeUnit] = []
-    for stop_request in authoring.stop_requests:
-        stop_index = stop_request.stop_index
-        envelope, sdk_request = candidate_compose_request_envelope(
-            requests[stop_index], stop_request, model=COMPOSE_MODEL
-        )
-        encoded = envelope.encode("utf-8")
-        units.append(
-            PrebuiltRouteComposeUnit(
-                stop_index=stop_index,
-                poi_name=route.pois[stop_index].name,
-                authorized_request=requests[stop_index],
-                authoring_request=stop_request,
-                request_sha256=hashlib.sha256(encoded).hexdigest(),
-                input_byte_count=len(encoded),
-                output_token_ceiling=CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
-                sdk_request=sdk_request,
-            )
-        )
-    return PrebuiltRouteAuthoringPlan(
-        route=route,
-        sequence=beat_sequence,
-        source=source,
-        candidate=candidate,
-        authoring=authoring,
-        units=tuple(units),
-    )
-
-
-def author_prebuilt_route(
-    plan: PrebuiltRouteAuthoringPlan,
-    *,
-    executor: PrebuiltRouteExecutor,
-    max_workers: int = 6,
-    faithfulness_checker: FaithfulnessChecker | None = None,
-    enforce_claim_coverage: bool = False,
-    scan_glue_for_invention: bool = False,
-) -> Script:
-    """Author every stop of a prebuilt route once, in parallel, and verify it.
-
-    Exactly one call per unit — no retries, no best-of-N. Bad provider OUTPUT
-    raises ``ComposeVerificationError`` from the shared finalizer, which is what a
-    persisted caller turns into a refusal; a provider/client ERROR propagates.
-
-    The three gate arguments are passed straight through to that finalizer; see its
-    docstring for why they are opt-in. A caller that PERSISTS the result (the
-    ``/trips/{id}/compose`` endpoint) turns all three on; an editor preview stays
-    structural for offline speed.
-    """
-
-    if not 1 <= max_workers <= 8:
-        raise ValueError("prebuilt-route authoring supports one to eight workers")
-
-    def _execute_unit(unit: PrebuiltRouteComposeUnit) -> PhysicalProviderResponse:
-        # AC-4: a unit that fails inside the fan-out must be recorded —
-        # exception type, message and stop index, in the CALLER's scope —
-        # before it is re-raised. A partial premium tour must abort, never
-        # ship half-narrated, so this never swallows the exception.
-        try:
-            return executor.execute(unit)
-        except Exception as exc:
-            record(
-                kind="authoring_unit_failed",
-                human=(
-                    "A stop failed to compose, so the tour was stopped rather than "
-                    "shipped half-narrated."
-                ),
-                component="author_prebuilt_route._execute_unit",
-                error=exc,
-                stop_index=str(unit.stop_index),
-            )
-            raise
-
-    # in_current_context: see src/tour/degradations.py — a pooled worker cannot
-    # see the request's collection scope without it, so failures vanish.
-    with ThreadPoolExecutor(max_workers=min(max_workers, len(plan.units))) as pool:
-        responses = tuple(pool.map(in_current_context(_execute_unit), plan.units))
-
-    authoring_responses: list[AuthoringStopResponse] = []
-    completed: list[CompletedCertificationComposeUnit] = []
-    for unit, response in zip(plan.units, responses, strict=True):
-        if response.model != COMPOSE_MODEL:
-            raise ValueError("provider response model differs from the authorized model")
-        if response.stop_reason == "max_tokens":
-            raise ValueError("provider response hit the fixed output ceiling")
-        try:
-            payload = json.loads(response.body)
-            raw_sentences = payload["sentences"]
-            if not isinstance(raw_sentences, list):
-                raise TypeError("sentences is not a list")
-            sentences = _sentences_from_json(raw_sentences, unit.authorized_request)
-        except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
-            raise ValueError("provider response is not a valid sentence payload") from exc
-        parsed_sha256 = sentences_payload_sha256(sentences)
-        response_sha256 = hashlib.sha256(response.body).hexdigest()
-        authoring_responses.append(
-            AuthoringStopResponse(
-                request=unit.authoring_request,
-                raw_response=response.body,
-                raw_response_sha256=response_sha256,
-                parsed_payload_sha256=parsed_sha256,
-                provider_request_id=response.provider_request_id,
-            )
-        )
-        completed.append(
-            CompletedCertificationComposeUnit(
-                unit_id=f"stop:{unit.stop_index}",
-                stop_index=unit.stop_index,
-                model=response.model,
-                authorized_request=unit.authorized_request,
-                authoring_request=unit.authoring_request,
-                parsed_provider_sentences=sentences,
-                request_sha256=unit.request_sha256,
-                response_sha256=response_sha256,
-                parsed_payload_sha256=parsed_sha256,
-            )
-        )
-    # Rejects a response set that is incomplete, duplicated, or spliced from
-    # another candidate's run before a single sentence is trusted.
-    AuthoringCandidateResponseSet(
-        plan=plan.authoring,
-        responses=tuple(authoring_responses),
-    )
-    composition = finalize_certification_composition(
-        plan.source,
-        plan.sequence,
-        plan.route,
-        completed_units=tuple(completed),
-        model=COMPOSE_MODEL,
-        faithfulness_checker=faithfulness_checker,
-        enforce_claim_coverage=enforce_claim_coverage,
-        scan_glue_for_invention=scan_glue_for_invention,
-    )
-    return composition.script
-
-
 __all__ = [
-    "AUTHORING_MAX_STOPS",
     "CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS",
     "COMPOSE_MAX_OUTPUT_TOKENS",
     "COMPOSE_MODEL",
     "CertificationComposition",
     "CompletedCertificationComposeUnit",
     "ComposeRequest",
-    "PrebuiltRouteAuthoringPlan",
-    "PrebuiltRouteComposeUnit",
-    "PrebuiltRouteExecutor",
-    "author_prebuilt_route",
     "candidate_compose_request_envelope",
     "compose_input_sha256",
     "finalize_certification_composition",
-    "plan_prebuilt_route_authoring",
-    "prebuilt_route_sha256",
 ]

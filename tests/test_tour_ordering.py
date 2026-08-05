@@ -1,10 +1,27 @@
-"""M4 — exact open-path Held-Karp ordering. Hermetic: no DB, no engine run.
+"""ORDER — the visiting-order step, end to end. Hermetic: no DB, no engine run.
 
-PROVE (IMPLEMENTATION-PLAN M4): on the seesaw fixture HK beats greedy
-nearest-neighbour with zero direction reversals and honors fixed_end; for
-every n in 4..8 HK cost equals the itertools.permutations brute-force
-optimum (open, round-trip, and asymmetric-cost variants); each case runs
-in under a second.
+Covers all three pieces and the one dispatcher that chooses between them:
+``held_karp_open`` (exact, provably optimal, exponential), ``cheapest_insertion_open``
+(cheap, mediocre), ``improve_order_or_opt`` (cheap, close to optimal), and
+``order_stops``, which every caller uses and which nothing outside this module
+may bypass.
+
+PROVE: on the seesaw fixture the exact solver beats greedy nearest-neighbour with
+zero direction reversals and honors fixed_end; for every n in 4..8 its cost equals
+the itertools.permutations brute-force optimum (open, round-trip, and asymmetric
+variants); the cheap path lands within a MEASURED small ratio of that same proven
+optimum; and one ordering call stays inside a per-call CPU budget at every n the
+corpus can produce.
+
+COST CEILINGS. Measured 2026-08-05, BEFORE any change, so a regression shows up as
+a number rather than as a feeling:
+
+    exact solver, n=10    3.6 ms      n=13   46.6 ms
+    exact solver, n=16  556.2 ms      n=17    1.27 s
+
+One 120-minute planning request made 495 ordering calls at n up to 17 and spent
+191 seconds — 100% of the run — inside this step. That 500x multiplier is why the
+budget below is a per-CALL figure and not a user-visible latency figure.
 """
 
 from __future__ import annotations
@@ -16,9 +33,8 @@ import time
 import pytest
 
 from src.tour.contract import POI
-from src.tour.ordering import held_karp_open
+from src.tour.ordering import ORDERING_EXACT_MAX, held_karp_open, order_stops
 from src.tour.routing import default_leg_seconds
-from src.tour.selection import HARD_ANCHOR_CAP
 
 START = (48.8550, 2.3600)
 UNIT = 0.003  # ~220m of longitude at Paris latitude
@@ -130,18 +146,62 @@ def test_exactness_against_brute_force(n: int):
         )
 
 
-def test_cap_sized_input_under_a_second():
-    # Exercise the REAL anchor cap so the sub-1s guarantee is validated at the
-    # ceiling select_route can actually hand the solver (raised 12→15).
-    pts = _random_points(HARD_ANCHOR_CAP, seed=99)
-    # process_time (CPU), not perf_counter (wall): this guards against an
-    # ALGORITHMIC regression (exponential blow-up), not the machine's current
-    # load. On a heavily-contended host the same sub-second compute can take
-    # multiple wall seconds; CPU time stays ~constant, so the guarantee holds.
+#: CPU seconds ``order_stops`` may spend on ONE call. The repair pass makes
+#: hundreds per request, so this carries a ~500x multiplier behind it.
+ORDER_CALL_CPU_CEILING_S: float = 0.05
+
+
+def _cpu_seconds(fn, *args, **kwargs) -> float:
+    """CPU time, never wall clock: a contended host must not make these flaky.
+
+    These guard against an ALGORITHMIC regression — an exponent creeping back
+    into the hot path — not against the machine's current load.
+    """
     t0 = time.process_time()
-    hk = held_karp_open(pts, fixed_start=START)
-    assert time.process_time() - t0 < 1.0
-    assert len(hk) == HARD_ANCHOR_CAP
+    fn(*args, **kwargs)
+    return time.process_time() - t0
+
+
+@pytest.mark.parametrize("n", [12, 16, 20, 25, 30, 40])
+def test_one_ordering_call_stays_under_the_per_call_budget(n: int):
+    """n must stop driving cost exponentially. n=25 is the case this plan exists
+    to make possible at all: under the exact solver alone it is roughly 12
+    minutes and 33 GB, which is an unkillable test rather than a slow one.
+    """
+    pts = _random_points(n, seed=200 + n)
+    elapsed = _cpu_seconds(order_stops, pts, fixed_start=START)
+    assert elapsed < ORDER_CALL_CPU_CEILING_S, (
+        f"n={n} took {elapsed * 1000:.1f} ms CPU, budget "
+        f"{ORDER_CALL_CPU_CEILING_S * 1000:.0f} ms"
+    )
+
+
+def test_a_realistic_request_worth_of_ordering_calls_fits_in_two_seconds():
+    """495 calls at n=17 is what ONE 120-minute request measured on 2026-08-05.
+    Priced at the exact solver that is 191 s. A per-call budget alone can still
+    be multiplied into minutes by the repair pass, so pin the aggregate too.
+    """
+    pts = _random_points(17, seed=317)
+    t0 = time.process_time()
+    for _ in range(495):
+        order_stops(pts, fixed_start=START)
+    elapsed = time.process_time() - t0
+    assert elapsed < 2.0, f"495 calls took {elapsed:.2f} s CPU"
+
+
+def test_the_exact_threshold_is_small_enough_to_be_called_in_a_loop():
+    """``ORDERING_EXACT_MAX`` is the only remaining exponential surface, and it
+    is inside a loop that runs hundreds of times. Pin it so raising it back
+    requires editing this assertion deliberately.
+    """
+    assert ORDERING_EXACT_MAX <= 16
+    pts = _random_points(ORDERING_EXACT_MAX, seed=99)
+    elapsed = _cpu_seconds(order_stops, pts, fixed_start=START)
+    assert elapsed < ORDER_CALL_CPU_CEILING_S, (
+        f"the exact solver at its own threshold n={ORDERING_EXACT_MAX} took "
+        f"{elapsed * 1000:.1f} ms CPU"
+    )
+    assert len(order_stops(pts, fixed_start=START)) == ORDERING_EXACT_MAX
 
 
 def test_edge_cases_and_contract_errors():

@@ -26,7 +26,14 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from .contract import POI, BeatRef, Route, TransitSegment, ValhallaLegReceipt
+from .contract import (
+    POI,
+    BeatRef,
+    Route,
+    TourabilityAssessment,
+    TransitSegment,
+    ValhallaLegReceipt,
+)
 
 if TYPE_CHECKING:
     # routing_client imports from this module; type-only import avoids the cycle.
@@ -40,7 +47,6 @@ LegSecondsFn = Callable[[float, float, float, float], int]
 # §3.2 / phase-1-design rule ledger 20-25.
 PACE_KMH: float = 3.0
 HAVERSINE_CORRECTION: float = 1.35
-ERR_SHORT: float = 0.83
 WALK_FRACTION: float = 0.40  # of err-short total
 AUDIO_FRACTION: float = 0.60  # of err-short total
 EARTH_RADIUS_M: float = 6_371_000.0
@@ -57,16 +63,18 @@ TIMEBOX_MATERIALITY_TOLERANCE_SECONDS: int = 60
 class RoutePlanningPolicy:
     """One immutable time currency for every route-selection phase.
 
-    The default policy preserves the legacy 0.83 planner exactly.  A
-    certification caller must construct its policy from its already-frozen
-    contract and provider-call authorization; selection deliberately does not
-    import or duplicate those authorities.
+    There is exactly ONE band since 2026-08-04: certification's 0.90-1.10, nominal
+    1.00 (``DEFAULT_ROUTE_PLANNING_POLICY``). The flat 0.83 "err-short" policy that
+    used to be the default was DELETED, not made optional, because two currencies
+    meant the same request produced tours of different declared length depending on
+    which surface asked. A certification caller still constructs its policy from its
+    already-frozen contract and provider-call authorization; selection deliberately
+    does not import or duplicate those authorities.
     """
 
     policy_id: str
     minimum_requested_fraction: float
     maximum_requested_fraction: float
-    max_stops: int | None = None
 
     def __post_init__(self) -> None:
         values = (self.minimum_requested_fraction, self.maximum_requested_fraction)
@@ -74,8 +82,6 @@ class RoutePlanningPolicy:
             raise ValueError("planning fractions must be finite and positive")
         if self.minimum_requested_fraction > self.maximum_requested_fraction:
             raise ValueError("minimum planning fraction exceeds maximum")
-        if self.max_stops is not None and not 1 <= self.max_stops <= 8:
-            raise ValueError("certification planning supports one to eight stops")
 
     @property
     def nominal_requested_fraction(self) -> float:
@@ -83,28 +89,22 @@ class RoutePlanningPolicy:
             self.minimum_requested_fraction + self.maximum_requested_fraction
         ) / 2.0
 
-    @property
-    def is_legacy(self) -> bool:
-        return self.policy_id == "legacy-err-short-v1"
-
     @classmethod
     def certification(
         cls,
         *,
         minimum_requested_fraction: float,
         maximum_requested_fraction: float,
-        max_stops: int,
         policy_id: str,
     ) -> RoutePlanningPolicy:
-        """Build from the frozen TIME band and authorized compose-stop limit."""
+        """Build from the frozen TIME band. Duration is the only stop bound."""
 
-        if not policy_id or policy_id == "legacy-err-short-v1":
+        if not policy_id:
             raise ValueError("certification planning requires its frozen policy id")
         return cls(
             policy_id=policy_id,
             minimum_requested_fraction=minimum_requested_fraction,
             maximum_requested_fraction=maximum_requested_fraction,
-            max_stops=max_stops,
         )
 
 
@@ -118,19 +118,23 @@ class RoutePlanningBudget:
     walk_envelope_minutes: float
     walk_budget_seconds: int
     audio_target_seconds: int
-    max_stops: int | None
 
 
-LEGACY_ROUTE_PLANNING_POLICY = RoutePlanningPolicy(
-    policy_id="legacy-err-short-v1",
-    minimum_requested_fraction=ERR_SHORT,
-    maximum_requested_fraction=ERR_SHORT,
+#: THE planning policy. Nominal fraction (0.90 + 1.10) / 2 = exactly 1.00, so a
+#: 60-minute request is planned to 60 minutes of active time. It replaced
+#: LEGACY_ROUTE_PLANNING_POLICY (flat 0.83) as the default of every helper on
+#: 2026-08-04; the legacy object is deleted rather than deprecated so no caller can
+#: reach the old currency by omitting an argument.
+DEFAULT_ROUTE_PLANNING_POLICY = RoutePlanningPolicy(
+    policy_id="certification-nominal-v1",
+    minimum_requested_fraction=MIN_REQUESTED_FRACTION,
+    maximum_requested_fraction=MAX_REQUESTED_FRACTION,
 )
 
 
 def route_planning_budget(
     duration_min: int,
-    policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+    policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> RoutePlanningBudget:
     requested_seconds = duration_min * 60
     nominal_fraction = policy.nominal_requested_fraction
@@ -151,7 +155,6 @@ def route_planning_budget(
         audio_target_seconds=round(
             requested_seconds * nominal_fraction * AUDIO_FRACTION
         ),
-        max_stops=policy.max_stops,
     )
 
 
@@ -205,12 +208,14 @@ def envelope_radius_m(
     duration_min: int,
     *,
     round_trip: bool,
-    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> float:
-    """Reachable straight-line radius from the origin under the err-short budget.
+    """Reachable straight-line radius from the origin under the planning budget.
 
-    Derivation: walk_min = duration x 0.83 x 0.40. Effective straight-line
-    distance is walk_min x (3 km/h) ÷ 1.35. Halve for round trips.
+    Derivation: walk_min = duration x the policy's nominal fraction x WALK_FRACTION
+    (0.40). Effective straight-line distance is walk_min x (3 km/h) / 1.35. Halve for
+    round trips. At the default policy the nominal fraction is 1.00, so a 60-minute
+    one-way request reaches 888.9 m; it was 737.8 m under the deleted flat 0.83.
     """
     if duration_min <= 0:
         return 0.0
@@ -221,53 +226,49 @@ def envelope_radius_m(
     return straight_m / 2.0 if round_trip else straight_m
 
 
-def err_short_total_seconds(duration_min: int) -> int:
-    return round(duration_min * ERR_SHORT * 60)
+def planned_total_seconds(
+    duration_min: int,
+    policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+) -> int:
+    """Total active seconds the planner aims at.
+
+    Was ``err_short_total_seconds``; renamed because it is no longer err-SHORT — the
+    nominal fraction is 1.00. It now DELEGATES to the budget rather than restating an
+    arithmetic of its own, so no caller can obtain a fraction the policy does not have.
+    """
+    return route_planning_budget(duration_min, policy).nominal_elapsed_seconds
 
 
-def target_audio_seconds(duration_min: int) -> int:
-    return round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60)
+def target_audio_seconds(
+    duration_min: int,
+    policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+) -> int:
+    return route_planning_budget(duration_min, policy).audio_target_seconds
 
 
-def governor_allowance_seconds(duration_min: int) -> int:
+def governor_allowance_seconds(
+    duration_min: int,
+    policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+) -> int:
     """Per-stop audio allowance for the C9 share-governor (ratified 2026-07-03).
 
     An INCIDENTAL stop's emitted narration is capped to this many voiced
     seconds; the ordered overflow beats become the keep-exploring extras. The
     start-anchor and the fixed-end-B / pulled endpoint are EXEMPT (no cap).
 
-    = ``target_audio_seconds(d) // min(3, d // 10)`` — i.e. budget ÷ 3 for
+    = ``target_audio_seconds(d) // min(3, d // 10)`` — i.e. budget / 3 for
     d>=30 (~5 min @30min, ~15 min @90min): an incidental may speak up to ~1/3
     of the tour audio. The divisor floors at 1 so very short tours (which seat
     ~1 stop) impose no cap.
     """
-    return target_audio_seconds(duration_min) // max(1, min(3, duration_min // 10))
+    return target_audio_seconds(duration_min, policy) // max(1, min(3, duration_min // 10))
 
 
-def walk_budget_seconds(duration_min: int) -> int:
-    return round(duration_min * ERR_SHORT * WALK_FRACTION * 60)
-
-
-def smallest_duration_min_for_walk_seconds(
-    target_seconds: int,
-    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+def walk_budget_seconds(
+    duration_min: int,
+    policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> int:
-    """Smallest integer duration (minutes) whose walk budget covers ``target_seconds``.
-
-    Returns the least ``d >= 1`` with ``walk_budget_seconds(d) >= target_seconds``.
-    Used by the Step 2.2a feasibility refusal to recommend an 'extend' duration
-    that would make a fixed A→B leg fit inside the walk budget. This is the
-    A→B-correct inverse of ``walk_budget_seconds`` — NOT
-    ``density.max_supportable_duration_min`` (which is fill-driven and None on
-    GREEN). ``walk_budget_seconds`` is monotonic non-decreasing in ``d``, so a
-    linear scan from 1 returns the exact threshold.
-    """
-    if target_seconds <= walk_budget_seconds(1):
-        return 1
-    d = 1
-    while route_planning_budget(d, planning_policy).walk_budget_seconds < target_seconds:
-        d += 1
-    return d
+    return route_planning_budget(duration_min, policy).walk_budget_seconds
 
 
 def compute_dwell_seconds(tier: int) -> int:
@@ -406,13 +407,28 @@ def summarise_route(
     duration_min: int,
     spine_area: str | None,
     routing_client: RoutingClient | None = None,
-    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+    vignettes: dict[int, tuple[POI, ...]] | None = None,
+    tourability: TourabilityAssessment | None = None,
+    start_anchor_poi_id: str | None = None,
+    fixed_end_poi_id: str | None = None,
 ) -> Route:
     """Build a Route from an ordered POI list.
 
     Selection already scores with routed leg seconds when a routing client is
     available. The final Route therefore reports those same road-network times
     and distances; haversine remains the explicit fallback when routing degrades.
+
+    The four keyword extras exist so a caller REBUILDING a route it has already
+    decided on can hand back the parts this function cannot recompute — the
+    walk-past sights, the thin-area disclosure, and which stops were the marquee
+    ones. Their defaults are exactly what an ordinary caller got before they
+    existed, so nothing changes for anyone who omits them.
+
+    Building the route right ONCE is the point. The alternative, which this
+    replaces, was to build it wrong and then patch each piece back on afterwards
+    with a copy-and-update per piece — three chances for the rebuilt tour to
+    quietly stop being the tour the traveller chose.
     """
     ordered = tuple(pois)
     transits: list[TransitSegment] = []
@@ -450,4 +466,8 @@ def summarise_route(
         target_audio_seconds=budget.audio_target_seconds,
         err_short_total_seconds=budget.nominal_elapsed_seconds,
         routed=bool(transits) and all(t.source == "valhalla" for t in transits),
+        vignettes=vignettes if vignettes is not None else {},
+        tourability=tourability,
+        start_anchor_poi_id=start_anchor_poi_id,
+        fixed_end_poi_id=fixed_end_poi_id,
     )

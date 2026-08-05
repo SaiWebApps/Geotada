@@ -1,13 +1,22 @@
-"""Track B (API half) — _preview_stops interleaves walk-past vignettes."""
+"""Track B (API half) — the preview cards interleave walk-past vignettes.
+
+These assertions are the spec for what the workbench renders. They used to run
+against ``trips._preview_stops``, the API layer's private fourth copy of the
+interleave; that copy was deleted 2026-08-04 and the local ``_preview_stops``
+helper below now drives the ONE shared implementation
+(``src.tour.options.build_route_option``) through the API's wire adapter, so the
+same assertions now pin the code the phone runs too.
+"""
 
 from __future__ import annotations
 
 import datetime as dt
 
-from src.api.routes.trips import _preview_stops
+from src.api.routes.trips import _preview_cards
 from src.tour.contract import (
     POI,
     BeatRef,
+    BeatSequence,
     Route,
     Script,
     ScriptPOI,
@@ -16,7 +25,27 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
+from src.tour.options import build_route_option
 from src.tour.selection import CorpusSnapshot
+
+
+def _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi):
+    """The shape the API produces, through the ONE shared interleave."""
+    beats_by_id = {b.id: b for beats in snapshot.beats_by_poi.values() for b in beats}
+    return _preview_cards(
+        build_route_option(
+            route,
+            script,
+            beats_by_id,
+            route_id="test-opt1",
+            snapshot=snapshot,
+            sequence=BeatSequence(
+                poi_beats=(),
+                vignette_beats=vignette_beats,
+                overflow_by_poi=overflow_by_poi,
+            ),
+        )
+    )
 
 
 def _poi(pid: str, tier: int = 2) -> POI:
@@ -225,8 +254,9 @@ def _legs(stops):
 
 
 def test_walk_narration_gets_its_own_leg_card():
-    """UNDO TEST: drop the is_walk_concurrent branch in _preview_stops (so GLUE_NAV
-    falls back into _dwell_sents) and this goes RED — no leg card is emitted."""
+    """UNDO TEST: drop the is_walk_concurrent branch in build_route_option (so
+    GLUE_NAV falls back into the dwell bucket) and this goes RED — no leg card
+    is emitted."""
     stops = _preview_stops(_script_with_leg_glue(), _route({}), {}, _snapshot(
         _poi("v"), BeatRef(id="b", poi_id="v", script_body="x.")), {})
     legs = _legs(stops)

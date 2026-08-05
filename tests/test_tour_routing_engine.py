@@ -402,21 +402,55 @@ def test_memoized_leg_fn_caches_directed_pairs():
         assert calls["n"] == 2
 
 
-# Routed-divisor inversion fixture: a POI cluster ~100m north of the start
-# that the mock road network walls off (25 s/m → ~2500s per leg, think
-# "across the river, no bridge" — over both the ~896s greedy budget and the
-# ~1135s fill-pass cap at 60 min), and a 250m POI it makes nearly free.
-_NEAR_CLUSTER = [(48.8564 + 0.00001 * i, 2.3656) for i in range(3)]
-_FAR_FAST = (48.85775, 2.3656)
+# Routed-divisor inversion fixture. Three POIs standing 20 m from the start that
+# the mock road network walls off, while pricing every other leg plausibly. The
+# wall is the ONLY thing the two pricings disagree about, so any difference in
+# the selection can have come from nothing else.
+_WALLED_STOPS = [
+    ("near", 48.85568, 2.3656),
+    ("c1", 48.855685, 2.3656),
+    ("c2", 48.85569, 2.3656),
+]
+_NEAR_CLUSTER = [(lat, lng) for _, lat, lng in _WALLED_STOPS]
+_WALLED_IDS = frozenset(pid for pid, _, _ in _WALLED_STOPS)
+# Straight-line 500 m north: past the halfway mark of the 889 m envelope, so the
+# one-way endpoint pull can close the route on it. It is the fixture's source of
+# WALKING, which since the budget went two-sided on 2026-08-04 is half of whether
+# a tour can be planned at all — a tight cluster of stops fills the narration
+# allowance and still lands barely two thirds of the requested hour.
+_FAR_ANCHOR = (PDV[0] + 0.0045, PDV[1])
+#: Seconds per straight-line metre the mock road network charges off the wall.
+#: Deliberately unequal to the haversine fallback's 1.62, so a routed leg is
+#: always visibly routed, and cheap enough that the walled cluster is the only
+#: thing the routed run cannot afford.
+_DIVISOR_OPEN_ROAD_S_PER_M = 1.3
+#: What the mock road network charges to reach a walled POI, whatever the
+#: straight line says. It is longer than the whole hour the tour was asked for,
+#: which is the purest form of the case this fixture exists for: 20 m away on the
+#: map, more than an hour away on foot. A per-metre wall cannot express that —
+#: the cost of walling a POI would fall with the very distance that makes the
+#: straight-line planner want it, so a POI close enough to be certainly picked is
+#: also too cheap to wall.
+_DIVISOR_WALL_SECONDS = 4000
 
 
 def _divisor_handler(request: httpx.Request) -> httpx.Response:
+    if request.url.path != "/route":
+        return httpx.Response(404)  # no isochrone: REACH uses the analytic envelope
     body = json.loads(request.content)
     a, b = body["locations"]
-    if abs(b["lat"] - _FAR_FAST[0]) < 1e-9 and abs(b["lon"] - _FAR_FAST[1]) < 1e-9:
-        secs = 50
-    else:
-        secs = round(haversine_m(a["lat"], a["lon"], b["lat"], b["lon"]) * 25.0)
+    walled = any(
+        abs(b["lat"] - lat) < 1e-9 and abs(b["lon"] - lng) < 1e-9
+        for lat, lng in _NEAR_CLUSTER
+    )
+    secs = (
+        _DIVISOR_WALL_SECONDS
+        if walled
+        else round(
+            haversine_m(a["lat"], a["lon"], b["lat"], b["lon"])
+            * _DIVISOR_OPEN_ROAD_S_PER_M
+        )
+    )
     return httpx.Response(
         200,
         json={"trip": {"legs": [{"summary": {"time": secs, "length": 0.1}, "shape": SHAPE}]}},
@@ -425,28 +459,37 @@ def _divisor_handler(request: httpx.Request) -> httpx.Response:
 
 def test_routed_divisor_inverts_greedy_choice():
     """The M3 PROVE with teeth: when routed times contradict straight-line
-    distance, the greedy follows the ROUTED times — selection changes."""
+    distance, the greedy follows the ROUTED times — selection changes.
+
+    The three POIs the mock road network walls off stand 20 m from the start and
+    are the richest thing on offer, so straight-line pricing seats all of them
+    first. By road each costs more than the whole hour, so routed pricing seats
+    none of them. Everything else in the fixture is scaffolding that lets both
+    runs fill the requested hour: a low-scored background cluster supplies stops,
+    and one far anchor supplies the walking narration alone can never reach.
+    """
     pois = [
-        _poi("near", lat=_NEAR_CLUSTER[0][0], lng=_NEAR_CLUSTER[0][1], areas=("Le Marais",)),
-        _poi("c1", lat=_NEAR_CLUSTER[1][0], lng=_NEAR_CLUSTER[1][1], areas=("Le Marais",)),
-        _poi("c2", lat=_NEAR_CLUSTER[2][0], lng=_NEAR_CLUSTER[2][1], areas=("Le Marais",)),
-        _poi("far", lat=_FAR_FAST[0], lng=_FAR_FAST[1], areas=("Le Marais",)),
+        *(
+            _poi(pid, lat=lat, lng=lng, areas=("Le Marais",))
+            for pid, lat, lng in _WALLED_STOPS
+        ),
+        _poi("far", lat=_FAR_ANCHOR[0], lng=_FAR_ANCHOR[1], areas=("Le Marais",)),
+        *_density_fillers(PDV, radius_m=60.0, tier=3, beat_count=3),
     ]
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
     tour_input = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
 
-    bare = [p.id for p in select_route(tour_input, snap).pois]
+    bare = {p.id for p in select_route(tour_input, snap).pois}
     with _client(_divisor_handler) as rc:
-        routed = [p.id for p in select_route(tour_input, snap, routing_client=rc).pois]
+        routed = {p.id for p in select_route(tour_input, snap, routing_client=rc).pois}
 
-    # C9 governor (end=None, budget/3 floor): the beat-rich near cluster is
-    # capped, so the haversine path fills the ~3-stop floor with the cheap
-    # cluster (the 4th, far, is not force-added once the floor is met). The
-    # divisor's INVERSION is the point and still holds: routed pricing walls off
-    # the cluster, so the routed selection DIFFERS from bare (only far survives).
-    assert set(bare) == {"near", "c1", "c2"}
-    assert routed == ["far"]
-    assert set(bare) != set(routed)  # routed times change the selection
+    assert bare >= _WALLED_IDS, (
+        f"straight-line pricing must seat the whole near cluster; got {sorted(bare)}"
+    )
+    assert not (_WALLED_IDS & routed), (
+        f"routed pricing must wall the near cluster off entirely; got {sorted(routed)}"
+    )
+    assert bare != routed  # routed times change the selection
 
 
 def test_routed_divisor_lets_cheaper_network_fit_more():
@@ -466,14 +509,17 @@ def test_routed_divisor_lets_cheaper_network_fit_more():
     bare_ids = {p.id for p in bare.pois}
     routed_ids = {p.id for p in routed.pois}
     assert bare_ids, "GREEN fixture must select something without the client"
-    # C9 governor (end=None, budget/3 floor): the floor caps BOTH the haversine
-    # and routed paths at the same ~3-stop count, so the divisor's "cheaper legs
-    # fit a strict SUPERSET" is masked on this beat-rich fixture. The divisor's
-    # real effect is what this now pins: routed fits at least as many, the routed
-    # path is USED, and every transit leg arrives enriched (client leg_seconds).
-    assert routed_ids >= bare_ids, (
-        f"routed must fit at least as many: bare={sorted(bare_ids)} routed={sorted(routed_ids)}"
+    # The claim is a COUNT, and it is asserted as one. It used to be written as a
+    # strict SUPERSET, which was a stronger statement than the divisor makes and
+    # a false one: the two runs plan independently, and since the budget went
+    # two-sided on 2026-08-04 the repair trades one stop for another to land
+    # inside the band, so the cheaper run reaches a higher count by a route that
+    # is not the dearer run's route plus extras.
+    assert len(routed_ids) > len(bare_ids), (
+        f"the cheaper network must fit MORE stops: "
+        f"bare={sorted(bare_ids)} routed={sorted(routed_ids)}"
     )
+    assert routed_ids - bare_ids, "and at least one of them is a stop bare could not afford"
     assert routed.routed is True
     assert all(seg.leg_seconds is not None for seg in routed.transits)
     assert any(seg.leg_seconds != seg.walk_seconds for seg in routed.transits), (

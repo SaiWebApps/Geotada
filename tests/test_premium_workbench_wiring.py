@@ -10,6 +10,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from typing import ClassVar
 
 import pytest
 
@@ -29,7 +30,13 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
-from src.tour.premium_tour import plan_premium_authoring
+from src.tour.glue_client import NO_GLUE_SENTINEL
+from src.tour.premium_tour import (
+    PREMIUM_MODULE_VERSION,
+    plan_premium_authoring,
+    plan_premium_options,
+    plan_premium_tour,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -228,16 +235,34 @@ def test_launchers_kill_only_listening_sockets(tmp_path) -> None:
 
 
 def test_preview_uses_shared_premium_plan_and_finalizer() -> None:
-    # Read the IMPLEMENTATION, not the route wrapper. ``preview_trip`` is now a
-    # thin shell that opens the degradation-collection scope and delegates; the
-    # planning it must not reimplement lives in ``_preview_trip_impl``. Reading
-    # the wrapper would pass vacuously the moment anything else moves behind an
-    # indirection, which is the failure this whole file exists to catch.
-    source = inspect.getsource(trips._preview_trip_impl)
-    assert "plan_premium_tour(" in source
-    assert "finalize_premium_tour(" in source
-    assert "compose_script_per_chapter(" not in source
-    assert "select_route(" not in source
+    """The two halves are two functions, and neither does the other's job.
+
+    Planning and writing used to be one call, so "the preview does not reimplement
+    the planner" was the only thing worth checking here. Now that choosing a route
+    and writing it are separate requests, the same guard has to say something
+    stronger: planning must not reach the narrator at all (that is what makes it
+    free), and writing must not choose a route (that is what makes it write the one
+    that was picked).
+
+    Read the IMPLEMENTATIONS, not the route wrappers, where there is one: a wrapper
+    that only opens the degradation-collection scope would pass vacuously the moment
+    anything moves behind an indirection, which is the failure this file exists to
+    catch.
+    """
+    planning = inspect.getsource(trips._plan_preview)
+    assert "plan_premium_options(" in planning
+    assert "select_route(" not in planning
+
+    plan_route = inspect.getsource(trips.preview_trip)
+    assert "execute_premium_plan(" not in plan_route, "planning called the narrator"
+    assert "finalize_premium_tour(" not in plan_route, "planning wrote a tour"
+
+    writing = inspect.getsource(trips._author_preview_impl)
+    assert "execute_premium_plan(" in writing
+    assert "finalize_premium_tour(" in writing
+    assert "compose_script_per_chapter(" not in writing
+    assert "select_route(" not in writing
+    assert "select_k_routes(" not in writing, "writing chose its own route"
 
 
 def test_batch_uses_the_same_shared_premium_plan() -> None:
@@ -481,4 +506,207 @@ def test_plan_premium_tour_builds_its_units_through_the_shared_prebuilt_seam() -
         "PremiumComposeUnit is constructed in more than one place, so the Block-2 "
         f"plan builder has been duplicated again: {sorted(builders)}"
     )
-    assert "plan_premium_authoring(" in inspect.getsource(premium_tour.plan_premium_tour)
+    # ...and the single-route entry point reaches that one construction site rather
+    # than growing a copy. It is now a one-line delegate to the all-routes planner, so
+    # the chain is checked at both links: the delegate hands off, and the thing it
+    # hands off to is what builds the units.
+    delegate = inspect.getsource(premium_tour.plan_premium_tour)
+    assert "plan_premium_options(" in delegate
+    assert "PremiumComposeUnit(" not in delegate
+    assert "plan_premium_authoring(" in inspect.getsource(premium_tour._plan_one_premium_route)
+
+
+# --------------------------------------------------------------------------
+# STEP 7 — BLOCK 1 returns three plans, and planning is genuinely free
+# --------------------------------------------------------------------------
+
+_BLOCK_ONE_BASE = (48.8568, 2.3414)
+
+
+class _Poison:
+    """Any construction is a failure. Stands in for a PAID client."""
+
+    def __init__(self, *args, **kwargs):
+        raise AssertionError(
+            "Block 1 constructed a paid provider client. Planning shows places, order "
+            "and walking times only (OWNER RULING 1); every word arrives in AUTHOR, "
+            "after the traveller has picked one option."
+        )
+
+
+class _RecordingSilentGlue:
+    """The silent client, instrumented: records what it was asked, writes nothing."""
+
+    asked: ClassVar[list[str]] = []
+
+    def stitch(self, category: str, context: str, request: str) -> str:
+        _RecordingSilentGlue.asked.append(category)
+        del context, request
+        return NO_GLUE_SENTINEL
+
+
+def _receipted_transit(from_id, to_id, a_lat, a_lng, b_lat, b_lng) -> TransitSegment:
+    from tests.test_trip_preview_contract import _FakeRoutingClient
+
+    seconds, distance_m, polyline, receipt = _FakeRoutingClient().route_with_receipt(
+        a_lat, a_lng, b_lat, b_lng
+    )
+    return TransitSegment(
+        from_poi_id=from_id,
+        to_poi_id=to_id,
+        distance_m=distance_m,
+        walk_seconds=seconds,
+        leg_seconds=seconds,
+        leg_distance_m=distance_m,
+        polyline=polyline,
+        source="valhalla",
+        valhalla_receipt=receipt,
+    )
+
+
+def _three_routes():
+    """Three receipt-backed flavours over nine disjoint POIs."""
+    from tests.test_tour_selection import _poi
+
+    routes = []
+    for flavour in range(3):
+        pois = tuple(
+            _poi(
+                f"f{flavour}-p{i}",
+                lat=_BLOCK_ONE_BASE[0] + 0.0006 * (flavour + 1),
+                lng=_BLOCK_ONE_BASE[1] + 0.0008 * (i + 1),
+            )
+            for i in range(3)
+        )
+        prev = _BLOCK_ONE_BASE
+        transits = []
+        for poi in pois:
+            transits.append(_receipted_transit(None, poi.id, prev[0], prev[1], poi.lat, poi.lng))
+            prev = (poi.lat, poi.lng)
+        routes.append(
+            Route(
+                pois=pois,
+                transits=tuple(transits),
+                total_walk_distance_m=sum(t.distance_m for t in transits),
+                total_walk_seconds=sum(t.walk_seconds for t in transits),
+                routed=True,
+            )
+        )
+    return routes
+
+
+def _snapshot_for(routes):
+    from tests.test_tour_selection import _snap
+
+    pois = [p for route in routes for p in route.pois]
+    return _snap(
+        pois,
+        beats_by_poi={
+            p.id: [
+                BeatRef(
+                    id=f"{p.id}-b{i}",
+                    poi_id=p.id,
+                    est_spoken_seconds=120,
+                    active_status="active",
+                    script_body=f"Story {i} at {p.name}. It runs on a little.",
+                )
+                for i in range(3)
+            ]
+            for p in pois
+        },
+    )
+
+
+def test_block_one_returns_three_priced_free_plans(monkeypatch) -> None:
+    """AC-1 / AC-2 / AC-3 / AC-23 — three plans, no provider, no prose.
+
+    Block 1 used to return exactly ONE plan: it asked the selector for three flavours,
+    threw two away, and authored the survivor. The workbench and the phone therefore
+    could not offer a choice at all, and the two ends disagreed about which route "the"
+    route was. It also was not free — ``generate`` defaults to the real paid Haiku glue
+    client, so planning made provider calls on the surface whose entire value
+    proposition is that it costs nothing, and fanning out to three would have TRIPLED
+    that spend rather than removing it.
+
+    The free half is asserted ON THE DEFAULT PATH, with no glue client passed, because
+    that is the only version of the claim that survives the next refactor: a path that
+    is free only when a caller remembers to ask is one edit away from being paid again.
+
+    UNDO (each turns this RED):
+      * change ``ordered = [chosen, *(...)]`` to ``ordered = [chosen]`` -> assertions 1-2;
+      * default ``glue_client`` back to None so ``generate`` builds a real Haiku client
+        -> assertion 4;
+      * change ``plan_premium_options(...)[0]`` to ``[-1]`` in ``plan_premium_tour``
+        -> assertion 5.
+    """
+    from tests.test_trip_preview_contract import _FakeRoutingClient
+
+    routes = _three_routes()
+    snapshot = _snapshot_for(routes)
+    tour_input = TourInput(start=_BLOCK_ONE_BASE, duration_min=60, city_slug="paris")
+    monkeypatch.setattr(premium_tour, "select_k_routes", lambda *a, **k: list(routes))
+    # THE PROVIDER THAT RAISES ON ANY CALL (AC-2), on both doors it could come through.
+    monkeypatch.setattr("src.tour.generation.HaikuGlueClient", _Poison)
+    monkeypatch.setattr(premium_tour, "AnthropicPremiumExecutor", _Poison)
+
+    plans = plan_premium_options(
+        tour_input,
+        snapshot,
+        routing_client=_FakeRoutingClient(),
+    )
+
+    # 1. THREE plans, one per flavour.
+    assert len(plans) == 3
+
+    # 2. The three DISTINCT flavours, in the selector's order, chosen first.
+    assert [[p.id for p in plan.route.pois] for plan in plans] == [
+        [p.id for p in route.pois] for route in routes
+    ]
+
+    # 3. Each is a complete, authorable plan — one compose unit per dwell stop.
+    for plan in plans:
+        assert len(plan.units) == len(plan.route.pois)
+        assert plan.policy_version == PREMIUM_MODULE_VERSION
+
+    # 4. AC-2, THE FREE CLAIM: nothing was authored and no paid client was ever built.
+    #    _Poison raises in __init__, so reaching here at all is the proof — but assert it
+    #    explicitly too, and assert the DEFAULT client is the silent one rather than
+    #    trusting that the poison would have fired.
+    assert isinstance(premium_tour.SilentGlueClient().stitch("GLUE_NAV", "", ""), str)
+    assert premium_tour.SilentGlueClient().stitch("GLUE_STAGING", "", "").startswith("<<NO_GLUE")
+    glue_default = inspect.signature(plan_premium_options).parameters["glue_client"].default
+    assert glue_default is None, "the parameter still exists for AUTHOR to pass a real one"
+    assert "SilentGlueClient()" in inspect.getsource(premium_tour.plan_premium_options), (
+        "plan_premium_options no longer substitutes the silent client for None, so a "
+        "default-path plan falls through to generate's PAID Haiku client"
+    )
+
+    # 4b. BEHAVIOURAL: on the default path every stitch request really does go to the
+    #     silent client and comes back as the NO_GLUE sentinel, so nothing an LLM could
+    #     have written is in the plan. ``generate`` DOES ask for connective text — the
+    #     claim is not that nobody asks, it is that nobody bills.
+    _RecordingSilentGlue.asked = []
+    monkeypatch.setattr(premium_tour, "SilentGlueClient", _RecordingSilentGlue)
+    quiet = plan_premium_options(
+        tour_input,
+        snapshot,
+        routing_client=_FakeRoutingClient(),
+    )
+    assert len(quiet) == 3
+    assert _RecordingSilentGlue.asked, (
+        "no stitch request reached the silent client on the default path, so this "
+        "assertion is not watching the thing it claims to watch"
+    )
+
+    # 5. THE PRESERVATION PIN: the single-plan entry point returns exactly plans[0].
+    single = plan_premium_tour(
+        tour_input,
+        snapshot,
+        routing_client=_FakeRoutingClient(),
+    )
+    assert single.route_record["route_sha256"] == plans[0].route_record["route_sha256"]
+    assert single.candidate.model_dump(mode="json") == plans[0].candidate.model_dump(mode="json")
+    assert [u.stop_index for u in single.units] == [u.stop_index for u in plans[0].units]
+
+    # 6. AC-23: a start with no end plans through without a 4xx-shaped failure.
+    assert tour_input.end is None

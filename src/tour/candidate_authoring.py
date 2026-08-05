@@ -8,14 +8,6 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-#: Most stops one candidate's call plan may cover. Kept equal to
-#: ``authoring.AUTHORING_MAX_STOPS`` (= ``selection.HARD_ANCHOR_CAP``, 15): a plan
-#: that could not hold every stop of a route the planner is allowed to seat would
-#: refuse a legitimate persisted trip at the identity layer, long after the route
-#: exists. Certification's own tighter 8-stop bar lives in its PLANNING policy
-#: (``routing.py``), which is where a spend limit belongs.
-MAX_CANDIDATE_STOPS = 15
-
 
 def _identity_digest(values: dict[str, str]) -> str:
     payload = json.dumps(values, separators=(",", ":"), sort_keys=True).encode("utf-8")
@@ -150,9 +142,10 @@ class AuthoringCandidatePlan(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     candidate: AuthoringCandidateIdentity
-    stop_requests: tuple[AuthoringStopRequest, ...] = Field(
-        ..., min_length=1, max_length=MAX_CANDIDATE_STOPS
-    )
+    # No upper bound: a plan must be able to hold every stop the planner seated,
+    # and since 2026-08-04 duration alone decides how many that is. ``min_length=1``
+    # stays — a zero-stop plan is a bug, not a short tour.
+    stop_requests: tuple[AuthoringStopRequest, ...] = Field(..., min_length=1)
 
     @model_validator(mode="after")
     def _plan_is_complete_and_single_candidate(self) -> AuthoringCandidatePlan:
@@ -173,9 +166,7 @@ class AuthoringCandidateResponseSet(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     plan: AuthoringCandidatePlan
-    responses: tuple[AuthoringStopResponse, ...] = Field(
-        ..., min_length=1, max_length=MAX_CANDIDATE_STOPS
-    )
+    responses: tuple[AuthoringStopResponse, ...] = Field(..., min_length=1)
 
     @model_validator(mode="after")
     def _responses_exactly_match_plan(self) -> AuthoringCandidateResponseSet:

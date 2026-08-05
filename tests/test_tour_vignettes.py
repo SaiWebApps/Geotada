@@ -16,11 +16,13 @@ from __future__ import annotations
 from src.tour.contract import POI, BeatRef, Route
 from src.tour.routing import summarise_route
 from src.tour.selection import (
+    MAX_DWELL_AUDIO_SECONDS,
     VIGNETTE_MAX_DETOUR_M,
     VIGNETTE_MAX_PER_LEG,
     CorpusSnapshot,
     select_vignettes,
 )
+from tests.test_tour_selection import _density_fillers
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -342,17 +344,55 @@ def _corpus_poi(
     )
 
 
+#: One distinct story per beat slot. Beat selection drops near-duplicates by
+#: character-5-gram overlap, so beats built from a shared sentence with the index
+#: swapped in still collapse to a single survivor. These deliberately share
+#: almost no vocabulary, which is the only way a POI the fixture says holds N
+#: stories actually holds N.
+_DISTINCT_BEAT_BODIES: tuple[str, ...] = (
+    "Bakers queued before dawn, arguing over flour. Their guild fined latecomers.",
+    "A duchess lost her wager and paid in candlesticks. Nobody melted them down.",
+    "Rain flooded the cellar; barrels floated. Vintners bailed for three nights.",
+    "Six printers shared one press until copyright arrived. Then they scattered.",
+    "Horses refused this corner for thirty years. Drivers blamed a buried well.",
+    "Glassmakers blew tiny birds nobody could afford. Children pressed the window.",
+    "The mayor's cat outlived four administrations. Its portrait hangs upstairs.",
+    "Snow fell through a hole in the roof all winter. Tenants skated the hallway.",
+    "Sailors traded parrots for bread on the quay. Customs never wrote it down.",
+    "Two brothers built rival towers, then stopped speaking. Both towers leaned.",
+    "Lanterns burned whale oil until gas arrived. Fishmongers mourned the smell.",
+    "A locksmith hid jewels inside his own doorframe. His widow sold the house.",
+)
+
+
 def _corpus_snap(pois: list[POI]) -> CorpusSnapshot:
-    """Auto-inject rich active beats per POI (test_tour_selection pattern) so
-    the Phase 6 density gate clears and every POI has something to say."""
+    """Auto-inject active beats per POI (test_tour_selection pattern) so the
+    Phase 6 density gate clears and every POI has something to say.
+
+    Two things about the beats matter, and both used to be wrong here.
+
+    Every beat says something DIFFERENT. They all carried one identical sentence,
+    and beat selection drops near-duplicates before it prices anything, so a POI
+    the fixture believed held eight stories in fact held one. Every count this
+    file reasons about was eight times smaller than it looked.
+
+    A POI's WHOLE beat set is sized to one stop's speaking ceiling. It used to be
+    240 s per beat, so an eight-beat POI nominally carried 1920 s — seven times
+    what a stop can ever voice. The planner books a stop against the whole tour's
+    narration allowance while emission caps it at the per-stop ceiling, so an
+    oversized POI is credited for audio the tourist never hears: the planner
+    believes it has filled the hour after a third of the stops, stops adding
+    them, and hands back a route far short of the duration that was asked for.
+    Only at the ceiling do the planner's two prices for a stop agree.
+    """
     beats = {
         p.id: tuple(
             BeatRef(
                 id=f"{p.id}-b{i}",
                 poi_id=p.id,
-                est_spoken_seconds=240,
+                est_spoken_seconds=max(1, MAX_DWELL_AUDIO_SECONDS // max(1, p.beat_count)),
                 active_status="active",
-                script_body="A line worth hearing as you pass. And one more.",
+                script_body=_DISTINCT_BEAT_BODIES[i % len(_DISTINCT_BEAT_BODIES)],
             )
             for i in range(max(0, p.beat_count))
         )
@@ -370,17 +410,29 @@ _PDV = (48.8555, 2.3656)
 
 
 def _select_route_fixture() -> tuple[list[POI], POI]:
-    """Dwell anchors (density fillers + two east anchors) and a tier-2
-    vignette POI 20 m off the anchor-to-anchor leg."""
-    fillers = [
-        _corpus_poi(f"filler-{i}", lat=_PDV[0] + 0.00005 * i, lng=_PDV[1] + 0.00005 * i)
-        for i in range(4)
-    ]
+    """Dwell anchors (a background cluster plus two east anchors) and a tier-2
+    vignette POI 20 m off the anchor-to-anchor leg.
+
+    The background is six low-scored anchors packed inside 60 m of the start.
+    Both halves of that matter. Low-scored and few, so they cannot fill the
+    hour's narration on their own and the two east anchors are still worth
+    reaching — which is what puts the anchor-to-anchor walk in the route at all.
+    Packed tight, so they contribute almost no walking and the walk that decides
+    whether the hour can be filled is the 540 m run out east.
+
+    It used to be four anchors standing 5 m apart, each carrying 1920 s of
+    stories. Since the walk budget became two-sided on 2026-08-04 that delivered
+    about 39 minutes of tour against a 54-minute floor and was refused outright,
+    so the vignette placement these tests exist to check was never reached.
+    """
+    background = _density_fillers(
+        _PDV, n=6, radius_m=60.0, tier=3, beat_count=3, prefix="bg"
+    )
     a1 = _corpus_poi("anchor-1", lat=48.8555, lng=2.3690)
     a2 = _corpus_poi("anchor-2", lat=48.8555, lng=2.3730)
     leg_mid_lng = (2.3690 + 2.3730) / 2.0
     v = _corpus_poi("v-walkpast", tier=2, lat=48.8555 + 20 * _DEG_PER_M_LAT, lng=leg_mid_lng)
-    return [*fillers, a1, a2], v
+    return [*background, a1, a2], v
 
 
 def test_select_route_populates_vignettes_after_ordering():

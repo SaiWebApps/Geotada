@@ -88,19 +88,6 @@ def create_app() -> FastAPI:
             raise HTTPException(404, "auth redirect page not found")
         return FileResponse(str(_auth_html), media_type="text/html")
 
-    _tour_preview_html = Path(__file__).resolve().parents[2] / "frontend" / "tour-preview.html"
-
-    @app.get("/tour-preview")
-    async def tour_preview_page():
-        """Phase 1.5 web-first preview: a standalone page that calls /trips/preview
-        + /audio/preview so a tour's per-stop narration can be read and heard in a
-        browser (no app, no profile)."""
-        if not _tour_preview_html.is_file():
-            from fastapi import HTTPException
-
-            raise HTTPException(404, "tour preview page not found")
-        return FileResponse(str(_tour_preview_html), media_type="text/html")
-
     @app.get("/api/v1/healthz")
     async def healthz():
         """Report which Neo4j the API is connected to (plus a liveness probe).
@@ -171,8 +158,8 @@ def create_app() -> FastAPI:
         )
 
     app.include_router(auth_router, prefix="/api/v1")
-    # Mobile-facing routes: always mounted (the app + the web tour-preview call
-    # these; audio/trips carry their own compose/VERIFY gates).
+    # Mobile-facing routes: always mounted (the app and the editorial workbench both
+    # call these; audio/trips carry their own compose/VERIFY gates).
     app.include_router(audio.router, prefix="/api/v1")
     app.include_router(trips.router, prefix="/api/v1")
     app.include_router(feedback.router, prefix="/api/v1")

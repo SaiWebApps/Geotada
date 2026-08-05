@@ -53,11 +53,11 @@ from .contract import (
 from .corpus_places import CorpusMaterializationPlan, CorpusPlaceManifest
 from .density import FeasibilityAlternative, TourabilityRefusedError
 from .density import assess_snapshot as assess_tourability
-from .ordering import held_karp_open
+from .ordering import order_stops
 from .routing import (
+    DEFAULT_ROUTE_PLANNING_POLICY,
     EARTH_RADIUS_M,
     HAVERSINE_CORRECTION,
-    LEGACY_ROUTE_PLANNING_POLICY,
     PACE_KMH,
     TIMEBOX_MATERIALITY_TOLERANCE_SECONDS,
     WALK_FRACTION,
@@ -70,7 +70,6 @@ from .routing import (
     insertion_cost_seconds,
     planned_audio_seconds,
     route_planning_budget,
-    smallest_duration_min_for_walk_seconds,
     summarise_route,
     within_planning_timebox,
 )
@@ -258,19 +257,13 @@ POI_ROLE_MULTIPLIER: dict[str, float] = {
 
 ANCHOR_TIERS: frozenset[int] = frozenset({3, 4, 5})
 
-# §5 Q5 (Phase 2 calibration, 2026-04-27):
-#   max_anchors = max(1, duration_min // ANCHOR_CAP_DIVISOR)
-#   bounded above by HARD_ANCHOR_CAP. Calibrated against the empirical Île
-#   walk (90 min → 9 anchors).
-ANCHOR_CAP_DIVISOR: int = 10
-# Outer anchors only — internal vignettes don't count. Raised 12→15 (2026-07-11)
-# to give long requests (150-400 min) denser coverage of nearby POIs instead of
-# overstuffing 12 stops (the thin-tour complaint). 15 keeps the EXACT Held-Karp
-# order solver comfortably under its 1s guard (~249ms measured; 2^15·15^2 ≈ 7.4M
-# transitions). Do NOT exceed 16 (the outer timing edge). Tours ≤120 min are
-# unaffected (max_anchors = duration//10 stays ≤12), so the calibration goldens
-# do not move.
-HARD_ANCHOR_CAP: int = 15  # outer anchors only — internal vignettes don't count
+# DELETED 2026-08-04 (OWNER RULING 5, "no stop limits, period"): ANCHOR_CAP_DIVISOR
+# and HARD_ANCHOR_CAP. The greedy now stops only when the walk budget or the audio
+# budget is spent, so DURATION is the sole bound on how many stops a tour has. The
+# tractability role the 15-anchor cap used to carry incidentally — keeping the exact
+# Held-Karp orderer under its one-second guard — now belongs to
+# ``ordering.ORDERING_EXACT_MAX``, which switches to cheapest insertion above 16
+# points without ever dropping a stop.
 
 # Spine selection: pick the most-populated non-city Area within this many
 # metres of the start point, weighted by tier among the candidate POIs.
@@ -421,6 +414,45 @@ GOVERNOR_SHARE_OF_DELIVERED: float = 1.0 / 3.0
 GOVERNOR_DOMINATION_FACTOR: float = 1.5
 
 
+def _band_alternatives(
+    *,
+    input: TourInput,
+    planning_policy: RoutePlanningPolicy,
+    best_elapsed_seconds: int | None,
+) -> tuple[tuple[FeasibilityAlternative, ...], int | None]:
+    """The loop/extend pair for a route that cannot reach its frozen band.
+
+    Mirrors the Step-2.2a fixed-destination construction exactly, so both refusals
+    reach a surface in the same shape and one renderer can draw either. ``extend`` is
+    the smallest duration whose maximum elapsed ceiling covers what the best bounded
+    route actually costs. Returns ``((), None)`` when there is nothing actionable to
+    offer, which is the honest answer when no bounded route was priced at all.
+    """
+    if best_elapsed_seconds is None:
+        return (), None
+    budget = route_planning_budget(input.duration_min, planning_policy)
+    overshoot = best_elapsed_seconds - budget.maximum_elapsed_seconds
+    gap_minutes = math.ceil(overshoot / 60) if overshoot > 0 else None
+    suggested = 1
+    while (
+        route_planning_budget(suggested, planning_policy).maximum_elapsed_seconds
+        + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+        < best_elapsed_seconds
+    ):
+        suggested += 1
+    alternatives: tuple[FeasibilityAlternative, ...] = (
+        FeasibilityAlternative(kind="extend", duration_min=suggested, drop_end=False),
+    )
+    if input.end is not None:
+        alternatives = (
+            FeasibilityAlternative(
+                kind="loop", duration_min=input.duration_min, drop_end=True
+            ),
+            *alternatives,
+        )
+    return alternatives, gap_minutes
+
+
 class CertificationPlanningInfeasibleError(Exception):
     """No eligible bounded stop set can satisfy a frozen certification band."""
 
@@ -432,12 +464,21 @@ class CertificationPlanningInfeasibleError(Exception):
         maximum_elapsed_seconds: int,
         best_elapsed_seconds: int | None,
         reason: str,
+        gap_minutes: int | None = None,
+        alternatives: tuple[FeasibilityAlternative, ...] = (),
     ) -> None:
         self.policy_id = policy_id
         self.minimum_elapsed_seconds = minimum_elapsed_seconds
         self.maximum_elapsed_seconds = maximum_elapsed_seconds
         self.best_elapsed_seconds = best_elapsed_seconds
         self.reason = reason
+        # Same two fields TourabilityRefusedError carries, so ONE refusal-detail helper
+        # can serialise both and a surface never has to know which one it caught. Before
+        # 2026-08-04 this error had no alternatives at all and escaped POST
+        # /trips/generate uncaught — a 500 to a traveller whose request merely did not
+        # fit.
+        self.gap_minutes = gap_minutes
+        self.alternatives = alternatives
         best = "none" if best_elapsed_seconds is None else str(best_elapsed_seconds)
         super().__init__(
             f"Certification planning infeasible under {policy_id}: {reason}; "
@@ -966,6 +1007,7 @@ def _closer_b_alternative(
     snapshot: CorpusSnapshot,
     leg_cost_fn: LegSecondsFn,
     walk_budget: int | None = None,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> FeasibilityAlternative | None:
     """Build the Step 2.2b 'closer_b' alternative, or None when none fits.
 
@@ -994,7 +1036,7 @@ def _closer_b_alternative(
     alignment (the rank still reflects tier x richness x lens fit x role).
     """
     budget = (
-        route_planning_budget(duration_min).walk_budget_seconds
+        route_planning_budget(duration_min, planning_policy).walk_budget_seconds
         if walk_budget is None
         else walk_budget
     )
@@ -1060,7 +1102,7 @@ def _materialize_fixed_end_b(
     All members of ``selected`` are already in-corridor on the fixed-end path
     (the §2.3 corridor gate filtered the candidate pool), so the snap pool is
     exactly ``selected``. The returned POI is guaranteed present in the
-    returned list — the precondition ``held_karp_open(fixed_end=...)`` enforces.
+    returned list — the precondition ``order_stops(fixed_end=...)`` enforces.
     """
     nearest: POI | None = None
     nearest_dist = float("inf")
@@ -1375,7 +1417,7 @@ def select_route(
     *,
     routing_client: RoutingClient | None = None,
     score_penalty: dict[str, float] | None = None,
-    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> Route:
     """Compute the spine, score POIs, run greedy selection. Returns a Route.
 
@@ -1407,7 +1449,9 @@ def select_route(
     start_lat, start_lng = input.start
     interest = frozenset(input.lenses or [])
     planning_budget = route_planning_budget(input.duration_min, planning_policy)
-    certification_fixed_end = input.end is not None and not planning_policy.is_legacy
+    # Every fixed-destination request now uses the certification reach model; the
+    # legacy arm that used the bare walk envelope was deleted 2026-08-04.
+    certification_fixed_end = input.end is not None
     certification_total_ceiling = (
         planning_budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
     )
@@ -1418,7 +1462,10 @@ def select_route(
 
     # Phase 6 density gate. Start-circle RED refuses open/round-trip requests.
     # Fixed-end requests defer to the routed A→B corridor checks below.
-    assessment = assess_tourability(input, snapshot)
+    # THE one line that makes the tourability gate and the planner speak the same
+    # currency. Without it density judges the pool against its own audio target
+    # while selection fills a different one.
+    assessment = assess_tourability(input, snapshot, planning_policy=planning_policy)
     if assessment.status == "RED" and input.end is None:
         raise TourabilityRefusedError(assessment)
 
@@ -1435,30 +1482,21 @@ def select_route(
     if input.end is not None:
         leg_cost_fn = leg_fn or default_leg_seconds
         t_ab = leg_cost_fn(start_lat, start_lng, input.end[0], input.end[1])
-        budget = planning_budget.walk_budget_seconds
         reachability_ceiling = (
-            budget
-            if planning_policy.is_legacy
-            else planning_budget.maximum_elapsed_seconds
-            + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+            planning_budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
         )
         if t_ab > reachability_ceiling:
             overshoot_s = t_ab - reachability_ceiling
             gap_minutes = math.ceil(overshoot_s / 60)
             suggested_duration = 1
-            if planning_policy.is_legacy:
-                suggested_duration = smallest_duration_min_for_walk_seconds(
-                    t_ab, planning_policy
-                )
-            else:
-                while (
-                    route_planning_budget(
-                        suggested_duration, planning_policy
-                    ).maximum_elapsed_seconds
-                    + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-                    < t_ab
-                ):
-                    suggested_duration += 1
+            while (
+                route_planning_budget(
+                    suggested_duration, planning_policy
+                ).maximum_elapsed_seconds
+                + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+                < t_ab
+            ):
+                suggested_duration += 1
             alternatives = (
                 # Drop B and loop from A at the requested duration.
                 FeasibilityAlternative(
@@ -1486,7 +1524,8 @@ def select_route(
                 interest=interest,
                 snapshot=snapshot,
                 leg_cost_fn=leg_cost_fn,
-                walk_budget=budget,
+                walk_budget=planning_budget.walk_budget_seconds,
+                planning_policy=planning_policy,
             )
             if closer_b is not None:
                 alternatives = (*alternatives, closer_b)
@@ -1695,20 +1734,21 @@ def select_route(
     # Step 3: greedy with insertion cost.
     walk_budget = planning_budget.walk_budget_seconds
     audio_budget = planning_budget.audio_target_seconds
-    max_anchors = min(HARD_ANCHOR_CAP, max(1, input.duration_min // ANCHOR_CAP_DIVISOR))
-    if planning_budget.max_stops is not None:
-        # A coordinate-only B can materialize as one additional sentinel.  Reserve
-        # that slot up front; the bounded repair may use it for a real destination
-        # POI when B snaps to one of the selected stops.
-        reserved_for_b = 1 if input.end is not None else 0
-        max_anchors = min(
-            max_anchors,
-            max(1, planning_budget.max_stops - reserved_for_b),
-        )
 
-    # Reserve some walk budget for the endpoint-pull post-step on one-way
-    # routes — otherwise the greedy fills 98% of the budget on tight
-    # clusters and silently abandons the pull.
+    # The greedy spends WALKING seconds and nothing else, so its cap is the
+    # WALKING allocation. It used to be ``certification_total_ceiling`` on the
+    # fixed-destination arm, which is the ceiling on total ACTIVE time — walking
+    # PLUS narration. At 90 minutes that handed the greedy 6000 walking seconds
+    # against a 2160-second allocation, so it could spend the whole tour's
+    # elapsed budget on walking before one second of narration was counted and
+    # every A→B route breached the band by construction. A cap on walking must
+    # be a walk budget for EVERY caller; there is no route shape for which the
+    # elapsed ceiling is the right bound on this quantity.
+    #
+    # The endpoint-pull reserve is subtracted only on the one shape that runs
+    # that post-step (open one-way — see Step 4 below, gated on
+    # ``input.end is None and not input.round_trip``). A round trip and a fixed
+    # destination never run it, so both get the whole allocation.
     if certification_fixed_end:
         greedy_walk_budget = certification_total_ceiling
     elif input.round_trip:
@@ -1774,7 +1814,7 @@ def select_route(
             _capped_memo[key] = cached
         return cached
 
-    while remaining and len(selected) < max_anchors:
+    while remaining:
         best_candidate: POI | None = None
         best_extra: int = 0
         best_idx: int = 0
@@ -1847,7 +1887,7 @@ def select_route(
     # Step 4: endpoint-pull (one-way only). Force-include a far-envelope POI
     # as the closing anchor so traverses (e.g. Pont Neuf → Île east tip)
     # don't truncate near the start. Re-orders the route end-to-end via
-    # insertion-cost optimisation; respects HARD_ANCHOR_CAP and walk budget.
+    # insertion-cost optimisation; respects the walk budget.
     pulled_endpoint_id: str | None = None
     if input.end is None and not input.round_trip and selected:
         far_radius_min = radius_m * ENDPOINT_PULL_FAR_FRACTION
@@ -1876,7 +1916,6 @@ def select_route(
                     start_lat=start_lat,
                     start_lng=start_lng,
                     walk_budget=walk_budget,
-                    hard_anchor_cap=planning_budget.max_stops or HARD_ANCHOR_CAP,
                     leg_seconds_fn=leg_fn,
                     score_penalty=score_penalty,
                 )
@@ -1904,14 +1943,13 @@ def select_route(
         round_trip=input.round_trip,
         walk_budget=walk_budget,
         audio_budget=audio_budget,
-        hard_anchor_cap=planning_budget.max_stops or HARD_ANCHOR_CAP,
         capped_audio_fn=_capped_audio,
         exempt_anchor_id=exempt_anchor_id,
         rescue_floor=RESCUE_STOP_FLOOR,
         fixed_end=input.end,
         rescue_candidates=(
             corridor_rescue_candidates
-            if planning_policy.is_legacy or certification_fixed_end
+            if input.end is not None
             else []
         ),
         rescue_added_ids=rescue_added_ids,
@@ -1930,7 +1968,7 @@ def select_route(
             trial_selected, trial_end = _materialize_fixed_end_b(
                 selected, end_lat=input.end[0], end_lng=input.end[1]
             )
-            trial_selected = held_karp_open(
+            trial_selected = order_stops(
                 trial_selected,
                 fixed_start=(start_lat, start_lng),
                 fixed_end=trial_end,
@@ -1967,19 +2005,26 @@ def select_route(
             selected = [poi for poi in selected if poi.id != drop.id]
             rescue_ids.remove(drop.id)
 
-    if not planning_policy.is_legacy:
-        selected = _apply_certification_timebox_repair(
-            selected,
-            certification_candidates if certification_fixed_end else candidates,
-            input=input,
-            snapshot=snapshot,
-            spine=spine,
-            interest=interest,
-            score_penalty=score_penalty,
-            leg_seconds_fn=leg_fn,
-            planning_policy=planning_policy,
-            planning_budget=planning_budget,
-        )
+    # The timebox repair now runs for EVERY route shape. It used to be gated on the
+    # policy not being the legacy one, so an open or round-trip walk on the phone's
+    # path never got band repair at all.
+    selected = _apply_certification_timebox_repair(
+        selected,
+        certification_candidates if certification_fixed_end else candidates,
+        input=input,
+        snapshot=snapshot,
+        spine=spine,
+        interest=interest,
+        score_penalty=score_penalty,
+        leg_seconds_fn=leg_fn,
+        planning_policy=planning_policy,
+        planning_budget=planning_budget,
+        # Certification must price what the ORDER pass below will actually build.
+        # That pass pins the pulled endpoint last (see the `elif` there), so the
+        # repair has to carry the same pin or it certifies a cheaper route than
+        # the one the traveller is given.
+        pulled_endpoint_id=pulled_endpoint_id,
+    )
 
     # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
     # and demote the smaller-tier of each pair. Demoted POI beats are
@@ -2014,7 +2059,7 @@ def select_route(
         )
     elif pulled_endpoint_id is not None and not input.round_trip:
         fixed_end = next((p for p in selected if p.id == pulled_endpoint_id), None)
-    selected = held_karp_open(
+    selected = order_stops(
         selected,
         fixed_start=(start_lat, start_lng),
         fixed_end=fixed_end,
@@ -2068,42 +2113,40 @@ def select_route(
         anchor_update["fixed_end_poi_id"] = fixed_end.id
     if anchor_update:
         route = route.model_copy(update=anchor_update)
-    if not planning_policy.is_legacy or input.end is not None:
-        # Last-line invariant: after materialization, demotion, exact ordering,
-        # and final-closing governance, a certification route of ANY shape must
-        # remain inside the same frozen band used by repair.  Legacy keeps its
-        # historical fixed-end-only over-ceiling guard byte-for-byte below.
-        final_audio = sum(
-            planned_audio_seconds(plan.beats)
-            for plan, _ in build_poi_beat_plans_capped(
-                route,
-                snapshot,
-                lenses=interest or None,
-                end_is_none=input.end is None,
-            )
+    # Last-line invariant, now applied to EVERY route shape: after materialization,
+    # demotion, exact ordering and final-closing governance, the route must still sit
+    # inside the same frozen band the repair used. The legacy fixed-end-only variant
+    # of this guard was deleted 2026-08-04 with the policy it belonged to.
+    # Last-line invariant: after materialization, demotion, exact ordering,
+    # and final-closing governance, a certification route of ANY shape must
+    # remain inside the same frozen band used by repair.  Legacy keeps its
+    # historical fixed-end-only over-ceiling guard byte-for-byte below.
+    final_audio = sum(
+        planned_audio_seconds(plan.beats)
+        for plan, _ in build_poi_beat_plans_capped(
+            route,
+            snapshot,
+            lenses=interest or None,
+            end_is_none=input.end is None,
         )
-        elapsed_ceiling = planning_budget.maximum_elapsed_seconds
-        final_elapsed = route.total_walk_seconds + final_audio
-        if not planning_policy.is_legacy and not within_planning_timebox(
-            final_elapsed, planning_budget
-        ):
-            raise CertificationPlanningInfeasibleError(
-                policy_id=planning_policy.policy_id,
-                minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
-                maximum_elapsed_seconds=elapsed_ceiling,
-                best_elapsed_seconds=final_elapsed,
-                reason="post-selection transforms moved the exact route outside the band",
-            )
-        if planning_policy.is_legacy and final_elapsed > elapsed_ceiling:
-            raise TourabilityRefusedError(
-                assessment,
-                (
-                    "Fixed-destination route exceeds the elapsed-time ceiling after "
-                    f"final routing: {route.total_walk_seconds}s walk + "
-                    f"{final_audio}s capped audio = {final_elapsed}s > "
-                    f"{elapsed_ceiling}s."
-                ),
-            )
+    )
+    elapsed_ceiling = planning_budget.maximum_elapsed_seconds
+    final_elapsed = route.total_walk_seconds + final_audio
+    if not within_planning_timebox(final_elapsed, planning_budget):
+        alternatives, gap_minutes = _band_alternatives(
+            input=input,
+            planning_policy=planning_policy,
+            best_elapsed_seconds=final_elapsed,
+        )
+        raise CertificationPlanningInfeasibleError(
+            policy_id=planning_policy.policy_id,
+            minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
+            maximum_elapsed_seconds=elapsed_ceiling,
+            best_elapsed_seconds=final_elapsed,
+            reason="post-selection transforms moved the exact route outside the band",
+            alternatives=alternatives,
+            gap_minutes=gap_minutes,
+        )
     # Track B (Step B.2): attach walk-past vignettes AFTER ordering — the leg
     # geometry is final only now. Additive metadata: ``pois``/``transits`` are
     # untouched (the identity baseline holds bit-for-bit).
@@ -2150,7 +2193,7 @@ def select_k_routes(
     k: int = 3,
     *,
     routing_client: RoutingClient | None = None,
-    planning_policy: RoutePlanningPolicy = LEGACY_ROUTE_PLANNING_POLICY,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> list[Route]:
     """§2.2 k flavours (M6): up to ``k`` distinct stop sets, each
     independently ordered (M4) and routed (M2/M3).
@@ -2443,7 +2486,6 @@ def _apply_fill_pass(
     round_trip: bool,
     walk_budget: int,
     audio_budget: int,
-    hard_anchor_cap: int,
     capped_audio_fn: Callable[..., int],
     exempt_anchor_id: str | None,
     rescue_floor: int = 0,
@@ -2461,7 +2503,6 @@ def _apply_fill_pass(
         >= ``FILL_PASS_AUDIO_FLOOR_FRAC x audio_budget``;
       - cumulative walk would exceed
         ``FILL_PASS_WALK_BUDGET_FRAC x walk_budget``;
-      - route hits ``hard_anchor_cap``;
       - no remaining candidate fits.
 
     Insertions go through ``insertion_cost_seconds`` so the route stays
@@ -2534,7 +2575,7 @@ def _apply_fill_pass(
     # any area where a nearby second stop fits the budget.
     if consumed_walk < walk_cap:
         for cand in pool:
-            if len(selected) >= hard_anchor_cap or consumed_audio >= floor_audio:
+            if consumed_audio >= floor_audio:
                 break
             extra, idx = _insertion(cand, selected)
             if consumed_walk + extra > walk_cap:
@@ -2562,7 +2603,7 @@ def _apply_fill_pass(
             ),
         )
         for cand in rescue_pool:
-            if cand.id in seated or len(selected) >= hard_anchor_cap:
+            if cand.id in seated:
                 continue
             if len(selected) >= rescue_floor and consumed_audio >= floor_audio:
                 break
@@ -2603,14 +2644,15 @@ def _isochrone_walk_minutes(
     *,
     round_trip: bool,
     walk_minutes: float | None = None,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> int:
     """The walking-time contour REACH asks Valhalla for.
 
-    Mirrors envelope_radius_m's derivation: the err-short walk budget in
-    minutes, halved for round trips (out-and-back reach).
+    Mirrors ``envelope_radius_m``'s derivation: the planning walk budget in minutes,
+    halved for round trips (out-and-back reach).
     """
     walk_min = (
-        route_planning_budget(duration_min).walk_envelope_minutes
+        route_planning_budget(duration_min, planning_policy).walk_envelope_minutes
         if walk_minutes is None
         else walk_minutes
     )
@@ -2816,8 +2858,18 @@ def _certification_route_trial(
     interest: frozenset[str],
     leg_seconds_fn: LegSecondsFn | None,
     planning_budget: RoutePlanningBudget,
+    pulled_endpoint_id: str | None = None,
 ) -> _CertificationRouteTrial | None:
-    """Price one stop set in the exact routed/capped certification currency."""
+    """Price one stop set in the exact routed/capped certification currency.
+
+    ``pulled_endpoint_id`` MUST mirror what ``select_route`` will pin when it
+    re-orders the repaired set, because certification is only meaningful if it
+    measures the route the engine actually builds.  Pinning a stop last is not
+    free: it forbids the cheapest tour through the same places, and on the live
+    Paris flagship it cost 1003 extra seconds of walking — enough to push a route
+    the repair had certified at 5403s out to 6406s, past the ceiling, where the
+    final band check refused it and the traveller lost the option entirely.
+    """
 
     if not selected and input.end is None:
         return None
@@ -2827,9 +2879,14 @@ def _certification_route_trial(
         materialized, fixed_end = _materialize_fixed_end_b(
             materialized, end_lat=input.end[0], end_lng=input.end[1]
         )
-    if planning_budget.max_stops is None or len(materialized) > planning_budget.max_stops:
-        return None
-    ordered = held_karp_open(
+    elif pulled_endpoint_id is not None and not input.round_trip:
+        # Same lookup select_route performs, and deliberately the same miss
+        # behaviour: a trial that DROPPED the pulled endpoint pins nothing, which
+        # is exactly what the engine will do with that set.
+        fixed_end = next(
+            (poi for poi in materialized if poi.id == pulled_endpoint_id), None
+        )
+    ordered = order_stops(
         materialized,
         fixed_start=input.start,
         fixed_end=fixed_end,
@@ -2867,6 +2924,16 @@ def _certification_route_trial(
     )
 
 
+#: Most (incumbent, candidate) exchange trials the timebox repair will price.
+#: Each trial runs a full exact-or-fallback ordering plus a capped beat-plan
+#: pricing, so the enumeration below is |selected| x |pool| trials. Until
+#: 2026-08-04 that was bounded only by the 8-stop planning cap; with duration as
+#: the sole stop bound it is not bounded at all. The pool is already score-sorted
+#: and the incumbents are id-sorted, so truncating at a fixed count is
+#: deterministic — the same tour is produced on every run.
+TIMEBOX_REPAIR_MAX_TRIALS: int = 4000
+
+
 def _apply_certification_timebox_repair(
     selected: list[POI],
     candidates: list[POI],
@@ -2879,8 +2946,9 @@ def _apply_certification_timebox_repair(
     leg_seconds_fn: LegSecondsFn | None,
     planning_policy: RoutePlanningPolicy,
     planning_budget: RoutePlanningBudget,
+    pulled_endpoint_id: str | None = None,
 ) -> list[POI]:
-    """Bounded add/exchange repair for one frozen certification policy.
+    """Bounded add/exchange/drop repair for one frozen certification policy.
 
     Only the already-eligible ordinary candidate pool is considered, so the
     pass cannot waive lens, role, REACH, or fixed-B corridor rules.  Each trial
@@ -2889,9 +2957,6 @@ def _apply_certification_timebox_repair(
     neither is a legitimate source of duration padding.
     """
 
-    if planning_budget.max_stops is None:
-        raise ValueError("certification repair requires an authorized stop cap")
-
     base = _certification_route_trial(
         selected,
         input=input,
@@ -2899,26 +2964,42 @@ def _apply_certification_timebox_repair(
         interest=interest,
         leg_seconds_fn=leg_seconds_fn,
         planning_budget=planning_budget,
+        pulled_endpoint_id=pulled_endpoint_id,
     )
     preferred_trials: list[_CertificationRouteTrial] = []
     last_resort_trials: list[_CertificationRouteTrial] = []
     observed: list[int] = []
+    # STRICT-IMPROVEMENT PRECONDITION. When the incumbent ALREADY satisfies the
+    # band, the repair has nothing to repair, and every remaining move is a
+    # discretionary swap judged by ``rank`` — which prices only distance from the
+    # nominal duration and never prices WALKING. Left ungoverned it will trade a
+    # compliant route for one that walks materially further to land a few seconds
+    # nearer the nominal, which is a pure downgrade for the tourist: more walking,
+    # no more narration. (The pressure to do so is systemic, not incidental: the
+    # planner books each stop against the per-tour narration allowance while
+    # emission caps every stop at MAX_DWELL_AUDIO_SECONDS, so routes routinely
+    # arrive here short of their target duration and the only currency the repair
+    # can pay in is distance.) So an in-band incumbent may only be displaced by a
+    # trial that does not materially increase walking. The threshold is the SAME
+    # materiality tolerance the band itself uses: seconds too few to change what
+    # the tourist experiences are not worth defending, and inventing a second
+    # tolerance would mean two different definitions of "material" in one function.
+    incumbent_in_band = base is not None and within_planning_timebox(
+        base.elapsed_seconds, planning_budget
+    )
 
-    def consider(
-        trial_selected: list[POI],
+    def record(
+        trial: _CertificationRouteTrial | None,
         *,
         added: POI | None = None,
         reference_walk_seconds: int | None = None,
     ) -> None:
-        trial = _certification_route_trial(
-            trial_selected,
-            input=input,
-            snapshot=snapshot,
-            interest=interest,
-            leg_seconds_fn=leg_seconds_fn,
-            planning_budget=planning_budget,
-        )
-        if trial is None:
+        """Bank one ALREADY-PRICED stop set as a possible answer.
+
+        Split out of ``consider`` so a trial the enumeration below has already
+        paid for can be offered as a solution without being priced twice.
+        """
+        if trial is None or len(observed) >= TIMEBOX_REPAIR_MAX_TRIALS:
             return
         observed.append(trial.elapsed_seconds)
         if trial.elapsed_seconds > (
@@ -2943,11 +3024,52 @@ def _apply_certification_timebox_repair(
                 marginal_walk > RESCUE_MAX_WALK_PER_AUDIO * max(1, added_audio)
             )
         if within_planning_timebox(trial.elapsed_seconds, planning_budget):
+            if (
+                incumbent_in_band
+                and base is not None
+                and trial.walk_seconds
+                > base.walk_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+            ):
+                return
             target = last_resort_trials if ratio_exceeded else preferred_trials
             target.append(trial)
 
-    consider(list(selected))
+    def consider(
+        trial_selected: list[POI],
+        *,
+        added: POI | None = None,
+        reference_walk_seconds: int | None = None,
+    ) -> None:
+        if len(observed) >= TIMEBOX_REPAIR_MAX_TRIALS:
+            return
+        record(
+            _certification_route_trial(
+                trial_selected,
+                input=input,
+                snapshot=snapshot,
+                interest=interest,
+                leg_seconds_fn=leg_seconds_fn,
+                planning_budget=planning_budget,
+                pulled_endpoint_id=pulled_endpoint_id,
+            ),
+            added=added,
+            reference_walk_seconds=reference_walk_seconds,
+        )
+
+    # ``base`` is the incumbent priced above; banking it directly is the same
+    # trial ``consider(list(selected))`` would recompute.
+    record(base)
     selected_ids = {poi.id for poi in selected}
+    # The one incumbent a DROP must never remove: the stop currently carrying a
+    # fixed destination B. Removing it does not lose B (each trial re-materializes
+    # it), but it re-materializes as a contentless sentinel at B's coordinate —
+    # trading a narrated stop for a bare pin while walking exactly as far.
+    protected_end_id: str | None = None
+    if input.end is not None and selected:
+        _, materialized_end = _materialize_fixed_end_b(
+            selected, end_lat=input.end[0], end_lng=input.end[1]
+        )
+        protected_end_id = materialized_end.id
     pool = sorted(
         (candidate for candidate in candidates if candidate.id not in selected_ids),
         key=lambda poi: (
@@ -2955,7 +3077,7 @@ def _apply_certification_timebox_repair(
             poi.id,
         ),
     )
-    if base is not None and len(base.ordered) < planning_budget.max_stops:
+    if base is not None:
         for candidate in pool:
             consider(
                 [*selected, candidate],
@@ -2971,10 +3093,23 @@ def _apply_certification_timebox_repair(
             interest=interest,
             leg_seconds_fn=leg_seconds_fn,
             planning_budget=planning_budget,
+            pulled_endpoint_id=pulled_endpoint_id,
         )
         reference_walk_seconds = (
             retained_trial.walk_seconds if retained_trial is not None else 0
         )
+        # The DROP itself is a solution, not merely a pricing reference for the
+        # exchanges below. Every other move here holds the stop count (exchange)
+        # or raises it (add), so without this a route that overshoots the ceiling
+        # has NO move that shortens it and the whole option is refused — the
+        # 2026-08-04 collapse to a single walk. Stop ceilings used to make the
+        # overshoot impossible; with duration as the only stop bound it is
+        # routine. A removal cannot be a walk-slog (it adds no walk and no
+        # audio), so it is never a last resort — and it still has to beat every
+        # other in-band trial on ``rank`` to be chosen, where the score tie-break
+        # favours the route that kept more stops.
+        if retained and incumbent.id != protected_end_id:
+            record(retained_trial)
         for candidate in pool:
             consider(
                 [*retained, candidate],
@@ -2992,12 +3127,19 @@ def _apply_certification_timebox_repair(
             + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
         ]
         best = max(bounded) if bounded else (min(observed) if observed else None)
+        alternatives, gap_minutes = _band_alternatives(
+            input=input,
+            planning_policy=planning_policy,
+            best_elapsed_seconds=best,
+        )
         raise CertificationPlanningInfeasibleError(
             policy_id=planning_policy.policy_id,
             minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
             maximum_elapsed_seconds=planning_budget.maximum_elapsed_seconds,
             best_elapsed_seconds=best,
             reason="no eligible non-slog add or one-for-one exchange reaches the TIME band",
+            alternatives=alternatives,
+            gap_minutes=gap_minutes,
         )
 
     def rank(trial: _CertificationRouteTrial) -> tuple[float, float, tuple[str, ...]]:
@@ -3038,33 +3180,24 @@ def _apply_endpoint_pull(
     start_lat: float,
     start_lng: float,
     walk_budget: int,
-    hard_anchor_cap: int,
     leg_seconds_fn: LegSecondsFn | None = None,
     score_penalty: dict[str, float] | None = None,
 ) -> list[POI]:
     """Insert `endpoint` as the closing stop, dropping at most
-    ENDPOINT_PULL_MAX_DROPS weak incumbents to fit walk-budget +
-    anchor-cap. If the endpoint can't be made to fit within those drops,
-    return the input unchanged (greedy result wins).
+    ENDPOINT_PULL_MAX_DROPS weak incumbents to fit the walk budget. If the
+    endpoint can't be made to fit within those drops, return the input
+    unchanged (greedy result wins).
+
+    The anchor-cap half of this loop was deleted 2026-08-04 with every other stop
+    ceiling; only the walk-budget drop below remains, and it is what still makes
+    the loop terminate.
     """
     incumbents = list(selected)
     drops_used = 0
     while True:
-        if (
-            len(incumbents) + 1 > hard_anchor_cap
-            and incumbents
-            and drops_used < ENDPOINT_PULL_MAX_DROPS
-        ):
-            incumbents = _drop_weakest(incumbents, spine, interest, snapshot, score_penalty)
-            drops_used += 1
-            continue
-
-        if len(incumbents) + 1 > hard_anchor_cap:
-            return list(selected)  # endpoint won't fit under cap with allowed drops
-
         # M4: order the trial route exactly (replaces the greedy
         # best-insertion `_reorder_with_endpoint`), endpoint pinned last.
-        candidate_route = held_karp_open(
+        candidate_route = order_stops(
             [*incumbents, endpoint],
             fixed_start=(start_lat, start_lng),
             fixed_end=endpoint,

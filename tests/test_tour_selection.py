@@ -12,7 +12,8 @@ from src.tour.selection import (
     AREA_ALIGNMENT_ADJACENT,
     AREA_ALIGNMENT_OTHER,
     AREA_ALIGNMENT_SPINE,
-    HARD_ANCHOR_CAP,
+    MAX_DWELL_AUDIO_SECONDS,
+    CertificationPlanningInfeasibleError,
     CorpusSnapshot,
     build_poi_beat_plans,
     build_poi_beat_plans_capped,
@@ -51,6 +52,26 @@ def _poi(
     )
 
 
+def _auto_beat_seconds(beat_count: int) -> int:
+    """Per-beat voiced seconds so a POI's WHOLE beat set fits one stop's ceiling.
+
+    Selection prices a stop TWICE and the two prices must agree. The greedy
+    credits ``planned_capped_audio_seconds(poi, ..., allowance)`` where the C9
+    governor allowance is ``target_audio_seconds(d) // min(3, d // 10)`` — 720 s
+    at 60 min, 1440 s at 120 min. Emission then caps every stop at
+    ``MAX_DWELL_AUDIO_SECONDS`` (270 s). A fixture POI carrying more than 270 s
+    of beats is therefore CREDITED up to 5x what the tour will ever speak, so
+    the greedy believes it has filled the audio target after a third of the
+    stops, stops adding them, and hands the certification repair a route that
+    is far short of the requested duration. Sizing the whole beat set to the
+    per-stop ceiling makes credit == delivery, which is the only regime where a
+    synthetic fixture behaves like the planner's own arithmetic says it should.
+
+    Kept at >= 1 s so a zero-beat POI stays representable.
+    """
+    return max(1, MAX_DWELL_AUDIO_SECONDS // max(1, beat_count))
+
+
 def _snap(
     pois: list[POI],
     *,
@@ -78,7 +99,7 @@ def _snap(
             BeatRef(
                 id=f"{p.id}-b{i}",
                 poi_id=p.id,
-                est_spoken_seconds=240,  # rich enough to clear fill_ratio
+                est_spoken_seconds=_auto_beat_seconds(n),
                 active_status="active",
             )
             for i in range(n)
@@ -122,31 +143,132 @@ def test_container_identity_is_context_not_a_fictional_stop() -> None:
     assert choose_discrete_route([container_route, discrete_route]) == discrete_route
 
 
-def _density_fillers(
-    start: tuple[float, float], *, n: int = 4, prefix: str = "filler"
-) -> list[POI]:
-    """4 tier-5 anchor candidates clustered near `start`.
+#: How far the filler cluster reaches, as metres per sqrt(minute).
+#:
+#: This sets how much WALKING a filled tour contains, which since 2026-08-04 is
+#: half of whether a fixture can be planned at all. Active time is walk plus
+#: capped audio. The greedy stops once it reaches the audio target (0.60 of the
+#: request) and no stop speaks more than MAX_DWELL_AUDIO_SECONDS, so audio alone
+#: can never reach the two-sided band's 0.90 floor — the remaining 0.30 has to
+#: arrive as walking, while walk_budget_seconds simultaneously caps walking at
+#: 0.40. The fixture therefore has to land walking in a WINDOW, not merely keep
+#: it small.
+#:
+#: For n stops spread over a disc of radius R the tour walks about
+#: ``0.7 * sqrt(n * pi) * R`` metres at 1.62 s/m, and the greedy seats
+#: n ~ duration/7.5. Solving that for the middle of the window (0.34 of the
+#: request) gives R ~ 28 * sqrt(duration) — which also stays inside the round-trip
+#: envelope (7.4 * duration) at every duration the suite uses.
+_FILLER_RADIUS_PER_SQRT_MIN: float = 23.0
 
-    Phase 6 density gate requires ≥4 anchor candidates with rich beats
-    inside a tight cluster for GREEN. Some pre-Phase-6 selection tests
-    used 1-3 POIs in their fixtures and now trip the gate. Adding these
-    fillers keeps each test's assertion intact (they cluster colocated
-    near start, so they don't affect spine, envelope, or distance
-    behaviour) while letting the gate clear.
+
+def _anchors_for_duration(duration_min: int) -> int:
+    """How many filler anchors a tour of `duration_min` needs to be plannable.
+
+    The greedy seats stops until it reaches the audio target (0.60 x requested)
+    and every stop is capped at MAX_DWELL_AUDIO_SECONDS, so it seats about
+    ``duration_min * 60 * 0.60 / 270`` = ``duration_min / 7.5`` of them. A
+    proportional third on top, floored at six, keeps the pool non-empty for the
+    endpoint pull, the fill pass and the certification repair, all of which need
+    somewhere left to go after the greedy has stopped — and the headroom has to
+    GROW with duration, because a flat six spare anchors is most of the pool at
+    30 minutes and almost none of it at 400.
     """
-    return [
-        POI(
-            id=f"{prefix}-{i}",
-            name=f"{prefix}-{i}",
-            tier=5,
-            poi_role="stop",
-            lat=start[0] + 0.00005 * i,
-            lng=start[1] + 0.00005 * i,
-            areas=("Le Marais",),
-            beat_count=8,
+    seated = math.ceil(duration_min / 7.5)
+    return seated + max(6, math.ceil(seated / 3))
+
+
+#: Round trips walk the closing leg back to the start, which a one-way tour never
+#: pays, so the same anchors over the same disc cost a round trip more walking.
+#: Shrinking its cluster keeps both shapes inside the walk allocation without
+#: changing anything else about the fixture. Measured over the 28-cell duration
+#: sweep: 0.90 leaves the 30-minute round trip 12 s over, 0.85 and 0.80 both pass
+#: every cell, so this sits at the top of the verified window.
+_ROUND_TRIP_RADIUS_FACTOR: float = 0.85
+
+
+def _density_fillers(
+    start: tuple[float, float],
+    *,
+    duration_min: int = 60,
+    round_trip: bool = False,
+    n: int | None = None,
+    radius_m: float | None = None,
+    tier: int = 5,
+    beat_count: int = 5,
+    prefix: str = "filler",
+) -> list[POI]:
+    """Tier-5 anchor candidates on a compact spiral around `start`.
+
+    Two gates have to clear, and they pull in opposite directions.
+
+    The Phase 6 DENSITY gate wants a rich, tight pool: >= 4 anchor candidates
+    with fill >= 1.0 and compactness <= 0.6, or the rich-pool escape of fill
+    >= 1.5 with >= 6 anchors. The certification TIME band (0.90-1.10 of the
+    request since 2026-08-04, two-sided) wants a pool the planner can spend a
+    whole hour on. The old fixture — 4 POIs colocated within ~7 m, 8 beats of
+    240 s each — satisfied the first and could not satisfy the second: 4
+    stops deliver 4 x 270 s of audio and almost no walking, roughly 20 minutes
+    of active time against a 54-minute floor, so every test using it refused
+    with CertificationPlanningInfeasibleError.
+
+    The fix is more anchors and real spacing, not weaker gates: a phyllotaxis
+    spiral whose anchor count comes from _anchors_for_duration and whose reach
+    comes from _FILLER_RADIUS_PER_SQRT_MIN (14 anchors inside ~217 m at the
+    default 60 minutes). Both scale with the request, so the cluster always sits
+    inside that duration's own round-trip envelope while still being spread
+    enough that filling the audio target accumulates the walking the band needs.
+    Beat seconds come from _auto_beat_seconds, so each anchor's whole beat set
+    equals one stop's emission ceiling, which is also what makes the density
+    fill ratio scale with the anchor COUNT rather than per-POI beat length.
+
+    Pass ``duration_min`` for anything other than an hour, and ``n`` when a test
+    needs an exact anchor count for its own assertion. Pass ``radius_m`` to pack
+    the anchors tighter than the default: a test whose subject is a DISTANT POI
+    (the endpoint pull, the far-anchor guards) needs the background cluster to
+    contribute stops without contributing walking, so that its far POI stays the
+    route's only source of walking seconds and cannot be traded away for a
+    nearer one of equal audio. Pass ``tier=3`` with
+    ``beat_count=3`` for BACKGROUND anchors: still anchor candidates as far as
+    density is concerned (ANCHOR_CANDIDATE_TIER_MIN is 3, and its beat-count
+    minimum is 3 too) and still able to carry the walking the band needs, but
+    scored low enough that a test's own tier-5 subject wins the dwell slot it is
+    being tested for.
+
+    Fillers still carry no test-specific signal: they share one area, one tier
+    and one beat budget, so spine, envelope and lens assertions read the same
+    as they did when the cluster was colocated.
+    """
+    count = _anchors_for_duration(duration_min) if n is None else n
+    outer_m = (
+        _FILLER_RADIUS_PER_SQRT_MIN * math.sqrt(duration_min)
+        if radius_m is None
+        else radius_m
+    )
+    if round_trip:
+        outer_m *= _ROUND_TRIP_RADIUS_FACTOR
+    dlat_m = 1.0 / 111_320.0
+    dlng_m = 1.0 / (111_320.0 * math.cos(math.radians(start[0])))
+    golden_angle = math.pi * (3.0 - math.sqrt(5.0))
+    out: list[POI] = []
+    for i in range(count):
+        # sqrt spacing spreads the anchors EVENLY over the disc rather than
+        # bunching them at the rim, so nearest-neighbour hops stay uniform.
+        radius = outer_m * math.sqrt((i + 1) / count)
+        angle = golden_angle * (i + 1)
+        out.append(
+            POI(
+                id=f"{prefix}-{i}",
+                name=f"{prefix}-{i}",
+                tier=tier,
+                poi_role="stop",
+                lat=start[0] + radius * math.cos(angle) * dlat_m,
+                lng=start[1] + radius * math.sin(angle) * dlng_m,
+                areas=("Le Marais",),
+                beat_count=beat_count,
+            )
         )
-        for i in range(n)
-    ]
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -156,9 +278,11 @@ def _density_fillers(
 
 def test_envelope_excludes_far_pois():
     near = _poi("near", lat=48.8556, lng=2.3658, areas=("Le Marais",))
-    # ~3km east of PdV — well outside the 738m one-way envelope.
+    # ~3km east of PdV — well outside the 889m one-way envelope.
     far = _poi("far", lat=48.8556, lng=2.4000, areas=("Le Marais",))
-    snap = _snap([near, far], area_types={"Le Marais": "neighborhood"})
+    snap = _snap(
+        [near, far, *_density_fillers(PDV)], area_types={"Le Marais": "neighborhood"}
+    )
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
 
     route = select_route(inp, snap)
@@ -168,11 +292,18 @@ def test_envelope_excludes_far_pois():
 
 
 def test_envelope_round_trip_uses_half_radius():
-    # POI sits at ~500m, between round-trip envelope (369m) and one-way (738m).
+    # POI sits at ~500m, between the round-trip envelope (444m) and the one-way
+    # one (889m), so it is REACHABLE one-way and UNREACHABLE on a round trip.
     near = _poi("near", lat=48.8556, lng=2.3658, areas=("Le Marais",))
     medium = _poi("medium", lat=48.8590, lng=2.3720, areas=("Le Marais",))
     fillers = _density_fillers(PDV)
     snap = _snap([near, medium, *fillers], area_types={"Le Marais": "neighborhood"})
+
+    # Preconditions, derived from the live envelope so the test pins BEHAVIOUR:
+    # the medium POI straddles the two radii, which is the whole point.
+    d_medium = haversine_m(*PDV, medium.lat, medium.lng)
+    assert envelope_radius_m(60, round_trip=True) < d_medium
+    assert d_medium <= envelope_radius_m(60, round_trip=False)
 
     one_way = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False), snap
@@ -181,14 +312,20 @@ def test_envelope_round_trip_uses_half_radius():
         TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True), snap
     )
 
-    # The medium-distance POI must drop out of the round-trip route.
-    assert {p.id for p in rt.pois} <= {p.id for p in one_way.pois}
+    # The medium-distance POI must drop out of the round-trip route. Asserted on
+    # the POI the test is ABOUT: the old blanket subset check over every id was a
+    # proxy that only held while the pool was 4 colocated fillers, and it now
+    # fails on harmless churn between two independently-planned routes.
+    assert "medium" not in {p.id for p in rt.pois}
+    # Both shapes still plan, so the exclusion above is the envelope halving and
+    # not a refusal that emptied the round trip.
+    assert one_way.pois and rt.pois
 
 
 def test_envelope_excludes_walk_by_only():
     walk_by = _poi("wb", role="walk_by_only", lat=48.8556, lng=2.3658)
     stop = _poi("stop", lat=48.8556, lng=2.3660)
-    snap = _snap([walk_by, stop])
+    snap = _snap([walk_by, stop, *_density_fillers(PDV)])
     route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     assert "wb" not in [p.id for p in route.pois]
 
@@ -398,11 +535,17 @@ def test_score_area_alignment_adjacent_between_spine_and_other():
 
 
 def _lensed_beats(poi_id: str, lenses: tuple[str, ...], *, n: int = 5) -> list[BeatRef]:
+    """Beats that all HIT `lenses`, sized like _snap's auto-injected ones.
+
+    Beat length follows _auto_beat_seconds for the same reason: a stop speaks
+    at most MAX_DWELL_AUDIO_SECONDS, so a POI carrying more than that is priced
+    by the greedy at several times what the tour will ever say.
+    """
     return [
         BeatRef(
             id=f"{poi_id}-b{i}",
             poi_id=poi_id,
-            est_spoken_seconds=240,
+            est_spoken_seconds=_auto_beat_seconds(n),
             active_status="active",
             lenses=lenses,
         )
@@ -501,12 +644,24 @@ def test_lens_miss_high_gravity_poi_survives_as_vignette():
     """
     from src.tour.selection import BAND_VIGNETTE, band_for_spotlight, spotlight
 
-    missed = _poi("missed", tier=5, lat=48.8557, lng=2.3659, areas=("Le Marais",))
-    # Lens-hit anchors so the dwell route is viable + dense enough to clear the gate.
-    hits = [
-        _poi(f"hit{i}", tier=5, lat=48.8556 + 0.0001 * i, lng=2.3658, areas=("Le Marais",))
-        for i in range(4)
-    ]
+    # Lens-hit anchors so the dwell route is viable and dense enough to clear
+    # both the density gate and the two-sided time band. Four anchors packed at
+    # the start cannot fill an hour, so the pool is the filler spiral, all of it
+    # lens-hitting.
+    hits = _density_fillers(
+        PDV, round_trip=True, n=3 * _anchors_for_duration(60), prefix="hit"
+    )
+    # The off-genre POI is planted at the MEDIAN distance of that pool, so its
+    # exclusion cannot be read as "it was simply further away" — anchors both
+    # nearer AND further than it are on offer, and only the lens differs.
+    median_hit = sorted(hits, key=lambda p: haversine_m(*PDV, p.lat, p.lng))[len(hits) // 2]
+    missed = _poi(
+        "missed",
+        tier=5,
+        lat=2 * PDV[0] - median_hit.lat,  # mirrored through the start, so the
+        lng=2 * PDV[1] - median_hit.lng,  # distance is EXACTLY the median hit's
+        areas=("Le Marais",),
+    )
     snap = _snap(
         [*hits, missed],
         area_types={"Le Marais": "neighborhood"},
@@ -526,6 +681,12 @@ def test_lens_miss_high_gravity_poi_survives_as_vignette():
     )
     ids = [p.id for p in select_route(inp, snap).pois]
     assert any(h.id in ids for h in hits), f"lens-hit dwell stops must be selected, got {ids}"
+    # The discriminator is the lens, not the distance: an on-genre anchor sitting
+    # FURTHER from the start than the off-genre one still takes a dwell slot.
+    missed_m = haversine_m(*PDV, missed.lat, missed.lng)
+    assert any(haversine_m(*PDV, h.lat, h.lng) > missed_m for h in hits if h.id in ids), (
+        f"fixture drifted: no selected on-genre anchor is further out than 'missed'; got {ids}"
+    )
     assert "missed" not in ids, (
         "a tier-5 off-genre POI is an eligible VIGNETTE (a brief mention), not a dwell "
         f"stop -- it must not take a dwell slot. Got {ids}"
@@ -539,7 +700,7 @@ def test_lens_miss_high_gravity_poi_survives_as_vignette():
 
 def test_select_route_returns_route_object_shape():
     p = _poi("p", lat=48.8556, lng=2.3658, areas=("Le Marais",))
-    snap = _snap([p], area_types={"Le Marais": "neighborhood"})
+    snap = _snap([p, *_density_fillers(PDV)], area_types={"Le Marais": "neighborhood"})
     route = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True), snap
     )
@@ -552,7 +713,7 @@ def test_select_route_returns_route_object_shape():
 
 def test_select_route_round_trip_returns_to_origin():
     p = _poi("p", lat=48.8556, lng=2.3658, areas=("Le Marais",))
-    snap = _snap([p], area_types={"Le Marais": "neighborhood"})
+    snap = _snap([p, *_density_fillers(PDV)], area_types={"Le Marais": "neighborhood"})
     rt = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True), snap
     )
@@ -561,63 +722,87 @@ def test_select_route_round_trip_returns_to_origin():
 
 
 def test_select_route_respects_walk_budget():
-    # Too many anchors with non-negligible spread → must still respect budget.
-    pois = [_poi(f"p{i}", lat=48.8550 + i * 0.0010, lng=2.3650 + i * 0.0010) for i in range(20)]
-    snap = _snap(pois)
+    """A pool with more reachable anchors than the tour can afford must still
+    come back inside the walk allocation — the tourist walks 40% of the hour,
+    not 60% of it.
+
+    The bound is READ from walk_budget_seconds rather than written down. It used
+    to be the literal 1195, which was 3600 x 0.83 x 0.40 under the flat legacy
+    planning policy deleted on 2026-08-04. Under the certification policy the
+    same 40% allocation is 3600 x 1.00 x 0.40 = 1440, so the literal had stopped
+    describing the product's own budget and would have gone on drifting silently
+    at the next policy move.
+    """
+    from src.tour.routing import walk_budget_seconds
+
+    # Enough spread anchors that the greedy could overspend if it were allowed
+    # to, plus the filler spiral so the pool can actually fill an hour.
+    pois = [
+        _poi(f"p{i}", lat=48.8550 + i * 0.0010, lng=2.3650 + i * 0.0010)
+        for i in range(20)
+    ]
+    snap = _snap([*pois, *_density_fillers(PDV)])
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
-    # walk_budget_seconds(60) = 1195
-    assert route.total_walk_seconds <= 1195 + 5  # cushion for integer rounding
+    assert route.total_walk_seconds <= walk_budget_seconds(60) + 5  # rounding cushion
 
 
-def test_select_route_respects_hard_anchor_cap():
-    # Place ~25 candidates in a tight cluster so all are insertable.
-    pois = [
-        _poi(
-            f"p{i}",
-            tier=5,
-            lat=48.8556 + (i % 5) * 0.00005,
-            lng=2.3658 + (i // 5) * 0.00005,
-        )
-        for i in range(25)
-    ]
+def test_select_route_seats_each_candidate_at_most_once():
+    """The stop CEILING was deleted 2026-08-04 (OWNER RULING 5); what must still
+    hold is that a long duration in a tight cluster seats each candidate once.
+
+    The cluster used to be 25 POIs ~5 m apart. A 400-minute request now has to
+    deliver at least 360 minutes of active time, and a stop speaks at most
+    MAX_DWELL_AUDIO_SECONDS, so 25 colocated stops cannot come close however
+    many beats they carry — the corpus is simply not big enough for the tour
+    that was asked for. Sized via _anchors_for_duration instead, which is the
+    same seat-count arithmetic the greedy uses.
+    """
+    pois = _density_fillers(
+        PDV, duration_min=400, n=2 * _anchors_for_duration(400), prefix="p"
+    )
     snap = _snap(pois)
-    # Long duration → max_anchors theoretically bigger than HARD_ANCHOR_CAP.
+    # Long duration: the time budget is now the only thing that stops the greedy.
     route = select_route(TourInput(start=PDV, duration_min=400, city_slug="paris"), snap)
-    assert len(route.pois) <= HARD_ANCHOR_CAP
+    assert len(route.pois) == len({p.id for p in route.pois})
 
 
 def test_long_tour_seats_more_than_the_old_twelve_stop_cap():
     """The thin-tour fix: a long request seats denser coverage of nearby POIs
-    (up to the raised cap) instead of overstuffing 12 stops. Moderate per-stop
-    audio (2 beats each) keeps the greedy ANCHOR-bound — it hits the cap rather
-    than terminating audio-bound early."""
-    pois = [
-        _poi(
-            f"p{i}",
-            tier=5,
-            lat=48.8556 + (i % 6) * 0.0004,
-            lng=2.3658 + (i // 6) * 0.0004,
-            beat_count=2,
-        )
-        for i in range(25)
-    ]
+    instead of overstuffing 12 stops.
+
+    The pool is sized by _anchors_for_duration so a 250-minute request has
+    somewhere to put 250/7.5 ~ 34 stops; the 25-POI grid it replaced could not
+    reach the two-sided band's 225-minute floor at all, because a stop speaks at
+    most MAX_DWELL_AUDIO_SECONDS however many beats sit behind it.
+    """
+    pois = _density_fillers(
+        PDV, duration_min=250, n=2 * _anchors_for_duration(250), prefix="p"
+    )
     snap = _snap(pois)
     route = select_route(TourInput(start=PDV, duration_min=250, city_slug="paris"), snap)
     n = len(route.pois)
-    assert n > 12, f"raised cap should seat >12 stops for a long tour, got {n}"
-    assert n <= HARD_ANCHOR_CAP
+    assert n > 12, f"a long tour should seat >12 stops, got {n}"
+    assert n == len({p.id for p in route.pois})
 
 
-def test_hard_anchor_cap_stays_within_held_karp_timing_ceiling():
+def test_the_exact_ordering_threshold_stays_within_its_timing_ceiling():
     """The exact Held-Karp order solver stays under its 1s guard only up to ~16
-    anchors; keep the cap at/under that measured ceiling (see
-    test_tour_ordering_heldkarp::test_cap_sized_input_under_a_second)."""
-    assert HARD_ANCHOR_CAP <= 16
+    points; keep ``order_stops``' exact/fallback threshold at or under that
+    measured ceiling (see tests/test_tour_ordering.py::
+    test_the_exact_threshold_is_small_enough_to_be_called_in_a_loop). This
+    guarantee moved out of ``HARD_ANCHOR_CAP`` when the stop ceiling was deleted:
+    the planner no longer bounds n, so the ORDERER has to."""
+    from src.tour.ordering import ORDERING_EXACT_MAX
+
+    assert ORDERING_EXACT_MAX <= 16
 
 
 def test_select_route_deterministic_under_input_shuffle():
-    base = [_poi(f"p{i}", lat=48.8550 + i * 0.0001, lng=2.3650 + i * 0.0001) for i in range(8)]
+    base = [
+        _poi(f"p{i}", lat=48.8550 + i * 0.0001, lng=2.3650 + i * 0.0001)
+        for i in range(8)
+    ] + _density_fillers(PDV)
 
     import random
 
@@ -635,9 +820,18 @@ def test_select_route_deterministic_under_input_shuffle():
     assert [p.id for p in route_a.pois] == [p.id for p in route_b.pois]
 
 
-def test_explicit_legacy_planning_policy_is_byte_identical_to_default():
-    """Threading the policy must be a strict no-op for every existing caller."""
-    from src.tour.routing import LEGACY_ROUTE_PLANNING_POLICY
+def test_explicit_default_planning_policy_is_byte_identical_to_omitting_it():
+    """Threading the policy must be a strict no-op for every existing caller.
+
+    This used to thread LEGACY_ROUTE_PLANNING_POLICY, the flat 0.83 planning
+    policy deleted on 2026-08-04 — so as written it could only ever raise
+    ImportError. What it was really guarding is still live and still worth
+    guarding: passing a policy explicitly must produce byte-identical output to
+    leaving the argument off. It now threads the surviving policy. That the
+    legacy object stays deleted is pinned separately, by the deleted-name list
+    in tests/test_tour_one_engine.py.
+    """
+    from src.tour.routing import DEFAULT_ROUTE_PLANNING_POLICY
 
     pois = _density_fillers(PDV)
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
@@ -647,7 +841,7 @@ def test_explicit_legacy_planning_policy_is_byte_identical_to_default():
     explicit = select_route(
         inp,
         snap,
-        planning_policy=LEGACY_ROUTE_PLANNING_POLICY,
+        planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
     )
 
     assert explicit.model_dump(mode="json") == implicit.model_dump(mode="json")
@@ -669,20 +863,11 @@ def test_select_route_prefers_spine_area():
         areas=("Other Hood",),
         beat_count=5,
     )
-    # Force spine to be Le Marais by sheer count: add filler in Marais near
-    # start so spine vote wins. Bumped to 4 tier-5 fillers (was 3 tier-4)
-    # to also satisfy the Phase 6 density gate — the assertion is unchanged.
-    fillers = [
-        _poi(
-            f"f{i}",
-            tier=5,
-            lat=48.8556 + i * 0.00002,
-            lng=2.3658,
-            areas=("Le Marais",),
-            beat_count=8,
-        )
-        for i in range(4)
-    ]
+    # Force spine to be Le Marais by sheer count: the filler spiral is all in
+    # Marais and near the start, so the spine vote wins. It also carries the
+    # density gate and (since the band went two-sided on 2026-08-04) supplies
+    # enough anchors to fill the hour. The assertions are unchanged.
+    fillers = _density_fillers(PDV, prefix="f")
     snap = _snap(
         [in_marais, out_other, *fillers],
         area_types={"Le Marais": "neighborhood", "Other Hood": "neighborhood"},
@@ -696,28 +881,33 @@ def test_select_route_prefers_spine_area():
 
 
 def test_yellow_density_attaches_assessment_to_route():
-    """Phase 6: a YELLOW assessment must surface as route.tourability."""
-    # 5 colocated tier-5 anchors with thin per-beat audio so fill lands
-    # in the YELLOW band (0.5-1.0). 5 beats x 5 POIs x 80s = 2000s;
-    # target 60min = 1793s; fill ≈ 1.12 — too high for YELLOW. Drop to
-    # 60s per beat: 5 x 5 x 60 = 1500s; fill ≈ 0.84 → YELLOW by-fill.
-    pois = [
-        _poi(
-            f"y{i}",
-            tier=5,
-            lat=PDV[0] + 0.00005 * i,
-            lng=PDV[1],
-            areas=("Le Marais",),
-            beat_count=5,
-        )
-        for i in range(5)
-    ]
+    """Phase 6: a YELLOW assessment must surface as route.tourability.
+
+    YELLOW means "there is less to say here than an hour wants, but a tour is
+    still worth building", so this fixture has to be thin in EXACTLY one way and
+    healthy in every other. Thin on audio: eight anchors carrying 225 s of stories
+    each, 1800 s against a 2160 s target, a fill ratio of 0.83. Healthy on
+    everything else: eight anchors is well past the four the density gate wants,
+    and they are spread over 220 m so the tour still walks enough to fill the hour
+    it was asked for.
+
+    That second half is what changed on 2026-08-04. The fixture used to be five
+    POIs standing on top of each other, which delivered about twenty minutes of
+    tour against a fifty-four minute floor and was refused outright — so the
+    disclosure this test exists to check was never reached. Sizing each anchor's
+    whole beat set below one stop's speaking ceiling also matters: a POI holding
+    more audio than a stop can ever voice is credited for the surplus, and the
+    planner stops adding stops on the strength of audio the tourist never hears.
+    """
+    pois = _density_fillers(
+        PDV, duration_min=60, n=8, radius_m=220.0, tier=5, beat_count=5, prefix="y"
+    )
     beats: dict[str, list[BeatRef]] = {
         p.id: [
             BeatRef(
                 id=f"{p.id}-b{j}",
                 poi_id=p.id,
-                est_spoken_seconds=60,
+                est_spoken_seconds=45,
                 active_status="active",
             )
             for j in range(5)
@@ -740,10 +930,33 @@ def test_yellow_density_attaches_assessment_to_route():
 
 def test_zero_beat_poi_excluded_from_anchor_pool():
     """Phase 6 selection guard: tier-3+ POIs with 0 active beats are dropped."""
-    rich = _poi("rich", tier=5, lat=PDV[0], lng=PDV[1], beat_count=8)
-    empty = _poi("empty", tier=4, lat=PDV[0], lng=PDV[1] + 0.00005, beat_count=0)
+    # Both carry the fillers' area so the control POI ("rich" must be selected)
+    # is not quietly outscored on spine alignment instead of on beats.
+    # Both carry the fillers' area so the control POI ("rich" must be selected)
+    # is not quietly outscored on spine alignment instead of on beats, and both
+    # sit out at the rim of the filler spiral rather than on top of the start.
+    # A stop AT the start contributes no walking, which since 2026-08-04 makes it
+    # the first thing the certification timebox repair trades away when it is
+    # hunting for active seconds — the control would then fail for a reason that
+    # has nothing to do with beat counts.
+    rich = _poi(
+        "rich",
+        tier=5,
+        lat=PDV[0] + 0.0018,
+        lng=PDV[1],
+        areas=("Le Marais",),
+        beat_count=8,
+    )
+    empty = _poi(
+        "empty",
+        tier=4,
+        lat=PDV[0] + 0.0018,
+        lng=PDV[1] + 0.00005,
+        areas=("Le Marais",),
+        beat_count=0,
+    )
     snap = _snap(
-        [rich, empty, *_density_fillers(PDV)],
+        [rich, empty, *_density_fillers(PDV, radius_m=100.0, tier=3, beat_count=3)],
         area_types={"Le Marais": "neighborhood"},
         beats_by_poi={"empty": []},  # explicit zero
     )
@@ -774,6 +987,24 @@ def test_select_route_empty_when_no_candidates_in_envelope():
 
 
 def test_fixed_end_red_start_circle_defers_to_routed_fixed_end_checks():
+    """A RED start circle does not decide a fixed-destination tour by itself.
+
+    With no destination, a RED density assessment refuses on the spot. With one,
+    it must stand aside: whether the tour is possible is a question about the
+    route to B, and the checks that know about B run later. This test pins which
+    layer answers, on a corpus that is RED either way.
+
+    A reachable destination gets past the density gate and is then judged on
+    whether a plan can fill the requested hour — which this one-POI corpus cannot,
+    so the refusal comes from certification. An unreachable destination is
+    refused by the destination check itself, before any of that. Two different
+    refusals from the same RED corpus is the whole point; if the density gate
+    stopped deferring, the first case would refuse with the second's kind of
+    error and this test would fail.
+
+    What B-materialization does once a fixed-end route IS buildable is covered on
+    a corpus that can be built, in tests/test_tour_b_materialization.py.
+    """
     from src.tour.density import TourabilityRefusedError, assess_snapshot
 
     close_end = (PDV[0], PDV[1] + 0.001)
@@ -792,8 +1023,10 @@ def test_fixed_end_red_start_circle_defers_to_routed_fixed_end_checks():
     )
     assert assess_snapshot(viable, snap).status == "RED"
 
-    route = select_route(viable, snap)
-    assert route.fixed_end_poi_id == destination.id
+    # Deferred: the density gate did NOT raise, and the refusal that does arrive
+    # is about filling the hour, not about the density of the start circle.
+    with pytest.raises(CertificationPlanningInfeasibleError, match="TIME band"):
+        select_route(viable, snap)
 
     impossible = viable.model_copy(update={"end": (PDV[0], PDV[1] + 0.1)})
     with pytest.raises(TourabilityRefusedError, match="Destination unreachable"):
@@ -851,7 +1084,14 @@ def test_oneway_endpoint_pull_reaches_far_envelope():
         beat_count=10,
     )
     snap = _snap(
-        [origin, *near, far_anchor],
+        [
+            origin,
+            *near,
+            far_anchor,
+            *_density_fillers(
+                start, duration_min=90, radius_m=60.0, tier=3, beat_count=3
+            ),
+        ],
         area_types={"Île de la Cité": "island"},
     )
 
@@ -917,7 +1157,10 @@ def test_endpoint_pull_respects_walk_budget():
         areas=("Île de la Cité",),
         beat_count=5,
     )
-    snap = _snap([near, too_far], area_types={"Île de la Cité": "island"})
+    snap = _snap(
+        [near, too_far, *_density_fillers(start, tier=3, beat_count=3)],
+        area_types={"Île de la Cité": "island"},
+    )
     route = select_route(
         TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False),
         snap,
@@ -956,6 +1199,18 @@ def test_endpoint_pull_never_evicts_entire_route():
     near2 = _poi(
         "near-2", tier=5, lat=start[0], lng=start[1] - 0.005464, areas=area, beat_count=6
     )  # 400m W
+    # The greedy cluster the pull must not wipe out. It was exactly near-1 and
+    # near-2 until 2026-08-04; two stops can no longer fill an hour, so the
+    # cluster is now a west-side group around them. The invariant is unchanged —
+    # the pull may not leave the far anchor standing alone — but it is asserted
+    # over the cluster rather than over two specific ids, because with more than
+    # two members the engine is free to seat any of them.
+    west_cluster = _density_fillers(
+        (start[0], start[1] - 0.00444),  # ~325m W, between near-1 and near-2
+        radius_m=110.0,
+        beat_count=6,
+        prefix="west",
+    )
     far = _poi(
         "far-mountain", tier=5, lat=start[0], lng=start[1] + 0.008197, areas=area, beat_count=39
     )  # 600m E
@@ -971,7 +1226,10 @@ def test_endpoint_pull_never_evicts_entire_route():
             beat_count=3,
         ),
     ]
-    snap = _snap([near1, near2, far, *decoys], area_types={"Île de la Cité": "island"})
+    snap = _snap(
+[near1, near2, far, *decoys, *west_cluster],
+        area_types={"Île de la Cité": "island"},
+    )
 
     inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
@@ -980,24 +1238,40 @@ def test_endpoint_pull_never_evicts_entire_route():
     # Pre-fix this came back as exactly ["far-mountain"] — one stop.
     assert ids != ["far-mountain"], "endpoint-pull evicted the entire greedy route"
     assert len(ids) >= 2, f"one-stop tour emitted: {ids}"
-    # The greedy's near cluster must survive the pull.
-    assert "near-1" in ids and "near-2" in ids
+    # The greedy's west cluster must survive the pull.
+    cluster_ids = {near1.id, near2.id, *(p.id for p in west_cluster)}
+    survivors = cluster_ids & set(ids)
+    assert len(survivors) >= 2, (
+        f"the pull left fewer than two west-cluster anchors standing: {ids}"
+    )
 
 
-def test_isolated_single_anchor_yields_one_stop_with_yellow_warning():
-    """Greedy-seats-1 path (Père Lachaise pattern; hostile-panel finding 2026-07-02).
+def test_isolated_single_anchor_is_refused_with_the_duration_it_could_support():
+    """One anchor in reach: the tour is refused, and the refusal says what fits.
 
-    When exactly ONE dwellable anchor is in reach, a single-stop route is the
-    honest maximum — canon: the PdV golden is a human-blessed one-stop tour —
-    and is NOT the endpoint-pull collapse (which the pull guard kills; that
-    collapse abandoned a richer greedy route). The contract this test pins:
-    such a route must carry the YELLOW tourability assessment (Phase 6:
-    "generate but WARN") so surfaces can show the user WHY the tour has one
-    stop instead of looking like a silent bug.
+    This is the Père Lachaise pattern (hostile-panel finding 2026-07-02): a start
+    point with exactly one dwellable anchor anywhere near it. It used to be
+    answered by building the one-stop tour anyway and hanging a YELLOW "this area
+    is thin" assessment on it, so the surfaces could explain the single stop
+    rather than look broken.
 
-    Density arithmetic for the fixture (60-min one-way, target audio 1793s):
-    one tier-4 anchor, 5 beats x 240s = 1200s -> fill 0.67 (YELLOW-by-fill,
-    0.5 <= fill < 1.0); 1 anchor candidate (< 4, so not GREEN)."""
+    That outcome became unreachable on 2026-08-04, and the arithmetic says so
+    rather than any judgement call. A stop speaks at most MAX_DWELL_AUDIO_SECONDS
+    (270 s) and a tour may spend at most 0.40 of its duration walking, so a
+    one-stop tour can fill at most 0.40 x duration + 270 s — while the
+    certification band will not accept less than 0.90 x duration. Those only
+    overlap below about nine minutes, which is shorter than anything the product
+    offers. The sweep below pins that: the refusal is not a quirk of one duration.
+
+    So the honest answer moved one step earlier, from a disclosure to a refusal —
+    and it is a better answer, because it carries the duration this corpus COULD
+    support instead of quietly handing over a minute of tour for an hour asked
+    for. The YELLOW disclosure itself is still live and is exercised on a corpus
+    that can actually be built, by
+    ``test_yellow_density_attaches_assessment_to_route``.
+    """
+    from src.tour.density import TourabilityRefusedError, assess
+
     start = (48.8568, 2.3414)
     lone = _poi(
         "lone-anchor",
@@ -1009,18 +1283,22 @@ def test_isolated_single_anchor_yields_one_stop_with_yellow_warning():
     )
     snap = _snap([lone], area_types={"Île de la Cité": "island"})
 
-    route = select_route(
-        TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False),
-        snap,
-    )
+    for duration_min in (30, 60, 120):
+        inp = TourInput(
+            start=start, duration_min=duration_min, city_slug="paris", round_trip=False
+        )
+        assessment = assess(inp, snap.pois, snap.beats_by_poi)
+        assert assessment.anchor_candidate_count == 1, "the fixture's whole premise"
+        assert assessment.status == "RED"
 
-    assert [p.id for p in route.pois] == ["lone-anchor"]
-    assert route.tourability is not None, (
-        "a one-stop tour must carry the YELLOW tourability assessment — "
-        "without it, thin-area tours are indistinguishable from collapse bugs"
-    )
-    assert route.tourability.status == "YELLOW"
-    assert route.tourability.anchor_candidate_count == 1
+        with pytest.raises(TourabilityRefusedError) as excinfo:
+            select_route(inp, snap)
+        refused = excinfo.value.assessment
+        assert refused.status == "RED"
+        assert refused.anchor_candidate_count == 1
+        # The useful half of the refusal: what this corpus can actually carry.
+        assert refused.max_supportable_duration_min is not None
+        assert refused.max_supportable_duration_min < duration_min
 
 
 # ---------------------------------------------------------------------------
@@ -1200,7 +1478,10 @@ def test_phase7_fill_pass_adds_anchors_when_below_floor():
         )
         for i in range(6)
     ]
-    snap = _snap(main + fill_candidates, area_types={"Le Marais": "neighborhood"})
+    snap = _snap(
+        main + fill_candidates + _density_fillers(start, duration_min=180, tier=3, beat_count=3),
+        area_types={"Le Marais": "neighborhood"},
+    )
 
     inp = TourInput(start=start, duration_min=180, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
@@ -1212,54 +1493,90 @@ def test_phase7_fill_pass_adds_anchors_when_below_floor():
 
 
 def test_phase7_fill_pass_does_not_run_when_already_above_floor():
-    """When greedy already meets the audio floor, fill pass is a no-op."""
+    """When greedy already meets the audio floor, fill pass is a no-op.
+
+    The mirror image of the test above: there, the greedy stalls short of the
+    audio floor and the fill pass has to rescue it, proven by a tier-3 candidate
+    named ``fill-*`` turning up in the route. Here the rich cluster satisfies the
+    floor on its own, and the SAME kind of candidate must stay out.
+
+    Naming the forbidden additions is what makes this checkable. It used to
+    assert a stop COUNT (at most six, the anchor cap of the day), which stopped
+    meaning anything once a tour had to fill the duration it was asked for:
+    a healthy hour now seats around eight stops, so the old bound failed on a
+    perfectly correct route and could not have told a fill-pass addition from a
+    legitimate one anyway.
+    """
     start = (48.85675, 2.341033)
-    # 9 dense tier-5 anchors with rich beats — greedy will satisfy audio floor.
-    pois = [
+    # A rich tier-5 cluster with enough anchors that the greedy clears the audio
+    # floor on its own and the tour is full on walking too. Twenty is inside a
+    # verified block (18 through 24 all hold; 16 leaves the plan short of the
+    # band and it is refused before the fill pass is even the question).
+    rich = _density_fillers(
+        start, duration_min=60, n=20, tier=5, beat_count=12, prefix="rich"
+    )
+    # The bait: thin, low-tier, several hundred metres out — inside reach, so
+    # nothing geometric excludes them, but exactly what a fill pass reaches for.
+    bait = [
         _poi(
-            f"rich-{i}",
-            tier=5,
-            lat=start[0] + 0.0001 * i,
-            lng=start[1] + 0.0001 * i,
+            f"fill-{i}",
+            tier=3,
+            lat=start[0] + 0.0040 + 0.0004 * i,
+            lng=start[1] + 0.0030 + 0.0004 * i,
             areas=("Le Marais",),
-            beat_count=12,
+            beat_count=2,
         )
-        for i in range(9)
+        for i in range(4)
     ]
-    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    snap = _snap([*rich, *bait], area_types={"Le Marais": "neighborhood"})
+    for poi in bait:
+        assert haversine_m(*start, poi.lat, poi.lng) <= envelope_radius_m(
+            60, round_trip=False
+        ), "the bait must be reachable, or its absence proves nothing"
     inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
-    # 60-min audio target is ~30 min. 6 tier-5 anchors at 5 min dwell = 30 min.
-    # The greedy/anchor-cap gates terminate well before the fill pass needs to fire.
-    # The assertion is "no spurious additions beyond the natural greedy result".
-    assert len(route.pois) <= 6  # max_anchors = 60 // 10 = 6
+    ids = [p.id for p in route.pois]
+    assert not any(i.startswith("fill-") for i in ids), (
+        f"greedy already cleared the audio floor, so no fill candidate should "
+        f"have been added; got {ids}"
+    )
 
 
 def test_fixed_end_fill_uses_emitted_audio_and_adds_safe_content(monkeypatch):
     """A→B fill must not over-credit thin landmarks with tier dwell proxies.
 
-    Six on-corridor landmarks each emit 105 seconds.  The old fixed-end
-    currency counted each as 300 seconds, concluded that six stops cleared the
-    fill floor, and left the seventh safe on-path stop unused.  Emission voices
-    the capped beat plans, so selection must use those same seconds.  Rich
-    off-corridor anchors keep the density pre-check GREEN without being eligible
-    for this A→B route.
+    Twenty landmarks sit strung along the corridor from A to B, and each of them
+    has only 105 seconds of story to tell. The old fixed-end currency did not ask
+    what they would actually say: it valued every stop at a flat 300 seconds by
+    tier, so seven of them "cleared" the fill floor on 2100 seconds of audio that
+    was never going to be spoken, and the remaining thirteen — all of them safely
+    on the path, costing almost nothing to visit — were left out of a tour that
+    was in fact badly short. Emission voices the capped beat plans, so selection
+    has to spend the same seconds. The proof is that EVERY on-path stop is taken.
+
+    Twenty is the arithmetic of the time band, not an arbitrary enrichment. A stop
+    speaks at most 270 seconds, walking is capped at 0.40 of the request, and an
+    hour must deliver at least 0.90 of it, so about 1800 seconds of audio has to
+    come from somewhere — which at 105 seconds a stop is eighteen stops before the
+    walking is even counted. The rich off-corridor anchors keep the density
+    pre-check GREEN while staying ineligible for this A→B route.
     """
     from src.tour.routing import planned_audio_seconds, walk_budget_seconds
 
     start = PDV
-    end = (start[0], start[1] + 0.006)
+    corridor_step = 0.0005
     on_path = [
         _poi(
             f"on-path-{i}",
             tier=5,
             lat=start[0],
-            lng=start[1] + 0.0006 * (i + 1),
+            lng=start[1] + corridor_step * (i + 1),
             areas=("Test Corridor",),
             beat_count=3,
         )
-        for i in range(7)
+        for i in range(20)
     ]
+    end = (start[0], start[1] + corridor_step * (len(on_path) + 2))
     density_only = [
         _poi(
             f"off-corridor-{i}",
@@ -1377,7 +1694,6 @@ def test_fixed_end_elapsed_rescue_considers_corridor_failure_but_rejects_over_ce
         round_trip=False,
         walk_budget=walk_budget,
         audio_budget=1000,
-        hard_anchor_cap=12,
         capped_audio_fn=lambda poi, *, exempt: 100,
         exempt_anchor_id=None,
         rescue_floor=2,
@@ -1399,7 +1715,6 @@ def test_fixed_end_elapsed_rescue_considers_corridor_failure_but_rejects_over_ce
         round_trip=False,
         walk_budget=walk_budget,
         audio_budget=1000,
-        hard_anchor_cap=12,
         capped_audio_fn=lambda poi, *, exempt: 100,
         exempt_anchor_id=None,
         rescue_floor=2,
@@ -1426,14 +1741,31 @@ def test_fixed_end_elapsed_rescue_considers_corridor_failure_but_rejects_over_ce
 
 
 def test_fixed_end_final_exact_elapsed_guard_catches_post_order_drift(monkeypatch):
-    """The returned fixed-B route is guarded after final routing and beat caps."""
+    """A fixed-B route that drifts out of the time band AFTER planning is refused.
+
+    Ordering, final routing and the beat caps all run after the plan is chosen,
+    and each of them can move the route's real elapsed time. A route that was in
+    the band when it was certified and out of it by the time it is handed back is
+    exactly the failure worth catching, because nothing downstream re-measures.
+
+    The drift is simulated by making the final summary report a preposterous walk
+    (100,000 seconds) that the planner never priced. The control run below proves
+    the fixture is otherwise healthy, so the refusal can only be the drift.
+    """
     from src.tour import selection as selection_module
-    from src.tour.density import TourabilityRefusedError
 
     start = PDV
-    end = (start[0], start[1] + 0.001)
-    pois = _density_fillers(start)
+    # The destination is ~590 m out, which puts real walking seconds on the A->B
+    # leg itself, and the corridor pool is packed tight so its detours stay inside
+    # the walk allocation.
+    end = (start[0], start[1] + 0.008)
+    pois = _density_fillers(start, duration_min=60, radius_m=90.0)
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=start, end=end, duration_min=60, city_slug="paris")
+
+    # Control: undrifted, this fixture plans and is handed back.
+    assert select_route(inp, snap).pois
+
     real_summarise = selection_module.summarise_route
 
     def drifted_summarise(*args, **kwargs):
@@ -1441,31 +1773,8 @@ def test_fixed_end_final_exact_elapsed_guard_catches_post_order_drift(monkeypatc
         return route.model_copy(update={"total_walk_seconds": 100_000})
 
     monkeypatch.setattr(selection_module, "summarise_route", drifted_summarise)
-    with pytest.raises(TourabilityRefusedError, match="elapsed-time ceiling after final routing"):
-        select_route(
-            TourInput(start=start, end=end, duration_min=30, city_slug="paris"), snap
-        )
-
-
-def test_phase7_fill_pass_respects_hard_anchor_cap():
-    """Fill pass must not exceed HARD_ANCHOR_CAP (= 12)."""
-    start = (48.85675, 2.341033)
-    # A long ladder of 30 cheap-to-insert near-start tier-3 candidates.
-    pois = [
-        _poi(
-            f"l-{i}",
-            tier=3,
-            lat=start[0] + 0.00005 * i,
-            lng=start[1] + 0.00010 * i,
-            areas=("Le Marais",),
-            beat_count=4,
-        )
-        for i in range(30)
-    ]
-    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
-    inp = TourInput(start=start, duration_min=180, city_slug="paris", round_trip=False)
-    route = select_route(inp, snap)
-    assert len(route.pois) <= HARD_ANCHOR_CAP
+    with pytest.raises(CertificationPlanningInfeasibleError, match="post-selection transforms"):
+        select_route(inp, snap)
 
 
 def test_phase7_fill_pass_respects_walk_budget_cap():
@@ -1498,7 +1807,10 @@ def test_phase7_fill_pass_respects_walk_budget_cap():
         )
         for i in range(8)
     ]
-    snap = _snap(near + far, area_types={"Le Marais": "neighborhood"})
+    snap = _snap(
+        near + far + _density_fillers(start, tier=3, beat_count=3),
+        area_types={"Le Marais": "neighborhood"},
+    )
     inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
     walk_cap = int(walk_budget_seconds(60) * FILL_PASS_WALK_BUDGET_FRAC)
@@ -1518,7 +1830,13 @@ def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
 
     start = (48.8462, 2.3436)
     a = _poi("A", tier=4, lat=48.8478, lng=2.3436, areas=("Latin Quarter",), beat_count=3)
-    b = _poi("B", tier=4, lat=48.8462, lng=2.3477, areas=("Latin Quarter",), beat_count=3)
+    # B sits ~510 m east. It used to sit at ~300 m, which stopped separating the
+    # two arms of this test on 2026-08-04: the ordinary fill pass now has a larger
+    # walk allowance and admitted B by itself, so the control could not show that
+    # the RESCUE was what let it in. Measured over a distance sweep, the window
+    # where the ordinary pass refuses and the rescue accepts runs from about
+    # 440 m to about 590 m; beyond ~730 m even the rescue calls it a slog.
+    b = _poi("B", tier=4, lat=48.8462, lng=2.3506, areas=("Latin Quarter",), beat_count=3)
     snap = _snap([a, b], area_types={"Latin Quarter": "neighborhood"})
 
     def capped(p, *, exempt):  # small audio -> well under the fill floor
@@ -1528,7 +1846,7 @@ def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
         candidates=[a, b], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
         start_lat=start[0], start_lng=start[1], round_trip=True,
         walk_budget=walk_budget_seconds(60), audio_budget=target_audio_seconds(60),
-        hard_anchor_cap=12, capped_audio_fn=capped, exempt_anchor_id="A",
+        capped_audio_fn=capped, exempt_anchor_id="A",
     )
     # rescue_floor=2 -> below floor -> rescue fires: the 2nd nearby stop is added.
     rescued = _apply_fill_pass([a], rescue_floor=2, **common)
@@ -1561,7 +1879,7 @@ def test_phase7_fill_pass_rescue_rejects_far_walk_slog():
         [a], candidates=[a, far], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
         start_lat=start[0], start_lng=start[1], round_trip=True,
         walk_budget=walk_budget_seconds(60), audio_budget=target_audio_seconds(60),
-        hard_anchor_cap=12, capped_audio_fn=capped, exempt_anchor_id="A", rescue_floor=2,
+        capped_audio_fn=capped, exempt_anchor_id="A", rescue_floor=2,
     )
     assert {p.id for p in out} == {"A"}, "a far thin stop must not be trekked to"
 
@@ -1851,11 +2169,19 @@ def test_demotion_merged_via_select_route_end_to_end():
         sub_location="hugo-museum-no-6",
         trigger_address="no. 6 place des Vosges",
         narrative_function="establishing",
-        est_spoken_seconds=240,
+        # Sized so the host's WHOLE beat set fits one stop's emission ceiling.
+        # At 240 s each the greedy would credit this stop with the full C9
+        # governor allowance while the tour only ever speaks one beat of it.
+        est_spoken_seconds=_auto_beat_seconds(8),
         active_status="active",
     )
     pdv_extra = [
-        BeatRef(id=f"pdv-x{i}", poi_id=pdv.id, est_spoken_seconds=240, active_status="active")
+        BeatRef(
+            id=f"pdv-x{i}",
+            poi_id=pdv.id,
+            est_spoken_seconds=_auto_beat_seconds(8),
+            active_status="active",
+        )
         for i in range(7)
     ]
     hugo_beat = BeatRef(
@@ -1866,7 +2192,19 @@ def test_demotion_merged_via_select_route_end_to_end():
         active_status="active",
     )
     snap = _snap(
-        [pdv, hugo, *_density_fillers(PDV, n=4)],
+        [
+            pdv,
+            hugo,
+            # 230 m of reach (185 m after the round-trip shrink). A round trip pays
+            # a closing leg back to the start that a one-way never pays, and this
+            # cluster has to walk far enough that the hour is genuinely full: at the
+            # default reach the plan came out a couple of minutes short of the band
+            # and was refused before demotion could be observed at all. Verified at
+            # three different anchor counts so it is not balanced on one of them.
+            *_density_fillers(
+                PDV, round_trip=True, tier=3, beat_count=3, radius_m=230.0
+            ),
+        ],
         area_types={"Le Marais": "neighborhood"},
         beats_by_poi={
             pdv.id: [pdv_beat, *pdv_extra],
@@ -1931,9 +2269,16 @@ class _DeterministicRoutingClient:
 def _frozen_end_none_snapshot() -> CorpusSnapshot:
     """A FIXED synthetic snapshot for the end=None ordering baseline.
 
-    Deterministic POIs at hardcoded coords inside the 60-min one-way
-    envelope around PDV: 4 density fillers (to clear the Phase 6 gate)
-    plus two distinct tier-5 anchors — a near one and a medium one.
+    Deterministic POIs at hardcoded coords inside the 60-min one-way envelope
+    around PDV: a duration-scaled background cluster plus two distinct tier-5
+    anchors — a near one and a medium one.
+
+    The background is deliberately tier-3 with the minimum anchor beat count.
+    That is the cheapest thing the density gate still counts as an anchor
+    candidate, so it can supply the stops and the walking an hour now has to be
+    filled with, while staying scored BELOW the two named anchors this baseline
+    is actually about. As tier-5 it outranked them and the ordering baseline
+    degenerated into a list of fillers.
     """
     near = _poi(
         "baseline-near",
@@ -1946,15 +2291,53 @@ def _frozen_end_none_snapshot() -> CorpusSnapshot:
     medium = _poi(
         "baseline-medium",
         tier=5,
-        lat=48.8580,
-        lng=2.3700,
+        # Moved out to ~560 m on 2026-08-05, from ~425 m. The endpoint pull only
+        # considers anchors past ENDPOINT_PULL_FAR_FRACTION of the reach envelope,
+        # and at 425 m this one sat just INSIDE that floor, so the open walk no
+        # longer closed on it and the baseline degenerated into a list of fillers.
+        # The precondition is now asserted live, below, so it cannot drift silently.
+        lat=48.8590,
+        lng=2.3711,
         areas=("Le Marais",),
         beat_count=8,
     )
     return _snap(
-        [near, medium, *_density_fillers(PDV)],
+        [
+            near,
+            medium,
+            *_density_fillers(
+                PDV, round_trip=True, tier=3, beat_count=3, radius_m=_FROZEN_BACKGROUND_RADIUS_M
+            ),
+        ],
         area_types={"Le Marais": "neighborhood"},
     )
+
+
+#: How tightly the frozen baseline's background sits around the start.
+#:
+#: The background has to supply the stops and walking an hour needs while leaving
+#: enough of the walk budget for the open walk to close on ``baseline-medium``.
+#: Measured across a radius sweep at this geometry: 70 m and 90 m produce the
+#: same ordered ids and both pull the medium anchor; the unpacked default spends
+#: the whole budget on the cluster and never reaches it.
+_FROZEN_BACKGROUND_RADIUS_M: float = 90.0
+
+
+def _assert_frozen_baseline_geometry() -> None:
+    """The two facts the frozen ordering rests on, re-derived live every run.
+
+    A frozen list of ids is only meaningful while the fixture still has the shape
+    the ids were captured under. Both preconditions here are the ones that
+    silently broke it before: the medium anchor must be far enough out for the
+    endpoint pull to consider it at all, and still inside the reach envelope.
+    """
+    from src.tour.selection import ENDPOINT_PULL_FAR_FRACTION
+
+    snapshot = _frozen_end_none_snapshot()
+    medium = next(p for p in snapshot.pois if p.id == "baseline-medium")
+    distance_m = haversine_m(PDV[0], PDV[1], medium.lat, medium.lng)
+    radius_m = envelope_radius_m(60, round_trip=False)
+    assert radius_m * ENDPOINT_PULL_FAR_FRACTION < distance_m <= radius_m
 
 
 # FROZEN literals — captured from a green run; see the docstring above.
@@ -1977,22 +2360,35 @@ def _frozen_end_none_snapshot() -> CorpusSnapshot:
 # corpus caps at the ~3-stop floor (the exempt anchor's audio clears the fill
 # floor, so no fill-added 4th-6th stop). The real end=None gate (Ile golden) is
 # BYTE-IDENTICAL to pre-C9 (16/47), so this re-baseline moves only the fixture.
+# 2026-08-05 re-baseline: the FIXTURE changed, so the captured ids had to be
+# recaptured with it. A tour now has to fill the duration it was asked for, and
+# the old fixture — four POIs sitting on top of the start — could not fill an
+# hour at all, so every run of this baseline refused before it produced any
+# ordering to compare. The background is now a duration-scaled cluster and the
+# medium anchor sits far enough out for the endpoint pull to see it. What the
+# baseline GUARDS is unchanged: both cost paths must agree, and the open walk
+# must still close on the medium anchor.
 _FROZEN_END_NONE_ORDER_HAVERSINE: tuple[str, ...] = (
     "filler-0",
-    "filler-1",
     "filler-2",
+    "baseline-near",
+    "filler-1",
+    "filler-9",
+    "filler-4",
+    "filler-12",
+    "filler-7",
     "baseline-medium",
 )
-_FROZEN_END_NONE_ORDER_ROUTED: tuple[str, ...] = (
-    "filler-0",
-    "filler-1",
-    "filler-2",
-    "baseline-medium",
-)
+# The two cost paths are REQUIRED to agree on this fixture — the deterministic
+# routing client returns exactly the pace-corrected haversine the no-client path
+# computes — so the routed baseline is the same list by construction. A run where
+# they diverge fails whichever test diverged, which is the point.
+_FROZEN_END_NONE_ORDER_ROUTED: tuple[str, ...] = _FROZEN_END_NONE_ORDER_HAVERSINE
 
 
 def test_frozen_end_none_ordered_ids_haversine_path():
     """end=None ordering is frozen on the no-client (haversine) cost path."""
+    _assert_frozen_baseline_geometry()
     snap = _frozen_end_none_snapshot()
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
@@ -2005,6 +2401,7 @@ def test_frozen_end_none_ordered_ids_haversine_path():
 
 def test_frozen_end_none_ordered_ids_routed_path():
     """end=None ordering is frozen on the deterministic routed cost path."""
+    _assert_frozen_baseline_geometry()
     snap = _frozen_end_none_snapshot()
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap, routing_client=_DeterministicRoutingClient())
@@ -2296,7 +2693,6 @@ def test_open_walk_bstar_equals_endpoint_pull():
     )
     from src.tour.selection import (
         ENDPOINT_PULL_FAR_FRACTION,
-        HARD_ANCHOR_CAP,
         _apply_endpoint_pull,
         pick_spine_area,
     )
@@ -2329,7 +2725,19 @@ def test_open_walk_bstar_equals_endpoint_pull():
         areas=("Île de la Cité",),
         beat_count=10,
     )
-    snap = _snap([*near, far_anchor], area_types={"Île de la Cité": "island"})
+    # Background so a 90-minute plan can actually be built. Three constraints
+    # shape it. It is packed to 50 m and kept tier-3 so it stays well inside the
+    # far floor (it must never become a pull candidate) and scores below the
+    # named cluster. And there are only eight of them: the eight plus the three
+    # near anchors plus the far one carry exactly the audio a 90-minute tour
+    # wants, so the plan is complete when the greedy finishes and nothing is
+    # added after the endpoint pull. That matters because this test RE-DERIVES
+    # the pull from the finished route's prefix, which is only a faithful
+    # reconstruction while the pull is the last thing that touched the route.
+    background = _density_fillers(
+        start, duration_min=duration_min, radius_m=50.0, tier=3, beat_count=3, n=8
+    )
+    snap = _snap([*near, far_anchor, *background], area_types={"Île de la Cité": "island"})
 
     inp = TourInput(start=start, duration_min=duration_min, city_slug="paris", round_trip=False)
     # Open walk: no fixed destination, so the §2.3 corridor gate never arms
@@ -2342,9 +2750,7 @@ def test_open_walk_bstar_equals_endpoint_pull():
 
     # Sanity: the far anchor really is the sole POI past the far floor (so the
     # endpoint-pull candidate ranking has a single, unambiguous winner).
-    past_floor = [
-        p for p in (*near, far_anchor) if haversine_m(*start, p.lat, p.lng) >= far_floor
-    ]
+    past_floor = [p for p in snap.pois if haversine_m(*start, p.lat, p.lng) >= far_floor]
     assert [p.id for p in past_floor] == ["far"], (
         f"test fixture invalid: expected only 'far' past {far_floor:.0f}m, "
         f"got {[p.id for p in past_floor]}"
@@ -2355,7 +2761,7 @@ def test_open_walk_bstar_equals_endpoint_pull():
     # endpoint-pull pins 'far' after; held_karp_open may reorder the prefix,
     # so compare against the set, not the order.
     prefix = [p for p in route.pois if p.id != "far"]
-    spine = pick_spine_area(*start, [*near, far_anchor], snap)
+    spine = pick_spine_area(*start, [*near, far_anchor, *background], snap)
     pulled = _apply_endpoint_pull(
         prefix,
         far_anchor,
@@ -2365,13 +2771,12 @@ def test_open_walk_bstar_equals_endpoint_pull():
         start_lat=start[0],
         start_lng=start[1],
         walk_budget=walk_budget_seconds(duration_min),
-        hard_anchor_cap=HARD_ANCHOR_CAP,
         leg_seconds_fn=None,  # open-walk haversine path → default_leg_seconds
     )
     # The helper must actually have pinned the far anchor (not abandoned the
     # pull), and that anchor is exactly what select_route emitted as the last
     # stop — i.e. the open-walk B* is the endpoint-pull far anchor, reused
-    # verbatim. The prefix order matches too (both go through held_karp_open
+    # verbatim. The prefix order matches too (both go through order_stops
     # with the same fixed_end and the same default_leg_seconds divisor).
     assert pulled[-1].id == "far"
     assert pulled is not prefix, "endpoint-pull must have applied, not no-op'd"
@@ -2399,12 +2804,19 @@ def test_open_walk_bstar_equals_endpoint_pull():
 # location (endpoint-pull eviction near Rue Cler) plus thin single-beat-
 # feeling narration. The point fixes are pinned above
 # (test_endpoint_pull_never_evicts_entire_route,
-# test_isolated_single_anchor_yields_one_stop_with_yellow_warning); the
-# tests below guard the CLASS: every code path that can shrink a rich
+# test_isolated_single_anchor_is_refused_with_the_duration_it_could_support);
+# the tests below guard the CLASS: every code path that can shrink a rich
 # pool down to one stop must either keep >= 2 stops or carry the YELLOW
 # tourability disclosure. Universal invariant, spelled out once:
 #
 #     len(route.pois) >= 2  OR  route.tourability is not None
+#
+# Since 2026-08-04 there is a third outcome, and it is the one a genuinely
+# thin corpus now gets: REFUSAL. A one-stop tour cannot reach the
+# certification time band at any duration the product offers, so the
+# lone-anchor case named above no longer delivers a warned route — it
+# declines and reports the duration the corpus could support. The invariant
+# above is unchanged for every route that IS delivered.
 #
 # These pin CURRENT contracts (tier-dwell audio proxy, YELLOW-only
 # tourability attach). The delivered-audio invariant is deferred design —
@@ -2412,33 +2824,29 @@ def test_open_walk_bstar_equals_endpoint_pull():
 # ---------------------------------------------------------------------------
 
 
-def _sweep_snap() -> CorpusSnapshot:
-    """12 tier-5 anchors compact around PdV (20-55m), 5 x 240s lensed beats each.
+def _sweep_snap(duration_min: int, round_trip: bool) -> CorpusSnapshot:
+    """The filler spiral around PdV, sized for `duration_min`, all lens-hitting.
 
-    Rich-pool GREEN at every duration in the sweep: total beat audio is
-    12 x 5 x 240 = 14400s, so even the largest target (d=120 -> 3586s) gives
-    fill 4.0 >= 1.5 with 12 anchors >= 6 — the density gate can never be the
-    reason a cell degrades. The cluster (<= ~55m) sits inside the tightest
-    envelope in the sweep (30-min round trip: ~184m). Explicit lensed beats
-    make the lensed arm a direct hit (lens_relevance 1.0, spotlight 5.0 ->
-    headline dwell band), so the legacy hard lens filter can never empty the
-    dwell pool if it were ever reintroduced.
+    WAS 12 tier-5 anchors packed inside 55 m with 5 x 240 s beats each. That
+    fixture was rich in BEATS and poor in PLACES, which stopped working when the
+    certification band went two-sided on 2026-08-04. A stop speaks at most
+    MAX_DWELL_AUDIO_SECONDS however deep its beat list, so 12 near-colocated
+    anchors top out around 19 minutes of active time — under the 27-minute floor
+    of the sweep's SHORTEST cell, let alone the 108-minute floor of its longest.
+    Piling more beats onto the same 12 places cannot fix that; only more places
+    can, which is why the pool is now sized by _anchors_for_duration.
+
+    Every other property the sweep depends on is preserved. Density is GREEN by
+    construction at every cell (anchor count scales with duration, so fill stays
+    above the rich-pool ratio), the spiral stays inside the tightest envelope in
+    the sweep (30-minute round trip, 222 m), and the explicit lensed beats keep
+    the lensed arm a direct hit — lens_relevance 1.0, spotlight 5.0, headline
+    dwell band — so a reintroduced hard lens filter would still empty the pool
+    and still fail the sweep.
     """
-    directions = ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0))
-    pois = []
-    for i in range(12):
-        dlat, dlng = directions[i % 4]
-        magnitude = 0.0002 + 0.000025 * i  # 0.0002 .. 0.000475 deg (~20-55m)
-        pois.append(
-            _poi(
-                f"sweep-{i}",
-                tier=5,
-                lat=PDV[0] + dlat * magnitude,
-                lng=PDV[1] + dlng * magnitude,
-                areas=("Le Marais",),
-                beat_count=5,
-            )
-        )
+    pois = _density_fillers(
+        PDV, duration_min=duration_min, round_trip=round_trip, prefix="sweep"
+    )
     beats = {p.id: _lensed_beats(p.id, ("hidden_history",)) for p in pois}
     return _snap(pois, area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats)
 
@@ -2455,7 +2863,7 @@ def test_rich_corpus_duration_sweep_never_collapses_to_single_stop(
     arithmetic change that collapses only at, say, 40 or 110 minutes (an
     off-by-one in walk_budget_seconds, an ENDPOINT_PULL_RESERVED_BUDGET_FRACTION
     change starving short durations, an audio-break unit error making the 300s
-    dwell proxy >= target at small d, an ANCHOR_CAP_DIVISOR change) would ship
+    dwell proxy >= target at small d, a walk-envelope change) would ship
     unseen. This fails in at least one of the 28 cells. The round-trip arm
     covers the pull-free path; the one-way arm covers greedy + pull + fill
     jointly; the lensed arm catches any reintroduction of the legacy hard lens
@@ -2463,7 +2871,7 @@ def test_rich_corpus_duration_sweep_never_collapses_to_single_stop(
     """
     from src.tour.routing import walk_budget_seconds
 
-    snap = _sweep_snap()
+    snap = _sweep_snap(duration_min, round_trip)
     inp = TourInput(
         start=PDV,
         duration_min=duration_min,
@@ -2520,11 +2928,11 @@ def test_round_trip_far_first_pick_cannot_starve_multi_anchor_pool():
             f"near-{i}",
             tier=4,
             lat=start[0],
-            lng=start[1] - (0.00082 + 0.000136 * i),  # 60-110m west
+            lng=start[1] - (0.00082 + 0.000136 * i),  # 60-320m west
             areas=area,
             beat_count=5,
         )
-        for i in range(6)
+        for i in range(14)
     ]
     mountain = _poi(
         "far-mountain",
@@ -2588,27 +2996,26 @@ def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
             "the greedy can now break after ONE anchor (single-stop class)"
         )
 
-    # Part 2 — behavioral: the tightest supported duration (30 min) with 4
-    # compact tier-5 anchors. max_anchors = 30 // 10 = 3 and the audio break
-    # fires at exactly the 3rd insert (900 >= 896), never earlier. Plain
-    # canonical GREEN: 4 anchors, fill 4800/896 = 5.36, compactness ~0.
-    cluster = [
-        _poi(
-            f"c-{i}",
-            tier=5,
-            lat=PDV[0] + 0.0002 * (i % 2),
-            lng=PDV[1] + 0.0002 * (i // 2),
-            areas=("Le Marais",),
-            beat_count=5,
-        )
-        for i in range(4)
-    ]
+    # Part 2 — behavioral: the tightest supported duration (30 min) on a GREEN
+    # cluster. The sharp pin used to be "exactly 3 stops", which was
+    # max_anchors = 30 // 10 — a stop CEILING that OWNER RULING 5 deleted on
+    # 2026-08-04. Pinning it now would re-assert a rule the product does not
+    # have. The stop count is instead DERIVED from the rule that actually stops
+    # the greedy: it seats stops until their capped audio reaches the audio
+    # target, so it stops at target / MAX_DWELL_AUDIO_SECONDS of them.
+    from src.tour.routing import target_audio_seconds
+
+    cluster = _density_fillers(PDV, duration_min=30, round_trip=True, prefix="c")
     snap = _snap(cluster, area_types={"Le Marais": "neighborhood"})
     route = select_route(
         TourInput(start=PDV, duration_min=30, city_slug="paris", round_trip=True), snap
     )
-    # Sharp pin (== 3) plus the class invariant (>= 2).
-    assert len(route.pois) == 3, f"expected exactly 3 stops at 30 min; got {len(route.pois)}"
+    audio_bound_stops = math.ceil(target_audio_seconds(30) / MAX_DWELL_AUDIO_SECONDS)
+    assert len(route.pois) == audio_bound_stops, (
+        f"expected the audio-bound {audio_bound_stops} stops at 30 min; "
+        f"got {len(route.pois)}"
+    )
+    # The class invariant this test exists for: never a 1-stop break.
     assert len(route.pois) >= 2
     assert route.tourability is None
 
@@ -2671,7 +3078,7 @@ def test_same_name_twins_never_produce_duplicate_stops():
                lat=start[0], lng=start[1], areas=("Le Marais",), beat_count=8)
     twin = POI(id="rodin-dup", name="Musee Rodin", tier=5, poi_role="stop",
                lat=start[0], lng=start[1], areas=("Le Marais",), beat_count=8)
-    fillers = _density_fillers(start, n=4)
+    fillers = _density_fillers(start, duration_min=120)
     snap = _snap([host, twin, *fillers], area_types={"Le Marais": "neighborhood"})
     route = select_route(TourInput(start=start, duration_min=120, city_slug="paris"), snap)
 
@@ -2725,22 +3132,18 @@ _SEP_86M_OFFSET = 0.00077341658108665  # haversine-calibrated: exactly 86.0m
 
 
 def _sep_fillers() -> list[POI]:
-    """4 low-score anchor candidates >50m apart from each other, to clear
-    the Phase 6 density gate without competing with the near/far pair
-    (tier 3, minimal 3 beats — well below the pair's tier 5 / 20 beats)."""
-    return [
-        POI(
-            id=f"sep-filler-{i}",
-            name=f"sep-filler-{i}",
-            tier=3,
-            poi_role="stop",
-            lat=_SEP_START[0] + 0.0005 * (i + 1),
-            lng=_SEP_START[1] + 0.0005 * (i + 1),
-            areas=("Le Marais",),
-            beat_count=3,
-        )
-        for i in range(4)
-    ]
+    """Low-score anchor candidates spread around the start, to clear the Phase 6
+    density gate AND the two-sided time band without competing with the near/far
+    pair (tier 3, minimal 3 beats — well below the pair's tier 5 / 20 beats).
+
+    Was 4 anchors on a diagonal. Four stops cannot fill an hour now that a stop
+    speaks at most MAX_DWELL_AUDIO_SECONDS, so this is the filler spiral in its
+    background mode — tier 3 with 3 beats, which is what keeps these from taking
+    the slots the separation pair is being tested for.
+    """
+    return _density_fillers(
+        _SEP_START, tier=3, beat_count=3, prefix="sep-filler"
+    )
 
 
 def _sep_pair(offset: float) -> tuple[POI, POI]:
@@ -2812,3 +3215,10 @@ def test_min_stop_separation_guard_seats_both_of_an_86m_pair():
     assert seated == {"sep-near-a", "sep-near-b"}, (
         f"86m pair (legitimate, distinct) must seat BOTH, got {seated}"
     )
+
+
+
+
+
+
+

@@ -56,6 +56,22 @@ PREVIEW_BODY = {
     "city_slug": "paris",
 }
 
+# Writing a tour is now its own call, and it takes the plan inputs plus WHICH of the
+# offered routes to write. Planning itself is free and spends nothing, so every test
+# about spending lives on the author call.
+AUTHOR_PATH = "/api/v1/trips/preview/author"
+
+
+def _author_body(client) -> dict:
+    """The plan body plus a live selector for its first route option.
+
+    The author route re-derives the plan and refuses a selector that no longer matches
+    it, so the id has to come from a real plan rather than be invented here.
+    """
+    plan = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
+    assert plan.status_code == 200, plan.text
+    return {**PREVIEW_BODY, "route_id": plan.json()["options"][0]["route_id"]}
+
 
 # ---------------------------------------------------------------------------
 # Fakes
@@ -221,13 +237,14 @@ def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, mo
     """
     executor = _CountingPremiumExecutor()
     client = preview_client(executor)
+    body_with_choice = _author_body(client)
     monkeypatch.setattr(
         trips_route,
         "resolve_build_identity",
         lambda: (_ for _ in ()).throw(ValueError("dirty build")),
     )
 
-    response = client.post("/api/v1/trips/preview", json=PREVIEW_BODY)
+    response = client.post(AUTHOR_PATH, json=body_with_choice)
 
     assert response.status_code == 200
     body = response.json()
@@ -246,9 +263,8 @@ def test_unverifiable_build_is_rejected_before_provider_spend(preview_client, mo
 
     # A genuine provider-authoring failure must still produce the OLD code/reason,
     # and the two payloads must not be byte-identical.
-    other = preview_client(_RaisingPremiumExecutor(RuntimeError("boom"))).post(
-        "/api/v1/trips/preview", json=PREVIEW_BODY
-    )
+    other_client = preview_client(_RaisingPremiumExecutor(RuntimeError("boom")))
+    other = other_client.post(AUTHOR_PATH, json=_author_body(other_client))
     other_body = other.json()
     assert other_body["candidate_rejection"]["code"] == "generation_failed"
     assert other_body["basic_tour"]["reason"] == "llm_generation_failed"
@@ -277,9 +293,8 @@ def test_provider_throttle_is_503_with_retry_after(preview_client):
         response=httpx.Response(429, request=_http_request()),
         body=None,
     )
-    resp = preview_client(_RaisingPremiumExecutor(exc)).post(
-        "/api/v1/trips/preview", json=PREVIEW_BODY
-    )
+    client = preview_client(_RaisingPremiumExecutor(exc))
+    resp = client.post(AUTHOR_PATH, json=_author_body(client))
     assert resp.status_code == 503, f"expected 503 for an upstream throttle, got {resp.status_code}"
     assert resp.headers.get("Retry-After") == "30"
 
@@ -291,9 +306,8 @@ def test_provider_timeout_is_502(preview_client):
     """
     anthropic = pytest.importorskip("anthropic")
     exc = anthropic.APITimeoutError(request=_http_request())
-    resp = preview_client(_RaisingPremiumExecutor(exc)).post(
-        "/api/v1/trips/preview", json=PREVIEW_BODY
-    )
+    client = preview_client(_RaisingPremiumExecutor(exc))
+    resp = client.post(AUTHOR_PATH, json=_author_body(client))
     assert resp.status_code == 502, f"expected 502 for a provider fault, got {resp.status_code}"
 
 

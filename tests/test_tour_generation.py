@@ -1522,7 +1522,14 @@ def test_nav_minutes_stay_consistent_with_options_eta_accounting():
         lens_coverage={}, script=(), validation=ValidationReport(),
     )
     snapshot = CorpusSnapshot(pois=list(pois), beats_by_poi={}, area_types={}, adjacent_areas={})
-    opt = build_route_option(route, script, {}, route_id="rt", snapshot=snapshot)
+    opt = build_route_option(
+        route,
+        script,
+        {},
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
+    )
 
     leg_seconds_from_generation = [_segment_leg_seconds(route, i) for i in range(len(transits))]
     dwell_total = sum(sp.dwell_seconds for sp in script.selected_pois)

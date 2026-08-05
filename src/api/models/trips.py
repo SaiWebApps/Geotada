@@ -167,6 +167,17 @@ class TripGenerateResponse(BaseModel):
         description="M6 k-flavours (§2.8): up to 3 distinct tour options; options[0] "
         "is the persisted trip. Computed per request, not persisted.",
     )
+    # EVERYTHING THAT SILENTLY DEGRADED while building this tour (owner ruling
+    # 2026-07-31: "Don't just log errors. Actually show them in the workbench UI.
+    # Otherwise, they're invisible."). Each row carries BOTH registers — `human` is
+    # plain English with no identifiers, and `error_type`/`error_message`/`component`/
+    # `context` are what gets pasted to Claude to fix it. An empty list means nothing
+    # degraded, which is a real statement rather than an absence. The preview has
+    # carried this since 2026-07-31; the phone's two endpoints dropped it on the floor,
+    # so a tour planned on estimated walking legs looked identical to a measured one.
+    # Same name, type and default on all three responses, so one client parser reads
+    # them all. See src/tour/degradations.py.
+    degradations: list[dict] = Field(default_factory=list)
 
 
 class TripComposeRequest(BaseModel):
@@ -190,6 +201,9 @@ class TripComposeResponse(BaseModel):
     route_id: str
     attempts: int = Field(description="Compose attempts consumed (1 clean, 2 after recompose)")
     stops: list[GeneratedStop]
+    #: Everything that silently degraded while writing this tour — see the identical
+    #: field on TripGenerateResponse for why it exists and what a row carries.
+    degradations: list[dict] = Field(default_factory=list)
 
 
 class TripPreviewRequest(BaseModel):
@@ -251,6 +265,23 @@ class TripPreviewRequest(BaseModel):
     # No narration flags: every preview uses the shared Premium certification
     # planner, one immutable zero-retry authoring request per stop, and the pure
     # traced-blueprint finalizer. Certification reviewers run separately.
+
+
+class TripPreviewAuthorRequest(TripPreviewRequest):
+    """The SAME plan inputs, plus which of the offered routes to write.
+
+    It builds on the plan request rather than restating it: writing re-derives the
+    plan, so every value that fed the plan has to come back unchanged, and one shared
+    definition is what guarantees "unchanged" — including the unknown-lens rejection.
+    """
+
+    route_id: str = Field(
+        ...,
+        description="The chosen route's id, copied exactly from the plan reply: "
+        "'preview-<12 hex>-optN'. The hex identifies the plan itself and N picks one "
+        "of its routes. An id that no longer matches a freshly derived plan is "
+        "refused, never quietly swapped for a different tour.",
+    )
 
 
 class TripPreviewStop(BaseModel):
@@ -318,23 +349,65 @@ class TripPreviewBasicTour(BaseModel):
 
 
 class TripPreviewResponse(BaseModel):
-    """Strict two-lane text preview — no audio and no persistence.
+    """THE PLAN, and nothing else — route options, no narration, no spend.
 
-    ``stops`` is gradeable only when ``candidate_eligible`` is true.  A grounded
-    emergency guide is returned under ``basic_tour`` instead of being mixed into
-    those stops or assigned a quality score.
+    The first of the two halves the tour engine was split into on 2026-08-04. This
+    endpoint picks the places, orders and routes them, and prices the walk; it calls
+    no provider, so its answer is free and it is what a person chooses FROM. Writing
+    the chosen route is a separate call, POST /trips/preview/author.
+
+    Everything that described WRITTEN text — the flat stop list, the narrator's name,
+    the candidate lane, the Basic fallback, the quality verdicts — moved there with
+    the writing. Keeping any of it here would advertise something planning cannot
+    produce, on a reply that is now sent before anyone has chosen anything.
     """
 
     spine_area: str | None = None
+    # The flavours: the same lens, duration, start and end; different places and a
+    # different walk. Each carries its own stops, its arrival time and its own
+    # per-corridor lens note. The first is the engine's own preferred one.
+    options: list[RouteOption] = Field(default_factory=list)
+    # None = GREEN (no warning needed). RED never reaches a 200 response.
+    tourability: TripPreviewTourability | None = None
+    # EVERYTHING THAT SILENTLY DEGRADED while PLANNING this tour (owner ruling
+    # 2026-07-31: "Don't just log errors. Actually show them in the workbench UI.
+    # Otherwise, they're invisible."). A route built on estimated walking legs rather
+    # than measured ones is labelled here rather than shipped silently. Each row
+    # carries BOTH registers — `human` is plain English with no identifiers,
+    # `error_type`/`error_message`/`component`/`context` are what gets pasted to
+    # Claude to fix it. Empty list means nothing degraded, which is a real statement
+    # rather than an absence. See src/tour/degradations.py.
+    degradations: list[dict] = Field(default_factory=list)
+
+
+class TripAuthoredTourResponse(BaseModel):
+    """THE WRITING: the one route that was chosen, now narrated.
+
+    The second of the two halves. It never re-plans. Its places, their order, its
+    arrival time and its walk-past sights are the chosen route's, unchanged — only
+    the words are new. The Basic fallback, the narrator's name and the quality
+    verdicts live here because they all describe written text, which the plan-only
+    reply no longer has.
+
+    ``stops`` is gradeable only when ``candidate_eligible`` is true. A grounded
+    emergency guide is returned under ``basic_tour`` instead of being mixed into the
+    written stops or assigned a quality score — and there is deliberately NO
+    top-level stop list, so a surface cannot render one tour's places under another
+    tour's words.
+    """
+
+    # Which route this is, echoed back exactly as it was sent.
+    route_id: str
+    # THE WRITTEN ROUTE. Same places, same order, same arrival time and same
+    # walk-past sights as the option that was chosen, with the narration filled in.
+    # None when nothing was written (the Basic lane below).
+    option: RouteOption | None = None
+    spine_area: str | None = None
     total_audio_min: int
-    stops: list[TripPreviewStop]
     candidate_eligible: bool = False
     candidate_status: Literal["premium_candidate_eligible_for_certification"] | None = None
     narration_kind: Literal["llm_candidate", "none"] = "none"
     basic_tour: TripPreviewBasicTour | None = None
-    # Phase 3 spotlight model (spec s7): per-corridor lens density surfaced to
-    # the user. None until REACH measures and fills it (later in Phase 3).
-    lens_coverage_note: str | None = None
     # None = GREEN (no warning needed). RED never reaches a 200 response.
     tourability: TripPreviewTourability | None = None
     # ``composed`` is the only gradeable state. ``basic_available`` means no LLM
@@ -348,13 +421,8 @@ class TripPreviewResponse(BaseModel):
     # Which narrator actually wrote this tour ('anthropic' | 'openai'), so the
     # workbench can label an Opus-vs-ChatGPT comparison. None when not composed.
     provider: str | None = None
-    # EVERYTHING THAT SILENTLY DEGRADED while building this tour (owner ruling
-    # 2026-07-31: "Don't just log errors. Actually show them in the workbench UI.
-    # Otherwise, they're invisible."). Each row carries BOTH registers — `human`
-    # is plain English with no identifiers, `error_type`/`error_message`/
-    # `component`/`context` are what gets pasted to Claude to fix it. Empty list
-    # means nothing degraded, which is a real statement rather than an absence.
-    # See src/tour/degradations.py.
+    # EVERYTHING THAT SILENTLY DEGRADED while writing this tour. Same channel, same
+    # row shape and same rendering as the plan reply's. See src/tour/degradations.py.
     degradations: list[dict] = Field(default_factory=list)
     # Objective spoken-narration quality signals for the composed tour (stilted vs
     # engagement scores + the per-100-word tells), so the comparison is MEASURED,

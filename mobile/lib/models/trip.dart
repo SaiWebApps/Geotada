@@ -206,6 +206,13 @@ class GeneratedTrip {
   // returns them, so absent parses to [] (back-compat) — the flavour picker
   // only shows for a just-generated trip.
   final List<RouteOption> options;
+  // Everything that quietly went worse while this tour was built — most often
+  // that the walking times between stops were estimated rather than measured.
+  // Each entry is the plain-English sentence the backend wrote for a human to
+  // read (src/tour/degradations.py's `human` register); the machine-facing
+  // fields are deliberately not parsed here. Absent or empty means nothing
+  // degraded, which is a statement, not a silence.
+  final List<String> degradationNotices;
 
   const GeneratedTrip({
     required this.tripId,
@@ -217,6 +224,7 @@ class GeneratedTrip {
     required this.flavourCount,
     required this.stops,
     this.options = const [],
+    this.degradationNotices = const [],
   });
 
   factory GeneratedTrip.fromJson(Map<String, dynamic> json) {
@@ -235,6 +243,16 @@ class GeneratedTrip {
       options: ((json['options'] as List<dynamic>?) ?? const [])
           .map((o) => RouteOption.fromJson(o as Map<String, dynamic>))
           .toList(),
+      // Defensive by design: a missing key, a JSON null, a non-list value, a
+      // non-map row, a row with no `human`, and a blank `human` all yield no
+      // entry and none of them throws. An older server that sends no
+      // degradations at all parses to an empty list, not an error.
+      degradationNotices: [
+        for (final row in (json['degradations'] as List<dynamic>?) ?? const [])
+          if (row is Map<String, dynamic> &&
+              (row['human'] as String?)?.trim().isNotEmpty == true)
+            (row['human'] as String).trim(),
+      ],
     );
   }
 
@@ -248,5 +266,8 @@ class GeneratedTrip {
         'flavour_count': flavourCount,
         'stops': stops.map((s) => s.toJson()).toList(),
         'options': options.map((o) => o.toJson()).toList(),
+        'degradations': [
+          for (final notice in degradationNotices) {'human': notice},
+        ],
       };
 }

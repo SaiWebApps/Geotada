@@ -380,6 +380,8 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
       body: Column(
         children: [
           _SummaryCard(trip: widget.trip),
+          if (widget.trip.degradationNotices.isNotEmpty)
+            _DegradationCard(notices: widget.trip.degradationNotices),
           if (_isPreparing || _preparationDone) _buildProgressCard(colorScheme),
           if (_prepareError != null) _buildErrorCard(colorScheme),
           Padding(
@@ -582,6 +584,50 @@ class _FlavourTile extends StatelessWidget {
             : '$dwellCount dwell stops · $etaMin min\n$note',
       ),
       onTap: onTap,
+    );
+  }
+}
+
+/// Shows, above the itinerary, whatever quietly went worse while this tour was
+/// built. Each notice is the backend's plain-English sentence — no identifiers,
+/// nothing for the traveller to decode. It renders only when there is at least
+/// one notice, so a clean tour shows nothing at all.
+class _DegradationCard extends StatelessWidget {
+  final List<String> notices;
+
+  const _DegradationCard({required this.notices});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: colorScheme.tertiaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.info_outline, color: colorScheme.onTertiaryContainer),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final notice in notices)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        notice,
+                        style: TextStyle(color: colorScheme.onTertiaryContainer),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

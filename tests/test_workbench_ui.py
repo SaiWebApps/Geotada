@@ -465,6 +465,155 @@ def _stubbed_audio_preview(page: Page):
         page.unroute("**/audio/providers")
 
 
+# ---------------------------------------------------------------------------
+# The tour view is TWO calls now: a free PLAN that returns three routes, and a
+# paid AUTHOR that runs only after a human picks one. Every stub below answers
+# both, in the shapes the two endpoints really return — a stub that fulfils a
+# shape no endpoint can produce is the same lie as a mock narrator.
+#
+# PLAN   POST /trips/preview        -> {spine_area, options[3], tourability, degradations}
+# AUTHOR POST /trips/preview/author -> {route_id, option, ...} and NO top-level stops
+#
+# The authored stops live on ``option.stops`` because there is exactly one
+# interleave now and the authored tour IS the option that was chosen.
+# ---------------------------------------------------------------------------
+
+#: A plan fingerprint the author route would accept: ``preview-<12 hex>-opt<N>``.
+_PLAN_FINGERPRINT = "preview-0123456789ab"
+
+
+def _option_stop(stop: dict, *, index: int) -> dict:
+    """One RouteOptionStop, from the flat stop dicts these stubs already write.
+
+    Two field names differ from a rendered card and only two: the place is
+    ``name`` here and ``poi_name`` there, and there is no ``sort_order`` at all —
+    that is a running counter over the emitted cards, which the page derives.
+    """
+    band = stop.get("band", "dwell")
+    return {
+        "poi_id": stop.get("poi_id", f"poi-{index}"),
+        "name": stop["poi_name"],
+        "lat": stop.get("lat", 48.8566),
+        "lng": stop.get("lng", 2.3522),
+        "lens": None,
+        "visit_or_walk_past": "walk_past" if band in ("vignette", "leg") else "visit",
+        "minutes": int(stop.get("minutes", 0)),
+        "band": band,
+        "spotlight": stop.get("spotlight", 0.0),
+        "narration": stop.get("narration", ""),
+        "has_deeper_dive": bool(stop.get("has_deeper_dive", False)),
+    }
+
+
+def _route_option(stops, *, route_id, eta_seconds=None):
+    """One PLAN option: PLACES ONLY.
+
+    Planning shows names, order, walking time and ETA and no words at all, so the
+    narration is emptied here rather than carried. ``band="leg"`` cards are
+    narration heard while walking rather than places, so they do not exist at plan
+    time either.
+    """
+    places = [s for s in stops if s.get("band") != "leg"]
+    dwell_minutes = sum(int(s.get("minutes", 0)) for s in places if s.get("band") != "vignette")
+    return {
+        "route_id": route_id,
+        "stops": [
+            dict(_option_stop(s, index=i), narration="", has_deeper_dive=False)
+            for i, s in enumerate(places)
+        ],
+        "stop_audio": {},
+        "route_polyline": None,
+        "eta_seconds": eta_seconds if eta_seconds is not None else (dwell_minutes + 18) * 60,
+        "why_this_works": None,
+        "lens_summary": {},
+        "flow_score": 0.0,
+        "backtrack_ratio": 0.0,
+        "degraded": False,
+        "profiles": [],
+        "offline_package": None,
+        "lens_coverage_note": None,
+    }
+
+
+def _plan_payload(stops, *, spine_area="Île de la Cité", degradations=None, options=None,
+                  tourability=None):
+    """The PLAN response: three routes over the same inputs that differ in how many
+    places they stop at and how much of the time is walking."""
+    if options is None:
+        shorter = [s for s in stops if s.get("band") != "leg"][:-1] or stops
+        options = [
+            _route_option(stops, route_id=f"{_PLAN_FINGERPRINT}-opt1"),
+            _route_option(shorter, route_id=f"{_PLAN_FINGERPRINT}-opt2"),
+            _route_option(stops, route_id=f"{_PLAN_FINGERPRINT}-opt3"),
+        ]
+    return {
+        "spine_area": spine_area,
+        "options": options,
+        "tourability": tourability,
+        "degradations": degradations or [],
+    }
+
+
+def _authored_payload(payload: dict, *, route_id=f"{_PLAN_FINGERPRINT}-opt1") -> dict:
+    """The AUTHOR response, built from the flat tour dict these stubs already write.
+
+    Everything that describes authored text — the narrator, the lane, the quality
+    verdicts, the Basic fallback — stays at the top level exactly as it is today.
+    Only two things move: the stops become ``option.stops``, and the per-corridor
+    lens note becomes ``option.lens_coverage_note``. The Basic lane authors
+    nothing, so it has no option at all and keeps its own stops.
+    """
+    stops = payload.get("stops") or []
+    rest = {k: v for k, v in payload.items() if k not in ("stops", "lens_coverage_note")}
+    option = None
+    if stops:
+        option = _route_option(stops, route_id=route_id)
+        option["stops"] = [_option_stop(s, index=i) for i, s in enumerate(stops)]
+        option["lens_coverage_note"] = payload.get("lens_coverage_note")
+    rest.setdefault("total_audio_min", sum(int(s.get("minutes", 0)) for s in stops))
+    return {"route_id": route_id, "option": option, **rest}
+
+
+def _route_two_step(page, *, plan, compose):
+    """Answer BOTH calls of the two-step flow. The plan pattern cannot match the
+    author URL (a Playwright glob is a full match), so registration order is
+    irrelevant."""
+    page.route(
+        "**/trips/preview",
+        lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps(plan)
+        ),
+    )
+    page.route(
+        "**/trips/preview/author",
+        lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps(compose)
+        ),
+    )
+
+
+def _unroute_two_step(page):
+    page.unroute("**/trips/preview/author")
+    page.unroute("**/trips/preview")
+
+
+def _generate_options(page):
+    """Press generate and wait for the PLAN response only. Renders 3 cards, spends
+    nothing, and asks for no audio."""
+    with page.expect_response(lambda r: r.url.endswith("/trips/preview")) as ri:
+        page.locator("#tourGenerateBtn").click()
+    page.locator("#tourStops .tour-option-card").first.wait_for(state="visible", timeout=15000)
+    return ri.value
+
+
+def _pick_option(page, index=0):
+    """Click one option card and wait for the AUTHOR response."""
+    with page.expect_response(lambda r: "/trips/preview/author" in r.url) as ri:
+        page.locator(f'#tourStops .tour-option-pick[data-tour-option="{index}"]').click()
+    page.wait_for_timeout(300)
+    return ri.value
+
+
 def _declared_audio_registry() -> dict[str, str]:
     """The provider registry ``src/audio/provider.py`` DECLARES, read from source.
 
@@ -2269,38 +2418,34 @@ class TestDetailViewAndEditing:
         paid synthesis is answered in the browser — the form->request, the render, the audio
         fetch and the decode are all REAL."""
         page, _seed_data, _reporter = browser_page
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(
-                    {
-                        "stops": [
-                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 5,
-                             "narration": "Settle in. A grounded opening line."},
-                            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
-                             "narration": "Walk on. Another grounded line."},
-                        ],
-                        "spine_area": "Île de la Cité",
-                        "total_audio_min": 9,
-                        "candidate_eligible": True,
-                        "candidate_status": "premium_candidate_eligible_for_certification",
-                        "narration_kind": "llm_candidate",
-                        "compose_status": "composed",
-                        "provider": "anthropic",
-                    }
-                ),
+        authored_stops = [
+            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 5,
+             "narration": "Settle in. A grounded opening line."},
+            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
+             "narration": "Walk on. Another grounded line."},
+        ]
+        _route_two_step(
+            page,
+            plan=_plan_payload(authored_stops),
+            compose=_authored_payload(
+                {
+                    "stops": authored_stops,
+                    "spine_area": "Île de la Cité",
+                    "total_audio_min": 9,
+                    "candidate_eligible": True,
+                    "candidate_status": "premium_candidate_eligible_for_certification",
+                    "narration_kind": "llm_candidate",
+                    "compose_status": "composed",
+                    "provider": "anthropic",
+                }
             ),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
-                page.locator("#tourGenerateBtn").click()
-            assert ri.value.status == 200
-            page.wait_for_timeout(300)
+            assert _generate_options(page).status == 200
+            assert _pick_option(page).status == 200
 
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 rendered stops, got {stops.count()}"
@@ -2324,7 +2469,7 @@ class TestDetailViewAndEditing:
                 _assert_asked_for_a_served_provider(audio_calls)
             _take_screenshot(page, "step4-tour-generate-play")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_preview_renders_basic_lane_honestly(self, browser_page):
         """The workbench must render the usable Basic lane when Premium is ineligible."""
@@ -2352,22 +2497,17 @@ class TestDetailViewAndEditing:
                 ],
             },
         }
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(payload),
-            ),
+        _route_two_step(
+            page,
+            plan=_plan_payload([{"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 7}]),
+            compose=_authored_payload(payload),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url) as response:
-                page.locator("#tourGenerateBtn").click()
-            assert response.value.status == 200
-            page.wait_for_timeout(300)
+            assert _generate_options(page).status == 200
+            assert _pick_option(page).status == 200
 
             panel = page.locator("#tourStops")
             assert panel.locator(".tour-stop").count() == 1
@@ -2383,58 +2523,7 @@ class TestDetailViewAndEditing:
             assert "Quality rubric" not in rendered
             _take_screenshot(page, "step4-tour-basic-lane")
         finally:
-            page.unroute("**/trips/preview")
-
-    def test_standalone_tour_preview_renders_basic_lane_honestly(self, browser_page):
-        """The public preview page must use the Basic lane's stops and duration."""
-        page, _seed_data, _reporter = browser_page
-        standalone = page.context.new_page()
-        payload = {
-            "stops": [],
-            "spine_area": "Île de la Cité",
-            "total_audio_min": 0,
-            "candidate_eligible": False,
-            "basic_tour": {
-                "kind": "basic_tour",
-                "reason": "llm_candidate_ineligible",
-                "total_audio_min": 7,
-                "stops": [
-                    {
-                        "sort_order": 1,
-                        "poi_name": "Notre-Dame",
-                        "minutes": 7,
-                        "narration": "A grounded Basic guide to the cathedral square.",
-                    }
-                ],
-            },
-        }
-        standalone.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(payload),
-            ),
-        )
-        try:
-            standalone.goto(f"http://localhost:{WORKBENCH_API_PORT}/tour-preview")
-            standalone.wait_for_load_state("networkidle")
-            with standalone.expect_response(lambda r: "/trips/preview" in r.url) as response:
-                standalone.locator("#go").click()
-            assert response.value.status == 200
-            standalone.wait_for_timeout(300)
-
-            assert standalone.locator("#stops .stop").count() == 1
-            rendered = standalone.locator("body").text_content() or ""
-            assert "Notre-Dame" in rendered
-            assert "1 stops" in rendered
-            assert "~7 min of audio" in rendered
-            assert "Basic" in rendered
-            assert "not Premium" in rendered
-            assert "not graded" in rendered
-            _take_screenshot(standalone, "step4-standalone-tour-basic-lane")
-        finally:
-            standalone.close()
+            _unroute_two_step(page)
 
     def test_tour_preview_untourable_shows_error(self, browser_page):
         """Step 4: a 422 from /trips/preview surfaces an error toast (no silent failure)."""
@@ -2451,7 +2540,7 @@ class TestDetailViewAndEditing:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
+            with page.expect_response(lambda r: r.url.endswith("/trips/preview")) as ri:
                 page.locator("#tourGenerateBtn").click()
             assert ri.value.status == 422
             page.wait_for_timeout(300)
@@ -2460,16 +2549,13 @@ class TestDetailViewAndEditing:
             page.unroute("**/trips/preview")
 
     def _route_tour_preview(self, page, stops):
-        """Helper: mock POST /trips/preview with the given stops payload."""
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(
-                    {"stops": stops, "spine_area": "Île de la Cité",
-                     "total_audio_min": sum(s.get("minutes", 0) for s in stops)}
-                ),
+        """Helper: answer BOTH calls — the free plan, then the authored tour."""
+        _route_two_step(
+            page,
+            plan=_plan_payload(stops),
+            compose=_authored_payload(
+                {"stops": stops, "spine_area": "Île de la Cité",
+                 "total_audio_min": sum(s.get("minutes", 0) for s in stops)}
             ),
         )
 
@@ -2509,10 +2595,8 @@ class TestDetailViewAndEditing:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
-                page.locator("#tourGenerateBtn").click()
-            assert ri.value.status == 200
-            page.wait_for_timeout(400)
+            assert _generate_options(page).status == 200
+            assert _pick_option(page).status == 200
 
             cards = page.locator("#tourStops .tour-stop")
             assert cards.count() == 3, f"expected 3 cards, got {cards.count()}"
@@ -2542,7 +2626,7 @@ class TestDetailViewAndEditing:
             page.wait_for_timeout(200)
             _take_screenshot(page, "leg-cards-render-as-walks")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_stop_audio_caches_on_replay(self, browser_page):
         """Step 5 (edge): replaying a stop reuses the cached blob (no 2nd /audio/preview), and
@@ -2568,9 +2652,8 @@ class TestDetailViewAndEditing:
             page.locator("#tourStart").fill("48.8566,2.3522")
             # Generate TWICE — the second re-render must not duplicate the delegated listener.
             for _ in range(2):
-                with page.expect_response(lambda r: "/trips/preview" in r.url):
-                    page.locator("#tourGenerateBtn").click()
-                page.wait_for_timeout(200)
+                _generate_options(page)
+                _pick_option(page)
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 stops after re-generate, got {stops.count()}"
 
@@ -2597,7 +2680,7 @@ class TestDetailViewAndEditing:
                 _assert_asked_for_a_served_provider(stubbed)
             _take_screenshot(page, "step5-tour-cache-replay")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_stop_long_narration_plays(self, browser_page):
         """Step 5 (edge): a long stop narration (> the 4096 TTS cap) plays through the chunked
@@ -2618,9 +2701,8 @@ class TestDetailViewAndEditing:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 1
             with _stubbed_audio_preview(page) as audio_calls:
@@ -2639,7 +2721,7 @@ class TestDetailViewAndEditing:
                 _assert_asked_for_a_served_provider(audio_calls)
             _take_screenshot(page, "step5-tour-long-narration")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_view_then_back_to_poi_restores_workbench(self, browser_page):
         """Step 6 (seamless): the tour view lives IN the existing detail pane — switching to it and
@@ -2675,34 +2757,43 @@ class TestDetailViewAndEditing:
         page, _seed_data, _reporter = browser_page
         captured = {}
 
+        ab_stops = [
+            {"sort_order": 1, "poi_name": "Hotel de Ville", "minutes": 5,
+             "lat": 48.8564, "lng": 2.3522, "narration": "Start the walk here."},
+            {"sort_order": 2, "poi_name": "Destination", "minutes": 0,
+             "lat": 48.8606, "lng": 2.3376, "narration": "End the walk here, or carry on."},
+        ]
+
         def _handler(route):
+            # Captured on the PLAN call: that is the one that must carry the
+            # destination, because it is what decides where the route goes.
             captured["body"] = route.request.post_data
             route.fulfill(
                 status=200,
                 content_type="application/json",
-                body=json.dumps(
-                    {
-                        "stops": [
-                            {"sort_order": 1, "poi_name": "Hotel de Ville", "minutes": 5,
-                             "lat": 48.8564, "lng": 2.3522, "narration": "Start the walk here."},
-                            {"sort_order": 2, "poi_name": "Destination", "minutes": 0,
-                             "lat": 48.8606, "lng": 2.3376, "narration": "End the walk here, or carry on."},
-                        ],
-                        "spine_area": "Île de la Cité",
-                        "total_audio_min": 5,
-                    }
-                ),
+                body=json.dumps(_plan_payload(ab_stops)),
             )
 
         page.route("**/trips/preview", _handler)
+        page.route(
+            "**/trips/preview/author",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    _authored_payload(
+                        {"stops": ab_stops, "spine_area": "Île de la Cité", "total_audio_min": 5}
+                    )
+                ),
+            ),
+        )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
             page.locator("#tourEnd").fill("48.8606,2.3376")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
 
             # The request carried the destination (A→B), not just a center.
             assert captured.get("body"), "no /trips/preview request body captured"
@@ -2721,7 +2812,7 @@ class TestDetailViewAndEditing:
             assert page.locator(".tour-route-pin").count() == 2, "expected 2 numbered route pins on the map"
             _take_screenshot(page, "ab-destination-route")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_preview_ab_infeasible_shows_alternatives(self, browser_page):
         """A→B over budget: the Step-2.6 structured 422 renders readable loop/extend/closer_b
@@ -2753,7 +2844,7 @@ class TestDetailViewAndEditing:
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
             page.locator("#tourEnd").fill("48.8606,2.3376")
-            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
+            with page.expect_response(lambda r: r.url.endswith("/trips/preview")) as ri:
                 page.locator("#tourGenerateBtn").click()
             assert ri.value.status == 422
             page.wait_for_timeout(300)
@@ -2776,35 +2867,32 @@ class TestDetailViewAndEditing:
         """Phase 3: the workbench shows the spotlight model's user-facing outputs —
         the per-corridor lens_coverage_note and each stop's spotlight score."""
         page, _seed_data, _reporter = browser_page
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(
-                    {
-                        "stops": [
-                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
-                             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
-                             "spotlight": 5.0, "band": "dwell"},
-                            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
-                             "lat": 48.8554, "lng": 2.3450, "narration": "Another line.",
-                             "spotlight": 3.6, "band": "dwell"},
-                        ],
-                        "spine_area": "Île de la Cité",
-                        "total_audio_min": 10,
-                        "lens_coverage_note": "Only 2 places on this route speak to film & TV.",
-                    }
-                ),
+        spotlight_stops = [
+            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
+             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
+             "spotlight": 5.0, "band": "dwell"},
+            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
+             "lat": 48.8554, "lng": 2.3450, "narration": "Another line.",
+             "spotlight": 3.6, "band": "dwell"},
+        ]
+        _route_two_step(
+            page,
+            plan=_plan_payload(spotlight_stops),
+            compose=_authored_payload(
+                {
+                    "stops": spotlight_stops,
+                    "spine_area": "Île de la Cité",
+                    "total_audio_min": 10,
+                    "lens_coverage_note": "Only 2 places on this route speak to film & TV.",
+                }
             ),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
             # The per-corridor lens coverage note (Phase 3) is surfaced.
             note = page.locator("#tourStops .tour-lens-coverage")
             assert note.count() == 1, "the lens_coverage_note should render"
@@ -2814,45 +2902,45 @@ class TestDetailViewAndEditing:
             assert "spotlight 5.00" in (first.text_content() or ""), "per-stop spotlight should render"
             _take_screenshot(page, "phase3-spotlight-coverage")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_preview_vignette_renders_tag_and_hollow_pin(self, browser_page):
         """Track B Step B.5: a band=="vignette" stop renders its card with a visible
         'vignette' tag + 0-minute (walk past) styling, and its map pin uses the distinct
         hollow style (tour-route-pin--vignette). Dwell stops are unchanged."""
         page, _seed_data, _reporter = browser_page
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(
-                    {
-                        "stops": [
-                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
-                             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
-                             "spotlight": 5.0, "band": "dwell"},
-                            {"sort_order": 2, "poi_name": "Fontaine du Palmier", "minutes": 0,
-                             "lat": 48.8576, "lng": 2.3470,
-                             "narration": "On your right, the Palmier fountain.",
-                             "spotlight": 1.2, "band": "vignette"},
-                            {"sort_order": 3, "poi_name": "Sainte-Chapelle", "minutes": 4,
-                             "lat": 48.8554, "lng": 2.3450, "narration": "Another line.",
-                             "spotlight": 3.6, "band": "dwell"},
-                        ],
-                        "spine_area": "Île de la Cité",
-                        "total_audio_min": 10,
-                    }
-                ),
+        vignette_stops = [
+            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
+             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
+             "spotlight": 5.0, "band": "dwell"},
+            {"sort_order": 2, "poi_name": "Fontaine du Palmier", "minutes": 0,
+             "lat": 48.8576, "lng": 2.3470,
+             "narration": "On your right, the Palmier fountain.",
+             "spotlight": 1.2, "band": "vignette"},
+            {"sort_order": 3, "poi_name": "Sainte-Chapelle", "minutes": 4,
+             "lat": 48.8554, "lng": 2.3450, "narration": "Another line.",
+             "spotlight": 3.6, "band": "dwell"},
+        ]
+        _route_two_step(
+            page,
+            plan=_plan_payload(vignette_stops),
+            compose=_authored_payload(
+                {"stops": vignette_stops, "spine_area": "Île de la Cité", "total_audio_min": 10}
             ),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            # The walk-past sight is countable on the option card before anything is
+            # written: two places to stand at, one sight passed on the way.
+            first_card = page.locator("#tourStops .tour-option-card").first.text_content() or ""
+            assert "2 stops" in first_card, f"option card miscounts places: {first_card!r}"
+            assert "1 walk-past sight" in first_card, (
+                f"option card does not surface the walk-past sight: {first_card!r}"
+            )
+            _pick_option(page)
 
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 3, f"expected 3 rendered stops, got {stops.count()}"
@@ -2879,7 +2967,7 @@ class TestDetailViewAndEditing:
             )
             _take_screenshot(page, "b5-vignette-tag-and-hollow-pin")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_preview_deeper_dive_badge_on_extras_stop(self, browser_page):
         """KE10: a dense Île-de-la-Cité tour (Notre-Dame) whose budget capped out
@@ -2890,36 +2978,29 @@ class TestDetailViewAndEditing:
         /trips/preview is mocked (the has_deeper_dive wiring is unit-tested in
         tests/test_trip_preview_vignettes.py); this test asserts the render."""
         page, _seed_data, _reporter = browser_page
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(
-                    {
-                        "stops": [
-                            # Notre-Dame: beat-dense, budget capped extras out.
-                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 8,
-                             "lat": 48.8530, "lng": 2.3499, "narration": "The cathedral rises.",
-                             "spotlight": 5.0, "band": "dwell", "has_deeper_dive": True},
-                            # Sainte-Chapelle: no extras -> no badge.
-                            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 5,
-                             "lat": 48.8554, "lng": 2.3450, "narration": "Stained glass glows.",
-                             "spotlight": 3.6, "band": "dwell", "has_deeper_dive": False},
-                        ],
-                        "spine_area": "Île de la Cité",
-                        "total_audio_min": 13,
-                    }
-                ),
+        dive_stops = [
+            # Notre-Dame: beat-dense, budget capped extras out.
+            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 8,
+             "lat": 48.8530, "lng": 2.3499, "narration": "The cathedral rises.",
+             "spotlight": 5.0, "band": "dwell", "has_deeper_dive": True},
+            # Sainte-Chapelle: no extras -> no badge.
+            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 5,
+             "lat": 48.8554, "lng": 2.3450, "narration": "Stained glass glows.",
+             "spotlight": 3.6, "band": "dwell", "has_deeper_dive": False},
+        ]
+        _route_two_step(
+            page,
+            plan=_plan_payload(dive_stops),
+            compose=_authored_payload(
+                {"stops": dive_stops, "spine_area": "Île de la Cité", "total_audio_min": 13}
             ),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8566,2.3522")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
 
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 rendered stops, got {stops.count()}"
@@ -2945,7 +3026,7 @@ class TestDetailViewAndEditing:
             )
             _take_screenshot(page, "ke10-deeper-dive-badge")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_preview_yellow_tourability_renders_warning_banner(self, browser_page):
         """Phase 6 contract surfaced (hostile-panel finding 2026-07-02): a preview
@@ -2971,19 +3052,17 @@ class TestDetailViewAndEditing:
                 "one_way_alternative_destination": None,
             },
         }
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200, content_type="application/json", body=json.dumps(yellow_payload)
-            ),
+        _route_two_step(
+            page,
+            plan=_plan_payload(yellow_payload["stops"]),
+            compose=_authored_payload(yellow_payload),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8608,2.3936")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
 
             banner = page.locator("#tourStops .tour-tourability-warn")
             assert banner.count() == 1, "YELLOW payload must render exactly one warning banner"
@@ -2994,26 +3073,24 @@ class TestDetailViewAndEditing:
             assert "~44-min tour" in text
             _take_screenshot(page, "yellow-tourability-banner")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
         # Control: a payload WITHOUT tourability renders no banner.
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps({k: v for k, v in yellow_payload.items() if k != "tourability"}),
+        _route_two_step(
+            page,
+            plan=_plan_payload(yellow_payload["stops"]),
+            compose=_authored_payload(
+                {k: v for k, v in yellow_payload.items() if k != "tourability"}
             ),
         )
         try:
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
             assert page.locator("#tourStops .tour-tourability-warn").count() == 0, (
                 "GREEN (no tourability field) must not render a warning banner"
             )
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_tour_preview_thin_delivery_renders_disclosure_note(self, browser_page):
         """Thin-delivery disclosure, now ENGINE-DRIVEN (C11a, 2026-07-03). The
@@ -3047,22 +3124,18 @@ class TestDetailViewAndEditing:
                 },
             }
 
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(_payload(2, delivered_thin=True)),
-            ),
+        _route_two_step(
+            page,
+            plan=_plan_payload(_payload(2, delivered_thin=True)["stops"]),
+            compose=_authored_payload(_payload(2, delivered_thin=True)),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
             page.locator("#tourStart").fill("48.8606,2.3376")
             page.locator("#tourDuration").fill("30")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
 
             note = page.locator("#tourStops .tour-thin-delivery-note")
             assert note.count() == 1, "GREEN delivered_thin must render the disclosure note"
@@ -3074,22 +3147,18 @@ class TestDetailViewAndEditing:
             )
             _take_screenshot(page, "thin-delivery-note")
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
         # Control: a GREEN route delivering richly (delivered_thin false) renders
         # neither the note nor the banner.
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(_payload(26, delivered_thin=False)),
-            ),
+        _route_two_step(
+            page,
+            plan=_plan_payload(_payload(26, delivered_thin=False)["stops"]),
+            compose=_authored_payload(_payload(26, delivered_thin=False)),
         )
         try:
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            _pick_option(page)
             assert page.locator("#tourStops .tour-thin-delivery-note").count() == 0, (
                 "GREEN delivered_thin=false must not render the disclosure note"
             )
@@ -3097,29 +3166,28 @@ class TestDetailViewAndEditing:
                 "GREEN (rich) must not render the amber density banner"
             )
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     _COORD_5DEC = r"-?\d+\.\d{5},-?\d+\.\d{5}"
 
     def _clear_tour_route_pins(self, page):
         """Generate an empty mocked preview to clear any leftover tour-route L.Markers
         (they swallow map clicks; circleMarkers bubble). Leaves the tour view open."""
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps({"stops": [], "spine_area": "-", "total_audio_min": 0}),
-            ),
+        # A plan with no options renders the empty-state card and clears the map.
+        # Nothing is picked, so the authoring call is never made.
+        _route_two_step(
+            page,
+            plan=_plan_payload([], spine_area="-", options=[]),
+            compose=_authored_payload({"stops": [], "spine_area": "-", "total_audio_min": 0}),
         )
         try:
             page.locator("#tourPreviewBtn").click()
             page.wait_for_timeout(300)
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
+            with page.expect_response(lambda r: r.url.endswith("/trips/preview")):
                 page.locator("#tourGenerateBtn").click()
             page.wait_for_timeout(200)
         finally:
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
         assert page.locator(".tour-route-pin").count() == 0, "route pins should be cleared"
 
     def test_tour_map_click_sets_start_end_and_clear_resets(self, browser_page):
@@ -3200,12 +3268,14 @@ class TestDetailViewAndEditing:
             route.fulfill(
                 status=200,
                 content_type="application/json",
-                body=json.dumps({"stops": [], "spine_area": "-", "total_audio_min": 0}),
+                body=json.dumps(_plan_payload([], spine_area="-", options=[])),
             )
 
+        # Only the PLAN call is made here: this test inspects the OUTBOUND body, and
+        # nothing is picked, so no authoring call exists to answer.
         page.route("**/trips/preview", _handler)
         try:
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
+            with page.expect_response(lambda r: r.url.endswith("/trips/preview")):
                 page.locator("#tourGenerateBtn").click()
             page.wait_for_timeout(200)
         finally:
@@ -3230,25 +3300,19 @@ class TestDetailViewAndEditing:
         surfaces a success toast with the issue number. Human-mediated loop — the click
         only files a GitHub issue."""
         page, _seed_data, _reporter = browser_page
-        page.route(
-            "**/trips/preview",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="application/json",
-                body=json.dumps(
-                    {
-                        "stops": [
-                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
-                             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
-                             "spotlight": 5.0, "band": "dwell"},
-                            {"sort_order": 2, "poi_name": "Fontaine du Palmier", "minutes": 0,
-                             "lat": 48.8576, "lng": 2.3470, "narration": "On your right.",
-                             "spotlight": 1.2, "band": "vignette"},
-                        ],
-                        "spine_area": "Île de la Cité",
-                        "total_audio_min": 6,
-                    }
-                ),
+        feedback_stops = [
+            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
+             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
+             "spotlight": 5.0, "band": "dwell"},
+            {"sort_order": 2, "poi_name": "Fontaine du Palmier", "minutes": 0,
+             "lat": 48.8576, "lng": 2.3470, "narration": "On your right.",
+             "spotlight": 1.2, "band": "vignette"},
+        ]
+        _route_two_step(
+            page,
+            plan=_plan_payload(feedback_stops),
+            compose=_authored_payload(
+                {"stops": feedback_stops, "spine_area": "Île de la Cité", "total_audio_min": 6}
             ),
         )
         captured = {}
@@ -3274,9 +3338,12 @@ class TestDetailViewAndEditing:
             page.locator("#tourStart").fill("48.8566,2.3522")
             page.locator("#tourEnd").fill("")
             page.locator("#tourLenses").fill("dark_history, medieval")
-            with page.expect_response(lambda r: "/trips/preview" in r.url):
-                page.locator("#tourGenerateBtn").click()
-            page.wait_for_timeout(300)
+            _generate_options(page)
+            # The eval bar must NOT exist yet: nothing has been written to rate.
+            assert page.locator("#tourFeedbackUp").count() == 0, (
+                "the feedback bar rendered on the plan screen, before any tour was written"
+            )
+            _pick_option(page)
 
             # The eval bar renders only after a tour: 👍, 👎 and the note input.
             assert page.locator("#tourFeedbackUp").count() == 1, "👍 should render after generate"
@@ -3313,7 +3380,7 @@ class TestDetailViewAndEditing:
             _take_screenshot(page, "b7-tour-feedback-loop")
         finally:
             page.unroute("**/feedback")
-            page.unroute("**/trips/preview")
+            _unroute_two_step(page)
 
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
@@ -5287,7 +5354,7 @@ class TestRealTourGeneration:
 
         # THE POINT: no page.route here. The server really answers.
         with page.expect_response(
-            lambda r: "/trips/preview" in r.url, timeout=180000
+            lambda r: r.url.endswith("/trips/preview"), timeout=180000
         ) as caught:
             page.locator("#tourGenerateBtn").click()
         response = caught.value
@@ -5298,21 +5365,34 @@ class TestRealTourGeneration:
         )
         _take_screenshot(page, "real-tour-generated-unstubbed")
 
+        # PLANNING is free and returns three routes over the same inputs. Nothing
+        # is written yet, so there is no narration to check here — only that the
+        # engine really routed the seeded corpus three different ways.
         body = response.json()
-        # A tour arrives in ONE OF TWO LANES and the stops live in different
-        # places. Premium puts them at the top level; the Basic grounded lane
-        # nests them under `basic_tour`. This test runs without a usable
-        # ANTHROPIC_API_KEY (conftest blanks it), so it lands in the Basic lane —
-        # which is the point: it proves the engine really routed and narrated
-        # from the seeded corpus, at zero cost. Accept either lane, because what
-        # is under test is that a tour was BUILT, not which lane served it.
-        lane_stops = body.get("stops") or []
-        basic = body.get("basic_tour") or {}
-        stops = lane_stops or (basic.get("stops") or [])
-        assert stops, (
-            f"the endpoint answered 200 but produced no stops in EITHER lane "
-            f"(premium={len(lane_stops)}, basic={len(basic.get('stops') or [])}): "
-            f"{str(body)[:400]}"
+        options = body.get("options") or []
+        assert len(options) == 3, (
+            f"the endpoint answered 200 but did not return three route options "
+            f"(got {len(options)}): {str(body)[:400]}"
+        )
+        planned_names = {
+            s.get("name") for opt in options for s in (opt.get("stops") or [])
+        }
+        assert planned_names & seeded_names, (
+            f"none of the SEEDED POIs appear in any planned option, so this did not "
+            f"come from the corpus under test. Seeded: {sorted(seeded_names)}. "
+            f"Planned: {sorted(n for n in planned_names if n)}"
+        )
+
+        # Now AUTHOR the first option — the only call that writes and spends. This
+        # shard runs without a usable ANTHROPIC_API_KEY (conftest blanks it), so it
+        # lands in the Basic grounded lane; either lane proves a tour was BUILT.
+        with page.expect_response(
+            lambda r: "/trips/preview/author" in r.url, timeout=180000
+        ) as authored:
+            page.locator('#tourStops .tour-option-pick[data-tour-option="0"]').click()
+        assert authored.value.status == 200, (
+            f"the workbench could not write the chosen tour: HTTP "
+            f"{authored.value.status} {authored.value.text()[:400]}"
         )
 
         rendered = page.locator(".tour-stop")
@@ -5363,9 +5443,18 @@ class TestRealTourGeneration:
         page.locator("#tourDuration").fill("60")
 
         with page.expect_response(
-            lambda r: "/trips/preview" in r.url, timeout=180000
-        ) as caught:
+            lambda r: r.url.endswith("/trips/preview"), timeout=180000
+        ):
             page.locator("#tourGenerateBtn").click()
+
+        # The degrade under test is the NARRATOR failing, and nothing is narrated
+        # until a route is chosen — planning makes no provider call at all now. So
+        # pick the first option: that is the call that tries to write, fails to
+        # reach the narrator, and must say so.
+        with page.expect_response(
+            lambda r: "/trips/preview/author" in r.url, timeout=180000
+        ) as caught:
+            page.locator('#tourStops .tour-option-pick[data-tour-option="0"]').click()
         body = caught.value.json()
 
         # The API must report the degrade at all — panel or no panel.
@@ -5424,8 +5513,14 @@ class TestRealTourGeneration:
         page.locator("#tourPreviewBtn").click()
         page.locator("#tourStart").fill("48.852966,2.349902")
         page.locator("#tourDuration").fill("60")
-        with page.expect_response(lambda r: "/trips/preview" in r.url, timeout=180000):
+        with page.expect_response(lambda r: r.url.endswith("/trips/preview"), timeout=180000):
             page.locator("#tourGenerateBtn").click()
+        # Listen buttons exist only on a written tour, so one route must be chosen
+        # before there is anything to press play on.
+        with page.expect_response(
+            lambda r: "/trips/preview/author" in r.url, timeout=180000
+        ):
+            page.locator('#tourStops .tour-option-pick[data-tour-option="0"]').click()
 
         # Record every preview request the page issues from here on.
         asked: list[str] = []

@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+import functools
+import hashlib
 import json
 import logging
 import re
 import sys
+from collections.abc import Callable
 from contextlib import contextmanager
+from typing import TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from neo4j import Driver, Session
@@ -29,10 +33,12 @@ from src.api.dependencies import (
 )
 from src.api.models.trips import (
     GeneratedStop,
+    TripAuthoredTourResponse,
     TripComposeRequest,
     TripComposeResponse,
     TripGenerateRequest,
     TripGenerateResponse,
+    TripPreviewAuthorRequest,
     TripPreviewBasicTour,
     TripPreviewRequest,
     TripPreviewResponse,
@@ -46,16 +52,17 @@ from src.tour.candidate_eligibility import (
 )
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
+    POI,
     BeatSequence,
-    Route,
+    RouteOption,
     TourabilityAssessment,
     TourInput,
 )
 from src.tour.degradations import degradation_scope, summarize
 from src.tour.density import TourabilityRefusedError
-from src.tour.generation import generate, is_walk_concurrent, vignette_one_liner_text
+from src.tour.generation import generate
 from src.tour.narration_quality import score_narration
-from src.tour.options import build_route_option
+from src.tour.options import build_route_option, option_eta_seconds
 from src.tour.premium_tour import (
     PREMIUM_MODULE_VERSION,
     EphemeralReceiptSink,
@@ -66,8 +73,10 @@ from src.tour.premium_tour import (
     execute_premium_plan,
     finalize_premium_tour,
     plan_premium_authoring,
-    plan_premium_tour,
+    plan_premium_options,
+    record_routing_degradations,
     resolve_build_identity,
+    resolve_routing_version,
 )
 from src.tour.quality_rubric import score_tour
 from src.tour.routing import summarise_route
@@ -79,8 +88,6 @@ from src.tour.selection import (
     build_poi_extra_narration,
     load_paris_corpus,
     pick_spine_area,
-    select_k_routes,
-    select_vignettes,
 )
 from src.tour.verify import FaithfulnessChecker
 
@@ -136,8 +143,10 @@ def _upstream_provider_errors():
 # and an in-flight concurrency slot. All four are DELETED, not disabled: no
 # constants, no counters, no env knobs, nothing to switch back on by accident.
 #
-# Stated once, plainly: /trips/preview is anonymous and authors one paid call per
-# routed stop, so nothing now bounds what an unauthenticated caller can spend.
+# Stated once, plainly: since the plan/write split of 2026-08-04 the anonymous
+# surface that spends money is /trips/preview/author, not /trips/preview — planning
+# is free and calls nobody. Writing still makes one paid call per stop with nothing
+# in front of it, so nothing bounds what an unauthenticated caller can spend.
 # If a bound is wanted later it must key on the AUTHENTICATED user rather than
 # the client IP — mobile carriers put thousands of subscribers behind a handful
 # of addresses, so the per-IP cap throttled real tour groups sharing a hotel or a
@@ -195,18 +204,31 @@ def _build_tour_input(**kwargs) -> TourInput:
         ) from exc
 
 
-def _refusal_detail(exc: TourabilityRefusedError) -> dict:
-    """Structured 422 body from a Step-2.2 feasibility/density refusal.
+def _refusal_detail(
+    exc: TourabilityRefusedError | CertificationPlanningInfeasibleError,
+) -> dict:
+    """Structured 422 body for EITHER refusal a traveller can hit.
 
     Shape (mirrors the FeasibilityAlternative NamedTuple from src/tour/density.py):
-        {reason, gap_minutes, alternatives: [{kind, duration_min, drop_end,
-                                              poi_id, lat, lng}, ...]}
+        {cause, reason, gap_minutes, alternatives: [{kind, duration_min, drop_end,
+                                                     poi_id, lat, lng}, ...]}
     gap_minutes is None for plain density-RED refusals (no fixed destination);
     alternatives is [] there too. For a fixed-destination overshoot it carries
     the routed-leg gap and the loop/extend/closer_b alternatives (closer_b
     includes its target poi_id/lat/lng).
+
+    BOTH refusals share this shape since 2026-08-04. ``CertificationPlanningInfeasible
+    Error`` used to have no alternatives at all and no handler on POST /trips/generate,
+    so a traveller whose request simply did not fit the time band got a 500. ``cause``
+    lets a surface tell the two apart — "there is not enough to see near here" versus
+    "this cannot be walked in the time you asked for" — without parsing prose.
     """
     return {
+        "cause": (
+            "time_budget"
+            if isinstance(exc, CertificationPlanningInfeasibleError)
+            else "tourability"
+        ),
         "reason": str(exc),
         "gap_minutes": exc.gap_minutes,
         "alternatives": [
@@ -221,6 +243,65 @@ def _refusal_detail(exc: TourabilityRefusedError) -> dict:
             for alt in exc.alternatives
         ],
     }
+
+
+def _infeasible_detail() -> dict:
+    """Structured 422 body for a route the street network could not carry.
+
+    The SAME four keys as ``_refusal_detail`` — cause / reason / gap_minutes /
+    alternatives — so a client parses one shape whichever refusal it hit. This
+    family measures nothing a traveller can trade away (there is no shorter
+    duration that makes an unroutable start routable), so gap_minutes is None and
+    there are no alternatives to offer.
+
+    PLAIN ENGLISH, never an identifier. This branch used to emit the literal string
+    ``premium_route_infeasible`` as ``reason``, and both surfaces render ``reason``
+    straight onto the page — so a person was shown an internal symbol and told
+    nothing about what to do next.
+    """
+    return {
+        "cause": "routing",
+        "reason": (
+            "This walk could not be routed on the street network. "
+            "Try a different start, or try again in a moment."
+        ),
+        "gap_minutes": None,
+        "alternatives": [],
+    }
+
+
+def _restored_vignettes(
+    stored: dict[str, list[str]] | None, pois_by_id: dict[str, POI]
+) -> dict[int, tuple[POI, ...]] | None:
+    """The walk-past sights of a saved flavour, back as POIs on their own legs.
+
+    JSON object keys are strings, so the leg numbers come back as text and are turned
+    into numbers again here. A sight whose POI has since left the corpus is dropped
+    rather than faked — the tour simply does not mention it — and a flavour saved
+    before this was recorded returns None, which leaves the rebuilt route with no
+    sights, exactly as those trips have always composed.
+    """
+    if not stored:
+        return None
+    return {
+        int(leg_idx): tuple(pois_by_id[pid] for pid in poi_ids if pid in pois_by_id)
+        for leg_idx, poi_ids in stored.items()
+    }
+
+
+def _restored_tourability(stored: dict | None) -> TourabilityAssessment | None:
+    """The thin-area disclosure of a saved flavour, or None when it was fully GREEN.
+
+    A malformed record is treated as no disclosure rather than a 500: the worst case
+    is a composed tour that does not repeat a warning the traveller already saw when
+    they picked it, which is far better than refusing to compose at all.
+    """
+    if not stored:
+        return None
+    try:
+        return TourabilityAssessment.model_validate(stored)
+    except ValidationError:
+        return None
 
 
 def _resolve_lenses(session: Session, body: TripGenerateRequest) -> list[str] | None:
@@ -279,7 +360,52 @@ def _primary_beat_audio(session: Session, beat_ids: list[str]) -> dict[str, dict
     }
 
 
+#: The two responses that gained a degradations list. Constrained rather than open, so
+#: a handler returning something with no such field cannot be decorated by mistake.
+_ReportsDegradations = TypeVar(
+    "_ReportsDegradations", TripGenerateResponse, TripComposeResponse
+)
+
+
+def _reports_degradations(
+    handler: Callable[..., _ReportsDegradations],
+) -> Callable[..., _ReportsDegradations]:
+    """Hand back everything that quietly degraded while the handler ran.
+
+    OWNER RULING 2026-07-31: a soft failure that only reaches a log file is
+    indistinguishable from success to the person looking at the screen. The preview
+    has opened a collection scope inline since then; these two did not, so
+    ``degradations.record`` was a silent no-op on the phone's own endpoints
+    (src/tour/degradations.py:137-139) and a tour planned on estimated walking legs
+    looked exactly like one planned on measured ones.
+
+    A DECORATOR RATHER THAN AN ``_impl`` SPLIT, deliberately. Moving each body into a
+    private function and leaving a thin route wrapper behind reads the same at the call
+    site, but it breaks three checks that read these handlers' SOURCE to prove what they
+    do — the one-engine suite finds the ``generate_trip`` function in the parsed module
+    and asserts it catches the band refusal, and two others assert the compose body
+    names the shared authoring seam. Wrapping keeps each handler an ordinary named
+    function with its body intact: ``functools.wraps`` sets ``__wrapped__``, which
+    ``inspect.getsource`` follows, and which is also how FastAPI still reads the real
+    signature and builds the same dependencies.
+
+    The scope must be opened OUT HERE, around the whole call, because the per-stop
+    authoring fan-out records from worker threads and a scope opened inside one of them
+    would not be the caller's (src/tour/degradations.py:86-121).
+    """
+
+    @functools.wraps(handler)
+    def _wrapped(*args, **kwargs) -> _ReportsDegradations:
+        with degradation_scope() as collected:
+            result = handler(*args, **kwargs)
+            rows = summarize(collected)
+        return result.model_copy(update={"degradations": rows}) if rows else result
+
+    return _wrapped
+
+
 @router.post("/trips/generate", response_model=TripGenerateResponse, status_code=201)
+@_reports_degradations
 def generate_trip(
     body: TripGenerateRequest,
     current_user: dict = Depends(get_current_user),
@@ -319,15 +445,35 @@ def generate_trip(
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
-        # M2/M3: the client supplies routed leg costs + polylines when the
-        # local Valhalla container is up; with it down every call falls back
-        # to haversine instantly. M6: up to 3 diverse flavours; flavours[0]
-        # is the trip that persists.
+        # ONE ALGORITHM. plan_premium_options is BLOCK 1, the only planner on either
+        # surface: it applies the certification walk budget (0.90-1.10, nominal 1.00),
+        # enforces the Premium receipt bar, and returns the same diverse flavours the
+        # workbench shows. This route used to call select_k_routes itself with no
+        # planning policy, so the phone silently planned on the legacy flat budget and
+        # skipped the route bar — about 20% less walking and audio than the workbench
+        # produced for the identical request.
+        #
+        # Provider-free: Block 1 defaults to the silent glue client, so planning three
+        # flavours here costs nothing. The words arrive at /trips/{id}/compose.
         with RoutingClient() as routing_client:
-            flavours = select_k_routes(tour_input, snapshot, 3, routing_client=routing_client)
-        route = flavours[0]
-    except TourabilityRefusedError as exc:
+            plans = plan_premium_options(tour_input, snapshot, routing_client=routing_client)
+    except (TourabilityRefusedError, CertificationPlanningInfeasibleError) as exc:
+        # The certification band refusal reaches this route for the first time in
+        # 2026-08-04's collapse: the timebox repair used to run only on the preview
+        # path. Uncaught it is a 500 with a stack trace; caught it is the same
+        # structured 422 with gap-minutes and alternatives the fixed-destination
+        # refusal already returns.
         raise HTTPException(422, _refusal_detail(exc)) from exc
+    except (PremiumRouteInfeasibleError, ValueError) as exc:
+        raise HTTPException(422, _infeasible_detail()) from exc
+
+    flavours = [plan.route for plan in plans]
+    scripts = [plan.source for plan in plans]
+    # RETAINED, not discarded: build_route_option reads the vignette beats and the
+    # governor's overflow off these sequences to voice the leg/vignette cards.
+    sequences = [plan.sequence for plan in plans]
+    route = flavours[0]
+    script = scripts[0]
 
     # A non-RED assessment can still yield an empty route (e.g. YELLOW by fill
     # ratio with no tier-3+ anchor candidates). Refuse before persisting —
@@ -337,35 +483,6 @@ def generate_trip(
             422,
             "No tourable POIs reachable from this start for the requested duration.",
         )
-
-    # Per flavour: beat plan (merging beats demoted into a host POI — same
-    # sequence as scripts/tour_build.py) and Script. scripts[0] drives the
-    # persisted trip; every flavour becomes a RouteOption. Track B: each
-    # flavour's walk-past vignettes get ONE voiceable beat and the stitcher
-    # voices the one-liner inside the leg narration.
-    scripts = []
-    for flavour in flavours:
-        # C9 governor v4 seam: caps a dominating stop, overflow -> keep-exploring.
-        capped = build_poi_beat_plans_capped(
-            flavour, snapshot, lenses=lenses, end_is_none=tour_input.end is None
-        )
-        plans = tuple(pb for pb, _ in capped)
-        overflow_by_poi = {pb.poi_id: ov for pb, ov in capped if ov}
-        vignette_beats = select_vignette_beats(
-            flavour.vignettes, snapshot.beats_by_poi, lenses=lenses
-        )
-        scripts.append(
-            generate(
-                BeatSequence(
-                    poi_beats=tuple(plans),
-                    vignette_beats=vignette_beats,
-                    overflow_by_poi=overflow_by_poi,
-                ),
-                flavour,
-                tour_input,
-            )
-        )
-    script = scripts[0]
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     # KE1: per-stop "keep exploring" extras (un-voiced beats), computed from the
@@ -394,18 +511,33 @@ def generate_trip(
             "start_time": body.start_time,
         }
     )
-    # Per-flavour ordered poi ids PLUS the C9 exempt-anchor identity, so /compose
-    # restores the SAME exempt set the greedy used (Held-Karp reorders pois, and
-    # the compose-rebuilt route has no greedy locals). Legacy trips stored a bare
-    # id list; the compose reader treats those as fail-open (uncapped).
+    # EVERYTHING ABOUT A FLAVOUR THAT COMPOSE CANNOT WORK OUT AGAIN. Ordered poi ids,
+    # the C9 exempt-anchor identity (Held-Karp reorders pois and the compose-rebuilt
+    # route has no greedy locals), the walk-past sights, the thin-area disclosure, and
+    # the elapsed time this flavour was OFFERED as. Compose hands all of it straight
+    # back into the route it rebuilds, so the tour the traveller is given is the tour
+    # they picked rather than a re-derivation that agrees only most of the time.
+    # Legacy trips stored a bare id list; the compose reader treats those as fail-open.
     options_json = json.dumps(
         [
             {
                 "poi_ids": [p.id for p in flavour.pois],
                 "start_anchor_poi_id": flavour.start_anchor_poi_id,
                 "fixed_end_poi_id": flavour.fixed_end_poi_id,
+                # leg index -> the walk-past POIs on that leg, as strings because
+                # JSON object keys cannot be integers.
+                "vignette_poi_ids": {
+                    str(leg_idx): [p.id for p in vignette_pois]
+                    for leg_idx, vignette_pois in flavour.vignettes.items()
+                },
+                "tourability": (
+                    flavour.tourability.model_dump(mode="json")
+                    if flavour.tourability is not None
+                    else None
+                ),
+                "eta_seconds": option_eta_seconds(flavour, fl_script),
             }
-            for flavour in flavours
+            for flavour, fl_script in zip(flavours, scripts, strict=True)
         ]
     )
 
@@ -457,8 +589,11 @@ def generate_trip(
             beats_by_id,
             route_id=f"{result['trip_id']}-opt{i + 1}",
             snapshot=snapshot,
+            sequence=fl_sequence,
         )
-        for i, (flavour, fl_script) in enumerate(zip(flavours, scripts, strict=True))
+        for i, (flavour, fl_script, fl_sequence) in enumerate(
+            zip(flavours, scripts, sequences, strict=True)
+        )
     ]
 
     return TripGenerateResponse(
@@ -484,6 +619,7 @@ COMPOSE_ATTEMPTS = 1
 
 
 @router.post("/trips/{trip_id}/compose", response_model=TripComposeResponse)
+@_reports_degradations
 def compose_trip(
     request: Request,
     trip_id: str,
@@ -540,16 +676,12 @@ def compose_trip(
     if not (1 <= option_n <= len(options)):
         raise HTTPException(404, f"Unknown route_id '{body.route_id}' for trip '{trip_id}'")
     entry = options[option_n - 1]
-    if isinstance(entry, dict):  # C9f-i per-flavour format: {poi_ids, anchor ids}
+    if isinstance(entry, dict):  # per-flavour format: everything generate decided
         poi_ids = entry["poi_ids"]
-        anchor_restore = {
-            k: entry[k]
-            for k in ("start_anchor_poi_id", "fixed_end_poi_id")
-            if entry.get(k) is not None
-        }
+        chosen = entry
     else:  # legacy bare id list (trips generated pre-C9f): fail open (uncapped).
         poi_ids = entry
-        anchor_restore = {}
+        chosen = {}
 
     tour_input = _build_tour_input(
         start=tuple(tour_input_dict["start"]),
@@ -576,30 +708,33 @@ def compose_trip(
         # Captured INSIDE the block: RoutingClient is a context manager, and the
         # authoring plan needs this value after it closes.
         #
-        # GUARDED, because this is the one call on this path that a Valhalla outage
-        # can hard-fail. Every walking leg below independently falls back to a
-        # straight-line estimate when the container is unreachable, but the routing
-        # VERSION is provenance -- it binds the authored tour to the engine that
-        # measured it -- so routing_client.routing_version() does a live GET /status
-        # and treats a missing or malformed answer as an error (routing_client.py:183-200).
-        # ondoway-valhalla is a real network dependency that cold-starts and rebuilds
-        # tiles (render.yaml:98-124). Left bare, an outage escapes as a generic 500
-        # (transport error) or, worse, is swept up by the ValueError branch far below
-        # and relabelled compose_verification_failed -- a code that means "the narrator
-        # wrote something untraceable", which would blame the writer for a container
-        # that is simply still booting. Named, retryable 503 instead, exactly like the
-        # build fingerprint below, and raised before any provider call is billed.
-        try:
-            routing_version = routing_client.routing_version()
-        except Exception as exc:
-            logging.getLogger("ondoway.api").exception(
-                "Compose could not read a routing version for trip=%s", trip_id
-            )
-            raise HTTPException(
-                503,
-                {"reason": "routing_version_unavailable", "detail": str(exc)},
-                headers={"Retry-After": "30"},
-            ) from exc
+        # GUARDED, because this is the one call on this path that a Valhalla outage can
+        # hard-fail. Every walking leg below independently falls back to a straight-line
+        # estimate when the container is unreachable; routing_version() does a live
+        # GET /status and treats a missing or malformed answer as an error
+        # (routing_client.py:183-200). Left bare it escapes as a generic 500, or worse
+        # is swept up by the ValueError branch far below and relabelled
+        # compose_verification_failed -- a code meaning "the narrator wrote something
+        # untraceable", which blames the writer for a container that is still booting.
+        #
+        # LABELLED, NOT REFUSED (resolved 2026-08-05). This was a named, retryable 503,
+        # which is the same answer PLANNING used to give the same outage and no longer
+        # does: ondoway-valhalla is a real network dependency that cold-starts and
+        # rebuilds tiles (render.yaml:98-124), and refusing here takes tour writing down
+        # app-wide for the duration -- after the traveller has already chosen a route.
+        # The provenance a refusal protects does not exist during an outage anyway,
+        # because unmeasured legs were measured by no engine; resolve_routing_version
+        # records that plainly and stamps an unmistakable value instead. Per-leg
+        # provenance is untouched, since every measured leg carries its own receipt.
+        routing_version = resolve_routing_version(routing_client)
+        # BUILT RIGHT ONCE. Everything generate decided about this flavour and could
+        # not be worked out again — the walk-past sights, the thin-area disclosure,
+        # which stops were the marquee ones — is handed straight in, so the rebuilt
+        # route IS the offered route rather than a fresh derivation patched afterwards.
+        # This used to re-run the vignette picker (its only caller anywhere, and it
+        # lowercased the lens set where generate did not) and then copy the anchor ids
+        # back on: two chances for the composed tour to stop being the chosen one.
+        # Empty for legacy trips, which restores exactly the old fail-open behaviour.
         route = summarise_route(
             picked,
             start_lat=tour_input.start[0],
@@ -609,19 +744,16 @@ def compose_trip(
             spine_area=spine,
             routing_client=routing_client,
             planning_policy=planning_policy,
+            vignettes=_restored_vignettes(chosen.get("vignette_poi_ids"), pois_by_id),
+            tourability=_restored_tourability(chosen.get("tourability")),
+            start_anchor_poi_id=chosen.get("start_anchor_poi_id"),
+            fixed_end_poi_id=chosen.get("fixed_end_poi_id"),
         )
+        # SAY SO IF THE LEGS WERE ESTIMATED. This route is rebuilt here rather than
+        # planned, so it never passes the planner that labels an unmeasured walk — and
+        # AC-18 allows no path on which such a route reaches a person unlabelled.
+        record_routing_degradations(route, component="trips.compose_trip")
 
-    # Track B: re-tag walk-past vignettes on the rebuilt route (pure fn over
-    # the same stop set) so the composed narration voices the one-liners too.
-    interest = frozenset(s.lower() for s in (tour_input.lenses or []))
-    route = route.model_copy(
-        update={"vignettes": select_vignettes(route, snapshot, interest or None)}
-    )
-    # C9f-i: restore the exempt-anchor identity persisted at generate time onto the
-    # summarise_route-rebuilt route, so C9f-ii's cap exempts the SAME start-anchor /
-    # fixed-end here as it did at generate. Empty for legacy trips -> fail open.
-    if anchor_restore:
-        route = route.model_copy(update=anchor_restore)
     # C9f-i: compose goes through the SAME shared governor seam as
     # generate/preview (unifies the choke point; the anchor-id restore above lets
     # the cap exempt the marquee at compose too). v4 caps a dominating stop and
@@ -790,140 +922,28 @@ def compose_trip(
     )
 
 
-def _preview_stops(
-    script, route: Route, vignette_beats, snapshot, overflow_by_poi
-) -> list[TripPreviewStop]:
-    """Interleave walk-past vignette stops into the preview stop list.
+def _preview_cards(option: RouteOption) -> list[TripPreviewStop]:
+    """The shared option's cards on the preview wire, one for one.
 
-    The vignette on leg ``i`` (the walk INTO dwell stop ``i``) sits right
-    BEFORE that dwell stop, mirroring build_route_option's interleave. Its
-    card carries the same one-liner the leg narration voices (first sentence
-    of its chosen beat) with minutes=0; the dwell stop's narration already
-    contains that line inside its leg text.
-
-    KE9: a DWELL stop gets ``has_deeper_dive=True`` iff its poi_id is a key of
-    ``overflow_by_poi`` with a non-empty overflow — the C9 governor capped some
-    of that stop's beats out into the "keep exploring here" extras. Vignette
-    (walk-past) stops never have deeper-dive. Pure and deterministic.
+    THE INTERLEAVE ITSELF IS NOT HERE. It is ``src/tour/options.build_route_option``,
+    the one implementation both surfaces use; this only renames the fields the preview
+    model spells differently and numbers the cards. ``sort_order`` counts EMITTED cards
+    (leg, vignette and dwell alike), which is what the workbench renders in order.
     """
-    from src.audio.tts_normalize import normalize_dashes_for_reading
-    from src.tour.selection import spotlight
-
-    lenses_fs = frozenset(script.inputs.lenses or ())
-    # The vignette one-liner is voiced by its own interleaved card (below); strip it
-    # from the dwell stop's narration so the workbench doesn't double-voice it (the
-    # "bleed"). _build_transit folds the one-liner in at the arrival dwell stop_idx as
-    # a vignette-beat sentence, so drop sentences sourced from a vignette beat.
-    vignette_beat_ids = {b.id for beats in vignette_beats.values() for b in beats}
-    # SPLIT WALK-CONCURRENT NARRATION OUT OF THE DWELL CARD (2026-07-19).
-    #
-    # Navigation lines and reflections are spoken WHILE THE TOURIST WALKS the leg
-    # INTO stop i, but they carry stop_idx == i, so they were concatenated into that
-    # stop's narration. The editor therefore saw one undifferentiated blob and could
-    # not tell what the tourist hears on the walk versus standing at the stop, could
-    # not play the walk content on its own, and could not see how much of a long
-    # walk was filled at all.
-    #
-    # That mattered because the walks are where the tour is emptiest. MEASURED on
-    # the live Paris graph, 2026-07-19, on the CURRENT code (an earlier revision of
-    # this comment quoted 1650 s / 959 s / 61%, measured while a since-reverted
-    # selection experiment was applied; those figures were stale and are corrected
-    # here — re-derive rather than carry a number forward):
-    #
-    #   60-min Ile de la Cite / dark_history: 1096 s walking, 710 s spoken.
-    #       60% of elapsed time is silence; 4 leg cards carry 54 words = 22 s,
-    #       filling 2.0% of the walking.
-    #   60-min Le Marais / social_change:     1148 s walking, 345 s spoken.
-    #       76% silence; 1 leg card carries 14 words = 6 s, filling 0.5%.
-    #
-    # ``is_walk_concurrent`` is the SHARED predicate (src/tour/generation.py) that
-    # quality_rubric's C7/C7b time model also uses, so a sentence shown on a leg
-    # card is exactly a sentence the rubric scored as costing no elapsed time.
-    _dwell_sents: dict[int, list[str]] = {}
-    _leg_sents: dict[int, list[str]] = {}
-    for s in script.script:
-        if s.source_type == "beat" and s.source_id in vignette_beat_ids:
-            continue  # voiced by its own interleaved vignette card, below
-        if is_walk_concurrent(s, vignette_beat_ids):
-            _leg_sents.setdefault(s.stop_idx, []).append(s.text)
-        else:
-            _dwell_sents.setdefault(s.stop_idx, []).append(s.text)
-    # Display-normalize dashes so the workbench text reads the way the audio
-    # sounds (comma pause, not a dangling em-dash the tourist complained about).
-    per_stop = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in _dwell_sents.items()}
-    per_leg = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in _leg_sents.items()}
-    # Walk seconds of the leg ARRIVING at stop i — shown on the leg card so the
-    # editor can see the walk against the narration that fills it. A leg with 600 s
-    # of walking and 20 s of narration is the defect made visible.
-    _leg_walk_s: dict[int, int] = {}
-    for i, t in enumerate(route.transits):
-        _leg_walk_s[i] = int(t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
-    # Voice the walk-past one-liner via the SAME helper the audio/script path uses
-    # (generation.vignette_one_liner_text) so the workbench text never diverges from
-    # what the tourist hears — clause-capped when the beat's first sentence is a long
-    # run-on, keeping the POI's own name in the shortened line.
-    # Vignette beats belong to WALK-PAST POIs (route.vignettes), NOT the seated
-    # route.pois — the cap's name guard needs THOSE names or it falls back to the
-    # full run-on. Cover both.
-    _poi_name_by_id = {p.id: p.name for p in route.pois}
-    for _pois in route.vignettes.values():
-        for _p in _pois:
-            _poi_name_by_id.setdefault(_p.id, _p.name)
-    one_liner_by_poi: dict[str, str] = {}
-    for beats in vignette_beats.values():
-        for beat in beats:
-            text = vignette_one_liner_text(beat.script_body, _poi_name_by_id.get(beat.poi_id, ""))
-            if text:
-                one_liner_by_poi[beat.poi_id] = normalize_dashes_for_reading(text)
-
-    out: list[TripPreviewStop] = []
-    for i, sp in enumerate(script.selected_pois):
-        # The LEG into this stop, before anything that happens at it. Emitted only
-        # when there is something to hear: a leg with no narration is silence, and
-        # an empty card would imply content that does not exist.
-        leg_text = per_leg.get(i, "").strip()
-        if leg_text:
-            out.append(
-                TripPreviewStop(
-                    sort_order=len(out) + 1,
-                    poi_name=f"Walk to {sp.name}",
-                    lat=sp.lat,
-                    lng=sp.lng,
-                    narration=leg_text,
-                    minutes=round(_leg_walk_s.get(i, 0) / 60),
-                    band="leg",
-                    spotlight=0.0,
-                )
-            )
-        for poi in route.vignettes.get(i, ()):
-            if poi.id not in one_liner_by_poi:
-                continue  # no voiceable beat -> not voiced, not shown
-            out.append(
-                TripPreviewStop(
-                    sort_order=len(out) + 1,
-                    poi_name=poi.name,
-                    lat=poi.lat,
-                    lng=poi.lng,
-                    narration=one_liner_by_poi[poi.id],
-                    minutes=0,
-                    band="vignette",
-                    spotlight=spotlight(poi, lenses=lenses_fs or None, snapshot=snapshot),
-                )
-            )
-        out.append(
-            TripPreviewStop(
-                sort_order=len(out) + 1,
-                poi_name=sp.name,
-                lat=sp.lat,
-                lng=sp.lng,
-                narration=per_stop.get(i, ""),
-                minutes=round(sp.dwell_seconds / 60),
-                band="dwell",
-                spotlight=0.0,
-                has_deeper_dive=bool(overflow_by_poi.get(sp.id)),
-            )
+    return [
+        TripPreviewStop(
+            sort_order=index,
+            poi_name=stop.name,
+            lat=stop.lat,
+            lng=stop.lng,
+            narration=stop.narration,
+            minutes=stop.minutes,
+            band=stop.band,
+            spotlight=stop.spotlight,
+            has_deeper_dive=stop.has_deeper_dive,
         )
-    return out
+        for index, stop in enumerate(option.stops, start=1)
+    ]
 
 
 def _tourability_payload(
@@ -953,44 +973,167 @@ def _tourability_payload(
     )
 
 
+def _preview_plan_fingerprint(plans) -> str:
+    """Stable 12-hex identity of ONE plan result: the options, in order.
+
+    The author route re-derives the plan from the same request body, and this is what
+    proves the option it authors is the option the operator was shown. Corpus or
+    routing drift between the two calls changes the fingerprint, and the author route
+    then refuses rather than silently authoring a different tour. Ordered POI ids are
+    the whole identity of an option — everything else (eta, dwell, vignettes) is a
+    pure function of them plus the routing answers.
+    """
+    payload = json.dumps(
+        [[poi.id for poi in plan.route.pois] for plan in plans],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
+
+
+def _places_only(option: RouteOption) -> RouteOption:
+    """The option as it looks while it is still being CHOSEN: places, order, times.
+
+    OWNER RULING 1, 2026-08-04: during route planning, on both surfaces, an option
+    shows the POI names, their order, the walking times and the ETA — and no
+    descriptive text of any kind. So the cards carry no narration, no "keep exploring"
+    flag, and there are no walking-narration cards at all: such a card exists only to
+    show what is heard on the way, and at plan time nothing has been written. The words
+    arrive at POST /trips/preview/author, once a route has been picked.
+    """
+    return option.model_copy(
+        update={
+            "stops": tuple(
+                stop.model_copy(update={"narration": "", "has_deeper_dive": False})
+                for stop in option.stops
+                if stop.band != "leg"
+            )
+        }
+    )
+
+
+def _plan_options(plans, snapshot, *, fingerprint: str) -> list[RouteOption]:
+    """The plans as RouteOptions, through the ONE shared interleave."""
+    beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
+    return [
+        _places_only(
+            build_route_option(
+                plan.route,
+                plan.source,
+                beats_by_id,
+                route_id=f"preview-{fingerprint}-opt{i + 1}",
+                snapshot=snapshot,
+                sequence=plan.sequence,
+            )
+        )
+        for i, plan in enumerate(plans)
+    ]
+
+
+def _plan_preview(tour_input: TourInput, driver: Driver):
+    """BLOCK 1 for the anonymous surface: plan, refuse, or hand back the options.
+
+    Shared by the plan-only preview and by the author route, which re-derives the same
+    plan before authoring the option it was handed. Provider-free and $0.
+    """
+    snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
+    try:
+        with RoutingClient() as routing_client:
+            plans = plan_premium_options(tour_input, snapshot, routing_client=routing_client)
+    except (TourabilityRefusedError, CertificationPlanningInfeasibleError) as exc:
+        raise HTTPException(422, _refusal_detail(exc)) from exc
+    except (PremiumRouteInfeasibleError, ValueError) as exc:
+        raise HTTPException(422, _infeasible_detail()) from exc
+    return snapshot, plans
+
+
 @router.post("/trips/preview", response_model=TripPreviewResponse)
 def preview_trip(
-    request: Request,
     body: TripPreviewRequest,
     driver: Driver = Depends(get_driver),
-    premium_executor: PremiumComposeExecutor = Depends(get_premium_compose_executor),
-    faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
 ):
-    """Build the preview, and hand back everything that quietly degraded doing it.
+    """Plan the tour. Route options, no narrator, no spend.
 
-    OWNER RULING 2026-07-31: "Don't just log errors. Actually show them in the
-    workbench UI. Otherwise, they're invisible." A soft failure that only reaches
-    a log file is indistinguishable from success to the person looking at the
-    screen — which is how canned transitions shipped as the default for months.
+    BLOCK 1 of the two-block split: start (required), end (optional), lenses and timing
+    in; routed options out. It selects the places, orders and routes them, computes the
+    ETA, dwell, vignettes and tourability, and calls no provider — so a person chooses
+    among real walks before anything is paid for. Writing the chosen one is a separate
+    call, POST /trips/preview/author.
 
-    The real work is ``_preview_trip_impl``; this wrapper owns the collection
-    scope so the implementation never has to thread a collector through, and so a
-    threaded compose fan-out cannot leak one request's degradations into another.
+    This endpoint used to plan AND write, one paid call per stop, on every request, with
+    no authentication in front of it — so a stranger could spend the project's money by
+    typing coordinates, and nobody could look at a route before it was written.
+
+    OWNER RULING 2026-07-31: "Don't just log errors. Actually show them in the workbench
+    UI. Otherwise, they're invisible." The degradation scope is opened here so a route
+    built on estimated walking legs rather than measured ones is reported on the wire
+    rather than in a log file nobody opens.
     """
     with degradation_scope() as collected:
-        result = _preview_trip_impl(request, body, driver, premium_executor, faithfulness_checker)
+        tour_input = _build_tour_input(
+            start=(body.center_lat, body.center_lng),
+            duration_min=body.duration_min or DEFAULT_DURATION_MIN,
+            city_slug=body.city_slug,
+            lenses=body.lenses or None,
+            round_trip=body.round_trip,
+            end=_end_point(body.end_lat, body.end_lng),
+        )
+        snapshot, plans = _plan_preview(tour_input, driver)
+        result = TripPreviewResponse(
+            spine_area=plans[0].route.spine_area,
+            options=_plan_options(
+                plans, snapshot, fingerprint=_preview_plan_fingerprint(plans)
+            ),
+            tourability=_tourability_payload(plans[0].route.tourability),
+        )
         rows = summarize(collected)
     return result.model_copy(update={"degradations": rows}) if rows else result
 
 
-def _preview_trip_impl(
-    request: Request,
-    body: TripPreviewRequest,
+# The plan's own identity, and which of its routes. The hex is a fingerprint of the
+# whole plan, so an id minted for one set of routes cannot select a route out of a
+# different set — see _preview_plan_fingerprint.
+_PREVIEW_ROUTE_ID = re.compile(r"^preview-([0-9a-f]{12})-opt(\d+)$")
+
+
+@router.post("/trips/preview/author", response_model=TripAuthoredTourResponse)
+def author_preview_tour(
+    body: TripPreviewAuthorRequest,
+    driver: Driver = Depends(get_driver),
+    premium_executor: PremiumComposeExecutor = Depends(get_premium_compose_executor),
+    faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
+):
+    """Write EXACTLY the route that was chosen. Never re-plans it.
+
+    The second half of the split. It re-derives the free plan from the same request,
+    checks the plan is still the one that was shown, and writes that one route — one
+    call to the narrator per stop, no retries. Nothing here chooses a route: the
+    choice arrived with the request.
+
+    ANONYMOUS AND PAID, for the Phase-1 window only, approved on 2026-08-04 because
+    without it the workbench cannot produce a tour at all once planning stops writing.
+    As the note further up this file says, nothing bounds what an unauthenticated
+    caller can spend here, and with the stop ceiling gone the requested duration is
+    the only thing limiting how many paid calls one request makes. Phase 2 closes it
+    by giving the workbench a real identity and moving it onto the saved-trip pair.
+    """
+    with degradation_scope() as collected:
+        result = _author_preview_impl(body, driver, premium_executor, faithfulness_checker)
+        rows = summarize(collected)
+    return result.model_copy(update={"degradations": rows}) if rows else result
+
+
+def _author_preview_impl(
+    body: TripPreviewAuthorRequest,
     driver: Driver,
     premium_executor: PremiumComposeExecutor,
     faithfulness_checker: FaithfulnessChecker | None,
-):
-    """Build a physically traced Premium candidate without certifying it.
+) -> TripAuthoredTourResponse:
+    match = _PREVIEW_ROUTE_ID.match(body.route_id)
+    if match is None:
+        raise HTTPException(422, {"reason": "invalid_route_id", "route_id": body.route_id})
+    chosen_fingerprint, option_n = match.group(1), int(match.group(2))
 
-    Planning uses the same certification route/request algorithm as the frozen
-    batch runner.  Authoring performs exactly one zero-retry call per planned
-    stop.  Paid FACT/ENJOY reviewers remain outside this interactive endpoint.
-    """
     tour_input = _build_tour_input(
         start=(body.center_lat, body.center_lng),
         duration_min=body.duration_min or DEFAULT_DURATION_MIN,
@@ -999,51 +1142,58 @@ def _preview_trip_impl(
         round_trip=body.round_trip,
         end=_end_point(body.end_lat, body.end_lng),
     )
-    snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
-    try:
-        with RoutingClient() as routing_client:
-            premium_plan = plan_premium_tour(
-                tour_input,
-                snapshot,
-                routing_client=routing_client,
-            )
-    except TourabilityRefusedError as exc:
-        raise HTTPException(422, _refusal_detail(exc)) from exc
-    except (
-        CertificationPlanningInfeasibleError,
-        PremiumRouteInfeasibleError,
-        ValueError,
-    ) as exc:
+    snapshot, plans = _plan_preview(tour_input, driver)
+    if not 1 <= option_n <= len(plans):
         raise HTTPException(
-            422,
+            404,
+            {"reason": "unknown_option", "route_id": body.route_id, "options": len(plans)},
+        )
+    # THE CHOSEN ROUTE, OR NOTHING. Planning is free and repeatable given the same
+    # corpus and the same walking times, but neither is frozen between the two calls:
+    # a content upload or a routing restart moves the plan. The fingerprint makes that
+    # visible instead of writing — and charging for — a tour nobody was shown and
+    # nobody could tell apart on screen.
+    fingerprint = _preview_plan_fingerprint(plans)
+    if fingerprint != chosen_fingerprint:
+        raise HTTPException(
+            409,
             {
-                "reason": "premium_route_infeasible",
-                "detail": str(exc),
-                "alternatives": [],
+                "reason": "plan_changed",
+                "route_id": body.route_id,
+                "current_route_id": f"preview-{fingerprint}-opt{option_n}",
             },
-        ) from exc
+        )
 
-    route = premium_plan.route
-    seq = premium_plan.sequence
-    basic_script = premium_plan.source
-    vignette_beats = seq.vignette_beats
-    overflow_by_poi = dict(seq.overflow_by_poi)
+    plan = plans[option_n - 1]
+    route = plan.route
+    seq = plan.sequence
+    beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     provider = premium_executor.provider_name
 
-    def _basic_tour_fallback(*, reason: str, rejection: CandidateRejection) -> TripPreviewResponse:
-        basic_stops = _preview_stops(basic_script, route, vignette_beats, snapshot, overflow_by_poi)
-        return TripPreviewResponse(
+    def _basic_tour_fallback(
+        *, reason: str, rejection: CandidateRejection
+    ) -> TripAuthoredTourResponse:
+        return TripAuthoredTourResponse(
+            route_id=body.route_id,
+            option=None,
             spine_area=route.spine_area,
             total_audio_min=0,
-            stops=[],
             candidate_eligible=False,
             narration_kind="none",
             basic_tour=TripPreviewBasicTour(
                 reason=reason,
-                total_audio_min=round(basic_script.total_audio_seconds / 60),
-                stops=basic_stops,
+                total_audio_min=round(plan.source.total_audio_seconds / 60),
+                stops=_preview_cards(
+                    build_route_option(
+                        route,
+                        plan.source,
+                        beats_by_id,
+                        route_id=body.route_id,
+                        snapshot=snapshot,
+                        sequence=seq,
+                    )
+                ),
             ),
-            lens_coverage_note=None,
             tourability=_tourability_payload(route.tourability),
             compose_status="basic_available",
             candidate_rejection=rejection,
@@ -1052,11 +1202,11 @@ def _preview_trip_impl(
             quality=None,
         )
 
-    # Resolved BEFORE any spend precheck / physical call: an unresolvable build
-    # fingerprint (dirty local tree, malformed deploy SHA) is an environment/config
-    # fault, not an LLM authoring failure — it must never be folded into the generic
-    # provider-failure branch below, which would both mislabel the cause and hide
-    # that ZERO provider spend happened.
+    # Resolved BEFORE any physical call: an unresolvable build fingerprint (dirty
+    # local tree, malformed deploy SHA) is an environment/config fault, not an LLM
+    # authoring failure — it must never be folded into the generic provider-failure
+    # branch below, which would both mislabel the cause and hide that ZERO provider
+    # spend happened.
     try:
         build_identity = resolve_build_identity()
     except Exception as exc:
@@ -1071,12 +1221,12 @@ def _preview_trip_impl(
     try:
         with _upstream_provider_errors():
             physical_responses = execute_premium_plan(
-                premium_plan,
+                plan,
                 executor=premium_executor,
                 receipt_sink=EphemeralReceiptSink(),
             )
             premium_result = finalize_premium_tour(
-                premium_plan,
+                plan,
                 physical_responses,
                 faithfulness_checker=faithfulness_checker,
                 build_identity=build_identity,
@@ -1097,7 +1247,7 @@ def _preview_trip_impl(
             "(city=%s duration=%s stops_planned=%s)",
             body.city_slug,
             body.duration_min,
-            len(premium_plan.units),
+            len(plan.units),
         )
         # A VERIFY refusal names counts only ("1 untraceable"), which is not enough to
         # act on: traceability fails for three structurally different reasons (unknown
@@ -1139,7 +1289,6 @@ def _preview_trip_impl(
         )
 
     script = premium_result.blueprint.script
-    compose_status = "composed"
     narration = " ".join(s.text for s in script.script)
     q = score_narration(narration)
     narration_quality = {
@@ -1161,27 +1310,40 @@ def _preview_trip_impl(
     # line, a stop GORGED past the listenable cap) plus repeats, empty stops and
     # imbalance. Surfaced to the editor rather than silently swallowed — a tour that
     # breaches the standard is visible in the workbench with the exact check and stop.
-    rubric = score_tour(script, route, snapshot.beats_by_poi, beat_sequence=seq)
-
+    #
     # Paid semantic FACT/ENJOY/repetition reviewers are certification concerns and never
     # run in this interactive candidate endpoint. The advisory G4 and coverage-omission
     # blocks this response used to carry are GONE rather than empty: their judges are
     # deleted, so a permanently-`[]` "findings" list advertised a check that could not
     # fire. Deterministic quality is the only local diagnostic.
+    #
+    # Scored ONCE. Two lanes each added this call with their own comment on 2026-08-05 and
+    # the duplicate scored the whole tour a second time on every request, discarding the
+    # first result. Both comments were worth keeping; the second traversal was not.
+    rubric = score_tour(script, route, snapshot.beats_by_poi, beat_sequence=seq)
 
-    stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
-    return TripPreviewResponse(
+    # THE CHOSEN ROUTE WITH THE WORDS FILLED IN. Same places, same order, same arrival
+    # time, same walk-past sights — it is built by the one shared interleave from the
+    # SAME route object the plan produced, so there is nothing to re-derive and nothing
+    # to patch back on afterwards.
+    return TripAuthoredTourResponse(
+        route_id=body.route_id,
+        option=build_route_option(
+            route,
+            script,
+            beats_by_id,
+            route_id=body.route_id,
+            snapshot=snapshot,
+            sequence=seq,
+        ),
         spine_area=route.spine_area,
         total_audio_min=round(script.total_audio_seconds / 60),
-        stops=stops,
         candidate_eligible=True,
         candidate_status="premium_candidate_eligible_for_certification",
         narration_kind="llm_candidate",
         basic_tour=None,
-        # Per-corridor lens coverage note ships later in Phase 3 (REACH).
-        lens_coverage_note=None,
         tourability=_tourability_payload(route.tourability),
-        compose_status=compose_status,
+        compose_status="composed",
         candidate_rejection=None,
         provider=provider,
         narration_quality=narration_quality,

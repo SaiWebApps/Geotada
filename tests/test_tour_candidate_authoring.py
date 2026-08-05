@@ -6,7 +6,6 @@ import pytest
 from pydantic import ValidationError
 
 from src.tour.candidate_authoring import (
-    MAX_CANDIDATE_STOPS,
     AuthoringCandidateIdentity,
     AuthoringCandidatePlan,
     AuthoringCandidateResponseSet,
@@ -178,25 +177,77 @@ def _wide_plan(stop_count: int) -> AuthoringCandidatePlan:
     )
 
 
-def test_candidate_plan_covers_every_stop_selection_can_seat() -> None:
-    """The identity layer caps at HARD_ANCHOR_CAP, not at certification's 8.
+def test_no_authoring_surface_imposes_a_stop_ceiling() -> None:
+    """OWNER RULING 5 — "no stop limits, period" — on the AUTHORING side.
 
-    A persisted trip carries whatever the planner seated. Refusing a 9-to-15-stop
-    plan HERE would reject a route the same engine had already built and stored,
-    at the point where the request identities are minted — long after the only
-    place a stop budget belongs (the PLANNING policy in routing.py).
+    Three ceilings used to sit behind the planner and reject a route it had
+    already built: the identity layer's ``MAX_CANDIDATE_STOPS`` (15), the compose
+    -request builder's ``AUTHORING_MAX_STOPS`` (15), and the quality scorer's
+    ``MAX_COMPOSED_STOPS`` (8). Each only ever REFUSED work the engine had
+    legitimately planned, at a point long after the route existed. With duration
+    as the only bound on tour length, a 20-stop or 40-stop tour is ordinary, and
+    an authoring surface that refuses one is a bug, not a safeguard.
+
+    The LOWER bound survives and is asserted below: a plan with zero stops is
+    still a refusal, because the compose-request builder keys its requests by stop
+    index and would otherwise return an empty authoring plan in silence.
+
+    UNDO (each turns this RED):
+      * re-add ``max_length=15`` to ``stop_requests`` -> assertion 1;
+      * re-add ``max_length=15`` to ``responses`` -> assertion 2;
+      * restore ``1 <= len(stops) <= AUTHORING_MAX_STOPS`` -> assertion 3;
+      * delete the ``if not stops`` lower bound -> assertion 4;
+      * restore the ``MAX_COMPOSED_STOPS`` cap term in the C3 floor -> assertion 6.
     """
-    assert MAX_CANDIDATE_STOPS == 15
-    plan = _wide_plan(MAX_CANDIDATE_STOPS)
+    import ast
+    import pathlib
 
-    assert len(plan.stop_requests) == 15
+    # 1 + 2. Twenty stops — five past every deleted authoring ceiling.
+    plan = _wide_plan(20)
+    assert len(plan.stop_requests) == 20
     response_set = AuthoringCandidateResponseSet(
         plan=plan,
         responses=tuple(_response(request) for request in plan.stop_requests),
     )
-    assert len(response_set.responses) == 15
+    assert len(response_set.responses) == 20
 
+    # 3. The compose-request builder authors a 20-stop route without refusing.
+    from src.tour.authoring import _certification_compose_requests
+    from tests.test_tour_authoring_from_route import _prebuilt
 
-def test_candidate_plan_still_refuses_more_stops_than_the_cap() -> None:
-    with pytest.raises(ValidationError, match="at most 15 items"):
-        _wide_plan(MAX_CANDIDATE_STOPS + 1)
+    stitched, sequence, route = _prebuilt(20)
+    _beats, stops, requests = _certification_compose_requests(stitched, sequence, route)
+    assert len(stops) == 20
+    assert len(requests) == 20
+
+    # 4. The LOWER bound is not collateral damage: an empty stitch still refuses.
+    empty = stitched.model_copy(update={"script": ()})
+    with pytest.raises(ValueError, match="at least one stop"):
+        _certification_compose_requests(empty, sequence, route)
+
+    # 5. STRUCTURAL: neither constant survives, in either module.
+    src = pathlib.Path(__file__).resolve().parents[1] / "src" / "tour"
+    for module, name in (
+        ("candidate_authoring.py", "MAX_CANDIDATE_STOPS"),
+        ("authoring.py", "AUTHORING_MAX_STOPS"),
+        ("quality_rubric.py", "MAX_COMPOSED_STOPS"),
+    ):
+        tree = ast.parse((src / module).read_text(encoding="utf-8"))
+        assigned = {
+            target.id
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Assign | ast.AnnAssign)
+            for target in (node.targets if isinstance(node, ast.Assign) else [node.target])
+            if isinstance(target, ast.Name)
+        }
+        assert name not in assigned, f"{module} still declares {name}"
+
+    # 6. The quality scorer's thinness floor no longer flattens on long tours. It
+    #    used to be capped at what an EIGHT-stop tour could hold, which made C3
+    #    progressively weaker the longer the tour — a thin 300-minute tour passed.
+    from src.tour.quality_rubric import c3_audio_floor_seconds
+
+    assert c3_audio_floor_seconds(300) > c3_audio_floor_seconds(150) * 1.9, (
+        "the C3 thinness floor is still capped by a fixed stop count, so a long "
+        "tour is judged against the same word budget as a short one"
+    )

@@ -32,8 +32,11 @@ from src.api.routes import trips
 from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import TourInput
+from src.tour.degradations import degradation_scope, record
 from src.tour.density import TourabilityRefusedError
-from src.tour.premium_tour import ALLOW_DIRTY_LOCAL_BUILD_ENV
+from src.tour.options import build_route_option
+from src.tour.premium_tour import ALLOW_DIRTY_LOCAL_BUILD_ENV, plan_premium_options
+from src.tour.routing import haversine_m, pace_corrected_walk_seconds
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_k_routes, select_route
 from tests.conftest import needs_neo4j
@@ -131,9 +134,29 @@ def client(live_neo4j, test_profiles):
 
     app.dependency_overrides[get_session] = _live_session
     app.dependency_overrides[get_driver] = lambda: live_neo4j
+
+    def _mint_fresh_bearer(request):
+        """Sign EVERY request with a token minted just now.
+
+        Ownership-scoped routes: authenticate as the User owning both profiles.
+
+        Minted per REQUEST, not once per module, and that is load-bearing rather than
+        fastidious. `ACCESS_TOKEN_EXPIRE_MINUTES` is 60 (src/api/auth/config.py:121) and
+        this fixture is module-scoped, so a single token used to cover the whole file.
+        On 2026-08-05 this module's runtime passed that hour — the planner explores far
+        more since the stop ceilings were removed and the fixtures were enriched to fill
+        a real hour — and every test after the 60-minute mark got 401 "Invalid or expired
+        token" while asserting a 422. That surfaced as 3 failures and 11 fixture errors
+        in a full-suite run, and NONE of them was a product fault: a 60-minute access
+        token is correct in production. A per-request token cannot expire mid-module no
+        matter how slow the suite becomes.
+        """
+        request.headers["Authorization"] = (
+            f"Bearer {create_access_token(TEST_USER_ID, TEST_USER_EMAIL)}"
+        )
+
     with TestClient(app) as c:
-        # Ownership-scoped routes: authenticate as the User owning both profiles.
-        c.headers["Authorization"] = f"Bearer {create_access_token(TEST_USER_ID, TEST_USER_EMAIL)}"
+        c.event_hooks["request"] = [_mint_fresh_bearer]
         yield c
 
 
@@ -187,6 +210,90 @@ def ile_response(client):
 
 
 @needs_neo4j
+def test_generate_plans_through_the_shared_block_one(ile_response, snapshot):
+    """AC-4/AC-7: the phone's route options ARE Block 1's plans, not a second planner.
+
+    The generate endpoint used to call ``select_k_routes`` itself, take flavour one, and
+    then re-run the whole beat-planning and script-stitching pass by hand — so it never
+    applied the Premium route bar and never went through the one shared planner the
+    workbench uses. Two halves of proof, because on a corpus where both paths happen to
+    agree the behavioural half alone would pass without the fix:
+
+    * STRUCTURAL — the handler calls the shared planner and no longer contains a second
+      route-selection or script-generation pass of its own. This is AC-4's own wording:
+      "select_k_routes is no longer reached at trips.py:325 with no planning_policy".
+    * BEHAVIOURAL — every option the endpoint publishes is byte-identical to the flavour
+      the shared planner produced for the identical input (AC-7).
+    """
+    planner_source = inspect.getsource(trips.generate_trip)
+    assert "plan_premium_options(" in planner_source, (
+        "generate_trip must plan through the one shared planner"
+    )
+    for second_pass in (
+        "select_k_routes(",
+        "build_poi_beat_plans_capped(",
+        "select_vignette_beats(",
+        "generate(",
+    ):
+        assert second_pass not in planner_source, (
+            f"generate_trip still runs its own {second_pass.rstrip('(')} pass — "
+            "that is the duplicate algorithm this slice removes"
+        )
+
+    body = ile_response
+    tour_input = TourInput(
+        start=ILE_START,
+        duration_min=ILE_DURATION_MIN,
+        city_slug="paris",
+        lenses=None,
+        round_trip=False,
+    )
+    with RoutingClient() as rc:
+        plans = plan_premium_options(tour_input, snapshot, routing_client=rc)
+
+    assert plans, "the shared planner produced no flavour at all for the Île input"
+    assert len(body["options"]) == len(plans), (
+        f"the endpoint published {len(body['options'])} options for "
+        f"{len(plans)} planned flavours — it is still planning for itself"
+    )
+
+    beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
+    for i, plan in enumerate(plans):
+        option = body["options"][i]
+        expected = build_route_option(
+            plan.route,
+            plan.source,
+            beats_by_id,
+            route_id=option["route_id"],
+            snapshot=snapshot,
+            sequence=plan.sequence,
+        ).model_dump(mode="json")
+        assert [s["poi_id"] for s in option["stops"] if s["band"] == "dwell"] == [
+            p.id for p in plan.route.pois
+        ], f"option {i + 1} visits different places from planned flavour {i + 1}"
+        assert option["eta_seconds"] > 0
+        assert option["eta_seconds"] == expected["eta_seconds"], (
+            f"option {i + 1} declares an arrival time the planned flavour did not"
+        )
+        assert [s["narration"] for s in option["stops"]] == [
+            s["narration"] for s in expected["stops"]
+        ], f"option {i + 1} was written by a second pass over the same route"
+        # Catch-all: nothing at all about the published option may differ from the
+        # flavour the shared planner produced.
+        assert option == expected, f"option {i + 1} diverged from planned flavour {i + 1}"
+
+    # The trip actually saved is flavour one, not some other flavour.
+    assert [s["poi_id"] for s in body["stops"]] == [p.id for p in plans[0].route.pois]
+
+    # Diversity survived the change (JACCARD_OVERLAP_MAX, src/tour/selection.py).
+    id_sets = [{p.id for p in plan.route.pois} for plan in plans]
+    for i in range(len(id_sets)):
+        for j in range(i + 1, len(id_sets)):
+            overlap = len(id_sets[i] & id_sets[j]) / len(id_sets[i] | id_sets[j])
+            assert overlap < 0.60, f"flavours {i},{j} share {overlap:.0%} of their stops"
+
+
+@needs_neo4j
 class TestTripGenerateEngine:
     """The endpoint must surface the real engine's selection, order, and beats."""
 
@@ -232,7 +339,9 @@ class TestTripGenerateEngine:
             assert option["eta_seconds"] > 0
             assert option["stops"], "an option without stops is not an option"
             for stop in option["stops"]:
-                assert stop["band"] in ("dwell", "vignette")
+                # Three kinds of card: a stop you stand at, a sight you pass, and the
+                # narration you hear on the way to the next stop.
+                assert stop["band"] in ("dwell", "vignette", "leg")
 
     def test_stop_order_matches_select_route(self, ile_response, ile_engine_route):
         expected = [p.id for p in ile_engine_route.pois]
@@ -491,9 +600,15 @@ class TestTripGenerateFixedDestination:
 
 
 class TestPreviewTrip:
-    """POST /trips/preview (Phase 1.5d): engine narration, no profile, no persistence."""
+    """POST /trips/preview: route options over the live corpus, no profile, nothing saved."""
 
-    def test_preview_returns_per_stop_narration(self, client):
+    def test_preview_returns_choosable_routes_and_no_words(self, client):
+        """What comes back is a set of real walks to choose between, and nothing else.
+
+        Each stop is a named place with a position and a time; none of them carries a
+        written line, because nothing has been written yet. The words arrive from
+        POST /trips/preview/author once one of these walks has been picked.
+        """
         resp = client.post(
             "/api/v1/trips/preview",
             json={
@@ -504,22 +619,15 @@ class TestPreviewTrip:
         )
         assert resp.status_code == 200, resp.text
         data = resp.json()
-        if data["candidate_eligible"]:
-            assert data["narration_kind"] == "llm_candidate"
-            assert data["basic_tour"] is None
-            selected_stops = data["stops"]
-            selected_audio_min = data["total_audio_min"]
-        else:
-            assert data["narration_kind"] == "none"
-            assert data["stops"] == []
-            assert data["basic_tour"] is not None
-            selected_stops = data["basic_tour"]["stops"]
-            selected_audio_min = data["basic_tour"]["total_audio_min"]
-        assert selected_stops, "preview should return narration in exactly one lane"
-        for stop in selected_stops:
-            assert stop["poi_name"]
-            assert stop["narration"].strip(), "each stop must carry narration text"
-        assert selected_audio_min >= 1
+        assert data["options"], "a plan with no walks to choose between is not a plan"
+        for option in data["options"]:
+            assert option["eta_seconds"] > 0
+            dwell = [s for s in option["stops"] if s["band"] == "dwell"]
+            assert dwell, "a walk with nowhere to stand is not a walk"
+            for stop in option["stops"]:
+                assert stop["name"], "a stop with no name is not a place anyone can choose"
+                assert stop["narration"] == "", "planning writes nothing"
+                assert stop["band"] in ("dwell", "vignette")
 
     def test_preview_sparse_origin_422(self, client):
         resp = client.post(
@@ -669,14 +777,23 @@ class _CountingChecker:
 
 
 class _ColdStartingRoutingClient:
-    """A routing client that answers walking legs but has no version to report.
+    """``ondoway-valhalla`` while it cold-starts or rebuilds tiles (render.yaml:98-124).
 
-    This is what ``ondoway-valhalla`` looks like while it cold-starts or rebuilds
-    tiles (render.yaml:98-124): the process is reachable enough to be constructed,
-    but ``GET /status`` does not come back. Standing in for the class rather than
-    stopping the container keeps the shared :8002 instance every other test and
-    every sibling session depends on completely untouched.
+    Every request to it fails, and it fails the two DIFFERENT ways the real client
+    fails, which is the whole point of the stub:
+
+    - walking legs fall back to a straight-line estimate with no polyline and no
+      receipt, never raising — src/tour/routing_client.py:175-181;
+    - the version read RAISES, because that one call deliberately has no fallback of
+      its own — src/tour/routing_client.py:183-200.
+
+    Standing in for the class rather than stopping the container keeps the shared
+    :8002 instance every other test and every sibling session depends on completely
+    untouched.
     """
+
+    def __init__(self, *args, **kwargs) -> None:
+        return None
 
     def __enter__(self):
         return self
@@ -686,6 +803,23 @@ class _ColdStartingRoutingClient:
 
     def routing_version(self) -> str:
         raise RuntimeError("valhalla is cold-starting")
+
+    def route_with_receipt(self, from_lat, from_lng, to_lat, to_lng):
+        seconds, distance_m, shape = self.route(from_lat, from_lng, to_lat, to_lng)
+        return seconds, distance_m, shape, None
+
+    def route(self, from_lat, from_lng, to_lat, to_lng):
+        d = haversine_m(from_lat, from_lng, to_lat, to_lng)
+        return int(pace_corrected_walk_seconds(d)), d, None
+
+    def leg_seconds(self, from_lat, from_lng, to_lat, to_lng) -> int:
+        return self.route(from_lat, from_lng, to_lat, to_lng)[0]
+
+    def isochrone(self, lat: float, lng: float, minutes: int) -> None:
+        return None
+
+    def close(self) -> None:
+        return None
 
 
 def _override_dep(client, dep: str, value):
@@ -710,6 +844,72 @@ def cutover_trip(client):
 
 
 @needs_neo4j
+def test_compose_hands_back_the_flavour_that_was_saved(
+    client, live_neo4j, cutover_trip, monkeypatch
+) -> None:
+    """AC-8, saved-trip half: composing gives back the walk that was offered.
+
+    A saved trip stores which places its chosen walk visits, but composing has to
+    rebuild the walk itself — the walking times are re-measured live, because a tour
+    composed days later must reflect today's streets and must still work when the
+    routing service is down. Everything ELSE about the walk was being re-derived too,
+    which is where it could quietly stop being the walk that was chosen: the walk-past
+    sights were re-picked by a second, differently-configured picker, the marquee
+    stops were copied back on afterwards, and the thin-area warning was lost entirely.
+
+    All four now come back from what was saved, handed into the rebuild in one go.
+
+    NOT bit-identical walking times, and deliberately so: those are re-measured, which
+    is the whole reason a tour composed later is still walkable. What is guaranteed is
+    that the elapsed time the walk was OFFERED as was recorded at the time, so the two
+    can always be compared.
+
+    UNDO: drop the ``vignettes=`` argument from the rebuild in ``compose_trip``, or
+    the ``tourability=`` one, and the matching assertion below goes RED.
+    """
+    from src.api.crud.trips import get_trip_compose_inputs
+
+    trip_id = cutover_trip["trip_id"]
+    with live_neo4j.session() as s:
+        stored = get_trip_compose_inputs(s, trip_id)
+    saved = stored["options"][0]
+    assert isinstance(saved, dict), "a saved flavour must record more than a list of places"
+
+    # The elapsed time the walk was offered as was written down, and it is the same
+    # number the traveller was shown.
+    assert saved["eta_seconds"] == cutover_trip["options"][0]["eta_seconds"]
+    assert saved["eta_seconds"] > 0
+
+    rebuilt = {}
+    real_summarise = trips.summarise_route
+
+    def _capture(*args, **kwargs):
+        route = real_summarise(*args, **kwargs)
+        rebuilt["route"] = route
+        return route
+
+    monkeypatch.setattr(trips, "summarise_route", _capture)
+    resp = client.post(
+        f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+    )
+    assert resp.status_code == 200, resp.text
+    route = rebuilt["route"]
+
+    assert [p.id for p in route.pois] == saved["poi_ids"], "composed a different set of places"
+    assert {
+        str(leg): [p.id for p in pois] for leg, pois in route.vignettes.items()
+    } == saved["vignette_poi_ids"], "the walk-past sights were re-picked, not carried over"
+    assert (
+        route.tourability.model_dump(mode="json") if route.tourability is not None else None
+    ) == saved["tourability"], "the thin-area warning did not survive composing"
+    assert route.start_anchor_poi_id == saved["start_anchor_poi_id"]
+    assert route.fixed_end_poi_id == saved["fixed_end_poi_id"]
+
+    # And the places the traveller is finally given are those same places, in order.
+    assert [s["poi_id"] for s in resp.json()["stops"]] == saved["poi_ids"]
+
+
+@needs_neo4j
 def test_compose_plans_and_authors_through_the_shared_premium_seam(
     client, live_neo4j, cutover_trip, monkeypatch
 ) -> None:
@@ -726,13 +926,23 @@ def test_compose_plans_and_authors_through_the_shared_premium_seam(
        0.83 one -- which is AC-10's whole reason;
     2. the suite declares itself a local build, so authoring off a developer tree
        with uncommitted work is not mistaken for a broken product;
-    3. the two environment dependencies the shared seam newly adds -- a resolvable
-       build fingerprint, and a routing-engine version read live from Valhalla --
-       each refuse as a NAMED 503 the caller can retry, never a bare 500 and never
+    3. the two environment dependencies the shared seam newly adds are each handled by
+       name rather than escaping -- a build fingerprint that cannot be resolved is a
+       NAMED 503 the caller can retry, and a routing-engine version that cannot be read
+       is a labelled degradation. Neither is ever a bare 500 and neither is ever
        ``compose_verification_failed`` (which means "the narrator wrote something
        untraceable" and would blame the writer for a container that is cold-starting);
     4. the fact-checking gate is consulted, which only the shared finalizer makes
        impossible to omit.
+
+    ON 3b, WHICH CHANGED ON 2026-08-05. The routing-version read used to be a 503 as
+    well. It is now a degradation, because a refusal there is the same hard "no" to a
+    cold-starting container that PLANNING gives up, and it lands after the traveller has
+    already picked a route -- so it took tour writing down app-wide for as long as the
+    container took to come back. It is checked in-process here, on the exact function
+    this handler calls, so that this test does not spend its one-shot compose budget
+    before block 4 needs it; the end-to-end 200-with-a-row is proven by
+    test_generate_and_compose_report_what_degraded.
 
     NOT AC-8, deliberately. AC-8 wants the authored route's ids, order, eta_seconds,
     vignettes and tourability to be IDENTICAL to the option the traveller chose, with
@@ -749,7 +959,7 @@ def test_compose_plans_and_authors_through_the_shared_premium_seam(
     UNDO -- each turns exactly one numbered block RED, and all four were run:
       * delete the ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD`` line from tests/conftest.py -> 2
       * collapse the build-fingerprint ``503`` branch to a bare ``raise`` -> 3a
-      * delete the ``routing_version_unavailable`` try/except in ``compose_trip`` -> 3b
+      * make ``resolve_routing_version`` re-raise instead of recording -> 3b
       * change ``faithfulness_checker=faithfulness_checker`` to ``=None`` -> 4
     """
     # 1. STRUCTURAL: the handler's own source names the shared seam and nothing else.
@@ -767,7 +977,9 @@ def test_compose_plans_and_authors_through_the_shared_premium_seam(
     assert "planning_policy=planning_policy" in source
     assert "certification_planning_policy(" in source
     policy = trips.certification_planning_policy(policy_id=trips.PREMIUM_MODULE_VERSION)
-    assert not policy.is_legacy, "compose rebuilt its route on the legacy 0.83 budget"
+    # There is only one walking-time budget left in the codebase, so there is no
+    # "which one is this" flag to read any more — the three fractions below ARE the
+    # identity of the certification band, and the legacy flat 0.83 one is deleted.
     assert policy.minimum_requested_fraction == pytest.approx(0.90)
     assert policy.maximum_requested_fraction == pytest.approx(1.10)
     assert policy.nominal_requested_fraction == pytest.approx(1.00)
@@ -819,26 +1031,18 @@ def test_compose_plans_and_authors_through_the_shared_premium_seam(
     #     degrades to a straight-line estimate when that container is down, so this
     #     one call is the only thing on the compose path an outage can hard-fail —
     #     and left bare it surfaces as a 500 (transport error) or, worse, as a 422
-    #     compose_verification_failed via the malformed-status ValueError. Same
-    #     treatment as the fingerprint: a named, retryable 503, and no spend.
-    #     The routing client is stubbed IN-PROCESS; the shared container is untouched.
-    unreachable = _PerStopCountingExecutor()
-    exec_target = _override_dep(client, "get_premium_compose_executor", unreachable)
-    monkeypatch.setattr(trips, "RoutingClient", _ColdStartingRoutingClient)
-    try:
-        refused = client.post(
-            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
-        )
-    finally:
-        _clear_dep(client, exec_target)
-    assert refused.status_code == 503, refused.text
-    detail = refused.json()["detail"]
-    assert detail["reason"] == "routing_version_unavailable", detail
-    assert "valhalla is cold-starting" in detail["detail"], detail
-    assert unreachable.stop_calls == [], (
-        "a routing-version fault must be raised before any paid authoring call"
-    )
-    monkeypatch.undo()
+    #     compose_verification_failed via the malformed-status ValueError.
+    #     It does NEITHER: the failure is caught and labelled, the tour is stamped with
+    #     an unmistakable placeholder rather than a plausible-looking version, and the
+    #     traveller is told on the wire. The routing client is stubbed IN-PROCESS; the
+    #     shared container is untouched.
+    assert "resolve_routing_version(" in source
+    with degradation_scope() as collected:
+        stamped = trips.resolve_routing_version(_ColdStartingRoutingClient())
+    assert stamped == "unavailable", stamped
+    assert [d.kind for d in collected] == ["routing_version_unavailable"], collected
+    assert collected[0].error_message == "valhalla is cold-starting"
+    assert collected[0].human and "valhalla" not in collected[0].human.lower()
 
     # 4. BEHAVIOURAL: composing consults the injected faithfulness checker. Only
     #    finalize_premium_tour makes that non-optional, so this is what proves the
@@ -878,7 +1082,7 @@ def test_compose_authors_per_stop_and_keeps_the_wire_contract(client, live_neo4j
       and persisted extra_narration, 409 already_composed, 404 for an unknown
       trip and for an unknown route_id, and a 422 whose detail carries BOTH
       ``reason == "compose_verification_failed"`` and ``attempts``
-      (mobile/lib/services/trip_service.dart:227-229 reads exactly those two);
+      (mobile/lib/services/trip_service.dart:201-203 reads exactly those two);
     * the SPEND PRECHECK reserves the real call count (n_stops, not 1) and runs
       AFTER the already-composed check, so a duplicate compose is a 409 that
       reserves nothing and calls nobody.
@@ -989,6 +1193,127 @@ def test_compose_authors_per_stop_and_keeps_the_wire_contract(client, live_neo4j
         )
     finally:
         _clear_dep(client, target)
+
+
+@needs_neo4j
+def test_generate_and_compose_report_what_degraded(client, live_neo4j, cutover_trip) -> None:
+    """AC-18 — the phone's two endpoints say what quietly went wrong, like the web does.
+
+    OWNER RULING 2026-07-31: "Don't just log errors. Actually show them in the workbench
+    UI. Otherwise, they're invisible." The workbench preview has carried that list since
+    then. The phone's own two calls collected the same facts and threw them away, so a
+    tour planned on estimated walking times looked, on a phone, exactly like one planned
+    on measured ones.
+
+    The fault injected is the real one rather than a synthetic marker: the walking
+    service is unreachable, so every leg falls back to a straight-line estimate and the
+    version read fails. Both must travel, and NEITHER may become a refusal — the service
+    is a real dependency that cold-starts and rebuilds tiles, and refusing would take
+    tour generation down for every user while it does.
+
+    Three things the already-shipped phone build depends on are asserted literally,
+    because a mismatch on any of them shows the traveller NOTHING, with no error and no
+    crash: the list is at the TOP level of the body, it is a JSON array, and every row
+    is an object carrying a ``human`` string. ``human`` is the only key the production
+    Dart reads.
+
+    WHY GENERATE IS PROVEN WITH A PLANTED ROW AND COMPOSE WITH THE REAL OUTAGE. Both
+    halves were first written against the real outage. Compose passes that way and is
+    kept that way. Generate does not, and NOT because of anything this change does: with
+    estimated legs the live 90-minute walk comes out at 6009s against a 4860-5940s band,
+    and the planner refuses it 422 — the over-ceiling refusal a separate lane is fixing,
+    which the timebox repair cannot bring back down because it can add or swap a stop
+    but not drop one. Asserting generate's routing row on the live corpus would import
+    that unrelated bug into this test and make it fail for a reason it is not about. A
+    planted row proves what this step actually changed — that a degradation recorded
+    anywhere inside the request reaches the top level of the reply instead of the floor
+    — with no dependence on which route the planner happens to pick. The routing row's
+    own content is proven end-to-end twice over: on compose below, and on the planning
+    surface generate shares by
+    test_trip_preview_contract.py::test_estimated_legs_are_labelled_not_silently_shipped.
+    """
+    # 1. A CLEAN RUN SAYS SO. An empty list is a real statement — "nothing degraded" —
+    #    and it is not the same as a missing key, which a client cannot distinguish
+    #    from an old server.
+    assert "degradations" in cutover_trip, sorted(cutover_trip)
+    assert cutover_trip["degradations"] == [], cutover_trip["degradations"]
+
+    # 2. GENERATE: a degradation recorded from inside the request reaches the caller.
+    real_loader = trips.load_paris_corpus
+
+    def _loader_that_degrades(*args, **kwargs):
+        record(
+            kind="test_probe",
+            human="A probe recorded one degradation so the channel can be seen.",
+            component="tests.test_trip_api",
+        )
+        return real_loader(*args, **kwargs)
+
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setattr(trips, "load_paris_corpus", _loader_that_degrades)
+        degraded = client.post("/api/v1/trips/generate", json=_body(NOLENS_PROFILE_ID))
+    assert degraded.status_code == 201, degraded.text
+
+    rows = degraded.json()["degradations"]
+    assert isinstance(rows, list), type(rows)
+    assert [row["kind"] for row in rows] == ["test_probe"], rows
+    row = rows[0]
+    assert isinstance(row, dict), row
+    assert isinstance(row.get("human"), str) and row["human"], row
+    # The six keys ``summarize`` emits — including the count that collapses repeats, or
+    # a fan-out of identical failures prints the same line once per occurrence.
+    assert set(row) == {
+        "kind",
+        "human",
+        "component",
+        "error_type",
+        "error_message",
+        "context",
+        "count",
+    }, sorted(row)
+    assert row["count"] == 1, row
+
+    # 3. COMPOSE under a real outage: a 200 that says what it lost, NOT a refusal.
+    #    This is the half that used to answer differently — the version read was a hard
+    #    503, so the identical outage degraded when planning and refused when writing.
+    trip_id = cutover_trip["trip_id"]
+    executor = _PerStopCountingExecutor()
+    target = _override_dep(client, "get_premium_compose_executor", executor)
+    try:
+        with pytest.MonkeyPatch.context() as mp:
+            mp.setattr(trips, "RoutingClient", _ColdStartingRoutingClient)
+            composed = client.post(
+                f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+            )
+    finally:
+        _clear_dep(client, target)
+
+    assert composed.status_code == 200, composed.text
+    composed_body = composed.json()
+    assert composed_body["stops"], "the outage produced a tour with no stops"
+    assert executor.stop_calls, "compose refused instead of writing on estimated legs"
+
+    composed_rows = {r["kind"]: r for r in composed_body["degradations"]}
+    for row in composed_body["degradations"]:
+        assert isinstance(row.get("human"), str) and row["human"], row
+
+    # THE TRAVELLER'S SENTENCE, pinned verbatim. The phone itinerary and the workbench
+    # panel both render it straight from here, so it must read alone and name nothing
+    # internal. This route rebuilds its walk itself instead of planning one, so it is a
+    # genuinely separate chance to ship an unlabelled estimate.
+    assert "walking_times_estimated" in composed_rows, composed_body["degradations"]
+    assert composed_rows["walking_times_estimated"]["human"] == (
+        "Walking times between stops are estimates, not measured routes, so the tour "
+        "may run a little longer or shorter than it says."
+    )
+    assert composed_rows["walking_times_estimated"]["component"] == "trips.compose_trip"
+
+    # And the one call an outage can hard-fail is labelled rather than refusing. A 503
+    # here would be the two-answers-to-one-outage this resolves: it arrives AFTER the
+    # traveller has chosen a route, so refusing takes tour writing down app-wide for as
+    # long as the container takes to come back.
+    assert "routing_version_unavailable" in composed_rows, composed_body["degradations"]
+    assert composed_rows["routing_version_unavailable"]["error_type"] == "RuntimeError"
 
 
 @needs_neo4j
@@ -1213,17 +1538,32 @@ class TestComposeTripEndpoint:
         # Not vacuously all-None: an open walk seats a positional start-anchor.
         assert any(e["start_anchor_poi_id"] is not None for e in options)
 
-    def test_second_option_composes_its_stored_pick(self, client, live_neo4j, fresh_trip):
+    def test_composing_a_numbered_option_uses_that_option(self, client, live_neo4j, fresh_trip):
+        """The number in the request picks the walk, and an absent number is refused.
+
+        Composes the LAST walk that was offered, so "always composed the first one"
+        cannot pass whenever more than one is offered, and asks for one past the end
+        to prove a number nobody was given is refused rather than quietly rounded down
+        to a walk the traveller did not pick.
+        """
         trip_id = fresh_trip["trip_id"]
         with live_neo4j.session() as s:
             from src.api.crud.trips import get_trip_compose_inputs
 
             stored = get_trip_compose_inputs(s, trip_id)
         options = stored["options"]
-        assert len(options) >= 2, "dense Île generation must preserve a second route option"
+        assert options, "a saved trip must record the walks it offered"
+
+        past_the_end = client.post(
+            f"/api/v1/trips/{trip_id}/compose",
+            json={"route_id": f"{trip_id}-opt{len(options) + 1}"},
+        )
+        assert past_the_end.status_code == 404, past_the_end.text
+
         resp = client.post(
-            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt2"}
+            f"/api/v1/trips/{trip_id}/compose",
+            json={"route_id": f"{trip_id}-opt{len(options)}"},
         )
         assert resp.status_code == 200, resp.text
-        # C9f-i: options entries are per-flavour {poi_ids, anchor ids} dicts.
-        assert [st["poi_id"] for st in resp.json()["stops"]] == options[1]["poi_ids"]
+        # options entries are per-flavour dicts of everything generate decided.
+        assert [st["poi_id"] for st in resp.json()["stops"]] == options[-1]["poi_ids"]

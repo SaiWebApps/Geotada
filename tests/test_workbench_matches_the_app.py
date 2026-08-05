@@ -56,13 +56,15 @@ WHAT THIS FILE CANNOT CATCH (human must watch — do not delete this list):
   workbench log line "API PID ..." appeared (a reused server prints "reusing it"
   instead).
 * **THE PREVIEW ROUTE IS NOT THE TOURIST'S ROUTE.** ``ttsPlay`` POSTs to
-  ``/audio/preview``, which caps text at ``AUDIO_PREVIEW_MAX_CHARS`` (6000) and
-  serves from an in-process cache; the tourist's app gets audio from
-  ``generate_stop_audio``, which has no cap and writes to storage. Test 7 stops
-  the workbench LOWERING the cap behind production's back, but the two paths
-  genuinely differ today and only an output-equality run (same narration through
-  both, compare bytes and duration) would prove otherwise. That needs a live
-  provider and is not a $0 check.
+  ``/audio/preview``, which serves from an in-process cache; the tourist's app
+  gets audio from ``generate_stop_audio``, which writes to storage. NEITHER
+  TRUNCATES ANY MORE — the preview's character cap was deleted on 2026-08-04
+  (it was an abuse bound on an anonymous endpoint, never a quality setting), so
+  the one length divergence between the two paths is closed. What remains is
+  still a genuine difference in plumbing — a cache and a memory buffer on one
+  side, a storage write on the other — and only an output-equality run (same
+  narration through both, compare bytes and duration) would prove the audio
+  itself matches. That needs a live provider and is not a $0 check.
 * **PRE-WRITTEN STORAGE ARTIFACTS.** ``/audio/generate-trip-stops`` skips
   regeneration whenever an item already has an ``audio_url`` whose artifact
   exists. Files hand-placed under ``audio_store/`` are indistinguishable from
@@ -76,28 +78,45 @@ WHAT THIS FILE CANNOT CATCH (human must watch — do not delete this list):
   by workbench and production, so downgrading it is not a workbench-vs-prod
   divergence at all — it is a product change and no parity check can see it.
   Test 7 does catch the env-var half (``OPENAI_VOICE`` set only locally).
-* **THE PREVIEW STOP CAP.** ``certification_planning_policy`` caps the preview
-  at 8 stops while the persisted path allows 15. That is a LIVE divergence, not
-  a hypothetical. Test 14 pins both numbers so the gap cannot widen unnoticed,
-  but it cannot close it — closing it is a product decision about spend.
+* **THE PREVIEW STOP CAP — CLOSED 2026-08-04, and test 14 now guards the
+  closure.** Until that date ``certification_planning_policy`` capped the preview
+  at 8 stops while the persisted path allowed 15, so the workbench structurally
+  could not show a tour as long as one a tourist could be given. OWNER RULING 5
+  ("no stop limits, period") removed BOTH, and every other ceiling with them.
+  Duration is now the only bound on tour length on every surface, including the
+  quality scorer. Test 14 measures that a long request really does seat more than
+  15 stops, and pins the tractability fallback that replaced the ceilings' one
+  useful side effect — keeping the exponential order solver off a 25-stop route.
 * **RUNTIME DOM BEHAVIOUR.** Tests 12 and 13 read the selection/disclosure code
   rather than executing it. Only the Playwright shard
   (``make test-workbench``) executes this page.
+* **A DIVERGENCE THAT NEEDS REAL DATA TO APPEAR.** Tests 16-19 drive all four
+  real HTTP handlers, but against a fixed synthetic corpus, a stand-in graph and
+  a stand-in walking-times service. That is deliberate — it is what makes "the
+  two surfaces produced the same tour" a statement about CODE rather than about
+  whether the corpus moved between two calls — but it means a fault that only
+  shows on live Paris content, or only against a real Valhalla answer, is
+  outside their reach. The live-corpus behaviour belongs to the tour-invariant
+  and golden shards.
 
-Cost: $0 and hermetic. File reads, one in-process import, and one real request
-whose socket layer is denied before it can open. No DB, no container, no
-browser, no provider call, no money. It does one DNS lookup per distinct
-upstream host named in ``src/`` (to classify the address, never to reach it).
+Cost: $0 and hermetic. File reads, in-process imports, and real requests served
+by the app in this process: one with the socket layer denied before it can open,
+and four planning/authoring calls whose graph, corpus and routing upstream are
+all stood in for. No DB, no container, no browser, no provider call, no money.
+It does one DNS lookup per distinct upstream host named in ``src/`` (to classify
+the address, never to reach it).
 """
 
 from __future__ import annotations
 
 import ast
+import importlib
 import ipaddress
 import os
 import pathlib
 import secrets
 import socket
+import time
 from functools import cache
 from typing import Any
 from urllib.parse import urlparse
@@ -1408,7 +1427,7 @@ def test_the_workbench_does_not_tune_the_audio_path_behind_productions_back() ->
     Test 6 compares variables production PINS. The nastier version sets one it
     does not: ``OPENAI_VOICE=alloy`` gives the owner a completely genuine, fully
     billed call to api.openai.com in a voice no tourist will ever hear, and
-    ``AUDIO_PREVIEW_MAX_CHARS=800`` silently truncates every long stop. Neither
+    ``AUDIO_PREVIEW_CACHE_ENTRIES=0`` silently re-bills every replayed stop. Neither
     value is a registry key, so the old "is this value a known implementation?"
     classification could never see either one.
 
@@ -1422,8 +1441,8 @@ def test_the_workbench_does_not_tune_the_audio_path_behind_productions_back() ->
     The rule: the workbench may not SET a variable that steers the audio path
     unless render.yaml pins it too (in which case test 6 owns the comparison).
 
-    UNDO TEST: add OPENAI_VOICE, AUDIO_PREVIEW_MAX_CHARS or
-    AUDIO_PREVIEW_CACHE_ENTRIES to scripts/workbench.sh or the profile -> RED.
+    UNDO TEST: add OPENAI_VOICE or AUDIO_PREVIEW_CACHE_ENTRIES to
+    scripts/workbench.sh or the profile -> RED.
     """
     dispatchers = _implementation_dispatchers()
     assert dispatchers, "no dispatchers discovered — cannot scope the audio path"
@@ -1809,23 +1828,25 @@ def test_no_consent_gate_between_the_click_and_the_tourist_facing_call() -> None
             "up the stack goes unnoticed."
         )
 
-    generate_calls = [
-        offset
-        for offset in _all_offsets(html, "generateTourPreview()")
-        if not html[:offset].rstrip().endswith("async function")
-    ]
-    assert generate_calls, "nothing calls generateTourPreview() — the button is dead"
-    for offset in generate_calls:
-        window_start = max(html.rfind("{", 0, offset), html.rfind(")", 0, offset))
-        assert window_start != -1, "cannot locate the dispatch branch for the generate button"
-        between = html[window_start + 1 : offset].strip()
-        assert between in ("", "{"), (
-            f"something runs between the click and generateTourPreview(): "
-            f"{between!r}. A tourist taps once and the tour generates; any "
-            f"acknowledgement, overlay, checkbox or gate in between makes the "
-            f"workbench a different product from the app — and none of them need "
-            f"to say the word confirm."
-        )
+    # Scoped to what a PERSON's tap reaches, which is the whole claim: nothing
+    # stands between pressing the button and the tour being generated. The page's
+    # own automatic re-fetch (after the server reports the routes moved) is not a
+    # gate — nobody is being asked for anything — so it is deliberately not in
+    # scope here; it is a click listener that must be clean.
+    dispatching = [body for body in listeners if "generateTourPreview()" in body]
+    assert dispatching, "no click listener calls generateTourPreview() — the button is dead"
+    for body in dispatching:
+        for offset in _all_offsets(body, "generateTourPreview()"):
+            window_start = max(body.rfind("{", 0, offset), body.rfind(")", 0, offset))
+            assert window_start != -1, "cannot locate the dispatch branch for the generate button"
+            between = body[window_start + 1 : offset].strip()
+            assert between in ("", "{"), (
+                f"something runs between the click and generateTourPreview(): "
+                f"{between!r}. A tourist taps once and the tour generates; any "
+                f"acknowledgement, overlay, checkbox or gate in between makes the "
+                f"workbench a different product from the app — and none of them need "
+                f"to say the word confirm."
+            )
 
 
 # --------------------------------------------------------------------------
@@ -1838,68 +1859,87 @@ def test_the_rendered_tour_is_exactly_the_server_response() -> None:
 
     Two shapes, neither of which touches Python:
 
-    * a canned tour rendered through the real pipeline — ``renderTourStops``
-      called a second time from the failure branch with a hand-written object
-      literal produces byte-for-byte the same DOM, badges and quality panels as
-      a live Premium result; and
+    * a canned tour rendered through the real pipeline — the renderer called a
+      second time from the failure branch with a hand-written object literal
+      produces byte-for-byte the same DOM, badges and quality panels as a live
+      Premium result; and
     * a label rewrite — one line between ``await resp.json()`` and the render
       call setting ``provider``/``compose_status``/``candidate_eligible``, so
       the narration is genuinely live but the tier and cost labels the owner
       judges by are forged.
 
     Both die on one derived property: the page renders the parsed response and
-    nothing else. Exactly one call site, inside the function that performed the
-    fetch, whose sole argument is the awaited JSON — no variable to patch, no
-    second entry point, no wrapper. The field list is read off the endpoint's
-    own Pydantic response model, so it cannot go stale.
+    nothing else. The page now does this TWICE, because choosing a route and
+    writing it are two calls — so both stages are checked, each with exactly one
+    call site, inside the function that performed its own fetch, whose first
+    argument is the awaited JSON. No variable to patch, no second entry point, no
+    wrapper. Both field lists are read off the endpoints' own Pydantic response
+    models, so they cannot go stale.
 
-    UNDO TEST: add a second renderTourStops call, wrap the argument in anything,
+    UNDO TEST: add a second call to either renderer, wrap an argument in anything,
     or assign to a response field before rendering -> RED.
     """
+    from src.api.models.trips import TripAuthoredTourResponse, TripPreviewResponse
+
     html = REVIEW_HTML.read_text()
-    callee = "renderTourStops("
-    offsets = _all_offsets(html, callee)
-    assert offsets, "renderTourStops is missing from review.html"
-    call_sites = [o for o in offsets if not html[:o].rstrip().endswith("function")]
-    assert len(call_sites) == 1, (
-        f"renderTourStops is called from {len(call_sites)} places. Exactly one "
-        f"call site — the one holding the live /trips/preview response — can be "
-        f"proved to render what the server sent; a second one renders whatever "
-        f"its caller made up, through the identical DOM, badges and quality "
-        f"panels the owner reads as proof of a live Premium tour."
-    )
 
-    body = _js_function_body(html, "async function generateTourPreview()")
-    assert callee in body, (
-        "the only renderTourStops call site is outside generateTourPreview, so "
-        "nothing ties what is rendered to the /trips/preview fetch"
-    )
-    assert "/trips/preview" in body, "generateTourPreview no longer fetches /trips/preview"
+    # (fetching function, renderer, path it must have fetched, response model)
+    stages = [
+        (
+            "async function generateTourPreview()",
+            "renderTourOptions(",
+            "/trips/preview",
+            TripPreviewResponse,
+        ),
+        (
+            "async function authorTourOption(",
+            "renderTourStops(",
+            "/trips/preview/author",
+            TripAuthoredTourResponse,
+        ),
+    ]
 
-    arguments = _call_arguments(html, call_sites[0], callee)
-    assert arguments, "renderTourStops is called with no arguments"
-    assert arguments[0] == "await resp.json()", (
-        f"renderTourStops is handed {arguments[0]!r} rather than the parsed "
-        f"response itself. Anything other than a bare `await resp.json()` — a "
-        f"variable, an Object.assign, a spread, a merge — is a place to inject "
-        f"fields the server never sent, and the owner cannot see the difference "
-        f"on screen."
-    )
+    for declaration, callee, path, model in stages:
+        offsets = _all_offsets(html, callee)
+        assert offsets, f"{callee} is missing from review.html"
+        call_sites = [o for o in offsets if not html[:o].rstrip().endswith("function")]
+        assert len(call_sites) == 1, (
+            f"{callee} is called from {len(call_sites)} places. Exactly one call "
+            f"site — the one holding the live {path} response — can be proved to "
+            f"render what the server sent; a second one renders whatever its caller "
+            f"made up, through the identical DOM, badges and quality panels the "
+            f"owner reads as proof of a live Premium tour."
+        )
 
-    from src.api.models.trips import TripPreviewResponse
+        body = _js_function_body(html, declaration)
+        assert callee in body, (
+            f"the only {callee} call site is outside {declaration!r}, so nothing "
+            f"ties what is rendered to the {path} fetch"
+        )
+        assert path in body, f"{declaration!r} no longer fetches {path}"
 
-    fields = sorted(TripPreviewResponse.model_fields)
-    assert fields, "the preview response model declares no fields"
-    for field in fields:
-        for offset in _all_offsets(body, f".{field}"):
-            tail = body[offset + len(field) + 1 :].lstrip()
-            if tail.startswith("=") and not tail.startswith("=="):
-                raise AssertionError(
-                    f"generateTourPreview writes to the response field {field!r} "
-                    f"before rendering. The narration can be perfectly live while "
-                    f"the tier, narrator and certification labels are forged — and "
-                    f"those labels are what the owner judges cost and quality by."
-                )
+        arguments = _call_arguments(html, call_sites[0], callee)
+        assert arguments, f"{callee} is called with no arguments"
+        assert arguments[0] == "await resp.json()", (
+            f"{callee} is handed {arguments[0]!r} rather than the parsed response "
+            f"itself. Anything other than a bare `await resp.json()` — a variable, "
+            f"an Object.assign, a spread, a merge — is a place to inject fields the "
+            f"server never sent, and the owner cannot see the difference on screen."
+        )
+
+        fields = sorted(model.model_fields)
+        assert fields, f"{model.__name__} declares no fields"
+        for field in fields:
+            for offset in _all_offsets(body, f".{field}"):
+                tail = body[offset + len(field) + 1 :].lstrip()
+                if tail.startswith("=") and not tail.startswith("=="):
+                    raise AssertionError(
+                        f"{declaration!r} writes to the response field {field!r} "
+                        f"before rendering. The narration can be perfectly live "
+                        f"while the tier, narrator and certification labels are "
+                        f"forged — and those labels are what the owner judges cost "
+                        f"and quality by."
+                    )
 
 
 # --------------------------------------------------------------------------
@@ -1961,20 +2001,22 @@ def test_the_basic_lane_disclosure_is_driven_by_the_servers_own_fields() -> None
     makes a degraded tour render the Premium narrator badge and the
     certification-eligible label.
 
-    Derived from the response model: both fields exist on
-    ``TripPreviewResponse``, and the renderer must consult both, and must build
-    the Premium-only quality panel exactly once (i.e. on one branch).
+    Derived from the response model: both fields exist on the reply that carries a
+    WRITTEN tour, the renderer must consult both, and it must build the
+    Premium-only quality panel exactly once (i.e. on one branch). They live on the
+    author reply rather than the plan reply because there is no Basic fallback and
+    no eligibility until something has actually been written.
 
     UNDO TEST: drop either field from the condition, or append the Premium panel
     unconditionally -> RED.
     """
-    from src.api.models.trips import TripPreviewResponse
+    from src.api.models.trips import TripAuthoredTourResponse
 
-    fields = set(TripPreviewResponse.model_fields)
+    fields = set(TripAuthoredTourResponse.model_fields)
     required = {"candidate_eligible", "basic_tour"}
     assert required <= fields, (
-        f"the preview response no longer carries {sorted(required - fields)}; the "
-        f"Basic-vs-Premium disclosure this test guards is derived from those "
+        f"the authored-tour response no longer carries {sorted(required - fields)}; "
+        f"the Basic-vs-Premium disclosure this test guards is derived from those "
         f"fields, so the derivation must be updated, not deleted"
     )
 
@@ -1995,61 +2037,212 @@ def test_the_basic_lane_disclosure_is_driven_by_the_servers_own_fields() -> None
 
 
 # --------------------------------------------------------------------------
-# TEST 14 — the preview cap and the persisted cap are pinned, gap and all
+# TEST 14 — duration is the only bound on how many stops a tour has
 # --------------------------------------------------------------------------
 
+#: The 17-point set on which cheapest insertion is provably WORSE than the exact
+#: solver, so "which orderer ran" is observable rather than asserted. MEASURED on
+#: this fixture: exact 7300 s, cheapest-insertion 7526 s. 17 and not 25 on purpose
+#: — at 25 the exact solver would never return, and a test that hangs is not RED.
+_ORDERING_PROBE_SEED = 7
+_ORDERING_PROBE_N = 17
 
-def test_the_preview_stop_cap_and_the_persisted_stop_cap_are_pinned() -> None:
-    """A LIVE divergence, pinned rather than blessed.
 
-    ``certification_planning_policy`` caps the Premium PREVIEW — the surface
-    ``generateTourPreview`` drives and the owner judges — at 8 routed stops,
-    while the persisted tourist path allows ``AUTHORING_MAX_STOPS`` (15). The
-    workbench therefore structurally cannot show a tour as long as one a tourist
-    can be given, and a future agent needs to touch ONE integer to widen that
-    indefinitely while every other guard in this file stays green.
+def _probe_points(n: int, seed: int):
+    """``n`` deterministic POIs in an ~1.8 km box, built without a corpus."""
+    import random
 
-    This test does NOT claim the gap is acceptable — closing it is a product
-    decision about spend that belongs to the owner, and is recorded in the file
-    docstring. What it does is make both numbers load-bearing, so neither can
-    move silently and the gap can never grow unnoticed.
+    from src.tour.contract import POI
 
-    UNDO TEST: change either constant -> RED.
+    rng = random.Random(seed)
+    return [
+        POI(
+            id=f"p{i:02d}",
+            name=f"p{i:02d}",
+            tier=5,
+            poi_role="stop",
+            lat=_PDV[0] + rng.uniform(-0.008, 0.008),
+            lng=_PDV[1] + rng.uniform(-0.008, 0.008),
+        )
+        for i in range(n)
+    ]
+
+
+_PDV = (48.85675, 2.341033)
+
+
+def test_duration_is_the_only_stop_bound_on_the_planning_path(monkeypatch) -> None:
+    """OWNER RULING 5 — "no stop limits, period" — measured, not asserted.
+
+    Until 2026-08-04 the planner clamped every tour to at most 15 seated anchors
+    (``selection.HARD_ANCHOR_CAP``) and the certification policy clamped the
+    PREVIEW to 8, so the workbench structurally could not show a tour as long as
+    one a tourist could be given. Both are gone. What bounds a tour now is the
+    time budget and nothing else, on every surface.
+
+    Removing a ceiling from an exponential solver is only safe if something
+    catches the pathological case, so this test also pins the replacement:
+    ``ordering.order_stops`` orders EXACTLY up to ``ORDERING_EXACT_MAX`` points
+    and by cheapest insertion above it, and never drops a stop either way.
+
+    UNDO (each turns this RED):
+      * restore the ``min(HARD_ANCHOR_CAP, ...)`` clamp -> assertions 3 and 7;
+      * restore ``max_stops=8`` in ``certification_planning_policy`` -> 3 and 7;
+      * restore the ``1 <= max_stops <= 8`` validator message -> 7b;
+      * set ``ORDERING_EXACT_MAX = 17`` -> assertions 5 and 6;
+      * delete the ``TIMEBOX_REPAIR_MAX_TRIALS`` early return -> assertion 8.
     """
-    policy_tree = ast.parse((SRC / "tour" / "premium_tour.py").read_text())
-    preview_caps: list[int] = []
-    for node in ast.walk(policy_tree):
-        if not isinstance(node, ast.FunctionDef) or node.name != "certification_planning_policy":
-            continue
-        for sub in ast.walk(node):
-            if isinstance(sub, ast.Call):
-                for keyword in sub.keywords:
-                    if keyword.arg == "max_stops" and isinstance(keyword.value, ast.Constant):
-                        preview_caps.append(keyword.value.value)
-    assert len(preview_caps) == 1, (
-        f"expected exactly one max_stops literal in certification_planning_policy, "
-        f"found {preview_caps}. The preview's stop cap moved shape; re-derive it."
+    from src.tour import selection
+    from src.tour.contract import TourInput
+    from src.tour.ordering import ORDERING_EXACT_MAX, cheapest_insertion_open, held_karp_open
+    from src.tour.ordering import order_stops as _order_stops
+    from src.tour.premium_tour import certification_planning_policy
+    from src.tour.routing import RoutePlanningPolicy
+    from src.tour.selection import select_route
+    from tests.test_tour_selection import _poi, _snap
+
+    # 1. A dense start area and a duration long enough to seat well past the old
+    #    ceiling. Two beats per POI keeps the greedy ANCHOR-bound rather than
+    #    letting it terminate audio-bound after a handful of beat-rich stops.
+    pois = [
+        _poi(
+            f"p{i:02d}",
+            tier=5,
+            lat=_PDV[0] + (i % 6) * 0.0004,
+            lng=_PDV[1] + (i // 6) * 0.0004,
+            beat_count=2,
+        )
+        for i in range(40)
+    ]
+    snap = _snap(pois)
+    inp = TourInput(start=_PDV, duration_min=400, city_slug="paris")
+
+    # 2. Planned on the CERTIFICATION path — the non-legacy branch, where the
+    #    deleted ``planning_budget.max_stops`` guards lived (the priced-trial
+    #    guard, the repair's "requires an authorized stop cap" ValueError, and the
+    #    add-pass's ``len(base.ordered) < max_stops`` gate). The band is
+    #    deliberately WIDE rather than the shipped 0.90-1.10: the shipped band is
+    #    two-sided and a synthetic uniform lattice cannot fill 400 minutes of
+    #    elapsed time, so the narrow band would refuse for a TIME reason and this
+    #    test would never reach its stop-count claim. The 0.90-1.10 band is
+    #    covered by tests/test_tour_certification_selection.py; what is under test
+    #    here is the stop ceiling.
+    no_cap_policy = RoutePlanningPolicy.certification(
+        minimum_requested_fraction=0.05,
+        maximum_requested_fraction=2.0,
+        policy_id="test-no-cap",
+    )
+    # There is only ONE planning branch since step 6 deleted the legacy flat policy, so
+    # this fixture reaches the same code the preview does; only the band differs.
+    assert no_cap_policy.nominal_requested_fraction > 0
+    route = select_route(inp, snap, planning_policy=no_cap_policy)
+
+    # 3. THE AC-16 BEHAVIOUR: far more dwell stops than any deleted ceiling could
+    #    produce. MEASURED on this fixture: 32 uncapped, against exactly 16 with
+    #    the old ceilings restored (15 greedy anchors plus the one stop the
+    #    certification repair's add-pass can contribute). So the threshold is 20,
+    #    not 16 — ">15" would have passed with every ceiling still in place, which
+    #    is the precise way this assertion could have been a passenger.
+    #
+    #    20 is also past ORDERING_EXACT_MAX, so this route was ordered by the
+    #    cheapest-insertion FALLBACK end to end: the assertion below is
+    #    simultaneously the proof that the fallback works inside real planning,
+    #    not just when called directly.
+    assert len(route.pois) >= 20, (
+        f"a 400-minute request in a dense area seated only {len(route.pois)} stops. "
+        f"16 or fewer means a stop ceiling survives somewhere on the planning path; "
+        f"this fixture seats 32 when duration is genuinely the only bound"
+    )
+    assert len(route.pois) > ORDERING_EXACT_MAX, (
+        "the fixture no longer exercises the cheapest-insertion fallback inside "
+        "select_route, so this test would stop proving the tractability half"
     )
 
-    authoring_tree = ast.parse((SRC / "tour" / "authoring.py").read_text())
-    persisted_caps: list[int] = []
-    for node in authoring_tree.body:
-        if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "AUTHORING_MAX_STOPS":
-                    assert isinstance(node.value, ast.Constant)
-                    persisted_caps.append(node.value.value)
-    assert len(persisted_caps) == 1, (
-        f"expected exactly one AUTHORING_MAX_STOPS, found {persisted_caps}"
-    )
+    # 3b. The PREVIEW's own policy — where ``max_stops=8`` lived — still builds.
+    #     Restoring that argument without restoring the field is a TypeError here,
+    #     and restoring both is caught by assertion 7's AST scan.
+    assert certification_planning_policy(policy_id="preview").nominal_requested_fraction == 1.0
 
-    assert (preview_caps[0], persisted_caps[0]) == (8, 15), (
-        f"the Premium preview plans at most {preview_caps[0]} stops while the "
-        f"persisted tourist path allows {persisted_caps[0]}. These were 8 and 15 "
-        f"when this guard was written — a known, documented divergence between "
-        f"what the owner judges and what ships. Either number moving changes that "
-        f"gap, so it is a deliberate decision, not a silent edit: state the new "
-        f"relationship here (and in this file's docstring) before updating it."
+    # 4. No stop is seated twice once the cap stops truncating the list.
+    assert len(route.pois) == len({p.id for p in route.pois})
+
+    # 5. THE DISPATCH: above the tractability wall the fallback runs, and it is a
+    #    genuinely DIFFERENT (worse) order — so this observes which solver ran
+    #    rather than trusting the branch.
+    probe = _probe_points(_ORDERING_PROBE_N, _ORDERING_PROBE_SEED)
+    assert _ORDERING_PROBE_N > ORDERING_EXACT_MAX
+    dispatched = [p.id for p in _order_stops(probe, fixed_start=_PDV)]
+    assert dispatched == [p.id for p in cheapest_insertion_open(probe, fixed_start=_PDV)]
+    assert dispatched != [p.id for p in held_karp_open(probe, fixed_start=_PDV)], (
+        "the dispatcher handed 17 points to the EXACT solver; that is the "
+        "exponential path this fallback exists to keep off the planner"
+    )
+    # ...and it kept every stop. A fallback that drops stops is a product change.
+    assert sorted(dispatched) == sorted(p.id for p in probe)
+
+    # 6. THE CPU BOUND, at a size the exact solver could not survive. CPU time,
+    #    not wall clock: a contended host must not make this flaky.
+    wide = _probe_points(40, seed=11)
+    t0 = time.process_time()
+    _order_stops(wide, fixed_start=_PDV)
+    assert time.process_time() - t0 < 1.0
+
+    # 7. STRUCTURAL: no stop ceiling survives anywhere on the planning path.
+    for module in ("premium_tour.py", "routing.py", "selection.py"):
+        tree = ast.parse((SRC / "tour" / module).read_text())
+        keywords = {
+            kw.arg
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            for kw in node.keywords
+        }
+        assert "max_stops" not in keywords, f"{module} still passes a max_stops="
+        attributes = {
+            node.attr for node in ast.walk(tree) if isinstance(node, ast.Attribute)
+        }
+        assert "max_stops" not in attributes, f"{module} still reads a .max_stops"
+        assigned = {
+            target.id
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Assign | ast.AnnAssign)
+            for target in (node.targets if isinstance(node, ast.Assign) else [node.target])
+            if isinstance(target, ast.Name)
+        }
+        assert not assigned & {"HARD_ANCHOR_CAP", "ANCHOR_CAP_DIVISOR"}, (
+            f"{module} re-declares a deleted anchor cap"
+        )
+
+    # 7b. The dead 1..8 validator went with the field it validated. Without this
+    #     the clause is unreachable-but-present, and nothing else can see it.
+    routing_source = (SRC / "tour" / "routing.py").read_text()
+    assert "certification planning supports one to eight stops" not in routing_source
+
+    # 8. The repair's own trial bound is real, not decoration. Deleting the stop
+    #    ceiling also removed what used to bound the repair's |incumbents| x |pool|
+    #    enumeration, so TIMEBOX_REPAIR_MAX_TRIALS is now the only thing standing
+    #    between a long tour and a quadratic pile of exponential orderings.
+    #
+    #    Asserting "a route still comes back" is NOT enough on its own — that is
+    #    also true when the bound is deleted. So this counts the pricing calls the
+    #    repair actually makes. MEASURED on this fixture: 321 unbounded, 35 with
+    #    the bound squeezed to 3. Deleting the early return puts it back to 321.
+    priced: list[int] = []
+    real_trial = selection._certification_route_trial
+
+    def _counting_trial(*args, **kwargs):
+        priced.append(1)
+        return real_trial(*args, **kwargs)
+
+    monkeypatch.setattr(selection, "_certification_route_trial", _counting_trial)
+    monkeypatch.setattr(selection, "TIMEBOX_REPAIR_MAX_TRIALS", 3)
+    squeezed = select_route(inp, snap, planning_policy=no_cap_policy)
+    assert squeezed.pois, (
+        "truncating the timebox repair to 3 trials made planning refuse outright; "
+        "the bound must degrade the repair, never fail the request"
+    )
+    assert len(priced) < 60, (
+        f"the timebox repair priced {len(priced)} trials with its bound squeezed to "
+        f"3, so the bound is not being enforced (unbounded on this fixture is 321)"
     )
 
 
@@ -2152,3 +2345,608 @@ def test_a_flag_allowed_to_differ_never_steers_the_request_path() -> None:
         f"identically in both environments; keep the divergence in the app "
         f"factory and the route gates, where it is decided."
     )
+
+
+# --------------------------------------------------------------------------
+# TESTS 16-19 — ONE ENGINE: the phone and the workbench run the SAME OBJECTS
+# --------------------------------------------------------------------------
+#
+# THE OWNER'S QUESTION, 2026-08-04: "prove to me that the app and the workbench
+# ultimately invoke the exact same tour logic code end-to-end. No duplicate, no
+# separate modules with the logic. The exact same code."
+#
+# Two client programs in two languages — the phone is Dart
+# (``mobile/lib/services/trip_service.dart``), the workbench is JavaScript
+# (``frontend/review.html``) — and both cross into Python at
+# ``src/api/routes/trips.py``. So the question reduces to a single one that can be
+# answered by running something: DO THOSE HANDLERS EXECUTE THE SAME FUNCTIONS?
+#
+# WHY NOT A TRACER. The obvious instrument — ``sys.settrace``, record every code
+# object executed under ``src/tour``, compare the two sets — is unsound HERE.
+# FastAPI runs a synchronous handler on a worker thread taken from a pool, and
+# ``sys.settrace`` instruments only the thread it was set on. A trace that comes
+# back EMPTY is then indistinguishable from a trace that comes back CLEAN, and a
+# proof may not have a failure mode that looks like success.
+#
+# THE INSTRUMENT USED INSTEAD — SINGLE-POINT INTERCEPTION. Break ONE shared object
+# and require BOTH surfaces to break. A duplicate implementation cannot hide from
+# that, because a duplicate is by definition not the object that was broken. This
+# is the project's own undo-test discipline pointed at architecture rather than at
+# a bug, and unlike a tracer it is thread-safe: the substitution lives on the
+# module object, so it applies whichever worker thread the handler lands on.
+#
+# WHY EVERY ALIAS IS SUBSTITUTED, NOT ONE. ``from x import y`` creates a SECOND
+# binding. Replacing the attribute on the DEFINING module intercepts calls that
+# resolve through that module's globals — including a delegate's own internal call
+# — but NOT a caller that imported the name and holds its own reference; replacing
+# it on the CALLER catches the opposite half. Patch one and a surface reached
+# through the other name looks like a divergence that is not there, or worse like
+# a convergence that is not there. So the binding set is DERIVED from the import
+# graph (:func:`_seam_bindings`) and every member is replaced at once. A module
+# that starts importing the planner tomorrow is covered without anyone remembering
+# to add it here.
+#
+# WHAT IS AND IS NOT STOOD IN FOR. These four tests replace the corpus reader, the
+# walking-times client and the Neo4j session — the DATA SOURCES and the STORE. They
+# never replace the planner or the authoring seam, which are the subject: standing
+# in for those would be assuming the answer. Test 16 asserts, by object identity,
+# that the objects reached are the real ones.
+
+
+#: The two convergence points every tour request passes through, whichever client
+#: asked. These are the SUBJECTS of tests 16-18 — the things whose identity is being
+#: proven — exactly as ``TOURIST_FACING_FUNCTIONS`` at the top of this file names the
+#: surfaces under test. They are not an allowlist of blessed implementations: which
+#: modules bind them, which handlers reach them, and whether each is one object or
+#: several, are all derived below rather than stated.
+PLAN_BLOCK = ("plan_premium_options", "plan_premium_tour")
+AUTHOR_BLOCK = ("execute_premium_plan", "finalize_premium_tour")
+
+#: Where both blocks are defined. Everything else about them is derived.
+ENGINE_MODULE = "src.tour.premium_tour"
+
+#: The phone's two calls and the workbench's two, as the HTTP layer sees them.
+PHONE_PLAN_PATH = "/api/v1/trips/generate"
+PHONE_AUTHOR_PATH = "/api/v1/trips/{trip_id}/compose"
+WORKBENCH_PLAN_PATH = "/api/v1/trips/preview"
+WORKBENCH_AUTHOR_PATH = "/api/v1/trips/preview/author"
+
+_PROOF_USER_ID = "one-engine-proof-user"
+_PROOF_PROFILE_ID = "one-engine-proof-profile"
+
+
+class _SeamBrokenError(Exception):
+    """Raised by the stand-in installed on every binding of a shared seam."""
+
+
+# --------------------------------------------------------------------------
+# derivation helpers — which names can reach the two blocks
+# --------------------------------------------------------------------------
+
+
+def _resolved_import(node: ast.ImportFrom, package: str) -> str:
+    """The absolute module an ``ImportFrom`` names, resolving a relative one."""
+    if not node.level:
+        return node.module or ""
+    parts = package.split(".")
+    base = parts[: len(parts) - node.level + 1]
+    return ".".join([*base, node.module] if node.module else base)
+
+
+def _dotted_name(path: pathlib.Path) -> str:
+    parts = list(path.relative_to(REPO).with_suffix("").parts)
+    if parts[-1] == "__init__":
+        parts.pop()
+    return ".".join(parts)
+
+
+@cache
+def _seam_bindings(names: tuple[str, ...]) -> tuple[tuple[str, str], ...]:
+    """Every ``(module, attribute)`` under ``src/`` through which ``names`` is callable.
+
+    Read off the import graph, never listed. Two kinds of binding exist and both
+    matter: the attribute on the module that DEFINES the function, and the attribute
+    a module gets when it writes ``from src.tour.premium_tour import <name>``. An
+    ``as`` alias is followed, because the local spelling is what the caller's globals
+    hold and therefore what a substitution has to replace.
+    """
+    wanted = set(names)
+    found: list[tuple[str, str]] = []
+    for path, tree in _source_modules():
+        dotted = _dotted_name(path)
+        package = dotted.rsplit(".", 1)[0] if "." in dotted else ""
+        defined = {
+            node.name
+            for node in tree.body
+            if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef)
+        }
+        found.extend((dotted, name) for name in sorted(wanted & defined))
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.ImportFrom):
+                continue
+            if _resolved_import(node, package) != ENGINE_MODULE:
+                continue
+            found.extend(
+                (dotted, alias.asname or alias.name)
+                for alias in node.names
+                if alias.name in wanted
+            )
+    return tuple(sorted(set(found)))
+
+
+def _bound_object(dotted: str, attribute: str) -> object:
+    return getattr(importlib.import_module(dotted), attribute)
+
+
+def _assert_bindings_are_usable(bindings: tuple[tuple[str, str], ...], names) -> None:
+    """Non-vacuity: the derivation really found the request path before anything else.
+
+    A binding sweep that silently found nothing would make every "both surfaces
+    broke" assertion below pass for free, since nothing would have been replaced and
+    nothing would have been called. So this fails LOUDLY on an empty or partial
+    derivation rather than letting the interception tests report a green vacuum.
+    """
+    assert bindings, f"derived no binding at all for {sorted(names)} — the sweep is broken"
+    modules = {dotted for dotted, _ in bindings}
+    assert ENGINE_MODULE in modules, (
+        f"{ENGINE_MODULE} does not define {sorted(names)} any more; the convergence "
+        f"point moved and these tests are watching the wrong thing"
+    )
+    assert "src.api.routes.trips" in modules, (
+        f"no route module binds {sorted(names)}, so neither client can be reaching "
+        f"them — either the handlers moved or the import sweep is broken"
+    )
+
+
+# --------------------------------------------------------------------------
+# the harness: one process, one corpus, both surfaces
+# --------------------------------------------------------------------------
+
+
+class _StubGraph:
+    """The smallest thing that can stand in for Neo4j across the phone's two routes.
+
+    It is a STORE, not tour logic. It answers the three record-shaped reads the trip
+    routes make (does this user own this profile, does this user own this trip, what
+    compose inputs were persisted), remembers the two JSON blobs ``/trips/generate``
+    writes so ``/trips/{id}/compose`` can read them back, and reports that it created
+    exactly the relationships it was asked to create. Every iterating read (profile
+    lens preferences, lens display labels, per-beat audio) is legitimately empty here,
+    which is the same shape a fresh graph gives.
+
+    Standing in for the DATABASE is what keeps these tests $0 and deterministic.
+    Standing in for the PLANNER or the AUTHORING SEAM would assume the very thing
+    under test, so neither is ever touched — see test 16, which asserts by object
+    identity that the ones reached are the real ones.
+    """
+
+    def __init__(self, profile_id: str) -> None:
+        self._record: dict[str, Any] = {
+            "id": profile_id,
+            "pid": profile_id,
+            "ti": None,
+            "oj": None,
+            "composed": None,
+            "edges": 0,
+        }
+
+    def run(self, _cypher: str, **params: Any) -> _StubGraph:
+        if params.get("tour_input_json") is not None:
+            self._record["ti"] = params["tour_input_json"]
+        if params.get("options_json") is not None:
+            self._record["oj"] = params["options_json"]
+        if params.get("beat_ids") is not None:
+            self._record["edges"] = len(params["beat_ids"])
+        return self
+
+    def single(self) -> dict[str, Any]:
+        return dict(self._record)
+
+    def __iter__(self):
+        return iter(())
+
+    def execute_write(self, unit_of_work):
+        return unit_of_work(self)
+
+
+def _proof_client(monkeypatch, graph: _StubGraph):
+    """A TestClient on the real app, given one fixed corpus and one routing client.
+
+    Both surfaces are served by the SAME app object in the SAME process, so a
+    difference between them cannot come from configuration, environment, process
+    state or the order the two ran in.
+
+    The corpus reader and the walking-times client are replaced ONCE, on the route
+    module, so both surfaces get byte-identical inputs — that is what makes the
+    output comparison in test 19 mean something. The routing client is the
+    mock-transport one the flavour suite already uses: a stubbed upstream SERVICE,
+    which the no-mocks rule permits and in fact requires, since the alternative is a
+    live Valhalla whose answers can move between two back-to-back requests.
+
+    The app's lifespan is deliberately NOT entered: it opens a real Neo4j driver, and
+    every database dependency is overridden here anyway.
+    """
+    from fastapi.testclient import TestClient
+
+    from src.api.app import create_app
+    from src.api.auth.dependencies import get_current_user
+    from src.api.dependencies import get_driver, get_session
+    from src.api.routes import trips
+    from tests.test_tour_flavours import _client as _mock_routing_client
+    from tests.test_tour_flavours import _dense_snap
+
+    monkeypatch.setenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", "1")
+    snapshot = _dense_snap()
+    monkeypatch.setattr(trips, "load_paris_corpus", lambda *_a, **_k: snapshot)
+    monkeypatch.setattr(trips, "RoutingClient", _mock_routing_client)
+
+    app = create_app()
+    app.dependency_overrides[get_session] = lambda: graph
+    app.dependency_overrides[get_driver] = lambda: graph
+    app.dependency_overrides[get_current_user] = lambda: {"id": _PROOF_USER_ID}
+    return TestClient(app)
+
+
+def _plan_request(**extra: Any) -> dict[str, Any]:
+    """One request body, shared by every surface, so nothing differs but the route."""
+    from tests.test_tour_selection import PDV
+
+    return {
+        "center_lat": PDV[0],
+        "center_lng": PDV[1],
+        "duration_min": 60,
+        "city_slug": "paris",
+        "round_trip": False,
+        **extra,
+    }
+
+
+def _generate_request(**extra: Any) -> dict[str, Any]:
+    return _plan_request(
+        profile_id=_PROOF_PROFILE_ID,
+        start_date="2026-08-05",
+        end_date="2026-08-05",
+        **extra,
+    )
+
+
+def _post(client, path: str, body: dict[str, Any]):
+    """POST and report a surface that could not answer at all as ``None``."""
+    try:
+        return client.post(path, json=body)
+    except _SeamBrokenError:
+        return None
+
+
+def _dwell_poi_ids(option: dict[str, Any]) -> list[str]:
+    """The stops of an option, in order. Dwell cards only, and that filter is required.
+
+    A ``leg`` card deliberately repeats its ARRIVAL stop's ``poi_id`` (see
+    ``RouteOptionStop`` in src/tour/contract.py: "a consumer matching POI ids must
+    therefore filter to band == 'dwell'"), so an unfiltered id list legitimately
+    contains duplicates and would compare two different things.
+    """
+    return [stop["poi_id"] for stop in option["stops"] if stop["band"] == "dwell"]
+
+
+# --------------------------------------------------------------------------
+# TEST 16 — the two surfaces name ONE planner and ONE authoring seam
+# --------------------------------------------------------------------------
+
+
+def test_the_phone_and_the_workbench_name_one_planner_and_one_author() -> None:
+    """AC-1 — object identity, which is stricter than any source comparison.
+
+    The check is ``is``, not ``==``. Two byte-identical copies of the planner living
+    in two modules would diff clean, pass every text search, satisfy any "same
+    algorithm" review — and FAIL here, because they are two objects. That is exactly
+    the failure the owner asked about: not "does the workbench run something similar"
+    but "does it run the same code".
+
+    Every binding is checked, not the obvious one. ``from x import y`` gives the
+    importer its own reference, so "the route module's planner" and "the engine
+    module's planner" are two attributes that can drift apart in one edit.
+
+    This test says nothing about whether the handlers CALL these objects — that is
+    tests 17 and 18, which break them and watch both surfaces fail.
+
+    UNDO TEST: in ``src/api/routes/trips.py``, replace the
+    ``from src.tour.premium_tour import plan_premium_options`` binding with a local
+    copy of the function (however faithful) -> RED on the PLAN block; do the same for
+    ``execute_premium_plan`` -> RED on the AUTHOR block.
+    """
+    for block in (PLAN_BLOCK, AUTHOR_BLOCK):
+        bindings = _seam_bindings(block)
+        _assert_bindings_are_usable(bindings, block)
+
+        # Group every derived binding by the name it ORIGINATES from, then require
+        # each group to be one single object. Grouping by the engine module's own
+        # attribute is what makes an alias (`import ... as ...`) comparable.
+        canonical = {name: _bound_object(ENGINE_MODULE, name) for name in block}
+        divergent: dict[str, list[str]] = {}
+        for dotted, attribute in bindings:
+            resolved = _bound_object(dotted, attribute)
+            matches = [name for name, obj in canonical.items() if obj is resolved]
+            if not matches:
+                divergent.setdefault(f"{dotted}.{attribute}", []).append(
+                    f"resolves to {resolved!r}, which is none of {sorted(canonical)}"
+                )
+        assert not divergent, (
+            f"a module reaches the tour engine through its OWN object rather than the "
+            f"one {ENGINE_MODULE} defines: {divergent}. Byte-identical source is not "
+            f"enough — a copy is a second implementation the moment either one is "
+            f"edited, and the workbench would then be judging a tour the phone cannot "
+            f"produce."
+        )
+
+    # The delegate and the planner are one implementation, not two that agree: the
+    # single-route entry point must be a thin call into the K-option one. Asserted
+    # here because tests 17 and 18 patch BOTH names, and if the delegate were an
+    # independent implementation that double patch would hide the duplication rather
+    # than expose it.
+    import inspect
+
+    from src.tour import premium_tour
+
+    delegate = inspect.getsource(premium_tour.plan_premium_tour)
+    assert "plan_premium_options(" in delegate, (
+        "plan_premium_tour no longer delegates to plan_premium_options, so there are "
+        "two definitions of 'the' route and the batch runner, the phone and the "
+        "workbench can each pick a different one"
+    )
+
+
+# --------------------------------------------------------------------------
+# TEST 17 — breaking the ONE planner breaks BOTH surfaces (BLOCK 1)
+# --------------------------------------------------------------------------
+
+
+def test_breaking_the_one_planner_breaks_both_surfaces(monkeypatch) -> None:
+    """AC-1 / AC-4 — the load-bearing proof, and the only one a duplicate cannot dodge.
+
+    Every binding through which the planner can be reached is replaced with a
+    stand-in that records who called it and then refuses. Then the phone's planning
+    call and the workbench's planning call are both made, against the same app in the
+    same process. Two things must be true of EACH surface:
+
+      * the stand-in fired exactly ONCE — so that surface really went through the one
+        replaced object, rather than through some other route to the same answer; and
+      * the surface could not answer — so it has no second implementation to fall back
+        on. A surface that still returns a plan when the shared planner is broken was
+        never using the shared planner.
+
+    Either assertion alone is weak. Together they are the whole claim: this surface
+    went through that object, and it cannot produce a tour without it.
+
+    UNDO TEST: reintroduce a private planning path on either handler — restore the
+    deleted ``_preview_stops`` interleave, or put a direct ``select_k_routes(...)``
+    call back into ``generate_trip`` where one lived until 2026-08-04 — and that
+    surface's pair of assertions goes RED: it answers 201/200 without the stand-in
+    ever firing.
+    """
+    bindings = _seam_bindings(PLAN_BLOCK)
+    _assert_bindings_are_usable(bindings, PLAN_BLOCK)
+
+    calls: list[str] = []
+
+    def _refuse(*_args: Any, **_kwargs: Any):
+        calls.append("plan")
+        raise _SeamBrokenError("the one planner was replaced for this test")
+
+    for dotted, attribute in bindings:
+        monkeypatch.setattr(importlib.import_module(dotted), attribute, _refuse)
+
+    client = _proof_client(monkeypatch, _StubGraph(_PROOF_PROFILE_ID))
+
+    del calls[:]
+    workbench = _post(client, WORKBENCH_PLAN_PATH, _plan_request())
+    workbench_calls = len(calls)
+
+    del calls[:]
+    phone = _post(client, PHONE_PLAN_PATH, _generate_request())
+    phone_calls = len(calls)
+
+    assert workbench_calls == 1, (
+        f"the workbench's plan request went through the shared planner "
+        f"{workbench_calls} times, not once. Zero means it planned the tour some "
+        f"other way — a second implementation, which is precisely what must not "
+        f"exist. More than one means an alias was reached twice and the surface's "
+        f"call count can no longer be read."
+    )
+    assert phone_calls == 1, (
+        f"the phone's plan request went through the shared planner {phone_calls} "
+        f"times, not once. Zero means POST /trips/generate has its own planner again, "
+        f"as it did until 2026-08-04 when it called select_k_routes directly with no "
+        f"planning policy and quietly produced a shorter walk than the workbench did "
+        f"for the identical request."
+    )
+    assert workbench is None, (
+        f"with the shared planner broken, the workbench still answered HTTP "
+        f"{workbench.status_code}. It is planning tours with something else."
+    )
+    assert phone is None, (
+        f"with the shared planner broken, the phone still answered HTTP "
+        f"{phone.status_code}. It is planning tours with something else."
+    )
+
+
+# --------------------------------------------------------------------------
+# TEST 18 — breaking the ONE authoring seam breaks BOTH surfaces (BLOCK 2)
+# --------------------------------------------------------------------------
+
+
+def test_breaking_the_one_author_seam_breaks_both_surfaces(monkeypatch) -> None:
+    """AC-1 / AC-8 — the same proof for the half that writes the words.
+
+    Planning and authoring are two separate convergence points, and proving one says
+    nothing about the other. This drives the phone's ``POST /trips/{id}/compose`` and
+    the workbench's ``POST /trips/preview/author`` — a real generate-then-compose
+    round trip on the phone's side, so the compose call reads back the very inputs the
+    generate call persisted.
+
+    The outcome assertion differs from test 17's for one honest reason: the workbench
+    authoring route wraps its seam in a blanket ``except Exception`` and falls back to
+    the Basic lane, so it answers 200 whatever happens. "Could not answer" is
+    therefore read off the BODY rather than the status — no authored option, and a
+    narration kind that is explicitly not the LLM candidate. The phone's route has no
+    such fallback and simply cannot answer.
+
+    UNDO TEST: give either handler its own authoring path — reintroduce the deleted
+    ``author_prebuilt_route`` seam and call it from one of them — and that surface's
+    assertions go RED: it produces an authored tour with the stand-in never firing.
+    """
+    plan_bindings = _seam_bindings(PLAN_BLOCK)
+    author_bindings = _seam_bindings(AUTHOR_BLOCK)
+    _assert_bindings_are_usable(author_bindings, AUTHOR_BLOCK)
+
+    graph = _StubGraph(_PROOF_PROFILE_ID)
+    client = _proof_client(monkeypatch, graph)
+
+    # 1. Plan normally on both surfaces first — authoring needs something to author,
+    #    and the planner must be untouched while that happens.
+    generated = client.post(PHONE_PLAN_PATH, json=_generate_request())
+    assert generated.status_code == 201, generated.text
+    trip = generated.json()
+    assert trip["options"], "the phone planned no options, so there is nothing to author"
+
+    previewed = client.post(WORKBENCH_PLAN_PATH, json=_plan_request())
+    assert previewed.status_code == 200, previewed.text
+    preview_options = previewed.json()["options"]
+    assert preview_options, "the workbench planned no options, so there is nothing to author"
+
+    # 2. NOW break the authoring seam — every binding of both of its functions.
+    calls: list[str] = []
+
+    def _refuse(*_args: Any, **_kwargs: Any):
+        calls.append("author")
+        raise _SeamBrokenError("the one authoring seam was replaced for this test")
+
+    for dotted, attribute in author_bindings:
+        monkeypatch.setattr(importlib.import_module(dotted), attribute, _refuse)
+    # The planner stays REAL, and is checked to be: this test is about Block 2, and
+    # both authoring routes legitimately re-derive their plan before writing it. If
+    # the planner had been caught by the substitution too, "the seam fired once"
+    # would be measuring a request that never got past planning.
+    still_real = {
+        _bound_object(dotted, attribute) is _refuse for dotted, attribute in plan_bindings
+    }
+    assert still_real == {False}, "the planner was replaced as well; this is a Block-2 test"
+
+    del calls[:]
+    workbench = client.post(
+        WORKBENCH_AUTHOR_PATH,
+        json=_plan_request(route_id=preview_options[0]["route_id"]),
+    )
+    workbench_calls = len(calls)
+
+    del calls[:]
+    phone = _post(
+        client,
+        PHONE_AUTHOR_PATH.format(trip_id=trip["trip_id"]),
+        {"route_id": f"{trip['trip_id']}-opt1"},
+    )
+    phone_calls = len(calls)
+
+    assert workbench_calls == 1, (
+        f"the workbench's authoring request went through the shared seam "
+        f"{workbench_calls} times, not once. Zero means the workbench writes tour "
+        f"narration with an implementation the phone does not use, which makes every "
+        f"judgement the owner forms in the workbench a judgement about a different "
+        f"product."
+    )
+    assert phone_calls == 1, (
+        f"the phone's compose request went through the shared seam {phone_calls} "
+        f"times, not once. Zero means POST /trips/{{id}}/compose has its own author "
+        f"again, as it did while the second seam in authoring.py was alive."
+    )
+    assert workbench.status_code == 200, workbench.text
+    authored = workbench.json()
+    assert authored["option"] is None and authored["narration_kind"] != "llm_candidate", (
+        f"with the shared authoring seam broken, the workbench still produced an "
+        f"authored tour ({authored['narration_kind']!r}). It is writing narration "
+        f"with something else."
+    )
+    assert phone is None, (
+        f"with the shared authoring seam broken, the phone's compose still answered "
+        f"HTTP {phone.status_code}. It is writing narration with something else."
+    )
+
+
+# --------------------------------------------------------------------------
+# TEST 19 — identical inputs, identical tour, on both surfaces
+# --------------------------------------------------------------------------
+
+
+def test_both_surfaces_plan_the_identical_tour(monkeypatch) -> None:
+    """AC-7 — the outcome the object identity above is supposed to buy.
+
+    Tests 16-18 prove the two surfaces run one implementation. This proves the thing
+    the owner actually cares about downstream of that: the same request produces the
+    same walk. Same start, same duration, same city, same lenses, in ONE process
+    against ONE corpus, back to back — and the stop lists and arrival times must
+    match option for option.
+
+    WHY THIS IS A FAIR COMPARISON RATHER THAN A COINCIDENCE. Planning is a pure
+    function of the request, the corpus and the walking times: nothing in selection
+    reads a clock, a random source or a fresh identifier, and the corpus is loaded in
+    a fixed order. The two residual sources of drift are the corpus and the routing
+    service, which are live in production and can genuinely change BETWEEN two calls
+    — that is exactly why the workbench's authoring route refuses a stale plan with
+    409 rather than writing a different tour than the one shown. Here both are fixed
+    for the duration of the test, so any difference that appears is a difference in
+    CODE, which is what is being measured.
+
+    Compared on the two fields that define a walk: the ordered dwell-stop POI ids
+    (where the tourist stands, in what order) and ``eta_seconds`` (how long it takes).
+    The two payloads legitimately differ elsewhere — the preview blanks narration and
+    drops the walking cards because nothing has been written yet, and the route ids
+    are minted from different things — and demanding those match would be demanding
+    the two surfaces stop having different jobs.
+
+    The NUMBER of options is compared but not pinned to three; how many flavours
+    survive is AC-2/AC-3's subject, not this one. What matters here is that the two
+    surfaces agree.
+
+    UNDO TEST: make either surface plan from a different corpus, a different walk
+    budget or a different flavour order — for instance reverse the tuple the planner
+    returns for one of them — and the ordered-id assertion goes RED naming the option.
+    """
+    client = _proof_client(monkeypatch, _StubGraph(_PROOF_PROFILE_ID))
+
+    previewed = client.post(WORKBENCH_PLAN_PATH, json=_plan_request())
+    assert previewed.status_code == 200, previewed.text
+    generated = client.post(PHONE_PLAN_PATH, json=_generate_request())
+    assert generated.status_code == 201, generated.text
+
+    workbench_options = previewed.json()["options"]
+    phone_options = generated.json()["options"]
+
+    # Non-vacuity BEFORE equality: two empty lists are equal and prove nothing.
+    assert workbench_options, "the workbench returned no options at all"
+    assert phone_options, "the phone returned no options at all"
+    assert len(_dwell_poi_ids(workbench_options[0])) > 1, (
+        "the first option has at most one stop, so an ordered-id comparison cannot "
+        "distinguish agreement from coincidence — the fixture has drifted"
+    )
+
+    assert len(workbench_options) == len(phone_options), (
+        f"the workbench offers {len(workbench_options)} route options and the phone "
+        f"offers {len(phone_options)} for the identical request, so the two surfaces "
+        f"are not choosing among the same set of walks."
+    )
+
+    for index, (mine, theirs) in enumerate(
+        zip(workbench_options, phone_options, strict=True), start=1
+    ):
+        assert _dwell_poi_ids(mine) == _dwell_poi_ids(theirs), (
+            f"option {index} visits different places, or the same places in a "
+            f"different order, depending on which client asked:\n"
+            f"  workbench: {_dwell_poi_ids(mine)}\n"
+            f"  phone:     {_dwell_poi_ids(theirs)}\n"
+            f"The owner judges tours in the workbench; a tourist walks the phone's."
+        )
+        assert mine["eta_seconds"] == theirs["eta_seconds"], (
+            f"option {index} is offered as {mine['eta_seconds']}s in the workbench "
+            f"and {theirs['eta_seconds']}s on the phone for the same walk."
+        )
+

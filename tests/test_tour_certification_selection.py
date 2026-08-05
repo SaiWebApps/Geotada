@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from itertools import pairwise
 
 import pytest
 
@@ -10,11 +11,14 @@ from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.routing import (
     MAX_REQUESTED_FRACTION,
     MIN_REQUESTED_FRACTION,
+    TIMEBOX_MATERIALITY_TOLERANCE_SECONDS,
     RoutePlanningPolicy,
+    default_leg_seconds,
     route_planning_budget,
     within_planning_timebox,
 )
 from src.tour.selection import (
+    ENDPOINT_PULL_RESERVED_BUDGET_FRACTION,
     CertificationPlanningInfeasibleError,
     CorpusSnapshot,
     _apply_certification_timebox_repair,
@@ -60,7 +64,6 @@ def _policy() -> RoutePlanningPolicy:
     return RoutePlanningPolicy.certification(
         minimum_requested_fraction=MIN_REQUESTED_FRACTION,
         maximum_requested_fraction=MAX_REQUESTED_FRACTION,
-        max_stops=2,
         policy_id="test-certification-policy-v1",
     )
 
@@ -73,7 +76,6 @@ def test_certification_policy_derives_one_midpoint_budget_from_frozen_inputs():
     policy = RoutePlanningPolicy.certification(
         minimum_requested_fraction=MIN_REQUESTED_FRACTION,
         maximum_requested_fraction=MAX_REQUESTED_FRACTION,
-        max_stops=8,
         policy_id="frozen-contract-and-call-plan-sha",
     )
     budget = route_planning_budget(90, policy)
@@ -84,14 +86,6 @@ def test_certification_policy_derives_one_midpoint_budget_from_frozen_inputs():
     assert budget.maximum_elapsed_seconds == 5940
     assert budget.walk_budget_seconds == 2160
     assert budget.audio_target_seconds == 3240
-    assert budget.max_stops == 8
-    with pytest.raises(ValueError, match="one to eight stops"):
-        RoutePlanningPolicy.certification(
-            minimum_requested_fraction=MIN_REQUESTED_FRACTION,
-            maximum_requested_fraction=MAX_REQUESTED_FRACTION,
-            max_stops=9,
-            policy_id="invalid-call-plan",
-        )
 
 
 def test_certification_fixed_end_reachability_uses_total_ceiling(monkeypatch):
@@ -269,7 +263,6 @@ def test_bounded_exchange_is_exact_deterministic_and_rejects_slog_and_overmax():
         planning_budget=budget,
     )
     assert trial is not None
-    assert len(trial.ordered) <= policy.max_stops
     assert (trial.ordered[-1].lat, trial.ordered[-1].lng) == tour_input.end
     assert (
         budget.minimum_elapsed_seconds
@@ -321,9 +314,317 @@ def test_ratio_exceeding_route_is_deterministic_last_resort():
         )
         return sorted(poi.id for poi in repaired)
 
-    expected = sorted((walk_slog.id, destination.id))
+    # UPDATED 2026-08-04 with the stop-ceiling removal. The policy used to carry
+    # ``max_stops=2``, which made ``_certification_route_trial`` return None for
+    # any trial materializing three POIs — so the only survivors were exchanges
+    # down to two, and the answer was {destination, walk-slog}. With duration as
+    # the only bound the repair may now KEEP the incumbent and still admit the
+    # ratio-exceeding candidate, because ``destination`` is carried as the
+    # materialized fixed end B rather than having to occupy a selected slot. The
+    # route therefore holds the same three places; it just no longer has to spend
+    # a stop on the destination. Both halves this test is named for are unchanged:
+    # the ratio-exceeding candidate is still admitted only as a LAST RESORT, and
+    # the pick is still identical under a reversed candidate order.
+    expected = sorted((walk_slog.id, incumbent.id))
     assert repair(pois) == expected
     assert repair(list(reversed(pois))) == expected
+    assert walk_slog.id in expected, "the last-resort admission is the subject of this test"
+
+
+def test_over_ceiling_route_is_repaired_by_dropping_one_stop():
+    """A route ABOVE the ceiling must be able to shrink its way back into the band.
+
+    Regression for the 2026-08-04 one-option collapse. The repair built candidate
+    sets three ways — the incumbent unchanged, incumbent+candidate, and a
+    one-for-one exchange — and every one of those either keeps the stop count or
+    raises it. So a route that overshot the maximum had no move that could shorten
+    it, and the whole option was refused with a "best eligible bounded route" that
+    was OVER the ceiling rather than under the floor. Stop ceilings used to make
+    the overshoot impossible; with duration as the only stop bound it is routine.
+    """
+
+    near = _poi("near", x=10.0, audio=270)
+    detour = _poi("detour", x=60.0, y=30.0, audio=270)
+    far = _poi("far", x=140.0, audio=270)
+    # Unreachable within any band: keeps the add/exchange pool non-empty (so the
+    # exchange loop really runs) without ever offering an in-band alternative.
+    outlier = _poi("outlier", x=400.0, audio=270)
+    pois = [near, detour, far, outlier]
+    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        duration_min=30,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+    incumbent = [near, detour, far]
+
+    def price(stops: list[POI]) -> int:
+        trial = _certification_route_trial(
+            stops,
+            input=tour_input,
+            snapshot=snap,
+            interest=frozenset(),
+            leg_seconds_fn=_routed,
+            planning_budget=budget,
+        )
+        assert trial is not None
+        return trial.elapsed_seconds
+
+    ceiling = budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    # Preconditions: the incumbent overshoots, exactly one single-stop drop lands
+    # in the band, and no other drop does. Without them the assertion below could
+    # pass for the wrong reason.
+    assert price(incumbent) > ceiling
+    assert within_planning_timebox(price([near, far]), budget)
+    assert not within_planning_timebox(price([detour, far]), budget)
+    assert not within_planning_timebox(price([near, detour]), budget)
+
+    def repair(candidate_order: list[POI]) -> list[str]:
+        repaired = _apply_certification_timebox_repair(
+            list(incumbent),
+            candidate_order,
+            input=tour_input,
+            snapshot=snap,
+            spine="Generic Corridor",
+            interest=frozenset(),
+            score_penalty=None,
+            leg_seconds_fn=_routed,
+            planning_policy=policy,
+            planning_budget=budget,
+        )
+        return sorted(poi.id for poi in repaired)
+
+    expected = sorted((near.id, far.id))
+    assert repair(pois) == expected
+    assert repair(list(reversed(pois))) == expected
+
+
+def test_timebox_drop_never_removes_the_materialized_fixed_destination():
+    """The drop trial may shorten a route, never un-anchor its destination B.
+
+    The stop carrying a fixed end B is the one stop the repair must not remove:
+    dropping it re-materializes B as a contentless sentinel, silently trading a
+    real narrated stop for a bare map pin at the same coordinate.
+    """
+
+    # Colinear, so every route below walks the identical 1000s out to B and only
+    # the audio differs. Dropping the destination is therefore the move that lands
+    # NEAREST the nominal 1200s — it wins the repair's ranking outright, and only
+    # the guard keeps it out.
+    destination = _poi("destination", x=100.0, audio=270)
+    filler = _poi("filler", x=50.0, audio=180)
+    pois = [destination, filler]
+    snap = _snapshot(pois, {destination.id: 270, filler.id: 180})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        end=(0.0, 100.0),
+        duration_min=20,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    def price(stops: list[POI]) -> int:
+        trial = _certification_route_trial(
+            stops,
+            input=tour_input,
+            snapshot=snap,
+            interest=frozenset(),
+            leg_seconds_fn=_routed,
+            planning_budget=budget,
+        )
+        assert trial is not None
+        return trial.elapsed_seconds
+
+    nominal = budget.nominal_elapsed_seconds
+    keeping_both = price([filler, destination])
+    dropping_destination = price([filler])
+    dropping_filler = price([destination])
+    # Preconditions: keeping both overshoots, and the destination-dropping route
+    # is both in band AND closer to nominal than the destination-keeping one.
+    assert keeping_both > budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    assert within_planning_timebox(dropping_destination, budget)
+    assert within_planning_timebox(dropping_filler, budget)
+    assert abs(nominal - dropping_destination) < abs(nominal - dropping_filler)
+
+    repaired = _apply_certification_timebox_repair(
+        [filler, destination],
+        pois,
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+    )
+
+    assert [poi.id for poi in repaired] == [destination.id]
+
+
+def test_repair_never_trades_an_in_band_route_for_a_materially_longer_walk():
+    """An already-acceptable route must not be made to walk further for a few seconds.
+
+    The planner books each stop against the PER-TOUR narration allowance while the
+    tourist only ever hears MAX_DWELL_AUDIO_SECONDS of it, so it believes the
+    listening budget is full early and seats too few stops. The repair then closes
+    the resulting duration gap the only way it can — by reaching for DISTANT stops.
+    Nothing in the repair's ranking prices walking, so it will happily swap a
+    compliant route for one that walks materially further just to land nearer the
+    nominal. When the incumbent is ALREADY in band that is a pure downgrade: more
+    walking, no more narration.
+    """
+
+    keep_a = _poi("keep-a", x=10.0, audio=270)
+    keep_b = _poi("keep-b", x=40.0, audio=270)
+    keep_c = _poi("keep-c", x=89.0, audio=270)
+    # Same audio, further away: swapping it in moves elapsed nearer the nominal
+    # while buying the tourist nothing but 90 extra seconds of walking.
+    far_swap = _poi("far-swap", x=98.0, audio=270)
+    pois = [keep_a, keep_b, keep_c, far_swap]
+    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        duration_min=30,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+    incumbent = [keep_a, keep_b, keep_c]
+
+    def trial(stops: list[POI]):
+        priced = _certification_route_trial(
+            stops,
+            input=tour_input,
+            snapshot=snap,
+            interest=frozenset(),
+            leg_seconds_fn=_routed,
+            planning_budget=budget,
+        )
+        assert priced is not None
+        return priced
+
+    incumbent_trial = trial(incumbent)
+    swapped_trial = trial([keep_a, keep_b, far_swap])
+    nominal = budget.nominal_elapsed_seconds
+    # Preconditions: the incumbent is ALREADY acceptable, and the swap is both
+    # nearer the nominal (so it wins the ranking) and materially longer on foot.
+    assert within_planning_timebox(incumbent_trial.elapsed_seconds, budget)
+    assert within_planning_timebox(swapped_trial.elapsed_seconds, budget)
+    assert abs(nominal - swapped_trial.elapsed_seconds) < abs(
+        nominal - incumbent_trial.elapsed_seconds
+    )
+    assert (
+        swapped_trial.walk_seconds
+        > incumbent_trial.walk_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    )
+
+    repaired = _apply_certification_timebox_repair(
+        list(incumbent),
+        pois,
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+    )
+
+    assert sorted(poi.id for poi in repaired) == sorted(poi.id for poi in incumbent)
+    assert trial(repaired).walk_seconds == incumbent_trial.walk_seconds
+
+
+def test_repair_prices_the_route_with_the_pulled_endpoint_actually_pinned():
+    """Certification must measure the route the engine will really build.
+
+    ``select_route`` finishes by re-ordering the chosen stops with the pulled
+    endpoint PINNED LAST, but the repair used to price every trial with nothing
+    pinned. Forcing one stop to be last can cost far more walking than the free
+    optimum, so the repair certified a route inside the band and the engine then
+    built a longer one that the final band check refused outright. Nine stops in,
+    nine stops out, identical narration, 1003 extra seconds of walking — measured
+    on the live Paris flagship, where it collapsed the product to a single option.
+
+    The two halves of the fix meet here: pricing the pinned cost lets the repair
+    SEE that the full set overshoots, and the drop trial gives it a way back into
+    the band.
+    """
+
+    # Colinear and east of the start, except the endpoint, which sits nearest the
+    # start — so pinning it last forces a full backtrack down the whole route.
+    endpoint = _poi("endpoint", x=5.0, audio=270)
+    near = _poi("near", x=25.0, audio=270)
+    middle = _poi("middle", x=50.0, audio=270)
+    far = _poi("far", x=70.0, audio=270)
+    pois = [endpoint, near, middle, far]
+    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        duration_min=30,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    def price(stops: list[POI], *, pinned: str | None):
+        trial = _certification_route_trial(
+            stops,
+            input=tour_input,
+            snapshot=snap,
+            interest=frozenset(),
+            leg_seconds_fn=_routed,
+            planning_budget=budget,
+            pulled_endpoint_id=pinned,
+        )
+        assert trial is not None
+        return trial
+
+    free = price(pois, pinned=None)
+    held = price(pois, pinned=endpoint.id)
+
+    # The pin must actually reach the orderer, and it must cost real walking.
+    assert held.ordered[-1].id == endpoint.id
+    assert held.walk_seconds > free.walk_seconds
+    # The whole set fits the band ONLY while the pin is ignored. This is exactly
+    # the fiction the engine used to certify.
+    assert within_planning_timebox(free.elapsed_seconds, budget)
+    assert held.elapsed_seconds > (
+        budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    )
+    # Dropping the farthest stop is the one move that fits once the pin is priced.
+    rescued = price([endpoint, near, middle], pinned=endpoint.id)
+    assert within_planning_timebox(rescued.elapsed_seconds, budget)
+
+    repaired = _apply_certification_timebox_repair(
+        list(pois),
+        pois,
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+        pulled_endpoint_id=endpoint.id,
+    )
+
+    assert sorted(poi.id for poi in repaired) == sorted(
+        (endpoint.id, near.id, middle.id)
+    )
+    # And what it returned really does fit once ordered the way it will be built.
+    assert within_planning_timebox(
+        price(repaired, pinned=endpoint.id).elapsed_seconds, budget
+    )
 
 
 def test_select_route_off_corridor_rescue_reaches_exact_certification_repair_once(
@@ -424,3 +725,101 @@ def test_final_certification_guard_rechecks_every_route_shape_after_transforms(
         match="post-selection transforms moved the exact route outside the band",
     ):
         select_route(tour_input, snap, planning_policy=_policy())
+
+
+def test_fixed_destination_greedy_is_capped_by_the_walk_budget_not_the_total_ceiling(
+    monkeypatch,
+):
+    """The greedy spends WALKING seconds, so a WALK budget must bound it.
+
+    REGRESSION (2026-08-04). ``greedy_walk_budget`` was set to
+    ``certification_total_ceiling`` on the fixed-destination arm. That value is
+    the ceiling on total ACTIVE time — walking PLUS narration — so at 90 minutes
+    it handed the greedy 6000 walking seconds against a 2160-second walking
+    allocation. Every A→B route could therefore spend the whole tour's elapsed
+    budget on walking before one second of narration was counted, and the final
+    band check refused the planner's own answer. Measured on the live Paris dev
+    graph the same day: a 90-minute walk ending 27 m from its own start seated
+    15 stops and 5787 s of walking, then refused.
+
+    The units error is the whole bug, so this test measures units. It captures
+    the stop set the greedy hands to the fill pass and prices the walking it
+    implies (A → stops → B with the same divisor selection used). That number
+    must fit the WALKING allocation. Under the old line it is multiples of it.
+    """
+    import src.tour.selection as selection_module
+
+    class StopBeforeFillPassError(Exception):
+        pass
+
+    policy = _policy()
+    budget = route_planning_budget(90, policy)
+    assert budget.walk_budget_seconds == 2160
+    total_ceiling = (
+        budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    )
+    assert total_ceiling == 6000
+
+    # A and B sit close together; every candidate is a genuine detour off the
+    # A→B line, alternating north/south so each extra stop costs real walking.
+    start = (0.0, 0.0)
+    end = (0.0, 0.0033274)  # ~370 m east of A: a ~600 s routed leg.
+    pois = [
+        _poi(f"detour-{index}", x=0.0016637, y=offset, audio=270)
+        for index, offset in enumerate(
+            (0.0053, -0.0053, 0.0045, -0.0045, 0.0037, -0.0037, 0.0029, -0.0029)
+        )
+    ]
+    snapshot = _snapshot(pois, {poi.id: 270 for poi in pois})
+    tour_input = TourInput(
+        start=start,
+        end=end,
+        duration_min=90,
+        city_slug="test",
+    )
+
+    captured: dict[str, object] = {}
+
+    def capture_fill_pass(selected, _candidates, **_kwargs):
+        captured["selected"] = list(selected)
+        raise StopBeforeFillPassError
+
+    monkeypatch.setattr(
+        selection_module,
+        "_reach_predicate",
+        lambda *_args, **_kwargs: ((lambda _lat, _lng: True), False),
+    )
+    monkeypatch.setattr(selection_module, "_apply_fill_pass", capture_fill_pass)
+
+    with pytest.raises(StopBeforeFillPassError):
+        select_route(tour_input, snapshot, planning_policy=policy)
+
+    seated = captured["selected"]
+    legs = [start, *[(poi.lat, poi.lng) for poi in seated], end]
+    greedy_walk_seconds = sum(
+        default_leg_seconds(a[0], a[1], b[0], b[1])
+        for a, b in pairwise(legs)
+    )
+
+    # The guard. A walking cap must be a walking budget: the greedy may not hand
+    # on a stop set that already walks past the WALKING allocation, whatever the
+    # total-time ceiling happens to be.
+    assert greedy_walk_seconds <= budget.walk_budget_seconds, (
+        f"greedy handed on {len(seated)} stops implying {greedy_walk_seconds}s of "
+        f"walking against a {budget.walk_budget_seconds}s walking allocation "
+        f"(total-active ceiling {total_ceiling}s)"
+    )
+
+
+def test_open_route_greedy_still_reserves_budget_for_the_endpoint_pull():
+    """The open one-way arm keeps its endpoint-pull reserve, untouched.
+
+    Companion to the test above: the fixed-destination repair must not have
+    moved the open path, which nine golden tours already pin. The reserve exists
+    for Step 4's endpoint-pull, which runs only when ``end is None`` and the walk
+    is one-way, so that arm — and only that arm — keeps the 0.75 factor.
+    """
+    budget = route_planning_budget(90, _policy())
+
+    assert ENDPOINT_PULL_RESERVED_BUDGET_FRACTION == 0.25
+    assert int(budget.walk_budget_seconds * 0.75) == 1620

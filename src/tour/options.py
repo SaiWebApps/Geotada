@@ -16,7 +16,10 @@ so spotlight == gravity x lens_relevance, always strictly positive.
 
 from __future__ import annotations
 
-from .contract import POI, BeatRef, Route, RouteOption, RouteOptionStop, Script
+from src.audio.tts_normalize import normalize_dashes_for_reading
+
+from .contract import POI, BeatRef, BeatSequence, Route, RouteOption, RouteOptionStop, Script
+from .generation import is_walk_concurrent, vignette_one_liner_text
 from .selection import (
     LENS_FLOOR,
     CorpusSnapshot,
@@ -48,6 +51,23 @@ def dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) ->
     return sorted(counts, key=lambda lname: (-counts[lname], lname))[0]
 
 
+def option_eta_seconds(route: Route, script: Script) -> int:
+    """How long this tour actually takes: every walking leg, plus every stop's dwell.
+
+    THE ONE FORMULA. Generate has to know a flavour's elapsed time BEFORE it can build
+    the flavour's option (that builder needs a trip id, which only exists once the trip
+    has been saved), so the number is computed here and used by both. Restating the sum
+    at the second call site is exactly how the saved tour and the offered tour drift
+    into declaring different lengths for the same walk.
+
+    A walk-past sight or a line heard on the move costs no elapsed time — it happens
+    during a walk this sum already counts.
+    """
+    return sum(
+        (t.leg_seconds if t.leg_seconds is not None else t.walk_seconds) for t in route.transits
+    ) + sum(sp.dwell_seconds for sp in script.selected_pois)
+
+
 def build_route_option(
     route: Route,
     script: Script,
@@ -55,12 +75,33 @@ def build_route_option(
     *,
     route_id: str,
     snapshot: CorpusSnapshot,
+    sequence: BeatSequence,
 ) -> RouteOption:
-    """Assemble one flavour's RouteOption from its Route + Script.
+    """Assemble one flavour's RouteOption from its Route + Script + BeatSequence.
 
-    eta_seconds is the honest routed estimate: per-leg routed time when the
-    leg was routed (leg_seconds), the pace-corrected haversine otherwise,
-    plus every stop's dwell.
+    THE ONE INTERLEAVE. This absorbed the fourth copy, the private preview builder
+    that lived in the API layer (``src/api/routes/trips.py``, deleted 2026-08-04):
+    the preview and the flavour cards were two implementations of the same ordering,
+    and they had already drifted — the preview split walk-concurrent narration onto
+    its own card and the option builder did not, so the workbench and the phone
+    disagreed about what a "stop" is.
+
+    THREE KINDS OF CARD, in walking order:
+      leg      — what the tourist hears WHILE WALKING into the next dwell stop. Emitted
+                 only when the walk actually carries narration; an empty card would
+                 imply content that does not exist. ``minutes`` is the WALK.
+      vignette — a walk-past one-liner on that leg, voiced through the SAME helper the
+                 audio path uses, so the printed line and the spoken line cannot drift.
+                 A vignette POI with no voiceable beat is not shown, because it is not
+                 heard either.
+      dwell    — the stop itself, with the stationary narration and the deeper-dive flag.
+
+    ``sequence`` is required and has no default on purpose: an optional narration
+    source is exactly how a caller silently gets a card list with no narration and
+    nobody notices.
+
+    eta_seconds is unchanged and still counts routed legs (or the pace-corrected
+    haversine) plus every dwell: a vignette or leg card costs no elapsed time.
 
     Step 3.4 (s3.1/s7): each stop is annotated with its ``spotlight`` score and
     collapsed output ``band``, and the option carries a per-corridor
@@ -83,38 +124,90 @@ def build_route_option(
     roles = {p.id: p.poi_role for p in route.pois}
     pois_by_id: dict[str, POI] = {p.id: p for p in route.pois}
     lenses_fs = frozenset(script.inputs.lenses or ())
-    dwell_stops = [
-        _build_stop(
-            sp,
-            poi=pois_by_id.get(sp.id),
-            role=roles.get(sp.id, "stop"),
-            beats_by_id=beats_by_id,
+
+    # --- narration, split the way the tourist experiences it -------------------
+    # A vignette's line is voiced by its OWN card below, so it is stripped from the
+    # dwell card it was folded into (_build_transit emits it at the ARRIVAL stop's
+    # stop_idx). ``is_walk_concurrent`` is the SHARED predicate quality_rubric's time
+    # model uses, so a sentence shown on a leg card is exactly a sentence the rubric
+    # scored as costing no elapsed time.
+    vignette_beat_ids = {b.id for beats in sequence.vignette_beats.values() for b in beats}
+    dwell_sents: dict[int, list[str]] = {}
+    leg_sents: dict[int, list[str]] = {}
+    for sentence in script.script:
+        if sentence.source_type == "beat" and sentence.source_id in vignette_beat_ids:
+            continue
+        bucket = leg_sents if is_walk_concurrent(sentence, vignette_beat_ids) else dwell_sents
+        bucket.setdefault(sentence.stop_idx, []).append(sentence.text)
+    # Display-normalize dashes so the text READS the way the audio SOUNDS (a comma
+    # pause, not a dangling stroke).
+    per_stop = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in dwell_sents.items()}
+    per_leg = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in leg_sents.items()}
+    leg_walk_seconds = {
+        i: int(t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
+        for i, t in enumerate(route.transits)
+    }
+    # The clause cap inside vignette_one_liner_text keeps the POI's own name in a
+    # shortened line, and vignette POIs are walk-past (route.vignettes), NOT seated
+    # route.pois — so the name map must cover both or the cap falls back to the run-on.
+    poi_name_by_id = {p.id: p.name for p in route.pois}
+    for vignette_pois in route.vignettes.values():
+        for vignette_poi in vignette_pois:
+            poi_name_by_id.setdefault(vignette_poi.id, vignette_poi.name)
+    one_liner_by_poi: dict[str, str] = {}
+    for beats in sequence.vignette_beats.values():
+        for beat in beats:
+            text = vignette_one_liner_text(beat.script_body, poi_name_by_id.get(beat.poi_id, ""))
+            if text:
+                one_liner_by_poi[beat.poi_id] = normalize_dashes_for_reading(text)
+
+    # --- the interleave --------------------------------------------------------
+    interleaved: list[RouteOptionStop] = []
+    for i, sp in enumerate(script.selected_pois):
+        leg_text = per_leg.get(i, "").strip()
+        if leg_text:
+            interleaved.append(
+                _leg_stop(sp, narration=leg_text, walk_seconds=leg_walk_seconds.get(i, 0))
+            )
+        interleaved.extend(
+            _vignette_stop(
+                vp,
+                lenses=lenses_fs,
+                snapshot=snapshot,
+                narration=one_liner_by_poi[vp.id],
+            )
+            for vp in route.vignettes.get(i, ())
+            if vp.id in one_liner_by_poi
+        )
+        interleaved.append(
+            _build_stop(
+                sp,
+                poi=pois_by_id.get(sp.id),
+                role=roles.get(sp.id, "stop"),
+                beats_by_id=beats_by_id,
+                lenses=lenses_fs,
+                snapshot=snapshot,
+                narration=per_stop.get(i, ""),
+                has_deeper_dive=bool(sequence.overflow_by_poi.get(sp.id)),
+            )
+        )
+    interleaved.extend(
+        _vignette_stop(
+            vp,
             lenses=lenses_fs,
             snapshot=snapshot,
+            narration=one_liner_by_poi[vp.id],
         )
-        for sp in script.selected_pois
-    ]
-    interleaved: list[RouteOptionStop] = []
-    for i, stop in enumerate(dwell_stops):
-        interleaved.extend(
-            _vignette_stop(vp, lenses=lenses_fs, snapshot=snapshot)
-            for vp in route.vignettes.get(i, ())
-        )
-        interleaved.append(stop)
-    interleaved.extend(
-        _vignette_stop(vp, lenses=lenses_fs, snapshot=snapshot)
-        for vp in route.vignettes.get(len(dwell_stops), ())
+        for vp in route.vignettes.get(len(script.selected_pois), ())
+        if vp.id in one_liner_by_poi
     )
     stops = tuple(interleaved)
-    eta_seconds = sum(
-        (t.leg_seconds if t.leg_seconds is not None else t.walk_seconds) for t in route.transits
-    ) + sum(sp.dwell_seconds for sp in script.selected_pois)
 
     return RouteOption(
         route_id=route_id,
         stops=stops,
         route_polyline=route.route_polyline,
-        eta_seconds=eta_seconds,
+        eta_seconds=option_eta_seconds(route, script),
         lens_summary=dict(script.lens_coverage),
         flow_score=route.flow_score,
         backtrack_ratio=route.backtrack_ratio,
@@ -131,6 +224,8 @@ def _build_stop(
     beats_by_id: dict[str, BeatRef],
     lenses: frozenset[str],
     snapshot: CorpusSnapshot,
+    narration: str,
+    has_deeper_dive: bool,
 ) -> RouteOptionStop:
     """One RouteOptionStop with its Step 3.4 spotlight + band annotation.
 
@@ -158,6 +253,8 @@ def _build_stop(
         minutes=round(sp.dwell_seconds / 60),
         band=band,
         spotlight=score,
+        narration=narration,
+        has_deeper_dive=has_deeper_dive,
     )
 
 
@@ -166,6 +263,7 @@ def _vignette_stop(
     *,
     lenses: frozenset[str],
     snapshot: CorpusSnapshot,
+    narration: str,
 ) -> RouteOptionStop:
     """One walk-past vignette as a RouteOptionStop (Track B Step B.3).
 
@@ -173,6 +271,7 @@ def _vignette_stop(
     a one-liner as you pass, never dwell time. ``spotlight`` is the POI's
     on-path score (the same call select_vignettes banded it with) and
     ``lens`` the dominant lens of its own beats from the snapshot.
+    ``has_deeper_dive`` stays False: a walk-past has no "keep exploring here".
     """
     beats = {b.id: b for b in snapshot.beats_for(poi.id)}
     return RouteOptionStop(
@@ -185,6 +284,31 @@ def _vignette_stop(
         minutes=0,
         band="vignette",
         spotlight=spotlight(poi, lenses=lenses, snapshot=snapshot),
+        narration=narration,
+    )
+
+
+def _leg_stop(sp, *, narration: str, walk_seconds: int) -> RouteOptionStop:
+    """The walk INTO ``sp``, as its own card.
+
+    Product ruling 2026-07-19: "Audio overlaps the walking. It is a part of the tour
+    experience." ``minutes`` is the WALK's duration, not the narration's, so a
+    six-minute walk carrying seven seconds of narration shows the gap instead of
+    averaging it away. The card borrows the arrival stop's identity and coordinates
+    rather than inventing a POI id, so a consumer matching POI ids must filter to
+    ``band == "dwell"``.
+    """
+    return RouteOptionStop(
+        poi_id=sp.id,
+        name=f"Walk to {sp.name}",
+        lat=sp.lat,
+        lng=sp.lng,
+        lens=None,
+        visit_or_walk_past="walk_past",
+        minutes=round(walk_seconds / 60),
+        band="leg",
+        spotlight=0.0,
+        narration=narration,
     )
 
 

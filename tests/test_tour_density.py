@@ -82,19 +82,28 @@ PANTHEON = (48.84622, 2.34604)
 
 
 def test_walk_radius_matches_canonical_formula():
-    """walk_radius = (duration x 0.83 x 0.4 x 3000 / 1.35) / 60, halved if round-trip."""
-    # 60-min one-way: 60 x 0.83 x 0.4 x 3000 / 1.35 / 60 = 738.5m
-    expected_one_way = (60 * 0.83 * 0.4 * 3000 / 1.35) / 60
+    """walk_radius = (duration x nominal x 0.4 x 3000 / 1.35) / 60, halved if round-trip.
+
+    The nominal fraction is 1.00 since 2026-08-04; it was a flat 0.83 until the legacy
+    planning policy was deleted, which is why this radius grew from ~738 m to ~889 m.
+    """
+    # 60-min one-way: 60 x 1.00 x 0.4 x 3000 / 1.35 / 60 = 888.9m
+    expected_one_way = (60 * 1.00 * 0.4 * 3000 / 1.35) / 60
     assert math.isclose(envelope_radius_m(60, round_trip=False), expected_one_way, rel_tol=1e-6)
     assert math.isclose(envelope_radius_m(60, round_trip=True), expected_one_way / 2, rel_tol=1e-6)
 
 
 def test_target_audio_matches_canonical_formula():
-    """target_audio_s = duration x 0.83 x 0.6 x 60."""
+    """target_audio_s = duration x the policy's nominal fraction x 0.6 x 60.
+
+    Nominal is 1.00 since 2026-08-04 (was a flat 0.83), so this is 2160 s, and it is now
+    THE SAME NUMBER selection fills — the whole point of threading the policy into the
+    density gate.
+    """
     pois = [_poi("p", lat=PDV[0], lng=PDV[1])]
     beats = {"p": (_beat("b1", "p"),)}
     a = assess(_input(PDV, 60), pois, beats)
-    expected = round(60 * 0.83 * 0.6 * 60)
+    expected = round(60 * 1.00 * 0.6 * 60)
     assert a.target_audio_seconds == expected
 
 
@@ -186,9 +195,9 @@ def test_yellow_attaches_max_supportable_duration():
     pois = [_poi("p", tier=5, lat=PDV[0], lng=PDV[1], beat_count=5)]
     beats = {"p": tuple(_beat(f"b{j}", "p", est_spoken_seconds=80) for j in range(5))}
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
-    # capacity = 400s; max_supportable = 400 / (0.83x0.6x60) = 400/29.88 ≈ 13 min
+    # capacity = 400s; max_supportable = 400 / (1.00x0.6x60) = 400/36 ~ 11 min
     assert a.max_supportable_duration_min is not None
-    assert a.max_supportable_duration_min == int(400 / (0.83 * 0.6 * 60))
+    assert a.max_supportable_duration_min == int(400 / (1.00 * 0.6 * 60))
 
 
 # ---------------------------------------------------------------------------

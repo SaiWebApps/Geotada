@@ -198,14 +198,130 @@ def test_generate_tour_preview_shows_no_spend_confirmation() -> None:
     UNDO TEST: paste any ``confirm(...)`` back into the function -> RED.
     """
     body = _js_function_body(REVIEW_HTML.read_text(), "async function generateTourPreview()")
-    # Prove we sliced the real function, so an absence is a real absence.
-    assert "/trips/preview" in body and "renderTourStops(" in body, (
+    # Prove we sliced the real function, so an absence is a real absence. Generate
+    # renders the three route OPTIONS; the narrated stops moved to authorTourOption
+    # when planning and authoring became two calls.
+    assert "/trips/preview" in body and "renderTourOptions(" in body, (
         "the extracted generateTourPreview body is not the real function"
     )
     assert "confirm(" not in body, (
         "generateTourPreview must never show a spend-confirmation dialog. The "
         "owner ordered it removed on 2026-07-31 so the workbench matches the "
         "experience a tourist gets in the app."
+    )
+
+
+def test_generate_tour_options_is_a_separate_call_from_authoring() -> None:
+    """Pressing generate must PLAN and nothing else.
+
+    The two-step split is only real if the generate handler cannot reach the
+    authoring endpoint or the audio endpoint. Both halves are asserted, so a
+    single function that plans and then authors in the same click cannot pass.
+
+    The authoring route is ``/trips/preview/author``. It is NOT
+    ``/trips/preview/compose``: that name is already taken by the authenticated
+    saved-trip route ``/trips/{trip_id}/compose``, so the anonymous twin could
+    never have used it.
+
+    UNDO TEST: in review.html, change generateTourPreview's
+    ``renderTourOptions(await resp.json(), duration);`` to
+    ``renderTourStops(await resp.json(), duration);`` -> RED.
+    """
+    html = REVIEW_HTML.read_text()
+
+    plan = _js_function_body(html, "async function generateTourPreview()")
+    assert "/trips/preview" in plan, (
+        "the extracted generateTourPreview body issues no preview request, so "
+        "this guard is not reading the generate path"
+    )
+    assert "renderTourOptions(" in plan, (
+        "generate must render the three route options; without this the operator "
+        "never gets to choose and the preview is whatever the server wrote first"
+    )
+    assert "renderTourStops(" not in plan, (
+        "generate renders narrated stops, so scripts were written before the "
+        "operator picked a route — the whole point of the split is that pressing "
+        "generate costs nothing"
+    )
+    assert "/trips/preview/author" not in plan, (
+        "generate calls the authoring endpoint; planning must be one call"
+    )
+    assert "/audio/" not in plan, (
+        "generate reaches an audio endpoint; no voice may be made before a route "
+        "is chosen"
+    )
+
+    author = _js_function_body(html, "async function authorTourOption(")
+    assert "/trips/preview/author" in author, (
+        "authorTourOption does not call the authoring endpoint"
+    )
+    assert "route_id" in author, (
+        "the authoring call does not carry the chosen option's identifier, so the "
+        "server cannot know which of the three routes the operator picked"
+    )
+    assert "renderTourStops(" in author, (
+        "authoring does not render the narrated stops"
+    )
+
+
+def test_the_authored_tour_renders_the_stops_of_the_option_that_was_written() -> None:
+    """The authored reply has no top-level stop list, so the renderer must read one.
+
+    There is exactly one interleave now, and the authored tour IS the option the
+    operator picked: its stops arrive on ``option.stops``. A renderer that reads
+    only a top-level ``stops`` array draws an EMPTY tour against the real
+    endpoint while every stubbed browser test stays green, because a stub is free
+    to fulfil a shape the server can no longer produce. That gap is exactly what
+    this guard closes, and it is why it reads the page rather than a fixture.
+
+    The Basic fallback lane keeps its own flat ``stops``, so both are read.
+
+    UNDO TEST: in review.html, change renderTourStops's
+    ``tourStops = Array.isArray(activeTour.stops) ? activeTour.stops :
+    tourOptionMapStops(activeTour.option);`` back to ``... : [];`` -> RED.
+    """
+    body = _js_function_body(REVIEW_HTML.read_text(), "function renderTourStops(")
+
+    # Non-vacuity: prove we sliced the renderer before asserting what it reads.
+    assert "tourStops =" in body, (
+        "the extracted renderTourStops body never assigns the stop list, so this "
+        "guard is not reading the renderer and would pass regardless"
+    )
+    assert "activeTour.option" in body, (
+        "renderTourStops takes no stops from the authored option, so an authored "
+        "tour renders zero stops: the reply carries them on option.stops, and the "
+        "top-level stop list it used to read no longer exists"
+    )
+
+
+def test_the_plan_screen_shows_what_degraded_before_anything_can_be_picked() -> None:
+    """A problem the operator cannot see before choosing is a problem they cannot act on.
+
+    Walking legs fall back to straight-line estimates when the routing service is
+    unavailable, and that is reported as a degradation on the PLAN response. It
+    has to be on screen ABOVE the three cards: once a card is clicked the tour is
+    written and paid for, so a warning that only appears afterwards arrives too
+    late to change anything.
+
+    UNDO TEST: move the ``buildDegradationPanel`` block in renderTourOptions
+    below the ``tourOptions.forEach`` that builds the cards, or delete it -> RED.
+    """
+    body = _js_function_body(REVIEW_HTML.read_text(), "function renderTourOptions(")
+
+    # Non-vacuity: prove we sliced the option renderer before asserting ordering.
+    assert "tour-option-card" in body, (
+        "the extracted renderTourOptions body builds no option cards, so this "
+        "guard is not reading the plan screen"
+    )
+    panel_at = body.find("buildDegradationPanel(")
+    cards_at = body.find("tour-option-card")
+    assert panel_at != -1, (
+        "the plan screen never builds the degradation panel, so a tour planned on "
+        "estimated walking times looks exactly like a measured one"
+    )
+    assert panel_at < cards_at, (
+        "the degradation panel is built after the option cards, so what went wrong "
+        "renders below the buttons that spend money on a tour"
     )
 
 

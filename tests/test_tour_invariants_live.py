@@ -63,9 +63,12 @@ _PATHS = [
     # tours already start from.
     #
     # WHY 300 AND NOT LESS: the engine prices this 2563 m straight line at 4153 s of
-    # walking (3 km/h under the x1.35 haversine correction), and walking may claim only
-    # WALK_FRACTION of the budget, so ``smallest_duration_min_for_walk_seconds`` puts the
-    # feasibility floor at 209 min. Below that the request is refused outright and the
+    # walking (3 km/h under the x1.35 haversine correction), and a fixed destination must
+    # be reachable inside the planning band's maximum elapsed ceiling, which puts the
+    # feasibility floor around 63 min at the 1.00 nominal fraction. (Before 2026-08-04
+    # the ceiling was the bare walk budget at a flat 0.83 and the floor was 209 min; the
+    # helper that computed it, ``smallest_duration_min_for_walk_seconds``, was deleted
+    # with the legacy policy.) Below the floor the request is refused outright and the
     # defect cannot reproduce. 300 is the owner's actual request.
     ("rue-royale-notredame-p2p", "paris", (48.867905, 2.323215), 300, None,
      (48.852966, 2.349902)),

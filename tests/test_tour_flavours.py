@@ -22,6 +22,7 @@ from src.tour.contract import (
     RouteOptionStop,
     Script,
     ScriptPOI,
+    Sentence,
     TourInput,
     TransitSegment,
     ValidationReport,
@@ -37,11 +38,21 @@ from src.tour.selection import (
     select_k_routes,
     select_route,
 )
-from tests.test_tour_selection import PDV, _poi, _snap
+from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
 # ---------------------------------------------------------------------------
-# Dense GREEN fixture: 4 directional clusters x 3 rich POIs, all inside the
-# 60-min one-way envelope (738m). Rich-pool GREEN (fill ~8, 12 anchors).
+# Dense GREEN fixture: 4 directional clusters x 5 rich POIs (20 tier-5 anchors,
+# 300s dwell each), reaching ~533m from the start — still inside the 60-min
+# one-way envelope (738m).
+#
+# WAS 3 per cluster (12 anchors) until 2026-08-04. Deleting the legacy flat 0.83
+# planning policy made the certification band TWO-SIDED: a 60-minute request now
+# refuses unless the plan delivers ~54 minutes of active time. The 12-anchor grid
+# topped out at 3166s of bounded route against a 3240s floor — 74s short — so
+# every select_k_routes test here raised CertificationPlanningInfeasibleError on
+# a fixture that was simply too thin to fill an hour, not on a real defect. The
+# fixture was ENRICHED rather than the band relaxed: the band is the locked
+# decision, and the live Paris corpus plans cleanly at 60/120/240/400/600 min.
 # ---------------------------------------------------------------------------
 
 
@@ -49,7 +60,7 @@ def _grid_pois() -> list[POI]:
     out = []
     directions = [(0.003, 0.0), (0.0, 0.0045), (-0.003, 0.0), (0.0, -0.0045)]
     for d, (dlat, dlng) in enumerate(directions):
-        for i in range(3):
+        for i in range(5):
             scale = 1.0 + 0.15 * i
             out.append(
                 _poi(
@@ -85,6 +96,26 @@ def _dense_snap():
         pois,
         area_types={"Le Marais": "neighborhood"},
         beats_by_poi=_rich_beats(pois),
+    )
+
+
+def _sweep_snap(duration_min: int):
+    """A corpus sized to plan `duration_min`, for the duration-sweep guard below.
+
+    The fixed grid above is calibrated for one hour. The sweep test asks for
+    30, 60, 90 and 120 minutes from the same start, and since 2026-08-04 a plan
+    has to land inside the certification TIME band at whichever duration was
+    asked for. Both halves of that band scale: how many stops the tour needs and
+    how far it walks between them. This borrows the duration-scaled anchor spiral
+    the selection suite already calibrates over a 28-cell duration sweep, whose
+    beat lengths also make a POI's credited audio equal the audio it delivers —
+    without that, the planner believes it has filled the tour after three stops
+    and then tries to make up the difference by walking, which is what pushed the
+    30- and 60-minute cells past their walk budgets.
+    """
+    return _snap(
+        _density_fillers(PDV, duration_min=duration_min),
+        area_types={"Le Marais": "neighborhood"},
     )
 
 
@@ -269,7 +300,7 @@ def test_all_flavours_multi_stop_when_primary_is_multi_stop(duration_min: int):
     """
     from src.tour.routing import walk_budget_seconds
 
-    snap = _dense_snap()
+    snap = _sweep_snap(duration_min)
     inp = TourInput(start=PDV, duration_min=duration_min, city_slug="paris", round_trip=False)
     with _client() as rc:
         flavours = select_k_routes(inp, snap, 3, routing_client=rc)
@@ -371,7 +402,12 @@ def _hand_built_route_and_script():
 def test_build_route_option_maps_engine_outputs():
     route, script, beats_by_id, snapshot = _hand_built_route_and_script()
     opt = build_route_option(
-        route, script, beats_by_id, route_id="trip-1-opt1", snapshot=snapshot
+        route,
+        script,
+        beats_by_id,
+        route_id="trip-1-opt1",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
     )
 
     assert opt.route_id == "trip-1-opt1"
@@ -391,7 +427,14 @@ def test_build_route_option_maps_engine_outputs():
 
 def test_route_option_contract_round_trips():
     route, script, beats_by_id, snapshot = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt = build_route_option(
+        route,
+        script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
+    )
     assert RouteOption.model_validate(opt.model_dump()) == opt
 
 
@@ -402,7 +445,14 @@ def test_build_route_option_populates_spotlight_and_band_per_stop():
     == tier: p1 (tier 5) = 5.0 -> headline -> dwell; p2 (tier 3) = 3.0 -> full ->
     dwell. The score must be computed, not the 0.0 default."""
     route, script, beats_by_id, snapshot = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt = build_route_option(
+        route,
+        script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
+    )
     assert opt.stops, "fixture must produce at least one stop"
     for stop in opt.stops:
         assert stop.spotlight > 0.0
@@ -432,7 +482,12 @@ def test_build_route_option_lens_dims_off_genre_stop_to_vignette():
         }
     )
     opt = build_route_option(
-        route, lensed_script, beats_by_id, route_id="rt", snapshot=snapshot
+        route,
+        lensed_script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
     )
     by_id = {s.poi_id: s for s in opt.stops}
     assert by_id["p1"].spotlight == pytest.approx(5.0)  # tier 5 x direct hit 1.0
@@ -444,7 +499,14 @@ def test_build_route_option_lens_dims_off_genre_stop_to_vignette():
 def test_route_option_lens_coverage_note_none_without_lens():
     """Step 3.4 (s3.1): no lens requested -> nothing to surface -> note is None."""
     route, script, beats_by_id, snapshot = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt = build_route_option(
+        route,
+        script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
+    )
     assert opt.lens_coverage_note is None
 
 
@@ -462,7 +524,12 @@ def test_route_option_lens_coverage_note_reflects_corridor_density():
         }
     )
     opt = build_route_option(
-        route, lensed_script, beats_by_id, route_id="rt", snapshot=snapshot
+        route,
+        lensed_script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
     )
     assert opt.lens_coverage_note == "1 of 2 places on this route speak to the chosen lens(es)."
 
@@ -493,14 +560,21 @@ def _route_script_with_vignette():
             "v1": [vbeat],
         },
     )
-    return route, script, beats_by_id, snapshot
+    return route, script, beats_by_id, snapshot, vbeat
 
 
 def test_route_option_interleaves_vignette_after_leg_origin():
     """The vignette on leg 1 (the walk INTO stop 1) sits between stop 0 and
     stop 1, as a minutes=0 walk_past band="vignette" stop with its score."""
-    route, script, beats_by_id, snapshot = _route_script_with_vignette()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    route, script, beats_by_id, snapshot, vbeat = _route_script_with_vignette()
+    opt = build_route_option(
+        route,
+        script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=(), vignette_beats={1: (vbeat,)}),
+    )
 
     assert [s.poi_id for s in opt.stops] == ["p1", "v1", "p2"]
     v_stop = opt.stops[1]
@@ -515,12 +589,15 @@ def test_route_option_interleaves_vignette_after_leg_origin():
 def test_route_option_dwell_stops_and_eta_unchanged_by_vignettes():
     """Vignettes are additive: the dwell stops (and eta, which counts routed
     legs + dwell only) are byte-identical with and without them."""
-    route_v, script, beats_by_id, snapshot = _route_script_with_vignette()
+    route_v, script, beats_by_id, snapshot, vbeat = _route_script_with_vignette()
     route_plain = route_v.model_copy(update={"vignettes": {}})
+    sequence = BeatSequence(poi_beats=(), vignette_beats={1: (vbeat,)})
 
-    opt_v = build_route_option(route_v, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt_v = build_route_option(
+        route_v, script, beats_by_id, route_id="rt", snapshot=snapshot, sequence=sequence
+    )
     opt_plain = build_route_option(
-        route_plain, script, beats_by_id, route_id="rt", snapshot=snapshot
+        route_plain, script, beats_by_id, route_id="rt", snapshot=snapshot, sequence=sequence
     )
 
     dwell_only = tuple(s for s in opt_v.stops if s.poi_id != "v1")
@@ -533,7 +610,14 @@ def test_route_option_empty_vignettes_is_todays_output():
     """route.vignettes == {} -> exactly today's stop list (no vignette rows)."""
     route, script, beats_by_id, snapshot = _hand_built_route_and_script()
     assert route.vignettes == {}
-    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt = build_route_option(
+        route,
+        script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
+    )
     assert [s.poi_id for s in opt.stops] == ["p1", "p2"]
     assert all(s.band == "dwell" for s in opt.stops)
 
@@ -545,18 +629,96 @@ def test_route_option_leg0_and_closing_leg_vignette_positions():
     v0 = POI(id="v0", name="Gate", tier=2, poi_role="stop", lat=48.849, lng=2.349)
     v_end = POI(id="v9", name="Bridge", tier=2, poi_role="stop", lat=48.861, lng=2.361)
     route = route.model_copy(update={"vignettes": {0: (v0,), 2: (v_end,)}})
+    vb0 = BeatRef(id="vb0", poi_id="v0", script_body="An old gate.")
+    vb9 = BeatRef(id="vb9", poi_id="v9", script_body="An old bridge.")
     snapshot = _snap(
         [*route.pois, v0, v_end],
         beats_by_poi={
             "p1": [beats_by_id["b1"], beats_by_id["b2"]],
             "p2": [beats_by_id["b3"]],
-            "v0": [BeatRef(id="vb0", poi_id="v0", script_body="An old gate.")],
-            "v9": [BeatRef(id="vb9", poi_id="v9", script_body="An old bridge.")],
+            "v0": [vb0],
+            "v9": [vb9],
         },
     )
-    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt = build_route_option(
+        route,
+        script,
+        beats_by_id,
+        route_id="rt",
+        snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=(), vignette_beats={0: (vb0,), 2: (vb9,)}),
+    )
     assert [s.poi_id for s in opt.stops] == ["v0", "p1", "p2", "v9"]
     assert opt.stops[0].band == "vignette" and opt.stops[-1].band == "vignette"
+
+
+def test_build_route_option_carries_the_leg_and_vignette_narration_cards():
+    """THE ONE INTERLEAVE: leg, vignette and dwell cards all come out of the shared
+    builder, which absorbed the API layer's fourth copy (trips._preview_stops).
+
+    Exercises all three card kinds at once on one fixture: a GLUE_NAV line spoken
+    while walking into stop 1 (its own leg card, carrying the WALK's minutes), a
+    walk-past one-liner on that same leg (its own vignette card, zero minutes), and
+    the two dwell stops — with neither the leg line nor the vignette line surviving
+    on a dwell card."""
+    route, script, beats_by_id, snapshot, vbeat = _route_script_with_vignette()
+    script = script.model_copy(
+        update={
+            "script": (
+                Sentence(text="Anchor story.", source_id="GLUE_PACING",
+                         source_type="glue", stop_idx=0),
+                Sentence(text="From Anchor, head on to Passby, about a minute away.",
+                         source_id="GLUE_NAV", source_type="glue", stop_idx=1),
+                Sentence(text="A quiet fountain from another century.",
+                         source_id="vb1", source_type="beat", stop_idx=1),
+                Sentence(text="Passby story.", source_id="GLUE_PACING",
+                         source_type="glue", stop_idx=1),
+            )
+        }
+    )
+    sequence = BeatSequence(
+        poi_beats=(),
+        vignette_beats={1: (vbeat,)},
+        overflow_by_poi={"p1": ("extra-1",)},
+    )
+
+    opt = build_route_option(
+        route, script, beats_by_id, route_id="rt", snapshot=snapshot, sequence=sequence
+    )
+
+    # 1. THE ORDER: the leg into a stop, then that leg's vignettes, then the stop.
+    assert [(s.band, s.name) for s in opt.stops] == [
+        ("dwell", "Anchor"),
+        ("leg", "Walk to Passby"),
+        ("vignette", "Fountain"),
+        ("dwell", "Passby"),
+    ]
+
+    # 2. THE LEG CARD carries the walking narration and the WALK's duration.
+    leg = opt.stops[1]
+    assert "head on to Passby" in leg.narration
+    assert leg.minutes == 8  # the 486s leg, not the narration's length
+    assert leg.spotlight == 0.0
+    assert leg.poi_id == "p2"  # the arrival stop's identity, never an invented id
+    assert leg.has_deeper_dive is False
+
+    # 3. THE VIGNETTE CARD voices the one-liner, at zero minutes.
+    vignette = opt.stops[2]
+    assert vignette.narration == "A quiet fountain from another century."
+    assert vignette.minutes == 0
+    assert vignette.has_deeper_dive is False
+
+    # 4. NO DOUBLE-VOICING: neither the leg line nor the vignette line survives on
+    #    a dwell card.
+    assert opt.stops[3].narration == "Passby story."
+    assert opt.stops[0].narration == "Anchor story."
+
+    # 5. THE DEEPER-DIVE FLAG rides the dwell card whose POI had overflow.
+    assert opt.stops[0].has_deeper_dive is True
+    assert opt.stops[3].has_deeper_dive is False
+
+    # 6. Cards cost no elapsed time: eta is unchanged from the no-narration build.
+    assert opt.eta_seconds == 600 + 486 + 300 + 60
 
 
 def test_route_option_round_trips_with_explicit_spotlight_fields():

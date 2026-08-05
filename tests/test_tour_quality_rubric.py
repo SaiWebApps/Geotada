@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import functools
 import json
+import math
 from pathlib import Path
 
 import pytest
@@ -35,7 +36,6 @@ from src.tour.narration_quality import score_narration
 from src.tour.quality_rubric import (
     BALANCE_MAX_SHARE,
     GORGE_MAX_WORDS_PER_STOP,
-    MAX_COMPOSED_STOPS,
     MAX_SENTENCE_WORDS,
     MIN_STOP_SEPARATION_M,
     OUTLIER_YEAR_DENSITY_MULTIPLE,
@@ -1603,20 +1603,88 @@ def test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour() 
 def test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration() -> None:
     """GUARDS satisfiability: C3 and C8 must never contradict each other.
 
-    The floor is LINEAR in duration; word capacity is BOUNDED at
-    ``MAX_COMPOSED_STOPS x GORGE_MAX_WORDS_PER_STOP``. TourInput allows durations up to
-    600 min (contract.py), so an uncapped linear floor becomes physically
-    unsatisfiable — at 240 min the old floor asked for 14 340 words from a tour that
-    may hold at most 6 800. UNDO: drop the ``min(...)`` cap term from the C3 floor and
-    this goes RED from ~120 min upward.
+    REDERIVED 2026-08-04, when the planner's stop ceiling was deleted (OWNER RULING 5).
+    The old proof compared the floor against a CONSTANT capacity — what an eight-stop
+    tour could hold — and the C3 floor had to be capped to stay under it. There is no
+    constant any more: duration is the only bound on stop count, so a longer tour holds
+    proportionally more stops, and the floor is linear again.
+
+    The replacement proof is duration-INDEPENDENT, which is why it is stronger than the
+    one it replaces. A tour meeting the C3 floor needs at least
+    ``floor_seconds / MAX_DWELL_AUDIO_SECONDS`` stops, because the engine caps ONE
+    stop's audio at ``MAX_DWELL_AUDIO_SECONDS``. Spread over that many stops, the words
+    per stop come to ``MAX_DWELL_AUDIO_SECONDS / 60 x WORDS_PER_MINUTE`` — 675 — and
+    that is under ``GORGE_MAX_WORDS_PER_STOP`` (850) at EVERY duration, so C8 can never
+    be forced to fire by C3.
+
+    UNDO: raise ``MAX_DWELL_AUDIO_SECONDS`` above ``GORGE_MAX_WORDS_PER_STOP /
+    WORDS_PER_MINUTE x 60`` (= 340 s) and this goes RED at every duration — which is
+    the real contradiction to guard now that neither side is capped by a stop count.
     """
-    capacity_words = MAX_COMPOSED_STOPS * GORGE_MAX_WORDS_PER_STOP
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
+
     for duration_min in range(1, 601):
-        floor_words = c3_audio_floor_seconds(duration_min) / 60 * WORDS_PER_MINUTE
-        assert floor_words <= capacity_words, (
-            f"{duration_min} min: floor {floor_words:.0f} words exceeds the "
-            f"{capacity_words}-word ceiling C8 permits"
+        floor_s = c3_audio_floor_seconds(duration_min)
+        stops_needed = math.ceil(floor_s / MAX_DWELL_AUDIO_SECONDS)
+        assert stops_needed >= 1
+        words_per_stop = floor_s / stops_needed / 60 * WORDS_PER_MINUTE
+        assert words_per_stop <= GORGE_MAX_WORDS_PER_STOP, (
+            f"{duration_min} min: meeting the C3 floor needs {words_per_stop:.0f} words "
+            f"at each of {stops_needed} stops, which C8 blocks at "
+            f"{GORGE_MAX_WORDS_PER_STOP}"
         )
+
+    # And the floor really is linear again — the whole point of deleting the cap.
+    assert c3_audio_floor_seconds(600) == pytest.approx(
+        4 * c3_audio_floor_seconds(150)
+    ), "the C3 thinness floor is still flattened by a fixed stop-count capacity"
+
+
+def test_the_saved_tour_scorer_reconstructs_the_current_planning_ceiling() -> None:
+    """AC-14 on the SCORER — the offline scorer must not keep a ceiling the engine dropped.
+
+    ``scripts/score_saved_tours.py`` rebuilds a ``Route`` from a persisted Script so the
+    rubric can score tours that were saved months ago. The only value it has to
+    reconstruct is C7's time ceiling, and its own docstring promises that ceiling
+    "cannot drift from the engine's" because it CALLS the engine's helper rather than
+    restating the arithmetic.
+
+    That promise had a deadline. The helper it called, ``err_short_total_seconds``,
+    returned a flat 0.83 of the requested duration; the engine's nominal fraction became
+    1.00 when the legacy planning policy was deleted on 2026-08-04. Left alone the
+    scorer would have judged every historical tour against a ceiling 20 percent tighter
+    than the one those tours are now planned to, and the docstring would have been a
+    lie. ``scripts/`` is outside the src-tree scan that guards the rest of AC-14, which
+    is exactly why this needs its own node id.
+
+    UNDO: point the scorer back at a 0.83 reconstruction and the equality below goes RED
+    (2988 != 3600).
+    """
+    import importlib.util
+    import pathlib as _pathlib
+
+    from src.tour.routing import planned_total_seconds, route_planning_budget
+
+    repo_root = _pathlib.Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location(
+        "_score_saved_tours_under_test", repo_root / "scripts" / "score_saved_tours.py"
+    )
+    assert spec is not None and spec.loader is not None
+    scorer = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(scorer)
+
+    poi = _spoi("a", tier=5, name="A")
+    script = _script([_sentence(_words(40, prefix="w"), 0)], [poi], total_audio_seconds=3000)
+    assert script.inputs.duration_min == 60
+
+    route = scorer._route_from_script(script)
+    assert route.err_short_total_seconds == route_planning_budget(60).nominal_elapsed_seconds
+    assert route.err_short_total_seconds == planned_total_seconds(60) == 3600, (
+        "the saved-tour scorer rebuilt a 60-minute tour's C7 ceiling as "
+        f"{route.err_short_total_seconds}s. The engine plans a 60-minute request to "
+        "3600s of active time, so any other value means the scorer is judging the "
+        "historical corpus against a ceiling the engine no longer uses"
+    )
 
 
 def test_c7_message_states_the_ceiling_the_route_was_actually_planned_to() -> None:

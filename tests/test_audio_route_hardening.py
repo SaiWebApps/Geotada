@@ -11,9 +11,11 @@ Each test here is red-first against a specific defect:
    exists() passes for a directory.
 3. /audio/files/{key:path} 500'd (leaking the absolute storage path) on an empty
    key or a directory key, for the same exists()-vs-is_file() reason.
-4. /audio/preview had no cache and a 20000-char body that fans out into five
-   billed chunk calls. (The rate limit this file also used to guard was DELETED
-   on 2026-07-31 by owner order, along with its tests.)
+4. /audio/preview had no cache, so a replayed identical payload was billed again.
+   (The rate limit this file used to guard was DELETED on 2026-07-31 by owner
+   order, along with its tests; the text cap was DELETED on 2026-08-04 by owner
+   order so the workbench judges the whole narration, and the test that pinned it
+   was replaced by the one that pins the opposite.)
 5. /audio/compare's on-disk cache was bounded only by AGE, so a caller could
    fill the container's ephemeral disk within the retention window.
 """
@@ -176,11 +178,18 @@ class TestPathHandling500s:
 
 class TestPreviewSpendBounds:
 
+    def test_preview_voices_the_whole_narration_uncapped(self, prod_client):
+        """The preview must voice every character it is given.
 
-    def test_preview_caps_text_below_the_20000_model_limit(self, prod_client, monkeypatch):
-        """20000 chars = five billed 4000-char chunk calls per anonymous
-        request. The public route must hand the provider far less."""
-        monkeypatch.setattr(audio_routes, "_PREVIEW_MAX_CHARS", 500)
+        The old cap silently truncated, so the workbench judged a fragment while
+        believing it judged the tour. It was an abuse bound on an anonymous
+        endpoint, not a quality setting, and it was deleted 2026-08-04 by owner
+        order. Equality, not a length bound: a `<=` would pass on any cap above
+        the payload.
+        """
+        narration = ("word " * 4000)[:12000]
+        assert len(narration) == 12000, "the payload itself must be long enough to be capped"
+
         seen: list[str] = []
 
         class _FakePaid:
@@ -193,12 +202,15 @@ class TestPreviewSpendBounds:
         with patch.object(audio_routes, "get_provider", return_value=_FakePaid()):
             resp = prod_client.post(
                 "/api/v1/audio/preview",
-                json={"text": ("word " * 4000)[:20000], "provider": "openai"},
+                json={"text": narration, "provider": "openai"},
             )
 
-        assert resp.status_code == 200
+        assert resp.status_code == 200, resp.text
         assert len(seen) == 1
-        assert len(seen[0]) <= 500, f"provider got {len(seen[0])} chars"
+        assert seen[0] == narration, (
+            f"the provider was handed {len(seen[0])} of {len(narration)} characters — "
+            "the preview truncated the narration"
+        )
 
     def test_preview_caches_identical_payloads(self, prod_client):
         """A replayed identical payload must never be re-billed."""

@@ -53,8 +53,8 @@ router = APIRouter(tags=["audio"])
 
 # ── Admin gate for the spend/mutate audio surface ──────────────────────────
 #
-# The audio router is mounted UNCONDITIONALLY (mobile + the public tour-preview
-# page need the playback/preview routes), but several of its routes are an
+# The audio router is mounted UNCONDITIONALLY (mobile + the editorial workbench
+# need the playback/preview routes), but several of its routes are an
 # unauthenticated *spend* and *write* surface:
 #
 #   POST /audio/generate-batch  -> paid TTS over EVERY NarrativeBeat in the
@@ -110,12 +110,6 @@ def require_audio_admin() -> None:
 # the client IP — mobile carriers put thousands of users behind one address, so
 # the old per-IP cap throttled real tourists in groups while barely slowing a
 # determined caller.
-
-# Cap on the text a single PUBLIC preview request may voice. The provider chunks
-# at MAX_TTS_CHARS (4000) internally, so the old 20000 model cap meant ONE
-# anonymous request fanned out into five billed calls by design. 20000 was
-# chosen for the internal keep-exploring path, not this public one.
-_PREVIEW_MAX_CHARS = int(os.getenv("AUDIO_PREVIEW_MAX_CHARS", "6000"))
 
 # Bounded in-memory cache of preview audio keyed by (provider, voice, text) so a
 # replayed identical payload is never re-billed. Mirrors the narration_hash
@@ -182,6 +176,22 @@ def _artifact_missing(url: str | None) -> bool:
         return not storage.exists(key)
     except Exception:
         return False
+
+
+def _stop_narration_hash(
+    narration: str, provider_name: str | None, voice_id: str | None
+) -> str:
+    """Content key for a stop's tour audio: (provider, voice, narration).
+
+    The same digest input the keep-exploring path uses below, so the two
+    staleness guards on ItineraryItem cannot drift apart. Provider and voice are
+    part of the key because both are per-request overrides: without them a caller
+    asking for a different voice would silently be handed audio in the old one.
+    """
+    return hashlib.sha256(
+        f"{provider_name or ''}\x00{voice_id or ''}\x00{narration}".encode()
+    ).hexdigest()
+
 
 # Max chars of narration handed to TTS for the on-demand keep-exploring deep
 # dive. Mirrors AudioPreviewRequest's cap so a huge extra_narration can't fan
@@ -289,22 +299,22 @@ def get_providers():
 def preview_audio(body: AudioPreviewRequest, request: Request):
     """Generate a TTS audio preview from raw text. Returns audio/mpeg bytes.
 
-    This route is deliberately anonymous — the public tour-preview page calls it
-    with no credentials. Its rate limit was DELETED on 2026-07-31 by owner order,
-    so the only things now bounding what an anonymous caller can spend are a text
-    cap well under the model limit and a content-hash cache that stops a replayed
-    payload being re-billed. This docstring ships in the OpenAPI schema; keep it
-    honest.
+    This route is deliberately anonymous — the editorial workbench calls it with
+    no credentials. Its rate limit was DELETED on 2026-07-31 by owner order,
+    and its text cap was deleted on 2026-08-04 by owner order so the workbench
+    judges the whole narration rather than a truncation. The only thing now
+    bounding what an anonymous caller can spend is the content-hash cache that
+    stops a replayed payload being re-billed, plus the request model's own
+    20000-character ceiling. A real bound belongs on the AUTHENTICATED user; the
+    workbench moves onto that path in Phase 2. This docstring ships in the
+    OpenAPI schema; keep it honest.
     """
     try:
         provider = get_provider(body.provider)
     except ValueError as e:
         raise HTTPException(400, str(e)) from None
 
-
-    # Bound the per-request fan-out: the provider chunks at 4000 chars, so an
-    # uncapped 20000-char body becomes five billed calls.
-    text = _cap_narration(body.text, _PREVIEW_MAX_CHARS)
+    text = body.text
 
     cache_key = hashlib.sha256(
         f"{provider.name}\x00{body.voice_id or ''}\x00{text}".encode()
@@ -817,6 +827,7 @@ def generate_stop_audio_for_trip(
         RETURN item.id AS stop_id,
                item.narration AS narration,
                item.audio_url AS audio_url,
+               item.audio_script_hash AS audio_script_hash,
                poi.name AS poi_name
         ORDER BY item.sort_order
         """,
@@ -837,12 +848,23 @@ def generate_stop_audio_for_trip(
                 StopAudioResultItem(stop_id=stop_id, status="skipped", reason="no narration")
             )
             continue
-        # "Has a url" is not "has audio": with AUDIO_STORAGE=local the bytes sit
-        # on the container's ephemeral disk while the url persists in Neo4j, so
-        # after a redeploy every stop skips here forever and the tour plays
-        # silence. Treat a verifiably-missing artifact as no-audio so a plain
-        # (non-force) regeneration self-heals.
-        if stop["audio_url"] and not force and not _artifact_missing(stop["audio_url"]):
+        narration_hash = _stop_narration_hash(narration, provider_name, voice_id)
+        # A skip needs BOTH halves to hold, and either one alone is a known bug:
+        #   - url without hash: edit a stop's narration and the stale audio
+        #     survives forever, which is the defect this guard closes.
+        #   - hash without url: nothing has been voiced yet, so there is nothing
+        #     to skip.
+        # "Has a url" is also not "has audio": with AUDIO_STORAGE=local the bytes
+        # sit on the container's ephemeral disk while the url persists in Neo4j,
+        # so after a redeploy every stop would skip here forever and the tour
+        # plays silence. Treat a verifiably-missing artifact as no-audio so a
+        # plain (non-force) regeneration self-heals.
+        if (
+            stop["audio_url"]
+            and stop["audio_script_hash"] == narration_hash
+            and not force
+            and not _artifact_missing(stop["audio_url"])
+        ):
             results.append(
                 StopAudioResultItem(
                     stop_id=stop_id,
@@ -865,10 +887,12 @@ def generate_stop_audio_for_trip(
             continue
         session.run(
             "MATCH (item:ItineraryItem {id: $sid}) "
-            "SET item.audio_url = $url, item.audio_duration_sec = $dur",
+            "SET item.audio_url = $url, item.audio_duration_sec = $dur, "
+            "    item.audio_script_hash = $hash",
             sid=stop_id,
             url=gen.audio_url,
             dur=gen.duration_sec,
+            hash=narration_hash,
         )
         results.append(
             StopAudioResultItem(stop_id=stop_id, status="generated", audio_url=gen.audio_url)
@@ -969,9 +993,7 @@ def keep_exploring_stop_audio(
     # a client requesting a different voice/provider silently gets audio generated
     # with the ORIGINAL voice. Mix provider_name and voice_id into the hash so a
     # voice/provider change yields a mismatch and regenerates.
-    narration_hash = hashlib.sha256(
-        f"{provider_name or ''}\x00{voice_id or ''}\x00{narration}".encode()
-    ).hexdigest()
+    narration_hash = _stop_narration_hash(narration, provider_name, voice_id)
     # Mobile calls this anonymously (KE5), so a cache MISS spends real TTS money
     # for an anonymous caller: bound the paid path the same way /audio/preview
     # is bounded. Checked after the cache lookup below would be too late, but

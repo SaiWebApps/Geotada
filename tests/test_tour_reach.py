@@ -5,9 +5,11 @@ GREEN/YELLOW/RED statuses map to ReachVerdict.mode standard/ambient|redirect/
 refuse, and the candidate filter switches from the analytic haversine circle
 to the (mocked) Valhalla walking isochrone, radius fallback when degraded.
 
-Fixture math (one-way 60 min): target_audio = 60 x 0.83 x 0.6 x 60 = 1793s,
-so 4 anchors x 3 beats x 100s = 1200s puts fill at 0.67 — YELLOW by fill.
-Round-trip 60 min envelopes: 369m (round-trip) vs 738m (one-way equivalent).
+Fixture math (60 min, the one planning policy since 2026-08-04): the audio
+target is 3600 x 1.00 x 0.60 = 2160 s and the walk allocation is 1440 s, so an
+hour's tour has to deliver 3240-3960 s of active time. Envelopes are 888.9 m
+one-way and 444.4 m round-trip. Every number here used to carry a flat 0.83
+factor (1793 s of audio, 738 m / 369 m of envelope) that no longer exists.
 """
 
 from __future__ import annotations
@@ -17,8 +19,9 @@ import json
 import httpx
 import pytest
 
-from src.tour.contract import BeatRef, TourInput
+from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.density import TourabilityRefusedError
+from src.tour.routing import walk_budget_seconds
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import _isochrone_walk_minutes, select_route
 from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
@@ -36,18 +39,49 @@ def _beats(poi_id: str, n: int, spoken_s: int) -> list[BeatRef]:
     ]
 
 
-def _thin_cluster(prefix: str = "thin") -> tuple[list, dict]:
-    """4 colocated anchors, 3x100s beats each → fill ≈ 0.67 (YELLOW)."""
-    pois = [
-        _poi(f"{prefix}-{i}", lat=PDV[0] + 0.00005 * i, lng=PDV[1], areas=("Le Marais",))
-        for i in range(4)
-    ]
-    beats = {p.id: _beats(p.id, 3, 100) for p in pois}
+#: Voiced seconds per anchor in the thin pool, and how many anchors carry them.
+#: 12 x 174 s = 2088 s of stories against a 2160 s target, so the fill ratio is
+#: 0.967 — under 1.0, hence NOT green, and over 0.5, hence YELLOW by fill.
+_THIN_ANCHORS: int = 12
+_THIN_BEATS_PER_ANCHOR: int = 3
+_THIN_SECONDS_PER_BEAT: int = 58
+
+
+def _thin_cluster(
+    prefix: str = "thin", *, round_trip: bool = False
+) -> tuple[list[POI], dict[str, list[BeatRef]]]:
+    """A pool that is thin on STORIES but still able to fill the hour.
+
+    YELLOW means "there is less to say here than an hour wants, but a tour is
+    still worth building", so a YELLOW fixture has to be thin in exactly one way
+    and healthy in every other. Thin on audio: 2088 s of stories against the
+    2160 s target. Healthy on spread: 12 anchors over the same spiral the green
+    fixtures use, so the tour walks the ~1250 s that audio alone cannot supply.
+
+    This used to be four anchors standing 5 m apart carrying 1200 s between
+    them. That was YELLOW, but since the walk budget became two-sided on
+    2026-08-04 it delivered roughly 850 s of tour against a 3240 s floor and was
+    refused outright — so the ambient/redirect disclosure these tests exist to
+    check was never reached. Story length is deliberately small enough that a
+    whole anchor fits inside one stop's speaking ceiling, which is the only
+    regime where the planner's two prices for a stop agree.
+    """
+    pois = _density_fillers(
+        PDV, n=_THIN_ANCHORS, round_trip=round_trip, prefix=prefix
+    )
+    beats = {
+        p.id: _beats(p.id, _THIN_BEATS_PER_ANCHOR, _THIN_SECONDS_PER_BEAT) for p in pois
+    }
     return pois, beats
 
 
-# Isochrone box: generous to the west of PdV, cut off ~150m east of it.
-_BOX_W, _BOX_E = PDV[1] - 0.02, PDV[1] + 0.002
+#: Isochrone box: generous to the west of PdV, cut off ~293 m east of it — wide
+#: enough to hold the whole background cluster, narrow enough to exclude the
+#: across-the-river POI these tests are about. It used to stop 146 m east, which
+#: also clipped the far edge of the background spiral once that spiral grew from
+#: four colocated POIs to a real one, and turned "the isochrone excludes the POI
+#: across the river" into "the isochrone excludes an unrelated filler too".
+_BOX_W, _BOX_E = PDV[1] - 0.02, PDV[1] + 0.004
 _BOX_S, _BOX_N = PDV[0] - 0.01, PDV[0] + 0.01
 
 
@@ -129,9 +163,9 @@ def test_thin_yellow_maps_to_ambient():
 
 
 def test_round_trip_yellow_with_gem_maps_to_redirect():
-    pois, beats = _thin_cluster()
-    # Tier-5 gem ~500m east: beyond the 369m round-trip envelope, inside the
-    # 738m one-way equivalent → density suggests it as the one-way alternative.
+    pois, beats = _thin_cluster(round_trip=True)
+    # Tier-5 gem ~500m east: beyond the 444m round-trip envelope, inside the
+    # 889m one-way equivalent → density suggests it as the one-way alternative.
     gem = _poi("faraway-gem", lat=PDV[0], lng=PDV[1] + 0.00683, areas=("Le Marais",))
     beats["faraway-gem"] = _beats("faraway-gem", 4, 200)
     snap = _snap([*pois, gem], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats)
@@ -154,12 +188,41 @@ def test_red_still_refuses():
 # ---------------------------------------------------------------------------
 
 
+def _east_of_river_pool() -> list[POI]:
+    """A background cluster the isochrone box fully contains, one far POI inside
+    the box and one far POI outside it — the across-the-river case.
+
+    Three requirements have to hold at once, and the shape below is what
+    satisfies all three.
+
+    The far POI must be genuinely SELECTED when the straight-line circle admits
+    it, not merely reachable, or the test says nothing about which membership
+    test ran. So the background is packed inside 60 m and scored low (tier 3,
+    three stories each): it supplies stops and almost no walking, leaving the
+    walk allocation free for the one-way endpoint pull to close the route on a
+    POI in the far half of the 889 m envelope.
+
+    The tour must also fill the hour BOTH ways round, and a tour is only in band
+    if it walks about 1200 s on top of its narration. A background that tight
+    cannot supply that on its own, so the far POI is the walking — and the
+    isochrone run, which is denied the POI across the river, needs an equally
+    far POI it IS allowed to reach. Hence the west-bank twin, inside the box at
+    the same distance, one tier lower so the pull prefers the east POI whenever
+    the east POI is admitted at all.
+    """
+    east = _poi("east-of-river", lat=PDV[0], lng=PDV[1] + 0.0070, areas=("Le Marais",))
+    west = _poi(
+        "west-bank", tier=4, lat=PDV[0], lng=PDV[1] - 0.0070, areas=("Le Marais",)
+    )
+    background = _density_fillers(PDV, radius_m=60.0, tier=3, beat_count=3)
+    return [*background, west, east]
+
+
 def test_out_of_isochrone_poi_rejected_but_radius_fallback_admits():
     """A POI inside the straight-line envelope but outside the walking
     isochrone (across the river, no bridge) is rejected — the exact case the
     analytic circle got wrong. Without the isochrone it is still admitted."""
-    east = _poi("east-of-river", lat=PDV[0], lng=PDV[1] + 0.0055, areas=("Le Marais",))
-    pois = [*_density_fillers(PDV), east]
+    pois = _east_of_river_pool()
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
 
@@ -187,8 +250,14 @@ def test_isochrone_refused_falls_back_degraded_with_same_roster():
 
 
 def test_reachable_poi_count_reflects_isochrone():
-    east = _poi("east-of-river", lat=PDV[0], lng=PDV[1] + 0.0055, areas=("Le Marais",))
-    pois = [*_density_fillers(PDV), east]
+    """The count REACH reports is the count the membership test admitted.
+
+    Both numbers are read off the fixture rather than written down. They used to
+    be the literals 4 and 5, which described a background cluster of four
+    colocated POIs; that cluster has since had to grow into something that can
+    fill an hour, and a literal count silently stopped meaning "everything the
+    circle admits, and one fewer once the isochrone rules out the far POI"."""
+    pois = _east_of_river_pool()
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
 
@@ -196,8 +265,10 @@ def test_reachable_poi_count_reflects_isochrone():
         iso_route = select_route(inp, snap, routing_client=rc)
     fallback_route = select_route(inp, snap)
 
-    assert iso_route.reach.reachable_poi_count == 4  # fillers only
-    assert fallback_route.reach.reachable_poi_count == 5  # circle admits east
+    # The circle admits every POI in the fixture; the isochrone admits every one
+    # of them EXCEPT the POI outside the box.
+    assert fallback_route.reach.reachable_poi_count == len(pois)
+    assert iso_route.reach.reachable_poi_count == len(pois) - 1
 
 
 # ---------------------------------------------------------------------------
@@ -206,9 +277,17 @@ def test_reachable_poi_count_reflects_isochrone():
 
 
 def test_isochrone_contour_minutes_mirror_walk_budget():
-    # 60 min: walk budget = 60 x 0.83 x 0.4 = 19.92 min one-way, half out-and-back.
-    assert _isochrone_walk_minutes(60, round_trip=False) == 20
-    assert _isochrone_walk_minutes(60, round_trip=True) == 10
+    """The contour REACH asks Valhalla for is the product's own walk allowance,
+    halved for an out-and-back.
+
+    Both sides are READ from the live budget rather than written down. They used
+    to be the literals 20 and 10, which were 60 x 0.83 x 0.40 under the flat
+    planning factor deleted on 2026-08-04; the same 40% allocation is now 24
+    minutes, so the literals had stopped describing the product's own budget."""
+    budget_min = walk_budget_seconds(60) / 60.0
+
+    assert _isochrone_walk_minutes(60, round_trip=False) == round(budget_min)
+    assert _isochrone_walk_minutes(60, round_trip=True) == round(budget_min / 2.0)
     assert _isochrone_walk_minutes(1, round_trip=True) == 1  # floor
 
 

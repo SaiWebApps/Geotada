@@ -181,6 +181,132 @@ void main() {
       expect(service.isGenerating, false);
     });
 
+    test('generateTrip surfaces the degradation notices the backend reported',
+        () async {
+      // The backend still builds a tour when the walking-directions service is
+      // unreachable, but its walking times are estimates rather than measured
+      // routes, and it says so on the wire. Dropping that on parse would show
+      // the traveller an estimate wearing a measurement's clothes.
+      final client = MockClient((request) async {
+        final body = _sampleTripResponse();
+        body['degradations'] = [
+          {
+            'kind': 'walking_times_estimated',
+            'human': 'Walking times between stops are estimates, not measured '
+                'routes, so the tour may run a little longer or shorter than '
+                'it says.',
+            'component': 'premium_tour.plan_premium_options',
+            'error_type': '',
+            'error_message': '',
+            'context': <String, String>{},
+          },
+        ];
+        return http.Response(jsonEncode(body), 201);
+      });
+
+      final service = TripService(httpClient: client);
+      final trip = await service.generateTrip(
+        profileId: 'profile-abc',
+        centerLat: 48.8566,
+        centerLng: 2.3522,
+        startDate: '2026-05-04',
+        endDate: '2026-05-06',
+        accessToken: 'token',
+      );
+
+      expect(trip.degradationNotices, hasLength(1));
+      expect(trip.degradationNotices.single, contains('estimates'));
+      // The plain-English sentence only — never the operator-facing fields.
+      expect(trip.degradationNotices.single, isNot(contains('premium_tour')));
+      expect(
+        trip.degradationNotices.single,
+        isNot(contains('walking_times_estimated')),
+      );
+    });
+
+    test('generateTrip keeps every degradation, not just the first', () async {
+      final client = MockClient((request) async {
+        final body = _sampleTripResponse();
+        body['degradations'] = [
+          {'human': 'First thing that went worse.'},
+          {'human': 'Second thing that went worse.'},
+        ];
+        return http.Response(jsonEncode(body), 201);
+      });
+
+      final service = TripService(httpClient: client);
+      final trip = await service.generateTrip(
+        profileId: 'profile-abc',
+        centerLat: 48.8566,
+        centerLng: 2.3522,
+        startDate: '2026-05-04',
+        endDate: '2026-05-06',
+        accessToken: 'token',
+      );
+
+      expect(trip.degradationNotices, hasLength(2));
+      expect(trip.degradationNotices.last, 'Second thing that went worse.');
+    });
+
+    test('a response with no degradations key parses to no notices', () async {
+      final client = MockClient(
+        (request) async => http.Response(jsonEncode(_sampleTripResponse()), 201),
+      );
+      final service = TripService(httpClient: client);
+      final trip = await service.generateTrip(
+        profileId: 'profile-abc',
+        centerLat: 48.8566,
+        centerLng: 2.3522,
+        startDate: '2026-05-04',
+        endDate: '2026-05-06',
+        accessToken: 'token',
+      );
+      expect(trip.degradationNotices, isEmpty);
+    });
+
+    test('a malformed degradations payload parses to no notices, not a crash',
+        () async {
+      // An older or misbehaving server must never take the itinerary screen
+      // down: a JSON null, a non-list, a non-map row, a row with no human
+      // sentence and a blank one all yield nothing and none of them throws.
+      final client = MockClient((request) async {
+        final body = _sampleTripResponse();
+        body['degradations'] = [
+          'not a map',
+          {'kind': 'walking_times_estimated'},
+          {'human': '   '},
+          42,
+        ];
+        return http.Response(jsonEncode(body), 201);
+      });
+
+      final service = TripService(httpClient: client);
+      final trip = await service.generateTrip(
+        profileId: 'profile-abc',
+        centerLat: 48.8566,
+        centerLng: 2.3522,
+        startDate: '2026-05-04',
+        endDate: '2026-05-06',
+        accessToken: 'token',
+      );
+      expect(trip.degradationNotices, isEmpty);
+
+      final nullClient = MockClient((request) async {
+        final body = _sampleTripResponse();
+        body['degradations'] = null;
+        return http.Response(jsonEncode(body), 201);
+      });
+      final nullTrip = await TripService(httpClient: nullClient).generateTrip(
+        profileId: 'profile-abc',
+        centerLat: 48.8566,
+        centerLng: 2.3522,
+        startDate: '2026-05-04',
+        endDate: '2026-05-06',
+        accessToken: 'token',
+      );
+      expect(nullTrip.degradationNotices, isEmpty);
+    });
+
     test('fetchSavedTrips returns list of trips', () async {
       final client = MockClient((request) async {
         expect(request.method, 'GET');

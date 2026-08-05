@@ -22,6 +22,8 @@ the BEHAVIOUR is wrong, never against a hardcoded leg time.
 
 from __future__ import annotations
 
+import pytest
+
 from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.routing import (
     default_leg_seconds,
@@ -34,6 +36,7 @@ from src.tour.selection import (
     CorpusSnapshot,
     select_route,
 )
+from tests.test_tour_selection import _auto_beat_seconds, _density_fillers
 
 PDV = (48.8555, 2.3656)
 
@@ -42,27 +45,36 @@ PDV = (48.8555, 2.3656)
 # Fixtures (mirroring the established feasibility-test helpers).
 # ---------------------------------------------------------------------------
 
+#: How tightly the background cluster is packed, in metres.
+#:
+#: Every test in this module has ONE subject POI — a snap target, a sentinel, a
+#: far endpoint — that has to end the route, and the background exists only to
+#: give the plan enough stops to fill the requested duration. Since 2026-08-04 a
+#: plan must also land inside the certification TIME band, so the background can
+#: no longer be four POIs sitting on top of the start: four stops cannot fill an
+#: hour and a half. But the default duration-scaled spiral is calibrated to spend
+#: about a third of the request on walking all by itself, which would leave
+#: nothing in the walk budget for the route to REACH its subject. Packing the
+#: same anchor count into 100 m keeps the stops and hands the budget back.
+_BACKGROUND_RADIUS_M = 100.0
 
-def _density_fillers(start: tuple[float, float]) -> list[POI]:
-    """4 tier-5 anchor candidates clustered AT start.
 
-    The Phase 6 density gate needs ≥4 rich-beat anchor candidates in a tight
-    cluster to clear (avoid RED). They sit right on top of A so they are
-    trivially inside the A→…→B corridor and never become the far endpoint.
+def _background(duration_min: int, n: int | None = None) -> list[POI]:
+    """Tier-3 background anchors: enough stops to fill `duration_min`, no more.
+
+    Tier 3 with the minimum anchor beat count is the lowest thing the density
+    gate still counts as an anchor candidate. That keeps the background scored
+    BELOW each test's tier-5 subject, so the greedy cannot fill the tour on
+    cheap background alone and leave the POI under test unselected.
     """
-    return [
-        POI(
-            id=f"filler-{i}",
-            name=f"filler-{i}",
-            tier=5,
-            poi_role="stop",
-            lat=start[0] + 0.00005 * i,
-            lng=start[1] + 0.00005 * i,
-            areas=("Le Marais",),
-            beat_count=8,
-        )
-        for i in range(4)
-    ]
+    return _density_fillers(
+        PDV,
+        duration_min=duration_min,
+        radius_m=_BACKGROUND_RADIUS_M,
+        tier=3,
+        beat_count=3,
+        n=n,
+    )
 
 
 def _anchor(poi_id: str, dlat: float, dlng: float, *, tier: int = 5, beats: int = 8) -> POI:
@@ -80,13 +92,21 @@ def _anchor(poi_id: str, dlat: float, dlng: float, *, tier: int = 5, beats: int 
 
 
 def _snap(pois: list[POI]) -> CorpusSnapshot:
-    """CorpusSnapshot with rich synthetic beats per POI (clears fill_ratio)."""
+    """CorpusSnapshot with synthetic beats sized to ONE STOP's audio ceiling.
+
+    A POI's whole beat set is worth ``MAX_DWELL_AUDIO_SECONDS`` (270 s), which is
+    the most any single stop can ever speak. Selection prices a stop twice — the
+    greedy CREDITS the POI's planned audio, emission then CAPS it — and the two
+    prices only agree when no POI carries more than one stop's worth. The old
+    flat 240 s per beat gave an 8-beat filler 1920 s of credit against 270 s of
+    delivery, so the greedy stopped adding stops long before the tour was full.
+    """
     beats: dict[str, tuple[BeatRef, ...]] = {
         p.id: tuple(
             BeatRef(
                 id=f"{p.id}-b{i}",
                 poi_id=p.id,
-                est_spoken_seconds=240,
+                est_spoken_seconds=_auto_beat_seconds(max(0, p.beat_count or 0)),
                 active_status="active",
             )
             for i in range(max(0, p.beat_count or 0))
@@ -151,7 +171,7 @@ def test_fixed_end_snaps_to_nearby_selected_poi():
     is that anchor's id (no sentinel synthesized)."""
     # A real east anchor that is well inside the corridor and budget.
     east = _anchor("east-real", 0.0, 0.0040, tier=5, beats=12)  # ~290m east of PdV
-    snap = _snap([east, *_density_fillers(PDV)])
+    snap = _snap([east, *_background(DURATION)])
 
     # B is ~30m east of the real anchor — comfortably inside B_SNAP_PROXIMITY_M.
     end = (east.lat, east.lng + 0.0004)
@@ -177,7 +197,7 @@ def test_fixed_end_records_exempt_identity_and_no_start_anchor():
     (exempt_anchor_id is guarded by ``input.end is None``), so nothing on the
     corridor is start-anchor-exempt. Additive metadata; ordering is unchanged."""
     east = _anchor("east-real", 0.0, 0.0040, tier=5, beats=12)  # ~290m east of PdV
-    snap = _snap([east, *_density_fillers(PDV)])
+    snap = _snap([east, *_background(DURATION)])
     end = (east.lat, east.lng + 0.0004)  # ~30m east of east-real -> within snap
     inp = TourInput(start=PDV, end=end, duration_min=DURATION, city_slug="paris")
     assert _ab_in_budget(end)
@@ -194,7 +214,7 @@ def test_fixed_end_snaps_to_nearest_of_two_in_range_pois():
     geometrically NEAREST one (derived live from haversine_m)."""
     near = _anchor("snap-near", 0.0, 0.0040, tier=5, beats=10)
     farther = _anchor("snap-far", 0.0, 0.0046, tier=5, beats=10)
-    snap = _snap([near, farther, *_density_fillers(PDV)])
+    snap = _snap([near, farther, *_background(DURATION)])
 
     # B sits between them but closer to `near`.
     end = (near.lat, near.lng + 0.0002)
@@ -223,7 +243,7 @@ def test_fixed_end_synthesizes_sentinel_when_b_is_far_from_every_poi():
     # An east anchor that is in-corridor but a clear, > ~150m gap from B, so B
     # cannot snap onto it.
     east = _anchor("east-real", 0.0, 0.0040, tier=5, beats=12)
-    snap = _snap([east, *_density_fillers(PDV)])
+    snap = _snap([east, *_background(DURATION)])
 
     # B is ~440m further east than the real anchor — beyond the snap radius of
     # every selected POI, but A→B still fits the 90-min budget.
@@ -253,7 +273,7 @@ def test_sentinel_route_ends_at_b_on_routed_cost_path_too():
     """Synthesis + endpoint pinning holds on the deterministic routed cost
     path, not only the no-client haversine path."""
     east = _anchor("east-real", 0.0, 0.0040, tier=5, beats=12)
-    snap = _snap([east, *_density_fillers(PDV)])
+    snap = _snap([east, *_background(DURATION)])
     end = (east.lat, east.lng + 0.0060)
     inp = TourInput(start=PDV, end=end, duration_min=DURATION, city_slug="paris")
     assert _ab_in_budget(end)
@@ -274,7 +294,7 @@ def test_open_walk_end_none_still_ends_at_far_far_anchor():
     """end=None open walk: ORDER still ends at the far anchor (no B-materialize
     branch runs). The endpoint-pull-derived fixed_end path is untouched."""
     far = _anchor("far-east", 0.0, 0.0090, tier=5, beats=30)  # far envelope, rich
-    snap = _snap([far, *_density_fillers(PDV)])
+    snap = _snap([far, *_background(DURATION)])
     inp = TourInput(start=PDV, duration_min=DURATION, city_slug="paris")  # end=None
 
     route = select_route(inp, snap)
@@ -288,7 +308,7 @@ def test_round_trip_still_returns_to_start():
     """round_trip=True (end is None): ORDER optimizes a closed tour, the last
     transit returns to A, and no B sentinel is ever synthesized."""
     far = _anchor("far-east", 0.0, 0.0050, tier=5, beats=20)
-    snap = _snap([far, *_density_fillers(PDV)])
+    snap = _snap([far, *_background(DURATION)])
     inp = TourInput(start=PDV, duration_min=DURATION, city_slug="paris", round_trip=True)
 
     route = select_route(inp, snap)
@@ -316,20 +336,17 @@ def test_fixed_end_corridor_rich_route_keeps_multiple_beat_bearing_stops():
     pool-shrinking filter; an over-tight gate (comparing against the greedy
     walk budget instead of the full budget, or a haversine/routed mixup)
     empties the pool down to one anchor and delivers a 1-story A→B tour with
-    NO warning (the fixture is GREEN). Engine walk-through at HEAD: the
-    greedy (one-way budget 1344s of 1793s) seats all 7 candidates (~736s
-    chain) and ends by POOL EXHAUSTION at 2100s dwell-audio — the audio
-    break (target 2689s) never fires; the fill pass DOES run (2100 < 0.8 x
-    2689 = 2151) but no-ops on the empty pool; the endpoint pull finds no
-    far candidate (far floor ~553m > east-3's ~439m); B then SNAPs onto
-    east-3 (~15m away).
+    NO warning (the fixture is GREEN). Every candidate here is proven
+    corridor-admissible below, and nothing sits beyond the endpoint-pull's far
+    floor, so the only thing that can shrink the delivery to one story is the
+    gate misfiring. B then SNAPs onto east-3, ~15 m away.
     """
     from src.tour.routing import envelope_radius_m
 
     east1 = _anchor("east-1", 0.0, 0.0020, tier=5, beats=8)  # ~146m east
     east2 = _anchor("east-2", 0.0, 0.0040, tier=5, beats=8)  # ~293m east
     east3 = _anchor("east-3", 0.0, 0.0060, tier=5, beats=8)  # ~439m east
-    snap = _snap([east1, east2, east3, *_density_fillers(PDV)])
+    snap = _snap([east1, east2, east3, *_background(DURATION)])
     end = (PDV[0], PDV[1] + 0.0062)  # ~15m past east-3 — inside the snap radius
 
     inp = TourInput(start=PDV, end=end, duration_min=DURATION, city_slug="paris")
@@ -338,7 +355,7 @@ def test_fixed_end_corridor_rich_route_keeps_multiple_beat_bearing_stops():
     assert _ab_in_budget(end)  # no Step-2.2a refusal
     assert haversine_m(*end, east3.lat, east3.lng) <= B_SNAP_PROXIMITY_M  # SNAP branch
     budget = walk_budget_seconds(DURATION)
-    for poi in (east1, east2, east3, *_density_fillers(PDV)):
+    for poi in (east1, east2, east3, *_background(DURATION)):
         detour = default_leg_seconds(PDV[0], PDV[1], poi.lat, poi.lng) + default_leg_seconds(
             poi.lat, poi.lng, *end
         )
@@ -372,7 +389,16 @@ def test_fixed_end_uses_a_nearby_poi_without_collapsing_the_greedy_cluster():
         _anchor("decoy-nw", 0.0038, -0.0058, tier=3, beats=3),
         _anchor("decoy-sw", -0.0038, -0.0058, tier=3, beats=3),
     ]
-    snap = _snap([n1, n2, mountain, *decoys])
+    # Background so the plan can fill 75 minutes: the six named POIs above carry
+    # six stops' worth of audio against a target of ten, which is density YELLOW,
+    # and this test's last assertion is that a healthy fixed-end route discloses
+    # NOTHING — so the fixture has to be genuinely healthy. The count is
+    # deliberately SMALLER than the shortfall: six cheap background anchors close
+    # most of the gap but not all of it, so the greedy still has to reach out for
+    # the named cluster and the mountain rather than filling the hour next door.
+    # Measured over a 4-10 sweep: four refuses, seven and ten drop the north
+    # cluster, five and six both hold every assertion.
+    snap = _snap([n1, n2, mountain, *decoys, *_background(duration, n=6)])
     end = (PDV[0], PDV[1] + 0.00685)  # ~500m due east
     assert _ab_in_budget(end, duration)
     assert haversine_m(*end, mountain.lat, mountain.lng) <= B_SNAP_PROXIMITY_M
@@ -389,55 +415,64 @@ def test_fixed_end_uses_a_nearby_poi_without_collapsing_the_greedy_cluster():
     assert route.tourability is None
 
 
-def test_sentinel_is_never_the_only_companion_of_a_silent_route():
-    """A beatless B sentinel must not masquerade as a second story; the honest
-    [one-real-POI, sentinel] delivery must carry the YELLOW disclosure.
+def test_one_story_fixed_end_corpus_is_refused_not_padded_with_a_sentinel():
+    """A destination with only ONE story to tell on the way is refused outright.
 
-    The sentinel (_materialize_fixed_end_b) carries NO beats, so preview
-    narration for it is empty — any downstream "route has 2 POIs so it is
-    fine" check that counts the sentinel as a companion story reproduces the
-    thin single-beat-feeling delivery the user reported. This test makes the
-    sentinel's beatlessness load-bearing AND pins that the lone-anchor
-    YELLOW contract (test_tour_selection.py's isolated-anchor test) EXTENDS
-    to the fixed-end path: the tourability attach happens AFTER
-    _materialize_fixed_end_b rebuilds the model, an ordering a refactor of
-    the end != None branch could easily break (silently stripping the
-    warning from exactly the routes that need it most).
+    This is the same worry as before — the destination sentinel carries no beats,
+    so any downstream "the route has two POIs, it must be fine" check would read
+    a one-story tour as a two-stop tour and ship the thin, single-beat-feeling
+    delivery the user complained about. What changed on 2026-08-04 is where that
+    worry is now answered.
+
+    It used to be answered by DISCLOSURE: the route was still built, and a YELLOW
+    tourability assessment rode along on it to say "this is thin". That outcome is
+    no longer reachable at any duration the product offers. A single stop can
+    speak at most ``MAX_DWELL_AUDIO_SECONDS`` (270 s) and walking is capped at
+    0.40 of the request, so a one-story tour tops out at 0.40 x duration + 270 s
+    of active time, while the certification band demands at least 0.90 x
+    duration. The two only overlap below about nine minutes.
+
+    So it is now answered by REFUSAL: the plan cannot reach the band, selection
+    says so, and no route — padded or otherwise — is produced. Note WHICH refusal.
+    The start circle is density RED, but a fixed destination makes the density
+    gate defer to the routed checks rather than raise, so what actually stops this
+    tour is the certification band. The sentinel's beatlessness is still
+    load-bearing, and is exercised on a corpus rich enough to deliver by
+    ``test_fixed_end_corridor_rich_route_keeps_multiple_beat_bearing_stops``,
+    which counts BEAT-BEARING stops rather than raw POIs.
     """
     from src.tour.density import assess as assess_tourability
+    from src.tour.selection import CertificationPlanningInfeasibleError
 
-    duration = 60  # budget 1195s, envelope ~738m, far floor ~369m
+    duration = 60
     lone = _anchor("lone", 0.0, 0.00205, tier=4, beats=5)  # ~150m east
     snap = _snap([lone])
     end = (PDV[0], PDV[1] + 0.0055)  # ~400m east
 
     inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
 
-    # Preconditions, derived live.
+    # Preconditions, derived live: nothing EXCEPT the thinness of the corpus is
+    # what stops this tour. The destination is reachable, it is far enough from
+    # the lone anchor that B-materialization would have had to synthesize a
+    # sentinel, and the lone anchor clears the corridor gate.
     assert _ab_in_budget(end, duration)  # no 2.2a refusal
     assert haversine_m(*end, lone.lat, lone.lng) > B_SNAP_PROXIMITY_M  # SYNTHESIZE branch
     corridor = default_leg_seconds(PDV[0], PDV[1], lone.lat, lone.lng) + default_leg_seconds(
         lone.lat, lone.lng, *end
     )
     assert corridor <= walk_budget_seconds(duration)  # lone is admitted
-    # YELLOW-by-fill: 5 x 240s = 1200s vs target 1793s -> fill ~0.67, one
-    # anchor candidate — same arithmetic as the pinned lone-anchor contract.
-    assert assess_tourability(inp, snap.pois, snap.beats_by_poi).status == "YELLOW"
 
-    route = select_route(inp, snap)
+    # One anchor carrying one stop's worth of audio against an hour's target, and
+    # it knows the honest answer: this corpus supports a much shorter tour.
+    assessment = assess_tourability(inp, snap.pois, snap.beats_by_poi)
+    assert assessment.status == "RED"
+    assert assessment.anchor_candidate_count == 1
+    assert assessment.max_supportable_duration_min is not None
+    assert assessment.max_supportable_duration_min < duration
 
-    # (1) The honest delivery shape: ONE story plus the beatless Destination.
-    beatful = [p for p in route.pois if snap.beats_for(p.id)]
-    assert len(beatful) == 1 and beatful[0].id == "lone"
-    assert route.pois[-1].id.startswith("__end_b__")
-    assert not snap.beats_for(route.pois[-1].id), "the B sentinel must carry no beats"
-    # (2) The YELLOW disclosure survives B-materialization on the wire model.
-    assert route.tourability is not None, (
-        "a 1-story fixed-end tour must carry the YELLOW tourability assessment — "
-        "without it the sentinel makes a silent thin delivery look multi-stop"
-    )
-    assert route.tourability.status == "YELLOW"
-    assert route.tourability.anchor_candidate_count == 1
-    # (3) The general invariant, spelled out for future fixtures: count
-    # BEAT-BEARING stops, never raw POIs (the sentinel is not a story).
-    assert len(beatful) >= 2 or route.tourability is not None
+    # No route comes back at all, so there is nothing for a beatless sentinel to
+    # pad. The message names the band and the best it could actually build.
+    with pytest.raises(CertificationPlanningInfeasibleError) as excinfo:
+        select_route(inp, snap)
+    assert "TIME band" in str(excinfo.value)
+

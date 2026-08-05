@@ -172,3 +172,97 @@ def test_the_fake_tts_provider_has_no_server_side_registrar() -> None:
         f"becomes resolvable, and a uvicorn process must never open it — the "
         f"workbench dropdown is built from that registry."
     )
+
+
+def test_the_app_shows_what_degraded_rather_than_dropping_it() -> None:
+    """A degraded tour must SAY so on the phone, not look like a clean one.
+
+    The third door of the same defect this file guards. When the walking-
+    directions service is unreachable the backend still builds the tour, but its
+    walking times are estimates rather than measured routes, and it labels that
+    on the wire (``degradations``, each row carrying the plain-English ``human``
+    sentence — ``src/tour/degradations.py:44-67``). The phone used to drop the
+    field on parse, so the traveller read estimated times as if a real route had
+    been measured. That is a stand-in reaching a human surface, which is exactly
+    what this file exists to stop.
+
+    The register matters as much as the presence. ``human`` is written for a
+    person and names no service, module or exception; ``kind``, ``component``,
+    ``error_type`` and ``error_message`` are for an operator. Rendering either of
+    the latter to a tourist is its own defect, so this guard checks the page shows
+    only the first.
+
+    Plain substring parsing, per this file's docstring, and every absence check
+    below is preceded by a proof that the sweep read the right file.
+
+    UNDO TEST: change the wire key in ``mobile/lib/models/trip.dart`` from
+    ``json['degradations']`` to any other name -> RED at assertion 2. Or delete
+    the ``_DegradationCard`` line from the itinerary page -> RED at assertion 4.
+    """
+    model = (MOBILE_LIB / "models" / "trip.dart").read_text(encoding="utf-8")
+    page = (MOBILE_LIB / "pages" / "trip_itinerary_page.dart").read_text(encoding="utf-8")
+    service = (MOBILE_LIB / "services" / "trip_service.dart").read_text(encoding="utf-8")
+
+    # 1. Non-vacuity: prove each file is the one we think it is before asserting
+    #    that anything is present or absent in it. A moved file would otherwise
+    #    make every check below pass against the wrong text.
+    assert "class GeneratedTrip" in model, (
+        "GeneratedTrip is no longer declared in mobile/lib/models/trip.dart — the "
+        "model moved and this guard is reading the wrong file"
+    )
+    assert "class TripItineraryPage" in page, (
+        "TripItineraryPage is no longer declared in "
+        "mobile/lib/pages/trip_itinerary_page.dart — the page moved and this "
+        "guard is reading the wrong file"
+    )
+    assert "GeneratedTrip.fromJson" in service, (
+        "mobile/lib/services/trip_service.dart no longer parses through "
+        "GeneratedTrip.fromJson — the app gained a second parse path and this "
+        "guard no longer covers it"
+    )
+
+    # 2. The wire key is READ, not dropped.
+    assert "json['degradations']" in model, (
+        "mobile/lib/models/trip.dart does not read the response's degradations "
+        "field, so a tour built on estimated walking times reaches the traveller "
+        "looking exactly like one built on measured routes"
+    )
+
+    # 3. The parsed value is KEPT.
+    assert "degradationNotices" in model, (
+        "mobile/lib/models/trip.dart parses the degradations field but stores "
+        "nothing — a value read and discarded is the same silence"
+    )
+
+    # 4. The page RENDERS it. A parsed-but-unrendered field fails this step.
+    assert "degradationNotices" in page, (
+        "mobile/lib/pages/trip_itinerary_page.dart never reads the trip's "
+        "degradation notices, so nothing the backend reported reaches the screen"
+    )
+    assert "_DegradationCard" in page, (
+        "mobile/lib/pages/trip_itinerary_page.dart has no _DegradationCard "
+        "widget, so there is nothing on the itinerary for the traveller to read"
+    )
+
+    # 5. The traveller reads the HUMAN register and only that one.
+    assert "row['human']" in model, (
+        "mobile/lib/models/trip.dart does not take the human sentence off each "
+        "degradation row; every other field on that row is written for an "
+        "operator, not a tourist"
+    )
+    operator_only = [
+        field for field in ("error_type", "error_message", "component") if field in page
+    ]
+    assert not operator_only, (
+        f"the itinerary page names operator-facing degradation fields "
+        f"{operator_only}. A traveller must never be shown an exception class, "
+        f"an exception message or the name of the code that failed — "
+        f"src/tour/degradations.py reserves those for the operator and gives the "
+        f"traveller `human`."
+    )
+
+    # 6. The notices arrive by the ordinary parse path, not a private second one.
+    assert "GeneratedTrip.fromJson" in service, (
+        "mobile/lib/services/trip_service.dart must reach the notices through the "
+        "same model parse every other trip field uses"
+    )

@@ -34,11 +34,12 @@ from typing import TYPE_CHECKING, NamedTuple
 
 from .contract import POI, BeatRef, TourabilityAssessment, TourInput
 from .routing import (
-    AUDIO_FRACTION,
-    ERR_SHORT,
+    DEFAULT_ROUTE_PLANNING_POLICY,
+    RoutePlanningPolicy,
     beat_spoken_seconds,
     envelope_radius_m,
     haversine_m,
+    route_planning_budget,
 )
 
 if TYPE_CHECKING:
@@ -164,6 +165,8 @@ def assess(
     tour_input: TourInput,
     pois: Iterable[POI],
     beats_by_poi: dict[str, tuple[BeatRef, ...]],
+    *,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> TourabilityAssessment:
     """Low-level component assessment retained for legacy diagnostics/tests.
 
@@ -175,7 +178,9 @@ def assess(
     duration_min = tour_input.duration_min
     round_trip = tour_input.round_trip
 
-    walk_radius_m = envelope_radius_m(duration_min, round_trip=round_trip)
+    walk_radius_m = envelope_radius_m(
+        duration_min, round_trip=round_trip, planning_policy=planning_policy
+    )
 
     # Reachable POIs: within walk envelope AND eligible role AND at
     # least one active beat (zero-beat POIs are diagnostic noise, not
@@ -208,7 +213,7 @@ def assess(
                 on_lens_audio_s += secs
         reachable_beat_count += len(active)
 
-    target_audio_s = _target_audio_seconds(duration_min)
+    target_audio_s = _target_audio_seconds(duration_min, planning_policy)
     fill_ratio = audio_capacity_s / target_audio_s if target_audio_s > 0 else 0.0
     on_lens_fill_ratio: float | None = (
         (on_lens_audio_s / target_audio_s if target_audio_s > 0 else 0.0)
@@ -242,7 +247,9 @@ def assess(
         # the current audio capacity. Only meaningful when the limiting
         # factor is fill_ratio (not anchor count or compactness).
         if audio_capacity_s > 0:
-            max_supportable = _duration_where_fill_equals_one(audio_capacity_s)
+            max_supportable = _duration_where_fill_equals_one(
+                audio_capacity_s, planning_policy
+            )
 
         # Round-trip-limited alternative: if the round-trip envelope
         # was the bottleneck, find the densest one-way destination
@@ -254,6 +261,7 @@ def assess(
                 duration_min=duration_min,
                 pois=list(pois),
                 beats_by_poi=beats_by_poi,
+                planning_policy=planning_policy,
             )
 
     return TourabilityAssessment(
@@ -277,6 +285,8 @@ def assess(
 def assess_snapshot(
     tour_input: TourInput,
     snapshot: CorpusSnapshot,
+    *,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> TourabilityAssessment:
     """Manifest-aware density boundary used by the product algorithm."""
 
@@ -287,7 +297,12 @@ def assess_snapshot(
         if not isinstance(snapshot, MaterializedCorpusSnapshot):
             raise ValueError("typed corpus must be materialized before density")
         validate_materialized_corpus_snapshot(snapshot)
-    return assess(tour_input, snapshot.pois, snapshot.beats_by_poi)  # type: ignore[arg-type]
+    return assess(  # type: ignore[arg-type]
+        tour_input,
+        snapshot.pois,
+        snapshot.beats_by_poi,
+        planning_policy=planning_policy,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -295,12 +310,17 @@ def assess_snapshot(
 # ---------------------------------------------------------------------------
 
 
-def _target_audio_seconds(duration_min: int) -> int:
-    """The err-short audio target. Matches phase-5-quality-audit.md.
+def _target_audio_seconds(duration_min: int, planning_policy: RoutePlanningPolicy) -> int:
+    """The planner's OWN audio target — the same number selection then tries to fill.
 
-    target_audio_s = duration_min x 0.83 x 0.6 x 60
+    Derived from the planning budget rather than restated here. Until 2026-08-04 this
+    was a bare ``duration_min x 0.83 x 0.6 x 60``, which no policy could reach: after
+    the walk envelope started following the certification policy, the gate would have
+    judged a pool against 1793 s while the planner aimed at 2160 s — reading GREEN on a
+    pool holding barely half the audio the tour needed, which is a thin tour served as
+    healthy, exactly what this module exists to prevent.
     """
-    return round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60)
+    return route_planning_budget(duration_min, planning_policy).audio_target_seconds
 
 
 def _beat_spoken_seconds(beat: BeatRef) -> int:
@@ -388,16 +408,20 @@ def _status(
     return "RED"
 
 
-def _duration_where_fill_equals_one(audio_capacity_s: int) -> int:
+def _duration_where_fill_equals_one(
+    audio_capacity_s: int, planning_policy: RoutePlanningPolicy
+) -> int:
     """Solve target_audio_s(d) = audio_capacity_s for d.
 
-    target_audio_s = d x 0.83 x 0.6 x 60 → d = capacity / (0.83 x 0.6 x 60).
-
-    Round down to nearest minute; floor at 1 to avoid degenerate 0s.
+    The per-minute audio target is linear in duration, so one minute's worth of it
+    divides the capacity directly. Round down to the nearest minute; floor at 1 to
+    avoid a degenerate 0.
     """
     if audio_capacity_s <= 0:
         return 1
-    seconds_per_minute = ERR_SHORT * AUDIO_FRACTION * 60
+    seconds_per_minute = route_planning_budget(1, planning_policy).audio_target_seconds
+    if seconds_per_minute <= 0:
+        return 1
     return max(1, int(audio_capacity_s / seconds_per_minute))
 
 
@@ -408,6 +432,7 @@ def _suggest_one_way_destination(
     duration_min: int,
     pois: list[POI],
     beats_by_poi: dict[str, tuple[BeatRef, ...]],
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
 ) -> str | None:
     """Highest-density tier-5 POI inside the equivalent one-way envelope.
 
@@ -415,8 +440,12 @@ def _suggest_one_way_destination(
     destination should be visibly farther than the round-trip envelope
     so the suggestion is meaningful.
     """
-    one_way_radius = envelope_radius_m(duration_min, round_trip=False)
-    round_trip_radius = envelope_radius_m(duration_min, round_trip=True)
+    one_way_radius = envelope_radius_m(
+        duration_min, round_trip=False, planning_policy=planning_policy
+    )
+    round_trip_radius = envelope_radius_m(
+        duration_min, round_trip=True, planning_policy=planning_policy
+    )
     best_name: str | None = None
     best_score = -1.0
     for poi in pois:

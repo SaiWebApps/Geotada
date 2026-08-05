@@ -196,6 +196,11 @@
   }
   .tour-stop--vignette { border-left: 3px dashed #3b82f6; }
   .tour-stop--vignette .meta { font-style: italic; }
+  /* PLAN screen: the three route options an operator chooses between before
+     anything is written or voiced. */
+  .tour-option-card { border-left: 3px solid var(--accent); }
+  .tour-option-card h4 { margin: 0 0 4px; }
+  .tour-option-card .tour-option-places { margin: 6px 0 10px; }
   /* KE9: "keep exploring here" — a dwell stop whose budget capped out extra
      beats. A small chip on the stop title, matching the vignette-tag idiom but
      in the accent (amber) token so it reads as an opt-in, not a walk-past. */
@@ -1140,12 +1145,27 @@
   // Generate button and per-stop Listen buttons. Keyed on data-tour-stop, disjoint from the
   // incoming beat-TTS handler's data-beat-tts, so they never cross-fire.
   let tourStops = [];
+  // The 3 PLAN options currently on screen (RouteOption wire objects). Empty
+  // whenever the page is showing stops, a refusal, or nothing.
+  let tourOptions = [];
+  // The exact body of the last PLAN request, replayed verbatim on the AUTHOR
+  // call so the endpoint rebuilds the option the operator is looking at.
+  let lastTourPlanBody = null;
+  // The minutes the operator asked for, needed by renderTourStops's thin-tour note.
+  let lastTourRequestedMinutes = 60;
+  // A one-line message to show above the next set of option cards. Set only when
+  // the plan was re-fetched on the operator's behalf (see authorTourOption).
+  let tourOptionsNotice = null;
   // Step B.6 click-to-set state: 0 -> next map click sets the start, 1 -> sets the
   // destination, 2 -> both set (further clicks ignored until Clear points).
   let tourClickStage = 0;
   let tourPointLayer = null;   // A/B pins dropped by map clicks (dies with the map on re-init)
   detailBody.addEventListener('click', (e) => {
     if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
+    const pick = e.target.closest('.tour-option-pick');
+    if (pick) { authorTourOption(parseInt(pick.dataset.tourOption, 10)); return; }
+    const showOn = e.target.closest('.tour-option-map');
+    if (showOn) { drawTourRoute(tourOptionMapStops(tourOptions[parseInt(showOn.dataset.tourOption, 10)])); return; }
     if (e.target.closest('#tourClearBtn')) { clearTourPoints(); return; }
     if (e.target.closest('#tourFeedbackUp')) { submitTourFeedback('up'); return; }
     if (e.target.closest('#tourFeedbackDown')) { submitTourFeedback('down'); return; }
@@ -2179,7 +2199,7 @@
           <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip (mutually exclusive with a destination)</label></div>
           <div class="field-group" style="color:var(--text-muted);font-size:0.8rem;">
             Tip: click the map — 1st click sets the start, 2nd the destination.</div>
-          <button class="btn btn-primary" id="tourGenerateBtn">Generate preview</button>
+          <button class="btn btn-primary" id="tourGenerateBtn">Generate tour options</button>
           <button class="btn btn-outline" id="tourClearBtn" title="Reset start/destination to an open walk">Clear points</button>
           <div id="tourStops" class="tour-stops"></div>
         </div>`;
@@ -3248,17 +3268,21 @@
     // on 2026-07-31: the workbench must replicate the tourist's app experience as
     // closely as possible, and a tourist is never asked to approve spend. Do not
     // reintroduce a spend dialog in this function.
-    genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
-    stopsEl.innerHTML = ''; tourStops = []; drawTourRoute([]);  // clear map unconditionally (D5a)
+    genBtn.disabled = true; genBtn.textContent = '⏳ Finding routes…';
+    stopsEl.innerHTML = ''; tourStops = []; tourOptions = []; drawTourRoute([]);  // clear map unconditionally (D5a)
+    lastTourRequestedMinutes = duration;
     try {
       // Remembered so the degradation panel's "Copy report for Claude" can say
       // WHAT WAS ASKED FOR. Without it the first reply to any pasted report is
       // always "what request produced this?", which costs a whole round trip.
-      lastTourPreviewRequest = {
+      // It is also replayed VERBATIM on the authoring call, so the endpoint
+      // rebuilds the very plan these three options came from.
+      lastTourPlanBody = {
         center_lat: lat, center_lng: lng, duration_min: duration,
         lenses: lenses.length ? lenses : null, round_trip: roundTrip,
         end_lat: endLat, end_lng: endLng, city_slug: cityName || 'paris',
       };
+      lastTourPreviewRequest = lastTourPlanBody;
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -3285,11 +3309,15 @@
         }
         return;
       }
-      renderTourStops(await resp.json(), duration);
+      renderTourOptions(await resp.json(), duration);
     } catch (err) {
-      showError('Tour preview failed: ' + err.message);
+      showError('Tour options failed: ' + err.message);
     } finally {
-      genBtn.disabled = false; genBtn.textContent = 'Generate preview';
+      genBtn.disabled = false; genBtn.textContent = 'Generate tour options';
+      // A successful render has already consumed it. Anything else — a refusal, an
+      // error, a thrown request — means the line was never shown, and it must not
+      // survive to caption a later, unrelated set of options.
+      tourOptionsNotice = null;
     }
   }
 
@@ -3397,6 +3425,32 @@
     });
     tourRouteLayer.addTo(persistentMap);
     persistentMap.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
+  }
+
+  // Adapt a RouteOption's stops to the card shape this page already draws and
+  // renders, so the map sketch and the stop list stay ONE implementation for both
+  // the plan options and the authored tour.
+  //
+  // The wire shapes differ in two places and only two: a RouteOptionStop calls the
+  // place `name` where a rendered card calls it `poi_name`, and it carries no
+  // `sort_order` at all — that is a 1-based counter over the EMITTED cards, which
+  // is what `enumerate(option.stops, start=1)` means on the server side. Everything
+  // else passes through untouched, INCLUDING `band`: a 'leg' card is narration heard
+  // while walking rather than a place, and drawTourRoute drops it by that exact
+  // value. Coercing it to 'dwell' here would stack a duplicate pin on the stop the
+  // walk arrives at, which is the bug drawTourRoute's own comment exists to prevent.
+  function tourOptionMapStops(option) {
+    const stops = (option && option.stops) || [];
+    return stops.map((s, i) => ({
+      lat: s.lat, lng: s.lng,
+      band: s.band || 'dwell',
+      sort_order: i + 1,
+      poi_name: s.name || '',
+      narration: s.narration || '',
+      minutes: s.minutes || 0,
+      spotlight: s.spotlight,
+      has_deeper_dive: !!s.has_deeper_dive,
+    }));
   }
 
   // ONE narrator engine: the premium Opus authoring path. The second narrator label
@@ -3539,6 +3593,15 @@
       tech.textContent = `${r.component}${times}`
         + (r.error_type ? ` — ${r.error_type}: ${r.error_message}` : '');
       row.appendChild(tech);
+      // The CAUSE, for an operator debugging a bad tour. `human` is deliberately the
+      // traveller's sentence and carries no diagnosis, so without this the operator has
+      // to copy the report to a clipboard to learn why anything degraded.
+      if (r.context && r.context.cause) {
+        const cause = document.createElement('div');
+        cause.textContent = r.context.cause;
+        cause.style.cssText = 'font-size:0.75rem;color:#c2836a;margin-top:2px;';
+        row.appendChild(cause);
+      }
       panel.appendChild(row);
     });
     return panel;
@@ -3575,7 +3638,14 @@
     const basicTour = data && data.candidate_eligible === false && data.basic_tour;
     const activeTour = basicTour || data || {};
     const isBasic = !!basicTour;
-    tourStops = Array.isArray(activeTour.stops) ? activeTour.stops : [];
+    // The authored tour arrives as the ONE option the operator picked, so its stops
+    // are `option.stops` — there is no top-level stop list any more, because there
+    // is now a single interleave and the authored route IS that option. The Basic
+    // fallback lane still carries its own flat `stops`, so read that first and fall
+    // back to the option; reading only one of the two renders an empty tour.
+    tourStops = Array.isArray(activeTour.stops)
+      ? activeTour.stops
+      : tourOptionMapStops(activeTour.option);
     const activeAudioMinutes = activeTour.total_audio_min || 0;
     drawTourRoute(tourStops);
     stopsEl.innerHTML = '';
@@ -3660,11 +3730,16 @@
     }
     // Phase 3 spotlight: the per-corridor lens coverage note (present only when
     // the engine surfaces it — off-genre corridors read "only N places speak to …").
-    if (data && data.lens_coverage_note) {
+    // The live note now travels on the chosen option (RouteOption.lens_coverage_note);
+    // the top-level field it used to sit on is gone from the authored response. Read
+    // both, or an off-genre corridor silently stops explaining itself.
+    const lensCoverageNote = (data && data.lens_coverage_note)
+      || (data && data.option && data.option.lens_coverage_note);
+    if (lensCoverageNote) {
       const note = document.createElement('div');
       note.className = 'tour-lens-coverage';
       note.style.cssText = 'color:var(--muted,#888);font-size:0.8rem;font-style:italic;margin:0 0 8px;';
-      note.textContent = data.lens_coverage_note;
+      note.textContent = lensCoverageNote;
       stopsEl.appendChild(note);
     }
     tourStops.forEach((s, i) => {
@@ -3717,6 +3792,150 @@
                  placeholder="Optional note — what worked / what didn't" />
         </div>`;
       stopsEl.appendChild(fb);
+    }
+  }
+
+  // The PLAN screen. Three routes over the same start, end, lens and timing —
+  // they differ in how many places they stop at and how much of the time is
+  // spent walking. NOTHING has been written or voiced yet; the AUTHOR call is
+  // made only when the operator picks one. Places only, by owner ruling: names,
+  // order, walking time and ETA, and no descriptive text of any kind.
+  function renderTourOptions(data, requestedMinutes) {
+    const stopsEl = document.getElementById('tourStops');
+    if (!stopsEl) return;
+    tourStops = [];
+    tourOptions = Array.isArray(data && data.options) ? data.options : [];
+    if (requestedMinutes) lastTourRequestedMinutes = requestedMinutes;
+    drawTourRoute([]);
+    stopsEl.innerHTML = '';
+
+    const head = document.createElement('div');
+    head.className = 'tour-options-head';
+    head.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
+    head.textContent = `${tourOptions.length} ways to walk this · spine: ${(data && data.spine_area) || '—'}`;
+    stopsEl.appendChild(head);
+
+    // Set only when these cards were re-fetched on the operator's behalf, because
+    // the ones they were looking at had gone stale. Shown once, then cleared.
+    if (tourOptionsNotice) {
+      const notice = document.createElement('div');
+      notice.className = 'tour-options-notice';
+      notice.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
+        + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 10px;';
+      notice.textContent = tourOptionsNotice;
+      stopsEl.appendChild(notice);
+      tourOptionsNotice = null;
+    }
+
+    const note = document.createElement('div');
+    note.className = 'tour-options-note';
+    note.style.cssText = 'color:var(--text-muted);font-size:0.8rem;margin:0 0 10px;';
+    note.textContent = 'Nothing has been written or recorded yet. Pick one and the narration and audio are made for that route.';
+    stopsEl.appendChild(note);
+
+    // Anything that went wrong while PLANNING is shown here, before the operator
+    // can choose — the same panel the authored view uses.
+    const degradePanel = buildDegradationPanel(data);
+    if (degradePanel) stopsEl.appendChild(degradePanel);
+
+    if (!tourOptions.length) {
+      const empty = document.createElement('div');
+      empty.className = 'tour-options-empty db-beat-card';
+      empty.textContent = 'No route was found from here for this timing.';
+      stopsEl.appendChild(empty);
+      return;
+    }
+
+    tourOptions.forEach((opt, i) => {
+      // A 'leg' card is narration heard on the WAY to a stop, not a place, and a
+      // 'vignette' is something walked past without stopping. Counting either as a
+      // stop is what made a 4-stop tour report 7 on the authored screen; the same
+      // arithmetic has to hold here or the two screens disagree about the same route.
+      const dwell = (opt.stops || []).filter(s => s.band !== 'vignette' && s.band !== 'leg');
+      const walkPast = (opt.stops || []).filter(s => s.band === 'vignette').length;
+      const dwellMin = dwell.reduce((sum, s) => sum + (s.minutes || 0), 0);
+      const totalMin = Math.round((opt.eta_seconds || 0) / 60);
+      const walkMin = Math.max(0, totalMin - dwellMin);
+      const names = dwell.map(s => s.name || '').filter(Boolean);
+      const shown = names.slice(0, 4).join(' · ') + (names.length > 4 ? ` · +${names.length - 4} more` : '');
+
+      const card = document.createElement('div');
+      card.className = 'tour-option-card db-beat-card';
+      card.dataset.tourOption = String(i);
+
+      const title = document.createElement('h4');
+      title.textContent = `Option ${i + 1} · ${dwell.length} stops · ${totalMin} min total`;
+      card.appendChild(title);
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = `About ${walkMin} min walking and ${dwellMin} min standing still`
+        + (walkPast ? ` · ${walkPast} walk-past sight${walkPast === 1 ? '' : 's'}` : '');
+      card.appendChild(meta);
+
+      const places = document.createElement('div');
+      places.className = 'tour-option-places script-preview';
+      places.textContent = shown;
+      card.appendChild(places);
+
+      const row = document.createElement('div');
+      row.className = 'tts-row';
+      const pick = document.createElement('button');
+      pick.className = 'btn btn-primary tour-option-pick';
+      pick.dataset.tourOption = String(i);
+      pick.title = 'Write and voice this route';
+      pick.textContent = 'Use this one — write the tour';
+      row.appendChild(pick);
+      const showOn = document.createElement('button');
+      showOn.className = 'btn btn-outline tour-option-map';
+      showOn.dataset.tourOption = String(i);
+      showOn.title = 'Draw this route on the map — nothing is generated';
+      showOn.textContent = 'Show on map';
+      row.appendChild(showOn);
+      card.appendChild(row);
+
+      stopsEl.appendChild(card);
+    });
+  }
+
+  // The AUTHOR call. Exactly the option the operator clicked, identified by its
+  // route_id — the endpoint never re-plans and never picks for us.
+  async function authorTourOption(index) {
+    const stopsEl = document.getElementById('tourStops');
+    const opt = tourOptions[index];
+    if (!stopsEl || !opt || !lastTourPlanBody) return;
+    const buttons = stopsEl.querySelectorAll('.tour-option-pick, .tour-option-map');
+    buttons.forEach(b => { b.disabled = true; });
+    const picked = stopsEl.querySelector(`.tour-option-pick[data-tour-option="${index}"]`);
+    if (picked) picked.textContent = '⏳ Writing the tour…';
+    try {
+      const resp = await fetch(`${API_BASE}/trips/preview/author`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({}, lastTourPlanBody, { route_id: opt.route_id })),
+      });
+      if (!resp.ok) {
+        // The routes on screen are no longer the ones this start, timing and lens
+        // produce — the corpus moved underneath them. Writing one anyway would voice
+        // a tour nobody chose, and the whole point of naming the option is to make
+        // that impossible. So say it in one plain line and fetch the current three,
+        // rather than leaving the operator on a screen whose buttons can never work.
+        if (resp.status === 409) {
+          tourOptionsNotice = 'The routes changed since you loaded them, so these are the current three. Pick one again.';
+          await generateTourPreview();
+          return;
+        }
+        let detail = null;
+        try { detail = (await resp.json()).detail; } catch (_) { /* keep null */ }
+        showError(typeof detail === 'string' ? detail : `Could not write this tour (${resp.status}).`);
+        return;
+      }
+      tourOptions = [];
+      renderTourStops(await resp.json(), lastTourRequestedMinutes);
+    } catch (err) {
+      showError('Writing the tour failed: ' + err.message);
+    } finally {
+      buttons.forEach(b => { b.disabled = false; });
+      if (picked) picked.textContent = 'Use this one — write the tour';
     }
   }
 

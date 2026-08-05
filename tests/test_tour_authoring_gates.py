@@ -40,7 +40,7 @@ from fastapi.testclient import TestClient
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
 from src.api.dependencies import get_driver, get_session
-from src.tour.authoring import COMPOSE_MODEL, author_prebuilt_route, plan_prebuilt_route_authoring
+from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import (
     POI,
@@ -56,13 +56,12 @@ from src.tour.contract import (
     ValidationReport,
 )
 from src.tour.generation import GLUE_REFLECTION
-from src.tour.premium_authorities import PREMIUM_AUTHORITIES
 from src.tour.premium_tour import (
-    PremiumComposeUnit,
-    PremiumTourPlan,
+    EphemeralReceiptSink,
+    execute_premium_plan,
     finalize_premium_composition,
     finalize_premium_tour,
-    premium_authoring_policy_sha256,
+    plan_premium_authoring,
 )
 from tests.conftest import needs_neo4j
 from tests.live_graph import open_dev_driver
@@ -517,7 +516,7 @@ def test_the_certification_replay_keeps_its_own_gate_defaults() -> None:
     """
     import inspect
 
-    from src.tour.authoring import author_prebuilt_route, finalize_certification_composition
+    from src.tour.authoring import finalize_certification_composition
 
     finalize = inspect.signature(finalize_certification_composition).parameters
     for name in ("faithfulness_checker", "enforce_claim_coverage", "scan_glue_for_invention"):
@@ -526,9 +525,9 @@ def test_the_certification_replay_keeps_its_own_gate_defaults() -> None:
     assert finalize["enforce_claim_coverage"].default is False
     assert finalize["scan_glue_for_invention"].default is False
 
-    seam = inspect.signature(author_prebuilt_route).parameters
+    seam = inspect.signature(finalize_premium_composition).parameters
     for name in ("faithfulness_checker", "enforce_claim_coverage", "scan_glue_for_invention"):
-        assert name in seam, f"the prebuilt-route seam cannot pass {name} through"
+        assert name in seam, f"the Block-2 finalizer cannot pass {name} through"
 
 
 # ---------------------------------------------------------------------------
@@ -655,49 +654,6 @@ class _EchoExecutor:
         return _offline_response(unit, _stitched(unit))
 
 
-def _preview_surface_plan(plan) -> PremiumTourPlan:
-    """Re-seat a prebuilt-route authoring plan as the ``PremiumTourPlan`` that
-    ``/trips/preview`` hands to ``finalize_premium_composition``.
-
-    Every field that finalizer READS is carried across byte-for-byte:
-    ``units`` (stop_index / authorized_request / authoring_request /
-    request_sha256), ``authoring`` (the response-set admission bar), and the
-    ``source``/``sequence``/``route`` triple it forwards to the shared finalizer.
-    The planning-provenance fields it never touches — the corpus snapshot, the
-    route record, the routing version — are placeholders, and are the ONLY
-    things this construction fakes. Building the plan through
-    ``plan_premium_tour`` instead would need a corpus snapshot, selection and a
-    live routing client, none of which the claim under test involves.
-    """
-    return PremiumTourPlan(
-        tour_input=plan.source.inputs,
-        snapshot=None,
-        snapshot_sha256="0" * 64,
-        route=plan.route,
-        route_record={},
-        sequence=plan.sequence,
-        source=plan.source,
-        candidate=plan.candidate,
-        authoring=plan.authoring,
-        units=tuple(
-            PremiumComposeUnit(
-                stop_index=unit.stop_index,
-                poi_name=unit.poi_name,
-                authorized_request=unit.authorized_request,
-                authoring_request=unit.authoring_request,
-                request_sha256=unit.request_sha256,
-                input_byte_count=unit.input_byte_count,
-                output_token_ceiling=unit.output_token_ceiling,
-                sdk_request=unit.sdk_request,
-            )
-            for unit in plan.units
-        ),
-        routing_version="offline-test",
-        policy_version="offline-test",
-        authorities=PREMIUM_AUTHORITIES,
-    )
-
-
 def test_a_sentence_outside_the_authored_stops_is_refused_not_shipped_unattested() -> None:
     """No sentence may ship in composed.script without a CompositionTrace covering it.
 
@@ -715,11 +671,14 @@ def test_a_sentence_outside_the_authored_stops_is_refused_not_shipped_unattested
     GREEN — which is exactly what a mutation run proved before this test existed.
     """
     stitched, sequence, route = _cross_stop_echo_fixture()
-    plan = plan_prebuilt_route_authoring(
+    plan = plan_premium_authoring(
         stitched,
         sequence,
         route,
-        authoring_policy_sha256=premium_authoring_policy_sha256(),
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
 
     class _StopMigratingExecutor:
@@ -746,7 +705,10 @@ def test_a_sentence_outside_the_authored_stops_is_refused_not_shipped_unattested
             return _offline_response(unit, sentences)
 
     with pytest.raises(ValueError) as excinfo:
-        author_prebuilt_route(plan, executor=_StopMigratingExecutor())
+        responses = execute_premium_plan(
+            plan, executor=_StopMigratingExecutor(), receipt_sink=EphemeralReceiptSink()
+        )
+        finalize_premium_composition(plan, responses)
 
     message = str(excinfo.value)
     assert "attested by no composition trace" in message or "subsequence" in message, (
@@ -769,12 +731,13 @@ def test_cross_stop_echo_is_suppressed() -> None:
     AC-6 names BOTH surfaces, so both are DRIVEN here rather than argued from
     the fact that they share a callee:
 
-    * the persisted ``POST /trips/{id}/compose`` engine — ``author_prebuilt_route``;
+    * the persisted ``POST /trips/{id}/compose`` engine — the Block-2 seam it drives,
+      ``execute_premium_plan`` + ``finalize_premium_composition``;
     * the ``/trips/preview`` engine — ``premium_tour.finalize_premium_composition``,
       the function ``preview_trip`` reaches through ``finalize_premium_tour``.
 
     Driving only the first would leave a port that moved the pass UP into
-    ``author_prebuilt_route`` fully green while ``/trips/preview`` still shipped
+    the persisted path fully green while ``/trips/preview`` still shipped
     the echo — which is exactly the fix AC-6 forbids. The preview clause is what
     pins the pass to the SHARED finalizer.
 
@@ -798,16 +761,22 @@ def test_cross_stop_echo_is_suppressed() -> None:
     untouched body.
     """
     stitched, sequence, route = _cross_stop_echo_fixture()
-    plan = plan_prebuilt_route_authoring(
+    plan = plan_premium_authoring(
         stitched,
         sequence,
         route,
-        authoring_policy_sha256=premium_authoring_policy_sha256(),
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
     executor = _EchoExecutor()
 
     # --- surface 1: POST /trips/{id}/compose -------------------------------
-    script = author_prebuilt_route(plan, executor=executor)
+    phone_responses = execute_premium_plan(
+        plan, executor=executor, receipt_sink=EphemeralReceiptSink()
+    )
+    script = finalize_premium_composition(plan, phone_responses).script
 
     all_texts = [s.text for s in script.script]
     assert all_texts.count(_DUP_TEXT) == 1, (
@@ -822,7 +791,7 @@ def test_cross_stop_echo_is_suppressed() -> None:
     assert stop0_texts == [_DUP_TEXT], "stop 0's own (first) telling must survive untouched"
 
     # --- surface 2: /trips/preview -----------------------------------------
-    premium_plan = _preview_surface_plan(plan)
+    premium_plan = plan
     responses = tuple(executor.execute(unit) for unit in premium_plan.units)
     composition = finalize_premium_composition(premium_plan, responses)
 
@@ -911,11 +880,14 @@ def test_the_preview_surface_runs_the_same_three_gates_as_the_phone() -> None:
     parameter a default so a caller can silently omit it.
     """
     stitched, sequence, route = _cross_stop_echo_fixture()
-    plan = plan_prebuilt_route_authoring(
+    plan = plan_premium_authoring(
         stitched,
         sequence,
         route,
-        authoring_policy_sha256=premium_authoring_policy_sha256(),
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
     executor = _RewritingExecutor()
 
@@ -926,9 +898,12 @@ def test_the_preview_surface_runs_the_same_three_gates_as_the_phone() -> None:
 
     # --- surface 1: the phone (POST /trips/{id}/compose) — already wired ------
     phone_checker = _RejectingChecker()
-    author_prebuilt_route(
+    phone_responses = execute_premium_plan(
+        plan, executor=executor, receipt_sink=EphemeralReceiptSink()
+    )
+    finalize_premium_composition(
         plan,
-        executor=executor,
+        phone_responses,
         faithfulness_checker=phone_checker,
         enforce_claim_coverage=True,
         scan_glue_for_invention=True,
@@ -936,7 +911,7 @@ def test_the_preview_surface_runs_the_same_three_gates_as_the_phone() -> None:
     assert phone_checker.calls, "baseline broken: the phone path never consulted its checker"
 
     # --- surface 2: the workbench (POST /trips/preview) — must consult IDENTICALLY
-    preview_plan = _preview_surface_plan(plan)
+    preview_plan = plan
     responses = tuple(executor.execute(unit) for unit in preview_plan.units)
     preview_checker = _RejectingChecker()
     finalize_premium_composition(

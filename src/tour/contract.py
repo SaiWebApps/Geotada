@@ -543,7 +543,20 @@ class ScriptPOI(BaseModel):
 
 
 class RouteOptionStop(BaseModel):
-    """One ordered stop inside a RouteOption (§2.8)."""
+    """One ordered card inside a RouteOption (§2.8).
+
+    THREE bands, and a card is exactly one of them:
+    - ``dwell`` — a stop the tourist stands at. ``minutes`` is its dwell time.
+    - ``vignette`` — a walk-past one-liner. ``minutes`` is always 0.
+    - ``leg`` — narration spoken WHILE WALKING into the next dwell stop (product
+      ruling 2026-07-19: "Audio overlaps the walking. It is a part of the tour
+      experience."). ``minutes`` is the WALK's duration, so a six-minute walk sits
+      next to seven seconds of narration and the gap is visible rather than averaged
+      away. Its ``poi_id``/``lat``/``lng`` are the ARRIVAL stop's, and its ``name``
+      reads "Walk to <that stop>". A consumer matching POI ids must therefore filter
+      to ``band == "dwell"``; a leg card deliberately repeats its arrival stop's id
+      rather than inventing one.
+    """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -557,8 +570,15 @@ class RouteOptionStop(BaseModel):
     # Phase 3 spotlight model (spec s7). Additive with behavior-preserving
     # defaults: until Step 3.5 wires the spotlight effect into selection, every
     # stop is a full dwell with a zero score, so nothing downstream changes.
-    band: Literal["dwell", "vignette"] = "dwell"  # spotlight output band (spec s3)
+    band: Literal["dwell", "vignette", "leg"] = "dwell"  # spotlight output band (spec s3)
     spotlight: float = Field(default=0.0, ge=0)  # the computed spotlight score
+    # The text this card voices. Empty only for a dwell stop whose stop_idx carried no
+    # stationary sentence. A leg card is NEVER emitted with empty narration, and a
+    # vignette card is never emitted without a voiceable one-liner.
+    narration: str = ""
+    # KE9: this dwell stop has "keep exploring here" extras — beats the time budget
+    # capped out. Always False on vignette and leg cards.
+    has_deeper_dive: bool = False
 
 
 class RouteOption(BaseModel):

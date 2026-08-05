@@ -1,15 +1,16 @@
 """Step 2.2a — fixed-destination feasibility refusal.
 
-When a tour carries a fixed end B, the routed A→B leg alone must fit inside
-the walk budget. If it does not, ``select_route`` raises
-``TourabilityRefusedError`` BEFORE the greedy, carrying:
+When a tour carries a fixed end B, the routed A→B leg alone must fit inside the
+reachability ceiling — since 2026-08-04 the certification band's maximum elapsed
+time plus the materiality tolerance, not the bare walk budget. If it does not,
+``select_route`` raises ``TourabilityRefusedError`` BEFORE the greedy, carrying:
 
-- ``gap_minutes`` (int): how many minutes the routed A→B leg overshoots the
-  walk budget.
+- ``gap_minutes`` (int): how many minutes the routed A→B leg overshoots that
+  ceiling.
 - a ``"loop"`` alternative (drop B, walk an open loop from A at the requested
   duration).
 - an ``"extend"`` alternative (keep B, lengthen the tour to the A→B-correct
-  smallest duration whose walk budget covers the routed A→B leg).
+  smallest duration whose ceiling covers the routed A→B leg).
 
 These are REAL ``select_route`` runs over synthetic corpora — the cost
 function is never mocked. ``end=None`` never enters the branch, so the
@@ -28,7 +29,6 @@ from src.tour.routing import (
     default_leg_seconds,
     envelope_radius_m,
     haversine_m,
-    smallest_duration_min_for_walk_seconds,
     walk_budget_seconds,
 )
 from src.tour.selection import (
@@ -39,41 +39,29 @@ from src.tour.selection import (
     select_k_routes,
     select_route,
 )
+from tests.test_tour_selection import _auto_beat_seconds, _density_fillers
 
 PDV = (48.8555, 2.3656)
 
 
-def _density_fillers(start: tuple[float, float]) -> list[POI]:
-    """4 tier-5 anchor candidates clustered near `start`.
-
-    The Phase 6 density gate requires >=4 rich-beat anchor candidates in a
-    tight cluster to clear (avoid RED), so feasibility tests reach the Step
-    2.2a branch instead of tripping the RED raise. Colocated near start, so
-    they don't perturb spine/envelope/distance behaviour.
-    """
-    return [
-        POI(
-            id=f"filler-{i}",
-            name=f"filler-{i}",
-            tier=5,
-            poi_role="stop",
-            lat=start[0] + 0.00005 * i,
-            lng=start[1] + 0.00005 * i,
-            areas=("Le Marais",),
-            beat_count=8,
-        )
-        for i in range(4)
-    ]
-
-
 def _snap(pois: list[POI]) -> CorpusSnapshot:
-    """CorpusSnapshot with rich synthetic beats per POI (clears fill_ratio)."""
+    """CorpusSnapshot with synthetic beats sized to ONE STOP's audio ceiling.
+
+    Every POI's whole beat set is worth ``MAX_DWELL_AUDIO_SECONDS`` (270 s), the
+    most a single stop can ever speak. That matters because selection prices a
+    stop twice — the greedy CREDITS a POI's planned audio, emission then CAPS it
+    at 270 s — and the two prices only agree when the POI carries no more than
+    one stop's worth. The previous flat 240 s per beat gave an 8-beat filler
+    1920 s of credit against 270 s of delivery, so the greedy believed it had
+    filled the hour after two stops and handed the certification repair a route
+    that was nowhere near the requested duration.
+    """
     beats: dict[str, tuple[BeatRef, ...]] = {
         p.id: tuple(
             BeatRef(
                 id=f"{p.id}-b{i}",
                 poi_id=p.id,
-                est_spoken_seconds=240,
+                est_spoken_seconds=_auto_beat_seconds(max(0, p.beat_count or 0)),
                 active_status="active",
             )
             for i in range(max(0, p.beat_count or 0))
@@ -97,36 +85,33 @@ FAR_EAST_END = (PDV[0], PDV[1] + 0.060)  # ~4.4 km east; far beyond a 30-min bud
 NEAR_END = (PDV[0], PDV[1] + 0.0004)  # ~30 m east; trivially inside any budget
 
 
-def _green_snapshot():
-    return _snap(_density_fillers(PDV))
+def _green_snapshot(duration_min: int):
+    """Background corpus rich enough to PLAN `duration_min`, not merely to be GREEN.
+
+    Since 2026-08-04 clearing the density gate is no longer enough: the plan also
+    has to land inside the certification TIME band (0.90-1.10 of the request), and
+    the number of stops and the amount of walking that takes both scale with the
+    requested duration. So the filler cluster is duration-scaled too.
+    """
+    return _snap(_density_fillers(PDV, duration_min=duration_min))
 
 
-# ---------------------------------------------------------------------------
-# The helper itself (pure inverse of walk_budget_seconds).
-# ---------------------------------------------------------------------------
+def _reach_ceiling(duration_min: int) -> int:
+    """The A->B reachability ceiling selection actually applies.
 
+    Since 2026-08-04 this is the planning band's MAXIMUM elapsed time plus the
+    materiality tolerance, on every route shape. The legacy arm that compared the
+    routed leg against the bare walk budget went with the flat 0.83 policy.
+    """
+    from src.tour.routing import (
+        TIMEBOX_MATERIALITY_TOLERANCE_SECONDS,
+        route_planning_budget,
+    )
 
-def test_smallest_duration_is_least_minute_covering_target():
-    """The helper returns the LEAST integer minute whose budget covers target."""
-    target = walk_budget_seconds(50)  # an exact budget value for d=50
-    d = smallest_duration_min_for_walk_seconds(target)
-    # d covers target, and one minute less does NOT (true minimality).
-    assert walk_budget_seconds(d) >= target
-    assert walk_budget_seconds(d - 1) < target
-
-
-def test_smallest_duration_floor_is_one():
-    """A target inside the 1-minute budget still returns at least 1 minute."""
-    assert smallest_duration_min_for_walk_seconds(0) == 1
-    assert smallest_duration_min_for_walk_seconds(walk_budget_seconds(1)) == 1
-
-
-def test_smallest_duration_is_monotonic_and_sufficient():
-    """For an arbitrary leg time, the returned duration's budget covers it."""
-    t = default_leg_seconds(PDV[0], PDV[1], FAR_EAST_END[0], FAR_EAST_END[1])
-    d = smallest_duration_min_for_walk_seconds(t)
-    assert walk_budget_seconds(d) >= t
-    assert walk_budget_seconds(d - 1) < t
+    return (
+        route_planning_budget(duration_min).maximum_elapsed_seconds
+        + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -135,24 +120,30 @@ def test_smallest_duration_is_monotonic_and_sufficient():
 
 
 def test_far_end_short_budget_raises_with_gap_and_alternatives():
-    snap = _green_snapshot()
+    snap = _green_snapshot(30)
     inp = TourInput(
         start=PDV, end=FAR_EAST_END, duration_min=30, city_slug="paris"
     )
     # Precondition for the test to be meaningful: the routed A→B leg really
-    # does exceed the walk budget (derived, not assumed).
+    # does exceed what a 30-minute tour can reach (derived, not assumed). It
+    # also exceeds the bare walk budget, which is the weaker of the two.
     t_ab = default_leg_seconds(PDV[0], PDV[1], FAR_EAST_END[0], FAR_EAST_END[1])
-    budget = walk_budget_seconds(30)
-    assert t_ab > budget
+    ceiling = _reach_ceiling(30)
+    assert t_ab > ceiling > walk_budget_seconds(30)
 
     with pytest.raises(TourabilityRefusedError) as excinfo:
         select_route(inp, snap)
     exc = excinfo.value
 
-    # gap_minutes is a positive int equal to the ceil-overshoot in minutes.
+    # gap_minutes is a positive int equal to the ceil-overshoot in minutes, and
+    # the quantity it overshoots is the reachability ceiling that selection now
+    # enforces — the certification band's maximum elapsed time plus the
+    # materiality tolerance. Before 2026-08-04 the gap was measured against the
+    # bare walk budget; measuring it there now would over-report the shortfall
+    # by the difference between the two, and the number is shown to the user.
     assert isinstance(exc.gap_minutes, int)
     assert exc.gap_minutes >= 1
-    assert exc.gap_minutes == math.ceil((t_ab - budget) / 60)
+    assert exc.gap_minutes == math.ceil((t_ab - ceiling) / 60)
 
     # At least a loop and an extend alternative, both structured. (Step 2.2b
     # may also add a 'closer_b' when an in-budget anchor exists — the fillers
@@ -172,15 +163,19 @@ def test_far_end_short_budget_raises_with_gap_and_alternatives():
     # The extend duration is the A→B-correct smallest duration: its budget
     # covers the routed leg, and it is genuinely longer than requested.
     assert extend.duration_min > 30
-    assert walk_budget_seconds(extend.duration_min) >= t_ab
-    assert walk_budget_seconds(extend.duration_min - 1) < t_ab
+    # The reachability ceiling is the certification band's MAXIMUM elapsed time plus
+    # the materiality tolerance, not the bare walk budget: the legacy walk-budget arm
+    # was deleted 2026-08-04 with the flat 0.83 policy. So the extend duration is the
+    # least minute whose ceiling covers the routed leg.
+    assert _reach_ceiling(extend.duration_min) >= t_ab
+    assert _reach_ceiling(extend.duration_min - 1) < t_ab
 
 
 def test_extend_alternative_is_not_density_max_supportable():
     """The extend duration is derived from the A→B leg, independent of
     density.max_supportable_duration_min (which is None on a non-RED,
     fill-healthy corpus)."""
-    snap = _green_snapshot()
+    snap = _green_snapshot(30)
     inp = TourInput(start=PDV, end=FAR_EAST_END, duration_min=30, city_slug="paris")
     with pytest.raises(TourabilityRefusedError) as excinfo:
         select_route(inp, snap)
@@ -192,7 +187,8 @@ def test_extend_alternative_is_not_density_max_supportable():
     extend = next(a for a in exc.alternatives if a.kind == "extend")
     assert isinstance(extend.duration_min, int)
     t_ab = default_leg_seconds(PDV[0], PDV[1], FAR_EAST_END[0], FAR_EAST_END[1])
-    assert extend.duration_min == smallest_duration_min_for_walk_seconds(t_ab)
+    assert _reach_ceiling(extend.duration_min) >= t_ab
+    assert _reach_ceiling(extend.duration_min - 1) < t_ab
 
 
 # ---------------------------------------------------------------------------
@@ -201,7 +197,7 @@ def test_extend_alternative_is_not_density_max_supportable():
 
 
 def test_near_end_within_budget_does_not_raise():
-    snap = _green_snapshot()
+    snap = _green_snapshot(60)
     inp = TourInput(start=PDV, end=NEAR_END, duration_min=60, city_slug="paris")
     # The near leg is comfortably inside the budget.
     t_ab = default_leg_seconds(PDV[0], PDV[1], NEAR_END[0], NEAR_END[1])
@@ -217,7 +213,7 @@ def test_near_end_within_budget_does_not_raise():
 
 
 def test_select_k_routes_raises_on_first_flavour_for_over_budget_end():
-    snap = _green_snapshot()
+    snap = _green_snapshot(30)
     inp = TourInput(start=PDV, end=FAR_EAST_END, duration_min=30, city_slug="paris")
     # Mirrors RED density: the refusal propagates through the first
     # select_route call, so select_k_routes raises rather than returning [].
@@ -244,7 +240,7 @@ def test_end_none_never_raises_even_when_corpus_spans_far():
         areas=("Le Marais",),
         beat_count=8,
     )
-    snap = _snap([*_density_fillers(PDV), far_poi])
+    snap = _snap([*_density_fillers(PDV, duration_min=30), far_poi])
     inp = TourInput(start=PDV, duration_min=30, city_slug="paris")  # end=None
     assert inp.end is None
     # No raise: open walk never consults the A→B feasibility branch.
@@ -255,7 +251,7 @@ def test_end_none_never_raises_even_when_corpus_spans_far():
 def test_end_none_and_within_budget_end_produce_routes_no_refusal():
     """Both end=None and an in-budget end return Routes; neither refuses. The
     end=None path must be untouched by the Step 2.2a branch."""
-    snap = _green_snapshot()
+    snap = _green_snapshot(60)
     open_route = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
     )
@@ -416,11 +412,15 @@ def test_closer_b_omitted_when_no_anchor_within_budget():
     anchors sit far east, beyond the walk budget, so closer_b finds nothing to
     offer."""
     end = FAR_EAST_END
-    # Tier-2 'stop' near the start: counts toward density fill (role+beats) but
-    # is NOT a closer_b anchor (tier < 3). Beats tuned to land density YELLOW
-    # (0.5 ≤ fill < 1.0 with zero tier-≥3 anchor candidates), which still
-    # reaches the 2.2a branch (only RED raises early).
-    fill_pois = [_anchor("t2-fill", 0.0003, 0.0, tier=2, beats=2)]
+    # Tier-2 'stop's near the start: they count toward density fill (role+beats)
+    # but are NOT closer_b anchors (tier < 3). The COUNT is what tunes fill now:
+    # each POI's whole beat set is worth one stop's audio ceiling (270 s) against
+    # a 30-minute audio target of 1080 s, so three of them land fill at 0.75 —
+    # density YELLOW (0.5 <= fill < 1.0 with zero tier-≥3 anchor candidates),
+    # which still reaches the 2.2a branch because only RED raises early.
+    fill_pois = [
+        _anchor(f"t2-fill-{i}", 0.0003 + 0.0001 * i, 0.0, tier=2, beats=2) for i in range(3)
+    ]
     # The only tier-≥3 anchor is far east, beyond the walk budget.
     far_anchor = _anchor("far-anchor", 0.0, 0.060, tier=5, beats=20)
     snap = _snap([*fill_pois, far_anchor])
@@ -502,7 +502,12 @@ def test_bearing_and_wedge_helpers_are_self_consistent():
 def test_end_none_unchanged_by_closer_b_logic():
     """Step-2.0d invariance: an open walk (end=None) never enters the 2.2a/2.2b
     branch, so no closer_b is computed and a Route is returned."""
-    snap = _snap([*_density_fillers(PDV), _anchor("east-anchor", 0.0006, 0.0012)])
+    snap = _snap(
+        [
+            *_density_fillers(PDV, duration_min=CLOSER_DURATION),
+            _anchor("east-anchor", 0.0006, 0.0012),
+        ]
+    )
     inp = TourInput(start=PDV, duration_min=CLOSER_DURATION, city_slug="paris")
     assert inp.end is None
     route = select_route(inp, snap)
@@ -534,6 +539,48 @@ CORRIDOR_END = (PDV[0], PDV[1] + 0.0064)
 # the route's POIs stand in for the post-corridor candidate pool.
 CORRIDOR_DURATION = 60
 
+#: How tightly the background cluster is packed for the corridor trio.
+#:
+#: These three tests share one corpus so that the end=None case is a true
+#: invariance control — same POIs, same duration, only ``end`` differs. That
+#: corpus has to do two jobs at once: carry enough stops to fill the hour the
+#: certification band demands, and still leave enough of the walk budget for the
+#: route to REACH the off-axis anchor when nothing is filtering it out. The
+#: default spiral (~178 m at 60 min) spends most of the 1440 s budget on the
+#: cluster alone, which starves the reach; packing it into 100 m keeps the stop
+#: count and gives the budget back. Measured over a 3x3 sweep of anchor count and
+#: radius, 100 m is the middle of the cell block where all three tests hold.
+_CORRIDOR_FILLER_RADIUS_M = 100.0
+
+
+def _corridor_background() -> list[POI]:
+    """The shared background anchors for all three corridor tests.
+
+    Deliberately tier-3 with the minimum anchor beat count: still anchor
+    candidates as far as the density gate is concerned, and still carrying a
+    full stop's worth of audio, but scored below each test's own tier-5 subject
+    so the greedy cannot fill the hour on cheap background alone and leave the
+    POI under test on the shelf.
+    """
+    return _density_fillers(
+        PDV,
+        duration_min=CORRIDOR_DURATION,
+        radius_m=_CORRIDOR_FILLER_RADIUS_M,
+        tier=3,
+        beat_count=3,
+    )
+
+
+def _off_axis_anchor() -> POI:
+    """The shared anchor the fixed-end corridor rejects but end=None keeps.
+
+    Due NORTH of the start, so the detour A→off→B away from the due-east axis
+    overruns the walk budget, while the anchor itself stays comfortably inside
+    the one-way REACH envelope. Both properties are re-asserted live in every
+    test that uses it, so moving it can never silently void the subject.
+    """
+    return _anchor("off-axis", 0.0045, 0.0, tier=5, beats=40)
+
 
 def _corridor_admits(poi: POI, end: tuple[float, float], duration_min: int) -> bool:
     """Live two-focus corridor predicate: does A→poi→B fit the walk budget?"""
@@ -556,7 +603,7 @@ def test_corridor_admits_on_axis_poi_for_fixed_end():
     # Midway between A and B on the due-east axis → its detour ≈ the direct
     # A→B leg, well inside the budget. Rich tier-5 anchor so the greedy picks it.
     on_axis = _anchor("on-axis", 0.0, 0.0032, tier=5, beats=20)
-    snap = _snap([*_density_fillers(PDV), on_axis])
+    snap = _snap([*_corridor_background(), on_axis])
 
     inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
     _assert_not_red(inp, snap)
@@ -579,11 +626,11 @@ def test_corridor_rejects_far_off_axis_poi_for_fixed_end():
     # Off-axis: due NORTH near the REACH-radius edge. t(A,off) alone nearly
     # exhausts the budget, so the A→off→B detour blows well past it — yet it is
     # the single richest anchor, so its absence can only be the corridor gate.
-    off_axis = _anchor("off-axis", 0.0065, 0.0, tier=5, beats=40)
+    off_axis = _off_axis_anchor()
     # On-axis control: a rich anchor on the segment that the corridor admits, so
     # the route is non-empty and we are comparing pool membership, not emptiness.
     on_axis = _anchor("on-axis", 0.0, 0.0032, tier=5, beats=20)
-    snap = _snap([*_density_fillers(PDV), off_axis, on_axis])
+    snap = _snap([*_corridor_background(), off_axis, on_axis])
 
     inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
     _assert_not_red(inp, snap)
@@ -614,8 +661,8 @@ def test_corridor_filter_does_not_touch_end_none_pool():
     candidate and gets selected. Same corpus, same duration — only end differs."""
     duration = CORRIDOR_DURATION
     # The very anchor the fixed-end corridor rejects (off-axis, in REACH).
-    off_axis = _anchor("off-axis", 0.0065, 0.0, tier=5, beats=40)
-    snap = _snap([*_density_fillers(PDV), off_axis])
+    off_axis = _off_axis_anchor()
+    snap = _snap([*_corridor_background(), off_axis])
 
     # Sanity: under a fixed end this anchor IS corridor-rejected…
     assert _in_reach(off_axis, duration)
@@ -627,3 +674,4 @@ def test_corridor_filter_does_not_touch_end_none_pool():
     open_route = select_route(open_inp, snap)
     assert open_route is not None
     assert off_axis.id in {p.id for p in open_route.pois}
+

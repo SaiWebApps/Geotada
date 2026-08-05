@@ -26,9 +26,18 @@ health.
   * ``poi_role`` is not persisted on ``ScriptPOI``; a placeholder is used. Verified safe:
     ``quality_rubric`` never reads it.
 
-``err_short_total_seconds`` IS reconstructed, and exactly: ``routing`` exports a
-helper of that name and it is CALLED here, not re-derived, so the ceiling cannot drift
-from the engine's. ``duration_min`` comes from the persisted ``inputs``.
+The C7 time ceiling IS reconstructed, and exactly: ``routing.planned_total_seconds`` is
+CALLED here, not re-derived, so the ceiling cannot drift from the engine's.
+``duration_min`` comes from the persisted ``inputs``.
+
+That helper was named ``err_short_total_seconds`` and returned a flat 0.83 of the
+requested duration until 2026-08-04, when the legacy planning policy was deleted and the
+nominal fraction became 1.00. THE CONSEQUENCE IS DELIBERATE AND MUST NOT BE MISREAD AS A
+NO-OP RENAME: every saved tour this script scores is now judged against a 60-minute
+ceiling for a 60-minute request instead of a 49.8-minute one, so C7 is about 20 percent
+more permissive across the whole historical corpus. Leaving the old helper in place
+would have been worse — the scorer would have kept a ceiling the engine no longer plans
+to, and the "cannot drift" claim above would have become false.
 
 THE AUDIO-CLOCK CAVEAT
 ----------------------
@@ -49,7 +58,7 @@ from pathlib import Path
 
 from src.tour.contract import POI, Route, Script
 from src.tour.quality_rubric import Severity, score_tour
-from src.tour.routing import err_short_total_seconds
+from src.tour.routing import planned_total_seconds
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -86,7 +95,7 @@ def _route_from_script(script: Script) -> Route:
         transits=(),  # not persisted -> C7b inert
         total_walk_distance_m=script.total_walk_distance_m,
         total_walk_seconds=script.total_walking_seconds,
-        err_short_total_seconds=err_short_total_seconds(script.inputs.duration_min),
+        err_short_total_seconds=planned_total_seconds(script.inputs.duration_min),
     )
 
 

@@ -2,17 +2,21 @@
 
 Ledger: specs/2026-08-03-premium-tour-crash-never-silent/run-context.md (D1-D5).
 
-D1 traced the outage to TWO call sites that share the exact same shape — a
-callable wrapped ONCE by ``in_current_context`` and handed to a thread pool:
-``src/tour/premium_tour.py execute_premium_plan`` (the workbench's
-``/trips/preview`` on-ramp) and ``src/tour/authoring.py author_prebuilt_route``
-(the phone's ``/trips/{id}/compose`` on-ramp). D5 named the exact trap a first
-attempt at this test fell into: a fan-out whose workers do not provably overlap
-passes for the wrong reason, exactly the way ``tests/test_degradations.py``'s
-original thread test did for three days while every real 2+-stop premium tour
-crashed 100% of the time.
+D1 traced the outage to TWO call sites that shared the exact same shape — a
+callable wrapped ONCE by ``in_current_context`` and handed to a thread pool.
+There is now only ONE: ``src/tour/premium_tour.py execute_premium_plan``, which
+BOTH the workbench's ``/trips/preview`` and the phone's ``/trips/{id}/compose``
+reach, because the second implementation in ``src/tour/authoring.py`` was
+deleted on 2026-08-04 (unify-tour-algorithm step 4). The second-site assertions
+went with it rather than being pointed at the surviving site twice: a duplicated
+assertion is a fake guard, and there is genuinely nothing left to prove about a
+function that no longer exists. D5 named the exact trap a first attempt at this
+test fell into: a fan-out whose workers do not provably overlap passes for the
+wrong reason, exactly the way ``tests/test_degradations.py``'s original thread
+test did for three days while every real 2+-stop premium tour crashed 100% of
+the time.
 
-So this module asserts TWO things about each production fan-out, and both are
+So this module asserts TWO things about the production fan-out, and both are
 gated on proof the run was actually concurrent:
 
 1. **It survives overlap.** Every worker parks INSIDE the wrapped call until all
@@ -35,8 +39,6 @@ applied to the real source, run, and reverted:
 
   * ``premium_tour.py``: ``pool.map(invoke, ...)`` (wrapper dropped) → RED, the
     premium propagation assertion, naming ``execute_premium_plan``;
-  * ``authoring.py``: ``pool.map(executor.execute, ...)`` (wrapper dropped) → RED,
-    the authoring propagation assertion, naming ``author_prebuilt_route``;
   * ``degradations.py``: ``snapshot.run`` in place of ``snapshot.copy().run`` (the
     production bug restored) → RED with ``RuntimeError: cannot enter context``;
   * ``degradations.py``: ``contextvars.copy_context().run`` inside ``_run`` (the
@@ -44,7 +46,7 @@ applied to the real source, run, and reverted:
     the WORKER's empty context and silently drops the caller's collector.
 
 What this file does NOT claim: the AC-3 empty-list assertion is a canary, not a
-guard. Nothing on the premium or authoring path calls ``record`` today, so no
+guard. Nothing on the premium path calls ``record`` today, so no
 mutation of the current tree turns it red; it exists so that a future degradation
 recorded on a healthy single-stop tour — crying wolf — is caught the day it is
 written.
@@ -57,11 +59,7 @@ import threading
 
 import pytest
 
-from src.tour.authoring import (
-    COMPOSE_MODEL,
-    author_prebuilt_route,
-    plan_prebuilt_route_authoring,
-)
+from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import (
     POI,
@@ -77,13 +75,10 @@ from src.tour.contract import (
     ValidationReport,
 )
 from src.tour.degradations import degradation_scope, record
-from src.tour.premium_authorities import PREMIUM_AUTHORITIES
 from src.tour.premium_tour import (
     EphemeralReceiptSink,
-    PremiumComposeUnit,
-    PremiumTourPlan,
     execute_premium_plan,
-    premium_authoring_policy_sha256,
+    plan_premium_authoring,
 )
 
 #: Long enough that a healthy handshake never trips it, short enough that a
@@ -183,44 +178,6 @@ def _prebuilt_route(stop_count: int) -> tuple[Script, BeatSequence, Route]:
         validation=ValidationReport(),
     )
     return stitched, sequence, route
-
-
-def _as_premium_plan(plan) -> PremiumTourPlan:
-    """Re-seat a prebuilt-route authoring plan as the ``PremiumTourPlan`` shape
-    ``execute_premium_plan`` consumes — same technique as
-    ``tests/test_tour_authoring_gates.py::_preview_surface_plan``. Building this
-    through ``plan_premium_tour`` would need a corpus snapshot, selection and a
-    live routing client, none of which this module's claim (concurrency at the
-    fan-out) involves; the planning-provenance-only fields below are the ONLY
-    things this construction fakes.
-    """
-    return PremiumTourPlan(
-        tour_input=plan.source.inputs,
-        snapshot=None,
-        snapshot_sha256="0" * 64,
-        route=plan.route,
-        route_record={},
-        sequence=plan.sequence,
-        source=plan.source,
-        candidate=plan.candidate,
-        authoring=plan.authoring,
-        units=tuple(
-            PremiumComposeUnit(
-                stop_index=unit.stop_index,
-                poi_name=unit.poi_name,
-                authorized_request=unit.authorized_request,
-                authoring_request=unit.authoring_request,
-                request_sha256=unit.request_sha256,
-                input_byte_count=unit.input_byte_count,
-                output_token_ceiling=unit.output_token_ceiling,
-                sdk_request=unit.sdk_request,
-            )
-            for unit in plan.units
-        ),
-        routing_version="offline-test",
-        policy_version="offline-test",
-        authorities=PREMIUM_AUTHORITIES,
-    )
 
 
 class _OverlapForcingExecutor:
@@ -341,11 +298,15 @@ def test_both_fan_outs_run_units_concurrently_without_context_error() -> None:
     """
     # --- AC-2: three units, both fan-outs, forced N-way overlap -----------
     stitched, sequence, route = _prebuilt_route(3)
-    authoring_plan = plan_prebuilt_route_authoring(
-        stitched, sequence, route, authoring_policy_sha256=premium_authoring_policy_sha256()
+    premium_plan = plan_premium_authoring(
+        stitched,
+        sequence,
+        route,
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
-    premium_plan = _as_premium_plan(authoring_plan)
-    assert len(authoring_plan.units) == 3
     assert len(premium_plan.units) == 3
 
     premium_executor = _OverlapForcingExecutor(unit_count=3, site="execute_premium_plan")
@@ -372,37 +333,20 @@ def test_both_fan_outs_run_units_concurrently_without_context_error() -> None:
         premium_collected, premium_executor, unit_count=3, site="execute_premium_plan"
     )
 
-    authoring_executor = _OverlapForcingExecutor(unit_count=3, site="author_prebuilt_route")
-    with degradation_scope() as authoring_collected:
-        try:
-            authored_script = author_prebuilt_route(authoring_plan, executor=authoring_executor)
-        except RuntimeError as exc:  # pragma: no cover - failure path, not the fix
-            raise AssertionError(
-                f"author_prebuilt_route raised a RuntimeError under forced worker "
-                f"overlap ({exc!r}); this is the production outage reproduced "
-                f"through its real on-ramp"
-            ) from exc
-    assert len({s.stop_idx for s in authored_script.script}) == 3, (
-        "author_prebuilt_route did not author all 3 stops under forced overlap"
-    )
-    _assert_genuine_overlap(authoring_executor.shook_hands, site="author_prebuilt_route")
-    _assert_every_worker_reached_the_caller(
-        authoring_collected, authoring_executor, unit_count=3, site="author_prebuilt_route"
-    )
-
     # --- AC-3 (negative): a single-unit plan never overlapped and must keep
     # working, and must not start crying wolf. These executors record NOTHING,
     # so the collector stays EMPTY unless the tour path itself starts reporting
     # a degradation on a perfectly healthy single-stop run.
     solo_stitched, solo_sequence, solo_route = _prebuilt_route(1)
-    solo_authoring_plan = plan_prebuilt_route_authoring(
+    solo_premium_plan = plan_premium_authoring(
         solo_stitched,
         solo_sequence,
         solo_route,
-        authoring_policy_sha256=premium_authoring_policy_sha256(),
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
-    solo_premium_plan = _as_premium_plan(solo_authoring_plan)
-    assert len(solo_authoring_plan.units) == 1
     assert len(solo_premium_plan.units) == 1
 
     with degradation_scope() as solo_premium_collected:
@@ -417,20 +361,6 @@ def test_both_fan_outs_run_units_concurrently_without_context_error() -> None:
     assert solo_premium_collected == [], (
         f"a clean single-stop premium run recorded a degradation "
         f"({solo_premium_collected}) — single-stop tours worked throughout the "
-        f"outage and must not start crying wolf now that concurrency is fixed"
-    )
-
-    with degradation_scope() as solo_authoring_collected:
-        solo_script = author_prebuilt_route(
-            solo_authoring_plan,
-            executor=_OverlapForcingExecutor(
-                unit_count=1, site="author_prebuilt_route", records=False
-            ),
-        )
-    assert len(solo_script.script) == 1
-    assert solo_authoring_collected == [], (
-        f"a clean single-stop authoring run recorded a degradation "
-        f"({solo_authoring_collected}) — single-stop tours worked throughout the "
         f"outage and must not start crying wolf now that concurrency is fixed"
     )
 
@@ -489,10 +419,15 @@ def test_a_unit_failure_inside_a_fan_out_reaches_the_caller() -> None:
     than shipping half-narrated.
     """
     stitched, sequence, route = _prebuilt_route(3)
-    authoring_plan = plan_prebuilt_route_authoring(
-        stitched, sequence, route, authoring_policy_sha256=premium_authoring_policy_sha256()
+    premium_plan = plan_premium_authoring(
+        stitched,
+        sequence,
+        route,
+        snapshot=None,
+        snapshot_sha256="0" * 64,
+        routing_version="offline-test",
+        policy_version="offline-test",
     )
-    premium_plan = _as_premium_plan(authoring_plan)
 
     with (
         degradation_scope() as premium_collected,
@@ -511,20 +446,3 @@ def test_a_unit_failure_inside_a_fan_out_reaches_the_caller() -> None:
     assert premium_degradation.error_type == "_MarkerFailureError", premium_degradation
     assert "MARKER-unit-1-failed" in premium_degradation.error_message, premium_degradation
     assert premium_degradation.context.get("stop_index") == "1", premium_degradation
-
-    with (
-        degradation_scope() as authoring_collected,
-        pytest.raises(_MarkerFailureError, match="MARKER-unit-1-failed"),
-    ):
-        author_prebuilt_route(
-            authoring_plan,
-            executor=_FailingUnitExecutor(fail_stop_index=1),
-        )
-    assert len(authoring_collected) == 1, (
-        f"author_prebuilt_route: expected exactly one degradation for the failed "
-        f"unit to reach the caller's scope, got {authoring_collected}"
-    )
-    authoring_degradation = authoring_collected[0]
-    assert authoring_degradation.error_type == "_MarkerFailureError", authoring_degradation
-    assert "MARKER-unit-1-failed" in authoring_degradation.error_message, authoring_degradation
-    assert authoring_degradation.context.get("stop_index") == "1", authoring_degradation

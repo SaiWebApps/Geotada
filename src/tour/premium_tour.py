@@ -62,6 +62,7 @@ from .certification_provider import (
 )
 from .contract import BeatSequence, Route, Script, TourInput
 from .generation import CONCURRENT_GLUE_LABELS, generate
+from .glue_client import NO_GLUE_SENTINEL, GlueClient
 from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .routing import MAX_REQUESTED_FRACTION, MIN_REQUESTED_FRACTION, RoutePlanningPolicy
 from .routing_client import VALHALLA_ROUTING_CONFIG_SHA256, RoutingClient
@@ -70,6 +71,7 @@ from .selection import (
     MaterializedCorpusSnapshot,
     build_poi_beat_plans_capped,
     choose_discrete_route,
+    route_has_container_identity_stop,
     select_k_routes,
 )
 from .verify import FaithfulnessChecker
@@ -324,48 +326,202 @@ def certification_planning_policy(*, policy_id: str) -> RoutePlanningPolicy:
     return RoutePlanningPolicy.certification(
         minimum_requested_fraction=MIN_REQUESTED_FRACTION,
         maximum_requested_fraction=MAX_REQUESTED_FRACTION,
-        max_stops=8,
         policy_id=policy_id,
     )
 
 
-def plan_premium_tour(
-    tour_input: TourInput,
-    snapshot: CorpusSnapshot,
-    *,
-    routing_client: RoutingClient,
-    planning_policy: RoutePlanningPolicy | None = None,
-    generation_time: dt.datetime | None = None,
-    authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
-) -> PremiumTourPlan:
-    """Pure/provider-free plan through the full certification route algorithm."""
+class SilentGlueClient:
+    """The glue client BLOCK 1 plans with: it writes nothing and calls nobody.
 
-    policy = planning_policy or certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
-    routing_version = routing_client.routing_version()
-    routes = select_k_routes(
-        tour_input,
-        snapshot,
-        3,
-        routing_client=routing_client,
-        planning_policy=policy,
-    )
-    route = choose_discrete_route(routes)
-    if (
-        not route.pois
-        or not route.routed
-        or len(route.transits) != len(route.pois)
-        or any(transit.valhalla_receipt is None for transit in route.transits)
-    ):
-        raise PremiumRouteInfeasibleError(
-            "Premium planning requires a complete receipt-backed Valhalla route"
+    OWNER RULING 1, 2026-08-04: during route planning, on both surfaces, the options show
+    THE PLACES ALONE — POI names, order, walking times, ETA. No descriptive text of any
+    kind. All prose arrives only at script generation, after a route has been picked.
+
+    This is what makes Block 1 genuinely free. ``generate`` defaults to the REAL, paid
+    ``HaikuGlueClient`` (src/tour/generation.py), so planning three route options would
+    otherwise make three tours' worth of Haiku calls on an endpoint whose whole value
+    proposition is that it costs nothing. Returning the NO_GLUE sentinel for every
+    category makes ``generate`` fall back to its own deterministic connective template,
+    so the stitched source is still complete — it simply contains no LLM-written line.
+
+    NOT a mock and not a test double: it is never substituted for anything, and nothing
+    else is standing behind it. It is the literal expression of "planning writes no
+    words", and it is what the PRODUCT uses. A caller that wants prose passes a real
+    client explicitly, which is what AUTHOR does for the one option the traveller picked.
+    """
+
+    def stitch(self, category: str, context: str, request: str) -> str:
+        del category, context, request
+        return NO_GLUE_SENTINEL
+
+
+#: A route whose leg times are estimated rather than measured. ONE kind for the whole
+#: outage — ``summarize`` collapses repeats into one row with a count
+#: (src/tour/degradations.py:152-166), and nobody needs it per leg or per flavour.
+ESTIMATED_LEGS_DEGRADATION = "walking_times_estimated"
+#: The routing service answered, but with a setup this build was not compiled against.
+ROUTING_CONFIG_DEGRADATION = "routing_setup_unexpected"
+#: The routing service would not say which version it is running.
+ROUTING_VERSION_DEGRADATION = "routing_version_unavailable"
+#: Stamped into the build fingerprint when the version above could not be read. It is a
+#: deliberately unmistakable word: ``BuildFingerprint.routing_version`` only requires a
+#: non-empty string (src/tour/artifact.py:428), so a plausible-looking placeholder would
+#: read back years later as a real engine version. Per-leg provenance is unaffected —
+#: every measured leg carries its own request, response and config hash in its receipt.
+ROUTING_VERSION_UNAVAILABLE = "unavailable"
+
+
+def _premium_route_refusal(route: Route) -> str | None:
+    """Why this route is STRUCTURALLY unplannable, or None.
+
+    Only the two faults in the plan's own shape refuse. A route with no stops is not a
+    tour, and a leg count that does not match the stop count breaks the index alignment
+    every consumer downstream assumes (``route_summary``'s ``enumerate`` below, and the
+    leg-walk map in ``build_route_option``).
+
+    MISSING ROUTE MEASUREMENTS DO NOT REFUSE (owner ruling 2026-08-04). The walking
+    engine is a real production service that can cold-start, restart or rebuild its map
+    (render.yaml:98-124), and a refusal here would take tour generation down for every
+    user for the duration of that. It is labelled instead — see
+    ``record_routing_degradations`` — so the silent substitution is gone without the
+    outage taking the product with it.
+
+    Still a predicate rather than a raise, so a NON-CHOSEN flavour can be dropped from
+    the options tuple while the CHOSEN one refuses the whole request.
+    """
+
+    if not route.pois:
+        return "Premium planning requires a route with at least one stop"
+    if len(route.transits) != len(route.pois):
+        return "Premium planning requires one walking leg per stop"
+    return None
+
+
+def record_routing_degradations(
+    route: Route, *, component: str = "premium_tour.plan_premium_options"
+) -> None:
+    """Label a route whose walking times were estimated rather than measured.
+
+    A no-op outside a degradation scope (src/tour/degradations.py:137-139), so the batch
+    runner and unit tests are unaffected; the API surfaces open one per request.
+
+    PUBLIC because planning is not the only place a receiptless route reaches a person.
+    Composing a saved trip rebuilds its route directly through ``summarise_route`` and
+    never comes back through here, so it must call this itself or ship an unlabelled
+    estimate — which AC-18 forbids on EITHER surface. ``component`` names the caller,
+    since that is what the field is for (src/tour/degradations.py:50-51).
+    """
+
+    estimated = [
+        index for index, transit in enumerate(route.transits) if transit.valhalla_receipt is None
+    ]
+    if estimated or not route.routed:
+        record(
+            kind=ESTIMATED_LEGS_DEGRADATION,
+            human=(
+                "Walking times between stops are estimates, not measured routes, so "
+                "the tour may run a little longer or shorter than it says."
+            ),
+            component=component,
+            cause=(
+                f"The routing service returned no measured route for {len(estimated)} "
+                f"of {len(route.transits)} legs. Those legs fell back to straight-line "
+                "distance scaled by HAVERSINE_CORRECTION at PACE_KMH "
+                "(src/tour/routing.py:41-53), which cannot see rivers, walls or closed "
+                "streets, so a leg across an unbridged gap is understated. Check that "
+                "ondoway-valhalla is up and has finished building its tiles."
+            ),
+            estimated_legs=str(len(estimated)),
+            total_legs=str(len(route.transits)),
+            fully_measured=str(route.routed).lower(),
         )
+    # GUARDED ON A NON-EMPTY SET, and that guard is the whole point. This set is empty
+    # when NO transit has a receipt, and an empty set is not equal to the expected one —
+    # so an unguarded comparison would report a total outage as a routing-SETUP mismatch
+    # as well, two rows describing one fault, one of them wrong.
     receipt_configs = {
         transit.valhalla_receipt.routing_config_sha256
         for transit in route.transits
         if transit.valhalla_receipt is not None
     }
-    if receipt_configs != {VALHALLA_ROUTING_CONFIG_SHA256}:
-        raise PremiumRouteInfeasibleError("route receipts use an unexpected routing config")
+    if receipt_configs and receipt_configs != {VALHALLA_ROUTING_CONFIG_SHA256}:
+        record(
+            kind=ROUTING_CONFIG_DEGRADATION,
+            human=(
+                "Walking times for this tour were worked out with different settings "
+                "than this version expects, so they may be a little off."
+            ),
+            component=component,
+            cause=(
+                f"Leg receipts carry {len(receipt_configs)} distinct routing-config "
+                "hashes; this build expects exactly VALHALLA_ROUTING_CONFIG_SHA256 "
+                "(src/tour/routing_client.py). The deployed Valhalla configuration and "
+                "the one compiled into this build have diverged."
+            ),
+            expected_setups="1",
+            observed_setups=str(len(receipt_configs)),
+        )
+
+
+def resolve_routing_version(routing_client: RoutingClient) -> str:
+    """The routing engine's version, or a labelled admission that it could not be read.
+
+    THE ONE CALL AN OUTAGE CAN HARD-FAIL, on both the planning and the compose paths.
+    Every walking leg independently degrades to a straight-line estimate when the
+    container is unreachable (src/tour/routing_client.py:175-181), but
+    ``routing_version`` deliberately has no fallback of its own: it does a live
+    GET /status and treats a missing or malformed answer as an error
+    (src/tour/routing_client.py:183-200).
+
+    Left bare, that escapes as a transport error — a generic 500 on the planning path,
+    and on the compose path it used to be swept up and relabelled
+    ``compose_verification_failed``, a code meaning "the narrator wrote something
+    untraceable", which blames the writer for a container that is merely still booting.
+
+    RESOLVED 2026-08-05 TO A DEGRADATION, NOT A REFUSAL, which is the same answer the
+    receipt bar above now gives to the same outage. A hard refusal here would take tour
+    generation down app-wide for a cold start, which is exactly what the owner ruled
+    against; and the provenance a refusal would be protecting does not exist during an
+    outage, because unmeasured legs were measured by no engine. Recording
+    ``unavailable`` states that plainly, and the traveller is told on the wire rather
+    than in a log file nobody opens.
+    """
+
+    try:
+        return routing_client.routing_version()
+    except Exception as exc:
+        record(
+            kind=ROUTING_VERSION_DEGRADATION,
+            human=(
+                "We could not record which version of the map worked out this tour's "
+                "walking times, so its record of how it was built is incomplete."
+            ),
+            component="premium_tour.resolve_routing_version",
+            error=exc,
+            cause=(
+                "A live status read against the routing engine failed or answered "
+                "without a version, so the build fingerprint records "
+                f"routing_version={ROUTING_VERSION_UNAVAILABLE!r} instead of a real "
+                "one. Per-leg provenance is unaffected: every measured leg still "
+                "carries its own request, response and routing-config hash. Check that "
+                "ondoway-valhalla is up and answering /status."
+            ),
+        )
+        return ROUTING_VERSION_UNAVAILABLE
+
+
+def _plan_one_premium_route(
+    tour_input: TourInput,
+    snapshot: CorpusSnapshot,
+    route: Route,
+    *,
+    policy: RoutePlanningPolicy,
+    routing_version: str,
+    generation_time: dt.datetime | None,
+    authorities: PremiumAuthorityHashes,
+    glue_client: GlueClient | None,
+) -> PremiumTourPlan:
+    """Everything one already-chosen route needs to become an authorable plan."""
 
     capped = build_poi_beat_plans_capped(
         route,
@@ -387,6 +543,7 @@ def plan_premium_tour(
         sequence,
         route,
         tour_input,
+        glue_client=glue_client,
         now=generation_time or dt.datetime.now(dt.UTC),
         validate_output=False,
     )
@@ -400,6 +557,101 @@ def plan_premium_tour(
         policy_version=policy.policy_id,
         authorities=authorities,
     )
+
+
+def plan_premium_options(
+    tour_input: TourInput,
+    snapshot: CorpusSnapshot,
+    *,
+    routing_client: RoutingClient,
+    planning_policy: RoutePlanningPolicy | None = None,
+    generation_time: dt.datetime | None = None,
+    authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
+    glue_client: GlueClient | None = None,
+) -> tuple[PremiumTourPlan, ...]:
+    """BLOCK 1 — every flavour of one request, planned, with no per-stop authoring.
+
+    Returns one plan per surviving flavour, CHOSEN FIRST. The chosen flavour is exactly
+    what ``choose_discrete_route`` picks, so ``plan_premium_options(...)[0]`` is the plan
+    ``plan_premium_tour`` has always returned for the same input. A flavour after the
+    first that cannot clear the Premium route bar is DROPPED from the tuple; the chosen
+    one refuses the whole request, as before.
+
+    FREE, and free BY DEFAULT. ``glue_client=None`` here means ``SilentGlueClient``, not
+    ``generate``'s paid Haiku default: planning a route is a places-and-times question
+    and makes no provider call at all (OWNER RULING 1). The DEFAULT is the part that
+    matters — a free path that is only free when a caller remembers to ask is one
+    refactor away from being paid again, on an endpoint Phase 1 leaves anonymous.
+    """
+
+    policy = planning_policy or certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
+    routing_version = resolve_routing_version(routing_client)
+    routes = select_k_routes(
+        tour_input,
+        snapshot,
+        3,
+        routing_client=routing_client,
+        planning_policy=policy,
+    )
+    chosen = choose_discrete_route(routes)
+    ordered = [
+        chosen,
+        *(
+            route
+            for route in routes
+            if route is not chosen and not route_has_container_identity_stop(route)
+        ),
+    ]
+    plans: list[PremiumTourPlan] = []
+    for index, route in enumerate(ordered):
+        refusal = _premium_route_refusal(route)
+        if refusal is not None:
+            if index == 0:
+                raise PremiumRouteInfeasibleError(refusal)
+            continue
+        record_routing_degradations(route)
+        plans.append(
+            _plan_one_premium_route(
+                tour_input,
+                snapshot,
+                route,
+                policy=policy,
+                routing_version=routing_version,
+                generation_time=generation_time,
+                authorities=authorities,
+                glue_client=glue_client if glue_client is not None else SilentGlueClient(),
+            )
+        )
+    return tuple(plans)
+
+
+def plan_premium_tour(
+    tour_input: TourInput,
+    snapshot: CorpusSnapshot,
+    *,
+    routing_client: RoutingClient,
+    planning_policy: RoutePlanningPolicy | None = None,
+    generation_time: dt.datetime | None = None,
+    authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
+    glue_client: GlueClient | None = None,
+) -> PremiumTourPlan:
+    """The ONE plan a single-route caller wants: the chosen flavour of Block 1.
+
+    Deliberately a one-line delegate. The selection rule (``choose_discrete_route`` over
+    the K=3 flavours) lives in ``plan_premium_options`` and nowhere else, so the batch
+    runner and the two API surfaces cannot drift into different definitions of "the"
+    route.
+    """
+
+    return plan_premium_options(
+        tour_input,
+        snapshot,
+        routing_client=routing_client,
+        planning_policy=planning_policy,
+        generation_time=generation_time,
+        authorities=authorities,
+        glue_client=glue_client,
+    )[0]
 
 
 class PremiumComposeExecutor(Protocol):
@@ -754,6 +1006,10 @@ def finalize_premium_tour(
 
 
 __all__ = [
+    "ESTIMATED_LEGS_DEGRADATION",
+    "ROUTING_CONFIG_DEGRADATION",
+    "ROUTING_VERSION_DEGRADATION",
+    "ROUTING_VERSION_UNAVAILABLE",
     "AnthropicPremiumExecutor",
     "EphemeralReceiptSink",
     "OfflinePremiumExecutor",
@@ -770,8 +1026,11 @@ __all__ = [
     "finalize_premium_composition",
     "finalize_premium_tour",
     "plan_premium_authoring",
+    "plan_premium_options",
     "plan_premium_tour",
     "premium_authoring_policy_sha256",
+    "record_routing_degradations",
     "resolve_build_identity",
+    "resolve_routing_version",
     "route_summary",
 ]

@@ -177,6 +177,90 @@ class TestGenerateTripStopAudio:
         assert data["failed"] == 0
         assert data["skipped"] == 3  # 2 already have audio + 1 has no narration
 
+    def test_edited_narration_invalidates_its_stop_audio(
+        self, client, clean_driver, _temp_audio_storage
+    ):
+        """Rewriting a stop's narration must re-voice THAT stop and only it.
+
+        The per-stop path was the one generation path with no content hash, so
+        "has a url" was the whole staleness test: an edited stop kept playing the
+        old recording forever. Phase 2 is that defect. Phase 3 is the pre-existing
+        self-heal (a row whose bytes vanished off disk must still re-voice), which
+        now shares an `and` chain with the new hash term and must survive it.
+        """
+        item1 = f"{TRIP_ID}-item1"
+        item2 = f"{TRIP_ID}-item2"
+        edited = "Settle in. Welcome to the Eiffel Tower, rewritten."
+
+        def _stored_hash(stop_id: str) -> str | None:
+            with clean_driver.session(database=get_database()) as s:
+                rec = s.run(
+                    "MATCH (i:ItineraryItem {id: $sid}) RETURN i.audio_script_hash AS h",
+                    sid=stop_id,
+                ).single()
+            return rec["h"] if rec else None
+
+        # ── Phase 1 — baseline: both narrated stops voiced, and hashed.
+        _seed(clean_driver)
+        recorder1 = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder1):
+            first = client.post(
+                f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
+            )
+        assert first.status_code == 200, first.text
+        assert first.json()["generated"] == 2, first.text
+
+        stored = _stored_hash(item1)
+        assert isinstance(stored, str) and len(stored) == 64, (
+            f"no content hash recorded for {item1} (got {stored!r}) — without one, "
+            "an edited narration can never be detected as stale"
+        )
+
+        # ── Phase 2 — rewrite item1's narration only (AC-25, AC-26).
+        with clean_driver.session(database=get_database()) as s:
+            s.run(
+                "MATCH (i:ItineraryItem {id: $sid}) SET i.narration = $n",
+                sid=item1,
+                n=edited,
+            )
+        recorder2 = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder2):
+            second = client.post(
+                f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
+            )
+        assert second.status_code == 200, second.text
+        data = second.json()
+        by_stop = {r["stop_id"]: r for r in data["results"]}
+
+        assert data["generated"] == 1, f"only the edited stop may re-voice: {data}"
+        assert by_stop[item1]["status"] == "generated", by_stop[item1]
+        assert data["skipped"] == 2, f"the untouched stops must both skip: {data}"
+        assert by_stop[item2]["status"] == "skipped", by_stop[item2]
+        assert by_stop[item2]["reason"] == "already has audio", by_stop[item2]
+        assert recorder2.texts == [edited], (
+            f"the provider must be handed the rewritten text exactly once: {recorder2.texts}"
+        )
+
+        # ── Phase 3 — the self-heal still fires beside the new hash term.
+        urls = _item_audio(clean_driver)
+        artifact = _temp_audio_storage / urls[item2].removeprefix("/api/v1/audio/files/")
+        assert artifact.exists(), f"phase-3 setup found no artifact at {artifact}"
+        artifact.unlink()
+        assert not artifact.exists()
+
+        recorder3 = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder3):
+            third = client.post(
+                f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
+            )
+        assert third.status_code == 200, third.text
+        third_by_stop = {r["stop_id"]: r for r in third.json()["results"]}
+        assert third_by_stop[item2]["status"] == "generated", (
+            "a stop whose stored bytes vanished must re-voice even though its "
+            f"hash is current — the self-heal must survive: {third_by_stop[item2]}"
+        )
+        assert recorder3.texts == [N2], recorder3.texts
+
     def test_unknown_trip_404(self, client):
         resp = client.post(
             "/api/v1/audio/generate-trip-stops/no-such-trip", json={"provider": "mock"}

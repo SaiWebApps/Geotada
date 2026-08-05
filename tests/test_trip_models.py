@@ -16,6 +16,7 @@ from src.api.models.trips import (
     TripPreviewStop,
     TripPreviewTourability,
 )
+from src.tour.contract import RouteOption, RouteOptionStop
 
 
 class TestTripGenerateRequest:
@@ -369,9 +370,15 @@ class TestTripGenerateResponse:
 
 
 class TestTripPreviewSpotlightFields:
-    """Step 3.3 (spec s7): the /trips/preview serializer types gain the spotlight
-    fields additively — band/spotlight per stop, lens_coverage_note on the
-    response — with behavior-preserving defaults."""
+    """Step 3.3 (spec s7): the /trips/preview serializer types carry the spotlight
+    fields — band and spotlight per stop, and the per-corridor lens note — with
+    behavior-preserving defaults.
+
+    Since the plan/author split the reply carries ROUTE OPTIONS rather than one flat
+    stop list, so the lens note sits on the option it describes and the per-stop
+    annotations are checked on both stop types: ``RouteOptionStop`` for a planned or
+    written option, ``TripPreviewStop`` for the Basic fallback's own flat list.
+    """
 
     def _base_stop_kwargs(self) -> dict:
         return dict(
@@ -401,35 +408,81 @@ class TestTripPreviewSpotlightFields:
         with pytest.raises(ValidationError):
             TripPreviewStop(**self._base_stop_kwargs(), band="headline")
 
-    def test_preview_response_lens_coverage_note_defaults_none(self):
-        """Omitting lens_coverage_note defaults None (REACH fills it later in
-        Phase 3); the default keeps the preview response shape unchanged."""
-        resp = TripPreviewResponse(total_audio_min=12, stops=[])
-        assert resp.lens_coverage_note is None
-
-    def test_preview_response_round_trips_with_spotlight_fields(self):
-        """A full preview response with the new fields set survives a model_dump
-        -> model_validate round-trip, proving the serializer carries them."""
-        stop = TripPreviewStop(**self._base_stop_kwargs(), band="vignette", spotlight=0.5)
-        resp = TripPreviewResponse(
-            spine_area="Ile de la Cite",
-            total_audio_min=12,
-            stops=[stop],
-            lens_coverage_note="only 2 places on this route speak to film and TV",
+    def _route_option(self, **overrides) -> RouteOption:
+        kwargs = dict(
+            route_id="preview-0123456789ab-opt1",
+            stops=(
+                RouteOptionStop(
+                    poi_id="poi-1",
+                    name="Notre-Dame",
+                    lat=48.853,
+                    lng=2.349,
+                    minutes=5,
+                    band="dwell",
+                ),
+            ),
+            eta_seconds=1800,
         )
+        kwargs.update(overrides)
+        return RouteOption(**kwargs)
+
+    def test_preview_response_carries_only_what_planning_knows(self):
+        """The plan-only preview response has exactly four fields, and no more.
+
+        Everything that described WRITTEN text — the flat stop list, the narrator
+        name, the candidate lane, the Basic fallback, the quality verdicts — left
+        with the authoring it described, to POST /trips/preview/author. A field
+        that survives here would advertise something planning cannot produce.
+        """
+        assert set(TripPreviewResponse.model_fields) == {
+            "spine_area",
+            "options",
+            "tourability",
+            "degradations",
+        }
+
+    def test_lens_coverage_note_lives_on_the_option_it_describes(self):
+        """The per-corridor lens note is a property of ONE route, not of the reply.
+
+        It sat on the response while there was only ever one route to describe. With
+        three routes offered at once a single note could only describe one of them,
+        so it belongs to the option — and defaults to None when no lens was asked for.
+        """
+        assert "lens_coverage_note" not in TripPreviewResponse.model_fields
+        assert self._route_option().lens_coverage_note is None
+        noted = self._route_option(
+            lens_coverage_note="2 of 5 places on this route speak to the chosen lens(es)."
+        )
+        assert "2 of 5" in noted.lens_coverage_note
+
+    def test_preview_response_round_trips_with_its_options(self):
+        """A full plan response survives a model_dump -> model_validate round-trip,
+        proving the serializer carries the options and their per-stop annotations."""
+        option = self._route_option(
+            stops=(
+                RouteOptionStop(
+                    poi_id="poi-1",
+                    name="Notre-Dame",
+                    lat=48.853,
+                    lng=2.349,
+                    minutes=0,
+                    band="vignette",
+                    spotlight=0.5,
+                ),
+            )
+        )
+        resp = TripPreviewResponse(spine_area="Ile de la Cite", options=[option])
         rebuilt = TripPreviewResponse.model_validate(resp.model_dump())
         assert rebuilt == resp
-        assert rebuilt.stops[0].band == "vignette"
-        assert rebuilt.stops[0].spotlight == 0.5
-        assert rebuilt.lens_coverage_note == "only 2 places on this route speak to film and TV"
+        assert rebuilt.options[0].stops[0].band == "vignette"
+        assert rebuilt.options[0].stops[0].spotlight == 0.5
+        assert rebuilt.options[0].eta_seconds == 1800
 
     def test_preview_tourability_defaults_none_and_round_trips(self):
         """tourability defaults None (GREEN) — the additive field keeps old
         payload shapes valid — and a YELLOW payload survives the round-trip."""
-        assert TripPreviewResponse(total_audio_min=5, stops=[]).tourability is None
+        assert TripPreviewResponse().tourability is None
         resp = TripPreviewResponse(
-            total_audio_min=7,
-            stops=[],
             tourability=TripPreviewTourability(
                 status="YELLOW",
                 fill_ratio=0.73,
