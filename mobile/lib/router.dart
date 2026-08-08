@@ -11,6 +11,7 @@ import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/spike/location_spike_page.dart';
 import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
 
@@ -94,6 +95,10 @@ GoRouter createRouter(
           final tripId = state.pathParameters['tripId'] ?? '';
           return TripItineraryPage(tripId: tripId);
         },
+      ),
+      GoRoute(
+        path: '/debug/location-spike',
+        builder: (context, state) => const LocationSpikePage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

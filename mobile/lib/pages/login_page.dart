@@ -47,6 +47,13 @@ class _LoginPageState extends State<LoginPage> {
     final authService = context.watch<AuthService>();
 
     return Scaffold(
+      floatingActionButton: kDebugMode
+          ? FloatingActionButton.extended(
+              onPressed: () => context.push('/debug/location-spike'),
+              icon: const Icon(Icons.explore),
+              label: const Text('Location Spike'),
+            )
+          : null,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
