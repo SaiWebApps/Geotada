@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
+import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 
@@ -18,7 +19,8 @@ class TourPlaybackProofPage extends StatefulWidget {
   State<TourPlaybackProofPage> createState() => _TourPlaybackProofPageState();
 }
 
-class _TourPlaybackProofPageState extends State<TourPlaybackProofPage> {
+class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
+    with WidgetsBindingObserver {
   final List<String> _log = [];
 
   /// Compass label -> bearing in degrees clockwise from north.
@@ -34,9 +36,59 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage> {
   };
   String _selectedDir = 'N';
 
+  // Instrumentation: refs + listeners that append a timestamped timeline so we
+  // can read AFTER the walk whether the geofence fired WHILE locked (a location
+  // question) vs. fired-but-stayed-silent (an audio question). The _log list
+  // accumulates even while backgrounded — the listeners still run; only the
+  // repaint defers to foreground.
+  LocationService? _loc;
+  AudioService? _audio;
+  TourPlaybackService? _tour;
+  bool _wiredListeners = false;
+
+  String get _ts {
+    final n = DateTime.now();
+    String p(int x) => x.toString().padLeft(2, '0');
+    return '${p(n.hour)}:${p(n.minute)}:${p(n.second)}';
+  }
+
+  void _onLocTick() {
+    final d = _tour?.distanceToNext;
+    _add('$_ts  pos  d=${d?.toStringAsFixed(1) ?? "—"}m  '
+        'state=${_tour?.state.name}  idx=${_tour?.currentStopIndex}  '
+        'playing=${_audio?.isPlaying}');
+  }
+
+  void _onAudioTick() {
+    _add('$_ts  AUDIO  playing=${_audio?.isPlaying}  '
+        'buffering=${_audio?.isBuffering}  beat=${_audio?.currentBeatId}');
+  }
+
   void _add(String line) {
     if (!mounted) return;
     setState(() => _log.insert(0, line));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 'paused' ≈ screen locked / pocketed; 'resumed' ≈ unlocked. These bracket
+    // the locked window in the log so we can see whether pos/AUDIO events land
+    // inside it.
+    _add('$_ts  ===== LIFECYCLE ${state.name} =====');
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _loc?.removeListener(_onLocTick);
+    _audio?.removeListener(_onAudioTick);
+    super.dispose();
   }
 
   /// Point [meters] from (lat,lng) along [bearingDeg] (clockwise from north).
@@ -64,6 +116,15 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage> {
   Future<void> _startProof() async {
     final location = context.read<LocationService>();
     final tour = context.read<TourPlaybackService>();
+    final audio = context.read<AudioService>();
+    _loc = location;
+    _tour = tour;
+    _audio = audio;
+    if (!_wiredListeners) {
+      location.addListener(_onLocTick);
+      audio.addListener(_onAudioTick);
+      _wiredListeners = true;
+    }
 
     final started = await location.startTracking(background: true);
     if (!started) {
