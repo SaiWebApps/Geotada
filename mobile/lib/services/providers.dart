@@ -6,7 +6,7 @@ abstract class LocationProvider extends ChangeNotifier {
   dynamic get lastPosition;
   bool get isTracking;
   bool get lowAccuracy;
-  Future<bool> startTracking();
+  Future<bool> startTracking({bool background = false});
   void stopTracking();
 }
 

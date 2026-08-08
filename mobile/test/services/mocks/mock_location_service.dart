@@ -18,7 +18,7 @@ class MockLocationService extends LocationProvider {
   bool get lowAccuracy => _lowAccuracy;
 
   @override
-  Future<bool> startTracking() async {
+  Future<bool> startTracking({bool background = false}) async {
     if (!trackingWillSucceed) {
       _error = 'Mock: tracking failed';
       notifyListeners();
