@@ -52,6 +52,7 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
 
   Future<void> _start() async {
     final ok = await _location!.startTracking(background: true);
+    if (!mounted) return;
     setState(() => _tracking = ok);
     _add(ok ? 'Background tracking started.' : 'Tracking failed to start.');
   }
@@ -79,8 +80,10 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
   Future<void> _playClip() async {
     try {
       await _player.setAsset('assets/audio/arrived.m4a');
+      if (!mounted) return;
       await _player.play();
     } catch (e) {
+      if (!mounted) return;
       _add('Audio error: $e');
     }
   }
