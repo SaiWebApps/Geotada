@@ -35,6 +35,7 @@ import UIKit
     let messenger = engineBridge.applicationRegistrar.messenger()
     GeocodingChannel.register(with: messenger)
     registerBackgroundAudioChannel(messenger)
+    registerAudioSessionChannel(messenger)
   }
 
   /// Native background-audio bridge with two calls:
@@ -77,6 +78,31 @@ import UIKit
         }
       default:
         result(FlutterMethodNotImplemented)
+      }
+    }
+  }
+
+  /// Foreground-only audio-session activation for the PRODUCTION tour-playback
+  /// path (just_audio owns actual playback here — no raw bytes). `prepare`
+  /// activates the .playback/.duckOthers session while the app is frontmost; it
+  /// then survives lock, so a background geofence fire plays without
+  /// re-activating (which returns CannotInterruptOthers). Same mechanism proven
+  /// in the Slice 0.3 spike, minus the raw-bytes `play`.
+  private func registerAudioSessionChannel(_ messenger: FlutterBinaryMessenger) {
+    let channel = FlutterMethodChannel(
+      name: "com.ondoway/audio_session", binaryMessenger: messenger)
+    channel.setMethodCallHandler { call, result in
+      guard call.method == "prepare" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      let session = AVAudioSession.sharedInstance()
+      do {
+        try session.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try session.setActive(true)
+        result(nil)
+      } catch {
+        result(FlutterError(code: "audio_session", message: "\(error)", details: nil))
       }
     }
   }
