@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,9 +21,32 @@ class TourPlaybackProofPage extends StatefulWidget {
 class _TourPlaybackProofPageState extends State<TourPlaybackProofPage> {
   final List<String> _log = [];
 
+  /// Compass label -> bearing in degrees clockwise from north.
+  static const Map<String, double> _directions = {
+    'N': 0,
+    'NE': 45,
+    'E': 90,
+    'SE': 135,
+    'S': 180,
+    'SW': 225,
+    'W': 270,
+    'NW': 315,
+  };
+  String _selectedDir = 'N';
+
   void _add(String line) {
     if (!mounted) return;
     setState(() => _log.insert(0, line));
+  }
+
+  /// Point [meters] from (lat,lng) along [bearingDeg] (clockwise from north).
+  /// Flat-earth approximation — fine at the ~30m scale of this proof.
+  (double, double) _offsetAlongBearing(
+      double lat, double lng, double meters, double bearingDeg) {
+    final b = bearingDeg * pi / 180.0;
+    final dLat = (meters * cos(b)) / 111320.0;
+    final dLng = (meters * sin(b)) / (111320.0 * cos(lat * pi / 180.0));
+    return (lat + dLat, lng + dLng);
   }
 
   // Mirrors AudioService's cache convention (temp/ondoway_audio/<beatId>.mp3) so
@@ -58,15 +82,18 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage> {
     await _cacheClip('proof-1');
     await _cacheClip('proof-2');
 
-    // ~0.00014 deg latitude ≈ 15.5m per step, due north.
+    final bearing = _directions[_selectedDir]!;
+    final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 15.5, bearing);
+    final s2 = _offsetAlongBearing(pos.latitude, pos.longitude, 31.0, bearing);
     final stops = [
-      _proofStop(1, 'proof-1', pos.latitude + 0.00014, pos.longitude),
-      _proofStop(2, 'proof-2', pos.latitude + 0.00028, pos.longitude),
+      _proofStop(1, 'proof-1', s1.$1, s1.$2),
+      _proofStop(2, 'proof-2', s2.$1, s2.$2),
     ];
 
     final ok = await tour.startTour(stops);
     _add(ok
-        ? 'Tour started. Lock the phone, pocket it, walk NORTH ~15m then ~30m.'
+        ? 'Tour started. Lock the phone, pocket it, walk $_selectedDir '
+            '~15m then ~30m.'
         : 'startTour failed.');
   }
 
@@ -103,9 +130,22 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage> {
                 ? 'Distance to next: —'
                 : 'Distance to next: ${tour.distanceToNext!.toStringAsFixed(1)} m'),
             const SizedBox(height: 12),
+            const Text('Walk direction'),
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 8,
+              children: _directions.keys.map((d) {
+                return ChoiceChip(
+                  label: Text(d),
+                  selected: _selectedDir == d,
+                  onSelected: (_) => setState(() => _selectedDir = d),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 12),
             FilledButton(
               onPressed: _startProof,
-              child: const Text('Prepare & start proof tour'),
+              child: Text('Prepare & start proof tour ($_selectedDir)'),
             ),
             const SizedBox(height: 8),
             OutlinedButton(
