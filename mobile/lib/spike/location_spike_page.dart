@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/providers.dart';
@@ -14,7 +14,10 @@ class LocationSpikePage extends StatefulWidget {
 }
 
 class _LocationSpikePageState extends State<LocationSpikePage> {
-  final AudioPlayer _player = AudioPlayer();
+  // Native background-audio channel: just_audio does not reliably play from a
+  // background geofence callback on iOS (needs an active AVAudioSession the Dart
+  // side can't hold). We hand the clip bytes to a native AVAudioPlayer instead.
+  static const MethodChannel _bgAudio = MethodChannel('com.ondoway/bg_audio');
   final List<String> _log = [];
   GeofenceTrigger? _trigger;
   LocationProvider? _location;
@@ -32,7 +35,6 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
   void dispose() {
     _location?.removeListener(_onLocation);
     _location?.stopTracking();
-    _player.dispose();
     super.dispose();
   }
 
@@ -52,6 +54,16 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
   }
 
   Future<void> _start() async {
+    // Activate the audio session while we are FOREGROUND. iOS only grants the
+    // .playback session to a frontmost app; once active it survives lock and
+    // backgrounding, so the geofence callback can play without re-activating
+    // (which fails with CannotInterruptOthers from the background).
+    try {
+      await _bgAudio.invokeMethod<void>('prepare');
+      _add('Audio session prepared (active, ducking).');
+    } catch (e) {
+      _add('Audio prepare error: $e');
+    }
     final ok = await _location!.startTracking(background: true);
     if (!mounted) return;
     setState(() => _tracking = ok);
@@ -80,9 +92,8 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
 
   Future<void> _playClip() async {
     try {
-      await _player.setAsset('assets/audio/arrived.wav');
-      if (!mounted) return;
-      await _player.play();
+      final bytes = await rootBundle.load('assets/audio/arrived.wav');
+      await _bgAudio.invokeMethod<void>('play', bytes.buffer.asUint8List());
     } catch (e) {
       if (!mounted) return;
       _add('Audio error: $e');
