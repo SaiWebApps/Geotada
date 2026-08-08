@@ -53,7 +53,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A former stock exchange now an events venue that is gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Grands Boulevards",
@@ -101,7 +105,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open tree-lined promenade corridor accessible from the street at all times; not gated.",
+    "place_category": "street"
   },
   {
     "name": "Porte Saint-Denis",
@@ -176,7 +184,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A triumphal arch viewed in the open from the street; not gated.",
+    "place_category": "other"
   },
   {
     "name": "Passage de la Trinite",
@@ -224,7 +236,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A historic covered passage/site treated as walk-by; gated hours not confidently known, left unfiltered.",
+    "place_category": "arcade"
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -272,7 +288,49 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "sun": []
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A covered arcade with grilles that is gated; hours reflect the passage's own published typical daily gate schedule with Sunday closure.",
+    "place_category": "arcade"
   },
   {
     "name": "Tour Jean sans Peur",
@@ -362,7 +420,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A medieval tower open to visitors as a ticketed monument that is gated, but its seasonal hours are not confidently known; left unfiltered.",
+    "place_category": "monument"
   },
   {
     "name": "Rue Montorgueil",
@@ -448,7 +510,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open pedestrian market street whose value is on the public pavement; not gated.",
+    "place_category": "street"
   },
   {
     "name": "Place du Caire",
@@ -500,7 +566,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square viewed from the street; not gated.",
+    "place_category": "square"
   },
   {
     "name": "Rue de Clery",
@@ -576,7 +646,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public street in the Sentier district; not gated.",
+    "place_category": "street"
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -626,7 +700,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A historic building facade viewed from the pavement as a walk-by site; not gated.",
+    "place_category": "other"
   },
   {
     "name": "Place de Louvois",
@@ -674,7 +752,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square; not gated.",
+    "place_category": "square"
   },
   {
     "name": "Cafe du Croissant",
@@ -730,6 +812,10 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A café is gated by its door, but its hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

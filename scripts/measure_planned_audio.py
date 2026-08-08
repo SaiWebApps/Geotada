@@ -20,7 +20,7 @@ import argparse
 
 from src.connection import create_driver
 from src.tour.beat_select import select_poi_beats
-from src.tour.routing import compute_dwell_seconds, target_audio_seconds
+from src.tour.routing import target_dwell_seconds
 from src.tour.selection import CorpusSnapshot, load_paris_corpus
 
 
@@ -52,7 +52,11 @@ def measure(
         active = snapshot.beats_for(poi.id)
         plan = select_poi_beats(poi, active, interest_lenses=lenses)
         planned = planned_audio_seconds(plan.beats)
-        dwell = compute_dwell_seconds(poi.tier)
+        # Was compute_dwell_seconds(poi.tier), a flat per-tier number deleted
+        # 2026-08-06. A stop's length is now priced per visitor against the
+        # place's own capacity, so the comparable figure here is what the
+        # place absorbs from the outside — the one number every POI carries.
+        dwell = poi.typical_duration_min * 60
         rows.append(
             {
                 "name": poi.name,
@@ -112,10 +116,10 @@ def main() -> None:
         f"{total_planned:>9} {total_dwell:>7} {total_honest:>8}"
     )
     if args.duration_min:
-        budget = target_audio_seconds(args.duration_min)
+        budget = target_dwell_seconds(args.duration_min)
         print(
-            f"\nduration {args.duration_min}min → audio budget {budget}s, "
-            f"fill floor {round(0.8 * budget)}s (FILL_PASS_AUDIO_FLOOR_FRAC=0.8)"
+            f"\nduration {args.duration_min}min → dwell budget {budget}s, "
+            f"fill floor {round(0.8 * budget)}s (FILL_PASS_DWELL_FLOOR_FRAC=0.8)"
         )
 
 

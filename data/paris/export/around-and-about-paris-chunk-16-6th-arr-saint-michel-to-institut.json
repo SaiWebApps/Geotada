@@ -76,7 +76,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated cafe you enter but no OSM tag and hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -231,7 +235,54 @@
         "emotional_register": "playful"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo,Su 09:30-20:00; Tu-Fr 07:30-20:00; Sa 08:30-20:00'.",
+    "place_category": "church"
   },
   {
     "name": "Le Procope",
@@ -318,7 +369,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A walk_by_only cafe passed on the street, so not gated for this tour.",
+    "place_category": "other"
   },
   {
     "name": "Cour du Commerce-Saint-Andre",
@@ -488,7 +543,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open pedestrian passage accessible from the street, not gated.",
+    "place_category": "arcade"
   },
   {
     "name": "Fontaine Saint-Michel",
@@ -531,7 +590,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A monumental fountain viewed from the open pavement, so not gated.",
+    "place_category": "monument"
   },
   {
     "name": "Rue de l'Hirondelle",
@@ -577,7 +640,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public alley admired from the street, so not gated.",
+    "place_category": "street"
   },
   {
     "name": "Caveau de la Bolee",
@@ -624,7 +691,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A walk_by_only cellar cabaret whose access hours are not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Cour de Rohan",
@@ -669,7 +740,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Hidden medieval courtyards sometimes gated, but their access hours are not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Theatre de l'Odeon",
@@ -754,7 +829,11 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Marked walk_by_only and admired as a facade from the square, so not gated.",
+    "place_category": "other"
   },
   {
     "name": "Institut de France",
@@ -901,7 +980,11 @@
         "emotional_register": "playful"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Marked walk_by_only and viewed as a domed exterior from the quai, so not gated.",
+    "place_category": "other"
   },
   {
     "name": "Hotel de la Monnaie",
@@ -954,7 +1037,54 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "11:00",
+          "22:00"
+        ]
+      ],
+      "fri": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A coin museum you enter, hence gated; transcribed from its OSM tag 'Mo-Su 11:00-19:00; Th 11:00-22:00' with holiday closures noted.",
+    "place_category": "museum"
   },
   {
     "name": "Shakespeare and Company",
@@ -1005,7 +1135,54 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A bookshop entered through a door (gated); hours from the shop's own published pattern of 10:00-20:00 weekdays and 11:00-20:00 weekends.",
+    "place_category": "other"
   },
   {
     "name": "Pont Neuf",
@@ -1051,6 +1228,10 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
+    "place_category": "bridge"
   }
 ]

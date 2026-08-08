@@ -642,7 +642,54 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "sat": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "sun": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated garden with closing gates; transcribed from OSM tag 'Mo-Su 07:30-21:00'.",
+    "place_category": "garden"
   },
   {
     "name": "Palais-Royal",
@@ -1031,7 +1078,11 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated garden with closing bells and seasonally varying hours; precise current schedule not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -1186,7 +1237,11 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A church you enter, hence gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Eglise Saint-Roch",
@@ -1266,7 +1321,11 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated church one enters; its opening hours are not confidently known, left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -1348,7 +1407,11 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated basilica one enters; its opening hours are not confidently known, left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Galerie Vivienne",
@@ -1428,7 +1491,49 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "tue": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "wed": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "thu": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "fri": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "sun": []
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated covered arcade with grilles; OSM tag \"Mo-Sa 08:30-20:30\" transcribed with Sunday closed.",
+    "place_category": "arcade"
   },
   {
     "name": "Comedie-Francaise",
@@ -1513,7 +1618,11 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated national theatre entered by ticket; performance and box-office hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Galignani",
@@ -1532,7 +1641,11 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated bookshop with a door, but no OSM tag and hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Angelina Paris",
@@ -1551,6 +1664,10 @@
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated tearoom/café that requires entry, but I do not confidently know its precise hours; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

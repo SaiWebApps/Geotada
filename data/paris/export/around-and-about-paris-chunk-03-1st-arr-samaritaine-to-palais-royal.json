@@ -136,7 +136,54 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated ticketed monument; transcribed from OSM tag 'Mo-Su 09:30-18:00'.",
+    "place_category": "other"
   },
   {
     "name": "Ile de la Cite",
@@ -213,7 +260,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open Seine island crossed by public streets and bridges, valued in the open air with no gate between street and experience.",
+    "place_category": "other"
   },
   {
     "name": "Place Dauphine",
@@ -285,7 +336,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open triangular public square on the Île de la Cité, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Place du Châtelet",
@@ -421,7 +476,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square with fountain and theatres, its value in the open street, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Pont Neuf",
@@ -463,7 +522,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
+    "place_category": "bridge"
   },
   {
     "name": "Sainte-Chapelle",
@@ -561,7 +624,54 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated ticketed chapel; transcribed from OSM tag \"Jan-Mar 09:00-17:00; Apr-Sep 09:00-19:00; Oct-Dec 09:00-17:00\" using the current Apr-Sep 09:00-19:00 season.",
+    "place_category": "church"
   },
   {
     "name": "Tour de l'Horloge",
@@ -607,6 +717,10 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "The clock is mounted on the Conciergerie exterior and viewed from the street, so as a monument seen from the pavement it is not gated.",
+    "place_category": "monument"
   }
 ]

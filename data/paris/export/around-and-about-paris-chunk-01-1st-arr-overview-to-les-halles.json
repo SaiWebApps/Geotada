@@ -49,7 +49,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open Seine island crossed by public streets and bridges, valued in the open air with no gate between street and experience.",
+    "place_category": "other"
   },
   {
     "name": "Jardin des Tuileries",
@@ -128,7 +132,54 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": {
+      "mon": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "sat": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ],
+      "sun": [
+        [
+          "07:30",
+          "21:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated garden with closing gates; transcribed from OSM tag 'Mo-Su 07:30-21:00'.",
+    "place_category": "garden"
   },
   {
     "name": "Les Halles",
@@ -286,7 +337,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "As a site/setting it refers to a public area; the surface square and gardens are open-air with no single gate.",
+    "place_category": "market"
   },
   {
     "name": "Louvre Museum",
@@ -585,7 +640,49 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "tue": [],
+      "wed": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:00",
+          "21:45"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "Gated museum; hours from the Louvre's own published schedule, closed Tuesdays with late Friday opening.",
+    "place_category": "museum"
   },
   {
     "name": "Paris Catacombs",
@@ -635,7 +732,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated underground ossuary with ticket line but no OSM tag and hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Pavillon de Flore",
@@ -683,7 +784,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Louvre wing viewed from the exterior as a walk-by, not gated as an independent entry.",
+    "place_category": "other"
   },
   {
     "name": "Place Vendome",
@@ -731,7 +836,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square with its column and buildings viewed in the open air, so it is not gated.",
+    "place_category": "square"
   },
   {
     "name": "Saint-Eustache",
@@ -888,6 +997,53 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:30",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo-Fr 09:30-19:00; Sa 10:00-19:00; Su 09:00-19:00'.",
+    "place_category": "church"
   }
 ]

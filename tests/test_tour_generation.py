@@ -95,8 +95,17 @@ def _input(round_trip: bool = True, duration: int = 60) -> TourInput:
     )
 
 
-def _route(pois: tuple[POI, ...], duration_min: int = 60) -> Route:
-    """Minimal Route: pretend each transit walks 60s for cap-budget arithmetic."""
+def _route(
+    pois: tuple[POI, ...],
+    duration_min: int = 60,
+    visit_seconds: dict[str, int] | None = None,
+) -> Route:
+    """Minimal Route: pretend each transit walks 60s for cap-budget arithmetic.
+
+    ``visit_seconds`` is how long this visitor spends AT each stop, priced in
+    selection. Omitted, it is empty and every stop falls back to the length of
+    its own narration — which is what an unpriced corpus produces.
+    """
     transits = tuple(
         TransitSegment(
             from_poi_id=None if i == 0 else pois[i - 1].id,
@@ -113,8 +122,9 @@ def _route(pois: tuple[POI, ...], duration_min: int = 60) -> Route:
         total_walk_distance_m=100.0 * len(pois),
         total_walk_seconds=walk,
         spine_area="Le Marais",
-        target_audio_seconds=duration_min * 30,
+        target_dwell_seconds=duration_min * 30,
         err_short_total_seconds=int(duration_min * 60 * 0.83),
+        planned_visit_seconds=visit_seconds or {},
     )
 
 
@@ -1218,17 +1228,26 @@ def test_transit_only_stop_dropped_beat_is_not_reported_as_voiced():
 
     seq = BeatSequence(poi_beats=(_poi_beats(p1, (p1_orient, p1_body)),
                                   _poi_beats(p2, (p2_transit,))))
-    script = generate(seq, _route((p1, p2)), _input(), glue_client=MockGlueClient())
+    # p2 is priced at 300 s of visit time, which is what selection supplies on a
+    # real route. Without it the stop would floor at its narration and this test
+    # could not tell "does not over-report unvoiced audio" from "reports nothing".
+    script = generate(
+        seq,
+        _route((p1, p2), visit_seconds={p2.id: 300}),
+        _input(),
+        glue_client=MockGlueClient(),
+    )
 
     # (1) FIX: the dropped, unvoiced beat is NOT reported as voiced — beat_ids is
     # empty (nothing was actually voiced at this stop).
     sp2 = script.selected_pois[1]
     assert sp2.beat_ids == ()
-    # (1b) FIX: dwell does not over-report the 120s of never-voiced audio; a
-    # tier-5 stop still floors at its tier dwell (300s), never above it here.
-    from src.tour.routing import compute_dwell_seconds
-
-    assert sp2.dwell_seconds == compute_dwell_seconds(p2.tier)
+    # (1b) FIX: dwell does not over-report the 120s of never-voiced audio. It
+    # floors at what this visitor spends AT the stop — 300 s here, supplied by
+    # the route exactly as selection supplies it. It was the flat tier-5 dwell
+    # until 2026-08-06; the number is the same, the reason is not, and the
+    # property under test is unchanged: never ABOVE the floor on unvoiced audio.
+    assert sp2.dwell_seconds == 300
     # (1c) FIX: because beat_ids no longer marks it voiced, keep-exploring
     # re-classifies the unreachable content as an extra the user CAN reach.
     extras = extra_beat_ids(p2, (p2_transit,), sp2.beat_ids)
@@ -1330,9 +1349,9 @@ def test_reported_dwell_is_planned_audio_when_a_stop_is_beat_rich():
     assert sp.dwell_seconds == 400  # planned voiced audio, NOT the 300s tier floor
 
 
-def test_reported_dwell_floors_at_tier_when_a_stop_is_beat_thin():
-    # A 100-word beat @150wpm = 40s of narration at a tier-5 stop -> the card
-    # still reports the 300s tier floor (a stop takes look-around time even when
+def test_reported_dwell_floors_at_its_visit_time_when_a_stop_is_beat_thin():
+    # A 100-word beat @150wpm = 40s of narration -> the card still reports the
+    # 300s the visitor actually spends there (a stop takes look-around time even when
     # the audio is short). max(tier_floor, planned) keeps the floor.
     poi = _poi("thin", "Small Chapel", tier=5)
     beats = (_beat("b1", poi.id, body="A brief note here.", word_count=100),)
@@ -1346,9 +1365,17 @@ def test_reported_dwell_floors_at_tier_when_a_stop_is_beat_thin():
             ),
         )
     )
-    script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+    # WAS the flat 300 s tier-5 dwell, deleted 2026-08-06. The floor is now what
+    # THIS visitor spends at THIS place, priced in selection and carried on the
+    # route — so the fixture must supply it, exactly as a real route does.
+    route = _route((poi,), visit_seconds={poi.id: 300})
+    script = generate(seq, route, _input(), glue_client=MockGlueClient())
     sp = next(s for s in script.selected_pois if s.id == poi.id)
-    assert sp.dwell_seconds == 300  # tier-5 floor wins over the 40s planned audio
+    assert sp.dwell_seconds == 300  # the visit time wins over the 40s of narration
+
+    # And with no visit time priced, the stop is exactly as long as it speaks.
+    bare = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+    assert next(s for s in bare.selected_pois if s.id == poi.id).dwell_seconds == 40
 
 
 # ---------------------------------------------------------------------------
@@ -1379,7 +1406,7 @@ def _route_with_first_leg(secs: int) -> Route:
                                  walk_seconds=secs),),
         total_walk_distance_m=100.0, total_walk_seconds=secs,
         spine_area="Le Marais",
-        target_audio_seconds=1800, err_short_total_seconds=2988,
+        target_dwell_seconds=1800, err_short_total_seconds=2988,
     )
 
 
@@ -1458,16 +1485,23 @@ def test_nav_template_final_destination_is_a_graceful_arrival():
 
 
 def test_template_nav_minutes_from_leg_seconds_when_routed():
-    """A routed leg (leg_seconds present) speaks minutes computed from
-    leg_seconds, not the old round(distance_m / 80) haversine-at-80m/min
-    formula. distance_m (240) and leg_seconds (660) intentionally disagree
-    here — a slow, winding routed path easily beats straight-line distance at
-    80 m/min — so a regression to the old formula would read a different
-    (wrong) minute count."""
+    """A routed leg speaks minutes computed from leg_seconds, not the old
+    round(distance_m / 80) haversine-at-80m/min formula. distance_m (240) and
+    leg_seconds (660) intentionally disagree here — a slow, winding routed path
+    easily beats straight-line distance at 80 m/min — so a regression to the old
+    formula would read a different (wrong) minute count.
+
+    TIGHTENED 2026-08-06: a leg is routed when VALHALLA SAID SO, not merely when
+    ``leg_seconds`` is set. The fixture therefore declares its provenance, and the
+    second half below pins the case that distinction exists for — a client that
+    answered with seconds but produced no shape, which is what a mid-route
+    degradation looks like. Its number is not one anybody can vouch for, so the
+    leg is worth its honest fallback."""
     route = Route(
         pois=(_poi("p", "B Place"),),
         transits=(TransitSegment(from_poi_id=None, to_poi_id="p", distance_m=240.0,
-                                 walk_seconds=300, leg_seconds=660),),
+                                 walk_seconds=300, leg_seconds=660,
+                                 polyline="fake", source="valhalla"),),
         total_walk_distance_m=240.0, total_walk_seconds=300,
     )
     leg_seconds = _segment_leg_seconds(route, 0)
@@ -1475,6 +1509,18 @@ def test_template_nav_minutes_from_leg_seconds_when_routed():
     text = _template_nav("A Place", "B Place", leg_seconds, 0)
     assert "11-minute walk" in text
     assert "3-minute" not in text  # what round(240/80) would have said
+
+    degraded = Route(
+        pois=(_poi("p", "B Place"),),
+        transits=(TransitSegment(from_poi_id=None, to_poi_id="p", distance_m=240.0,
+                                 walk_seconds=300, leg_seconds=660,
+                                 source="haversine"),),
+        total_walk_distance_m=240.0, total_walk_seconds=300,
+    )
+    assert _segment_leg_seconds(degraded, 0) == 300, (
+        "a leg Valhalla did not route must be worth its honest fallback, whatever "
+        "number a degraded client left behind"
+    )
 
 
 def test_template_nav_minutes_fall_back_to_walk_seconds_when_unrouted():
@@ -1504,7 +1550,8 @@ def test_nav_minutes_stay_consistent_with_options_eta_accounting():
     )
     transits = (
         TransitSegment(from_poi_id=None, to_poi_id="p1", distance_m=500.0,
-                       walk_seconds=810, leg_seconds=600),  # routed: 600s -> 10 min
+                       walk_seconds=810, leg_seconds=600,
+                       polyline="fake", source="valhalla"),  # routed: 600s -> 10 min
         TransitSegment(from_poi_id="p1", to_poi_id="p2", distance_m=300.0,
                        walk_seconds=360, leg_seconds=None),  # fallback: 360s -> 6 min
     )

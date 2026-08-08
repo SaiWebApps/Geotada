@@ -52,7 +52,8 @@ from .contract import (
     ValidationReport,
 )
 from .glue_client import NO_GLUE_SENTINEL, GlueClient, HaikuGlueClient
-from .routing import compute_dwell_seconds, planned_audio_seconds
+from .routing import leg_walk_seconds, planned_audio_seconds
+from .visit_time import stop_seconds
 
 # ---------------------------------------------------------------------------
 # The audio clock
@@ -433,7 +434,7 @@ def generate(
         validation=ValidationReport(),  # placeholder — replaced below
     )
     report = (
-        validate_script(script, beat_sequence)
+        validate_script(script, beat_sequence, spine_area=route.spine_area)
         if validate_output
         else ValidationReport()
     )
@@ -990,16 +991,15 @@ def _segment_distance_m(route: Route, stop_idx: int) -> float:
 def _segment_leg_seconds(route: Route, stop_idx: int) -> int:
     """Walking-segment seconds for the transit into stop ``stop_idx``.
 
-    Same routed-first fallback used by options.py's eta_seconds sum,
-    reflection.py's ``_leg_walk_seconds``, and audit.py's
-    ``route_eta_seconds``: prefer the routed ``leg_seconds`` (Valhalla,
-    pinned to PACE_KMH=3.0) and fall back to the pace-corrected haversine
-    ``walk_seconds``. Display must derive from the same budget the engine
-    uses everywhere else so announced legs sum to the displayed tour total.
+    Delegates to ``routing.leg_walk_seconds`` — the one per-leg expression the
+    route total, the served clock and reflection all use — so the leg this
+    announces to the walker is the leg the tour was budgeted with. It used to
+    restate the rule here (and so did the other three), and the restatements
+    read nullness where the total read provenance. (The fourth copy it named,
+    audit.py's ``route_eta_seconds``, was dead and is gone.)
     """
     if 0 <= stop_idx < len(route.transits):
-        t = route.transits[stop_idx]
-        return t.leg_seconds if t.leg_seconds is not None else t.walk_seconds
+        return leg_walk_seconds(route.transits[stop_idx])
     return 0
 
 
@@ -1192,11 +1192,14 @@ def _flatten_pois(
                 area=route.spine_area
                 if route.spine_area in poi.areas
                 else (poi.areas[0] if poi.areas else None),
-                # C8: honest REPORTED minutes — tier dwell is a display floor
-                # only; a beat-rich stop reports its real voiced length. Zero
-                # route change (selection still books tier dwell until C9).
-                dwell_seconds=max(
-                    compute_dwell_seconds(poi.tier),
+                # Time AT the stop, priced once in selection against this
+                # visitor's interest and this place's capacity. The combining
+                # rule is IMPORTED, not spelled here: the planner's gate applies
+                # the same `stop_seconds` to the same capped plans, so certified
+                # and served are the same quantity rather than two `max(...)`
+                # calls that agree until someone edits one of them.
+                dwell_seconds=stop_seconds(
+                    route.planned_visit_seconds.get(poi.id, 0),
                     planned_audio_seconds(plan_beats),
                 ),
                 beat_ids=beat_ids,

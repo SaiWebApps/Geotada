@@ -60,13 +60,136 @@ def text_sha256(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
-def _valid_coordinates(value: tuple[float, float]) -> tuple[float, float]:
+def valid_coordinates(value: tuple[float, float]) -> tuple[float, float]:
+    """Is this a real point on Earth? THE ONE ANSWER.
+
+    Lives in this module because it is the lowest layer in the tour package —
+    ``contract`` imports it, ``artifact`` imports ``contract``, and
+    ``quality_certification`` imports ``artifact`` — so every caller can reach it
+    without a cycle.
+
+    IT WAS DEFINED FOUR TIMES until 2026-08-06: here, twice in ``contract`` and
+    once in ``artifact``. All four agreed, which is what made it survive — four
+    correct copies read as four careful authors rather than one decision made four
+    times. The cost is that tightening the rule (a city-scoped bound, a
+    coordinate-precision floor, rejecting the null island) means finding all four,
+    and the one that gets missed then admits a point the others refuse.
+
+    Non-finite values are rejected by the range comparison alone — ``-90 <= nan``
+    is False — so ``isfinite`` is belt-and-braces, kept because a reader should not
+    have to know that about NaN to trust this.
+    """
     lat, lng = value
     if not math.isfinite(lat) or not -90.0 <= lat <= 90.0:
         raise ValueError(f"lat out of range: {lat}")
     if not math.isfinite(lng) or not -180.0 <= lng <= 180.0:
         raise ValueError(f"lng out of range: {lng}")
     return value
+
+
+def canonical_payload_bound_to_hash(
+    payload_json: str,
+    payload_sha256: str,
+    *,
+    label: str,
+    require_object: bool = False,
+) -> None:
+    """Is this payload canonical JSON, and does its hash actually bind it?
+
+    THE ONE ANSWER, and it is a replay-integrity rule rather than a formatting
+    one: a payload that is canonical and hash-bound can be re-derived byte for
+    byte by anybody holding the hash, which is the whole basis on which evidence
+    in this system is trusted.
+
+    IT WAS DEFINED THREE TIMES until 2026-08-06 — twice in ``artifact`` and once
+    in ``quality_certification`` — differing only in their error strings and in
+    whether the payload had to be an object. Both of those are now arguments,
+    because they are the only things that ever genuinely varied.
+
+    ``label`` names the evidence in the error the way each caller already did, so
+    a failure still says which kind of payload was wrong.
+    """
+    try:
+        parsed = json.loads(payload_json)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{label} is not JSON") from exc
+    # `canonical_json` and not a local `json.dumps`: this module already owns the
+    # one canonical form, and the copies this helper replaced spelled it inline
+    # WITHOUT `allow_nan=False`. That was a real difference, not a formatting one —
+    # `json.loads` accepts a bare `NaN` literal, so the laxer form round-tripped a
+    # payload carrying NaN and hash-bound it as valid evidence. Delegating tightens
+    # those callers to the strict form, which is the correct one for anything whose
+    # whole purpose is exact replay.
+    canonical = canonical_json(parsed)
+    if require_object and not isinstance(parsed, dict):
+        raise ValueError(f"{label} is not a canonical JSON object")
+    if canonical != payload_json:
+        raise ValueError(
+            f"{label} is not a canonical JSON object"
+            if require_object
+            else f"{label} is not canonical JSON"
+        )
+    if payload_sha256 != text_sha256(canonical):
+        raise ValueError(f"{label} hash does not match payload")
+
+
+def check_reference_lane(
+    reference_kind: str,
+    relation: str | None,
+    feature_of_canonical_place_id: str | None,
+    perceivability_state: str,
+) -> None:
+    """THE shared experiential-vs-historical lane rules for a place reference.
+
+    One home (dedup-review 2026-08-07 — they were spelled twice, here and in
+    ``artifact.PlaceReferenceEvidence``): a contextual-historical reference
+    carries no experiential semantics (no relation, no feature parent) and
+    marks perceivability not applicable; an experiential reference requires a
+    typed relation, a perceivability decision, and the feature_of/parent
+    pairing. Each layer adds its OWN extras beside this call — directional
+    semantics and coordinate identity in the artifact layer, resolution-state
+    gating in the corpus layer.
+    """
+    if reference_kind == "contextual_historical":
+        if relation is not None or feature_of_canonical_place_id is not None:
+            raise ValueError(
+                "contextual historical references cannot carry experiential semantics"
+            )
+        if perceivability_state != "not_applicable":
+            raise ValueError(
+                "contextual historical references must mark perceivability not applicable"
+            )
+        return
+    if relation is None:
+        raise ValueError("experiential references require a typed place relation")
+    if perceivability_state == "not_applicable":
+        raise ValueError("experiential references require a perceivability decision")
+    if relation == "feature_of":
+        if feature_of_canonical_place_id is None:
+            raise ValueError("feature_of references require their canonical primary")
+    elif feature_of_canonical_place_id is not None:
+        raise ValueError("only feature_of references may name a canonical parent")
+
+
+def check_place_assessment_references(
+    assessment: str, reference_ids: tuple[str, ...]
+) -> None:
+    """THE shared consistency core for a sentence place assessment.
+
+    Three rules, one home (dedup-review 2026-08-07 — they were spelled twice,
+    here and in ``artifact.SentencePlaceAssessment``): (1) a no-claim
+    assessment carries no references; (2) a place-references assessment
+    carries at least one; (3) reference identities are unique. Each validator
+    layer adds its OWN extra guards beside this call — sentence-hash binding
+    in the artifact layer; the unreviewed lane, resolution state and canonical
+    ordering in the corpus layer.
+    """
+    if assessment == "no_material_place_claim" and reference_ids:
+        raise ValueError("no-place-claim assessment cannot contain references")
+    if assessment == "place_references" and not reference_ids:
+        raise ValueError("place-reference assessment cannot be empty")
+    if len(reference_ids) != len(set(reference_ids)):
+        raise ValueError("sentence place assessment repeats a reference identity")
 
 
 def _model_payload(model: BaseModel, *, excluded_hash: str) -> dict[str, object]:
@@ -87,18 +210,20 @@ class CoordinateProvenance(BaseModel):
     payload_json: str = Field(..., min_length=2)
     payload_sha256: str = Field(..., pattern=SHA256_PATTERN)
 
-    _coordinates_are_valid = field_validator("coordinates")(_valid_coordinates)
+    _coordinates_are_valid = field_validator("coordinates")(valid_coordinates)
 
     @model_validator(mode="after")
     def _payload_is_exact(self) -> CoordinateProvenance:
-        try:
-            parsed = json.loads(self.payload_json)
-        except json.JSONDecodeError as exc:
-            raise ValueError("coordinate provenance payload is not JSON") from exc
-        if not isinstance(parsed, dict) or canonical_json(parsed) != self.payload_json:
-            raise ValueError("coordinate provenance payload is not a canonical JSON object")
-        if text_sha256(self.payload_json) != self.payload_sha256:
-            raise ValueError("coordinate provenance hash does not match payload")
+        canonical_payload_bound_to_hash(
+            self.payload_json,
+            self.payload_sha256,
+            label="coordinate provenance payload",
+            require_object=True,
+        )
+        parsed = json.loads(self.payload_json)
+        # Everything above is the shared canonical-and-bound rule. What follows is
+        # this model's OWN extra requirement — that the payload agrees with the
+        # fields beside it — and is genuinely not shared.
         if parsed.get("source_record_id") != self.source_record_id:
             raise ValueError("coordinate provenance source record differs from payload")
         if parsed.get("coordinates") != list(self.coordinates):
@@ -211,24 +336,17 @@ class CorpusPlaceReference(BaseModel):
 
     @model_validator(mode="after")
     def _reference_lane_is_consistent(self) -> CorpusPlaceReference:
+        # The shared lane core; the corpus layer's own resolution gate follows.
+        check_reference_lane(
+            self.reference_kind,
+            self.relation,
+            self.feature_of_canonical_place_id,
+            self.perceivability_state,
+        )
         if self.reference_kind == "contextual_historical":
-            if self.relation is not None or self.feature_of_canonical_place_id is not None:
-                raise ValueError("historical context cannot carry experiential semantics")
-            if self.perceivability_state != "not_applicable":
-                raise ValueError("historical context must mark perceivability not applicable")
             return self
-
-        if self.relation is None:
-            raise ValueError("experiential reference requires a typed relation")
-        if self.perceivability_state == "not_applicable":
-            raise ValueError("experiential reference requires a perceivability decision")
         if self.resolution_state == "resolved" and self.canonical_place_id is None:
             raise ValueError("resolved experiential reference requires a canonical place")
-        if self.relation == "feature_of":
-            if self.feature_of_canonical_place_id is None:
-                raise ValueError("feature reference requires its canonical parent")
-        elif self.feature_of_canonical_place_id is not None:
-            raise ValueError("only a feature reference may name a canonical parent")
         return self
 
 
@@ -253,18 +371,14 @@ class CorpusSentencePlaceAssessment(BaseModel):
             if self.references or self.resolution_state == "resolved":
                 raise ValueError("unreviewed assessment must be unresolved and reference-free")
             return self
-        if self.assessment == "no_material_place_claim" and self.references:
-            raise ValueError("no-place-claim assessment cannot contain references")
+        reference_ids = tuple(reference.reference_id for reference in self.references)
+        # The shared three-rule core; the corpus layer's own guards follow.
+        check_place_assessment_references(self.assessment, reference_ids)
         if (
             self.assessment == "no_material_place_claim"
             and self.resolution_state != "resolved"
         ):
             raise ValueError("no-place-claim is a resolved review decision")
-        if self.assessment == "place_references" and not self.references:
-            raise ValueError("place-reference assessment cannot be empty")
-        reference_ids = tuple(reference.reference_id for reference in self.references)
-        if len(reference_ids) != len(set(reference_ids)):
-            raise ValueError("sentence place assessment repeats a reference identity")
         if reference_ids != tuple(sorted(reference_ids)):
             raise ValueError("sentence place references must be in canonical order")
         if self.resolution_state == "resolved" and any(
@@ -589,5 +703,6 @@ __all__ = [
     "StableBeatIdentity",
     "canonical_json",
     "canonical_sha256",
+    "check_place_assessment_references",
     "text_sha256",
 ]

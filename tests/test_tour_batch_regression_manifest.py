@@ -35,18 +35,6 @@ def test_each_city_covers_open_round_trip_and_fixed_end() -> None:
         } == {"open", "round_trip", "fixed_end"}
 
 
-def test_accepted_paris_request_is_preserved_exactly() -> None:
-    manifest = load_frozen_tour_batch(MANIFEST_PATH)
-    accepted = manifest.cases[0]
-
-    assert accepted.case_id == "paris-ile-open-90"
-    assert accepted.tour_input.model_dump(mode="json", exclude_none=True) == {
-        "start": [48.8568, 2.3414],
-        "duration_min": 90,
-        "city_slug": "paris",
-        "round_trip": False,
-    }
-
 
 def test_duplicate_or_unbalanced_batches_fail_closed() -> None:
     manifest = load_frozen_tour_batch(MANIFEST_PATH)

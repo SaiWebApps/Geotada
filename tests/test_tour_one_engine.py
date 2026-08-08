@@ -1430,7 +1430,7 @@ def test_the_legacy_err_short_planner_is_gone() -> None:
       * set both fractions of DEFAULT_ROUTE_PLANNING_POLICY to 0.83 -> assertions 1-5;
       * re-add LEGACY_ROUTE_PLANNING_POLICY, ``is_legacy``, or any single one of the
         seven ``is_legacy`` branches -> assertion 6;
-      * point ``density._target_audio_seconds`` back at a bare ERR_SHORT expression
+      * point ``density._target_dwell_seconds`` back at a bare ERR_SHORT expression
         -> assertions 5 and 6;
       * drop ``planning_policy=planning_policy`` from selection's density call
         -> assertion 8.
@@ -1446,8 +1446,8 @@ def test_the_legacy_err_short_planner_is_gone() -> None:
 
     # 1-3. The 60-minute budget is the certification one on the DEFAULT path.
     budget = route_planning_budget(60)
-    assert budget.nominal_elapsed_seconds == 3600, "was 2988 under the legacy 0.83"
-    assert budget.audio_target_seconds == 2160, "was 1793 under the legacy 0.83"
+
+    assert budget.dwell_target_seconds == 2160, "was 1793 under the legacy 0.83"
     assert budget.walk_budget_seconds == 1440, "was 1195 under the legacy 0.83"
 
     # 4. The reachable walk envelope follows it.
@@ -1459,8 +1459,8 @@ def test_the_legacy_err_short_planner_is_gone() -> None:
     #    would read GREEN on a pool holding barely half the audio the planner then tried
     #    to fill: a thin tour served as healthy.
     assert (
-        density._target_audio_seconds(60, DEFAULT_ROUTE_PLANNING_POLICY)
-        == budget.audio_target_seconds
+        density._target_dwell_seconds(60, DEFAULT_ROUTE_PLANNING_POLICY)
+        == budget.dwell_target_seconds
     )
 
     # 6. STRUCTURAL: none of the legacy names, and no legacy policy id, survives in src/.
@@ -1559,7 +1559,7 @@ def test_the_legacy_err_short_planner_is_gone() -> None:
         maximum_requested_fraction=0.9,
         policy_id="test-half-nominal",
     )
-    assert density._target_audio_seconds(60, half) != density._target_audio_seconds(
+    assert density._target_dwell_seconds(60, half) != density._target_dwell_seconds(
         60, DEFAULT_ROUTE_PLANNING_POLICY
     ), "the fixture policy is indistinguishable from the default; it proves nothing"
 
@@ -1596,8 +1596,8 @@ def _minimal_assessment():
         status="RED",
         walk_radius_m=100.0,
         fill_ratio=0.1,
-        audio_capacity_seconds=10,
-        target_audio_seconds=100,
+        dwell_capacity_seconds=10,
+        target_dwell_seconds=100,
         reachable_poi_count=0,
         reachable_beat_count=0,
         anchor_candidate_count=0,

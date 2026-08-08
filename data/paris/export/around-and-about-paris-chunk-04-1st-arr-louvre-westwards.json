@@ -73,7 +73,54 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated department store; transcribed from OSM tag 'Mo-Su 10:00-20:00'.",
+    "place_category": "other"
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -151,7 +198,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A church you enter, hence gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Galerie Vero-Dodat",
@@ -200,7 +251,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A covered arcade with grilles that close, hence gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "arcade"
   },
   {
     "name": "Banque de France",
@@ -249,7 +304,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working central bank whose interior is not routinely open; hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Place des Victoires",
@@ -323,7 +382,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open circular public square with a statue, viewed from the street, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Palais-Royal",
@@ -427,7 +490,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated garden with closing bells and seasonally varying hours; precise current schedule not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Comedie-Francaise",
@@ -482,7 +549,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated national theatre entered by ticket; performance and box-office hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Hotel Le Meurice",
@@ -557,7 +628,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated palace hotel with a lobby/reception behind doors; specific access hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Eglise Saint-Roch",
@@ -608,7 +683,11 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated church one enters; its opening hours are not confidently known, left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Place Vendome",
@@ -661,6 +740,10 @@
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square with its column and buildings viewed in the open air, so it is not gated.",
+    "place_category": "square"
   }
 ]

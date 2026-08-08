@@ -344,6 +344,10 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "moulin_rouge-rev-1353706143",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated cabaret with ticketed evening shows; exact performance/access hours not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

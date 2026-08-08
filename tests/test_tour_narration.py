@@ -58,7 +58,7 @@ def _yellow_assessment(on_lens_fill_ratio):
 
     return TourabilityAssessment(
         status="YELLOW", walk_radius_m=369.0, fill_ratio=0.57,
-        audio_capacity_seconds=1000, target_audio_seconds=1793,
+        dwell_capacity_seconds=1000, target_dwell_seconds=1793,
         reachable_poi_count=3, reachable_beat_count=10, anchor_candidate_count=2,
         cluster_compactness=0.5, duration_min=60, round_trip=True,
         on_lens_fill_ratio=on_lens_fill_ratio,
@@ -94,7 +94,7 @@ def _surplus_fill_assessment(anchor_candidate_count: int = 2, cluster_compactnes
 
     return TourabilityAssessment(
         status="YELLOW", walk_radius_m=369.0, fill_ratio=1.00,
-        audio_capacity_seconds=1793, target_audio_seconds=1793,
+        dwell_capacity_seconds=1793, target_dwell_seconds=1793,
         reachable_poi_count=2, reachable_beat_count=11,
         anchor_candidate_count=anchor_candidate_count,
         cluster_compactness=cluster_compactness, duration_min=45, round_trip=True,

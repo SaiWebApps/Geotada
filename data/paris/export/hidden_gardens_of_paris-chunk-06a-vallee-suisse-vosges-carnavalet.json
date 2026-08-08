@@ -213,7 +213,11 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A small landscaped garden slope off the Champs-Élysées; gated garden but hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Petit Palais",
@@ -308,7 +312,49 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "Gated municipal museum; published City of Paris pattern is Tuesday-Sunday 10:00-18:00, closed Mondays.",
+    "place_category": "museum"
   },
   {
     "name": "Grand Palais",
@@ -329,7 +375,49 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "22:30"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated exhibition hall; transcribed from OSM tag 'Tu-Th, Sa-Su 09:30-20:00; Fr 09:30-22:30' with Monday closed.",
+    "place_category": "monument"
   },
   {
     "name": "Champs-Elysees",
@@ -438,7 +526,11 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Not gated — an open public avenue whose whole value stands in the open on the pavement, always accessible.",
+    "place_category": "other"
   },
   {
     "name": "Place des Vosges",
@@ -901,7 +993,11 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Jardin Saint-Gilles Grand Veneur",
@@ -986,7 +1082,11 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Marais public garden with closing bells, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Hotel de Sully",
@@ -1089,7 +1189,11 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A mansion with an enterable courtyard and interior, so gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Place du Marché Sainte-Catherine",
@@ -1173,7 +1277,11 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square in the Marais whose value stands in the open with no door or gate, so not gated.",
+    "place_category": "square"
   },
   {
     "name": "Musee Carnavalet",
@@ -1522,7 +1630,49 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated museum; hours follow the institution's published pattern of Tuesday-Sunday 10:00-18:00, closed Mondays.",
+    "place_category": "museum"
   },
   {
     "name": "La Tartine",
@@ -1611,6 +1761,10 @@
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A café/eatery passed on the walk; role is walk-by only, hours not confidently known and not needed for routing, left unfiltered.",
+    "place_category": "other"
   }
 ]

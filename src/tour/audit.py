@@ -27,9 +27,6 @@ import math
 from shapely.geometry import LineString, MultiLineString
 from shapely.geometry.base import BaseGeometry
 
-from .contract import Route
-from .routing import compute_dwell_seconds
-
 # metres per degree at Paris latitude (~48.86°N).
 _M_PER_DEG_LAT = 111_320.0
 _M_PER_DEG_LNG = 73_200.0
@@ -97,14 +94,10 @@ def seine_crossing_metres(
     return inside
 
 
-def route_eta_seconds(route: Route) -> int:
-    """Honest ETA: routed leg seconds (haversine fallback per leg) + dwell."""
-    walk = sum(
-        (t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
-        for t in route.transits
-    )
-    dwell = sum(compute_dwell_seconds(p.tier) for p in route.pois)
-    return walk + dwell
+# DELETED 2026-08-06: route_eta_seconds. A fifth, unused definition of "elapsed"
+# whose docstring called itself "Honest ETA" while pricing every stop by tier. It
+# had no caller in src/, tests/ or scripts/, so it could never have been honest
+# about anything. The one definition of elapsed now lives with the planner.
 
 
 def eta_error(routed_eta_seconds: int, reference_seconds: int) -> float:

@@ -300,6 +300,10 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "colonne_de_juillet-rev-1351698150",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A commemorative column standing in the middle of Place de la Bastille and viewed from the open square; the crypt is not routinely public, but the monument itself is not gated.",
+    "place_category": "monument"
   }
 ]

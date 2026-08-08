@@ -99,9 +99,18 @@ def _coords(pid: str) -> tuple[float, float]:
     return 48.85 + idx * 0.003, 2.35
 
 
-def _spoi(pid: str, *, tier: int = 5, name: str | None = None) -> ScriptPOI:
+def _spoi(
+    pid: str, *, tier: int = 5, name: str | None = None, dwell_seconds: int = 0
+) -> ScriptPOI:
+    # ``dwell_seconds`` is HOW LONG THE TRAVELLER STANDS HERE, and since 2026-08-06
+    # it is what C7 counts as the tour's non-walking time. It used to be inferred
+    # from the script's stationary AUDIO, which said a stop lasts as long as it
+    # talks — the model this release replaced. It defaults to 0 so every fixture
+    # that does not care is unaffected.
     lat, lng = _coords(pid)
-    return ScriptPOI(id=pid, name=name or pid, tier=tier, lat=lat, lng=lng)
+    return ScriptPOI(
+        id=pid, name=name or pid, tier=tier, lat=lat, lng=lng, dwell_seconds=dwell_seconds
+    )
 
 
 def _poi(pid: str, *, tier: int = 5, name: str | None = None) -> POI:
@@ -135,7 +144,7 @@ def _script(
     sentences: list[Sentence],
     pois: list[ScriptPOI],
     *,
-    # Default ABOVE the C3-thin floor (MIN_AUDIO_FRAC_OF_REQUESTED x 60 min = 11.4 min)
+    # Default ABOVE the C3-thin floor (MIN_AUDIO_FRAC_OF_WALKING x 60 min = 11.4 min)
     # so a fixture aimed at some OTHER check does not trip C3 as a side effect. A test
     # about C3 passes a deliberately low value. Was 23.9 min while C3 derived its floor
     # from the retired disjoint walk/audio split.
@@ -714,10 +723,17 @@ def test_c7_fires_when_walk_plus_listening_exceeds_the_err_short_total() -> None
     (routing.py:290-299) stamps that onto ``Route.err_short_total_seconds``, and
     score_tour reads it straight off the Route rather than recomputing anything.
 
-    2000s audio + 500s walk = 2500s > the 2400s budget. UNDO: delete the
-    ``if actual_total_s > route.err_short_total_seconds`` block and this goes RED.
+    2000s standing at the stop + 500s walk = 2500s > the 2400s budget. UNDO: delete
+    the ``if actual_total_s > route.err_short_total_seconds`` block and this goes RED.
+
+    REWRITTEN 2026-08-06 against the new currency, not weakened. The arithmetic is
+    unchanged — 2000 + 500 = 2500 against 2400 — but the 2000 is now the seconds the
+    traveller SPENDS at the stop rather than the seconds it speaks. Under the old
+    model those were the same number by definition, which is exactly the assumption
+    this release removed: Camille stands twenty minutes at Concorde for four minutes
+    of audio.
     """
-    poi = _spoi("a", tier=3)
+    poi = _spoi("a", tier=3, dwell_seconds=2000)
     report = score_tour(
         _script([_sentence(_words(40, prefix="a"), 0)], [poi], total_audio_seconds=2000),
         _route([_poi("a", tier=3)], total_walk_seconds=500, err_short_total_seconds=2400),
@@ -1246,12 +1262,24 @@ def test_c7_excludes_reflection_audio_spoken_while_walking() -> None:
 
     UNDO TEST: revert C7 to ``route.total_walk_seconds + script.total_audio_seconds``
     and this goes RED — the tour trips C7 purely because its walking was filled.
+
+    REWRITTEN 2026-08-06. The ruling it guards is unchanged and so is the shape of
+    the proof; what moved is that the tour's non-walking time is now each stop's
+    DWELL rather than its stationary audio. A reflection spoken on a leg still costs
+    nothing, and now it costs nothing BY CONSTRUCTION — it is not a stop, so it has
+    no dwell to contribute — instead of by subtracting concurrent seconds from a
+    total. The concurrent/stationary split is still computed and still reported,
+    because C7b judges it; it simply no longer decides C7.
     """
     pois = [_poi("p0"), _poi("p1")]
     # 300 words of reflection = 120s at 150 wpm, all spoken while walking.
     reflection = _leg_sentence(" ".join(f"w{i}" for i in range(300)), 1, GLUE_REFLECTION)
     stop_words = [_sentence("A grounded fact about this place.", 0)]
-    script = _script([*stop_words, reflection], [], total_audio_seconds=1800)
+    script = _script(
+        [*stop_words, reflection],
+        [_spoi("p0", dwell_seconds=1680)],
+        total_audio_seconds=1800,
+    )
     route = Route(
         pois=tuple(pois),
         transits=(_transit(0, 0), _transit(900, 1)),
@@ -1263,9 +1291,9 @@ def test_c7_excludes_reflection_audio_spoken_while_walking() -> None:
 
     assert report.stats["audio_concurrent_s"] == 120
     assert report.stats["audio_stationary_s"] == 1800 - 120
-    # walk 1650 + stationary 1680 = 3330 > 2988 -> still over, but on STATIONARY
-    # audio only. The point of this assertion is the arithmetic, below.
-    assert report.stats["time_budget_actual_s"] == 1650 + (1800 - 120)
+    # walk 1650 + the 1680s the traveller stands at p0 = 3330 > 2988. The 120s of
+    # reflection is nowhere in that sum, which is the whole point.
+    assert report.stats["time_budget_actual_s"] == 1650 + 1680
 
 
 def test_c7_passes_when_the_deficit_is_closed_on_the_legs() -> None:
@@ -1332,9 +1360,15 @@ def test_c7b_silent_when_leg_narration_fits_the_walk() -> None:
 
 def test_stop_audio_still_counts_against_the_time_budget() -> None:
     """The ruling frees LEG audio only. Standing at a stop listening still costs
-    the tourist minutes, and C7 must keep saying so."""
+    the tourist minutes, and C7 must keep saying so.
+
+    REWRITTEN 2026-08-06 against the new currency. A stop's length is now
+    ``max(what the place is worth, what it says)``, so a stop with 1200s of
+    narration lasts AT LEAST 1200s — the floor at the narration is what carries
+    this test's claim, and it is the same claim.
+    """
     stop_audio = [_sentence(" ".join(f"w{i}" for i in range(3000)), 0)]
-    script = _script(stop_audio, [], total_audio_seconds=1200)
+    script = _script(stop_audio, [_spoi("p0", dwell_seconds=1200)], total_audio_seconds=1200)
     route = Route(
         pois=(_poi("p0"),),
         transits=(_transit(0, 0),),
@@ -1568,36 +1602,66 @@ def test_c8_clears_the_widest_stop_in_the_certification_corpus() -> None:
 def test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour() -> None:
     """GUARDS the thinness floor from BOTH directions — the whole point of C3.
 
-    MEASURED audio/duration ratios on the tracked batch: healthy population
-    0.227-0.426 (nyc-lower-manhattan-90 is the worst good tour at 0.227), starved pole
-    0.056. The old floor demanded 0.398 and therefore BLOCKED 7 of 8 tours this
-    project itself certified.
+    RE-DERIVED 2026-08-06 against WALKING time, on this same tracked batch. The
+    question moved from "does this tour talk for a fifth of its length?" to "are the
+    walks silent?", because once a stop lasts as long as the place is worth, a
+    five-hour tour can spend three and a half hours standing still — and the old
+    form demanded 57 minutes of continuous narration to approve it.
 
-    UNDO (pass side): restore the old
-    ``duration_min * ERR_SHORT * AUDIO_FRACTION * 60 * AUDIO_FLOOR_FRAC`` floor and
-    this goes RED on seven cases.
+    MEASURED audio/WALKING on the tracked batch: healthy population 0.327-0.738
+    (nyc-lower-manhattan-90 the thinnest good tour at 0.327), starved pole 0.059.
+    The two poles are 5.5x apart under this denominator against 1.5x under the old
+    one, which is itself evidence that walking is the quantity the check was
+    reaching for.
+
+    UNDO (pass side): put the denominator back to ``duration_min * 60`` and this
+    goes RED on the flagship-shaped case below.
     UNDO (block side): delete the C3 block entirely and this goes RED on
-    paris-west-axis-90 and on the 9.4-min run below.
+    paris-west-axis-90 and on the silent-corridor run below.
     """
     for case_id, script, route in _certified_cases():
         report = score_tour(script, route, {})
         thin = [f for f in report.findings if f.check == "C3-thin"]
         if case_id == _STARVED_CASE:
-            assert len(thin) == 1, f"{case_id} is starved (0.056) and MUST be blocked"
+            assert len(thin) == 1, f"{case_id} is starved (0.059) and MUST be blocked"
             assert thin[0].severity is Severity.BLOCKER
         else:
             assert thin == [], f"{case_id}: {[f.message for f in thin]}"
 
-    # The documented starved run the C3 check was written for: 2 stops, 60-min
-    # request, 9.4 min of audio (ratio 0.157). It must still block.
+    # THE BLOCK SIDE, restated for the new question. The old fixture here was "2
+    # stops, 9.4 min of audio for a 60-min request" — thin against the REQUEST, but
+    # its walking was never recorded, so it says nothing about whether its walks
+    # were silent. Replaced with a case that is unambiguous under either reading and
+    # was MEASURED off this repository's own tour files: 2.1 minutes of audio across
+    # 76 minutes of walking. One minute of narration every thirty-six minutes on
+    # foot is the tourist walking in silence by any definition.
     poi = _spoi("a", tier=5, name="A")
     starved = score_tour(
-        _script([_sentence(_words(60, prefix="s"), 0)], [poi], total_audio_seconds=564),
-        _route([_poi("a", tier=5)]),
+        _script([_sentence(_words(60, prefix="s"), 0)], [poi], total_audio_seconds=126),
+        _route([_poi("a", tier=5)], total_walk_seconds=4548),
         {},
     )
     thin = [f for f in starved.findings if f.check == "C3-thin"]
     assert len(thin) == 1 and thin[0].severity is Severity.BLOCKER, _checks(starved)
+
+    # THE PASS SIDE, and the reason the denominator moved at all: the tour this
+    # release exists to produce. 22.6 min of audio across 85.8 min of walking, with
+    # 213 minutes of that five hours spent standing in and around places. Judged
+    # against the REQUEST it needs 57 minutes of narration and is refused; judged
+    # against its walking it passes with a 2.2x margin.
+    flagship = score_tour(
+        _script(
+            [_sentence(_words(60, prefix="f"), 0)],
+            [_spoi("f", tier=5, name="F", dwell_seconds=12816)],
+            total_audio_seconds=1356,
+        ),
+        _route([_poi("f", tier=5)], total_walk_seconds=5151),
+        {},
+    )
+    assert [f for f in flagship.findings if f.check == "C3-thin"] == [], (
+        "the 300-minute Rue Royale -> Notre-Dame tour was refused for being quiet "
+        "while standing still, which is the tour working, not failing"
+    )
 
 
 def test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration() -> None:
@@ -1695,7 +1759,7 @@ def test_c7_message_states_the_ceiling_the_route_was_actually_planned_to() -> No
     was wrong by 20 points while the ARITHMETIC used the route's own stamped total.
     UNDO: re-hardcode the percentage from ERR_SHORT and this goes RED.
     """
-    poi = _spoi("a", tier=5, name="A")
+    poi = _spoi("a", tier=5, name="A", dwell_seconds=3000)
     report = score_tour(
         _script([_sentence(_words(40, prefix="w"), 0)], [poi], total_audio_seconds=3000),
         _route(
@@ -1715,7 +1779,7 @@ def test_c7_message_states_the_ceiling_the_route_was_actually_planned_to() -> No
 # CALIBRATION AGAINST THE HUMAN-AUTHORED REFERENCE TOURS
 #
 # ``test_c9_cap_admits_the_owners_own_gold_text`` above calibrates ONE check
-# against ONE 509-word passage. ``Docs/tour-builder/empirical-tours/`` holds two
+# against ONE 509-word passage. ``fixtures/reference-tours/`` holds two
 # COMPLETE human-written tours; ``scripts/human_reference_tours.py`` loads them
 # at BOTH granularities the documents support (declared stop / standing
 # position) and these tests pin what the real rubric measures on them.

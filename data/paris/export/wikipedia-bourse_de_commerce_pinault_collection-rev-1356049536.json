@@ -347,6 +347,48 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "bourse_de_commerce_pinault_collection-rev-1356049536",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "tue": [],
+      "wed": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "sat": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "11:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated contemporary-art museum; transcribed from OSM tag '11:00-19:00; Tu off; Fr 11:00-21:00; May 01 off' (public-holiday closure May 1 not expressible in weekly table).",
+    "place_category": "museum"
   }
 ]

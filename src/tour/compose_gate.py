@@ -15,6 +15,7 @@ surfaces as its 422.
 
 from __future__ import annotations
 
+import functools
 from collections.abc import Callable
 
 from .claim_dedup import verify_claim_coverage
@@ -56,7 +57,8 @@ def build_full_verifier(
     faithfulness_checker: FaithfulnessChecker | None = None,
     allow_unverified_faithfulness: bool = False,
     expected_claim_ids: set[tuple[str, int]] | None = None,
-    base_validator: Callable[[Script, BeatSequence], ValidationReport] = validate_script,
+    spine_area: str | None = None,
+    base_validator: Callable[[Script, BeatSequence], ValidationReport] | None = None,
 ) -> Callable[[Script], ValidationReport]:
     """A ``verify(script)`` that merges the VERIFY checks into one report.
 
@@ -80,6 +82,20 @@ def build_full_verifier(
     was verified. Passing both a checker and the opt-out is a contradiction and
     raises rather than silently picking a winner.
     """
+
+    # THE SPINE IS PART OF THE TOUR'S OWN VOCABULARY. The opener says where the
+    # walker is standing, and the neighbourhood it names is the engine's choice
+    # from the corpus — often one no seated stop belongs to, because a walk starts
+    # in one quarter and ends in another. Without it the invention scan reads
+    # "You're starting in Opera-Garnier" as glue asserting a place out of nowhere
+    # and fails a correct tour, which is worse than not checking: a report that
+    # cries wolf gets ignored.
+    #
+    # An injected `base_validator` (tests, certification) is left exactly as it
+    # was, so this cannot change what those callers measure.
+    validator = base_validator or functools.partial(
+        validate_script, spine_area=spine_area
+    )
     if faithfulness_checker is not None and allow_unverified_faithfulness:
         raise ValueError(
             "build_full_verifier got both a faithfulness_checker and "
@@ -106,7 +122,7 @@ def build_full_verifier(
     chunks = chunk_text_by_slug or {}
 
     def verify(script: Script) -> ValidationReport:
-        base = base_validator(script, beat_sequence)
+        base = validator(script, beat_sequence)
         # No chunk library loaded -> provenance is a genuine no-op. Since the
         # Step-4.0 backfill, live beats DO carry source_passage/chunk_slug;
         # without this guard every one of them would fail at 0.0 against an

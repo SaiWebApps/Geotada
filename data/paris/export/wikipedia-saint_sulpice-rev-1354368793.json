@@ -288,6 +288,53 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "saint_sulpice-rev-1354368793",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "sat": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "sun": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag '08:00-19:45' applied to all seven days.",
+    "place_category": "church"
   }
 ]

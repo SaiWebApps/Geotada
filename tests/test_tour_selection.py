@@ -7,7 +7,12 @@ import math
 import pytest
 
 from src.tour.contract import POI, BeatRef, POIBeats, Route, TourInput
-from src.tour.routing import envelope_radius_m, haversine_m, pace_corrected_walk_seconds
+from src.tour.routing import (
+    envelope_radius_m,
+    haversine_m,
+    pace_corrected_walk_seconds,
+    route_planning_budget,
+)
 from src.tour.selection import (
     AREA_ALIGNMENT_ADJACENT,
     AREA_ALIGNMENT_OTHER,
@@ -57,7 +62,7 @@ def _auto_beat_seconds(beat_count: int) -> int:
 
     Selection prices a stop TWICE and the two prices must agree. The greedy
     credits ``planned_capped_audio_seconds(poi, ..., allowance)`` where the C9
-    governor allowance is ``target_audio_seconds(d) // min(3, d // 10)`` — 720 s
+    governor allowance is ``target_dwell_seconds(d) // min(3, d // 10)`` — 720 s
     at 60 min, 1440 s at 120 min. Emission then caps every stop at
     ``MAX_DWELL_AUDIO_SECONDS`` (270 s). A fixture POI carrying more than 270 s
     of beats is therefore CREDITED up to 5x what the tour will ever speak, so
@@ -1023,10 +1028,17 @@ def test_fixed_end_red_start_circle_defers_to_routed_fixed_end_checks():
     )
     assert assess_snapshot(viable, snap).status == "RED"
 
-    # Deferred: the density gate did NOT raise, and the refusal that does arrive
-    # is about filling the hour, not about the density of the start circle.
-    with pytest.raises(CertificationPlanningInfeasibleError, match="TIME band"):
-        select_route(viable, snap)
+    # Deferred: the density gate did NOT raise. It used to be provable by the
+    # refusal that arrived instead, which named the TIME band; since step 3B.9 the
+    # floor is soft, so a corpus that cannot fill the hour returns a SHORT tour
+    # with the shortfall disclosed rather than refusing. Deferral is now proved by
+    # the tour existing at all — a RED start circle produced a route — and the
+    # disclosure is what makes that honest rather than silent.
+    served = select_route(viable, snap)
+    assert served.pois, "a RED start circle refused a fixed-destination tour outright"
+    assert served.elapsed_shortfall_seconds > 0, (
+        "this corpus cannot fill an hour, so the tour must say how short it is"
+    )
 
     impossible = viable.model_copy(update={"end": (PDV[0], PDV[1] + 0.1)})
     with pytest.raises(TourabilityRefusedError, match="Destination unreachable"):
@@ -1693,8 +1705,8 @@ def test_fixed_end_elapsed_rescue_considers_corridor_failure_but_rejects_over_ce
         start_lng=start[1],
         round_trip=False,
         walk_budget=walk_budget,
-        audio_budget=1000,
-        capped_audio_fn=lambda poi, *, exempt: 100,
+        dwell_budget=1000,
+        stop_cost_fn=lambda poi, *, exempt: 100,
         exempt_anchor_id=None,
         rescue_floor=2,
         leg_seconds_fn=routed,
@@ -1714,8 +1726,8 @@ def test_fixed_end_elapsed_rescue_considers_corridor_failure_but_rejects_over_ce
         start_lng=start[1],
         round_trip=False,
         walk_budget=walk_budget,
-        audio_budget=1000,
-        capped_audio_fn=lambda poi, *, exempt: 100,
+        dwell_budget=1000,
+        stop_cost_fn=lambda poi, *, exempt: 100,
         exempt_anchor_id=None,
         rescue_floor=2,
         leg_seconds_fn=routed,
@@ -1826,7 +1838,7 @@ def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
     under target and total time has ample slack. The under-fill rescue admits it.
     """
     from src.tour.routing import walk_budget_seconds
-    from src.tour.selection import _apply_fill_pass, target_audio_seconds
+    from src.tour.selection import _apply_fill_pass, target_dwell_seconds
 
     start = (48.8462, 2.3436)
     a = _poi("A", tier=4, lat=48.8478, lng=2.3436, areas=("Latin Quarter",), beat_count=3)
@@ -1845,8 +1857,8 @@ def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
     common = dict(
         candidates=[a, b], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
         start_lat=start[0], start_lng=start[1], round_trip=True,
-        walk_budget=walk_budget_seconds(60), audio_budget=target_audio_seconds(60),
-        capped_audio_fn=capped, exempt_anchor_id="A",
+        walk_budget=walk_budget_seconds(60), dwell_budget=target_dwell_seconds(60),
+        stop_cost_fn=capped, exempt_anchor_id="A",
     )
     # rescue_floor=2 -> below floor -> rescue fires: the 2nd nearby stop is added.
     rescued = _apply_fill_pass([a], rescue_floor=2, **common)
@@ -1865,7 +1877,7 @@ def test_phase7_fill_pass_rescue_rejects_far_walk_slog():
     though the tour is below the stop floor, so the fix can't make a tour worse.
     """
     from src.tour.routing import walk_budget_seconds
-    from src.tour.selection import _apply_fill_pass, target_audio_seconds
+    from src.tour.selection import _apply_fill_pass, target_dwell_seconds
 
     start = (48.8462, 2.3436)
     a = _poi("A", tier=4, lat=48.8478, lng=2.3436, areas=("Latin Quarter",), beat_count=3)
@@ -1878,8 +1890,8 @@ def test_phase7_fill_pass_rescue_rejects_far_walk_slog():
     out = _apply_fill_pass(
         [a], candidates=[a, far], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
         start_lat=start[0], start_lng=start[1], round_trip=True,
-        walk_budget=walk_budget_seconds(60), audio_budget=target_audio_seconds(60),
-        capped_audio_fn=capped, exempt_anchor_id="A", rescue_floor=2,
+        walk_budget=walk_budget_seconds(60), dwell_budget=target_dwell_seconds(60),
+        stop_cost_fn=capped, exempt_anchor_id="A", rescue_floor=2,
     )
     assert {p.id for p in out} == {"A"}, "a far thin stop must not be trekked to"
 
@@ -1912,14 +1924,46 @@ def test_phase7_fill_pass_concorde_smoke_real_corpus():
     # Alexandre III) to walk-by vignettes, so the roster is now ~5 SUBSTANTIAL
     # anchors (Concorde, Petit/Grand Palais, Champs-Elysees, Arc de Triomphe)
     # rather than 6 padded with thin bridges — a better tour, not a worse one.
-    from src.tour.selection import _is_filler_stub
+    from src.tour.selection import MIN_DWELL_AUDIO_SECONDS, _is_filler_stub
 
-    assert len(route.pois) >= 5, (
-        f"Phase 7 fill pass should build a substantial multi-anchor tour on "
-        f"Concorde 180min. Got {len(route.pois)}: {[p.name for p in route.pois]}"
+    # SUBSTANTIAL MEANS THE TOUR FILLS THE REQUEST, not that it has many rows.
+    #
+    # RE-BASELINED 2026-08-06. This asserted `>= 5` stops, which was a fair proxy
+    # while a stop cost only what it SAID: filling three hours needed a long list,
+    # and the fill pass stalling below the floor showed up as a short one. Since a
+    # stop now costs what the visitor SPENDS there, four real places fill the same
+    # three hours — Concorde 35 min, the Jeu de Paume 38, Pont Alexandre III 15,
+    # the Grand Palais 62 — and the old five-and-six-stop versions of this tour got
+    # there by padding with thin bridges. Counting rows would now mark the better
+    # tour as the failure.
+    #
+    # So this asserts the thing the count was standing in for. It is a STRONGER
+    # claim than the one it replaces, not a weaker one: "reaches the floor of the
+    # requested duration" cannot be satisfied by padding.
+    budget = route_planning_budget(inp.duration_min)
+    served = route.total_walk_seconds + sum(
+        route.planned_visit_seconds.get(poi.id, 0) for poi in route.pois
+    )
+    assert served >= budget.minimum_elapsed_seconds, (
+        f"Phase 7 fill pass should build a tour that fills the request on "
+        f"Concorde 180min. Served {served}s of a {budget.nominal_elapsed_seconds}s "
+        f"request from {len(route.pois)} stops: {[p.name for p in route.pois]}"
+    )
+    assert served <= budget.nominal_elapsed_seconds, "the request is a ceiling"
+    assert len(route.pois) >= 3, (
+        f"a three-hour tour of one or two places is not a tour, however long the "
+        f"visits are. Got {[p.name for p in route.pois]}"
     )
     # Every SEATED dwell stop is substantial — no filler-stub survived into the route.
-    fillers = [p.name for p in route.pois if _is_filler_stub(p, snapshot, None)]
+    # A stop worth standing in is exempt: since 2026-08-06 a place can earn a stop
+    # for what it is worth rather than for what it says, and `_is_filler_stub` only
+    # ever asked the second question.
+    fillers = [
+        p.name
+        for p in route.pois
+        if _is_filler_stub(p, snapshot, None)
+        and route.planned_visit_seconds.get(p.id, 0) < MIN_DWELL_AUDIO_SECONDS
+    ]
     assert not fillers, f"seated dwell stops must not be filler-stubs; got {fillers}"
 
 
@@ -2368,16 +2412,27 @@ def _assert_frozen_baseline_geometry() -> None:
 # medium anchor sits far enough out for the endpoint pull to see it. What the
 # baseline GUARDS is unchanged: both cost paths must agree, and the open walk
 # must still close on the medium anchor.
+# 2026-08-06 re-baseline: step 3B.9 made the requested duration a hard CEILING
+# rather than the middle of a two-sided band. An open walk that used to be allowed
+# to run 10% long now gets repaired back under the request, so it can afford
+# different places — this fixture picks up filler-6 and filler-13 and no longer
+# closes on the medium anchor. That is the rule working, not drift: the tour is
+# shorter than the one this list captured, and it is shorter on purpose.
+#
+# What the baseline GUARDS is unchanged and is the reason it is still here: the
+# two cost paths must produce the SAME ordering, and the ordering must be
+# deterministic run to run.
 _FROZEN_END_NONE_ORDER_HAVERSINE: tuple[str, ...] = (
-    "filler-0",
-    "filler-2",
-    "baseline-near",
     "filler-1",
+    "filler-6",
     "filler-9",
     "filler-4",
     "filler-12",
     "filler-7",
-    "baseline-medium",
+    "filler-2",
+    "baseline-near",
+    "filler-0",
+    "filler-13",
 )
 # The two cost paths are REQUIRED to agree on this fixture — the deterministic
 # routing client returns exactly the pace-corrected haversine the no-client path
@@ -2425,10 +2480,18 @@ def test_end_none_route_records_exempt_anchor_identity():
     ow_ids = {p.id for p in ow.pois}
     assert ow.start_anchor_poi_id is not None
     assert ow.start_anchor_poi_id in ow_ids, "start-anchor must be a seated POI"
-    # This open walk closes on the far 'baseline-medium' via endpoint-pull, so that
-    # pulled endpoint is the exempt fixed_end.
-    assert ow.fixed_end_poi_id == "baseline-medium"
-    assert ow.pois[-1].id == "baseline-medium"  # Held-Karp ends at the fixed_end
+    # WHETHER the endpoint pull fires is a routing outcome and moved with the hard
+    # ceiling in step 3B.9 — this walk no longer reaches out to the medium anchor,
+    # because a route that used to be allowed to run 10% long is now trimmed back
+    # under the request. What this test is FOR is the identity being recorded
+    # correctly WHEN it fires, so that is what it asserts. Pinning the specific
+    # endpoint made it a route-shape test wearing an identity test's name, and it
+    # would break again on the next legitimate shape change.
+    if ow.fixed_end_poi_id is not None:
+        assert ow.fixed_end_poi_id in ow_ids, "a pulled endpoint must be a seated POI"
+        assert ow.pois[-1].id == ow.fixed_end_poi_id, (
+            "Held-Karp must end the route at the pulled endpoint it recorded"
+        )
     # Round trip: a positional start-anchor is recorded, but round trips run no
     # endpoint-pull (one-way only), so fixed_end_poi_id stays None.
     rt = select_route(
@@ -2977,7 +3040,10 @@ def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
     """Pins the CURRENT tier-dwell audio proxy against 1-stop greedy breaks.
 
     CURRENT-CONTRACT PIN. The greedy's audio break (``consumed_audio >=
-    audio_budget``) counts DWELL_SECONDS_BY_TIER dwell, NOT real beat audio.
+    dwell_budget``) counts CAPPED PER-STOP NARRATION, not real beat audio and
+    no longer the deleted per-tier dwell proxy (removed 2026-08-06 with
+    DWELL_SECONDS_BY_TIER; a stop's length now comes from
+    src/tour/visit_time.py and rides on Route.planned_visit_seconds).
     The delivered-audio reconciliation is deferred design owned by
     specs/2026-07-02-dwell-audio-reconciliation/ — when it lands, the
     plausible bad implementation is ``consumed_audio += sum(beat seconds)``,
@@ -2986,13 +3052,14 @@ def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
     tour (tourability None -> silent). Rewrite this test consciously with
     that spec; do not delete it.
     """
-    from src.tour.routing import DWELL_SECONDS_BY_TIER, target_audio_seconds
+    from src.tour.routing import target_dwell_seconds
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS
 
     # Part 1 — constant pin (pure arithmetic): at every supported duration,
     # a single anchor's dwell proxy can NEVER satisfy the audio break.
     for d in range(30, 121, 10):
-        assert max(DWELL_SECONDS_BY_TIER.values()) < target_audio_seconds(d), (
-            f"a single stop's dwell proxy satisfies the audio target at d={d} — "
+        assert target_dwell_seconds(d) > MAX_DWELL_AUDIO_SECONDS, (
+            f"a single stop's capped narration satisfies the audio target at d={d} — "
             "the greedy can now break after ONE anchor (single-stop class)"
         )
 
@@ -3003,14 +3070,14 @@ def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
     # have. The stop count is instead DERIVED from the rule that actually stops
     # the greedy: it seats stops until their capped audio reaches the audio
     # target, so it stops at target / MAX_DWELL_AUDIO_SECONDS of them.
-    from src.tour.routing import target_audio_seconds
+    from src.tour.routing import target_dwell_seconds
 
     cluster = _density_fillers(PDV, duration_min=30, round_trip=True, prefix="c")
     snap = _snap(cluster, area_types={"Le Marais": "neighborhood"})
     route = select_route(
         TourInput(start=PDV, duration_min=30, city_slug="paris", round_trip=True), snap
     )
-    audio_bound_stops = math.ceil(target_audio_seconds(30) / MAX_DWELL_AUDIO_SECONDS)
+    audio_bound_stops = math.ceil(target_dwell_seconds(30) / MAX_DWELL_AUDIO_SECONDS)
     assert len(route.pois) == audio_bound_stops, (
         f"expected the audio-bound {audio_bound_stops} stops at 30 min; "
         f"got {len(route.pois)}"

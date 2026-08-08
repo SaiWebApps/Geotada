@@ -30,8 +30,8 @@ CORPUS_PATH = REPO_ROOT / "data" / "paris" / "beats.json"
 
 # Each fixture and the hand-composed empirical tour document it was written from.
 GOLDEN_DOCUMENTS = {
-    "ile_oneway_90min": "Docs/tour-builder/empirical-tours/02-ile-de-la-cite-notre-dame.md",
-    "pdv_round_trip_60min": "Docs/tour-builder/empirical-tours/01-place-des-vosges.md",
+    "ile_oneway_90min": "fixtures/reference-tours/02-ile-de-la-cite-notre-dame.md",
+    "pdv_round_trip_60min": "fixtures/reference-tours/01-place-des-vosges.md",
 }
 
 _HEX = set("0123456789abcdefABCDEF")

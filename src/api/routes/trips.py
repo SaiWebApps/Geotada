@@ -289,17 +289,37 @@ def _restored_vignettes(
     }
 
 
+#: Field names the 2026-08-06 currency move changed, stored -> current.
+#:
+#: WHY THIS EXISTS AND WHY IT IS NOT OPTIONAL. Every trip saved before that date
+#: recorded its disclosure under the old names, and ``TourabilityAssessment`` is
+#: ``extra="forbid"``, so validating one of those dicts raises. The function below
+#: fails OPEN, so the failure would not be an error anyone sees — the thin-area
+#: warning would simply stop appearing, on every trip saved before today, silently.
+_RENAMED_TOURABILITY_FIELDS = {
+    "audio_capacity_seconds": "dwell_capacity_seconds",  # stored-schema
+    "target_audio_seconds": "target_dwell_seconds",  # stored-schema
+}
+
+
 def _restored_tourability(stored: dict | None) -> TourabilityAssessment | None:
     """The thin-area disclosure of a saved flavour, or None when it was fully GREEN.
 
     A malformed record is treated as no disclosure rather than a 500: the worst case
     is a composed tour that does not repeat a warning the traveller already saw when
     they picked it, which is far better than refusing to compose at all.
+
+    Records written before a field was renamed are translated rather than dropped,
+    because "fail open" turns a rename into an invisible loss of a disclosure the
+    traveller was shown when they chose the tour.
     """
     if not stored:
         return None
+    migrated = {
+        _RENAMED_TOURABILITY_FIELDS.get(key, key): value for key, value in stored.items()
+    }
     try:
-        return TourabilityAssessment.model_validate(stored)
+        return TourabilityAssessment.model_validate(migrated)
     except ValidationError:
         return None
 
@@ -440,7 +460,10 @@ def generate_trip(
         city_slug=body.city_slug,
         lenses=lenses,
         round_trip=body.round_trip,
+        max_stop_minutes=body.max_stop_minutes,
         end=_end_point(body.end_lat, body.end_lng),
+        start_datetime=body.start_datetime,
+        end_hardness=body.end_hardness,
     )
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
@@ -509,6 +532,11 @@ def generate_trip(
             "lenses": tour_input.lenses,
             "round_trip": tour_input.round_trip,
             "start_time": body.start_time,
+            # The planner's clock (redesign §2.2/§2.3): compose rebuilds the
+            # pick from THIS record, so a clock not persisted here is a clock
+            # the composed tour silently loses.
+            "start_datetime": tour_input.start_datetime,
+            "end_hardness": tour_input.end_hardness,
         }
     )
     # EVERYTHING ABOUT A FLAVOUR THAT COMPOSE CANNOT WORK OUT AGAIN. Ordered poi ids,
@@ -535,6 +563,19 @@ def generate_trip(
                     if flavour.tourability is not None
                     else None
                 ),
+                # How long this visitor spends AT each stop. It CANNOT be
+                # recomputed on compose: it is priced against a CorpusSnapshot and
+                # the visitor's declared interest, and the rebuild has the corpus
+                # but not the pricing call. Without it every dwell silently
+                # collapses back to the length of its own narration, which is the
+                # planned tour quietly becoming a different, shorter tour.
+                "planned_visit_seconds": dict(flavour.planned_visit_seconds),
+                # How far short of the request this tour honestly runs. It cannot
+                # be recomputed on compose either: it is the planner's verdict at
+                # the gate, and a rebuild has no gate. Dropping it would silently
+                # remove the sentence that explains why a five-hour request came
+                # back as four hours forty.
+                "elapsed_shortfall_seconds": flavour.elapsed_shortfall_seconds,
                 "eta_seconds": option_eta_seconds(flavour, fl_script),
             }
             for flavour, fl_script in zip(flavours, scripts, strict=True)
@@ -689,7 +730,15 @@ def compose_trip(
         city_slug=tour_input_dict["city_slug"],
         lenses=tour_input_dict["lenses"],
         round_trip=tour_input_dict["round_trip"],
+        # Restored from the stored request. A trip saved before this key existed
+        # returns None, i.e. no ceiling, which is what it was planned with.
+        max_stop_minutes=tour_input_dict.get("max_stop_minutes"),
         end=tuple(tour_input_dict["end"]) if tour_input_dict.get("end") else None,
+        # Same fail-open shape: a trip saved before the clock existed restores
+        # dateless and `firm` — `or "firm"` because None is not a legal
+        # hardness, and a legacy record must compose exactly as it always did.
+        start_datetime=tour_input_dict.get("start_datetime"),
+        end_hardness=tour_input_dict.get("end_hardness") or "firm",
     )
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
@@ -748,6 +797,17 @@ def compose_trip(
             tourability=_restored_tourability(chosen.get("tourability")),
             start_anchor_poi_id=chosen.get("start_anchor_poi_id"),
             fixed_end_poi_id=chosen.get("fixed_end_poi_id"),
+            # The FIFTH extra. A trip saved before this key existed returns None
+            # and lands on the empty default, which reproduces the old behaviour
+            # rather than raising — the same fail-open the other four use.
+            planned_visit_seconds={
+                str(poi_id): int(seconds)
+                for poi_id, seconds in (chosen.get("planned_visit_seconds") or {}).items()
+            },
+            # The SIXTH extra, same fail-open shape: a trip saved before this key
+            # existed restores at 0, which reads as "not short enough to mention"
+            # and reproduces exactly how those trips have always composed.
+            elapsed_shortfall_seconds=int(chosen.get("elapsed_shortfall_seconds") or 0),
         )
         # SAY SO IF THE LEGS WERE ESTIMATED. This route is rebuilt here rather than
         # planned, so it never passes the planner that labels an unmeasured walk — and
@@ -1076,7 +1136,10 @@ def preview_trip(
             city_slug=body.city_slug,
             lenses=body.lenses or None,
             round_trip=body.round_trip,
+            max_stop_minutes=body.max_stop_minutes,
             end=_end_point(body.end_lat, body.end_lng),
+            start_datetime=body.start_datetime,
+            end_hardness=body.end_hardness,
         )
         snapshot, plans = _plan_preview(tour_input, driver)
         result = TripPreviewResponse(
@@ -1140,7 +1203,10 @@ def _author_preview_impl(
         city_slug=body.city_slug,
         lenses=body.lenses or None,
         round_trip=body.round_trip,
+        max_stop_minutes=body.max_stop_minutes,
         end=_end_point(body.end_lat, body.end_lng),
+        start_datetime=body.start_datetime,
+        end_hardness=body.end_hardness,
     )
     snapshot, plans = _plan_preview(tour_input, driver)
     if not 1 <= option_n <= len(plans):

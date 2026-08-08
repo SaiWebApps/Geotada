@@ -387,6 +387,10 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "bois_de_vincennes-rev-1354970628",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A large public woodland park with open roads and paths that is freely walkable and effectively unenclosed, so not gated.",
+    "place_category": "garden"
   }
 ]

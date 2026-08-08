@@ -22,6 +22,7 @@ from .artifact import (
     validate_blueprint_integrity,
     validate_llm_composed_blueprint,
 )
+from .corpus_places import canonical_payload_bound_to_hash
 
 SHA256_PATTERN = r"^[0-9a-f]{64}$"
 FACT_PROMPT_POLICY_VERSION = "tour-fact-review-v2"
@@ -137,15 +138,11 @@ class FactDerivedEvidence(BaseModel):
 
     @model_validator(mode="after")
     def _payload_is_canonical_and_bound(self) -> FactDerivedEvidence:
-        try:
-            parsed = json.loads(self.derivation_payload_json)
-        except json.JSONDecodeError as exc:
-            raise ValueError("derived FACT evidence is not JSON") from exc
-        canonical = json.dumps(parsed, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
-        if canonical != self.derivation_payload_json:
-            raise ValueError("derived FACT evidence is not canonical JSON")
-        if self.derivation_payload_sha256 != _sha256_text(canonical):
-            raise ValueError("derived FACT evidence hash does not match payload")
+        canonical_payload_bound_to_hash(
+            self.derivation_payload_json,
+            self.derivation_payload_sha256,
+            label="derived FACT evidence",
+        )
         return self
 
 

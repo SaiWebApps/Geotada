@@ -129,7 +129,54 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo,Su 09:30-20:00; Tu-Fr 07:30-20:00; Sa 08:30-20:00'.",
+    "place_category": "church"
   },
   {
     "name": "Place de Furstemberg",
@@ -241,7 +288,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square whose value stands entirely on the pavement, so it is not gated; the Musée Delacroix inside is a separate place.",
+    "place_category": "square"
   },
   {
     "name": "L'Hotel Paris",
@@ -290,7 +341,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working luxury hotel, not a gated visitor attraction with public hours; its lobby is not a ticketed experience.",
+    "place_category": "other"
   },
   {
     "name": "Rue Visconti",
@@ -487,7 +542,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A public street open to the air at all times, so it is not gated.",
+    "place_category": "street"
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -573,7 +632,11 @@
         "emotional_register": "wry"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working art school whose public admission hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Les Deux Magots",
@@ -624,7 +687,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Marked walk_by_only and treated as a streetside landmark café viewed from the pavement, so it is not gated for this tour.",
+    "place_category": "other"
   },
   {
     "name": "Hotel d'York",
@@ -676,7 +743,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A former hotel now marking a historic site, viewed from the pavement as a facade, so it is not gated.",
+    "place_category": "other"
   },
   {
     "name": "Natalie Barney Salon",
@@ -727,7 +798,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A former private residence viewed from the street as a facade, not a gated attraction, so hours are null.",
+    "place_category": "other"
   },
   {
     "name": "Hotel d'Angleterre Paris",
@@ -772,7 +847,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working hotel viewed as a streetside facade, not a gated public attraction, so hours are null.",
+    "place_category": "other"
   },
   {
     "name": "Rue de Buci Market",
@@ -817,6 +896,10 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open-air street market along the pavement with no enclosing gate; specific stall hours are not confidently known, so left as null and not gated.",
+    "place_category": "street"
   }
 ]

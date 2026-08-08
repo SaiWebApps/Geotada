@@ -23,7 +23,11 @@ from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.routing import walk_budget_seconds
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import _isochrone_walk_minutes, select_route
+from src.tour.selection import (
+    VALHALLA_MAX_CONTOUR_MINUTES,
+    _isochrone_walk_minutes,
+    select_route,
+)
 from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
 
@@ -302,3 +306,66 @@ def test_reach_verdict_round_trips_on_contract():
         alternative_destination="Notre-Dame Cathedral",
     )
     assert ReachVerdict.model_validate(v.model_dump()) == v
+
+
+def test_the_contour_asked_for_never_exceeds_what_the_engine_will_answer():
+    """A contour above Valhalla's maximum is not a bigger polygon — it is no polygon.
+
+    MEASURED against the live engine 2026-08-06: a 120-minute contour is accepted
+    and a 121-minute contour is refused with
+    ``{"error_code":151,"error":"Exceeded max time: 120"}`` in about 4 ms. REACH
+    then falls back to a plain haversine circle with no road network, losing the
+    across-the-river protection the polygon exists to provide — silently, because a
+    refused isochrone is a degraded reach rather than an error.
+
+    Before the clamp, the request crossed that limit at roughly a 300-minute walk
+    on the open arm and at roughly 110 minutes on the fixed-destination arm, which
+    is most real tour lengths rather than an exotic edge case.
+    """
+    # 400 minutes: the walk envelope is 400 x 1.00 nominal x 0.40 = 160 minutes.
+    assert _isochrone_walk_minutes(400, round_trip=False) == VALHALLA_MAX_CONTOUR_MINUTES
+
+    # 300 minutes lands exactly ON the maximum, so the polygon is still available.
+    assert _isochrone_walk_minutes(300, round_trip=False) == VALHALLA_MAX_CONTOUR_MINUTES
+
+    # Well under the limit, the clamp is inert and the contour still mirrors the
+    # walk envelope. A clamp that changed these would shrink every ordinary tour.
+    assert _isochrone_walk_minutes(90, round_trip=False) == 36
+    assert _isochrone_walk_minutes(60, round_trip=False) == 24
+    # Round trips halve the reach, so they need twice the duration to be clamped.
+    assert _isochrone_walk_minutes(600, round_trip=True) == VALHALLA_MAX_CONTOUR_MINUTES
+
+
+def test_every_golden_fixture_sits_below_the_contour_clamp():
+    """PROVEN, not assumed: the clamp cannot move a golden tour.
+
+    The plan's step 1.7 says the clamp is inert at or under a 300-minute request
+    and instructs that this be proven for the fixtures rather than assumed, because
+    ``_isochrone_walk_minutes`` is SHARED with the open arm — it is the one Phase 1
+    change that could move an open tour, and a golden that moved would be absorbed
+    by the later re-baseline as expected drift.
+
+    Reads the committed fixture files rather than restating their durations here,
+    so adding a longer golden fails this test instead of silently escaping it.
+    """
+    from pathlib import Path
+
+    fixture_dir = Path(__file__).resolve().parent.parent / "fixtures" / "tour_golden"
+    fixtures = sorted(fixture_dir.glob("*.json"))
+    assert fixtures, f"no golden fixtures found under {fixture_dir}"
+
+    for path in fixtures:
+        payload = json.loads(path.read_text())
+        request = payload["input"]
+        duration = request["duration_min"]
+        round_trip = bool(request.get("round_trip"))
+        asked = _isochrone_walk_minutes(duration, round_trip=round_trip)
+        unclamped = round(
+            (duration * 0.40 / 2.0) if round_trip else (duration * 0.40)
+        )
+        assert asked == unclamped, (
+            f"{path.name} requests {duration} min "
+            f"({'round trip' if round_trip else 'one way'}), whose contour "
+            f"clamps from {unclamped} to {asked}. The clamp is NOT inert for this "
+            f"fixture, so Phase 1 can move this golden tour."
+        )

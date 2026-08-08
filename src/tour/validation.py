@@ -93,10 +93,15 @@ _SENTENCE_HEAD_WORDS: frozenset[str] = frozenset(
 )
 
 
-def validate_script(script: Script, beat_sequence: BeatSequence) -> ValidationReport:
+def validate_script(
+    script: Script,
+    beat_sequence: BeatSequence,
+    *,
+    spine_area: str | None = None,
+) -> ValidationReport:
     """Run both gates and return the report."""
     traceability = validate_source_traceability(script, beat_sequence)
-    forbidden = _forbidden_phrase_hits(script, beat_sequence)
+    forbidden = _forbidden_phrase_hits(script, beat_sequence, spine_area=spine_area)
     return traceability.model_copy(
         update={"forbidden_phrase_hits": tuple(forbidden)}
     )
@@ -162,11 +167,37 @@ def _untraceable_sentences(
 
 
 def _forbidden_phrase_hits(
-    script: Script, beat_sequence: BeatSequence
+    script: Script,
+    beat_sequence: BeatSequence,
+    *,
+    spine_area: str | None = None,
 ) -> list[tuple[Sentence, str]]:
     out: list[tuple[Sentence, str]] = []
     cited_text = _cited_beat_corpus_text(script, beat_sequence)
     cited_proper_nouns = _proper_nouns_in(cited_text)
+    # THE TOUR'S OWN PLACE VOCABULARY IS NOT AN INVENTION. This scan exists to
+    # catch glue asserting a fact the corpus never gave it — a name, a date, a
+    # claim the walker cannot check. The names of the stops the engine SEATED, and
+    # of the areas they sit in, are corpus records the engine chose the route from;
+    # they are the one vocabulary glue is entitled to use.
+    #
+    # Without this, the synthesized opener fails whenever the spine area's name
+    # happens not to appear inside a cited beat's body — "You're starting in
+    # Opéra-Garnier" was flagged on the 300-minute Rue Royale tour purely because
+    # the beats about its stops never spell the neighbourhood out. That is a
+    # validation FAILURE on a correct tour, which is worse than no check: it
+    # teaches whoever reads the report to ignore it.
+    for stop in script.selected_pois:
+        cited_proper_nouns |= _proper_nouns_in(stop.name)
+        if stop.area:
+            cited_proper_nouns |= _proper_nouns_in(stop.area)
+    # The SPINE is the neighbourhood the walk starts in, and it is not always one
+    # any stop belongs to — a Rue Royale tour starts in Opéra-Garnier and its first
+    # stop is already in the 1st. The opener's whole job is to say where the walker
+    # is standing, so it has to be allowed to name that, and the name is the
+    # engine's own choice from the corpus rather than anything glue made up.
+    if spine_area:
+        cited_proper_nouns |= _proper_nouns_in(spine_area)
     cited_years = set(_YEAR_RE.findall(cited_text))
 
     for sentence in script.script:

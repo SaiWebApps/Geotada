@@ -168,7 +168,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open pocket-park at the tip of the island with the OSM tag '24/7' indicating no gated closure.",
+    "place_category": "garden"
   },
   {
     "name": "Place Dauphine",
@@ -253,7 +257,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open triangular public square on the Île de la Cité, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Pont des Arts",
@@ -348,7 +356,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A pedestrian bridge open in the air and crossable at any hour, so not gated.",
+    "place_category": "bridge"
   },
   {
     "name": "Voltaire Statue (Square Honoré-Champion)",
@@ -432,7 +444,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Statue in a small public square viewed in the open; hours of the square not confidently known and it is walk-by only, treated as not gated.",
+    "place_category": "monument"
   },
   {
     "name": "Square Jean XXIII",
@@ -697,7 +713,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated municipal cathedral garden with closing bells, but its hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Square Rene Viviani",
@@ -917,7 +937,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Shakespeare and Company",
@@ -1011,7 +1035,54 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "11:00",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A bookshop entered through a door (gated); hours from the shop's own published pattern of 10:00-20:00 weekdays and 11:00-20:00 weekends.",
+    "place_category": "other"
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -1097,7 +1168,49 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated underground memorial with seasonal hours; transcribed from its OSM tag whose current (Apr-Sep) window is 'Avr - Sep, Mar-Dim 10:00-19:00' (Mardi-Dimanche, Monday closed) in the tag 'Oct - Mar, Mar-Dim 10:00-17:00; Avr - Sep, Mar-Dim 10:00-19:00'.",
+    "place_category": "monument"
   },
   {
     "name": "Hotel-Dieu",
@@ -1184,7 +1297,11 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working hospital rather than a visitor attraction; not a gated tourist experience, so no visiting hours apply.",
+    "place_category": "other"
   },
   {
     "name": "Pont Neuf",
@@ -1262,6 +1379,10 @@
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
+    "place_category": "bridge"
   }
 ]

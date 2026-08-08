@@ -96,7 +96,11 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Temple du Marais",
@@ -173,7 +177,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A Protestant temple one can enter, so gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Hotel de Mayenne",
@@ -216,7 +224,11 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A Marais mansion (now a school) viewed from the street; hours not confidently known and left unfiltered as null.",
+    "place_category": "other"
   },
   {
     "name": "Place des Vosges",
@@ -315,7 +327,11 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Musee Victor Hugo",
@@ -387,7 +403,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A ticketed/entry-controlled museum, so gated, but its exact hours are not confidently known; left unfiltered.",
+    "place_category": "museum"
   },
   {
     "name": "Hotel de Sully",
@@ -459,7 +479,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A mansion with an enterable courtyard and interior, so gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Hotel de Sens",
@@ -505,7 +529,54 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "19:50"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "19:50"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "19:50"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "19:50"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "19:50"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "19:50"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "19:50"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated fortress-mansion library, transcribed from its OSM tag 'Mo-Fr 08:00-19:50; Sa,Su 09:00-19:50'.",
+    "place_category": "other"
   },
   {
     "name": "Saint-Paul-Saint-Louis",
@@ -577,7 +648,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A Baroque church one can enter, so gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Village Saint-Paul",
@@ -618,7 +693,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A cluster of antique courtyards with gates that close, so gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Hotel Lamoignon",
@@ -668,7 +747,54 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "17:00"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "17:00"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "17:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "17:00"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "17:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "17:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "17:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A Renaissance mansion housing a library with controlled access, transcribed from its OSM tag 'Mo-Fr 08:00-17:00; Sa-Su 09:00-17:00'.",
+    "place_category": "other"
   },
   {
     "name": "Synagogue de la rue Pavee",
@@ -715,7 +841,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An active synagogue that is gated, but as a working place of worship with restricted access its hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Rue des Rosiers",
@@ -787,7 +917,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A public street in the Marais whose value is in the open, so it is not gated.",
+    "place_category": "street"
   },
   {
     "name": "Hotel Amelot de Bisseuil",
@@ -833,7 +967,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A private Marais mansion viewed from the street; as a walk-by facade it is not gated for entry.",
+    "place_category": "other"
   },
   {
     "name": "Notre-Dame-des-Blancs-Manteaux",
@@ -875,7 +1013,58 @@
         "emotional_register": "wry"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [
+        [
+          "17:00",
+          "19:30"
+        ]
+      ],
+      "tue": [
+        [
+          "15:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "15:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "15:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "15:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "15:00",
+          "19:30"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "12:00"
+        ],
+        [
+          "15:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A church you enter, hence gated; transcribed from OSM tag 'Mo 17:00-19:30; Tu-Fr 15:00-19:00; Sa 15:00-19:30; Su 10:00-12:00, 15:00-19:00'.",
+    "place_category": "church"
   },
   {
     "name": "La Force Prison Site",
@@ -917,6 +1106,10 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A former prison site now marked only in the open streetscape, so it is not gated.",
+    "place_category": "other"
   }
 ]

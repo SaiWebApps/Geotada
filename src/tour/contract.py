@@ -10,12 +10,13 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+from collections.abc import Mapping
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from src import city_registry
-from src.tour.corpus_places import CoordinateProvenance
+from src.tour.corpus_places import CoordinateProvenance, valid_coordinates
 
 # Cities with a loaded corpus (data/{slug}/ + graph nodes scoped by city_name).
 # The API validates request city_slug against this so an unknown city is a clear
@@ -40,6 +41,19 @@ NONPROPOSITIONAL_GLUE_TEMPLATES: frozenset[str] = frozenset(
 )
 
 
+def normalized_lens_list(v: list[str] | None) -> list[str] | None:
+    """THE one lens-list normalization: strip blanks/whitespace; empty -> None.
+
+    It was spelled twice — here and in the API request models, whose docstring
+    admitted one "mirrors" the other (dedup-review 2026-08-07). Both validators
+    now call this; the preview's vocabulary guard adds its own check on top.
+    """
+    if v is None:
+        return None
+    cleaned = [s.strip() for s in v if s and s.strip()]
+    return cleaned or None
+
+
 class TourInput(BaseModel):
     """User-supplied tour request. Mirrors §3.1 of phase-1-design.md."""
 
@@ -52,6 +66,22 @@ class TourInput(BaseModel):
     round_trip: bool = False
     theme_hint: str | None = None
     start_label: str | None = None
+    # The party's ceiling on ANY ONE stop, in minutes. None = no ceiling.
+    #
+    # WHY A CEILING IS NEEDED AT ALL. The other two terms in a stop's length —
+    # what the place absorbs and what the visitor's interest justifies — are both
+    # MAXIMISING, so nothing in them can express Nadia's "six minutes is the
+    # ceiling here, not the floor" (docs/personas/03-family-with-children.md
+    # step 3). The flat five-minute tier cap was protecting her by accident, and
+    # removing it without this would hand a family with a five-year-old a
+    # 45-minute cathedral.
+    #
+    # IT BOUNDS STANDING THERE, NOT TALKING. Generation floors a stop at
+    # max(planned_visit, planned_audio), so a ceiling below a stop's narration is
+    # overridden — Release 1 never truncates narration. The API refuses anything
+    # under 5 minutes for that reason: 300 s sits above the 270 s per-stop
+    # speaking cap, so an accepted ceiling is always one the tour can honour.
+    max_stop_minutes: int | None = Field(default=None, ge=5)
     end: tuple[float, float] | None = Field(
         default=None,
         description=(
@@ -61,6 +91,39 @@ class TourInput(BaseModel):
             "synthesize a sentinel POI at this exact coordinate."
         ),
     )
+    # WHEN THE WALK STARTS, as a local ISO 8601 string, e.g. "2026-08-11T10:00".
+    # None = no clock, which is today's dateless behaviour: nothing is filtered,
+    # nothing is priced by hour, and every existing caller and golden stays
+    # byte-identical (redesign §2.2). A STRING rather than a datetime because
+    # TourInput must survive TourInput(**inp.model_dump()) — only a string
+    # round-trips — and because the API and persisted tour_input_json carry it
+    # as text anyway.
+    start_datetime: str | None = None
+    # HOW HARD THE END IS (redesign §2.3). "wall": missing it has a real cost —
+    # Marcus's 16:40 airport train — so planning keeps visible spare minutes.
+    # "firm": today's behaviour, byte-identical. "open": the duration was a
+    # rough intent, never a number to pad toward — Julien's leavable-blank
+    # clock. The default is "firm" so an undated request plans exactly as
+    # before this field existed.
+    end_hardness: Literal["wall", "firm", "open"] = "firm"
+
+    @field_validator("start_datetime")
+    @classmethod
+    def _check_start_datetime(cls, v: str | None) -> str | None:
+        # Plain words, because the API surfaces this text to the person who
+        # typed the value (plan S1.2). fromisoformat is the whole grammar.
+        if v is None:
+            return v
+        from datetime import datetime
+
+        try:
+            datetime.fromisoformat(v)
+        except ValueError:
+            raise ValueError(
+                f"start_datetime {v!r} is not a valid date and time; "
+                "use ISO 8601, e.g. '2026-08-11T10:00'"
+            ) from None
+        return v
 
     @field_validator("start", "end")
     @classmethod
@@ -68,22 +131,17 @@ class TourInput(BaseModel):
         cls, v: tuple[float, float] | None
     ) -> tuple[float, float] | None:
         # `end` is optional; `start` is required so pydantic rejects None before here.
+        # The rule itself is `corpus_places.valid_coordinates` — this wrapper exists
+        # only for the None, and delegating rather than restating is what stops a
+        # tightened bound from applying to a receipt's endpoints but not a request's.
         if v is None:
             return v
-        lat, lng = v
-        if not (-90.0 <= lat <= 90.0):
-            raise ValueError(f"lat out of range: {lat}")
-        if not (-180.0 <= lng <= 180.0):
-            raise ValueError(f"lng out of range: {lng}")
-        return v
+        return valid_coordinates(v)
 
     @field_validator("lenses")
     @classmethod
     def _normalize_lenses(cls, v: list[str] | None) -> list[str] | None:
-        if v is None:
-            return None
-        cleaned = [s.strip() for s in v if s and s.strip()]
-        return cleaned or None
+        return normalized_lens_list(v)
 
     @model_validator(mode="after")
     def _end_round_trip_mutex(self) -> TourInput:
@@ -116,6 +174,45 @@ class POI(BaseModel):
     coordinate_provenance: CoordinateProvenance | None = None
     requires_dwell: bool = False
     vignette_eligible: bool = True
+    # HOW LONG A VISITOR SPENDS AT THIS PLACE — the third hand on the tour clock.
+    # Two numbers, because one cannot serve two visitors: Camille gives
+    # Sainte-Chapelle 38 minutes inside plus 28 in the queue, while Theo gives the
+    # same building 15 from the outside and never goes in
+    # (docs/personas/02-dark-history-walker.md:77).
+    #
+    # `typical_duration_min` is the OUTSIDE number and already existed on the API's
+    # POICreate (src/api/models/nodes.py); this is its selection-side twin.
+    # `visit_seconds_inside` is None for a place with no interior — a street, a
+    # bridge, a square. `visit_basis` is the sentence that argues for both, so a
+    # reviewer who has never been to the city can judge the numbers.
+    #
+    # THE `0` DEFAULT IS LOAD-BEARING, not a placeholder. Until the capacity pass
+    # has run over a city, every POI reports 0 seconds of visit time and dwell
+    # falls back to the narration floor — i.e. exactly today's behaviour. That is
+    # what makes this field safe to add before the data exists, and it is also why
+    # a corpus that is only PARTLY priced silently under-books the unpriced stops
+    # rather than failing loudly. tests/test_poi_visit_duration.py is the guard
+    # that no city ships half-priced.
+    visit_seconds_inside: int | None = None
+    visit_basis: str = ""
+    typical_duration_min: int = 0
+    # WHEN THE PLACE CAN BE ENTERED (redesign 6.1) — additive, same style as the
+    # visit-capacity trio above. `opening_hours` is the JSON-encoded week table
+    # exactly as the graph stores it (the physical_cues precedent); the clock
+    # filter decodes it. None = NOT GATED — a street, a square, a bridge — the
+    # same load-bearing null `visit_seconds_inside` uses, and the safe default
+    # for a corpus the hours pass has not reached: a POI with no table is NEVER
+    # clock-excluded. `opening_hours_source` records "osm" | "ai";
+    # `opening_hours_basis` is the sentence that argues for the table.
+    opening_hours: str | None = None
+    opening_hours_source: str | None = None
+    opening_hours_basis: str = ""
+    # WHAT KIND OF PLACE THIS IS (redesign 6.7): a closed vocabulary (gallery |
+    # museum | church | square | arcade | market | park | garden | bridge |
+    # street | monument | other) derived deterministically at $0. Phase 3's
+    # category-diverse replacement is the consumer; Phase 1 surfaces it in the
+    # harness printout. "" = the categoriser has not run.
+    place_category: str = ""
 
     @model_validator(mode="after")
     def _playback_flags_are_consistent(self) -> POI:
@@ -234,15 +331,9 @@ class ValhallaLegReceipt(BaseModel):
     distance_m: float = Field(..., ge=0)
     polyline: str = Field(..., min_length=1)
 
-    @field_validator("requested_from", "requested_to")
-    @classmethod
-    def _finite_latlng(cls, value: tuple[float, float]) -> tuple[float, float]:
-        lat, lng = value
-        if not math.isfinite(lat) or not -90.0 <= lat <= 90.0:
-            raise ValueError(f"lat out of range: {lat}")
-        if not math.isfinite(lng) or not -180.0 <= lng <= 180.0:
-            raise ValueError(f"lng out of range: {lng}")
-        return value
+    _endpoints_are_real_places = field_validator(
+        "requested_from", "requested_to"
+    )(valid_coordinates)
 
     @model_validator(mode="after")
     def _canonical_payloads_match_fields(self) -> ValhallaLegReceipt:
@@ -317,6 +408,13 @@ class TransitSegment(BaseModel):
     leg_distance_m: float | None = Field(default=None, ge=0)
     polyline: str | None = None  # encoded polyline (6-digit precision), routed legs only
     source: Literal["valhalla", "haversine"] = "haversine"
+    # HOW this leg is travelled. Walking is the only mode Release 1 plans, and the
+    # field exists now so that adding transit later is an ADDITION rather than a
+    # rewrite: every consumer that must branch on mode gets a compile-time-visible
+    # place to do it, instead of "walking" being an unstated assumption baked into
+    # every leg calculation in the codebase. A leg with no mode is a leg whose
+    # duration means different things to different readers.
+    mode: str = "walk"
     valhalla_receipt: ValhallaLegReceipt | None = None
 
     @model_validator(mode="after")
@@ -351,8 +449,14 @@ class TourabilityAssessment(BaseModel):
     status: str  # "GREEN" | "YELLOW" | "RED"
     walk_radius_m: float
     fill_ratio: float
-    audio_capacity_seconds: int
-    target_audio_seconds: int
+    # The pool's standing-still capacity, against the tour's standing-still
+    # target. Both were named "audio" until 2026-08-06, when the planner's
+    # currency moved from what a place SAYS to what a visitor SPENDS there.
+    # They are a ratio, so both halves have to be the same currency or the
+    # gate judges a pool in one unit against a target in another — the exact
+    # drift `_target_dwell_seconds`'s docstring in density.py recounts.
+    dwell_capacity_seconds: int
+    target_dwell_seconds: int
     reachable_poi_count: int
     reachable_beat_count: int
     anchor_candidate_count: int
@@ -394,6 +498,22 @@ class ReachVerdict(BaseModel):
     alternative_destination: str | None = None
 
 
+class ClockExclusion(BaseModel):
+    """One POI the clock kept off a dated tour, and the plain-English reason.
+
+    Recorded so the day can SAY why the museum is missing (redesign 6.1 —
+    Aiko's locked door, Rosemary's Tuesday). `reason` is written for the
+    person reading the breakdown, names the day and the hours' source, and
+    needs no other field to be understood.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    poi_id: str
+    name: str
+    reason: str
+
+
 class Route(BaseModel):
     """Selected POIs in walking order, with transit segments and budgets.
 
@@ -420,12 +540,54 @@ class Route(BaseModel):
     total_walk_distance_m: float = Field(..., ge=0)
     total_walk_seconds: int = Field(..., ge=0)
     spine_area: str | None = None
-    target_audio_seconds: int = 0
+    # Seconds this tour aims to spend standing still. Was target_audio_seconds.
+    target_dwell_seconds: int = 0
     err_short_total_seconds: int = 0
     tourability: TourabilityAssessment | None = None
     demoted_beats: dict[str, tuple[BeatRef, ...]] = Field(default_factory=dict)
+    # poi_id -> seconds this visitor spends AT that stop, priced ONCE in selection
+    # against the place's capacity and the visitor's declared interest.
+    #
+    # WHY IT RIDES ON THE ROUTE. The obvious home is generation, where a stop's
+    # length is set — but `_flatten_pois` receives no CorpusSnapshot, and pricing
+    # needs one to read a POI's beat lenses. Its caller `generate()` has no
+    # snapshot either. So the number is computed where the snapshot is already
+    # open, in selection, and carried here. That also means it is priced once
+    # rather than twice, so the planner and the served tour cannot disagree
+    # about how long a stop lasts.
+    #
+    # Empty is safe and means "nobody priced this route": generation floors every
+    # stop at its narration, which is exactly today's behaviour. Four harnesses
+    # build a Route without it (score_saved_tours, score_gold_text,
+    # human_reference_tours, and the repair's throwaway trial) and inherit that.
+    planned_visit_seconds: Mapping[str, int] = Field(default_factory=dict)
+    # HOW MUCH SHORTER THAN ASKED this tour actually runs, in seconds, and 0 when
+    # it is not short enough to be worth saying.
+    #
+    # WHY IT EXISTS. Duration is a CEILING, not a contract to fill. When a corridor
+    # cannot honestly reach the requested length, the right answer is a shorter
+    # tour with a sentence saying so — "this is 4h40 rather than 5h; the area does
+    # not support more" — and not a refusal, and never a route that walks you
+    # across the city to pad the clock. That padding is the bug this release
+    # exists to remove, so the disclosure is the thing that makes removing it safe.
+    #
+    # WHY ON THE ROUTE AND NOT THE TOURABILITY PAYLOAD. `tourability` is attached
+    # only when the assessment is YELLOW or the delivery is thin
+    # (`_attach_tourability_if_yellow`), so it is None on a GREEN, richly-
+    # delivered, honestly-short tour — exactly the tour that needs to say this.
+    # A disclosure that rides a channel which is null in its own case discloses
+    # nothing.
+    elapsed_shortfall_seconds: int = Field(default=0, ge=0)
     # Track B (Step B.2): leg_idx -> walk-past vignette POIs on that leg.
     vignettes: dict[int, tuple[POI, ...]] = Field(default_factory=dict)
+    # WHO THE CLOCK EXCLUDED, AND WHY (redesign 6.1) — additive metadata in the
+    # `vignettes` mould: populated only on a dated request, default empty, so
+    # every existing Route is byte-identical. ON THE ROUTE for the same reason
+    # `elapsed_shortfall_seconds` gives above: `tourability` is None on exactly
+    # the GREEN route that still needs to say "the museum is closed today", and
+    # a disclosure riding a channel that is null in its own case discloses
+    # nothing.
+    clock_exclusions: tuple[ClockExclusion, ...] = ()
     # M2 routed-metadata slots. ``routed`` is True iff every transit leg came
     # from Valhalla. ``route_polyline`` (stitched whole-route shape) and
     # ``backtrack_ratio``/``flow_score`` keep their defaults until the
@@ -598,6 +760,12 @@ class RouteOption(BaseModel):
     stop_audio: dict[int, str] = Field(default_factory=dict)
     route_polyline: str | None = None
     eta_seconds: int = Field(..., ge=0)  # honest routed legs + dwell
+    # How much SHORTER than the requested duration this option runs, in seconds,
+    # and 0 when it is not short enough to be worth saying. Carried per option
+    # because each flavour is its own route with its own length. See
+    # Route.elapsed_shortfall_seconds for why this is not on the tourability
+    # payload: that payload is null on exactly the tour that needs to say this.
+    elapsed_shortfall_seconds: int = Field(default=0, ge=0)
     why_this_works: str | None = None
     lens_summary: dict[str, int] = Field(default_factory=dict)
     flow_score: float = Field(default=0.0, ge=0)

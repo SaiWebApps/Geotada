@@ -1,8 +1,9 @@
 """Idempotently make the local development graph match committed city data.
 
-This command is intentionally incapable of targeting Aura. It only provisions
-the exact local development endpoint at port 7687, and it never deletes data.
-If additive deployment cannot resolve drift, the final parity check fails.
+This command is intentionally incapable of targeting Aura. It only provisions a
+local DEVELOPMENT graph -- the canonical one, or a parallel lane's -- never a
+pytest, workbench or cloud graph, and it never deletes data. If additive
+deployment cannot resolve drift, the final parity check fails.
 """
 
 from __future__ import annotations
@@ -14,7 +15,18 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
-LOCAL_PORT = 7687
+
+try:  # run directly as `python scripts/ensure_dev_data.py` -- scripts/ is sys.path[0]
+    import preflight as _preflight
+except ModuleNotFoundError:  # imported as `scripts.ensure_dev_data`
+    from scripts import preflight as _preflight
+
+# Every lane's DEV graph and nothing else, so a lane can provision its own corpus
+# while the guard still refuses a pytest, workbench or cloud endpoint. Read from
+# preflight's lane table, so adding a lane needs no edit here.
+LOCAL_DEV_PORTS = frozenset(
+    spec.port for spec in _preflight.DATABASES if spec.key.startswith("dev")
+)
 
 
 def _assert_local_dev() -> None:
@@ -22,12 +34,12 @@ def _assert_local_dev() -> None:
     parsed = urlparse(uri)
     if (
         parsed.hostname not in {"localhost", "127.0.0.1", "::1"}
-        or parsed.port != LOCAL_PORT
+        or parsed.port not in LOCAL_DEV_PORTS
         or os.environ.get("NEO4J_DATABASE") != "neo4j"
     ):
         raise SystemExit(
-            "REFUSING local data provisioning: expected the exact development "
-            f"database at bolt://localhost:{LOCAL_PORT}, got {uri!r}"
+            "REFUSING local data provisioning: expected a local development graph on "
+            f"one of {sorted(LOCAL_DEV_PORTS)}, got {uri!r}"
         )
 
 

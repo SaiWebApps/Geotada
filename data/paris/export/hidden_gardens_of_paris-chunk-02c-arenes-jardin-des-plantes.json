@@ -317,7 +317,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open Roman amphitheatre ruin within a public garden; though it has posted gate hours they are not confidently known, and its value is largely open-air — left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Place de la Contrescarpe",
@@ -458,7 +462,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square whose value stands in the open, so not gated.",
+    "place_category": "square"
   },
   {
     "name": "Rue Mouffetard",
@@ -552,7 +560,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public market street whose value stands in the open with no door or gate, so it is not gated.",
+    "place_category": "street"
   },
   {
     "name": "Eglise Saint-Medard",
@@ -574,7 +586,49 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "09:00",
+          "19:30"
+        ]
+      ],
+      "wed": [
+        [
+          "09:00",
+          "19:30"
+        ]
+      ],
+      "thu": [
+        [
+          "09:00",
+          "19:30"
+        ]
+      ],
+      "fri": [
+        [
+          "09:00",
+          "19:30"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "19:30"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A church you enter, hence gated; transcribed from its OSM tag 'Tu-Sa 09:00-19:30; Su 09:00-20:00' with Monday closed.",
+    "place_category": "church"
   },
   {
     "name": "Jardin des Plantes",
@@ -858,7 +912,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A walled botanical garden with closing gates (gated), but its precise seasonal opening times vary and are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Jardin Alpin",
@@ -880,7 +938,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated garden within the Jardin des Plantes with seasonal restricted access, but its hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Grand Mosque of Paris",
@@ -963,7 +1025,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated site with ticketed visiting hours, but no OSM tag supplied and its exact hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Institut du Monde Arabe",
@@ -1057,7 +1123,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Marked walk_by_only and admired for its facade from the street, so treated as not gated.",
+    "place_category": "other"
   },
   {
     "name": "Jardin Tino Rossi",
@@ -1143,7 +1213,11 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open riverside quay garden along Quai Saint-Bernard freely accessible from the pavement, treated as not gated; hours not confidently known if enclosed, left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Librairie Michael Seksik",
@@ -1227,6 +1301,10 @@
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated bookshop requiring entry, but I do not confidently know its hours; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

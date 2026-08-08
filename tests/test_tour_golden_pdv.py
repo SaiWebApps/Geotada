@@ -49,7 +49,7 @@ OVERLAP_TARGET = 0.90
 # THE TRUE REASON THE OLD NUMBER IS NOT A BASELINE FOR THIS ONE: the 18-id expectation it
 # was measured against did not encode this document. Measured 2026-07-30, only 8 of the
 # old fixture's 25 tag keys exist verbatim in
-# Docs/tour-builder/empirical-tours/01-place-des-vosges.md — the rest named tags the
+# fixtures/reference-tours/01-place-des-vosges.md — the rest named tags the
 # document does not contain. So 12/18 was scored against a partly fabricated expectation,
 # while today's 4/21 is scored against 24 of 25 real document tags, every one verified
 # against the corpus. The measurements are not comparable, and the honest move is to say

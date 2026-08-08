@@ -295,7 +295,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working university whose interior is gated and access-controlled; hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -397,7 +401,62 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "06:30",
+          "19:30"
+        ]
+      ],
+      "tue": [
+        [
+          "08:45",
+          "19:45"
+        ]
+      ],
+      "wed": [
+        [
+          "08:45",
+          "22:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:45",
+          "19:45"
+        ]
+      ],
+      "fri": [
+        [
+          "08:45",
+          "19:45"
+        ]
+      ],
+      "sat": [
+        [
+          "08:45",
+          "12:00"
+        ],
+        [
+          "14:00",
+          "19:45"
+        ]
+      ],
+      "sun": [
+        [
+          "08:45",
+          "12:15"
+        ],
+        [
+          "14:30",
+          "19:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo 06:30-19:30; Tu-Fr 08:45-19:45; We 08:45-22:00; Sa 08:45-12:00,14:00-19:45; Su 08:45-12:15,14:30-19:45'.",
+    "place_category": "church"
   },
   {
     "name": "Lycee Henri IV",
@@ -443,7 +502,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Working secondary school not open to the public; gated but no general visiting hours exist, so left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "College de France",
@@ -494,7 +557,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Research institution marked walk_by_only; its lecture-hall access is not a general gated visit with confident public hours, so left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Jardin des Plantes",
@@ -541,7 +608,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A walled botanical garden with closing gates (gated), but its precise seasonal opening times vary and are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Caveau de la Huchette",
@@ -650,7 +721,11 @@
         "emotional_register": "wry"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated cellar jazz club with door and admission, but no OSM tag supplied and its nightly hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Theatre de la Huchette",
@@ -696,7 +771,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated theatre entered by performance/box-office ticket, but its box-office and show hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Ecole Normale Superieure",
@@ -742,7 +821,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working grande ecole behind gates; not a public visitor site and hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Arenes de Lutece",
@@ -788,6 +871,10 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open Roman amphitheatre ruin within a public garden; though it has posted gate hours they are not confidently known, and its value is largely open-air — left unfiltered.",
+    "place_category": "other"
   }
 ]

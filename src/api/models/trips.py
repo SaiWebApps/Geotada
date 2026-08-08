@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from src import city_registry
 from src.tour.candidate_eligibility import CandidateRejection
-from src.tour.contract import RouteOption
+from src.tour.contract import RouteOption, normalized_lens_list
 
 
 def _validate_city_slug(v: str) -> str:
@@ -53,6 +53,35 @@ class TripGenerateRequest(BaseModel):
         le=600,
         description="Total trip budget in minutes (engine cap: 600)",
     )
+    # Bounds how long the party STANDS at any one stop — not how long the tour
+    # talks. Five minutes is the floor because generation floors every stop at its
+    # own narration (capped at 270 s), so a ceiling under 300 s could not be
+    # honoured and would be a promise the tour breaks. Validated HERE rather than
+    # only on TourInput so a bad value is a 422 to the caller instead of a
+    # pydantic error surfacing as a 500. Trimming narration to fit a shorter
+    # ceiling is Release 2.
+    max_stop_minutes: int | None = Field(
+        default=None,
+        ge=5,
+        le=600,
+        description="Optional ceiling on time spent at any single stop, in minutes (min 5)",
+    )
+    # THE PLANNER'S CLOCK (redesign §2.2/§2.3). Declared on BOTH request models
+    # for the same reason max_stop_minutes records above: neither model sets
+    # model_config, so an undeclared field would be silently dropped rather
+    # than rejected, and the caller would get a clockless tour with no error
+    # saying why. Validation of the string itself lives on TourInput
+    # (src/tour/contract.py), the one home of that rule.
+    start_datetime: str | None = Field(
+        default=None,
+        description="When the walk starts, local ISO 8601 (e.g. '2026-08-11T10:00'); "
+        "None = dateless planning, exactly as before this field existed",
+    )
+    end_hardness: Literal["wall", "firm", "open"] = Field(
+        default="firm",
+        description="How hard the end is: 'wall' keeps visible spare minutes, "
+        "'firm' is today's behaviour, 'open' never pads toward the requested length",
+    )
     start_date: str = Field(..., description="ISO date for the trip start")
     end_date: str = Field(..., description="ISO date for the trip end")
     start_time: str = Field(default="09:00", description="Daily start time (HH:MM)")
@@ -92,11 +121,9 @@ class TripGenerateRequest(BaseModel):
     @field_validator("lenses")
     @classmethod
     def normalize_lenses(cls, v: list[str] | None) -> list[str] | None:
-        """Drop blanks/whitespace; empty -> None. Mirrors TourInput in src/tour/contract.py."""
-        if v is None:
-            return None
-        cleaned = [s.strip() for s in v if s and s.strip()]
-        return cleaned or None
+        """Drop blanks/whitespace; empty -> None — by calling THE one rule in
+        src/tour/contract.py (this used to restate it and "mirror" the other)."""
+        return normalized_lens_list(v)
 
 
 class GeneratedStop(BaseModel):
@@ -215,6 +242,17 @@ class TripPreviewRequest(BaseModel):
     end_lat: float | None = Field(default=None, ge=-90, le=90)
     end_lng: float | None = Field(default=None, ge=-180, le=180)
     duration_min: int | None = Field(default=None, ge=1, le=600)
+    # See TripGenerateRequest.max_stop_minutes. Declared on BOTH request models
+    # because neither sets model_config, so both inherit pydantic's default
+    # extra="ignore" and would silently DROP an unknown field rather than reject
+    # it — the caller would get a tour with no ceiling and no error saying why.
+    # TripPreviewAuthorRequest subclasses this and inherits it.
+    max_stop_minutes: int | None = Field(default=None, ge=5, le=600)
+    # THE PLANNER'S CLOCK — declared here for the same silently-dropped-field
+    # reason as max_stop_minutes above; see TripGenerateRequest for the full
+    # story. TripPreviewAuthorRequest subclasses this and inherits both.
+    start_datetime: str | None = None
+    end_hardness: Literal["wall", "firm", "open"] = "firm"
     lenses: list[str] | None = None
     round_trip: bool = False
     city_slug: str = Field(
@@ -246,10 +284,8 @@ class TripPreviewRequest(BaseModel):
         human types free text). ``TripGenerateRequest`` keeps its permissive
         ``normalize_lenses`` so no mobile-app request shape changes.
         """
-        if v is None:
-            return None
-        cleaned = [s.strip() for s in v if s and s.strip()]
-        if not cleaned:
+        cleaned = normalized_lens_list(v)
+        if cleaned is None:
             return None
         from src.schema.definitions import TAGGABLE_LENSES
 

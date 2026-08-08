@@ -32,7 +32,14 @@ def _poi(
     lat: float,
     lng: float,
     beat_count: int = 5,
+    typical_duration_min: int = 0,
+    visit_seconds_inside: int | None = None,
 ) -> POI:
+    # The two visit arguments default to the CONTRACT defaults (0 and None), so a
+    # POI built without them prices at zero visit seconds and the gate's capacity
+    # collapses to exactly the beat seconds it counted before 2026-08-06. That is
+    # what keeps every hand-computed fixture in this file valid across the
+    # currency move rather than needing re-derivation.
     return POI(
         id=pid,
         name=pid,
@@ -42,6 +49,8 @@ def _poi(
         lng=lng,
         areas=("Le Marais",),
         beat_count=beat_count,
+        typical_duration_min=typical_duration_min,
+        visit_seconds_inside=visit_seconds_inside,
     )
 
 
@@ -104,7 +113,7 @@ def test_target_audio_matches_canonical_formula():
     beats = {"p": (_beat("b1", "p"),)}
     a = assess(_input(PDV, 60), pois, beats)
     expected = round(60 * 1.00 * 0.6 * 60)
-    assert a.target_audio_seconds == expected
+    assert a.target_dwell_seconds == expected
 
 
 # ---------------------------------------------------------------------------
@@ -300,7 +309,7 @@ def test_word_count_fallback_when_est_spoken_seconds_missing():
     }
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
     # 250/2.5 = 100s per beat x 4 beats = 400s
-    assert a.audio_capacity_seconds == 400
+    assert a.dwell_capacity_seconds == 400
 
 
 # ---------------------------------------------------------------------------
@@ -437,8 +446,8 @@ def test_refused_carries_assessment():
         status="RED",
         walk_radius_m=369.0,
         fill_ratio=0.05,
-        audio_capacity_seconds=90,
-        target_audio_seconds=1793,
+        dwell_capacity_seconds=90,
+        target_dwell_seconds=1793,
         reachable_poi_count=1,
         reachable_beat_count=2,
         anchor_candidate_count=0,
@@ -525,12 +534,94 @@ def test_on_lens_fill_differs_by_interest_at_same_start():
     assert dark.fill_ratio == hidden.fill_ratio
     # ...but the on-lens fill distinguishes them by EXACT audio: 1 dark beat (60s)
     # vs 2 hidden beats (120s). Non-zero, so a "count nothing" mutation is caught.
-    target = dark.target_audio_seconds
+    target = dark.target_dwell_seconds
     assert dark.on_lens_fill_ratio == 60 / target > 0
     assert hidden.on_lens_fill_ratio == 120 / target
     assert hidden.on_lens_fill_ratio == 2 * dark.on_lens_fill_ratio
     # On-lens fill never exceeds the overall fill (a subset of the audio).
     assert dark.on_lens_fill_ratio < dark.fill_ratio
+
+
+def test_the_gate_prices_both_halves_of_its_ratio_in_standing_still_seconds():
+    """Capacity and target must be the same currency or the gate judges nothing.
+
+    This module's own history is the argument. Its ``_target_dwell_seconds``
+    docstring records the last time the two halves drifted: the gate judged a
+    pool against 1793 s while the planner aimed at 2160 s, and served a thin
+    tour as healthy. Phase 3B moves the target from narration seconds to
+    standing-still seconds, so the capacity has to move in the same step.
+
+    THE MUTATION THIS CATCHES. Leave the numerator summing beat seconds and the
+    ratio silently becomes narration-over-visits. A place with a big interior
+    and one short beat — a museum, which is most of what an interest-led tour
+    is made of — would then contribute 60 seconds of capacity for the 29
+    minutes a visitor actually spends inside it, and a perfectly rich area
+    would read as thin.
+    """
+    from src.tour.routing import route_planning_budget
+    from src.tour.visit_time import stop_seconds, visit_seconds
+
+    # One museum: five minutes outside, forty-five inside, and one 60-second beat.
+    museum = _poi(
+        "museum",
+        lat=PDV[0],
+        lng=PDV[1],
+        typical_duration_min=5,
+        visit_seconds_inside=2700,
+    )
+    beats = {"museum": (_beat("b1", "museum", est_spoken_seconds=60),)}
+
+    a = assess(_input(PDV, 60), [museum], beats)
+
+    # The denominator is the planner's own number, not a restatement of it.
+    assert a.target_dwell_seconds == route_planning_budget(60).dwell_target_seconds
+
+    # The numerator is what a visitor SPENDS there, not what the place SAYS.
+    expected_visit = visit_seconds(museum, frozenset(), None)
+    assert expected_visit > 60, "fixture is pointless unless the interior dominates"
+    assert a.dwell_capacity_seconds == stop_seconds(expected_visit, 60)
+    assert a.dwell_capacity_seconds > 60, (
+        "capacity still equals the beat seconds, so the numerator never moved and "
+        "the gate is dividing narration by visits"
+    )
+
+    # And the ratio is those two and nothing else.
+    assert a.fill_ratio == a.dwell_capacity_seconds / a.target_dwell_seconds
+
+    # A place with no interior is unchanged: its capacity IS its narration, which
+    # is why every hand-computed fixture above still holds.
+    street = _poi("street", lat=PDV[0], lng=PDV[1])
+    b = assess(_input(PDV, 60), [street], {"street": (_beat("s1", "street"),)})
+    assert b.dwell_capacity_seconds == 60
+
+
+def test_the_longest_supported_duration_is_solved_in_the_same_currency():
+    """`max_supportable_duration_min` is the gate's third reader of the currency.
+
+    It answers "how long a tour does this area actually support?" by solving
+    capacity against one minute's target. Solve a standing-still capacity
+    against a narration target and the answer is wrong by the ratio between
+    them — and it is shown to the traveller as a suggestion.
+    """
+    from src.tour.routing import route_planning_budget
+
+    # Deliberately thin so the assessment is not GREEN and the diagnostic runs.
+    thin = _poi(
+        "thin",
+        tier=3,
+        lat=PDV[0],
+        lng=PDV[1],
+        typical_duration_min=4,
+        visit_seconds_inside=None,
+    )
+    a = assess(_input(PDV, 60), [thin], {"thin": (_beat("t1", "thin"),)})
+
+    assert a.status != "GREEN", "fixture must be thin or the diagnostic never runs"
+    assert a.max_supportable_duration_min is not None
+    per_minute = route_planning_budget(1).dwell_target_seconds
+    assert a.max_supportable_duration_min == max(
+        1, int(a.dwell_capacity_seconds / per_minute)
+    )
 
 
 def test_on_lens_matching_is_case_insensitive():

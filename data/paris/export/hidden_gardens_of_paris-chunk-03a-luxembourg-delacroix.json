@@ -394,7 +394,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated walled park with closing bells and seasonally shifting hours (roughly dawn to dusk); gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Fontaine Médicis",
@@ -495,7 +499,54 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "sat": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "sun": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A fountain inside the gated Luxembourg Gardens, which close at nightfall by bells; hours vary seasonally and this reflects the current typical spring/summer pattern from the Sénat's published schedule.",
+    "place_category": "monument"
   },
   {
     "name": "Palais du Luxembourg",
@@ -640,7 +691,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "The Senate palace is gated with restricted public access whose visiting hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Musée Eugène Delacroix",
@@ -970,7 +1025,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated museum with ticketed entry; no OSM tag and hours not confidently known, left unfiltered.",
+    "place_category": "museum"
   },
   {
     "name": "Place de Furstemberg",
@@ -1050,7 +1109,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public square whose value stands entirely on the pavement, so it is not gated; the Musée Delacroix inside is a separate place.",
+    "place_category": "square"
   },
   {
     "name": "Institut Catholique",
@@ -1200,7 +1263,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated Catholic university building not a public visitor attraction; hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -1299,7 +1366,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working art school whose public admission hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "9 Quai Malaquais (George Sand)",
@@ -1381,7 +1452,11 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Not gated: a private residential address commemorated only by its facade, viewed from the street.",
+    "place_category": "other"
   },
   {
     "name": "Saint-Sulpice",
@@ -1468,7 +1543,54 @@
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "sat": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "sun": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag '08:00-19:45' applied to all seven days.",
+    "place_category": "church"
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -1560,6 +1682,53 @@
     "latitude": 48.853968,
     "longitude": 2.334518,
     "importance_tier": 3,
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo,Su 09:30-20:00; Tu-Fr 07:30-20:00; Sa 08:30-20:00'.",
+    "place_category": "church"
   }
 ]

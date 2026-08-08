@@ -173,6 +173,40 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             "kid_friendly": poi.get("kid_friendly", "yes"),
             "name_variations": name_variations,
             "poi_role": poi.get("poi_role"),
+            # Visit capacity: how long a visitor usefully spends AT the place.
+            # `typical_duration_min` is MINUTES outside, `visit_seconds_inside`
+            # is SECONDS inside (None where there is no interior), `visit_basis`
+            # is the sentence that argues for both. Produced by the capacity pass
+            # (.claude/commands/poi-visit-duration.md).
+            #
+            # NO DEFAULTS HERE, deliberately, and note this differs from
+            # POICreate.typical_duration_min = 30 in src/api/models/nodes.py.
+            # Absence stays absent, exactly as _provenance_fields below does it:
+            # `SET x = null` REMOVES the property in Neo4j, so an unpriced POI
+            # carries nothing and the reader's own default applies. This path
+            # re-syncs an entire city's corpus on every deploy, so substituting a
+            # plausible 30 would stamp a made-up half-hour visit onto every POI
+            # that has not been through the pass, indistinguishable afterwards
+            # from a measured one. The API model may default because it creates
+            # one POI at a time from a caller who omitted the field on purpose.
+            "typical_duration_min": poi.get("typical_duration_min"),
+            "visit_seconds_inside": poi.get("visit_seconds_inside"),
+            "visit_basis": (poi.get("visit_basis") or "").strip() or None,
+            # The planner's clock (redesign 6.1/6.7). `opening_hours` is a week
+            # table in poi-raw.json; Neo4j cannot store nested dicts, so it is
+            # JSON-encoded here — the `physical_cues` precedent — and decoded by
+            # the clock filter. Same no-defaults rule as the visit fields above:
+            # absence stays absent (`SET x = null` removes the property), so a
+            # POI the pass never reached is indistinguishable from nothing, not
+            # from a place with known hours.
+            "opening_hours": (
+                json.dumps(poi["opening_hours"], ensure_ascii=False)
+                if isinstance(poi.get("opening_hours"), dict)
+                else None
+            ),
+            "opening_hours_source": poi.get("opening_hours_source"),
+            "opening_hours_basis": (poi.get("opening_hours_basis") or "").strip() or None,
+            "place_category": (poi.get("place_category") or "").strip() or None,
         })
 
     result = session.run(
@@ -187,7 +221,18 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             p.trigger_radius      = poi.trigger_radius,
             p.kid_friendly        = poi.kid_friendly,
             p.name_variations     = poi.name_variations,
-            p.poi_role            = poi.poi_role
+            p.poi_role            = poi.poi_role,
+            // Visit capacity. This SET list and the param dict above are TWO
+            // hardcoded property lists that must agree: a key added to one and
+            // not the other reaches the graph as nothing, with no error. If you
+            // add a property, add it in both places.
+            p.typical_duration_min = poi.typical_duration_min,
+            p.visit_seconds_inside = poi.visit_seconds_inside,
+            p.visit_basis          = poi.visit_basis,
+            p.opening_hours        = poi.opening_hours,
+            p.opening_hours_source = poi.opening_hours_source,
+            p.opening_hours_basis  = poi.opening_hours_basis,
+            p.place_category       = poi.place_category
         RETURN count(p) AS total
         """,
         pois=params,

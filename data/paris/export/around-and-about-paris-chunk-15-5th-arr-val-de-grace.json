@@ -154,6 +154,18 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [],
+      "tue": [],
+      "wed": [],
+      "thu": [],
+      "fri": [],
+      "sat": [],
+      "sun": []
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated former abbey/military site; OSM tag 'closed' transcribed as closed every day.",
+    "place_category": "church"
   }
 ]

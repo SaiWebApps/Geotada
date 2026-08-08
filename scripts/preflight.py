@@ -120,12 +120,28 @@ class DatabaseSpec(NamedTuple):
 DATABASES = (
     DatabaseSpec("dev", "local", "neo4j", "ondoway-neo4j", 7687),
     DatabaseSpec("test", "test", "neo4j-test", "ondoway-neo4j-test", 7688),
-    # One pytest graph per concurrent worktree; see docker-compose.yml.
-    DatabaseSpec("test2", "test2", "neo4j-test2", "ondoway-neo4j-test2", 7690),
-    DatabaseSpec("test3", "test3", "neo4j-test3", "ondoway-neo4j-test3", 7691),
     DatabaseSpec("workbench", "workbench", "neo4j-workbench", "ondoway-neo4j-workbench", 7689),
+    # One complete set of graphs per concurrent lane; see docker-compose.yml.
+    # A lane writes only its own, so two tracks cannot wipe each other's data.
+    # Adding lane 4 is one row per graph here plus its compose service.
+    DatabaseSpec("dev2", "local2", "neo4j-dev2", "ondoway-neo4j-dev2", 7692),
+    DatabaseSpec("test2", "test2", "neo4j-test2", "ondoway-neo4j-test2", 7690),
+    DatabaseSpec("workbench2", "workbench2", "neo4j-workbench2", "ondoway-neo4j-workbench2", 7694),
+    DatabaseSpec("dev3", "local3", "neo4j-dev3", "ondoway-neo4j-dev3", 7693),
+    DatabaseSpec("test3", "test3", "neo4j-test3", "ondoway-neo4j-test3", 7691),
+    DatabaseSpec("workbench3", "workbench3", "neo4j-workbench3", "ondoway-neo4j-workbench3", 7695),
 )
 DATABASE_BY_KEY = {spec.key: spec for spec in DATABASES}
+
+# Which lane this process is running in: "" for the main checkout, "2"/"3" for a
+# concurrent worktree. The Makefile exports it from LANE=; nothing below needs to
+# know more than the suffix, so a new lane costs no branching here.
+LANE = os.environ.get("ONDOWAY_LANE", "").strip()
+
+
+def _lane_database(role: str) -> DatabaseSpec:
+    """This lane's graph for a role -- `dev` -> dev2 on lane 2, dev on main."""
+    return DATABASE_BY_KEY[f"{role}{LANE}"]
 
 
 # ── process helpers ──────────────────────────────────────────────────────────
@@ -560,7 +576,9 @@ def _local_profile_env() -> dict:
     # check at an empty tree, where it compares nothing and reports OK.
     for leaked in ("ONBOARD_DATA_ROOT", "ONBOARD_REGISTRY_PATH"):
         env.pop(leaked, None)
-    env.update(_read_profile("local"))
+    # This lane's dev graph, not the canonical one: provisioning on lane 2 must
+    # write :7692, or the isolation the lane exists for is silently undone.
+    env.update(_read_profile(_lane_database("dev").profile))
     return env
 
 
@@ -594,7 +612,8 @@ def _probe_dev_data() -> Probe:
 
 
 def _repair_dev_data() -> Probe:
-    print("    -> scripts/ensure_dev_data.py   (WRITES to the shared dev graph on 7687)")
+    dev = _lane_database("dev")
+    print(f"    -> scripts/ensure_dev_data.py   (WRITES to the {dev.key} graph on :{dev.port})")
     # The same environment the probe uses. Without it the script refuses outright.
     if _stream(
         [str(_venv_python()), "scripts/ensure_dev_data.py"],
@@ -1215,11 +1234,16 @@ def _build_registry() -> dict:
     add(
         Requirement(
             name="dev-data",
-            summary="committed city data",
+            summary=f"committed city data in the {_lane_database('dev').key} graph",
             probe=_probe_dev_data,
-            needs=("python-deps", "db-dev"),
+            # This lane's dev graph. Naming `db-dev` here would drag every lane
+            # back onto the canonical :7687 corpus and undo the isolation.
+            needs=("python-deps", f"db-{_lane_database('dev').key}"),
             repair=_repair_dev_data,
-            instruction="run scripts/ensure_dev_data.py under the local profile",
+            instruction=(
+                "run scripts/ensure_dev_data.py under the "
+                f"{_lane_database('dev').profile} profile"
+            ),
         )
     )
     add(

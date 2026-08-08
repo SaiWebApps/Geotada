@@ -1,7 +1,7 @@
 """Markdown renderer for generated tours.
 
 Reproduces the user-readable format of the empirical walks at
-``Docs/tour-builder/empirical-tours/01-place-des-vosges.md`` and
+``fixtures/reference-tours/01-place-des-vosges.md`` and
 ``02-ile-de-la-cite-notre-dame.md``: header → per-stop sections →
 sentence-per-line with bold ``[SOURCE]`` attributions → footer with
 validation summary + "what to look for" hints.

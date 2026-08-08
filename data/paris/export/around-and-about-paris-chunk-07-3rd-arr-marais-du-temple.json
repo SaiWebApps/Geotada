@@ -171,7 +171,54 @@
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": true
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tue": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wed": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thu": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "fri": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sat": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sun": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated public garden with closing bells; OSM tag \"sunrise-sunset\" transcribed to an approximate daylight window as a fixed clock is required.",
+    "place_category": "garden"
   },
   {
     "name": "Place des Vosges",
@@ -279,7 +326,11 @@
     "kid_friendly": "yes",
     "latitude": 48.8555,
     "longitude": 2.3656,
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Musee Carnavalet",
@@ -390,7 +441,49 @@
     "kid_friendly": "yes",
     "latitude": 48.855076,
     "longitude": 2.361661,
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated museum; hours follow the institution's published pattern of Tuesday-Sunday 10:00-18:00, closed Mondays.",
+    "place_category": "museum"
   },
   {
     "name": "Musee Picasso",
@@ -500,7 +593,49 @@
     "kid_friendly": "yes",
     "latitude": 48.85987,
     "longitude": 2.362115,
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:30",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:30",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:30",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:30",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated museum; hours follow the institution's published pattern of Tue-Fri 10:30-18:00 and weekends 09:30-18:00, closed Mondays.",
+    "place_category": "museum"
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -570,7 +705,11 @@
     "kid_friendly": "yes",
     "latitude": 48.862792,
     "longitude": 2.361978,
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated covered market hall with gates that close, but no OSM tag supplied and its exact stall hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "market"
   },
   {
     "name": "Hotel de Soubise",
@@ -693,6 +832,10 @@
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": true
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated museum of the National Archives entered by ticket; hours not confidently known, left unfiltered.",
+    "place_category": "other"
   }
 ]

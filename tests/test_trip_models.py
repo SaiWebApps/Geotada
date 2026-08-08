@@ -512,8 +512,8 @@ class TestTripPreviewSpotlightFields:
             status="YELLOW",
             walk_radius_m=738.0,
             fill_ratio=0.7315,
-            audio_capacity_seconds=1312,
-            target_audio_seconds=1793,
+            dwell_capacity_seconds=1312,
+            target_dwell_seconds=1793,
             reachable_poi_count=1,
             reachable_beat_count=32,
             anchor_candidate_count=1,
@@ -531,3 +531,59 @@ class TestTripPreviewSpotlightFields:
         assert payload.reachable_poi_count == 1
         assert payload.max_supportable_duration_min == 44
         assert payload.one_way_alternative_destination is None
+
+    def test_a_trip_saved_before_the_rename_still_discloses_its_thin_area(self):
+        """A record written under the OLD field names must still restore.
+
+        On 2026-08-06 two TourabilityAssessment fields were renamed as the
+        planner's currency moved from narration seconds to dwell seconds.
+        Every trip saved before that stored the old names, and the model is
+        ``extra="forbid"``, so the stored dict no longer validates.
+
+        WHY THIS TEST AND NOT A CODE READ. ``_restored_tourability`` fails
+        OPEN — a ValidationError returns None, not a 500 — so the regression
+        is invisible from the outside: no error, no log, the thin-area warning
+        simply stops appearing on every trip saved before the rename. A test
+        is the only thing that can see it.
+        """
+        from src.api.routes.trips import _restored_tourability, _tourability_payload
+
+        stored_before_the_rename = {
+            "status": "YELLOW",
+            "walk_radius_m": 738.0,
+            "fill_ratio": 0.7315,
+            "dwell_capacity_seconds": 1312,
+            "target_dwell_seconds": 1793,
+            "reachable_poi_count": 1,
+            "reachable_beat_count": 32,
+            "anchor_candidate_count": 1,
+            "cluster_compactness": 0.0,
+            "duration_min": 60,
+            "round_trip": False,
+            "max_supportable_duration_min": 44,
+            "one_way_alternative_destination": None,
+            "delivered_thin": False,
+            "on_lens_fill_ratio": None,
+        }
+
+        restored = _restored_tourability(stored_before_the_rename)
+        assert restored is not None, (
+            "a trip saved before the rename restored as None, so its thin-area "
+            "disclosure silently vanished"
+        )
+        assert restored.status == "YELLOW"
+        assert restored.dwell_capacity_seconds == 1312
+        assert restored.target_dwell_seconds == 1793
+        assert restored.max_supportable_duration_min == 44
+
+        # And the disclosure the traveller actually sees survives the round trip.
+        payload = _tourability_payload(restored)
+        assert payload is not None
+        assert payload.status == "YELLOW"
+        assert payload.max_supportable_duration_min == 44
+
+        # Fail-open is unchanged for a record that is genuinely broken rather
+        # than merely old: a garbled row must still compose without a warning,
+        # never a 500.
+        assert _restored_tourability({"status": "YELLOW"}) is None
+        assert _restored_tourability(None) is None

@@ -167,7 +167,7 @@ def test_route_holds_segments_and_budgets():
         total_walk_distance_m=120.0,
         total_walk_seconds=144,
         spine_area="Le Marais",
-        target_audio_seconds=1800,
+        target_dwell_seconds=1800,
         err_short_total_seconds=2988,
     )
     assert r.pois[0].name == "X"
@@ -193,3 +193,61 @@ def test_beat_sequence_rejects_invalid_strategy():
             ordering_strategy="random",  # type: ignore[arg-type]
             beats=(),
         )
+
+
+def test_a_poi_without_visit_capacity_still_constructs_and_defaults_safely():
+    """The three visit-capacity fields must be additive, or every corpus breaks.
+
+    Step 2.7's whole safety argument rests on this: the fields land on the
+    contract BEFORE the capacity pass has run over any city, so a POI that knows
+    nothing about them has to construct and report values that reproduce today's
+    behaviour exactly.
+
+    The `0` default is load-bearing rather than a placeholder. Generation floors a
+    stop at `max(planned_visit, planned_audio)`, so a visit time of 0 means the
+    stop lasts exactly as long as its narration — which is what happens today.
+    A `None` default here would raise instead, and a non-zero one would silently
+    lengthen every stop in every unpriced city.
+    """
+    poi = POI(
+        id="no-capacity",
+        name="A place nobody has priced yet",
+        tier=3,
+        poi_role="stop",
+        lat=48.8566,
+        lng=2.3522,
+    )
+    assert poi.typical_duration_min == 0
+    assert poi.visit_seconds_inside is None
+    assert poi.visit_basis == ""
+
+    # And a fully priced POI carries them through unchanged.
+    priced = POI(
+        id="priced",
+        name="Sainte-Chapelle",
+        tier=5,
+        poi_role="stop",
+        lat=48.8554,
+        lng=2.3450,
+        typical_duration_min=15,
+        visit_seconds_inside=3960,
+        visit_basis="Modest exterior; inside is a 28-minute queue plus 38 under the glass.",
+    )
+    assert priced.typical_duration_min == 15
+    assert priced.visit_seconds_inside == 3960
+    assert priced.visit_basis.startswith("Modest exterior")
+
+
+def test_every_transit_segment_declares_its_mode():
+    """Walking is the only mode Release 1 plans, and it must be SAID.
+
+    The field exists so adding public transport later is an addition rather than a
+    rewrite. Without it, "these seconds are walking seconds" is an unstated
+    assumption baked into every leg calculation — the pace correction, the walk
+    budget, the reach envelope — and a transit leg would silently inherit all of
+    them.
+    """
+    seg = TransitSegment(
+        from_poi_id=None, to_poi_id="a", distance_m=100.0, walk_seconds=120
+    )
+    assert seg.mode == "walk"

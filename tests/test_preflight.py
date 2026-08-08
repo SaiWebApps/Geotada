@@ -1,6 +1,13 @@
 """The prerequisite declarations are only worth what they are checked to be.
 
-Three properties are guarded here, each with the mutation that turns it red:
+Four properties are guarded here, each with the mutation that turns it red:
+
+0.  LANE TABLE INTEGRITY -- the graphs preflight can start are exactly the ones
+    docker-compose.yml defines, on the same ports, in the same containers. The
+    two files cannot import each other, so only this test stops them drifting.
+    RED when: a ``DatabaseSpec`` is added without its compose service, a
+    published Bolt port disagrees, or a ``container_name`` is renamed on one
+    side. Proven 2026-08-05 by moving dev3 to :7699 with compose untouched.
 
 1.  REGISTRY INTEGRITY -- every ``needs`` name resolves and the graph is acyclic.
     RED when: a requirement names a dependency that does not exist, or two
@@ -226,6 +233,49 @@ def test_database_specs_agree_with_the_committed_profiles():
         )
         assert profile.get("NEO4J_PASSWORD"), (
             f"profile {spec.profile!r} has no password, so the readiness query cannot run"
+        )
+
+
+def test_database_specs_agree_with_the_compose_services():
+    """Every graph preflight starts must exist in compose, and vice versa.
+
+    These two files cannot import each other, so nothing but this test stops
+    them drifting: a spec with no service fails at runtime as an opaque docker
+    error, and a service with no spec is a graph the build cannot start, probe
+    or reset. RED when: a DatabaseSpec is added without its compose service, a
+    published Bolt port disagrees, or a container_name is renamed on one side.
+    """
+    import yaml
+
+    compose = yaml.safe_load((ROOT / "docker-compose.yml").read_text(encoding="utf-8"))
+    services = compose["services"]
+    graphs = {name: body for name, body in services.items() if name.startswith("neo4j")}
+
+    assert {spec.service for spec in preflight.DATABASES} == set(graphs), (
+        "the graphs preflight knows about and the ones compose defines have drifted"
+    )
+
+    for spec in preflight.DATABASES:
+        body = graphs[spec.service]
+        assert body.get("container_name") == spec.container, (
+            f"{spec.service}: compose names the container {body.get('container_name')!r}, "
+            f"preflight probes {spec.container!r}"
+        )
+        published = {port.split(":", 1)[0] for port in body.get("ports", [])}
+        assert str(spec.port) in published, (
+            f"{spec.service}: compose publishes {sorted(published)}, "
+            f"preflight probes :{spec.port}"
+        )
+
+    volumes = set(compose.get("volumes") or {})
+    for spec in preflight.DATABASES:
+        declared = {
+            mount.split(":", 1)[0]
+            for mount in graphs[spec.service].get("volumes", [])
+            if not mount.startswith(".")
+        }
+        assert declared <= volumes, (
+            f"{spec.service} mounts {declared - volumes}, which the volumes block omits"
         )
 
 

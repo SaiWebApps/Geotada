@@ -225,7 +225,54 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "17:30"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "17:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "Gated elevated park with closing gates; City of Paris publishes winter hours opening 08:00 weekdays / 09:00 weekends and closing around dusk (~17:30 in winter), recorded as the current typical winter pattern.",
+    "place_category": "other"
   },
   {
     "name": "Viaduc des Arts",
@@ -322,7 +369,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "The viaduct's arcade of shopfronts lines a public street and is walked past in the open, not gated as a whole.",
+    "place_category": "street"
   },
   {
     "name": "Bois de Vincennes",
@@ -459,7 +510,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A large public woodland park with open roads and paths that is freely walkable and effectively unenclosed, so not gated.",
+    "place_category": "garden"
   },
   {
     "name": "Chateau de Vincennes",
@@ -556,7 +611,54 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "17:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A monument entered by ticket (gated); hours from the château's published winter pattern of 10:00-17:00 daily (summer extends to 18:00).",
+    "place_category": "other"
   },
   {
     "name": "Bibliotheque Francois Mitterrand",
@@ -579,7 +681,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated national library with controlled access, but no OSM tag supplied and its reading-room hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Parc Floral",
@@ -724,7 +830,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated ticketed botanical park in the Bois de Vincennes with seasonal hours not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "park"
   },
   {
     "name": "Jardin de Reuilly",
@@ -799,7 +909,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal garden with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Bistro du Peintre",
@@ -942,7 +1056,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A bistro passed on the walk and only viewed from the street in this role; treated as not gated for touring, so null.",
+    "place_category": "other"
   },
   {
     "name": "Square Raoul Nordling",
@@ -1027,7 +1145,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Parc de Bercy",
@@ -1189,7 +1311,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal park with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "park"
   },
   {
     "name": "Cinematheque Française",
@@ -1279,7 +1405,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A ticketed cinema and museum institution whose hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Buddhist Temple Lac Daumesnil",
@@ -1354,7 +1484,11 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated Buddhist temple (Grande Pagode de Vincennes) requiring entry through a door; hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Sainte-Chapelle",
@@ -1442,6 +1576,53 @@
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated ticketed chapel; transcribed from OSM tag \"Jan-Mar 09:00-17:00; Apr-Sep 09:00-19:00; Oct-Dec 09:00-17:00\" using the current Apr-Sep 09:00-19:00 season.",
+    "place_category": "church"
   }
 ]

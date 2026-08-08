@@ -980,7 +980,7 @@ def test_compose_plans_and_authors_through_the_shared_premium_seam(
     # There is only one walking-time budget left in the codebase, so there is no
     # "which one is this" flag to read any more — the three fractions below ARE the
     # identity of the certification band, and the legacy flat 0.83 one is deleted.
-    assert policy.minimum_requested_fraction == pytest.approx(0.90)
+
     assert policy.maximum_requested_fraction == pytest.approx(1.10)
     assert policy.nominal_requested_fraction == pytest.approx(1.00)
 

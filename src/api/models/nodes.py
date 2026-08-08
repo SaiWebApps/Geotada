@@ -138,7 +138,23 @@ class POICreate(BaseModel):
     # famous landmarks to be demoted in earlier pipeline runs.
     # See tests/test_export_consistency.py for the regression guard.
     trigger_radius: int = 10
+    # How long a visitor usefully spends AT this place, in two numbers.
+    # `typical_duration_min` is MINUTES spent WITHOUT going in; it is the only
+    # number a street, bridge or square ever gets. `visit_seconds_inside` is
+    # SECONDS spent INSIDE, and is None for anything with no interior. Two are
+    # needed because one cannot serve two visitors: Camille gives Sainte-Chapelle
+    # 66 minutes including the queue, Theo gives the same building 15 from the
+    # outside (docs/personas/01-architecture-pilgrim.md, 02-dark-history-walker.md).
+    # POICreate has no model_config, so pydantic's default extra="ignore" applies:
+    # any field NOT declared here is silently dropped from a POST /api/nodes/POI
+    # body. These three are declared for exactly that reason.
     typical_duration_min: int = 30
+    visit_seconds_inside: int | None = None
+    # One sentence a person who has never visited the city can judge the numbers
+    # by ("interior, ~30 rooms, typical visit 45-60 min"). Not provenance and not
+    # source text, so unlike `source_passage` it IS forwarded to the graph — it is
+    # the only audit trail a generated capacity has.
+    visit_basis: str = Field(default="", max_length=500)
     kid_friendly: str = Field(default="yes", max_length=50)
     name_variations: list[str] = []
     poi_role: POIRole = "stop"

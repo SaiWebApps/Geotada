@@ -34,6 +34,8 @@ from src.tour.generation import (
     is_walk_concurrent,
 )
 from src.tour.narration_quality import score_narration
+from src.tour.routing import total_walk_seconds
+from src.tour.visit_time import served_elapsed_seconds
 
 # ── thresholds ──────────────────────────────────────────────────────────────
 # Provenance for every value is in the standard, §5. Summary of KIND:
@@ -142,38 +144,65 @@ MIN_STOP_SEPARATION_M: float = 50.0
 #: at the C1 check for the Notre-Dame arithmetic that forced this.
 STARVE_FLOOR_MAX_SHARE_OF_CAP: float = 0.5
 
-#: MEASURED 2026-07-26. The minimum share of the REQUESTED duration that must arrive as
-#: spoken audio. Replaces the old derivation
-#: ``0.83 x AUDIO_FRACTION(0.60) x AUDIO_FLOOR_FRAC(0.8) = 0.398``, which was
-#: self-referential (it inherited the PLANNER's aim as the SERVING verdict) and wrong.
-#: The 0.83 in that derivation was the flat legacy planning fraction, deleted from the
-#: engine on 2026-08-04; it is quoted here as HISTORY, not as a live constant.
+#: RE-MEASURED 2026-08-06. Seconds of spoken audio required per second of WALKING.
 #:
-#: routing.py declares WALK_FRACTION 0.40 + AUDIO_FRACTION 0.60 = 1.00 — a DISJOINT
-#: walk-XOR-listen model, i.e. the tourist stands still for 60% of the hour. The product
-#: ruling of 2026-07-19 ("audio overlaps the walking… it costs no time", commit 4cbb94c)
-#: retired that model, and C7/C7b were updated for it. C3 was not. 0.398 is a fossil.
+#: THE DENOMINATOR CHANGED, and that is the whole point (owner ruling, 2026-08-06).
+#: This was a share of the REQUESTED duration, which asked "does this tour talk for a
+#: fifth of its length?". That question only made sense while a tour's length was
+#: walking plus talking. Now that a stop lasts as long as the place and the visitor
+#: jointly justify, a five-hour tour can spend three and a half hours standing still —
+#: and the old form demanded 57 minutes of continuous narration to approve it, which
+#: refuses the persona day this whole release was built to serve. Re-measuring the old
+#: fraction would have been a no-op: neither of its terms moves under the new time
+#: model.
 #:
-#: MEASURED audio/duration on the eight tracked certified tours:
-#:     0.227 nyc-lower-manhattan-90   <- worst tour this project ACCEPTED
-#:     0.249 nyc-central-park-open-90
-#:     0.277 paris-marais-loop-60
-#:     0.286 nyc-grand-central-times-square-60
-#:     0.311 nyc-village-loop-60
-#:     0.343 paris-ile-open-90
-#:     0.426 paris-pont-neuf-notre-dame-60
+#: Silence while you STAND somewhere is the product working; silence while you WALK for
+#: an hour is the defect. Walking time is the denominator that asks that directly.
+#:
+#: RE-MEASURED on the SAME eight tracked tours the previous value was derived from
+#: (``data/certification/tour-batch-v1``), by the same method, against the new
+#: denominator:
+#:
+#:     0.738 paris-pont-neuf-notre-dame-60
+#:     0.541 paris-ile-open-90
+#:     0.472 nyc-village-loop-60
+#:     0.451 nyc-grand-central-times-square-60
+#:     0.414 paris-marais-loop-60
+#:     0.387 nyc-central-park-open-90
+#:     0.327 nyc-lower-manhattan-90        <- thinnest tour this project ACCEPTED
 #:     ----
-#:     0.056 paris-west-axis-90       <- genuinely starved: 2 stops, 5.0 min for 90 min
-#: At 0.398, SEVEN of the eight were BLOCKED. The check was also inverted in practice:
-#: a verbose ONE-STOP tour passed while an 11-stop tour did not.
+#:     0.059 paris-west-axis-90            <- genuinely starved: 5.0 min of audio
+#:                                            across 85.3 min of walking
 #:
-#: 0.19 is the geometric midpoint of the two poles it must separate — the documented
-#: starved run (9.4 min for 60 min = 0.157) and the worst accepted tour (0.227) — giving
-#: a symmetric 1.21x block margin and 1.19x pass margin. It is NOT a target: the engine
-#: still AIMS at AUDIO_FRACTION; this is the floor below which a tour is not deliverable.
-#: Guarded from both sides by
+#: The gap between the two poles is far wider under this denominator than it was
+#: under the old one (5.5x, against 1.5x before), which is itself evidence that
+#: walking is the quantity the check was always reaching for.
+#:
+#: AND ONE INTERIOR-HEAVY TOUR ADDED to the derivation set, because all eight above
+#: predate visit time and a threshold calibrated on exterior-only tours alone is
+#: off-distribution for what this release produces: the 300-minute Rue Royale ->
+#: Notre-Dame flagship, 22.6 min of audio across 85.8 min of walking, 7 stops —
+#: **0.263**, and the worst tour that must PASS.
+#:
+#: 0.12 is the geometric midpoint of the starved pole (0.059) and that worst
+#: must-pass tour (0.263), which is 0.1246, rounded DOWN to 0.12 so the nearest
+#: observed passing tour in the wider corpus (a one-stop 45-minute artifact at
+#: exactly 0.125) is not decided by a coin flip. Block margin 2.03x, pass margin
+#: 2.19x.
+#:
+#: CROSS-CHECKED against every stored tour with both numbers — 210 files under
+#: ``data/*/tours``. The distribution has a real gap, not a smear: thirteen tours sit
+#: at 0.018-0.054, all of them the same failing corridor (2 stops, 1.6-4.5 min of
+#: audio across 76-123 min of walking), then nothing at all until 0.125. Every bar
+#: between 0.055 and 0.124 blocks the identical thirteen, so this value is not
+#: balanced on a knife edge.
+#:
+#: The previous value was 0.19 of the REQUESTED duration. It cannot be compared to
+#: this one: different question, different denominator.
+#:
+#: It is NOT a target. Guarded from both sides by
 #: test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour.
-MIN_AUDIO_FRAC_OF_REQUESTED: float = 0.19
+MIN_AUDIO_FRAC_OF_WALKING: float = 0.12
 
 #: MEASURED, 2026-07-19, over every real composed tour in ``data/*/tours/`` — 195 tour
 #: files: **paris 191, london 4. ``data/new_york/tours/`` DOES NOT EXIST** and
@@ -247,31 +276,35 @@ class RubricReport:
         )
 
 
-def c3_audio_floor_seconds(duration_min: int) -> float:
-    """The C3 thinness floor, in seconds of spoken audio, for a requested duration.
+def c3_audio_floor_seconds(walk_seconds: int) -> float:
+    """The C3 thinness floor, in seconds of spoken audio, for a route's WALKING time.
 
-    LINEAR in the requested duration: ``MIN_AUDIO_FRAC_OF_REQUESTED``, measured against
-    the tracked certified tours. A 300-minute tour must carry twice the audio of a
-    150-minute one, because that is what the traveller asked for.
+    THE QUESTION IS "ARE THE WALKS SILENT?" (owner ruling 2026-08-06). It used to be
+    "does this tour talk for a fifth of its length?", which was the right question only
+    while a tour's length was walking plus talking. Since a stop now lasts as long as
+    the place and the visitor jointly justify, a five-hour tour can spend three and a
+    half hours standing in and around buildings — and the old form demanded 57 minutes
+    of continuous narration to approve it. That refuses Camille's own day, which
+    carries about 35 minutes of audio across five hours and which the persona describes
+    as a good one: she stands twenty minutes at Concorde for four minutes of talking
+    and does not feel short-changed (``docs/personas/01-architecture-pilgrim.md``).
+
+    Silence while you stand somewhere looking at it is the product working. Silence
+    while you walk for an hour is the defect this check exists to catch, and walking
+    time is the only denominator that asks about it directly.
 
     CHANGED 2026-08-04 (OWNER RULING 5, "no stop limits, period"). This used to be
     ``min(linear, MAX_COMPOSED_STOPS x GORGE_MAX_WORDS_PER_STOP x
     STARVE_FLOOR_MAX_SHARE_OF_CAP)`` — a cap at what an EIGHT-stop tour could hold,
-    inherited from a planning ceiling that no longer exists. The cap was there because
-    the floor was linear while capacity was CONSTANT, so a long tour could be asked for
-    more words than it could physically contain. Capacity is no longer constant:
-    duration is now the only bound on stop count, so a longer tour holds proportionally
-    more stops and the contradiction is gone.
-
-    Removing it makes C3 STRICTER on long tours, and that is the point. With the cap in
-    place the floor flattened at roughly 22.7 minutes of audio, so a thin 300-minute
-    tour was judged against the same word budget as a 120-minute one and passed. See
+    inherited from a planning ceiling that no longer exists. Capacity is no longer
+    constant: duration is the only bound on stop count, so a longer tour holds
+    proportionally more stops and the contradiction is gone. See
     ``test_c3_floor_never_demands_more_words_than_c8_allows_at_any_offered_duration``
-    for the replacement satisfiability proof, which is now duration-INDEPENDENT: the
-    engine caps one stop at ``MAX_DWELL_AUDIO_SECONDS`` of audio, so the stops needed to
-    meet this floor each carry well under ``GORGE_MAX_WORDS_PER_STOP``.
+    for the satisfiability proof: the engine caps one stop at
+    ``MAX_DWELL_AUDIO_SECONDS`` of audio, so the stops needed to meet this floor each
+    carry well under ``GORGE_MAX_WORDS_PER_STOP``.
     """
-    return MIN_AUDIO_FRAC_OF_REQUESTED * duration_min * 60
+    return MIN_AUDIO_FRAC_OF_WALKING * walk_seconds
 
 
 def _words(text: str) -> int:
@@ -360,15 +393,20 @@ def score_tour(
         "words_by_stop": dict(sorted(words_by_stop.items())),
     }
 
-    # ── C3: thin tour — delivered audio against a MEASURED floor ────────────
-    # The floor is MIN_AUDIO_FRAC_OF_REQUESTED, calibrated against the tracked
-    # certification batch (see that constant for the full population). It is CAPPED by
-    # what a tour may physically hold, so C3 can never demand what C8 forbids — the
-    # same construction, and the same reason, as C1's cap at the starvation check.
+    # ── C3: ARE THE WALKS SILENT? ───────────────────────────────────────────
+    # Delivered audio against the tour's own WALKING time, not against the requested
+    # duration (owner ruling 2026-08-06). A stop the traveller stands at for twenty
+    # minutes and hears four minutes about is the product working; an hour of walking
+    # with nothing said is the defect. Judging against the request confused the two,
+    # and once a stop's length became what the place is worth it started refusing
+    # exactly the tours this release produces. See MIN_AUDIO_FRAC_OF_WALKING for the
+    # 210-tour measurement behind the number.
+    #
     # Without C3 the rubric BLESSES a starved tour, which it did on a 2-stop/9.4-min run.
     duration_min = getattr(script.inputs, "duration_min", 0) or 0
-    if duration_min:
-        floor_s = c3_audio_floor_seconds(duration_min)
+    walk_s = route.total_walk_seconds
+    if walk_s > 0:
+        floor_s = c3_audio_floor_seconds(walk_s)
         report.stats["audio_floor_min"] = round(floor_s / 60, 1)
         if script.total_audio_seconds < floor_s:
             report.findings.append(
@@ -376,9 +414,9 @@ def score_tour(
                     check="C3-thin",
                     severity=Severity.BLOCKER,
                     message=(
-                        f"{script.total_audio_seconds / 60:.1f} min of audio for a "
-                        f"{duration_min}-min request (floor {floor_s / 60:.1f} min) — "
-                        f"the tourist walks in silence"
+                        f"{script.total_audio_seconds / 60:.1f} min of audio across "
+                        f"{walk_s / 60:.0f} min of walking (floor "
+                        f"{floor_s / 60:.1f} min) — the tourist walks in silence"
                     ),
                 )
             )
@@ -433,7 +471,31 @@ def score_tour(
     report.stats["audio_stationary_s"] = stationary_s
 
     if route.err_short_total_seconds > 0:
-        actual_total_s = route.total_walk_seconds + stationary_s
+        # THE THIRD KIND OF TIME, added 2026-08-06. The two above are both about
+        # LISTENING, and until this release listening was the only way to spend a
+        # minute you were not walking. It is not: Camille stands twenty minutes at
+        # Concorde for four minutes of audio and is content
+        # (docs/personas/01-architecture-pilgrim.md, step 5). Counting only her
+        # stationary AUDIO said that stop cost four minutes; she spent twenty.
+        #
+        # THE SAME TWO TERMS THE PLANNER'S FINAL GATE USES, deliberately. That gate
+        # computes `route.total_walk_seconds + served dwell`, so C7 must compose the
+        # same pair or the rubric and the planner disagree about the same tour —
+        # which is the class of defect this whole release is removing. Reading the
+        # route's own declared walk total (rather than re-summing its legs) is what
+        # keeps them identical on a route somebody CONSTRUCTED as well as on one
+        # `summarise_route` built.
+        #
+        # Stationary audio is already inside each stop's dwell
+        # (`stop_seconds(visit, narration)`), and concurrent audio is inside its
+        # leg's walk, so the overlap ruling is honoured by construction rather than
+        # by subtraction. The two audio numbers above stay as REPORTED STATS: they
+        # are what C7b judges and what a reader needs to see, but they no longer
+        # decide C7.
+        actual_total_s = served_elapsed_seconds(
+            route.total_walk_seconds,
+            sum(sp.dwell_seconds for sp in script.selected_pois),
+        )
         report.stats["time_budget_actual_s"] = actual_total_s
         report.stats["time_budget_ceiling_s"] = route.err_short_total_seconds
         # The ceiling percentage is DERIVED FROM THE ROUTE, never from a planning
@@ -470,22 +532,24 @@ def score_tour(
     # that outlasts its leg either cuts off on arrival or holds the tourist on the
     # pavement — so the free-airtime budget is the walk itself.
     #
-    # THE TWO WALK MEASURES DISAGREE, so take the SMALLER. ``route.total_walk_seconds``
-    # and ``sum(transits.leg_seconds)`` are not the same number: measured across six
-    # real Paris tours they differ by -119s to +499s (ile_arch_60: 736 vs 1115;
-    # ile_dark_120: 2166 vs 2665), because leg_seconds carries routed road-network
-    # values while total_walk_seconds is the pace-corrected haversine the budget math
-    # uses (see routing.py's TransitSegment note). C7 uses total_walk_seconds because
-    # that is the currency the err-short ceiling is denominated in.
+    # THE MIN IS STILL HERE AND IT IS STILL LOAD-BEARING — but not for the reason
+    # it used to be, and the difference matters enough to write down.
     #
-    # C7b is a BLOCKER about whether narration FITS a walk, so it must never
-    # overstate the airtime available: the min of the two is the honest bound. An
+    # It was a hedge between two DIFFERENT FORMULAS: this line summed the legs one
+    # way and ``summarise_route`` totalled them another, and across six real Paris
+    # tours they differed by -119s to +499s (ile_arch_60: 736 vs 1115). An
     # adversarial review caught the two checks silently reasoning about different
-    # walks.
-    leg_seconds_total = sum(
-        int(t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
-        for t in route.transits
-    )
+    # walks and the min was the patch. Since 2026-08-06 there is one expression —
+    # ``routing.total_walk_seconds`` — so on any route ``summarise_route`` built,
+    # the two sides of this min are provably equal and it is a no-op.
+    #
+    # It is NOT a no-op on a route somebody CONSTRUCTED: the timebox repair's
+    # trials and the scoring harnesses set ``total_walk_seconds`` directly while
+    # passing ``transits=()``. C7b is a BLOCKER about whether narration fits a
+    # walk, so it must never overstate the airtime available, and the min is what
+    # keeps a declared total from outranking the legs actually present. Do not
+    # collapse it into the tautology it now looks like on the happy path.
+    leg_seconds_total = total_walk_seconds(route.transits)
     total_leg_walk_s = (
         min(leg_seconds_total, route.total_walk_seconds)
         if route.total_walk_seconds > 0

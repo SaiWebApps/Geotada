@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from .contract import BeatSequence, Route
 from .generation import _find_directional_transit_beat
-from .routing import beat_spoken_seconds
+from .routing import beat_spoken_seconds, leg_walk_seconds
 
 # A leg qualifies for a reflection when walking exceeds its audio by this much.
 REFLECTION_MIN_DEFICIT_SECONDS: int = 90
@@ -31,10 +31,14 @@ GLUE_SENTENCE_SECONDS: int = 4
 
 
 def _leg_walk_seconds(route: Route, stop_idx: int) -> int:
-    """Walking seconds of the leg arriving at ``stop_idx`` (routed if known)."""
+    """Walking seconds of the leg arriving at ``stop_idx`` (routed if known).
+
+    Delegates to ``routing.leg_walk_seconds``, the one per-leg expression, so a
+    reflection about how long a walk was cannot disagree with the walk the tour
+    was planned around.
+    """
     if 0 <= stop_idx < len(route.transits):
-        t = route.transits[stop_idx]
-        return int(t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
+        return leg_walk_seconds(route.transits[stop_idx])
     return 0
 
 

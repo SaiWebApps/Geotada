@@ -8,12 +8,12 @@ import pytest
 
 from src.tour.contract import POI, BeatRef
 from src.tour.routing import (
-    AUDIO_FRACTION,
+    DWELL_FRACTION,
     HAVERSINE_CORRECTION,
     PACE_KMH,
+    REACH_PACE_KMH,
     WALK_FRACTION,
     beat_spoken_seconds,
-    compute_dwell_seconds,
     envelope_radius_m,
     governor_allowance_seconds,
     haversine_m,
@@ -22,7 +22,7 @@ from src.tour.routing import (
     planned_audio_seconds,
     planned_total_seconds,
     summarise_route,
-    target_audio_seconds,
+    target_dwell_seconds,
     walk_budget_seconds,
 )
 
@@ -79,8 +79,37 @@ def test_pace_corrected_500m_haversine():
 
 def test_pace_constants_lock():
     assert PACE_KMH == 3.0
+    assert REACH_PACE_KMH == 3.0
     assert HAVERSINE_CORRECTION == 1.35
-    assert math.isclose(WALK_FRACTION + AUDIO_FRACTION, 1.0)
+    assert math.isclose(WALK_FRACTION + DWELL_FRACTION, 1.0)
+
+
+def test_the_reach_radius_does_not_follow_the_walking_pace(monkeypatch):
+    """How far to SEND someone is not a consequence of how fast they walk.
+
+    These are two equal numbers today, which is exactly why this needs a test
+    rather than an inequality: equal values are a coincidence waiting to be
+    mistaken for a rule, and the next person to correct the walking pace —
+    3.0 km/h is a stroll, not a walk — would otherwise widen the search region
+    by half without meaning to. At a 300-minute request that takes the radius
+    from 4,444 m to 6,667 m, and Parc de la Villette sits 5,614 m from Rue
+    Royale, so it re-enters the circle Phase 1 shrank to exclude it. Phase 1
+    undone through a constant with nothing to do with it.
+
+    This raises the WALKING pace and asserts the reach is untouched.
+    """
+    import src.tour.routing as routing_module
+
+    before = envelope_radius_m(300, round_trip=False)
+    monkeypatch.setattr(routing_module, "PACE_KMH", 4.5)
+    after = envelope_radius_m(300, round_trip=False)
+
+    assert after == before, (
+        f"walking faster widened the reach from {before:.0f} m to {after:.0f} m. "
+        f"The radius must follow REACH_PACE_KMH, which is a product choice, not "
+        f"PACE_KMH, which is a measurement of walking speed."
+    )
+    assert math.isclose(before, 4444.4, rel_tol=1e-3)
 
 
 # ---------------------------------------------------------------------------
@@ -101,7 +130,7 @@ def test_walk_budget_60min():
 
 def test_audio_budget_60min():
     # 60 x 1.00 x 0.60 x 60 = 2160s. Was 1793 under the deleted flat 0.83.
-    assert target_audio_seconds(60) == 2160
+    assert target_dwell_seconds(60) == 2160
 
 
 def test_envelope_round_trip_is_half_of_one_way():
@@ -126,21 +155,33 @@ def test_envelope_zero_duration():
 # ---------------------------------------------------------------------------
 
 
-def test_dwell_anchor_tiers_use_5min():
-    assert compute_dwell_seconds(5) == 300
-    assert compute_dwell_seconds(4) == 300
+def test_a_stops_length_is_no_longer_a_property_of_its_tier():
+    """DELETED 2026-08-06, and this test is the guard against it coming back.
 
+    Four tests used to live here pinning a flat per-tier dwell: 300 s for tiers 5
+    and 4, 150 s for tier 3, 0 for tier 1. They asserted the table faithfully; the
+    table was the problem. It said a stop's length is a property of how FAMOUS a
+    place is, so every tier-5 anchor got the same five minutes — simultaneously far
+    too little for the Louvre and far too much for a bridge — and nothing in it
+    could express Camille and Theo spending 33 and 8 minutes at the same courtyard.
 
-def test_dwell_pause_tier_3():
-    assert compute_dwell_seconds(3) == 150
+    A stop's length is now min(what the place absorbs, what this visitor's interest
+    justifies, the party's ceiling), floored at its own narration. It is priced once
+    in selection, where the corpus snapshot is open, and carried on
+    ``Route.planned_visit_seconds``. See src/tour/visit_time.py and
+    tests/test_tour_visit_time.py.
 
+    Rewritten rather than deleted, because a deleted test is a guard nobody misses.
+    """
+    import src.tour.routing as routing_module
 
-def test_dwell_walkby_tier_1_zero():
-    assert compute_dwell_seconds(1) == 0
-
-
-def test_dwell_unknown_tier_zero():
-    assert compute_dwell_seconds(99) == 0
+    assert not hasattr(routing_module, "compute_dwell_seconds"), (
+        "compute_dwell_seconds is back. A stop's length must not be derived from "
+        "its importance tier; price it through src/tour/visit_time.py instead."
+    )
+    assert not hasattr(routing_module, "DWELL_SECONDS_BY_TIER"), (
+        "DWELL_SECONDS_BY_TIER is back. See src/tour/visit_time.py."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -301,8 +342,8 @@ def test_planned_audio_seconds_sums_the_plan():
 
 @pytest.mark.parametrize("d", [30, 45, 60, 90, 120])
 def test_governor_allowance_is_budget_over_three_for_normal_durations(d: int):
-    # d>=30 -> min(3, d//10)=3 -> allowance = target_audio_seconds(d)//3.
-    assert governor_allowance_seconds(d) == target_audio_seconds(d) // 3
+    # d>=30 -> min(3, d//10)=3 -> allowance = target_dwell_seconds(d)//3.
+    assert governor_allowance_seconds(d) == target_dwell_seconds(d) // 3
 
 
 def test_governor_allowance_concrete_values():
@@ -315,7 +356,7 @@ def test_governor_allowance_concrete_values():
 def test_governor_allowance_divisor_floors_for_short_durations():
     # d<20 -> d//10 in {0,1} -> divisor floored at 1 -> allowance == full budget
     # (very short tours seat ~1 stop; no incidental cap needed). No ZeroDivision.
-    assert governor_allowance_seconds(15) == target_audio_seconds(15)
-    assert governor_allowance_seconds(5) == target_audio_seconds(5)
+    assert governor_allowance_seconds(15) == target_dwell_seconds(15)
+    assert governor_allowance_seconds(5) == target_dwell_seconds(5)
     # d in [20,29] -> d//10=2 -> budget/2.
-    assert governor_allowance_seconds(25) == target_audio_seconds(25) // 2
+    assert governor_allowance_seconds(25) == target_dwell_seconds(25) // 2

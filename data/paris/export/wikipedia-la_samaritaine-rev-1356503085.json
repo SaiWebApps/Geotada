@@ -241,6 +241,53 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "la_samaritaine-rev-1356503085",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated department store; transcribed from OSM tag 'Mo-Su 10:00-20:00'.",
+    "place_category": "other"
   }
 ]

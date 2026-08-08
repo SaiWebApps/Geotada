@@ -724,7 +724,7 @@ def _route_for(pois: list[POI]) -> Route:
         total_walk_distance_m=0.0,
         total_walk_seconds=0,
         spine_area=None,
-        target_audio_seconds=0,
+        target_dwell_seconds=0,
         err_short_total_seconds=0,
     )
 
@@ -1137,7 +1137,7 @@ def _hoist_route(start_poi: POI, sibling_poi: POI) -> Route:
         total_walk_distance_m=0.0,
         total_walk_seconds=0,
         spine_area=None,
-        target_audio_seconds=0,
+        target_dwell_seconds=0,
         err_short_total_seconds=0,
     )
 

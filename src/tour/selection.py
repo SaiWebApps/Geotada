@@ -17,7 +17,6 @@ live. Keep it deliberate and well-commented.
 
 from __future__ import annotations
 
-import itertools
 import json
 import math
 import re
@@ -26,6 +25,7 @@ from collections import Counter
 from collections.abc import Callable, Iterable, Mapping
 from dataclasses import InitVar, dataclass
 from dataclasses import field as dataclass_field
+from datetime import datetime, time, timedelta
 from types import MappingProxyType
 from typing import TYPE_CHECKING
 
@@ -43,6 +43,7 @@ from .beat_select import (
 from .contract import (
     POI,
     BeatRef,
+    ClockExclusion,
     PhysicalCue,
     POIBeats,
     ReachVerdict,
@@ -57,8 +58,6 @@ from .ordering import order_stops
 from .routing import (
     DEFAULT_ROUTE_PLANNING_POLICY,
     EARTH_RADIUS_M,
-    HAVERSINE_CORRECTION,
-    PACE_KMH,
     TIMEBOX_MATERIALITY_TOLERANCE_SECONDS,
     WALK_FRACTION,
     LegSecondsFn,
@@ -68,14 +67,17 @@ from .routing import (
     envelope_radius_m,
     haversine_m,
     insertion_cost_seconds,
+    path_leg_seconds,
+    path_walk_seconds,
     planned_audio_seconds,
     route_planning_budget,
     summarise_route,
     within_planning_timebox,
 )
 from .routing import (
-    target_audio_seconds as target_audio_seconds,
+    target_dwell_seconds as target_dwell_seconds,
 )
+from .visit_time import served_elapsed_seconds, stop_seconds, visit_seconds
 
 if TYPE_CHECKING:
     from .routing_client import RoutingClient
@@ -375,19 +377,31 @@ _NAME_TOKEN_MIN_LEN: int = 4
 # `score / extra_cost` no longer favours additions. Phase 7 fill pass
 # adds higher-walk-cost candidates because being below the audio floor
 # matters more than route efficiency at that point.
-FILL_PASS_AUDIO_FLOOR_FRAC: float = 0.8
+FILL_PASS_DWELL_FLOOR_FRAC: float = 0.8
 FILL_PASS_WALK_BUDGET_FRAC: float = 0.95
 # #21 under-fill rescue: while below the stop floor, admit a further stop whose
-# MARGINAL walk cost is proportional to the audio it delivers — walk-seconds per
-# audio-second. A rich nearby stop the greedy couldn't fit is worth the detour; a
-# far, thin stop is a walk-slog (25 min walking for 3 min audio) and stays OUT.
-# Tuned on the live routed corpus, which shows a clean gap: rich stops the fix
-# SHOULD add rate 3.2-4.2 (Pantheon 3.47, Louvre Museum 3.2-3.3, Palais-Royal
-# 4.19), thin slogs rate >=5.0 (Pont des Arts 5.0, thin streets 5.7-16). 4.5 sits
-# squarely in the gap. (A marginal ratio is used, not a total-walk cap: the
-# fill-pass insertion cost is a PRE-Held-Karp overestimate, so a total-walk
-# threshold wrongly rejects good stops once the route is re-optimised.)
-RESCUE_MAX_WALK_PER_AUDIO: float = 4.5
+# MARGINAL walk cost is proportional to the time it EARNS the visitor —
+# walk-seconds per standing-still second. A rich nearby stop the greedy couldn't
+# fit is worth the detour; a far, thin stop is a walk-slog (25 min walking for 3
+# min of anything) and stays OUT.
+#
+# THE DENOMINATOR MOVED ON 2026-08-06 AND THE THRESHOLD DID NOT, on purpose. It
+# was walk-seconds per AUDIO-second, which asked "is this walk worth what the
+# place says?" — so a forty-minute interior with ninety seconds of narration
+# rated 27 and was refused as a slog. The question was always meant to be "is
+# this walk worth what you get?", and the answer is the stop, not its script.
+#
+# Tuned on the live routed corpus, which showed a clean gap on the OLD
+# denominator: rich stops the fix SHOULD add rated 3.2-4.2 (Pantheon 3.47, Louvre
+# Museum 3.2-3.3, Palais-Royal 4.19), thin slogs >=5.0 (Pont des Arts 5.0, thin
+# streets 5.7-16). 4.5 sits squarely in that gap. Moving the denominator can only
+# LOWER a candidate's ratio (dwell >= audio always), so 4.5 stays a valid divider
+# and every stop that passed before still passes; what changes is that
+# interior-heavy stops stop being rejected. Re-tuning it belongs with a fresh
+# corpus measurement, not with this rename. (A marginal ratio is used, not a
+# total-walk cap: the fill-pass insertion cost is a PRE-Held-Karp overestimate,
+# so a total-walk threshold wrongly rejects good stops once re-optimised.)
+RESCUE_MAX_WALK_PER_DWELL_SECOND: float = 4.5
 # The rescue lifts a tour to at least this many stops (the reported failure was a
 # 60-min tour seating only ONE). Kept modest so two far-ish rich stops can't
 # accumulate into a walk-heavy route — a 1->2 stop lift is the fix; a rich dense
@@ -660,6 +674,13 @@ RETURN
   p.poi_role      AS poi_role,
   p.location.y    AS lat,
   p.location.x    AS lng,
+  p.typical_duration_min AS typical_duration_min,
+  p.visit_seconds_inside AS visit_seconds_inside,
+  p.visit_basis   AS visit_basis,
+  p.opening_hours AS opening_hours,
+  p.opening_hours_source AS opening_hours_source,
+  p.opening_hours_basis AS opening_hours_basis,
+  p.place_category AS place_category,
   area_names      AS areas
 ORDER BY p.id
 """
@@ -754,6 +775,85 @@ def _lens_neighbor_map(lens_records: list[dict]) -> dict[str, frozenset[str]]:
 _PLACEHOLDER_AUDIO_PREFIX = "s3://ondoway-audio/placeholder/"
 
 
+#: Weekday index (datetime.weekday(): Monday=0) -> the week-table key the
+#: opening-hours pass writes, and the English name the exclusion reason speaks.
+_CLOCK_DAY_KEYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
+_CLOCK_DAY_NAMES = (
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+)
+
+
+def _clock_exclusion_reason(
+    opening_hours_json: str,
+    source: str | None,
+    start: datetime,
+    duration_min: int,
+) -> str | None:
+    """THE one definition of clock-closure (redesign 6.1). None = may be seated.
+
+    A POI is clock-excluded only when its opening table is CLOSED for the
+    ENTIRE visit window (start → start + duration): a place open for any part
+    of the window stays in the pool — arriving to find a door that closes in
+    an hour is the visitor's trade to make, a locked one is not.
+
+    FAILS OPEN, deliberately: a table that does not parse, a malformed window,
+    an unknown shape — all return None, i.e. "may be seated". A data defect
+    must degrade to today's trusting behaviour, never lock a visitor out of an
+    open door. The structural bars in tests/test_poi_opening_hours.py are the
+    guard on the data itself.
+    """
+    try:
+        table = json.loads(opening_hours_json)
+    except (json.JSONDecodeError, TypeError):
+        return None
+    if not isinstance(table, dict):
+        return None
+
+    end = start + timedelta(minutes=duration_min)
+    closed_day_names: list[str] = []
+    open_windows_seen: list[str] = []
+    cursor = start
+    while cursor < end:
+        day_key = _CLOCK_DAY_KEYS[cursor.weekday()]
+        windows = table.get(day_key)
+        if not isinstance(windows, list):
+            return None  # malformed / missing day → fail open
+        next_midnight = datetime.combine(cursor.date() + timedelta(days=1), time.min)
+        segment_end = min(end, next_midnight)
+        seg_from = cursor.strftime("%H:%M")
+        seg_to = "24:00" if segment_end == next_midnight else segment_end.strftime("%H:%M")
+        for window in windows:
+            if (
+                not isinstance(window, list)
+                or len(window) != 2
+                or not all(isinstance(t, str) for t in window)
+            ):
+                return None  # malformed window → fail open
+            opens, closes = window
+            if opens < seg_to and closes > seg_from:
+                return None  # open for part of the window → seatable
+        closed_day_names.append(_CLOCK_DAY_NAMES[cursor.weekday()])
+        open_windows_seen.extend(f"{w[0]}-{w[1]}" for w in windows)
+        cursor = next_midnight
+
+    source_label = (source or "AI").upper()
+    if len(closed_day_names) == 1:
+        day = closed_day_names[0]
+        if open_windows_seen:
+            detail = (
+                f"closed {day} {start.strftime('%H:%M')}-{end.strftime('%H:%M')} "
+                f"(open {', '.join(open_windows_seen)}; hours: {source_label})"
+            )
+        else:
+            detail = f"closed all day {day} (hours: {source_label})"
+    else:
+        detail = (
+            f"closed for the entire {closed_day_names[0]}-{closed_day_names[-1]} "
+            f"visit window (hours: {source_label})"
+        )
+    return f"{detail}; would otherwise have been seated"
+
+
 def _is_unadopted_placeholder_beat(record: dict) -> bool:
     """True for a seed-artifact beat: no stable beat_id AND placeholder audio.
 
@@ -840,6 +940,28 @@ def _snapshot_from_records(
                 coordinate_provenance=_decode_coordinate_provenance(
                     r.get("coordinate_provenance")
                 ),
+                # THREE PLACES CAN EAT THESE FIELDS SILENTLY, and all three are
+                # closed: the Cypher above only returns what it names, this
+                # constructor only sets what it lists, and POI is extra="ignore"
+                # so an unlisted keyword vanishes without an error. A corpus
+                # written before the capacity pass returns None for all three and
+                # lands on the contract defaults, which reproduce today's
+                # behaviour exactly.
+                typical_duration_min=int(r.get("typical_duration_min") or 0),
+                visit_seconds_inside=(
+                    int(r["visit_seconds_inside"])
+                    if r.get("visit_seconds_inside") is not None
+                    else None
+                ),
+                visit_basis=_clean(r.get("visit_basis")) or "",
+                # The clock fields (redesign 6.1/6.7) ride the same three
+                # closed hops as the capacity trio above; an unpriced corpus
+                # returns None for all four and lands on the contract defaults
+                # (None hours = never clock-excluded — the safe direction).
+                opening_hours=_clean(r.get("opening_hours")),
+                opening_hours_source=_clean(r.get("opening_hours_source")),
+                opening_hours_basis=_clean(r.get("opening_hours_basis")) or "",
+                place_category=_clean(r.get("place_category")) or "",
             )
         )
 
@@ -1353,6 +1475,48 @@ def build_poi_beat_plans_capped(
     return tuple(capped)
 
 
+def served_dwell_seconds(
+    route: Route,
+    snapshot: CorpusSnapshot,
+    *,
+    interest: frozenset[str] | None,
+    end_is_none: bool,
+) -> int:
+    """Standing-still seconds this route actually serves.
+
+    ONE definition, and the reason this function exists rather than the sum being
+    written at each site. Four places price a route's non-walking time — the final
+    band gate, the timebox repair's trial, the fixed-end rescue trim, and the
+    generated tour — and while any of them spelled it differently they could
+    disagree about the same route. The planner then buys a tour the tourist does
+    not get, which is the defect this whole phase removes.
+
+    Per stop it is ``stop_seconds(what the visitor spends there, what it says)``,
+    where "what it says" is this route's own CAPPED plan — the same emission choke
+    point generation uses, so the gate cannot count narration the tour will not
+    voice.
+
+    ``planned_visit_seconds`` empty means nobody priced this route, and every stop
+    falls back to the length of its own narration — exactly the pre-Phase-3
+    behaviour, which is what makes the four harnesses that build a bare Route safe.
+    """
+    audio_by_id = {
+        plan.poi_id: planned_audio_seconds(plan.beats)
+        for plan, _ in build_poi_beat_plans_capped(
+            route, snapshot, lenses=interest or None, end_is_none=end_is_none
+        )
+    }
+    # Iterate the ROUTE's stops, not the plans: a stop with no beat plan at all
+    # (a materialized fixed-end sentinel is the common case) still costs the
+    # visitor the time they stand there.
+    return sum(
+        stop_seconds(
+            route.planned_visit_seconds.get(poi.id, 0), audio_by_id.get(poi.id, 0)
+        )
+        for poi in route.pois
+    )
+
+
 def _keep_final_closing_beat(
     capped: tuple[POIBeats, tuple[str, ...]],
     full_plan: POIBeats,
@@ -1411,6 +1575,66 @@ def planned_capped_audio_seconds(
     return planned_audio_seconds(kept.beats)
 
 
+#: The longest walking contour Valhalla will answer. MEASURED against the live
+#: engine on 2026-08-06: a 120-minute contour is accepted and a 121-minute contour
+#: is refused with ``{"error_code":151,"error":"Exceeded max time: 120"}``.
+#:
+#: WHY THIS MATTERS FAR MORE THAN IT LOOKS. ``_reach_predicate`` uses the Valhalla
+#: road polygon as its PRIMARY admission test and the analytic circle only as a
+#: fallback when the polygon is unavailable. So whenever the contour asked for
+#: exceeds this limit, the circle silently becomes the real reach test — losing the
+#: across-the-river protection the polygon exists to provide — and whenever it does
+#: not, the circle is NOT the reach test and quoting its radius describes something
+#: the planner did not use. Any report of "the radius searched" is meaningless
+#: without saying which of the two was operative.
+VALHALLA_MAX_CONTOUR_MINUTES: int = 120
+
+
+def reach_envelope_searched(
+    input: TourInput,
+    *,
+    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+) -> tuple[float, int]:
+    """The circle the reach test ACTUALLY searches: ``(radius_m, isochrone_minutes)``.
+
+    ONE definition, called by ``select_route`` and by the ``tour-build`` harness,
+    so the harness reports what the planner DID rather than what it ought to do.
+
+    ONE ARM, DELIBERATELY. There used to be two. A fixed-destination request sized
+    its radius from the TOTAL time ceiling — walking PLUS narration — so a
+    300-minute request searched **12,259 m** where the open arm's walk envelope
+    gives **4,444 m**: a factor of 2.76, and 7.6x the area. Paris is about 10 km
+    across, so the fixed-end arm searched a circle wider than the city in order to
+    plan a walk between two points half an hour apart. That is the arithmetic by
+    which a Rue Royale to Notre-Dame request reached Parc de la Villette, 5.6 km
+    away in the wrong direction.
+
+    The reach question is identical on both shapes — *how far can this visitor walk
+    from here?* — so there is no route shape for which a walking-plus-talking
+    ceiling is the right bound. Hence one arm.
+
+    WHY THE HARNESS SHARES THIS RATHER THAN RE-DERIVING IT. A harness that computed
+    the radius from the requested duration would have printed 4,444 m both before
+    and after this fix, and the phase verifying the fix would have recorded "no
+    change" while proving nothing. See VALHALLA_MAX_CONTOUR_MINUTES above for the
+    second half of that hazard: this circle is only the FALLBACK admission test, so
+    a report of it must also say whether the road polygon was available.
+    """
+    planning_budget = route_planning_budget(input.duration_min, planning_policy)
+    return (
+        envelope_radius_m(
+            input.duration_min,
+            round_trip=input.round_trip,
+            planning_policy=planning_policy,
+        ),
+        _isochrone_walk_minutes(
+            input.duration_min,
+            round_trip=input.round_trip,
+            walk_minutes=planning_budget.walk_envelope_minutes,
+        ),
+    )
+
+
 def select_route(
     input: TourInput,
     snapshot: CorpusSnapshot,
@@ -1448,13 +1672,21 @@ def select_route(
         )
     start_lat, start_lng = input.start
     interest = frozenset(input.lenses or [])
-    planning_budget = route_planning_budget(input.duration_min, planning_policy)
-    # Every fixed-destination request now uses the certification reach model; the
-    # legacy arm that used the bare walk envelope was deleted 2026-08-04.
-    certification_fixed_end = input.end is not None
-    certification_total_ceiling = (
-        planning_budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+    # The request's own hardness bends this ONE budget (redesign §2.3): every
+    # repair, rescue and final band check below receives this object, so `open`
+    # dropping the floor and `wall` capping the ceiling propagate everywhere
+    # without a second derivation. Helper call sites keep the firm default.
+    planning_budget = route_planning_budget(
+        input.duration_min, planning_policy, end_hardness=input.end_hardness
     )
+    # A fixed destination changes the SHAPE of the route, not how far a visitor can
+    # walk. The 2026-08-04 "certification reach model" that used to branch here has
+    # been deleted: it sized both the reach circle and the greedy's walking cap from
+    # `maximum_elapsed_seconds + tolerance`, the ceiling on walking PLUS narration.
+    # There is no route shape for which a walking-plus-talking ceiling is the right
+    # bound on walking alone. Both quantities now come from the walk budget, on
+    # every shape. See reach_envelope_searched.
+    certification_fixed_end = input.end is not None
     # M3: the §3 divisor — routed leg times when a client is given (memoized;
     # the greedy re-evaluates the same coordinate pairs many times), else the
     # pace-corrected haversine.
@@ -1544,23 +1776,10 @@ def select_route(
     # analytic radius (a straight-line circle admits across-the-river POIs no
     # bridge serves). Falls back to the exact haversine envelope when the
     # isochrone is unavailable. Phase 6 also drops 0-active-beat POIs.
-    if certification_fixed_end:
-        reach_walk_minutes = certification_total_ceiling / 60.0
-        radius_m = (
-            reach_walk_minutes * PACE_KMH * 1000.0
-        ) / 60.0 / HAVERSINE_CORRECTION
-        iso_minutes = max(1, math.ceil(reach_walk_minutes))
-    else:
-        radius_m = envelope_radius_m(
-            input.duration_min,
-            round_trip=input.round_trip,
-            planning_policy=planning_policy,
-        )
-        iso_minutes = _isochrone_walk_minutes(
-            input.duration_min,
-            round_trip=input.round_trip,
-            walk_minutes=planning_budget.walk_envelope_minutes,
-        )
+    # ONE definition of the searched circle, shared with the tour-build harness so
+    # the harness cannot report a radius the planner never used. See
+    # reach_envelope_searched above for why that mattered.
+    radius_m, iso_minutes = reach_envelope_searched(input, planning_policy=planning_policy)
     reach_contains, reach_degraded = _reach_predicate(
         (start_lat, start_lng), radius_m, iso_minutes, routing_client
     )
@@ -1611,6 +1830,41 @@ def select_route(
     # allocation is unchanged in spirit -- gate removal WIDENS which POIs can
     # earn a dwell stop (every tier, every lens), it does not make the route
     # stop everywhere.
+    # HOW LONG THIS VISITOR SPENDS AT A PLACE, priced once per request and memoized.
+    # Declared HERE, above the candidate loop, because the dwell-pool filter below
+    # needs it: a place worth standing in must not be dropped for being quiet before
+    # anyone asks what it is worth. The greedy, the final Route's
+    # ``planned_visit_seconds`` and the rescue trim all read the same memo, so the
+    # number the search spends and the number the traveller is served are one number
+    # rather than three calls that agree today.
+    _visit_memo: dict[str, int] = {}
+    party_ceiling_seconds = (
+        input.max_stop_minutes * 60 if input.max_stop_minutes is not None else None
+    )
+
+    def _visit(cand: POI) -> int:
+        cached = _visit_memo.get(cand.id)
+        if cached is None:
+            cached = visit_seconds(
+                cand,
+                interest,
+                snapshot,
+                party_ceiling_seconds=party_ceiling_seconds,
+            )
+            _visit_memo[cand.id] = cached
+        return cached
+
+    # THE PLANNER'S CLOCK (redesign 6.1). Parsed once; the contract validator
+    # has already guaranteed the ISO form. None = dateless request = no
+    # filtering anywhere below — the identity default that keeps every
+    # existing tour and golden byte-identical.
+    clock_start = (
+        datetime.fromisoformat(input.start_datetime)
+        if input.start_datetime is not None
+        else None
+    )
+    clock_exclusions: list[ClockExclusion] = []
+
     reachable_count = 0
     candidates: list[POI] = []
     # Fixed-end POIs that fail ONLY the ordinary walking-allocation ellipse.
@@ -1668,7 +1922,56 @@ def select_route(
             # right layer -- it stays available as a walk-past vignette, which is
             # what a neighbourhood actually is.
             continue
-        if not poi.requires_dwell and _is_filler_stub(poi, snapshot, interest or None):
+        if clock_start is not None and poi.opening_hours is not None:
+            # THE CLOCK FILTER (redesign 6.1): on a dated request, a place whose
+            # opening table is CLOSED for the entire visit window leaves the
+            # DWELL pool — and is RECORDED, so the day can say why the museum is
+            # missing (Aiko's locked door, Rosemary's Tuesday). Dwell pool only:
+            # walking PAST a closed building is fine, so vignettes are untouched.
+            # No datetime, or no table (None = not gated / pass not run), means
+            # no filtering — the safe direction and the identity default.
+            clock_reason = _clock_exclusion_reason(
+                poi.opening_hours,
+                poi.opening_hours_source,
+                clock_start,
+                input.duration_min,
+            )
+            if clock_reason is not None:
+                clock_exclusions.append(
+                    ClockExclusion(poi_id=poi.id, name=poi.name, reason=clock_reason)
+                )
+                continue
+        if (
+            not poi.requires_dwell
+            and _is_filler_stub(poi, snapshot, interest or None)
+            # A PLACE STILL HAS TO HAVE SOMETHING TO SAY.
+            #
+            # This briefly also exempted anything WORTH VISITING regardless of what
+            # it says, so a chocolate museum — low tier, thin beats, ninety minutes
+            # of interior — could be a stop. That is a real shape and the release
+            # is built for it, but measured on the live corpus the exemption cost
+            # more than it bought, twice:
+            #
+            #   * The 60-minute Place des Vosges round trip walked twenty minutes
+            #     to Marche Bastille — thirty minutes of visit, NOTHING said —
+            #     instead of standing in a square the corpus has twenty-one things
+            #     to say about.
+            #   * The 300-minute Rue Royale walk took a church 1,146 m off the
+            #     line behind a fifty-one-minute unbroken march, and traded
+            #     twenty-two minutes of standing for twenty-three of walking.
+            #
+            # The cause is that the greedy ranks by score over insertion cost, so a
+            # cheap-to-reach silent place outranks a rich one the moment silence
+            # stops disqualifying it. Seating a place that says nothing is not what
+            # "a stop is worth what the visitor spends there" was ever meant to
+            # license: Camille's silence at Concorde is silence AT a place the tour
+            # told her about.
+            #
+            # Re-opening this needs the greedy to value what a stop CONTRIBUTES,
+            # not just what it costs to reach — which is a change to the objective,
+            # not to this filter. Recorded rather than deleted so the next attempt
+            # starts from the measurement instead of the idea.
+        ):
             # Too thin for a dedicated stop — keep it OUT of the greedy's dwell
             # pool so it surfaces as a walk-by vignette (select_vignettes applies
             # the SAME predicate). Held for the never-empty guard below.
@@ -1733,7 +2036,13 @@ def select_route(
 
     # Step 3: greedy with insertion cost.
     walk_budget = planning_budget.walk_budget_seconds
-    audio_budget = planning_budget.audio_target_seconds
+    # What the tour aims to spend NOT walking. The greedy fills this by seating
+    # stops, and a stop costs what the visitor SPENDS there — the longer of the
+    # visit and the narration — not what it says. Spending narration seconds
+    # against this budget is what made a 120-minute request serve 157 minutes
+    # while reporting 120, because the tourist stood at places the planner had
+    # priced at the length of their audio.
+    dwell_budget = planning_budget.dwell_target_seconds
 
     # The greedy spends WALKING seconds and nothing else, so its cap is the
     # WALKING allocation. It used to be ``certification_total_ceiling`` on the
@@ -1749,9 +2058,7 @@ def select_route(
     # that post-step (open one-way — see Step 4 below, gated on
     # ``input.end is None and not input.round_trip``). A round trip and a fixed
     # destination never run it, so both get the whole allocation.
-    if certification_fixed_end:
-        greedy_walk_budget = certification_total_ceiling
-    elif input.round_trip:
+    if certification_fixed_end or input.round_trip:
         greedy_walk_budget = walk_budget
     else:
         greedy_walk_budget = int(walk_budget * (1.0 - ENDPOINT_PULL_RESERVED_BUDGET_FRACTION))
@@ -1766,7 +2073,7 @@ def select_route(
         if input.end is not None
         else 0
     )
-    consumed_audio = 0
+    consumed_dwell = 0
 
     remaining = list(
         certification_candidates
@@ -1782,7 +2089,12 @@ def select_route(
     # SUPPRESSED until the route reaches the min(3, d//10) stop floor, so a
     # beat-rich anchor can never collapse the tour to one stop (the abandoned
     # >=2 hard-ceiling refutation).
-    allowance = audio_budget // max(1, min(3, input.duration_min // 10))
+    # STILL AN AUDIO CAP, deliberately: it bounds how long one ordinary stop may
+    # TALK, which is a fairness rule about narration share and has nothing to do
+    # with how long the visitor stands there. Only its base moved, and the number
+    # is unchanged at every duration (routing.governor_allowance_seconds says the
+    # same thing at the same arithmetic).
+    allowance = dwell_budget // max(1, min(3, input.duration_min // 10))
     count_floor = min(3, input.duration_min // 10)
     exempt_anchor_id: str | None = None
     _capped_memo: dict[tuple[str, bool], int] = {}
@@ -1814,6 +2126,16 @@ def select_route(
             _capped_memo[key] = cached
         return cached
 
+    def _stop_cost(cand: POI, *, exempt: bool) -> int:
+        """What seating this candidate costs the STANDING-STILL budget.
+
+        One combining rule, imported rather than restated — see
+        ``visit_time.stop_seconds``. The audio half is the greedy's own capped
+        number, because no Route exists during insertion; the gate and generation
+        supply their own. The COMBINING is what must not fork.
+        """
+        return stop_seconds(_visit(cand), _capped_audio(cand, exempt=exempt))
+
     while remaining:
         best_candidate: POI | None = None
         best_extra: int = 0
@@ -1840,6 +2162,27 @@ def select_route(
                     leg_seconds_fn=leg_fn,
                 )
             if consumed_walk + extra > greedy_walk_budget:
+                continue
+            # DON'T SEAT A STOP THE TOUR HAS NO ROOM FOR.
+            #
+            # The break below fires AFTER an add, so the greedy always overshot by
+            # up to one stop. That was harmless while a stop cost what it SAID —
+            # narration is capped at 270 s, so the overshoot was minutes. It is not
+            # harmless now that a stop costs what the visitor SPENDS there: Place
+            # des Vosges alone absorbs 35 minutes, so one add past the line blew a
+            # 60-minute round trip out to 68 and the hard ceiling then refused the
+            # whole tour. A refusal is what the traveller sees, on the most
+            # ordinary request there is.
+            #
+            # The `selected` guard is what keeps a one-stop tour possible: a place
+            # bigger than the entire request still gets seated when nothing else
+            # has been, because a short tour of one big place beats no tour.
+            if (
+                selected
+                and consumed_dwell
+                + _stop_cost(cand, exempt=cand.id == exempt_anchor_id)
+                > dwell_budget
+            ):
                 continue
             base = poi_score(cand, spine, interest, snapshot, penalty=score_penalty)
             # +1s smoothing prevents division-by-zero on co-located POIs.
@@ -1874,12 +2217,12 @@ def select_route(
         # corridor stop.
         if input.end is None and exempt_anchor_id is None:
             exempt_anchor_id = best_candidate.id
-        consumed_audio += _capped_audio(
+        consumed_dwell += _stop_cost(
             best_candidate, exempt=best_candidate.id == exempt_anchor_id
         )
         remaining.remove(best_candidate)
 
-        if consumed_audio >= audio_budget and (
+        if consumed_dwell >= dwell_budget and (
             input.end is not None or len(selected) >= count_floor
         ):
             break
@@ -1924,11 +2267,11 @@ def select_route(
                     pulled_endpoint_id = cand.id
                     break
 
-    # Phase 7 fill pass — target_audio is a floor. Greedy +
-    # endpoint-pull may emit a route well below the audio target when
-    # cost-efficient additions run out. Add anchors with a relaxed
-    # cost-efficiency threshold until target is met or walk budget is
-    # nearly spent. See FILL_PASS_* constants for thresholds.
+    # Phase 7 fill pass — the dwell target is a floor. Greedy +
+    # endpoint-pull may emit a route well below it when cost-efficient
+    # additions run out. Add anchors with a relaxed cost-efficiency
+    # threshold until target is met or walk budget is nearly spent.
+    # See FILL_PASS_* constants for thresholds.
     rescue_added_ids: list[str] = []
     selected = _apply_fill_pass(
         selected,
@@ -1942,8 +2285,8 @@ def select_route(
         score_penalty=score_penalty,
         round_trip=input.round_trip,
         walk_budget=walk_budget,
-        audio_budget=audio_budget,
-        capped_audio_fn=_capped_audio,
+        dwell_budget=dwell_budget,
+        stop_cost_fn=_stop_cost,
         exempt_anchor_id=exempt_anchor_id,
         rescue_floor=RESCUE_STOP_FLOOR,
         fixed_end=input.end,
@@ -1983,14 +2326,19 @@ def select_route(
                 spine_area=spine,
                 routing_client=routing_client,
                 planning_policy=planning_policy,
+                # The trim decides whether a rescued stop stays, so it has to
+                # price the same clock the tourist experiences. Without this the
+                # trial's visits are zero and the loop keeps a route it believes
+                # fits and the traveller will overrun by hours.
+                planned_visit_seconds={poi.id: _visit(poi) for poi in trial_selected},
             ).model_copy(update={"fixed_end_poi_id": trial_end.id})
-            trial_audio = sum(
-                planned_audio_seconds(plan.beats)
-                for plan, _ in build_poi_beat_plans_capped(
-                    trial_route, snapshot, lenses=interest or None, end_is_none=False
-                )
+            trial_dwell = served_dwell_seconds(
+                trial_route, snapshot, interest=interest, end_is_none=False
             )
-            if trial_route.total_walk_seconds + trial_audio <= elapsed_ceiling:
+            trial_elapsed = served_elapsed_seconds(
+                trial_route.total_walk_seconds, trial_dwell
+            )
+            if trial_elapsed <= elapsed_ceiling:
                 break
             removable = [poi for poi in selected if poi.id in rescue_ids]
             if not removable:
@@ -2090,6 +2438,16 @@ def select_route(
         spine_area=spine,
         routing_client=routing_client,
         planning_policy=planning_policy,
+        # PRICED ONCE, HERE. This is the only place in the request with both the
+        # corpus snapshot (needed to read a POI's beat lenses) and the final stop
+        # set, so it is the only place the answer can be computed. Generation has
+        # neither. Carrying it on the Route is what stops the planner and the
+        # served tour disagreeing about how long a stop lasts.
+        # THE SAME MEMO THE GREEDY SPENT. `_visit` is what the search charged
+        # itself for seating each stop, so the route the traveller receives cannot
+        # book a different number than the planner paid — not "computed the same
+        # way", literally the same call.
+        planned_visit_seconds={poi.id: _visit(poi) for poi in selected},
     )
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})
@@ -2113,6 +2471,10 @@ def select_route(
         anchor_update["fixed_end_poi_id"] = fixed_end.id
     if anchor_update:
         route = route.model_copy(update=anchor_update)
+    if clock_exclusions:
+        # Additive metadata (the vignettes mould): only a dated request can
+        # collect these, so every dateless route stays byte-identical.
+        route = route.model_copy(update={"clock_exclusions": tuple(clock_exclusions)})
     # Last-line invariant, now applied to EVERY route shape: after materialization,
     # demotion, exact ordering and final-closing governance, the route must still sit
     # inside the same frozen band the repair used. The legacy fixed-end-only variant
@@ -2121,18 +2483,31 @@ def select_route(
     # and final-closing governance, a certification route of ANY shape must
     # remain inside the same frozen band used by repair.  Legacy keeps its
     # historical fixed-end-only over-ceiling guard byte-for-byte below.
-    final_audio = sum(
-        planned_audio_seconds(plan.beats)
-        for plan, _ in build_poi_beat_plans_capped(
-            route,
-            snapshot,
-            lenses=interest or None,
-            end_is_none=input.end is None,
-        )
+    #
+    # THE ONE DEFINITION OF ELAPSED: walking plus standing still, where standing
+    # still is `served_dwell_seconds` — the same function the repair's trials and
+    # the rescue trim call. Until 2026-08-06 this line added NARRATION to walking,
+    # so a tour certified at 300 minutes served walk + visits and could run hours
+    # over. Generation serves max(visit, audio) per stop; this counts the same
+    # rule on the same capped plans, so certified and served are the same
+    # quantity by construction rather than by coincidence.
+    final_dwell = served_dwell_seconds(
+        route, snapshot, interest=interest, end_is_none=input.end is None
     )
-    elapsed_ceiling = planning_budget.maximum_elapsed_seconds
-    final_elapsed = route.total_walk_seconds + final_audio
-    if not within_planning_timebox(final_elapsed, planning_budget):
+    # THE CEILING IS HARD AND THE FLOOR IS SOFT.
+    #
+    # Over the request: refuse. A tourist who asks for three hours and is handed
+    # three hours twenty has been given a worse thing than a refusal, because they
+    # will discover it at the far end of a walk.
+    #
+    # Under the floor: SHIP IT and say so. Duration is a ceiling, not a contract
+    # to fill, and the only way a planner can guarantee filling one is by walking
+    # you somewhere pointless — which is the reported bug. An honestly short tour
+    # with a sentence explaining it is a better product, and it closes the last
+    # door through which that bug returns.
+    elapsed_ceiling = planning_budget.nominal_elapsed_seconds
+    final_elapsed = served_elapsed_seconds(route.total_walk_seconds, final_dwell)
+    if final_elapsed > elapsed_ceiling:
         alternatives, gap_minutes = _band_alternatives(
             input=input,
             planning_policy=planning_policy,
@@ -2143,9 +2518,19 @@ def select_route(
             minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
             maximum_elapsed_seconds=elapsed_ceiling,
             best_elapsed_seconds=final_elapsed,
-            reason="post-selection transforms moved the exact route outside the band",
+            reason=(
+                "post-selection transforms pushed the exact route OVER the "
+                "requested duration, and no in-band drop was available"
+            ),
             alternatives=alternatives,
             gap_minutes=gap_minutes,
+        )
+    if final_elapsed < planning_budget.minimum_elapsed_seconds:
+        # Measured against what was ASKED FOR, not against the floor: the sentence
+        # the traveller reads is "this is 4h40 rather than the 5h you asked for",
+        # and 4h30 is an internal threshold they never see.
+        route = route.model_copy(
+            update={"elapsed_shortfall_seconds": elapsed_ceiling - final_elapsed}
         )
     # Track B (Step B.2): attach walk-past vignettes AFTER ordering — the leg
     # geometry is final only now. Additive metadata: ``pois``/``transits`` are
@@ -2169,12 +2554,21 @@ def select_route(
         # capped tour is not "thin" — its content is all there. Measuring capped
         # audio would flip a healthy tour to a spurious thin banner when the
         # governor fires (the panel's bug-5). This is the original C11a currency.
-        delivered_audio = sum(
-            planned_capped_audio_seconds(p, snapshot, interest or None, None)
+        #
+        # BOTH SIDES ARE STANDING-STILL SECONDS since 2026-08-06. Comparing
+        # delivered NARRATION against a dwell target would call a tour thin for
+        # being quiet, which is the opposite of true: a route of long interior
+        # visits is the richest thing this release can produce, and Camille's
+        # sixteen silent minutes at Concorde are the tour working.
+        delivered_dwell = sum(
+            stop_seconds(
+                route.planned_visit_seconds.get(p.id, 0),
+                planned_capped_audio_seconds(p, snapshot, interest or None, None),
+            )
             for p in route.pois
         )
         if (
-            delivered_audio < GREEN_THIN_DELIVERY_FRAC * assessment.target_audio_seconds
+            delivered_dwell < GREEN_THIN_DELIVERY_FRAC * assessment.target_dwell_seconds
             or len(route.pois) < 2
         ):
             assessment = assessment.model_copy(update={"delivered_thin": True})
@@ -2485,8 +2879,8 @@ def _apply_fill_pass(
     start_lng: float,
     round_trip: bool,
     walk_budget: int,
-    audio_budget: int,
-    capped_audio_fn: Callable[..., int],
+    dwell_budget: int,
+    stop_cost_fn: Callable[..., int],
     exempt_anchor_id: str | None,
     rescue_floor: int = 0,
     leg_seconds_fn: LegSecondsFn | None = None,
@@ -2495,15 +2889,22 @@ def _apply_fill_pass(
     rescue_candidates: list[POI] | None = None,
     rescue_added_ids: list[str] | None = None,
 ) -> list[POI]:
-    """Phase 7: fill until audio floor is met or walk budget hits 95%.
+    """Phase 7: fill until the dwell floor is met or walk budget hits 95%.
 
     Score-first ranking (not score / cost) so we keep adding genuinely
     rich anchors at the price of a higher walk cost. Stops when:
-      - delivered audio (dwell-seconds proxy)
-        >= ``FILL_PASS_AUDIO_FLOOR_FRAC x audio_budget``;
+      - delivered STANDING-STILL time
+        >= ``FILL_PASS_DWELL_FLOOR_FRAC x dwell_budget``;
       - cumulative walk would exceed
         ``FILL_PASS_WALK_BUDGET_FRAC x walk_budget``;
       - no remaining candidate fits.
+
+    Until 2026-08-06 the first of those counted narration and called it a
+    "dwell-seconds proxy". It is no longer a proxy: ``stop_cost_fn`` returns
+    what the visitor actually spends at a stop, so a place with a long interior
+    and little to say now fills the tour, which is the whole point of the
+    release. A room you stand in for forty minutes used to count for the ninety
+    seconds it spoke.
 
     Insertions go through ``insertion_cost_seconds`` so the route stays
     geometrically sane. The post-endpoint-pull last-anchor (one-way
@@ -2512,26 +2913,26 @@ def _apply_fill_pass(
 
     #21 UNDER-FILL RESCUE: in a thin area the greedy can seat only one stop
     because a second stop's round-trip detour busts ``walk_budget`` — even
-    though the tour massively under-delivers AUDIO (e.g. a 60-min Latin Quarter
-    loop seating only Sorbonne: 6 min audio, 15 min walk). While the route is
-    BELOW ``count_floor`` stops, a further stop is admitted when its MARGINAL
-    walk cost is proportional to the audio it delivers (``extra <=
-    RESCUE_MAX_WALK_PER_AUDIO x cand_audio``): a rich nearby stop is seated, a
-    far/thin walk-slog is not. A tour that ALREADY meets the audio floor returns
-    early (below), so an audio-rich few-stop tour (e.g. the PdV golden, whose
+    though the tour massively under-fills the visitor's TIME (e.g. a 60-min Latin
+    Quarter loop seating only Sorbonne: 6 min audio, 15 min walk). While the route
+    is BELOW ``count_floor`` stops, a further stop is admitted when its MARGINAL
+    walk cost is proportional to the time it earns (``extra <=
+    RESCUE_MAX_WALK_PER_DWELL_SECOND x cand_dwell``): a rich nearby stop is
+    seated, a far/thin walk-slog is not. A tour that ALREADY meets the floor
+    returns early (below), so a full few-stop tour (e.g. the PdV golden, whose
     beat-heavy stops clear the floor) is never expanded — only the genuine
     under-fill is; and a multi-stop tour (Île, ≥ rescue_floor) is never touched.
     """
     if not selected or not candidates:
         return selected
 
-    floor_audio = audio_budget * FILL_PASS_AUDIO_FLOOR_FRAC
+    floor_dwell = dwell_budget * FILL_PASS_DWELL_FLOOR_FRAC
     walk_cap = int(walk_budget * FILL_PASS_WALK_BUDGET_FRAC)
 
-    consumed_audio = sum(
-        capped_audio_fn(p, exempt=p.id == exempt_anchor_id) for p in selected
+    consumed_dwell = sum(
+        stop_cost_fn(p, exempt=p.id == exempt_anchor_id) for p in selected
     )
-    if consumed_audio >= floor_audio:
+    if consumed_dwell >= floor_dwell:
         return selected  # already met; no fill needed
 
     consumed_walk = _full_route_walk_seconds(
@@ -2575,14 +2976,14 @@ def _apply_fill_pass(
     # any area where a nearby second stop fits the budget.
     if consumed_walk < walk_cap:
         for cand in pool:
-            if consumed_audio >= floor_audio:
+            if consumed_dwell >= floor_dwell:
                 break
             extra, idx = _insertion(cand, selected)
             if consumed_walk + extra > walk_cap:
                 continue
             selected = [*selected[:idx], cand, *selected[idx:]]
             consumed_walk += extra
-            consumed_audio += capped_audio_fn(cand, exempt=False)
+            consumed_dwell += stop_cost_fn(cand, exempt=False)
 
     # Phase 2 — #21 under-fill rescue: ONLY if Phase 1 could not reach the stop
     # floor (a thin area where every next stop's detour busts walk_cap). Lift to
@@ -2590,7 +2991,7 @@ def _apply_fill_pass(
     # the audio it delivers (rich nearby stop in, far/thin walk-slog out). Runs on
     # top of Phase 1, so it never displaces a within-budget stop Phase 1 chose.
     move_ceiling = walk_budget / WALK_FRACTION if WALK_FRACTION else float("inf")
-    if rescue_floor > 0 and (len(selected) < rescue_floor or consumed_audio < floor_audio):
+    if rescue_floor > 0 and (len(selected) < rescue_floor or consumed_dwell < floor_dwell):
         seated = {p.id for p in selected}
         rescue_pool_by_id = {cand.id: cand for cand in pool}
         for cand in rescue_candidates or ():
@@ -2605,7 +3006,7 @@ def _apply_fill_pass(
         for cand in rescue_pool:
             if cand.id in seated:
                 continue
-            if len(selected) >= rescue_floor and consumed_audio >= floor_audio:
+            if len(selected) >= rescue_floor and consumed_dwell >= floor_dwell:
                 break
             # LENS FIDELITY. A landmark the lens DIMMED to vignette is kept in the
             # pool by the lens_dimmed_landmark floor so it never vanishes from the
@@ -2621,17 +3022,22 @@ def _apply_fill_pass(
             ):
                 continue
             extra, idx = _insertion(cand, selected)
-            cand_audio = capped_audio_fn(cand, exempt=False)
-            if extra > RESCUE_MAX_WALK_PER_AUDIO * cand_audio:
+            cand_dwell = stop_cost_fn(cand, exempt=False)
+            # IS THE WALK WORTH THE STOP? Priced against what the stop EARNS the
+            # visitor, not what it says. The old form divided by narration alone,
+            # so a forty-minute interior carrying ninety seconds of audio was
+            # classified a walk-slog and refused — which is exactly the shape of
+            # stop this release exists to seat.
+            if extra > RESCUE_MAX_WALK_PER_DWELL_SECOND * cand_dwell:
                 continue
-            # MOVE CEILING: walking + listening is the tourist's real elapsed time.
-            # Cap it at the engine's own err-short total, or filling to the audio
+            # MOVE CEILING: walking + standing still is the tourist's real elapsed
+            # time. Cap it at the engine's own nominal total, or filling to the
             # floor produces a route needing 67.7 min for a 60-min request.
-            if consumed_walk + extra + consumed_audio + cand_audio > move_ceiling:
+            if consumed_walk + extra + consumed_dwell + cand_dwell > move_ceiling:
                 continue
             selected = [*selected[:idx], cand, *selected[idx:]]
             consumed_walk += extra
-            consumed_audio += cand_audio
+            consumed_dwell += cand_dwell
             seated.add(cand.id)
             if rescue_added_ids is not None:
                 rescue_added_ids.append(cand.id)
@@ -2656,7 +3062,14 @@ def _isochrone_walk_minutes(
         if walk_minutes is None
         else walk_minutes
     )
-    return max(1, round(walk_min / 2.0 if round_trip else walk_min))
+    asked = round(walk_min / 2.0 if round_trip else walk_min)
+    # CLAMPED to what the engine will actually answer. Asking for more than
+    # VALHALLA_MAX_CONTOUR_MINUTES does not get a bigger polygon — it gets
+    # `{"error_code":151,"error":"Exceeded max time: 120"}` in about 4 ms, after
+    # which REACH silently falls back to a plain circle with no road network and
+    # loses the across-the-river protection the polygon exists to provide. Asking
+    # for exactly the maximum keeps the polygon.
+    return max(1, min(VALHALLA_MAX_CONTOUR_MINUTES, asked))
 
 
 # A real pedestrian isochrone covers a meaningful slice of the walk envelope; a
@@ -2764,9 +3177,7 @@ def _insertion_extra_at_index(
         base_coords.append(fixed_end)
     elif round_trip:
         base_coords.append((start_lat, start_lng))
-    base = 0
-    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(base_coords):
-        base += fn(lat1, lng1, lat2, lng2)
+    base = path_walk_seconds(base_coords, fn)
     new_pois = [*selected[:idx], cand, *selected[idx:]]
     new_coords: list[tuple[float, float]] = [
         (start_lat, start_lng),
@@ -2776,10 +3187,7 @@ def _insertion_extra_at_index(
         new_coords.append(fixed_end)
     elif round_trip:
         new_coords.append((start_lat, start_lng))
-    new_total = 0
-    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(new_coords):
-        new_total += fn(lat1, lng1, lat2, lng2)
-    return new_total - base
+    return path_walk_seconds(new_coords, fn) - base
 
 
 def _insertion_cost_with_fixed_end(
@@ -2825,17 +3233,36 @@ def _full_route_walk_seconds(
     leg_seconds_fn: LegSecondsFn | None = None,
     fixed_end: tuple[float, float] | None = None,
 ) -> int:
-    fn = leg_seconds_fn or default_leg_seconds
+    # Building the chain is this function's job; measuring it is not.
+    return sum(
+        _full_route_leg_seconds(
+            pois,
+            start_lat=start_lat,
+            start_lng=start_lng,
+            round_trip=round_trip,
+            leg_seconds_fn=leg_seconds_fn,
+            fixed_end=fixed_end,
+        )
+    )
+
+
+def _full_route_leg_seconds(
+    pois: list[POI],
+    *,
+    start_lat: float,
+    start_lng: float,
+    round_trip: bool,
+    leg_seconds_fn: LegSecondsFn | None = None,
+    fixed_end: tuple[float, float] | None = None,
+) -> list[int]:
+    """Every leg of a full route, separately — start, the stops, and the close."""
     coords: list[tuple[float, float]] = [(start_lat, start_lng)]
     coords.extend((p.lat, p.lng) for p in pois)
     if fixed_end is not None:
         coords.append(fixed_end)
     elif round_trip:
         coords.append((start_lat, start_lng))
-    total = 0
-    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
-        total += fn(lat1, lng1, lat2, lng2)
-    return total
+    return path_leg_seconds(coords, leg_seconds_fn)
 
 
 @dataclass(frozen=True)
@@ -2843,11 +3270,27 @@ class _CertificationRouteTrial:
     selected: tuple[POI, ...]
     ordered: tuple[POI, ...]
     walk_seconds: int
-    audio_seconds: int
+    dwell_seconds: int
+    #: The longest SINGLE walk in this route. A walking budget is not one number:
+    #: Rosemary's total of 54 minutes is unremarkable and her twelve-minute
+    #: per-leg limit is the binding constraint, so "a route with one 25-minute leg
+    #: and one 5-minute leg has the same total and is unusable"
+    #: (docs/personas/05-step-free-visitor.md). Nadia's afternoon ends early when a
+    #: leg runs long, and Marcus is watching a train. Nothing in the model expresses
+    #: this yet; ranking on it is the cheapest thing that stops the planner
+    #: PREFERRING such a route while a better one sits in the same trial set.
+    max_leg_seconds: int = 0
 
     @property
     def elapsed_seconds(self) -> int:
-        return self.walk_seconds + self.audio_seconds
+        """Walking plus standing still — the tourist's whole clock.
+
+        Was ``walk_seconds + audio_seconds``. If the final gate prices elapsed in
+        visits and the repair does not, the repair sees a route thousands of
+        seconds under the floor and keeps buying enormous walks to close a gap
+        the visit term already closed. That is Parc de la Villette coming back.
+        """
+        return self.walk_seconds + self.dwell_seconds
 
 
 def _certification_route_trial(
@@ -2893,34 +3336,47 @@ def _certification_route_trial(
         round_trip=input.round_trip,
         routed_cost_fn=leg_seconds_fn,
     )
-    walk_seconds = _full_route_walk_seconds(
+    legs = _full_route_leg_seconds(
         ordered,
         start_lat=input.start[0],
         start_lng=input.start[1],
         round_trip=input.round_trip,
         leg_seconds_fn=leg_seconds_fn,
     )
+    walk_seconds = sum(legs)
     route = Route(
         pois=tuple(ordered),
         transits=(),
         total_walk_distance_m=0.0,
         total_walk_seconds=walk_seconds,
         fixed_end_poi_id=fixed_end.id if fixed_end is not None else None,
+        # WITHOUT THIS EVERY TRIAL PRICES ITS VISITS AT ZERO. The repair would
+        # then judge every candidate stop set by narration alone while the final
+        # gate judges the winner by visits, and the two would disagree about the
+        # same route by hours.
+        planned_visit_seconds={
+            poi.id: visit_seconds(
+                poi,
+                interest,
+                snapshot,
+                party_ceiling_seconds=(
+                    input.max_stop_minutes * 60
+                    if input.max_stop_minutes is not None
+                    else None
+                ),
+            )
+            for poi in ordered
+        },
     )
-    audio_seconds = sum(
-        planned_audio_seconds(plan.beats)
-        for plan, _ in build_poi_beat_plans_capped(
-            route,
-            snapshot,
-            lenses=interest or None,
-            end_is_none=input.end is None,
-        )
+    dwell_seconds = served_dwell_seconds(
+        route, snapshot, interest=interest, end_is_none=input.end is None
     )
     return _CertificationRouteTrial(
         selected=tuple(selected),
         ordered=tuple(ordered),
         walk_seconds=walk_seconds,
-        audio_seconds=audio_seconds,
+        dwell_seconds=dwell_seconds,
+        max_leg_seconds=max(legs, default=0),
     )
 
 
@@ -2968,6 +3424,9 @@ def _apply_certification_timebox_repair(
     )
     preferred_trials: list[_CertificationRouteTrial] = []
     last_resort_trials: list[_CertificationRouteTrial] = []
+    #: Every trial that fits UNDER the ceiling, whether or not it reaches the
+    #: floor. The floor is soft (disclose and ship short); the ceiling is hard.
+    under_ceiling_trials: list[_CertificationRouteTrial] = []
     observed: list[int] = []
     # STRICT-IMPROVEMENT PRECONDITION. When the incumbent ALREADY satisfies the
     # band, the repair has nothing to repair, and every remaining move is a
@@ -3002,11 +3461,21 @@ def _apply_certification_timebox_repair(
         if trial is None or len(observed) >= TIMEBOX_REPAIR_MAX_TRIALS:
             return
         observed.append(trial.elapsed_seconds)
-        if trial.elapsed_seconds > (
-            planning_budget.maximum_elapsed_seconds
-            + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-        ):
+        # THE CEILING IS THE REQUEST ITSELF. It was ``maximum + tolerance`` — 1.10
+        # of the request plus a minute — so a 300-minute request could bank a
+        # 331-minute tour, and the repair would then buy walking to reach it.
+        # Duration is a ceiling, not a target: ask for five hours and the tour is
+        # at most five hours. Marcus has to be on a platform at 16:40, and ten
+        # per cent over is a missed train
+        # (docs/personas/04-layover-sprinter.md).
+        if trial.elapsed_seconds > planning_budget.nominal_elapsed_seconds:
             return
+        # Bank it as a fallback BEFORE the band test. A trial that fits under the
+        # ceiling but cannot reach the floor is an honestly short tour, and an
+        # honestly short tour is a better product than a refusal — it is also the
+        # last door through which the reported bug could return, since a planner
+        # that must reach the floor will walk you to Parc de la Villette to do it.
+        under_ceiling_trials.append(trial)
         ratio_exceeded = False
         if added is not None and reference_walk_seconds is not None:
             # Price the candidate against the route *without that candidate*.
@@ -3014,14 +3483,34 @@ def _apply_certification_timebox_repair(
             # can hide a pure walk-slog whenever the removed incumbent was an
             # even larger detour.
             marginal_walk = max(0, trial.walk_seconds - reference_walk_seconds)
-            added_audio = planned_capped_audio_seconds(
-                added,
-                snapshot,
-                interest or None,
-                MAX_DWELL_AUDIO_SECONDS,
+            # THE PRODUCER OF THE TWO LISTS, and it has to move with the consumer
+            # below or the guard keeps demoting exactly the stops this release
+            # exists to seat. Priced in narration, a forty-five-minute interior
+            # carrying ninety seconds of audio rates its walk at 30x and is filed
+            # as a last-resort slog. Priced in what the visitor gets, the same
+            # stop rates under 1x and is preferred — which is correct, because
+            # walking twenty minutes for forty-five minutes inside the
+            # Conciergerie is the best trade in Theo's afternoon.
+            added_dwell = stop_seconds(
+                visit_seconds(
+                    added,
+                    interest,
+                    snapshot,
+                    party_ceiling_seconds=(
+                        input.max_stop_minutes * 60
+                        if input.max_stop_minutes is not None
+                        else None
+                    ),
+                ),
+                planned_capped_audio_seconds(
+                    added,
+                    snapshot,
+                    interest or None,
+                    MAX_DWELL_AUDIO_SECONDS,
+                ),
             )
             ratio_exceeded = (
-                marginal_walk > RESCUE_MAX_WALK_PER_AUDIO * max(1, added_audio)
+                marginal_walk > RESCUE_MAX_WALK_PER_DWELL_SECOND * max(1, added_dwell)
             )
         if within_planning_timebox(trial.elapsed_seconds, planning_budget):
             if (
@@ -3118,15 +3607,36 @@ def _apply_certification_timebox_repair(
             )
 
     eligible_trials = preferred_trials or last_resort_trials
+    if not eligible_trials and under_ceiling_trials:
+        # UNDER-FILLED, NOT INFEASIBLE. Nothing reaches the floor, but something
+        # fits under the ceiling — so the area cannot support the length asked
+        # for, and the honest answer is the longest tour it CAN support. The gate
+        # downstream measures the shortfall and attaches the disclosure; this
+        # function only picks the set.
+        #
+        # "The longest under the ceiling" is the same preference `rank` expresses
+        # (nearest the nominal), stated directly because every candidate here is
+        # below it. Ties break on the higher score, then on ids, so the choice is
+        # deterministic exactly as `rank` is.
+        return list(
+            max(
+                under_ceiling_trials,
+                key=lambda trial: (
+                    trial.elapsed_seconds,
+                    sum(
+                        poi_score(poi, spine, interest, snapshot, penalty=score_penalty)
+                        for poi in trial.selected
+                    ),
+                    tuple(sorted(poi.id for poi in trial.selected)),
+                ),
+            ).selected
+        )
     if not eligible_trials:
-        bounded = [
-            value
-            for value in observed
-            if value
-            <= planning_budget.maximum_elapsed_seconds
-            + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-        ]
-        best = max(bounded) if bounded else (min(observed) if observed else None)
+        # EVERY trial overshoots the request. There is no shorter set to fall back
+        # to, so this genuinely cannot be served — and the message says OVERSHOOT
+        # rather than "band", because a reader who sees a band here reads it as
+        # the old bug (a tour refused for being too short).
+        best = min(observed) if observed else None
         alternatives, gap_minutes = _band_alternatives(
             input=input,
             planning_policy=planning_policy,
@@ -3135,19 +3645,41 @@ def _apply_certification_timebox_repair(
         raise CertificationPlanningInfeasibleError(
             policy_id=planning_policy.policy_id,
             minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
-            maximum_elapsed_seconds=planning_budget.maximum_elapsed_seconds,
+            maximum_elapsed_seconds=planning_budget.nominal_elapsed_seconds,
             best_elapsed_seconds=best,
-            reason="no eligible non-slog add or one-for-one exchange reaches the TIME band",
+            reason=(
+                "every route reachable from this start overruns the requested "
+                "duration; the shortest one found is still longer than asked for"
+            ),
             alternatives=alternatives,
             gap_minutes=gap_minutes,
         )
 
-    def rank(trial: _CertificationRouteTrial) -> tuple[float, float, tuple[str, ...]]:
+    def rank(
+        trial: _CertificationRouteTrial,
+    ) -> tuple[int, float, float, tuple[str, ...]]:
         score = sum(
             poi_score(poi, spine, interest, snapshot, penalty=score_penalty)
             for poi in trial.selected
         )
         return (
+            # THE LONGEST SINGLE WALK COMES FIRST, in ten-minute bands.
+            #
+            # A walking budget is not one number. Nothing in this engine could say
+            # so until now: the total was capped and the worst leg was free, so a
+            # route with one fifty-minute march could out-rank a route of five
+            # short ones that filled the same clock. Rosemary stops every twelve
+            # minutes and "a route with one 25-minute leg and one 5-minute leg has
+            # the same total and is unusable"
+            # (docs/personas/05-step-free-visitor.md); Nadia's afternoon simply
+            # ends when a leg runs long.
+            #
+            # BANDED, not exact, and that is the point: shaving forty seconds off
+            # the worst leg is not worth losing a better set of places for, so
+            # within a band the older preferences decide exactly as before. This
+            # only fires when one route asks for a materially longer unbroken walk
+            # than another.
+            trial.max_leg_seconds // 600,
             abs(planning_budget.nominal_elapsed_seconds - trial.elapsed_seconds),
             -score,
             tuple(sorted(poi.id for poi in trial.selected)),
@@ -3203,10 +3735,14 @@ def _apply_endpoint_pull(
             fixed_end=endpoint,
             routed_cost_fn=leg_seconds_fn,
         )
-        walk = _route_walk_seconds(
+        walk = _full_route_walk_seconds(
             candidate_route,
             start_lat=start_lat,
             start_lng=start_lng,
+            # An endpoint-pull candidate is an OPEN chain: it ends at the pulled
+            # endpoint and never walks back. Stated rather than defaulted, because
+            # a silently-false round trip would under-count a loop by its closing leg.
+            round_trip=False,
             leg_seconds_fn=leg_seconds_fn,
         )
         if walk <= walk_budget:
@@ -3233,21 +3769,6 @@ def _drop_weakest(
         pois, key=lambda p: (poi_score(p, spine, interest, snapshot, penalty=score_penalty), p.id)
     )
     return [p for p in pois if p.id != weakest.id]
-
-
-def _route_walk_seconds(
-    pois: list[POI],
-    *,
-    start_lat: float,
-    start_lng: float,
-    leg_seconds_fn: LegSecondsFn | None = None,
-) -> int:
-    fn = leg_seconds_fn or default_leg_seconds
-    coords = [(start_lat, start_lng), *((p.lat, p.lng) for p in pois)]
-    total = 0
-    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
-        total += fn(lat1, lng1, lat2, lng2)
-    return total
 
 
 # ---------------------------------------------------------------------------
@@ -3393,6 +3914,14 @@ def poi_score(
     miss value changed from 0.0 to a positive floor. With no lenses requested
     both functions return 1.0, so the unlensed objective is byte-identical.
     """
+    # DELIBERATE OVERLAP WITH `spotlight`, not a fork (dedup-review 2026-08-07):
+    # both multiply a tier-derived weight by the ONE `lens_relevance` definition,
+    # and that shared factor already lives in one function. The tier transforms
+    # differ ON PURPOSE — the greedy weighs raw tier against richness/alignment/
+    # role, while spotlight uses `gravity(tier)` against proximity to band
+    # OUTPUT — so collapsing them would force one transform to serve two
+    # different questions. If the §3 factor model itself changes, change
+    # `lens_relevance` (shared automatically) and revisit both tier weights.
     importance = float(poi.tier)
     richness = math.log1p(max(0, poi.beat_count))
     relevance = lens_relevance(poi, lenses=interest or None, snapshot=snapshot)
@@ -3740,9 +4269,7 @@ def _attach_tourability_if_yellow(route: Route, assessment: TourabilityAssessmen
 
 __all__ = [
     "CLOSER_B_WEDGE_HALF_ANGLE_DEG",
-    "HAVERSINE_CORRECTION",
     "LENS_FLOOR",
-    "PACE_KMH",
     "PROXIMITY_DECAY_SECONDS",
     "VIGNETTE_MAX_DETOUR_M",
     "VIGNETTE_MAX_PER_LEG",

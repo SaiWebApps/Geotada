@@ -302,7 +302,11 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal garden with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Musée de Montmartre",
@@ -748,7 +752,54 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A ticketed museum; transcribed faithfully from its OSM tag \"10:00-19:00\" applied to all seven days.",
+    "place_category": "museum"
   },
   {
     "name": "Square Carpeaux",
@@ -910,7 +961,11 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Square Léon-Serpollet",
@@ -996,7 +1051,11 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Parc Turlure",
@@ -1091,7 +1150,11 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal park with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "park"
   },
   {
     "name": "Square Louise-Michel",
@@ -1185,7 +1248,54 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated garden below Sacré-Cœur; transcribed from its OSM tag with the current May 01-Aug 31 summer extension to 21:30 and the Sa/Su 09:00 open applied (\"08:00-17:45; PH,Sa,Su 08:00-09:00 off, ... May 01-Aug 31 17:45-21:30\").",
+    "place_category": "garden"
   },
   {
     "name": "Square des Abbesses",
@@ -1290,7 +1400,11 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Montmartre Cemetery",
@@ -1385,7 +1499,54 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated walled cemetery with closing gates; hours follow the City of Paris's published summer pattern shared across municipal cemeteries.",
+    "place_category": "other"
   },
   {
     "name": "Lapin Agile",
@@ -1410,6 +1571,38 @@
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "21:00",
+          "23:59"
+        ]
+      ],
+      "wed": [],
+      "thu": [
+        [
+          "21:00",
+          "23:59"
+        ]
+      ],
+      "fri": [
+        [
+          "21:00",
+          "23:59"
+        ]
+      ],
+      "sat": [
+        [
+          "21:00",
+          "23:59"
+        ]
+      ],
+      "sun": []
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated cabaret; OSM tag 'Tu,Th-Sa 21:00-01:00' transcribed, with past-midnight windows capped at 23:59 to avoid a backwards window.",
+    "place_category": "other"
   }
 ]

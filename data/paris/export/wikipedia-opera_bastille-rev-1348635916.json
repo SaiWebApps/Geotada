@@ -336,6 +336,10 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "opera_bastille-rev-1348635916",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated opera house entered by ticket, but performance/visit hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

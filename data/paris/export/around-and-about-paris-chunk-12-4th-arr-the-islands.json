@@ -90,7 +90,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working hospital rather than a visitor attraction; not a gated tourist experience, so no visiting hours apply.",
+    "place_category": "other"
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -319,7 +323,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated cathedral you enter, but post-reopening visiting hours are not confidently known to me; gated, hours not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Rue Chanoinesse",
@@ -417,7 +425,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A public medieval street open to the air; not gated.",
+    "place_category": "street"
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -459,7 +471,49 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated underground memorial with seasonal hours; transcribed from its OSM tag whose current (Apr-Sep) window is 'Avr - Sep, Mar-Dim 10:00-19:00' (Mardi-Dimanche, Monday closed) in the tag 'Oct - Mar, Mar-Dim 10:00-17:00; Avr - Sep, Mar-Dim 10:00-19:00'.",
+    "place_category": "monument"
   },
   {
     "name": "Ile Saint-Louis",
@@ -607,7 +661,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open residential island of public streets and quays, not gated; its value stands in the open.",
+    "place_category": "other"
   },
   {
     "name": "Berthillon",
@@ -648,7 +706,44 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [],
+      "tue": [],
+      "wed": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "An ice cream parlour entered through a door (gated); the flagship's published pattern is Wednesday-Sunday, closed Monday and Tuesday.",
+    "place_category": "other"
   },
   {
     "name": "Pont-Marie",
@@ -692,7 +787,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open stone bridge crossed freely from the pavement; not gated.",
+    "place_category": "bridge"
   },
   {
     "name": "Hotel de Lauzun",
@@ -770,7 +869,11 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Private/occasional-use mansion marked walk_by_only; admired from the quay, not gated for general entry.",
+    "place_category": "other"
   },
   {
     "name": "Hotel Lambert",
@@ -846,7 +949,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Private residence not open to the public; gated but no public hours exist, so left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Quai de Bourbon",
@@ -914,7 +1021,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open riverside quay walked freely; not gated.",
+    "place_category": "street"
   },
   {
     "name": "Crypte Archeologique de l'Ile de la Cite",
@@ -953,7 +1064,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated underground museum with a ticket desk, but its exact current hours are not confidently known; left unfiltered.",
+    "place_category": "museum"
   },
   {
     "name": "Saint-Louis-en-l'Ile Church",
@@ -996,6 +1111,10 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated church you enter, but its current opening hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   }
 ]

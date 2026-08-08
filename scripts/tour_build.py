@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 import time
 import uuid
@@ -32,8 +33,16 @@ from src.tour.density import TourabilityRefusedError, assess_snapshot
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
+from src.tour.routing import haversine_m
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
+from src.tour.selection import (
+    VALHALLA_MAX_CONTOUR_MINUTES,
+    CertificationPlanningInfeasibleError,
+    build_poi_beat_plans_capped,
+    load_paris_corpus,
+    reach_envelope_searched,
+    select_route,
+)
 
 HAIKU_INPUT_USD_PER_MTOK = 1.00  # 2026 Haiku 4.5 list (per 1M tokens)
 HAIKU_OUTPUT_USD_PER_MTOK = 5.00
@@ -100,7 +109,10 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
                 name=cand,
             ).single()
             if record and record["lat"] is not None:
-                return (float(record["lat"]), float(record["lng"])), f"{record['area_name']} (centroid)"
+                return (
+                    (float(record["lat"]), float(record["lng"])),
+                    f"{record['area_name']} (centroid)",
+                )
 
     raise SystemExit(
         f"\u2717 Could not resolve start point: {start_arg!r}. "
@@ -167,6 +179,134 @@ def _project_cost_upper_bound(
     return proj_in, proj_out_max, usd
 
 
+def _perp_distance_m(
+    lat: float, lng: float, a: tuple[float, float], b: tuple[float, float]
+) -> float:
+    """Perpendicular distance from a point to the straight A->B line, in metres.
+
+    Equirectangular projection, which is exact enough across a city: the error
+    over 10 km is under a metre, and this number is read to the nearest 10 m.
+    Clamped to the segment, so a stop beyond either end measures to that end
+    rather than to an imaginary extension of the line.
+    """
+    lat0 = math.radians((a[0] + b[0]) / 2.0)
+    to_x = 111_320.0 * math.cos(lat0)
+    to_y = 110_540.0
+    ax, ay = a[1] * to_x, a[0] * to_y
+    bx, by = b[1] * to_x, b[0] * to_y
+    px, py = lng * to_x, lat * to_y
+    dx, dy = bx - ax, by - ay
+    span = dx * dx + dy * dy
+    if span == 0:
+        return math.hypot(px - ax, py - ay)
+    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / span))
+    return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+
+
+def _print_breakdown(
+    *,
+    tour_input: TourInput,
+    wall_clock_s: float,
+    route=None,
+    script=None,
+    best_elapsed_s: int | None = None,
+) -> None:
+    """The seven numbers, printed on BOTH the success and the refusal paths.
+
+    ONE printer for both, deliberately, so the two can never drift into reporting
+    different things. Four of the seven need a route that a refusal never
+    produced; those say so in words rather than printing a zero, because a zero
+    reads as a measurement and "no route exists" is not one.
+
+    The reach radius comes from ``reach_envelope_searched`` -- the SAME function
+    the planner uses -- so this reports the circle actually searched. Deriving it
+    here from the requested duration would print ~4,444 m at 300 minutes while the
+    fixed-destination planner searched ~12,259 m, and the harness built to expose
+    that bug would have hidden it.
+    """
+    radius_m, iso_minutes = reach_envelope_searched(tour_input)
+    absent = "— no route was produced, so this cannot be measured"
+
+    print("  ── breakdown ──────────────────────────────────────────────")
+    if route is not None and script is not None:
+        walk_s = route.total_walk_seconds
+        dwell_s = sum(p.dwell_seconds for p in script.selected_pois)
+        legs = [
+            int(t.leg_seconds) if getattr(t, "leg_seconds", None) is not None else t.walk_seconds
+            for t in route.transits
+        ]
+        longest = max(legs) if legs else 0
+        print(f"  walk:               {walk_s:6d} s ({walk_s // 60} min)")
+        print(f"  dwell:              {dwell_s:6d} s ({dwell_s // 60} min)")
+        print(f"  total (walk+dwell): {walk_s + dwell_s:6d} s ({(walk_s + dwell_s) // 60} min)")
+        print(f"  longest leg:        {longest:6d} s ({longest // 60} min)")
+        if tour_input.end is not None:
+            worst = max(
+                (
+                    (_perp_distance_m(p.lat, p.lng, tour_input.start, tour_input.end), p.name)
+                    for p in script.selected_pois
+                ),
+                default=(0.0, "—"),
+            )
+            print(f"  furthest off A→B:   {worst[0]:6.0f} m  ({worst[1]})")
+        else:
+            worst_open = max(
+                (
+                    (haversine_m(tour_input.start[0], tour_input.start[1], p.lat, p.lng), p.name)
+                    for p in script.selected_pois
+                ),
+                default=(0.0, "—"),
+            )
+            print(
+                f"  furthest off A→B:   {worst_open[0]:6.0f} m  ({worst_open[1]}) "
+                "— measured from the start; this walk has no B"
+            )
+    else:
+        best = "unknown" if best_elapsed_s is None else f"{best_elapsed_s} s"
+        print(f"  walk:               {absent}")
+        print(f"  dwell:              {absent}")
+        print(
+            f"  total (walk+dwell): {best} — the best bounded route the planner "
+            "reached, which it then refused"
+        )
+        print(f"  longest leg:        {absent}")
+        print(f"  furthest off A→B:   {absent}")
+    # NAME WHICH MECHANISM WAS OPERATIVE, or this line is worse than no line.
+    # `radius_m` is the analytic FALLBACK circle. The planner's primary admission
+    # test is the Valhalla road polygon, used whenever the contour it asks for is
+    # within the engine's limit. Reporting the circle without saying which of the
+    # two applied invites a phase to record a shrink that never happened: clamping
+    # the contour makes the polygon available again, so the circle can fall while
+    # the region the planner actually admits GROWS.
+    if iso_minutes > VALHALLA_MAX_CONTOUR_MINUTES:
+        note = (
+            f"isochrone {iso_minutes} min REFUSED (>{VALHALLA_MAX_CONTOUR_MINUTES} "
+            "max), so this circle IS the reach test"
+        )
+    else:
+        note = (
+            f"isochrone {iso_minutes} min accepted, so the ROAD POLYGON is the reach "
+            "test and this circle is only its fallback"
+        )
+    print(f"  reach radius:       {radius_m:6.0f} m circle — {note}")
+    print(f"  wall clock:         {wall_clock_s:6.2f} s")
+    # CLOCK EXCLUSIONS — printed on every DATED run, including when empty, so a
+    # Monday and a Tuesday breakdown keep the same shape and read side by side
+    # (D1 demo). Omitted entirely on a dateless run, which is what keeps that
+    # output byte-identical to the pre-clock harness. Reads the field
+    # defensively: the section lands (printing "none") before Route learns to
+    # record exclusions in S1.6, and lists them once it has.
+    if tour_input.start_datetime is not None:
+        exclusions = getattr(route, "clock_exclusions", ()) if route is not None else ()
+        print("  clock exclusions:")
+        if exclusions:
+            for excl in exclusions:
+                print(f"    • {excl.name} — {excl.reason}")
+        else:
+            print("    none")
+    print("  ───────────────────────────────────────────────────────────")
+
+
 def _print_refusal(
     a,
     *,
@@ -213,14 +353,42 @@ def _print_refusal(
         )
 
 
-def main() -> int:
+def _build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--start", required=True, help="'lat,lng' or POI/Area name")
+    parser.add_argument(
+        "--end",
+        default=None,
+        help=(
+            "'lat,lng' or POI/Area name for a fixed destination B. Omit for an open "
+            "walk. Mutually exclusive with --round-trip."
+        ),
+    )
     parser.add_argument("--duration", type=int, required=True, help="Minutes")
     parser.add_argument("--lenses", default="", help="Comma-separated child lenses")
     parser.add_argument("--round-trip", action="store_true")
     parser.add_argument("--theme", default="", help="Optional theme hint")
     parser.add_argument("--city-slug", default="paris")
+    # THE PLANNER'S CLOCK (redesign §2.2/§2.3). No --date = dateless planning,
+    # byte-identical to before the clock existed — which is also what keeps the
+    # W1.1 before-picture comparable to a post-clock dateless run.
+    parser.add_argument(
+        "--date",
+        default=None,
+        help="Walk date, YYYY-MM-DD. Omit for dateless planning (today's behaviour).",
+    )
+    parser.add_argument(
+        "--time",
+        default="09:00",
+        help="Walk start time, HH:MM (used only with --date; default 09:00).",
+    )
+    parser.add_argument(
+        "--end-hardness",
+        choices=["wall", "firm", "open"],
+        default="firm",
+        help="How hard the end is: wall keeps visible slack, firm is today's "
+        "behaviour, open never pads toward the requested length.",
+    )
     parser.add_argument(
         "--haiku",
         action="store_true",
@@ -244,6 +412,11 @@ def main() -> int:
         action="store_true",
         help="JSON only (skip the markdown render).",
     )
+    return parser
+
+
+def main() -> int:
+    parser = _build_arg_parser()
     args = parser.parse_args()
 
     # WHO WRITES THE TRANSITIONS — decided here, before any work, because a
@@ -267,12 +440,22 @@ def main() -> int:
         )
 
     project_root = Path(__file__).resolve().parent.parent
-    out_dir = Path(args.output_dir) if args.output_dir else project_root / "data" / args.city_slug / "tours"
+    out_dir = (
+        Path(args.output_dir)
+        if args.output_dir
+        else project_root / "data" / args.city_slug / "tours"
+    )
     out_dir.mkdir(parents=True, exist_ok=True)
 
     driver = create_driver()
     try:
         start_coords, start_label = _resolve_start(driver, args.start, args.city_slug)
+        # Resolved through the SAME resolver as --start so a name, a substring and a
+        # bare "lat,lng" all behave identically at both ends. The label is discarded:
+        # TourInput carries start_label and has no end_label field.
+        end_coords: tuple[float, float] | None = None
+        if args.end:
+            end_coords, _ = _resolve_start(driver, args.end, args.city_slug)
         snapshot = load_paris_corpus(driver, city_slug=args.city_slug)
 
         lenses = [s.strip() for s in args.lenses.split(",") if s.strip()] or None
@@ -281,9 +464,12 @@ def main() -> int:
             duration_min=args.duration,
             city_slug=args.city_slug,
             round_trip=bool(args.round_trip),
+            end=end_coords,
             lenses=lenses,
             theme_hint=args.theme.strip() or None,
             start_label=start_label,
+            start_datetime=f"{args.date}T{args.time}" if args.date else None,
+            end_hardness=args.end_hardness,
         )
 
         t_select = time.perf_counter()
@@ -302,6 +488,63 @@ def main() -> int:
                 ),
                 duration_min=args.duration,
                 round_trip=rt,
+            )
+            return 3
+        except CertificationPlanningInfeasibleError as exc:
+            # CAUGHT, not allowed to escape. Until this clause existed, a request
+            # that merely did not fit its certification band ended the run in a
+            # Python traceback — the harness printed none of the numbers that
+            # explain WHY, and the one command meant to demonstrate the reported
+            # bug produced a stack trace instead of evidence. Everything printed
+            # here already lives on the exception (src/tour/selection.py:456-487);
+            # nothing is recomputed, so this cannot disagree with the planner.
+            rt = bool(args.round_trip)
+            lo, hi = exc.minimum_elapsed_seconds, exc.maximum_elapsed_seconds
+            best = exc.best_elapsed_seconds
+            print(
+                f"✗ CERTIFICATION PLANNING INFEASIBLE — {start_label} "
+                f"{args.duration}-min {'round-trip' if rt else 'one-way'}"
+            )
+            print(f"  message:     {exc}")
+            print(f"  policy:      {exc.policy_id}")
+            print(f"  reason:      {exc.reason}")
+            print(f"  required:    {lo}-{hi}s ({lo // 60}-{hi // 60} min)")
+            print(
+                "  best found:  "
+                + ("none" if best is None else f"{best}s ({best // 60} min)")
+            )
+            if exc.gap_minutes is not None:
+                print(f"  gap:         {exc.gap_minutes} min")
+            print()
+            print("  Alternatives:")
+            if not exc.alternatives:
+                print("    • none offered by the planner")
+            for alt in exc.alternatives:
+                if alt.kind == "closer_b" and alt.poi_id:
+                    print(
+                        f"    • closer_b: end at {alt.poi_id} "
+                        f"({alt.lat:.5f}, {alt.lng:.5f}) at {alt.duration_min} min"
+                    )
+                elif alt.kind == "extend":
+                    print(
+                        f"    • extend: keep this destination, ask for "
+                        f"{alt.duration_min} min"
+                    )
+                elif alt.kind == "loop":
+                    print(
+                        f"    • loop: drop the destination, walk {alt.duration_min} "
+                        f"min from the start"
+                    )
+                else:
+                    print(
+                        f"    • {alt.kind}: {alt.duration_min} min, "
+                        f"drop_end={alt.drop_end}"
+                    )
+            print()
+            _print_breakdown(
+                tour_input=tour_input,
+                wall_clock_s=time.perf_counter() - t_select,
+                best_elapsed_s=exc.best_elapsed_seconds,
             )
             return 3
         t_select = time.perf_counter() - t_select
@@ -379,7 +622,10 @@ def main() -> int:
         # decision, not something this harness should do by default.
         beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
         verify = build_full_verifier(
-            beat_sequence, beats_by_id, allow_unverified_faithfulness=True
+            beat_sequence,
+            beats_by_id,
+            allow_unverified_faithfulness=True,
+            spine_area=route.spine_area,
         )
         script = script.model_copy(update={"validation": verify(script)})
 
@@ -422,6 +668,12 @@ def main() -> int:
         )
         print(f"  cost:        ${cost_usd:.5f} ({cost_kind}: {in_tok} in + {out_tok} out)")
         print(f"  wall_clock:  {wall_clock:.2f} s")
+        _print_breakdown(
+            tour_input=tour_input,
+            wall_clock_s=wall_clock,
+            route=route,
+            script=script,
+        )
         print(
             f"  validation:  {'PASS' if passed else 'FAIL'} "
             f"(untraceable={len(script.validation.untraceable_sentences)}, "

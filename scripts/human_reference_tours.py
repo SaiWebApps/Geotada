@@ -7,7 +7,7 @@ calibrates the PROSE checks and nothing else: checks that need more than one sto
 duration, or a route report NOT APPLICABLE on a single passage, so they had never been
 calibrated against anything a human approved.
 
-``Docs/tour-builder/empirical-tours/`` holds two COMPLETE human-written tours,
+``fixtures/reference-tours/`` holds two COMPLETE human-written tours,
 hand-composed from the live corpus on 2026-04-26 and recorded in the goldens as the
 reference for what a good tour contains. This module turns them into ``Script`` +
 ``Route`` pairs so the REAL ``quality_rubric.score_tour`` can run on them unchanged.
@@ -94,7 +94,12 @@ from src.tour.contract import (
 from src.tour.generation import SPOKEN_WPM
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-EMPIRICAL_DIR = REPO_ROOT / "Docs" / "tour-builder" / "empirical-tours"
+#: The two hand-composed reference tours, beside the golden fixtures they
+#: calibrate. MOVED here 2026-08-06 from Docs/tour-builder/empirical-tours/:
+#: they are read by this shipped tool and by the rubric tests, so a routine
+#: documentation rename deleted them and took five tests with it. Data a
+#: program opens by path does not live in a folder for prose.
+EMPIRICAL_DIR = REPO_ROOT / "fixtures" / "reference-tours"
 
 #: Golden-fixture key -> the document it was composed from. The fixture is the
 #: provenance link (its ``_doc`` field names the document) and supplies the

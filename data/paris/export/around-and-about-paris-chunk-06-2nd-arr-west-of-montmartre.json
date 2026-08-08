@@ -43,7 +43,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated covered arcade with grilles; its opening hours are not confidently known, left unfiltered.",
+    "place_category": "arcade"
   },
   {
     "name": "Theatre des Varietes",
@@ -96,7 +100,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated theatre entered by ticket; its hours are not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Place de la Bourse",
@@ -146,7 +154,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public square whose value is on the pavement, not gated.",
+    "place_category": "square"
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -224,7 +236,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated basilica one enters; its opening hours are not confidently known, left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Bibliotheque Nationale de France - Richelieu",
@@ -299,7 +315,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated library with reading rooms behind entry control; hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Galerie Vivienne",
@@ -347,7 +367,49 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": {
+      "mon": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "tue": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "wed": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "thu": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "fri": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "20:30"
+        ]
+      ],
+      "sun": []
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated covered arcade with grilles; OSM tag \"Mo-Sa 08:30-20:30\" transcribed with Sunday closed.",
+    "place_category": "arcade"
   },
   {
     "name": "Square Louvois",
@@ -486,7 +548,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated public garden with closing bells; its hours are not confidently known, left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Passage Choiseul",
@@ -540,7 +606,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated covered arcade with grilles; its opening hours are not confidently known, left unfiltered.",
+    "place_category": "arcade"
   },
   {
     "name": "Restaurant Drouant",
@@ -596,7 +666,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated restaurant entered by door; its service hours are not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Harry's New York Bar",
@@ -648,7 +722,11 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated bar entered by door; its exact opening hours are not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Rue de la Paix",
@@ -785,6 +863,10 @@
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open shopping street whose value stands in the open on the public pavement; not gated.",
+    "place_category": "street"
   }
 ]

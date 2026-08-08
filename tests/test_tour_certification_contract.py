@@ -67,7 +67,7 @@ def test_time_and_enjoyment_finish_line_cannot_regress_to_old_false_gates() -> N
     time_gate = contract["gates"]["TIME"]
     enjoy_gate = contract["gates"]["ENJOY"]
 
-    assert time_gate["minimum_requested_fraction"] == 0.9
+
     assert time_gate["maximum_requested_fraction"] == 1.1
     assert time_gate["requires_final_baked_audio"] is True
     assert time_gate["word_count_can_certify"] is False

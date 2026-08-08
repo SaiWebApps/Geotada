@@ -23,20 +23,40 @@ SHELL := /bin/bash
 # can still report that uv or Docker is missing on a machine with nothing set up.
 PREFLIGHT := python3 scripts/preflight.py
 
-# Which pytest graph this invocation talks to.  Defaults to the canonical `test`
-# profile (:7688).  A concurrent worktree overrides it — `make test-file
-# TEST_PROFILE=test2` — so two agents cannot wipe each other's fixtures: the
-# pytest suite full-wipes its graph per-module, so a shared graph produces
-# phantom failures, not a slow queue.  It moves the preflight requirement too
-# (PRE_PYTEST below), so the override cannot silently run against a graph that
-# was never started.  `make test` and `make audit` are deliberately NOT
-# parameterised: the definitive bar always runs on the canonical graph.
+# A LANE is one concurrent track of work: the main checkout (LANE empty) or a
+# worktree (LANE=2, LANE=3).  A lane owns EVERY graph it writes — dev, pytest and
+# workbench — so two agents cannot wipe each other's data: both suites full-wipe
+# their own graph, so sharing one produces phantom failures rather than a slow
+# queue.  Routing is deliberately NOT per-lane: it is stateless read-only lookup
+# with no write to collide over, and a copy would mean a second 1.6 GB of tiles.
+#
+# LANE= is the only knob.  It selects the whole set and moves the preflight
+# requirements with it (PRE_PYTEST below), so a lane cannot silently run against a
+# graph nobody started:   make test-file LANE=2 FILE=tests/test_x.py::TestY::test_z
+#
+# Adding lane 4 is one compose service per graph plus one preflight row each — do
+# that rather than queueing behind a busy lane.  `make test` and `make audit` are
+# deliberately NOT parameterised: the definitive bar always runs the canonical set.
+# The defaults stay LITERAL -- `test`, not `test$(LANE)` -- because
+# scripts/preflight.py resolves `db-$(TEST_PROFILE)` by reading these lines, and
+# it deliberately takes only literal values so it can never start a substitution
+# chain (tests/test_preflight.py fails the moment a name stops resolving). The
+# lane override therefore happens below, where it costs the parser nothing.
+LANE ?=
 TEST_PROFILE ?= test
+DEV_DB ?= dev
+WORKBENCH_PROFILE ?= workbench
+ifneq ($(LANE),)
+TEST_PROFILE := test$(LANE)
+DEV_DB := dev$(LANE)
+WORKBENCH_PROFILE := workbench$(LANE)
+endif
+export ONDOWAY_LANE := $(LANE)
 
 ENV_EXEC := uv run python scripts/dev_env.py exec
 LOCAL_EXEC := $(ENV_EXEC) --profile local --
 TEST_EXEC := $(ENV_EXEC) --profile $(TEST_PROFILE) --
-WORKBENCH_EXEC := $(ENV_EXEC) --profile workbench --
+WORKBENCH_EXEC := $(ENV_EXEC) --profile $(WORKBENCH_PROFILE) --
 RENDER_LOCAL_EXEC := $(ENV_EXEC) --profile local --render --
 RENDER_TEST_EXEC := $(ENV_EXEC) --profile test --render --
 CLOUD_EXEC := $(ENV_EXEC) --profile cloud --render --
@@ -56,7 +76,7 @@ INVARIANT_TEST_FILES := tests/test_tour_invariants_live.py
 PRE_PY := uv python-deps
 PRE_LOCAL_GRAPH := uv python-deps db-dev dev-data
 PRE_TOUR := uv python-deps db-dev dev-data valhalla
-PRE_PYTEST := uv python-deps db-$(TEST_PROFILE) db-dev dev-data valhalla
+PRE_PYTEST := uv python-deps db-$(TEST_PROFILE) db-$(DEV_DB) dev-data valhalla
 PRE_FLUTTER := flutter flutter-deps
 # The full union `make test` will need, checked once up front so a missing Render
 # credential fails in seconds rather than twenty minutes into the suite.
@@ -67,7 +87,9 @@ LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 	scripts/preflight.py scripts/db_parity.py scripts/check_audio_setup.py \
 	scripts/tour_batch_candidate.py scripts/score_saved_tours.py \
 	scripts/score_gold_text.py scripts/human_reference_tours.py \
-	scripts/tour_golden_diff.py
+	scripts/tour_golden_diff.py scripts/poi_visit_duration.py \
+	scripts/poi_opening_hours.py scripts/poi_place_category.py \
+	scripts/report_visit_durations.py scripts/tour_build.py scripts/dedup_review.py
 
 # Reports a missing credential or a wrong endpoint as a sentence. This was a bare
 # `assert` inside `python -c`, so the answer to "is my config right?" was a stack trace.
@@ -80,6 +102,15 @@ print(f"{name}: localhost:{port} + fresh Render credentials")
 
 DB ?= dev
 TARGET ?= local
+
+# Every local graph, plus how its compose service and volume are derived from the
+# name. Spelled once so a new lane is one compose service and one preflight row,
+# never an edit to four copies of the same list down in the DATABASE targets.
+LOCAL_DBS := dev test workbench dev2 test2 workbench2 dev3 test3 workbench3
+db_service = $(if $(filter dev,$(1)),neo4j,neo4j-$(1))
+db_volume = ondoway_$(subst -,_,$(call db_service,$(1)))_data
+check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
+	{ echo "ERROR: DB must be one of: $(LOCAL_DBS); never cloud." >&2; exit 2; }
 
 .PHONY: \
 	help doctor setup bootstrap preflight preflight-list \
@@ -94,7 +125,9 @@ TARGET ?= local
 	flutter-web flutter-ios flutter-device flutter-pub-get flutter-clean \
 	survey-area-candidates fix-area-radii backfill-provenance backfill-poi-role \
 	backfill-name-key wiki-fetch gen-within-edges validate-beats deploy prune-orphans \
-	fetch-boundary geocode-pois tour-build measure-planned-audio measure-governor \
+	fetch-boundary geocode-pois poi-visit-duration poi-opening-hours \
+	poi-place-category poi-visit-report tour-build \
+	measure-planned-audio measure-governor \
 	onboard-city flutter-ipa testflight render-watch render-status setup-audio \
 	aura-resume-proof flutter-test clean \
 	_test-python _test-golden _test-grade _test-invariants _test-cloud
@@ -193,6 +226,10 @@ lint: ## Run the Python linter.
 	@$(PREFLIGHT) --label lint $(PRE_PY)
 	uv run ruff check $(LINT_PATHS)
 
+dedup-review: ## Find one question this codebase answers in two places.
+	@$(PREFLIGHT) --label dedup-review $(PRE_PY) render-key
+	@$(RENDER_LOCAL_EXEC) uv run python scripts/dedup_review.py
+
 format: ## Format Python and apply safe lint fixes.
 	@$(PREFLIGHT) --label format $(PRE_PY)
 	uv run ruff format $(LINT_PATHS)
@@ -207,22 +244,26 @@ flutter-analyze: ## Run Dart static analysis.
 # ════════════════════════════════════════════════════════════════════════════
 ##@ TEST
 
+# `LANE=` on every delegation, so this stays the definitive bar even when invoked
+# from a lane: PRE_FULL_SUITE above names the canonical graphs, and without the
+# override a `make test LANE=2` would preflight those and then run the shards
+# against lane 2's. One bar, one set of graphs, one meaning of green.
 test: ## THE definitive suite: Python, Flutter, browser, tour, live-provider, and cloud parity.
 	@$(PREFLIGHT) --label test $(PRE_FULL_SUITE)
-	@$(MAKE) --no-print-directory _test-python
-	@$(MAKE) --no-print-directory flutter-test
-	@$(MAKE) --no-print-directory test-workbench
-	@$(MAKE) --no-print-directory _test-golden
-	@$(MAKE) --no-print-directory _test-grade
-	@$(MAKE) --no-print-directory _test-invariants
-	@$(MAKE) --no-print-directory test-live
-	@$(MAKE) --no-print-directory _test-cloud
+	@$(MAKE) --no-print-directory LANE= _test-python
+	@$(MAKE) --no-print-directory LANE= flutter-test
+	@$(MAKE) --no-print-directory LANE= test-workbench
+	@$(MAKE) --no-print-directory LANE= _test-golden
+	@$(MAKE) --no-print-directory LANE= _test-grade
+	@$(MAKE) --no-print-directory LANE= _test-invariants
+	@$(MAKE) --no-print-directory LANE= test-live
+	@$(MAKE) --no-print-directory LANE= _test-cloud
 	@echo "✓ Every definitive test shard passed."
 
 audit: ## Run lint and then the definitive test suite.
 	@$(PREFLIGHT) --label audit $(PRE_FULL_SUITE)
-	@$(MAKE) --no-print-directory lint
-	@$(MAKE) --no-print-directory test
+	@$(MAKE) --no-print-directory LANE= lint
+	@$(MAKE) --no-print-directory LANE= test
 
 test-file: ## Run one test file safely. Usage: make test-file FILE=tests/test_x.py [LIVE=1].
 	@test -n "$(FILE)" || { echo "ERROR: FILE is required." >&2; exit 2; }
@@ -248,7 +289,7 @@ test-live: ## Run every live-provider test with a fresh full Render environment.
 # have started routing first is what made it pass while producing nothing.
 # It also declares port-8001, the port its managed server binds.
 test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 7689.
-	@$(PREFLIGHT) --label test-workbench uv python-deps db-test db-workbench valhalla playwright-browser
+	@$(PREFLIGHT) --label test-workbench uv python-deps db-$(TEST_PROFILE) db-$(WORKBENCH_PROFILE) valhalla playwright-browser
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
@@ -345,39 +386,27 @@ tour-batch-review-live: ## Execute an approved semantic-review plan with fresh R
 # Starting a database IS the preflight requirement `db-<name>`: it starts the
 # service if needed and then proves readiness by running a real Cypher query
 # inside the container. It cannot report success on a database that is absent.
-db-up: ## Start one local Neo4j service. Usage: make db-up DB=dev|test|test2|test3|workbench.
-	@case "$(DB)" in dev|test|test2|test3|workbench) ;; \
-		*) echo "ERROR: DB must be dev, test, test2, test3 or workbench; never cloud." >&2; exit 2 ;; esac
+db-up: ## Start one local Neo4j service. Usage: make db-up DB=<one of $(LOCAL_DBS)>.
+	$(check_db)
 	@$(PREFLIGHT) --label "db-up DB=$(DB)" db-$(DB)
 
 db-down: ## Stop one local Neo4j service without deleting data. Usage: make db-down DB=...
-	@case "$(DB)" in dev|test|test2|test3|workbench) ;; \
-		*) echo "ERROR: DB must be dev, test, test2, test3 or workbench; never cloud." >&2; exit 2 ;; esac
+	$(check_db)
 	@$(PREFLIGHT) --label "db-down DB=$(DB)" docker-daemon
-	@case "$(DB)" in dev) service=neo4j ;; test) service=neo4j-test ;; \
-		test2) service=neo4j-test2 ;; test3) service=neo4j-test3 ;; \
-		workbench) service=neo4j-workbench ;; esac; \
-	docker compose stop "$${service}"
+	docker compose stop "$(call db_service,$(DB))"
 
 db-status: ## Show all local Neo4j service states.
 	@$(PREFLIGHT) --label db-status docker-daemon
-	@docker compose ps neo4j neo4j-test neo4j-test2 neo4j-test3 neo4j-workbench
+	@docker compose ps $(foreach d,$(LOCAL_DBS),$(call db_service,$(d)))
 
-db-reset: ## Delete exactly one local Neo4j volume. Usage: make db-reset DB=dev|test|test2|test3|workbench.
-	@case "$(DB)" in dev|test|test2|test3|workbench) ;; \
-		*) echo "ERROR: DB must be dev, test, test2, test3 or workbench; Aura is unreachable here." >&2; exit 2 ;; esac
+db-reset: ## Delete exactly one local Neo4j volume. Usage: make db-reset DB=<one of $(LOCAL_DBS)>.
+	$(check_db)
 	@$(PREFLIGHT) --label "db-reset DB=$(DB)" docker-daemon
-	@set -e; case "$(DB)" in \
-		dev) service=neo4j; volume=ondoway_neo4j_data ;; \
-		test) service=neo4j-test; volume=ondoway_neo4j_test_data ;; \
-		test2) service=neo4j-test2; volume=ondoway_neo4j_test2_data ;; \
-		test3) service=neo4j-test3; volume=ondoway_neo4j_test3_data ;; \
-		workbench) service=neo4j-workbench; volume=ondoway_neo4j_workbench_data ;; \
-	esac; \
-	docker compose stop "$${service}"; \
-	docker compose rm -f "$${service}"; \
-	docker volume rm -f "$${volume}"; \
-	echo "✓ Deleted only local volume $${volume}."
+	@set -e; \
+	docker compose stop "$(call db_service,$(DB))"; \
+	docker compose rm -f "$(call db_service,$(DB))"; \
+	docker volume rm -f "$(call db_volume,$(DB))"; \
+	echo "✓ Deleted only local volume $(call db_volume,$(DB))."
 
 db-parity: ## Compare committed data with local dev or read-only Aura. Usage: make db-parity TARGET=local|cloud.
 	@case "$(TARGET)" in \
@@ -569,6 +598,42 @@ fetch-boundary: ## Fetch an OSM boundary polygon.
 geocode-pois: ## Geocode POIs through Nominatim.
 	@$(PREFLIGHT) --label geocode-pois $(PRE_PY)
 	@$(LOCAL_EXEC) uv run python -m scripts.geocode_pois --slug "$(SLUG)"$(if $(filter 1,$(ALL)), --all,)
+
+# Prices how long a visitor spends AT each POI — outside, and inside where there
+# IS an inside. Spends real model credits, so LIMIT= runs a subset and writes
+# nothing; that is the intended way to inspect the output before a full pass.
+# Needs the provider secrets, hence render-key + RENDER_LOCAL_EXEC, exactly like
+# setup-audio.
+poi-visit-duration: ## Price POI visit time. Usage: make poi-visit-duration SLUG=paris [LIMIT=10].
+	@$(PREFLIGHT) --label poi-visit-duration $(PRE_PY) render-key
+	@$(RENDER_LOCAL_EXEC) uv run python scripts/poi_visit_duration.py \
+		--slug "$(or $(SLUG),paris)"$(if $(LIMIT), --limit $(LIMIT),) $(ARGS)
+
+# Learns each POI's opening days and hours (redesign data row 6.1): one bulk
+# OSM/Overpass query where OSM has the place, an audited model pass otherwise.
+# Spends real model credits, so LIMIT= runs a subset and writes nothing —
+# exactly the poi-visit-duration pattern, including render-key for the
+# provider secrets.
+poi-opening-hours: ## Learn POI opening hours. Usage: make poi-opening-hours SLUG=paris [LIMIT=10].
+	@$(PREFLIGHT) --label poi-opening-hours $(PRE_PY) render-key
+	@$(RENDER_LOCAL_EXEC) uv run python scripts/poi_opening_hours.py \
+		--slug "$(or $(SLUG),paris)"$(if $(LIMIT), --limit $(LIMIT),) $(ARGS)
+
+# Deterministic, $0, re-runnable at will (redesign data row 6.7): no model, no
+# network, no credentials — name tokens, description and poi_role in, one of a
+# closed twelve-word vocabulary out.
+poi-place-category: ## Categorise every POI (deterministic, $0). Usage: make poi-place-category SLUG=paris.
+	@$(PREFLIGHT) --label poi-place-category $(PRE_PY)
+	@$(LOCAL_EXEC) uv run python scripts/poi_place_category.py \
+		--slug "$(or $(SLUG),paris)" $(ARGS)
+
+# The audit table for the pass above. Reads the committed JSON only -- no graph,
+# no provider, no spend -- so it is safe to run at any time and is how a reviewer
+# who has never been to the city checks the numbers.
+poi-visit-report: ## Print the POI visit-capacity audit table. Usage: make poi-visit-report [SLUG=paris].
+	@$(PREFLIGHT) --label poi-visit-report $(PRE_PY)
+	@$(LOCAL_EXEC) uv run python scripts/report_visit_durations.py \
+		--slug "$(or $(SLUG),paris)" $(ARGS)
 
 # Who writes the transition sentences. scripts/tour_build.py now REFUSES to run
 # without being told, because canned transitions printed under a "validation:

@@ -396,7 +396,11 @@
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Square Santiago du Chili",
@@ -657,7 +661,11 @@
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Champ de Mars",
@@ -948,7 +956,11 @@
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public greenspace whose value stands in the open with no gates, and the OSM tag '24/7' confirms it is not gated.",
+    "place_category": "other"
   },
   {
     "name": "Eiffel Tower",
@@ -1101,7 +1113,54 @@
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "tue": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "Gated ticketed monument with elevator/stair access; hours follow the tower's own published year-round daily pattern (extended summer hours from mid-June).",
+    "place_category": "other"
   },
   {
     "name": "Théâtre du Vieux-Colombier",
@@ -1192,7 +1251,11 @@
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated theatre (Comédie-Française's second venue) whose performance/box-office hours I do not confidently know; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Jardin Atlantique",
@@ -1427,6 +1490,53 @@
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "21:30"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "21:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated rooftop garden with closing gates; OSM tag transcribed for the current May 1-Aug 31 08:00-21:30 pattern, with Sa/Su opening delayed to 09:00 per the \"Sa,Su,PH 08:00-09:00 closed\" rule.",
+    "place_category": "garden"
   }
 ]

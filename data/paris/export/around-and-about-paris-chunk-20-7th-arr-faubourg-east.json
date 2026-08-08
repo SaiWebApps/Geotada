@@ -154,7 +154,54 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "tue": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "23:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "Gated ticketed monument with elevator/stair access; hours follow the tower's own published year-round daily pattern (extended summer hours from mid-June).",
+    "place_category": "other"
   },
   {
     "name": "Quai Voltaire",
@@ -330,7 +377,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open Left Bank embankment and street viewed in the open — not gated.",
+    "place_category": "street"
   },
   {
     "name": "Fontaine des Quatre Saisons",
@@ -378,7 +429,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A monumental wall fountain on the street facade viewed from the pavement — not gated.",
+    "place_category": "monument"
   },
   {
     "name": "Saint-Thomas-d'Aquin",
@@ -425,7 +480,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A Catholic church one enters (gated), but its specific opening hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Le Bon Marché",
@@ -502,7 +561,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated department store but no OSM tag and hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "La Pagode",
@@ -551,6 +614,10 @@
         "emotional_register": "dramatic"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A cinema (gated), but it has been closed for years and no current confident hours exist; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

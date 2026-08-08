@@ -20,6 +20,7 @@ from src.audio.tts_normalize import normalize_dashes_for_reading
 
 from .contract import POI, BeatRef, BeatSequence, Route, RouteOption, RouteOptionStop, Script
 from .generation import is_walk_concurrent, vignette_one_liner_text
+from .routing import leg_walk_seconds, total_walk_seconds
 from .selection import (
     LENS_FLOOR,
     CorpusSnapshot,
@@ -62,10 +63,17 @@ def option_eta_seconds(route: Route, script: Script) -> int:
 
     A walk-past sight or a line heard on the move costs no elapsed time — it happens
     during a walk this sum already counts.
+
+    The walking half is ``routing.total_walk_seconds``, the same expression the Route
+    was built with. This line used to spell it differently — branching on whether
+    ``leg_seconds`` was set rather than on whether Valhalla produced it — and the two
+    agreed only because the fallback path happens to compute the same number. A leg
+    with a routed duration but a haversine provenance would have made the served
+    clock and the planned clock disagree, silently.
     """
-    return sum(
-        (t.leg_seconds if t.leg_seconds is not None else t.walk_seconds) for t in route.transits
-    ) + sum(sp.dwell_seconds for sp in script.selected_pois)
+    return total_walk_seconds(route.transits) + sum(
+        sp.dwell_seconds for sp in script.selected_pois
+    )
 
 
 def build_route_option(
@@ -143,10 +151,10 @@ def build_route_option(
     # pause, not a dangling stroke).
     per_stop = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in dwell_sents.items()}
     per_leg = {idx: normalize_dashes_for_reading(" ".join(t)) for idx, t in leg_sents.items()}
-    leg_walk_seconds = {
-        i: int(t.leg_seconds if t.leg_seconds is not None else t.walk_seconds)
-        for i, t in enumerate(route.transits)
-    }
+    # The walk shown on each leg card. One expression, shared with the route
+    # total and the announced leg in generation, so the card the traveller reads
+    # cannot claim a different walk from the one the tour was planned around.
+    walk_by_leg = {i: leg_walk_seconds(t) for i, t in enumerate(route.transits)}
     # The clause cap inside vignette_one_liner_text keeps the POI's own name in a
     # shortened line, and vignette POIs are walk-past (route.vignettes), NOT seated
     # route.pois — so the name map must cover both or the cap falls back to the run-on.
@@ -167,7 +175,7 @@ def build_route_option(
         leg_text = per_leg.get(i, "").strip()
         if leg_text:
             interleaved.append(
-                _leg_stop(sp, narration=leg_text, walk_seconds=leg_walk_seconds.get(i, 0))
+                _leg_stop(sp, narration=leg_text, walk_seconds=walk_by_leg.get(i, 0))
             )
         interleaved.extend(
             _vignette_stop(
@@ -208,6 +216,9 @@ def build_route_option(
         stops=stops,
         route_polyline=route.route_polyline,
         eta_seconds=option_eta_seconds(route, script),
+        # Carried straight off the Route the planner gated. Recomputing it here
+        # would be a second opinion about the same tour's length.
+        elapsed_shortfall_seconds=route.elapsed_shortfall_seconds,
         lens_summary=dict(script.lens_coverage),
         flow_score=route.flow_score,
         backtrack_ratio=route.backtrack_ratio,

@@ -361,7 +361,54 @@
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "tue": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "wed": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "thu": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "fri": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sat": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ],
+      "sun": [
+        [
+          "06:00",
+          "21:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated municipal square with closing gates; OSM tag \"sunrise-sunset\" transcribed to an approximate daylight window of 06:00-21:00.",
+    "place_category": "garden"
   },
   {
     "name": "Square de la Roquette",
@@ -625,7 +672,11 @@
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated public garden with closing hours, but no OSM tag and hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Canal Saint-Martin",
@@ -728,7 +779,11 @@
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open waterway with public towpaths and bridges viewed from the pavement, so it is not gated.",
+    "place_category": "bridge"
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -812,7 +867,54 @@
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated walled cemetery with closing bells; hours follow the City of Paris's published summer pattern (opens 08:00 weekdays, 08:30 Sat, 09:00 Sun, closing 18:00).",
+    "place_category": "other"
   },
   {
     "name": "Eglise Notre-Dame de la Croix",
@@ -904,7 +1006,49 @@
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "08:30",
+          "19:30"
+        ]
+      ],
+      "wed": [
+        [
+          "08:30",
+          "19:30"
+        ]
+      ],
+      "thu": [
+        [
+          "08:30",
+          "19:30"
+        ]
+      ],
+      "fri": [
+        [
+          "08:30",
+          "19:30"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "19:30"
+        ]
+      ],
+      "sun": [
+        [
+          "08:30",
+          "19:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church one enters; OSM tag \"Tu-Su 08:30-19:30\" transcribed faithfully with Monday closed.",
+    "place_category": "church"
   },
   {
     "name": "La Maison des Metallos",
@@ -987,6 +1131,10 @@
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated cultural centre with doors, but no OSM tag and hours not confidently known; left unfiltered.",
+    "place_category": "other"
   }
 ]

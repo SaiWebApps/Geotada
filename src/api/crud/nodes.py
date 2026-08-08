@@ -3,32 +3,22 @@
 from __future__ import annotations
 
 import json
-import re
 from typing import TYPE_CHECKING, Any
 
-from fastapi.exceptions import RequestValidationError
-
-from src.api.models.nodes import NodeLabel, canonical_name_key, protected_node_keys
+from src.api.crud.validation import (
+    raise_422 as _raise_422,
+)
+from src.api.crud.validation import (
+    validate_label as _validate_label,
+)
+from src.api.crud.validation import (
+    validate_property_keys as _validate_property_keys,
+)
+from src.api.models.nodes import canonical_name_key, protected_node_keys
 from src.api.utils import serialize_neo4j_props
 
 if TYPE_CHECKING:
     from neo4j import Session
-
-_VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
-
-
-def _raise_422(msg: str, loc: tuple[str, ...]) -> None:
-    """Raise a validation error that FastAPI's built-in handler renders as 422.
-
-    The route layer does not (and must not) special-case ValueError from crud,
-    so a plain ValueError would surface as a 500. RequestValidationError is
-    handled globally by FastAPI (RequestValidationError -> 422) with no route
-    change required.
-    """
-    raise RequestValidationError(
-        [{"type": "value_error", "loc": loc, "msg": msg, "input": None}]
-    )
-
 
 def _encode_complex_props(props: dict) -> dict:
     """JSON-encode list-of-dict values so Neo4j can store them as strings.
@@ -46,21 +36,6 @@ def _encode_complex_props(props: dict) -> dict:
         else:
             encoded[key] = val
     return encoded
-
-
-def _validate_label(label: str) -> None:
-    """Validate that label is a known NodeLabel. Raises ValueError if not."""
-    NodeLabel(label)
-
-
-def _validate_property_keys(properties: dict) -> None:
-    """Validate that all property keys are safe identifiers."""
-    for key in properties:
-        if not _VALID_PROPERTY_NAME.match(key):
-            raise ValueError(
-                f"Invalid property name: {key!r}. "
-                "Property names must match ^[a-zA-Z_][a-zA-Z0-9_]*$"
-            )
 
 
 def _record_to_node(record) -> dict[str, Any]:

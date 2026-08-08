@@ -64,7 +64,49 @@
         "emotional_register": "playful"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "tue": [],
+      "wed": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "thu": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "fri": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "sat": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ],
+      "sun": [
+        [
+          "11:00",
+          "21:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "Gated museum; hours from the Centre's own published schedule, closed Tuesdays.",
+    "place_category": "museum"
   },
   {
     "name": "Atelier Brancusi",
@@ -107,7 +149,49 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "14:00",
+          "18:00"
+        ]
+      ],
+      "tue": [],
+      "wed": [
+        [
+          "14:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "14:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "14:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "14:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "14:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A museum studio you enter, hence gated; transcribed from OSM tag 'Mo,We,Th,Fr,Sa,Su 14:00-18:00' with Tuesday closed.",
+    "place_category": "other"
   },
   {
     "name": "Stravinsky Fountain",
@@ -153,7 +237,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open public fountain and square with no barrier, so it is not gated.",
+    "place_category": "monument"
   },
   {
     "name": "Eglise Saint-Merri",
@@ -240,7 +328,54 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A church you enter, hence gated; transcribed from OSM tag '09:00-18:00' applied to every day.",
+    "place_category": "church"
   },
   {
     "name": "Rue de la Verrerie",
@@ -283,7 +418,11 @@
         "emotional_register": "playful"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A public medieval street whose value is in the open, so it is not gated.",
+    "place_category": "street"
   },
   {
     "name": "Hotel de Ville",
@@ -328,7 +467,49 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sun": []
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated building with ticketed exhibition access; transcribed from OSM tag 'Mo-Sa 10:00-19:00' with Sunday closed.",
+    "place_category": "other"
   },
   {
     "name": "BHV (Bazar de l'Hotel de Ville)",
@@ -376,7 +557,49 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "19:00"
+        ]
+      ],
+      "sun": []
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A department store with entrance doors, hence gated; transcribed from OSM tag 'Mo-Sa 10:00-19:00' with Sunday closed.",
+    "place_category": "other"
   },
   {
     "name": "Eglise des Billettes",
@@ -442,7 +665,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A church and cloister you enter, hence gated, but its hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Fondation Azzedine Alaia",
@@ -480,7 +707,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A foundation gallery that is gated, but as it opens only for specific exhibitions its hours are not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Half-Timbered Houses (Rue Francois-Miron)",
@@ -521,7 +752,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Historic house facades viewed from the pavement, so it is not gated.",
+    "place_category": "other"
   },
   {
     "name": "Hotel de Beauvais",
@@ -621,7 +856,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A Marais mansion (now administrative offices) viewed from the street as a walk-by, so it is not gated for the visitor.",
+    "place_category": "other"
   },
   {
     "name": "Memorial de la Shoah",
@@ -665,7 +904,49 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "22:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated Holocaust museum; hours follow the institution's published pattern of 10:00-18:00 (Thursday until 22:00), closed Saturdays.",
+    "place_category": "monument"
   },
   {
     "name": "Hotel Chalons de Luxembourg",
@@ -708,7 +989,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A private Marais mansion viewed from the street for its portal, so it is not gated.",
+    "place_category": "other"
   },
   {
     "name": "Eglise Saint-Gervais-Saint-Protais",
@@ -834,7 +1119,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated church (you enter the sanctuary), but its confessional-community hours are not confidently known; left unfiltered.",
+    "place_category": "church"
   },
   {
     "name": "Hotel d'Aumont",
@@ -879,6 +1168,10 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Grand mansion now housing an administrative court and marked walk_by_only, not a public venue; value from the street facade, not gated.",
+    "place_category": "other"
   }
 ]

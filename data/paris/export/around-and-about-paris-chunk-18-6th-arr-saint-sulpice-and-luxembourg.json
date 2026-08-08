@@ -266,7 +266,54 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "sat": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ],
+      "sun": [
+        [
+          "08:00",
+          "19:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated church you enter; transcribed from OSM tag '08:00-19:45' applied to all seven days.",
+    "place_category": "church"
   },
   {
     "name": "Marché Saint-Germain",
@@ -373,7 +420,49 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:00",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "08:00",
+          "13:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated covered market hall; transcribed from OSM tag 'Tu-Sa 08:00-20:00, Su 08:00-13:30' (Monday closed).",
+    "place_category": "market"
   },
   {
     "name": "Café de la Mairie",
@@ -421,7 +510,11 @@
         "emotional_register": "reverent"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A café viewed as a streetside landmark and marked walk_by_only, not treated as a gated attraction, so hours are null.",
+    "place_category": "other"
   },
   {
     "name": "Palais du Luxembourg",
@@ -537,7 +630,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "The Senate palace is gated with restricted public access whose visiting hours are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Luxembourg Gardens",
@@ -678,7 +775,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated walled park with closing bells and seasonally shifting hours (roughly dawn to dusk); gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Musée du Luxembourg",
@@ -726,7 +827,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated museum whose hours vary by exhibition and are not confidently known; gated, hours not confidently known; left unfiltered.",
+    "place_category": "museum"
   },
   {
     "name": "27 Rue de Fleurus",
@@ -774,7 +879,11 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A private residence viewed from the street as a facade, not a gated attraction, so hours are null.",
+    "place_category": "other"
   },
   {
     "name": "Rue Férou",
@@ -823,7 +932,11 @@
         "emotional_register": "somber"
       }
     ],
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A public street, not gated — its whole value stands in the open on the pavement.",
+    "place_category": "street"
   },
   {
     "name": "Fontaine Médicis",
@@ -879,6 +992,53 @@
         "emotional_register": "neutral"
       }
     ],
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "tue": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "wed": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "thu": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "fri": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "sat": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ],
+      "sun": [
+        [
+          "07:30",
+          "21:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A fountain inside the gated Luxembourg Gardens, which close at nightfall by bells; hours vary seasonally and this reflects the current typical spring/summer pattern from the Sénat's published schedule.",
+    "place_category": "monument"
   }
 ]

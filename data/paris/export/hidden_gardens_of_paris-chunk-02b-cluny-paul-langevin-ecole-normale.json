@@ -193,7 +193,11 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An enclosed museum garden with closing gates, but I do not confidently know its hours; gated, hours not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Square Paul-Painleve",
@@ -270,7 +274,11 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Square Paul-Langevin",
@@ -490,7 +498,11 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Jardin Carre",
@@ -573,7 +585,11 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Gated courtyard garden with enclosure and closing hours, but those hours are not confidently known; left unfiltered.",
+    "place_category": "garden"
   },
   {
     "name": "Musee de Cluny",
@@ -657,7 +673,49 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "09:30",
+          "18:15"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "18:15"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "18:15"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "18:15"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "18:15"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "18:15"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated medieval-art museum; transcribed from the OSM tag \"Tu off; ... Tu-Su 09:30-18:15\", closed Mondays.",
+    "place_category": "museum"
   },
   {
     "name": "Ecole Normale Superieure",
@@ -942,7 +1000,11 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A working grande ecole behind gates; not a public visitor site and hours not confidently known, left unfiltered.",
+    "place_category": "other"
   },
   {
     "name": "Montagne Sainte-Genevieve",
@@ -1019,6 +1081,10 @@
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A hill and open street district in the Latin Quarter experienced from the public pavement; not gated.",
+    "place_category": "other"
   }
 ]

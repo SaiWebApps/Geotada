@@ -494,7 +494,54 @@
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A walled garden with closing bells, transcribed faithfully from its OSM tag 'Mo-Su 09:30-20:00'.",
+    "place_category": "park"
   },
   {
     "name": "Maison de Balzac",
@@ -880,7 +927,49 @@
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated house-museum, transcribed faithfully from its OSM tag 'Tu-Su 10:00-18:00' with Monday closed.",
+    "place_category": "other"
   },
   {
     "name": "Allée des Cygnes",
@@ -980,7 +1069,11 @@
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open riverbank walkway on an island in the Seine, valued in the open; the OSM tag \"24/7\" confirms it is not gated, so null.",
+    "place_category": "street"
   },
   {
     "name": "Trocadero",
@@ -1147,7 +1240,11 @@
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Not gated — an open public terrace and esplanade viewed in the open, always accessible.",
+    "place_category": "garden"
   },
   {
     "name": "Parc des Serres d'Auteuil",
@@ -1229,6 +1326,10 @@
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A gated botanical garden/greenhouse complex with closing bells, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
+    "place_category": "park"
   }
 ]

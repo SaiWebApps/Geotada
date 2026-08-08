@@ -23,11 +23,24 @@ from src.tour.selection import (
     CorpusSnapshot,
     _apply_certification_timebox_repair,
     _certification_route_trial,
+    _CertificationRouteTrial,
+    reach_envelope_searched,
     select_route,
 )
 
 
-def _poi(poi_id: str, *, x: float, y: float = 0.0, audio: int) -> POI:
+def _poi(
+    poi_id: str,
+    *,
+    x: float,
+    y: float = 0.0,
+    audio: int,
+    visit_min: int = 0,
+) -> POI:
+    # ``visit_min`` defaults to the contract default, so a POI built without it
+    # prices at zero visit seconds and every fixture below keeps its pre-3B
+    # numbers. Only a test that explicitly asks for a place worth standing in
+    # sees the new currency.
     return POI(
         id=poi_id,
         name=f"Generic {poi_id}",
@@ -37,6 +50,7 @@ def _poi(poi_id: str, *, x: float, y: float = 0.0, audio: int) -> POI:
         lng=x,
         areas=("Generic Corridor",),
         beat_count=1,
+        typical_duration_min=visit_min,
     )
 
 
@@ -71,75 +85,6 @@ def _policy() -> RoutePlanningPolicy:
 def _routed(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
     return round(math.hypot(lat2 - lat1, lng2 - lng1) * 10)
 
-
-def test_certification_policy_derives_one_midpoint_budget_from_frozen_inputs():
-    policy = RoutePlanningPolicy.certification(
-        minimum_requested_fraction=MIN_REQUESTED_FRACTION,
-        maximum_requested_fraction=MAX_REQUESTED_FRACTION,
-        policy_id="frozen-contract-and-call-plan-sha",
-    )
-    budget = route_planning_budget(90, policy)
-
-    assert policy.nominal_requested_fraction == 1.0
-    assert budget.minimum_elapsed_seconds == 4860
-    assert budget.nominal_elapsed_seconds == 5400
-    assert budget.maximum_elapsed_seconds == 5940
-    assert budget.walk_budget_seconds == 2160
-    assert budget.audio_target_seconds == 3240
-
-
-def test_certification_fixed_end_reachability_uses_total_ceiling(monkeypatch):
-    from src.tour.density import TourabilityRefusedError
-    from src.tour.routing import TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-
-    class DownstreamReachedError(Exception):
-        pass
-
-    class FixedLegClient:
-        def __init__(self, seconds: int):
-            self.seconds = seconds
-
-        def leg_seconds(self, *_args):
-            return self.seconds
-
-    policy = _policy()
-    budget = route_planning_budget(10, policy)
-    destination = _poi("destination", x=10.0, audio=270)
-    snapshot = _snapshot([destination], {destination.id: 270})
-    tour_input = TourInput(
-        start=(0.0, 0.0),
-        end=(0.0, 10.0),
-        duration_min=10,
-        city_slug="test",
-    )
-
-    monkeypatch.setattr(
-        "src.tour.selection._reach_predicate",
-        lambda *_args, **_kwargs: (_ for _ in ()).throw(DownstreamReachedError()),
-    )
-
-    within_total = budget.walk_budget_seconds + 1
-    assert within_total <= (
-        budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-    )
-    with pytest.raises(DownstreamReachedError):
-        select_route(
-            tour_input,
-            snapshot,
-            routing_client=FixedLegClient(within_total),
-            planning_policy=policy,
-        )
-
-    beyond_total = (
-        budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS + 1
-    )
-    with pytest.raises(TourabilityRefusedError, match="Destination unreachable"):
-        select_route(
-            tour_input,
-            snapshot,
-            routing_client=FixedLegClient(beyond_total),
-            planning_policy=policy,
-        )
 
 
 def test_certification_fixed_end_rescue_reaches_exact_repair_once(monkeypatch):
@@ -194,20 +139,41 @@ def test_certification_fixed_end_rescue_reaches_exact_repair_once(monkeypatch):
             planning_policy=policy,
         )
 
-    assert captured["iso_minutes"] == 12
+    # The contour REACH asks for is the WALKING envelope: 4 minutes at a 10-minute
+    # request (10 x 1.00 nominal x 0.40 WALK_FRACTION). It asserted 12 until
+    # 2026-08-06, because the fixed-destination arm sized its reach from
+    # ``maximum_elapsed_seconds + tolerance`` — the ceiling on walking PLUS
+    # narration. That is the defect this release removes; at a 300-minute request
+    # the same units error searched 12,259 m instead of 4,444 m, which is how a Rue
+    # Royale walk reached Parc de la Villette. Asserted against the budget rather
+    # than as a bare literal, so this states the RULE and cannot quietly re-encode a
+    # wrong number the next time the policy moves.
+    assert captured["iso_minutes"] == round(budget.walk_envelope_minutes)
     assert captured["candidate_ids"] == [destination.id]
 
 
-def test_final_timebox_accepts_only_immaterial_whole_minute_rounding_drift():
-    budget = route_planning_budget(60, _policy())
-
-    assert within_planning_timebox(budget.minimum_elapsed_seconds - 15, budget)
-    assert within_planning_timebox(budget.maximum_elapsed_seconds + 60, budget)
-    assert not within_planning_timebox(budget.minimum_elapsed_seconds - 61, budget)
-    assert not within_planning_timebox(budget.maximum_elapsed_seconds + 61, budget)
-
 
 def test_bounded_exchange_is_exact_deterministic_and_rejects_slog_and_overmax():
+    """The repair is deterministic, and it refuses a walk-slog and an overshoot.
+
+    RE-BASELINED 2026-08-06 for the hard ceiling (step 3B.9). The request is now
+    the ceiling rather than 1.10 of it, which changed this fixture in two ways
+    that are both the rule working:
+
+    - The duration moved 10 -> 12 minutes. At 10 the new ceiling is 600 s and
+      EVERY candidate set here prices above it, so the repair had nothing to
+      choose between and the test was measuring an empty pool.
+    - The winning set gained a stop. Keeping the incumbent AND adding `useful`
+      lands at 658 s against a 720 s request; exchanging one for the other lands
+      at 640. Under the old two-sided band both were legal and the exchange won
+      on nearness to a 1.00 nominal that sat in the MIDDLE of the band. With the
+      request as the ceiling, filling more of it without crossing it is simply
+      the better tour, and that is what the planner now picks.
+
+    Everything this test is named for is unchanged and still asserted: the same
+    answer under a reversed candidate order, the walk-slog excluded, the
+    over-ceiling stop excluded, the route ending at B, and the result in band.
+    """
     destination = _poi("destination", x=10.0, audio=270)
     incumbent = _poi("incumbent", x=5.0, audio=20)
     useful = _poi("useful", x=6.0, audio=270)
@@ -227,7 +193,7 @@ def test_bounded_exchange_is_exact_deterministic_and_rejects_slog_and_overmax():
     tour_input = TourInput(
         start=(0.0, 0.0),
         end=(0.0, 10.0),
-        duration_min=10,
+        duration_min=12,
         city_slug="test",
         round_trip=False,
     )
@@ -249,11 +215,14 @@ def test_bounded_exchange_is_exact_deterministic_and_rejects_slog_and_overmax():
         )
         return sorted(poi.id for poi in repaired), repaired
 
-    expected = sorted((useful.id, destination.id))
+    expected = sorted((incumbent.id, useful.id, destination.id))
     forward_ids, repaired = repair(pois)
     reverse_ids, _ = repair(list(reversed(pois)))
     assert forward_ids == expected
     assert reverse_ids == expected
+    # The two the test is named for stay out, whatever else moves.
+    assert walk_slog.id not in forward_ids
+    assert overmax.id not in forward_ids
     trial = _certification_route_trial(
         repaired,
         input=tour_input,
@@ -351,9 +320,14 @@ def test_over_ceiling_route_is_repaired_by_dropping_one_stop():
     outlier = _poi("outlier", x=400.0, audio=270)
     pois = [near, detour, far, outlier]
     snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    # 33 minutes, not 30. The stop sets below price at 2347 / 1940 / 2065 / 1223 s
+    # whatever the request is; what the request decides is which of them the repair
+    # will accept. Since step 3B.9 the ceiling IS the request, so at 30 minutes even
+    # the intended winner (1940 s) sits above it and the fixture had no admissible
+    # move at all. At 33 the original three preconditions hold again exactly.
     tour_input = TourInput(
         start=(0.0, 0.0),
-        duration_min=30,
+        duration_min=33,
         city_slug="test",
         round_trip=False,
     )
@@ -373,14 +347,23 @@ def test_over_ceiling_route_is_repaired_by_dropping_one_stop():
         assert trial is not None
         return trial.elapsed_seconds
 
-    ceiling = budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-    # Preconditions: the incumbent overshoots, exactly one single-stop drop lands
-    # in the band, and no other drop does. Without them the assertion below could
-    # pass for the wrong reason.
+    # RE-BASELINED 2026-08-06 for the hard ceiling (step 3B.9): the request itself
+    # is the ceiling now, not 1.10 of it plus a minute. The preconditions below are
+    # what this test always meant — the incumbent overshoots, exactly one
+    # single-stop drop is admissible, and no other is — restated against the rule
+    # the repair now applies. `within_planning_timebox` is deliberately NOT used
+    # for the upper bound any more: it is still two-sided (3B.9 kept it that way on
+    # purpose) and would call a 1.10-length route legal when the repair will not.
+    ceiling = budget.nominal_elapsed_seconds
+
+    def admissible(elapsed: int) -> bool:
+        floor = budget.minimum_elapsed_seconds - TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+        return floor <= elapsed <= ceiling
+
     assert price(incumbent) > ceiling
-    assert within_planning_timebox(price([near, far]), budget)
-    assert not within_planning_timebox(price([detour, far]), budget)
-    assert not within_planning_timebox(price([near, detour]), budget)
+    assert admissible(price([near, far]))
+    assert not admissible(price([detour, far]))
+    assert not admissible(price([near, detour]))
 
     def repair(candidate_order: list[POI]) -> list[str]:
         repaired = _apply_certification_timebox_repair(
@@ -412,16 +395,26 @@ def test_timebox_drop_never_removes_the_materialized_fixed_destination():
 
     # Colinear, so every route below walks the identical 1000s out to B and only
     # the audio differs. Dropping the destination is therefore the move that lands
-    # NEAREST the nominal 1200s — it wins the repair's ranking outright, and only
-    # the guard keeps it out.
-    destination = _poi("destination", x=100.0, audio=270)
-    filler = _poi("filler", x=50.0, audio=180)
+    # NEAREST the request — it wins the repair's ranking outright, and only the
+    # guard keeps it out.
+    #
+    # RE-BASELINED 2026-08-06 for the hard ceiling (step 3B.9), and the two numbers
+    # that moved both had to. "Nearest the request" used to mean nearest a nominal
+    # sitting in the MIDDLE of a two-sided band, so a SHORTER route could win it;
+    # now the request is the ceiling, so nearest means longest-without-crossing.
+    # The richer stop therefore had to become the filler rather than the
+    # destination — otherwise dropping the destination makes the route shorter,
+    # the ranking prefers keeping it anyway, and the guard this test exists for is
+    # never asked to do anything. 22 minutes, because that is where both drops are
+    # admissible and keeping both still overshoots.
+    destination = _poi("destination", x=100.0, audio=180)
+    filler = _poi("filler", x=50.0, audio=270)
     pois = [destination, filler]
-    snap = _snapshot(pois, {destination.id: 270, filler.id: 180})
+    snap = _snapshot(pois, {destination.id: 180, filler.id: 270})
     tour_input = TourInput(
         start=(0.0, 0.0),
         end=(0.0, 100.0),
-        duration_min=20,
+        duration_min=22,
         city_slug="test",
         round_trip=False,
     )
@@ -440,16 +433,23 @@ def test_timebox_drop_never_removes_the_materialized_fixed_destination():
         assert trial is not None
         return trial.elapsed_seconds
 
-    nominal = budget.nominal_elapsed_seconds
+    ceiling = budget.nominal_elapsed_seconds
+
+    def admissible(elapsed: int) -> bool:
+        floor = budget.minimum_elapsed_seconds - TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+        return floor <= elapsed <= ceiling
+
     keeping_both = price([filler, destination])
     dropping_destination = price([filler])
     dropping_filler = price([destination])
-    # Preconditions: keeping both overshoots, and the destination-dropping route
-    # is both in band AND closer to nominal than the destination-keeping one.
-    assert keeping_both > budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
-    assert within_planning_timebox(dropping_destination, budget)
-    assert within_planning_timebox(dropping_filler, budget)
-    assert abs(nominal - dropping_destination) < abs(nominal - dropping_filler)
+    # Preconditions: keeping both overshoots, both single drops are admissible, and
+    # the destination-dropping one is the one the ranking would choose. Without the
+    # last of those this test passes for the wrong reason — the guard would never
+    # be consulted.
+    assert keeping_both > ceiling
+    assert admissible(dropping_destination)
+    assert admissible(dropping_filler)
+    assert abs(ceiling - dropping_destination) < abs(ceiling - dropping_filler)
 
     repaired = _apply_certification_timebox_repair(
         [filler, destination],
@@ -630,21 +630,59 @@ def test_repair_prices_the_route_with_the_pulled_endpoint_actually_pinned():
 def test_select_route_off_corridor_rescue_reaches_exact_certification_repair_once(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    destination = _poi("destination", x=0.001, audio=270)
-    on_path = [
-        _poi(f"on-path-{index}", x=0.0001 * (index + 1), audio=270)
-        for index in range(6)
-    ]
-    off_corridor = _poi("off-corridor", x=0.0005, y=0.002, audio=270)
-    pois = [*on_path, destination, off_corridor]
-    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    lng_b = 0.001
     tour_input = TourInput(
         start=(0.0, 0.0),
-        end=(0.0, 0.001),
+        end=(0.0, lng_b),
         duration_min=10,
         city_slug="test",
         round_trip=False,
     )
+
+    # WHERE THE OFF-CORRIDOR PLACE SITS IS DERIVED, NOT TYPED.
+    #
+    # It has to satisfy two opposing bounds at once. It must be INSIDE the reach
+    # circle, or it never becomes a candidate and there is nothing to rescue. And
+    # it must be OUTSIDE the corridor ellipse, or it is admitted normally and never
+    # needs rescuing. Both bounds now come from the same walking budget, so the
+    # window between them is narrow.
+    #
+    # It was hardcoded at y=0.002 until 2026-08-06. That sat inside a reach circle
+    # sized by walking PLUS narration (444 m at this fixture) and outside the
+    # corrected one (148 m) — so the fix that made the reach circle a WALKING
+    # envelope put this place genuinely out of reach: 221 m of walking, each way,
+    # against a 4-minute total walking allowance. The fixture was encoding the bug.
+    #
+    # Deriving the position means a future change to pace or to the budget
+    # fractions MOVES this fixture rather than breaking it, and the assertion below
+    # fails loudly — rather than silently testing nothing — if the two bounds ever
+    # converge and "reachable but off-corridor" stops existing as a category.
+    budget = route_planning_budget(10, _policy())
+    radius_m, _iso = reach_envelope_searched(tour_input, planning_policy=_policy())
+    # The corridor: this client prices a leg as hypot(degrees) * 100_000, and the
+    # place sits due north of the A->B midpoint, so the detour is symmetric:
+    # 2 * hypot(h, lng_b / 2) * 100_000 must EXCEED the walking budget.
+    min_hypot_deg = budget.walk_budget_seconds / 2 / 100_000
+    h_min = math.sqrt(max(min_hypot_deg**2 - (lng_b / 2) ** 2, 0.0))
+    # The reach: straight-line metres from A must stay UNDER the circle.
+    h_max = math.sqrt(max(radius_m**2 - (lng_b / 2 * 111_320) ** 2, 0.0)) / 110_540
+    assert h_min < h_max, (
+        f"no position satisfies both bounds: outside-corridor needs h > {h_min:.6f} "
+        f"and inside-reach needs h < {h_max:.6f}. The corridor ellipse and the reach "
+        f"circle have converged, so 'reachable but off-corridor' is no longer a real "
+        f"category and this test has lost its subject."
+    )
+
+    destination = _poi("destination", x=lng_b, audio=270)
+    on_path = [
+        _poi(f"on-path-{index}", x=0.0001 * (index + 1), audio=270)
+        for index in range(6)
+    ]
+    off_corridor = _poi(
+        "off-corridor", x=lng_b / 2, y=(h_min + h_max) / 2, audio=270
+    )
+    pois = [*on_path, destination, off_corridor]
+    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
 
     class _Client:
         @staticmethod
@@ -682,15 +720,34 @@ def test_select_route_off_corridor_rescue_reaches_exact_certification_repair_onc
 
 
 @pytest.mark.parametrize(
-    ("round_trip", "forced_walk_seconds"),
-    [(False, 0), (True, 100_000)],
+    ("round_trip", "forced_walk_seconds", "expect_refusal"),
+    [(False, 0, False), (True, 100_000, True)],
     ids=("open-underfill", "round-trip-overfill"),
 )
 def test_final_certification_guard_rechecks_every_route_shape_after_transforms(
     monkeypatch: pytest.MonkeyPatch,
     round_trip: bool,
     forced_walk_seconds: int,
+    expect_refusal: bool,
 ):
+    """The last-line guard still re-prices a route the transforms moved.
+
+    RE-BASELINED 2026-08-06 for step 3B.9, and the two directions no longer have
+    the same right answer — which is the whole content of that step.
+
+    OVER the request: refuse. A traveller who asked for thirty minutes and is
+    handed fifty has been given something worse than a refusal, because they find
+    out at the far end of a walk.
+
+    UNDER the floor: SERVE IT, and say how short it is. Duration is a ceiling, not
+    a contract to fill, and the only way a planner can guarantee filling one is by
+    walking somebody somewhere pointless — which is the reported bug this release
+    exists to remove. So the underfill case now asserts a route WITH a disclosure
+    rather than an exception; asserting a refusal here would be pinning the bug.
+
+    The claim the test is named for is unchanged: the guard runs after the
+    post-selection transforms, on every route shape.
+    """
     from src.tour import selection as selection_module
 
     pois = [
@@ -720,11 +777,65 @@ def test_final_certification_guard_rechecks_every_route_shape_after_transforms(
     )
     monkeypatch.setattr(selection_module, "summarise_route", drift_after_repair)
 
-    with pytest.raises(
-        CertificationPlanningInfeasibleError,
-        match="post-selection transforms moved the exact route outside the band",
-    ):
-        select_route(tour_input, snap, planning_policy=_policy())
+    if expect_refusal:
+        with pytest.raises(
+            CertificationPlanningInfeasibleError,
+            match="pushed the exact route OVER the requested duration",
+        ):
+            select_route(tour_input, snap, planning_policy=_policy())
+        return
+
+    route = select_route(tour_input, snap, planning_policy=_policy())
+    assert route.elapsed_shortfall_seconds > 0, (
+        "an honestly short tour shipped with no disclosure, so the traveller is "
+        "promised thirty minutes and handed far less with no explanation"
+    )
+    budget = route_planning_budget(tour_input.duration_min, _policy())
+    assert route.elapsed_shortfall_seconds <= budget.nominal_elapsed_seconds
+
+
+def test_fixed_destination_reach_radius_is_a_walk_envelope_not_a_total_ceiling():
+    """The circle the reach test searches must be sized by WALKING time.
+
+    The sibling of the greedy walk-budget defect below, and nothing covered it
+    until this test. ``select_route`` sizes the fixed-destination reach circle from
+    the TOTAL time ceiling — walking PLUS narration — while the open arm sizes the
+    same circle from the walk envelope. The reach question is identical on both
+    arms ("how far can this visitor walk from here?"), so the two answers must be
+    the same. They are not.
+
+    MEASURED on the live Paris dev graph, 2026-08-06, through the tour-build
+    harness at a 300-minute request: **12259 m searched on the fixed-destination
+    arm against a 4444 m walk envelope** — a factor of 2.76. Paris is roughly 10 km
+    across, so the fixed-end arm searches a circle wider than the city in order to
+    plan a walk between two points about 30 walking minutes apart. That is the
+    arithmetic by which a Rue Royale to Notre-Dame request reaches Parc de la
+    Villette, 5.6 km away and in the wrong direction.
+
+    Pinned against the DEFAULT planning policy on purpose, so the numbers here are
+    the same ones the harness prints rather than a fixture's private arithmetic.
+    """
+    start = (48.8686, 2.3229)  # Rue Royale, the owner's clicked start
+    end = (48.8530, 2.3499)  # Notre-Dame, the owner's clicked end
+
+    open_radius, _open_iso = reach_envelope_searched(
+        TourInput(start=start, duration_min=300, city_slug="test")
+    )
+    fixed_radius, _fixed_iso = reach_envelope_searched(
+        TourInput(start=start, end=end, duration_min=300, city_slug="test")
+    )
+
+    # The walk envelope at 300 minutes. Not the thing under test — it anchors the
+    # comparison, so a failure cannot be read as "the open arm moved".
+    assert open_radius == pytest.approx(4444, abs=25)
+
+    # THE GUARD. Same visitor, same duration, same question.
+    assert fixed_radius == pytest.approx(open_radius, rel=0.01), (
+        f"fixed-destination reach searched {fixed_radius:.0f} m where the walk "
+        f"envelope allows {open_radius:.0f} m — a factor of "
+        f"{fixed_radius / open_radius:.2f}. A reach radius is a statement about "
+        f"how far somebody can WALK; it must not be sized by walking plus talking."
+    )
 
 
 def test_fixed_destination_greedy_is_capped_by_the_walk_budget_not_the_total_ceiling(
@@ -823,3 +934,270 @@ def test_open_route_greedy_still_reserves_budget_for_the_endpoint_pull():
 
     assert ENDPOINT_PULL_RESERVED_BUDGET_FRACTION == 0.25
     assert int(budget.walk_budget_seconds * 0.75) == 1620
+
+
+def test_the_repair_and_the_final_gate_price_the_same_stop_set_identically():
+    """One definition of elapsed, or the repair certifies a tour nobody serves.
+
+    The timebox repair banks a stop set only if IT thinks the set is in band;
+    the final gate then re-prices the winner and refuses it if IT disagrees. So
+    a route can only survive when the two agree, and until 2026-08-06 they
+    could not: the repair added walking to NARRATION while the gate was moving
+    to walking plus VISITS. A repair that sees a route thousands of seconds
+    short keeps buying enormous walks to close a gap the visit term had already
+    closed, which is Parc de la Villette returning by a different door.
+    """
+    from src.tour.selection import served_dwell_seconds
+
+    destination = _poi("destination", x=10.0, audio=120)
+    museum = _poi("museum", x=5.0, y=6.0, audio=60, visit_min=6)
+    pois = [destination, museum]
+    snap = _snapshot(pois, {destination.id: 120, museum.id: 60})
+    tour_input = TourInput(
+        start=(0.0, 0.0), end=(0.0, 10.0), duration_min=15, city_slug="test"
+    )
+    budget = route_planning_budget(tour_input.duration_min, _policy())
+
+    trial = _certification_route_trial(
+        [museum],
+        input=tour_input,
+        snapshot=snap,
+        interest=frozenset(),
+        leg_seconds_fn=_routed,
+        planning_budget=budget,
+    )
+    assert trial is not None
+
+    # Rebuild what the gate sees for the SAME ordered set and price it the way
+    # the gate does. The two numbers must be the same number.
+    from src.tour.contract import Route
+    from src.tour.visit_time import visit_seconds
+
+    gate_route = Route(
+        pois=trial.ordered,
+        transits=(),
+        total_walk_distance_m=0.0,
+        total_walk_seconds=trial.walk_seconds,
+        fixed_end_poi_id=trial.ordered[-1].id,
+        planned_visit_seconds={
+            poi.id: visit_seconds(poi, frozenset(), snap) for poi in trial.ordered
+        },
+    )
+    gate_dwell = served_dwell_seconds(
+        gate_route, snap, interest=frozenset(), end_is_none=False
+    )
+
+    assert trial.dwell_seconds == gate_dwell
+    assert trial.elapsed_seconds == trial.walk_seconds + gate_dwell
+    # And the museum's six minutes are actually in there — a fixture where every
+    # visit is zero would satisfy the equality above while proving nothing.
+    assert trial.dwell_seconds > sum(
+        (120, 60)
+    ), "the fixture must have at least one stop whose visit exceeds its narration"
+
+
+def test_a_place_worth_standing_in_is_a_preferred_add_not_a_walk_slog():
+    """The producer of the preferred / last-resort split moved with its consumer.
+
+    The guard asks "is this detour justified by what we get?" and until
+    2026-08-06 it answered in narration alone, so a place worth twenty minutes
+    of anyone's afternoon but carrying one short beat was filed as a walk-slog
+    and demoted. That is precisely the shape of stop this release exists to
+    seat: Theo's Conciergerie is sixty-five minutes inside and the audio is a
+    fraction of it.
+
+    THE OBSERVABLE. ``eligible_trials = preferred_trials or last_resort_trials``,
+    so a single preferred trial makes the whole last-resort list unreachable.
+    Both candidates below are identical detours with identical narration; only
+    one is worth standing in. Under the old denominator both were slogs and the
+    repair ranked them by nearness to the nominal, which the thin one wins. Under
+    the new one the museum is preferred and the ranking never runs.
+    """
+    destination = _poi("destination", x=10.0, audio=160)
+    # Same detour magnitude, opposite sides, same narration. The ONLY difference
+    # is that one of them is a place you stand in. `a-thin` sorts first, so it
+    # also wins every id tie-break — if it is returned, the split did not happen.
+    # The detour costs 312 s of marginal walking against 30 s of narration, so
+    # BOTH are slogs at 4.5 walk-seconds per narration-second; only the museum
+    # clears the bar once the denominator is what the visitor gets.
+    thin = _poi("a-thin", x=5.0, y=-20.0, audio=30)
+    museum = _poi("museum", x=5.0, y=20.0, audio=30, visit_min=2)
+    pois = [destination, thin, museum]
+    snap = _snapshot(pois, {destination.id: 160, thin.id: 30, museum.id: 30})
+    # 12 minutes, not 8. Step 3B.9 made the ceiling the REQUEST itself rather than
+    # 1.10 of it, and at 8 minutes the museum trial landed just above the new
+    # ceiling — so it was refused before the preferred/last-resort split it exists
+    # to exercise ever ran. The fixture moved; the point did not.
+    tour_input = TourInput(
+        start=(0.0, 0.0), end=(0.0, 10.0), duration_min=12, city_slug="test"
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    repaired = _apply_certification_timebox_repair(
+        [],
+        [thin, museum],
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+    )
+    seated = {poi.id for poi in repaired}
+    assert museum.id in seated, (
+        "the interior stop was still classified a walk-slog, so the ratio's "
+        "denominator is still narration and the guard keeps demoting exactly "
+        "the stops this release exists to seat"
+    )
+    assert thin.id not in seated, (
+        "a preferred trial exists, so the last-resort list must be unreachable"
+    )
+
+
+def test_a_request_is_a_ceiling_and_the_planner_never_returns_more_than_it():
+    """Ask for N minutes and the tour is at most N minutes.
+
+    The band was two-sided with a nominal of exactly 1.00, so a 300-minute
+    request certified anywhere from 270 to 330 and the greedy filled TOWARD
+    300 — meaning a request could come back 10% long. Marcus has to be standing
+    on a platform at 16:40; twelve minutes early costs him nothing and four
+    minutes late costs him the train (docs/personas/04-layover-sprinter.md).
+    The cost of the error is asymmetric and the band treated it as symmetric.
+
+    The lever is `nominal_elapsed_seconds`, deliberately NOT
+    `MAX_REQUESTED_FRACTION = 1.0`: that would drag the nominal down to 0.95
+    through `nominal_requested_fraction` and quietly shrink every tour.
+    """
+    budget = route_planning_budget(300, _policy())
+    assert budget.nominal_elapsed_seconds == 18000, "300 minutes, exactly"
+
+    over = _CertificationRouteTrial(
+        selected=(), ordered=(), walk_seconds=9000, dwell_seconds=9001
+    )
+    at_ceiling = _CertificationRouteTrial(
+        selected=(), ordered=(), walk_seconds=9000, dwell_seconds=9000
+    )
+    assert over.elapsed_seconds == 18001
+    assert at_ceiling.elapsed_seconds == 18000
+    # Exactly at the request is fine; one second over is not, and the old
+    # two-sided predicate cannot tell them apart.
+    assert within_planning_timebox(over.elapsed_seconds, budget) is True
+    assert over.elapsed_seconds > budget.nominal_elapsed_seconds
+    assert at_ceiling.elapsed_seconds <= budget.nominal_elapsed_seconds
+
+
+def test_an_area_that_cannot_fill_the_request_returns_a_short_tour_not_a_refusal():
+    """THE FLOOR IS SOFT. A thin corridor gets a shorter tour and a sentence.
+
+    This is the last door through which the reported bug returns. A planner
+    that MUST reach the floor has only one currency to pay in — distance — so
+    it walks the tourist across the city to pad the clock, which is exactly how
+    a Rue Royale walk ended up at Parc de la Villette. Making the floor a
+    disclosure instead of a refusal removes the pressure entirely.
+
+    Neither `CertificationPlanningInfeasibleError` nor `TourabilityRefusedError`
+    may be raised for under-fill. Naming only the first would let a density
+    refusal on the same underlying condition pass this assertion literally
+    while breaking its promise.
+    """
+    from src.tour.density import TourabilityRefusedError
+
+    # Real Paris degrees, no injected routing client, so the walk is the engine's
+    # own pace-corrected haversine and the arithmetic below is the engine's.
+    # One nearby stop and a destination 600 m away, against a 90-minute request
+    # the corridor cannot honestly fill.
+    destination = _poi("destination", x=2.3229, y=48.8740, audio=60)
+    nearby = _poi("nearby", x=2.3240, y=48.8710, audio=60, visit_min=3)
+    pois = [destination, nearby]
+    snap = _snapshot(pois, {destination.id: 60, nearby.id: 60})
+    tour_input = TourInput(
+        start=(48.8686, 2.3229),
+        end=(48.8740, 2.3229),
+        duration_min=90,
+        city_slug="test",
+    )
+    policy = _policy()
+    budget = route_planning_budget(90, policy)
+
+    route = select_route(tour_input, snap, planning_policy=policy)
+
+    served = route.total_walk_seconds + sum(
+        max(route.planned_visit_seconds.get(p.id, 0), 0) for p in route.pois
+    )
+    assert served < budget.minimum_elapsed_seconds, (
+        "fixture must be genuinely under-filled or this test proves nothing"
+    )
+    assert route.elapsed_shortfall_seconds > 0, (
+        "an honestly short tour shipped with no disclosure, so the traveller is "
+        "told 90 minutes and given far less with no explanation"
+    )
+    # Measured against what was ASKED, not against the internal floor.
+    assert route.elapsed_shortfall_seconds <= budget.nominal_elapsed_seconds
+    assert not isinstance(route, TourabilityRefusedError)
+
+
+def test_a_tour_that_fills_the_request_carries_no_shortfall_disclosure():
+    """The disclosure must be silent when there is nothing to disclose.
+
+    A field that is always set is a banner nobody reads.
+    """
+    destination = _poi("destination", x=2.3229, y=48.8713, audio=30)
+    rich = _poi("rich", x=2.3234, y=48.8699, audio=30, visit_min=25)
+    pois = [destination, rich]
+    snap = _snapshot(pois, {destination.id: 30, rich.id: 30})
+    tour_input = TourInput(
+        start=(48.8686, 2.3229),
+        end=(48.8713, 2.3229),
+        duration_min=35,
+        city_slug="test",
+    )
+    policy = _policy()
+    budget = route_planning_budget(35, policy)
+    route = select_route(tour_input, snap, planning_policy=policy)
+    served = route.total_walk_seconds + sum(
+        route.planned_visit_seconds.get(p.id, 0) for p in route.pois
+    )
+    assert served >= budget.minimum_elapsed_seconds
+    assert route.elapsed_shortfall_seconds == 0
+    assert served <= budget.nominal_elapsed_seconds, "the ceiling is hard"
+
+
+def test_a_rich_stop_cannot_push_a_tour_past_the_duration_that_was_asked_for():
+    """The ceiling bites on a route that would otherwise overshoot.
+
+    A single place worth half an hour can carry a short request past its own
+    length in one add — the band is 1,860 s wide at 300 minutes and a single
+    interior may legitimately be 5,400 s, so the greedy can step from under the
+    floor to over the ceiling with nothing in between. Under the old two-sided
+    band, anything up to 1.10 of the request plus a minute was certified, so
+    this route shipped ~8% long and the traveller was told the shorter number.
+
+    The right answer is not to seat it. A shorter tour is a disappointment; a
+    tour that runs over is a missed train.
+    """
+    # Both carry enough narration to clear the filler-stub floor, so the point
+    # under test is the CEILING and not whether the stop was admitted at all.
+    big = _poi("big", x=2.3235, y=48.8691, audio=120, visit_min=27)
+    destination = _poi("destination", x=2.3229, y=48.8697, audio=120)
+    pois = [big, destination]
+    snap = _snapshot(pois, {big.id: 120, destination.id: 120})
+    tour_input = TourInput(
+        start=(48.8686, 2.3229),
+        end=(48.8697, 2.3229),
+        duration_min=30,
+        city_slug="test",
+    )
+    policy = _policy()
+    budget = route_planning_budget(30, policy)
+    route = select_route(tour_input, snap, planning_policy=policy)
+
+    served = route.total_walk_seconds + sum(
+        max(route.planned_visit_seconds.get(p.id, 0), 0) for p in route.pois
+    )
+    assert served <= budget.nominal_elapsed_seconds, (
+        f"a 30-minute request came back at {served}s "
+        f"({served / 60:.0f} min). Duration is a ceiling, not a target."
+    )

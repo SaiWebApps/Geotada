@@ -44,7 +44,54 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": {
+      "mon": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated ticketed monument; transcribed from OSM tag 'Mo-Su 09:30-18:00'.",
+    "place_category": "other"
   },
   {
     "name": "Fontaine des Innocents",
@@ -97,7 +144,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
     },
-    "poi_role": "walk_by_only"
+    "poi_role": "walk_by_only",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A Renaissance fountain standing in an open public square, viewed from the pavement, not gated.",
+    "place_category": "monument"
   },
   {
     "name": "Les Halles",
@@ -247,7 +298,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "As a site/setting it refers to a public area; the surface square and gardens are open-air with no single gate.",
+    "place_category": "market"
   },
   {
     "name": "Place de la Concorde",
@@ -297,7 +352,11 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
     },
-    "poi_role": "setting"
+    "poi_role": "setting",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Not gated — an open public square whose whole value stands in the open, always accessible.",
+    "place_category": "square"
   },
   {
     "name": "Pont Neuf",
@@ -345,6 +404,10 @@
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
     },
-    "poi_role": "stop"
+    "poi_role": "stop",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
+    "place_category": "bridge"
   }
 ]

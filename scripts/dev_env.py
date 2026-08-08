@@ -29,14 +29,17 @@ KEYCHAIN_SERVICE = "ondoway-render-api-key"
 KEYCHAIN_LABEL = "ondoway-dev"
 PAGE_LIMIT = 100
 
-_LOCAL_PROFILE_PORTS = {
-    "local": 7687,
-    "test": 7688,
-    # One pytest graph per concurrent worktree (make test-file TEST_PROFILE=test2).
-    "test2": 7690,
-    "test3": 7691,
-    "workbench": 7689,
-}
+# The profile-to-port guard below asserts a committed profile file resolves to the
+# port it is supposed to. Deriving it from the profile files themselves would make
+# it check a file against itself, so it is taken from preflight's database table --
+# the independent statement of the same fact, and the one place a lane is defined.
+# Adding a lane there is all that is needed; nothing here restates it.
+try:  # run directly as `python scripts/dev_env.py` -- scripts/ is sys.path[0]
+    import preflight as _preflight
+except ModuleNotFoundError:  # imported as `scripts.dev_env` (pytest)
+    from scripts import preflight as _preflight
+
+_LOCAL_PROFILE_PORTS = {spec.profile: spec.port for spec in _preflight.DATABASES}
 
 
 class EnvironmentError(RuntimeError):

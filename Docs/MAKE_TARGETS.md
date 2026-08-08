@@ -65,6 +65,8 @@ process—never a cached or filtered subset.
 | `prune-orphans` | Dev DB, or explicit cloud selection | Cloud only | Yes, with `CITY`; deletes only with `APPLY=1` |
 | `fetch-boundary` | Exact local profile | No | Yes, with slug/relation |
 | `geocode-pois` | Exact local profile | No | Yes, with slug |
+| `poi-opening-hours` | None; reads/writes `data/{slug}/poi-raw.json` | Yes | Yes; one Overpass query + a paid model pass; `LIMIT=` writes nothing |
+| `poi-place-category` | None; reads/writes `data/{slug}/poi-raw.json` | No | Yes; deterministic and $0, no network |
 | `tour-build` | Dev DB/data and Valhalla | No | Yes |
 | `measure-planned-audio` | Dev DB/data | No | Yes |
 | `measure-governor` | Dev DB/data | No | Yes |

@@ -33,15 +33,24 @@ import os
 import httpx
 
 from .contract import ValhallaLegReceipt
-from .routing import PACE_KMH, haversine_m, pace_corrected_walk_seconds
+from .routing import PACE_KMH, REACH_PACE_KMH, haversine_m, pace_corrected_walk_seconds
 
-# Pace pin (2026-07-02, hostile-panel finding): Valhalla defaults pedestrians
-# to ~5.1 km/h; the engine's whole budget model (envelopes, walk budgets, the
-# haversine fallback) is spec'd at PACE_KMH = 3.0 (§3.2 rule ledger 20-25).
-# Without this, routed leg times assume a walker ~70% faster than the product
-# designs for, and the isochrone reach (~1.7km at 20min) diverges ~2.2x from
-# the analytic envelope (738m) — the root of the density-gate/REACH mismatch.
+# Pace pin (2026-07-02, hostile-panel finding): Valhalla defaults pedestrians to
+# ~5.1 km/h, and every leg time the engine reports must come from the same walker
+# its budgets assume, or a routed leg and its haversine fallback describe two
+# different people. `PACE_KMH` was 3.0 until 2026-08-06 and is now 4.5, which is
+# what people actually walk; the reach contour deliberately did NOT follow it (see
+# `_REACH_COSTING_OPTIONS`).
 _PEDESTRIAN_COSTING_OPTIONS = {"pedestrian": {"walking_speed": PACE_KMH}}
+#: THE ISOCHRONE IS THE REACH TEST, and it must not widen when the pace does.
+#:
+#: `_reach_predicate` uses the Valhalla polygon as PRIMARY and the analytic circle
+#: only as a fallback, so pinning the circle to `REACH_PACE_KMH` and leaving the
+#: contour on `PACE_KMH` would report a fixed radius while the region actually
+#: admitted grew by half — the change reading green while doing the opposite of what
+#: it claims. At a 120-minute contour that is roughly 6 km of path at 3.0 km/h and
+#: roughly 9 km at 4.5.
+_REACH_COSTING_OPTIONS = {"pedestrian": {"walking_speed": REACH_PACE_KMH}}
 _ROUTING_CONFIG = {
     "costing": "pedestrian",
     "costing_options": _PEDESTRIAN_COSTING_OPTIONS,
@@ -220,7 +229,7 @@ class RoutingClient:
                 json={
                     "locations": [{"lat": lat, "lon": lng}],
                     "costing": "pedestrian",
-                    "costing_options": _PEDESTRIAN_COSTING_OPTIONS,
+                    "costing_options": _REACH_COSTING_OPTIONS,
                     "contours": [{"time": float(minutes)}],
                     "polygons": True,
                 },

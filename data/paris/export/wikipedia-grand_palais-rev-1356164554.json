@@ -342,6 +342,48 @@
       "exported_at": "2026-05-30T00:34:05+00:00",
       "source_chunk": "grand_palais-rev-1356164554",
       "source_book": "Wikipedia"
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "wed": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "thu": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "fri": [
+        [
+          "09:30",
+          "22:30"
+        ]
+      ],
+      "sat": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:30",
+          "20:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated exhibition hall; transcribed from OSM tag 'Tu-Th, Sa-Su 09:30-20:00; Fr 09:30-22:30' with Monday closed.",
+    "place_category": "monument"
   }
 ]

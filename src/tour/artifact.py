@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import math
 from collections import defaultdict
 from collections.abc import Iterable
 from typing import Literal
@@ -27,6 +26,13 @@ from pydantic import (
 from src.audio.tts_normalize import TTS_NORMALIZATION_VERSION, normalize_for_tts
 
 from .contract import Route, Script, Sentence, TourInput
+from .corpus_places import (
+    canonical_payload_bound_to_hash,
+    check_place_assessment_references,
+    check_reference_lane,
+    valid_coordinates,
+)
+from .generation import is_walk_concurrent
 
 SHA256_PATTERN = r"^[0-9a-f]{64}$"
 PROBE_VERSION = "ondoway-audio-probe-v1"
@@ -155,15 +161,6 @@ DirectionalInstruction = Literal[
 DirectionalReferenceFrame = Literal["cardinal", "incoming_path", "unsupported"]
 
 
-def _validate_coordinates(value: tuple[float, float]) -> tuple[float, float]:
-    lat, lng = value
-    if not math.isfinite(lat) or not -90 <= lat <= 90:
-        raise ValueError(f"lat out of range: {lat}")
-    if not math.isfinite(lng) or not -180 <= lng <= 180:
-        raise ValueError(f"lng out of range: {lng}")
-    return value
-
-
 class PlaceEvidenceProvenance(BaseModel):
     """Replayable source identity for place evidence.
 
@@ -184,15 +181,12 @@ class PlaceEvidenceProvenance(BaseModel):
 
     @model_validator(mode="after")
     def _payload_is_canonical_and_bound(self) -> PlaceEvidenceProvenance:
-        try:
-            parsed = json.loads(self.payload_json)
-        except json.JSONDecodeError as exc:
-            raise ValueError("place provenance payload is not JSON") from exc
-        canonical = json.dumps(parsed, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
-        if not isinstance(parsed, dict) or canonical != self.payload_json:
-            raise ValueError("place provenance payload is not a canonical JSON object")
-        if self.payload_sha256 != _sha256_text(canonical):
-            raise ValueError("place provenance hash does not match payload")
+        canonical_payload_bound_to_hash(
+            self.payload_json,
+            self.payload_sha256,
+            label="place provenance payload",
+            require_object=True,
+        )
         return self
 
 
@@ -209,7 +203,7 @@ class CanonicalPrimaryPlaceEvidence(BaseModel):
     resolution_state: PlaceResolutionState
     perceivability_state: Literal["perceivable", "not_perceivable", "unresolved"]
 
-    _coordinates_are_valid = field_validator("coordinates")(_validate_coordinates)
+    _coordinates_are_valid = field_validator("coordinates")(valid_coordinates)
 
 
 class PlaceReferenceEvidence(BaseModel):
@@ -237,15 +231,20 @@ class PlaceReferenceEvidence(BaseModel):
     def _optional_coordinates_are_valid(
         cls, value: tuple[float, float] | None
     ) -> tuple[float, float] | None:
-        return None if value is None else _validate_coordinates(value)
+        return None if value is None else valid_coordinates(value)
 
     @model_validator(mode="after")
     def _reference_lane_is_consistent(self) -> PlaceReferenceEvidence:
+        # The shared lane core lives in corpus_places (dedup-review
+        # 2026-08-07); the artifact layer's own extras — directional
+        # semantics and exact coordinate identity — follow it.
+        check_reference_lane(
+            self.reference_kind,
+            self.relation,
+            self.feature_of_canonical_place_id,
+            self.perceivability_state,
+        )
         if self.reference_kind == "contextual_historical":
-            if self.relation is not None:
-                raise ValueError("contextual historical references cannot be experiential")
-            if self.feature_of_canonical_place_id is not None:
-                raise ValueError("contextual historical references cannot bind a feature")
             if any(
                 value is not None
                 for value in (
@@ -258,22 +257,9 @@ class PlaceReferenceEvidence(BaseModel):
                 raise ValueError(
                     "contextual historical references cannot carry directional semantics"
                 )
-            if self.perceivability_state != "not_applicable":
-                raise ValueError(
-                    "contextual historical references must mark perceivability not applicable"
-                )
             return self
-        if self.relation is None:
-            raise ValueError("experiential references require a typed place relation")
         if self.canonical_place_id is None or self.coordinates is None:
             raise ValueError("experiential references require canonical identity and coordinates")
-        if self.perceivability_state == "not_applicable":
-            raise ValueError("experiential references require a perceivability decision")
-        if self.relation == "feature_of":
-            if self.feature_of_canonical_place_id is None:
-                raise ValueError("feature_of references require their canonical primary")
-        elif self.feature_of_canonical_place_id is not None:
-            raise ValueError("only feature_of references may name a canonical parent")
         directional_values = (
             self.directional_instruction,
             self.directional_reference_frame,
@@ -303,15 +289,15 @@ class SentencePlaceAssessment(BaseModel):
 
     @model_validator(mode="after")
     def _assessment_is_complete(self) -> SentencePlaceAssessment:
-        if self.assessment == "no_material_place_claim" and self.references:
-            raise ValueError("no-place-claim assessment cannot contain references")
-        if self.assessment == "place_references" and not self.references:
-            raise ValueError("place-reference assessment cannot be empty")
+        # The shared three-rule core lives in corpus_places (dedup-review
+        # 2026-08-07); the artifact layer's own guard — every reference bound
+        # to THIS exact sentence — follows it.
+        check_place_assessment_references(
+            self.assessment,
+            tuple(reference.reference_id for reference in self.references),
+        )
         if any(reference.sentence_sha256 != self.sentence_sha256 for reference in self.references):
             raise ValueError("place reference is bound to a different sentence")
-        reference_ids = tuple(reference.reference_id for reference in self.references)
-        if len(reference_ids) != len(set(reference_ids)):
-            raise ValueError("sentence place assessment repeats a reference identity")
         return self
 
 
@@ -357,15 +343,11 @@ class DerivedNarrationEvidence(BaseModel):
 
     @model_validator(mode="after")
     def _payload_is_canonical_and_bound(self) -> DerivedNarrationEvidence:
-        try:
-            parsed = json.loads(self.payload_json)
-        except json.JSONDecodeError as exc:
-            raise ValueError("derived narration evidence is not JSON") from exc
-        canonical = json.dumps(parsed, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
-        if canonical != self.payload_json:
-            raise ValueError("derived narration evidence is not canonical JSON")
-        if self.payload_sha256 != _sha256_text(canonical):
-            raise ValueError("derived narration evidence hash does not match payload")
+        canonical_payload_bound_to_hash(
+            self.payload_json,
+            self.payload_sha256,
+            label="derived narration evidence",
+        )
         return self
 
 
@@ -532,11 +514,11 @@ def derive_playback_assignments(
         cited_ids = set(sentence.cited_beat_ids)
         if cited_ids & seated_beat_ids and cited_ids & frozen_vignette_ids:
             raise ValueError("one fused sentence cannot cross stop and leg playback contexts")
+        # THE one leg-vs-stop rule is generation.is_walk_concurrent — this used
+        # to re-spell its glue-label set inline, so the freeze and the audio
+        # clock could drift apart (dedup-review finding, 2026-08-07).
         placement: Placement = (
-            "leg"
-            if sentence.source_id in {"GLUE_NAV", "GLUE_REFLECTION"}
-            or sentence.source_id in frozen_vignette_ids
-            else "stop"
+            "leg" if is_walk_concurrent(sentence, frozen_vignette_ids) else "stop"
         )
         assignments.append(
             PlaybackAssignment(
@@ -609,9 +591,14 @@ def remap_provider_playback_assignments(
             if sentence.source_id in derivable_leg_source_ids or (
                 sentence.source_type == "beat" and sentence.source_id in cited_source_ids
             ):
+                # Same ONE rule as the generation-time freeze (the only caller
+                # passes CONCURRENT_GLUE_LABELS | vignette ids, so the answers
+                # are identical by construction, not by parallel maintenance).
                 placements = {
                     (
-                        "leg" if sentence.source_id in derivable_leg_source_ids else "stop",
+                        "leg"
+                        if is_walk_concurrent(sentence, derivable_leg_source_ids)
+                        else "stop",
                         sentence.stop_idx,
                     )
                 }

@@ -41,6 +41,7 @@ from .routing import (
     haversine_m,
     route_planning_budget,
 )
+from .visit_time import stop_seconds, visit_seconds
 
 if TYPE_CHECKING:
     from .selection import CorpusSnapshot
@@ -167,12 +168,19 @@ def assess(
     beats_by_poi: dict[str, tuple[BeatRef, ...]],
     *,
     planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+    snapshot: CorpusSnapshot | None = None,
 ) -> TourabilityAssessment:
     """Low-level component assessment retained for legacy diagnostics/tests.
 
     Product selection must call :func:`assess_snapshot`, which refuses typed
     place evidence until the validating materializer has relocated or omitted
     every beat.  This detached-components form cannot carry that proof.
+
+    ``snapshot`` is optional and exists only so the capacity measure can price a
+    place against the requested lenses. Without it the pool is priced as if no
+    interest were declared, which is honest rather than merely tolerant: a
+    detached component list cannot answer "does this place speak to dark
+    history?" at all.
     """
     start_lat, start_lng = tour_input.start
     duration_min = tour_input.duration_min
@@ -185,14 +193,20 @@ def assess(
     # Reachable POIs: within walk envelope AND eligible role AND at
     # least one active beat (zero-beat POIs are diagnostic noise, not
     # tour content; the Phase 5 Petit Palais bug).
-    # Lens-specific fill: sum audio ONLY from beats matching the requested lenses,
-    # so the surface can disclose "thin for YOUR interest" (dark_history vs
-    # hidden_history) rather than a lens-agnostic pool number identical for both.
+    # Lens-specific fill: count ONLY the standing-still time the requested lenses
+    # would earn, so the surface can disclose "thin for YOUR interest"
+    # (dark_history vs hidden_history) rather than a lens-agnostic pool number
+    # identical for both.
     requested_lenses = {s.lower() for s in (tour_input.lenses or [])}
+    # Pricing a place against a declared interest needs the lens graph. The
+    # legacy detached-components form of this function has no snapshot, so it
+    # prices as an undeclared visitor rather than guessing a lens miss — see
+    # visit_seconds, which refuses the guess outright.
+    interest = frozenset(requested_lenses) if snapshot is not None else frozenset()
 
     reachable_pois: list[POI] = []
-    audio_capacity_s = 0
-    on_lens_audio_s = 0
+    dwell_capacity_s = 0
+    on_lens_dwell_s = 0
     reachable_beat_count = 0
     for poi in pois:
         if poi.poi_role not in ELIGIBLE_POI_ROLES:
@@ -204,19 +218,40 @@ def assess(
         if not active:
             continue
         reachable_pois.append(poi)
+        poi_audio_s = 0
+        poi_on_lens_audio_s = 0
         for beat in active:
             secs = _beat_spoken_seconds(beat)
-            audio_capacity_s += secs
+            poi_audio_s += secs
             if requested_lenses and requested_lenses.intersection(
                 s.lower() for s in beat.lenses
             ):
-                on_lens_audio_s += secs
+                poi_on_lens_audio_s += secs
+        # BOTH HALVES OF THE RATIO ARE NOW STANDING-STILL SECONDS. Until
+        # 2026-08-06 the numerator was beat seconds and the denominator became a
+        # dwell target, which would have judged a pool measured in narration
+        # against a target measured in visits — the identical drift this
+        # module's own history records, where the gate judged 1793 s against a
+        # planner aiming at 2160 s and served a thin tour as healthy.
+        #
+        # Audio here is UNCAPPED on purpose. This is a measure of what the POOL
+        # holds, not of what one route would emit, and it is the currency C11a
+        # has always used (selection.py's delivered-thin check says so).
+        visit_s = visit_seconds(poi, interest, snapshot)
+        dwell_capacity_s += stop_seconds(visit_s, poi_audio_s)
+        # "Thin for YOUR interest": a place that says nothing about the declared
+        # lens contributes nothing here, and one that does contributes what this
+        # visitor would actually spend there. Theo's Conciergerie is 65 minutes
+        # inside BECAUSE it matches dark history
+        # (docs/personas/02-dark-history-walker.md, step 14).
+        if poi_on_lens_audio_s:
+            on_lens_dwell_s += stop_seconds(visit_s, poi_on_lens_audio_s)
         reachable_beat_count += len(active)
 
-    target_audio_s = _target_audio_seconds(duration_min, planning_policy)
-    fill_ratio = audio_capacity_s / target_audio_s if target_audio_s > 0 else 0.0
+    target_dwell_s = _target_dwell_seconds(duration_min, planning_policy)
+    fill_ratio = dwell_capacity_s / target_dwell_s if target_dwell_s > 0 else 0.0
     on_lens_fill_ratio: float | None = (
-        (on_lens_audio_s / target_audio_s if target_audio_s > 0 else 0.0)
+        (on_lens_dwell_s / target_dwell_s if target_dwell_s > 0 else 0.0)
         if requested_lenses
         else None
     )
@@ -244,11 +279,11 @@ def assess(
     one_way_alternative: str | None = None
     if status != "GREEN":
         # Diagnostic: the duration where fill_ratio would equal 1.0 at
-        # the current audio capacity. Only meaningful when the limiting
+        # the current dwell capacity. Only meaningful when the limiting
         # factor is fill_ratio (not anchor count or compactness).
-        if audio_capacity_s > 0:
+        if dwell_capacity_s > 0:
             max_supportable = _duration_where_fill_equals_one(
-                audio_capacity_s, planning_policy
+                dwell_capacity_s, planning_policy
             )
 
         # Round-trip-limited alternative: if the round-trip envelope
@@ -268,8 +303,8 @@ def assess(
         status=status,
         walk_radius_m=walk_radius_m,
         fill_ratio=fill_ratio,
-        audio_capacity_seconds=audio_capacity_s,
-        target_audio_seconds=target_audio_s,
+        dwell_capacity_seconds=dwell_capacity_s,
+        target_dwell_seconds=target_dwell_s,
         reachable_poi_count=len(reachable_pois),
         reachable_beat_count=reachable_beat_count,
         anchor_candidate_count=len(anchor_candidates),
@@ -302,6 +337,7 @@ def assess_snapshot(
         snapshot.pois,
         snapshot.beats_by_poi,
         planning_policy=planning_policy,
+        snapshot=snapshot,
     )
 
 
@@ -310,17 +346,21 @@ def assess_snapshot(
 # ---------------------------------------------------------------------------
 
 
-def _target_audio_seconds(duration_min: int, planning_policy: RoutePlanningPolicy) -> int:
-    """The planner's OWN audio target — the same number selection then tries to fill.
+def _target_dwell_seconds(duration_min: int, planning_policy: RoutePlanningPolicy) -> int:
+    """The planner's OWN standing-still target — the number selection then fills.
 
     Derived from the planning budget rather than restated here. Until 2026-08-04 this
     was a bare ``duration_min x 0.83 x 0.6 x 60``, which no policy could reach: after
     the walk envelope started following the certification policy, the gate would have
     judged a pool against 1793 s while the planner aimed at 2160 s — reading GREEN on a
-    pool holding barely half the audio the tour needed, which is a thin tour served as
+    pool holding barely half the content the tour needed, which is a thin tour served as
     healthy, exactly what this module exists to prevent.
+
+    That history is why the numerator moved in the SAME step as this rename on
+    2026-08-06: a target measured in visits against a pool measured in narration
+    is the same defect wearing different clothes.
     """
-    return route_planning_budget(duration_min, planning_policy).audio_target_seconds
+    return route_planning_budget(duration_min, planning_policy).dwell_target_seconds
 
 
 def _beat_spoken_seconds(beat: BeatRef) -> int:
@@ -409,20 +449,24 @@ def _status(
 
 
 def _duration_where_fill_equals_one(
-    audio_capacity_s: int, planning_policy: RoutePlanningPolicy
+    dwell_capacity_s: int, planning_policy: RoutePlanningPolicy
 ) -> int:
-    """Solve target_audio_s(d) = audio_capacity_s for d.
+    """Solve target_dwell_s(d) = dwell_capacity_s for d.
 
-    The per-minute audio target is linear in duration, so one minute's worth of it
+    The per-minute dwell target is linear in duration, so one minute's worth of it
     divides the capacity directly. Round down to the nearest minute; floor at 1 to
     avoid a degenerate 0.
+
+    This is the third reader of the gate's currency, and it has to move with the
+    other two: solving a dwell-second capacity against a narration-second target
+    would answer "the longest tour this area supports" in the wrong unit.
     """
-    if audio_capacity_s <= 0:
+    if dwell_capacity_s <= 0:
         return 1
-    seconds_per_minute = route_planning_budget(1, planning_policy).audio_target_seconds
+    seconds_per_minute = route_planning_budget(1, planning_policy).dwell_target_seconds
     if seconds_per_minute <= 0:
         return 1
-    return max(1, int(audio_capacity_s / seconds_per_minute))
+    return max(1, int(dwell_capacity_s / seconds_per_minute))
 
 
 def _suggest_one_way_destination(

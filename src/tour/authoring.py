@@ -662,7 +662,9 @@ def finalize_certification_composition(
         # source ids, so it would reject legitimately-authorized glue.
         return report.model_copy(
             update={
-                "forbidden_phrase_hits": validate_script(script, sequence).forbidden_phrase_hits
+                "forbidden_phrase_hits": validate_script(
+                    script, sequence, spine_area=route.spine_area
+                ).forbidden_phrase_hits
             }
         )
 

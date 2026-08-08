@@ -261,7 +261,49 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated city studio-museum; transcribed from its OSM tag \"Tu-Su 10:00-18:00\".",
+    "place_category": "museum"
   },
   {
     "name": "Musee Bourdelle",
@@ -333,7 +375,49 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [],
+      "tue": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "10:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated municipal sculpture museum; transcribed from OSM tag 'Tu-Su 10:00-18:00'.",
+    "place_category": "museum"
   },
   {
     "name": "La Closerie des Lilas",
@@ -416,7 +500,54 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ],
+      "tue": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ],
+      "wed": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ],
+      "thu": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ],
+      "fri": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ],
+      "sat": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ],
+      "sun": [
+        [
+          "12:00",
+          "23:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A brasserie entered through a door (gated); hours from its published daily pattern of roughly midday to 23:00.",
+    "place_category": "other"
   },
   {
     "name": "Montparnasse Cemetery",
@@ -498,7 +629,54 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "18:00"
+        ]
+      ],
+      "sat": [
+        [
+          "08:30",
+          "18:00"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "18:00"
+        ]
+      ]
+    },
+    "opening_hours_source": "ai",
+    "opening_hours_basis": "A gated walled cemetery with closing gates; hours follow the City of Paris's published summer pattern shared across municipal cemeteries.",
+    "place_category": "other"
   },
   {
     "name": "Parc Georges-Brassens",
@@ -912,7 +1090,54 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "08:00",
+          "17:45"
+        ]
+      ],
+      "tue": [
+        [
+          "08:00",
+          "17:45"
+        ]
+      ],
+      "wed": [
+        [
+          "08:00",
+          "17:45"
+        ]
+      ],
+      "thu": [
+        [
+          "08:00",
+          "17:45"
+        ]
+      ],
+      "fri": [
+        [
+          "08:00",
+          "17:45"
+        ]
+      ],
+      "sat": [
+        [
+          "09:00",
+          "17:45"
+        ]
+      ],
+      "sun": [
+        [
+          "09:00",
+          "17:45"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "Gated public park with closing bells; transcribed from OSM tag base '08:00-17:45' with weekend late opening 'Sa,Su,PH 08:00-09:00 off', seasonal evening extensions not expressible in a fixed weekly table.",
+    "place_category": "park"
   },
   {
     "name": "La Ruche",
@@ -931,7 +1156,11 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An artists' residence/studio complex not open to the public; role is walk-by only and it is viewed from outside, so treated as not-gated for routing but hours not applicable.",
+    "place_category": "other"
   },
   {
     "name": "Parc Montsouris",
@@ -1247,7 +1476,54 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": {
+      "mon": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ],
+      "tue": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ],
+      "wed": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ],
+      "thu": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ],
+      "fri": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ],
+      "sat": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ],
+      "sun": [
+        [
+          "07:00",
+          "20:30"
+        ]
+      ]
+    },
+    "opening_hours_source": "osm",
+    "opening_hours_basis": "A gated park with seasonal closing times; transcribed from the OSM tag whose current (September) window is 'Sep PH,Mo-Su 07:00-20:30' in the tag 'Sep PH,Mo-Su 07:00-20:30; Oct 01-Oct Su[-1] ... 07:00-19:30; ...; Jul-Aug ... 07:00-24:00'.",
+    "place_category": "park"
   },
   {
     "name": "Villa Santos-Dumont",
@@ -1320,7 +1596,11 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": true
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "A private residential lane/street viewed from the pavement, not gated, so opening_hours is null.",
+    "place_category": "other"
   },
   {
     "name": "Butte-aux-Cailles",
@@ -1341,6 +1621,10 @@
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
-    }
+    },
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": "An open neighbourhood of public streets and cobblestone lanes with no gate between street and experience.",
+    "place_category": "street"
   }
 ]
