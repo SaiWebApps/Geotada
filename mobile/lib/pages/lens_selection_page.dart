@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ondoway/models/lens.dart';
 import 'package:ondoway/widgets/lens_tile.dart';
 
@@ -63,15 +65,33 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.isOnboarding
-                        ? 'Welcome, ${widget.userName ?? "Explorer"}'
-                        : 'Your Lenses',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.isOnboarding
+                              ? 'Welcome, ${widget.userName ?? "Explorer"}'
+                              : 'Your Lenses',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      // Debug escape hatch (removed with the spike scaffolding):
+                      // jumps to the auth-exempt tour-playback proof screen when a
+                      // persisted session strands the tester here (prod lens API
+                      // 404s). Header-right so it overlaps no tile or Continue.
+                      if (!kReleaseMode)
+                        IconButton(
+                          tooltip: 'Debug: tour playback proof',
+                          icon: const Icon(Icons.headphones,
+                              color: Color(0xFF9E9E9E)),
+                          onPressed: () =>
+                              context.push('/debug/tour-playback-proof'),
+                        ),
+                    ],
                   ),
                   if (widget.isOnboarding) ...[
                     const SizedBox(height: 8),
