@@ -59,9 +59,16 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
         'playing=${_audio?.isPlaying}');
   }
 
+  String? _lastAudioSig;
   void _onAudioTick() {
-    _add('$_ts  AUDIO  playing=${_audio?.isPlaying}  '
-        'buffering=${_audio?.isBuffering}  beat=${_audio?.currentBeatId}');
+    // just_audio fires notifyListeners on every position tick — log only when a
+    // playing/buffering/beat TRANSITION happens, else the flood buries the pos
+    // and lifecycle lines.
+    final sig = 'playing=${_audio?.isPlaying}  buffering=${_audio?.isBuffering}'
+        '  beat=${_audio?.currentBeatId}';
+    if (sig == _lastAudioSig) return;
+    _lastAudioSig = sig;
+    _add('$_ts  AUDIO  $sig');
   }
 
   void _add(String line) {
