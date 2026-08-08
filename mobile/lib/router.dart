@@ -13,6 +13,7 @@ import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/spike/location_spike_page.dart';
+import 'package:ondoway/spike/tour_playback_proof_page.dart';
 import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
 
@@ -126,6 +127,10 @@ GoRouter createRouter(
       GoRoute(
         path: '/debug/location-spike',
         builder: (context, state) => const LocationSpikePage(),
+      ),
+      GoRoute(
+        path: '/debug/tour-playback-proof',
+        builder: (context, state) => const TourPlaybackProofPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
