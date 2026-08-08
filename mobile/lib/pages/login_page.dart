@@ -48,10 +48,24 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       floatingActionButton: !kReleaseMode
-          ? FloatingActionButton.extended(
-              onPressed: () => context.push('/debug/location-spike'),
-              icon: const Icon(Icons.explore),
-              label: const Text('Location Spike'),
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'debug-location-spike',
+                  onPressed: () => context.push('/debug/location-spike'),
+                  icon: const Icon(Icons.explore),
+                  label: const Text('Location Spike'),
+                ),
+                const SizedBox(height: 12),
+                FloatingActionButton.extended(
+                  heroTag: 'debug-tour-playback-proof',
+                  onPressed: () => context.push('/debug/tour-playback-proof'),
+                  icon: const Icon(Icons.headphones),
+                  label: const Text('Tour Proof'),
+                ),
+              ],
             )
           : null,
       body: SafeArea(
