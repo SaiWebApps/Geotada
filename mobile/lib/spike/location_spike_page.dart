@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/providers.dart';
 import 'package:ondoway/spike/geofence_trigger.dart';
 
@@ -23,7 +24,7 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
   @override
   void initState() {
     super.initState();
-    _location = context.read<LocationProvider>();
+    _location = context.read<LocationService>();
     _location!.addListener(_onLocation);
   }
 
