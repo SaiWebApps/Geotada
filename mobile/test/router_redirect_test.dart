@@ -4,27 +4,27 @@ import 'package:ondoway/router.dart';
 void main() {
   group('computeAuthRedirect', () {
     test(
-        'unauthenticated + /debug/location-spike + isDebug:true → null '
+        'unauthenticated + /debug/location-spike + allowDebugRoutes:true → null '
         '(the bug: must NOT redirect)', () {
       final result = computeAuthRedirect(
         isAuthenticated: false,
         profileLoaded: false,
         profileIsFirstTime: false,
         path: '/debug/location-spike',
-        isDebug: true,
+        allowDebugRoutes: true,
       );
       expect(result, isNull);
     });
 
     test(
-        'unauthenticated + /debug/location-spike + isDebug:false → /login '
+        'unauthenticated + /debug/location-spike + allowDebugRoutes:false → /login '
         '(release still guards it)', () {
       final result = computeAuthRedirect(
         isAuthenticated: false,
         profileLoaded: false,
         profileIsFirstTime: false,
         path: '/debug/location-spike',
-        isDebug: false,
+        allowDebugRoutes: false,
       );
       expect(result, '/login');
     });
@@ -35,7 +35,7 @@ void main() {
         profileLoaded: false,
         profileIsFirstTime: false,
         path: '/explore',
-        isDebug: true,
+        allowDebugRoutes: true,
       );
       expect(result, '/login');
     });
@@ -46,7 +46,7 @@ void main() {
         profileLoaded: false,
         profileIsFirstTime: false,
         path: '/login',
-        isDebug: true,
+        allowDebugRoutes: true,
       );
       expect(result, isNull);
     });
@@ -59,7 +59,7 @@ void main() {
         profileLoaded: true,
         profileIsFirstTime: true,
         path: '/login',
-        isDebug: false,
+        allowDebugRoutes: false,
       );
       expect(result, '/onboarding');
     });
@@ -72,7 +72,7 @@ void main() {
         profileLoaded: true,
         profileIsFirstTime: false,
         path: '/login',
-        isDebug: false,
+        allowDebugRoutes: false,
       );
       expect(result, '/explore');
     });
@@ -83,7 +83,7 @@ void main() {
         profileLoaded: false,
         profileIsFirstTime: false,
         path: '/login',
-        isDebug: false,
+        allowDebugRoutes: false,
       );
       expect(result, isNull);
     });

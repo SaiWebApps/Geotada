@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     final authService = context.watch<AuthService>();
 
     return Scaffold(
-      floatingActionButton: kDebugMode
+      floatingActionButton: !kReleaseMode
           ? FloatingActionButton.extended(
               onPressed: () => context.push('/debug/location-spike'),
               icon: const Icon(Icons.explore),

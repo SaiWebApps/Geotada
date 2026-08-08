@@ -474,6 +474,10 @@ flutter-device: ## Run the Flutter app on a physical device against production.
 	@$(PREFLIGHT) --label flutter-device $(PRE_FLUTTER) xcode cocoapods
 	cd mobile && flutter run --dart-define=API_BASE_URL=https://ondoway.com/api/v1
 
+flutter-device-profile: ## Run on a physical device in PROFILE mode (AOT, no JIT -- stable on iOS 26 where the debug JIT crashes; debug affordances stay visible via !kReleaseMode).
+	@$(PREFLIGHT) --label flutter-device-profile $(PRE_FLUTTER) xcode cocoapods
+	cd mobile && flutter run --profile --dart-define=API_BASE_URL=https://ondoway.com/api/v1
+
 flutter-pub-get: ## Resolve Flutter dependencies.
 	@$(PREFLIGHT) --label flutter-pub-get flutter
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get

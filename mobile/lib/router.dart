@@ -24,18 +24,18 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 /// [GoRouter.redirect] closure so it is unit-testable without constructing
 /// real services. Auth routes (`/login`, `/auth`, `/auth/callback`) are
 /// always exempt from the "must be authenticated" guard; debug routes
-/// (`/debug/...`) are exempt only when [isDebug] is true, so production
-/// behavior is unchanged.
+/// (`/debug/...`) are exempt only when [allowDebugRoutes] is true (debug and
+/// profile builds, never release), so production behavior is unchanged.
 String? computeAuthRedirect({
   required bool isAuthenticated,
   required bool profileLoaded,
   required bool profileIsFirstTime,
   required String path,
-  required bool isDebug,
+  required bool allowDebugRoutes,
 }) {
   final isAuthRoute =
       path == '/login' || path == '/auth' || path == '/auth/callback';
-  final isExemptDebugRoute = isDebug && path.startsWith('/debug/');
+  final isExemptDebugRoute = allowDebugRoutes && path.startsWith('/debug/');
 
   if (!isAuthenticated && !isAuthRoute && !isExemptDebugRoute) {
     return '/login';
@@ -63,7 +63,10 @@ GoRouter createRouter(
         profileLoaded: profileService.isLoaded,
         profileIsFirstTime: profileService.isFirstTime,
         path: state.matchedLocation,
-        isDebug: kDebugMode,
+        // Debug affordances (the location-spike screen) are reachable in debug
+        // AND profile builds — profile is what we use for on-device iOS 26
+        // testing — but never in release.
+        allowDebugRoutes: !kReleaseMode,
       );
     },
     routes: [
