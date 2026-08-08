@@ -25,4 +25,10 @@ abstract class AudioProvider extends ChangeNotifier {
   /// "keep exploring here" audio so completion does not auto-advance the tour.
   void play(String beatId, String audioUrl, {bool isDeeperDive = false});
   void stop();
+
+  /// Activate the iOS audio session (.playback/.duckOthers) so playback is
+  /// audible through a locked screen. MUST be called from the foreground — iOS
+  /// refuses session activation from a background callback
+  /// (AVAudioSessionErrorCodeCannotInterruptOthers). No-op off iOS; never throws.
+  Future<void> prepareSession();
 }

@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ondoway/services/providers.dart';
 
 class AudioService extends ChangeNotifier implements AudioProvider {
+  static const MethodChannel _sessionChannel =
+      MethodChannel('com.ondoway/audio_session');
+
   final http.Client _httpClient;
   AudioPlayer? _playerInstance;
 
@@ -76,6 +80,15 @@ class AudioService extends ChangeNotifier implements AudioProvider {
       _isBuffering = false;
       notifyListeners();
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> prepareSession() async {
+    try {
+      await _sessionChannel.invokeMethod<void>('prepare');
+    } catch (e) {
+      debugPrint('AudioService.prepareSession failed: $e');
     }
   }
 

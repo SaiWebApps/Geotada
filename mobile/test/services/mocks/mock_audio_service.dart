@@ -7,6 +7,8 @@ class MockAudioService extends AudioProvider {
   bool _isPlaying = false;
   bool _isDeeperDive = false;
   int _playCount = 0;
+  int prepareSessionCount = 0;
+  List<String>? callLog;
 
   @override
   String? get currentBeatId => _currentBeatId;
@@ -15,6 +17,12 @@ class MockAudioService extends AudioProvider {
   @override
   bool get isDeeperDive => _isDeeperDive;
   int get playCount => _playCount;
+
+  @override
+  Future<void> prepareSession() async {
+    prepareSessionCount++;
+    callLog?.add('prepare');
+  }
 
   @override
   void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
