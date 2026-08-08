@@ -54,8 +54,15 @@ class TourPlaybackService extends ChangeNotifier {
     _pendingStopIndex = null;
     _state = TourState.active;
 
-    // Start GPS tracking
-    final started = await _locationService.startTracking();
+    // Activate the audio session while we are FOREGROUND. iOS grants session
+    // activation only to a frontmost app; from a background geofence callback it
+    // returns CannotInterruptOthers (560557684). Once active it survives lock, so
+    // the fire path only needs to play. (No-op off iOS.)
+    await _audioService.prepareSession();
+
+    // Start GPS tracking — background:true so position updates keep arriving when
+    // the screen locks and the phone is pocketed (Slice 0.3).
+    final started = await _locationService.startTracking(background: true);
     if (!started) {
       _state = TourState.idle;
       notifyListeners();

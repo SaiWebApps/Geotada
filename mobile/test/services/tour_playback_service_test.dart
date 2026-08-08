@@ -101,6 +101,28 @@ void main() {
       expect(service.state, TourState.idle);
     });
 
+    test('startTour prepares the audio session before background tracking (AC1)',
+        () async {
+      final log = <String>[];
+      audioService.callLog = log;
+      locationService.callLog = log;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'b1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://example.test/1.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+
+      expect(log, ['prepare', 'track']);
+      expect(locationService.lastBackground, isTrue);
+      expect(audioService.prepareSessionCount, 1);
+    });
+
     test('startTour with valid stops sets state to active', () async {
       locationService.trackingWillSucceed = true;
       final stops = [
