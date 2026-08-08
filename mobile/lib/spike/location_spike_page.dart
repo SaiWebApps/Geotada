@@ -80,7 +80,7 @@ class _LocationSpikePageState extends State<LocationSpikePage> {
 
   Future<void> _playClip() async {
     try {
-      await _player.setAsset('assets/audio/arrived.m4a');
+      await _player.setAsset('assets/audio/arrived.wav');
       if (!mounted) return;
       await _player.play();
     } catch (e) {
