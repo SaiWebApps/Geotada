@@ -1,0 +1,174 @@
+"""Propagate enriched POI fields from poi-raw.json into every export chunk — one command.
+
+EXTENDS, per CLAUDE.md §1.7 (the third manual copy becomes the template). This same
+block was performed by hand three times before it became a script:
+
+  1. the hand-sync `.claude/commands/poi-visit-duration.md` mandates under
+     "MANDATORY — SYNC THE EXPORT FILES" ("the step that gets skipped, and skipping
+     it makes the whole pass invisible");
+  2. the scratch script W1.8 wrote to push the opening-hours trio and
+     ``place_category`` into the 48 Paris chunks (1,384 fields), deleted with its
+     spec folder;
+  3. the identical "NEXT, AND MANDATORY: sync data/{city}/export/*.json" warning all
+     three pass scripts printed — each now names ``make sync-poi-exports`` instead.
+
+WHY THE SYNC EXISTS AT ALL. ``data/{slug}/poi-raw.json`` is the canonical POI source
+per city, and it is what the enrichment passes write. But ``data/{slug}/export/*.json``
+is what `/upload` reads into Neo4j — a field that exists only in poi-raw never reaches
+the graph (the Notre-Dame tier-1 incident; ``tests/test_export_consistency.py`` guards
+the RESULT, and this script is the one way the fields travel).
+
+THE SCRIPT OWNS THE FIELD LIST. ``SYNCED_FIELDS`` below is the single statement of
+which enriched fields flow poi-raw -> export; the pass trailers deliberately do not
+restate it, and ``tests/test_export_consistency.py`` fails when a pass starts writing
+a field this list does not carry.
+
+NULL IS A STATEMENT (W1.8's ledger: "nulls propagated deliberately"). A null
+``visit_seconds_inside`` means "no interior"; a null ``opening_hours`` means "not
+gated". So a null — and an absent field, for a pass that has not run on this city
+yet — propagates as an explicit null rather than being skipped.
+
+BYTE-SAFE, two ways. A chunk whose parsed content the sync would not change is never
+rewritten, so a formatting-only difference can never masquerade as a data change. A
+chunk that does change is written through ``dump_pois`` — imported from
+``scripts/poi_visit_duration.py``, never copied — whose round-trip guard refuses any
+write that would reformat the whole file and bury the real diff.
+
+POIs are matched canonical -> chunk by lower-cased ``name``, the same key
+``tests/test_export_consistency.py`` has always matched on (there is no id field in
+either file). An export POI with no canonical match aborts the run before any write:
+that is stale-export drift, the RESULT guard's finding, not something to sync around.
+
+``--check`` writes nothing and exits nonzero when anything would change — the proof,
+before `make deploy`, that the chunks carry what the passes produced.
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+from typing import Any
+
+from scripts.poi_visit_duration import dump_pois, load_pois
+
+ROOT = Path(__file__).resolve().parent.parent
+
+#: THE one list of enriched fields that flow poi-raw -> export chunks. One fact, one
+#: place (CLAUDE.md §1.7): the pass scripts' trailer messages name the make target and
+#: never restate this list. Ordered as the passes landed.
+SYNCED_FIELDS: tuple[str, ...] = (
+    # Visit-capacity trio — scripts/poi_visit_duration.py.
+    "visit_seconds_inside",
+    "visit_basis",
+    "typical_duration_min",
+    # Opening-hours trio — scripts/poi_opening_hours.py.
+    "opening_hours",
+    "opening_hours_source",
+    "opening_hours_basis",
+    # Place category — scripts/poi_place_category.py.
+    "place_category",
+    # Place judgements — redesign S2.6's pass, landing this same phase; listed ahead
+    # of it so the sync never lags the pass (plan step S2.9).
+    "children_can_run",
+    "sit_and_talk",
+    "good_after_dark",
+    "judgement_basis",
+)
+
+
+def sync_chunk(
+    chunk: list[dict[str, Any]],
+    canonical: dict[str, dict[str, Any]],
+    chunk_name: str,
+    unknown: list[str],
+) -> int:
+    """Copy every synced field canonical -> chunk POI, in place. Returns the number
+    of field-level changes; unmatched POI names are appended to ``unknown``."""
+    changes = 0
+    for poi in chunk:
+        name = poi.get("name")
+        canon = canonical.get(str(name).lower()) if name else None
+        if canon is None:
+            unknown.append(f"{chunk_name}: {name!r} is not in poi-raw.json")
+            continue
+        for field in SYNCED_FIELDS:
+            value = canon.get(field)  # absent propagates as null: null is a statement
+            if field not in poi or poi[field] != value:
+                poi[field] = value
+                changes += 1
+    return changes
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--slug", default="paris", help="City slug (default: paris)")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Report what would change and write nothing; exit nonzero on any pending change.",
+    )
+    args = parser.parse_args(argv)
+
+    raw_path = ROOT / "data" / args.slug / "poi-raw.json"
+    if not raw_path.exists():
+        raise SystemExit(f"✗ no POI file at {raw_path}")
+    export_dir = ROOT / "data" / args.slug / "export"
+    chunk_paths = sorted(export_dir.glob("*.json")) if export_dir.exists() else []
+    if not chunk_paths:
+        raise SystemExit(f"✗ no export chunks under {export_dir} — nothing to sync into")
+
+    pois, _ = load_pois(raw_path)
+    canonical = {p["name"].lower(): p for p in pois}
+
+    # Plan every chunk before writing any, so an abort leaves nothing half-synced.
+    pending: list[tuple[Path, list[dict[str, Any]], str, int]] = []
+    unknown: list[str] = []
+    for chunk_path in chunk_paths:
+        chunk, original = load_pois(chunk_path)
+        changes = sync_chunk(chunk, canonical, chunk_path.name, unknown)
+        if changes:
+            pending.append((chunk_path, chunk, original, changes))
+
+    if unknown:
+        print(
+            f"✗ {len(unknown)} export POI(s) have no match in {raw_path.relative_to(ROOT)}; "
+            "syncing nothing — fix the stale export first "
+            "(tests/test_export_consistency.py fails on exactly this):",
+            file=sys.stderr,
+        )
+        for line in unknown:
+            print(f"    {line}", file=sys.stderr)
+        return 1
+
+    total = sum(changes for _, _, _, changes in pending)
+    if not pending:
+        print(
+            f"✓ {len(chunk_paths)} chunk(s) under {export_dir.relative_to(ROOT)} already "
+            f"carry poi-raw.json's values for all {len(SYNCED_FIELDS)} synced fields."
+        )
+        return 0
+
+    verb = "would update" if args.check else "updating"
+    for chunk_path, _, _, changes in pending:
+        print(f"  {verb} {changes:4d} field(s) in {chunk_path.name}")
+
+    if args.check:
+        print(
+            f"✗ --check: {total} field(s) across {len(pending)} of {len(chunk_paths)} chunks "
+            f"would change. Run: make sync-poi-exports SLUG={args.slug}"
+        )
+        return 1
+
+    for chunk_path, chunk, original, _ in pending:
+        dump_pois(chunk_path, chunk, original)
+    print(
+        f"✓ wrote {total} field(s) across {len(pending)} of {len(chunk_paths)} chunks "
+        f"in {export_dir.relative_to(ROOT)}"
+    )
+    print("  Prove it: make test-file FILE=tests/test_export_consistency.py")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

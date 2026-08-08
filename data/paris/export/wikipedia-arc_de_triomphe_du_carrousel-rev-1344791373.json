@@ -267,6 +267,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Not gated: a triumphal arch standing in the open in the Tuileries axis, viewed freely from the pavement.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small neoclassical triumphal arch with pink marble columns and relief panels, walked round and viewed on the axis toward the Louvre and Tuileries, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A traffic-adjacent monument on open paving between the Louvre and Tuileries with roads and no enclosure so a child could run off toward vehicles, no real free seating at the arch itself, but the area is lit, central and busy with people crossing at all hours."
   }
 ]

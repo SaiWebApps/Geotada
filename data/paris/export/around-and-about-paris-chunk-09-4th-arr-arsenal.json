@@ -6,7 +6,7 @@
     "longitude": 2.349902,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [
       "Notre-Dame de Paris"
@@ -131,7 +131,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated cathedral you enter, but post-reopening visiting hours are not confidently known to me; gated, hours not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 3000,
+    "visit_basis": "The west facade with its portals and towers, plus the parvis and views from around the Ile de la Cite, absorb 25 minutes; the interior nave, chancel, rose windows and side chapels take around 35 minutes plus an entry queue since reopening.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A cathedral interior demands silence and stillness so children cannot run and normal conversation is discouraged, and the surrounding parvis is open paving without quiet free seating; the Ile de la Cite location is lit and trafficked with people about, so being left standing after dark is fine."
   },
   {
     "name": "Ile de la Cite",
@@ -140,7 +146,7 @@
     "longitude": 2.3472,
     "importance_tier": 5,
     "trigger_radius": 100,
-    "typical_duration_min": 40,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "Île de la Cité"
@@ -179,7 +185,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open Seine island crossed by public streets and bridges, valued in the open air with no gate between street and experience.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Whole Seine island of quays, squares and lanes to walk across between Notre-Dame and Pont Neuf; a setting explored on foot with no single interior to enter here.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark."
   },
   {
     "name": "Ile Saint-Louis",
@@ -223,7 +235,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open residential island of public streets and quays, not gated; its value stands in the open.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small residential island with one main street of 17th-century townhouses, quays and an ice cream stop; the value is walking it, nothing single to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A residential island whose narrow streets carry cars and whose quays edge straight onto the Seine, so running children are at risk, but its tree-lined quay steps and benches are quiet enough to talk and the streets stay lit and inhabited at night."
   },
   {
     "name": "Hotel de Ville",
@@ -475,7 +493,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated building with ticketed exhibition access; transcribed from OSM tag 'Mo-Sa 10:00-19:00' with Sunday closed.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Grand neo-Renaissance city hall facade fronting a large open plaza where you stand back to take in the statues and rooflines; interior open only for occasional booked exhibitions, not a normal visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A city-hall forecourt that is open paved plaza bordered by trafficked streets with no free seating and often fenced for events, so children cannot safely range and there is nowhere to sit quietly, but the square is well lit and peopled into the evening."
   },
   {
     "name": "Place des Vosges",
@@ -484,7 +508,7 @@
     "longitude": 2.3656,
     "importance_tier": 5,
     "trigger_radius": 40,
-    "typical_duration_min": 25,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Place Royale"
@@ -611,7 +635,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Oldest planned square in Paris, 36 uniform brick houses framing a central garden you walk round under the arcades; nothing general to enter, Hugo's house is a separate stop.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night."
   },
   {
     "name": "Centre Pompidou",
@@ -620,7 +650,7 @@
     "longitude": 2.352095,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Centre Georges Pompidou",
@@ -725,7 +755,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated museum; hours from the Centre's own published schedule, closed Tuesdays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The exposed-pipe exterior and the sloping piazza where crowds gather absorb 20 minutes; inside is Europe's largest modern art collection plus the escalator facade views, which would absorb over two hours, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The museum interior forbids running, but the large sloping traffic-free forecourt has broad ground and low ledges where people sit and talk, and the plaza is lit and busy with people into the evening, so standing after dark is fine; note the forecourt itself is fairly open, but its slope toward buildings not traffic still does not make it safe free-range running ground for a loud fast child amid dense crowds."
   },
   {
     "name": "Bibliotheque de l'Arsenal",
@@ -734,7 +770,7 @@
     "longitude": 2.365,
     "importance_tier": 3,
     "trigger_radius": 75,
-    "typical_duration_min": 25,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Bibliothèque de l'Arsenal",
@@ -915,7 +951,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A historic library with controlled reading-room access, so gated, but its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Historic library in the former Royal Arsenal with Louis XIII period rooms; a short look at the exterior, and access to the show rooms and reading room takes about 25 minutes when open to visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A historic library where silence is enforced indoors and there is no free public seating for casual talk, and the building is closed and locked after hours."
   },
   {
     "name": "Pavillon de l'Arsenal",
@@ -924,7 +966,7 @@
     "longitude": 2.3648,
     "importance_tier": 2,
     "trigger_radius": 60,
-    "typical_duration_min": 15,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
       "Pavillon de l'Arsenal"
@@ -964,6 +1006,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated exhibition hall, but its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "19th-century glass-and-steel hall housing Paris urbanism exhibits including a large city model; brief exterior look, and the free galleries absorb around 40 minutes for an engaged visitor.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A glass-and-steel exhibition hall where quiet browsing is expected and running is not, with no free seating and doors locked at night, leaving no lit open place to stand."
   }
 ]

@@ -6,7 +6,7 @@
     "longitude": 2.3417,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": 10,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Passage des Panoramas"
@@ -47,7 +47,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated covered arcade with grilles; its opening hours are not confidently known, left unfiltered.",
-    "place_category": "arcade"
+    "place_category": "arcade",
+    "visit_seconds_inside": null,
+    "visit_basis": "Covered arcade you walk through end to end, lined with stamp dealers, old shopfronts and restaurants to browse, about 15 minutes; it is itself the space, nothing separate to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid restaurant seating, echoing acoustics, and gates that close it at night."
   },
   {
     "name": "Theatre des Varietes",
@@ -56,7 +62,7 @@
     "longitude": 2.3421,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Théâtre des Variétés",
@@ -104,7 +110,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated theatre entered by ticket; its hours are not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Neoclassical theatre facade on Boulevard Montmartre viewed from the pavement, a few minutes; interior entered only for performances so no normal visit inside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A theatre facade directly on the wide, traffic-heavy Boulevard Montmartre with no free seating and a quiet interior, but the boulevard is brightly lit and busy at all hours."
   },
   {
     "name": "Place de la Bourse",
@@ -113,7 +125,7 @@
     "longitude": 2.3416,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": 10,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "Palais Brongniart",
@@ -158,7 +170,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public square whose value is on the pavement, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Open square dominated by the colonnaded Palais Brongniart which you walk around to take in from several angles, about 18 minutes; the exchange building is not normally open to visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An open square ringed by roads and parked cars around the Palais Brongniart, with no protective enclosure to stop a running child reaching traffic and no notable free quiet seating, but it is a central lit place with people passing at night."
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -167,7 +185,7 @@
     "longitude": 2.341,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Basilique Notre-Dame-des-Victoires",
@@ -240,7 +258,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated basilica one enters; its opening hours are not confidently known, left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Modest facade on a small square takes a few minutes; inside is a basilica famous for its walls covered in thousands of votive plaques plus Lully's tomb, roughly 18 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A church interior expecting silence, on the small quiet Place des Petits-Pères which has little through-traffic or nightlife, and the church itself is locked after hours, so I judge after-dark false on this calm side-street."
   },
   {
     "name": "Bibliotheque Nationale de France - Richelieu",
@@ -319,7 +343,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated library with reading rooms behind entry control; hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Long historic facade and entrance courtyard take ten minutes outside; inside are the restored Labrouste and Oval reading rooms plus a museum of treasures, roughly an hour with entry.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A national library whose reading rooms demand absolute silence and offer no casual free seating to the public, but it stands on lit central streets near the Palais-Royal with people about in the evening."
   },
   {
     "name": "Galerie Vivienne",
@@ -328,7 +358,7 @@
     "longitude": 2.3398,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Galerie Vivienne",
@@ -409,7 +439,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated covered arcade with grilles; OSM tag \"Mo-Sa 08:30-20:30\" transcribed with Sunday closed.",
-    "place_category": "arcade"
+    "place_category": "arcade",
+    "visit_seconds_inside": null,
+    "visit_basis": "Elegant covered arcade with mosaic floors, glass roof and neoclassical shopfronts to walk slowly and browse, about 15 minutes; the arcade itself is the space.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid café tables, echoing acoustics, and gates locked after closing."
   },
   {
     "name": "Square Louvois",
@@ -418,7 +454,7 @@
     "longitude": 2.3376,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": 20,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Square Louvois"
@@ -552,7 +588,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated public garden with closing bells; its hours are not confidently known, left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small garden with benches and Visconti's four-rivers fountain to walk round and view, about 8 minutes; nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small fenced public garden set back from traffic with benches around Visconti's fountain, quiet enough to talk and enclosed enough for a child to run, but gated and locked at night like all Paris squares."
   },
   {
     "name": "Passage Choiseul",
@@ -610,7 +652,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated covered arcade with grilles; its opening hours are not confidently known, left unfiltered.",
-    "place_category": "arcade"
+    "place_category": "arcade",
+    "visit_seconds_inside": null,
+    "visit_basis": "Long covered arcade you walk through with shops and its literary history, about 10 minutes; the passage itself is the space.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A long narrow covered arcade lined with shopfronts at child height, no free public seating, echoing under its glass roof, and closed off with gates after hours."
   },
   {
     "name": "Restaurant Drouant",
@@ -619,7 +667,7 @@
     "longitude": 2.3345,
     "importance_tier": 2,
     "trigger_radius": 8,
-    "typical_duration_min": 10,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Drouant",
@@ -670,7 +718,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated restaurant entered by door; its service hours are not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Restaurant facade on the small Place Gaillon viewed from outside for its Goncourt-prize history, a few minutes; entering is a full meal, not a tour stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A restaurant on the small Place Gaillon offering only paid seating and no run-around space, but the place is lit and lies just off the busy Avenue de l'Opéra quarter with people about at night."
   },
   {
     "name": "Harry's New York Bar",
@@ -679,7 +733,7 @@
     "longitude": 2.3321,
     "importance_tier": 3,
     "trigger_radius": 8,
-    "typical_duration_min": 10,
+    "typical_duration_min": 5,
     "kid_friendly": "no",
     "name_variations": [
       "Harry's Bar",
@@ -726,7 +780,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated bar entered by door; its exact opening hours are not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Wood-panelled street frontage takes a few minutes outside; inside is a historic bar where you can sit for a Bloody Mary and take in the pennants and cellar piano, around 25 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A bar interior with only paid seating and no space for children, on the lit and central rue Daunou near the Opéra where people are about in the evening."
   },
   {
     "name": "Rue de la Paix",
@@ -735,7 +795,7 @@
     "longitude": 2.3312,
     "importance_tier": 4,
     "trigger_radius": 15,
-    "typical_duration_min": 20,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "Rue de la Paix"
@@ -867,6 +927,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open shopping street whose value stands in the open on the public pavement; not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Elegant shopping street of jewellers and couture houses running from the Opera to Place Vendome; walked end to end looking at the storefronts and the Vendome column vista, about 15-20 min, with no single interior that is the point of a visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A wide luxury shopping street with vehicle traffic and no free public seating, its jewellery-shop windows fronting narrow pavements make it unsafe for a running child and offer nowhere to sit, but it is broad, well-lit and central enough for someone to be left standing at night."
   }
 ]

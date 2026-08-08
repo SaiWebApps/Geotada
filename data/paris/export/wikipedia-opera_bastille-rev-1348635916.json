@@ -6,7 +6,7 @@
     "longitude": 2.370108,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 20,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Opera Bastille",
@@ -340,6 +340,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated opera house entered by ticket, but performance/visit hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Large modern opera house; the sweeping glass exterior takes several minutes, a guided backstage-and-auditorium tour runs about an hour.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A modern opera house whose broad exterior steps face the busy traffic circle of Place de la Bastille with no traffic-free run and no quiet free seating, but the square is brightly lit and crowded at all hours so ending a tour there is safe."
   }
 ]

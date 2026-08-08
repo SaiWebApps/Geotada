@@ -207,6 +207,13 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             "opening_hours_source": poi.get("opening_hours_source"),
             "opening_hours_basis": (poi.get("opening_hours_basis") or "").strip() or None,
             "place_category": (poi.get("place_category") or "").strip() or None,
+            # Place judgements (redesign row 6.4, plan S2.6) — three AI verdicts
+            # with no external source, same no-defaults rule as the fields
+            # above: absence stays absent, never a made-up affordance.
+            "children_can_run": poi.get("children_can_run"),
+            "sit_and_talk": poi.get("sit_and_talk"),
+            "good_after_dark": poi.get("good_after_dark"),
+            "judgement_basis": (poi.get("judgement_basis") or "").strip() or None,
         })
 
     result = session.run(
@@ -232,12 +239,85 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             p.opening_hours        = poi.opening_hours,
             p.opening_hours_source = poi.opening_hours_source,
             p.opening_hours_basis  = poi.opening_hours_basis,
-            p.place_category       = poi.place_category
+            p.place_category       = poi.place_category,
+            p.children_can_run     = poi.children_can_run,
+            p.sit_and_talk         = poi.sit_and_talk,
+            p.good_after_dark      = poi.good_after_dark,
+            p.judgement_basis      = poi.judgement_basis
         RETURN count(p) AS total
         """,
         pois=params,
     )
     created = result.single()["total"]
+    return {"created": created, "skipped": skipped, "out_of_bounds": out_of_bounds}
+
+
+def _upload_body_places(session, city_slug: str, bbox: tuple) -> dict[str, int]:
+    """Upload toilets/benches from ``data/{slug}/body-places.json`` as
+    ``poi_role="body"`` POI nodes — the S2.5 OSM pass
+    (``scripts/poi_body_places.py``). Absent file = this city has not run the
+    pass yet; skipped, not an error, so every other city's upload is
+    unaffected by this function's existence.
+
+    Uploaded as ordinary ``:POI`` nodes, not a separate label, so body places
+    flow through the SAME loader (``LOAD_PARIS_POIS_CYPHER``) the planner
+    already reads. ``POI_ROLE_MULTIPLIER["body"] = 0.0`` (src/tour/selection.py)
+    is what then keeps them out of the story ranking; only the rest-cadence
+    axis (``_seat_body_stops``) may ever schedule one. `name_key` is the
+    record's own stable id ("body-toilet-<osmid>") rather than a canonicalized
+    name — a body place has no name to canonicalize, and the id is already the
+    MERGE-safe, re-upload-stable key the fetch pass produces.
+    """
+    path = city_registry.onboard_data_root() / city_slug / "body-places.json"
+    if not path.exists():
+        return {"created": 0, "skipped": 0, "out_of_bounds": 0}
+    records = _load_json(path)
+
+    params = []
+    out_of_bounds = 0
+    for rec in records:
+        lat, lng = rec.get("lat"), rec.get("lng")
+        if lat is None or lng is None:
+            continue
+        if not _in_city_bounds(float(lat), float(lng), bbox):
+            out_of_bounds += 1
+            continue
+        kind = rec.get("kind")
+        params.append({
+            "name_key": rec["id"],
+            "city_name": city_slug,
+            "name": "Public toilet" if kind == "toilet" else "Bench",
+            "lat": float(lat),
+            "lon": float(lng),
+            "poi_role": "body",
+            # A body stop carries ZERO NARRATION but real minutes (plan S2.5:
+            # "seated as a zero-narration stop" — narration, not duration).
+            # Nadia's toilet stop and Rosemary's bench sits are both real
+            # time the day spends; these are conservative fixed minutes, not
+            # narration-derived, since a body place has no beats to price by.
+            "typical_duration_min": 5 if kind == "toilet" else 8,
+        })
+
+    result = session.run(
+        """
+        UNWIND $places AS place
+        MERGE (p:POI {name_key: place.name_key, city_name: place.city_name})
+        ON CREATE SET p.id = randomUUID()
+        SET p.name              = place.name,
+            p.short_description = "",
+            p.location           = point({latitude: place.lat, longitude: place.lon, srid: 4326}),
+            p.importance_tier    = 1,
+            p.trigger_radius     = 10,
+            p.kid_friendly       = "yes",
+            p.name_variations    = [],
+            p.poi_role           = place.poi_role,
+            p.typical_duration_min = place.typical_duration_min
+        RETURN count(p) AS total
+        """,
+        places=params,
+    )
+    created = result.single()["total"]
+    skipped = len(records) - len(params) - out_of_bounds
     return {"created": created, "skipped": skipped, "out_of_bounds": out_of_bounds}
 
 
@@ -520,6 +600,12 @@ def main() -> None:
                 f"(null coords), {poi_stats['out_of_bounds']} skipped (out of bounds) "
                 f"({time.time()-t0:.1f}s)"
             )
+            body_stats = _upload_body_places(session, city_slug, bbox)
+            if body_stats["created"] or body_stats["out_of_bounds"]:
+                print(
+                    f"         + {body_stats['created']} body places (toilets/benches) "
+                    f"created, {body_stats['out_of_bounds']} skipped (out of bounds)"
+                )
 
             # 4. Beats + relationships
             print(f"  [4/5] Uploading {len(beats)} beats + linking...")

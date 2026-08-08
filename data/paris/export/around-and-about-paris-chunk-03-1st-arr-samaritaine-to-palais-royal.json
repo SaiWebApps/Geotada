@@ -6,7 +6,7 @@
     "longitude": 2.3458,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "La Conciergerie"
@@ -183,7 +183,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated ticketed monument; transcribed from OSM tag 'Mo-Su 09:30-18:00'.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3900,
+    "visit_basis": "Medieval royal palace and Revolutionary prison; the vaulted Hall of the Men-at-Arms, the tribunal and Marie Antoinette's cell take around an hour plus a ticket queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A medieval prison-monument requiring paid entry where quiet is expected indoors and there is no free seating, and the building locks at closing so no one can be left standing inside after dark."
   },
   {
     "name": "Ile de la Cite",
@@ -192,7 +198,7 @@
     "longitude": 2.3472,
     "importance_tier": 5,
     "trigger_radius": 100,
-    "typical_duration_min": 30,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "City Island"
@@ -264,7 +270,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open Seine island crossed by public streets and bridges, valued in the open air with no gate between street and experience.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Whole Seine island of quays, squares and lanes to walk across between Notre-Dame and Pont Neuf; a setting explored on foot with no single interior to enter here.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark."
   },
   {
     "name": "Place Dauphine",
@@ -273,7 +285,7 @@
     "longitude": 2.342655,
     "importance_tier": 2,
     "trigger_radius": 30,
-    "typical_duration_min": 10,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -340,7 +352,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open triangular public square on the Île de la Cité, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Quiet triangular square of 1607 townhouses with trees and cafes on the Île de la Cité; an enclosed square to walk through and pause in, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A quiet triangular square with light local traffic and open gravel that is not fully enclosed from its access roads so children could stray, but there are benches and enough calm to talk, and it stays lit and safely central at night."
   },
   {
     "name": "Place du Châtelet",
@@ -349,7 +367,7 @@
     "longitude": 2.347463,
     "importance_tier": 3,
     "trigger_radius": 40,
-    "typical_duration_min": 10,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Châtelet",
@@ -480,7 +498,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square with fountain and theatres, its value in the open street, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large square with the Victoire fountain flanked by two grand 1860s theatres, walked between positions to view; an open square, nothing entered on a tour.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A major traffic square ringed by heavy roads with no enclosure and only fountain-edge perches beside noisy traffic, so children cannot run and quiet talk is impossible, but it is brightly lit, central and busy at all hours."
   },
   {
     "name": "Pont Neuf",
@@ -489,7 +513,7 @@
     "longitude": 2.341033,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "New Bridge"
@@ -526,7 +550,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
-    "place_category": "bridge"
+    "place_category": "bridge",
+    "visit_seconds_inside": null,
+    "visit_basis": "Oldest bridge in Paris with 381 carved grotesque faces and river views from its bays; a destination to walk across and pause on but nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours."
   },
   {
     "name": "Sainte-Chapelle",
@@ -535,7 +565,7 @@
     "longitude": 2.34483,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 20,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "The Holy Chapel"
@@ -671,7 +701,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated ticketed chapel; transcribed from OSM tag \"Jan-Mar 09:00-17:00; Apr-Sep 09:00-19:00; Oct-Dec 09:00-17:00\" using the current Apr-Sep 09:00-19:00 season.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 3960,
+    "visit_basis": "The modest facade and courtyard are seen in 15 minutes; inside is roughly 28 minutes of security and ticket queue plus 38 minutes under the two-storey glass, the upper chapel's 15 stained-glass windows being the whole point.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A small ticketed Gothic chapel where silence is expected and there is no free seating for conversation, and it is locked after closing so no one can be left standing inside at night."
   },
   {
     "name": "Tour de l'Horloge",
@@ -721,6 +757,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "The clock is mounted on the Conciergerie exterior and viewed from the street, so as a monument seen from the pavement it is not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "A medieval clock tower with an ornate gilded public clock viewed from the street corner; ten minutes to look at the clock and its sculpture, with no visitor interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A clock tower viewed from a pavement beside the traffic of the Ile de la Cite with no seating or safe run-space, but the central quays here are lit and busy at night."
   }
 ]

@@ -57,6 +57,22 @@ _ROUTING_CONFIG = {
     "units": "kilometers",
 }
 
+#: What each `TourInput.route_surface` axis value asks Valhalla for, per
+#: W2.1's live capability proof (redesign §2.4; plan S2.7;
+#: specs/2026-08-07-tour-algorithm-redesign/phase2-ledger.md): a real request
+#: over the Rue Foyatier stairs (Place Saint-Pierre -> Sacre-Coeur forecourt)
+#: measurably swung the route around the butte under `step_penalty` alone
+#: (+878 m, +1060 s) and under `step_penalty` + `type: "wheelchair"` combined
+#: (+888 m) — probed live, not read from documentation. `max_grade` and
+#: `use_hills` were ALSO probed on the same pair and recorded INERT; they are
+#: deliberately absent here. "any" carries no override — today's requests,
+#: byte-identical.
+ROUTE_SURFACE_COSTING_OVERRIDES: dict[str, dict | None] = {
+    "any": None,
+    "no_stairs": {"step_penalty": 3600},
+    "step_free": {"step_penalty": 3600, "type": "wheelchair"},
+}
+
 
 def _canonical_json(value: object) -> str:
     return json.dumps(
@@ -116,13 +132,29 @@ class RoutingClient:
     def __exit__(self, *exc) -> None:
         self.close()
 
-    def leg_seconds(self, from_lat: float, from_lng: float, to_lat: float, to_lng: float) -> int:
+    def leg_seconds(
+        self,
+        from_lat: float,
+        from_lng: float,
+        to_lat: float,
+        to_lng: float,
+        *,
+        costing_options_override: dict | None = None,
+    ) -> int:
         """Walking seconds for one leg (routed, else pace-corrected haversine)."""
-        seconds, _meters, _shape = self.route(from_lat, from_lng, to_lat, to_lng)
+        seconds, _meters, _shape = self.route(
+            from_lat, from_lng, to_lat, to_lng, costing_options_override=costing_options_override
+        )
         return seconds
 
     def route(
-        self, from_lat: float, from_lng: float, to_lat: float, to_lng: float
+        self,
+        from_lat: float,
+        from_lng: float,
+        to_lat: float,
+        to_lng: float,
+        *,
+        costing_options_override: dict | None = None,
     ) -> tuple[int, float, str | None]:
         """(walk_seconds, distance_m, encoded_polyline6 | None) for one leg.
 
@@ -131,28 +163,71 @@ class RoutingClient:
         summarise_route records today).
         """
         seconds, distance_m, shape, _receipt = self.route_with_receipt(
-            from_lat, from_lng, to_lat, to_lng
+            from_lat,
+            from_lng,
+            to_lat,
+            to_lng,
+            costing_options_override=costing_options_override,
         )
         return seconds, distance_m, shape
 
     def route_with_receipt(
-        self, from_lat: float, from_lng: float, to_lat: float, to_lng: float
+        self,
+        from_lat: float,
+        from_lng: float,
+        to_lat: float,
+        to_lng: float,
+        *,
+        costing_options_override: dict | None = None,
     ) -> tuple[int, float, str | None, ValhallaLegReceipt | None]:
         """Route one leg and retain replayable evidence when Valhalla succeeds.
 
         Fallback behavior remains byte-for-byte compatible with :meth:`route`;
         a ``None`` receipt is the explicit signal that no Valhalla result exists.
+
+        ``costing_options_override`` (plan S2.7; W2.1 proved live: `step_penalty`
+        genuinely moves a route off the Rue Foyatier stairs) merges INTO the
+        pedestrian costing for THIS request only — ``None`` (the default) keeps
+        ``_ROUTING_CONFIG``, byte-identical to every caller before this
+        parameter existed. Never mutates the module-level ``_ROUTING_CONFIG`` /
+        ``_PEDESTRIAN_COSTING_OPTIONS``, which would repoint every request
+        including the reach contour and change ``VALHALLA_ROUTING_CONFIG_SHA256``
+        for tours that never asked for a surface constraint. The receipt's
+        ``routing_config_json``/``routing_config_sha256`` are rebuilt from the
+        OVERRIDDEN config rather than the module constants when an override
+        rides — ``ValhallaLegReceipt._canonical_payloads_match_fields`` derives
+        the config it expects from the request itself (strips ``locations``,
+        hashes the rest), so a receipt claiming the default config while an
+        override actually rode the request would fail that check, correctly.
         """
         if self._degraded:
             seconds, distance_m, shape = self._route_fallback(from_lat, from_lng, to_lat, to_lng)
             return seconds, distance_m, shape, None
 
+        if costing_options_override is None:
+            routing_config = _ROUTING_CONFIG
+            routing_config_json = VALHALLA_ROUTING_CONFIG_JSON
+            routing_config_sha256 = VALHALLA_ROUTING_CONFIG_SHA256
+        else:
+            routing_config = {
+                **_ROUTING_CONFIG,
+                "costing_options": {
+                    "pedestrian": {
+                        **_PEDESTRIAN_COSTING_OPTIONS["pedestrian"],
+                        **costing_options_override,
+                    }
+                },
+            }
+            routing_config_json = _canonical_json(routing_config)
+            routing_config_sha256 = hashlib.sha256(
+                routing_config_json.encode("utf-8")
+            ).hexdigest()
         request_payload = {
             "locations": [
                 {"lat": from_lat, "lon": from_lng},
                 {"lat": to_lat, "lon": to_lng},
             ],
-            **_ROUTING_CONFIG,
+            **routing_config,
         }
         try:
             resp = self._client.post(
@@ -172,8 +247,8 @@ class RoutingClient:
                 requested_to=(to_lat, to_lng),
                 request_json=request_json,
                 request_sha256=hashlib.sha256(request_json.encode("utf-8")).hexdigest(),
-                routing_config_json=VALHALLA_ROUTING_CONFIG_JSON,
-                routing_config_sha256=VALHALLA_ROUTING_CONFIG_SHA256,
+                routing_config_json=routing_config_json,
+                routing_config_sha256=routing_config_sha256,
                 response_json=response_json,
                 response_sha256=hashlib.sha256(response_json.encode("utf-8")).hexdigest(),
                 seconds=seconds,
@@ -215,21 +290,36 @@ class RoutingClient:
         d = haversine_m(from_lat, from_lng, to_lat, to_lng)
         return (pace_corrected_walk_seconds(d), d, None)
 
-    def isochrone(self, lat: float, lng: float, minutes: int) -> dict | None:
+    def isochrone(
+        self, lat: float, lng: float, minutes: int, *, walking_speed_kmh: float | None = None
+    ) -> dict | None:
         """GeoJSON FeatureCollection of the walking isochrone, or ``None``.
 
         ``None`` tells the caller to keep using the analytic envelope radius
         (``envelope_radius_m``) — the pre-M1 behavior.
+
+        ``walking_speed_kmh`` (plan S2.4) overrides the request's pedestrian
+        speed for THIS call only — the mechanism a slow party's pace shrinks
+        the reach polygon with, so the road-network admission test and the
+        analytic circle (``envelope_radius_m(..., pace_multiplier=...)``)
+        shrink together rather than one silently staying full-size while the
+        other reports a shrink that never happened. ``None`` (the default)
+        keeps ``_REACH_COSTING_OPTIONS`` — today's behaviour, byte-identical.
         """
         if self._degraded:
             return None
+        costing_options = (
+            _REACH_COSTING_OPTIONS
+            if walking_speed_kmh is None
+            else {"pedestrian": {"walking_speed": walking_speed_kmh}}
+        )
         try:
             resp = self._client.post(
                 "/isochrone",
                 json={
                     "locations": [{"lat": lat, "lon": lng}],
                     "costing": "pedestrian",
-                    "costing_options": _REACH_COSTING_OPTIONS,
+                    "costing_options": costing_options,
                     "contours": [{"time": float(minutes)}],
                     "polygons": True,
                 },

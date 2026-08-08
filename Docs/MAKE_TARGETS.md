@@ -67,6 +67,9 @@ process—never a cached or filtered subset.
 | `geocode-pois` | Exact local profile | No | Yes, with slug |
 | `poi-opening-hours` | None; reads/writes `data/{slug}/poi-raw.json` | Yes | Yes; one Overpass query + a paid model pass; `LIMIT=` writes nothing |
 | `poi-place-category` | None; reads/writes `data/{slug}/poi-raw.json` | No | Yes; deterministic and $0, no network |
+| `poi-body-places` | None; writes `data/{slug}/body-places.json` | No | Yes; one Overpass query, $0, no model; `LIMIT=` writes nothing |
+| `poi-place-judgements` | None; reads/writes `data/{slug}/poi-raw.json` | Yes | Yes; a paid model pass; `LIMIT=` writes nothing |
+| `sync-poi-exports` | None; reads `poi-raw.json`, writes `data/{slug}/export/*.json` | No | Yes; $0, no network; `ARGS=--check` writes nothing |
 | `tour-build` | Dev DB/data and Valhalla | No | Yes |
 | `measure-planned-audio` | Dev DB/data | No | Yes |
 | `measure-governor` | Dev DB/data | No | Yes |

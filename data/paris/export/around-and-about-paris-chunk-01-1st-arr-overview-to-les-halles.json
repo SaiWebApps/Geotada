@@ -6,7 +6,7 @@
     "longitude": 2.3472,
     "importance_tier": 5,
     "trigger_radius": 100,
-    "typical_duration_min": 30,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "City Island"
@@ -53,7 +53,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open Seine island crossed by public streets and bridges, valued in the open air with no gate between street and experience.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Whole Seine island of quays, squares and lanes to walk across between Notre-Dame and Pont Neuf; a setting explored on foot with no single interior to enter here.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark."
   },
   {
     "name": "Jardin des Tuileries",
@@ -62,7 +68,7 @@
     "longitude": 2.3274,
     "importance_tier": 5,
     "trigger_radius": 100,
-    "typical_duration_min": 45,
+    "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
       "Tuileries Garden",
@@ -179,7 +185,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated garden with closing gates; transcribed from OSM tag 'Mo-Su 07:30-21:00'.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large formal royal garden with long gravel allees, fountains, statues and terraces between the Louvre and Concorde; walking its length and pausing at the basins fills the better part of an hour, open-air throughout.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A large enclosed traffic-free royal garden with gravel paths, lawns and abundant free movable chairs and benches where children can run and two people can talk quietly, but the garden is gated and closed at night."
   },
   {
     "name": "Les Halles",
@@ -188,7 +200,7 @@
     "longitude": 2.347138,
     "importance_tier": 5,
     "trigger_radius": 50,
-    "typical_duration_min": 30,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Forum des Halles",
@@ -341,7 +353,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "As a site/setting it refers to a public area; the surface square and gardens are open-air with no single gate.",
-    "place_category": "market"
+    "place_category": "market",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Site of the former market, now the Forum des Halles with its Canopy roof and surrounding gardens; the mall interior and levels absorb around 40 min if entered.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A large shopping-centre-and-garden complex where children cannot run free among crowds and roads, but the surrounding Nelson Mandela garden has free benches and lawns quiet enough to talk, and the area is lit and busy well into the night."
   },
   {
     "name": "Louvre Museum",
@@ -350,7 +368,7 @@
     "longitude": 2.3358,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 90,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Musee du Louvre",
@@ -682,7 +700,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated museum; hours from the Louvre's own published schedule, closed Tuesdays with late Friday opening.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The glass pyramid, the Cour Napoleon and the palace facades absorb half an hour outside; inside is the world's largest art museum with 35,000 works over several wings that would absorb a full day, capped at the 90-minute tour maximum plus a long security and ticket queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "The interior is a hushed gallery where quiet is expected and running is forbidden, and the courtyard has no significant free quiet seating away from crowds; the pyramid courtyard is lit, open and busy into the evening, so standing there after dark is fine."
   },
   {
     "name": "Paris Catacombs",
@@ -691,7 +715,7 @@
     "longitude": 2.33225,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 10,
     "kid_friendly": "no",
     "name_variations": [
       "Catacombes de Paris",
@@ -736,7 +760,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated underground ossuary with ticket line but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Long underground tunnel route through the bone-lined ossuary of six million dead; the walk plus a notoriously long ticket queue would absorb over two hours, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A confined underground ossuary of narrow tunnels with no running room, no seating and no place to talk, and it is locked and inaccessible at night."
   },
   {
     "name": "Pavillon de Flore",
@@ -745,7 +775,7 @@
     "longitude": 2.336574,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Pavillon de l'Egalite"
@@ -788,7 +818,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Louvre wing viewed from the exterior as a walk-by, not gated as an independent entry.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Ornate southwest wing of the Louvre Palace seen from the riverside and Tuileries; a facade you pause at briefly, no separate entrance for it.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A Louvre palace wing passed by on foot along trafficked quays and passages with no free seating and nowhere enclosed for a child to run, but the central riverside location is lit and peopled at night."
   },
   {
     "name": "Place Vendome",
@@ -797,7 +833,7 @@
     "longitude": 2.3292,
     "importance_tier": 4,
     "trigger_radius": 40,
-    "typical_duration_min": 10,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -840,7 +876,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public square with its column and buildings viewed in the open air, so it is not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Octagonal 17th-century square with a tall bronze column at its centre ringed by uniform facades; you walk between vantage points around the column and along the arcades for about half an hour, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An open octagonal square with vehicle traffic circulating and no free seating, offering no safe enclosed run-space, but it is central, well-lit and patrolled into the night."
   },
   {
     "name": "Saint-Eustache",
@@ -849,7 +891,7 @@
     "longitude": 2.3456,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Eglise Saint-Eustache"
@@ -1044,6 +1086,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo-Fr 09:30-19:00; Sa 10:00-19:00; Su 09:00-19:00'.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Second-largest church in Paris, a Gothic-Renaissance hybrid with the country's largest organ and soaring vaults; interior takes about 25 min, exterior facing Les Halles a few minutes.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The church itself is a quiet interior forbidding running, but it fronts the traffic-free Les Halles gardens with benches and lawns where two people can sit and talk, and the surrounding pedestrian district stays lit and busy after dark."
   }
 ]

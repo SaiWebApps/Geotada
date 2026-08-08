@@ -6,7 +6,7 @@
     "longitude": 2.368776,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "July Column",
@@ -304,6 +304,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A commemorative column standing in the middle of Place de la Bastille and viewed from the open square; the crypt is not routinely public, but the monument itself is not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "47-metre bronze column at the centre of the busy Place de la Bastille; you walk between viewing positions around the traffic circle to take it in, and the crypt is not normally open to visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "The column stands on a traffic island in the middle of the vast Place de la Bastille roundabout, ringed by heavy traffic with no traffic-free run and no free quiet seating, but the square is brightly lit and busy at all hours so standing there after dark is fine."
   }
 ]

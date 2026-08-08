@@ -6,7 +6,7 @@
     "longitude": 2.304005,
     "importance_tier": 4,
     "trigger_radius": 150,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Monceau Park",
@@ -388,7 +388,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated public park with closing bells, but no OSM tag is given and I do not confidently know its seasonal hours; gated, hours not confidently known; left unfiltered.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Romantic English-style park with winding paths, a Roman colonnade around an oval pond, a miniature pyramid and other follies to walk between; a full loop taking in the features runs about half an hour.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A fully enclosed traffic-free park with lawns and paths lets children run and offers ample free benches for quiet talk, but its gates are locked at night so no one can be left standing inside."
   },
   {
     "name": "Musée Jacquemart-André",
@@ -397,7 +403,7 @@
     "longitude": 2.310789,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Jacquemart-André Museum",
@@ -467,7 +473,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated museum requiring a ticket, but its hours are not confidently known; left unfiltered.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Second Empire mansion with Italian Renaissance and French 18th-century collections, grand staircase and tea salon; would absorb well over 90 minutes with audioguide, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A museum mansion with a hushed interior full of fragile collections where children cannot run free, seating tied to a ticketed visit or a paid café, and gates locked at night."
   },
   {
     "name": "Musée de la Vie Romantique",
@@ -476,7 +488,7 @@
     "longitude": 2.3335217,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -714,7 +726,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated museum, transcribed faithfully from its OSM tag 'Tu-Su 10:00-18:00, Mo off'.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 3000,
+    "visit_basis": "House-museum of the Romantic era set around a courtyard garden; the ground-floor rooms with George Sand memorabilia and upstairs paintings take about 45 minutes plus a short entry, and the leafy courtyard and café add outside time.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a house-museum where quiet is expected indoors so children cannot run, but its courtyard garden has free-to-sit areas quiet enough for conversation, and it closes and locks in the evening so it fails after dark."
   },
   {
     "name": "Square des Batignolles",
@@ -723,7 +741,7 @@
     "longitude": 2.3162267,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1031,7 +1049,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated public square with closing bells, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "English-style neighbourhood park with a winding stream, small lake, grotto and mature trees; walking its curving paths and pausing at the water absorbs about half an hour, with nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a fenced traffic-free English-style garden square with lawns, a pond and play areas where children can run and plenty of free benches quiet enough to talk, but it is gated and locked at nightfall so no one can be left standing inside after dark."
   },
   {
     "name": "Square d'Orléans",
@@ -1040,7 +1064,7 @@
     "longitude": 2.3360446,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1145,7 +1169,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private residential courtyard/passage viewed as an open urban space; not gated in the touring sense, so null.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Private residential courtyard-square off a passage, a paved court with a fountain and elegant facades to walk into and round; nothing public to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A private residential courtyard-square off rue Taitbout entered through a carriage arch, with paved cobbled ground and no lawns for children to range freely, some benches and quiet enclosed surroundings good for talking, but it is a gated private enclave closed and unwelcoming to outsiders at night."
   },
   {
     "name": "Cathédrale Saint-Alexandre-Nevsky",
@@ -1154,7 +1184,7 @@
     "longitude": 2.301992,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Alexander Nevsky Cathedral",
@@ -1222,7 +1252,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated church you enter; hours not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Russian Orthodox cathedral with five gilded onion domes; the exterior and forecourt reward a good look, and the icon-filled Byzantine-Muscovite interior takes around twenty minutes when open during limited visiting hours.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A working Orthodox church where silence and reverence are expected, with no running and no casual public seating for conversation, and its doors and surrounding gates are closed after services so no one is left standing inside after dark."
   },
   {
     "name": "Place Saint-Georges",
@@ -1231,7 +1267,7 @@
     "longitude": 2.3374403,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1245,6 +1281,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square whose value stands in the open from the pavement; not gated, so null.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small ornate 19th-century circle with a central monument and townhouse facades around it; you walk the ring reading the buildings, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A traffic circle around a central fountain with roads on all sides, so a child could run into vehicles and there is no protected play space, the narrow central island has little usable free seating and traffic noise makes talking effort, but it is lit, open and busy with people and traffic after dark."
   }
 ]

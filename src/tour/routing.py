@@ -256,16 +256,28 @@ def haversine_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     return EARTH_RADIUS_M * c
 
 
-def pace_corrected_walk_seconds(haversine_distance_m: float) -> int:
+def pace_corrected_walk_seconds(
+    haversine_distance_m: float, *, pace_multiplier: float = 1.0
+) -> int:
     """Walking time in seconds for a haversine straight-line distance.
 
     Applies the x1.35 correction so that a 1km haversine line takes
     1350m / (3000m/h) ≈ 27 minutes worth of walking.
+
+    `pace_multiplier` (redesign §2.4; plan S2.4) divides the walking speed —
+    2.0 = half speed, Nadia's "Pace drops to roughly half"
+    (docs/personas/03-family-with-children.md step 4). 1.0 is the identity
+    default: byte-identical to every caller before this parameter existed.
+    The fast direction (< 1.0) is not this function's job to police — the
+    contract field that feeds it (`TourInput.walking_pace`) is the one place
+    that rejects it, so a caller handing a bad multiplier straight to this
+    function is a caller that bypassed validation, not a case this function
+    silently accepts.
     """
     if haversine_distance_m <= 0:
         return 0
     actual_distance_m = haversine_distance_m * HAVERSINE_CORRECTION
-    speed_m_per_s = (PACE_KMH * 1000.0) / 3600.0
+    speed_m_per_s = (PACE_KMH * 1000.0) / 3600.0 / pace_multiplier
     return round(actual_distance_m / speed_m_per_s)
 
 
@@ -274,6 +286,7 @@ def envelope_radius_m(
     *,
     round_trip: bool,
     planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
+    pace_multiplier: float = 1.0,
 ) -> float:
     """Reachable straight-line radius from the origin under the planning budget.
 
@@ -286,13 +299,23 @@ def envelope_radius_m(
     USES `REACH_PACE_KMH`, NOT `PACE_KMH`, and the two are different numbers on
     purpose — see the constant. This radius is how far a tour may range, and it must
     not move because people were re-measured as walking faster.
+
+    `pace_multiplier` (redesign §2.4; plan S2.4) SHRINKS the circle — a slow
+    party covers less ground in the same walking budget, so they are offered a
+    smaller world, never the same one at a pace they cannot keep. 1.0 is the
+    identity default. Density's own `assess` call (src/tour/density.py) and
+    the planner's `select_route` (via `reach_envelope_searched`) both read
+    this from the SAME `TourInput.walking_pace` field, so the tourability
+    gate and the planner never disagree about how far this party can walk.
     """
     if duration_min <= 0:
         return 0.0
     walk_min = route_planning_budget(
         duration_min, planning_policy
     ).walk_envelope_minutes
-    straight_m = (walk_min * REACH_PACE_KMH * 1000.0) / 60.0 / HAVERSINE_CORRECTION
+    straight_m = (
+        (walk_min * REACH_PACE_KMH * 1000.0) / 60.0 / HAVERSINE_CORRECTION / pace_multiplier
+    )
     return straight_m / 2.0 if round_trip else straight_m
 
 
@@ -423,6 +446,45 @@ def default_leg_seconds(lat1: float, lng1: float, lat2: float, lng2: float) -> i
     return pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
 
 
+def insertion_extra_at_index(
+    candidate: POI,
+    ordered: list[POI],
+    idx: int,
+    *,
+    start_lat: float,
+    start_lng: float,
+    round_trip: bool,
+    leg_seconds_fn: LegSecondsFn | None = None,
+    fixed_end: tuple[float, float] | None = None,
+) -> int:
+    """Walk-time delta from inserting `candidate` at exactly position `idx`.
+
+    THE one single-index insertion-cost computation (dedup-review 2026-08-07):
+    ``insertion_cost_seconds``'s per-position loop below and every single-index
+    recompute in selection.py (the one-way pull-clamp case, and the pinned
+    A→selected→B chain) independently rebuilt this same splice-and-diff before
+    this consolidation. This is now the one definition all three call.
+    """
+    base_coords: list[tuple[float, float]] = [
+        (start_lat, start_lng), *((p.lat, p.lng) for p in ordered)
+    ]
+    if fixed_end is not None:
+        base_coords.append(fixed_end)
+    elif round_trip:
+        base_coords.append((start_lat, start_lng))
+    base = path_walk_seconds(base_coords, leg_seconds_fn)
+
+    new_pois = [*ordered[:idx], candidate, *ordered[idx:]]
+    new_coords: list[tuple[float, float]] = [
+        (start_lat, start_lng), *((p.lat, p.lng) for p in new_pois)
+    ]
+    if fixed_end is not None:
+        new_coords.append(fixed_end)
+    elif round_trip:
+        new_coords.append((start_lat, start_lng))
+    return path_walk_seconds(new_coords, leg_seconds_fn) - base
+
+
 def insertion_cost_seconds(
     candidate: POI,
     ordered: list[POI],
@@ -441,11 +503,6 @@ def insertion_cost_seconds(
     Used by routing-aware greedy selection (§3.2). M3: ``leg_seconds_fn``
     supplies routed leg times (the §3 divisor); default is haversine.
     """
-    coords: list[tuple[float, float]] = [(start_lat, start_lng), *((p.lat, p.lng) for p in ordered)]
-    if round_trip:
-        coords.append((start_lat, start_lng))
-
-    base_seconds = path_walk_seconds(coords, leg_seconds_fn)
     best_extra: int | None = None
     best_idx: int = 0
 
@@ -453,8 +510,15 @@ def insertion_cost_seconds(
     # but never after the closing-return-to-origin segment.
     insertable_positions = len(ordered) + 1
     for idx in range(insertable_positions):
-        new_coords = [*coords[:idx + 1], (candidate.lat, candidate.lng), *coords[idx + 1:]]
-        extra = path_walk_seconds(new_coords, leg_seconds_fn) - base_seconds
+        extra = insertion_extra_at_index(
+            candidate,
+            ordered,
+            idx,
+            start_lat=start_lat,
+            start_lng=start_lng,
+            round_trip=round_trip,
+            leg_seconds_fn=leg_seconds_fn,
+        )
         if best_extra is None or extra < best_extra:
             best_extra = extra
             best_idx = idx
@@ -509,8 +573,14 @@ def _transit(
     to_lat: float,
     to_lng: float,
     routing_client: RoutingClient | None,
+    *,
+    costing_options_override: dict | None = None,
 ) -> TransitSegment:
-    """Build one leg while retaining planning and routed measurements."""
+    """Build one leg while retaining planning and routed measurements.
+
+    ``costing_options_override`` (plan S2.7) carries the route-surface axis's
+    Valhalla costing when set — ``None`` is today's request, byte-identical.
+    """
     d = haversine_m(from_lat, from_lng, to_lat, to_lng)
     secs = pace_corrected_walk_seconds(d)
     leg_seconds: int | None = None
@@ -522,7 +592,11 @@ def _transit(
         route_with_receipt = getattr(routing_client, "route_with_receipt", None)
         if callable(route_with_receipt):
             leg_seconds, routed_m, polyline, receipt = route_with_receipt(
-                from_lat, from_lng, to_lat, to_lng
+                from_lat,
+                from_lng,
+                to_lat,
+                to_lng,
+                costing_options_override=costing_options_override,
             )
         else:
             # Explicit route-only compatibility for injected legacy clients.
@@ -561,12 +635,19 @@ def summarise_route(
     fixed_end_poi_id: str | None = None,
     planned_visit_seconds: Mapping[str, int] | None = None,
     elapsed_shortfall_seconds: int = 0,
+    costing_options_override: dict | None = None,
 ) -> Route:
     """Build a Route from an ordered POI list.
 
     Selection already scores with routed leg seconds when a routing client is
     available. The final Route therefore reports those same road-network times
     and distances; haversine remains the explicit fallback when routing degrades.
+
+    ``costing_options_override`` (plan S2.7) carries the route-surface axis's
+    Valhalla costing to every leg this route contains, so the shipped route's
+    times and shapes are the SAME step-avoiding request selection priced —
+    never a route selected under one costing and reported under another.
+    ``None`` (the default) is today's request, byte-identical.
 
     The six keyword extras exist so a caller REBUILDING a route it has already
     decided on can hand back the parts this function cannot recompute — the
@@ -592,7 +673,16 @@ def summarise_route(
     total_distance = 0.0
 
     for poi in ordered:
-        seg = _transit(prev_id, poi.id, prev_lat, prev_lng, poi.lat, poi.lng, routing_client)
+        seg = _transit(
+            prev_id,
+            poi.id,
+            prev_lat,
+            prev_lng,
+            poi.lat,
+            poi.lng,
+            routing_client,
+            costing_options_override=costing_options_override,
+        )
         transits.append(seg)
         total_distance += (
             seg.leg_distance_m if seg.source == "valhalla" else seg.distance_m
@@ -601,7 +691,16 @@ def summarise_route(
         prev_id = poi.id
 
     if round_trip and ordered:
-        seg = _transit(prev_id, None, prev_lat, prev_lng, start_lat, start_lng, routing_client)
+        seg = _transit(
+            prev_id,
+            None,
+            prev_lat,
+            prev_lng,
+            start_lat,
+            start_lng,
+            routing_client,
+            costing_options_override=costing_options_override,
+        )
         transits.append(seg)
         total_distance += (
             seg.leg_distance_m if seg.source == "valhalla" else seg.distance_m

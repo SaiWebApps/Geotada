@@ -117,6 +117,55 @@ def test_export_matches_poi_raw(city_dir: Path) -> None:
         )
 
 
+def test_export_sync_carries_every_field_the_passes_write() -> None:
+    """`make sync-poi-exports` must never silently strand a newly enriched field.
+
+    The enrichment passes write fields into poi-raw.json only; the export
+    chunks — what `make deploy` actually uploads — receive them via
+    scripts/sync_poi_exports.py, which owns THE one list of propagated fields
+    (`SYNCED_FIELDS`; the passes' trailer messages deliberately do not restate
+    it). This test derives, from each pass script's own source, the set of
+    fields it writes (`poi["<field>"] = ...`) and fails the moment a pass
+    starts writing a field the sync would not carry — the exact gap that made
+    W1.8 need a scratch sync script in the first place.
+
+    Hop-style source scan (the `test_golden_diff_cli_reads_the_durable_key`
+    genre): import the module for real first, so a script that raises on
+    import cannot pass a pure text check.
+    """
+    import importlib
+    import re
+
+    module = importlib.import_module("scripts.sync_poi_exports")
+    synced = set(module.SYNCED_FIELDS)
+    assert synced, "SYNCED_FIELDS is empty — the sync would propagate nothing"
+
+    pass_scripts = (
+        "poi_visit_duration.py",  # visit-capacity trio
+        "poi_opening_hours.py",  # opening-hours trio
+        "poi_place_category.py",  # place_category
+    )
+    assignment = re.compile(r'\bpoi\["([a-z_]+)"\]\s*=')
+    written: set[str] = set()
+    for script_name in pass_scripts:
+        source = (REPO_ROOT / "scripts" / script_name).read_text()
+        fields = assignment.findall(source)
+        assert fields, (
+            f"scripts/{script_name}: the source scan matched no poi[...] = assignment — "
+            "either the pass stopped writing fields or the write pattern changed; "
+            "update this scan so it keeps guarding the sync list"
+        )
+        written.update(fields)
+
+    missing = written - synced
+    assert not missing, (
+        f"pass scripts write {sorted(missing)} but SYNCED_FIELDS in "
+        "scripts/sync_poi_exports.py does not carry them — the field would reach "
+        "poi-raw.json and never reach the export chunks (the Notre-Dame tier-1 "
+        "incident shape, see this file's module docstring)"
+    )
+
+
 def test_no_tier_one_for_known_top_landmarks() -> None:
     """Sanity guard: a hard-coded list of obvious world landmarks must NEVER
     appear at importance_tier 1 in any city's poi-raw.json. Catches accidental

@@ -6,7 +6,7 @@
     "longitude": 2.352095,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Centre Georges Pompidou",
@@ -106,7 +106,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated museum; hours from the Centre's own published schedule, closed Tuesdays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The exposed-pipe exterior and the sloping piazza where crowds gather absorb 20 minutes; inside is Europe's largest modern art collection plus the escalator facade views, which would absorb over two hours, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The museum interior forbids running, but the large sloping traffic-free forecourt has broad ground and low ledges where people sit and talk, and the plaza is lit and busy with people into the evening, so standing after dark is fine; note the forecourt itself is fairly open, but its slope toward buildings not traffic still does not make it safe free-range running ground for a loud fast child amid dense crowds."
   },
   {
     "name": "Atelier Brancusi",
@@ -115,7 +121,7 @@
     "longitude": 2.352,
     "importance_tier": 2,
     "trigger_radius": 30,
-    "typical_duration_min": 15,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -191,7 +197,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A museum studio you enter, hence gated; transcribed from OSM tag 'Mo,We,Th,Fr,Sa,Su 14:00-18:00' with Tuesday closed.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Reconstructed sculptor's studio of four glazed rooms packed with Brancusi's works arranged as he left them; a focused visit of about 35-40 minutes including entry.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A quiet museum studio interior where visitors are expected to be silent and there is no free seating, closed and locked at night, so it fails all three tests despite the open Pompidou piazza nearby."
   },
   {
     "name": "Stravinsky Fountain",
@@ -200,7 +212,7 @@
     "longitude": 2.3515,
     "importance_tier": 3,
     "trigger_radius": 30,
-    "typical_duration_min": 10,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Fontaine Stravinsky"
@@ -241,7 +253,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public fountain and square with no barrier, so it is not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Open water basin filled with sixteen playful kinetic and colourful sculptures to walk round and watch turn and spray; a stop entirely outside with nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A traffic-free pedestrian plaza around a fountain with broad flat paving and low walls and ledges people sit on, enclosed from cars, and lit and busy in the evening beside the Pompidou, so children can run, people can sit, and it is fine at nightfall (though the fountain basin edges warrant a watchful eye)."
   },
   {
     "name": "Eglise Saint-Merri",
@@ -250,7 +268,7 @@
     "longitude": 2.3509,
     "importance_tier": 2,
     "trigger_radius": 50,
-    "typical_duration_min": 15,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -375,7 +393,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A church you enter, hence gated; transcribed from OSM tag '09:00-18:00' applied to every day.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Flamboyant Gothic facade to read from the street, then an interior with stained glass, organ and side chapels absorbing about 20 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A Gothic church where quiet is expected inside and the exterior offers only a narrow pavement with no free seating, locked at night, so all three affordances fail."
   },
   {
     "name": "Rue de la Verrerie",
@@ -384,7 +408,7 @@
     "longitude": 2.353,
     "importance_tier": 1,
     "trigger_radius": 40,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -422,7 +446,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A public medieval street whose value is in the open, so it is not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Medieval Marais street to walk along for its old frontages and the playing-card tale; value is entirely along the street with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow medieval street open to traffic with no free seating and no distinctive lighting or crowds to hold anyone after dark, so a child could reach the road, there is nowhere quiet to sit, and it would be a deserted lane at nightfall."
   },
   {
     "name": "Hotel de Ville",
@@ -509,7 +539,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated building with ticketed exhibition access; transcribed from OSM tag 'Mo-Sa 10:00-19:00' with Sunday closed.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Grand neo-Renaissance city hall facade fronting a large open plaza where you stand back to take in the statues and rooflines; interior open only for occasional booked exhibitions, not a normal visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A city-hall forecourt that is open paved plaza bordered by trafficked streets with no free seating and often fenced for events, so children cannot safely range and there is nowhere to sit quietly, but the square is well lit and peopled into the evening."
   },
   {
     "name": "BHV (Bazar de l'Hotel de Ville)",
@@ -518,7 +554,7 @@
     "longitude": 2.3541,
     "importance_tier": 5,
     "trigger_radius": 50,
-    "typical_duration_min": 15,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
       "BHV Marais"
@@ -599,7 +635,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A department store with entrance doors, hence gated; transcribed from OSM tag 'Mo-Sa 10:00-19:00' with Sunday closed.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Large multi-floor department store with its famous basement hardware hall plus fashion and homeware floors to browse; an engaged wander of roughly 50 minutes inside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A department store interior full of fragile merchandise where running is not tolerated and free seating is scarce, but it sits on a busy well-lit boulevard by the Hotel de Ville where someone could be left standing safely in the evening."
   },
   {
     "name": "Eglise des Billettes",
@@ -608,7 +650,7 @@
     "longitude": 2.355,
     "importance_tier": 1,
     "trigger_radius": 40,
-    "typical_duration_min": 10,
+    "typical_duration_min": 6,
     "kid_friendly": "caution",
     "name_variations": [],
     "parent_poi": null,
@@ -669,7 +711,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A church and cloister you enter, hence gated, but its hours are not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Street facade and the small surviving medieval cloister beside the church, plus a plain single-nave interior; together about 18 minutes if open.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A church and cloister where quiet is expected and the street frontage offers only a narrow pavement with no free seating, locked at night, so none of the tests pass."
   },
   {
     "name": "Fondation Azzedine Alaia",
@@ -678,7 +726,7 @@
     "longitude": 2.3527,
     "importance_tier": 1,
     "trigger_radius": 30,
-    "typical_duration_min": 10,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -711,7 +759,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A foundation gallery that is gated, but as it opens only for specific exhibitions its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Small Marais foundation and exhibition space; when a fashion show is on the gallery absorbs about 25 minutes, otherwise it is a facade to note in passing.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private fashion foundation seen from a narrow Marais street with no enclosure, no free seating and no independent lighting or crowds after dark, so all three fail."
   },
   {
     "name": "Half-Timbered Houses (Rue Francois-Miron)",
@@ -720,7 +774,7 @@
     "longitude": 2.355,
     "importance_tier": 2,
     "trigger_radius": 20,
-    "typical_duration_min": 5,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -756,7 +810,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Historic house facades viewed from the pavement, so it is not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Two rare securely-dated 14th-century timber-framed houses to stand before and study the overhanging storeys and beams; the interest is entirely the exterior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "Historic houses viewed from a narrow street open to traffic with no free seating and no distinctive lighting or crowds to hold anyone at night, so a child could reach the road, there is nowhere to sit, and it fails after dark."
   },
   {
     "name": "Hotel de Beauvais",
@@ -765,7 +825,7 @@
     "longitude": 2.355,
     "importance_tier": 2,
     "trigger_radius": 40,
-    "typical_duration_min": 10,
+    "typical_duration_min": 8,
     "kid_friendly": "caution",
     "name_variations": [
       "Hôtel de Beauvais"
@@ -860,7 +920,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A Marais mansion (now administrative offices) viewed from the street as a walk-by, so it is not gated for the visitor.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Grand 17th-century mansion facade and entrance archway giving a glimpse of the courtyard; an administrative building not generally open, so no interior time.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private mansion seen only from a narrow street frontage with no enclosure, no free seating and nothing to light or populate it after dark, so all three tests fail."
   },
   {
     "name": "Memorial de la Shoah",
@@ -869,7 +935,7 @@
     "longitude": 2.356636,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [],
     "parent_poi": null,
@@ -946,7 +1012,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated Holocaust museum; hours follow the institution's published pattern of 10:00-18:00 (Thursday until 22:00), closed Saturdays.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Wall of Names in the forecourt plus a crypt and permanent Holocaust exhibition with a security check; typically about an hour inside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A solemn Holocaust memorial and indoor museum where loud running would be deeply inappropriate and where the reflective forecourt offers no relaxed seating for casual talk; it is gated and closed at night."
   },
   {
     "name": "Hotel Chalons de Luxembourg",
@@ -955,7 +1027,7 @@
     "longitude": 2.3569,
     "importance_tier": 1,
     "trigger_radius": 30,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -993,7 +1065,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private Marais mansion viewed from the street for its portal, so it is not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Notable carved lion's-head portal and street frontage of a private 17th-century mansion to look at from the pavement; not open inside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private Marais mansion with an ornate portal viewed from a narrow pavement, offering no enclosure, no free seating and no independent lighting or crowds at night, so none of the affordances hold."
   },
   {
     "name": "Eglise Saint-Gervais-Saint-Protais",
@@ -1002,7 +1080,7 @@
     "longitude": 2.3547,
     "importance_tier": 3,
     "trigger_radius": 60,
-    "typical_duration_min": 20,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Saint-Gervais"
@@ -1123,7 +1201,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated church (you enter the sanctuary), but its confessional-community hours are not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Church with Paris's first classical facade to study from the small square outside, and a large Gothic interior with the Couperin organ, typical visit around 20 min.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working church where quiet and reverence are expected so children cannot run and pews are not free social seating, but it stands on an open lit square in the central Marais with people about after dark."
   },
   {
     "name": "Hotel d'Aumont",
@@ -1132,7 +1216,7 @@
     "longitude": 2.358,
     "importance_tier": 2,
     "trigger_radius": 40,
-    "typical_duration_min": 10,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Hôtel d'Aumont"
@@ -1172,6 +1256,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Grand mansion now housing an administrative court and marked walk_by_only, not a public venue; value from the street facade, not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Grand 17th-century mansion viewed from the street, a facade and courtyard gate to take in; interiors are municipal offices and not open, so nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A walk-by 17th-century mansion (now government offices) with no public interior access, no free seating, and a pavement beside street traffic, though its central Marais location is lit and trafficked at night."
   }
 ]

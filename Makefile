@@ -126,7 +126,8 @@ check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
 	survey-area-candidates fix-area-radii backfill-provenance backfill-poi-role \
 	backfill-name-key wiki-fetch gen-within-edges validate-beats deploy prune-orphans \
 	fetch-boundary geocode-pois poi-visit-duration poi-opening-hours \
-	poi-place-category poi-visit-report tour-build \
+	poi-place-category poi-visit-report poi-body-places poi-place-judgements \
+	sync-poi-exports tour-build \
 	measure-planned-audio measure-governor \
 	onboard-city flutter-ipa testflight render-watch render-status setup-audio \
 	aura-resume-proof flutter-test clean \
@@ -633,6 +634,32 @@ poi-place-category: ## Categorise every POI (deterministic, $0). Usage: make poi
 poi-visit-report: ## Print the POI visit-capacity audit table. Usage: make poi-visit-report [SLUG=paris].
 	@$(PREFLIGHT) --label poi-visit-report $(PRE_PY)
 	@$(LOCAL_EXEC) uv run python scripts/report_visit_durations.py \
+		--slug "$(or $(SLUG),paris)" $(ARGS)
+
+# Toilets and benches (redesign data row 6.3): one bulk OSM/Overpass query,
+# no model, no credentials, $0. Written to data/{slug}/body-places.json,
+# never poi-raw.json — body places are not narrated places.
+poi-body-places: ## Fetch toilets/benches from OSM ($0). Usage: make poi-body-places SLUG=paris [LIMIT=10].
+	@$(PREFLIGHT) --label poi-body-places $(PRE_PY)
+	@$(LOCAL_EXEC) uv run python -m scripts.poi_body_places \
+		--slug "$(or $(SLUG),paris)"$(if $(LIMIT), --limit $(LIMIT),) $(ARGS)
+
+# Three practical affordances per POI (redesign data row 6.4): can children
+# run here, can two people sit and talk here, is it good to be left standing
+# here after dark. The ONLY data row with no external source — reviewed at
+# twice the normal rate. Spends real model credits, exactly the
+# poi-visit-duration pattern.
+poi-place-judgements: ## Judge child/talk/dark affordances. Usage: make poi-place-judgements SLUG=paris [LIMIT=10].
+	@$(PREFLIGHT) --label poi-place-judgements $(PRE_PY) render-key
+	@$(RENDER_LOCAL_EXEC) uv run python scripts/poi_place_judgements.py \
+		--slug "$(or $(SLUG),paris)"$(if $(LIMIT), --limit $(LIMIT),) $(ARGS)
+
+# The third manual performance of the same block became the template
+# (CLAUDE.md §1.7): propagates every enriched field poi-raw.json carries into
+# every data/{slug}/export/*.json chunk. $0, no network, no credentials.
+sync-poi-exports: ## Sync enriched fields into export chunks. Usage: make sync-poi-exports SLUG=paris [ARGS=--check].
+	@$(PREFLIGHT) --label sync-poi-exports $(PRE_PY)
+	@$(LOCAL_EXEC) uv run python -m scripts.sync_poi_exports \
 		--slug "$(or $(SLUG),paris)" $(ARGS)
 
 # Who writes the transition sentences. scripts/tour_build.py now REFUSES to run

@@ -6,7 +6,7 @@
     "longitude": 2.3274,
     "importance_tier": 5,
     "trigger_radius": 100,
-    "typical_duration_min": null,
+    "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
       "Tuileries Garden",
@@ -689,7 +689,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated garden with closing gates; transcribed from OSM tag 'Mo-Su 07:30-21:00'.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large formal royal garden with long gravel allees, fountains, statues and terraces between the Louvre and Concorde; walking its length and pausing at the basins fills the better part of an hour, open-air throughout.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A large enclosed traffic-free royal garden with gravel paths, lawns and abundant free movable chairs and benches where children can run and two people can talk quietly, but the garden is gated and closed at night."
   },
   {
     "name": "Palais-Royal",
@@ -698,7 +704,7 @@
     "longitude": 2.3372,
     "importance_tier": 5,
     "trigger_radius": 30,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Palais Royal",
@@ -1082,7 +1088,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated garden with closing bells and seasonally varying hours; precise current schedule not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Arcaded gardens with the Buren striped columns, fountains and colonnaded walks to stroll through; the whole value is the open courtyard and garden, the palace itself is government offices not open.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A fully enclosed traffic-free gravel-and-lawn garden ringed by arcades where children can run loud and fast and movable chairs let two people sit and talk at normal volume, but the gates are locked at night so no one can be left standing inside."
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -1091,7 +1103,7 @@
     "longitude": 2.341,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
       "Eglise Saint-Germain-l'Auxerrois"
@@ -1241,7 +1253,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A church you enter, hence gated, but its hours are not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Royal parish church with Gothic porch opposite the Louvre; interior with nave, stained glass and royal pew absorbs the usual parish-church visit of about 18 min.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working church where quiet is expected and pews are not casual seating, so children cannot run and there is no free conversational seating, but it faces the well-lit and peopled area beside the Louvre at night."
   },
   {
     "name": "Eglise Saint-Roch",
@@ -1250,7 +1268,7 @@
     "longitude": 2.3324,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Saint-Roch",
@@ -1325,7 +1343,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated church one enters; its opening hours are not confidently known, left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Long Baroque facade on rue Saint-Honore with its steps takes a few minutes outside; inside is a large church with a deep nave, several chapels and notable tombs, roughly 18 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A church interior where silence is expected (no running, and pews are not free casual seating) fronting rue Saint-Honoré, a busy lit shopping street where someone left on the steps at nightfall would be among passers-by."
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -1334,7 +1358,7 @@
     "longitude": 2.341,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Basilique Notre-Dame-des-Victoires",
@@ -1411,7 +1435,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated basilica one enters; its opening hours are not confidently known, left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Modest facade on a small square takes a few minutes; inside is a basilica famous for its walls covered in thousands of votive plaques plus Lully's tomb, roughly 18 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A church interior expecting silence, on the small quiet Place des Petits-Pères which has little through-traffic or nightlife, and the church itself is locked after hours, so I judge after-dark false on this calm side-street."
   },
   {
     "name": "Galerie Vivienne",
@@ -1420,7 +1450,7 @@
     "longitude": 2.3398,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Galerie Vivienne",
@@ -1533,7 +1563,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated covered arcade with grilles; OSM tag \"Mo-Sa 08:30-20:30\" transcribed with Sunday closed.",
-    "place_category": "arcade"
+    "place_category": "arcade",
+    "visit_seconds_inside": null,
+    "visit_basis": "Elegant covered arcade with mosaic floors, glass roof and neoclassical shopfronts to walk slowly and browse, about 15 minutes; the arcade itself is the space.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid café tables, echoing acoustics, and gates locked after closing."
   },
   {
     "name": "Comedie-Francaise",
@@ -1542,7 +1578,7 @@
     "longitude": 2.3367,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
       "Comédie-Française",
@@ -1622,7 +1658,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated national theatre entered by ticket; performance and box-office hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Grand facade on Place Colette worth a few minutes outside; inside is a working theatre normally entered only for a performance, which fills an entire evening, so the interior is capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working theatre building whose interior demands quiet and whose ground floor offers no free public seating, but it fronts the busy lit rue de Rivoli and Place Colette near the Palais-Royal métro with people about at night, so someone left standing outside would be fine."
   },
   {
     "name": "Galignani",
@@ -1631,7 +1673,7 @@
     "longitude": 2.3285487,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1645,7 +1687,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated bookshop with a door, but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Historic English-language bookshop on rue de Rivoli with a classic wood-panelled storefront; the exterior is a few minutes and browsing the interior shelves absorbs about 20 min.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "Galignani is a bookshop on rue de Rivoli where running is impossible among the shelves and there is no free seating, but it fronts a lit and busy central arcade street where someone could be left standing at night."
   },
   {
     "name": "Angelina Paris",
@@ -1654,7 +1702,7 @@
     "longitude": 2.3284104,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 3,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1668,6 +1716,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated tearoom/café that requires entry, but I do not confidently know its precise hours; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Belle Époque tea room on Rue de Rivoli famous for hot chocolate and pastries; the frontage is brief, but sitting for a table, ordering and eating typically runs an hour including the usual queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "Angelina is a paid tearoom on Rue de Rivoli where seating must be bought and children cannot run among tables and china, and it closes and locks at night; I judge from its known nature as a café."
   }
 ]

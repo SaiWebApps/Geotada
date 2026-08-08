@@ -6,7 +6,7 @@
     "longitude": 2.3268,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -400,7 +400,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small pedestrian square off rue de Sèvres, a quiet planted dead-end to walk into and sit; no description given, priced conservatively as a minor square, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "No description given, but as a named Paris square it is judged conservatively as a fenced municipal garden set back from traffic where children can run and benches allow quiet talk, but which is gated and locked after dark."
   },
   {
     "name": "Square Santiago du Chili",
@@ -409,7 +415,7 @@
     "longitude": 2.3098,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -665,7 +671,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small city square near the Invalides; no description given, priced conservatively as a minor planted square walked through, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "No description given, but as a named Paris square it is judged conservatively as a fenced municipal garden away from traffic with benches quiet enough to talk and room for a child to run, closed and locked at night."
   },
   {
     "name": "Champ de Mars",
@@ -674,7 +686,7 @@
     "longitude": 2.2986,
     "importance_tier": 3,
     "trigger_radius": 150,
-    "typical_duration_min": null,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "Champs de Mars",
@@ -960,7 +972,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public greenspace whose value stands in the open with no gates, and the OSM tag '24/7' confirms it is not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast formal greenspace stretching from the Ecole Militaire to the Eiffel Tower, with long tree-lined lawns and walks between viewpoints; crossing it and pausing for the tower view absorbs over half an hour.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A vast traffic-free lawn lets children run loud and free with benches and grass for quiet conversation, but the open park is unlit in stretches, sees crowds thin at night and is periodically fenced near the Tower."
   },
   {
     "name": "Eiffel Tower",
@@ -969,7 +987,7 @@
     "longitude": 2.294694,
     "importance_tier": 5,
     "trigger_radius": 30,
-    "typical_duration_min": null,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "Tour Eiffel",
@@ -1160,7 +1178,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated ticketed monument with elevator/stair access; hours follow the tower's own published year-round daily pattern (extended summer hours from mid-June).",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The Champ de Mars and the space beneath the four piers absorb over half an hour of looking up and photographing; going up involves long security and lift queues plus two viewing levels and the summit, which would absorb well over two hours, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "The Champ de Mars lawns run traffic-free but the immediate base is a fenced, security-controlled paved plaza crossed by roads and crowds where a child at speed can reach traffic and there is no quiet free seating; the site is brightly lit and busy with people at all hours, so a person left standing at night would be fine."
   },
   {
     "name": "Théâtre du Vieux-Colombier",
@@ -1169,7 +1193,7 @@
     "longitude": 2.3302873,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1255,7 +1279,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated theatre (Comédie-Française's second venue) whose performance/box-office hours I do not confidently know; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Historic Comédie-Française annexe theatre; the facade takes a couple of minutes to see, while attending a performance inside fills a full evening, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is a theatre building where entry is ticketed and quiet is expected indoors, offering no free-range running space and no free public seating, and its interior is locked outside performance hours; I judge conservatively from the name as I have no floor detail."
   },
   {
     "name": "Jardin Atlantique",
@@ -1264,7 +1294,7 @@
     "longitude": 2.3189805,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1537,6 +1567,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated rooftop garden with closing gates; OSM tag transcribed for the current May 1-Aug 31 08:00-21:30 pattern, with Sa/Su opening delayed to 09:00 per the \"Sa,Su,PH 08:00-09:00 closed\" rule.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Rooftop park built over Montparnasse station with lawns, tennis courts, fountains and grasses; reaching it and walking the elevated deck absorbs about 25 min, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is an enclosed rooftop garden above Montparnasse station with traffic-free lawns and paths where children can run and plenty of benches for quiet talk, but it is a gated garden closed and locked at night."
   }
 ]

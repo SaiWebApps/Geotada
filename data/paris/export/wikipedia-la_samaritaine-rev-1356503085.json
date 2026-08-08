@@ -6,7 +6,7 @@
     "longitude": 2.342,
     "importance_tier": 5,
     "trigger_radius": 20,
-    "typical_duration_min": 45,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Samaritaine"
@@ -288,6 +288,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated department store; transcribed from OSM tag 'Mo-Su 10:00-20:00'.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Landmark department store with Art Nouveau glass-and-ironwork atrium and Art Deco facades; browsing the restored interior and peacock frieze takes about 50 min.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A department store interior with glass displays and paid seating only, unsuitable for running children or free quiet conversation, but it stands on lit, busy central streets with people about after dark."
   }
 ]

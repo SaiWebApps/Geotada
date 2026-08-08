@@ -6,7 +6,7 @@
     "longitude": 2.34078,
     "importance_tier": 3,
     "trigger_radius": 20,
-    "typical_duration_min": 5,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "La Bourse",
@@ -57,7 +57,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A former stock exchange now an events venue that is gated, but its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Neoclassical former stock exchange with a colonnaded Roman-temple facade and steps; you circle it and take in the columns from the front, about 12 min, and it is a walk-by with no public interior on the tour.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A neoclassical former stock exchange fronted by streets and its columned steps, walked past not entered, the surrounding pavement carries traffic and offers no reliable quiet free seating, though the building is floodlit and stands on a busy central square lit and peopled after dark."
   },
   {
     "name": "Grands Boulevards",
@@ -66,7 +72,7 @@
     "longitude": 2.34346,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": 5,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Les Grands Boulevards"
@@ -109,7 +115,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open tree-lined promenade corridor accessible from the street at all times; not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Long tree-lined promenade corridor of cafes, theatres and 19th-century facades; a stretch is walked between positions taking in the shopfronts and street life, absorbing about half an hour, with nothing single to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A long tree-lined boulevard corridor with heavy multi-lane traffic beside the pavements, too dangerous for a child at speed and too noisy for a benched conversation at normal volume, but brightly lit and busy with people and cafés late into the night."
   },
   {
     "name": "Porte Saint-Denis",
@@ -118,7 +130,7 @@
     "longitude": 2.35237,
     "importance_tier": 2,
     "trigger_radius": 20,
-    "typical_duration_min": 5,
+    "typical_duration_min": 10,
     "kid_friendly": "caution",
     "name_variations": [
       "Porte Saint Denis"
@@ -188,7 +200,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A triumphal arch viewed in the open from the street; not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Free-standing triumphal arch with carved reliefs at a street junction; you cross to it, walk round and read the sculpture from both sides, about 10 min, and there is nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A triumphal arch standing on a traffic island where rue Saint-Denis meets a busy boulevard, ringed by roads with no enclosure and no free seating, but lit at night and set on a well-trafficked junction where a person would not be isolated."
   },
   {
     "name": "Passage de la Trinite",
@@ -197,7 +215,7 @@
     "longitude": 2.35052,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Hopital de la Trinite"
@@ -240,7 +258,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A historic covered passage/site treated as walk-by; gated hours not confidently known, left unfiltered.",
-    "place_category": "arcade"
+    "place_category": "arcade",
+    "visit_seconds_inside": null,
+    "visit_basis": "A narrow historic passage marking a medieval hospital and theatre site with little surviving fabric to see; a brief pause of a few minutes reading the spot, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow covered arcade on rue Saint-Denis with shopfronts at child height, no free seating and echoing enclosed acoustics, and like all such passages it is gated and locked when its shops close, leaving no one safely standing there after dark."
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -249,7 +273,7 @@
     "longitude": 2.34983,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Grand Cerf"
@@ -330,7 +354,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A covered arcade with grilles that is gated; hours reflect the passage's own published typical daily gate schedule with Sunday closure.",
-    "place_category": "arcade"
+    "place_category": "arcade",
+    "visit_seconds_inside": null,
+    "visit_basis": "Tall glass-roofed 19th-century covered arcade lined with small shops and ironwork; walked through its length looking up at the glazing and into windows, about 12 min, and the arcade itself is the sight rather than any one interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A tall glazed covered arcade with glass shopfronts at child height and only paid café tables for seating, its echoing hall makes talking effort, and it is gated shut after closing so no one can be left standing inside at night."
   },
   {
     "name": "Tour Jean sans Peur",
@@ -339,7 +369,7 @@
     "longitude": 2.34912,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Tour de Jean sans Peur",
@@ -424,7 +454,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A medieval tower open to visitors as a ticketed monument that is gated, but its seasonal hours are not confidently known; left unfiltered.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Small surviving medieval tower with a famous carved vaulted staircase; the exterior takes a few minutes, and the compact interior with its stair and one or two exhibition rooms is a 20-25 min visit including ticket.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow medieval stone tower on a tight street, walked past only, with no enclosed traffic-free ground for a child, no free seating, and an unremarkable poorly-lit side street around it that would leave someone isolated after dark."
   },
   {
     "name": "Rue Montorgueil",
@@ -433,7 +469,7 @@
     "longitude": 2.34715,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": 15,
+    "typical_duration_min": 22,
     "kid_friendly": "no",
     "name_variations": [
       "Montorgueil"
@@ -514,7 +550,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open pedestrian market street whose value is on the public pavement; not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Lively pedestrian market street of food stalls, cafes and old shopfronts; walked slowly end to end taking in the produce and terraces, about 20-25 min, with no single interior being the stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A pedestrianised market street free of through traffic but crowded with market stalls, delivery movement and dense pedestrians, so a child cannot safely run full-speed and the only seating is paid café terraces, though it stays lit and lively with people well into the evening."
   },
   {
     "name": "Place du Caire",
@@ -523,7 +565,7 @@
     "longitude": 2.34857,
     "importance_tier": 2,
     "trigger_radius": 12,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "caution",
     "name_variations": [
       "Cour des Miracles"
@@ -570,7 +612,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square viewed from the street; not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small square with an Egyptian-themed carved facade of heads and columns; you stand and look up at the decoration and take in the square, about 8 min, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A small hard-surfaced square in the garment district open to vehicle access with no dedicated free seating and little enclosure, and its Sentier-district streets empty out and dim after business hours, leaving no one comfortably left standing at night."
   },
   {
     "name": "Rue de Clery",
@@ -579,7 +627,7 @@
     "longitude": 2.3467,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Rue de Cléry"
@@ -650,7 +698,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public street in the Sentier district; not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Narrow historic Sentier street with literary associations but ordinary facades; walked along with a short pause at the plaques, about 6 min, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow historic street in the Sentier with vehicle traffic, no free public seating and tight pavements, and being a quiet workaday street it becomes deserted and dim after dark, so I judge it conservatively false on all three."
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -659,7 +713,7 @@
     "longitude": 2.33187,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Nadar's Studio",
@@ -704,7 +758,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A historic building facade viewed from the pavement as a walk-by site; not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "A single building facade marking the site of the first Impressionist exhibition; you stop, read the plaque and look up at the front, a few minutes, with no relevant interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A building address on a wide busy boulevard walked past only, with traffic beside narrow pavements and no free seating, but the boulevard is brightly lit and busy with people and cafés late, so a person could safely be left standing there at night."
   },
   {
     "name": "Place de Louvois",
@@ -713,7 +773,7 @@
     "longitude": 2.33764,
     "importance_tier": 1,
     "trigger_radius": 15,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "caution",
     "name_variations": [
       "Square Louvois"
@@ -756,7 +816,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square; not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small square with a fountain facing the old national library, benches and trees; you walk round the fountain and take in the setting, about 8 min, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small square with a fountain garden and public benches quiet enough for two people to talk, but roads run around it so a child at speed could reach traffic, and this small square is unlit and deserted at night with no crowds about."
   },
   {
     "name": "Cafe du Croissant",
@@ -765,7 +831,7 @@
     "longitude": 2.3425,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 5,
     "kid_friendly": "caution",
     "name_variations": [
       "Taverne du Croissant",
@@ -816,6 +882,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A café is gated by its door, but its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "A street-corner cafe marking where Jean Jaures was assassinated; you stop at the front and plaque and take in the corner, about 5 min, and going in is a meal rather than a normal tour stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A street-corner café building walked past only, its pavement carries traffic and its only seating is a paid terrace, but it sits on a lit and peopled corner near the boulevards where someone could safely be left standing after dark."
   }
 ]

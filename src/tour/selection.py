@@ -58,6 +58,7 @@ from .ordering import order_stops
 from .routing import (
     DEFAULT_ROUTE_PLANNING_POLICY,
     EARTH_RADIUS_M,
+    REACH_PACE_KMH,
     TIMEBOX_MATERIALITY_TOLERANCE_SECONDS,
     WALK_FRACTION,
     LegSecondsFn,
@@ -67,8 +68,8 @@ from .routing import (
     envelope_radius_m,
     haversine_m,
     insertion_cost_seconds,
+    insertion_extra_at_index,
     path_leg_seconds,
-    path_walk_seconds,
     planned_audio_seconds,
     route_planning_budget,
     summarise_route,
@@ -77,6 +78,7 @@ from .routing import (
 from .routing import (
     target_dwell_seconds as target_dwell_seconds,
 )
+from .routing_client import ROUTE_SURFACE_COSTING_OVERRIDES
 from .visit_time import served_elapsed_seconds, stop_seconds, visit_seconds
 
 if TYPE_CHECKING:
@@ -255,6 +257,13 @@ POI_ROLE_MULTIPLIER: dict[str, float] = {
     "stop": 1.0,
     "setting": 0.7,
     "walk_by_only": 0.0,
+    # A toilet or a bench (redesign row 6.3, plan S2.5) is scheduled by the
+    # BODY CLOCK, never the story ranking — design §3.1: a bench is a
+    # scheduled item, not a scored sight. The zero is the whole contract: it
+    # is what keeps a body place from ever out-scoring a narrated stop once
+    # the upload puts one in the graph; only `_seat_body_stops`, gated on the
+    # rest-cadence axis, may ever place one.
+    "body": 0.0,
 }
 
 ANCHOR_TIERS: frozenset[int] = frozenset({3, 4, 5})
@@ -681,6 +690,10 @@ RETURN
   p.opening_hours_source AS opening_hours_source,
   p.opening_hours_basis AS opening_hours_basis,
   p.place_category AS place_category,
+  p.children_can_run AS children_can_run,
+  p.sit_and_talk  AS sit_and_talk,
+  p.good_after_dark AS good_after_dark,
+  p.judgement_basis AS judgement_basis,
   area_names      AS areas
 ORDER BY p.id
 """
@@ -962,6 +975,13 @@ def _snapshot_from_records(
                 opening_hours_source=_clean(r.get("opening_hours_source")),
                 opening_hours_basis=_clean(r.get("opening_hours_basis")) or "",
                 place_category=_clean(r.get("place_category")) or "",
+                # Row 6.4 (plan S2.6) — same closed-hop safe-default rule: a
+                # corpus the judgements pass has not reached returns None for
+                # all four and lands on the contract defaults (affords nothing).
+                children_can_run=bool(r.get("children_can_run")),
+                sit_and_talk=bool(r.get("sit_and_talk")),
+                good_after_dark=bool(r.get("good_after_dark")),
+                judgement_basis=_clean(r.get("judgement_basis")) or "",
             )
         )
 
@@ -1619,13 +1639,20 @@ def reach_envelope_searched(
     change" while proving nothing. See VALHALLA_MAX_CONTOUR_MINUTES above for the
     second half of that hazard: this circle is only the FALLBACK admission test, so
     a report of it must also say whether the road polygon was available.
+
+    Reads `input.walking_pace` directly (plan S2.4) rather than taking a
+    separate parameter — the harness calls this with the same `TourInput` it
+    built, so a paced request's printed reach radius is automatically the
+    smaller, correct one with no second thing to keep in sync.
     """
     planning_budget = route_planning_budget(input.duration_min, planning_policy)
+    pace_multiplier = input.walking_pace if input.walking_pace is not None else 1.0
     return (
         envelope_radius_m(
             input.duration_min,
             round_trip=input.round_trip,
             planning_policy=planning_policy,
+            pace_multiplier=pace_multiplier,
         ),
         _isochrone_walk_minutes(
             input.duration_min,
@@ -1679,6 +1706,28 @@ def select_route(
     planning_budget = route_planning_budget(
         input.duration_min, planning_policy, end_hardness=input.end_hardness
     )
+    # THE PARTY'S PACE (redesign §2.4; plan S2.4), derived once and threaded
+    # into every mechanism that must slow together: the walk-cost divisor
+    # (`leg_fn`, below) and the reach circle's road-network test
+    # (`_reach_predicate`). The analytic reach radius and density's own copy
+    # of it read `input.walking_pace` straight off the input instead of
+    # taking this as a second parameter — see `reach_envelope_searched` and
+    # `density.assess` — so there is only one number to keep in sync, not two.
+    # 1.0 = axis unset = today, byte-identical.
+    pace_multiplier = input.walking_pace if input.walking_pace is not None else 1.0
+    # THE PARTY'S ROUTE SURFACE (redesign §2.4; plan S2.7), per W2.1's live
+    # capability proof (phase2-ledger.md): step_penalty genuinely moves a
+    # route off real stairs. None for "any" — today's requests, byte-
+    # identical. Threaded into `leg_fn` below and into every `summarise_route`
+    # call, so the route selection prices and the route the traveller
+    # receives are ROUTED UNDER THE SAME COSTING — never a route chosen
+    # step-free and reported over stairs.
+    surface_override = ROUTE_SURFACE_COSTING_OVERRIDES[input.route_surface]
+    # WHO THIS DAY IS FOR (redesign row 6.4; plan S2.6) — threaded into every
+    # `poi_score` call below so a family day weights `children_can_run`
+    # places up and a take-it-easy/couple day weights `sit_and_talk` up. None
+    # (no party) = today's scoring, byte-identical.
+    party = input.party
     # A fixed destination changes the SHAPE of the route, not how far a visitor can
     # walk. The 2026-08-04 "certification reach model" that used to branch here has
     # been deleted: it sized both the reach circle and the greedy's walking cap from
@@ -1689,8 +1738,27 @@ def select_route(
     certification_fixed_end = input.end is not None
     # M3: the §3 divisor — routed leg times when a client is given (memoized;
     # the greedy re-evaluates the same coordinate pairs many times), else the
-    # pace-corrected haversine.
-    leg_fn = _memoized_leg_fn(routing_client) if routing_client is not None else None
+    # pace-corrected haversine. ALWAYS a real callable (never None) since
+    # plan S2.4: a slow party's multiplier has to reach every consumer of
+    # this ONE divisor, and the three sites that used to read
+    # ``leg_fn or default_leg_seconds`` would otherwise need the multiplier
+    # threaded through them separately, forking the arithmetic in two places.
+    # At `pace_multiplier == 1.0` the base function rides through unwrapped —
+    # byte-identical to before this existed, in both the client and no-client
+    # cases (``leg_fn or default_leg_seconds`` already always resolved to
+    # ``default_leg_seconds`` when ``leg_fn`` was ``None``; assigning that
+    # same function object directly changes nothing any caller can observe).
+    _base_leg_fn = (
+        _memoized_leg_fn(routing_client, costing_options_override=surface_override)
+        if routing_client is not None
+        else default_leg_seconds
+    )
+    if pace_multiplier == 1.0:
+        leg_fn = _base_leg_fn
+    else:
+
+        def leg_fn(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
+            return round(_base_leg_fn(lat1, lng1, lat2, lng2) * pace_multiplier)
 
     # Phase 6 density gate. Start-circle RED refuses open/round-trip requests.
     # Fixed-end requests defer to the routed A→B corridor checks below.
@@ -1712,7 +1780,7 @@ def select_route(
     # exactly like RED density. (end is None for open/loop walks — they never
     # enter this branch, so the Step-2.0d invariance baseline is untouched.)
     if input.end is not None:
-        leg_cost_fn = leg_fn or default_leg_seconds
+        leg_cost_fn = leg_fn  # never None (see the derivation above)
         t_ab = leg_cost_fn(start_lat, start_lng, input.end[0], input.end[1])
         reachability_ceiling = (
             planning_budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
@@ -1781,22 +1849,26 @@ def select_route(
     # reach_envelope_searched above for why that mattered.
     radius_m, iso_minutes = reach_envelope_searched(input, planning_policy=planning_policy)
     reach_contains, reach_degraded = _reach_predicate(
-        (start_lat, start_lng), radius_m, iso_minutes, routing_client
+        (start_lat, start_lng),
+        radius_m,
+        iso_minutes,
+        routing_client,
+        pace_multiplier=pace_multiplier,
     )
     # Step 2.3: corridor (time-ellipse) reach filter for fixed-destination
     # walks. When a fixed end B exists, an anchor only earns candidacy if the
     # routed detour through it — A→poi→B — still fits inside the walk budget:
     # ``t(A, poi) + t(poi, B) <= walk_budget_seconds(duration_min)``. This is
     # the two-focus (A, B) ellipse whose string length is the walk budget,
-    # measured with the SAME divisor the greedy uses (``leg_fn or
-    # default_leg_seconds``) — NEVER straight-line haversine, which would admit
+    # measured with the SAME divisor the greedy uses (``leg_fn``, never None
+    # — see its derivation) — NEVER straight-line haversine, which would admit
     # across-the-river anchors no bridge serves. ``end is None`` for open/loop
     # walks: ``corridor_admits`` is None and the gate is skipped entirely, so
     # the candidate pool on that path is LITERALLY unchanged (Step-2.0d
     # identity baseline holds).
     corridor_admits = None
     if input.end is not None:
-        corridor_leg_fn = leg_fn or default_leg_seconds
+        corridor_leg_fn = leg_fn
         end_lat, end_lng = input.end
         corridor_budget = planning_budget.walk_budget_seconds
 
@@ -1942,6 +2014,21 @@ def select_route(
                 )
                 continue
         if (
+            input.escape_radius_m is not None
+            and haversine_m(start_lat, start_lng, poi.lat, poi.lng) > input.escape_radius_m
+        ):
+            # THE ESCAPE RADIUS (redesign §2.4; plan S2.8) — a constraint on
+            # DISTANCE FROM THE START, not on any one leg: "a meltdown 25
+            # minutes from the exit means carrying a child for 25 minutes"
+            # (design §2.4; panel locked cost D4, 03-panel-findings.md).
+            # Dwell pool only, same layer and same identity default as the
+            # clock filter above — walking past a far place is still fine.
+            # Recorded NOWHERE, unlike a closed museum: a closed door needs
+            # explaining, a too-far bench does not, and cluttering
+            # `clock_exclusions` with radius ejections would bury the day's
+            # real disclosures (plan S2.8's own sabotage warning).
+            continue
+        if (
             not poi.requires_dwell
             and _is_filler_stub(poi, snapshot, interest or None)
             # A PLACE STILL HAS TO HAVE SOMETHING TO SAY.
@@ -2069,7 +2156,7 @@ def select_route(
     # spend the remaining A→B allocation rather than starting from a fictional
     # zero-length open walk.
     consumed_walk = (
-        (leg_fn or default_leg_seconds)(start_lat, start_lng, input.end[0], input.end[1])
+        leg_fn(start_lat, start_lng, input.end[0], input.end[1])
         if input.end is not None
         else 0
     )
@@ -2136,6 +2223,21 @@ def select_route(
         """
         return stop_seconds(_visit(cand), _capped_audio(cand, exempt=exempt))
 
+    # THE PER-LEG CAP (redesign §2.4; plan S2.3): with the axis set, the banded
+    # longest-leg RANK's soft preference becomes a HARD admission rule at every
+    # mechanism that can add a stop — here, the fill pass, the endpoint pull,
+    # and the timebox repair's trials. None = axis unset = today, byte-identical.
+    max_leg_seconds = (
+        input.max_leg_minutes * 60 if input.max_leg_minutes is not None else None
+    )
+    greedy_close: tuple[float, float] | None
+    if input.end is not None:
+        greedy_close = input.end
+    elif input.round_trip:
+        greedy_close = (start_lat, start_lng)
+    else:
+        greedy_close = None
+
     while remaining:
         best_candidate: POI | None = None
         best_extra: int = 0
@@ -2184,7 +2286,17 @@ def select_route(
                 > dwell_budget
             ):
                 continue
-            base = poi_score(cand, spine, interest, snapshot, penalty=score_penalty)
+            if not _insertion_legs_fit_cap(
+                cand,
+                selected,
+                idx,
+                start=(start_lat, start_lng),
+                close=greedy_close,
+                max_leg_seconds=max_leg_seconds,
+                leg_seconds_fn=leg_fn,
+            ):
+                continue
+            base = poi_score(cand, spine, interest, snapshot, penalty=score_penalty, party=party)
             # +1s smoothing prevents division-by-zero on co-located POIs.
             # Phase 7.5: clamp the denominator floor at 1.0 — integer
             # rounding inside ``insertion_cost_seconds`` can yield extra=-1
@@ -2245,7 +2357,7 @@ def select_route(
             ranked_far = sorted(
                 far_candidates,
                 key=lambda c: (
-                    -poi_score(c, spine, interest, snapshot, penalty=score_penalty),
+                    -poi_score(c, spine, interest, snapshot, penalty=score_penalty, party=party),
                     c.id,
                 ),
             )[:ENDPOINT_PULL_CANDIDATE_TOP_K]
@@ -2261,6 +2373,8 @@ def select_route(
                     walk_budget=walk_budget,
                     leg_seconds_fn=leg_fn,
                     score_penalty=score_penalty,
+                    max_leg_seconds=max_leg_seconds,
+                    party=party,
                 )
                 if pulled is not selected and pulled[-1].id == cand.id:
                     selected = pulled
@@ -2283,6 +2397,7 @@ def select_route(
         start_lng=start_lng,
         leg_seconds_fn=leg_fn,
         score_penalty=score_penalty,
+        party=party,
         round_trip=input.round_trip,
         walk_budget=walk_budget,
         dwell_budget=dwell_budget,
@@ -2296,6 +2411,7 @@ def select_route(
             else []
         ),
         rescue_added_ids=rescue_added_ids,
+        max_leg_seconds=max_leg_seconds,
     )
 
     # A rescue is allowed to trade walking-allocation seconds for useful audio,
@@ -2331,6 +2447,7 @@ def select_route(
                 # trial's visits are zero and the loop keeps a route it believes
                 # fits and the traveller will overrun by hours.
                 planned_visit_seconds={poi.id: _visit(poi) for poi in trial_selected},
+                costing_options_override=surface_override,
             ).model_copy(update={"fixed_end_poi_id": trial_end.id})
             trial_dwell = served_dwell_seconds(
                 trial_route, snapshot, interest=interest, end_is_none=False
@@ -2346,7 +2463,7 @@ def select_route(
             drop = min(
                 removable,
                 key=lambda poi: (
-                    poi_score(poi, spine, interest, snapshot, penalty=score_penalty),
+                    poi_score(poi, spine, interest, snapshot, penalty=score_penalty, party=party),
                     poi.id,
                 ),
             )
@@ -2429,6 +2546,21 @@ def select_route(
             f"No POIs could be seated within a {input.duration_min}-min walk of this "
             f"start — try a longer duration or a start nearer the density.",
         )
+    # BODY STOPS (redesign §3.1; plan S2.5) — AFTER the emptiness check (a
+    # body stop must never mask a genuinely empty story route) and AFTER
+    # every scoring/certification pass (a bench is scheduled by the body
+    # clock, never the story ranking). Only the closing return-to-start leg
+    # of a round trip is not considered — Phase 2's mechanical-seating scope;
+    # phase2-ledger.md records it.
+    if input.rest_cadence_minutes is not None:
+        body_pool = [p for p in snapshot.pois if p.poi_role == "body"]
+        selected = _seat_body_stops(
+            selected,
+            start=(start_lat, start_lng),
+            rest_cadence_minutes=input.rest_cadence_minutes,
+            body_pool=body_pool,
+            leg_seconds_fn=leg_fn,
+        )
     route = summarise_route(
         selected,
         start_lat=start_lat,
@@ -2448,6 +2580,7 @@ def select_route(
         # book a different number than the planner paid — not "computed the same
         # way", literally the same call.
         planned_visit_seconds={poi.id: _visit(poi) for poi in selected},
+        costing_options_override=surface_override,
     )
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})
@@ -2885,9 +3018,11 @@ def _apply_fill_pass(
     rescue_floor: int = 0,
     leg_seconds_fn: LegSecondsFn | None = None,
     score_penalty: dict[str, float] | None = None,
+    party: str | None = None,
     fixed_end: tuple[float, float] | None = None,
     rescue_candidates: list[POI] | None = None,
     rescue_added_ids: list[str] | None = None,
+    max_leg_seconds: int | None = None,
 ) -> list[POI]:
     """Phase 7: fill until the dwell floor is met or walk budget hits 95%.
 
@@ -2928,6 +3063,16 @@ def _apply_fill_pass(
 
     floor_dwell = dwell_budget * FILL_PASS_DWELL_FLOOR_FRAC
     walk_cap = int(walk_budget * FILL_PASS_WALK_BUDGET_FRAC)
+    # The chain's closing point, for the per-leg cap check (S2.3): the fixed
+    # end on A→B, the start on a round trip, nothing on an open end — the same
+    # close every walk measurement below already uses.
+    fill_close: tuple[float, float] | None
+    if fixed_end is not None:
+        fill_close = fixed_end
+    elif round_trip:
+        fill_close = (start_lat, start_lng)
+    else:
+        fill_close = None
 
     consumed_dwell = sum(
         stop_cost_fn(p, exempt=p.id == exempt_anchor_id) for p in selected
@@ -2946,7 +3091,12 @@ def _apply_fill_pass(
 
     selected_ids = {p.id for p in selected}
     pool = [c for c in candidates if c.id not in selected_ids]
-    pool.sort(key=lambda c: (-poi_score(c, spine, interest, snapshot, penalty=score_penalty), c.id))
+    pool.sort(
+        key=lambda c: (
+            -poi_score(c, spine, interest, snapshot, penalty=score_penalty, party=party),
+            c.id,
+        )
+    )
 
     def _insertion(cand: POI, sel: list[POI]) -> tuple[int, int]:
         if fixed_end is not None:
@@ -2965,7 +3115,7 @@ def _apply_fill_pass(
         # One-way with ≥2 stops: never insert after the endpoint-pulled last anchor.
         if (not round_trip) and len(sel) >= 2 and idx >= len(sel):
             idx = len(sel) - 1
-            extra = _insertion_extra_at_index(
+            extra = insertion_extra_at_index(
                 cand, sel, idx, start_lat=start_lat, start_lng=start_lng,
                 round_trip=round_trip, leg_seconds_fn=leg_seconds_fn,
             )
@@ -2980,6 +3130,16 @@ def _apply_fill_pass(
                 break
             extra, idx = _insertion(cand, selected)
             if consumed_walk + extra > walk_cap:
+                continue
+            if not _insertion_legs_fit_cap(
+                cand,
+                selected,
+                idx,
+                start=(start_lat, start_lng),
+                close=fill_close,
+                max_leg_seconds=max_leg_seconds,
+                leg_seconds_fn=leg_seconds_fn,
+            ):
                 continue
             selected = [*selected[:idx], cand, *selected[idx:]]
             consumed_walk += extra
@@ -2999,7 +3159,7 @@ def _apply_fill_pass(
         rescue_pool = sorted(
             rescue_pool_by_id.values(),
             key=lambda cand: (
-                -poi_score(cand, spine, interest, snapshot, penalty=score_penalty),
+                -poi_score(cand, spine, interest, snapshot, penalty=score_penalty, party=party),
                 cand.id,
             ),
         )
@@ -3014,6 +3174,13 @@ def _apply_fill_pass(
             # rescue must not promote it: asking for dark_history and being made to
             # stand in front of an off-genre POI is exactly the failure the band
             # logic exists to prevent.
+            #
+            # NO `party=` HERE, DELIBERATELY (plan S2.6): this call feeds a BAND
+            # classification (dwell vs vignette eligibility), not a ranking —
+            # "banding is not party-aware in this phase". Threading party into
+            # the score above would let a family's affordance boost change
+            # WHETHER a POI is eligible at all, not just how it ranks among
+            # already-eligible candidates.
             if interest and not is_dwell_band(
                 band_for_spotlight(
                     poi_score(cand, spine, interest, snapshot, penalty=score_penalty),
@@ -3022,6 +3189,16 @@ def _apply_fill_pass(
             ):
                 continue
             extra, idx = _insertion(cand, selected)
+            if not _insertion_legs_fit_cap(
+                cand,
+                selected,
+                idx,
+                start=(start_lat, start_lng),
+                close=fill_close,
+                max_leg_seconds=max_leg_seconds,
+                leg_seconds_fn=leg_seconds_fn,
+            ):
+                continue
             cand_dwell = stop_cost_fn(cand, exempt=False)
             # IS THE WALK WORTH THE STOP? Priced against what the stop EARNS the
             # visitor, not what it says. The old form divided by narration alone,
@@ -3086,6 +3263,8 @@ def _reach_predicate(
     radius_m: float,
     iso_minutes: int,
     routing_client: RoutingClient | None,
+    *,
+    pace_multiplier: float = 1.0,
 ):
     """(contains(lat, lng), degraded) — the REACH membership test (§2.1).
 
@@ -3093,9 +3272,21 @@ def _reach_predicate(
     (prepared shapely geometry; GeoJSON rings are (lng, lat)). Fallback —
     no client, isochrone refused, or unparseable geometry — is the exact
     pre-M5 haversine envelope with ``degraded=True``.
+
+    ``pace_multiplier`` (plan S2.4) rides the isochrone request as a slower
+    ``walking_speed`` — ``REACH_PACE_KMH / pace_multiplier`` — so the
+    road-network polygon shrinks for a slow party exactly as the analytic
+    ``radius_m`` fallback already has (``envelope_radius_m`` at the call
+    site). 1.0 is the identity default: ``None`` rides through to
+    ``RoutingClient.isochrone``, which keeps today's costing, byte-identical.
     """
     if routing_client is not None:
-        iso = routing_client.isochrone(start[0], start[1], iso_minutes)
+        walking_speed_kmh = (
+            None if pace_multiplier == 1.0 else REACH_PACE_KMH / pace_multiplier
+        )
+        iso = routing_client.isochrone(
+            start[0], start[1], iso_minutes, walking_speed_kmh=walking_speed_kmh
+        )
         if iso is not None:
             try:
                 geoms = [
@@ -3137,57 +3328,147 @@ def _reach_predicate(
     )
 
 
-def _memoized_leg_fn(client: RoutingClient) -> LegSecondsFn:
+#: How far (metres) from a leg's midpoint a body place may sit and still be
+#: seated there — the "bounded detour" plan S2.5 asks for. 150 m is roughly
+#: two minutes each way at the corpus pace: enough to reach a real nearby
+#: bench or toilet, not enough to turn a rest stop into its own excursion.
+BODY_STOP_MAX_DETOUR_M: float = 150.0
+
+
+def _seat_body_stops(
+    ordered: list[POI],
+    *,
+    start: tuple[float, float],
+    rest_cadence_minutes: int,
+    body_pool: list[POI],
+    leg_seconds_fn: LegSecondsFn | None,
+) -> list[POI]:
+    """Seat a bench or toilet at every stretch of walking longer than the
+    rest cadence — design §3.1's body-stop promise (plan S2.5): "a rest
+    window with no bench under it is thirteen minutes standing on a stick".
+    Nadia's toilet stop is "Ten minutes, zero cultural content, entirely
+    non-negotiable" (docs/personas/03-family-with-children.md step 5).
+
+    Runs on the FINAL walking order, after every scoring/certification pass
+    has already decided the story stops — a body place is scheduled by the
+    body clock, never the story ranking (POI_ROLE_MULTIPLIER prices it 0.0,
+    so it cannot compete for a dwell slot on its own). A seated body stop is
+    a ZERO-NARRATION stop, not a zero-DURATION one: its dwell comes from its
+    own `typical_duration_min` (priced by the upload, not by beats — a body
+    place carries none).
+
+    Full promise-grade protection (a bench guaranteed to exist before the
+    day is served, re-verified against the elapsed ceiling) is Phase 3's
+    protected class; this is Phase 2's mechanical seating only — the walk
+    total this adds is reported honestly by `summarise_route`, downstream,
+    but is not re-checked against the certification band here.
+    """
+    if not body_pool or not ordered:
+        return ordered
+    cadence_seconds = rest_cadence_minutes * 60
+    fn = leg_seconds_fn or default_leg_seconds
+    result: list[POI] = []
+    prev_lat, prev_lng = start
+    accumulated = 0
+    seated_ids: set[str] = set()
+
+    for poi in ordered:
+        leg_s = fn(prev_lat, prev_lng, poi.lat, poi.lng)
+        if accumulated + leg_s > cadence_seconds:
+            mid_lat = (prev_lat + poi.lat) / 2.0
+            mid_lng = (prev_lng + poi.lng) / 2.0
+            candidates_here = [b for b in body_pool if b.id not in seated_ids]
+            nearest = min(
+                candidates_here,
+                key=lambda b: haversine_m(mid_lat, mid_lng, b.lat, b.lng),
+                default=None,
+            )
+            if nearest is not None and (
+                haversine_m(mid_lat, mid_lng, nearest.lat, nearest.lng)
+                <= BODY_STOP_MAX_DETOUR_M
+            ):
+                result.append(nearest)
+                seated_ids.add(nearest.id)
+                accumulated = fn(nearest.lat, nearest.lng, poi.lat, poi.lng)
+            else:
+                # Crossed the cadence with nothing nearby to seat — reset the
+                # clock anyway rather than compounding a second, longer
+                # over-cadence stretch on top of the first.
+                accumulated = leg_s
+        else:
+            accumulated += leg_s
+        result.append(poi)
+        prev_lat, prev_lng = poi.lat, poi.lng
+
+    return result
+
+
+def _memoized_leg_fn(
+    client: RoutingClient, *, costing_options_override: dict | None = None
+) -> LegSecondsFn:
     """Memoized routed leg times for the §3 divisor.
 
     The greedy, endpoint-pull, and fill pass re-evaluate the same coordinate
     pairs many times per request; with a live Valhalla each unique pair costs
     one HTTP roundtrip, so cache per select_route call. (The client itself
     sticky-degrades to pure math after the first transport failure.)
+
+    ``costing_options_override`` (plan S2.7) carries the route-surface axis's
+    Valhalla costing on every call this closure makes — constant for the
+    whole ``select_route`` invocation, so it is safe to close over rather
+    than fold into the cache key.
     """
     cache: dict[tuple[float, float, float, float], int] = {}
 
     def leg_fn(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
         key = (lat1, lng1, lat2, lng2)
         if key not in cache:
-            cache[key] = client.leg_seconds(lat1, lng1, lat2, lng2)
+            cache[key] = client.leg_seconds(
+                lat1, lng1, lat2, lng2, costing_options_override=costing_options_override
+            )
         return cache[key]
 
     return leg_fn
 
 
-def _insertion_extra_at_index(
+
+def _insertion_legs_fit_cap(
     cand: POI,
-    selected: list[POI],
+    sel: list[POI],
     idx: int,
     *,
-    start_lat: float,
-    start_lng: float,
-    round_trip: bool,
-    leg_seconds_fn: LegSecondsFn | None = None,
-    fixed_end: tuple[float, float] | None = None,
-) -> int:
-    """Walk-time delta from inserting `cand` at exactly position `idx`."""
+    start: tuple[float, float],
+    close: tuple[float, float] | None,
+    max_leg_seconds: int | None,
+    leg_seconds_fn: LegSecondsFn | None,
+) -> bool:
+    """Would the two legs minted by inserting ``cand`` at ``idx`` fit the cap?
+
+    THE per-leg admission check (redesign §2.4; plan S2.3), shared by the
+    greedy and the fill pass so the rule cannot fork. A walking budget is not
+    one number: Rosemary's twelve-minute per-leg limit is the binding
+    constraint while her 54-minute total is unremarkable
+    (docs/personas/05-step-free-visitor.md, breaks bullet 1). Deliberately
+    LOCAL — only the two would-be legs around the priced position, O(1) per
+    candidate; an O(n) whole-chain sweep per candidate per round is the
+    quadratic this shape exists to avoid. The endpoint pull and the timebox
+    repair check whole chains instead, because they run once per route.
+    ``close`` is the fixed end for A→B, the start for a round trip, and None
+    for an open end. ``max_leg_seconds`` None = axis unset = today, no check.
+    """
+    if max_leg_seconds is None:
+        return True
     fn = leg_seconds_fn or default_leg_seconds
-    base_coords: list[tuple[float, float]] = [
-        (start_lat, start_lng),
-        *((p.lat, p.lng) for p in selected),
-    ]
-    if fixed_end is not None:
-        base_coords.append(fixed_end)
-    elif round_trip:
-        base_coords.append((start_lat, start_lng))
-    base = path_walk_seconds(base_coords, fn)
-    new_pois = [*selected[:idx], cand, *selected[idx:]]
-    new_coords: list[tuple[float, float]] = [
-        (start_lat, start_lng),
-        *((p.lat, p.lng) for p in new_pois),
-    ]
-    if fixed_end is not None:
-        new_coords.append(fixed_end)
-    elif round_trip:
-        new_coords.append((start_lat, start_lng))
-    return path_walk_seconds(new_coords, fn) - base
+    prev = (sel[idx - 1].lat, sel[idx - 1].lng) if idx > 0 else start
+    if fn(prev[0], prev[1], cand.lat, cand.lng) > max_leg_seconds:
+        return False
+    if idx < len(sel):
+        nxt: tuple[float, float] | None = (sel[idx].lat, sel[idx].lng)
+    else:
+        nxt = close
+    if nxt is None:
+        return True
+    return fn(cand.lat, cand.lng, nxt[0], nxt[1]) <= max_leg_seconds
 
 
 def _insertion_cost_with_fixed_end(
@@ -3208,7 +3489,7 @@ def _insertion_cost_with_fixed_end(
     best_extra = math.inf
     best_idx = 0
     for idx in range(len(selected) + 1):
-        extra = _insertion_extra_at_index(
+        extra = insertion_extra_at_index(
             cand,
             selected,
             idx,
@@ -3289,8 +3570,12 @@ class _CertificationRouteTrial:
         visits and the repair does not, the repair sees a route thousands of
         seconds under the floor and keeps buying enormous walks to close a gap
         the visit term already closed. That is Parc de la Villette coming back.
+
+        Delegates the actual combining to ``served_elapsed_seconds`` (dedup-
+        review 2026-08-07) — this trial's own walk/dwell terms are legitimately
+        its own, but the RULE for adding them is the one rule every caller uses.
         """
-        return self.walk_seconds + self.dwell_seconds
+        return served_elapsed_seconds(self.walk_seconds, self.dwell_seconds)
 
 
 def _certification_route_trial(
@@ -3470,6 +3755,18 @@ def _apply_certification_timebox_repair(
         # (docs/personas/04-layover-sprinter.md).
         if trial.elapsed_seconds > planning_budget.nominal_elapsed_seconds:
             return
+        # THE PER-LEG CAP IS AN ADMISSION RULE HERE TOO (plan S2.3). The greedy
+        # cap-checked its own insertions, but a repair trial re-orders the whole
+        # set, which can mint a brand-new over-cap leg — and these trials LOOK
+        # leg-aware because rank() reads max_leg_seconds, but rank only ranks.
+        # Same filter shape as the ceiling above: over the cap = ineligible in
+        # every list, because under the axis a route with one over-cap leg "has
+        # the same total and is unusable" (05-step-free-visitor.md, bullet 1).
+        if (
+            input.max_leg_minutes is not None
+            and trial.max_leg_seconds > input.max_leg_minutes * 60
+        ):
+            return
         # Bank it as a fallback BEFORE the band test. A trial that fits under the
         # ceiling but cannot reach the floor is an honestly short tour, and an
         # honestly short tour is a better product than a refusal — it is also the
@@ -3562,7 +3859,7 @@ def _apply_certification_timebox_repair(
     pool = sorted(
         (candidate for candidate in candidates if candidate.id not in selected_ids),
         key=lambda poi: (
-            -poi_score(poi, spine, interest, snapshot, penalty=score_penalty),
+            -poi_score(poi, spine, interest, snapshot, penalty=score_penalty, party=input.party),
             poi.id,
         ),
     )
@@ -3624,7 +3921,10 @@ def _apply_certification_timebox_repair(
                 key=lambda trial: (
                     trial.elapsed_seconds,
                     sum(
-                        poi_score(poi, spine, interest, snapshot, penalty=score_penalty)
+                        poi_score(
+                            poi, spine, interest, snapshot,
+                            penalty=score_penalty, party=input.party,
+                        )
                         for poi in trial.selected
                     ),
                     tuple(sorted(poi.id for poi in trial.selected)),
@@ -3659,7 +3959,9 @@ def _apply_certification_timebox_repair(
         trial: _CertificationRouteTrial,
     ) -> tuple[int, float, float, tuple[str, ...]]:
         score = sum(
-            poi_score(poi, spine, interest, snapshot, penalty=score_penalty)
+            poi_score(
+                poi, spine, interest, snapshot, penalty=score_penalty, party=input.party
+            )
             for poi in trial.selected
         )
         return (
@@ -3714,6 +4016,8 @@ def _apply_endpoint_pull(
     walk_budget: int,
     leg_seconds_fn: LegSecondsFn | None = None,
     score_penalty: dict[str, float] | None = None,
+    max_leg_seconds: int | None = None,
+    party: str | None = None,
 ) -> list[POI]:
     """Insert `endpoint` as the closing stop, dropping at most
     ENDPOINT_PULL_MAX_DROPS weak incumbents to fit the walk budget. If the
@@ -3735,7 +4039,7 @@ def _apply_endpoint_pull(
             fixed_end=endpoint,
             routed_cost_fn=leg_seconds_fn,
         )
-        walk = _full_route_walk_seconds(
+        legs = _full_route_leg_seconds(
             candidate_route,
             start_lat=start_lat,
             start_lng=start_lng,
@@ -3745,6 +4049,15 @@ def _apply_endpoint_pull(
             round_trip=False,
             leg_seconds_fn=leg_seconds_fn,
         )
+        walk = sum(legs)
+        if max_leg_seconds is not None and max(legs, default=0) > max_leg_seconds:
+            # THE PER-LEG CAP checks the pulled ordering's WHOLE chain (S2.3 —
+            # this pass runs once per route, so the full sweep is affordable
+            # here). One over-cap leg makes the pull unusable to the party that
+            # set the axis, and dropping incumbents only LENGTHENS the surviving
+            # legs, so there is nothing to iterate toward: abandon the pull and
+            # let the greedy result (already cap-admitted leg by leg) stand.
+            return list(selected)
         if walk <= walk_budget:
             return candidate_route
         if len(incumbents) <= 1 or drops_used >= ENDPOINT_PULL_MAX_DROPS:
@@ -3754,7 +4067,9 @@ def _apply_endpoint_pull(
             # (2026-07-02 Rue Cler regression): abandon the pull and let
             # the greedy result stand.
             return list(selected)
-        incumbents = _drop_weakest(incumbents, spine, interest, snapshot, score_penalty)
+        incumbents = _drop_weakest(
+            incumbents, spine, interest, snapshot, score_penalty, party=party
+        )
         drops_used += 1
 
 
@@ -3764,9 +4079,15 @@ def _drop_weakest(
     interest: frozenset[str],
     snapshot: CorpusSnapshot,
     score_penalty: dict[str, float] | None = None,
+    *,
+    party: str | None = None,
 ) -> list[POI]:
     weakest = min(
-        pois, key=lambda p: (poi_score(p, spine, interest, snapshot, penalty=score_penalty), p.id)
+        pois,
+        key=lambda p: (
+            poi_score(p, spine, interest, snapshot, penalty=score_penalty, party=party),
+            p.id,
+        ),
     )
     return [p for p in pois if p.id != weakest.id]
 
@@ -3890,6 +4211,26 @@ def _is_excluded(area: str, snapshot: CorpusSnapshot) -> bool:
 # ---------------------------------------------------------------------------
 
 
+#: Bounded party-affordance boost inside `poi_score` (redesign row 6.4; plan
+#: S2.6): family days weight `children_can_run` places up; take-it-easy and
+#: couple days weight `sit_and_talk` up. Bounded and test-pinned — large
+#: enough to let a richer children's/talkable place occasionally beat a
+#: marginally higher-scoring one, never large enough to override a landmark
+#: (`importance` alone spans 1-5). `spotlight` does NOT gain this factor:
+#: banding is not party-aware in this phase, and this is a NEW factor added
+#: to `poi_score` alone, not a re-opening of the poi_score/spotlight
+#: deliberate-overlap ruling (dedup-review 2026-08-07).
+PARTY_AFFORDANCE_BOOST: float = 1.25
+
+
+def _party_affordance_factor(poi: POI, party: str | None) -> float:
+    if party == "family" and poi.children_can_run:
+        return PARTY_AFFORDANCE_BOOST
+    if party in ("couple", "take_it_easy") and poi.sit_and_talk:
+        return PARTY_AFFORDANCE_BOOST
+    return 1.0
+
+
 def poi_score(
     poi: POI,
     spine_area: str | None,
@@ -3897,6 +4238,7 @@ def poi_score(
     snapshot: CorpusSnapshot,
     *,
     penalty: dict[str, float] | None = None,
+    party: str | None = None,
 ) -> float:
     """The §3 per-POI score: importance x richness x lens_relevance x alignment x role.
 
@@ -3928,7 +4270,8 @@ def poi_score(
     alignment = _area_alignment(poi, spine_area, snapshot)
     role_mult = POI_ROLE_MULTIPLIER.get(poi.poi_role, 0.0)
     diversity = penalty.get(poi.id, 1.0) if penalty else 1.0
-    return importance * richness * relevance * alignment * role_mult * diversity
+    affordance = _party_affordance_factor(poi, party)
+    return importance * richness * relevance * alignment * role_mult * diversity * affordance
 
 
 def _lens_adjacency(poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot) -> float:

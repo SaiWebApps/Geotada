@@ -186,8 +186,16 @@ def assess(
     duration_min = tour_input.duration_min
     round_trip = tour_input.round_trip
 
+    # THE GATE AND THE PLANNER MUST SHRINK TOGETHER (plan S2.4 re-plan finding).
+    # `select_route` derives this same multiplier from the same
+    # `TourInput.walking_pace` field; reading it here rather than threading a
+    # second parameter is what keeps the two readings from drifting apart.
+    pace_multiplier = tour_input.walking_pace if tour_input.walking_pace is not None else 1.0
     walk_radius_m = envelope_radius_m(
-        duration_min, round_trip=round_trip, planning_policy=planning_policy
+        duration_min,
+        round_trip=round_trip,
+        planning_policy=planning_policy,
+        pace_multiplier=pace_multiplier,
     )
 
     # Reachable POIs: within walk envelope AND eligible role AND at

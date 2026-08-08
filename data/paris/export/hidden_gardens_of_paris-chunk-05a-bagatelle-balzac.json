@@ -6,7 +6,7 @@
     "longitude": 2.2481493,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -541,7 +541,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A walled garden with closing bells, transcribed faithfully from its OSM tag 'Mo-Su 09:30-20:00'.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large landscaped park within the Bois de Boulogne with a famous rose garden, ornamental waters, grottoes and a small château grounds; walking the paths and gardens easily absorbs three quarters of an hour outdoors.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This enclosed botanical park in the Bois de Boulogne has traffic-free lawns and paths for children plus free benches in quiet settings, but it charges admission and is gated and locked at night so no one can be left standing there after dark."
   },
   {
     "name": "Maison de Balzac",
@@ -550,7 +556,7 @@
     "longitude": 2.2808879,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -969,7 +975,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated house-museum, transcribed faithfully from its OSM tag 'Tu-Su 10:00-18:00' with Monday closed.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "House-museum in the writer's former home with a terraced garden; interior of several small rooms with manuscripts, portraits and his study takes about 35-40 minutes, plus a short entry, and the garden and hillside setting add outside time.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a writer's house-museum where quiet is expected indoors so children cannot run, though its small terraced garden has free benches quiet enough to talk; it closes and locks in the evening so it fails after dark."
   },
   {
     "name": "Allée des Cygnes",
@@ -978,7 +990,7 @@
     "longitude": 2.28408,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 22,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1073,7 +1085,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open riverbank walkway on an island in the Seine, valued in the open; the OSM tag \"24/7\" confirms it is not gated, so null.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Narrow tree-lined artificial island walkway in the Seine ending at a small replica Statue of Liberty; walking its length and back with river views on both sides takes around twenty minutes, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This narrow tree-lined walkway on an artificial island in the Seine is traffic-free but its edges drop straight to the river with no barrier suitable for a running child, it has some benches quiet enough for conversation, and as an isolated deserted strip over the water it is unsuitable after dark."
   },
   {
     "name": "Trocadero",
@@ -1082,7 +1100,7 @@
     "longitude": 2.287592,
     "importance_tier": 5,
     "trigger_radius": 50,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Place du Trocadero",
@@ -1244,7 +1262,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Not gated — an open public terrace and esplanade viewed in the open, always accessible.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "An elevated terrace and gardens giving the classic head-on view of the Eiffel Tower across the Seine; walking the terrace, the wings of the Palais and down into the gardens absorbs 30 minutes, the square itself being an open outdoor space.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The terrace and gardens offer some quiet benches where two people can sit and talk, but the site is bordered by roads and the crowded esplanade edges toward traffic so it is not safe free-range running ground; it is lit and busy with people at night, so standing after dark is fine."
   },
   {
     "name": "Parc des Serres d'Auteuil",
@@ -1253,7 +1277,7 @@
     "longitude": 2.252604,
     "importance_tier": 2,
     "trigger_radius": 75,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1330,6 +1354,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated botanical garden/greenhouse complex with closing bells, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": 2100,
+    "visit_basis": "Botanical garden with historic glasshouses; strolling the ornamental grounds takes about twenty minutes and the greenhouses of tropical and palm collections add roughly half an hour walking through them.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This botanical garden with greenhouses has traffic-free outdoor lawns and paths where children can run and free benches quiet enough to talk, but glasshouse interiors expect care and the whole enclosure is gated and locked at night so it fails after dark."
   }
 ]

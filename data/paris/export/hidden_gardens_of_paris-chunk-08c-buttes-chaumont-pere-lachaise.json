@@ -6,7 +6,7 @@
     "longitude": 2.384246,
     "importance_tier": 3,
     "trigger_radius": 150,
-    "typical_duration_min": null,
+    "typical_duration_min": 55,
     "kid_friendly": "yes",
     "name_variations": [
       "Buttes-Chaumont"
@@ -430,7 +430,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated park with closing gates; transcribed from OSM tag \"Apr,Sep 07:00-21:00; Oct-Mar 07:00-20:00; May-Aug 07:00-22:00\" using the current summer (May-Aug) window.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large dramatic hillside park with a lake, cliffs, waterfall, grotto and a temple on a rocky island reached by a suspension bridge; walking the paths and climbing to the temple easily fills an hour, all outdoors.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A large enclosed park with traffic-free lawns and paths where children can run and abundant benches in quiet greenery for talking, but its gates are locked at night."
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -439,7 +445,7 @@
     "longitude": 2.393646,
     "importance_tier": 4,
     "trigger_radius": 100,
-    "typical_duration_min": null,
+    "typical_duration_min": 75,
     "kid_friendly": "yes",
     "name_variations": [
       "Cimetiere du Pere-Lachaise"
@@ -1066,7 +1072,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated walled cemetery with closing bells; hours follow the City of Paris's published summer pattern (opens 08:00 weekdays, 08:30 Sat, 09:00 Sun, closing 18:00).",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast hillside cemetery with cobbled avenues and many famous graves to hunt down over a wide area; an outdoor walk with no building to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A hushed cemetery of hard cobbled lanes where loud running children draw disapproval, though its quiet benches suit low conversation; it is gated and locked at nightfall so nobody can be left standing inside."
   },
   {
     "name": "Parc de la Villette",
@@ -1075,7 +1087,7 @@
     "longitude": 2.3884384,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1154,7 +1166,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Large park whose grounds are open 24 hours in the open air, but with gated venues; no OSM tag and hours not confidently known, left unfiltered.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Very large modern park with canal, lawns, themed gardens and the red follies spread over a big area; crossing and exploring it usefully absorbs around 45 min, all outdoors.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "This very large park has vast traffic-free lawns and open ground where children can run freely, ample benches and lawn edges quiet enough to talk, and unusually for Paris it stays open and lit at night with people and venues about, so it passes all three."
   },
   {
     "name": "Parc de Belleville",
@@ -1163,7 +1181,7 @@
     "longitude": 2.384229,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1296,7 +1314,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated park with closing gates; OSM tag transcribed for the current typical pattern (\"Mo-Fr 08:00-19:00; Sa-Su 09:00-19:00\"), omitting the seasonal Mar27-Apr30 override outside the current window.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Hillside park with terraced paths, vines and a panoramic terrace over Paris; climbing through it and taking in the view absorbs about 30 min, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This terraced hillside park has traffic-free paths, lawns and a playground for children plus benches with views for quiet conversation, but it is gated and locked at night so no one can be left standing inside after dark."
   },
   {
     "name": "Jardin Naturel",
@@ -1305,7 +1329,7 @@
     "longitude": 2.3989622,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1375,7 +1399,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal garden with closing gates, but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Wild-style ecological garden with native plants and a pond near Pere-Lachaise; strolling its winding paths takes about 15 min, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a small enclosed nature garden managed to protect its wild plantings where free-ranging running is discouraged and fragile, but it has quiet benches for conversation, and being a gated Paris garden it is locked at night."
   },
   {
     "name": "Cemetery of Eglise Saint-Germain de Charonne",
@@ -1384,7 +1414,7 @@
     "longitude": 2.404021,
     "importance_tier": 2,
     "trigger_radius": 40,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1462,6 +1492,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated cemetery with closing gates, but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small rural-feeling churchyard cemetery, one of the last village cemeteries in Paris, beside its hilltop church; walking the rows and steps takes about 15 min outdoors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is a small churchyard cemetery where running among graves is inappropriate, it has no casual free seating for talking, and it is gated and closed after dark with no one about."
   }
 ]

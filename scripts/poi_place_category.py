@@ -178,8 +178,8 @@ def main(argv: list[str] | None = None) -> int:
 
     dump_pois(path, pois, original)
     print(f"✓ wrote place_category for all {len(pois)} POIs to {path.relative_to(ROOT)}")
-    print("  NEXT, AND MANDATORY: sync data/{city}/export/*.json, exactly as the")
-    print("  opening-hours and visit-duration passes require.")
+    print(f"  NEXT, AND MANDATORY: make sync-poi-exports SLUG={args.slug}, exactly")
+    print("  as the opening-hours and visit-duration passes require.")
     return 0
 
 

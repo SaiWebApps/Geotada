@@ -387,9 +387,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"\n✓ wrote {len(priced)} priced POIs to {path.relative_to(ROOT)}")
     if errors:
         print(f"  {len(errors)} still unpriced — re-run this target to pick up just those.")
-    print("  NEXT, AND MANDATORY: sync data/{city}/export/*.json and re-run the")
-    print("  consistency tests, exactly as /poi-gravity does. Fields written here")
-    print("  do not reach the graph until that sync happens.")
+    print(f"  NEXT, AND MANDATORY: make sync-poi-exports SLUG={args.slug} — fields")
+    print("  written here do not reach the graph until that sync runs.")
     # Non-zero when anything is still unpriced: a pass that silently exits 0 with
     # gaps in it is how a partial corpus gets treated as a finished one.
     return 1 if errors else 0

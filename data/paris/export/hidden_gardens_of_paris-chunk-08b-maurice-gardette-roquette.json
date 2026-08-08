@@ -6,7 +6,7 @@
     "longitude": 2.3790253,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -408,7 +408,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated municipal square with closing gates; OSM tag \"sunrise-sunset\" transcribed to an approximate daylight window of 06:00-21:00.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Neighbourhood public garden with lawns, benches, a bandstand and playgrounds; you walk its paths and sit, absorbing around 18 min, with nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a fenced neighbourhood square with traffic-free paths, lawns and a playground where children can run freely, and benches quiet enough for conversation, but like all Paris squares it is gated and locked at nightfall so no one can be left standing inside."
   },
   {
     "name": "Square de la Roquette",
@@ -417,7 +423,7 @@
     "longitude": 2.3846173,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -676,7 +682,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated public garden with closing hours, but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small local square-garden with lawns and trees on the site of a former prison; a walk-through and a pause take about 15 min, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This enclosed municipal garden has traffic-free paths and play areas where children can run safely and benches for quiet talk, but its gates are locked at night leaving no one able to stand inside after dark."
   },
   {
     "name": "Canal Saint-Martin",
@@ -685,7 +697,7 @@
     "longitude": 2.366885,
     "importance_tier": 4,
     "trigger_radius": 75,
-    "typical_duration_min": null,
+    "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -783,7 +795,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open waterway with public towpaths and bridges viewed from the pavement, so it is not gated.",
-    "place_category": "bridge"
+    "place_category": "bridge",
+    "visit_seconds_inside": null,
+    "visit_basis": "A 4.5-km tree-lined waterway with iron footbridges and locks; an engaged visitor strolls the towpaths, crosses several bridges and watches a lock cycle, easily filling forty minutes, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The unfenced canal edges drop straight into water so a running child is at risk, but the quays have quays and benches quiet enough to talk under the chestnut trees, and the area is lit and lively at night."
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -792,7 +810,7 @@
     "longitude": 2.393646,
     "importance_tier": 4,
     "trigger_radius": 100,
-    "typical_duration_min": null,
+    "typical_duration_min": 75,
     "kid_friendly": "yes",
     "name_variations": [
       "Cimetiere du Pere-Lachaise"
@@ -914,7 +932,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated walled cemetery with closing bells; hours follow the City of Paris's published summer pattern (opens 08:00 weekdays, 08:30 Sat, 09:00 Sun, closing 18:00).",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast hillside cemetery with cobbled avenues and many famous graves to hunt down over a wide area; an outdoor walk with no building to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A hushed cemetery of hard cobbled lanes where loud running children draw disapproval, though its quiet benches suit low conversation; it is gated and locked at nightfall so nobody can be left standing inside."
   },
   {
     "name": "Eglise Notre-Dame de la Croix",
@@ -923,7 +947,7 @@
     "longitude": 2.3874443,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1048,7 +1072,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated church one enters; OSM tag \"Tu-Su 08:30-19:30\" transcribed faithfully with Monday closed.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Large 19th-century Belleville church with a tall facade and steps; the exterior takes about 12 min, and the vast interior nave is a roughly 18-min walk-through.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "This is a church where quiet is expected inside and running is unacceptable, its interior pews are not free casual seating for chatting, but it fronts a lit open square in the Belleville area with people about at night making it fine to end a tour beside it."
   },
   {
     "name": "La Maison des Metallos",
@@ -1057,7 +1087,7 @@
     "longitude": 2.3780287,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1135,6 +1165,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated cultural centre with doors, but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 900,
+    "visit_basis": "Former metalworkers' union hall, now a cultural centre; the industrial facade takes several minutes and the interior exhibition hall about 15 min when something is showing.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "This is a cultural venue on a Paris street with no traffic-free enclosure for children to run and no free public seating on its pavement, but it sits on a lit populated street where someone could be left standing safely at night."
   }
 ]

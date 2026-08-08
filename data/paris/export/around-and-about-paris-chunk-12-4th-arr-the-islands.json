@@ -6,7 +6,7 @@
     "longitude": 2.3488,
     "importance_tier": 3,
     "trigger_radius": 80,
-    "typical_duration_min": 10,
+    "typical_duration_min": 7,
     "kid_friendly": "caution",
     "name_variations": [
       "Hôtel-Dieu"
@@ -94,7 +94,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working hospital rather than a visitor attraction; not a gated tourist experience, so no visiting hours apply.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working hospital with a long facade on the Notre-Dame parvis and an inner courtyard glimpse; it is not a visitor interior, so priced outside only.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A functioning hospital with a quiet interior courtyard where running and casual sitting are inappropriate, but it sits on the open, lit, well-populated Ile de la Cite near Notre-Dame after dark."
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -103,7 +109,7 @@
     "longitude": 2.349902,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [
       "Notre-Dame de Paris"
@@ -327,7 +333,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated cathedral you enter, but post-reopening visiting hours are not confidently known to me; gated, hours not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 3000,
+    "visit_basis": "The west facade with its portals and towers, plus the parvis and views from around the Ile de la Cite, absorb 25 minutes; the interior nave, chancel, rose windows and side chapels take around 35 minutes plus an entry queue since reopening.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A cathedral interior demands silence and stillness so children cannot run and normal conversation is discouraged, and the surrounding parvis is open paving without quiet free seating; the Ile de la Cite location is lit and trafficked with people about, so being left standing after dark is fine."
   },
   {
     "name": "Rue Chanoinesse",
@@ -336,7 +348,7 @@
     "longitude": 2.35,
     "importance_tier": 1,
     "trigger_radius": 40,
-    "typical_duration_min": 10,
+    "typical_duration_min": 12,
     "kid_friendly": "caution",
     "name_variations": [],
     "parent_poi": null,
@@ -429,7 +441,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A public medieval street open to the air; not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Medieval street on Ile de la Cite with old canons' houses to walk along slowly and look into; a street whose value is entirely outside, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow medieval street on Ile de la Cite carrying occasional vehicles with no free seating and little quiet, and it is a deserted lane after dark rather than a lit populated place to leave someone standing."
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -438,7 +456,7 @@
     "longitude": 2.351968,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 15,
+    "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [],
     "parent_poi": null,
@@ -513,7 +531,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated underground memorial with seasonal hours; transcribed from its OSM tag whose current (Apr-Sep) window is 'Avr - Sep, Mar-Dim 10:00-19:00' (Mardi-Dimanche, Monday closed) in the tag 'Oct - Mar, Mar-Dim 10:00-17:00; Avr - Sep, Mar-Dim 10:00-19:00'.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Stark underground memorial at the tip of Île de la Cité; you approach across the small garden above, then descend into the narrow crypt of 200,000 lights and inscriptions, a contemplative space taking about twenty minutes inside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is a stark, silent underground memorial where running and casual conversation are socially unacceptable and there is no free open seating, and the site is closed and gated after dark."
   },
   {
     "name": "Ile Saint-Louis",
@@ -665,7 +689,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open residential island of public streets and quays, not gated; its value stands in the open.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small residential island with one main street of 17th-century townhouses, quays and an ice cream stop; the value is walking it, nothing single to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A residential island whose narrow streets carry cars and whose quays edge straight onto the Seine, so running children are at risk, but its tree-lined quay steps and benches are quiet enough to talk and the streets stay lit and inhabited at night."
   },
   {
     "name": "Berthillon",
@@ -674,7 +704,7 @@
     "longitude": 2.358565,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 15,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -743,7 +773,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "An ice cream parlour entered through a door (gated); the flagship's published pattern is Wednesday-Sunday, closed Monday and Tuesday.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 900,
+    "visit_basis": "Famous ice cream parlour on Ile Saint-Louis; a few minutes at the corner shopfront, and inside a small salon or counter with a reliably long queue, so 15 min including waiting and choosing.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A small ice cream shop on the narrow streets of Ile Saint-Louis with no free seating and shopfronts at child height; it closes in the evening and the quiet residential island offers little activity once shut."
   },
   {
     "name": "Pont-Marie",
@@ -752,7 +788,7 @@
     "longitude": 2.356,
     "importance_tier": 3,
     "trigger_radius": 60,
-    "typical_duration_min": 5,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -791,7 +827,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open stone bridge crossed freely from the pavement; not gated.",
-    "place_category": "bridge"
+    "place_category": "bridge",
+    "visit_seconds_inside": null,
+    "visit_basis": "17th-century stone bridge you cross and pause on for river and island views; a destination in itself but with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A stone road bridge with traffic and low parapets onto the Seine offering no safe running room and no quiet free seating, but it is lit, open and crossed at all hours."
   },
   {
     "name": "Hotel de Lauzun",
@@ -800,7 +842,7 @@
     "longitude": 2.3569,
     "importance_tier": 2,
     "trigger_radius": 50,
-    "typical_duration_min": 15,
+    "typical_duration_min": 6,
     "kid_friendly": "caution",
     "name_variations": [
       "Hôtel de Lauzun"
@@ -873,7 +915,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Private/occasional-use mansion marked walk_by_only; admired from the quay, not gated for general entry.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Opulent riverside mansion seen from the quay, its facade and ironwork the whole of the stop; interior is by rare special arrangement only, so not a normal entry.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A closed private mansion on Ile Saint-Louis seen only from the narrow quay-side pavement with no free seating, though the riverside street is lit and moderately used at night."
   },
   {
     "name": "Hotel Lambert",
@@ -882,7 +930,7 @@
     "longitude": 2.3585,
     "importance_tier": 3,
     "trigger_radius": 50,
-    "typical_duration_min": 10,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Hôtel Lambert"
@@ -953,7 +1001,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Private residence not open to the public; gated but no public hours exist, so left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Le Vau mansion at the tip of Ile Saint-Louis, its rotunda balcony and river-facing walls viewed from the quay and street corner; private residence, no public interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A private mansion at the tip of Ile Saint-Louis viewed from a narrow pavement with river parapets nearby and no free seating, but the quay is lit and central for standing after dark."
   },
   {
     "name": "Quai de Bourbon",
@@ -1025,7 +1079,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open riverside quay walked freely; not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Northern quay of Ile Saint-Louis to stroll for river views and old house frontages; an outdoor walk with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A riverside quay on Ile Saint-Louis with road traffic and stone parapets onto the Seine, no reliable quiet free seating, and quiet dim conditions after dark on this residential island."
   },
   {
     "name": "Crypte Archeologique de l'Ile de la Cite",
@@ -1034,7 +1094,7 @@
     "longitude": 2.3488,
     "importance_tier": 3,
     "trigger_radius": 50,
-    "typical_duration_min": 20,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1068,7 +1128,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated underground museum with a ticket desk, but its exact current hours are not confidently known; left unfiltered.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Small parvis entrance, then an underground museum of excavated Roman and medieval foundations with walkways and displays, typical visit 35-40 min plus a short ticket queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed underground museum where quiet is expected, with no free social seating, that is locked and inaccessible at night."
   },
   {
     "name": "Saint-Louis-en-l'Ile Church",
@@ -1077,7 +1143,7 @@
     "longitude": 2.3552,
     "importance_tier": 3,
     "trigger_radius": 50,
-    "typical_duration_min": 10,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1115,6 +1181,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated church you enter, but its current opening hours are not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Baroque church with an openwork spire seen from the street and a richly gilded single-nave interior, typical visit around 18 min.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A quiet baroque church interior where running and casual conversation are out of place, fronting a narrow Ile Saint-Louis street that is dim and largely deserted once shops close at night."
   }
 ]

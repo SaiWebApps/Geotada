@@ -6,7 +6,7 @@
     "longitude": 2.441435,
     "importance_tier": 5,
     "trigger_radius": 150,
-    "typical_duration_min": 45,
+    "typical_duration_min": 75,
     "kid_friendly": "yes",
     "name_variations": [
       "Vincennes Woods"
@@ -391,6 +391,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A large public woodland park with open roads and paths that is freely walkable and effectively unenclosed, so not gated.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast 995-hectare woodland park with lakes, gardens and attractions spread far apart; even a focused walk through one section and along a lake absorbs well over an hour, and it functions as an outdoor setting with no single interior.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A vast open woodland park with traffic-free lawns and paths for running and plentiful benches in quiet settings, but it is dark, unlit and deserted after nightfall with roads cutting through parts of it."
   }
 ]

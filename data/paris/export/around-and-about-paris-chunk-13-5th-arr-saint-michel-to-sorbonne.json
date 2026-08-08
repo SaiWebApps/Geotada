@@ -6,7 +6,7 @@
     "longitude": 2.342038,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": 18,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Universite de Paris",
@@ -299,7 +299,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working university whose interior is gated and access-controlled; hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Historic university facade and courtyard viewed from Place de la Sorbonne; interior access is limited but the chapel court and entrance hall absorb about 20 min when open.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working university whose historic buildings are gated and access-controlled, offering no open ground for children to run and no free public seating, but its Latin Quarter frontage is lit and busy with people into the evening."
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -456,7 +462,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo 06:30-19:30; Tu-Fr 08:45-19:45; We 08:45-22:00; Sa 08:45-12:00,14:00-19:45; Su 08:45-12:15,14:30-19:45'.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Church holding the last rood screen in Paris and the shrine of Sainte Genevieve; the carved interior takes about 20 min, the facade near the Pantheon a few minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A quiet church interior where children cannot run and offering no free outdoor seating, set on narrow Latin Quarter streets behind the Pantheon that empty out and offer little lit through-traffic at night."
   },
   {
     "name": "Lycee Henri IV",
@@ -465,7 +477,7 @@
     "longitude": 2.348,
     "importance_tier": 3,
     "trigger_radius": 30,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Lycée Henri-IV",
@@ -506,7 +518,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Working secondary school not open to the public; gated but no general visiting hours exist, so left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": null,
+    "visit_basis": "Elite school in a former abbey with the Clovis Tower visible over the walls, viewed from the street; an active lycee closed to the public, so no normal entry.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working secondary school closed to the public with no accessible running space or free seating, but its Place du Pantheon setting is open, lit and populated after dark."
   },
   {
     "name": "College de France",
@@ -515,7 +533,7 @@
     "longitude": 2.3455,
     "importance_tier": 3,
     "trigger_radius": 30,
-    "typical_duration_min": 5,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
       "College du Roi",
@@ -561,7 +579,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Research institution marked walk_by_only; its lecture-hall access is not a general gated visit with confident public hours, so left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Renaissance-founded institution with a courtyard and statue seen from the street; a working research college, not a general visitor interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A research institution with gated courtyards not open for children to run and no free casual seating, but it sits on a lit, busy Latin Quarter street near the Sorbonne after dark."
   },
   {
     "name": "Jardin des Plantes",
@@ -570,7 +594,7 @@
     "longitude": 2.356212,
     "importance_tier": 3,
     "trigger_radius": 150,
-    "typical_duration_min": 5,
+    "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [
       "Garden of Plants"
@@ -612,7 +636,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A walled botanical garden with closing gates (gated), but its precise seasonal opening times vary and are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large formal botanical garden with tree-lined alleys, alpine and rose gardens and museum buildings along its edges; walking the full length and side gardens absorbs around 45 min, treated here as an open garden with its museums as separate entries.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall."
   },
   {
     "name": "Caveau de la Huchette",
@@ -621,7 +651,7 @@
     "longitude": 2.346298,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "no",
     "name_variations": [],
     "parent_poi": null,
@@ -725,7 +755,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated cellar jazz club with door and admission, but no OSM tag supplied and its nightly hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Basement jazz club on a narrow Latin Quarter lane; nothing to enter by day, only a small storied doorway to note in passing.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An underground jazz cellar with no run-around space and no free seating, but its entrance is on a narrow but busy, brightly lit Latin Quarter pedestrian street that stays crowded and peopled late into the night."
   },
   {
     "name": "Theatre de la Huchette",
@@ -734,7 +770,7 @@
     "longitude": 2.3454,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Théâtre de la Huchette"
@@ -775,7 +811,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated theatre entered by performance/box-office ticket, but its box-office and show hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Tiny theatre facade and its record-run posters on a narrow street, a brief look unless attending a performance; no daytime interior visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A tiny theatre on the very narrow rue de la Huchette with no room to run and no free seating, but the street is a busy, lit, crowded pedestrian area at night."
   },
   {
     "name": "Ecole Normale Superieure",
@@ -784,7 +826,7 @@
     "longitude": 2.3447,
     "importance_tier": 3,
     "trigger_radius": 25,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "ENS",
@@ -825,7 +867,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working grande ecole behind gates; not a public visitor site and hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working academic institution on rue d'Ulm; from the street you take in the classical facade and gated main courtyard, but the interior is not open to casual visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A gated, secured academic institution whose interior courtyards are not open to the public so children cannot run there and there is no public free seating, but its rue d'Ulm frontage near the Pantheon is lit and on a normal city street where someone could safely be left standing."
   },
   {
     "name": "Arenes de Lutece",
@@ -834,7 +882,7 @@
     "longitude": 2.352309,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Lutece Arena",
@@ -875,6 +923,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open Roman amphitheatre ruin within a public garden; though it has posted gate hours they are not confidently known, and its value is largely open-air — left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Open Gallo-Roman amphitheatre ruin you walk down into and around the arena floor and tiers; a free open space, nothing enclosed to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night."
   }
 ]

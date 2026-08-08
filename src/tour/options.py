@@ -31,6 +31,7 @@ from .selection import (
     require_materialized_snapshot,
     spotlight,
 )
+from .visit_time import served_elapsed_seconds
 
 
 def dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) -> str | None:
@@ -70,9 +71,14 @@ def option_eta_seconds(route: Route, script: Script) -> int:
     agreed only because the fallback path happens to compute the same number. A leg
     with a routed duration but a haversine provenance would have made the served
     clock and the planned clock disagree, silently.
+
+    The COMBINING (walk + dwell) delegates to ``served_elapsed_seconds`` (dedup-
+    review 2026-08-07) — the one rule every elapsed-time caller in the engine now
+    shares; this function's own job is only supplying the two honest terms.
     """
-    return total_walk_seconds(route.transits) + sum(
-        sp.dwell_seconds for sp in script.selected_pois
+    return served_elapsed_seconds(
+        total_walk_seconds(route.transits),
+        sum(sp.dwell_seconds for sp in script.selected_pois),
     )
 
 

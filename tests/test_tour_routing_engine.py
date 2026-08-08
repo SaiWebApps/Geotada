@@ -150,7 +150,16 @@ def test_isochrone_returns_feature_collection():
 
 def test_requests_use_documented_wire_format():
     """Pin the outgoing JSON: pedestrian costing, lat/lon keys, km units,
-    minute contours with polygons=true."""
+    minute contours with polygons=true.
+
+    EXTENDED for plan S2.7 (route surface, redesign §2.4), per the audit's own
+    ruling for this exact test (05-audit-B: LOAD-BEARING — "Extend this row
+    with the surface options rather than writing a second wire-format test"):
+    an unset override leaves the request byte-identical to the default
+    ``_ROUTING_CONFIG``; a set override merges into ``costing_options.pedestrian``
+    alongside the pace pin, and rides the SAME wire format the plain request
+    uses — never a second shape.
+    """
     seen: list[tuple[str, dict]] = []
 
     def recording_handler(request: httpx.Request) -> httpx.Response:
@@ -160,16 +169,26 @@ def test_requests_use_documented_wire_format():
     with _client(recording_handler) as rc:
         rc.route(*POINTS[0], *POINTS[1])
         rc.isochrone(48.8584, 2.2945, 30)
+        rc.route(*POINTS[0], *POINTS[1], costing_options_override={"step_penalty": 3600})
 
-    route_body = dict(seen)["/route"]
-    assert route_body["costing"] == "pedestrian"
-    assert route_body["units"] == "kilometers"
-    assert route_body["locations"][0] == {"lat": POINTS[0][0], "lon": POINTS[0][1]}
+    route_bodies = [body for path, body in seen if path == "/route"]
+    plain_body, surfaced_body = route_bodies[0], route_bodies[1]
+    assert plain_body["costing"] == "pedestrian"
+    assert plain_body["units"] == "kilometers"
+    assert plain_body["locations"][0] == {"lat": POINTS[0][0], "lon": POINTS[0][1]}
+    assert "step_penalty" not in plain_body["costing_options"]["pedestrian"], (
+        "an unset surface axis must not carry any override"
+    )
 
     iso_body = dict(seen)["/isochrone"]
     assert iso_body["costing"] == "pedestrian"
     assert iso_body["contours"] == [{"time": 30.0}]
     assert iso_body["polygons"] is True
+
+    assert surfaced_body["costing_options"]["pedestrian"]["step_penalty"] == 3600
+    assert "walking_speed" in surfaced_body["costing_options"]["pedestrian"], (
+        "the surface override must MERGE into the pace pin, not replace it"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -218,7 +218,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated public garden with closing bells; OSM tag \"sunrise-sunset\" transcribed to an approximate daylight window as a fixed clock is required.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Public garden with lawns, mature trees, a pond and rockery to walk round and read the Templar history, about 20 minutes; nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A fenced, traffic-free public garden with lawns and gravel paths where children can run freely and benches sit quietly away from cars, but like Paris squares it is gated and locked at nightfall so no one can be left inside."
   },
   {
     "name": "Place des Vosges",
@@ -330,7 +336,14 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Oldest planned square in Paris, 36 uniform brick houses framing a central garden you walk round under the arcades; nothing general to enter, Hugo's house is a separate stop.",
+    "typical_duration_min": 30,
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night."
   },
   {
     "name": "Musee Carnavalet",
@@ -483,7 +496,14 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated museum; hours follow the institution's published pattern of Tuesday-Sunday 10:00-18:00, closed Mondays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Two connected Marais mansions with dozens of rooms tracing Paris history plus courtyards; large free collection, typically 60-75 min with minimal queue.",
+    "typical_duration_min": 5,
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An indoor history museum where quiet is expected and objects sit at child height, but its enclosed courtyards and garden have benches quiet enough to talk; it closes in the evening and is gated at night."
   },
   {
     "name": "Musee Picasso",
@@ -635,7 +655,14 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated museum; hours follow the institution's published pattern of Tue-Fri 10:30-18:00 and weekends 09:30-18:00, closed Mondays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "17th-century mansion over several floors with thousands of works shown in rotation; typically 60-70 min plus a short ticket queue.",
+    "typical_duration_min": 5,
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An indoor mansion museum where quiet is expected and art is at child height, with a courtyard offering seating quiet enough to talk, but closed and gated after dark."
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -709,7 +736,14 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated covered market hall with gates that close, but no OSM tag supplied and its exact stall hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "market"
+    "place_category": "market",
+    "visit_seconds_inside": 1800,
+    "visit_basis": "Oldest covered market in Paris, a compact hall of food stalls and eateries to wander and sample; browsing and a bite absorbs about 30 min, the entrance a few minutes.",
+    "typical_duration_min": 6,
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow covered market with fragile stalls and produce at child height where running is unsafe and unwelcome, whose only seating is paid food-stall benches, and which is gated and locked outside market hours leaving nowhere lit to stand at night."
   },
   {
     "name": "Hotel de Soubise",
@@ -718,7 +752,7 @@
     "longitude": 2.35765,
     "importance_tier": 4,
     "trigger_radius": 30,
-    "typical_duration_min": 25,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Archives Nationales",
@@ -836,6 +870,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated museum of the National Archives entered by ticket; hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Grand horseshoe courtyard and colonnade absorb over ten minutes outside; inside are the National Archives museum with the sumptuous Rococo salons of the prince and princess, roughly 50 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "The National Archives occupy a formal building with a courtyard of honour that is a monument, not a play or lounging space, with no free public seating; unfamiliar with its evening street life on the quiet rue des Francs-Bourgeois I judge after-dark conservatively false as the courtyard is gated when closed."
   }
 ]

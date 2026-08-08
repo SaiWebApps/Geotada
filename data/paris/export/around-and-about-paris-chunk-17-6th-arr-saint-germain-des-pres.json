@@ -176,7 +176,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated church you enter; transcribed from OSM tag 'Mo,Su 09:30-20:00; Tu-Fr 07:30-20:00; Sa 08:30-20:00'.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Oldest church in Paris with a Romanesque tower and painted medieval nave; interior takes about 20 min, exterior square and cafe corner a few minutes more.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working church where silence is expected and running is impossible, with no free quiet seating suited to talk (the small adjacent square sits beside busy boulevard traffic), but the busy lit Left Bank crossroads outside is well-peopled after dark."
   },
   {
     "name": "Place de Furstemberg",
@@ -185,7 +191,7 @@
     "longitude": 2.3352,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": 5,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Atelier Delacroix",
@@ -292,7 +298,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square whose value stands entirely on the pavement, so it is not gated; the Musée Delacroix inside is a separate place.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Small enclosed square with a central lamppost and paulownia trees to stand in and circle; the Musée Delacroix at no. 6 is a compact studio-and-apartment museum with a small garden, roughly 20-25 min inside.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A small quiet paved square set off the road with low kerbs and no full enclosure or gates, so a child could wander into the adjoining lane; it has benches and low walls around the central paulownia trees quiet enough to talk, and being an open, lit through-square it stays accessible after dark."
   },
   {
     "name": "L'Hotel Paris",
@@ -345,7 +357,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working luxury hotel, not a gated visitor attraction with public hours; its lobby is not a ticketed experience.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "A working luxury hotel facade viewed from the narrow street where Oscar Wilde died; a few minutes to read the plaque and look up, nothing publicly enterable as a visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "This is a private luxury hotel frontage on a narrow street: no traffic-free run for children, no free public seating on the pavement, but the doorway sits on a lit, populated central street so a person left standing outside would be fine at night."
   },
   {
     "name": "Rue Visconti",
@@ -354,7 +372,7 @@
     "longitude": 2.3362,
     "importance_tier": 2,
     "trigger_radius": 20,
-    "typical_duration_min": 12,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
       "Rue des Marais Saint-Germain",
@@ -546,7 +564,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A public street open to the air at all times, so it is not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Narrow historic alley you walk end to end reading plaques for Racine, Balzac and Delacroix; the value is entirely along its length, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow historic alley with no pavement separation and no public seating, echoing and deserted at night with no through-lighting or crowds, so it fails all three tests."
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -555,7 +579,7 @@
     "longitude": 2.337,
     "importance_tier": 3,
     "trigger_radius": 25,
-    "typical_duration_min": 5,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
       "Beaux-Arts de Paris",
@@ -636,7 +660,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working art school whose public admission hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Fine arts school with a courtyard gate and historic facades on rue Bonaparte; walk-by only, time to look through the gates at the former convent buildings.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A gated art school with courtyards closed to the public, offering no free public seating and no open, populated space at night on its quiet side street."
   },
   {
     "name": "Les Deux Magots",
@@ -645,7 +675,7 @@
     "longitude": 2.3332,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Deux Magots",
@@ -691,7 +721,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Marked walk_by_only and treated as a streetside landmark café viewed from the pavement, so it is not gated for this tour.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Famous cafe terrace on the square; walk-by only, a few minutes to take in the frontage and terrace from the pavement.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A café on a busy boulevard corner where children have no enclosed space and its only seating is a paid terrace, but the square and boulevard around it are brightly lit and busy well into the night."
   },
   {
     "name": "Hotel d'York",
@@ -747,7 +783,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A former hotel now marking a historic site, viewed from the pavement as a facade, so it is not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Facade of the building where the 1783 peace treaty was signed; a few minutes to read the plaque and take in the street, nothing to enter as a visit.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A former hotel building on the narrow, quiet rue Jacob offering no enclosed play space, no public seating, and a deserted, dim street after dark."
   },
   {
     "name": "Natalie Barney Salon",
@@ -802,7 +844,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A former private residence viewed from the street as a facade, not a gated attraction, so hours are null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Private house frontage at 20 rue Jacob; walk-by only, a few minutes to read the story and glimpse the courtyard, the Temple de l'Amitie is not publicly accessible.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private former residence on the narrow rue Jacob with no public interior access, no seating, and a quiet, unlit residential street that empties after dark."
   },
   {
     "name": "Hotel d'Angleterre Paris",
@@ -811,7 +859,7 @@
     "longitude": 2.333,
     "importance_tier": 2,
     "trigger_radius": 12,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Hôtel d'Angleterre",
@@ -851,7 +899,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working hotel viewed as a streetside facade, not a gated public attraction, so hours are null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working hotel facade on a quiet street where Hemingway first lodged; walk-by only, a couple of minutes to read the plaque.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private hotel frontage on the narrow, quiet rue Jacob with no traffic-free running space, no free seating, and a residential street with little foot traffic or lighting at night."
   },
   {
     "name": "Rue de Buci Market",
@@ -860,7 +914,7 @@
     "longitude": 2.336,
     "importance_tier": 3,
     "trigger_radius": 20,
-    "typical_duration_min": 5,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "Marché rue de Buci",
@@ -900,6 +954,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open-air street market along the pavement with no enclosing gate; specific stall hours are not confidently known, so left as null and not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Bustling open street market of stalls and cafe-lined blocks to walk slowly and browse; the whole experience is outdoors along the street, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A bustling market street with pedestrian and vehicle traffic, dense stalls and crowds where a child cannot run free and there is no quiet free seating, but it is lit and populated into the evening."
   }
 ]

@@ -103,8 +103,20 @@ def _expected(slug: str) -> dict:
 
 def _actual(session, slug: str) -> dict:
     q = lambda c, **kw: session.run(c, city=slug, **kw)  # noqa: E731
+    # Body places (toilets/benches, redesign row 6.3, plan S2.5) are uploaded
+    # as poi_role="body" :POI nodes — deliberately, so they flow through the
+    # SAME planner loader — but they come from data/{slug}/body-places.json,
+    # never poi-raw.json, so they are NOT part of the repo-vs-db POI
+    # comparison below. Same shape as the blocked/unlinkable beat exclusion
+    # a few lines down: a real, named, non-drift category, not a fold-in.
     poi_keys = {
-        r["k"] for r in q("MATCH (p:POI {city_name:$city}) RETURN p.name_key AS k") if r["k"]
+        r["k"]
+        for r in q(
+            "MATCH (p:POI {city_name:$city}) "
+            "WHERE p.poi_role IS NULL OR p.poi_role <> 'body' "
+            "RETURN p.name_key AS k"
+        )
+        if r["k"]
     }
     beat_ids = {
         r["b"]

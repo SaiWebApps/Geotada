@@ -6,7 +6,7 @@
     "longitude": 2.3447,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Gardens of the Musée de Cluny",
@@ -197,7 +197,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An enclosed museum garden with closing gates, but I do not confidently know its hours; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Enclosed medieval-themed gardens arranged thematically around love, nature and the soul; you wander the paths and read the plantings, an outdoor space with no interior to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "These enclosed medieval-themed museum gardens have benches in a quiet planted setting good for talking, but the contemplative curated planting and enclosure mean children are not free to run loud and fast, and the gates are shut at night."
   },
   {
     "name": "Square Paul-Painleve",
@@ -206,7 +212,7 @@
     "longitude": 2.3443,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Square Paul-Painlevé",
@@ -278,7 +284,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small planted square with a statue of Montaigne facing the Cluny museum, paused at and walked round, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small fenced garden set back from rue des Ecoles with lawns and benches quiet enough to talk and enclosed enough for a child to run, but as a railed municipal square it is locked at night."
   },
   {
     "name": "Square Paul-Langevin",
@@ -287,7 +299,7 @@
     "longitude": 2.3507,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Square Paul Langevin"
@@ -502,7 +514,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small flower-bordered square with a statue of Villon and an ivy-covered wall, a brief pause on the hillside, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small enclosed flower-bordered square with benches off the street quiet enough to talk and contained enough for a child to run, but a gated municipal garden closed and locked after dark."
   },
   {
     "name": "Jardin Carre",
@@ -511,7 +529,7 @@
     "longitude": 2.3505,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Jardin Carré",
@@ -589,7 +607,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated courtyard garden with enclosure and closing hours, but those hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Quiet topiary garden with a square pool in a former courtyard, walked round and sat in briefly, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A serene topiary courtyard garden with a pool where quiet contemplation is expected and topiary and water make free running discouraged and hazardous, but low walls or benches allow a quiet seated conversation, while as an enclosed courtyard hideaway it is gated and shut at night."
   },
   {
     "name": "Musee de Cluny",
@@ -598,7 +622,7 @@
     "longitude": 2.343391,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
       "Musee National du Moyen Age",
@@ -715,7 +739,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated medieval-art museum; transcribed from the OSM tag \"Tu off; ... Tu-Su 09:30-18:15\", closed Mondays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Medieval museum over Gallo-Roman baths with the Lady and the Unicorn tapestries and stone remains; typically 60-70 min including a short queue.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A medieval art museum indoors where running is not tolerated near fragile tapestries, with garden benches quiet enough for conversation, but it closes and is locked at night."
   },
   {
     "name": "Ecole Normale Superieure",
@@ -724,7 +754,7 @@
     "longitude": 2.3447,
     "importance_tier": 3,
     "trigger_radius": 25,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "ENS",
@@ -1004,7 +1034,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working grande ecole behind gates; not a public visitor site and hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working academic institution on rue d'Ulm; from the street you take in the classical facade and gated main courtyard, but the interior is not open to casual visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A gated, secured academic institution whose interior courtyards are not open to the public so children cannot run there and there is no public free seating, but its rue d'Ulm frontage near the Pantheon is lit and on a normal city street where someone could safely be left standing."
   },
   {
     "name": "Montagne Sainte-Genevieve",
@@ -1013,7 +1049,7 @@
     "longitude": 2.3472341,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1085,6 +1121,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A hill and open street district in the Latin Quarter experienced from the public pavement; not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic Latin Quarter hill with sloping streets around the Panthéon; you climb and walk between viewpoints, a district to stroll through rather than a building to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "This is a hill and network of Latin Quarter streets carrying traffic with pavement seating at most, so children cannot run free of cars and there is no reliably quiet free seating, but the streets are lit and peopled into the evening; I judge from its known character as an urban quarter."
   }
 ]

@@ -106,6 +106,43 @@ class TourInput(BaseModel):
     # clock. The default is "firm" so an undated request plans exactly as
     # before this field existed.
     end_hardness: Literal["wall", "firm", "open"] = "firm"
+    # WHO IS WALKING (redesign §2.4) — a preset is a SHORTCUT over the axes
+    # below: `resolve_party_axes` expands it, an explicitly-set axis always
+    # wins, and the axes are what the planner reads. None = no party stated,
+    # which with every axis at its default is today's behaviour, byte-identical.
+    party: Literal["solo", "couple", "family", "take_it_easy", "with_luggage"] | None = None
+    # PACE MULTIPLIER on walking time, slow direction only: 2.0 = half speed
+    # (Nadia: "Pace drops to roughly half", 03-family-with-children.md step 4).
+    # ge=1.0 because the FAST direction is the raised-and-held-back `PACE_KMH`
+    # pin's locked half (src/tour/routing.py) — slow is a fact about real
+    # walkers; fast would quietly re-price every budget. None = 1.0.
+    walking_pace: float | None = Field(default=None, ge=1.0)
+    # THE PER-LEG CAP, in minutes. Rosemary's binding constraint is not her
+    # 54-minute walking total but her 12-minute per-leg limit — "A walking
+    # budget is not one number" (05-step-free-visitor.md, breaks bullet 1).
+    # None = uncapped; the banded longest-leg RANK stays as the soft preference.
+    max_leg_minutes: int | None = Field(default=None, ge=1)
+    # HOW MUCH ACCUMULATED WALKING may pass before a body stop (bench/toilet)
+    # is seated (S2.5) — Nadia's "Ten minutes, zero cultural content, entirely
+    # non-negotiable" (03, step 5); design §3.1: "a rest window with no bench
+    # under it is thirteen minutes standing on a stick". None = no seating rule.
+    rest_cadence_minutes: int | None = Field(default=None, ge=1)
+    # EVERY CANDIDATE MUST SIT WITHIN THIS DISTANCE OF THE START — a constraint
+    # on the whole loop, not on a leg: "a meltdown 25 minutes from the exit
+    # means carrying a child for 25 minutes" (design §2.4); panel locked cost
+    # D4: "cap DISTANCE FROM EXIT not just leg length" (03-panel-findings.md).
+    escape_radius_m: int | None = Field(default=None, ge=1)
+    # WHAT THE ROUTE MAY BE MADE OF. "no_stairs" (buggy, wheeled luggage) and
+    # "step_free" (Rosemary) ride Valhalla's per-request pedestrian costing —
+    # capability-proven live in W2.1 (phase2-ledger.md): step_penalty moves the
+    # route off the Rue Foyatier stairs; "step_free" adds the wheelchair
+    # profile. "any" = today's requests, byte-identical.
+    route_surface: Literal["any", "no_stairs", "step_free"] = "any"
+    # HOW THE NARRATION SPEAKS (design §2.4 bottom row) — carried on the input
+    # now so presets can set it; consumed by the phase that reworks narration.
+    # NEVER set by mobility ("slow the walking, never the talking") and
+    # "warm" is warm, never romantic.
+    narration_register: Literal["solo", "warm", "family"] | None = None
 
     @field_validator("start_datetime")
     @classmethod
@@ -150,6 +187,82 @@ class TourInput(BaseModel):
         if self.end is not None and self.round_trip:
             raise ValueError("end and round_trip are mutually exclusive")
         return self
+
+
+# THE §2.4 TABLE, TRANSCRIBED (01-design.md:118-126) — the one place the
+# preset→axes mapping lives. Numbers with no design pin carry their basis here:
+#  - family pace 2.0: "~half, variable" (03-family-with-children.md step 4).
+#  - rest cadence 20: Nadia's toilet lands after ~19 accumulated walking
+#    minutes (03 steps 2+4→5); the table gives the cadence to take-it-easy too
+#    (Rosemary's benches, 05 steps 3 and 7 — see phase2-ledger.md).
+#  - escape radius 800 m: the design's failure case is "a meltdown 25 minutes
+#    from the exit"; 800 m is ~16 min back at the corpus pace, inside it with
+#    margin, and matches Nadia's real day (never further than ~700 m from
+#    Place des Vosges).
+#  - take-it-easy pace 1.2 / with-luggage 1.25: the table says "slow" for
+#    both with no number anywhere. take-it-easy was FIRST set to 1.5 (scaled
+#    against family's pinned 2.0, "half") and CORRECTED to 1.2 after the W2.10
+#    panel: three independent personas (Camille, Rosemary, Paulo) caught the
+#    same real defect on the real corpus — 1.5x pace combined with Rosemary's
+#    locked 12-minute leg cap made every nearby leg exceed the cap on the
+#    FIRST hop, collapsing the day to one stop and 30 of 180 minutes. 1.2x
+#    was verified empirically on the same real request (Place des Vosges,
+#    180 min): four real stops including a seated rest bench, longest leg 9
+#    min, comfortably under the cap — see phase2-ledger.md. The 12-minute cap
+#    itself is Rosemary's own number and stays untouched; only the
+#    interpolated pace moved.
+#  - §2.4's family "short" longest-walk cell and with-luggage's "medium" cell
+#    carry NO number in the design, the plan, or any persona — deliberately
+#    not wired rather than invented (phase2-ledger.md).
+_PARTY_AXES: dict[str, dict[str, object]] = {
+    # No ceiling for solo: panel locked cost D6 — "party-preset stop ceiling
+    # under 65 min DECAPITATES his day" (Théo, 03-panel-findings.md:193).
+    "solo": {"narration_register": "solo"},
+    # Warm, NEVER romantic (design §2.4:126).
+    "couple": {"narration_register": "warm"},
+    "family": {
+        "walking_pace": 2.0,
+        "rest_cadence_minutes": 20,
+        "escape_radius_m": 800,
+        "max_stop_minutes": 6,  # "Six minutes is the ceiling here, not the floor"
+        "route_surface": "no_stairs",  # buggy
+        "narration_register": "family",
+    },
+    "take_it_easy": {
+        "walking_pace": 1.2,
+        "max_leg_minutes": 12,  # the table's one numbered leg cap (Rosemary)
+        "rest_cadence_minutes": 20,
+        "route_surface": "step_free",
+        # register DELIBERATELY absent: "slow the walking, never the talking".
+    },
+    "with_luggage": {
+        "walking_pace": 1.25,  # Marcus: "Slower than his normal pace" (04 step 2)
+        "route_surface": "no_stairs",  # the cobbles half rides S2.7's costing
+        "narration_register": "solo",
+    },
+}
+
+
+def resolve_party_axes(inp: TourInput) -> TourInput:
+    """Expand a party preset into concrete axes; an explicit axis ALWAYS wins.
+
+    design §2.4:136-137: "the presets are shortcuts over axes, and the axes
+    are what the planner reads". A None-able axis counts as explicit when it
+    is non-None; `route_surface` (the one axis with a non-None default) counts
+    as explicit when it appears in `model_fields_set`, so an explicitly-passed
+    "any" beats the preset too. No party → the input comes back unchanged.
+    Idempotent: re-resolving a resolved input moves nothing.
+    """
+    if inp.party is None:
+        return inp
+    updates: dict[str, object] = {}
+    for axis, value in _PARTY_AXES[inp.party].items():
+        if axis == "route_surface":
+            if "route_surface" not in inp.model_fields_set:
+                updates[axis] = value
+        elif getattr(inp, axis) is None:
+            updates[axis] = value
+    return inp.model_copy(update=updates) if updates else inp
 
 
 class POI(BaseModel):
@@ -213,6 +326,21 @@ class POI(BaseModel):
     # category-diverse replacement is the consumer; Phase 1 surfaces it in the
     # harness printout. "" = the categoriser has not run.
     place_category: str = ""
+    # WHAT THIS PLACE AFFORDS (redesign row 6.4, plan S2.6) — three AI
+    # judgements with no external source, additive in the same style as the
+    # trios above. False/"" = the pass has not reached this POI, the safe
+    # direction: a corpus the pass never priced affords NOTHING rather than
+    # everything. `children_can_run` (Nadia: 38 of her 55 place-minutes were
+    # valuable because the kids could run — 03-panel-findings.md), `sit_and_talk`
+    # (Fiona & Dev's two green chairs — docs/personas/09-couple-who-would-
+    # rather-talk.md), `good_after_dark` (design §3.1's finish rule; consumed
+    # only in Phase 3). `judgement_basis` is the one sentence arguing all three
+    # — the whole audit trail, since this row has no OSM tag or observable fact
+    # behind it.
+    children_can_run: bool = False
+    sit_and_talk: bool = False
+    good_after_dark: bool = False
+    judgement_basis: str = ""
 
     @model_validator(mode="after")
     def _playback_flags_are_consistent(self) -> POI:

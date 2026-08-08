@@ -6,7 +6,7 @@
     "longitude": 2.342836,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 90,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Bourse du Commerce",
@@ -389,6 +389,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated contemporary-art museum; transcribed from OSM tag '11:00-19:00; Tu off; Fr 11:00-21:00; May 01 off' (public-holiday closure May 1 not expressible in weekly table).",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Contemporary-art museum inside a circular corn exchange, the Ando concrete rotunda under the glass dome plus galleries over several floors would absorb well over two hours; capped at the 90-minute tour maximum, exterior facade a few minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An enclosed contemporary-art museum where quiet is expected and children cannot run, seating is inside a paid ticketed hall rather than free and quiet, but it stands on a lit central plaza in the Les Halles district that stays busy and open after dark."
   }
 ]

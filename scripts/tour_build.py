@@ -28,7 +28,7 @@ from pathlib import Path
 from src.connection import create_driver
 from src.tour.beat_select import select_vignette_beats
 from src.tour.compose_gate import build_full_verifier
-from src.tour.contract import BeatSequence, TourInput
+from src.tour.contract import BeatSequence, TourInput, resolve_party_axes
 from src.tour.density import TourabilityRefusedError, assess_snapshot
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
@@ -228,6 +228,29 @@ def _print_breakdown(
     absent = "— no route was produced, so this cannot be measured"
 
     print("  ── breakdown ──────────────────────────────────────────────")
+    # WHO THIS DAY IS FOR (plan S2.1/D2) — printed even when every mobility
+    # axis happens to tie two runs (e.g. a preset pair whose only new axis is
+    # the register, which touches no other number in this table): the day
+    # must be visibly different in the OUTPUT, not just in the code path that
+    # produced it. Prints "none" only when truly nothing was asked for.
+    axis_bits = []
+    if tour_input.party:
+        axis_bits.append(f"preset={tour_input.party}")
+    if tour_input.walking_pace is not None:
+        axis_bits.append(f"pace-x{tour_input.walking_pace:g}")
+    if tour_input.max_leg_minutes is not None:
+        axis_bits.append(f"leg-cap={tour_input.max_leg_minutes}min")
+    if tour_input.max_stop_minutes is not None:
+        axis_bits.append(f"stop-ceiling={tour_input.max_stop_minutes}min")
+    if tour_input.rest_cadence_minutes is not None:
+        axis_bits.append(f"rest-cadence={tour_input.rest_cadence_minutes}min")
+    if tour_input.escape_radius_m is not None:
+        axis_bits.append(f"escape-radius={tour_input.escape_radius_m}m")
+    if tour_input.route_surface != "any":
+        axis_bits.append(f"surface={tour_input.route_surface}")
+    if tour_input.narration_register is not None:
+        axis_bits.append(f"register={tour_input.narration_register}")
+    print(f"  party:              {', '.join(axis_bits) if axis_bits else 'none'}")
     if route is not None and script is not None:
         walk_s = route.total_walk_seconds
         dwell_s = sum(p.dwell_seconds for p in script.selected_pois)
@@ -304,6 +327,32 @@ def _print_breakdown(
                 print(f"    • {excl.name} — {excl.reason}")
         else:
             print("    none")
+    # PER-STOP TABLE (plan S2.1) — the DAY, not the total: one line per stop
+    # with the place category (the carried Phase 1 gap: S1.7 promised category
+    # labels in the harness printout), the priced stand/visit minutes ("—"
+    # when the route carries no pricing — the four legacy harnesses' shape,
+    # never a zero that reads as a measurement), and the walking leg INTO that
+    # stop (route.transits leg i is the walk into stop i). Printed on EVERY
+    # run that has a route, same shape priced or not; W2.11's side-by-side
+    # demo table is assembled from these lines verbatim. Sits BELOW the
+    # seven-number block so the D1 evidence stays readable above it.
+    if route is not None and route.pois:
+        print("  per-stop:")
+        print(f"     {'#':>2}  {'stop':<34} {'category':<10} {'visit':>7}  {'walk-in':>7}")
+        priced = route.planned_visit_seconds
+        for i, poi in enumerate(route.pois):
+            if i < len(route.transits):
+                seg = route.transits[i]
+                leg_s = seg.leg_seconds if seg.leg_seconds is not None else seg.walk_seconds
+                walk_in = f"{round(leg_s / 60)} min"
+            else:
+                walk_in = "—"
+            visit_s = priced.get(poi.id) if priced else None
+            visit = f"{round(visit_s / 60)} min" if visit_s is not None else "—"
+            print(
+                f"     {i + 1:>2}  {poi.name:<34} {poi.place_category:<10} "
+                f"{visit:>7}  {walk_in:>7}"
+            )
     print("  ───────────────────────────────────────────────────────────")
 
 
@@ -389,6 +438,61 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help="How hard the end is: wall keeps visible slack, firm is today's "
         "behaviour, open never pads toward the requested length.",
     )
+    # WHO IS WALKING (redesign §2.4, plan S2.1). A preset is a SHORTCUT over
+    # the axis flags below — main() feeds both onto TourInput and through
+    # resolve_party_axes, where an explicitly-passed axis always wins. No
+    # flags = today's behaviour, byte-identical.
+    parser.add_argument(
+        "--party",
+        choices=["solo", "couple", "family", "take-it-easy", "with-luggage"],
+        default=None,
+        help="Party preset — a shortcut over the axis flags (design §2.4).",
+    )
+    parser.add_argument(
+        "--max-stop-minutes",
+        type=int,
+        default=None,
+        help="Ceiling on any ONE stop, minutes (Nadia's six-minute ceiling).",
+    )
+    parser.add_argument(
+        "--max-leg-minutes",
+        type=int,
+        default=None,
+        help="Hard cap on any single walking leg, minutes (Rosemary's twelve).",
+    )
+    parser.add_argument(
+        "--walking-pace",
+        type=float,
+        default=None,
+        help="Pace multiplier ≥ 1.0 on walking time; 2.0 = half speed.",
+    )
+    parser.add_argument(
+        "--rest-cadence-minutes",
+        type=int,
+        default=None,
+        help="Accumulated walking minutes before a bench/toilet stop is seated.",
+    )
+    parser.add_argument(
+        "--escape-radius-m",
+        type=int,
+        default=None,
+        help="Every stop must sit within this distance of the start, metres.",
+    )
+    parser.add_argument(
+        "--route-surface",
+        choices=["any", "no_stairs", "step_free"],
+        default=None,
+        help="What the route may be made of; no_stairs/step_free ride Valhalla "
+        "costing (W2.1-proven).",
+    )
+    parser.add_argument(
+        "--narration-register",
+        choices=["solo", "warm", "family"],
+        default=None,
+        help="Explicit narration register — an axis flag like the others, so "
+        "a preset PAIR (e.g. take-it-easy + solo, design §2.4) can be built "
+        "without a party value for the pair itself.",
+    )
     parser.add_argument(
         "--haiku",
         action="store_true",
@@ -459,17 +563,39 @@ def main() -> int:
         snapshot = load_paris_corpus(driver, city_slug=args.city_slug)
 
         lenses = [s.strip() for s in args.lenses.split(",") if s.strip()] or None
-        tour_input = TourInput(
-            start=start_coords,
-            duration_min=args.duration,
-            city_slug=args.city_slug,
-            round_trip=bool(args.round_trip),
-            end=end_coords,
-            lenses=lenses,
-            theme_hint=args.theme.strip() or None,
-            start_label=start_label,
-            start_datetime=f"{args.date}T{args.time}" if args.date else None,
-            end_hardness=args.end_hardness,
+        # PARTY FLAGS RIDE CONDITIONALLY (plan S2.1): an omitted flag must stay
+        # OUT of the constructor kwargs, because resolve_party_axes reads
+        # `model_fields_set` to tell an explicit `--route-surface any` (wins
+        # over the preset) from the untouched default (preset may fill it).
+        party_fields: dict[str, object] = {}
+        if args.party:
+            party_fields["party"] = args.party.replace("-", "_")
+        for axis_flag in (
+            "max_stop_minutes",
+            "max_leg_minutes",
+            "walking_pace",
+            "rest_cadence_minutes",
+            "escape_radius_m",
+            "route_surface",
+            "narration_register",
+        ):
+            axis_value = getattr(args, axis_flag)
+            if axis_value is not None:
+                party_fields[axis_flag] = axis_value
+        tour_input = resolve_party_axes(
+            TourInput(
+                start=start_coords,
+                duration_min=args.duration,
+                city_slug=args.city_slug,
+                round_trip=bool(args.round_trip),
+                end=end_coords,
+                lenses=lenses,
+                theme_hint=args.theme.strip() or None,
+                start_label=start_label,
+                start_datetime=f"{args.date}T{args.time}" if args.date else None,
+                end_hardness=args.end_hardness,
+                **party_fields,
+            )
         )
 
         t_select = time.perf_counter()

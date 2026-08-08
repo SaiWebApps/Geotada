@@ -6,7 +6,7 @@
     "longitude": 2.3112134,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -217,7 +217,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A small landscaped garden slope off the Champs-Élysées; gated garden but hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small hidden landscaped garden ravine off the Champs-Élysées gardens with winding rock paths and greenery; a few minutes' wander through the dell, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a small secluded landscaped garden dell off the Champs-Élysées gardens, too small and sloped for free-range running but with benches quiet enough for a conversation, and as a tucked-away gated garden it is unsuitable for leaving someone standing after dark."
   },
   {
     "name": "Petit Palais",
@@ -226,7 +232,7 @@
     "longitude": 2.3143,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Musee des Beaux-Arts de la Ville de Paris"
@@ -354,7 +360,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated municipal museum; published City of Paris pattern is Tuesday-Sunday 10:00-18:00, closed Mondays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Free Beaux-Arts fine-art museum with roughly a dozen galleries over two levels plus a hidden interior garden cafe; an engaged visit runs 60-70 min and entry is free so no long queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A fine-art museum where quiet is expected and children cannot run, its only seating being a paid interior garden cafe, and the building locks at closing so no one can be left standing inside after dark."
   },
   {
     "name": "Grand Palais",
@@ -363,7 +375,7 @@
     "longitude": 2.312156,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Grand Palais des Champs-Elysees"
@@ -417,7 +429,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated exhibition hall; transcribed from OSM tag 'Tu-Th, Sa-Su 09:30-20:00; Fr 09:30-22:30' with Monday closed.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Monumental glass-roofed exhibition hall; the vast nave and staircases plus a major temporary exhibition would absorb well over two hours, capped at the 90-minute tour maximum, with a ticket queue included.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An enclosed exhibition hall requiring paid entry where quiet is expected and free seating is absent, so children cannot run free-range and there is no free quiet seat, but it sits on a lit, open, trafficked central avenue where a person left standing outside at night would be fine."
   },
   {
     "name": "Champs-Elysees",
@@ -426,7 +444,7 @@
     "longitude": 2.3074,
     "importance_tier": 5,
     "trigger_radius": 100,
-    "typical_duration_min": null,
+    "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
       "Avenue des Champs-Elysees",
@@ -530,7 +548,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Not gated — an open public avenue whose whole value stands in the open on the pavement, always accessible.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "A 1.9 km grand avenue of shops, cafes and trees running between two landmarks; walking a good stretch of it and pausing absorbs 40 minutes, with nothing single to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A wide avenue with heavy multi-lane traffic beside the pavement and no quiet free seating, so a child cannot safely run and conversation competes with engine noise; it is brightly lit and crowded at all hours, so a person left standing is fine."
   },
   {
     "name": "Place des Vosges",
@@ -539,7 +563,7 @@
     "longitude": 2.3656,
     "importance_tier": 5,
     "trigger_radius": 40,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "Place Royale"
@@ -997,7 +1021,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public square accessible from the pavement, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Oldest planned square in Paris, 36 uniform brick houses framing a central garden you walk round under the arcades; nothing general to enter, Hugo's house is a separate stop.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night."
   },
   {
     "name": "Jardin Saint-Gilles Grand Veneur",
@@ -1006,7 +1036,7 @@
     "longitude": 2.3668079,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1086,7 +1116,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Marais public garden with closing bells, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small tucked-away Marais garden known for its climbing roses and pergola; a quiet few-minute pause among the beds, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a small enclosed rose garden in the Marais, too modest for children to run at full speed but with free benches quiet enough to talk, and it is gated and locked at nightfall so it fails the after-dark test."
   },
   {
     "name": "Hotel de Sully",
@@ -1095,7 +1131,7 @@
     "longitude": 2.3647,
     "importance_tier": 4,
     "trigger_radius": 30,
-    "typical_duration_min": null,
+    "typical_duration_min": 14,
     "kid_friendly": "yes",
     "name_variations": [
       "Hôtel de Sully"
@@ -1193,7 +1229,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A mansion with an enterable courtyard and interior, so gated, but its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Grand 17th-century mansion with a carved courtyard facade and an orangerie garden linking to Place des Vosges; the courtyards absorb the outside time, interior access is limited to bookshop and rooms for about 25 minutes.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This mansion's enclosed courtyard and small formal garden have benches quiet enough to talk, but the gravel is fragile-formal and hemmed by ornamental planting rather than open running ground, and the courtyard gates are locked at night."
   },
   {
     "name": "Place du Marché Sainte-Catherine",
@@ -1202,7 +1244,7 @@
     "longitude": 2.362813,
     "importance_tier": 3,
     "trigger_radius": 40,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Place du Marché Ste Catherine",
@@ -1281,7 +1323,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square in the Marais whose value stands in the open with no door or gate, so not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small quiet rectangular Marais square lined with café terraces; you walk in, circle the perimeter and sit or stand a while, but there is no interior to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small pedestrianised square with no through traffic where a child can run freely on the paved centre, though seating is largely paid café terraces the low kerbs and quiet let two people talk, but the enclosed square is dead and unlit at night with only restaurant custom about."
   },
   {
     "name": "Musee Carnavalet",
@@ -1290,7 +1338,7 @@
     "longitude": 2.361661,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
       "Carnavalet Museum",
@@ -1672,7 +1720,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated museum; hours follow the institution's published pattern of Tuesday-Sunday 10:00-18:00, closed Mondays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Two connected Marais mansions with dozens of rooms tracing Paris history plus courtyards; large free collection, typically 60-75 min with minimal queue.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An indoor history museum where quiet is expected and objects sit at child height, but its enclosed courtyards and garden have benches quiet enough to talk; it closes in the evening and is gated at night."
   },
   {
     "name": "La Tartine",
@@ -1681,7 +1735,7 @@
     "longitude": 2.3584052,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1765,6 +1819,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A café/eatery passed on the walk; role is walk-by only, hours not confidently known and not needed for routing, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Traditional Paris café/wine bar; a normal stop is a seated drink or light meal of around twenty-five minutes inside, while the frontage itself takes only a moment to note.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "Judging conservatively from the name, this appears to be a café or eatery, so there is no traffic-free running ground for children, only paid seating which does not count for sit-and-talk, and it is an enclosed business that closes rather than a lit open place to leave someone standing after dark."
   }
 ]

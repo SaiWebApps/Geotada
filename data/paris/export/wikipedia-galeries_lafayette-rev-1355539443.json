@@ -6,7 +6,7 @@
     "longitude": 2.3322,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 45,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Galeries Lafayette Haussmann"
@@ -368,6 +368,12 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated department store; the flagship Haussmann store's own published pattern is 10:00-20:00 Monday-Saturday and 11:00-20:00 Sunday, recorded as the current typical pattern.",
-    "place_category": "gallery"
+    "place_category": "gallery",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Belle Epoque department store with a spectacular stained-glass dome and a free rooftop panorama terrace; an engaged visit takes in the dome galleries and climbs to the roof for views, around an hour inside, plus the exterior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "An echoing department store interior with fragile luxury goods at child height where quiet browsing is expected and seating must be paid for, and the whole building is locked at closing time."
   }
 ]

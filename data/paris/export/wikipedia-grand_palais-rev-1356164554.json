@@ -6,7 +6,7 @@
     "longitude": 2.312156,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 90,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Grand Palais des Champs-Elysees"
@@ -384,6 +384,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated exhibition hall; transcribed from OSM tag 'Tu-Th, Sa-Su 09:30-20:00; Fr 09:30-22:30' with Monday closed.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Monumental glass-roofed exhibition hall; the vast nave and staircases plus a major temporary exhibition would absorb well over two hours, capped at the 90-minute tour maximum, with a ticket queue included.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An enclosed exhibition hall requiring paid entry where quiet is expected and free seating is absent, so children cannot run free-range and there is no free quiet seat, but it sits on a lit, open, trafficked central avenue where a person left standing outside at night would be fine."
   }
 ]

@@ -6,7 +6,7 @@
     "longitude": 2.3372245,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -306,7 +306,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal garden with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Quiet Montmartre garden with tree-lined paths, benches and a statue of Saint Denis; an enclosed green square to walk through and sit in, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed Montmartre garden with gravel paths, lawns and a boules ground fully fenced from traffic where children can run safely, with benches in quiet leafy surroundings for conversation, but it is a municipal square locked at nightfall."
   },
   {
     "name": "Musée de Montmartre",
@@ -315,7 +321,7 @@
     "longitude": 2.3406297,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -799,7 +805,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A ticketed museum; transcribed faithfully from its OSM tag \"10:00-19:00\" applied to all seven days.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Interior museum in historic houses plus the Renoir gardens, several rooms of period paintings and rooms, roughly 50-60 min plus a short ticket queue; garden and courtyard add outside time.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A museum where quiet is expected indoors and children cannot run, though its enclosed traffic-free Renoir gardens offer benches quiet enough to talk, and it is a ticketed site that closes and locks in the evening."
   },
   {
     "name": "Square Carpeaux",
@@ -808,7 +820,7 @@
     "longitude": 2.331571,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -965,7 +977,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small neighbourhood garden square with paths and benches; a place to walk through and pause, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A fenced neighbourhood garden set back from traffic with paths and open ground where children can run and benches in quiet surroundings for talking, but a gated municipal square locked after dark."
   },
   {
     "name": "Square Léon-Serpollet",
@@ -974,7 +992,7 @@
     "longitude": 2.3384538,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1055,7 +1073,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Local garden square with lawns, trees and seating; a modest green space to cross and rest in, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed local garden fenced off from the street with lawns and play areas where children run freely and benches quiet enough for conversation, but closed and gated at night."
   },
   {
     "name": "Parc Turlure",
@@ -1064,7 +1088,7 @@
     "longitude": 2.3437147,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1154,7 +1178,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal park with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Terraced hillside park behind Sacré-Cœur with sloping lawns, a pergola and views over the city; you climb the terraces and stop at the viewpoints, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A terraced hillside park behind Sacré-Coeur enclosed and traffic-free with lawns and paths for running and benches in quiet surroundings for talking, but a municipal park locked at nightfall."
   },
   {
     "name": "Square Louise-Michel",
@@ -1163,7 +1193,7 @@
     "longitude": 2.3435393,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1295,7 +1325,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated garden below Sacré-Cœur; transcribed from its OSM tag with the current May 01-Aug 31 summer extension to 21:30 and the Sa/Su 09:00 open applied (\"08:00-17:45; PH,Sa,Su 08:00-09:00 off, ... May 01-Aug 31 17:45-21:30\").",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "The formal stepped garden below Sacré-Cœur, tiered lawns, a fountain and the panoramic view of Paris; you climb the terraces and stand at the belvedere, an open landscaped slope with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The stepped terraced lawns below Sacré-Coeur are steep and busy with dense tourist crowds rather than free running ground, but there are wide steps and grass to sit on and it is a large open unfenced space, lit and thronged with people late into the evening."
   },
   {
     "name": "Square des Abbesses",
@@ -1304,7 +1340,7 @@
     "longitude": 2.3383885,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1404,7 +1440,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small Montmartre square by the Art Nouveau metro entrance and the church, with the wall of love nearby; you circle the space taking in the metro canopy and facades, nothing entered here.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small fenced garden beside the Abbesses metro with traffic-free paths and lawn where children can run and benches quiet enough to talk, but a gated square locked after dark."
   },
   {
     "name": "Montmartre Cemetery",
@@ -1413,7 +1455,7 @@
     "longitude": 2.330804,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
       "Cimetiere de Montmartre",
@@ -1546,7 +1588,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated walled cemetery with closing gates; hours follow the City of Paris's published summer pattern shared across municipal cemeteries.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Mid-size terraced cemetery with several notable graves along tree-lined paths; explored on foot outdoors with no interior.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A solemn walled cemetery where running and noise are out of place, with quiet benches where two can talk, but its gates are locked at night leaving no one able to stand inside."
   },
   {
     "name": "Lapin Agile",
@@ -1555,7 +1603,7 @@
     "longitude": 2.339975,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Au Lapin Agile",
@@ -1603,6 +1651,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated cabaret; OSM tag 'Tu,Th-Sa 21:00-01:00' transcribed, with past-midnight windows capped at 23:59 to avoid a backwards window.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Historic Montmartre cabaret; the painted rabbit sign and ivy-clad exterior take a few minutes, while an actual evening show inside runs well past two hours and is capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A cabaret on a steep Montmartre lane with no enclosed traffic-free ground, no free public seating (only ticketed indoor seats), and its sloping side street is dim and largely deserted at night, so someone left standing there is not fine."
   }
 ]

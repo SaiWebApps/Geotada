@@ -6,7 +6,7 @@
     "longitude": 2.341516,
     "importance_tier": 3,
     "trigger_radius": 40,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Vert-Galant Square",
@@ -172,7 +172,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open pocket-park at the tip of the island with the OSM tag '24/7' indicating no gated closure.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Triangular riverside pocket-park at the island's tip, seven meters below street level, with benches, trees and downstream views under Pont Neuf; you descend, walk to the point and stand looking at the river, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small triangular riverside park sitting seven metres below street level with unfenced stone edges dropping straight to the Seine on both sides, so a running child could reach the water; it has benches quiet enough to talk beside the river, but it is gated and locked at night."
   },
   {
     "name": "Place Dauphine",
@@ -181,7 +187,7 @@
     "longitude": 2.342655,
     "importance_tier": 2,
     "trigger_radius": 30,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -261,7 +267,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open triangular public square on the Île de la Cité, not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Quiet triangular square of 1607 townhouses with trees and cafes on the Île de la Cité; an enclosed square to walk through and pause in, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A quiet triangular square with light local traffic and open gravel that is not fully enclosed from its access roads so children could stray, but there are benches and enough calm to talk, and it stays lit and safely central at night."
   },
   {
     "name": "Pont des Arts",
@@ -270,7 +282,7 @@
     "longitude": 2.337548,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Passerelle des Arts"
@@ -360,7 +372,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A pedestrian bridge open in the air and crossable at any hour, so not gated.",
-    "place_category": "bridge"
+    "place_category": "bridge",
+    "visit_seconds_inside": null,
+    "visit_basis": "Pedestrian bridge with wooden deck and open river views of the Louvre and Institut de France; crossing slowly, stopping mid-span for the views both ways absorbs around 15 min, and there is nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A traffic-free pedestrian bridge with wooden benches where two people can sit and talk over the river, but its low parapets and open decking give a running child no barrier from the drop; it is lit, open and well-crossed at night."
   },
   {
     "name": "Voltaire Statue (Square Honoré-Champion)",
@@ -369,7 +387,7 @@
     "longitude": 2.336212,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Statue de Voltaire",
@@ -448,7 +466,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Statue in a small public square viewed in the open; hours of the square not confidently known and it is walk-by only, treated as not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Single stone statue of Voltaire in a small square; a walk-by stop where you read the base and look at the figure, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small fenced garden square around a statue near the Seine quays with benches quiet enough to sit and talk, but too small and enclosed for a child to run free, and gated and locked at night."
   },
   {
     "name": "Square Jean XXIII",
@@ -457,7 +481,7 @@
     "longitude": 2.350971,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "Square Jean-XXIII",
@@ -717,7 +741,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal cathedral garden with closing bells, but its hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Cathedral garden along the south flank of Notre-Dame with lawns, a fountain and the best close view of the apse and flying buttresses, walked through between viewpoints, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A gated cathedral garden with lawns and paths set back from traffic where children can run, with benches quiet enough to talk, but it is a fenced municipal square locked at night so no one can be left standing inside."
   },
   {
     "name": "Square Rene Viviani",
@@ -726,7 +756,7 @@
     "longitude": 2.3418,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": null,
+    "typical_duration_min": 14,
     "kid_friendly": "yes",
     "name_variations": [
       "Square René-Viviani",
@@ -941,7 +971,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated municipal square with railings and closing hours, but those hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small Left Bank square with the oldest tree in Paris, a bronze fountain and views across to Notre-Dame, a few benches and paths to walk, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small enclosed Left Bank square with paths, lawn and a fountain away from traffic where children can run and benches let two people talk, but as a fenced municipal square it is gated and locked after dark."
   },
   {
     "name": "Shakespeare and Company",
@@ -950,7 +986,7 @@
     "longitude": 2.347112,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Shakespeare & Company"
@@ -1082,7 +1118,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A bookshop entered through a door (gated); hours from the shop's own published pattern of 10:00-20:00 weekdays and 11:00-20:00 weekends.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 2100,
+    "visit_basis": "Cramped multi-room English bookshop across from Notre-Dame; the facade and window are quick, but inside two floors of tightly packed stacks, reading nooks and the tumbleweed beds reward 30-40 min of genuine browsing.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A cramped bookshop with narrow aisles and shelved stock at child height where quiet browsing is expected and seating is not free public seating, but it sits on a lit, busy Left Bank stretch opposite Notre-Dame that stays peopled after dark."
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -1091,7 +1133,7 @@
     "longitude": 2.351968,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [
       "Deportation Memorial"
@@ -1210,7 +1252,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated underground memorial with seasonal hours; transcribed from its OSM tag whose current (Apr-Sep) window is 'Avr - Sep, Mar-Dim 10:00-19:00' (Mardi-Dimanche, Monday closed) in the tag 'Oct - Mar, Mar-Dim 10:00-17:00; Avr - Sep, Mar-Dim 10:00-19:00'.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Stark underground memorial at the tip of Île de la Cité; you approach across the small garden above, then descend into the narrow crypt of 200,000 lights and inscriptions, a contemplative space taking about twenty minutes inside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is a stark, silent underground memorial where running and casual conversation are socially unacceptable and there is no free open seating, and the site is closed and gated after dark."
   },
   {
     "name": "Hotel-Dieu",
@@ -1219,7 +1267,7 @@
     "longitude": 2.3488,
     "importance_tier": 3,
     "trigger_radius": 80,
-    "typical_duration_min": null,
+    "typical_duration_min": 7,
     "kid_friendly": "caution",
     "name_variations": [
       "Hôtel-Dieu"
@@ -1301,7 +1349,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working hospital rather than a visitor attraction; not a gated tourist experience, so no visiting hours apply.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working hospital with a long facade on the Notre-Dame parvis and an inner courtyard glimpse; it is not a visitor interior, so priced outside only.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A functioning hospital with a quiet interior courtyard where running and casual sitting are inappropriate, but it sits on the open, lit, well-populated Ile de la Cite near Notre-Dame after dark."
   },
   {
     "name": "Pont Neuf",
@@ -1310,7 +1364,7 @@
     "longitude": 2.341033,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "New Bridge"
@@ -1383,6 +1437,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
-    "place_category": "bridge"
+    "place_category": "bridge",
+    "visit_seconds_inside": null,
+    "visit_basis": "Oldest bridge in Paris with 381 carved grotesque faces and river views from its bays; a destination to walk across and pause on but nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours."
   }
 ]

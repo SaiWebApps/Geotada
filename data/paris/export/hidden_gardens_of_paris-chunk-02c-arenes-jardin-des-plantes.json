@@ -6,7 +6,7 @@
     "longitude": 2.352309,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Lutece Arena",
@@ -321,7 +321,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open Roman amphitheatre ruin within a public garden; though it has posted gate hours they are not confidently known, and its value is largely open-air — left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Open Gallo-Roman amphitheatre ruin you walk down into and around the arena floor and tiers; a free open space, nothing enclosed to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night."
   },
   {
     "name": "Place de la Contrescarpe",
@@ -330,7 +336,7 @@
     "longitude": 2.3494,
     "importance_tier": 4,
     "trigger_radius": 20,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -466,7 +472,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public square whose value stands in the open, so not gated.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small historic village square with cafe terraces, a central fountain and the head of rue Mouffetard; you circle it, read the plaques and settle onto the setting, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "This small square has central trees and benches but roads and café terraces ring it with passing traffic and delivery vehicles, so a child cannot run free-range and free quiet seating is scarce among the paid terraces; it is lit, busy and central at night so leaving someone standing is fine."
   },
   {
     "name": "Rue Mouffetard",
@@ -475,7 +487,7 @@
     "longitude": 2.349772,
     "importance_tier": 3,
     "trigger_radius": 75,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "La Mouffe"
@@ -564,7 +576,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open public market street whose value stands in the open with no door or gate, so it is not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Winding medieval market street of open-air stalls, shops and cafes stretching several blocks; walking its length and pausing at stalls fills half an hour, with nothing single to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A narrow crowded market street with stalls and goods at child height and jostling shoppers where a child cannot safely run free, offering no quiet free seating, but it is lit and busy with cafes and passers-by well after dark."
   },
   {
     "name": "Eglise Saint-Medard",
@@ -573,7 +591,7 @@
     "longitude": 2.35,
     "importance_tier": 2,
     "trigger_radius": 25,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Église Saint-Médard",
@@ -628,7 +646,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A church you enter, hence gated; transcribed from its OSM tag 'Tu-Sa 09:00-19:30; Su 09:00-20:00' with Monday closed.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Medieval parish church at the foot of rue Mouffetard; exterior is modest, interior has nave, side chapels and Jansenist history to absorb an engaged walk-through.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "As a working church quiet is expected inside and there is no running room, its pews are not casual conversation seating, and the building is locked at night with the surrounding foot of rue Mouffetard quieting after dark."
   },
   {
     "name": "Jardin des Plantes",
@@ -637,7 +661,7 @@
     "longitude": 2.356212,
     "importance_tier": 3,
     "trigger_radius": 150,
-    "typical_duration_min": null,
+    "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [
       "Garden of Plants"
@@ -916,7 +940,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A walled botanical garden with closing gates (gated), but its precise seasonal opening times vary and are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large formal botanical garden with tree-lined alleys, alpine and rose gardens and museum buildings along its edges; walking the full length and side gardens absorbs around 45 min, treated here as an open garden with its museums as separate entries.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall."
   },
   {
     "name": "Jardin Alpin",
@@ -925,7 +955,7 @@
     "longitude": 2.3597,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Alpine Garden",
@@ -942,7 +972,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated garden within the Jardin des Plantes with seasonal restricted access, but its hours are not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Alpine garden within the Jardin des Plantes reached through a tunnel, over 2,000 species across rockeries and winding paths that reward slow walking, open-air with no building to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed specialist alpine plant collection inside the Jardin des Plantes reached by a tunnel, with narrow planted paths where running among fragile specimens is not tolerated, little free quiet seating, and it is locked with the botanical garden at night."
   },
   {
     "name": "Grand Mosque of Paris",
@@ -951,7 +987,7 @@
     "longitude": 2.355103,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
       "Grande Mosquee de Paris"
@@ -1029,7 +1065,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated site with ticketed visiting hours, but no OSM tag supplied and its exact hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Spanish-Moorish complex with mosaic prayer hall, planted courtyards, and a tea salon; the interior gardens and tea room absorb about 40 min, the tiled exterior a few minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A gated religious complex whose enclosed courtyard demands decorum and forbids running, whose tea-salon seating must be paid for rather than being free, and which locks its gates and leaves no public lit standing room at night."
   },
   {
     "name": "Institut du Monde Arabe",
@@ -1038,7 +1080,7 @@
     "longitude": 2.3538,
     "importance_tier": 3,
     "trigger_radius": 30,
-    "typical_duration_min": null,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Arab World Institute",
@@ -1127,7 +1169,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Marked walk_by_only and admired for its facade from the street, so treated as not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Jean Nouvel's celebrated glass-and-steel building with the photo-sensitive mashrabiya facade; walk-by only, you stand and study the light-diaphragm wall and river frontage from outside.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A walk-by museum building on a busy quai near the Seine with traffic and no traffic-free running ground, and no free quiet seating on its forecourt, but the riverside area is lit and trafficked so someone could be left standing safely after dark."
   },
   {
     "name": "Jardin Tino Rossi",
@@ -1136,7 +1184,7 @@
     "longitude": 2.355,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "Jardin Tino-Rossi"
@@ -1217,7 +1265,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open riverside quay garden along Quai Saint-Bernard freely accessible from the pavement, treated as not gated; hours not confidently known if enclosed, left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Riverside garden along the Seine with an open-air sculpture museum, walked the length past the works, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A riverside garden on Quai Saint-Bernard open to the Seine embankment with unfenced water edges so a child running is at risk, though its stepped banks and benches let two people sit and talk, and the unlit deserted quay is not somewhere to be left standing after dark."
   },
   {
     "name": "Librairie Michael Seksik",
@@ -1226,7 +1280,7 @@
     "longitude": 2.3536556,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1305,6 +1359,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated bookshop requiring entry, but I do not confidently know its hours; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 900,
+    "visit_basis": "A bookshop; the window and frontage take a few minutes, and browsing the shelves inside a small independent store runs around fifteen minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A bookshop is a quiet commercial interior with fragile stock at child height, no free seating and locked doors at closing; I judge from the name as I have no further detail."
   }
 ]

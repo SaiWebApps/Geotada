@@ -34,7 +34,7 @@ from src.tour.generation import (
     is_walk_concurrent,
 )
 from src.tour.narration_quality import score_narration
-from src.tour.routing import total_walk_seconds
+from src.tour.routing import haversine_m, total_walk_seconds
 from src.tour.visit_time import served_elapsed_seconds
 
 # ── thresholds ──────────────────────────────────────────────────────────────
@@ -309,18 +309,6 @@ def c3_audio_floor_seconds(walk_seconds: int) -> float:
 
 def _words(text: str) -> int:
     return len(text.split())
-
-
-def _haversine_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
-    """Great-circle metres. Local copy so the rubric imports nothing from the
-    selection engine it is meant to judge independently."""
-    import math
-
-    phi1, phi2 = math.radians(lat1), math.radians(lat2)
-    dphi = math.radians(lat2 - lat1)
-    dlmb = math.radians(lng2 - lng1)
-    a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlmb / 2) ** 2
-    return 6_371_000.0 * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
 
 def _concurrent_audio_seconds(script: Script, beat_sequence: BeatSequence | None) -> int:
@@ -711,7 +699,7 @@ def score_tour(
     pois = list(script.selected_pois)
     for i in range(len(pois) - 1):
         a, b = pois[i], pois[i + 1]
-        metres = _haversine_m(a.lat, a.lng, b.lat, b.lng)
+        metres = haversine_m(a.lat, a.lng, b.lat, b.lng)
         if metres < MIN_STOP_SEPARATION_M:
             report.findings.append(
                 Finding(

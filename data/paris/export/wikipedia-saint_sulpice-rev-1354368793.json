@@ -6,7 +6,7 @@
     "longitude": 2.33487,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 20,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Eglise Saint-Sulpice"
@@ -335,6 +335,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated church you enter; transcribed from OSM tag '08:00-19:45' applied to all seven days.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Huge Baroque church with Delacroix murals, the gnomon solar calendar and a monumental organ; interior of side chapels and nave takes about 25 min, with a large fountain square outside.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark."
   }
 ]

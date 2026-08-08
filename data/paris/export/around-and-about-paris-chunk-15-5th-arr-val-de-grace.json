@@ -166,6 +166,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated former abbey/military site; OSM tag 'closed' transcribed as closed every day.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Royal abbey with a monumental Baroque facade and dome to view from the forecourt, and a church interior with Mignard's painted cupola open to visitors, roughly 25 min inside when accessible.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A former abbey attached to a military hospital, walk-by only with no free public seating and no space for children to run, though it fronts a lit Left Bank street with people about at night."
   }
 ]

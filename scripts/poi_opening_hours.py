@@ -457,9 +457,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"\n✓ wrote opening hours for {len(priced)} POIs to {path.relative_to(ROOT)}")
     if errors:
         print(f"  {len(errors)} still unprocessed — re-run this target to pick up just those.")
-    print("  NEXT, AND MANDATORY: sync data/{city}/export/*.json and re-run the")
-    print("  consistency tests, exactly as /poi-visit-duration does. Fields written")
-    print("  here do not reach the graph until that sync happens.")
+    print(f"  NEXT, AND MANDATORY: make sync-poi-exports SLUG={args.slug} — fields")
+    print("  written here do not reach the graph until that sync runs.")
     # Non-zero while anything is unprocessed, same as the capacity pass.
     return 1 if errors else 0
 

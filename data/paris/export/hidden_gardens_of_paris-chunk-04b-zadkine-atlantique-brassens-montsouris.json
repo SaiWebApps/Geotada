@@ -6,7 +6,7 @@
     "longitude": 2.334026,
     "importance_tier": 3,
     "trigger_radius": 45,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
       "Musée Zadkine",
@@ -303,7 +303,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated city studio-museum; transcribed from its OSM tag \"Tu-Su 10:00-18:00\".",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Small free studio-museum with sculptor's house, a few rooms and a garden of bronzes; compact collection absorbing roughly 40 min with little queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A small studio-museum entered from rue d'Assas and passed by only from the street; interiors expect quiet so children cannot run, there is no free street seating, and the frontage on a calm side street offers no lit night presence."
   },
   {
     "name": "Musee Bourdelle",
@@ -312,7 +318,7 @@
     "longitude": 2.3186277,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -417,7 +423,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated municipal sculpture museum; transcribed from OSM tag 'Tu-Su 10:00-18:00'.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Museum in sculptor Bourdelle's former studio and house with large plaster and bronze works, galleries and a sculpture garden, an engaged visit runs about 60-70 minutes; short exterior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A sculptor's-studio museum where quiet is expected among fragile works so children cannot run and there is no free public quiet seating, and as an enclosed museum with a courtyard it is gated and closed after dark; judged from the museum name absent a description."
   },
   {
     "name": "La Closerie des Lilas",
@@ -426,7 +438,7 @@
     "longitude": 2.335973,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Closerie des Lilas"
@@ -547,7 +559,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A brasserie entered through a door (gated); hours from its published daily pattern of roughly midday to 23:00.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic Montparnasse brasserie with literary brass plaques; as a walk-by the facade and terrace occupy a few minutes, and entering to dine is not a normal part of a tour stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A brasserie with only paid table seating fronting a busy boulevard junction where a child cannot run safely, but the wide avenue is lit and trafficked at night."
   },
   {
     "name": "Montparnasse Cemetery",
@@ -556,7 +574,7 @@
     "longitude": 2.327684,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [
       "Cimetiere du Montparnasse"
@@ -676,7 +694,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A gated walled cemetery with closing gates; hours follow the City of Paris's published summer pattern shared across municipal cemeteries.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large flat gridded cemetery with numerous famous graves spread across its avenues; an outdoor walk, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A quiet gravelled cemetery where children cannot be loud and free-range without disapproval, offering benches suitable for calm conversation, but closed and locked after dark."
   },
   {
     "name": "Parc Georges-Brassens",
@@ -685,7 +709,7 @@
     "longitude": 2.2999921,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1137,7 +1161,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated public park with closing bells; transcribed from OSM tag base '08:00-17:45' with weekend late opening 'Sa,Su,PH 08:00-09:00 off', seasonal evening extensions not expressible in a fixed weekly table.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large landscaped park with a pond, vineyard, garden of scents and former abattoir gateways, walked across and lingered in for over twenty minutes, open-air with nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A large enclosed municipal park with lawns and paths traffic-free where children can run and abundant benches allow quiet conversation, but as a fenced Paris park it is gated and locked at nightfall."
   },
   {
     "name": "La Ruche",
@@ -1146,7 +1176,7 @@
     "longitude": 2.2972385,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1160,7 +1190,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An artists' residence/studio complex not open to the public; role is walk-by only and it is viewed from outside, so treated as not-gated for routing but hours not applicable.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic circular artists' studio building viewed from outside; the round beehive-shaped structure and its garden gate can be seen in a few minutes, and the working studios inside are not normally open to the public.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "La Ruche is a private artists' residence complex in the 15th arrondissement with a gated garden not open for free public use, so there is no traffic-free running ground for children, no free public seating to hold a conversation, and its gates and private status make it unsuitable for leaving someone standing after dark."
   },
   {
     "name": "Parc Montsouris",
@@ -1169,7 +1205,7 @@
     "longitude": 2.3377922,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1523,7 +1559,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated park with seasonal closing times; transcribed from the OSM tag whose current (September) window is 'Sep PH,Mo-Su 07:00-20:30' in the tag 'Sep PH,Mo-Su 07:00-20:30; Oct 01-Oct Su[-1] ... 07:00-19:30; ...; Jul-Aug ... 07:00-24:00'.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large English-style landscape park with a lake, lawns, sloping paths and cascades; walking between its features and pausing at the water absorbs over half an hour, and there is no building to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This large landscaped park has traffic-free lawns and paths where children can run freely and abundant free benches quiet enough for conversation, but like all Paris municipal parks it is fenced and locked at nightfall, so no one can be left standing inside after dark."
   },
   {
     "name": "Villa Santos-Dumont",
@@ -1532,7 +1574,7 @@
     "longitude": 2.3046557,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1600,7 +1642,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private residential lane/street viewed from the pavement, not gated, so opening_hours is null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Quiet private residential cul-de-sac lined with artists' houses and greenery; you stroll its short length looking at the villas, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is a quiet private residential cul-de-sac lane with no enclosed play space or free public seating and, as a deserted lane after dark, it fails the leave-someone-standing test despite feeling safe by day."
   },
   {
     "name": "Butte-aux-Cailles",
@@ -1609,7 +1657,7 @@
     "longitude": 2.352246,
     "importance_tier": 1,
     "trigger_radius": 100,
-    "typical_duration_min": null,
+    "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
       "La Butte aux Cailles"
@@ -1625,6 +1673,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open neighbourhood of public streets and cobblestone lanes with no gate between street and experience.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Village-like hilltop quarter of cobbled streets and Miss Tic murals to wander through; a walk-through neighbourhood, nothing single to enter on a tour.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A hilltop network of open cobblestone streets that carry traffic and offer no free public seating, so children cannot safely run free and there is nowhere to sit quietly, but the streets are lit and populated by bars and restaurants after dark."
   }
 ]

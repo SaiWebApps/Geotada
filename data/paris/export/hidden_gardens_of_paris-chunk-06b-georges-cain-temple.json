@@ -6,7 +6,7 @@
     "longitude": 2.3627314,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -261,7 +261,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris square with closing gates, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small enclosed Marais garden square with lawn, sculpture fragments and archaeological stonework; a short circuit and pause on a bench, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a small enclosed Marais garden square displaying fragile statuary and lapidary fragments where children cannot run free-range, but it has free benches quiet enough to talk, and it is gated and locked at night so it fails after dark."
   },
   {
     "name": "Square Léopold-Achille",
@@ -270,7 +276,7 @@
     "longitude": 2.363193,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -343,7 +349,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris square with closing gates, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small local Marais garden square with lawns, trees and benches; a brief stroll and sit, with nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "This is a fenced, traffic-free Marais garden square with lawns and often a play area where children can run and free benches quiet enough for conversation, but municipal squares are gated and locked at nightfall so no one can be left standing there after dark."
   },
   {
     "name": "Clos des Blancs-Manteaux",
@@ -352,7 +364,7 @@
     "longitude": 2.3564592,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -444,7 +456,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated garden/vineyard plot with closing gates, but no OSM tag given and hours not confidently known; gated, hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small community garden and green plot in the Marais; a short look through the railings or a quick walk of the compact grounds, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "Uncertain of this specific place; judging conservatively from its name and enclosed 'clos' character it is likely a small gated garden or courtyard without room for free-range running or clearly free quiet seating, and gated enclosures fail the after-dark leave-standing test."
   },
   {
     "name": "Square du Temple",
@@ -924,7 +942,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated public garden with closing bells; OSM tag \"sunrise-sunset\" transcribed to an approximate daylight window as a fixed clock is required.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Public garden with lawns, mature trees, a pond and rockery to walk round and read the Templar history, about 20 minutes; nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A fenced, traffic-free public garden with lawns and gravel paths where children can run freely and benches sit quietly away from cars, but like Paris squares it is gated and locked at nightfall so no one can be left inside."
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -933,7 +957,7 @@
     "longitude": 2.361978,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Marche Couvert des Enfants Rouges"
@@ -1001,7 +1025,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated covered market hall with gates that close, but no OSM tag supplied and its exact stall hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "market"
+    "place_category": "market",
+    "visit_seconds_inside": 1800,
+    "visit_basis": "Oldest covered market in Paris, a compact hall of food stalls and eateries to wander and sample; browsing and a bite absorbs about 30 min, the entrance a few minutes.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A narrow covered market with fragile stalls and produce at child height where running is unsafe and unwelcome, whose only seating is paid food-stall benches, and which is gated and locked outside market hours leaving nowhere lit to stand at night."
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -1010,7 +1040,7 @@
     "longitude": 2.355414,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Museum of Arts and Crafts",
@@ -1130,6 +1160,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated museum; transcribed from OSM tag 'Tu-Th 10:00-18:00; Fr 10:00-21:00; Sa-Su 10:00-18:00' (Monday closed).",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Large science and technology museum with 80,000 objects across multiple galleries plus Foucault's pendulum in a medieval chapel; would absorb over two hours, capped at the 90-minute tour maximum; exterior is a plain converted priory worth a brief look.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An enclosed indoor museum with fragile exhibits and expected quiet where children cannot run and free quiet seating for conversation is absent, but it sits on a lit central Paris street with metro traffic and passers-by after closing."
   }
 ]

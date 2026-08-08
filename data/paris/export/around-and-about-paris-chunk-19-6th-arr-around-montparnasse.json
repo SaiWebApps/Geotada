@@ -6,7 +6,7 @@
     "longitude": 2.335973,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Closerie des Lilas",
@@ -161,7 +161,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A brasserie entered through a door (gated); hours from its published daily pattern of roughly midday to 23:00.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic Montparnasse brasserie with literary brass plaques; as a walk-by the facade and terrace occupy a few minutes, and entering to dine is not a normal part of a tour stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A brasserie with only paid table seating fronting a busy boulevard junction where a child cannot run safely, but the wide avenue is lit and trafficked at night."
   },
   {
     "name": "Statue of Marshal Ney",
@@ -216,7 +222,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An outdoor bronze statue on a street corner viewed from the pavement — not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Single bronze statue on a plinth at a boulevard corner, seen from a couple of angles; nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "The statue stands on a traffic island at the busy junction of Avenue de l'Observatoire and Boulevard du Montparnasse, so a child would run straight into roads, there is no quiet free seating beside the moving traffic, but the wide boulevard is well lit with people about at all hours."
   },
   {
     "name": "Fontaine des Quatre-Parties-du-Monde",
@@ -225,7 +237,7 @@
     "longitude": 2.336,
     "importance_tier": 3,
     "trigger_radius": 50,
-    "typical_duration_min": 5,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Fontaine de l'Observatoire",
@@ -270,7 +282,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A monumental fountain in the Jardin Marco Polo, an open garden strip on Avenue de l'Observatoire that is not enclosed by closing gates — not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Monumental Carpeaux fountain with the globe held by four figures and surrounding basin in a small garden, circled and studied from several sides; no interior.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "The fountain sits in the Jardin Marco Polo, a planted garden strip with benches quiet enough to talk, but the garden runs alongside Avenue de l'Observatoire without full traffic enclosure so a child at speed could reach the road, and this narrow public garden is unlit and deserted after dark."
   },
   {
     "name": "Rue Notre-Dame-des-Champs",
@@ -279,7 +297,7 @@
     "longitude": 2.3329,
     "importance_tier": 2,
     "trigger_radius": 80,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Notre-Dame-des-Champs"
@@ -320,7 +338,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A public street viewed from the open pavement — not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Long historic Left Bank street walked past several literary addresses and facades; nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is an ordinary Left Bank street with a live roadway and parked cars, no free public seating, and quiet residential blocks that go dim and empty at night, so it fails all three tests."
   },
   {
     "name": "Ecole Alsacienne",
@@ -329,7 +353,7 @@
     "longitude": 2.3325,
     "importance_tier": 3,
     "trigger_radius": 35,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "École Alsacienne"
@@ -370,7 +394,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working private school entered only by pupils and staff, not a visitable venue; treated as walk-by from the street, not gated for tour purposes.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working private school seen only from the street facade and gate; not open to visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private school seen only from the pavement of a working street, with a gated frontage, no public seating, and a deserted quiet block after school hours, so children cannot run, there is nowhere to sit, and it is no place to be left at night."
   },
   {
     "name": "College Stanislas",
@@ -379,7 +409,7 @@
     "longitude": 2.331,
     "importance_tier": 3,
     "trigger_radius": 35,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Collège Stanislas"
@@ -418,7 +448,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A working private school not open to visitors, seen only from the street; not a gated visitor venue.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large Catholic school viewed from its street frontage and entrance; not open to visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A gated private school viewed from the street pavement beside traffic, offering no free seating and a walled institutional frontage that empties at night, so it fails all three physical tests."
   },
   {
     "name": "3 Rue Joseph-Bara",
@@ -427,7 +463,7 @@
     "longitude": 2.3345,
     "importance_tier": 1,
     "trigger_radius": 30,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Kisling's studio"
@@ -472,7 +508,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private residential/studio address viewed from the street — not a gated visitor attraction.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Residential building facade associated with 1920s artists, read from the pavement with a plaque; not open to visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This is a private apartment/studio building fronting a narrow roadway, with no traffic-free ground for a child, no public seating, and a quiet residential street that is dim and empty after dark."
   },
   {
     "name": "Musee Zadkine",
@@ -562,7 +604,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated city studio-museum; transcribed from its OSM tag \"Tu-Su 10:00-18:00\".",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Small free studio-museum with sculptor's house, a few rooms and a garden of bronzes; compact collection absorbing roughly 40 min with little queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A small studio-museum entered from rue d'Assas and passed by only from the street; interiors expect quiet so children cannot run, there is no free street seating, and the frontage on a calm side street offers no lit night presence."
   },
   {
     "name": "Reid Hall",
@@ -571,7 +619,7 @@
     "longitude": 2.333,
     "importance_tier": 3,
     "trigger_radius": 35,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
       "Reid Hall Paris"
@@ -616,7 +664,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private university academic centre not open to general visitors, seen from the street — not a gated public venue.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Academic residence seen from its street gate and courtyard entrance; not a public visitor interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "An academic residence behind its gate on the short quiet rue de Chevreuse, seen only from the pavement, with no traffic-free running room, no public seating, and a deserted street at night."
   },
   {
     "name": "Academie de la Grande-Chaumiere",
@@ -716,7 +770,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated independent art academy; transcribed from its OSM tag \"Mo-Fr 14:00-15:30, We 19:00-20:00, Sa 13:30-14:30\".",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Working art academy on a narrow street, viewed from its entrance and any open courtyard glimpse; not a general visitor interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A working art academy on a narrow street, passed from the roadway pavement, with no enclosed play space, no free seating, and a quiet dim block after hours."
   },
   {
     "name": "26 Rue Vavin (Sauvage Building)",
@@ -725,7 +785,7 @@
     "longitude": 2.334,
     "importance_tier": 2,
     "trigger_radius": 30,
-    "typical_duration_min": 5,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
       "Immeuble Sauvage",
@@ -766,7 +826,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private apartment building admired from the street for its facade — not gated.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Distinctive stepped white-and-blue tiled facade studied from the street across and along; a residential building with no public interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private tiled apartment building admired from a live street pavement, with traffic alongside, no public seating, and a residential block that goes quiet and dim at night."
   },
   {
     "name": "La Rotonde",
@@ -775,7 +841,7 @@
     "longitude": 2.3292,
     "importance_tier": 3,
     "trigger_radius": 50,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Café de la Rotonde",
@@ -848,6 +914,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A café that is gated (an entered venue with service), but its precise current hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 2700,
+    "visit_basis": "Historic Montparnasse café-brasserie; the outside terrace and facade take a few minutes, while sitting inside for a drink or meal in the belle-epoque room absorbs around 45 min.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A busy café on the Boulevard du Montparnasse with only paid terrace seating that does not count and no traffic-free ground for children, but the wide boulevard is brightly lit and crowded late so it is fine to be left standing after dark."
   }
 ]

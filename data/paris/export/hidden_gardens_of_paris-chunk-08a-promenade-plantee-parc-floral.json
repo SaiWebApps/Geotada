@@ -6,7 +6,7 @@
     "longitude": 2.373433,
     "importance_tier": 2,
     "trigger_radius": 75,
-    "typical_duration_min": null,
+    "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [
       "Coulee Verte Rene-Dumont",
@@ -272,7 +272,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated elevated park with closing gates; City of Paris publishes winter hours opening 08:00 weekdays / 09:00 weekends and closing around dusk (~17:30 in winter), recorded as the current typical winter pattern.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Elevated linear park on a former railway viaduct running several kilometres; the whole experience is walking its length past planted gardens and rose arches, absorbing well over half an hour for an engaged walker, with nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "Elevated linear park fully separated from traffic with wide traffic-free paths where a child cannot reach a road, and it has benches in quiet greenery, but the elevated sections are gated and locked at night."
   },
   {
     "name": "Viaduc des Arts",
@@ -281,7 +287,7 @@
     "longitude": 2.404853,
     "importance_tier": 3,
     "trigger_radius": 75,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Le Viaduc des Arts",
@@ -373,7 +379,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "The viaduct's arcade of shopfronts lines a public street and is walked past in the open, not gated as a whole.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Row of arched brick railway-viaduct bays converted into artisan workshops with glass fronts; you walk the length looking into the studios, which absorbs around twenty minutes at street level.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A row of artisan workshops along a pavement beside a trafficked avenue with no traffic-free run and no free quiet seating, shuttered and quiet after closing with little night footfall at street level."
   },
   {
     "name": "Bois de Vincennes",
@@ -382,7 +394,7 @@
     "longitude": 2.441435,
     "importance_tier": 5,
     "trigger_radius": 150,
-    "typical_duration_min": null,
+    "typical_duration_min": 75,
     "kid_friendly": "yes",
     "name_variations": [
       "Vincennes Woods"
@@ -514,7 +526,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A large public woodland park with open roads and paths that is freely walkable and effectively unenclosed, so not gated.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast 995-hectare woodland park with lakes, gardens and attractions spread far apart; even a focused walk through one section and along a lake absorbs well over an hour, and it functions as an outdoor setting with no single interior.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A vast open woodland park with traffic-free lawns and paths for running and plentiful benches in quiet settings, but it is dark, unlit and deserted after nightfall with roads cutting through parts of it."
   },
   {
     "name": "Chateau de Vincennes",
@@ -523,7 +541,7 @@
     "longitude": 2.438338,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -658,7 +676,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "A monument entered by ticket (gated); hours from the château's published winter pattern of 10:00-17:00 daily (summer extends to 18:00).",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Medieval royal fortress with a moat, the 52m keep and the Sainte-Chapelle; circling the ramparts and courtyard outside takes 20 min, and inside the keep's cells, chambers and the chapel with a ticket runs about an hour including entry.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A medieval fortress with paid ticketed interiors where quiet is expected and no free public seating, and it closes and locks its grounds in the evening leaving nowhere to stand."
   },
   {
     "name": "Bibliotheque Francois Mitterrand",
@@ -667,7 +691,7 @@
     "longitude": 2.377128,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "Bibliotheque Nationale de France",
@@ -685,7 +709,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated national library with controlled access, but no OSM tag supplied and its reading-room hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1800,
+    "visit_basis": "Four glass book-shaped towers around a sunken forest esplanade you walk across and around; the vast exterior plaza absorbs most of the value, with limited reading-room and exhibition access inside worth about half an hour.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "The vast traffic-free elevated timber esplanade between the four towers gives children open car-free ground to run, has broad steps and low walls people sit on away from traffic, and stays lit with metro-fed foot traffic into the evening."
   },
   {
     "name": "Parc Floral",
@@ -694,7 +724,7 @@
     "longitude": 2.437923,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -834,7 +864,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated ticketed botanical park in the Bois de Vincennes with seasonal hours not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large botanical park in the Bois de Vincennes with themed flower gardens, ponds and wide walks; a big open space you spend real time crossing between sections, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A large botanical park in the Bois de Vincennes with vast traffic-free lawns and play areas where children range freely and abundant quiet seating for talking, but a ticketed enclosed park that closes and locks in the evening."
   },
   {
     "name": "Jardin de Reuilly",
@@ -843,7 +879,7 @@
     "longitude": 2.3875338,
     "importance_tier": 2,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -913,7 +949,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal garden with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Sizeable neighbourhood park with a large central lawn, a footbridge and planted borders on the old railway line; an open green space to walk and sit in, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "An enclosed garden with a large central lawn open for play, traffic-free and fenced, with benches and grass in quiet surroundings for conversation, but a municipal garden gated and locked at night."
   },
   {
     "name": "Bistro du Peintre",
@@ -922,7 +964,7 @@
     "longitude": 2.3773247,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1060,7 +1102,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A bistro passed on the walk and only viewed from the street in this role; treated as not gated for touring, so null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Art Nouveau corner bistro with a decorated facade and terrace; from the street you take in the frontage in a few minutes, and it is a café not a visitable interior for a tour.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A bistro whose only seating is paid café tables and whose interior is enclosed with fragile settings not suited to running children, but it is lit and staffed with people about in the evening."
   },
   {
     "name": "Square Raoul Nordling",
@@ -1069,7 +1117,7 @@
     "longitude": 2.38156,
     "importance_tier": 1,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1149,7 +1197,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal square with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Small public garden square with paths and benches; a modest green pause point to walk through, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A small fenced neighbourhood garden traffic-free with paths and lawn where children can run and benches quiet enough for talking, but a gated square locked at nightfall."
   },
   {
     "name": "Parc de Bercy",
@@ -1158,7 +1212,7 @@
     "longitude": 2.3817168,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1315,7 +1369,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A gated Paris municipal park with closing bells, but its hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "park"
+    "place_category": "park",
+    "visit_seconds_inside": null,
+    "visit_basis": "Large riverside park in three linked sections with vineyards, gardens, ponds and lawns and old wine-warehouse tracks; a broad space you spend half an hour walking through, nothing to enter.",
+    "children_can_run": true,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A large riverside park with extensive traffic-free lawns and paths where children range freely and abundant quiet seating for conversation, but a municipal park whose gated sections close and lock at night."
   },
   {
     "name": "Cinematheque Française",
@@ -1324,7 +1384,7 @@
     "longitude": 2.3826352,
     "importance_tier": 4,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1409,7 +1469,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A ticketed cinema and museum institution whose hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Interior film museum in the Frank Gehry building with permanent collection of cinema apparatus, costumes and exhibits over several floors, roughly 60-70 min plus a ticket queue; the sculptural exterior adds a short outside stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A film institution and cinema where quiet is expected indoors and children cannot run, with no free public seating beyond paid or lobby areas, but a large lit venue in an open riverside setting busy with people into the evening."
   },
   {
     "name": "Buddhist Temple Lac Daumesnil",
@@ -1418,7 +1484,7 @@
     "longitude": 2.41536,
     "importance_tier": 2,
     "trigger_radius": 50,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
     "parent_poi": null,
@@ -1488,7 +1554,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated Buddhist temple (Grande Pagode de Vincennes) requiring entry through a door; hours not confidently known, left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Buddhist temple pavilion by the lake in the Bois de Vincennes; the exterior and lakeside setting take about 15 min, and the interior with its large gilded Buddha absorbs roughly 20 min if open to visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This Buddhist temple building beside Lac Daumesnil in the Bois de Vincennes is a place of quiet worship where running is discouraged, offers no clear free public seating for conversation, and sits in a large unlit wooded park that empties and feels isolated after dark."
   },
   {
     "name": "Sainte-Chapelle",
@@ -1497,7 +1569,7 @@
     "longitude": 2.34483,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": null,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "The Holy Chapel"
@@ -1623,6 +1695,12 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated ticketed chapel; transcribed from OSM tag \"Jan-Mar 09:00-17:00; Apr-Sep 09:00-19:00; Oct-Dec 09:00-17:00\" using the current Apr-Sep 09:00-19:00 season.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 3960,
+    "visit_basis": "The modest facade and courtyard are seen in 15 minutes; inside is roughly 28 minutes of security and ticket queue plus 38 minutes under the two-storey glass, the upper chapel's 15 stained-glass windows being the whole point.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A small ticketed Gothic chapel where silence is expected and there is no free seating for conversation, and it is locked after closing so no one can be left standing inside at night."
   }
 ]

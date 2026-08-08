@@ -6,7 +6,7 @@
     "longitude": 2.3458,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "La Conciergerie"
@@ -91,7 +91,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated ticketed monument; transcribed from OSM tag 'Mo-Su 09:30-18:00'.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3900,
+    "visit_basis": "Medieval royal palace and Revolutionary prison; the vaulted Hall of the Men-at-Arms, the tribunal and Marie Antoinette's cell take around an hour plus a ticket queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A medieval prison-monument requiring paid entry where quiet is expected indoors and there is no free seating, and the building locks at closing so no one can be left standing inside after dark."
   },
   {
     "name": "Fontaine des Innocents",
@@ -148,7 +154,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A Renaissance fountain standing in an open public square, viewed from the pavement, not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Single Renaissance fountain in a pedestrian square, sculpted reliefs to walk round; a monument with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A pedestrian square around a fountain with hard paving and steps but no enclosure or barrier from surrounding streets so running is unsafe, though the steps offer free seating and the busy Les Halles area is lit and peopled after dark."
   },
   {
     "name": "Les Halles",
@@ -157,7 +169,7 @@
     "longitude": 2.347138,
     "importance_tier": 5,
     "trigger_radius": 50,
-    "typical_duration_min": 30,
+    "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
       "Forum des Halles",
@@ -302,7 +314,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "As a site/setting it refers to a public area; the surface square and gardens are open-air with no single gate.",
-    "place_category": "market"
+    "place_category": "market",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Site of the former market, now the Forum des Halles with its Canopy roof and surrounding gardens; the mall interior and levels absorb around 40 min if entered.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": true,
+    "judgement_basis": "A large shopping-centre-and-garden complex where children cannot run free among crowds and roads, but the surrounding Nelson Mandela garden has free benches and lawns quiet enough to talk, and the area is lit and busy well into the night."
   },
   {
     "name": "Place de la Concorde",
@@ -311,7 +329,7 @@
     "longitude": 2.321038,
     "importance_tier": 5,
     "trigger_radius": 50,
-    "typical_duration_min": 10,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "Place de la Revolution"
@@ -356,7 +374,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Not gated — an open public square whose whole value stands in the open, always accessible.",
-    "place_category": "square"
+    "place_category": "square",
+    "visit_seconds_inside": null,
+    "visit_basis": "The largest square in Paris with the Luxor obelisk, two fountains and views toward the Tuileries and the Champs-Elysees; walking between its positions absorbs 35 minutes, with nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A huge open square ringed and crossed by heavy fast traffic with no barrier and no quiet free seating, so a child cannot safely run and conversation is drowned; it is brightly lit and busy at all hours, so a person left standing is fine."
   },
   {
     "name": "Pont Neuf",
@@ -365,7 +389,7 @@
     "longitude": 2.341033,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "New Bridge"
@@ -408,6 +432,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Open public bridge with no gate, always accessible, not gated.",
-    "place_category": "bridge"
+    "place_category": "bridge",
+    "visit_seconds_inside": null,
+    "visit_basis": "Oldest bridge in Paris with 381 carved grotesque faces and river views from its bays; a destination to walk across and pause on but nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours."
   }
 ]

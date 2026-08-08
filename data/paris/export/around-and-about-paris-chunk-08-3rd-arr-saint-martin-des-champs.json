@@ -6,7 +6,7 @@
     "longitude": 2.36,
     "importance_tier": 1,
     "trigger_radius": 25,
-    "typical_duration_min": 10,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
       "Synagogue de Nazareth",
@@ -48,7 +48,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A synagogue that is gated with restricted entry, but its hours are not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 1000,
+    "visit_basis": "Early-19th-century synagogue with a restrained facade on a narrow street; the exterior is a few minutes, and if open the single galleried prayer hall is a roughly 15-min interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A 19th-century synagogue on a narrow street, an interior place of worship where quiet is expected and there is no free street seating, and its side street is dim and quiet after dark with a secured gated entrance, so I judge it false on all three."
   },
   {
     "name": "Priory of Saint-Martin-des-Champs",
@@ -57,7 +63,7 @@
     "longitude": 2.3553,
     "importance_tier": 3,
     "trigger_radius": 40,
-    "typical_duration_min": 25,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Prieuré Saint-Martin-des-Champs",
@@ -188,7 +194,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A medieval priory now part of the Musée des Arts et Métiers that is gated, but its hours are not confidently known here; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Medieval priory with crenellated walls and an early Gothic rib-vaulted church, now housing the arts-and-crafts museum galleries; the walls and church exterior take about 12 min and the vaulted refectory and church interior a 35-40 min visit with ticket.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A medieval priory church now part of a museum complex behind crenellated walls, an enclosed interior where quiet is expected and free public seating is not offered, and its grounds are gated and locked at night so no one could be left standing inside."
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -197,7 +209,7 @@
     "longitude": 2.355414,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 30,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Conservatoire des Arts et Métiers",
@@ -276,7 +288,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated museum; transcribed from OSM tag 'Tu-Th 10:00-18:00; Fr 10:00-21:00; Sa-Su 10:00-18:00' (Monday closed).",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Large science and technology museum with 80,000 objects across multiple galleries plus Foucault's pendulum in a medieval chapel; would absorb over two hours, capped at the 90-minute tour maximum; exterior is a plain converted priory worth a brief look.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "An enclosed indoor museum with fragile exhibits and expected quiet where children cannot run and free quiet seating for conversation is absent, but it sits on a lit central Paris street with metro traffic and passers-by after closing."
   },
   {
     "name": "Porte Saint-Martin",
@@ -285,7 +303,7 @@
     "longitude": 2.354,
     "importance_tier": 3,
     "trigger_radius": 30,
-    "typical_duration_min": 10,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Porte Saint-Martin"
@@ -356,7 +374,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A triumphal arch viewed from the open street; not gated, so hours are null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Freestanding 17th-century triumphal arch on a traffic island; you circle it to read the relief carvings on both faces, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A freestanding triumphal arch on a traffic island where busy boulevards meet, with no seating and roads on all sides, but it is brightly lit and on a major thoroughfare with people passing at all hours."
   },
   {
     "name": "Saint-Nicolas-des-Champs",
@@ -365,7 +389,7 @@
     "longitude": 2.3543,
     "importance_tier": 3,
     "trigger_radius": 30,
-    "typical_duration_min": 15,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
       "Église Saint-Nicolas-des-Champs"
@@ -432,7 +456,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A parish church one can enter, so gated, but its precise hours are not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Parish church with a 15th-century tower and Gothic-to-Renaissance nave; a few minutes on the facade outside, roughly 18 minutes inside among the chapels and burials.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A working parish church where quiet is expected inside and running is impossible; interiors have no free casual seating for conversation and the building is locked at night, leaving no lit open space to stand in."
   },
   {
     "name": "3 Rue Volta",
@@ -484,7 +514,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A private half-timbered house seen from the pavement; not gated, so hours are null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "A single half-timbered facade once claimed as the oldest house in Paris; you stand across the narrow street and look at the timbering, private and not enterable.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A private half-timbered house fronting directly onto a narrow Marais street with no enclosure, no seating and no room to run, and the quiet residential lane is deserted and dim after dark."
   },
   {
     "name": "Convent of the Madelonnettes",
@@ -493,7 +529,7 @@
     "longitude": 2.3593,
     "importance_tier": 1,
     "trigger_radius": 15,
-    "typical_duration_min": 5,
+    "typical_duration_min": 4,
     "kid_friendly": "caution",
     "name_variations": [
       "Couvent des Madelonnettes",
@@ -535,6 +571,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A demolished convent with nothing to enter; not gated, so hours are null.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Demolished in 1865-66, so only a street site remains; a few minutes to locate the spot and read its history, nothing standing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "This convent was demolished in 1865-66 so nothing survives to stand at; judged conservatively, its former site is ordinary street frontage with no enclosure, no seating and no reason to linger after dark."
   }
 ]

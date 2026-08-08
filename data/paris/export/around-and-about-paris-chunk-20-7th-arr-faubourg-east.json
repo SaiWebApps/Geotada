@@ -6,7 +6,7 @@
     "longitude": 2.294694,
     "importance_tier": 5,
     "trigger_radius": 30,
-    "typical_duration_min": 7,
+    "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
       "La Tour Eiffel",
@@ -201,7 +201,13 @@
     },
     "opening_hours_source": "ai",
     "opening_hours_basis": "Gated ticketed monument with elevator/stair access; hours follow the tower's own published year-round daily pattern (extended summer hours from mid-June).",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The Champ de Mars and the space beneath the four piers absorb over half an hour of looking up and photographing; going up involves long security and lift queues plus two viewing levels and the summit, which would absorb well over two hours, capped at the 90-minute tour maximum.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "The Champ de Mars lawns run traffic-free but the immediate base is a fenced, security-controlled paved plaza crossed by roads and crowds where a child at speed can reach traffic and there is no quiet free seating; the site is brightly lit and busy with people at all hours, so a person left standing at night would be fine."
   },
   {
     "name": "Quai Voltaire",
@@ -210,7 +216,7 @@
     "longitude": 2.3312,
     "importance_tier": 3,
     "trigger_radius": 40,
-    "typical_duration_min": 7,
+    "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
       "quai Voltaire",
@@ -381,7 +387,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "An open Left Bank embankment and street viewed in the open — not gated.",
-    "place_category": "street"
+    "place_category": "street",
+    "visit_seconds_inside": null,
+    "visit_basis": "Riverside embankment walked its length past 18th-century facades and plaques with open views across the Seine to the Louvre; a setting to stroll, nothing to enter.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A Seine embankment street with a roadway and river parapets so children cannot safely run, no quiet free seating beside the traffic, but it is lit, open and central with people passing along the quay at night."
   },
   {
     "name": "Fontaine des Quatre Saisons",
@@ -390,7 +402,7 @@
     "longitude": 2.3251,
     "importance_tier": 3,
     "trigger_radius": 20,
-    "typical_duration_min": 5,
+    "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
       "Bouchardon Fountain",
@@ -433,7 +445,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A monumental wall fountain on the street facade viewed from the pavement — not gated.",
-    "place_category": "monument"
+    "place_category": "monument",
+    "visit_seconds_inside": null,
+    "visit_basis": "Monumental Bouchardon wall fountain filling a street frontage with allegorical sculpture read across its full width; no interior.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "A monumental wall fountain set flush into buildings on the narrow rue de Grenelle, seen from the pavement beside traffic, with no free seating, no room to run, and a quiet dim street after dark."
   },
   {
     "name": "Saint-Thomas-d'Aquin",
@@ -442,7 +460,7 @@
     "longitude": 2.3277,
     "importance_tier": 3,
     "trigger_radius": 20,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
       "Église Saint-Thomas-d'Aquin"
@@ -484,7 +502,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A Catholic church one enters (gated), but its specific opening hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1000,
+    "visit_basis": "17th-century Dominican church with a classical facade on a small square; interior is a single broad nave with side chapels and a painted ceiling, about 15 minutes to walk through with no queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A working church where quiet is expected so a child cannot run loose inside, no free public seating exists on its small paved place, but the square sits on lit central streets with people about after dark."
   },
   {
     "name": "Le Bon Marché",
@@ -493,7 +517,7 @@
     "longitude": 2.3244,
     "importance_tier": 3,
     "trigger_radius": 25,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Au Bon Marché",
@@ -565,7 +589,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated department store but no OSM tag and hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Grand 19th-century department store with a famous iron-and-glass atrium, escalator well and multiple floors including the Grande Epicerie food hall; an engaged wander through the architecture and displays fills an hour.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A department-store interior of fragile displays and paid café tables where children cannot run free and no free quiet seating exists, but rue de Sèvres outside is a busy lit street trafficked at night."
   },
   {
     "name": "La Pagode",
@@ -574,7 +604,7 @@
     "longitude": 2.3185,
     "importance_tier": 3,
     "trigger_radius": 15,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Cinéma La Pagode",
@@ -618,6 +648,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A cinema (gated), but it has been closed for years and no current confident hours exist; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Ornate Japanese-style pagoda facade and garden gate viewed from the street; it is a working cinema, not an interior open to casual visiting, so nothing to enter as a tour stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A cinema on a pavement offers no running room and no free seating, but rue de Babylone is a lit residential street with people passing after dark."
   }
 ]

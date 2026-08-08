@@ -6,7 +6,7 @@
     "longitude": 2.3192,
     "importance_tier": 3,
     "trigger_radius": 80,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [
       "Hôtel Matignon",
@@ -113,7 +113,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "The Prime Minister's official residence, gated and not open to the public except on rare heritage days; gated, hours not confidently known; left unfiltered.",
-    "place_category": "garden"
+    "place_category": "garden",
+    "visit_seconds_inside": null,
+    "visit_basis": "Grand 18th-century mansion behind a guarded gate as the Prime Minister's residence; you see only the portal and wall from the street, with no public entry.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "The Prime Minister's residence is a gated, guarded mansion with an inaccessible private garden, offering no run-space, no seating, and a heavily secured pavement where lingering after dark is unwelcome."
   },
   {
     "name": "Musee de la Legion d'Honneur",
@@ -122,7 +128,7 @@
     "longitude": 2.321,
     "importance_tier": 3,
     "trigger_radius": 80,
-    "typical_duration_min": 5,
+    "typical_duration_min": 7,
     "kid_friendly": "no",
     "name_variations": [
       "Musée de la Légion d'Honneur",
@@ -224,7 +230,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A medals museum housed in a mansion is gated, but no OSM tag is given and I do not confidently know its hours; gated, hours not confidently known; left unfiltered.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Neoclassical Hôtel de Salm with a colonnaded facade facing the Seine; interior museum of medals, orders and honours across several rooms, a focused visit of around 40 minutes with little or no queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A quiet museum interior forbids running and offers no free seating, but it stands on the lit Seine-side quay near the Musée d'Orsay where people pass at all hours."
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -233,7 +245,7 @@
     "longitude": 2.3182,
     "importance_tier": 3,
     "trigger_radius": 80,
-    "typical_duration_min": 5,
+    "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
       "Basilique Sainte-Clotilde",
@@ -302,7 +314,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "A church one enters (gated), but its specific opening hours are not confidently known; gated, hours not confidently known; left unfiltered.",
-    "place_category": "church"
+    "place_category": "church",
+    "visit_seconds_inside": 1100,
+    "visit_basis": "19th-century neo-Gothic church with twin spires on a garden square; interior has a tall nave, stained glass and the organ associated with César Franck, about 18 minutes to see.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A church interior demands quiet so children cannot run, and its surrounding square has no reliable free seating, but the adjacent square is lit and set on trafficked residential streets after dark."
   },
   {
     "name": "Hotel de Gallifet",
@@ -311,7 +329,7 @@
     "longitude": 2.3224,
     "importance_tier": 1,
     "trigger_radius": 70,
-    "typical_duration_min": 5,
+    "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [
       "Hôtel de Galliffet",
@@ -358,7 +376,13 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "The Italian Cultural Institute and Embassy (gated), open only for events/exhibitions with no confidently known regular hours; gated, hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "18th-century mansion with a fine courtyard and colonnaded facade, now the Italian embassy and cultural institute; visited from the street and gate, with the interior not generally open to tour visitors.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": false,
+    "judgement_basis": "An embassy and cultural institute behind gates on rue de Grenelle offers no accessible run-space or public seating, and this quiet Faubourg lane is deserted and unwelcoming for lingering after dark."
   },
   {
     "name": "Musee Rodin",
@@ -367,7 +391,7 @@
     "longitude": 2.315867,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
       "Rodin Museum"
@@ -506,7 +530,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "A gated sculpture museum; transcribed from the OSM tag \"Tu-Su 10:00-18:30\", closed Mondays.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Hotel Biron interior galleries plus a large formal sculpture garden with The Thinker and Gates of Hell; typically 55-65 min including a short queue.",
+    "children_can_run": false,
+    "sit_and_talk": true,
+    "good_after_dark": false,
+    "judgement_basis": "A ticketed sculpture museum whose formal garden has fragile artworks and expects decorum, though it has benches quiet enough to sit and talk; it closes and locks at night."
   },
   {
     "name": "Musee d'Orsay",
@@ -515,7 +545,7 @@
     "longitude": 2.326561,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Orsay Museum",
@@ -680,7 +710,13 @@
     },
     "opening_hours_source": "osm",
     "opening_hours_basis": "Gated museum; transcribed from OSM tag \"Tu-Su 09:30-18:00; Th 09:30-21:45\" with Monday closed by absence.",
-    "place_category": "museum"
+    "place_category": "museum",
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The former railway station facade and riverside frontage give about 15 minutes outside; inside is a major Impressionist and Post-Impressionist collection over several floors that would absorb three hours, capped at the 90-minute tour maximum plus a ticket queue.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A converted railway hall now a hushed museum where running is forbidden and echoing galleries make quiet conversation on free seating impossible; the Left Bank riverside frontage is lit and trafficked with people about, so standing there after dark is fine."
   },
   {
     "name": "Assemblee Nationale",
@@ -689,7 +725,7 @@
     "longitude": 2.318389,
     "importance_tier": 3,
     "trigger_radius": 10,
-    "typical_duration_min": 5,
+    "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
       "Palais Bourbon",
@@ -887,6 +923,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated parliament building with restricted/appointment-only visitor access; hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Neoclassical parliament palace viewed from the river and its colonnaded portico facing Concorde; interior accessible only by prior booking, so a normal visit is exterior only.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A guarded parliament building fronting trafficked quays with security barriers and no public free seating, so children cannot run and there is nowhere quiet to sit, but its riverside surroundings are lit and policed at night."
   }
 ]

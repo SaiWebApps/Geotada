@@ -6,7 +6,7 @@
     "longitude": 2.3324,
     "importance_tier": 5,
     "trigger_radius": 10,
-    "typical_duration_min": 10,
+    "typical_duration_min": 8,
     "kid_friendly": "no",
     "name_variations": [
       "Le Moulin Rouge"
@@ -348,6 +348,12 @@
     "opening_hours": null,
     "opening_hours_source": null,
     "opening_hours_basis": "Gated cabaret with ticketed evening shows; exact performance/access hours not confidently known; left unfiltered.",
-    "place_category": "other"
+    "place_category": "other",
+    "visit_seconds_inside": null,
+    "visit_basis": "Cabaret facade with its red windmill photographed from the street; there is no daytime interior to tour, evening shows are ticketed sit-down events not a walking-tour stop.",
+    "children_can_run": false,
+    "sit_and_talk": false,
+    "good_after_dark": true,
+    "judgement_basis": "A cabaret fronting the busy trafficked Boulevard de Clichy with narrow pavements and no free seating, so a child would run into traffic and there is nowhere quiet to sit, but the boulevard is brightly lit and busy with people at all hours."
   }
 ]
