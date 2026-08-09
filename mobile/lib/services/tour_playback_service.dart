@@ -38,9 +38,15 @@ class TourPlaybackService extends ChangeNotifier {
       _state != TourState.idle && _state != TourState.completed;
   bool get hasPendingStop => _pendingStopIndex != null;
 
+  /// Geofence trigger radius in metres. Defaults to the NORTHSTAR 10m spec.
+  /// Configurable because real GPS accuracy (~5m+) makes a bare 10m radius miss
+  /// stops the user walks straight past; the on-device proof sets a wider value.
+  double triggerRadiusMeters;
+
   TourPlaybackService({
     required LocationProvider locationService,
     required AudioProvider audioService,
+    this.triggerRadiusMeters = 10.0,
   })  : _locationService = locationService,
         _audioService = audioService;
 
@@ -141,8 +147,8 @@ class TourPlaybackService extends ChangeNotifier {
     );
     _distanceToNext = distance;
 
-    // Check geofence: 10m trigger radius (NORTHSTAR spec)
-    if (distance <= 10.0 && !_audioService.isPlaying) {
+    // Check geofence (NORTHSTAR spec 10m by default; configurable).
+    if (distance <= triggerRadiusMeters && !_audioService.isPlaying) {
       _playCurrentStop();
     }
 
@@ -155,7 +161,7 @@ class TourPlaybackService extends ChangeNotifier {
         nextTarget.lat,
         nextTarget.lng,
       );
-      if (distToNext <= 10.0 && _pendingStopIndex == null) {
+      if (distToNext <= triggerRadiusMeters && _pendingStopIndex == null) {
         _pendingStopIndex = _currentStopIndex + 1;
         _state = TourState.approaching;
         notifyListeners();

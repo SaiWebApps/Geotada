@@ -150,9 +150,14 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     await _cacheClip('proof-1');
     await _cacheClip('proof-2');
 
+    // Wider trigger than production's 10m: real GPS cross-track (~10m observed)
+    // walks straight past a 10m radius. 20m reliably trips while still requiring
+    // the tester to START outside it (stops are 30m/55m out) and walk in locked.
+    tour.triggerRadiusMeters = 20.0;
+
     final bearing = _directions[_selectedDir]!;
-    final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 15.5, bearing);
-    final s2 = _offsetAlongBearing(pos.latitude, pos.longitude, 31.0, bearing);
+    final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 30.0, bearing);
+    final s2 = _offsetAlongBearing(pos.latitude, pos.longitude, 55.0, bearing);
     final stops = [
       _proofStop(1, 'proof-1', s1.$1, s1.$2),
       _proofStop(2, 'proof-2', s2.$1, s2.$2),
@@ -160,8 +165,8 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
 
     final ok = await tour.startTour(stops);
     _add(ok
-        ? 'Tour started. Lock the phone, pocket it, walk $_selectedDir '
-            '~15m then ~30m.'
+        ? 'Tour started (fires within 20m). Lock, pocket, walk $_selectedDir '
+            '~30m then ~55m.'
         : 'startTour failed.');
   }
 

@@ -425,6 +425,32 @@ void main() {
       expect(audioService.currentBeatId, 'beat-1');
     });
 
+    test('geofence radius is configurable — fires at the wider proof radius',
+        () async {
+      final wideService = TourPlaybackService(
+        locationService: locationService,
+        audioService: audioService,
+        triggerRadiusMeters: 20.0,
+      );
+      addTearDown(wideService.dispose);
+
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+      ];
+      await wideService.startTour(stops);
+
+      // ~15.5m north of the stop: OUTSIDE the default 10m, INSIDE the 20m radius.
+      locationService.simulatePosition(48.8584 + 0.00014, 2.2945);
+      expect(audioService.isPlaying, true);
+      expect(audioService.currentBeatId, 'beat-1');
+    });
+
     test('does not auto-play if audio already playing', () async {
       locationService.trackingWillSucceed = true;
       final stops = [
