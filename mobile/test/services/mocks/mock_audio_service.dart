@@ -18,6 +18,8 @@ class MockAudioService extends AudioProvider {
   bool get isDeeperDive => _isDeeperDive;
   int get playCount => _playCount;
 
+  int releaseSessionCount = 0;
+
   @override
   Future<void> prepareSession() async {
     prepareSessionCount++;
@@ -25,11 +27,23 @@ class MockAudioService extends AudioProvider {
   }
 
   @override
+  Future<void> releaseSession() async {
+    releaseSessionCount++;
+    callLog?.add('release');
+  }
+
+  /// When false, [play] mimics a play that fails to start (e.g. the native
+  /// player throwing): it records the beat and buffering-style notify but never
+  /// sets isPlaying. Reproduces the on-device regression where a failed play
+  /// looked like a completion and phantom-advanced the tour.
+  bool playSucceeds = true;
+
+  @override
   void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
     if (_currentBeatId == beatId && _isPlaying) return;
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
-    _isPlaying = true;
+    _isPlaying = playSucceeds;
     _playCount++;
     notifyListeners();
   }

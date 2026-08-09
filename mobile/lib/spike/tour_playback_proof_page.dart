@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
@@ -227,6 +228,12 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
                 _add('Tour stopped.');
               },
               child: const Text('Stop'),
+            ),
+            const SizedBox(height: 8),
+            TextButton.icon(
+              onPressed: () => context.push('/debug/tour-pin-proof'),
+              icon: const Icon(Icons.map_outlined),
+              label: const Text('Map pin-drop mode →'),
             ),
             const Divider(),
             const Text('Event log'),

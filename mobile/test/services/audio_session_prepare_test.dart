@@ -22,4 +22,22 @@ void main() {
 
     expect(calls, ['prepare']);
   });
+
+  test('releaseSession invokes "deactivate" on the audio_session channel',
+      () async {
+    final calls = <String>[];
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+      calls.add(call.method);
+      return null;
+    });
+    addTearDown(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null);
+    });
+
+    await AudioService().releaseSession();
+
+    expect(calls, ['deactivate']);
+  });
 }

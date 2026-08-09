@@ -31,4 +31,10 @@ abstract class AudioProvider extends ChangeNotifier {
   /// refuses session activation from a background callback
   /// (AVAudioSessionErrorCodeCannotInterruptOthers). No-op off iOS; never throws.
   Future<void> prepareSession();
+
+  /// Deactivate the iOS audio session so a ducked session is RELEASED — the
+  /// tourist's music/podcast returns to full volume. Called when the tour ends
+  /// (stopped or completed); otherwise `.duckOthers` keeps other audio ducked
+  /// for the whole session, even after playback finishes. No-op off iOS.
+  Future<void> releaseSession();
 }
