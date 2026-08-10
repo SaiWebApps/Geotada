@@ -1,21 +1,18 @@
-"""Public read-only product endpoint: the lens taxonomy.
+"""Public read-only product endpoints: the lens taxonomy and the caller's profile.
 
-Unlike the workbench CRUD routers (graph/nodes/edges/schema/onboard), this is
+Unlike the workbench CRUD routers (graph/nodes/edges/schema/onboard), these are
 mounted UNCONDITIONALLY in src/api/app.py — outside `_workbench_api_enabled()`
-— because the mobile client needs it with the gate off (see
+— because the mobile client needs them with the gate off (see
 specs/2026-08-09-public-read-endpoints/run-context.md, decision
-`workbench_stays_off`).
-
-The /profile endpoint from the original branch is intentionally NOT shipped
-here: it was an auth-gate-only stub that returned {}. It lands with its real
-body (display_name/selected_lens_ids/theme_preference) in a later slice.
+`workbench_stays_off`). /profile contract: specs/2026-08-10-profile-endpoint/design.md.
 """
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from neo4j import Session
 
+from src.api.auth.dependencies import get_current_user
 from src.api.dependencies import get_session
 
 router = APIRouter(tags=["product"])
@@ -50,3 +47,38 @@ def list_lenses(session: Session = Depends(get_session)) -> list[dict]:
         }
         for record in result
     ]
+
+
+@router.get("/profile")
+def get_profile(
+    current_user: dict = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> dict:
+    """Return the caller's profile.
+
+    `get_current_user` requires a valid bearer (401 on missing/malformed/expired
+    before this body runs — no data leak). Body: profile_id, display_name,
+    selected_lens_ids (the profile's PREFERS_LENS child-lens ids, [] if none),
+    and theme_preference (verbatim when set, null when the property is absent —
+    read-only pass-through). 404 (not a fabricated empty profile) when the user
+    has no HAS_PROFILE. When a user has >1 profile, the latest by created_at wins
+    and its lens set is returned. See specs/2026-08-10-profile-endpoint/design.md.
+    """
+    record = session.run(
+        "MATCH (u:User {id: $uid})-[:HAS_PROFILE]->(p:Profile) "
+        "WITH p ORDER BY p.created_at DESC LIMIT 1 "
+        "OPTIONAL MATCH (p)-[:PREFERS_LENS]->(l:Lens) "
+        "RETURN p.id AS profile_id, p.display_name AS display_name, "
+        "p.theme_preference AS theme_preference, collect(l.id) AS selected_lens_ids",
+        uid=current_user["id"],
+    ).single()
+
+    if record is None:
+        raise HTTPException(status_code=404, detail="No profile for this user")
+
+    return {
+        "profile_id": record["profile_id"],
+        "display_name": record["display_name"],
+        "selected_lens_ids": record["selected_lens_ids"],
+        "theme_preference": record["theme_preference"],
+    }
