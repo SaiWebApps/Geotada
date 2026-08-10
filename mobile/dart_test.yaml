@@ -1,0 +1,9 @@
+# Declares the test tags used across the suite so `flutter test --tags` /
+# `--exclude-tags` don't warn about unknown tags.
+#
+# `vm`: tests that use dart:io (e.g. File().readAsStringSync() source guards)
+# and therefore cannot run under `--platform chrome`. scripts/flutter_test.sh
+# runs the chrome pass with `--exclude-tags vm` and runs these on the VM
+# platform via `--platform vm --tags vm`.
+tags:
+  vm:

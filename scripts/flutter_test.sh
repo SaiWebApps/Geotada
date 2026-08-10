@@ -112,13 +112,35 @@ failed_log() { grep -qE "Some tests failed|Failed to load|did not complete" "$LO
 
 acquire_lock
 
+# VM-only guard pass. Tests tagged @Tags(['vm']) use dart:io (e.g. the
+# no-hardcoded-colors source guards that File().readAsStringSync() a lib file)
+# and therefore CANNOT run under `--platform chrome` — they throw
+# Unsupported operation and fail the chrome suite. So the chrome run above
+# excludes them (`--exclude-tags vm`) and we run them here on the native VM
+# platform (`--platform tester` — flutter's default engine; `vm` is not an
+# accepted --platform value, `tester` is the VM one). BOTH passes must succeed
+# for this target to succeed; the VM guard runs first so the central
+# design-system guard actually executes in the mandated suite. It is a tiny,
+# non-hanging test set, so it needs no hang detector — but its exit code is
+# load-bearing and aggregated into the target's verdict.
+echo ">> running VM-tagged guard tests (flutter test --platform tester --tags vm)" >&2
+( cd "$MOBILE_DIR" \
+    && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
+       flutter test --platform tester --tags vm )
+vm_rc=$?
+if [ "$vm_rc" -ne 0 ]; then
+  echo "FLUTTER VM-TAGGED GUARD TESTS FAILED (exit $vm_rc) — see output above" >&2
+  exit 1
+fi
+echo ">> VM-tagged guard tests passed; running the chrome suite" >&2
+
 attempt=1
 while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
   : > "$LOG"
   [ -n "$CHROME" ] && export CHROME_EXECUTABLE="$CHROME"
   ( cd "$MOBILE_DIR" \
       && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
-         flutter test --platform chrome >"$LOG" 2>&1 ) &
+         flutter test --platform chrome --exclude-tags vm >"$LOG" 2>&1 ) &
   fpid=$!
   i=0
   while [ "$i" -lt "$ITERS" ]; do
