@@ -35,3 +35,15 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+  fonts:
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces.ttf
+    - family: Space Grotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk.ttf
+    - family: Space Mono
+      fonts:
+        - asset: assets/fonts/SpaceMono-Regular.ttf
+        - asset: assets/fonts/SpaceMono-Bold.ttf
+          weight: 700
