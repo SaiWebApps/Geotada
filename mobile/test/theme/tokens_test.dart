@@ -11,6 +11,7 @@ void main() {
     expect(c.ink, const Color(0xFF20242C));
     expect(c.inkMute, const Color(0xFF5B6069));
     expect(c.spark, const Color(0xFFE8934A));
+    expect(c.onAccent, const Color(0xFFFFFFFF));
   });
 
   test('dark tokens match v10 hex values', () {
@@ -18,6 +19,7 @@ void main() {
     expect(c.accent, const Color(0xFF7BB2F5));
     expect(c.bg, const Color(0xFF101218));
     expect(c.ink, const Color(0xFFF6F4F0));
+    expect(c.onAccent, const Color(0xFF101218));
   });
 
   test('lerp(t=0) returns the start instance colors', () {

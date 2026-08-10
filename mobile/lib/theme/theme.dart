@@ -24,7 +24,7 @@ ThemeData buildOndowayTheme(Brightness brightness) {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: t.accent, foregroundColor: brightness == Brightness.dark ? t.bg : Colors.white,
+        backgroundColor: t.accent, foregroundColor: t.onAccent,
         shape: const StadiumBorder(), padding: const EdgeInsets.symmetric(horizontal: Dims.spaceLg, vertical: Dims.spaceMd),
       ),
     ),
