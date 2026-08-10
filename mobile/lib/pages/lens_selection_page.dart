@@ -115,6 +115,7 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                       child: Text(
                         entry.key.toUpperCase(),
                         style: TextStyle(
+                          fontFamily: 'Space Mono',
                           color: colors.inkMute,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
