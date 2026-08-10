@@ -29,6 +29,32 @@ void main() {
       expect(result, '/login');
     });
 
+    test(
+        'unauthenticated + /debug/style-gallery + allowDebugRoutes:true → null '
+        '(style gallery reachable in debug)', () {
+      final result = computeAuthRedirect(
+        isAuthenticated: false,
+        profileLoaded: false,
+        profileIsFirstTime: false,
+        path: '/debug/style-gallery',
+        allowDebugRoutes: true,
+      );
+      expect(result, isNull);
+    });
+
+    test(
+        'unauthenticated + /debug/style-gallery + allowDebugRoutes:false → /login '
+        '(release still guards it)', () {
+      final result = computeAuthRedirect(
+        isAuthenticated: false,
+        profileLoaded: false,
+        profileIsFirstTime: false,
+        path: '/debug/style-gallery',
+        allowDebugRoutes: false,
+      );
+      expect(result, '/login');
+    });
+
     test('unauthenticated + /explore → /login (existing guard preserved)', () {
       final result = computeAuthRedirect(
         isAuthenticated: false,

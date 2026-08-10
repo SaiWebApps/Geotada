@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ondoway/models/lens.dart';
+import 'package:ondoway/theme/tokens.dart';
 import 'package:ondoway/widgets/lens_tile.dart';
 
 class LensSelectionPage extends StatefulWidget {
@@ -54,9 +55,10 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final canContinue = _selected.length >= 3;
+    final colors = Theme.of(context).extension<OndowayColors>()!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: colors.bg,
       body: SafeArea(
         child: Column(
           children: [
@@ -72,8 +74,8 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                           widget.isOnboarding
                               ? 'Welcome, ${widget.userName ?? "Explorer"}'
                               : 'Your Lenses',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: colors.ink,
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
@@ -86,8 +88,7 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                       if (!kReleaseMode)
                         IconButton(
                           tooltip: 'Debug: tour playback proof',
-                          icon: const Icon(Icons.headphones,
-                              color: Color(0xFF9E9E9E)),
+                          icon: Icon(Icons.headphones, color: colors.inkMute),
                           onPressed: () =>
                               context.push('/debug/tour-playback-proof'),
                         ),
@@ -95,9 +96,9 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                   ),
                   if (widget.isOnboarding) ...[
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'Pick at least 3 — you can always change these later.',
-                      style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 15),
+                      style: TextStyle(color: colors.inkMute, fontSize: 15),
                     ),
                   ],
                   const SizedBox(height: 20),
@@ -113,8 +114,9 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                       padding: const EdgeInsets.only(top: 16, bottom: 8),
                       child: Text(
                         entry.key.toUpperCase(),
-                        style: const TextStyle(
-                          color: Color(0xFF9E9E9E),
+                        style: TextStyle(
+                          fontFamily: 'Space Mono',
+                          color: colors.inkMute,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1.2,
@@ -143,15 +145,15 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
             ),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: Color(0xFF1A1A1A),
-                border: Border(top: BorderSide(color: Color(0xFF2A2A2A))),
+              decoration: BoxDecoration(
+                color: colors.panel,
+                border: Border(top: BorderSide(color: colors.line)),
               ),
               child: Row(
                 children: [
                   Text(
                     '${_selected.length} selected',
-                    style: const TextStyle(color: Color(0xFF9E9E9E), fontSize: 15),
+                    style: TextStyle(color: colors.inkMute, fontSize: 15),
                   ),
                   const Spacer(),
                   if (widget.isOnboarding)
@@ -159,21 +161,11 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                       onPressed: canContinue
                           ? () => widget.onComplete?.call(_selected)
                           : null,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: canContinue
-                            ? const Color(0xFF3D5AFE)
-                            : const Color(0xFF2A2A2A),
-                        foregroundColor: Colors.white,
-                      ),
                       child: const Text('Continue'),
                     )
                   else
                     FilledButton(
                       onPressed: () => widget.onSave?.call(_selected),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: const Color(0xFF3D5AFE),
-                        foregroundColor: Colors.white,
-                      ),
                       child: const Text('Save'),
                     ),
                 ],
