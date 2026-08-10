@@ -13,7 +13,7 @@
 - Source of truth = **v10**, at `mobile/design/design-system-v10.html` + `mobile/design/README.md`. Do NOT use the stale `specs/2026-08-04-mobile-roadmap/design-system.html` (v2).
 - **No hardcoded colors** anywhere in `lib/` after this slice — every color comes from `Theme.of(context).colorScheme.*` or `Theme.of(context).extension<OndowayColors>()!`. (CLAUDE.md Pre-commit rule.)
 - v10 core tokens (light / dark): accent `#2C6CC0`/`#7BB2F5`, accent-deep `#1E4F92`/`#4C86D6`, bg `#E9E5DB`/`#101218`, card `#FFFFFF`/`#20242C`, panel `#F6F4F0`/`#12151B`, ink `#20242C`/`#F6F4F0`, ink-soft `#3A3F49`/`#C7CBD3`, ink-mute `#5B6069`/`#8B909B`, line `#DED8CB`/`#2E333D`, line-soft `#E8E3D8`/`#252A33`, spark `#E8934A`/`#E8934A`.
-- Type: Fraunces (display) / Space Grotesk (body) / Space Mono (labels/eyebrows).
+- Type: Fraunces (display) / Space Grotesk (body) / Space Mono (labels/eyebrows) — **loaded from bundled assets `mobile/assets/fonts/`, NOT `google_fonts`** (runtime fetch breaks `flutter_test`'s HTTP sandbox and won't render offline — decided 2026-08-09 during Task 3).
 - Buttons are **pills** (`StadiumBorder`); cards 16–24px radius.
 - Build ONLY components Slice-1 screens consume: primary + outline pill buttons, LensTile (de-hardcoded, cobalt selected ring), card, dark location pill, Preparing→Downloading→Ready strip. **Do NOT** build bottom nav or other unreached components (that's Slice 3).
 - Flutter tests run via `make flutter-test` (never `flutter test` raw for the suite); a single file: `cd mobile && flutter test test/<path>` is acceptable for the RED/GREEN inner loop in this worktree. Lint: `make flutter-analyze` must be clean.
@@ -198,12 +198,12 @@ abstract final class Dims {
   static const double radiusCard = 20, radiusPill = 999;
 
   static const List<BoxShadow> liftLight = [
-    BoxShadow(color: Color(0x14202429), offset: Offset(0, 4), blurRadius: 14), // rgba(32,36,44,.08)
-    BoxShadow(color: Color(0x0D202429), offset: Offset(0, 1), blurRadius: 2),  // rgba(32,36,44,.05)
+    BoxShadow(color: Color(0x1420242C), offset: Offset(0, 4), blurRadius: 14), // rgba(32,36,44,.08)
+    BoxShadow(color: Color(0x0D20242C), offset: Offset(0, 1), blurRadius: 2),  // rgba(32,36,44,.05)
   ];
   static const List<BoxShadow> liftLarge = [
-    BoxShadow(color: Color(0x29202429), offset: Offset(0, 22), blurRadius: 50), // .16
-    BoxShadow(color: Color(0x0F202429), offset: Offset(0, 4), blurRadius: 10),  // .06
+    BoxShadow(color: Color(0x2920242C), offset: Offset(0, 22), blurRadius: 50), // .16
+    BoxShadow(color: Color(0x0F20242C), offset: Offset(0, 4), blurRadius: 10),  // .06
   ];
 }
 ```
