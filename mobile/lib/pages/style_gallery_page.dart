@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/dims.dart';
+import '../theme/lens_palette.dart';
 import '../theme/theme.dart';
 import '../theme/tokens.dart';
 import '../widgets/lens_tile.dart';
@@ -82,6 +83,10 @@ class StyleGalleryPage extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: Dims.spaceXl),
+            _SectionHeader('Lens categories (all 21)'),
+            const SizedBox(height: Dims.spaceSm),
+            const _LensCategorySwatches(),
             const SizedBox(height: Dims.spaceXl),
             _SectionHeader('Card'),
             const SizedBox(height: Dims.spaceSm),
@@ -174,6 +179,43 @@ class _ColorSwatchRow extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _LensCategorySwatches extends StatelessWidget {
+  const _LensCategorySwatches();
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = Theme.of(context).extension<OndowayColors>()!;
+    return Wrap(
+      spacing: Dims.spaceMd,
+      runSpacing: Dims.spaceMd,
+      children: [
+        for (final entry in kLensCategoryColors.entries)
+          SizedBox(
+            width: 96,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: entry.value,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(height: Dims.spaceXs),
+                Text(
+                  entry.key,
+                  style: TextStyle(color: tokens.inkMute, fontSize: 10),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
