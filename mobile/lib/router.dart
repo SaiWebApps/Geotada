@@ -7,6 +7,7 @@ import 'package:ondoway/pages/lens_selection_page.dart';
 import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/pages/saved_trips_page.dart';
+import 'package:ondoway/pages/style_gallery_page.dart';
 import 'package:ondoway/pages/trip_duration_page.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
@@ -136,6 +137,10 @@ GoRouter createRouter(
       GoRoute(
         path: '/debug/tour-pin-proof',
         builder: (context, state) => const TourPinProofPage(),
+      ),
+      GoRoute(
+        path: '/debug/style-gallery',
+        builder: (context, state) => const StyleGalleryPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
