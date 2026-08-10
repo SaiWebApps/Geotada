@@ -101,6 +101,28 @@ void main() {
       expect(service.state, TourState.idle);
     });
 
+    test('startTour prepares the audio session before background tracking (AC1)',
+        () async {
+      final log = <String>[];
+      audioService.callLog = log;
+      locationService.callLog = log;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'b1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://example.test/1.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+
+      expect(log, ['prepare', 'track']);
+      expect(locationService.lastBackground, isTrue);
+      expect(audioService.prepareSessionCount, 1);
+    });
+
     test('startTour with valid stops sets state to active', () async {
       locationService.trackingWillSucceed = true;
       final stops = [
@@ -403,6 +425,32 @@ void main() {
       expect(audioService.currentBeatId, 'beat-1');
     });
 
+    test('geofence radius is configurable — fires at the wider proof radius',
+        () async {
+      final wideService = TourPlaybackService(
+        locationService: locationService,
+        audioService: audioService,
+        triggerRadiusMeters: 20.0,
+      );
+      addTearDown(wideService.dispose);
+
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+      ];
+      await wideService.startTour(stops);
+
+      // ~15.5m north of the stop: OUTSIDE the default 10m, INSIDE the 20m radius.
+      locationService.simulatePosition(48.8584 + 0.00014, 2.2945);
+      expect(audioService.isPlaying, true);
+      expect(audioService.currentBeatId, 'beat-1');
+    });
+
     test('does not auto-play if audio already playing', () async {
       locationService.trackingWillSucceed = true;
       final stops = [
@@ -545,6 +593,112 @@ void main() {
       // Still at stop 0; the pending nudge is untouched (no auto-advance).
       expect(service.currentStopIndex, 0);
       expect(service.pendingStopIndex, 1);
+    });
+
+    test('a play that never starts does NOT phantom-advance the tour', () async {
+      // On-device regression: a geofence fire whose play() fails to start (the
+      // native player threw) leaves isPlaying=false with currentBeatId==the
+      // current stop. The old completion check (`!isPlaying`) read that as a
+      // completion and jumped to the next stop before any audio played.
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+        _makeStop(
+          sortOrder: 2,
+          beatId: 'beat-2',
+          lat: 48.8606,
+          lng: 2.3376,
+          audioUrl: 'https://cdn.ondoway.com/beat-2.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      audioService.playSucceeds = false; // the native player will "throw"
+
+      // Enter the geofence for stop 0 — play fires but never reaches playing=true.
+      locationService.simulatePosition(48.8584, 2.2945);
+
+      expect(audioService.currentBeatId, 'beat-1');
+      expect(audioService.isPlaying, isFalse);
+      // The tour must stay on stop 0 — no phantom advance, not completed.
+      expect(service.currentStopIndex, 0);
+      expect(service.state, isNot(TourState.completed));
+    });
+
+    test('a stop fires only ONCE — no replay while lingering in its radius',
+        () async {
+      // On-device regression: the terminal stop replayed on every GPS tick
+      // because nothing marked it already-fired once state=completed.
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+
+      // Enter the geofence — fires once.
+      locationService.simulatePosition(48.8584, 2.2945);
+      expect(audioService.playCount, 1);
+
+      // Audio completes -> single-stop tour is now completed.
+      audioService.simulateComplete();
+      expect(service.state, TourState.completed);
+
+      // Still standing in the radius: more GPS ticks must NOT replay it.
+      locationService.simulatePosition(48.8584, 2.2945);
+      locationService.simulatePosition(48.85841, 2.2945);
+      expect(audioService.playCount, 1);
+    });
+
+    test('releases the ducked audio session when the tour completes', () async {
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      locationService.simulatePosition(48.8584, 2.2945); // fire the only stop
+      expect(audioService.releaseSessionCount, 0); // still playing
+
+      audioService.simulateComplete(); // last stop done -> tour completed
+      expect(service.state, TourState.completed);
+      expect(audioService.releaseSessionCount, 1); // podcast un-ducks
+    });
+
+    test('releases the ducked audio session when the tour is stopped', () async {
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      service.stopTour();
+
+      expect(audioService.releaseSessionCount, 1);
     });
 
     test('stop without audioUrl does not trigger play', () async {

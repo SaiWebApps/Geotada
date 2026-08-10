@@ -6,7 +6,7 @@ abstract class LocationProvider extends ChangeNotifier {
   dynamic get lastPosition;
   bool get isTracking;
   bool get lowAccuracy;
-  Future<bool> startTracking();
+  Future<bool> startTracking({bool background = false});
   void stopTracking();
 }
 
@@ -25,4 +25,16 @@ abstract class AudioProvider extends ChangeNotifier {
   /// "keep exploring here" audio so completion does not auto-advance the tour.
   void play(String beatId, String audioUrl, {bool isDeeperDive = false});
   void stop();
+
+  /// Activate the iOS audio session (.playback/.duckOthers) so playback is
+  /// audible through a locked screen. MUST be called from the foreground — iOS
+  /// refuses session activation from a background callback
+  /// (AVAudioSessionErrorCodeCannotInterruptOthers). No-op off iOS; never throws.
+  Future<void> prepareSession();
+
+  /// Deactivate the iOS audio session so a ducked session is RELEASED — the
+  /// tourist's music/podcast returns to full volume. Called when the tour ends
+  /// (stopped or completed); otherwise `.duckOthers` keeps other audio ducked
+  /// for the whole session, even after playback finishes. No-op off iOS.
+  Future<void> releaseSession();
 }

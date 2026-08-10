@@ -8,6 +8,8 @@ class MockLocationService extends LocationProvider {
   bool _lowAccuracy = false;
   MockPosition? _lastPosition;
   String? _error;
+  bool? lastBackground;
+  List<String>? callLog;
 
   @override
   MockPosition? get lastPosition => _lastPosition;
@@ -18,7 +20,9 @@ class MockLocationService extends LocationProvider {
   bool get lowAccuracy => _lowAccuracy;
 
   @override
-  Future<bool> startTracking() async {
+  Future<bool> startTracking({bool background = false}) async {
+    lastBackground = background;
+    callLog?.add('track');
     if (!trackingWillSucceed) {
       _error = 'Mock: tracking failed';
       notifyListeners();

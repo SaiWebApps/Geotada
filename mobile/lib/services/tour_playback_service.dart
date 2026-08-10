@@ -22,6 +22,19 @@ class TourPlaybackService extends ChangeNotifier {
   VoidCallback? _locationListener;
   VoidCallback? _audioListener;
 
+  /// Stop indices whose audio has already been triggered. A stop auto-plays
+  /// exactly once when the walker enters its radius; without this, standing in
+  /// the radius (especially at the terminal stop, which never advances) replays
+  /// the narration on every GPS tick.
+  final Set<int> _triggeredStops = {};
+
+  /// Tracks the audio player's last-seen playing state so completion is detected
+  /// as a genuine true→false TRANSITION, not a bare `!isPlaying`. Without this, a
+  /// stop's pre-start buffering notify (or a play that fails outright) reads as
+  /// `!isPlaying` while `currentBeatId` already equals the current stop, and the
+  /// tour "auto-advances" before a single second of audio has played.
+  bool _audioWasPlaying = false;
+
   // Getters
   TourState get state => _state;
   int get currentStopIndex => _currentStopIndex;
@@ -38,9 +51,15 @@ class TourPlaybackService extends ChangeNotifier {
       _state != TourState.idle && _state != TourState.completed;
   bool get hasPendingStop => _pendingStopIndex != null;
 
+  /// Geofence trigger radius in metres. Defaults to the NORTHSTAR 10m spec.
+  /// Configurable because real GPS accuracy (~5m+) makes a bare 10m radius miss
+  /// stops the user walks straight past; the on-device proof sets a wider value.
+  double triggerRadiusMeters;
+
   TourPlaybackService({
     required LocationProvider locationService,
     required AudioProvider audioService,
+    this.triggerRadiusMeters = 10.0,
   })  : _locationService = locationService,
         _audioService = audioService;
 
@@ -52,10 +71,19 @@ class TourPlaybackService extends ChangeNotifier {
     _stops = List.unmodifiable(stops);
     _currentStopIndex = 0;
     _pendingStopIndex = null;
+    _audioWasPlaying = false;
+    _triggeredStops.clear();
     _state = TourState.active;
 
-    // Start GPS tracking
-    final started = await _locationService.startTracking();
+    // Activate the audio session while we are FOREGROUND. iOS grants session
+    // activation only to a frontmost app; from a background geofence callback it
+    // returns CannotInterruptOthers (560557684). Once active it survives lock, so
+    // the fire path only needs to play. (No-op off iOS.)
+    await _audioService.prepareSession();
+
+    // Start GPS tracking — background:true so position updates keep arriving when
+    // the screen locks and the phone is pocketed (Slice 0.3).
+    final started = await _locationService.startTracking(background: true);
     if (!started) {
       _state = TourState.idle;
       notifyListeners();
@@ -86,9 +114,13 @@ class TourPlaybackService extends ChangeNotifier {
     }
     _locationService.stopTracking();
     _audioService.stop();
+    // Release the ducked audio session so the tourist's own audio resumes.
+    _audioService.releaseSession();
     _stops = [];
     _currentStopIndex = -1;
     _pendingStopIndex = null;
+    _audioWasPlaying = false;
+    _triggeredStops.clear();
     _state = TourState.idle;
     _distanceToNext = null;
     notifyListeners();
@@ -134,8 +166,11 @@ class TourPlaybackService extends ChangeNotifier {
     );
     _distanceToNext = distance;
 
-    // Check geofence: 10m trigger radius (NORTHSTAR spec)
-    if (distance <= 10.0 && !_audioService.isPlaying) {
+    // Check geofence (NORTHSTAR spec 10m by default; configurable). Fire a stop
+    // only once — _triggeredStops guards against replay while lingering.
+    if (distance <= triggerRadiusMeters &&
+        !_audioService.isPlaying &&
+        !_triggeredStops.contains(targetIndex)) {
       _playCurrentStop();
     }
 
@@ -148,7 +183,7 @@ class TourPlaybackService extends ChangeNotifier {
         nextTarget.lat,
         nextTarget.lng,
       );
-      if (distToNext <= 10.0 && _pendingStopIndex == null) {
+      if (distToNext <= triggerRadiusMeters && _pendingStopIndex == null) {
         _pendingStopIndex = _currentStopIndex + 1;
         _state = TourState.approaching;
         notifyListeners();
@@ -159,28 +194,38 @@ class TourPlaybackService extends ChangeNotifier {
   }
 
   void _onAudioStateChanged() {
+    // Detect a genuine completion: playing must have gone true→false. A bare
+    // `!isPlaying` also holds during a stop's buffering window and after a play
+    // that never started, both of which must NOT advance the tour.
+    final playing = _audioService.isPlaying;
+    final justCompleted = _audioWasPlaying && !playing;
+    _audioWasPlaying = playing;
+
+    if (!justCompleted) return;
+
     // KE6: a completed "keep exploring here" deep-dive clip NEVER advances the
     // tour — it is served off the tour's time budget. Only scheduled per-stop
     // tour audio drives auto-advance, so bail before either advance path.
     if (_audioService.isDeeperDive) return;
 
-    // When audio finishes playing, auto-advance if there's a pending stop
-    if (!_audioService.isPlaying &&
-        _audioService.currentBeatId != null &&
+    // Audio finished — auto-advance if there's a pending stop.
+    if (_audioService.currentBeatId != null &&
         _state == TourState.approaching &&
         _pendingStopIndex != null) {
       _currentStopIndex = _pendingStopIndex!;
       _pendingStopIndex = null;
       _state = TourState.active;
       _playCurrentStop();
-    } else if (!_audioService.isPlaying &&
-        _audioService.currentBeatId == _audioKeyOf(currentStop)) {
+    } else if (_audioService.currentBeatId == _audioKeyOf(currentStop)) {
       // Audio completed for current stop — advance index for next geofence
       if (_currentStopIndex + 1 < _stops.length) {
         _currentStopIndex++;
         notifyListeners();
       } else {
         _state = TourState.completed;
+        // Tour finished — release the ducked session so the tourist's own audio
+        // returns to full volume.
+        _audioService.releaseSession();
         notifyListeners();
       }
     }
@@ -196,6 +241,7 @@ class TourPlaybackService extends ChangeNotifier {
     if (_currentStopIndex < 0 || _currentStopIndex >= _stops.length) return;
     final stop = _stops[_currentStopIndex];
     if (stop.audioUrl != null) {
+      _triggeredStops.add(_currentStopIndex);
       _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!);
       _state = TourState.active;
       notifyListeners();

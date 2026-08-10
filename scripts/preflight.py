@@ -1089,6 +1089,34 @@ def _repair_flutter_deps() -> Probe:
     return _probe_flutter_deps()
 
 
+def _probe_cocoapods() -> Probe:
+    # Only the iOS-build targets declare this, and those are macOS-only anyway;
+    # off macOS it is a no-op so a Linux dart-test run is never blocked by it.
+    if sys.platform != "darwin":
+        return Probe(True, "not needed off macOS")
+    if not shutil.which("pod"):
+        return Probe(False, "not on PATH")
+    result = _run(["pod", "--version"], timeout=60)
+    if result.returncode != 0:
+        return Probe(False, "pod is present but does not run")
+    return Probe(True, f"cocoapods {result.stdout.strip()}")
+
+
+def _repair_cocoapods() -> Probe:
+    if not _brew():
+        return Probe(
+            False,
+            "Homebrew is not installed, so this cannot be installed for you -- "
+            'install it first: /bin/bash -c "$(curl -fsSL '
+            'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        )
+    # The Homebrew cask ships its own Ruby, sidestepping the ancient macOS system
+    # Ruby (2.6) that breaks a plain `gem install cocoapods`.
+    print("    -> brew install cocoapods")
+    _stream(["brew", "install", "cocoapods"])
+    return _after_install("pod", _probe_cocoapods)
+
+
 def _probe_xcode() -> Probe:
     if sys.platform != "darwin":
         return Probe(False, "macOS only")
@@ -1296,6 +1324,16 @@ def _build_registry() -> dict:
             needs=("flutter",),
             repair=_repair_flutter_deps,
             instruction="make flutter-pub-get",
+        )
+    )
+    add(
+        Requirement(
+            name="cocoapods",
+            summary="CocoaPods (iOS pods)",
+            probe=_probe_cocoapods,
+            repair=_repair_cocoapods,
+            announce="installing CocoaPods through Homebrew",
+            instruction="install CocoaPods:  brew install cocoapods",
         )
     )
     add(

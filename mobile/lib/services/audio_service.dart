@@ -1,14 +1,28 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:ondoway/services/native_audio_backend.dart';
 import 'package:ondoway/services/providers.dart';
 
 class AudioService extends ChangeNotifier implements AudioProvider {
+  static const MethodChannel _sessionChannel =
+      MethodChannel('com.ondoway/audio_session');
+
   final http.Client _httpClient;
+  final NativeAudioBackend _native;
   AudioPlayer? _playerInstance;
+
+  /// True while the NATIVE `AVAudioPlayer` (not just_audio) owns playback. Set
+  /// whenever a cached file is played on iOS — the only path that stays audible
+  /// through a locked screen. Determines which backend pause/resume/stop/seek
+  /// and the position poll talk to.
+  bool _nativeActive = false;
+  Timer? _nativePosTimer;
 
   String? _currentBeatId;
   bool _isPlaying = false;
@@ -17,8 +31,25 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
 
-  AudioService({http.Client? httpClient})
-      : _httpClient = httpClient ?? http.Client();
+  /// Test seam: resolves a beat's cached file path without touching the real
+  /// filesystem / path_provider, so the native-routing logic is exercisable on
+  /// the web test runner (which has no `dart:io`). Null in production, where
+  /// [_getCachedPath] hits the real cache directory.
+  final Future<String?> Function(String beatId)? _cachedPathResolver;
+
+  AudioService({
+    http.Client? httpClient,
+    NativeAudioBackend? nativeBackend,
+    @visibleForTesting Future<String?> Function(String beatId)? cachedPathResolver,
+  })  : _httpClient = httpClient ?? http.Client(),
+        _native = nativeBackend ?? NativeAudioBackend(),
+        _cachedPathResolver = cachedPathResolver {
+    _native.onComplete = _onNativeComplete;
+  }
+
+  /// iOS is the only platform with the native `AVAudioPlayer` bridge; elsewhere
+  /// (Android, tests without an override) cached files fall back to just_audio.
+  bool get _useNativePlayer => defaultTargetPlatform == TargetPlatform.iOS;
 
   /// The just_audio player, created lazily on first playback. HTTP-only
   /// operations (checkAudioStatus, prefetch, cache queries) never touch it,
@@ -66,12 +97,22 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
     try {
       final cachedPath = await _getCachedPath(beatId);
-      if (cachedPath != null) {
-        await _player.setFilePath(cachedPath);
+      if (cachedPath != null && _useNativePlayer) {
+        // Cached file on iOS: play via the native AVAudioPlayer, which — unlike
+        // just_audio — stays audible while the screen is locked. State is
+        // bridged back below and via _onNativeComplete.
+        await _playNative(cachedPath);
       } else {
-        await _player.setUrl(audioUrl);
+        // Streaming a URL, or a non-iOS platform: just_audio. Make sure the
+        // native player isn't left running underneath it.
+        await _stopNative();
+        if (cachedPath != null) {
+          await _player.setFilePath(cachedPath);
+        } else {
+          await _player.setUrl(audioUrl);
+        }
+        await _player.play();
       }
-      await _player.play();
     } catch (e) {
       _isBuffering = false;
       notifyListeners();
@@ -79,17 +120,101 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     }
   }
 
+  /// Start the native player and bridge its state. Duration comes back from the
+  /// `play` call; position is polled for the UI; completion arrives via
+  /// [_onNativeComplete]. just_audio, if it was playing, is stopped so the two
+  /// never overlap.
+  Future<void> _playNative(String path) async {
+    await _playerInstance?.stop();
+    final duration = await _native.play(path);
+    _nativeActive = true;
+    _duration = duration;
+    _position = Duration.zero;
+    _isBuffering = false;
+    _isPlaying = true;
+    _startNativePolling();
+    notifyListeners();
+  }
+
+  Future<void> _stopNative() async {
+    if (!_nativeActive) return;
+    _stopNativePolling();
+    await _native.stop();
+    _nativeActive = false;
+  }
+
+  void _startNativePolling() {
+    _nativePosTimer?.cancel();
+    _nativePosTimer =
+        Timer.periodic(const Duration(milliseconds: 300), (_) async {
+      if (!_nativeActive || !_isPlaying) return;
+      _position = await _native.getPosition();
+      notifyListeners();
+    });
+  }
+
+  void _stopNativePolling() {
+    _nativePosTimer?.cancel();
+    _nativePosTimer = null;
+  }
+
+  /// Native player finished the clip. Mirror just_audio's completed state
+  /// (playing false, position pinned to duration) so TourPlaybackService's
+  /// completion listener auto-advances the tour — the whole reason tour audio
+  /// runs through the native player.
+  void _onNativeComplete() {
+    _isPlaying = false;
+    _position = _duration;
+    _stopNativePolling();
+    notifyListeners();
+  }
+
+  @override
+  Future<void> prepareSession() async {
+    try {
+      await _sessionChannel.invokeMethod<void>('prepare');
+    } catch (e) {
+      debugPrint('AudioService.prepareSession failed: $e');
+    }
+  }
+
+  @override
+  Future<void> releaseSession() async {
+    try {
+      await _sessionChannel.invokeMethod<void>('deactivate');
+    } catch (e) {
+      debugPrint('AudioService.releaseSession failed: $e');
+    }
+  }
+
   Future<void> pause() async {
+    if (_nativeActive) {
+      await _native.pause();
+      _isPlaying = false;
+      _stopNativePolling();
+      notifyListeners();
+      return;
+    }
     await _player.pause();
   }
 
   Future<void> resume() async {
+    if (_nativeActive) {
+      await _native.resume();
+      _isPlaying = true;
+      _startNativePolling();
+      notifyListeners();
+      return;
+    }
     await _player.play();
   }
 
   @override
   Future<void> stop() async {
-    await _player.stop();
+    await _stopNative();
+    // Only stop just_audio if it was actually booted — reading `_player` here
+    // would needlessly create the engine when playback was native-only.
+    await _playerInstance?.stop();
     _currentBeatId = null;
     _isDeeperDive = false;
     _position = Duration.zero;
@@ -98,6 +223,12 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   }
 
   Future<void> seek(Duration position) async {
+    if (_nativeActive) {
+      await _native.seek(position);
+      _position = position;
+      notifyListeners();
+      return;
+    }
     await _player.seek(position);
   }
 
@@ -197,6 +328,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
   @override
   void dispose() {
+    _stopNativePolling();
     _playerInstance?.dispose();
     super.dispose();
   }
@@ -204,6 +336,8 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   // Private helpers
 
   Future<String?> _getCachedPath(String beatId) async {
+    final resolver = _cachedPathResolver;
+    if (resolver != null) return resolver(beatId);
     final dir = await _cacheDirectory();
     final file = File('${dir.path}/$beatId.mp3');
     if (await file.exists()) return file.path;

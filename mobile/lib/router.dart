@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ondoway/pages/callback_page.dart';
@@ -11,10 +12,44 @@ import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/spike/location_spike_page.dart';
+import 'package:ondoway/spike/tour_playback_proof_page.dart';
+import 'package:ondoway/spike/tour_pin_proof_page.dart';
 import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
 
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
+/// Pure decision function for the router's auth redirect.
+///
+/// Reproduces the router's auth-gating logic outside of a go_router
+/// [GoRouter.redirect] closure so it is unit-testable without constructing
+/// real services. Auth routes (`/login`, `/auth`, `/auth/callback`) are
+/// always exempt from the "must be authenticated" guard; debug routes
+/// (`/debug/...`) are exempt only when [allowDebugRoutes] is true (debug and
+/// profile builds, never release), so production behavior is unchanged.
+String? computeAuthRedirect({
+  required bool isAuthenticated,
+  required bool profileLoaded,
+  required bool profileIsFirstTime,
+  required String path,
+  required bool allowDebugRoutes,
+}) {
+  final isAuthRoute =
+      path == '/login' || path == '/auth' || path == '/auth/callback';
+  final isExemptDebugRoute = allowDebugRoutes && path.startsWith('/debug/');
+
+  if (!isAuthenticated && !isAuthRoute && !isExemptDebugRoute) {
+    return '/login';
+  }
+
+  if (isAuthenticated && path == '/login') {
+    if (!profileLoaded) return null;
+    return profileIsFirstTime ? '/onboarding' : '/explore';
+  }
+
+  return null;
+}
 
 GoRouter createRouter(
   AuthService authService,
@@ -25,21 +60,16 @@ GoRouter createRouter(
     initialLocation: '/login',
     refreshListenable: authService,
     redirect: (context, state) {
-      final isAuthenticated = authService.isAuthenticated;
-      final path = state.matchedLocation;
-      final isAuthRoute = path == '/login' ||
-          path == '/auth' ||
-          path == '/auth/callback';
-      if (!isAuthenticated && !isAuthRoute) {
-        return '/login';
-      }
-
-      if (isAuthenticated && path == '/login') {
-        if (!profileService.isLoaded) return null;
-        return profileService.isFirstTime ? '/onboarding' : '/explore';
-      }
-
-      return null;
+      return computeAuthRedirect(
+        isAuthenticated: authService.isAuthenticated,
+        profileLoaded: profileService.isLoaded,
+        profileIsFirstTime: profileService.isFirstTime,
+        path: state.matchedLocation,
+        // Debug affordances (the location-spike screen) are reachable in debug
+        // AND profile builds — profile is what we use for on-device iOS 26
+        // testing — but never in release.
+        allowDebugRoutes: !kReleaseMode,
+      );
     },
     routes: [
       GoRoute(
@@ -94,6 +124,18 @@ GoRouter createRouter(
           final tripId = state.pathParameters['tripId'] ?? '';
           return TripItineraryPage(tripId: tripId);
         },
+      ),
+      GoRoute(
+        path: '/debug/location-spike',
+        builder: (context, state) => const LocationSpikePage(),
+      ),
+      GoRoute(
+        path: '/debug/tour-playback-proof',
+        builder: (context, state) => const TourPlaybackProofPage(),
+      ),
+      GoRoute(
+        path: '/debug/tour-pin-proof',
+        builder: (context, state) => const TourPinProofPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

@@ -76,7 +76,7 @@ class LocationService extends ChangeNotifier implements LocationProvider {
   /// Start continuous position tracking.
   /// Uses adaptive polling: 5m distance filter, high accuracy, walking activity.
   @override
-  Future<bool> startTracking() async {
+  Future<bool> startTracking({bool background = false}) async {
     if (_isTracking) return true;
 
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -103,10 +103,19 @@ class LocationService extends ChangeNotifier implements LocationProvider {
       return false;
     }
 
-    const locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 5, // Only emit when user moves 5+ meters
-    );
+    final LocationSettings locationSettings = background
+        ? AppleSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 5,
+            allowBackgroundLocationUpdates: true,
+            pauseLocationUpdatesAutomatically: false,
+            showBackgroundLocationIndicator: true,
+            activityType: ActivityType.otherNavigation,
+          )
+        : const LocationSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 5, // Only emit when user moves 5+ meters
+          );
 
     _positionSubscription = Geolocator.getPositionStream(
       locationSettings: locationSettings,
