@@ -4,6 +4,7 @@
 # `vm`: tests that use dart:io (e.g. File().readAsStringSync() source guards)
 # and therefore cannot run under `--platform chrome`. scripts/flutter_test.sh
 # runs the chrome pass with `--exclude-tags vm` and runs these on the VM
-# platform via `--platform vm --tags vm`.
+# platform via `--platform tester --tags vm` (`tester` is Flutter's native/VM
+# engine; `vm` is not a valid `flutter test --platform` value).
 tags:
   vm:
