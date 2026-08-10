@@ -11,13 +11,16 @@ class Lens {
     required this.isParent,
   });
 
+  /// Parses one lens (parent or child) from the public `GET /api/v1/lenses`
+  /// response, where each lens is a flat object `{id, name, display_label,
+  /// is_parent}` (parents additionally carry a `children` list, handled by the
+  /// caller). Replaces the old graph-node shape (`{id, properties: {...}}`).
   factory Lens.fromApiJson(Map<String, dynamic> json) {
-    final props = json['properties'] as Map<String, dynamic>? ?? {};
     return Lens(
       id: json['id'] as String,
-      name: props['name'] as String? ?? '',
-      displayLabel: props['display_label'] as String? ?? '',
-      isParent: props['is_parent'] as bool? ?? false,
+      name: json['name'] as String? ?? '',
+      displayLabel: json['display_label'] as String? ?? '',
+      isParent: json['is_parent'] as bool? ?? false,
     );
   }
 }
