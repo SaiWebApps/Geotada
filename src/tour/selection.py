@@ -84,6 +84,8 @@ from .routing import (
 )
 from .routing_client import ROUTE_SURFACE_COSTING_OVERRIDES
 from .visit_time import (
+    RAIN_DWELL_FRACTION,
+    place_is_covered,
     served_elapsed_seconds,
     shape_total_seconds,
     stop_seconds,
@@ -1756,6 +1758,22 @@ def select_route(
     # places up and a take-it-easy/couple day weights `sit_and_talk` up. None
     # (no party) = today's scoring, byte-identical.
     party = input.party
+    # RAIN REACHES THE RANKING (deviation iv, amended at W3.3). Halving a wet
+    # square's DWELL was supposed to shift selection toward covered places
+    # "through the existing value model" — but dwell flows into the greedy as
+    # COST, not worth, so cheaper wet squares packed DENSER: the first D3 rain
+    # run swapped a covered church OUT for an open street. Worth reaches
+    # selection only through score, and the planner already owns exactly one
+    # per-place score knob — the M6 penalty dict — so rain rides it: every
+    # uncovered place's score dims by the same RAIN_DWELL_FRACTION the dwell
+    # already uses (one constant, one coveredness map, both imported from THE
+    # pricer). None weather = empty overlay = byte-identical.
+    if input.weather == "rain":
+        rain_penalty = dict(score_penalty or {})
+        for poi in snapshot.pois:
+            if not place_is_covered(poi):
+                rain_penalty[poi.id] = rain_penalty.get(poi.id, 1.0) * RAIN_DWELL_FRACTION
+        score_penalty = rain_penalty
     # A fixed destination changes the SHAPE of the route, not how far a visitor can
     # walk. The 2026-08-04 "certification reach model" that used to branch here has
     # been deleted: it sized both the reach circle and the greedy's walking cap from
