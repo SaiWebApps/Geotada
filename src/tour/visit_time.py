@@ -10,6 +10,7 @@ for the next. See docs/personas/.
 from __future__ import annotations
 
 import json
+from functools import lru_cache
 from typing import TYPE_CHECKING, Literal
 
 from .contract import POI, PromiseShape
@@ -76,26 +77,43 @@ def _hour_in_peak_band(bands_json: str, clock_hour: int) -> bool:
     Bands are half-open — `start <= hour < end` — mirroring the opening-hours
     overlap test, so 10:00 sits before a 10:30-16:00 band and 16:00 after it.
     """
+    bands = _parse_peak_bands(bands_json)
+    if bands is None:
+        return False
+    return any(start <= clock_hour < end for start, end in bands)
+
+
+@lru_cache(maxsize=1024)
+def _parse_peak_bands(bands_json: str) -> tuple[tuple[float, float], ...] | None:
+    """Parse-once cache for a POI's stored peak bands; None = no peak data.
+
+    CACHED because the repair prices thousands of trials per request and each
+    trial re-prices every stop at its arrival hour: parsing the same ~370
+    corpus strings per call multiplied a JSON decode into the planner's hot
+    path (measured as part of a 4-8x wall-clock blowup at W3.2). The corpus
+    holds at most one distinct string per POI, so the cache is tiny and
+    permanent.
+    """
     try:
         bands = json.loads(bands_json)
     except (json.JSONDecodeError, TypeError):
-        return False
+        return None
     if not isinstance(bands, list):
-        return False
+        return None
+    parsed: list[tuple[float, float]] = []
     for window in bands:
         if (
             not isinstance(window, list)
             or len(window) != 2
             or not all(isinstance(t, str) for t in window)
         ):
-            return False  # malformed window → no peak data → off-peak
+            return None  # malformed window → no peak data → off-peak
         try:
             start, end = (_hh_mm_to_hours(t) for t in window)
         except ValueError:
-            return False
-        if start <= clock_hour < end:
-            return True
-    return False
+            return None
+        parsed.append((start, end))
+    return tuple(parsed)
 
 
 def _queue_seconds(poi: POI, clock_hour: int | None) -> int:

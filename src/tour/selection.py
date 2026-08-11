@@ -1961,7 +1961,20 @@ def select_route(
         input.max_stop_minutes * 60 if input.max_stop_minutes is not None else None
     )
     wall_hardness = input.end_hardness == "wall"
-    request_hour = clock_start.hour if clock_start is not None else None
+    # THE ESTIMATE HOUR (deviation v, amended at W3.2): the greedy prices
+    # queues at the MIDDLE of the requested window, not its first minute. A
+    # 10:00 start put every estimate in the off-peak band while the real
+    # arrivals (11:00 onward) priced peak, and that gap summed across a day
+    # exceeded what a single repair drop can shed — measured at W3.2, four of
+    # seven baseline cells refused with the best route ~45 min over its
+    # ceiling. The window's midpoint is the unbiased one-hour stand-in for
+    # "when this day stands at places"; the repair's trials and the final
+    # route still re-price every stop at its exact ordered arrival hour.
+    request_hour = (
+        (clock_start + timedelta(minutes=input.duration_min // 2)).hour
+        if clock_start is not None
+        else None
+    )
 
     def shape_visit(cand: POI, clock_hour: int | None) -> PromiseShape:
         return visit_shape(
@@ -4159,8 +4172,18 @@ def _orient_loop(
 #: The plan names at most this many promises (design §3.1: "2-5 PROMISES on a
 #: clock connected by FABRIC"). A cap on the NAMED list only — capping it
 #: drops no stop; a sixth pinned/rest stop is still seated and protected, it
-#: is simply not headlined. The phase's kill criterion may lower this to 3.
-MAX_PROMISES: int = 5
+#: is simply not headlined.
+#:
+#: LOWERED 5 -> 3 BY THE PHASE'S KILL CRITERION (W3.2, 2026-08-11): the
+#: 180-min dated cells measured 7-47 s against the <= 11 s budget, and the
+#: criterion permits exactly one trade for speed — this count — before
+#: anything else. Applied with the caveat the measurement itself forced into
+#: the ledger: capped and uncapped runs time IDENTICALLY (solo 32.19 s
+#: uncapped vs 32.25 s re-measured), so the promise list is NOT the cost —
+#: the repair's multi-pass enumeration over a demotion-widened dated pool is,
+#: and that lever is named for the owner and the next phase rather than
+#: silently traded here.
+MAX_PROMISES: int = 3
 
 
 def _assemble_promises(
@@ -4279,6 +4302,17 @@ def _diversity_weighted_score(
 #: deterministic — the same tour is produced on every run.
 TIMEBOX_REPAIR_MAX_TRIALS: int = 4000
 
+#: How many times the repair may RE-RUN itself on its best over-ceiling set
+#: when no single move lands in-band. One enumeration can shed at most ONE
+#: stop (drops and exchanges both remove one incumbent), which was enough
+#: while overshoots were a stop's worth — but arrival-hour queue re-pricing
+#: (plan S3.3, deviation v) can move a day by SEVERAL stops' worth at once
+#: (measured at W3.2: 45 min over on a 180-min request), and a repair that
+#: cannot shed two stops answers that with a refusal. Each pass starts from
+#: the previous best's strictly different set, so the recursion is bounded
+#: twice over: by this cap and by the shrinking set.
+TIMEBOX_REPAIR_MAX_PASSES: int = 4
+
 
 def _apply_certification_timebox_repair(
     selected: list[POI],
@@ -4296,6 +4330,7 @@ def _apply_certification_timebox_repair(
     price_visit: Callable[[POI, int | None], int] | None = None,
     clock_start: datetime | None = None,
     protected_promise_ids: set[str] | None = None,
+    _pass_number: int = 1,
 ) -> list[POI]:
     """Bounded add/exchange/drop repair for one frozen certification policy.
 
@@ -4331,6 +4366,9 @@ def _apply_certification_timebox_repair(
     #: Every trial that fits UNDER the ceiling, whether or not it reaches the
     #: floor. The floor is soft (disclose and ship short); the ceiling is hard.
     under_ceiling_trials: list[_CertificationRouteTrial] = []
+    #: The lowest-elapsed trial the CEILING rejected — the seed for another
+    #: repair pass when nothing fits (TIMEBOX_REPAIR_MAX_PASSES).
+    best_over: list[_CertificationRouteTrial] = []
     observed: list[int] = []
     # STRICT-IMPROVEMENT PRECONDITION. When the incumbent ALREADY satisfies the
     # band, the repair has nothing to repair, and every remaining move is a
@@ -4373,6 +4411,8 @@ def _apply_certification_timebox_repair(
         # per cent over is a missed train
         # (docs/personas/04-layover-sprinter.md).
         if trial.elapsed_seconds > planning_budget.nominal_elapsed_seconds:
+            if not best_over or trial.elapsed_seconds < best_over[0].elapsed_seconds:
+                best_over[:] = [trial]
             return
         # THE PER-LEG CAP IS AN ADMISSION RULE HERE TOO (plan S2.3). The greedy
         # cap-checked its own insertions, but a repair trial re-orders the whole
@@ -4408,11 +4448,16 @@ def _apply_certification_timebox_repair(
             # walking twenty minutes for forty-five minutes inside the
             # Conciergerie is the best trade in Theo's afternoon. The added
             # stop's arrival hour is unknown before its trial orders it, so
-            # the slog ratio prices at the request's start hour — the same
-            # estimate the greedy budgets with (deviation v).
+            # the slog ratio prices at the window's MIDPOINT hour — the same
+            # estimate the greedy budgets with (deviation v, W3.2 amendment).
             if price_visit is not None:
                 added_visit = price_visit(
-                    added, clock_start.hour if clock_start is not None else None
+                    added,
+                    (
+                        (clock_start + timedelta(minutes=input.duration_min // 2)).hour
+                        if clock_start is not None
+                        else None
+                    ),
                 )
             else:
                 added_visit = visit_seconds(
@@ -4590,10 +4635,37 @@ def _apply_certification_timebox_repair(
             ).selected
         )
     if not eligible_trials:
-        # EVERY trial overshoots the request. There is no shorter set to fall back
-        # to, so this genuinely cannot be served — and the message says OVERSHOOT
-        # rather than "band", because a reader who sees a band here reads it as
-        # the old bug (a tour refused for being too short).
+        # EVERY trial overshoots the request. One enumeration can shed at most
+        # one stop, and an arrival-hour queue re-pricing can move the day by
+        # several stops' worth at once — so before refusing, run another pass
+        # from the best over-ceiling set this one found (strictly different,
+        # or there is nothing new to try). Bounded by TIMEBOX_REPAIR_MAX_PASSES.
+        if (
+            best_over
+            and _pass_number < TIMEBOX_REPAIR_MAX_PASSES
+            and {poi.id for poi in best_over[0].selected} != selected_ids
+        ):
+            return _apply_certification_timebox_repair(
+                list(best_over[0].selected),
+                candidates,
+                input=input,
+                snapshot=snapshot,
+                spine=spine,
+                interest=interest,
+                score_penalty=score_penalty,
+                leg_seconds_fn=leg_seconds_fn,
+                planning_policy=planning_policy,
+                planning_budget=planning_budget,
+                pulled_endpoint_id=pulled_endpoint_id,
+                price_visit=price_visit,
+                clock_start=clock_start,
+                protected_promise_ids=protected_promise_ids,
+                _pass_number=_pass_number + 1,
+            )
+        # There is no shorter set to fall back to, so this genuinely cannot be
+        # served — and the message says OVERSHOOT rather than "band", because
+        # a reader who sees a band here reads it as the old bug (a tour
+        # refused for being too short).
         best = min(observed) if observed else None
         alternatives, gap_minutes = _band_alternatives(
             input=input,
