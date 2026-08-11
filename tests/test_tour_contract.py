@@ -10,6 +10,8 @@ from src.tour.contract import (
     BeatRef,
     BeatSequence,
     POIBeats,
+    Promise,
+    PromiseShape,
     Route,
     TourInput,
     TransitSegment,
@@ -251,3 +253,235 @@ def test_every_transit_segment_declares_its_mode():
         from_poi_id=None, to_poi_id="a", distance_m=100.0, walk_seconds=120
     )
     assert seg.mode == "walk"
+
+
+def test_tour_input_pins_and_weather_default_to_todays_behaviour():
+    """An input that pins nothing and carries no sky signal plans exactly as before.
+
+    design §3.2 makes pinning the visitor's move, so the empty tuple is Julien's
+    open walk — today's behaviour, byte-identical. `weather=None` means no signal
+    was fetched (design §2.5: weather is fetched, never asked), and an
+    unsignalled request must plan byte-identically to a pre-weather request —
+    the `start_datetime` None-means-no-clock precedent.
+    """
+    inp = TourInput(start=(48.8553, 2.3653), duration_min=60, city_slug="paris")
+    assert inp.pinned_poi_ids == ()
+    assert inp.weather is None
+
+
+def test_tour_input_carries_pins_and_weather_and_round_trips():
+    """design §3.2: "the visitor may pin any offered stop into a promise".
+
+    Pins and the weather signal must survive TourInput(**inp.model_dump()) —
+    the `end` round-trip precedent — because persisted tour_input_json is how
+    a session replans the same day (D4, "pin it": the day rebuilds around the
+    pinned chapel from the same stored request).
+    """
+    inp = TourInput(
+        start=(48.8553, 2.3653),
+        duration_min=90,
+        city_slug="paris",
+        pinned_poi_ids=("poi-chapel", "poi-market"),
+        weather="rain",
+    )
+    assert inp.pinned_poi_ids == ("poi-chapel", "poi-market")
+    assert inp.weather == "rain"
+    revived = TourInput(**inp.model_dump())
+    assert revived == inp
+
+
+def test_tour_input_rejects_an_unknown_weather_signal():
+    """"dry" | "rain" is the whole vocabulary — a decision, not a forecast adjective.
+
+    Asserts the LITERAL rejected the value, not merely extra="forbid" refusing an
+    unknown key: before the field exists this raises extra_forbidden and the test
+    stays red, so it cannot pass without the implementation.
+    """
+    with pytest.raises(ValidationError) as exc_info:
+        TourInput(start=(48.0, 2.0), duration_min=60, city_slug="paris", weather="snow")
+    assert exc_info.value.errors()[0]["type"] == "literal_error"
+
+
+def test_a_poi_the_queue_pass_has_not_reached_is_never_priced():
+    """queue_class=None is the never-priced switch (data row 6.5).
+
+    A queue is a fourth kind of time — not walking, not being-at-a-place, not
+    narration — priced separately and excluded entirely under a "wall" end
+    (design §3.3). So the safe default for a corpus the audited queue pass has
+    not reached is NO CLAIM AT ALL: None means unpassed, and an unpassed queue
+    is NEVER priced. The int and string defaults are inert until `queue_class`
+    is set, so no default can imply a real queue — "none" is the audited claim
+    that there is no line; None is no claim at all (the visit-capacity
+    precedent: an unpriced corpus reproduces today's behaviour exactly).
+    """
+    poi = POI(
+        id="unqueued",
+        name="A place the queue pass has not reached",
+        tier=3,
+        poi_role="stop",
+        lat=48.8566,
+        lng=2.3522,
+    )
+    assert poi.queue_class is None
+    assert poi.queue_minutes_peak == 0
+    assert poi.queue_minutes_offpeak == 0
+    assert poi.queue_peak_hours == ""
+    assert poi.queue_basis == ""
+
+    # And a fully audited POI carries all five columns through unchanged.
+    queued = POI(
+        id="queued",
+        name="Sainte-Chapelle",
+        tier=5,
+        poi_role="stop",
+        lat=48.8554,
+        lng=2.3450,
+        queue_class="long",
+        queue_minutes_peak=28,
+        queue_minutes_offpeak=10,
+        queue_peak_hours='[["10:00", "16:00"]]',
+        queue_basis="Security screening line: 28 minutes at midday, 10 at opening.",
+    )
+    assert queued.queue_class == "long"
+    assert queued.queue_minutes_peak == 28
+    assert queued.queue_minutes_offpeak == 10
+    assert queued.queue_peak_hours == '[["10:00", "16:00"]]'
+    assert queued.queue_basis.startswith("Security screening")
+
+
+def test_poi_rejects_an_unknown_queue_class():
+    """none / short / long / unpredictable is row 6.5's whole vocabulary.
+
+    POI ignores unknown keys (extra="ignore"), so before the field exists this
+    constructs silently and the test stays red on DID NOT RAISE — it cannot
+    pass without the Literal actually existing.
+    """
+    with pytest.raises(ValidationError):
+        POI(
+            id="p",
+            name="X",
+            tier=3,
+            poi_role="stop",
+            lat=48.0,
+            lng=2.0,
+            queue_class="massive",  # type: ignore[arg-type]
+        )
+
+
+def test_promise_shape_and_promise_carry_the_visit_shape_and_nothing_else():
+    """A promise is OUTPUT — the planner's obligation — never a scoring knob.
+
+    design §3.1: a promise includes "the shape of the visit" — 65 minutes
+    inside is a different promise from 15 minutes outside, and the queue is a
+    third number again. Those three numbers, which side of the door the visit
+    lives on, and whether the clock has already voided the door are the ENTIRE
+    shape. The exact-field-set assertion is the mechanical form of that rule:
+    a score, weight, or priority landing on either model turns the planner's
+    obligations into knobs, and this test goes red the moment one appears.
+    """
+    assert set(PromiseShape.model_fields) == {
+        "outside_seconds",
+        "inside_seconds",
+        "queue_seconds",
+        "goes_inside",
+        "closed_today",
+    }
+    assert set(Promise.model_fields) == {"kind", "poi_id", "shape"}
+
+
+def test_promise_kinds_are_the_four_species_of_the_day():
+    """design §3.1's promise list, as a vocabulary: the interest anchor, the
+    visitor's pin (§3.2), a body stop, the finish. A detour is fabric, and
+    fabric is never promised — "fabric may change silently; promises may not".
+    """
+    shape = PromiseShape(
+        outside_seconds=900,
+        inside_seconds=3900,
+        queue_seconds=1680,
+        goes_inside=True,
+        closed_today=False,
+    )
+    for kind in ("anchor", "pinned", "rest", "finish"):
+        assert Promise(kind=kind, poi_id="poi-chapel", shape=shape).kind == kind
+    with pytest.raises(ValidationError):
+        Promise(kind="detour", poi_id="poi-chapel", shape=shape)  # type: ignore[arg-type]
+
+
+def test_promise_is_frozen_and_forbids_scoring_state():
+    """extra="forbid" is what makes the no-knobs rule mechanical at runtime:
+    a caller smuggling score= or priority= onto a promise is refused at
+    construction, and a frozen promise cannot be edited after the planner
+    swears it (§3.2: a pin is the visitor's decision, not a preference).
+    """
+    shape = PromiseShape(
+        outside_seconds=0,
+        inside_seconds=0,
+        queue_seconds=0,
+        goes_inside=False,
+        closed_today=True,
+    )
+    with pytest.raises(ValidationError):
+        PromiseShape(
+            outside_seconds=0,
+            inside_seconds=0,
+            queue_seconds=0,
+            goes_inside=False,
+            closed_today=False,
+            score=1.0,
+        )
+    with pytest.raises(ValidationError):
+        Promise(kind="finish", poi_id="p", shape=shape, priority=3)
+    promise = Promise(kind="finish", poi_id="p", shape=shape)
+    with pytest.raises(ValidationError):
+        promise.poi_id = "other"
+
+
+def test_promise_shape_rejects_negative_seconds():
+    """The three numbers are durations, so ge=0 — the file's rule for every
+    seconds field on a frozen model (walk_seconds, eta_seconds, ...)."""
+    with pytest.raises(ValidationError):
+        PromiseShape(
+            outside_seconds=-1,
+            inside_seconds=0,
+            queue_seconds=0,
+            goes_inside=False,
+            closed_today=False,
+        )
+
+
+def test_route_promises_default_empty_and_carry_through():
+    """Route.promises is additive in the `vignettes` mould (design §3.1).
+
+    An unpromised Route — every Route today — must stay byte-identical, and a
+    promise-native Route carries the planner's obligations so downstream
+    phases can protect them through replans ("fabric may change silently;
+    promises may not").
+    """
+    poi = POI(id="p1", name="X", tier=5, poi_role="stop", lat=48.85, lng=2.35)
+    seg = TransitSegment(from_poi_id=None, to_poi_id="p1", distance_m=120, walk_seconds=144)
+    bare = Route(
+        pois=(poi,), transits=(seg,), total_walk_distance_m=120.0, total_walk_seconds=144
+    )
+    assert bare.promises == ()
+
+    promised = Route(
+        pois=(poi,),
+        transits=(seg,),
+        total_walk_distance_m=120.0,
+        total_walk_seconds=144,
+        promises=(
+            Promise(
+                kind="anchor",
+                poi_id="p1",
+                shape=PromiseShape(
+                    outside_seconds=900,
+                    inside_seconds=0,
+                    queue_seconds=0,
+                    goes_inside=False,
+                    closed_today=False,
+                ),
+            ),
+        ),
+    )
+    assert promised.promises[0].kind == "anchor"
+    assert promised.promises[0].shape.outside_seconds == 900
