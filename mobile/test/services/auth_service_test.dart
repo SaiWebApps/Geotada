@@ -349,5 +349,51 @@ void main() {
       expect(authService.isAuthenticated, true);
       expect(authService.userEmail, 'apple@icloud.com');
     });
+
+    test('refreshSession swaps in a new access token and returns true', () async {
+      final storage = FakeSecureStorage();
+      await storage.write(key: 'access_token', value: 'stale-access');
+      await storage.write(key: 'refresh_token', value: 'valid-refresh');
+
+      mockClient = MockClient((request) async {
+        if (request.url.path.contains('/auth/refresh')) {
+          expect(jsonDecode(request.body)['refresh_token'], 'valid-refresh');
+          return http.Response(
+            jsonEncode({
+              'access_token': 'new-access',
+              'refresh_token': 'valid-refresh',
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/me')) {
+          return http.Response(
+            jsonEncode({'id': 'u1', 'email': 'user@ondoway.app'}),
+            200,
+          );
+        }
+        return http.Response('', 404);
+      });
+
+      authService = AuthService(storage: storage, httpClient: mockClient);
+      final ok = await authService.refreshSession();
+
+      expect(ok, true);
+      expect(authService.accessToken, 'new-access');
+      expect(await storage.read(key: 'access_token'), 'new-access');
+    });
+
+    test('refreshSession returns false when no refresh token is stored', () async {
+      final storage = FakeSecureStorage();
+
+      mockClient = MockClient((request) async {
+        fail('should not call the network without a refresh token');
+      });
+
+      authService = AuthService(storage: storage, httpClient: mockClient);
+      final ok = await authService.refreshSession();
+
+      expect(ok, false);
+    });
   });
 }

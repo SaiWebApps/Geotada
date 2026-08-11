@@ -281,5 +281,79 @@ void main() {
       service.reset();
       expect(service.themePreference, isNull);
     });
+
+    test('completeOnboarding refreshes and retries once on 401 expired token', () async {
+      final authHeadersSeen = <String>[];
+      var refreshCalls = 0;
+      final client = MockClient((request) async {
+        if (request.url.path.endsWith('/profile')) {
+          return http.Response(jsonEncode({'detail': 'No profile'}), 404);
+        }
+        if (request.url.path.contains('/onboarding/complete')) {
+          authHeadersSeen.add(request.headers['Authorization'] ?? '');
+          if (authHeadersSeen.length == 1) {
+            // First attempt uses the stale token -> server rejects it.
+            return http.Response(
+              jsonEncode({'detail': 'Invalid or expired token'}),
+              401,
+            );
+          }
+          return http.Response(
+            jsonEncode({
+              'profile_id': 'p1',
+              'display_name': 'U',
+              'lens_count': 3,
+            }),
+            200,
+          );
+        }
+        return http.Response('Not found', 404);
+      });
+
+      final service = ProfileService(httpClient: client);
+      await service.completeOnboarding(
+        ['a', 'b', 'c'],
+        'stale-token',
+        refresh: () async {
+          refreshCalls++;
+          return 'fresh-token';
+        },
+      );
+
+      // Refreshed exactly once, retried with the fresh token, and succeeded.
+      expect(refreshCalls, 1);
+      expect(authHeadersSeen, ['Bearer stale-token', 'Bearer fresh-token']);
+      expect(service.isFirstTime, false);
+      expect(service.selectedLensIds, ['a', 'b', 'c']);
+    });
+
+    test('completeOnboarding throws typed 401 when refresh also fails', () async {
+      final client = MockClient((request) async {
+        if (request.url.path.endsWith('/profile')) {
+          return http.Response(jsonEncode({'detail': 'No profile'}), 404);
+        }
+        if (request.url.path.contains('/onboarding/complete')) {
+          return http.Response(
+            jsonEncode({'detail': 'Invalid or expired token'}),
+            401,
+          );
+        }
+        return http.Response('Not found', 404);
+      });
+
+      final service = ProfileService(httpClient: client);
+
+      await expectLater(
+        () => service.completeOnboarding(
+          ['a', 'b', 'c'],
+          'stale-token',
+          refresh: () async => null, // refresh token also dead
+        ),
+        throwsA(
+          isA<ProfileServiceException>()
+              .having((e) => e.statusCode, 'statusCode', 401),
+        ),
+      );
+    });
   });
 }

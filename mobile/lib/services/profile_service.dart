@@ -69,22 +69,41 @@ class ProfileService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Persists the caller's chosen lenses (also used by the lens-edit "Save").
+  ///
+  /// The access token lives 60 minutes; a user can easily cross that boundary
+  /// mid-session. [refresh] lets the caller supply a fresh token on a 401 —
+  /// it is invoked at most once, and the request is retried with its result.
+  /// Returning null from [refresh] (or omitting it) surfaces the 401 as a typed
+  /// [ProfileServiceException] with statusCode 401 so the caller can route to
+  /// login rather than swallow the failure.
   Future<void> completeOnboarding(
     List<String> lensIds,
-    String accessToken,
-  ) async {
-    final resp = await _httpClient.post(
-      Uri.parse('$_authBaseUrl/onboarding/complete'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: jsonEncode({'lens_ids': lensIds}),
-    );
+    String accessToken, {
+    Future<String?> Function()? refresh,
+  }) async {
+    Future<http.Response> post(String token) => _httpClient.post(
+          Uri.parse('$_authBaseUrl/onboarding/complete'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({'lens_ids': lensIds}),
+        );
+
+    var resp = await post(accessToken);
+
+    if ((resp.statusCode == 401 || resp.statusCode == 403) && refresh != null) {
+      final freshToken = await refresh();
+      if (freshToken != null) {
+        resp = await post(freshToken);
+      }
+    }
 
     if (resp.statusCode != 200) {
       throw ProfileServiceException(
         'Onboarding failed: ${resp.body}',
+        statusCode: resp.statusCode,
       );
     }
 
@@ -192,7 +211,8 @@ class ProfileService extends ChangeNotifier {
 
 class ProfileServiceException implements Exception {
   final String message;
-  ProfileServiceException(this.message);
+  final int? statusCode;
+  ProfileServiceException(this.message, {this.statusCode});
 
   @override
   String toString() => message;

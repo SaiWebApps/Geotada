@@ -102,11 +102,27 @@ GoRouter createRouter(
             userName: as_.userEmail?.split('@')[0],
             lensesByParent: ls.childrenByParent,
             onComplete: (selectedIds) async {
-              await ps.completeOnboarding(
-                selectedIds.toList(),
-                as_.accessToken!,
-              );
-              if (context.mounted) context.go('/explore');
+              try {
+                await ps.completeOnboarding(
+                  selectedIds.toList(),
+                  as_.accessToken!,
+                  refresh: () async =>
+                      (await as_.refreshSession()) ? as_.accessToken : null,
+                );
+                if (context.mounted) context.go('/explore');
+              } on ProfileServiceException catch (e) {
+                if (!context.mounted) return;
+                if (e.statusCode == 401 || e.statusCode == 403) {
+                  // Session is unrecoverable (refresh failed) — back to login.
+                  await as_.logout();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Could not save your lenses — please try again.'),
+                    ),
+                  );
+                }
+              }
             },
           );
         },
@@ -176,17 +192,33 @@ GoRouter createRouter(
                       final current = ps.selectedLensIds.toSet();
                       final toAdd = selectedIds.difference(current);
                       final toRemove = current.difference(selectedIds);
-                      // For now, re-run onboarding endpoint to replace all preferences
-                      if (toAdd.isNotEmpty || toRemove.isNotEmpty) {
-                        await ps.completeOnboarding(
-                          selectedIds.toList(),
-                          as_.accessToken!,
-                        );
-                      }
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Lenses saved')),
-                        );
+                      try {
+                        // For now, re-run onboarding endpoint to replace all preferences
+                        if (toAdd.isNotEmpty || toRemove.isNotEmpty) {
+                          await ps.completeOnboarding(
+                            selectedIds.toList(),
+                            as_.accessToken!,
+                            refresh: () async =>
+                                (await as_.refreshSession()) ? as_.accessToken : null,
+                          );
+                        }
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Lenses saved')),
+                          );
+                        }
+                      } on ProfileServiceException catch (e) {
+                        if (!context.mounted) return;
+                        if (e.statusCode == 401 || e.statusCode == 403) {
+                          // Session is unrecoverable (refresh failed) — back to login.
+                          await as_.logout();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Could not save — please try again.'),
+                            ),
+                          );
+                        }
                       }
                     },
                   );
