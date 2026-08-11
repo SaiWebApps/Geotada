@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ondoway/models/trip.dart';
-import 'package:ondoway/services/providers.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/theme/dims.dart';
 import 'package:ondoway/widgets/tour/next_stop_banner.dart';

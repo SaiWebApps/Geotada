@@ -4,7 +4,6 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ondoway/pages/tour_walk_page.dart';
-import 'package:ondoway/services/providers.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:provider/provider.dart';
 

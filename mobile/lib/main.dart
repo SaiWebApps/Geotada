@@ -8,7 +8,6 @@ import 'package:ondoway/services/feedback_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
-import 'package:ondoway/services/providers.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 import 'package:ondoway/theme/theme.dart';
