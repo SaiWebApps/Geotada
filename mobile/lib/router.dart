@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/callback_page.dart';
 import 'package:ondoway/pages/explore_page.dart';
 import 'package:ondoway/pages/lens_selection_page.dart';
@@ -8,6 +9,7 @@ import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/pages/saved_trips_page.dart';
 import 'package:ondoway/pages/style_gallery_page.dart';
+import 'package:ondoway/pages/tour_walk_page.dart';
 import 'package:ondoway/pages/trip_duration_page.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
@@ -16,6 +18,7 @@ import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/spike/location_spike_page.dart';
 import 'package:ondoway/spike/tour_playback_proof_page.dart';
 import 'package:ondoway/spike/tour_pin_proof_page.dart';
+import 'package:ondoway/theme/dims.dart';
 import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
 
@@ -143,6 +146,19 @@ GoRouter createRouter(
         },
       ),
       GoRoute(
+        path: '/trip/:tripId/walk',
+        builder: (context, state) {
+          // Golden path: "Start walking" pushes here with the already-loaded
+          // GeneratedTrip as `extra` — no service round-trip needed.
+          final extra = state.extra;
+          if (extra is GeneratedTrip) return TourWalkPage(trip: extra);
+          // Cold/deep-link entry (no `extra`, e.g. a fresh app launch on this
+          // URL): TripService has no fetch-by-id, so there is nothing to hydrate
+          // from here. Send the user back to a place they CAN start a walk from.
+          return const _TourWalkFallback();
+        },
+      ),
+      GoRoute(
         path: '/debug/location-spike',
         builder: (context, state) => const LocationSpikePage(),
       ),
@@ -246,4 +262,36 @@ GoRouter createRouter(
       ),
     ],
   );
+}
+
+/// Graceful landing for `/trip/:tripId/walk` reached without a trip in hand
+/// (a cold start or deep link, not the in-app "Start walking" button). There
+/// is no fetch-by-id to hydrate from — `TripService` only generates, composes,
+/// and lists saved trips — so this points the user back to a screen that can
+/// actually start a walk instead of crashing on a null trip.
+class _TourWalkFallback extends StatelessWidget {
+  const _TourWalkFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Walking tour')),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(Dims.spaceLg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Open this walk from your trip'),
+              const SizedBox(height: Dims.spaceMd),
+              FilledButton(
+                onPressed: () => context.go('/saved-trips'),
+                child: const Text('Go to your saved trips'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

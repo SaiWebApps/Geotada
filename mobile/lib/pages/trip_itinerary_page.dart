@@ -71,6 +71,23 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
   /// Tracks which stops have had their audio URL resolved.
   late List<ItineraryStop> _stops;
 
+  /// The trip to hand to [TourWalkPage]: same trip, but with [_stops] — which
+  /// carry the `audioUrl`s the prepare/poll flow just resolved — instead of
+  /// [widget.trip]'s original stops (still null for a freshly generated trip).
+  /// [TourPlaybackService] plays directly off `stop.audioUrl`, so passing the
+  /// unresolved list would start a walk with no audio.
+  GeneratedTrip get _tripForWalk => GeneratedTrip(
+        tripId: widget.trip.tripId,
+        tripName: widget.trip.tripName,
+        profileId: widget.trip.profileId,
+        totalStops: widget.trip.totalStops,
+        totalDurationMin: widget.trip.totalDurationMin,
+        anchorCount: widget.trip.anchorCount,
+        flavourCount: widget.trip.flavourCount,
+        stops: _stops,
+        options: widget.trip.options,
+      );
+
   @override
   void initState() {
     super.initState();
@@ -508,12 +525,12 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
   Widget _buildFab(ColorScheme colorScheme) {
     if (_preparationDone) {
       return FloatingActionButton.extended(
-        onPressed: () {
-          // Navigate to tour playback (for now, go to saved-trips)
-          context.go('/saved-trips');
-        },
-        icon: const Icon(Icons.play_arrow),
-        label: const Text('Start Tour'),
+        onPressed: () => context.push(
+          '/trip/${widget.trip.tripId}/walk',
+          extra: _tripForWalk,
+        ),
+        icon: const Icon(Icons.directions_walk),
+        label: const Text('Start walking'),
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
       );
