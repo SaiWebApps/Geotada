@@ -1,14 +1,18 @@
-"""Tests for the public read-only product API — GET /api/v1/lenses.
+"""Tests for the public read-only product API — GET /api/v1/lenses and
+GET /api/v1/profile.
 
-This endpoint is the mobile client's lens-taxonomy read surface: unlike the
-workbench CRUD routers, it is mounted unconditionally (outside
-`_workbench_api_enabled()`).
+Both are the mobile client's read surface: unlike the workbench CRUD routers,
+they are mounted unconditionally (outside `_workbench_api_enabled()`). See
+specs/2026-08-10-profile-endpoint/design.md for the /profile contract.
 """
 
 from __future__ import annotations
 
+from unittest.mock import patch
+
 import pytest
 
+from src.api.auth.tokens import create_access_token
 from src.connection import get_database
 from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES
 from src.seed.lenses import seed_lenses
@@ -207,3 +211,137 @@ class TestLensesEndpoint:
                     "MATCH (l:Lens) WHERE l.name IN $names DETACH DELETE l",
                     names=["orphan_child_test", "childless_parent_test"],
                 )
+
+
+# ---------------------------------------------------------------------------
+# GET /api/v1/profile (bearer) — specs/2026-08-10-profile-endpoint/design.md.
+# The module DB is not wiped between tests, so each test uses distinct user ids.
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def profile_client(client, clean_driver):
+    """Client with the canonical lens taxonomy seeded — child lenses must exist
+    for PREFERS_LENS. Per-test users/profiles are seeded inside each test."""
+    seed_lenses(clean_driver)
+    return client
+
+
+def _seed_user(driver, user_id, email):
+    with driver.session(database=get_database()) as s:
+        s.run("MERGE (u:User {id: $uid}) SET u.email = $email", uid=user_id, email=email)
+
+
+def _seed_profile(driver, user_id, *, profile_id, display_name, lens_names, created_at, theme=None):
+    """Seed one Profile mirroring the real writer (auth/routes.py:441): id +
+    created_at + display_name, optional theme_preference (None -> property
+    absent, since SET x = null removes it), and PREFERS_LENS to child lenses."""
+    with driver.session(database=get_database()) as s:
+        s.run(
+            "MATCH (u:User {id: $uid}) "
+            "CREATE (u)-[:HAS_PROFILE]->(p:Profile {id: $pid, display_name: $name, "
+            "created_at: datetime($created)}) "
+            "SET p.theme_preference = $theme",
+            uid=user_id, pid=profile_id, name=display_name, created=created_at, theme=theme,
+        )
+        for ln in lens_names:
+            s.run(
+                "MATCH (p:Profile {id: $pid}), (l:Lens {name: $ln}) "
+                "MERGE (p)-[:PREFERS_LENS]->(l)",
+                pid=profile_id, ln=ln,
+            )
+
+
+def _lens_ids(driver, names):
+    with driver.session(database=get_database()) as s:
+        rec = s.run(
+            "MATCH (l:Lens) WHERE l.name IN $names RETURN collect(l.id) AS ids",
+            names=names,
+        ).single()
+        return set(rec["ids"])
+
+
+def _auth(user_id, email):
+    return {"Authorization": f"Bearer {create_access_token(user_id, email)}"}
+
+
+class TestProfileEndpoint:
+    def test_missing_or_invalid_bearer_returns_401(self, profile_client):
+        """AC-10: no header, and a malformed/expired token, all 401 with no leak."""
+        no_header = profile_client.get("/api/v1/profile")
+        assert no_header.status_code == 401
+        assert "display_name" not in no_header.text
+        assert "selected_lens_ids" not in no_header.text
+
+        garbage = profile_client.get(
+            "/api/v1/profile", headers={"Authorization": "Bearer garbage.token.here"}
+        )
+        assert garbage.status_code == 401
+        assert "display_name" not in garbage.text
+
+        with patch("src.api.auth.tokens.ACCESS_TOKEN_EXPIRE_MINUTES", -1):
+            expired = create_access_token("user-p-401", "p401@ondoway.app")
+        expired_resp = profile_client.get(
+            "/api/v1/profile", headers={"Authorization": f"Bearer {expired}"}
+        )
+        assert expired_resp.status_code == 401
+        assert "selected_lens_ids" not in expired_resp.text
+
+    def test_no_profile_returns_404_not_empty(self, profile_client, clean_driver):
+        """AC-8: authenticated user with zero HAS_PROFILE -> 404 (not {}, not 500)."""
+        uid, email = "user-noprofile", "noprofile@ondoway.app"
+        _seed_user(clean_driver, uid, email)
+        resp = profile_client.get("/api/v1/profile", headers=_auth(uid, email))
+        assert resp.status_code == 404
+        assert "display_name" not in resp.text  # no fabricated empty profile
+        assert resp.json().get("detail")
+
+    def test_returns_profile_with_display_name_and_lens_set(self, profile_client, clean_driver):
+        """AC-6: one profile + child lenses -> 200 with display_name, profile_id,
+        and selected_lens_ids == exactly the profile's child-lens id set."""
+        uid, email = "user-ac6", "ac6@ondoway.app"
+        _seed_user(clean_driver, uid, email)
+        lenses = ["hidden_history", "dark_history", "street_art"]
+        _seed_profile(clean_driver, uid, profile_id="prof-ac6", display_name="adam",
+                      lens_names=lenses, created_at="2026-08-01T00:00:00")
+        resp = profile_client.get("/api/v1/profile", headers=_auth(uid, email))
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["profile_id"] == "prof-ac6"
+        assert body["display_name"] == "adam"
+        assert set(body["selected_lens_ids"]) == _lens_ids(clean_driver, lenses)
+
+    def test_theme_preference_verbatim_or_null(self, profile_client, clean_driver):
+        """AC-7: theme_preference verbatim when set, JSON null (key present) when absent."""
+        uid_s, email_s = "user-theme-set", "themeset@ondoway.app"
+        _seed_user(clean_driver, uid_s, email_s)
+        _seed_profile(clean_driver, uid_s, profile_id="prof-theme-set", display_name="t",
+                      lens_names=["hidden_history"], created_at="2026-08-01T00:00:00", theme="dark")
+        set_resp = profile_client.get("/api/v1/profile", headers=_auth(uid_s, email_s))
+        assert set_resp.json()["theme_preference"] == "dark"
+
+        uid_a, email_a = "user-theme-absent", "themeabsent@ondoway.app"
+        _seed_user(clean_driver, uid_a, email_a)
+        _seed_profile(clean_driver, uid_a, profile_id="prof-theme-absent", display_name="t",
+                      lens_names=["hidden_history"], created_at="2026-08-01T00:00:00", theme=None)
+        absent = profile_client.get("/api/v1/profile", headers=_auth(uid_a, email_a)).json()
+        assert "theme_preference" in absent  # key present
+        assert absent["theme_preference"] is None
+
+    def test_multi_profile_returns_latest_created_at(self, profile_client, clean_driver):
+        """AC-9: two profiles of distinct created_at -> return the later one and
+        ITS lens set; the older's lens set must not appear."""
+        uid, email = "user-ac9", "ac9@ondoway.app"
+        _seed_user(clean_driver, uid, email)
+        old_lenses = ["hidden_history"]
+        new_lenses = ["street_art", "dark_history"]
+        _seed_profile(clean_driver, uid, profile_id="prof-old", display_name="old",
+                      lens_names=old_lenses, created_at="2026-01-01T00:00:00")
+        _seed_profile(clean_driver, uid, profile_id="prof-new", display_name="new",
+                      lens_names=new_lenses, created_at="2026-08-01T00:00:00")
+        body = profile_client.get("/api/v1/profile", headers=_auth(uid, email)).json()
+        assert body["profile_id"] == "prof-new"
+        assert body["display_name"] == "new"
+        assert set(body["selected_lens_ids"]) == _lens_ids(clean_driver, new_lenses)
+        old_only = _lens_ids(clean_driver, old_lenses) - _lens_ids(clean_driver, new_lenses)
+        assert old_only.isdisjoint(set(body["selected_lens_ids"]))
