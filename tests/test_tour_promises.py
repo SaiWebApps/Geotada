@@ -285,9 +285,11 @@ def test_shape_column_renders_in_out_and_closed_out(capsys):
     column that only fills on promise stops): a goes-inside promise renders
     `44m in` (240s outside + 2400s inside; the queue is NOT folded in —
     design §3.3, 'folding them into one 66 makes the wait permanent'), an
-    outside promise renders `15m out`, an outside-only clock exclusion
-    renders `closed—out`, and promise-less stops fall back to the route's
-    priced minutes with in/out read off the POI's own capacity numbers."""
+    outside promise renders `15 min out`, an outside-only clock exclusion
+    renders `closed — outside only` (units spelled out and the phrasal-verb
+    collision removed by the second-language panelist's ruling, W3.4), and
+    promise-less stops fall back to the route's priced minutes with in/out
+    read off the POI's own capacity numbers."""
     tour_build = _tour_build()
     a = _poi("poi-a", "Musee d'Orsay", place_category="museum")
     b = _poi("poi-b", "Pont Neuf", place_category="bridge")
@@ -342,13 +344,13 @@ def test_shape_column_renders_in_out_and_closed_out(capsys):
         script=_script_for(route),
     )
     out = capsys.readouterr().out
-    assert "44m in" in _stop_line(out, "Musee d'Orsay")
-    assert "15m out" in _stop_line(out, "Pont Neuf")
-    assert "closed—out" in _stop_line(out, "Musee de Cluny")
+    assert "44 min in" in _stop_line(out, "Musee d'Orsay")
+    assert "15 min out" in _stop_line(out, "Pont Neuf")
+    assert "closed — outside only" in _stop_line(out, "Musee de Cluny")
     # Pre-promise fallback: minutes from planned_visit_seconds, side from the
     # POI's own numbers (no interior -> out; 1800s inside > 10min outside -> in).
-    assert "10m out" in _stop_line(out, "Place Dauphine")
-    assert "15m in" in _stop_line(out, "Pantheon")
+    assert "10 min out" in _stop_line(out, "Place Dauphine")
+    assert "15 min in" in _stop_line(out, "Pantheon")
 
 
 def test_queue_column_prints_minutes_and_dash(capsys):

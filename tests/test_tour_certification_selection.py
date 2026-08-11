@@ -1131,3 +1131,87 @@ def test_a_drop_that_merges_two_legs_past_the_cap_is_refused():
             planning_policy=policy,
             planning_budget=budget,
         )
+
+
+def test_a_queue_never_earns_the_rank():
+    """The Phase 3 panel's convergent ruling (Camille: "the fit metric cannot
+    tell a minute under Sainte-Chapelle's glass from a minute in a queue";
+    seconded as a dealbreaker by the day-two planner): queue seconds SPEND the
+    elapsed budget — the ceiling counts them in full — but they never EARN the
+    nearest-the-request rank. Two otherwise-equal repairs: the queued anchor
+    lands nearer the raw nominal precisely because of its 10-minute line; the
+    quiet anchor delivers more actual experience. The quiet one must win.
+
+    RED before the rule: raw-elapsed fit preferred the queued day (174 s off
+    nominal vs 294), which is how the first live W3.2 runs promoted a
+    40-minute Louvre line to "best fit" over queue-free multi-stop days.
+    """
+    m1 = _poi("m1", x=30.0, audio=120, visit_min=10)
+    m2 = _poi("m2", x=60.0, audio=120, visit_min=10)
+    queued = _poi("a-queued-anchor", x=45.0, y=3.0, audio=120, visit_min=12)
+    quiet = _poi("b-quiet-anchor", x=45.0, y=3.0, audio=120, visit_min=20)
+    pois = [m1, m2, queued, quiet]
+    snap = _snapshot(pois, {p.id: 120 for p in pois})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        end=(0.0, 90.0),
+        duration_min=60,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    queue_table = {"a-queued-anchor": 600}
+
+    def price(poi: POI, hour: int | None) -> int:
+        return poi.typical_duration_min * 60 + queue_table.get(poi.id, 0)
+
+    def queue(poi: POI, hour: int | None) -> int:
+        return queue_table.get(poi.id, 0)
+
+    repaired = _apply_certification_timebox_repair(
+        [m1, m2],
+        pois,
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+        price_visit=price,
+        queue_visit=queue,
+    )
+    repaired_ids = {poi.id for poi in repaired}
+    assert "b-quiet-anchor" in repaired_ids, (
+        f"the repair chose {sorted(repaired_ids)} — the queued day out-ranked the "
+        "quiet one, so line minutes are still being scored as experience"
+    )
+    assert "a-queued-anchor" not in repaired_ids
+
+
+def test_select_route_wires_the_queue_closure_into_the_repair():
+    """The judge's close-gate finding (2026-08-11): the queue-never-earns-rank
+    rule was proven against an injected double, while the PRODUCTION wiring —
+    select_route handing the repair a real queue closure — had no guard, so
+    deleting that one line kept every test green. This scan is the guard: the
+    repair call inside select_route must pass `queue_visit=` built on the
+    pricer's own shape. RED when the wiring line is deleted; the functional
+    half (the rank preferring the quiet day) is test_a_queue_never_earns_the_rank.
+    """
+    import re
+    from pathlib import Path
+
+    repo_root = Path(__file__).resolve().parent.parent
+    source = (repo_root / "src" / "tour" / "selection.py").read_text()
+    wiring = re.search(
+        r"queue_visit=lambda cand, hour: shape_visit\(cand, hour\)\.queue_seconds",
+        source,
+    )
+    assert wiring is not None, (
+        "select_route no longer passes the repair a queue_visit closure — the "
+        "panel's queues-are-budgeted-never-credited rule silently stopped "
+        "reaching production"
+    )

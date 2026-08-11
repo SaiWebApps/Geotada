@@ -2764,6 +2764,9 @@ def select_route(
             | ({pulled_endpoint_id} if pulled_endpoint_id is not None else set())
         )
         or None,
+        # Queues are BUDGETED, never credited (the panel's convergent ruling):
+        # the rank's fit term reads elapsed minus these seconds.
+        queue_visit=lambda cand, hour: shape_visit(cand, hour).queue_seconds,
     )
 
     # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
@@ -3990,6 +3993,14 @@ class _CertificationRouteTrial:
     ordered: tuple[POI, ...]
     walk_seconds: int
     dwell_seconds: int
+    #: Seconds of LINE inside this trial's dwell, at each stop's arrival hour.
+    #: Queues are BUDGETED, never credited (the Phase 3 panel's convergent
+    #: ruling — Camille: "the fit metric cannot tell a minute under
+    #: Sainte-Chapelle's glass from a minute in a queue"): the elapsed ceiling
+    #: counts them in full, but the rank's nearest-the-request preference
+    #: measures elapsed MINUS this, so the day that stands in line longest can
+    #: never win the ranking BECAUSE it stands in line.
+    queue_seconds: int = 0
     #: The longest SINGLE walk in this route. A walking budget is not one number:
     #: Rosemary's total of 54 minutes is unremarkable and her twelve-minute
     #: per-leg limit is the binding constraint, so "a route with one 25-minute leg
@@ -4027,6 +4038,7 @@ def _certification_route_trial(
     pulled_endpoint_id: str | None = None,
     price_visit: Callable[[POI, int | None], int] | None = None,
     clock_start: datetime | None = None,
+    queue_visit: Callable[[POI, int | None], int] | None = None,
 ) -> _CertificationRouteTrial | None:
     """Price one stop set in the exact routed/capped certification currency.
 
@@ -4077,10 +4089,17 @@ def _certification_route_trial(
     # estimate-then-exact contract (deviation v), so the repair certifies the
     # same clock the traveller is served. The bare fallback keeps every
     # injected legacy caller (tests, doubles) on the pre-promise arithmetic.
+    trial_queue_seconds = 0
     if price_visit is not None:
-        planned = _arrival_priced_visits(
+        arrivals = _walk_arrivals(
             ordered, legs, clock_start=clock_start, price_visit=price_visit
         )
+        planned = {poi.id: seconds for poi, _hour, seconds in arrivals}
+        if queue_visit is not None:
+            # The SAME arrival hours the visits priced — no second accumulation.
+            trial_queue_seconds = sum(
+                queue_visit(poi, hour) for poi, hour, _seconds in arrivals
+            )
     else:
         planned = {
             poi.id: visit_seconds(
@@ -4112,6 +4131,7 @@ def _certification_route_trial(
         walk_seconds=walk_seconds,
         dwell_seconds=dwell_seconds,
         max_leg_seconds=max(legs, default=0),
+        queue_seconds=trial_queue_seconds,
     )
 
 
@@ -4348,6 +4368,7 @@ def _apply_certification_timebox_repair(
     price_visit: Callable[[POI, int | None], int] | None = None,
     clock_start: datetime | None = None,
     protected_promise_ids: set[str] | None = None,
+    queue_visit: Callable[[POI, int | None], int] | None = None,
     _pass_number: int = 1,
 ) -> list[POI]:
     """Bounded add/exchange/drop repair for one frozen certification policy.
@@ -4378,6 +4399,7 @@ def _apply_certification_timebox_repair(
         pulled_endpoint_id=pulled_endpoint_id,
         price_visit=price_visit,
         clock_start=clock_start,
+        queue_visit=queue_visit,
     )
     preferred_trials: list[_CertificationRouteTrial] = []
     last_resort_trials: list[_CertificationRouteTrial] = []
@@ -4530,6 +4552,7 @@ def _apply_certification_timebox_repair(
                 pulled_endpoint_id=pulled_endpoint_id,
                 price_visit=price_visit,
                 clock_start=clock_start,
+                queue_visit=queue_visit,
             ),
             added=added,
             reference_walk_seconds=reference_walk_seconds,
@@ -4600,6 +4623,7 @@ def _apply_certification_timebox_repair(
             pulled_endpoint_id=pulled_endpoint_id,
             price_visit=price_visit,
             clock_start=clock_start,
+            queue_visit=queue_visit,
         )
         reference_walk_seconds = (
             retained_trial.walk_seconds if retained_trial is not None else 0
@@ -4639,7 +4663,10 @@ def _apply_certification_timebox_repair(
             max(
                 under_ceiling_trials,
                 key=lambda trial: (
-                    trial.elapsed_seconds,
+                    # Longest EXPERIENCE under the ceiling — queue seconds spend
+                    # the budget but never count as the day (the same rule as
+                    # rank's fit term).
+                    trial.elapsed_seconds - trial.queue_seconds,
                     _diversity_weighted_score(
                         trial.selected,
                         spine=spine,
@@ -4678,6 +4705,7 @@ def _apply_certification_timebox_repair(
                 price_visit=price_visit,
                 clock_start=clock_start,
                 protected_promise_ids=protected_promise_ids,
+                queue_visit=queue_visit,
                 _pass_number=_pass_number + 1,
             )
         # There is no shorter set to fall back to, so this genuinely cannot be
@@ -4736,7 +4764,18 @@ def _apply_certification_timebox_repair(
             # only fires when one route asks for a materially longer unbroken walk
             # than another.
             trial.max_leg_seconds // 600,
-            abs(planning_budget.nominal_elapsed_seconds - trial.elapsed_seconds),
+            # NEAREST THE REQUEST, MEASURED IN EXPERIENCE — elapsed minus queue
+            # (the Phase 3 panel's convergent ruling, Camille's words: "the fit
+            # metric cannot tell a minute under Sainte-Chapelle's glass from a
+            # minute in a queue"). The ceiling banked the FULL elapsed above, so
+            # a queue still spends the budget; it just never EARNS rank — the
+            # first W3.2 corpus runs measurably promoted a 40-minute Louvre line
+            # to "best fit" over queue-free multi-stop days because lines were
+            # the cheapest way to fill a 180-minute bucket.
+            abs(
+                planning_budget.nominal_elapsed_seconds
+                - (trial.elapsed_seconds - trial.queue_seconds)
+            ),
             -score,
             tuple(sorted(poi.id for poi in trial.selected)),
         )

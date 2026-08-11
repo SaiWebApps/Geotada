@@ -505,7 +505,7 @@ def _print_breakdown(
             visit = f"{round(visit_s / 60)} min" if visit_s is not None else "—"
             promise = promises_by_poi.get(poi.id)
             if poi.id in outside_only:
-                shape = "closed—out"
+                shape = "closed — outside only"
             elif promise is not None:
                 # The at-place minutes are outside + inside, NEVER the queue —
                 # design §3.3: "folding them into one 66 makes the wait
@@ -513,13 +513,13 @@ def _print_breakdown(
                 # pricer's own named quantity.
                 at_place = shape_at_place_seconds(promise.shape)
                 side = "in" if promise.shape.goes_inside else "out"
-                shape = f"{round(at_place / 60)}m {side}"
+                shape = f"{round(at_place / 60)} min {side}"
             else:
                 # Pre-promise fallback — the planner has not shaped this stop:
                 # minutes from the route's own pricing, in/out from the
                 # pricer's own interior test.
                 side = "in" if poi_has_interior(poi) else "out"
-                shape = f"{round(visit_s / 60)}m {side}" if visit_s is not None else f"— {side}"
+                shape = f"{round(visit_s / 60)} min {side}" if visit_s is not None else f"— {side}"
             queue_s = promise.shape.queue_seconds if promise is not None else 0
             queue = f"{round(queue_s / 60)}m" if queue_s else "—"
             print(
