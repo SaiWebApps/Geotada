@@ -9,9 +9,10 @@ for the next. See docs/personas/.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import json
+from typing import TYPE_CHECKING, Literal
 
-from .contract import POI
+from .contract import POI, PromiseShape
 
 if TYPE_CHECKING:
     # CorpusSnapshot lives in selection.py, NOT contract.py — and it is imported
@@ -25,21 +26,132 @@ if TYPE_CHECKING:
 #: a second scale.
 ONE_HOP_VISIT_FRACTION: float = 0.6
 
+#: Rain halves what standing in an UNCOVERED place is worth (plan S3.3,
+#: deviation iv). The queue is exempt: the line takes what it takes, whatever
+#: falls on it.
+RAIN_DWELL_FRACTION: float = 0.5
 
-def visit_seconds(
+#: The place categories (contract row 6.7 vocabulary) that shelter a visit.
+#: Everything else — square, garden, street, bridge, park, market, monument,
+#: other, and the "" of an unjudged corpus — counts as OPEN, the safe direction
+#: for rain (plan S3.3, deviation i): never promise shelter the data cannot
+#: back. A wrong "open" under-prices a dry arcade; a wrong "covered" strands a
+#: visitor in the rain.
+_COVERED_CATEGORIES: frozenset[str] = frozenset({"arcade", "museum", "church", "gallery"})
+
+#: The queue_class values that CLAIM a line exists. None is no claim at all
+#: (the audited pass has not reached this POI) and "none" is the audited claim
+#: that there IS no line (contract row 6.5) — neither prices a second of wait,
+#: and neither gives a `wall` end anything to refuse.
+_QUEUE_CLAIMS: frozenset[str] = frozenset({"short", "long", "unpredictable"})
+
+
+def place_is_covered(poi: POI) -> bool:
+    """THE covered/open decision — rain pricing's only input, defined once.
+
+    The plan names the sabotage this guards against: "a second coveredness map
+    in selection.py". `tests/test_one_promise_pricing.py` scans the engine for
+    any other file that speaks of cover while naming `place_category`.
+    """
+    return poi.place_category in _COVERED_CATEGORIES
+
+
+def _hh_mm_to_hours(text: str) -> float:
+    """"10:30" -> 10.5. Raises ValueError on anything else; callers fail open."""
+    hours, minutes = text.split(":")
+    return int(hours) + int(minutes) / 60
+
+
+def _hour_in_peak_band(bands_json: str, clock_hour: int) -> bool:
+    """Does an arrival at `clock_hour` fall inside a queue peak band?
+
+    Parses the JSON-encoded `[["HH:MM", "HH:MM"], ...]` the graph stores, with
+    the same fail-open discipline as the opening-hours parser
+    (`_clock_exclusion_reason`, selection.py): a table that does not parse, a
+    malformed window, an unknown shape — all mean NO peak data, so the price
+    falls to off-peak, the milder claim. A data defect must under-price a wait,
+    never invent one. The structural bars in `tests/test_poi_queues.py` guard
+    the data itself.
+
+    Bands are half-open — `start <= hour < end` — mirroring the opening-hours
+    overlap test, so 10:00 sits before a 10:30-16:00 band and 16:00 after it.
+    """
+    try:
+        bands = json.loads(bands_json)
+    except (json.JSONDecodeError, TypeError):
+        return False
+    if not isinstance(bands, list):
+        return False
+    for window in bands:
+        if (
+            not isinstance(window, list)
+            or len(window) != 2
+            or not all(isinstance(t, str) for t in window)
+        ):
+            return False  # malformed window → no peak data → off-peak
+        try:
+            start, end = (_hh_mm_to_hours(t) for t in window)
+        except ValueError:
+            return False
+        if start <= clock_hour < end:
+            return True
+    return False
+
+
+def _queue_seconds(poi: POI, clock_hour: int | None) -> int:
+    """Seconds of line this arrival stands, from the row-6.5 corpus fields.
+
+    "short"/"long" price by arrival-hour band: `queue_minutes_peak` inside a
+    `queue_peak_hours` band, `queue_minutes_offpeak` outside one. An undated
+    request (`clock_hour` None) prices at OFF-PEAK — no hour claimed means the
+    milder claim, because an undated plan that budgeted every line at its worst
+    hour would refuse days that are actually fine. "unpredictable" prices at
+    `queue_minutes_peak` regardless of hour: the only honest single number for
+    an unboundable wait is its worst known bound.
+    """
+    if poi.queue_class not in _QUEUE_CLAIMS:
+        return 0
+    if poi.queue_class == "unpredictable":
+        return poi.queue_minutes_peak * 60
+    if clock_hour is not None and _hour_in_peak_band(poi.queue_peak_hours, clock_hour):
+        return poi.queue_minutes_peak * 60
+    return poi.queue_minutes_offpeak * 60
+
+
+def visit_shape(
     poi: POI,
     interest: frozenset[str],
     snapshot: CorpusSnapshot | None,
     *,
     party_ceiling_seconds: int | None = None,
-) -> int:
-    """Seconds this visitor spends AT this place.
+    clock_hour: int | None = None,
+    closed_today: bool = False,
+    weather: Literal["dry", "rain"] | None = None,
+    wall: bool = False,
+) -> PromiseShape:
+    """THE promise pricing — what standing at this place costs, as a shape.
+
+    Camille's Sainte-Chapelle is 38 minutes of chapel and 28 minutes of line,
+    and "price the building at a single 66 and the line becomes permanent"
+    (docs/personas/01-architecture-pilgrim.md:77-84) — so the cost is three
+    numbers, not one: outside seconds, inside seconds, and a queue that belongs
+    to the hour rather than the building (design §3.3).
 
     ``snapshot`` may be None ONLY when no interest was declared, because that is
     the one case the lens graph is never consulted for. Callers without a corpus
     — density's legacy diagnostic form is the only one — must pass an empty
     interest rather than a snapshot of None with lenses, which would otherwise
     silently price every place as a lens miss.
+
+    Decision order, each rule test-pinned in tests/test_one_promise_pricing.py:
+    1. the outside/inside split (today's blend arithmetic, extracted, then the
+       party ceiling); 2. queue by arrival-hour band; 3. a queue the ceiling
+       cannot cover collapses the stop to outside-only — nobody stands 28
+       minutes of line for the zero minutes the ceiling has left; 4. a `wall`
+       end refuses ANY audited line ("no stop whose duration is unboundable",
+       design §2.3) but never the place; 5. `closed_today` voids the door and
+       keeps the exterior (delete-vs-demote, panel W1.9 dissent 1); 6. rain
+       halves an uncovered place's dwell worth, never its queue.
     """
     from .selection import _lens_relation  # single source of truth for the hop model
 
@@ -52,23 +164,97 @@ def visit_seconds(
     outside = poi.typical_duration_min * 60
     inside = poi.visit_seconds_inside
     if inside is None or inside <= outside:
-        value = outside
+        blend = outside
     else:
         relation = _lens_relation(poi, interest, snapshot)
         if relation == "direct":
-            value = inside
+            blend = inside
         # "no_lens" is DELIBERATELY not "direct" here, unlike _lens_adjacency at
         # selection.py:3405-3418. Uniform 1.0 is right for SELECTION — do not
         # penalise someone for not choosing. Giving them the maximum interior at
         # every place is wrong for DWELL: it hands a family with a five-year-old
         # a 45-minute cathedral. Same classifier, two questions, two answers.
         elif relation in ("one_hop", "no_lens"):
-            value = round(outside + (inside - outside) * ONE_HOP_VISIT_FRACTION)
+            blend = round(outside + (inside - outside) * ONE_HOP_VISIT_FRACTION)
         else:
-            value = outside
-    if party_ceiling_seconds is not None:
-        value = min(value, party_ceiling_seconds)
-    return value
+            blend = outside
+
+    # An interior share was JUSTIFIED iff the uncapped blend exceeded the
+    # outside number — the ceiling may then eat it, but the visitor still
+    # reaches the door, so the door's line still applies.
+    goes_inside = blend > outside
+    base_visit = blend if party_ceiling_seconds is None else min(blend, party_ceiling_seconds)
+    outside_seconds = min(outside, base_visit)
+    inside_seconds = base_visit - outside_seconds
+
+    # Only someone who reaches the door stands in its line: an outside-only
+    # visitor skips the queue, which is exactly what a single folded "66"
+    # could never let them do.
+    queue_seconds = _queue_seconds(poi, clock_hour) if goes_inside else 0
+
+    if (
+        closed_today
+        # A wall refuses ANY audited line, not only the unpredictable class:
+        # Marcus is four minutes from £180 (04-layover-sprinter.md:45-47).
+        or (wall and poi.queue_class in _QUEUE_CLAIMS)
+        # The queue is indivisible and the ceiling covers the WHOLE stop; when
+        # visit + wait exceed it, the visitor does not join the line. Never
+        # triggers without a queue, since base_visit is already ceiling-capped.
+        or (
+            party_ceiling_seconds is not None
+            and base_visit + queue_seconds > party_ceiling_seconds
+        )
+    ):
+        # Outside-only, NEVER deleted: the stop survives as the exterior view
+        # ("excluded entirely under wall" excludes the line and the interior,
+        # design §3.3; a closed museum is still worth standing in front of).
+        goes_inside = False
+        inside_seconds = 0
+        queue_seconds = 0
+        outside_seconds = (
+            outside if party_ceiling_seconds is None else min(outside, party_ceiling_seconds)
+        )
+
+    if weather == "rain" and not place_is_covered(poi):
+        outside_seconds = round(outside_seconds * RAIN_DWELL_FRACTION)
+        inside_seconds = round(inside_seconds * RAIN_DWELL_FRACTION)
+
+    return PromiseShape(
+        outside_seconds=outside_seconds,
+        inside_seconds=inside_seconds,
+        queue_seconds=queue_seconds,
+        goes_inside=goes_inside,
+        closed_today=closed_today,
+    )
+
+
+def shape_total_seconds(shape: PromiseShape) -> int:
+    """A stop's whole cost — THE one spelling of the components sum.
+
+    `tests/test_one_promise_pricing.py` scans the engine for any second
+    `outside + inside + queue` expression, because two expressions of one
+    quantity agree only until one of them is edited.
+    """
+    return shape.outside_seconds + shape.inside_seconds + shape.queue_seconds
+
+
+def visit_seconds(
+    poi: POI,
+    interest: frozenset[str],
+    snapshot: CorpusSnapshot | None,
+    *,
+    party_ceiling_seconds: int | None = None,
+) -> int:
+    """Seconds this visitor spends AT this place — `visit_shape`'s total.
+
+    A delegation, not a second pricer: the identity defaults (no clock, not
+    closed, no weather, no wall) reproduce today's number byte-for-byte on an
+    unpassed corpus, and on a queue-passed one the total already carries the
+    off-peak line — one definition, so no gate can budget the visit while the
+    tourist also pays the wait.
+    """
+    shape = visit_shape(poi, interest, snapshot, party_ceiling_seconds=party_ceiling_seconds)
+    return shape_total_seconds(shape)
 
 
 def stop_seconds(visit_seconds: int, audio_seconds: int) -> int:
