@@ -1,7 +1,8 @@
 """Tour-builder data contracts.
 
 INPUT: TourInput — the user-supplied request (§3.1 of phase-1-design).
-INTERMEDIATE: POI, BeatRef, TransitSegment, Route, POIBeats, BeatSequence.
+INTERMEDIATE: POI, BeatRef, TransitSegment, Route, POIBeats, BeatSequence,
+PromiseShape, Promise.
 OUTPUT: Script + Sentence + ValidationReport (§3.6 of phase-1-design).
 """
 
@@ -143,6 +144,20 @@ class TourInput(BaseModel):
     # NEVER set by mobility ("slow the walking, never the talking") and
     # "warm" is warm, never romantic.
     narration_register: Literal["solo", "warm", "family"] | None = None
+    # STOPS THE VISITOR PINNED (design §3.2) — corpus POI ids the visitor has
+    # promoted into promises: "the visitor may pin any offered stop into a
+    # promise, or release one back into fabric". The one mechanism that lets
+    # one engine serve Théo (pins one thing absolutely) and Julien (pins
+    # nothing, wants an open walk). Empty = nothing pinned = today's
+    # behaviour, byte-identical.
+    pinned_poi_ids: tuple[str, ...] = ()
+    # THE SKY — FETCHED, NEVER ASKED (design §2.5, data row 6.8): the caller
+    # fetches the forecast and hands the planner the decision it implies, so
+    # the visitor is never questioned about it. Two values because that is
+    # the whole decision (Phase 3 demo D3: the same request, dry vs rain).
+    # None = no signal fetched, which is today's behaviour, byte-identical
+    # planning — the `start_datetime` None-means-no-clock precedent.
+    weather: Literal["dry", "rain"] | None = None
 
     @field_validator("start_datetime")
     @classmethod
@@ -341,6 +356,24 @@ class POI(BaseModel):
     sit_and_talk: bool = False
     good_after_dark: bool = False
     judgement_basis: str = ""
+    # WHAT THE LINE COSTS (redesign row 6.5) — additive, same style as the
+    # opening-hours block above. A queue is a FOURTH kind of time (design
+    # §3.3): not walking, not being-at-a-place, not narration — priced
+    # separately, belonging to the day rather than the building, and excluded
+    # entirely under a "wall" end. `queue_class` is the never-priced switch:
+    # None = the audited queue pass has not reached this POI, and an unpassed
+    # queue is NEVER priced — the safe default, and the reason the numbers
+    # below may default to 0 without implying a real zero-minute line ("none"
+    # is the audited claim that there IS no line; None is no claim at all).
+    # `queue_minutes_peak` / `queue_minutes_offpeak` are the two prices;
+    # `queue_peak_hours` is the JSON-encoded hour ranges saying when peak
+    # applies (the `opening_hours` encoding precedent); `queue_basis` is the
+    # sentence that argues for the values (the `*_basis` precedent).
+    queue_class: Literal["none", "short", "long", "unpredictable"] | None = None
+    queue_minutes_peak: int = 0
+    queue_minutes_offpeak: int = 0
+    queue_peak_hours: str = ""
+    queue_basis: str = ""
 
     @model_validator(mode="after")
     def _playback_flags_are_consistent(self) -> POI:
@@ -642,6 +675,50 @@ class ClockExclusion(BaseModel):
     reason: str
 
 
+class PromiseShape(BaseModel):
+    """The shape of one promised visit — the numbers the promise is made OF.
+
+    design §3.1: a promise includes "the shape of the visit — 65 minutes
+    *inside* is a different promise from 15 minutes outside, and the queue is
+    a third number again." The three seconds are those three numbers.
+    ``goes_inside`` says which side of the door this visitor's visit lives on;
+    ``closed_today`` records that the clock has already voided the door, so
+    the promise is the outside view and nothing inside is owed. All required:
+    a promise never leaves its shape half-stated. Deliberately NO scores,
+    weights, or priorities — see ``Promise``.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    outside_seconds: int = Field(..., ge=0)
+    inside_seconds: int = Field(..., ge=0)
+    queue_seconds: int = Field(..., ge=0)
+    goes_inside: bool
+    closed_today: bool
+
+
+class Promise(BaseModel):
+    """One promised item of the day — OUTPUT, the planner's obligation.
+
+    design §3.1: a planned day is "a small set of PROMISES on a clock,
+    connected by FABRIC", and "fabric may change silently; promises may not"
+    (§4.3). ``kind`` names the four species the design lists: the interest
+    anchor, a stop the visitor pinned (§3.2), a body stop, and the finish.
+
+    A Promise carries NO scoring state — no score, no weight, no priority.
+    Promises are what the planner OWES after deciding, not knobs it reads
+    while deciding: a §3.2 pin is the visitor's decision, not a preference to
+    be traded off, and ``extra="forbid"`` refuses any field that would turn
+    an obligation back into a candidate.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    kind: Literal["anchor", "pinned", "rest", "finish"]
+    poi_id: str
+    shape: PromiseShape
+
+
 class Route(BaseModel):
     """Selected POIs in walking order, with transit segments and budgets.
 
@@ -716,6 +793,13 @@ class Route(BaseModel):
     # a disclosure riding a channel that is null in its own case discloses
     # nothing.
     clock_exclusions: tuple[ClockExclusion, ...] = ()
+    # WHAT THIS ROUTE PROMISES (design §3.1) — additive metadata in the
+    # `vignettes` mould: populated only by the promise-native planner, default
+    # empty, so every existing Route is byte-identical. Output, never input:
+    # these are the obligations the planner swore for this day, carried so
+    # downstream phases can protect them through every replan ("fabric may
+    # change silently; promises may not", §4.3).
+    promises: tuple[Promise, ...] = ()
     # M2 routed-metadata slots. ``routed`` is True iff every transit leg came
     # from Valhalla. ``route_polyline`` (stitched whole-route shape) and
     # ``backtrack_ratio``/``flow_score`` keep their defaults until the
