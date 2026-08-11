@@ -178,7 +178,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small triangular riverside park sitting seven metres below street level with unfenced stone edges dropping straight to the Seine on both sides, so a running child could reach the water; it has benches quiet enough to talk beside the river, but it is gated and locked at night."
+    "judgement_basis": "A small triangular riverside park sitting seven metres below street level with unfenced stone edges dropping straight to the Seine on both sides, so a running child could reach the water; it has benches quiet enough to talk beside the river, but it is gated and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public pocket-park with a free open gate at the island's tip; visitors walk straight down the steps with no door, ticket, or screening."
   },
   {
     "name": "Place Dauphine",
@@ -273,7 +278,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A quiet triangular square with light local traffic and open gravel that is not fully enclosed from its access roads so children could stray, but there are benches and enough calm to talk, and it stays lit and safely central at night."
+    "judgement_basis": "A quiet triangular square with light local traffic and open gravel that is not fully enclosed from its access roads so children could stray, but there are benches and enough calm to talk, and it stays lit and safely central at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A triangular open square on the Île de la Cité entered freely from the street, with no gate or ticket and therefore no queue."
   },
   {
     "name": "Pont des Arts",
@@ -378,7 +388,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A traffic-free pedestrian bridge with wooden benches where two people can sit and talk over the river, but its low parapets and open decking give a running child no barrier from the drop; it is lit, open and well-crossed at night."
+    "judgement_basis": "A traffic-free pedestrian bridge with wooden benches where two people can sit and talk over the river, but its low parapets and open decking give a running child no barrier from the drop; it is lit, open and well-crossed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A pedestrian bridge you walk straight onto from either bank — no door, no ticket, no line."
   },
   {
     "name": "Voltaire Statue (Square Honoré-Champion)",
@@ -472,7 +487,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small fenced garden square around a statue near the Seine quays with benches quiet enough to sit and talk, but too small and enclosed for a child to run free, and gated and locked at night."
+    "judgement_basis": "A small fenced garden square around a statue near the Seine quays with benches quiet enough to sit and talk, but too small and enclosed for a child to run free, and gated and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An outdoor statue in an open square passed on the walk; there is no door, ticket, or line."
   },
   {
     "name": "Square Jean XXIII",
@@ -747,7 +767,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A gated cathedral garden with lawns and paths set back from traffic where children can run, with benches quiet enough to talk, but it is a fenced municipal square locked at night so no one can be left standing inside."
+    "judgement_basis": "A gated cathedral garden with lawns and paths set back from traffic where children can run, with benches quiet enough to talk, but it is a fenced municipal square locked at night so no one can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open cathedral garden entered through a gate off the street with no ticket or screening, so no line forms."
   },
   {
     "name": "Square Rene Viviani",
@@ -977,7 +1002,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small enclosed Left Bank square with paths, lawn and a fountain away from traffic where children can run and benches let two people talk, but as a fenced municipal square it is gated and locked after dark."
+    "judgement_basis": "A small enclosed Left Bank square with paths, lawn and a fountain away from traffic where children can run and benches let two people talk, but as a fenced municipal square it is gated and locked after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open public square with an open gate and no ticket, so there is no queue."
   },
   {
     "name": "Shakespeare and Company",
@@ -1124,7 +1154,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A cramped bookshop with narrow aisles and shelved stock at child height where quiet browsing is expected and seating is not free public seating, but it sits on a lit, busy Left Bank stretch opposite Notre-Dame that stays peopled after dark."
+    "judgement_basis": "A cramped bookshop with narrow aisles and shelved stock at child height where quiet browsing is expected and seating is not free public seating, but it sits on a lit, busy Left Bank stretch opposite Notre-Dame that stays peopled after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A tiny bookshop that caps how many people fit inside and meters entry through one narrow door, so a short line forms at midday tourist peaks but clears quickly at opening; no security screening."
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -1258,7 +1298,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is a stark, silent underground memorial where running and casual conversation are socially unacceptable and there is no free open seating, and the site is closed and gated after dark."
+    "judgement_basis": "This is a stark, silent underground memorial where running and casual conversation are socially unacceptable and there is no free open seating, and the site is closed and gated after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "The memorial is free but entered by a narrow staircase that admits only a few visitors at once, so a small line can form at midday while it is otherwise walk-straight-in."
   },
   {
     "name": "Hotel-Dieu",
@@ -1355,7 +1405,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A functioning hospital with a quiet interior courtyard where running and casual sitting are inappropriate, but it sits on the open, lit, well-populated Ile de la Cite near Notre-Dame after dark."
+    "judgement_basis": "A functioning hospital with a quiet interior courtyard where running and casual sitting are inappropriate, but it sits on the open, lit, well-populated Ile de la Cite near Notre-Dame after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working hospital, not a ticketed attraction; a tourist stops to look at the facade and courtyard from the street and never joins any admission line."
   },
   {
     "name": "Pont Neuf",
@@ -1443,6 +1498,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours."
+    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
   }
 ]

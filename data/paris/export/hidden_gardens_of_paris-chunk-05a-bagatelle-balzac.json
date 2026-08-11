@@ -547,7 +547,17 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This enclosed botanical park in the Bois de Boulogne has traffic-free lawns and paths for children plus free benches in quiet settings, but it charges admission and is gated and locked at night so no one can be left standing there after dark."
+    "judgement_basis": "This enclosed botanical park in the Bois de Boulogne has traffic-free lawns and paths for children plus free benches in quiet settings, but it charges admission and is gated and locked at night so no one can be left standing there after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "This walled garden charges a small admission at a staffed gate, so a brief ticket-desk line can form on summer weekends but it moves quickly through the kiosk."
   },
   {
     "name": "Maison de Balzac",
@@ -981,7 +991,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a writer's house-museum where quiet is expected indoors so children cannot run, though its small terraced garden has free benches quiet enough to talk; it closes and locks in the evening so it fails after dark."
+    "judgement_basis": "This is a writer's house-museum where quiet is expected indoors so children cannot run, though its small terraced garden has free benches quiet enough to talk; it closes and locks in the evening so it fails after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small writer's-house museum with a single reception desk; the free permanent collection means only a minor bag-check and desk line at busy midday hours."
   },
   {
     "name": "Allée des Cygnes",
@@ -1091,7 +1111,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This narrow tree-lined walkway on an artificial island in the Seine is traffic-free but its edges drop straight to the river with no barrier suitable for a running child, it has some benches quiet enough for conversation, and as an isolated deserted strip over the water it is unsuitable after dark."
+    "judgement_basis": "This narrow tree-lined walkway on an artificial island in the Seine is traffic-free but its edges drop straight to the river with no barrier suitable for a running child, it has some benches quiet enough for conversation, and as an isolated deserted strip over the water it is unsuitable after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A narrow walkable island path in the Seine with open access at both ends — no door and no line."
   },
   {
     "name": "Trocadero",
@@ -1268,7 +1293,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The terrace and gardens offer some quiet benches where two people can sit and talk, but the site is bordered by roads and the crowded esplanade edges toward traffic so it is not safe free-range running ground; it is lit and busy with people at night, so standing after dark is fine."
+    "judgement_basis": "The terrace and gardens offer some quiet benches where two people can sit and talk, but the site is bordered by roads and the crowded esplanade edges toward traffic so it is not safe free-range running ground; it is lit and busy with people at night, so standing after dark is fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open terrace and public gardens facing the Eiffel Tower with no gate or ticket, so visitors arrive freely without queuing."
   },
   {
     "name": "Parc des Serres d'Auteuil",
@@ -1360,6 +1390,16 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This botanical garden with greenhouses has traffic-free outdoor lawns and paths where children can run and free benches quiet enough to talk, but glasshouse interiors expect care and the whole enclosure is gated and locked at night so it fails after dark."
+    "judgement_basis": "This botanical garden with greenhouses has traffic-free outdoor lawns and paths where children can run and free benches quiet enough to talk, but glasshouse interiors expect care and the whole enclosure is gated and locked at night so it fails after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "This botanical greenhouse garden has open park access but a controlled entrance to the historic glasshouses, producing only a short desk or bag-check line at peak midday."
   }
 ]

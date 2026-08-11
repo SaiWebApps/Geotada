@@ -312,7 +312,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed Montmartre garden with gravel paths, lawns and a boules ground fully fenced from traffic where children can run safely, with benches in quiet leafy surroundings for conversation, but it is a municipal square locked at nightfall."
+    "judgement_basis": "An enclosed Montmartre garden with gravel paths, lawns and a boules ground fully fenced from traffic where children can run safely, with benches in quiet leafy surroundings for conversation, but it is a municipal square locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public neighborhood garden entered through an open gate with no ticket or screening, so no wait exists before entering."
   },
   {
     "name": "Musée de Montmartre",
@@ -811,7 +816,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A museum where quiet is expected indoors and children cannot run, though its enclosed traffic-free Renoir gardens offer benches quiet enough to talk, and it is a ticketed site that closes and locks in the evening."
+    "judgement_basis": "A museum where quiet is expected indoors and children cannot run, though its enclosed traffic-free Renoir gardens offer benches quiet enough to talk, and it is a ticketed site that closes and locks in the evening.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small museum with a single ticket desk and no airport-style security, so a modest line forms at midday but stays minor at its worst."
   },
   {
     "name": "Square Carpeaux",
@@ -983,7 +998,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A fenced neighbourhood garden set back from traffic with paths and open ground where children can run and benches in quiet surroundings for talking, but a gated municipal square locked after dark."
+    "judgement_basis": "A fenced neighbourhood garden set back from traffic with paths and open ground where children can run and benches in quiet surroundings for talking, but a gated municipal square locked after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public garden with an open gate and no ticket or check, so there is no line before entering."
   },
   {
     "name": "Square Léon-Serpollet",
@@ -1079,7 +1099,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed local garden fenced off from the street with lawns and play areas where children run freely and benches quiet enough for conversation, but closed and gated at night."
+    "judgement_basis": "An enclosed local garden fenced off from the street with lawns and play areas where children run freely and benches quiet enough for conversation, but closed and gated at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public neighborhood garden entered freely through an open gate, so no queue exists."
   },
   {
     "name": "Parc Turlure",
@@ -1184,7 +1209,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A terraced hillside park behind Sacré-Coeur enclosed and traffic-free with lawns and paths for running and benches in quiet surroundings for talking, but a municipal park locked at nightfall."
+    "judgement_basis": "A terraced hillside park behind Sacré-Coeur enclosed and traffic-free with lawns and paths for running and benches in quiet surroundings for talking, but a municipal park locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public hillside park with open gates and no ticket or security, so there is nothing to wait in."
   },
   {
     "name": "Square Louise-Michel",
@@ -1331,7 +1361,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The stepped terraced lawns below Sacré-Coeur are steep and busy with dense tourist crowds rather than free running ground, but there are wide steps and grass to sit on and it is a large open unfenced space, lit and thronged with people late into the evening."
+    "judgement_basis": "The stepped terraced lawns below Sacré-Coeur are steep and busy with dense tourist crowds rather than free running ground, but there are wide steps and grass to sit on and it is a large open unfenced space, lit and thronged with people late into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The open terraced garden below Sacré-Cœur is entered freely from the street with no gate or check, so no line exists."
   },
   {
     "name": "Square des Abbesses",
@@ -1446,7 +1481,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small fenced garden beside the Abbesses metro with traffic-free paths and lawn where children can run and benches quiet enough to talk, but a gated square locked after dark."
+    "judgement_basis": "A small fenced garden beside the Abbesses metro with traffic-free paths and lawn where children can run and benches quiet enough to talk, but a gated square locked after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small public square-garden entered through an open gate with no ticket, so there is no queue to price."
   },
   {
     "name": "Montmartre Cemetery",
@@ -1594,7 +1634,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A solemn walled cemetery where running and noise are out of place, with quiet benches where two can talk, but its gates are locked at night leaving no one able to stand inside."
+    "judgement_basis": "A solemn walled cemetery where running and noise are out of place, with quiet benches where two can talk, but its gates are locked at night leaving no one able to stand inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free public cemetery entered through open gates with no ticketing or bag check, so there is no line to join."
   },
   {
     "name": "Lapin Agile",
@@ -1657,6 +1702,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A cabaret on a steep Montmartre lane with no enclosed traffic-free ground, no free public seating (only ticketed indoor seats), and its sloping side street is dim and largely deserted at night, so someone left standing there is not fine."
+    "judgement_basis": "A cabaret on a steep Montmartre lane with no enclosed traffic-free ground, no free public seating (only ticketed indoor seats), and its sloping side street is dim and largely deserted at night, so someone left standing there is not fine.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "21:00",
+        "21:30"
+      ]
+    ],
+    "queue_basis": "A small cabaret admitted by a single door at the start of an evening show, so a brief cluster forms at doors-open time but there is no security screening or all-day line."
   }
 ]

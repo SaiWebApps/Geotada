@@ -695,7 +695,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large enclosed traffic-free royal garden with gravel paths, lawns and abundant free movable chairs and benches where children can run and two people can talk quietly, but the garden is gated and closed at night."
+    "judgement_basis": "A large enclosed traffic-free royal garden with gravel paths, lawns and abundant free movable chairs and benches where children can run and two people can talk quietly, but the garden is gated and closed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in."
   },
   {
     "name": "Palais-Royal",
@@ -1094,7 +1099,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A fully enclosed traffic-free gravel-and-lawn garden ringed by arcades where children can run loud and fast and movable chairs let two people sit and talk at normal volume, but the gates are locked at night so no one can be left standing inside."
+    "judgement_basis": "A fully enclosed traffic-free gravel-and-lawn garden ringed by arcades where children can run loud and fast and movable chairs let two people sit and talk at normal volume, but the gates are locked at night so no one can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in."
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -1259,7 +1269,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working church where quiet is expected and pews are not casual seating, so children cannot run and there is no free conversational seating, but it faces the well-lit and peopled area beside the Louvre at night."
+    "judgement_basis": "A working church where quiet is expected and pews are not casual seating, so children cannot run and there is no free conversational seating, but it faces the well-lit and peopled area beside the Louvre at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working parish church with an open door you walk straight through without ticket or check, so there is no queue."
   },
   {
     "name": "Eglise Saint-Roch",
@@ -1349,7 +1364,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A church interior where silence is expected (no running, and pews are not free casual seating) fronting rue Saint-Honoré, a busy lit shopping street where someone left on the steps at nightfall would be among passers-by."
+    "judgement_basis": "A church interior where silence is expected (no running, and pews are not free casual seating) fronting rue Saint-Honoré, a busy lit shopping street where someone left on the steps at nightfall would be among passers-by.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door and no ticket or security screening; worshippers and visitors walk straight in without stopping."
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -1441,7 +1461,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A church interior expecting silence, on the small quiet Place des Petits-Pères which has little through-traffic or nightlife, and the church itself is locked after hours, so I judge after-dark false on this calm side-street."
+    "judgement_basis": "A church interior expecting silence, on the small quiet Place des Petits-Pères which has little through-traffic or nightlife, and the church itself is locked after hours, so I judge after-dark false on this calm side-street.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A basilica with an open door and no ticket or security check, entered directly without stopping."
   },
   {
     "name": "Galerie Vivienne",
@@ -1569,7 +1594,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid café tables, echoing acoustics, and gates locked after closing."
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid café tables, echoing acoustics, and gates locked after closing.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered arcade open at both ends with no door or ticket; visitors stroll through with no queue."
   },
   {
     "name": "Comedie-Francaise",
@@ -1664,7 +1694,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working theatre building whose interior demands quiet and whose ground floor offers no free public seating, but it fronts the busy lit rue de Rivoli and Place Colette near the Palais-Royal métro with people about at night, so someone left standing outside would be fine."
+    "judgement_basis": "A working theatre building whose interior demands quiet and whose ground floor offers no free public seating, but it fronts the busy lit rue de Rivoli and Place Colette near the Palais-Royal métro with people about at night, so someone left standing outside would be fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working theatre entered on a ticket for a performance rather than by a walk-in queue; on a walking tour it is a facade you pass with no standing line."
   },
   {
     "name": "Galignani",
@@ -1693,7 +1728,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "Galignani is a bookshop on rue de Rivoli where running is impossible among the shelves and there is no free seating, but it fronts a lit and busy central arcade street where someone could be left standing at night."
+    "judgement_basis": "Galignani is a bookshop on rue de Rivoli where running is impossible among the shelves and there is no free seating, but it fronts a lit and busy central arcade street where someone could be left standing at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A rue de Rivoli bookshop entered straight from the street with no admission or screening, so there is no queue to enter."
   },
   {
     "name": "Angelina Paris",
@@ -1722,6 +1762,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "Angelina is a paid tearoom on Rue de Rivoli where seating must be bought and children cannot run among tables and china, and it closes and locks at night; I judge from its known nature as a café."
+    "judgement_basis": "Angelina is a paid tearoom on Rue de Rivoli where seating must be bought and children cannot run among tables and china, and it closes and locks at night; I judge from its known nature as a café.",
+    "queue_class": "long",
+    "queue_minutes_peak": 40,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "This is a small famous tea room with limited table seating and no reservations for walk-ins, so patrons queue on the pavement for a table through the midday and afternoon tea rush, with only a short wait at opening."
   }
 ]

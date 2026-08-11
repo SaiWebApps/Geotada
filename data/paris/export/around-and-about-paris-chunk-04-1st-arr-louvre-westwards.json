@@ -126,7 +126,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A department store interior with glass displays and paid seating only, unsuitable for running children or free quiet conversation, but it stands on lit, busy central streets with people about after dark."
+    "judgement_basis": "A department store interior with glass displays and paid seating only, unsuitable for running children or free quiet conversation, but it stands on lit, busy central streets with people about after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A free-entry department store whose doors carry a bag check that can back up briefly at peak shopping hours but otherwise flows straight through."
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -214,7 +224,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working church where quiet is expected and pews are not casual seating, so children cannot run and there is no free conversational seating, but it faces the well-lit and peopled area beside the Louvre at night."
+    "judgement_basis": "A working church where quiet is expected and pews are not casual seating, so children cannot run and there is no free conversational seating, but it faces the well-lit and peopled area beside the Louvre at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working parish church with an open door you walk straight through without ticket or check, so there is no queue."
   },
   {
     "name": "Galerie Vero-Dodat",
@@ -273,7 +288,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, no free seating and echoing acoustics, and it is locked at closing time so no one can stand inside after dark."
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, no free seating and echoing acoustics, and it is locked at closing time so no one can stand inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered shopping passage open to the street at both ends with no admission control, so there is nothing to wait in."
   },
   {
     "name": "Banque de France",
@@ -332,7 +352,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A secured central-bank building closed to the public with no open ground or public seating, but its surrounding central streets are lit and normally trafficked in the evening."
+    "judgement_basis": "A secured central-bank building closed to the public with no open ground or public seating, but its surrounding central streets are lit and normally trafficked in the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working central bank not open to walk-in visitors; passed only from the street outside, so there is no public entry line to price."
   },
   {
     "name": "Place des Victoires",
@@ -416,7 +441,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A circular square encircled by traffic around a central statue island with no enclosure and no free seating, so children cannot run and there is nowhere quiet to sit, but it is lit and centrally located with people passing after dark."
+    "judgement_basis": "A circular square encircled by traffic around a central statue island with no enclosure and no free seating, so children cannot run and there is nowhere quiet to sit, but it is lit and centrally located with people passing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A circular open square around a royal statue, freely entered from the surrounding streets with no gate or ticket, so there is no queue."
   },
   {
     "name": "Palais-Royal",
@@ -530,7 +560,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A fully enclosed traffic-free gravel-and-lawn garden ringed by arcades where children can run loud and fast and movable chairs let two people sit and talk at normal volume, but the gates are locked at night so no one can be left standing inside."
+    "judgement_basis": "A fully enclosed traffic-free gravel-and-lawn garden ringed by arcades where children can run loud and fast and movable chairs let two people sit and talk at normal volume, but the gates are locked at night so no one can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in."
   },
   {
     "name": "Comedie-Francaise",
@@ -595,7 +630,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working theatre building whose interior demands quiet and whose ground floor offers no free public seating, but it fronts the busy lit rue de Rivoli and Place Colette near the Palais-Royal métro with people about at night, so someone left standing outside would be fine."
+    "judgement_basis": "A working theatre building whose interior demands quiet and whose ground floor offers no free public seating, but it fronts the busy lit rue de Rivoli and Place Colette near the Palais-Royal métro with people about at night, so someone left standing outside would be fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working theatre entered on a ticket for a performance rather than by a walk-in queue; on a walking tour it is a facade you pass with no standing line."
   },
   {
     "name": "Hotel Le Meurice",
@@ -680,7 +720,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A palace hotel on the traffic-heavy rue de Rivoli with an arcaded pavement and no free public seating and an interior closed to non-guests, but the street is brightly lit and busy well into the night."
+    "judgement_basis": "A palace hotel on the traffic-heavy rue de Rivoli with an arcaded pavement and no free public seating and an interior closed to non-guests, but the street is brightly lit and busy well into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A luxury hotel with no public ticketed entry and no queue mechanism; visitors on a tour view it from the street, so there is nothing to stand in."
   },
   {
     "name": "Eglise Saint-Roch",
@@ -741,7 +786,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A church interior where silence is expected (no running, and pews are not free casual seating) fronting rue Saint-Honoré, a busy lit shopping street where someone left on the steps at nightfall would be among passers-by."
+    "judgement_basis": "A church interior where silence is expected (no running, and pews are not free casual seating) fronting rue Saint-Honoré, a busy lit shopping street where someone left on the steps at nightfall would be among passers-by.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door and no ticket or security screening; worshippers and visitors walk straight in without stopping."
   },
   {
     "name": "Place Vendome",
@@ -804,6 +854,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An open octagonal square with vehicle traffic circulating and no free seating, offering no safe enclosed run-space, but it is central, well-lit and patrolled into the night."
+    "judgement_basis": "An open octagonal square with vehicle traffic circulating and no free seating, offering no safe enclosed run-space, but it is central, well-lit and patrolled into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square walked into freely from surrounding streets with no gate or ticket, so there is no line."
   }
 ]

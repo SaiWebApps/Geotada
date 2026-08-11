@@ -63,7 +63,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A neoclassical former stock exchange fronted by streets and its columned steps, walked past not entered, the surrounding pavement carries traffic and offers no reliable quiet free seating, though the building is floodlit and stands on a busy central square lit and peopled after dark."
+    "judgement_basis": "A neoclassical former stock exchange fronted by streets and its columned steps, walked past not entered, the surrounding pavement carries traffic and offers no reliable quiet free seating, though the building is floodlit and stands on a busy central square lit and peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by-only former stock exchange now used as an event venue; no public ticketed entry means there is no queue to price."
   },
   {
     "name": "Grands Boulevards",
@@ -121,7 +126,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A long tree-lined boulevard corridor with heavy multi-lane traffic beside the pavements, too dangerous for a child at speed and too noisy for a benched conversation at normal volume, but brightly lit and busy with people and cafés late into the night."
+    "judgement_basis": "A long tree-lined boulevard corridor with heavy multi-lane traffic beside the pavements, too dangerous for a child at speed and too noisy for a benched conversation at normal volume, but brightly lit and busy with people and cafés late into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open promenade corridor with no door and no admission; there is nothing to stand in line for."
   },
   {
     "name": "Porte Saint-Denis",
@@ -206,7 +216,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A triumphal arch standing on a traffic island where rue Saint-Denis meets a busy boulevard, ringed by roads with no enclosure and no free seating, but lit at night and set on a well-trafficked junction where a person would not be isolated."
+    "judgement_basis": "A triumphal arch standing on a traffic island where rue Saint-Denis meets a busy boulevard, ringed by roads with no enclosure and no free seating, but lit at night and set on a well-trafficked junction where a person would not be isolated.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A triumphal arch in the middle of a street, seen from the pavement; no interior and no line."
   },
   {
     "name": "Passage de la Trinite",
@@ -264,7 +279,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered arcade on rue Saint-Denis with shopfronts at child height, no free seating and echoing enclosed acoustics, and like all such passages it is gated and locked when its shops close, leaving no one safely standing there after dark."
+    "judgement_basis": "A narrow covered arcade on rue Saint-Denis with shopfronts at child height, no free seating and echoing enclosed acoustics, and like all such passages it is gated and locked when its shops close, leaving no one safely standing there after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered passage you walk straight through with no gate or ticket; nothing to queue for."
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -360,7 +380,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A tall glazed covered arcade with glass shopfronts at child height and only paid café tables for seating, its echoing hall makes talking effort, and it is gated shut after closing so no one can be left standing inside at night."
+    "judgement_basis": "A tall glazed covered arcade with glass shopfronts at child height and only paid café tables for seating, its echoing hall makes talking effort, and it is gated shut after closing so no one can be left standing inside at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open covered arcade entered freely from the street; no door check and no line to enter."
   },
   {
     "name": "Tour Jean sans Peur",
@@ -460,7 +485,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow medieval stone tower on a tight street, walked past only, with no enclosed traffic-free ground for a child, no free seating, and an unremarkable poorly-lit side street around it that would leave someone isolated after dark."
+    "judgement_basis": "A narrow medieval stone tower on a tight street, walked past only, with no enclosed traffic-free ground for a child, no free seating, and an unremarkable poorly-lit side street around it that would leave someone isolated after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small medieval tower museum with a single ticket desk that admits a trickle of visitors; the desk can hold a few people at busy afternoon hours but the modest interior draws no substantial line."
   },
   {
     "name": "Rue Montorgueil",
@@ -556,7 +591,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A pedestrianised market street free of through traffic but crowded with market stalls, delivery movement and dense pedestrians, so a child cannot safely run full-speed and the only seating is paid café terraces, though it stays lit and lively with people well into the evening."
+    "judgement_basis": "A pedestrianised market street free of through traffic but crowded with market stalls, delivery movement and dense pedestrians, so a child cannot safely run full-speed and the only seating is paid café terraces, though it stays lit and lively with people well into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A pedestrian market street entered freely; the value is in the open air with no gate to pass."
   },
   {
     "name": "Place du Caire",
@@ -618,7 +658,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A small hard-surfaced square in the garment district open to vehicle access with no dedicated free seating and little enclosure, and its Sentier-district streets empty out and dim after business hours, leaving no one comfortably left standing at night."
+    "judgement_basis": "A small hard-surfaced square in the garment district open to vehicle access with no dedicated free seating and little enclosure, and its Sentier-district streets empty out and dim after business hours, leaving no one comfortably left standing at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open square viewed from the pavement; no interior and no admission means no queue."
   },
   {
     "name": "Rue de Clery",
@@ -704,7 +749,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow historic street in the Sentier with vehicle traffic, no free public seating and tight pavements, and being a quiet workaday street it becomes deserted and dim after dark, so I judge it conservatively false on all three."
+    "judgement_basis": "A narrow historic street in the Sentier with vehicle traffic, no free public seating and tight pavements, and being a quiet workaday street it becomes deserted and dim after dark, so I judge it conservatively false on all three.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open historic street with no door or ticket; there is nothing to stand in line for."
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -764,7 +814,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A building address on a wide busy boulevard walked past only, with traffic beside narrow pavements and no free seating, but the boulevard is brightly lit and busy with people and cafés late, so a person could safely be left standing there at night."
+    "judgement_basis": "A building address on a wide busy boulevard walked past only, with traffic beside narrow pavements and no free seating, but the boulevard is brightly lit and busy with people and cafés late, so a person could safely be left standing there at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A commemorative building facade seen from the street with no public entry; no queue to price."
   },
   {
     "name": "Place de Louvois",
@@ -822,7 +877,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small square with a fountain garden and public benches quiet enough for two people to talk, but roads run around it so a child at speed could reach traffic, and this small square is unlit and deserted at night with no crowds about."
+    "judgement_basis": "A small square with a fountain garden and public benches quiet enough for two people to talk, but roads run around it so a child at speed could reach traffic, and this small square is unlit and deserted at night with no crowds about.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open square with a fountain, entered freely; no door and no line."
   },
   {
     "name": "Cafe du Croissant",
@@ -888,6 +948,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A street-corner café building walked past only, its pavement carries traffic and its only seating is a paid terrace, but it sits on a lit and peopled corner near the boulevards where someone could safely be left standing after dark."
+    "judgement_basis": "A street-corner café building walked past only, its pavement carries traffic and its only seating is a paid terrace, but it sits on a lit and peopled corner near the boulevards where someone could safely be left standing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working café passed on the street; there is no admission line, only ordinary café seating, so no entry queue to price."
   }
 ]

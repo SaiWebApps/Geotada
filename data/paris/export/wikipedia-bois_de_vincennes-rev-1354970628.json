@@ -397,6 +397,11 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A vast open woodland park with traffic-free lawns and paths for running and plentiful benches in quiet settings, but it is dark, unlit and deserted after nightfall with roads cutting through parts of it."
+    "judgement_basis": "A vast open woodland park with traffic-free lawns and paths for running and plentiful benches in quiet settings, but it is dark, unlit and deserted after nightfall with roads cutting through parts of it.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A vast open public park with no enclosing gate to queue at; you simply walk in from any edge."
   }
 ]

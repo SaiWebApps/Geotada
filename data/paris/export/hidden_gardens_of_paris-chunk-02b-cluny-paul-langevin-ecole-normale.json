@@ -203,7 +203,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "These enclosed medieval-themed museum gardens have benches in a quiet planted setting good for talking, but the contemplative curated planting and enclosure mean children are not free to run loud and fast, and the gates are shut at night."
+    "judgement_basis": "These enclosed medieval-themed museum gardens have benches in a quiet planted setting good for talking, but the contemplative curated planting and enclosure mean children are not free to run loud and fast, and the gates are shut at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The gardens are a free open enclosure entered directly from the street without ticket or screening, so no line forms to reach them."
   },
   {
     "name": "Square Paul-Painleve",
@@ -290,7 +295,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small fenced garden set back from rue des Ecoles with lawns and benches quiet enough to talk and enclosed enough for a child to run, but as a railed municipal square it is locked at night."
+    "judgement_basis": "A small fenced garden set back from rue des Ecoles with lawns and benches quiet enough to talk and enclosed enough for a child to run, but as a railed municipal square it is locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street-side square you walk into freely with no door or ticket, so no line exists."
   },
   {
     "name": "Square Paul-Langevin",
@@ -520,7 +530,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small enclosed flower-bordered square with benches off the street quiet enough to talk and contained enough for a child to run, but a gated municipal garden closed and locked after dark."
+    "judgement_basis": "A small enclosed flower-bordered square with benches off the street quiet enough to talk and contained enough for a child to run, but a gated municipal garden closed and locked after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open garden entered directly from the street with no ticket or screening, so there is nothing to queue for."
   },
   {
     "name": "Jardin Carre",
@@ -613,7 +628,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A serene topiary courtyard garden with a pool where quiet contemplation is expected and topiary and water make free running discouraged and hazardous, but low walls or benches allow a quiet seated conversation, while as an enclosed courtyard hideaway it is gated and shut at night."
+    "judgement_basis": "A serene topiary courtyard garden with a pool where quiet contemplation is expected and topiary and water make free running discouraged and hazardous, but low walls or benches allow a quiet seated conversation, while as an enclosed courtyard hideaway it is gated and shut at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public courtyard garden reached through an open passage with no ticket, so no line forms."
   },
   {
     "name": "Musee de Cluny",
@@ -745,7 +765,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A medieval art museum indoors where running is not tolerated near fragile tapestries, with garden benches quiet enough for conversation, but it closes and is locked at night."
+    "judgement_basis": "A medieval art museum indoors where running is not tolerated near fragile tapestries, with garden benches quiet enough for conversation, but it closes and is locked at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single ticket desk and bag check at this modest medieval museum produce a small moving line rather than a substantial one."
   },
   {
     "name": "Ecole Normale Superieure",
@@ -1040,7 +1070,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A gated, secured academic institution whose interior courtyards are not open to the public so children cannot run there and there is no public free seating, but its rue d'Ulm frontage near the Pantheon is lit and on a normal city street where someone could safely be left standing."
+    "judgement_basis": "A gated, secured academic institution whose interior courtyards are not open to the public so children cannot run there and there is no public free seating, but its rue d'Ulm frontage near the Pantheon is lit and on a normal city street where someone could safely be left standing.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working academic institution, not a ticketed attraction; the tour views it from the street with no public entry line to stand in."
   },
   {
     "name": "Montagne Sainte-Genevieve",
@@ -1127,6 +1162,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is a hill and network of Latin Quarter streets carrying traffic with pavement seating at most, so children cannot run free of cars and there is no reliably quiet free seating, but the streets are lit and peopled into the evening; I judge from its known character as an urban quarter."
+    "judgement_basis": "This is a hill and network of Latin Quarter streets carrying traffic with pavement seating at most, so children cannot run free of cars and there is no reliably quiet free seating, but the streets are lit and peopled into the evening; I judge from its known character as an urban quarter.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a hill and its network of open streets in the Latin Quarter, with no door or ticket, so the whole value stands in the open with no queue."
   }
 ]

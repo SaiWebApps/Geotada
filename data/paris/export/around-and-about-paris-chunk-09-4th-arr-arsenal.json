@@ -137,7 +137,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A cathedral interior demands silence and stillness so children cannot run and normal conversation is discouraged, and the surrounding parvis is open paving without quiet free seating; the Ile de la Cite location is lit and trafficked with people about, so being left standing after dark is fine."
+    "judgement_basis": "A cathedral interior demands silence and stillness so children cannot run and normal conversation is discouraged, and the surrounding parvis is open paving without quiet free seating; the Ile de la Cite location is lit and trafficked with people about, so being left standing after dark is fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 40,
+    "queue_minutes_offpeak": 15,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Since the post-fire reopening entry is managed through a controlled single access point with high demand, forming a substantial line to walk into a free cathedral that eases only at opening and near closing."
   },
   {
     "name": "Ile de la Cite",
@@ -191,7 +201,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark."
+    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it."
   },
   {
     "name": "Ile Saint-Louis",
@@ -241,7 +256,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A residential island whose narrow streets carry cars and whose quays edge straight onto the Seine, so running children are at risk, but its tree-lined quay steps and benches are quiet enough to talk and the streets stay lit and inhabited at night."
+    "judgement_basis": "A residential island whose narrow streets carry cars and whose quays edge straight onto the Seine, so running children are at risk, but its tree-lined quay steps and benches are quiet enough to talk and the streets stay lit and inhabited at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A residential island of open streets and shopfronts with no controlled entrance, so nothing is queued before you walk onto it."
   },
   {
     "name": "Hotel de Ville",
@@ -499,7 +519,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A city-hall forecourt that is open paved plaza bordered by trafficked streets with no free seating and often fenced for events, so children cannot safely range and there is nowhere to sit quietly, but the square is well lit and peopled into the evening."
+    "judgement_basis": "A city-hall forecourt that is open paved plaza bordered by trafficked streets with no free seating and often fenced for events, so children cannot safely range and there is nowhere to sit quietly, but the square is well lit and peopled into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The City Hall interior is only open by occasional booked exhibition or event, so a walking-tour stop views the facade and forecourt from the open square with no line."
   },
   {
     "name": "Place des Vosges",
@@ -641,7 +666,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night."
+    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for."
   },
   {
     "name": "Centre Pompidou",
@@ -761,7 +791,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The museum interior forbids running, but the large sloping traffic-free forecourt has broad ground and low ledges where people sit and talk, and the plaza is lit and busy with people into the evening, so standing after dark is fine; note the forecourt itself is fairly open, but its slope toward buildings not traffic still does not make it safe free-range running ground for a loud fast child amid dense crowds."
+    "judgement_basis": "The museum interior forbids running, but the large sloping traffic-free forecourt has broad ground and low ledges where people sit and talk, and the plaza is lit and busy with people into the evening, so standing after dark is fine; note the forecourt itself is fairly open, but its slope toward buildings not traffic still does not make it safe free-range running ground for a loud fast child amid dense crowds.",
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Security screening and ticket gates at the entrance form a modest line at busy afternoon hours, short at opening and near closing."
   },
   {
     "name": "Bibliotheque de l'Arsenal",
@@ -957,7 +997,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A historic library where silence is enforced indoors and there is no free public seating for casual talk, and the building is closed and locked after hours."
+    "judgement_basis": "A historic library where silence is enforced indoors and there is no free public seating for casual talk, and the building is closed and locked after hours.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A working historic library where entry means a reading-room reception or a small guided-visit desk rather than mass ticketing, so at most a few people wait ahead at busy afternoon hours."
   },
   {
     "name": "Pavillon de l'Arsenal",
@@ -1012,6 +1062,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A glass-and-steel exhibition hall where quiet browsing is expected and running is not, with no free seating and doors locked at night, leaving no lit open place to stand."
+    "judgement_basis": "A glass-and-steel exhibition hall where quiet browsing is expected and running is not, with no free seating and doors locked at night, leaving no lit open place to stand.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A free urbanism exhibition hall with a single entrance and occasional bag check; a brief line can form on busy weekend afternoons but it clears quickly."
   }
 ]

@@ -341,6 +341,11 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark."
+    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering."
   }
 ]

@@ -54,7 +54,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A 19th-century synagogue on a narrow street, an interior place of worship where quiet is expected and there is no free street seating, and its side street is dim and quiet after dark with a secured gated entrance, so I judge it false on all three."
+    "judgement_basis": "A 19th-century synagogue on a narrow street, an interior place of worship where quiet is expected and there is no free street seating, and its side street is dim and quiet after dark with a secured gated entrance, so I judge it false on all three.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by-only synagogue with no public tourist admission; there is no line for a passing visitor to stand in."
   },
   {
     "name": "Priory of Saint-Martin-des-Champs",
@@ -200,7 +205,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A medieval priory church now part of a museum complex behind crenellated walls, an enclosed interior where quiet is expected and free public seating is not offered, and its grounds are gated and locked at night so no one could be left standing inside."
+    "judgement_basis": "A medieval priory church now part of a museum complex behind crenellated walls, an enclosed interior where quiet is expected and free public seating is not offered, and its grounds are gated and locked at night so no one could be left standing inside.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Now the Musée des Arts et Métiers, entry is through a single ticket and bag-check desk that gathers a few people at midday but the line stays minor and moves steadily."
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -294,7 +309,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An enclosed indoor museum with fragile exhibits and expected quiet where children cannot run and free quiet seating for conversation is absent, but it sits on a lit central Paris street with metro traffic and passers-by after closing."
+    "judgement_basis": "An enclosed indoor museum with fragile exhibits and expected quiet where children cannot run and free quiet seating for conversation is absent, but it sits on a lit central Paris street with metro traffic and passers-by after closing.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A mid-sized ticketed museum with a bag check and ticket desk that rarely backs up; the line is minor and moves, peaking only midday when school and tour groups arrive."
   },
   {
     "name": "Porte Saint-Martin",
@@ -380,7 +405,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A freestanding triumphal arch on a traffic island where busy boulevards meet, with no seating and roads on all sides, but it is brightly lit and on a major thoroughfare with people passing at all hours."
+    "judgement_basis": "A freestanding triumphal arch on a traffic island where busy boulevards meet, with no seating and roads on all sides, but it is brightly lit and on a major thoroughfare with people passing at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A freestanding triumphal arch on a street island with no interior and no door, so there is nothing to queue for."
   },
   {
     "name": "Saint-Nicolas-des-Champs",
@@ -462,7 +492,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A working parish church where quiet is expected inside and running is impossible; interiors have no free casual seating for conversation and the building is locked at night, leaving no lit open space to stand in."
+    "judgement_basis": "A working parish church where quiet is expected inside and running is impossible; interiors have no free casual seating for conversation and the building is locked at night, leaving no lit open space to stand in.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working parish church with an open door and free entry, walked into without any ticket desk or security check."
   },
   {
     "name": "3 Rue Volta",
@@ -520,7 +555,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private half-timbered house fronting directly onto a narrow Marais street with no enclosure, no seating and no room to run, and the quiet residential lane is deserted and dim after dark."
+    "judgement_basis": "A private half-timbered house fronting directly onto a narrow Marais street with no enclosure, no seating and no room to run, and the quiet residential lane is deserted and dim after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private half-timbered house seen only from the street; there is no admission and no interior to enter, so no line forms."
   },
   {
     "name": "Convent of the Madelonnettes",
@@ -577,6 +617,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This convent was demolished in 1865-66 so nothing survives to stand at; judged conservatively, its former site is ordinary street frontage with no enclosure, no seating and no reason to linger after dark."
+    "judgement_basis": "This convent was demolished in 1865-66 so nothing survives to stand at; judged conservatively, its former site is ordinary street frontage with no enclosure, no seating and no reason to linger after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The convent was demolished in the 1860s and only a street site remains, so there is nothing to enter and no queue."
   }
 ]

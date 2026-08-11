@@ -224,7 +224,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A fenced, traffic-free public garden with lawns and gravel paths where children can run freely and benches sit quietly away from cars, but like Paris squares it is gated and locked at nightfall so no one can be left inside."
+    "judgement_basis": "A fenced, traffic-free public garden with lawns and gravel paths where children can run freely and benches sit quietly away from cars, but like Paris squares it is gated and locked at nightfall so no one can be left inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free public garden entered through an open gate with no ticket or bag check, so there is no line to price."
   },
   {
     "name": "Place des Vosges",
@@ -343,7 +348,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night."
+    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for."
   },
   {
     "name": "Musee Carnavalet",
@@ -503,7 +513,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An indoor history museum where quiet is expected and objects sit at child height, but its enclosed courtyards and garden have benches quiet enough to talk; it closes in the evening and is gated at night."
+    "judgement_basis": "An indoor history museum where quiet is expected and objects sit at child height, but its enclosed courtyards and garden have benches quiet enough to talk; it closes in the evening and is gated at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "The permanent collection is free so there is no ticket-purchase line, but a bag check at the mansion entrance forms a small moving queue at midday."
   },
   {
     "name": "Musee Picasso",
@@ -662,7 +682,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An indoor mansion museum where quiet is expected and art is at child height, with a courtyard offering seating quiet enough to talk, but closed and gated after dark."
+    "judgement_basis": "An indoor mansion museum where quiet is expected and art is at child height, with a courtyard offering seating quiet enough to talk, but closed and gated after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Timed entry and a bag check at the mansion door keep the line to a minor wait even when the ticket gate is busy."
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -743,7 +773,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered market with fragile stalls and produce at child height where running is unsafe and unwelcome, whose only seating is paid food-stall benches, and which is gated and locked outside market hours leaving nowhere lit to stand at night."
+    "judgement_basis": "A narrow covered market with fragile stalls and produce at child height where running is unsafe and unwelcome, whose only seating is paid food-stall benches, and which is gated and locked outside market hours leaving nowhere lit to stand at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered public market with open entrances and no admission control, so visitors walk straight in and there is no line to enter."
   },
   {
     "name": "Hotel de Soubise",
@@ -876,6 +911,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "The National Archives occupy a formal building with a courtyard of honour that is a monument, not a play or lounging space, with no free public seating; unfamiliar with its evening street life on the quiet rue des Francs-Bourgeois I judge after-dark conservatively false as the courtyard is gated when closed."
+    "judgement_basis": "The National Archives occupy a formal building with a courtyard of honour that is a monument, not a play or lounging space, with no free public seating; unfamiliar with its evening street life on the quiet rue des Francs-Bourgeois I judge after-dark conservatively false as the courtyard is gated when closed.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "The National Archives museum has a single ticket desk with a bag check that moves quickly, producing only a minor line at afternoon peak."
   }
 ]

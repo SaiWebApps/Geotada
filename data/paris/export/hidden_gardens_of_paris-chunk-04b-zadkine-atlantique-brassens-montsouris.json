@@ -309,7 +309,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A small studio-museum entered from rue d'Assas and passed by only from the street; interiors expect quiet so children cannot run, there is no free street seating, and the frontage on a calm side street offers no lit night presence."
+    "judgement_basis": "A small studio-museum entered from rue d'Assas and passed by only from the street; interiors expect quiet so children cannot run, there is no free street seating, and the frontage on a calm side street offers no lit night presence.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small free city studio-museum with one entrance and a bag check that can back up briefly in the afternoon, but the intimate size keeps any wait minor even though the group is only walking by."
   },
   {
     "name": "Musee Bourdelle",
@@ -429,7 +439,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A sculptor's-studio museum where quiet is expected among fragile works so children cannot run and there is no free public quiet seating, and as an enclosed museum with a courtyard it is gated and closed after dark; judged from the museum name absent a description."
+    "judgement_basis": "A sculptor's-studio museum where quiet is expected among fragile works so children cannot run and there is no free public quiet seating, and as an enclosed museum with a courtyard it is gated and closed after dark; judged from the museum name absent a description.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small sculpture museum in the artist's former studio with a modest reception desk and light bag check; free permanent collection keeps the line short, peaking to about 10 minutes midday and a few minutes otherwise."
   },
   {
     "name": "La Closerie des Lilas",
@@ -565,7 +585,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A brasserie with only paid table seating fronting a busy boulevard junction where a child cannot run safely, but the wide avenue is lit and trafficked at night."
+    "judgement_basis": "A brasserie with only paid table seating fronting a busy boulevard junction where a child cannot run safely, but the wide avenue is lit and trafficked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Priced as a walk-by brasserie with no entry line — you pass its facade and plaques from the street, and any table wait is seating, not a queue to enter a monument."
   },
   {
     "name": "Montparnasse Cemetery",
@@ -700,7 +725,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A quiet gravelled cemetery where children cannot be loud and free-range without disapproval, offering benches suitable for calm conversation, but closed and locked after dark."
+    "judgement_basis": "A quiet gravelled cemetery where children cannot be loud and free-range without disapproval, offering benches suitable for calm conversation, but closed and locked after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Free open gates and no entry control mean visitors pass straight in with no queue."
   },
   {
     "name": "Parc Georges-Brassens",
@@ -1167,7 +1197,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large enclosed municipal park with lawns and paths traffic-free where children can run and abundant benches allow quiet conversation, but as a fenced Paris park it is gated and locked at nightfall."
+    "judgement_basis": "A large enclosed municipal park with lawns and paths traffic-free where children can run and abundant benches allow quiet conversation, but as a fenced Paris park it is gated and locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large open public park entered freely through gates with no ticket or screening, so no queue forms."
   },
   {
     "name": "La Ruche",
@@ -1196,7 +1231,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "La Ruche is a private artists' residence complex in the 15th arrondissement with a gated garden not open for free public use, so there is no traffic-free running ground for children, no free public seating to hold a conversation, and its gates and private status make it unsuitable for leaving someone standing after dark."
+    "judgement_basis": "La Ruche is a private artists' residence complex in the 15th arrondissement with a gated garden not open for free public use, so there is no traffic-free running ground for children, no free public seating to hold a conversation, and its gates and private status make it unsuitable for leaving someone standing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an artists' residence complex viewed from the outside only on a walk-by; there is no public entrance line to stand in."
   },
   {
     "name": "Parc Montsouris",
@@ -1565,7 +1605,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This large landscaped park has traffic-free lawns and paths where children can run freely and abundant free benches quiet enough for conversation, but like all Paris municipal parks it is fenced and locked at nightfall, so no one can be left standing inside after dark."
+    "judgement_basis": "This large landscaped park has traffic-free lawns and paths where children can run freely and abundant free benches quiet enough for conversation, but like all Paris municipal parks it is fenced and locked at nightfall, so no one can be left standing inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large public park with open gates you walk straight through — no ticket, no security, no line."
   },
   {
     "name": "Villa Santos-Dumont",
@@ -1648,7 +1693,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is a quiet private residential cul-de-sac lane with no enclosed play space or free public seating and, as a deserted lane after dark, it fails the leave-someone-standing test despite feeling safe by day."
+    "judgement_basis": "This is a quiet private residential cul-de-sac lane with no enclosed play space or free public seating and, as a deserted lane after dark, it fails the leave-someone-standing test despite feeling safe by day.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private residential lane admired from the street; there is no door or ticket and thus no queue."
   },
   {
     "name": "Butte-aux-Cailles",
@@ -1679,6 +1729,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A hilltop network of open cobblestone streets that carry traffic and offer no free public seating, so children cannot safely run free and there is nowhere to sit quietly, but the streets are lit and populated by bars and restaurants after dark."
+    "judgement_basis": "A hilltop network of open cobblestone streets that carry traffic and offer no free public seating, so children cannot safely run free and there is nowhere to sit quietly, but the streets are lit and populated by bars and restaurants after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open hilltop neighbourhood of cobbled streets and murals with no door or gate to enter, so there is nothing to queue for."
   }
 ]

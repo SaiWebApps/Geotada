@@ -106,7 +106,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A large traffic roundabout circling the July Column with heavy vehicles on all sides and no free quiet seating, so a child could run into traffic and conversation is impossible, but it is a lit, open, busy junction where a person left standing at night would be fine."
+    "judgement_basis": "A large traffic roundabout circling the July Column with heavy vehicles on all sides and no free quiet seating, so a child could run into traffic and conversation is impossible, but it is a lit, open, busy junction where a person left standing at night would be fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open traffic square with the July Column at its centre, entered from the surrounding streets with no door or ticket."
   },
   {
     "name": "Temple du Marais",
@@ -193,7 +198,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A domed Protestant church where quiet is expected inside and running is impossible, with no free casual seating for conversation and the building locked after services."
+    "judgement_basis": "A domed Protestant church where quiet is expected inside and running is impossible, with no free casual seating for conversation and the building locked after services.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working Protestant temple with an open door and free entry, walked straight into with no ticket desk or screening."
   },
   {
     "name": "Hotel de Mayenne",
@@ -246,7 +256,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private Marais mansion (now a school) fronting a narrow street with no public enclosure, no seating and no room to run, and its stretch of the rue Saint-Antoine side streets is quiet and dim at night."
+    "judgement_basis": "A private Marais mansion (now a school) fronting a narrow street with no public enclosure, no seating and no room to run, and its stretch of the rue Saint-Antoine side streets is quiet and dim at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private Marais mansion (now a school) viewed only from the street, with no public interior and therefore no queue."
   },
   {
     "name": "Place des Vosges",
@@ -355,7 +370,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night."
+    "judgement_basis": "A traffic-free central garden enclosed by uniform arcaded houses with lawns and benches where children can run safely and two people can sit quietly, but the garden itself is railed and gated shut at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for."
   },
   {
     "name": "Musee Victor Hugo",
@@ -437,7 +457,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "The museum interior is a hushed former apartment where children cannot run and there is no free conversational seating, and it closes at night; the surrounding Place des Vosges arcade is not the place itself."
+    "judgement_basis": "The museum interior is a hushed former apartment where children cannot run and there is no free conversational seating, and it closes at night; the surrounding Place des Vosges arcade is not the place itself.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small apartment-museum on Place des Vosges with free permanent collection but one narrow entrance and a bag check, so a modest line forms midday when capacity throttles arrivals."
   },
   {
     "name": "Hotel de Sully",
@@ -519,7 +549,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This mansion's enclosed courtyard and small formal garden have benches quiet enough to talk, but the gravel is fragile-formal and hemmed by ornamental planting rather than open running ground, and the courtyard gates are locked at night."
+    "judgement_basis": "This mansion's enclosed courtyard and small formal garden have benches quiet enough to talk, but the gravel is fragile-formal and hemmed by ornamental planting rather than open running ground, and the courtyard gates are locked at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Entry is through a courtyard and bookshop of the heritage centre with no mass ticketing, so only a brief wait at the single door forms at busy hours."
   },
   {
     "name": "Hotel de Sens",
@@ -618,7 +658,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This fortress-mansion has a small enclosed forecourt garden with benches quiet enough to talk, but the formal beds and gravel are not free running ground, and the courtyard gates close at night."
+    "judgement_basis": "This fortress-mansion has a small enclosed forecourt garden with benches quiet enough to talk, but the formal beds and gravel are not free running ground, and the courtyard gates close at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "The building houses the Forney library with a single reception entrance rather than mass ticketing, so only a few people wait at busy hours."
   },
   {
     "name": "Saint-Paul-Saint-Louis",
@@ -700,7 +750,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A Baroque church where interior quiet is expected and there is no free casual seating for conversation, but it fronts directly onto the busy well-lit rue Saint-Antoine where people pass at all hours after dark."
+    "judgement_basis": "A Baroque church where interior quiet is expected and there is no free casual seating for conversation, but it fronts directly onto the busy well-lit rue Saint-Antoine where people pass at all hours after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A Baroque church with an open door and free entry on rue Saint-Antoine, walked into without any ticket or security line."
   },
   {
     "name": "Village Saint-Paul",
@@ -751,7 +806,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A cluster of small interlinked antique-shop courtyards with hard cobbled ground, fragile shopfronts and merchandise at child height and no free public seating, and the courtyard gates are closed at night leaving the passages dark."
+    "judgement_basis": "A cluster of small interlinked antique-shop courtyards with hard cobbled ground, fragile shopfronts and merchandise at child height and no free public seating, and the courtyard gates are closed at night leaving the passages dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open cluster of antique courtyards with multiple street passages and no gate or ticketing, so there is no line to enter."
   },
   {
     "name": "Hotel Lamoignon",
@@ -854,7 +914,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A Renaissance mansion housing a library where quiet is enforced and there is no free public seating for talk, and the building and its courtyard are locked at night."
+    "judgement_basis": "A Renaissance mansion housing a library where quiet is enforced and there is no free public seating for talk, and the building and its courtyard are locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A Renaissance mansion seen from the street as a walk-by; its historical library is reached through open courtyard access rather than a queued entrance, so no line forms for the passer-by."
   },
   {
     "name": "Synagogue de la rue Pavee",
@@ -911,7 +976,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A working synagogue viewed only from a narrow Marais pavement beside road traffic, with no free seating and a facade that is closed and unlit for street purposes at night, so a child at speed could reach the road and there is nowhere quiet to sit."
+    "judgement_basis": "A working synagogue viewed only from a narrow Marais pavement beside road traffic, with no free seating and a facade that is closed and unlit for street purposes at night, so a child at speed could reach the road and there is nowhere quiet to sit.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by-only facade viewed from the street with no public entry to queue for."
   },
   {
     "name": "Rue des Rosiers",
@@ -993,7 +1063,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A narrow, crowded pedestrianised shopping street with no free public seating and constant foot traffic that makes running unsafe among people and conversation an effort, but it is lit and busy well into the evening so someone could be left there at nightfall."
+    "judgement_basis": "A narrow, crowded pedestrianised shopping street with no free public seating and constant foot traffic that makes running unsafe among people and conversation an effort, but it is lit and busy well into the evening so someone could be left there at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street with no door and no line; its value is walked past in the open."
   },
   {
     "name": "Hotel Amelot de Bisseuil",
@@ -1049,7 +1124,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private mansion seen only from a narrow Marais street with no enclosure, no free seating and no lighting or crowds of its own after dark, so all three physical tests fail."
+    "judgement_basis": "A private mansion seen only from a narrow Marais street with no enclosure, no free seating and no lighting or crowds of its own after dark, so all three physical tests fail.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private mansion seen from the street as a walk-by; there is no visitor entry to queue for."
   },
   {
     "name": "Notre-Dame-des-Blancs-Manteaux",
@@ -1148,7 +1228,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A church where quiet is expected inside and the exterior gives only a narrow pavement with no free seating, and the building is locked and the street unremarkable for lighting at night, so none of the affordances hold."
+    "judgement_basis": "A church where quiet is expected inside and the exterior gives only a narrow pavement with no free seating, and the building is locked and the street unremarkable for lighting at night, so none of the affordances hold.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door you walk straight through without any ticket desk or security line."
   },
   {
     "name": "La Force Prison Site",
@@ -1200,6 +1285,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A former prison site now built over, experienced only as a Marais street frontage with no enclosure, no free seating and nothing to hold people or light it after dark, so all three fail."
+    "judgement_basis": "A former prison site now built over, experienced only as a Marais street frontage with no enclosure, no free seating and nothing to hold people or light it after dark, so all three fail.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A demolished prison marked only by a street site with no interior and nothing to queue for."
   }
 ]

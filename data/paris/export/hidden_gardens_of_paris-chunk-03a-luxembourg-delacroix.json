@@ -404,7 +404,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large enclosed formal garden with traffic-free gravel paths and lawns where children can run freely, plus abundant free movable chairs and benches quiet enough to talk; the gates are locked at nightfall, so no one can be left standing inside after dark."
+    "judgement_basis": "A large enclosed formal garden with traffic-free gravel paths and lawns where children can run freely, plus abundant free movable chairs and benches quiet enough to talk; the gates are locked at nightfall, so no one can be left standing inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening."
   },
   {
     "name": "Fontaine Médicis",
@@ -558,7 +563,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This grotto fountain sits inside the Luxembourg Gardens with a long basin and rows of free park chairs in a quiet leafy setting good for conversation, but the water basin and the sober tone discourage children running full-speed, and the Luxembourg is gated and locked at nightfall so nobody can be left inside it."
+    "judgement_basis": "This grotto fountain sits inside the Luxembourg Gardens with a long basin and rows of free park chairs in a quiet leafy setting good for conversation, but the water basin and the sober tone discourage children running full-speed, and the Luxembourg is gated and locked at nightfall so nobody can be left inside it.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A fountain inside the freely-entered Luxembourg Gardens, viewed in the open with no gate or ticket to queue for."
   },
   {
     "name": "Palais du Luxembourg",
@@ -713,7 +723,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "The Senate palace is a guarded government building closed to casual public access with no free seating at its frontage and secured, unwelcoming grounds after dark."
+    "judgement_basis": "The Senate palace is a guarded government building closed to casual public access with no free seating at its frontage and secured, unwelcoming grounds after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "As the seat of the French Senate, public access is limited and gated by security screening on booked-visit days, giving a modest controlled line rather than a mass tourist queue; without booking most tours only see the exterior and the surrounding gardens, which are free and unqueued."
   },
   {
     "name": "Musée Eugène Delacroix",
@@ -1053,7 +1073,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "The museum interior demands quiet and forbids running, but the small place de Furstemberg outside has benches quiet enough to talk; the square is a small residential spot that grows deserted and the museum itself is closed at night, so leaving someone there after dark is poor."
+    "judgement_basis": "The museum interior demands quiet and forbids running, but the small place de Furstemberg outside has benches quiet enough to talk; the square is a small residential spot that grows deserted and the museum itself is closed at night, so leaving someone there after dark is poor.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small apartment-and-studio museum with a single ticket desk and modest capacity, so a few visitors may briefly queue at midday but the line is minor and moves."
   },
   {
     "name": "Place de Furstemberg",
@@ -1143,7 +1173,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A small quiet paved square set off the road with low kerbs and no full enclosure or gates, so a child could wander into the adjoining lane; it has benches and low walls around the central paulownia trees quiet enough to talk, and being an open, lit through-square it stays accessible after dark."
+    "judgement_basis": "A small quiet paved square set off the road with low kerbs and no full enclosure or gates, so a child could wander into the adjoining lane; it has benches and low walls around the central paulownia trees quiet enough to talk, and being an open, lit through-square it stays accessible after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no door and no gate; the Musée Delacroix on it has its own small desk, but the square itself is walked into freely with no line."
   },
   {
     "name": "Institut Catholique",
@@ -1303,7 +1338,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A working Catholic university building with an enclosed Gothic courtyard behind gates where the public cannot freely run or loiter, with no public free seating, and its grounds are closed and locked at night."
+    "judgement_basis": "A working Catholic university building with an enclosed Gothic courtyard behind gates where the public cannot freely run or loiter, with no public free seating, and its grounds are closed and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working university passed on the street as a walk-by with no public ticketed entry, so there is no visitor queue."
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -1412,7 +1452,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A gated art school with courtyards closed to the public, offering no free public seating and no open, populated space at night on its quiet side street."
+    "judgement_basis": "A gated art school with courtyards closed to the public, offering no free public seating and no open, populated space at night on its quiet side street.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Walked by only; the art school's courtyard and street facade are viewed without any ticketed entry or line."
   },
   {
     "name": "9 Quai Malaquais (George Sand)",
@@ -1504,7 +1549,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A private residential address on a Left Bank quay with traffic and no enclosure or free seating, judged only from its description as a building facade, but it sits on a lit central riverside street where people pass at night."
+    "judgement_basis": "A private residential address on a Left Bank quay with traffic and no enclosure or free seating, judged only from its description as a building facade, but it sits on a lit central riverside street where people pass at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private residential address viewed from the street with no interior to enter, so there is no queue."
   },
   {
     "name": "Saint-Sulpice",
@@ -1644,7 +1694,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark."
+    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering."
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -1790,6 +1845,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working church where silence is expected and running is impossible, with no free quiet seating suited to talk (the small adjacent square sits beside busy boulevard traffic), but the busy lit Left Bank crossroads outside is well-peopled after dark."
+    "judgement_basis": "A working church where silence is expected and running is impossible, with no free quiet seating suited to talk (the small adjacent square sits beside busy boulevard traffic), but the busy lit Left Bank crossroads outside is well-peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An active parish church with an open door and free entry that visitors walk straight into, so there is no ticket desk or security to stand in."
   }
 ]

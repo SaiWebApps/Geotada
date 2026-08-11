@@ -319,7 +319,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark."
+    "judgement_basis": "The church interior demands quiet and forbids running, but the large pedestrian square in front has a fountain with rim ledges and benches set back from traffic where two people can sit and talk, and the open lit plaza stays peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering."
   },
   {
     "name": "Marché Saint-Germain",
@@ -474,7 +479,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A covered commercial market with glass shopfronts at child height, no free public seating, echoing interior noise, and gates locked after closing hours."
+    "judgement_basis": "A covered commercial market with glass shopfronts at child height, no free public seating, echoing interior noise, and gates locked after closing hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered market walked into freely through open doors with no ticket or security check."
   },
   {
     "name": "Café de la Mairie",
@@ -532,7 +542,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A café on Place Saint-Sulpice with only paid terrace seating and no enclosed child space, but the open, lit square with its fountain stays populated after dark."
+    "judgement_basis": "A café on Place Saint-Sulpice with only paid terrace seating and no enclosed child space, but the open, lit square with its fountain stays populated after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Walked by only and in any case a café entered directly with no security or ticket gate; there is no queue before entering."
   },
   {
     "name": "Palais du Luxembourg",
@@ -658,7 +673,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "The Senate palace is a guarded government building closed to casual public access with no free seating at its frontage and secured, unwelcoming grounds after dark."
+    "judgement_basis": "The Senate palace is a guarded government building closed to casual public access with no free seating at its frontage and secured, unwelcoming grounds after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "As the seat of the French Senate, public access is limited and gated by security screening on booked-visit days, giving a modest controlled line rather than a mass tourist queue; without booking most tours only see the exterior and the surrounding gardens, which are free and unqueued."
   },
   {
     "name": "Luxembourg Gardens",
@@ -809,7 +834,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large enclosed formal garden with traffic-free gravel paths and lawns where children can run freely, plus abundant free movable chairs and benches quiet enough to talk; the gates are locked at nightfall, so no one can be left standing inside after dark."
+    "judgement_basis": "A large enclosed formal garden with traffic-free gravel paths and lawns where children can run freely, plus abundant free movable chairs and benches quiet enough to talk; the gates are locked at nightfall, so no one can be left standing inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening."
   },
   {
     "name": "Musée du Luxembourg",
@@ -867,7 +897,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "An indoor exhibition space where quiet is expected, offering no running room and no free seating, and it locks up at closing so no one can be left there at night."
+    "judgement_basis": "An indoor exhibition space where quiet is expected, offering no running room and no free seating, and it locks up at closing so no one can be left there at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small exhibition space in the orangery with a single ticket desk and a bag check; without a timed ticket a line forms during a popular show midday but stays minor at opening and late afternoon."
   },
   {
     "name": "27 Rue de Fleurus",
@@ -925,7 +965,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private residential building facade on a narrow quiet street with no public interior, no seating, and little lighting or foot traffic after dark."
+    "judgement_basis": "A private residential building facade on a narrow quiet street with no public interior, no seating, and little lighting or foot traffic after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private apartment building marked only by a plaque and seen from the street; there is no public interior and no line."
   },
   {
     "name": "Rue Férou",
@@ -984,7 +1029,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow quiet residential street beside Saint-Sulpice with a roadway and no free public seating, so a child running risks the traffic lane, there is nothing to sit on, and being deserted and dim at night it is not a place to leave someone standing."
+    "judgement_basis": "A narrow quiet residential street beside Saint-Sulpice with a roadway and no free public seating, so a child running risks the traffic lane, there is nothing to sit on, and being deserted and dim at night it is not a place to leave someone standing.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street you walk past; there is no door, ticket, or line of any kind."
   },
   {
     "name": "Fontaine Médicis",
@@ -1093,6 +1143,11 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This grotto fountain sits inside the Luxembourg Gardens with a long basin and rows of free park chairs in a quiet leafy setting good for conversation, but the water basin and the sober tone discourage children running full-speed, and the Luxembourg is gated and locked at nightfall so nobody can be left inside it."
+    "judgement_basis": "This grotto fountain sits inside the Luxembourg Gardens with a long basin and rows of free park chairs in a quiet leafy setting good for conversation, but the water basin and the sober tone discourage children running full-speed, and the Luxembourg is gated and locked at nightfall so nobody can be left inside it.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A fountain inside the freely-entered Luxembourg Gardens, viewed in the open with no gate or ticket to queue for."
   }
 ]

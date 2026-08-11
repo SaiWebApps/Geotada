@@ -390,6 +390,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An enclosed exhibition hall requiring paid entry where quiet is expected and free seating is absent, so children cannot run free-range and there is no free quiet seat, but it sits on a lit, open, trafficked central avenue where a person left standing outside at night would be fine."
+    "judgement_basis": "An enclosed exhibition hall requiring paid entry where quiet is expected and free seating is absent, so children cannot run free-range and there is no free quiet seat, but it sits on a lit, open, trafficked central avenue where a person left standing outside at night would be fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Entry to the exhibition hall runs through security bag checks and timed-ticket scanning at a controlled entrance, so the line builds midday during major shows; the numbers reflect a busy exhibition period and drop at opening."
   }
 ]

@@ -53,7 +53,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid restaurant seating, echoing acoustics, and gates that close it at night."
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid restaurant seating, echoing acoustics, and gates that close it at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered public passage open at both ends with no door, ticket, or screening; you walk through freely."
   },
   {
     "name": "Theatre des Varietes",
@@ -116,7 +121,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A theatre facade directly on the wide, traffic-heavy Boulevard Montmartre with no free seating and a quiet interior, but the boulevard is brightly lit and busy at all hours."
+    "judgement_basis": "A theatre facade directly on the wide, traffic-heavy Boulevard Montmartre with no free seating and a quiet interior, but the boulevard is brightly lit and busy at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A performance theatre with no walk-in queue; entry is by show ticket and on a tour it is only viewed from the boulevard."
   },
   {
     "name": "Place de la Bourse",
@@ -176,7 +186,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An open square ringed by roads and parked cars around the Palais Brongniart, with no protective enclosure to stop a running child reaching traffic and no notable free quiet seating, but it is a central lit place with people passing at night."
+    "judgement_basis": "An open square ringed by roads and parked cars around the Palais Brongniart, with no protective enclosure to stop a running child reaching traffic and no notable free quiet seating, but it is a central lit place with people passing at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no gate or ticket; the whole value stands in the open with no line."
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -264,7 +279,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A church interior expecting silence, on the small quiet Place des Petits-Pères which has little through-traffic or nightlife, and the church itself is locked after hours, so I judge after-dark false on this calm side-street."
+    "judgement_basis": "A church interior expecting silence, on the small quiet Place des Petits-Pères which has little through-traffic or nightlife, and the church itself is locked after hours, so I judge after-dark false on this calm side-street.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A basilica with an open door and no ticket or security check, entered directly without stopping."
   },
   {
     "name": "Bibliotheque Nationale de France - Richelieu",
@@ -349,7 +369,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A national library whose reading rooms demand absolute silence and offer no casual free seating to the public, but it stands on lit central streets near the Palais-Royal with people about in the evening."
+    "judgement_basis": "A national library whose reading rooms demand absolute silence and offer no casual free seating to the public, but it stands on lit central streets near the Palais-Royal with people about in the evening.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Public access to the museum and gallery passes a reception and bag check that moves steadily, giving only a brief line at midday peak."
   },
   {
     "name": "Galerie Vivienne",
@@ -445,7 +475,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid café tables, echoing acoustics, and gates locked after closing."
+    "judgement_basis": "A narrow covered arcade with glass shopfronts at child height, only paid café tables, echoing acoustics, and gates locked after closing.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered arcade open at both ends with no door or ticket; visitors stroll through with no queue."
   },
   {
     "name": "Square Louvois",
@@ -594,7 +629,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small fenced public garden set back from traffic with benches around Visconti's fountain, quiet enough to talk and enclosed enough for a child to run, but gated and locked at night like all Paris squares."
+    "judgement_basis": "A small fenced public garden set back from traffic with benches around Visconti's fountain, quiet enough to talk and enclosed enough for a child to run, but gated and locked at night like all Paris squares.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small free public garden entered through an open gate with no ticket or check, so no line exists."
   },
   {
     "name": "Passage Choiseul",
@@ -658,7 +698,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A long narrow covered arcade lined with shopfronts at child height, no free public seating, echoing under its glass roof, and closed off with gates after hours."
+    "judgement_basis": "A long narrow covered arcade lined with shopfronts at child height, no free public seating, echoing under its glass roof, and closed off with gates after hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered public passage open at both ends with no door or ticket; you walk straight through."
   },
   {
     "name": "Restaurant Drouant",
@@ -724,7 +769,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A restaurant on the small Place Gaillon offering only paid seating and no run-around space, but the place is lit and lies just off the busy Avenue de l'Opéra quarter with people about at night."
+    "judgement_basis": "A restaurant on the small Place Gaillon offering only paid seating and no run-around space, but the place is lit and lies just off the busy Avenue de l'Opéra quarter with people about at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A restaurant with no public queue for entry; on a walking tour it is a facade passed by, with dining by reservation not a standing line."
   },
   {
     "name": "Harry's New York Bar",
@@ -786,7 +836,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A bar interior with only paid seating and no space for children, on the lit and central rue Daunou near the Opéra where people are about in the evening."
+    "judgement_basis": "A bar interior with only paid seating and no space for children, on the lit and central rue Daunou near the Opéra where people are about in the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A bar you walk into off the street with no ticket or security screening; any wait is for a seat inside, not a line to enter."
   },
   {
     "name": "Rue de la Paix",
@@ -933,6 +988,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A wide luxury shopping street with vehicle traffic and no free public seating, its jewellery-shop windows fronting narrow pavements make it unsafe for a running child and offer nowhere to sit, but it is broad, well-lit and central enough for someone to be left standing at night."
+    "judgement_basis": "A wide luxury shopping street with vehicle traffic and no free public seating, its jewellery-shop windows fronting narrow pavements make it unsafe for a running child and offer nowhere to sit, but it is broad, well-lit and central enough for someone to be left standing at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open shopping street with no gate or ticket; the whole value stands in the open, so there is no line to enter."
   }
 ]

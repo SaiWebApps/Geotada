@@ -395,6 +395,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An enclosed contemporary-art museum where quiet is expected and children cannot run, seating is inside a paid ticketed hall rather than free and quiet, but it stands on a lit central plaza in the Les Halles district that stays busy and open after dark."
+    "judgement_basis": "An enclosed contemporary-art museum where quiet is expected and children cannot run, seating is inside a paid ticketed hall rather than free and quiet, but it stands on a lit central plaza in the Les Halles district that stays busy and open after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A ticketed contemporary-art museum with a bag check and ticket scan at a single entrance under the dome; the line moves but bunches midday, so peak runs about 15 minutes and off-peak near opening only a few."
   }
 ]

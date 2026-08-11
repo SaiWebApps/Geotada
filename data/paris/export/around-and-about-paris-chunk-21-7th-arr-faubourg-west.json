@@ -119,7 +119,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "The Prime Minister's residence is a gated, guarded mansion with an inaccessible private garden, offering no run-space, no seating, and a heavily secured pavement where lingering after dark is unwelcome."
+    "judgement_basis": "The Prime Minister's residence is a gated, guarded mansion with an inaccessible private garden, offering no run-space, no seating, and a heavily secured pavement where lingering after dark is unwelcome.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Prime Minister's residence is closed to the public and walked past only; there is no visitor entrance and therefore no line."
   },
   {
     "name": "Musee de la Legion d'Honneur",
@@ -236,7 +241,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A quiet museum interior forbids running and offers no free seating, but it stands on the lit Seine-side quay near the Musée d'Orsay where people pass at all hours."
+    "judgement_basis": "A quiet museum interior forbids running and offers no free seating, but it stands on the lit Seine-side quay near the Musée d'Orsay where people pass at all hours.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small free museum with a single reception desk and light bag check; the mechanism is one modest door with few visitors, so any line is brief even at its worst."
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -320,7 +335,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A church interior demands quiet so children cannot run, and its surrounding square has no reliable free seating, but the adjacent square is lit and set on trafficked residential streets after dark."
+    "judgement_basis": "A church interior demands quiet so children cannot run, and its surrounding square has no reliable free seating, but the adjacent square is lit and set on trafficked residential streets after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A neo-Gothic parish church with an open door and free entry; visitors walk straight in without a ticket or screening."
   },
   {
     "name": "Hotel de Gallifet",
@@ -382,7 +402,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "An embassy and cultural institute behind gates on rue de Grenelle offers no accessible run-space or public seating, and this quiet Faubourg lane is deserted and unwelcoming for lingering after dark."
+    "judgement_basis": "An embassy and cultural institute behind gates on rue de Grenelle offers no accessible run-space or public seating, and this quiet Faubourg lane is deserted and unwelcoming for lingering after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An embassy and cultural institute walked past from the street; there is no public ticket entrance and thus no queue to enter."
   },
   {
     "name": "Musee Rodin",
@@ -536,7 +561,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A ticketed sculpture museum whose formal garden has fragile artworks and expects decorum, though it has benches quiet enough to sit and talk; it closes and locks at night."
+    "judgement_basis": "A ticketed sculpture museum whose formal garden has fragile artworks and expects decorum, though it has benches quiet enough to sit and talk; it closes and locks at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single ticket desk and bag check at the Hotel Biron gate create a modest wait at peak hours that stays manageable."
   },
   {
     "name": "Musee d'Orsay",
@@ -716,7 +751,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A converted railway hall now a hushed museum where running is forbidden and echoing galleries make quiet conversation on free seating impossible; the Left Bank riverside frontage is lit and trafficked with people about, so standing there after dark is fine."
+    "judgement_basis": "A converted railway hall now a hushed museum where running is forbidden and echoing galleries make quiet conversation on free seating impossible; the Left Bank riverside frontage is lit and trafficked with people about, so standing there after dark is fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Security screening and ticket checks at the single main entrance of the converted railway station form a substantial midday line, shortest at opening and late afternoon."
   },
   {
     "name": "Assemblee Nationale",
@@ -929,6 +974,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A guarded parliament building fronting trafficked quays with security barriers and no public free seating, so children cannot run and there is nowhere quiet to sit, but its riverside surroundings are lit and policed at night."
+    "judgement_basis": "A guarded parliament building fronting trafficked quays with security barriers and no public free seating, so children cannot run and there is nowhere quiet to sit, but its riverside surroundings are lit and policed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The working parliament is not a walk-in attraction and interior access is only by rare booked visit, so a tour stop views the Palais Bourbon facade from the open street with no line."
   }
 ]

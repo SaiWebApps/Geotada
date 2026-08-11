@@ -327,7 +327,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night."
+    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line."
   },
   {
     "name": "Place de la Contrescarpe",
@@ -478,7 +483,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This small square has central trees and benches but roads and café terraces ring it with passing traffic and delivery vehicles, so a child cannot run free-range and free quiet seating is scarce among the paid terraces; it is lit, busy and central at night so leaving someone standing is fine."
+    "judgement_basis": "This small square has central trees and benches but roads and café terraces ring it with passing traffic and delivery vehicles, so a child cannot run free-range and free quiet seating is scarce among the paid terraces; it is lit, busy and central at night so leaving someone standing is fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no door and no ticket; the whole value stands in the open air with nothing to wait for."
   },
   {
     "name": "Rue Mouffetard",
@@ -582,7 +592,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A narrow crowded market street with stalls and goods at child height and jostling shoppers where a child cannot safely run free, offering no quiet free seating, but it is lit and busy with cafes and passers-by well after dark."
+    "judgement_basis": "A narrow crowded market street with stalls and goods at child height and jostling shoppers where a child cannot safely run free, offering no quiet free seating, but it is lit and busy with cafes and passers-by well after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open market street with no door or ticket; the whole value is walked through in the open air, so there is no queue."
   },
   {
     "name": "Eglise Saint-Medard",
@@ -652,7 +667,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "As a working church quiet is expected inside and there is no running room, its pews are not casual conversation seating, and the building is locked at night with the surrounding foot of rue Mouffetard quieting after dark."
+    "judgement_basis": "As a working church quiet is expected inside and there is no running room, its pews are not casual conversation seating, and the building is locked at night with the surrounding foot of rue Mouffetard quieting after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door and free entry; visitors walk straight in without any security screening or ticket desk."
   },
   {
     "name": "Jardin des Plantes",
@@ -946,7 +966,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall."
+    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line."
   },
   {
     "name": "Jardin Alpin",
@@ -978,7 +1003,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed specialist alpine plant collection inside the Jardin des Plantes reached by a tunnel, with narrow planted paths where running among fragile specimens is not tolerated, little free quiet seating, and it is locked with the botanical garden at night."
+    "judgement_basis": "An enclosed specialist alpine plant collection inside the Jardin des Plantes reached by a tunnel, with narrow planted paths where running among fragile specimens is not tolerated, little free quiet seating, and it is locked with the botanical garden at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An alpine section inside the free, open Jardin des Plantes reached by a tunnel with no separate ticket gate, so there is no queue to enter."
   },
   {
     "name": "Grand Mosque of Paris",
@@ -1071,7 +1101,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A gated religious complex whose enclosed courtyard demands decorum and forbids running, whose tea-salon seating must be paid for rather than being free, and which locks its gates and leaves no public lit standing room at night."
+    "judgement_basis": "A gated religious complex whose enclosed courtyard demands decorum and forbids running, whose tea-salon seating must be paid for rather than being free, and which locks its gates and leaves no public lit standing room at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "The visitor areas require a small paid ticket at a single desk that forms a modest, moving line, peaking on weekend afternoons when tourists and tea-salon visitors overlap."
   },
   {
     "name": "Institut du Monde Arabe",
@@ -1175,7 +1215,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A walk-by museum building on a busy quai near the Seine with traffic and no traffic-free running ground, and no free quiet seating on its forecourt, but the riverside area is lit and trafficked so someone could be left standing safely after dark."
+    "judgement_basis": "A walk-by museum building on a busy quai near the Seine with traffic and no traffic-free running ground, and no free quiet seating on its forecourt, but the riverside area is lit and trafficked so someone could be left standing safely after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This stop is walk-by only to see Nouvel's photo-sensitive facade from outside, so no interior entry line is priced."
   },
   {
     "name": "Jardin Tino Rossi",
@@ -1271,7 +1316,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A riverside garden on Quai Saint-Bernard open to the Seine embankment with unfenced water edges so a child running is at risk, though its stepped banks and benches let two people sit and talk, and the unlit deserted quay is not somewhere to be left standing after dark."
+    "judgement_basis": "A riverside garden on Quai Saint-Bernard open to the Seine embankment with unfenced water edges so a child running is at risk, though its stepped banks and benches let two people sit and talk, and the unlit deserted quay is not somewhere to be left standing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open quayside sculpture garden with no gate or ticket, so no line forms."
   },
   {
     "name": "Librairie Michael Seksik",
@@ -1365,6 +1415,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A bookshop is a quiet commercial interior with fragile stock at child height, no free seating and locked doors at closing; I judge from the name as I have no further detail."
+    "judgement_basis": "A bookshop is a quiet commercial interior with fragile stock at child height, no free seating and locked doors at closing; I judge from the name as I have no further detail.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A bookshop you walk into off the street with no admission control, so there is no entry line to price."
   }
 ]

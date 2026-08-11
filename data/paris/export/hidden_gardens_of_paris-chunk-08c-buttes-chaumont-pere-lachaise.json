@@ -436,7 +436,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large enclosed park with traffic-free lawns and paths where children can run and abundant benches in quiet greenery for talking, but its gates are locked at night."
+    "judgement_basis": "A large enclosed park with traffic-free lawns and paths where children can run and abundant benches in quiet greenery for talking, but its gates are locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free public park with open gates you walk straight through — no ticket, no security, no line."
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -1078,7 +1083,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A hushed cemetery of hard cobbled lanes where loud running children draw disapproval, though its quiet benches suit low conversation; it is gated and locked at nightfall so nobody can be left standing inside."
+    "judgement_basis": "A hushed cemetery of hard cobbled lanes where loud running children draw disapproval, though its quiet benches suit low conversation; it is gated and locked at nightfall so nobody can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting."
   },
   {
     "name": "Parc de la Villette",
@@ -1172,7 +1182,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "This very large park has vast traffic-free lawns and open ground where children can run freely, ample benches and lawn edges quiet enough to talk, and unusually for Paris it stays open and lit at night with people and venues about, so it passes all three."
+    "judgement_basis": "This very large park has vast traffic-free lawns and open ground where children can run freely, ample benches and lawn edges quiet enough to talk, and unusually for Paris it stays open and lit at night with people and venues about, so it passes all three.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large open urban park with multiple unbarred entrances and no ticket or bag check, so there is no line to enter the grounds."
   },
   {
     "name": "Parc de Belleville",
@@ -1320,7 +1335,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This terraced hillside park has traffic-free paths, lawns and a playground for children plus benches with views for quiet conversation, but it is gated and locked at night so no one can be left standing inside after dark."
+    "judgement_basis": "This terraced hillside park has traffic-free paths, lawns and a playground for children plus benches with views for quiet conversation, but it is gated and locked at night so no one can be left standing inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A hillside public park entered freely through open gates with no admission or screening, so visitors walk straight in."
   },
   {
     "name": "Jardin Naturel",
@@ -1405,7 +1425,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a small enclosed nature garden managed to protect its wild plantings where free-ranging running is discouraged and fragile, but it has quiet benches for conversation, and being a gated Paris garden it is locked at night."
+    "judgement_basis": "This is a small enclosed nature garden managed to protect its wild plantings where free-ranging running is discouraged and fragile, but it has quiet benches for conversation, and being a gated Paris garden it is locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small public wild garden near Père-Lachaise entered through an open gate with no ticket or security check, so there is no queue."
   },
   {
     "name": "Cemetery of Eglise Saint-Germain de Charonne",
@@ -1498,6 +1523,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is a small churchyard cemetery where running among graves is inappropriate, it has no casual free seating for talking, and it is gated and closed after dark with no one about."
+    "judgement_basis": "This is a small churchyard cemetery where running among graves is inappropriate, it has no casual free seating for talking, and it is gated and closed after dark with no one about.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small parish churchyard cemetery entered freely from the street with no ticket desk or screening, so there is no line to stand in."
   }
 ]

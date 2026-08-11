@@ -52,7 +52,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A street-side fountain on a narrow pavement gives no traffic-free running room and no real free seating, but rue Saint-Dominique is a lit, populated street after dark."
+    "judgement_basis": "A street-side fountain on a narrow pavement gives no traffic-free running room and no real free seating, but rue Saint-Dominique is a lit, populated street after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street fountain with no interior and no door; the whole value stands in the open, so there is nothing to queue for."
   },
   {
     "name": "Église Saint-Pierre du Gros Caillou",
@@ -110,7 +115,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A parish church where quiet rules out running and which offers no free public seating, but it fronts the lit and busy rue Saint-Dominique where people pass at night."
+    "judgement_basis": "A parish church where quiet rules out running and which offers no free public seating, but it fronts the lit and busy rue Saint-Dominique where people pass at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door and free entry walked straight into; no ticket desk or screening creates a line."
   },
   {
     "name": "Rue Cler",
@@ -163,7 +173,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A pedestrianised market street free of through-traffic still crowds with shoppers, stalls and café tables that leave no clear running room and only paid seating, but it is lit and peopled into the evening."
+    "judgement_basis": "A pedestrianised market street free of through-traffic still crowds with shoppers, stalls and café tables that leave no clear running room and only paid seating, but it is lit and peopled into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A pedestrian market street with no door or gate; the whole experience is in the open air with nothing to enter."
   },
   {
     "name": "Ecole Militaire",
@@ -221,7 +236,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working military academy behind gates and fences offers no accessible interior run-space or free seating, but it sits on the wide lit Avenue de la Motte-Picquet with traffic and passers-by at night."
+    "judgement_basis": "A working military academy behind gates and fences offers no accessible interior run-space or free seating, but it sits on the wide lit Avenue de la Motte-Picquet with traffic and passers-by at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working military academy closed to general public entry and viewed from the exterior; there is no visitor line."
   },
   {
     "name": "UNESCO Headquarters Paris",
@@ -279,7 +299,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A secured institutional building with a private Noguchi garden inaccessible without entry offers no public run-space or free seating, and its Place de Fontenoy frontage is quiet and unwelcoming for lingering after dark."
+    "judgement_basis": "A secured institutional building with a private Noguchi garden inaccessible without entry offers no public run-space or free seating, and its Place de Fontenoy frontage is quiet and unwelcoming for lingering after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "12:00"
+      ]
+    ],
+    "queue_basis": "Public access requires advance registration and passes an airport-style security check at the gate, but visitor volume is low, so the screening line stays minor even at its busiest."
   },
   {
     "name": "Champ de Mars",
@@ -454,7 +484,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A vast traffic-free lawn lets children run loud and free with benches and grass for quiet conversation, but the open park is unlit in stretches, sees crowds thin at night and is periodically fenced near the Tower."
+    "judgement_basis": "A vast traffic-free lawn lets children run loud and free with benches and grass for quiet conversation, but the open park is unlit in stretches, sees crowds thin at night and is periodically fenced near the Tower.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side."
   },
   {
     "name": "Les Invalides",
@@ -762,7 +797,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The museum and tomb interiors are hushed and gated, but the vast open lawns of the Esplanade des Invalides are traffic-free with grass and benches where people sit and talk; the esplanade is lit and reasonably trafficked, so standing after dark is acceptable, though the lawns are large and open rather than fully enclosed which combined with bordering roads keeps children_can_run false."
+    "judgement_basis": "The museum and tomb interiors are hushed and gated, but the vast open lawns of the Esplanade des Invalides are traffic-free with grass and benches where people sit and talk; the esplanade is lit and reasonably trafficked, so standing after dark is acceptable, though the lawns are large and open rather than fully enclosed which combined with bordering roads keeps children_can_run false.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "The wide complex has a ticket desk and light bag check for Napoleon's tomb and the Army Museum, producing only a minor midday line that clears early or late."
   },
   {
     "name": "29 Avenue Rapp",
@@ -818,7 +863,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A walk-by facade on a pavement beside a busy avenue with no seating and no room to run safely, but the avenue is central, lit and trafficked into the evening."
+    "judgement_basis": "A walk-by facade on a pavement beside a busy avenue with no seating and no room to run safely, but the avenue is central, lit and trafficked into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An ornate apartment facade admired from the pavement with no public interior, so there is no queue to enter."
   },
   {
     "name": "Eiffel Tower",
@@ -968,6 +1018,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "The Champ de Mars lawns run traffic-free but the immediate base is a fenced, security-controlled paved plaza crossed by roads and crowds where a child at speed can reach traffic and there is no quiet free seating; the site is brightly lit and busy with people at all hours, so a person left standing at night would be fine."
+    "judgement_basis": "The Champ de Mars lawns run traffic-free but the immediate base is a fenced, security-controlled paved plaza crossed by roads and crowds where a child at speed can reach traffic and there is no quiet free seating; the site is brightly lit and busy with people at all hours, so a person left standing at night would be fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 45,
+    "queue_minutes_offpeak": 20,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening."
   }
 ]

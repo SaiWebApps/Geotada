@@ -100,7 +100,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A functioning hospital with a quiet interior courtyard where running and casual sitting are inappropriate, but it sits on the open, lit, well-populated Ile de la Cite near Notre-Dame after dark."
+    "judgement_basis": "A functioning hospital with a quiet interior courtyard where running and casual sitting are inappropriate, but it sits on the open, lit, well-populated Ile de la Cite near Notre-Dame after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working hospital, not a ticketed attraction; a tourist stops to look at the facade and courtyard from the street and never joins any admission line."
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -339,7 +344,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A cathedral interior demands silence and stillness so children cannot run and normal conversation is discouraged, and the surrounding parvis is open paving without quiet free seating; the Ile de la Cite location is lit and trafficked with people about, so being left standing after dark is fine."
+    "judgement_basis": "A cathedral interior demands silence and stillness so children cannot run and normal conversation is discouraged, and the surrounding parvis is open paving without quiet free seating; the Ile de la Cite location is lit and trafficked with people about, so being left standing after dark is fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 40,
+    "queue_minutes_offpeak": 15,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Since the post-fire reopening entry is managed through a controlled single access point with high demand, forming a substantial line to walk into a free cathedral that eases only at opening and near closing."
   },
   {
     "name": "Rue Chanoinesse",
@@ -447,7 +462,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow medieval street on Ile de la Cite carrying occasional vehicles with no free seating and little quiet, and it is a deserted lane after dark rather than a lit populated place to leave someone standing."
+    "judgement_basis": "A narrow medieval street on Ile de la Cite carrying occasional vehicles with no free seating and little quiet, and it is a deserted lane after dark rather than a lit populated place to leave someone standing.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open medieval street with no interior and no gate, so nothing is ever queued for."
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -537,7 +557,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is a stark, silent underground memorial where running and casual conversation are socially unacceptable and there is no free open seating, and the site is closed and gated after dark."
+    "judgement_basis": "This is a stark, silent underground memorial where running and casual conversation are socially unacceptable and there is no free open seating, and the site is closed and gated after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "The memorial is free but entered by a narrow staircase that admits only a few visitors at once, so a small line can form at midday while it is otherwise walk-straight-in."
   },
   {
     "name": "Ile Saint-Louis",
@@ -695,7 +725,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A residential island whose narrow streets carry cars and whose quays edge straight onto the Seine, so running children are at risk, but its tree-lined quay steps and benches are quiet enough to talk and the streets stay lit and inhabited at night."
+    "judgement_basis": "A residential island whose narrow streets carry cars and whose quays edge straight onto the Seine, so running children are at risk, but its tree-lined quay steps and benches are quiet enough to talk and the streets stay lit and inhabited at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A residential island of open streets and shopfronts with no controlled entrance, so nothing is queued before you walk onto it."
   },
   {
     "name": "Berthillon",
@@ -779,7 +814,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A small ice cream shop on the narrow streets of Ile Saint-Louis with no free seating and shopfronts at child height; it closes in the evening and the quiet residential island offers little activity once shut."
+    "judgement_basis": "A small ice cream shop on the narrow streets of Ile Saint-Louis with no free seating and shopfronts at child height; it closes in the evening and the quiet residential island offers little activity once shut.",
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A small ice-cream counter whose line is limited by one serving window, so afternoon and warm-season crowds form a real but bounded queue that shrinks to a few people off-peak; no security or ticket."
   },
   {
     "name": "Pont-Marie",
@@ -833,7 +878,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A stone road bridge with traffic and low parapets onto the Seine offering no safe running room and no quiet free seating, but it is lit, open and crossed at all hours."
+    "judgement_basis": "A stone road bridge with traffic and low parapets onto the Seine offering no safe running room and no quiet free seating, but it is lit, open and crossed at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A stone bridge with no door and no ticket: you simply walk across it in the open, so there is no line."
   },
   {
     "name": "Hotel de Lauzun",
@@ -921,7 +971,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A closed private mansion on Ile Saint-Louis seen only from the narrow quay-side pavement with no free seating, though the riverside street is lit and moderately used at night."
+    "judgement_basis": "A closed private mansion on Ile Saint-Louis seen only from the narrow quay-side pavement with no free seating, though the riverside street is lit and moderately used at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by private mansion closed to the general public except rare special events, so no ticket line exists on an ordinary day."
   },
   {
     "name": "Hotel Lambert",
@@ -1007,7 +1062,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A private mansion at the tip of Ile Saint-Louis viewed from a narrow pavement with river parapets nearby and no free seating, but the quay is lit and central for standing after dark."
+    "judgement_basis": "A private mansion at the tip of Ile Saint-Louis viewed from a narrow pavement with river parapets nearby and no free seating, but the quay is lit and central for standing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private residence viewed only from the street; with no public admission there is no queue to price."
   },
   {
     "name": "Quai de Bourbon",
@@ -1085,7 +1145,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A riverside quay on Ile Saint-Louis with road traffic and stone parapets onto the Seine, no reliable quiet free seating, and quiet dim conditions after dark on this residential island."
+    "judgement_basis": "A riverside quay on Ile Saint-Louis with road traffic and stone parapets onto the Seine, no reliable quiet free seating, and quiet dim conditions after dark on this residential island.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open riverside quay with no door and no ticket; the whole experience is outdoors, so no line forms."
   },
   {
     "name": "Crypte Archeologique de l'Ile de la Cite",
@@ -1134,7 +1199,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed underground museum where quiet is expected, with no free social seating, that is locked and inaccessible at night."
+    "judgement_basis": "An enclosed underground museum where quiet is expected, with no free social seating, that is locked and inaccessible at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small municipal museum with a single ticket desk at the entrance; a modest queue can build midday when Notre-Dame crowds spill in, but it stays minor and moves quickly."
   },
   {
     "name": "Saint-Louis-en-l'Ile Church",
@@ -1187,6 +1262,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A quiet baroque church interior where running and casual conversation are out of place, fronting a narrow Ile Saint-Louis street that is dim and largely deserted once shops close at night."
+    "judgement_basis": "A quiet baroque church interior where running and casual conversation are out of place, fronting a narrow Ile Saint-Louis street that is dim and largely deserted once shops close at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with free open-door entry and no security screening, so visitors walk in directly without waiting in line."
   }
 ]

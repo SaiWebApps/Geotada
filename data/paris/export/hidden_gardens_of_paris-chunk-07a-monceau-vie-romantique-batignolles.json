@@ -394,7 +394,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A fully enclosed traffic-free park with lawns and paths lets children run and offers ample free benches for quiet talk, but its gates are locked at night so no one can be left standing inside."
+    "judgement_basis": "A fully enclosed traffic-free park with lawns and paths lets children run and offers ample free benches for quiet talk, but its gates are locked at night so no one can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free public park entered through open railing gates without a ticket or check; there is no line to enter."
   },
   {
     "name": "Musée Jacquemart-André",
@@ -479,7 +484,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A museum mansion with a hushed interior full of fragile collections where children cannot run free, seating tied to a ticketed visit or a paid café, and gates locked at night."
+    "judgement_basis": "A museum mansion with a hushed interior full of fragile collections where children cannot run free, seating tied to a ticketed visit or a paid café, and gates locked at night.",
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A popular mansion museum with a narrow entrance, bag check and ticket control feeding a limited-capacity house, so blockbuster exhibitions produce a real mid-day line that timed slots only partly relieve."
   },
   {
     "name": "Musée de la Vie Romantique",
@@ -732,7 +747,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a house-museum where quiet is expected indoors so children cannot run, but its courtyard garden has free-to-sit areas quiet enough for conversation, and it closes and locks in the evening so it fails after dark."
+    "judgement_basis": "This is a house-museum where quiet is expected indoors so children cannot run, but its courtyard garden has free-to-sit areas quiet enough for conversation, and it closes and locks in the evening so it fails after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A modest house-museum with a single reception desk and free permanent collection, so only a brief desk/bag-check line forms at busy midday hours."
   },
   {
     "name": "Square des Batignolles",
@@ -1055,7 +1080,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a fenced traffic-free English-style garden square with lawns, a pond and play areas where children can run and plenty of free benches quiet enough to talk, but it is gated and locked at nightfall so no one can be left standing inside after dark."
+    "judgement_basis": "This is a fenced traffic-free English-style garden square with lawns, a pond and play areas where children can run and plenty of free benches quiet enough to talk, but it is gated and locked at nightfall so no one can be left standing inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public English-style garden with open gates you walk straight through — no admission and no queue."
   },
   {
     "name": "Square d'Orléans",
@@ -1175,7 +1205,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A private residential courtyard-square off rue Taitbout entered through a carriage arch, with paved cobbled ground and no lawns for children to range freely, some benches and quiet enclosed surroundings good for talking, but it is a gated private enclave closed and unwelcoming to outsiders at night."
+    "judgement_basis": "A private residential courtyard-square off rue Taitbout entered through a carriage arch, with paved cobbled ground and no lawns for children to range freely, some benches and quiet enclosed surroundings good for talking, but it is a gated private enclave closed and unwelcoming to outsiders at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private residential courtyard-garden you walk into through an open gate with no ticket or security, so there is no line to price."
   },
   {
     "name": "Cathédrale Saint-Alexandre-Nevsky",
@@ -1258,7 +1293,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A working Orthodox church where silence and reverence are expected, with no running and no casual public seating for conversation, and its doors and surrounding gates are closed after services so no one is left standing inside after dark."
+    "judgement_basis": "A working Orthodox church where silence and reverence are expected, with no running and no casual public seating for conversation, and its doors and surrounding gates are closed after services so no one is left standing inside after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A working Orthodox cathedral with restricted visiting hours entered through one door; a small line can form only within its limited opening windows and is otherwise negligible."
   },
   {
     "name": "Place Saint-Georges",
@@ -1287,6 +1332,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A traffic circle around a central fountain with roads on all sides, so a child could run into vehicles and there is no protected play space, the narrow central island has little usable free seating and traffic noise makes talking effort, but it is lit, open and busy with people and traffic after dark."
+    "judgement_basis": "A traffic circle around a central fountain with roads on all sides, so a child could run into vehicles and there is no protected play space, the narrow central island has little usable free seating and traffic noise makes talking effort, but it is lit, open and busy with people and traffic after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no door and no interior; the whole value stands in the open, so there is nothing to queue for."
   }
 ]

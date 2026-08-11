@@ -267,7 +267,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a small enclosed Marais garden square displaying fragile statuary and lapidary fragments where children cannot run free-range, but it has free benches quiet enough to talk, and it is gated and locked at night so it fails after dark."
+    "judgement_basis": "This is a small enclosed Marais garden square displaying fragile statuary and lapidary fragments where children cannot run free-range, but it has free benches quiet enough to talk, and it is gated and locked at night so it fails after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small free public square entered through an open gate; there is no ticket or security and thus no queue."
   },
   {
     "name": "Square Léopold-Achille",
@@ -355,7 +360,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a fenced, traffic-free Marais garden square with lawns and often a play area where children can run and free benches quiet enough for conversation, but municipal squares are gated and locked at nightfall so no one can be left standing there after dark."
+    "judgement_basis": "This is a fenced, traffic-free Marais garden square with lawns and often a play area where children can run and free benches quiet enough for conversation, but municipal squares are gated and locked at nightfall so no one can be left standing there after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small free neighborhood garden with an open gate you walk straight into — no line to enter."
   },
   {
     "name": "Clos des Blancs-Manteaux",
@@ -462,7 +472,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "Uncertain of this specific place; judging conservatively from its name and enclosed 'clos' character it is likely a small gated garden or courtyard without room for free-range running or clearly free quiet seating, and gated enclosures fail the after-dark leave-standing test."
+    "judgement_basis": "Uncertain of this specific place; judging conservatively from its name and enclosed 'clos' character it is likely a small gated garden or courtyard without room for free-range running or clearly free quiet seating, and gated enclosures fail the after-dark leave-standing test.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open community garden/green space with no ticket or controlled entry, so there is no queue."
   },
   {
     "name": "Square du Temple",
@@ -948,7 +963,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A fenced, traffic-free public garden with lawns and gravel paths where children can run freely and benches sit quietly away from cars, but like Paris squares it is gated and locked at nightfall so no one can be left inside."
+    "judgement_basis": "A fenced, traffic-free public garden with lawns and gravel paths where children can run freely and benches sit quietly away from cars, but like Paris squares it is gated and locked at nightfall so no one can be left inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free public garden entered through an open gate with no ticket or bag check, so there is no line to price."
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -1031,7 +1051,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow covered market with fragile stalls and produce at child height where running is unsafe and unwelcome, whose only seating is paid food-stall benches, and which is gated and locked outside market hours leaving nowhere lit to stand at night."
+    "judgement_basis": "A narrow covered market with fragile stalls and produce at child height where running is unsafe and unwelcome, whose only seating is paid food-stall benches, and which is gated and locked outside market hours leaving nowhere lit to stand at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A covered public market with open entrances and no admission control, so visitors walk straight in and there is no line to enter."
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -1166,6 +1191,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An enclosed indoor museum with fragile exhibits and expected quiet where children cannot run and free quiet seating for conversation is absent, but it sits on a lit central Paris street with metro traffic and passers-by after closing."
+    "judgement_basis": "An enclosed indoor museum with fragile exhibits and expected quiet where children cannot run and free quiet seating for conversation is absent, but it sits on a lit central Paris street with metro traffic and passers-by after closing.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A mid-sized ticketed museum with a bag check and ticket desk that rarely backs up; the line is minor and moves, peaking only midday when school and tour groups arrive."
   }
 ]

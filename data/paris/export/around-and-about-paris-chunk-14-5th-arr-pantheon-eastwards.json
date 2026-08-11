@@ -225,7 +225,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The mausoleum interior is a hushed ticketed space where running is forbidden, but the surrounding Place du Pantheon has steps and low walls people sit on in a relatively quiet Latin Quarter setting, and the square is lit with people about, so standing after dark is fine."
+    "judgement_basis": "The mausoleum interior is a hushed ticketed space where running is forbidden, but the surrounding Place du Pantheon has steps and low walls people sit on in a relatively quiet Latin Quarter setting, and the square is lit with people about, so standing after dark is fine.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A single ticket desk and bag check at the front portico creates a minor line at busy midday hours that clears quickly at opening or late in the day."
   },
   {
     "name": "Bibliotheque Sainte-Genevieve",
@@ -286,7 +296,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A quiet library interior where running and normal-volume talk are forbidden and free public seating requires entry procedures, but it stands on the open lit Place du Pantheon with people about at night."
+    "judgement_basis": "A quiet library interior where running and normal-volume talk are forbidden and free public seating requires entry procedures, but it stands on the open lit Place du Pantheon with people about at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "12:00"
+      ]
+    ],
+    "queue_basis": "A working university library where access is controlled by a single entry desk with bag check and reader registration, producing a modest line at morning opening that eases through the day."
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -420,7 +440,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A quiet church interior where children cannot run and offering no free outdoor seating, set on narrow Latin Quarter streets behind the Pantheon that empty out and offer little lit through-traffic at night."
+    "judgement_basis": "A quiet church interior where children cannot run and offering no free outdoor seating, set on narrow Latin Quarter streets behind the Pantheon that empty out and offer little lit through-traffic at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free parish church with an open door and no admission control, so visitors enter without stopping and there is nothing to queue for."
   },
   {
     "name": "Lycee Henri IV",
@@ -479,7 +504,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working secondary school closed to the public with no accessible running space or free seating, but its Place du Pantheon setting is open, lit and populated after dark."
+    "judgement_basis": "A working secondary school closed to the public with no accessible running space or free seating, but its Place du Pantheon setting is open, lit and populated after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working secondary school closed to casual visitors and seen only from the street or via rare booked tours, so there is no walk-up admission line."
   },
   {
     "name": "Place de la Contrescarpe",
@@ -535,7 +565,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This small square has central trees and benches but roads and café terraces ring it with passing traffic and delivery vehicles, so a child cannot run free-range and free quiet seating is scarce among the paid terraces; it is lit, busy and central at night so leaving someone standing is fine."
+    "judgement_basis": "This small square has central trees and benches but roads and café terraces ring it with passing traffic and delivery vehicles, so a child cannot run free-range and free quiet seating is scarce among the paid terraces; it is lit, busy and central at night so leaving someone standing is fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no door and no ticket; the whole value stands in the open air with nothing to wait for."
   },
   {
     "name": "Rue Mouffetard",
@@ -589,7 +624,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A narrow crowded market street with stalls and goods at child height and jostling shoppers where a child cannot safely run free, offering no quiet free seating, but it is lit and busy with cafes and passers-by well after dark."
+    "judgement_basis": "A narrow crowded market street with stalls and goods at child height and jostling shoppers where a child cannot safely run free, offering no quiet free seating, but it is lit and busy with cafes and passers-by well after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open market street with no door or ticket; the whole value is walked through in the open air, so there is no queue."
   },
   {
     "name": "Eglise Saint-Medard",
@@ -714,7 +754,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "As a working church quiet is expected inside and there is no running room, its pews are not casual conversation seating, and the building is locked at night with the surrounding foot of rue Mouffetard quieting after dark."
+    "judgement_basis": "As a working church quiet is expected inside and there is no running room, its pews are not casual conversation seating, and the building is locked at night with the surrounding foot of rue Mouffetard quieting after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door and free entry; visitors walk straight in without any security screening or ticket desk."
   },
   {
     "name": "Grand Mosque of Paris",
@@ -775,7 +820,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A gated religious complex whose enclosed courtyard demands decorum and forbids running, whose tea-salon seating must be paid for rather than being free, and which locks its gates and leaves no public lit standing room at night."
+    "judgement_basis": "A gated religious complex whose enclosed courtyard demands decorum and forbids running, whose tea-salon seating must be paid for rather than being free, and which locks its gates and leaves no public lit standing room at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "The visitor areas require a small paid ticket at a single desk that forms a modest, moving line, peaking on weekend afternoons when tourists and tea-salon visitors overlap."
   },
   {
     "name": "Jardin des Plantes",
@@ -860,7 +915,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall."
+    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line."
   },
   {
     "name": "Arenes de Lutece",
@@ -918,7 +978,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night."
+    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line."
   },
   {
     "name": "Institut du Monde Arabe",
@@ -977,7 +1042,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A walk-by museum building on a busy quai near the Seine with traffic and no traffic-free running ground, and no free quiet seating on its forecourt, but the riverside area is lit and trafficked so someone could be left standing safely after dark."
+    "judgement_basis": "A walk-by museum building on a busy quai near the Seine with traffic and no traffic-free running ground, and no free quiet seating on its forecourt, but the riverside area is lit and trafficked so someone could be left standing safely after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This stop is walk-by only to see Nouvel's photo-sensitive facade from outside, so no interior entry line is priced."
   },
   {
     "name": "La Tour d'Argent",
@@ -1035,7 +1105,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is a formal indoor restaurant with no public running space and no free seating (its interior requires paid dining), fronting the busy quai de la Tournelle which is lit and trafficked enough for someone to stand safely at night."
+    "judgement_basis": "This is a formal indoor restaurant with no public running space and no free seating (its interior requires paid dining), fronting the busy quai de la Tournelle which is lit and trafficked enough for someone to stand safely at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A restaurant entered by reservation, not a queued attraction; there is no public standing line outside to price."
   },
   {
     "name": "Verlaine's Garret",
@@ -1091,7 +1166,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is merely a private building facade on rue Descartes with a narrow pavement, no running room and no seating, though the street is a lit and reasonably frequented Latin Quarter road where someone could be left standing after dark."
+    "judgement_basis": "This is merely a private building facade on rue Descartes with a narrow pavement, no running room and no seating, though the street is a lit and reasonably frequented Latin Quarter road where someone could be left standing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private residence viewed only from the street as a plaque-marked facade, with no interior to enter and thus no line."
   },
   {
     "name": "College des Bernardins",
@@ -1187,6 +1267,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A restored Cistercian hall now a cultural center where quiet is expected inside and there is no free-range running or free casual seating, but its rue de Poissy frontage is a lit central street where someone could safely stand at night."
+    "judgement_basis": "A restored Cistercian hall now a cultural center where quiet is expected inside and there is no free-range running or free casual seating, but its rue de Poissy frontage is a lit central street where someone could safely stand at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A cultural center with a single reception desk and light bag check that moves quickly; the small afternoon flow to the Cistercian nave rarely holds more than a few people."
   }
 ]

@@ -278,7 +278,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "Elevated linear park fully separated from traffic with wide traffic-free paths where a child cannot reach a road, and it has benches in quiet greenery, but the elevated sections are gated and locked at night."
+    "judgement_basis": "Elevated linear park fully separated from traffic with wide traffic-free paths where a child cannot reach a road, and it has benches in quiet greenery, but the elevated sections are gated and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open elevated park entered by ramps and staircases with no gate, ticket, or bag check, so there is no line to price."
   },
   {
     "name": "Viaduc des Arts",
@@ -385,7 +390,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A row of artisan workshops along a pavement beside a trafficked avenue with no traffic-free run and no free quiet seating, shuttered and quiet after closing with little night footfall at street level."
+    "judgement_basis": "A row of artisan workshops along a pavement beside a trafficked avenue with no traffic-free run and no free quiet seating, shuttered and quiet after closing with little night footfall at street level.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A row of street-level artisan shops beneath a viaduct, entered freely from the pavement with no single controlled door."
   },
   {
     "name": "Bois de Vincennes",
@@ -532,7 +542,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A vast open woodland park with traffic-free lawns and paths for running and plentiful benches in quiet settings, but it is dark, unlit and deserted after nightfall with roads cutting through parts of it."
+    "judgement_basis": "A vast open woodland park with traffic-free lawns and paths for running and plentiful benches in quiet settings, but it is dark, unlit and deserted after nightfall with roads cutting through parts of it.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A vast open public park with no enclosing gate to queue at; you simply walk in from any edge."
   },
   {
     "name": "Chateau de Vincennes",
@@ -682,7 +697,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A medieval fortress with paid ticketed interiors where quiet is expected and no free public seating, and it closes and locks its grounds in the evening leaving nowhere to stand."
+    "judgement_basis": "A medieval fortress with paid ticketed interiors where quiet is expected and no free public seating, and it closes and locks its grounds in the evening leaving nowhere to stand.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A ticketed medieval fortress with a single ticket desk and bag check that draws a modest midday line in summer, shrinking to a few people at opening; the monument is not high-volume enough for a substantial queue."
   },
   {
     "name": "Bibliotheque Francois Mitterrand",
@@ -715,7 +740,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The vast traffic-free elevated timber esplanade between the four towers gives children open car-free ground to run, has broad steps and low walls people sit on away from traffic, and stays lit with metro-fed foot traffic into the evening."
+    "judgement_basis": "The vast traffic-free elevated timber esplanade between the four towers gives children open car-free ground to run, has broad steps and low walls people sit on away from traffic, and stays lit with metro-fed foot traffic into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The library's esplanade and glass-tower plaza are open public space you walk straight onto with no ticket or door, so there is no line to stand in before reaching the value of the stop."
   },
   {
     "name": "Parc Floral",
@@ -870,7 +900,17 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large botanical park in the Bois de Vincennes with vast traffic-free lawns and play areas where children range freely and abundant quiet seating for talking, but a ticketed enclosed park that closes and locks in the evening."
+    "judgement_basis": "A large botanical park in the Bois de Vincennes with vast traffic-free lawns and play areas where children range freely and abundant quiet seating for talking, but a ticketed enclosed park that closes and locks in the evening.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A public park that charges a small entry fee on event days handled at a ticket booth, so a brief line can form at midday but never a substantial one."
   },
   {
     "name": "Jardin de Reuilly",
@@ -955,7 +995,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed garden with a large central lawn open for play, traffic-free and fenced, with benches and grass in quiet surroundings for conversation, but a municipal garden gated and locked at night."
+    "judgement_basis": "An enclosed garden with a large central lawn open for play, traffic-free and fenced, with benches and grass in quiet surroundings for conversation, but a municipal garden gated and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public garden entered freely through open gates with no ticket or security, so no wait exists."
   },
   {
     "name": "Bistro du Peintre",
@@ -1108,7 +1153,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A bistro whose only seating is paid café tables and whose interior is enclosed with fragile settings not suited to running children, but it is lit and staffed with people about in the evening."
+    "judgement_basis": "A bistro whose only seating is paid café tables and whose interior is enclosed with fragile settings not suited to running children, but it is lit and staffed with people about in the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A street-front bistro walked past on the tour, not a ticketed interior, so there is no entry line to price."
   },
   {
     "name": "Square Raoul Nordling",
@@ -1203,7 +1253,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small fenced neighbourhood garden traffic-free with paths and lawn where children can run and benches quiet enough for talking, but a gated square locked at nightfall."
+    "judgement_basis": "A small fenced neighbourhood garden traffic-free with paths and lawn where children can run and benches quiet enough for talking, but a gated square locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small public garden entered through an open gate with no ticket or check, so no queue exists."
   },
   {
     "name": "Parc de Bercy",
@@ -1375,7 +1430,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large riverside park with extensive traffic-free lawns and paths where children range freely and abundant quiet seating for conversation, but a municipal park whose gated sections close and lock at night."
+    "judgement_basis": "A large riverside park with extensive traffic-free lawns and paths where children range freely and abundant quiet seating for conversation, but a municipal park whose gated sections close and lock at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large public park with multiple open entrances and no ticket or security, so there is nothing to wait in before entering."
   },
   {
     "name": "Cinematheque Française",
@@ -1475,7 +1535,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A film institution and cinema where quiet is expected indoors and children cannot run, with no free public seating beyond paid or lobby areas, but a large lit venue in an open riverside setting busy with people into the evening."
+    "judgement_basis": "A film institution and cinema where quiet is expected indoors and children cannot run, with no free public seating beyond paid or lobby areas, but a large lit venue in an open riverside setting busy with people into the evening.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A film archive and museum with a ticket desk and light bag check but no airport-style screening, so only a minor line forms before screenings and exhibitions."
   },
   {
     "name": "Buddhist Temple Lac Daumesnil",
@@ -1560,7 +1630,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This Buddhist temple building beside Lac Daumesnil in the Bois de Vincennes is a place of quiet worship where running is discouraged, offers no clear free public seating for conversation, and sits in a large unlit wooded park that empties and feels isolated after dark."
+    "judgement_basis": "This Buddhist temple building beside Lac Daumesnil in the Bois de Vincennes is a place of quiet worship where running is discouraged, offers no clear free public seating for conversation, and sits in a large unlit wooded park that empties and feels isolated after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This Buddhist temple pavilion by Lac Daumesnil in the Bois de Vincennes is entered through open grounds with no security screening or ticket gate, so there is no line to price."
   },
   {
     "name": "Sainte-Chapelle",
@@ -1701,6 +1776,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A small ticketed Gothic chapel where silence is expected and there is no free seating for conversation, and it is locked after closing so no one can be left standing inside at night."
+    "judgement_basis": "A small ticketed Gothic chapel where silence is expected and there is no free seating for conversation, and it is locked after closing so no one can be left standing inside at night.",
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Airport-style security shared with the Palais de Justice plus a ticket check funnels visitors ahead of a small chapel, so the line runs long at midday and thins near opening and late afternoon."
   }
 ]

@@ -172,6 +172,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A former abbey attached to a military hospital, walk-by only with no free public seating and no space for children to run, though it fronts a lit Left Bank street with people about at night."
+    "judgement_basis": "A former abbey attached to a military hospital, walk-by only with no free public seating and no space for children to run, though it fronts a lit Left Bank street with people about at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by abbey church attached to a military hospital, viewed from the exterior with no general ticketed entry line to stand in."
   }
 ]

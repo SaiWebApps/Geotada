@@ -59,7 +59,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark."
+    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it."
   },
   {
     "name": "Jardin des Tuileries",
@@ -191,7 +196,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A large enclosed traffic-free royal garden with gravel paths, lawns and abundant free movable chairs and benches where children can run and two people can talk quietly, but the garden is gated and closed at night."
+    "judgement_basis": "A large enclosed traffic-free royal garden with gravel paths, lawns and abundant free movable chairs and benches where children can run and two people can talk quietly, but the garden is gated and closed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in."
   },
   {
     "name": "Les Halles",
@@ -359,7 +369,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A large shopping-centre-and-garden complex where children cannot run free among crowds and roads, but the surrounding Nelson Mandela garden has free benches and lawns quiet enough to talk, and the area is lit and busy well into the night."
+    "judgement_basis": "A large shopping-centre-and-garden complex where children cannot run free among crowds and roads, but the surrounding Nelson Mandela garden has free benches and lawns quiet enough to talk, and the area is lit and busy well into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Forum des Halles is an open shopping centre with multiple free entrances and no admission control, so nobody waits to enter."
   },
   {
     "name": "Louvre Museum",
@@ -706,7 +721,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "The interior is a hushed gallery where quiet is expected and running is forbidden, and the courtyard has no significant free quiet seating away from crowds; the pyramid courtyard is lit, open and busy into the evening, so standing there after dark is fine."
+    "judgement_basis": "The interior is a hushed gallery where quiet is expected and running is forbidden, and the courtyard has no significant free quiet seating away from crowds; the pyramid courtyard is lit, open and busy into the evening, so standing there after dark is fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 40,
+    "queue_minutes_offpeak": 15,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Security into the glass pyramid, then ticket gates, produce a substantial line at midday; timed tickets shorten but do not remove it, and off-peak means opening or late afternoon."
   },
   {
     "name": "Paris Catacombs",
@@ -766,7 +791,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A confined underground ossuary of narrow tunnels with no running room, no seating and no place to talk, and it is locked and inaccessible at night."
+    "judgement_basis": "A confined underground ossuary of narrow tunnels with no running room, no seating and no place to talk, and it is locked and inaccessible at night.",
+    "queue_class": "unpredictable",
+    "queue_minutes_peak": 120,
+    "queue_minutes_offpeak": 45,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Occupancy underground is capped to a few hundred people at once, so entry moves at a trickle and the wall-standing wait can be twenty minutes or three hours with no reliable way to predict which, making any bound untrustworthy."
   },
   {
     "name": "Pavillon de Flore",
@@ -824,7 +859,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A Louvre palace wing passed by on foot along trafficked quays and passages with no free seating and nowhere enclosed for a child to run, but the central riverside location is lit and peopled at night."
+    "judgement_basis": "A Louvre palace wing passed by on foot along trafficked quays and passages with no free seating and nowhere enclosed for a child to run, but the central riverside location is lit and peopled at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a walk-by-only wing of the Louvre Palace viewed from the street or riverside with no separate entrance, so there is nothing to queue for."
   },
   {
     "name": "Place Vendome",
@@ -882,7 +922,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An open octagonal square with vehicle traffic circulating and no free seating, offering no safe enclosed run-space, but it is central, well-lit and patrolled into the night."
+    "judgement_basis": "An open octagonal square with vehicle traffic circulating and no free seating, offering no safe enclosed run-space, but it is central, well-lit and patrolled into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square walked into freely from surrounding streets with no gate or ticket, so there is no line."
   },
   {
     "name": "Saint-Eustache",
@@ -1092,6 +1137,11 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The church itself is a quiet interior forbidding running, but it fronts the traffic-free Les Halles gardens with benches and lawns where two people can sit and talk, and the surrounding pedestrian district stays lit and busy after dark."
+    "judgement_basis": "The church itself is a quiet interior forbidding running, but it fronts the traffic-free Les Halles gardens with benches and lawns where two people can sit and talk, and the surrounding pedestrian district stays lit and busy after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A large free-entry church near Les Halles with open doors and no ticket or security check, so entry is immediate and no line forms."
   }
 ]

@@ -406,7 +406,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "No description given, but as a named Paris square it is judged conservatively as a fenced municipal garden set back from traffic where children can run and benches allow quiet talk, but which is gated and locked after dark."
+    "judgement_basis": "No description given, but as a named Paris square it is judged conservatively as a fenced municipal garden set back from traffic where children can run and benches allow quiet talk, but which is gated and locked after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square entered freely from the street with no ticket or door, so no line forms."
   },
   {
     "name": "Square Santiago du Chili",
@@ -677,7 +682,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "No description given, but as a named Paris square it is judged conservatively as a fenced municipal garden away from traffic with benches quiet enough to talk and room for a child to run, closed and locked at night."
+    "judgement_basis": "No description given, but as a named Paris square it is judged conservatively as a fenced municipal garden away from traffic with benches quiet enough to talk and room for a child to run, closed and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with an open gate and no ticket, so there is nothing to queue for."
   },
   {
     "name": "Champ de Mars",
@@ -978,7 +988,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A vast traffic-free lawn lets children run loud and free with benches and grass for quiet conversation, but the open park is unlit in stretches, sees crowds thin at night and is periodically fenced near the Tower."
+    "judgement_basis": "A vast traffic-free lawn lets children run loud and free with benches and grass for quiet conversation, but the open park is unlit in stretches, sees crowds thin at night and is periodically fenced near the Tower.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side."
   },
   {
     "name": "Eiffel Tower",
@@ -1184,7 +1199,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "The Champ de Mars lawns run traffic-free but the immediate base is a fenced, security-controlled paved plaza crossed by roads and crowds where a child at speed can reach traffic and there is no quiet free seating; the site is brightly lit and busy with people at all hours, so a person left standing at night would be fine."
+    "judgement_basis": "The Champ de Mars lawns run traffic-free but the immediate base is a fenced, security-controlled paved plaza crossed by roads and crowds where a child at speed can reach traffic and there is no quiet free seating; the site is brightly lit and busy with people at all hours, so a person left standing at night would be fine.",
+    "queue_class": "long",
+    "queue_minutes_peak": 45,
+    "queue_minutes_offpeak": 20,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening."
   },
   {
     "name": "Théâtre du Vieux-Colombier",
@@ -1285,7 +1310,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is a theatre building where entry is ticketed and quiet is expected indoors, offering no free-range running space and no free public seating, and its interior is locked outside performance hours; I judge conservatively from the name as I have no floor detail."
+    "judgement_basis": "This is a theatre building where entry is ticketed and quiet is expected indoors, offering no free-range running space and no free public seating, and its interior is locked outside performance hours; I judge conservatively from the name as I have no floor detail.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "A working theatre where any wait is a ticket-check and bag glance clustered just before a performance, not a standing queue, so it peaks briefly around curtain time and is otherwise negligible."
   },
   {
     "name": "Jardin Atlantique",
@@ -1573,6 +1608,11 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is an enclosed rooftop garden above Montparnasse station with traffic-free lawns and paths where children can run and plenty of benches for quiet talk, but it is a gated garden closed and locked at night."
+    "judgement_basis": "This is an enclosed rooftop garden above Montparnasse station with traffic-free lawns and paths where children can run and plenty of benches for quiet talk, but it is a gated garden closed and locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public rooftop garden atop Gare Montparnasse entered freely via lift or stairs with no ticket or screening, so there is no line."
   }
 ]

@@ -310,6 +310,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "The column stands on a traffic island in the middle of the vast Place de la Bastille roundabout, ringed by heavy traffic with no traffic-free run and no free quiet seating, but the square is brightly lit and busy at all hours so standing there after dark is fine."
+    "judgement_basis": "The column stands on a traffic island in the middle of the vast Place de la Bastille roundabout, ringed by heavy traffic with no traffic-free run and no free quiet seating, but the square is brightly lit and busy at all hours so standing there after dark is fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A column standing on a traffic-island square, viewed from the open; the crypt is not routinely open to visitors, so there is no entry line to stand in."
   }
 ]

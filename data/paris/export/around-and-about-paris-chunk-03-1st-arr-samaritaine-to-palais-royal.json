@@ -189,7 +189,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A medieval prison-monument requiring paid entry where quiet is expected indoors and there is no free seating, and the building locks at closing so no one can be left standing inside after dark."
+    "judgement_basis": "A medieval prison-monument requiring paid entry where quiet is expected indoors and there is no free seating, and the building locks at closing so no one can be left standing inside after dark.",
+    "queue_class": "long",
+    "queue_minutes_peak": 25,
+    "queue_minutes_offpeak": 8,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry to the medieval prison passes through a security bag-check and a single ticket desk at one narrow entrance, so a substantial line forms midday and thins near opening and late afternoon."
   },
   {
     "name": "Ile de la Cite",
@@ -276,7 +286,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark."
+    "judgement_basis": "This island is threaded by trafficked streets with quays dropping to the river so a child at speed is unsafe, but it has open squares and benches (place Dauphine, cathedral forecourt) quiet enough to sit and talk, and it stays lit, central and peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it."
   },
   {
     "name": "Place Dauphine",
@@ -358,7 +373,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A quiet triangular square with light local traffic and open gravel that is not fully enclosed from its access roads so children could stray, but there are benches and enough calm to talk, and it stays lit and safely central at night."
+    "judgement_basis": "A quiet triangular square with light local traffic and open gravel that is not fully enclosed from its access roads so children could stray, but there are benches and enough calm to talk, and it stays lit and safely central at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A triangular open square on the Île de la Cité entered freely from the street, with no gate or ticket and therefore no queue."
   },
   {
     "name": "Place du Châtelet",
@@ -504,7 +524,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A major traffic square ringed by heavy roads with no enclosure and only fountain-edge perches beside noisy traffic, so children cannot run and quiet talk is impossible, but it is brightly lit, central and busy at all hours."
+    "judgement_basis": "A major traffic square ringed by heavy roads with no enclosure and only fountain-edge perches beside noisy traffic, so children cannot run and quiet talk is impossible, but it is brightly lit, central and busy at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with a fountain, freely crossed on foot with no door or admission, so there is no line."
   },
   {
     "name": "Pont Neuf",
@@ -556,7 +581,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours."
+    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
   },
   {
     "name": "Sainte-Chapelle",
@@ -707,7 +737,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A small ticketed Gothic chapel where silence is expected and there is no free seating for conversation, and it is locked after closing so no one can be left standing inside at night."
+    "judgement_basis": "A small ticketed Gothic chapel where silence is expected and there is no free seating for conversation, and it is locked after closing so no one can be left standing inside at night.",
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Airport-style security shared with the Palais de Justice plus a ticket check funnels visitors ahead of a small chapel, so the line runs long at midday and thins near opening and late afternoon."
   },
   {
     "name": "Tour de l'Horloge",
@@ -763,6 +803,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A clock tower viewed from a pavement beside the traffic of the Ile de la Cite with no seating or safe run-space, but the central quays here are lit and busy at night."
+    "judgement_basis": "A clock tower viewed from a pavement beside the traffic of the Ile de la Cite with no seating or safe run-space, but the central quays here are lit and busy at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A clock tower viewed from the street corner with no visitor entry, so there is nothing to queue for."
   }
 ]

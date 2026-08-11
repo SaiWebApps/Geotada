@@ -67,7 +67,7 @@ QUEUE_FIELDS = (
 # ADDING a slug here is the deliberate act of declaring "this city's queues are
 # priced". REMOVING one to reach green is forbidden — it deletes the guard
 # instead of fixing the data.
-CITIES_WITH_QUEUE_PRICING: tuple[str, ...] = ()
+CITIES_WITH_QUEUE_PRICING: tuple[str, ...] = ("paris",)
 
 
 def _pois(city: str) -> list[dict]:

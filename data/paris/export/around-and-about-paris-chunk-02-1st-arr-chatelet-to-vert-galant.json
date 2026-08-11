@@ -97,7 +97,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A medieval prison-monument requiring paid entry where quiet is expected indoors and there is no free seating, and the building locks at closing so no one can be left standing inside after dark."
+    "judgement_basis": "A medieval prison-monument requiring paid entry where quiet is expected indoors and there is no free seating, and the building locks at closing so no one can be left standing inside after dark.",
+    "queue_class": "long",
+    "queue_minutes_peak": 25,
+    "queue_minutes_offpeak": 8,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry to the medieval prison passes through a security bag-check and a single ticket desk at one narrow entrance, so a substantial line forms midday and thins near opening and late afternoon."
   },
   {
     "name": "Fontaine des Innocents",
@@ -160,7 +170,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A pedestrian square around a fountain with hard paving and steps but no enclosure or barrier from surrounding streets so running is unsafe, though the steps offer free seating and the busy Les Halles area is lit and peopled after dark."
+    "judgement_basis": "A pedestrian square around a fountain with hard paving and steps but no enclosure or barrier from surrounding streets so running is unsafe, though the steps offer free seating and the busy Les Halles area is lit and peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A Renaissance fountain standing in an open square with no interior or gate, so there is nothing to queue for."
   },
   {
     "name": "Les Halles",
@@ -320,7 +335,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A large shopping-centre-and-garden complex where children cannot run free among crowds and roads, but the surrounding Nelson Mandela garden has free benches and lawns quiet enough to talk, and the area is lit and busy well into the night."
+    "judgement_basis": "A large shopping-centre-and-garden complex where children cannot run free among crowds and roads, but the surrounding Nelson Mandela garden has free benches and lawns quiet enough to talk, and the area is lit and busy well into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Forum des Halles is an open shopping centre with multiple free entrances and no admission control, so nobody waits to enter."
   },
   {
     "name": "Place de la Concorde",
@@ -380,7 +400,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A huge open square ringed and crossed by heavy fast traffic with no barrier and no quiet free seating, so a child cannot safely run and conversation is drowned; it is brightly lit and busy at all hours, so a person left standing is fine."
+    "judgement_basis": "A huge open square ringed and crossed by heavy fast traffic with no barrier and no quiet free seating, so a child cannot safely run and conversation is drowned; it is brightly lit and busy at all hours, so a person left standing is fine.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no interior, door, or ticket, so there is no line to stand in."
   },
   {
     "name": "Pont Neuf",
@@ -438,6 +463,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours."
+    "judgement_basis": "A stone road bridge with traffic down the middle and parapets straight onto the river where a running child is in danger, and its half-moon stone bays sit metres from moving cars making conversation an effort, but it is lit, open and centrally crossed at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
   }
 ]

@@ -294,6 +294,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A department store interior with glass displays and paid seating only, unsuitable for running children or free quiet conversation, but it stands on lit, busy central streets with people about after dark."
+    "judgement_basis": "A department store interior with glass displays and paid seating only, unsuitable for running children or free quiet conversation, but it stands on lit, busy central streets with people about after dark.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A free-entry department store whose doors carry a bag check that can back up briefly at peak shopping hours but otherwise flows straight through."
   }
 ]

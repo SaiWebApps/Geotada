@@ -305,7 +305,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working university whose historic buildings are gated and access-controlled, offering no open ground for children to run and no free public seating, but its Latin Quarter frontage is lit and busy with people into the evening."
+    "judgement_basis": "A working university whose historic buildings are gated and access-controlled, offering no open ground for children to run and no free public seating, but its Latin Quarter frontage is lit and busy with people into the evening.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "The historic university is not a free walk-in; visitor access runs through a controlled entrance with ID and bag check, producing a modest line at midday that thins outside guided-visit windows."
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -468,7 +478,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A quiet church interior where children cannot run and offering no free outdoor seating, set on narrow Latin Quarter streets behind the Pantheon that empty out and offer little lit through-traffic at night."
+    "judgement_basis": "A quiet church interior where children cannot run and offering no free outdoor seating, set on narrow Latin Quarter streets behind the Pantheon that empty out and offer little lit through-traffic at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free parish church with an open door and no admission control, so visitors enter without stopping and there is nothing to queue for."
   },
   {
     "name": "Lycee Henri IV",
@@ -524,7 +539,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working secondary school closed to the public with no accessible running space or free seating, but its Place du Pantheon setting is open, lit and populated after dark."
+    "judgement_basis": "A working secondary school closed to the public with no accessible running space or free seating, but its Place du Pantheon setting is open, lit and populated after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working secondary school closed to casual visitors and seen only from the street or via rare booked tours, so there is no walk-up admission line."
   },
   {
     "name": "College de France",
@@ -585,7 +605,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A research institution with gated courtyards not open for children to run and no free casual seating, but it sits on a lit, busy Latin Quarter street near the Sorbonne after dark."
+    "judgement_basis": "A research institution with gated courtyards not open for children to run and no free casual seating, but it sits on a lit, busy Latin Quarter street near the Sorbonne after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A research institution walked past from the street; its free public lectures involve no security or ticket line for a passing visitor."
   },
   {
     "name": "Jardin des Plantes",
@@ -642,7 +667,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall."
+    "judgement_basis": "An enclosed botanical garden with traffic-free gravel paths and lawns where children can run and many benches in quiet plantings for conversation, but the gates are locked at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line."
   },
   {
     "name": "Caveau de la Huchette",
@@ -761,7 +791,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "An underground jazz cellar with no run-around space and no free seating, but its entrance is on a narrow but busy, brightly lit Latin Quarter pedestrian street that stays crowded and peopled late into the night."
+    "judgement_basis": "An underground jazz cellar with no run-around space and no free seating, but its entrance is on a narrow but busy, brightly lit Latin Quarter pedestrian street that stays crowded and peopled late into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A cellar jazz club with no daytime entry; it is only walked past on a tour, so there is no queue to price during the day."
   },
   {
     "name": "Theatre de la Huchette",
@@ -817,7 +852,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A tiny theatre on the very narrow rue de la Huchette with no room to run and no free seating, but the street is a busy, lit, crowded pedestrian area at night."
+    "judgement_basis": "A tiny theatre on the very narrow rue de la Huchette with no room to run and no free seating, but the street is a busy, lit, crowded pedestrian area at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "21:00"
+      ]
+    ],
+    "queue_basis": "A tiny theatre where the only wait is at the box-office window before a performance; the small door and single desk make a brief line just before curtain, but there is no daytime queue."
   },
   {
     "name": "Ecole Normale Superieure",
@@ -873,7 +918,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A gated, secured academic institution whose interior courtyards are not open to the public so children cannot run there and there is no public free seating, but its rue d'Ulm frontage near the Pantheon is lit and on a normal city street where someone could safely be left standing."
+    "judgement_basis": "A gated, secured academic institution whose interior courtyards are not open to the public so children cannot run there and there is no public free seating, but its rue d'Ulm frontage near the Pantheon is lit and on a normal city street where someone could safely be left standing.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working academic institution, not a ticketed attraction; the tour views it from the street with no public entry line to stand in."
   },
   {
     "name": "Arenes de Lutece",
@@ -929,6 +979,11 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night."
+    "judgement_basis": "A sunken traffic-free Roman arena enclosed below street level where children can run loudly on the open arena floor and its stone tiers give free quiet seating, but it is gated and closed at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line."
   }
 ]

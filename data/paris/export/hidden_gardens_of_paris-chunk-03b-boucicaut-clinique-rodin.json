@@ -198,7 +198,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A small enclosed public garden set back from the street with gravel paths, lawns and benches quiet enough to talk, but a fenced square of this type is gated and locked at nightfall so nobody can be left standing inside."
+    "judgement_basis": "A small enclosed public garden set back from the street with gravel paths, lawns and benches quiet enough to talk, but a fenced square of this type is gated and locked at nightfall so nobody can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no gate and no interior to enter, so there is no line to stand in at any hour."
   },
   {
     "name": "Jardin de la Clinique Saint-Jean de Dieu",
@@ -409,7 +414,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a hidden hospital rose garden where quiet is expected and delicate plantings discourage free-range running, though it has benches for calm conversation, and being accessible only during visiting hours it is closed after dark."
+    "judgement_basis": "This is a hidden hospital rose garden where quiet is expected and delicate plantings discourage free-range running, though it has benches for calm conversation, and being accessible only during visiting hours it is closed after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A hidden hospital-grounds rose garden entered during visiting hours with no ticket desk or security line, so there is no queue to stand in."
   },
   {
     "name": "Musee Rodin",
@@ -781,7 +791,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A ticketed sculpture museum whose formal garden has fragile artworks and expects decorum, though it has benches quiet enough to sit and talk; it closes and locks at night."
+    "judgement_basis": "A ticketed sculpture museum whose formal garden has fragile artworks and expects decorum, though it has benches quiet enough to sit and talk; it closes and locks at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single ticket desk and bag check at the Hotel Biron gate create a modest wait at peak hours that stays manageable."
   },
   {
     "name": "Le Bon Marché",
@@ -871,7 +891,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A department-store interior of fragile displays and paid café tables where children cannot run free and no free quiet seating exists, but rue de Sèvres outside is a busy lit street trafficked at night."
+    "judgement_basis": "A department-store interior of fragile displays and paid café tables where children cannot run free and no free quiet seating exists, but rue de Sèvres outside is a busy lit street trafficked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A department store with wide free-entry doors and no ticket or security line to enter; any waiting happens at checkout tills inside, not at the threshold."
   },
   {
     "name": "Hotel Lutetia",
@@ -984,7 +1009,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is a luxury hotel fronting the busy boulevard Raspail with no traffic-free running ground and no free public seating, but the boulevard is well lit and trafficked into the night so someone could safely be left standing outside it."
+    "judgement_basis": "This is a luxury hotel fronting the busy boulevard Raspail with no traffic-free running ground and no free public seating, but the boulevard is well lit and trafficked into the night so someone could safely be left standing outside it.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working luxury hotel walked past or entered through its lobby doors with no admission line or screening, so there is no queue to price."
   },
   {
     "name": "Jardin Catherine-Laboure",
@@ -1073,7 +1103,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This walled convent garden is fully enclosed and traffic-free with lawns and an arbor where children can run and quiet benches for lunchtime conversation, but as a gated garden on convent grounds it is locked at night."
+    "judgement_basis": "This walled convent garden is fully enclosed and traffic-free with lawns and an arbor where children can run and quiet benches for lunchtime conversation, but as a gated garden on convent grounds it is locked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A convent-grounds public garden on rue de Babylone entered freely through an open gate with no ticket or bag check, so there is no queue."
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -1169,6 +1204,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A church interior demands quiet so children cannot run, and its surrounding square has no reliable free seating, but the adjacent square is lit and set on trafficked residential streets after dark."
+    "judgement_basis": "A church interior demands quiet so children cannot run, and its surrounding square has no reliable free seating, but the adjacent square is lit and set on trafficked residential streets after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A neo-Gothic parish church with an open door and free entry; visitors walk straight in without a ticket or screening."
   }
 ]

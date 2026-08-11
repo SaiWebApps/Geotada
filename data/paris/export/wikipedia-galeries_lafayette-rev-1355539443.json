@@ -374,6 +374,16 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "An echoing department store interior with fragile luxury goods at child height where quiet browsing is expected and seating must be paid for, and the whole building is locked at closing time."
+    "judgement_basis": "An echoing department store interior with fragile luxury goods at child height where quiet browsing is expected and seating must be paid for, and the whole building is locked at closing time.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A free-entry department store with open doors, but bag checks and the wait for the small rooftop-terrace elevator create a minor moving line at busy afternoon hours."
   }
 ]

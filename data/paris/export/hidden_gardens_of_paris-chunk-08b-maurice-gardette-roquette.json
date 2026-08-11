@@ -414,7 +414,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This is a fenced neighbourhood square with traffic-free paths, lawns and a playground where children can run freely, and benches quiet enough for conversation, but like all Paris squares it is gated and locked at nightfall so no one can be left standing inside."
+    "judgement_basis": "This is a fenced neighbourhood square with traffic-free paths, lawns and a playground where children can run freely, and benches quiet enough for conversation, but like all Paris squares it is gated and locked at nightfall so no one can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public neighbourhood garden square with open gates and no ticket or bag check, so visitors walk straight in with no wait."
   },
   {
     "name": "Square de la Roquette",
@@ -688,7 +693,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "This enclosed municipal garden has traffic-free paths and play areas where children can run safely and benches for quiet talk, but its gates are locked at night leaving no one able to stand inside after dark."
+    "judgement_basis": "This enclosed municipal garden has traffic-free paths and play areas where children can run safely and benches for quiet talk, but its gates are locked at night leaving no one able to stand inside after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public garden square entered freely through open gates with no screening or admission, so there is no queue to stand in."
   },
   {
     "name": "Canal Saint-Martin",
@@ -801,7 +811,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The unfenced canal edges drop straight into water so a running child is at risk, but the quays have quays and benches quiet enough to talk under the chestnut trees, and the area is lit and lively at night."
+    "judgement_basis": "The unfenced canal edges drop straight into water so a running child is at risk, but the quays have quays and benches quiet enough to talk under the chestnut trees, and the area is lit and lively at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open waterway with footbridges and towpaths that are walked straight onto, with no gate or ticket, so there is no queue."
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -938,7 +953,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "A hushed cemetery of hard cobbled lanes where loud running children draw disapproval, though its quiet benches suit low conversation; it is gated and locked at nightfall so nobody can be left standing inside."
+    "judgement_basis": "A hushed cemetery of hard cobbled lanes where loud running children draw disapproval, though its quiet benches suit low conversation; it is gated and locked at nightfall so nobody can be left standing inside.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting."
   },
   {
     "name": "Eglise Notre-Dame de la Croix",
@@ -1078,7 +1098,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is a church where quiet is expected inside and running is unacceptable, its interior pews are not free casual seating for chatting, but it fronts a lit open square in the Belleville area with people about at night making it fine to end a tour beside it."
+    "judgement_basis": "This is a church where quiet is expected inside and running is unacceptable, its interior pews are not free casual seating for chatting, but it fronts a lit open square in the Belleville area with people about at night making it fine to end a tour beside it.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church in Ménilmontant with an open door you walk straight through, with no ticket desk or security screening, so there is no line."
   },
   {
     "name": "La Maison des Metallos",
@@ -1171,6 +1196,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is a cultural venue on a Paris street with no traffic-free enclosure for children to run and no free public seating on its pavement, but it sits on a lit populated street where someone could be left standing safely at night."
+    "judgement_basis": "This is a cultural venue on a Paris street with no traffic-free enclosure for children to run and no free public seating on its pavement, but it sits on a lit populated street where someone could be left standing safely at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public cultural centre and event venue entered freely from the street outside of ticketed shows, with no standing security line, so it is priced as no queue."
   }
 ]

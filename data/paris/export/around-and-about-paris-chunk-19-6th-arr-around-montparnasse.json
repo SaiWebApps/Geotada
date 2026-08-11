@@ -167,7 +167,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A brasserie with only paid table seating fronting a busy boulevard junction where a child cannot run safely, but the wide avenue is lit and trafficked at night."
+    "judgement_basis": "A brasserie with only paid table seating fronting a busy boulevard junction where a child cannot run safely, but the wide avenue is lit and trafficked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Priced as a walk-by brasserie with no entry line — you pass its facade and plaques from the street, and any table wait is seating, not a queue to enter a monument."
   },
   {
     "name": "Statue of Marshal Ney",
@@ -228,7 +233,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "The statue stands on a traffic island at the busy junction of Avenue de l'Observatoire and Boulevard du Montparnasse, so a child would run straight into roads, there is no quiet free seating beside the moving traffic, but the wide boulevard is well lit with people about at all hours."
+    "judgement_basis": "The statue stands on a traffic island at the busy junction of Avenue de l'Observatoire and Boulevard du Montparnasse, so a child would run straight into roads, there is no quiet free seating beside the moving traffic, but the wide boulevard is well lit with people about at all hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public statue on a street corner with no interior and no admission line."
   },
   {
     "name": "Fontaine des Quatre-Parties-du-Monde",
@@ -288,7 +298,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": false,
-    "judgement_basis": "The fountain sits in the Jardin Marco Polo, a planted garden strip with benches quiet enough to talk, but the garden runs alongside Avenue de l'Observatoire without full traffic enclosure so a child at speed could reach the road, and this narrow public garden is unlit and deserted after dark."
+    "judgement_basis": "The fountain sits in the Jardin Marco Polo, a planted garden strip with benches quiet enough to talk, but the garden runs alongside Avenue de l'Observatoire without full traffic enclosure so a child at speed could reach the road, and this narrow public garden is unlit and deserted after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open-air fountain in a public garden on Avenue de l'Observatoire; nothing is ticketed or gated."
   },
   {
     "name": "Rue Notre-Dame-des-Champs",
@@ -344,7 +359,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is an ordinary Left Bank street with a live roadway and parked cars, no free public seating, and quiet residential blocks that go dim and empty at night, so it fails all three tests."
+    "judgement_basis": "This is an ordinary Left Bank street with a live roadway and parked cars, no free public seating, and quiet residential blocks that go dim and empty at night, so it fails all three tests.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public street walked past; there is no entrance or line."
   },
   {
     "name": "Ecole Alsacienne",
@@ -400,7 +420,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private school seen only from the pavement of a working street, with a gated frontage, no public seating, and a deserted quiet block after school hours, so children cannot run, there is nowhere to sit, and it is no place to be left at night."
+    "judgement_basis": "A private school seen only from the pavement of a working street, with a gated frontage, no public seating, and a deserted quiet block after school hours, so children cannot run, there is nowhere to sit, and it is no place to be left at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working private school viewed only from the street; there is no visitor entrance or queue."
   },
   {
     "name": "College Stanislas",
@@ -454,7 +479,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A gated private school viewed from the street pavement beside traffic, offering no free seating and a walled institutional frontage that empties at night, so it fails all three physical tests."
+    "judgement_basis": "A gated private school viewed from the street pavement beside traffic, offering no free seating and a walled institutional frontage that empties at night, so it fails all three physical tests.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A functioning school seen from outside; no public entry line exists."
   },
   {
     "name": "3 Rue Joseph-Bara",
@@ -514,7 +544,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "This is a private apartment/studio building fronting a narrow roadway, with no traffic-free ground for a child, no public seating, and a quiet residential street that is dim and empty after dark."
+    "judgement_basis": "This is a private apartment/studio building fronting a narrow roadway, with no traffic-free ground for a child, no public seating, and a quiet residential street that is dim and empty after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private residential building admired from the street facade; there is no interior to enter and no line."
   },
   {
     "name": "Musee Zadkine",
@@ -610,7 +645,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A small studio-museum entered from rue d'Assas and passed by only from the street; interiors expect quiet so children cannot run, there is no free street seating, and the frontage on a calm side street offers no lit night presence."
+    "judgement_basis": "A small studio-museum entered from rue d'Assas and passed by only from the street; interiors expect quiet so children cannot run, there is no free street seating, and the frontage on a calm side street offers no lit night presence.",
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small free city studio-museum with one entrance and a bag check that can back up briefly in the afternoon, but the intimate size keeps any wait minor even though the group is only walking by."
   },
   {
     "name": "Reid Hall",
@@ -670,7 +715,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "An academic residence behind its gate on the short quiet rue de Chevreuse, seen only from the pavement, with no traffic-free running room, no public seating, and a deserted street at night."
+    "judgement_basis": "An academic residence behind its gate on the short quiet rue de Chevreuse, seen only from the pavement, with no traffic-free running room, no public seating, and a deserted street at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A university academic centre not open as a visitor attraction; seen from the street with no public queue."
   },
   {
     "name": "Academie de la Grande-Chaumiere",
@@ -776,7 +826,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A working art academy on a narrow street, passed from the roadway pavement, with no enclosed play space, no free seating, and a quiet dim block after hours."
+    "judgement_basis": "A working art academy on a narrow street, passed from the roadway pavement, with no enclosed play space, no free seating, and a quiet dim block after hours.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working art academy viewed from the street; there is no ticketed entry or line."
   },
   {
     "name": "26 Rue Vavin (Sauvage Building)",
@@ -832,7 +887,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private tiled apartment building admired from a live street pavement, with traffic alongside, no public seating, and a residential block that goes quiet and dim at night."
+    "judgement_basis": "A private tiled apartment building admired from a live street pavement, with traffic alongside, no public seating, and a residential block that goes quiet and dim at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private tiled apartment building appreciated from the pavement; no interior access and no queue."
   },
   {
     "name": "La Rotonde",
@@ -920,6 +980,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A busy café on the Boulevard du Montparnasse with only paid terrace seating that does not count and no traffic-free ground for children, but the wide boulevard is brightly lit and crowded late so it is fine to be left standing after dark."
+    "judgement_basis": "A busy café on the Boulevard du Montparnasse with only paid terrace seating that does not count and no traffic-free ground for children, but the wide boulevard is brightly lit and crowded late so it is fine to be left standing after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A café you walk to and enter or seat at will; there is no security or ticket line to price before entering."
   }
 ]

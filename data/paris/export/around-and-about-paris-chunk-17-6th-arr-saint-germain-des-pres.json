@@ -182,7 +182,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working church where silence is expected and running is impossible, with no free quiet seating suited to talk (the small adjacent square sits beside busy boulevard traffic), but the busy lit Left Bank crossroads outside is well-peopled after dark."
+    "judgement_basis": "A working church where silence is expected and running is impossible, with no free quiet seating suited to talk (the small adjacent square sits beside busy boulevard traffic), but the busy lit Left Bank crossroads outside is well-peopled after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An active parish church with an open door and free entry that visitors walk straight into, so there is no ticket desk or security to stand in."
   },
   {
     "name": "Place de Furstemberg",
@@ -304,7 +309,12 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A small quiet paved square set off the road with low kerbs and no full enclosure or gates, so a child could wander into the adjoining lane; it has benches and low walls around the central paulownia trees quiet enough to talk, and being an open, lit through-square it stays accessible after dark."
+    "judgement_basis": "A small quiet paved square set off the road with low kerbs and no full enclosure or gates, so a child could wander into the adjoining lane; it has benches and low walls around the central paulownia trees quiet enough to talk, and being an open, lit through-square it stays accessible after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with no door and no gate; the Musée Delacroix on it has its own small desk, but the square itself is walked into freely with no line."
   },
   {
     "name": "L'Hotel Paris",
@@ -363,7 +373,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "This is a private luxury hotel frontage on a narrow street: no traffic-free run for children, no free public seating on the pavement, but the doorway sits on a lit, populated central street so a person left standing outside would be fine at night."
+    "judgement_basis": "This is a private luxury hotel frontage on a narrow street: no traffic-free run for children, no free public seating on the pavement, but the doorway sits on a lit, populated central street so a person left standing outside would be fine at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working luxury hotel viewed from the street on a walking tour; there is no public ticketed entry and no queue to stand in outside."
   },
   {
     "name": "Rue Visconti",
@@ -570,7 +585,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow historic alley with no pavement separation and no public seating, echoing and deserted at night with no through-lighting or crowds, so it fails all three tests."
+    "judgement_basis": "A narrow historic alley with no pavement separation and no public seating, echoing and deserted at night with no through-lighting or crowds, so it fails all three tests.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A narrow open alley you walk down; it has no door, no ticket, and no line."
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -666,7 +686,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A gated art school with courtyards closed to the public, offering no free public seating and no open, populated space at night on its quiet side street."
+    "judgement_basis": "A gated art school with courtyards closed to the public, offering no free public seating and no open, populated space at night on its quiet side street.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Walked by only; the art school's courtyard and street facade are viewed without any ticketed entry or line."
   },
   {
     "name": "Les Deux Magots",
@@ -727,7 +752,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A café on a busy boulevard corner where children have no enclosed space and its only seating is a paid terrace, but the square and boulevard around it are brightly lit and busy well into the night."
+    "judgement_basis": "A café on a busy boulevard corner where children have no enclosed space and its only seating is a paid terrace, but the square and boulevard around it are brightly lit and busy well into the night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Walked by only and in any case a café with no security or ticketed entry; there is no queue to price for a tour stop."
   },
   {
     "name": "Hotel d'York",
@@ -789,7 +819,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A former hotel building on the narrow, quiet rue Jacob offering no enclosed play space, no public seating, and a deserted, dim street after dark."
+    "judgement_basis": "A former hotel building on the narrow, quiet rue Jacob offering no enclosed play space, no public seating, and a deserted, dim street after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A historic building marked by a plaque and seen from the street; there is no interior visit and no queue."
   },
   {
     "name": "Natalie Barney Salon",
@@ -850,7 +885,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private former residence on the narrow rue Jacob with no public interior access, no seating, and a quiet, unlit residential street that empties after dark."
+    "judgement_basis": "A private former residence on the narrow rue Jacob with no public interior access, no seating, and a quiet, unlit residential street that empties after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private former residence seen only from the street with no public interior; there is nothing to queue for."
   },
   {
     "name": "Hotel d'Angleterre Paris",
@@ -905,7 +945,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private hotel frontage on the narrow, quiet rue Jacob with no traffic-free running space, no free seating, and a residential street with little foot traffic or lighting at night."
+    "judgement_basis": "A private hotel frontage on the narrow, quiet rue Jacob with no traffic-free running space, no free seating, and a residential street with little foot traffic or lighting at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working hotel viewed from the street with no public ticketed entry and no line to stand in."
   },
   {
     "name": "Rue de Buci Market",
@@ -960,6 +1005,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A bustling market street with pedestrian and vehicle traffic, dense stalls and crowds where a child cannot run free and there is no quiet free seating, but it is lit and populated into the evening."
+    "judgement_basis": "A bustling market street with pedestrian and vehicle traffic, dense stalls and crowds where a child cannot run free and there is no quiet free seating, but it is lit and populated into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open-air street market you stroll through; there is no gate, ticket, or security, so no line to enter."
   }
 ]

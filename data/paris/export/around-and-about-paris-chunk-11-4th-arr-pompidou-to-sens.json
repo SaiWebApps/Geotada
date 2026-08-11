@@ -112,7 +112,17 @@
     "children_can_run": false,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "The museum interior forbids running, but the large sloping traffic-free forecourt has broad ground and low ledges where people sit and talk, and the plaza is lit and busy with people into the evening, so standing after dark is fine; note the forecourt itself is fairly open, but its slope toward buildings not traffic still does not make it safe free-range running ground for a loud fast child amid dense crowds."
+    "judgement_basis": "The museum interior forbids running, but the large sloping traffic-free forecourt has broad ground and low ledges where people sit and talk, and the plaza is lit and busy with people into the evening, so standing after dark is fine; note the forecourt itself is fairly open, but its slope toward buildings not traffic still does not make it safe free-range running ground for a loud fast child amid dense crowds.",
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Security screening and ticket gates at the entrance form a modest line at busy afternoon hours, short at opening and near closing."
   },
   {
     "name": "Atelier Brancusi",
@@ -203,7 +213,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A quiet museum studio interior where visitors are expected to be silent and there is no free seating, closed and locked at night, so it fails all three tests despite the open Pompidou piazza nearby."
+    "judgement_basis": "A quiet museum studio interior where visitors are expected to be silent and there is no free seating, closed and locked at night, so it fails all three tests despite the open Pompidou piazza nearby.",
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small free-admission studio with a single controlled entrance and light bag check that forms only a brief line at busy afternoon hours."
   },
   {
     "name": "Stravinsky Fountain",
@@ -259,7 +279,12 @@
     "children_can_run": true,
     "sit_and_talk": true,
     "good_after_dark": true,
-    "judgement_basis": "A traffic-free pedestrian plaza around a fountain with broad flat paving and low walls and ledges people sit on, enclosed from cars, and lit and busy in the evening beside the Pompidou, so children can run, people can sit, and it is fine at nightfall (though the fountain basin edges warrant a watchful eye)."
+    "judgement_basis": "A traffic-free pedestrian plaza around a fountain with broad flat paving and low walls and ledges people sit on, enclosed from cars, and lit and busy in the evening beside the Pompidou, so children can run, people can sit, and it is fine at nightfall (though the fountain basin edges warrant a watchful eye).",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public fountain in a square with no door and no line to enter."
   },
   {
     "name": "Eglise Saint-Merri",
@@ -399,7 +424,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A Gothic church where quiet is expected inside and the exterior offers only a narrow pavement with no free seating, locked at night, so all three affordances fail."
+    "judgement_basis": "A Gothic church where quiet is expected inside and the exterior offers only a narrow pavement with no free seating, locked at night, so all three affordances fail.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A Gothic parish church with an open door you walk through without a ticket desk or security screening."
   },
   {
     "name": "Rue de la Verrerie",
@@ -452,7 +482,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A narrow medieval street open to traffic with no free seating and no distinctive lighting or crowds to hold anyone after dark, so a child could reach the road, there is nowhere quiet to sit, and it would be a deserted lane at nightfall."
+    "judgement_basis": "A narrow medieval street open to traffic with no free seating and no distinctive lighting or crowds to hold anyone after dark, so a child could reach the road, there is nowhere quiet to sit, and it would be a deserted lane at nightfall.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open medieval street with no interior and no line to enter."
   },
   {
     "name": "Hotel de Ville",
@@ -545,7 +580,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A city-hall forecourt that is open paved plaza bordered by trafficked streets with no free seating and often fenced for events, so children cannot safely range and there is nowhere to sit quietly, but the square is well lit and peopled into the evening."
+    "judgement_basis": "A city-hall forecourt that is open paved plaza bordered by trafficked streets with no free seating and often fenced for events, so children cannot safely range and there is nowhere to sit quietly, but the square is well lit and peopled into the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The City Hall interior is only open by occasional booked exhibition or event, so a walking-tour stop views the facade and forecourt from the open square with no line."
   },
   {
     "name": "BHV (Bazar de l'Hotel de Ville)",
@@ -641,7 +681,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A department store interior full of fragile merchandise where running is not tolerated and free seating is scarce, but it sits on a busy well-lit boulevard by the Hotel de Ville where someone could be left standing safely in the evening."
+    "judgement_basis": "A department store interior full of fragile merchandise where running is not tolerated and free seating is scarce, but it sits on a busy well-lit boulevard by the Hotel de Ville where someone could be left standing safely in the evening.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A department store with wide open doors and multiple entrances that visitors walk straight into without a queue."
   },
   {
     "name": "Eglise des Billettes",
@@ -717,7 +762,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A church and cloister where quiet is expected and the street frontage offers only a narrow pavement with no free seating, locked at night, so none of the tests pass."
+    "judgement_basis": "A church and cloister where quiet is expected and the street frontage offers only a narrow pavement with no free seating, locked at night, so none of the tests pass.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A church with an open door you walk through without a ticket desk or security line."
   },
   {
     "name": "Fondation Azzedine Alaia",
@@ -765,7 +815,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private fashion foundation seen from a narrow Marais street with no enclosure, no free seating and no independent lighting or crowds after dark, so all three fail."
+    "judgement_basis": "A private fashion foundation seen from a narrow Marais street with no enclosure, no free seating and no independent lighting or crowds after dark, so all three fail.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by foundation viewed from the street; no public entry queue applies to this stop."
   },
   {
     "name": "Half-Timbered Houses (Rue Francois-Miron)",
@@ -816,7 +871,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "Historic houses viewed from a narrow street open to traffic with no free seating and no distinctive lighting or crowds to hold anyone at night, so a child could reach the road, there is nowhere to sit, and it fails after dark."
+    "judgement_basis": "Historic houses viewed from a narrow street open to traffic with no free seating and no distinctive lighting or crowds to hold anyone at night, so a child could reach the road, there is nowhere to sit, and it fails after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Historic house facades viewed from the open street with no interior entry to queue for."
   },
   {
     "name": "Hotel de Beauvais",
@@ -926,7 +986,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private mansion seen only from a narrow street frontage with no enclosure, no free seating and nothing to light or populate it after dark, so all three tests fail."
+    "judgement_basis": "A private mansion seen only from a narrow street frontage with no enclosure, no free seating and nothing to light or populate it after dark, so all three tests fail.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A mansion now housing administrative offices, seen as a walk-by from the street with no visitor entry line."
   },
   {
     "name": "Memorial de la Shoah",
@@ -1018,7 +1083,17 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A solemn Holocaust memorial and indoor museum where loud running would be deeply inappropriate and where the reflective forecourt offers no relaxed seating for casual talk; it is gated and closed at night."
+    "judgement_basis": "A solemn Holocaust memorial and indoor museum where loud running would be deeply inappropriate and where the reflective forecourt offers no relaxed seating for casual talk; it is gated and closed at night.",
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry is free but airport-style security screening at this memorial creates a real bag-check line that stays modest at busy hours."
   },
   {
     "name": "Hotel Chalons de Luxembourg",
@@ -1071,7 +1146,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": false,
-    "judgement_basis": "A private Marais mansion with an ornate portal viewed from a narrow pavement, offering no enclosure, no free seating and no independent lighting or crowds at night, so none of the affordances hold."
+    "judgement_basis": "A private Marais mansion with an ornate portal viewed from a narrow pavement, offering no enclosure, no free seating and no independent lighting or crowds at night, so none of the affordances hold.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private Marais mansion viewed from the street as a walk-by; there is no public entry to queue for."
   },
   {
     "name": "Eglise Saint-Gervais-Saint-Protais",
@@ -1207,7 +1287,12 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A working church where quiet and reverence are expected so children cannot run and pews are not free social seating, but it stands on an open lit square in the central Marais with people about after dark."
+    "judgement_basis": "A working church where quiet and reverence are expected so children cannot run and pews are not free social seating, but it stands on an open lit square in the central Marais with people about after dark.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A parish church with an open door and free entry: worshippers and visitors walk straight in with no ticket desk or security screening, so no line forms."
   },
   {
     "name": "Hotel d'Aumont",
@@ -1262,6 +1347,11 @@
     "children_can_run": false,
     "sit_and_talk": false,
     "good_after_dark": true,
-    "judgement_basis": "A walk-by 17th-century mansion (now government offices) with no public interior access, no free seating, and a pavement beside street traffic, though its central Marais location is lit and trafficked at night."
+    "judgement_basis": "A walk-by 17th-century mansion (now government offices) with no public interior access, no free seating, and a pavement beside street traffic, though its central Marais location is lit and trafficked at night.",
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by mansion now housing administrative offices with no public interior visit, so there is no entry line to stand in on the street outside."
   }
 ]
