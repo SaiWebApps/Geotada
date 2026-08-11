@@ -54,31 +54,104 @@ class _TourWalkPageState extends State<TourWalkPage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.trip.tripName)),
       body: SafeArea(
-        child: stop == null
-            ? const Center(child: Text('Preparing your walk…'))
-            : Column(
+        child: engine.state == TourState.completed
+            ? _CompletePanel(onDone: () => Navigator.of(context).maybePop())
+            : Stack(
                 children: [
-                  _ProgressText(
-                    index: engine.currentStopIndex,
-                    total: widget.trip.stops.length,
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: audio.isPlaying
-                          ? StopAudioCard(
-                              stop: stop,
-                              isPlaying: true,
-                              onReplay: () => engine.skipToStop(engine.currentStopIndex),
-                              onSkip: () => engine.skipToStop(engine.currentStopIndex + 1),
-                            )
-                          : NextStopBanner(
-                              stopName: stop.poiName,
-                              distanceMeters: engine.distanceToNext,
+                  stop == null
+                      ? const Center(child: Text('Preparing your walk…'))
+                      : Column(
+                          children: [
+                            _ProgressText(
+                              index: engine.currentStopIndex,
+                              total: widget.trip.stops.length,
                             ),
+                            Expanded(
+                              child: Center(
+                                child: audio.isPlaying
+                                    ? StopAudioCard(
+                                        stop: stop,
+                                        isPlaying: true,
+                                        onReplay: () => engine.skipToStop(engine.currentStopIndex),
+                                        onSkip: () => engine.skipToStop(engine.currentStopIndex + 1),
+                                      )
+                                    : NextStopBanner(
+                                        stopName: stop.poiName,
+                                        distanceMeters: engine.distanceToNext,
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                  if (engine.hasPendingStop && engine.nextStop != null)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: _ApproachingNudge(
+                        stopName: engine.nextStop!.poiName,
+                        onAccept: engine.acceptPendingStop,
+                        onDismiss: engine.dismissPending,
+                      ),
                     ),
-                  ),
                 ],
               ),
+      ),
+    );
+  }
+}
+
+class _ApproachingNudge extends StatelessWidget {
+  final String stopName;
+  final VoidCallback onAccept;
+  final VoidCallback onDismiss;
+  const _ApproachingNudge({
+    required this.stopName, required this.onAccept, required this.onDismiss});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(Dims.spaceMd),
+      child: Padding(
+        padding: const EdgeInsets.all(Dims.spaceMd),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Approaching $stopName', style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: Dims.spaceSm),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: onDismiss,
+                  child: const Text('Keep listening'),
+                ),
+                FilledButton(
+                  key: const Key('tour-nudge-accept'),
+                  onPressed: onAccept,
+                  child: const Text('Play now'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CompletePanel extends StatelessWidget {
+  final VoidCallback onDone;
+  const _CompletePanel({required this.onDone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Tour complete', style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: Dims.spaceSm + Dims.spaceXs),
+          FilledButton(onPressed: onDone, child: const Text('Done')),
+        ],
       ),
     );
   }

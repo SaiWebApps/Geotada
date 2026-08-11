@@ -72,4 +72,49 @@ void main() {
     await tester.pumpAndSettle();
     expect(engine.currentStopIndex, 1);
   });
+
+  testWidgets('approaching the next stop shows the nudge; Play now accepts it',
+      (tester) async {
+    final trip = loadParisFixtureTrip();
+    final loc = MockLocationService();
+    final audio = MockAudioService();
+    final engine = TourPlaybackService(locationService: loc, audioService: audio);
+
+    await tester.pumpWidget(_harness(
+        loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
+    await tester.pumpAndSettle();
+
+    loc.simulatePosition(48.8606, 2.3376); // arrive stop 0 -> audio plays
+    await tester.pumpAndSettle();
+    // Walk into stop 1's radius while stop 0 audio still "plays".
+    loc.simulatePosition(48.8570, 2.3410);
+    await tester.pumpAndSettle();
+
+    expect(engine.hasPendingStop, true);
+    expect(find.byKey(const Key('tour-nudge-accept')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('tour-nudge-accept')));
+    await tester.pumpAndSettle();
+    expect(engine.currentStopIndex, 1);
+  });
+
+  testWidgets('completed tour shows the done panel', (tester) async {
+    final trip = loadParisFixtureTrip();
+    final loc = MockLocationService();
+    final audio = MockAudioService();
+    final engine = TourPlaybackService(locationService: loc, audioService: audio);
+
+    await tester.pumpWidget(_harness(
+        loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
+    await tester.pumpAndSettle();
+
+    // Jump to the final stop, play it, then complete -> engine goes `completed`.
+    engine.skipToStop(2);
+    await tester.pumpAndSettle();
+    audio.simulateComplete();
+    await tester.pumpAndSettle();
+
+    expect(engine.state, TourState.completed);
+    expect(find.textContaining('Tour complete'), findsOneWidget);
+  });
 }
