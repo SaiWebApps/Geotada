@@ -74,6 +74,13 @@ SYNCED_FIELDS: tuple[str, ...] = (
     "sit_and_talk",
     "good_after_dark",
     "judgement_basis",
+    # Queue pass — scripts/poi_queues.py (redesign data row 6.5, plan W3.1);
+    # registered with the pass so the sync never lags it, the S2.9 precedent.
+    "queue_class",
+    "queue_minutes_peak",
+    "queue_minutes_offpeak",
+    "queue_peak_hours",
+    "queue_basis",
 )
 
 
