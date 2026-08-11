@@ -23,6 +23,7 @@ import math
 import sys
 import time
 import uuid
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from src.connection import create_driver
@@ -36,6 +37,7 @@ from src.tour.render_md import render_markdown
 from src.tour.routing import haversine_m
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
+    B_SNAP_PROXIMITY_M,
     VALHALLA_MAX_CONTOUR_MINUTES,
     CertificationPlanningInfeasibleError,
     build_poi_beat_plans_capped,
@@ -43,31 +45,61 @@ from src.tour.selection import (
     reach_envelope_searched,
     select_route,
 )
+from src.tour.weather import fetch_rain_likelihood
 
 HAIKU_INPUT_USD_PER_MTOK = 1.00  # 2026 Haiku 4.5 list (per 1M tokens)
 HAIKU_OUTPUT_USD_PER_MTOK = 5.00
 
 
-def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float, float], str]:
-    """Coordinate string or POI/Area name → (lat, lng) + display label.
+def _lookup_place(
+    driver, arg: str, city_slug: str, *, want_poi_id: bool = False
+) -> tuple[str | None, tuple[float, float], str] | None:
+    """THE one place-lookup ladder: coordinate string or POI/Area name →
+    ``(poi_id, (lat, lng), label)``, or None when nothing matches.
 
-    Tries (in order):
+    ``--start``, ``--end`` and ``--pin`` all resolve HERE (plan S3.1's
+    sabotage list forbids a second lookup), so a name means the same place
+    at every flag. Tries (in order):
     1. ``"lat,lng"`` literal.
     2. POI exact name (case-insensitive).
     3. POI substring match (case-insensitive contains).
     4. Area exact name → use the centroid of POIs WITHIN that area.
+
+    ``poi_id`` is None when no single corpus POI names the spot: a raw
+    coordinate, or an Area centroid. A pin needs an id, so ``want_poi_id``
+    additionally snaps a coordinate onto the nearest corpus POI within
+    ``B_SNAP_PROXIMITY_M`` — the established "the destination IS this
+    place" threshold from B-materialization — and only then, because the
+    extra query would be dead weight on every ordinary --start resolution.
     """
-    if "," in start_arg:
+    if "," in arg:
         try:
-            lat_s, lng_s = start_arg.split(",", 1)
-            return (float(lat_s.strip()), float(lng_s.strip())), start_arg
+            lat_s, lng_s = arg.split(",", 1)
+            coords = (float(lat_s.strip()), float(lng_s.strip()))
         except ValueError:
-            pass
+            pass  # a name containing a comma falls through to the name arms
+        else:
+            if not want_poi_id:
+                return None, coords, arg
+            with driver.session() as session:
+                record = session.run(
+                    "MATCH (p:POI {city_name: $city}) "
+                    "WHERE p.location IS NOT NULL "
+                    "WITH p, point.distance(p.location, "
+                    "point({latitude: $lat, longitude: $lng, srid: 4326})) AS d "
+                    "WHERE d <= $radius "
+                    "RETURN p.id AS id ORDER BY d LIMIT 1",
+                    city=city_slug,
+                    lat=coords[0],
+                    lng=coords[1],
+                    radius=B_SNAP_PROXIMITY_M,
+                ).single()
+            return (record["id"] if record else None), coords, arg
 
     # Build a list of name candidates to try, full name first then
     # progressively shorter leading-word slices ("Pont Neuf metro" →
     # "Pont Neuf metro", "Pont Neuf", "Pont"). Stops at 1 word.
-    tokens = start_arg.split()
+    tokens = arg.split()
     candidates: list[str] = []
     for n_words in range(len(tokens), 0, -1):
         candidates.append(" ".join(tokens[:n_words]))
@@ -77,26 +109,36 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
             record = session.run(
                 "MATCH (p:POI {city_name: $city}) "
                 "WHERE toLower(p.name) = toLower($name) "
-                "RETURN p.name AS name, p.location.y AS lat, p.location.x AS lng "
+                "RETURN p.id AS id, p.name AS name, "
+                "p.location.y AS lat, p.location.x AS lng "
                 "LIMIT 1",
                 city=city_slug,
                 name=cand,
             ).single()
             if record:
-                return (float(record["lat"]), float(record["lng"])), record["name"]
+                return (
+                    record["id"],
+                    (float(record["lat"]), float(record["lng"])),
+                    record["name"],
+                )
 
         for cand in candidates:
             record = session.run(
                 "MATCH (p:POI {city_name: $city}) "
                 "WHERE toLower(p.name) CONTAINS toLower($needle) "
                 "WITH p ORDER BY p.importance_tier DESC, p.name "
-                "RETURN p.name AS name, p.location.y AS lat, p.location.x AS lng "
+                "RETURN p.id AS id, p.name AS name, "
+                "p.location.y AS lat, p.location.x AS lng "
                 "LIMIT 1",
                 city=city_slug,
                 needle=cand,
             ).single()
             if record:
-                return (float(record["lat"]), float(record["lng"])), record["name"]
+                return (
+                    record["id"],
+                    (float(record["lat"]), float(record["lng"])),
+                    record["name"],
+                )
 
         for cand in candidates:
             record = session.run(
@@ -110,14 +152,52 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
             ).single()
             if record and record["lat"] is not None:
                 return (
+                    None,
                     (float(record["lat"]), float(record["lng"])),
                     f"{record['area_name']} (centroid)",
                 )
 
-    raise SystemExit(
-        f"\u2717 Could not resolve start point: {start_arg!r}. "
-        f"Pass coordinates as 'lat,lng', an exact POI name, or an Area name."
-    )
+    return None
+
+
+def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float, float], str]:
+    """Coordinate string or POI/Area name \u2192 (lat, lng) + display label.
+
+    A thin wrapper over ``_lookup_place`` \u2014 the ladder lives THERE so --pin
+    can share it (plan S3.1); the raise and its message are unchanged from
+    before the extraction.
+    """
+    found = _lookup_place(driver, start_arg, city_slug)
+    if found is None:
+        raise SystemExit(
+            f"\u2717 Could not resolve start point: {start_arg!r}. "
+            f"Pass coordinates as 'lat,lng', an exact POI name, or an Area name."
+        )
+    _, coords, label = found
+    return coords, label
+
+
+def _resolve_pinned_poi_ids(
+    driver, parser: argparse.ArgumentParser, pins: list[str] | None, city_slug: str
+) -> tuple[str, ...]:
+    """Each ``--pin`` through the one lookup ladder \u2192 a corpus POI id, in
+    command-line order (design \u00a73.2: a pin is the visitor's decision on a
+    SPECIFIC place, so it lands as an id, never a string). A pin that
+    resolves to nothing \u2014 unknown text, or a coordinate with no corpus POI
+    within snapping range \u2014 is an argparse-level error naming the pin text.
+    """
+    ids: list[str] = []
+    for pin_text in pins or ():
+        found = _lookup_place(driver, pin_text, city_slug, want_poi_id=True)
+        poi_id = found[0] if found is not None else None
+        if poi_id is None:
+            parser.error(
+                f"--pin {pin_text!r} does not resolve to a corpus POI. Pass a POI "
+                f"name, or 'lat,lng' within {B_SNAP_PROXIMITY_M:.0f} m of one \u2014 a "
+                "pin is a promise on a specific place."
+            )
+        ids.append(poi_id)
+    return tuple(ids)
 
 
 def _build_beat_sequence(route, snapshot, lenses) -> BeatSequence:
@@ -223,6 +303,16 @@ def _print_breakdown(
     here from the requested duration would print ~4,444 m at 300 minutes while the
     fixed-destination planner searched ~12,259 m, and the harness built to expose
     that bug would have hidden it.
+
+    Plan S3.1 adds the promise view: a ``promises:`` line above the per-stop
+    table (kind, stop name, arrive-depart window), a SHAPE column (``44m in``
+    / ``15m out`` / ``closed—out``) and a QUEUE column. A stop no Promise has
+    shaped falls back to the route's priced minutes, with in/out read off the
+    POI's own capacity numbers — a pre-promise value: the planner has not
+    shaped this stop, and the fallback reports what today's planner actually
+    committed to rather than pretending a promise exists. On a dated run the
+    table is followed by Aiko's honesty line, ``hours unverified for N of the
+    M gated stops on this route`` (plan deviation ii).
     """
     radius_m, iso_minutes = reach_envelope_searched(tour_input)
     absent = "— no route was produced, so this cannot be measured"
@@ -327,19 +417,79 @@ def _print_breakdown(
                 print(f"    • {excl.name} — {excl.reason}")
         else:
             print("    none")
-    # PER-STOP TABLE (plan S2.1) — the DAY, not the total: one line per stop
-    # with the place category (the carried Phase 1 gap: S1.7 promised category
-    # labels in the harness printout), the priced stand/visit minutes ("—"
-    # when the route carries no pricing — the four legacy harnesses' shape,
-    # never a zero that reads as a measurement), and the walking leg INTO that
-    # stop (route.transits leg i is the walk into stop i). Printed on EVERY
-    # run that has a route, same shape priced or not; W2.11's side-by-side
-    # demo table is assembled from these lines verbatim. Sits BELOW the
+    # PER-STOP TABLE (plan S2.1; promise columns plan S3.1) — the DAY, not the
+    # total: one line per stop with the place category (the carried Phase 1
+    # gap: S1.7 promised category labels in the harness printout), the priced
+    # stand/visit minutes ("—" when the route carries no pricing — the four
+    # legacy harnesses' shape, never a zero that reads as a measurement), the
+    # promise SHAPE and QUEUE, and the walking leg INTO that stop
+    # (route.transits leg i is the walk into stop i). Printed on EVERY run
+    # that has a route, same shape priced or not; W2.11's side-by-side demo
+    # table is assembled from these lines verbatim. Sits BELOW the
     # seven-number block so the D1 evidence stays readable above it.
     if route is not None and route.pois:
-        print("  per-stop:")
-        print(f"     {'#':>2}  {'stop':<34} {'category':<10} {'visit':>7}  {'walk-in':>7}")
+        # THE PROMISE VIEW (plan S3.1; design §3.1 "each promise carries a
+        # clock window"). One cumulative clock feeds BOTH the promises line
+        # and the table rows — the same legs in, the same time at each stop —
+        # so the printed window and the printed table can never disagree.
+        promises_by_poi = {p.poi_id: p for p in route.promises}
+        # A stop the clock voided but the day KEEPS, from the outside — the
+        # promise-native planner records it as a clock exclusion whose reason
+        # says "outside only". Distinct from an excluded-and-dropped POI,
+        # which never appears in route.pois and so never reaches this table.
+        outside_only = {
+            e.poi_id for e in route.clock_exclusions if "outside only" in e.reason
+        }
         priced = route.planned_visit_seconds
+        start_dt = (
+            datetime.fromisoformat(tour_input.start_datetime)
+            if tour_input.start_datetime is not None
+            else None
+        )
+
+        def _at_stop_seconds(poi) -> int:
+            promise = promises_by_poi.get(poi.id)
+            if promise is not None:
+                shape = promise.shape
+                return shape.outside_seconds + shape.inside_seconds + shape.queue_seconds
+            return (priced.get(poi.id) or 0) if priced else 0
+
+        def _clock(seconds: int) -> str:
+            if start_dt is not None:
+                return (start_dt + timedelta(seconds=seconds)).strftime("%H:%M")
+            return f"+{seconds // 60}m"  # undated run: minutes from the start
+
+        windows: dict[str, tuple[int, int]] = {}
+        elapsed = 0
+        for i, poi in enumerate(route.pois):
+            if i < len(route.transits):
+                seg = route.transits[i]
+                elapsed += seg.leg_seconds if seg.leg_seconds is not None else seg.walk_seconds
+            arrive = elapsed
+            elapsed += _at_stop_seconds(poi)
+            windows[poi.id] = (arrive, elapsed)
+
+        # The promises line, ABOVE the table: kind, stop name, arrive-depart.
+        # An empty tuple (every pre-S3.6 route) prints no line at all — the
+        # identity default.
+        if route.promises:
+            names = {p.id: p.name for p in route.pois}
+            print("  promises:")
+            for promise in route.promises:
+                window = windows.get(promise.poi_id)
+                span = (
+                    f"{_clock(window[0])}-{_clock(window[1])}"
+                    if window is not None
+                    else "no window — not seated on this route"
+                )
+                stop_name = names.get(promise.poi_id, promise.poi_id)
+                print(f"    • {promise.kind:<6} {stop_name:<34} {span}")
+
+        print("  per-stop:")
+        print(
+            f"     {'#':>2}  {'stop':<34} {'category':<10} {'visit':>7}  "
+            f"{'shape':>10}  {'queue':>5}  {'walk-in':>7}"
+        )
         for i, poi in enumerate(route.pois):
             if i < len(route.transits):
                 seg = route.transits[i]
@@ -349,10 +499,47 @@ def _print_breakdown(
                 walk_in = "—"
             visit_s = priced.get(poi.id) if priced else None
             visit = f"{round(visit_s / 60)} min" if visit_s is not None else "—"
+            promise = promises_by_poi.get(poi.id)
+            if poi.id in outside_only:
+                shape = "closed—out"
+            elif promise is not None:
+                # The at-place minutes are outside + inside, NEVER the queue —
+                # design §3.3: "folding them into one 66 makes the wait
+                # permanent". The queue has its own column.
+                at_place = promise.shape.outside_seconds + promise.shape.inside_seconds
+                side = "in" if promise.shape.goes_inside else "out"
+                shape = f"{round(at_place / 60)}m {side}"
+            else:
+                # Pre-promise fallback — the planner has not shaped this stop:
+                # minutes from the route's own pricing, in/out from the POI's
+                # capacity numbers (an interior worth more than the outside
+                # view reads as an inside visit).
+                inside = (poi.visit_seconds_inside or 0) > poi.typical_duration_min * 60
+                side = "in" if inside else "out"
+                shape = f"{round(visit_s / 60)}m {side}" if visit_s is not None else f"— {side}"
+            queue_s = promise.shape.queue_seconds if promise is not None else 0
+            queue = f"{round(queue_s / 60)}m" if queue_s else "—"
             print(
                 f"     {i + 1:>2}  {poi.name:<34} {poi.place_category:<10} "
-                f"{visit:>7}  {walk_in:>7}"
+                f"{visit:>7}  {shape:>10}  {queue:>5}  {walk_in:>7}"
             )
+        # AIKO'S HONESTY LINE (plan S3.1 deviation ii; design §6: clock-native
+        # planning is "a promise without a table under it" until the hours
+        # data exists): on a dated run, say how many of the gated stops rest
+        # on unaudited hours. GATED = a non-None opening_hours table.
+        # UNVERIFIED = opening_hours_source missing or "ai" — the AI-only
+        # value in the exact vocabulary scripts/poi_opening_hours.py writes
+        # ("osm" | "ai" | null). Printed even at 0 unverified so a clean run
+        # SAYS it is clean; omitted on undated runs (no clock, no gate) and
+        # when no stop on the route is gated.
+        if start_dt is not None:
+            gated = [p for p in route.pois if p.opening_hours is not None]
+            if gated:
+                unverified = sum(1 for p in gated if p.opening_hours_source in (None, "ai"))
+                print(
+                    f"  hours unverified for {unverified} of the {len(gated)} "
+                    "gated stops on this route"
+                )
     print("  ───────────────────────────────────────────────────────────")
 
 
@@ -493,6 +680,27 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         "a preset PAIR (e.g. take-it-easy + solo, design §2.4) can be built "
         "without a party value for the pair itself.",
     )
+    # PROMISES AND THE SKY (plan S3.1 — the harness speaks promises before
+    # the planner emits them). --pin resolves through the SAME lookup ladder
+    # as --start (design §3.2: Théo pins one thing absolutely; Julien pins
+    # nothing and wants an open walk). --weather hands the planner the sky's
+    # decision (design §2.5: fetched, never asked). Both omitted = today's
+    # request, byte-identical.
+    parser.add_argument(
+        "--pin",
+        action="append",
+        metavar="NAME_OR_LATLNG",
+        help="Pin this stop into a promise — a POI name or 'lat,lng'; "
+        "repeatable. Must land on a corpus POI.",
+    )
+    parser.add_argument(
+        "--weather",
+        choices=["dry", "rain", "auto"],
+        default=None,
+        help="Plan for this sky: dry/rain pass straight through; auto "
+        "fetches the forecast for --date at the start point (fail-open). "
+        "Omit for no signal — today's behaviour.",
+    )
     parser.add_argument(
         "--haiku",
         action="store_true",
@@ -542,6 +750,11 @@ def main() -> int:
             "canned transitions presented as a finished tour is the defect this "
             "replaces."
         )
+    if args.weather == "auto" and not args.date:
+        parser.error(
+            "--weather auto fetches a forecast, and a forecast is for a day: "
+            "pass --date too, or state the sky yourself with --weather dry/rain."
+        )
 
     project_root = Path(__file__).resolve().parent.parent
     out_dir = (
@@ -560,6 +773,19 @@ def main() -> int:
         end_coords: tuple[float, float] | None = None
         if args.end:
             end_coords, _ = _resolve_start(driver, args.end, args.city_slug)
+        # Pins resolve BEFORE the corpus load: a mistyped pin is an input
+        # error (exit 2, naming the pin), not something to discover after
+        # seconds of snapshot work.
+        pinned_poi_ids = _resolve_pinned_poi_ids(driver, parser, args.pin, args.city_slug)
+        # THE SKY (design §2.5, plan S3.1): dry/rain are the caller's own
+        # statement; auto asks open-meteo for the walk's date at the start
+        # point. A None answer is "no signal" — say so in one honest line and
+        # plan a plain day, never block and never guess.
+        weather = args.weather if args.weather in ("dry", "rain") else None
+        if args.weather == "auto":
+            weather = fetch_rain_likelihood(args.date, start_coords[0], start_coords[1])
+            if weather is None:
+                print("  forecast unavailable — planning a plain day")
         snapshot = load_paris_corpus(driver, city_slug=args.city_slug)
 
         lenses = [s.strip() for s in args.lenses.split(",") if s.strip()] or None
@@ -582,6 +808,15 @@ def main() -> int:
             axis_value = getattr(args, axis_flag)
             if axis_value is not None:
                 party_fields[axis_flag] = axis_value
+        # Same conditional-kwarg rule as the axis flags above: an omitted
+        # --pin/--weather stays OUT of the constructor call, so a flagless
+        # request builds a TourInput byte-identical to a pre-promise one
+        # (fields at their defaults, model_fields_set untouched).
+        promise_fields: dict[str, object] = {}
+        if pinned_poi_ids:
+            promise_fields["pinned_poi_ids"] = pinned_poi_ids
+        if weather is not None:
+            promise_fields["weather"] = weather
         tour_input = resolve_party_axes(
             TourInput(
                 start=start_coords,
@@ -595,6 +830,7 @@ def main() -> int:
                 start_datetime=f"{args.date}T{args.time}" if args.date else None,
                 end_hardness=args.end_hardness,
                 **party_fields,
+                **promise_fields,
             )
         )
 

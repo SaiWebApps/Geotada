@@ -1,0 +1,444 @@
+"""Phase 3 promise tests — the harness speaks promises (plan S3.1).
+
+One hand per file: S3.6 (the planner's promise assembly) appends its planner
+tests here; this file is created by S3.1 with the parser/printer nodes.
+
+Everything here is HERMETIC: TourInput / Route / Promise / PromiseShape are
+constructed by hand, the printer is read through capsys, and pin resolution is
+exercised against a stubbed lookup — no graph, no network. The live lookup
+ladder itself (`_lookup_place`) is `_resolve_start`'s own machinery, already
+exercised by every live harness run.
+
+The RED that proved S3.1 was real: `--pin` and `--weather` were unrecognized
+arguments (argparse exited 2 before any assertion ran), and the breakdown
+table had no shape column, no queue column, no promises line and no
+hours-unverified line.
+"""
+
+import importlib
+import json
+import sys
+from types import SimpleNamespace
+
+import pytest
+
+from src.tour.contract import (
+    POI,
+    ClockExclusion,
+    Promise,
+    PromiseShape,
+    Route,
+    TourInput,
+    TransitSegment,
+)
+
+
+def _tour_build():
+    return importlib.import_module("scripts.tour_build")
+
+
+def _base_input(**overrides) -> TourInput:
+    fields = {
+        "start": (48.8568, 2.3414),
+        "duration_min": 90,
+        "city_slug": "paris",
+    }
+    fields.update(overrides)
+    return TourInput(**fields)
+
+
+def _poi(poi_id: str, name: str, **overrides) -> POI:
+    fields = {
+        "id": poi_id,
+        "name": name,
+        "tier": 4,
+        "poi_role": "stop",
+        "lat": 48.8566,
+        "lng": 2.3450,
+        "place_category": "monument",
+    }
+    fields.update(overrides)
+    return POI(**fields)
+
+
+def _legs(pois) -> tuple[TransitSegment, ...]:
+    """One 300-second (5-minute) walk INTO each stop — transits leg i is the
+    walk into stop i, the same indexing the table prints."""
+    legs = []
+    prev = None
+    for poi in pois:
+        legs.append(
+            TransitSegment(
+                from_poi_id=prev, to_poi_id=poi.id, distance_m=400.0, walk_seconds=300
+            )
+        )
+        prev = poi.id
+    return tuple(legs)
+
+
+def _route(pois, **overrides) -> Route:
+    fields = {
+        "pois": tuple(pois),
+        "transits": _legs(pois),
+        "total_walk_distance_m": 400.0 * len(pois),
+        "total_walk_seconds": 300 * len(pois),
+    }
+    fields.update(overrides)
+    return Route(**fields)
+
+
+def _script_for(route) -> SimpleNamespace:
+    """The printer's script stand-in (the test_tour_party.py pattern)."""
+    return SimpleNamespace(
+        selected_pois=[
+            SimpleNamespace(dwell_seconds=600, lat=p.lat, lng=p.lng, name=p.name)
+            for p in route.pois
+        ]
+    )
+
+
+def _stop_line(out: str, name: str) -> str:
+    table = out.split("per-stop", 1)[1]
+    lines = [ln for ln in table.splitlines() if name in ln]
+    assert lines, f"the per-stop table carries no line for {name!r}"
+    return lines[0]
+
+
+_GATED_TABLE = json.dumps({"mon": [["09:00", "18:00"]]})
+
+
+# --- parser: pins and weather ------------------------------------------------
+
+
+def test_one_pin_lands_in_pinned_poi_ids(monkeypatch):
+    """One `--pin` resolves through the shared lookup ladder to a corpus POI id
+    and lands in TourInput.pinned_poi_ids (design §3.2 — the visitor's pin is
+    a decision, and the planner receives it as an id, not a string)."""
+    tour_build = _tour_build()
+    parser = tour_build._build_arg_parser()
+    args = parser.parse_args(
+        ["--start", "X", "--duration", "60", "--canned", "--pin", "Sainte-Chapelle"]
+    )
+    assert args.pin == ["Sainte-Chapelle"]
+
+    seen: list[dict] = []
+
+    def fake_lookup(driver, arg, city_slug, *, want_poi_id=False):
+        seen.append({"arg": arg, "want_poi_id": want_poi_id})
+        return "poi-chapelle", (48.8554, 2.3450), arg
+
+    monkeypatch.setattr(tour_build, "_lookup_place", fake_lookup)
+    ids = tour_build._resolve_pinned_poi_ids(None, parser, args.pin, "paris")
+    assert ids == ("poi-chapelle",)
+    assert seen and seen[0]["want_poi_id"] is True, (
+        "a pin must ASK the ladder for a POI id — without want_poi_id a "
+        "coordinate pin can never snap to the place it names"
+    )
+
+    inp = _base_input(pinned_poi_ids=ids)
+    assert inp.pinned_poi_ids == ("poi-chapelle",)
+
+
+def test_two_pins_land_in_order(monkeypatch):
+    """Repeatable `--pin`s keep their command-line order into pinned_poi_ids."""
+    tour_build = _tour_build()
+    parser = tour_build._build_arg_parser()
+    args = parser.parse_args(
+        [
+            "--start", "X", "--duration", "60", "--canned",
+            "--pin", "Sainte-Chapelle", "--pin", "Conciergerie",
+        ]
+    )
+    assert args.pin == ["Sainte-Chapelle", "Conciergerie"]
+
+    table = {"Sainte-Chapelle": "poi-chapelle", "Conciergerie": "poi-conciergerie"}
+
+    def fake_lookup(driver, arg, city_slug, *, want_poi_id=False):
+        return table[arg], (48.8554, 2.3450), arg
+
+    monkeypatch.setattr(tour_build, "_lookup_place", fake_lookup)
+    ids = tour_build._resolve_pinned_poi_ids(None, parser, args.pin, "paris")
+    assert ids == ("poi-chapelle", "poi-conciergerie")
+    assert _base_input(pinned_poi_ids=ids).pinned_poi_ids == ids
+
+
+def test_bad_pin_text_is_an_argparse_error_naming_it(monkeypatch, capsys):
+    """A pin that resolves to nothing is an argparse-level error NAMING the
+    pin text — the person who typed it must see which pin failed."""
+    tour_build = _tour_build()
+    parser = tour_build._build_arg_parser()
+
+    def fake_lookup(driver, arg, city_slug, *, want_poi_id=False):
+        return None
+
+    monkeypatch.setattr(tour_build, "_lookup_place", fake_lookup)
+    with pytest.raises(SystemExit) as exc:
+        tour_build._resolve_pinned_poi_ids(None, parser, ["Atlantis Metro"], "paris")
+    assert exc.value.code == 2
+    assert "Atlantis Metro" in capsys.readouterr().err
+
+
+def test_weather_rain_parses_and_lands_on_tour_input():
+    """`--weather rain` parses, and the value TourInput carries is the same
+    two-word vocabulary the contract speaks (dry | rain)."""
+    tour_build = _tour_build()
+    parser = tour_build._build_arg_parser()
+    args = parser.parse_args(
+        ["--start", "X", "--duration", "60", "--canned", "--weather", "rain"]
+    )
+    assert args.weather == "rain"
+    assert _base_input(weather="rain").weather == "rain"
+
+    flagless = parser.parse_args(["--start", "X", "--duration", "60", "--canned"])
+    assert flagless.weather is None, "no flag = no signal = today's request"
+
+
+def test_weather_auto_without_date_is_an_argparse_error(monkeypatch, capsys):
+    """`--weather auto` fetches a forecast, and a forecast is for a DAY: with
+    no --date the harness refuses at argparse level, before any driver or
+    network work (which is also what keeps this test hermetic)."""
+    tour_build = _tour_build()
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["tour_build.py", "--start", "X", "--duration", "60", "--canned",
+         "--weather", "auto"],
+    )
+    with pytest.raises(SystemExit) as exc:
+        tour_build.main()
+    assert exc.value.code == 2
+    err = capsys.readouterr().err
+    assert "--weather auto" in err
+    assert "--date" in err
+    # Mutation-proof: argparse's own "unrecognized arguments" + usage text can
+    # satisfy the two asserts above; only the real refusal explains itself.
+    assert "forecast" in err
+
+
+# --- printer: the promises line ----------------------------------------------
+
+
+def test_promises_line_prints_kind_stop_and_window(capsys):
+    """A Route carrying a pinned Promise prints a promises line above the
+    table with the promise's kind, stop name and arrive-depart window, from
+    the SAME cumulative arithmetic as the table's legs and stop times:
+    5m walk + 10m stop + 5m walk lands the pinned stop at 10:20, and its
+    shape (0 outside + 2400 inside + 600 queue = 50m) departs it at 11:10."""
+    tour_build = _tour_build()
+    a = _poi("poi-a", "Conciergerie")
+    b = _poi("poi-b", "Sainte-Chapelle", place_category="church")
+    route = _route(
+        [a, b],
+        planned_visit_seconds={"poi-a": 600},
+        promises=(
+            Promise(
+                kind="pinned",
+                poi_id="poi-b",
+                shape=PromiseShape(
+                    outside_seconds=0,
+                    inside_seconds=2400,
+                    queue_seconds=600,
+                    goes_inside=True,
+                    closed_today=False,
+                ),
+            ),
+        ),
+    )
+    tour_build._print_breakdown(
+        tour_input=_base_input(start_datetime="2026-08-11T10:00"),
+        wall_clock_s=1.0,
+        route=route,
+        script=_script_for(route),
+    )
+    out = capsys.readouterr().out
+    assert "promises:" in out
+    promise_lines = [ln for ln in out.splitlines() if "pinned" in ln]
+    assert promise_lines, "the pinned promise must be named on the promises line"
+    assert "Sainte-Chapelle" in promise_lines[0]
+    assert "10:20-11:10" in promise_lines[0]
+    assert out.index("promises:") < out.index("per-stop"), (
+        "the promises line sits ABOVE the per-stop table"
+    )
+
+
+def test_empty_promises_route_prints_no_promises_line(capsys):
+    """A pre-S3.6 Route (empty promises tuple) prints NO promises line — the
+    identity default that keeps today's output shape for unpromised routes."""
+    tour_build = _tour_build()
+    route = _route([_poi("poi-a", "Conciergerie")], planned_visit_seconds={"poi-a": 600})
+    tour_build._print_breakdown(
+        tour_input=_base_input(),
+        wall_clock_s=1.0,
+        route=route,
+        script=_script_for(route),
+    )
+    out = capsys.readouterr().out
+    assert "promises:" not in out
+    assert "per-stop" in out, "the table itself still prints"
+
+
+# --- printer: the shape and queue columns ------------------------------------
+
+
+def test_shape_column_renders_in_out_and_closed_out(capsys):
+    """Every stop's row fills the shape column (the sabotage list forbids a
+    column that only fills on promise stops): a goes-inside promise renders
+    `44m in` (240s outside + 2400s inside; the queue is NOT folded in —
+    design §3.3, 'folding them into one 66 makes the wait permanent'), an
+    outside promise renders `15m out`, an outside-only clock exclusion
+    renders `closed—out`, and promise-less stops fall back to the route's
+    priced minutes with in/out read off the POI's own capacity numbers."""
+    tour_build = _tour_build()
+    a = _poi("poi-a", "Musee d'Orsay", place_category="museum")
+    b = _poi("poi-b", "Pont Neuf", place_category="bridge")
+    c = _poi("poi-c", "Musee de Cluny", place_category="museum")
+    d = _poi("poi-d", "Place Dauphine", place_category="square")
+    e = _poi(
+        "poi-e",
+        "Pantheon",
+        place_category="monument",
+        visit_seconds_inside=1800,
+        typical_duration_min=10,
+    )
+    route = _route(
+        [a, b, c, d, e],
+        planned_visit_seconds={"poi-d": 600, "poi-e": 900},
+        promises=(
+            Promise(
+                kind="anchor",
+                poi_id="poi-a",
+                shape=PromiseShape(
+                    outside_seconds=240,
+                    inside_seconds=2400,
+                    queue_seconds=600,
+                    goes_inside=True,
+                    closed_today=False,
+                ),
+            ),
+            Promise(
+                kind="finish",
+                poi_id="poi-b",
+                shape=PromiseShape(
+                    outside_seconds=900,
+                    inside_seconds=0,
+                    queue_seconds=0,
+                    goes_inside=False,
+                    closed_today=False,
+                ),
+            ),
+        ),
+        clock_exclusions=(
+            ClockExclusion(
+                poi_id="poi-c",
+                name="Musee de Cluny",
+                reason="closed Tuesday; kept as an outside only stop (hours: AI-judged)",
+            ),
+        ),
+    )
+    tour_build._print_breakdown(
+        tour_input=_base_input(),
+        wall_clock_s=1.0,
+        route=route,
+        script=_script_for(route),
+    )
+    out = capsys.readouterr().out
+    assert "44m in" in _stop_line(out, "Musee d'Orsay")
+    assert "15m out" in _stop_line(out, "Pont Neuf")
+    assert "closed—out" in _stop_line(out, "Musee de Cluny")
+    # Pre-promise fallback: minutes from planned_visit_seconds, side from the
+    # POI's own numbers (no interior -> out; 1800s inside > 10min outside -> in).
+    assert "10m out" in _stop_line(out, "Place Dauphine")
+    assert "15m in" in _stop_line(out, "Pantheon")
+
+
+def test_queue_column_prints_minutes_and_dash(capsys):
+    """The queue column prints the promise's queue minutes, and an em-dash
+    when the stop carries no queue — never a zero that reads as a
+    measurement."""
+    tour_build = _tour_build()
+    a = _poi("poi-a", "Sainte-Chapelle", place_category="church")
+    b = _poi("poi-b", "Place Dauphine", place_category="square")
+    route = _route(
+        [a, b],
+        planned_visit_seconds={"poi-b": 600},
+        promises=(
+            Promise(
+                kind="anchor",
+                poi_id="poi-a",
+                shape=PromiseShape(
+                    outside_seconds=0,
+                    inside_seconds=2280,
+                    queue_seconds=1680,
+                    goes_inside=True,
+                    closed_today=False,
+                ),
+            ),
+        ),
+    )
+    tour_build._print_breakdown(
+        tour_input=_base_input(),
+        wall_clock_s=1.0,
+        route=route,
+        script=_script_for(route),
+    )
+    out = capsys.readouterr().out
+    assert "28m" in _stop_line(out, "Sainte-Chapelle"), "1680s of line = 28m in the queue column"
+    dauphine = _stop_line(out, "Place Dauphine")
+    assert dauphine.count("—") == 1, (
+        "a priced, promise-less stop dashes exactly ONE cell — the queue; its "
+        "visit, shape and walk-in cells all carry real values"
+    )
+
+
+# --- printer: Aiko's honesty line --------------------------------------------
+
+
+def _hours_route() -> Route:
+    """Four stops: gated-and-OSM-verified, gated-by-AI, gated-with-no-source,
+    and not gated at all -> M=3 gated, N=2 unverified."""
+    verified = _poi(
+        "poi-osm", "Musee d'Orsay",
+        opening_hours=_GATED_TABLE, opening_hours_source="osm",
+    )
+    ai_judged = _poi(
+        "poi-ai", "Musee de Cluny",
+        opening_hours=_GATED_TABLE, opening_hours_source="ai",
+    )
+    sourceless = _poi(
+        "poi-none", "Conciergerie",
+        opening_hours=_GATED_TABLE, opening_hours_source=None,
+    )
+    ungated = _poi("poi-open", "Pont Neuf", place_category="bridge")
+    return _route([verified, ai_judged, sourceless, ungated])
+
+
+def test_dated_run_prints_hours_unverified_line_with_right_counts(capsys):
+    """A dated run says how much of its gate data is on the record's word
+    alone: gated = a non-None opening_hours table; unverified = the table's
+    source is missing or is the AI-only value ("ai") — the exact vocabulary
+    scripts/poi_opening_hours.py writes ("osm" | "ai" | null). Aiko's finding
+    (design §6): clock-native planning is a promise without a table under it,
+    so the harness must SAY when the table under it is unaudited."""
+    tour_build = _tour_build()
+    route = _hours_route()
+    tour_build._print_breakdown(
+        tour_input=_base_input(start_datetime="2026-08-11T10:00"),
+        wall_clock_s=1.0,
+        route=route,
+        script=_script_for(route),
+    )
+    out = capsys.readouterr().out
+    assert "hours unverified for 2 of the 3 gated stops on this route" in out
+
+
+def test_undated_run_prints_no_hours_line(capsys):
+    """No clock, no gate, no line — the dateless output keeps today's shape."""
+    tour_build = _tour_build()
+    route = _hours_route()
+    tour_build._print_breakdown(
+        tour_input=_base_input(),
+        wall_clock_s=1.0,
+        route=route,
+        script=_script_for(route),
+    )
+    assert "hours unverified" not in capsys.readouterr().out
