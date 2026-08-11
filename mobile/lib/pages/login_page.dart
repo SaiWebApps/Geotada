@@ -229,10 +229,7 @@ class _LoginPageState extends State<LoginPage> {
 
       await Future.wait([
         if (!lensService.isLoaded) lensService.fetchLenses(),
-        profileService.fetchProfile(
-          authService.userId!,
-          authService.accessToken!,
-        ),
+        profileService.fetchProfile(authService.accessToken!),
       ]);
 
       if (mounted) {
@@ -259,10 +256,7 @@ class _LoginPageState extends State<LoginPage> {
 
       await Future.wait([
         if (!lensService.isLoaded) lensService.fetchLenses(),
-        profileService.fetchProfile(
-          authService.userId!,
-          authService.accessToken!,
-        ),
+        profileService.fetchProfile(authService.accessToken!),
       ]);
 
       if (mounted) {

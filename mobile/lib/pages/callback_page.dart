@@ -40,10 +40,7 @@ class _CallbackPageState extends State<CallbackPage> {
 
       await Future.wait([
         if (!lensService.isLoaded) lensService.fetchLenses(),
-        profileService.fetchProfile(
-          authService.userId!,
-          authService.accessToken!,
-        ),
+        profileService.fetchProfile(authService.accessToken!),
       ]);
 
       if (!mounted) return;

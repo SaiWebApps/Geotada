@@ -28,62 +28,41 @@ class ProfileService extends ChangeNotifier {
   bool get isFirstTime => _isFirstTime;
   bool get isLoaded => _isLoaded;
 
-  Future<void> fetchProfile(String userId, String accessToken) async {
-    final headers = {'Authorization': 'Bearer $accessToken'};
-
-    final profileResp = await _httpClient.get(
-      Uri.parse('$_apiBaseUrl/edges/HAS_PROFILE?source_id=$userId&limit=10'),
-      headers: headers,
+  /// Loads the caller's profile from the public `GET /api/v1/profile` (bearer).
+  ///
+  /// The endpoint resolves the user from the token and returns the profile in
+  /// one call — `{profile_id, display_name, selected_lens_ids, theme_preference}`
+  /// — replacing the old `/edges/HAS_PROFILE` + `/nodes/Profile` +
+  /// `/edges/PREFERS_LENS` trio, which is workbench-gated and 404s in prod
+  /// (project_mobile_prod_api_gap). 404 = no profile yet (first-time). 401/403 =
+  /// auth failure — left unloaded so the auth layer can refresh and retry.
+  Future<void> fetchProfile(String accessToken) async {
+    final resp = await _httpClient.get(
+      Uri.parse('$_apiBaseUrl/profile'),
+      headers: {'Authorization': 'Bearer $accessToken'},
     );
 
-    if (profileResp.statusCode == 401 || profileResp.statusCode == 403) {
-      // Auth failed — don't treat as "new user", leave state unloaded so
-      // the auth layer can attempt refresh and retry.
+    if (resp.statusCode == 401 || resp.statusCode == 403) {
+      // Auth failed — don't treat as "new user"; leave unloaded so the auth
+      // layer can attempt refresh and retry.
       return;
     }
 
-    if (profileResp.statusCode != 200) {
+    if (resp.statusCode != 200) {
+      // 404 (no profile yet) or any other non-200: first-time user.
       _isFirstTime = true;
       _isLoaded = true;
       notifyListeners();
       return;
     }
 
-    final profileData = jsonDecode(profileResp.body) as Map<String, dynamic>;
-    final profileEdges = profileData['items'] as List<dynamic>;
-
-    if (profileEdges.isEmpty) {
-      _isFirstTime = true;
-      _isLoaded = true;
-      notifyListeners();
-      return;
-    }
-
-    _profileId = profileEdges[0]['target_id'] as String;
-
-    final nodeResp = await _httpClient.get(
-      Uri.parse('$_apiBaseUrl/nodes/Profile/$_profileId'),
-      headers: headers,
-    );
-    if (nodeResp.statusCode == 200) {
-      final nodeData = jsonDecode(nodeResp.body) as Map<String, dynamic>;
-      final props = nodeData['properties'] as Map<String, dynamic>;
-      _displayName = props['display_name'] as String?;
-      _themePreference = props['theme_preference'] as String?;
-    }
-
-    final lensResp = await _httpClient.get(
-      Uri.parse('$_apiBaseUrl/edges/PREFERS_LENS?source_id=$_profileId&limit=200'),
-      headers: headers,
-    );
-
-    if (lensResp.statusCode == 200) {
-      final lensData = jsonDecode(lensResp.body) as Map<String, dynamic>;
-      final lensEdges = lensData['items'] as List<dynamic>;
-      _selectedLensIds = lensEdges
-          .map((e) => (e as Map<String, dynamic>)['target_id'] as String)
-          .toList();
-    }
+    final data = jsonDecode(resp.body) as Map<String, dynamic>;
+    _profileId = data['profile_id'] as String?;
+    _displayName = data['display_name'] as String?;
+    _themePreference = data['theme_preference'] as String?;
+    _selectedLensIds = (data['selected_lens_ids'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList();
 
     _isFirstTime = _selectedLensIds.isEmpty;
     _isLoaded = true;
