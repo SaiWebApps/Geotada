@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/tour_walk_page.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:provider/provider.dart';
@@ -116,5 +117,90 @@ void main() {
 
     expect(engine.state, TourState.completed);
     expect(find.textContaining('Tour complete'), findsOneWidget);
+  });
+
+  testWidgets('walking state has a manual Skip that advances without a geofence hit',
+      (tester) async {
+    final trip = loadParisFixtureTrip();
+    final loc = MockLocationService();
+    final audio = MockAudioService();
+    final engine = TourPlaybackService(locationService: loc, audioService: audio);
+
+    await tester.pumpWidget(_harness(
+        loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
+    await tester.pumpAndSettle();
+
+    // Still walking: no GPS fix yet, no audio playing.
+    expect(engine.currentStopIndex, 0);
+    expect(audio.isPlaying, false);
+
+    await tester.tap(find.byKey(const Key('tour-walking-skip')));
+    await tester.pumpAndSettle();
+
+    expect(engine.currentStopIndex, 1);
+  });
+
+  testWidgets('a stop with no audio shows "No audio for this stop" alongside Skip',
+      (tester) async {
+    const noAudioStop = ItineraryStop(
+      sortOrder: 0,
+      poiId: 'poi-no-audio',
+      poiName: 'Silent Courtyard',
+      lat: 48.8606,
+      lng: 2.3376,
+      beatId: 'beat-no-audio',
+      lensName: 'history',
+      lensDisplay: 'History',
+      durationMin: 5,
+      importanceTier: 1,
+      startTime: '10:00',
+      audioUrl: null,
+    );
+    final trip = GeneratedTrip(
+      tripId: 'trip-no-audio',
+      tripName: 'No Audio Trip',
+      profileId: 'profile-1',
+      totalStops: 1,
+      totalDurationMin: 5,
+      anchorCount: 1,
+      flavourCount: 1,
+      stops: const [noAudioStop],
+    );
+    final loc = MockLocationService();
+    final audio = MockAudioService();
+    final engine = TourPlaybackService(locationService: loc, audioService: audio);
+
+    await tester.pumpWidget(_harness(
+        loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
+    await tester.pumpAndSettle();
+
+    expect(find.text('No audio for this stop'), findsOneWidget);
+    expect(find.byKey(const Key('tour-walking-skip')), findsOneWidget);
+  });
+
+  testWidgets('dismissing the nudge clears hasPendingStop and hides the nudge',
+      (tester) async {
+    final trip = loadParisFixtureTrip();
+    final loc = MockLocationService();
+    final audio = MockAudioService();
+    final engine = TourPlaybackService(locationService: loc, audioService: audio);
+
+    await tester.pumpWidget(_harness(
+        loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
+    await tester.pumpAndSettle();
+
+    loc.simulatePosition(48.8606, 2.3376); // arrive stop 0 -> audio plays
+    await tester.pumpAndSettle();
+    // Walk into stop 1's radius while stop 0 audio still "plays".
+    loc.simulatePosition(48.8570, 2.3410);
+    await tester.pumpAndSettle();
+
+    expect(engine.hasPendingStop, true);
+
+    await tester.tap(find.text('Keep listening'));
+    await tester.pumpAndSettle();
+
+    expect(engine.hasPendingStop, false);
+    expect(find.byKey(const Key('tour-nudge-accept')), findsNothing);
   });
 }

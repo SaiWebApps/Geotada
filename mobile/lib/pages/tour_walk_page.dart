@@ -34,6 +34,7 @@ class _TourWalkPageState extends State<TourWalkPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _engine?.startTour(widget.trip.stops);
     });
   }
@@ -75,9 +76,30 @@ class _TourWalkPageState extends State<TourWalkPage> {
                                         onReplay: () => engine.skipToStop(engine.currentStopIndex),
                                         onSkip: () => engine.skipToStop(engine.currentStopIndex + 1),
                                       )
-                                    : NextStopBanner(
-                                        stopName: stop.poiName,
-                                        distanceMeters: engine.distanceToNext,
+                                    : Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (stop.audioUrl == null)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: Dims.spaceSm),
+                                              child: Text(
+                                                'No audio for this stop',
+                                                style: Theme.of(context).textTheme.bodyMedium,
+                                              ),
+                                            ),
+                                          NextStopBanner(
+                                            stopName: stop.poiName,
+                                            distanceMeters: engine.distanceToNext,
+                                          ),
+                                          const SizedBox(height: Dims.spaceSm),
+                                          FilledButton(
+                                            key: const Key('tour-walking-skip'),
+                                            onPressed: () => engine
+                                                .skipToStop(engine.currentStopIndex + 1),
+                                            child: const Text('Skip'),
+                                          ),
+                                        ],
                                       ),
                               ),
                             ),
