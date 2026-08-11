@@ -367,6 +367,176 @@ def test_no_datetime_means_no_filtering_and_a_byte_identical_pool():
     assert [p.id for p in dateless.pois] == [p.id for p in monday.pois]
 
 
+# --- closed means outside-only, not gone (S3.5; W1.9 dissent 1) ---------------
+
+
+def _tuesday_closed_museum_with_an_exterior():
+    """The closed museum, but with a facade worth twenty minutes — the shape
+    the Phase 1 panel ruled on. Interior 45 min when open."""
+    museum = _tuesday_closed_museum()
+    return museum.model_copy(
+        update={"typical_duration_min": 20, "visit_seconds_inside": 2700}
+    )
+
+
+def test_a_closed_museum_with_an_exterior_becomes_an_outside_only_stop():
+    """Closed for the whole window ≠ gone: the stop survives at its EXTERIOR
+    price, and the day says so.
+
+    BY PANEL ORDER, not audit order (W1.9 dissent 1 — Camille, Théo, Greta,
+    and Fiona & Dev all ruled a clock-closed building should become an
+    OUTSIDE-ONLY stop rather than leave the pool; "the strongest recurring
+    finding", re-confirmed by the D2 panel). The D1 demo itself made the
+    point: its Monday run STARTS at a Monday-closed Orsay, and deleting the
+    closed anchor deletes the walk's reason to exist.
+
+    On Tuesday the museum is seated, priced at its outside minutes only
+    (20 min, never the 45-min interior or the open-day blend), and the
+    disclosure channel names it with an "outside only" reason. On Monday the
+    same request prices the full open-day blend — the exclusion was the
+    clock's, and so is the demotion.
+    """
+    from src.tour.selection import select_route
+
+    museum = _tuesday_closed_museum_with_an_exterior()
+    tuesday = select_route(_clock_request(_TUESDAY_10AM), _clock_corpus(museum))
+
+    assert museum.id in {p.id for p in tuesday.pois}, (
+        "a closed building with an exterior left the pool — the delete-vs-demote "
+        "fix is not wired"
+    )
+    demoted = [e for e in tuesday.clock_exclusions if e.poi_id == museum.id]
+    assert len(demoted) == 1, "the outside-only demotion must be disclosed"
+    assert "outside only" in demoted[0].reason
+    assert tuesday.planned_visit_seconds[museum.id] == 20 * 60, (
+        "a closed interior (and any queue) must price at ZERO — the visitor "
+        "stands outside for the exterior minutes and nothing else"
+    )
+
+    monday = select_route(_clock_request(_MONDAY_10AM), _clock_corpus(museum))
+    assert monday.clock_exclusions == ()
+    # Open-day blend (no lenses → outside + 0.6·gap): 1200 + 0.6·1500 = 2100.
+    assert monday.planned_visit_seconds[museum.id] == 2100
+
+
+def test_a_closed_poi_with_nothing_to_stand_and_see_is_still_excluded():
+    """The ONE honest removal the panel's demotion keeps: a closed place with
+    no outside value (typical_duration_min == 0) leaves the pool and is
+    recorded — there is nothing to stand and see (plan S3.5). This is the
+    only closure keying allowed: never tier, never score (the sabotage
+    list)."""
+    from src.tour.selection import select_route
+
+    museum = _tuesday_closed_museum()  # typical_duration_min = 0
+    tuesday = select_route(_clock_request(_TUESDAY_10AM), _clock_corpus(museum))
+
+    assert museum.id not in {p.id for p in tuesday.pois}
+    recorded = [e for e in tuesday.clock_exclusions if e.poi_id == museum.id]
+    assert len(recorded) == 1, "the honest removal must still be recorded"
+    assert "closed" in recorded[0].reason
+
+
+# --- dusk, and the after-dark finish (S3.7; design §4.3; Sofia's swap rule) ---
+
+# December early evening: a 17:00 + 60-min one-way plans to finish ~18:00,
+# past Paris civil dusk (~17:31 CET on the 15th); the 09:00 sibling finishes
+# at 10:00, hours before it. Same corpus, same request — only the clock moves.
+_DEC_EVENING = "2026-12-15T17:00:00"
+_DEC_MORNING = "2026-12-15T09:00:00"
+
+
+def _dusk_corpus(*, with_lit_finisher: bool):
+    """A near-start filler cluster plus far-envelope finisher(s) ~470 m east.
+
+    Just past the 60-min one-way far-half line (~444 m of an 889 m reach), and
+    near enough that the pull can AFFORD either finisher inside the walk
+    budget (farther placements made the pull fall back to a cheaper far-half
+    filler). The rich finisher (8 beats) outranks the lit one (4 beats) on
+    score, so WITHOUT the dusk rule the endpoint pull always takes the rich
+    one — which is exactly what the evening test must see flipped.
+    """
+    from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
+
+    rich_dark_bad = _poi(
+        "far-rich-dark-bad", tier=5, lat=48.8555, lng=2.3720, beat_count=8
+    )
+    lit = _poi("far-lit-finisher", tier=5, lat=48.8560, lng=2.3718, beat_count=4)
+    lit = lit.model_copy(update={"good_after_dark": True})
+    # Five fillers on a TIGHT 80 m spiral, not the duration-scaled default:
+    # the default spread's zig-zag chain alone cost ~1,027 s of the 1,440 s
+    # walk budget (probed), so with a ~674 s finisher leg the pull abandoned
+    # BOTH finishers and the dusk rank was never exercised — the far stop
+    # that then appeared last was the dusk-blind fill pass's, not the pull's.
+    # A tight cluster keeps the chain cheap so BOTH finishers are comfortably
+    # affordable and rank alone — score undated, dusk-then-score after dusk —
+    # decides the finish.
+    fillers = _density_fillers(PDV, duration_min=60, n=5, radius_m=80)
+    pois = [rich_dark_bad, lit] if with_lit_finisher else [rich_dark_bad]
+    return _snap([*pois, *fillers])
+
+
+def _dusk_request(start_datetime):
+    from tests.test_tour_selection import PDV
+
+    return TourInput(
+        start=PDV,
+        duration_min=60,
+        city_slug="paris",
+        round_trip=False,
+        start_datetime=start_datetime,
+    )
+
+
+def test_an_after_dusk_day_finishes_at_a_lit_place_instead_of_the_richer_dark_one():
+    """Sofia's swap rule, scoped to what plan-time knows (plan S3.7; design
+    §4.3's dusk trigger; docs/personas/11-solo-after-dark; row 6.4 consumed):
+    a dated December day that runs past civil dusk must not END at the
+    highest-scoring finisher when that place is bad after dark — the pull
+    prefers the lit alternative, WITHOUT asking the user anything (Sofia's
+    never-ask rule). The morning sibling proves the preference is
+    dusk-gated: same corpus, 09:00 start, and the richer finisher is back.
+    """
+    from src.tour.selection import select_route
+
+    evening = select_route(_dusk_request(_DEC_EVENING), _dusk_corpus(with_lit_finisher=True))
+    assert evening.pois[-1].id == "far-lit-finisher", (
+        f"evening day ended at {evening.pois[-1].id} — the dusk preference did not "
+        "reach the endpoint pull"
+    )
+
+    morning = select_route(_dusk_request(_DEC_MORNING), _dusk_corpus(with_lit_finisher=True))
+    assert morning.pois[-1].id == "far-rich-dark-bad", (
+        "the morning sibling must keep today's score ranking — the dusk rule may "
+        "only bind after dusk"
+    )
+
+
+def test_a_dark_finish_nothing_could_fix_is_disclosed():
+    """When NO lit finisher exists, the dark one still serves — a rank
+    preference is not a gate — and the day SAYS SO (plan S3.7: "DISCLOSED
+    when no passing finisher exists"). Four confident stops beside an
+    unflagged dark ending would imply the ending was judged fine."""
+    from src.tour.selection import select_route
+
+    evening = select_route(_dusk_request(_DEC_EVENING), _dusk_corpus(with_lit_finisher=False))
+    assert evening.pois[-1].id == "far-rich-dark-bad"
+    dusk_notes = [
+        e for e in evening.clock_exclusions if "after civil dusk" in e.reason
+    ]
+    assert len(dusk_notes) == 1
+    assert dusk_notes[0].poi_id == "far-rich-dark-bad"
+
+
+def test_an_undated_run_never_consults_dusk():
+    """No clock = no dusk = today's behaviour, byte-identical (the S3.7
+    sabotage line: consuming dark-finish on UNDATED runs is forbidden)."""
+    from src.tour.selection import select_route
+
+    undated = select_route(_dusk_request(None), _dusk_corpus(with_lit_finisher=True))
+    assert undated.pois[-1].id == "far-rich-dark-bad"
+    assert undated.clock_exclusions == ()
+
+
 # --- end hardness reaches the budget (S1.6c) ---------------------------------
 
 

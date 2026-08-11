@@ -442,3 +442,188 @@ def test_undated_run_prints_no_hours_line(capsys):
         script=_script_for(route),
     )
     assert "hours unverified" not in capsys.readouterr().out
+
+
+# =============================================================================
+# S3.6 — the planner's promise assembly, the protected set, and pins
+# (appended per this file's one-hand-per-file header)
+# =============================================================================
+
+
+def _pin_corpus(*, with_pin_seated_naturally: bool = False):
+    """A rich tier-5 cluster and a poor tier-2 chapel ~300 m off it — a place
+    the greedy has no reason to choose, which is what makes pinning it a real
+    test: the pin, not the score, is why it is in the day."""
+    from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
+
+    chapel = _poi("chapelle-obscure", tier=2, lat=48.8555, lng=2.3697, beat_count=2)
+    fillers = _density_fillers(PDV, duration_min=60, n=5, radius_m=80)
+    return _snap([chapel, *fillers])
+
+
+def _pin_request(pins: tuple[str, ...] = ()):
+    from tests.test_tour_selection import PDV
+
+    return TourInput(
+        start=PDV,
+        duration_min=60,
+        city_slug="paris",
+        round_trip=True,
+        pinned_poi_ids=pins,
+    )
+
+
+def test_a_pinned_stop_is_seated_and_survives_every_repair():
+    """Théo pins one thing absolutely; Julien pins nothing (design §3.2; plan
+    S3.6). A pin is a CERTAINTY: force-seated before the greedy, in the
+    repair's protected set (no drop, no exchange may remove it — §4.5.2/4),
+    never traded by the pull, never folded into a co-located host. The
+    precondition run proves the greedy would NOT have chosen this place on
+    its own — the pin, not the score, is why it is in the day."""
+    from src.tour.selection import select_route
+
+    unpinned = select_route(_pin_request(), _pin_corpus())
+    assert "chapelle-obscure" not in {p.id for p in unpinned.pois}, (
+        "precondition broke: the chapel was chosen on merit, so pinning it "
+        "would prove nothing — weaken the chapel or enrich the cluster"
+    )
+
+    pinned = select_route(_pin_request(("chapelle-obscure",)), _pin_corpus())
+    assert "chapelle-obscure" in {p.id for p in pinned.pois}
+    pin_promises = [p for p in pinned.promises if p.kind == "pinned"]
+    assert [p.poi_id for p in pin_promises] == ["chapelle-obscure"]
+
+
+def test_an_unknown_pin_is_an_honest_refusal_naming_it():
+    """An unseatable pin is an honest refusal naming the pin (plan S3.6) —
+    never a day quietly served without it."""
+    from src.tour.density import TourabilityRefusedError
+    from src.tour.selection import select_route
+
+    with pytest.raises(TourabilityRefusedError) as refusal:
+        select_route(_pin_request(("no-such-place",)), _pin_corpus())
+    assert "no-such-place" in str(refusal.value)
+
+
+def test_rests_and_the_finish_are_never_auto_cut():
+    """§4.5.2/§4.5.4: rests and the finish are promise-grade. Structurally a
+    rest CANNOT be auto-cut — body stops seat AFTER the repair, on the final
+    walking order — and the finish survives the repair through the protected
+    set (the dusk swap tests prove that behaviourally: the lit endpoint out-
+    ranks and out-lives a richer exchange). This test pins the NAMING half
+    directly on `_assemble_promises`: the served order's rest and finish are
+    promised, with shapes priced at their arrival hours, deduped one promise
+    per stop, pins outranking everything, the list capped at five without
+    unseating anything."""
+    from src.tour.selection import _assemble_promises, _walk_arrivals
+    from src.tour.visit_time import visit_shape
+    from tests.test_tour_selection import _poi, _snap
+
+    near = _poi("a-near", tier=4, lat=48.8555, lng=2.3670)
+    marquee = _poi("m-marquee", tier=5, lat=48.8555, lng=2.3683)
+    bench = _poi(
+        "body-bench", role="body", tier=1, lat=48.8556, lng=2.3676, beat_count=0
+    ).model_copy(update={"typical_duration_min": 5})
+    finish = _poi("z-finish", tier=4, lat=48.8555, lng=2.3690)
+    ordered = [near, marquee, bench, finish]
+    snapshot = _snap(ordered)
+
+    def shape(poi, clock_hour):
+        return visit_shape(poi, frozenset(), snapshot, clock_hour=clock_hour)
+
+    arrivals = _walk_arrivals(
+        ordered,
+        [120, 120, 60, 60],
+        clock_start=None,
+        price_visit=lambda poi, hour: poi.typical_duration_min * 60,
+    )
+    promises = _assemble_promises(
+        arrivals,
+        snapshot=snapshot,
+        interest=frozenset(),
+        shape_visit=shape,
+        pinned_ids=frozenset(),
+    )
+    kinds = {p.kind: p for p in promises}
+    assert kinds["rest"].poi_id == "body-bench"
+    assert kinds["rest"].shape.goes_inside is False
+    assert kinds["anchor"].poi_id == "m-marquee"
+    assert kinds["finish"].poi_id == "z-finish"
+    assert len(promises) <= 5
+
+    # One promise per stop, the stronger claim winning: a pinned marquee is
+    # promised as PINNED, never twice.
+    pinned_promises = _assemble_promises(
+        arrivals,
+        snapshot=snapshot,
+        interest=frozenset(),
+        shape_visit=shape,
+        pinned_ids=frozenset({"m-marquee"}),
+    )
+    marquee_claims = [p for p in pinned_promises if p.poi_id == "m-marquee"]
+    assert [p.kind for p in marquee_claims] == ["pinned"]
+
+
+def test_the_day_names_its_promises_with_priced_shapes():
+    """Design §3.1: the plan becomes 2-5 promises. Every promise's kind is
+    from the closed vocabulary, the list caps at five, and each shape is a
+    real priced PromiseShape (outside/inside split from THE one pricer)."""
+    from src.tour.selection import select_route
+
+    route = select_route(_pin_request(), _pin_corpus())
+    assert 1 <= len(route.promises) <= 5
+    for promise in route.promises:
+        assert promise.kind in {"anchor", "pinned", "rest", "finish"}
+        assert promise.shape.outside_seconds >= 0
+        assert promise.poi_id in {p.id for p in route.pois}
+    assert any(p.kind == "anchor" for p in route.promises)
+
+
+def test_a_day_with_rests_still_fits_its_own_ceiling():
+    """A rest is part of the day, not an overdraft (plan S3.6; §4.5.2 rests
+    are promise-grade; design §2.3 the ceiling is hard).
+
+    Body stops seat AFTER the repair, so before the rest reserve existed the
+    repair filled the day to the nominal and the bench's minutes burst the
+    hard ceiling: THIS exact fixture measured 3,849 s against 3,600 and the
+    whole request refused — a family asking for rest breaks on a full day got
+    no day at all. With the reserve, the repair aims lower by the expected
+    rest time, the bench seats inside the promise, and the day ships with a
+    rest promised and the ceiling intact.
+    """
+    from src.tour.selection import select_route
+    from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
+
+    near = _poi("a-near", tier=4, lat=48.8555, lng=2.3676)
+    marquee = _poi("m-marquee", tier=5, lat=48.8555, lng=2.3694)
+    far = _poi("z-far", tier=4, lat=48.8555, lng=2.3710)
+    bench = _poi(
+        "body-bench", role="body", tier=1, lat=48.8556, lng=2.3672, beat_count=0
+    ).model_copy(update={"typical_duration_min": 5})
+    fillers = _density_fillers(PDV, duration_min=60, n=5, radius_m=80, tier=4)
+    snapshot = _snap([near, marquee, far, bench, *fillers])
+
+    route = select_route(
+        TourInput(
+            start=PDV,
+            duration_min=60,
+            city_slug="paris",
+            round_trip=True,
+            rest_cadence_minutes=3,
+        ),
+        snapshot,
+    )
+    # select_route RETURNING is the load-bearing assertion — before the
+    # reserve, this exact request raised CertificationPlanningInfeasibleError.
+    # The bound below re-states the ceiling in the engine's own currency
+    # (walking plus served dwell, the final gate's arithmetic).
+    from src.tour.selection import served_dwell_seconds
+    from src.tour.visit_time import served_elapsed_seconds
+
+    served = served_elapsed_seconds(
+        route.total_walk_seconds,
+        served_dwell_seconds(route, snapshot, interest=None, end_is_none=True),
+    )
+    assert served <= 3600, f"the rested day still bursts its ceiling: {served}s"
+    rest_promises = [p for p in route.promises if p.kind == "rest"]
+    assert [p.poi_id for p in rest_promises] == ["body-bench"]

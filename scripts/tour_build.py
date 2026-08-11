@@ -45,6 +45,11 @@ from src.tour.selection import (
     reach_envelope_searched,
     select_route,
 )
+from src.tour.visit_time import (
+    poi_has_interior,
+    shape_at_place_seconds,
+    shape_total_seconds,
+)
 from src.tour.weather import fetch_rain_likelihood
 
 HAIKU_INPUT_USD_PER_MTOK = 1.00  # 2026 Haiku 4.5 list (per 1M tokens)
@@ -450,8 +455,7 @@ def _print_breakdown(
         def _at_stop_seconds(poi) -> int:
             promise = promises_by_poi.get(poi.id)
             if promise is not None:
-                shape = promise.shape
-                return shape.outside_seconds + shape.inside_seconds + shape.queue_seconds
+                return shape_total_seconds(promise.shape)
             return (priced.get(poi.id) or 0) if priced else 0
 
         def _clock(seconds: int) -> str:
@@ -505,17 +509,16 @@ def _print_breakdown(
             elif promise is not None:
                 # The at-place minutes are outside + inside, NEVER the queue —
                 # design §3.3: "folding them into one 66 makes the wait
-                # permanent". The queue has its own column.
-                at_place = promise.shape.outside_seconds + promise.shape.inside_seconds
+                # permanent". The queue has its own column; the sum is the
+                # pricer's own named quantity.
+                at_place = shape_at_place_seconds(promise.shape)
                 side = "in" if promise.shape.goes_inside else "out"
                 shape = f"{round(at_place / 60)}m {side}"
             else:
                 # Pre-promise fallback — the planner has not shaped this stop:
-                # minutes from the route's own pricing, in/out from the POI's
-                # capacity numbers (an interior worth more than the outside
-                # view reads as an inside visit).
-                inside = (poi.visit_seconds_inside or 0) > poi.typical_duration_min * 60
-                side = "in" if inside else "out"
+                # minutes from the route's own pricing, in/out from the
+                # pricer's own interior test.
+                side = "in" if poi_has_interior(poi) else "out"
                 shape = f"{round(visit_s / 60)}m {side}" if visit_s is not None else f"— {side}"
             queue_s = promise.shape.queue_seconds if promise is not None else 0
             queue = f"{round(queue_s / 60)}m" if queue_s else "—"

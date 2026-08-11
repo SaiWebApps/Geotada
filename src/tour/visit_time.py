@@ -163,7 +163,7 @@ def visit_shape(
 
     outside = poi.typical_duration_min * 60
     inside = poi.visit_seconds_inside
-    if inside is None or inside <= outside:
+    if not poi_has_interior(poi):
         blend = outside
     else:
         relation = _lens_relation(poi, interest, snapshot)
@@ -236,6 +236,27 @@ def shape_total_seconds(shape: PromiseShape) -> int:
     quantity agree only until one of them is edited.
     """
     return shape.outside_seconds + shape.inside_seconds + shape.queue_seconds
+
+
+def shape_at_place_seconds(shape: PromiseShape) -> int:
+    """Time AT the place — the line excluded. THE one spelling of that sum.
+
+    A genuinely different quantity from `shape_total_seconds`, not a shortcut
+    around it: design §3.3 forbids folding the wait into the visit ("price
+    the building at a single 66 and the line becomes permanent"), so a
+    surface that prints an at-place number beside a queue column needs this
+    exact split. The harness's shape column is the founding consumer.
+    """
+    return shape.outside_seconds + shape.inside_seconds
+
+
+def poi_has_interior(poi: POI) -> bool:
+    """Whether this place's interior is worth more than its outside view —
+    THE one spelling of the uncapped interior test (`visit_shape`'s own gate
+    on the blend, and any surface's in/out label when no shape was priced).
+    """
+    outside = poi.typical_duration_min * 60
+    return poi.visit_seconds_inside is not None and poi.visit_seconds_inside > outside
 
 
 def visit_seconds(

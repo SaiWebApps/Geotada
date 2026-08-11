@@ -2916,3 +2916,81 @@ def test_min_stop_separation_guard_seats_both_of_an_86m_pair():
 
 
 
+
+# --- the loop's direction is a choice (S3.8a; deviation vi; Nadia's rule) ----
+
+
+def _line_loop(marquee_first: bool) -> list:
+    """Three stops east of PDV on a line: the tier-5 marquee nearest the start,
+    two tier-4 stops beyond it — the shape whose forward order front-loads the
+    day's anchor."""
+    marquee = _poi("marquee", tier=5, lat=48.8555, lng=2.3683)  # ~200 m
+    mid = _poi("mid", tier=4, lat=48.8555, lng=2.3710)  # ~400 m
+    far = _poi("far", tier=4, lat=48.8555, lng=2.3738)  # ~600 m
+    ordered = [marquee, mid, far]
+    return ordered if marquee_first else list(reversed(ordered))
+
+
+def test_a_round_trips_direction_lands_the_marquee_late():
+    """A closed loop's two directions cost the same walk, so the direction is
+    a CHOICE, and the marquee lands late deliberately — Nadia: "Tuesday's
+    back-loaded anchor was right by luck; make it deliberate" (plan S3.8a,
+    deviation vi; W1.9 concentration rule). Held-Karp's tie-break had made it
+    an accident of ids."""
+    from src.tour.selection import _orient_loop
+
+    ordered = _line_loop(marquee_first=True)
+    snapshot = _snap(list(ordered))
+    oriented = _orient_loop(
+        ordered,
+        snapshot=snapshot,
+        interest=frozenset(),
+        start=PDV,
+        leg_seconds_fn=None,
+    )
+    assert oriented[-1].id == "marquee", (
+        f"the marquee sat first and the loop was not reversed: {[p.id for p in oriented]}"
+    )
+
+
+def test_an_already_late_marquee_keeps_its_order():
+    """No churn when the accident already landed right."""
+    from src.tour.selection import _orient_loop
+
+    ordered = _line_loop(marquee_first=False)
+    snapshot = _snap(list(ordered))
+    oriented = _orient_loop(
+        ordered,
+        snapshot=snapshot,
+        interest=frozenset(),
+        start=PDV,
+        leg_seconds_fn=None,
+    )
+    assert [p.id for p in oriented] == [p.id for p in ordered]
+
+
+def test_direction_choice_never_buys_walking():
+    """The reversal is COST-FREE or it does not happen (deviation vi: routed
+    legs are near- but not exactly symmetric): under a leg fn that prices
+    westward walking +500 s, reversing the eastbound loop would add real
+    walking, so the forward order stands even with the marquee early."""
+    from src.tour.selection import _orient_loop
+
+    def eastbound_cheap(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
+        from src.tour.routing import default_leg_seconds
+
+        penalty = 500 if lng2 < lng1 else 0
+        return default_leg_seconds(lat1, lng1, lat2, lng2) + penalty
+
+    ordered = _line_loop(marquee_first=True)
+    snapshot = _snap(list(ordered))
+    oriented = _orient_loop(
+        ordered,
+        snapshot=snapshot,
+        interest=frozenset(),
+        start=PDV,
+        leg_seconds_fn=eastbound_cheap,
+    )
+    assert [p.id for p in oriented] == [p.id for p in ordered], (
+        "the reversal bought materially more walking and must be refused"
+    )

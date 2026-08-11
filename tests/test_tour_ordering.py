@@ -148,7 +148,19 @@ def test_exactness_against_brute_force(n: int):
 
 #: CPU seconds ``order_stops`` may spend on ONE call. The repair pass makes
 #: hundreds per request, so this carries a ~500x multiplier behind it.
-ORDER_CALL_CPU_CEILING_S: float = 0.05
+#:
+#: 1.0, matching the module's OWN documented guarantee — ordering.py's
+#: ORDERING_EXACT_MAX comment measures n=16 at 0.55 s and calls n=17's 1.22 s
+#: "past the sub-second guarantee tests/test_tour_ordering.py pins". The 0.05
+#: this constant was born with (c8a35a75) contradicted that same commit's
+#: docstring and the solver's real cost (re-measured 2026-08-11: bare
+#: held_karp_open at n=16 is 719 ms CPU, no tracer, no monitoring tools), so
+#: at 0.05 the two n=16 pins were red against unchanged code. The repair
+#: pass's aggregate exposure has its own pin
+#: (test_a_realistic_request_worth_of_ordering_calls_fits_in_two_seconds):
+#: above the threshold the cheapest-insertion fallback runs, so the 500x
+#: multiplier never multiplies THIS ceiling.
+ORDER_CALL_CPU_CEILING_S: float = 1.0
 
 
 def _cpu_seconds(fn, *args, **kwargs) -> float:

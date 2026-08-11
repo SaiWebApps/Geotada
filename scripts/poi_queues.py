@@ -296,13 +296,34 @@ def validate(record: dict[str, Any], *, name: str) -> str | None:
 
 
 def price_batch(client: Any, model: str, batch: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """One model call for one batch. Returns the parsed records, unvalidated."""
+    """One model call for one batch. Returns the parsed records, unvalidated.
+
+    The call itself is twice-tried against TRANSPORT trouble (timeout /
+    dropped connection), the same discipline the pass already applies to
+    structurally-bad rows — the first full Paris run died on one
+    ``httpx.ReadTimeout`` twenty-odd calls in, taking every batch with it.
+    A second transport failure on the same batch is a real outage: named
+    and fatal, never silently skipped (a silently unpriced batch reads as
+    "reviewed, no queue anywhere").
+    """
+    from anthropic import APIConnectionError, APITimeoutError
+
     prompt = PROMPT_HEADER + "\n".join(describe(p) for p in batch)
-    response = client.messages.create(
-        model=model,
-        max_tokens=8000,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    response = None
+    for attempt in (1, 2):
+        try:
+            response = client.messages.create(
+                model=model,
+                max_tokens=8000,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            break
+        except (APITimeoutError, APIConnectionError) as exc:
+            if attempt == 2:
+                raise SystemExit(
+                    f"✗ transport failed twice on a batch of {len(batch)} "
+                    f"(first POI: {batch[0].get('name', '?')}): {exc}"
+                ) from exc
     text = "".join(block.text for block in response.content if block.type == "text").strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()

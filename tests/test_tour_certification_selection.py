@@ -973,3 +973,161 @@ def test_a_rich_stop_cannot_push_a_tour_past_the_duration_that_was_asked_for():
         f"a 30-minute request came back at {served}s "
         f"({served / 60:.0f} min). Duration is a ceiling, not a target."
     )
+
+
+# --- the trades obey the panel's rules (S3.8b/c; §4.5.3/§4.5.5) --------------
+
+
+def _categorised(poi: POI, category: str) -> POI:
+    return poi.model_copy(update={"place_category": category})
+
+
+def test_the_repair_prefers_a_different_kind_of_place_on_a_near_tie():
+    """Greta's rule (plan S3.8b; design §4.5.5; row 6.7's consumer): when the
+    repair fills a short route and two candidates are otherwise equal, "another
+    one of those" loses — a candidate whose place_category already dominates
+    the seated set is dimmed by a bounded factor, so the different-kind place
+    is chosen. The ids are rigged so today's tie-break would pick the museum;
+    only the diversity rule flips it.
+    """
+    m1 = _categorised(_poi("m1", x=30.0, audio=270), "museum")
+    m2 = _categorised(_poi("m2", x=60.0, audio=270), "museum")
+    third_museum = _categorised(_poi("a-third-museum", x=45.0, y=3.0, audio=270), "museum")
+    church = _categorised(_poi("b-church", x=45.0, y=3.0, audio=270), "church")
+    pois = [m1, m2, third_museum, church]
+    snap = _snapshot(pois, {p.id: 270 for p in pois})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        end=(0.0, 90.0),
+        duration_min=25,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    repaired = _apply_certification_timebox_repair(
+        [m1, m2],
+        pois,
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+    )
+    repaired_ids = {poi.id for poi in repaired}
+    assert "b-church" in repaired_ids, (
+        f"the repair seated {sorted(repaired_ids)} — a third museum over the "
+        "equal church; Greta's diversity rule is not reaching the ranking"
+    )
+    assert "a-third-museum" not in repaired_ids
+
+
+def test_variety_never_beats_a_landmark():
+    """The diversity factor is BOUNDED (§2.4:130's principle, the S3.8
+    sabotage line): it re-orders near-ties and can never make a minor
+    different-kind place beat a landmark. Same shape as the near-tie test,
+    but the church is tier 3 — the tier-5 museum must still win."""
+    m1 = _categorised(_poi("m1", x=30.0, audio=270), "museum")
+    m2 = _categorised(_poi("m2", x=60.0, audio=270), "museum")
+    third_museum = _categorised(_poi("a-third-museum", x=45.0, y=3.0, audio=270), "museum")
+    minor_church = _categorised(
+        _poi("b-church", x=45.0, y=3.0, audio=270), "church"
+    ).model_copy(update={"tier": 3})
+    pois = [m1, m2, third_museum, minor_church]
+    snap = _snapshot(pois, {p.id: 270 for p in pois})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        end=(0.0, 90.0),
+        duration_min=25,
+        city_slug="test",
+        round_trip=False,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    repaired = _apply_certification_timebox_repair(
+        [m1, m2],
+        pois,
+        input=tour_input,
+        snapshot=snap,
+        spine="Generic Corridor",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=_routed,
+        planning_policy=policy,
+        planning_budget=budget,
+    )
+    repaired_ids = {poi.id for poi in repaired}
+    assert "a-third-museum" in repaired_ids, (
+        "variety dimming overrode a two-tier landmark gap — the factor is not "
+        "bounded the way §2.4:130 requires"
+    )
+
+
+def test_a_drop_that_merges_two_legs_past_the_cap_is_refused():
+    """§4.5.3, written fresh as the deleted drop test's one surviving
+    invariant (05-audit-F; plan S3.8c): a drop whose removal MERGES two legs
+    into one longer than the per-leg cap is not a legal repair, because under
+    the axis a route with one over-cap leg "has the same total and is
+    unusable" (docs/personas/05-step-free-visitor.md). Here every
+    ceiling-fitting drop mints a 200 s merged leg against a 180 s cap, so the
+    honest answer is a refusal — not a served route with an unwalkable leg.
+
+    Born green against the mechanism S2.3 built (the repair's `record` gate);
+    its RED is proven by the undo test (removing the max-leg check in
+    `record` lets the in-band cap-busting drop win and this test fail), as
+    the plan states.
+    """
+    a = _poi("a", x=10.0, audio=270)
+    b = _poi("b", x=20.0, audio=270)
+    c = _poi("c", x=30.0, audio=30)
+    pois = [a, b, c]
+    snap = _snapshot(pois, {a.id: 270, b.id: 270, c.id: 30})
+    tour_input = TourInput(
+        start=(0.0, 0.0),
+        duration_min=10,
+        city_slug="test",
+        round_trip=False,
+        max_leg_minutes=3,
+    )
+    policy = _policy()
+    budget = route_planning_budget(tour_input.duration_min, policy)
+
+    def elapsed(stops: list[POI]) -> int:
+        trial = _certification_route_trial(
+            stops,
+            input=tour_input,
+            snapshot=snap,
+            leg_seconds_fn=_routed,
+            planning_budget=budget,
+            interest=frozenset(),
+        )
+        assert trial is not None
+        return trial.elapsed_seconds
+
+    # Preconditions, or the guard is never consulted: keeping all three (and
+    # every cap-legal drop) overshoots the 600 s ceiling, while each
+    # cap-busting drop would fit the band — the merged 200 s leg is the ONLY
+    # thing standing between the overshoot and a served route.
+    assert elapsed([a, b, c]) > budget.nominal_elapsed_seconds
+    assert elapsed([a, b]) > budget.nominal_elapsed_seconds  # the cap-legal drop
+    assert elapsed([b, c]) <= budget.nominal_elapsed_seconds  # merged start→b leg
+    assert elapsed([a, c]) <= budget.nominal_elapsed_seconds  # merged a→c leg
+
+    with pytest.raises(CertificationPlanningInfeasibleError):
+        _apply_certification_timebox_repair(
+            [a, b, c],
+            [],
+            input=tour_input,
+            snapshot=snap,
+            spine="Generic Corridor",
+            interest=frozenset(),
+            score_penalty=None,
+            leg_seconds_fn=_routed,
+            planning_policy=policy,
+            planning_budget=budget,
+        )

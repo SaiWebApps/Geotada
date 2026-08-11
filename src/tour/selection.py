@@ -23,7 +23,7 @@ import re
 import unicodedata
 from collections import Counter
 from collections.abc import Callable, Iterable, Mapping
-from dataclasses import InitVar, dataclass
+from dataclasses import InitVar, dataclass, replace
 from dataclasses import field as dataclass_field
 from datetime import datetime, time, timedelta
 from types import MappingProxyType
@@ -46,6 +46,8 @@ from .contract import (
     ClockExclusion,
     PhysicalCue,
     POIBeats,
+    Promise,
+    PromiseShape,
     ReachVerdict,
     Route,
     TourabilityAssessment,
@@ -64,11 +66,13 @@ from .routing import (
     LegSecondsFn,
     RoutePlanningBudget,
     RoutePlanningPolicy,
+    civil_dusk_local,
     default_leg_seconds,
     envelope_radius_m,
     haversine_m,
     insertion_cost_seconds,
     insertion_extra_at_index,
+    pace_corrected_walk_seconds,
     path_leg_seconds,
     planned_audio_seconds,
     route_planning_budget,
@@ -79,7 +83,13 @@ from .routing import (
     target_dwell_seconds as target_dwell_seconds,
 )
 from .routing_client import ROUTE_SURFACE_COSTING_OVERRIDES
-from .visit_time import served_elapsed_seconds, stop_seconds, visit_seconds
+from .visit_time import (
+    served_elapsed_seconds,
+    shape_total_seconds,
+    stop_seconds,
+    visit_seconds,
+    visit_shape,
+)
 
 if TYPE_CHECKING:
     from .routing_client import RoutingClient
@@ -807,15 +817,19 @@ def _clock_exclusion_reason(
     start: datetime,
     duration_min: int,
 ) -> str | None:
-    """THE one definition of clock-closure (redesign 6.1). None = may be seated.
+    """THE one definition of clock-closure (redesign 6.1). None = not closed.
 
-    A POI is clock-excluded only when its opening table is CLOSED for the
+    A POI is clock-CLOSED only when its opening table is CLOSED for the
     ENTIRE visit window (start → start + duration): a place open for any part
-    of the window stays in the pool — arriving to find a door that closes in
-    an hour is the visitor's trade to make, a locked one is not.
+    of the window is simply open — arriving to find a door that closes in
+    an hour is the visitor's trade to make, a locked one is not. What closure
+    MEANS is the call site's decision, not this function's (plan S3.5, W1.9
+    dissent 1): a closed place with an exterior demotes to an outside-only
+    stop; only one with nothing to stand and see is removed. Both outcomes
+    append their own trailer to the detail returned here.
 
     FAILS OPEN, deliberately: a table that does not parse, a malformed window,
-    an unknown shape — all return None, i.e. "may be seated". A data defect
+    an unknown shape — all return None, i.e. "not closed". A data defect
     must degrade to today's trusting behaviour, never lock a visitor out of an
     open door. The structural bars in tests/test_poi_opening_hours.py are the
     guard on the data itself.
@@ -869,7 +883,7 @@ def _clock_exclusion_reason(
             f"closed for the entire {closed_day_names[0]}-{closed_day_names[-1]} "
             f"visit window (hours: {source_label})"
         )
-    return f"{detail}; would otherwise have been seated"
+    return detail
 
 
 def _is_unadopted_placeholder_beat(record: dict) -> bool:
@@ -1916,30 +1930,6 @@ def select_route(
     # allocation is unchanged in spirit -- gate removal WIDENS which POIs can
     # earn a dwell stop (every tier, every lens), it does not make the route
     # stop everywhere.
-    # HOW LONG THIS VISITOR SPENDS AT A PLACE, priced once per request and memoized.
-    # Declared HERE, above the candidate loop, because the dwell-pool filter below
-    # needs it: a place worth standing in must not be dropped for being quiet before
-    # anyone asks what it is worth. The greedy, the final Route's
-    # ``planned_visit_seconds`` and the rescue trim all read the same memo, so the
-    # number the search spends and the number the traveller is served are one number
-    # rather than three calls that agree today.
-    _visit_memo: dict[str, int] = {}
-    party_ceiling_seconds = (
-        input.max_stop_minutes * 60 if input.max_stop_minutes is not None else None
-    )
-
-    def _visit(cand: POI) -> int:
-        cached = _visit_memo.get(cand.id)
-        if cached is None:
-            cached = visit_seconds(
-                cand,
-                interest,
-                snapshot,
-                party_ceiling_seconds=party_ceiling_seconds,
-            )
-            _visit_memo[cand.id] = cached
-        return cached
-
     # THE PLANNER'S CLOCK (redesign 6.1). Parsed once; the contract validator
     # has already guaranteed the ISO form. None = dateless request = no
     # filtering anywhere below — the identity default that keeps every
@@ -1950,6 +1940,52 @@ def select_route(
         else None
     )
     clock_exclusions: list[ClockExclusion] = []
+    # POIs closed for the whole window that keep an exterior worth standing at
+    # (plan S3.5, W1.9 dissent 1): they stay in the pool and price OUTSIDE-ONLY
+    # through `price_visit` below. Populated by the candidate loop.
+    closed_today_ids: set[str] = set()
+
+    # HOW LONG THIS VISITOR SPENDS AT A PLACE — one closure, three clock reads
+    # (plan S3.3/S3.5; deviation v, estimate-then-exact, the walk clock's own
+    # shape): the greedy budgets every stop at the REQUEST's start hour (the
+    # estimate, memoized in `_visit`), while the repair's trials and the final
+    # Route re-price each stop at its ordered ARRIVAL hour (the exact form,
+    # via `_arrival_priced_visits`) — same closure, same rules, different
+    # clock reads, so a queue that peaks at noon prices differently at 09:00
+    # and 14:00 without a second pricing spelling anywhere. At the identity
+    # defaults (dateless, no weather flag, no closures, unpassed queue corpus,
+    # end hardness not "wall") this is byte-identical to the bare
+    # ``visit_seconds`` it replaced — the delegation is proven in
+    # tests/test_one_promise_pricing.py.
+    party_ceiling_seconds = (
+        input.max_stop_minutes * 60 if input.max_stop_minutes is not None else None
+    )
+    wall_hardness = input.end_hardness == "wall"
+    request_hour = clock_start.hour if clock_start is not None else None
+
+    def shape_visit(cand: POI, clock_hour: int | None) -> PromiseShape:
+        return visit_shape(
+            cand,
+            interest,
+            snapshot,
+            party_ceiling_seconds=party_ceiling_seconds,
+            clock_hour=clock_hour,
+            closed_today=cand.id in closed_today_ids,
+            weather=input.weather,
+            wall=wall_hardness,
+        )
+
+    def price_visit(cand: POI, clock_hour: int | None) -> int:
+        return shape_total_seconds(shape_visit(cand, clock_hour))
+
+    _visit_memo: dict[str, int] = {}
+
+    def _visit(cand: POI) -> int:
+        cached = _visit_memo.get(cand.id)
+        if cached is None:
+            cached = price_visit(cand, request_hour)
+            _visit_memo[cand.id] = cached
+        return cached
 
     reachable_count = 0
     candidates: list[POI] = []
@@ -2009,11 +2045,18 @@ def select_route(
             # what a neighbourhood actually is.
             continue
         if clock_start is not None and poi.opening_hours is not None:
-            # THE CLOCK FILTER (redesign 6.1): on a dated request, a place whose
-            # opening table is CLOSED for the entire visit window leaves the
-            # DWELL pool — and is RECORDED, so the day can say why the museum is
-            # missing (Aiko's locked door, Rosemary's Tuesday). Dwell pool only:
-            # walking PAST a closed building is fine, so vignettes are untouched.
+            # THE CLOCK RULE (redesign 6.1; re-ruled by the Phase 1 panel, W1.9
+            # dissent 1 — plan S3.5): on a dated request, a place whose opening
+            # table is CLOSED for the entire visit window is DEMOTED, not
+            # deleted — it stays in the dwell pool as an OUTSIDE-ONLY stop
+            # (interior and queue zeroed by `price_visit`, exterior minutes
+            # kept) and the day says so. Four personas ruled a locked door is
+            # still a facade worth standing at; the D1 demo's own Monday run
+            # STARTS at a Monday-closed Orsay. The ONE honest removal that
+            # remains: a closed place with no outside value
+            # (typical_duration_min == 0) — nothing to stand and see — leaves
+            # the pool, recorded, exactly as before. That is the only closure
+            # keying allowed: never tier, never score.
             # No datetime, or no table (None = not gated / pass not run), means
             # no filtering — the safe direction and the identity default.
             clock_reason = _clock_exclusion_reason(
@@ -2023,10 +2066,24 @@ def select_route(
                 input.duration_min,
             )
             if clock_reason is not None:
-                clock_exclusions.append(
-                    ClockExclusion(poi_id=poi.id, name=poi.name, reason=clock_reason)
-                )
-                continue
+                if poi.typical_duration_min > 0:
+                    closed_today_ids.add(poi.id)
+                    clock_exclusions.append(
+                        ClockExclusion(
+                            poi_id=poi.id,
+                            name=poi.name,
+                            reason=f"{clock_reason}; closed today — seated outside only",
+                        )
+                    )
+                else:
+                    clock_exclusions.append(
+                        ClockExclusion(
+                            poi_id=poi.id,
+                            name=poi.name,
+                            reason=f"{clock_reason}; would otherwise have been seated",
+                        )
+                    )
+                    continue
         if (
             input.escape_radius_m is not None
             and haversine_m(start_lat, start_lng, poi.lat, poi.lng) > input.escape_radius_m
@@ -2176,11 +2233,20 @@ def select_route(
     )
     consumed_dwell = 0
 
-    remaining = list(
-        certification_candidates
-        if certification_fixed_end and not candidates
-        else candidates
-    )
+    # VISITOR PINS (plan S3.6; design §3.2 — Théo pins one thing absolutely;
+    # Julien pins nothing): a pin is a CERTAINTY, not a preference. Pinned
+    # stops leave the greedy's own pool here and are force-seated below, once
+    # the seating helpers exist.
+    pinned_ids: frozenset[str] = frozenset(input.pinned_poi_ids)
+    remaining = [
+        candidate
+        for candidate in (
+            certification_candidates
+            if certification_fixed_end and not candidates
+            else candidates
+        )
+        if candidate.id not in pinned_ids
+    ]
 
     # C9 governor (SCOPED to round-trip / open-walk, end is None; A->B keeps the
     # Phase-2 currency + corridor discipline — see _capped_audio): floor-less
@@ -2251,6 +2317,78 @@ def select_route(
         greedy_close = (start_lat, start_lng)
     else:
         greedy_close = None
+
+    # FORCE-SEAT THE PINS (plan S3.6) before the greedy spends a second of
+    # budget. What cannot be honoured is REFUSED by name — a pin silently
+    # missing from the day is the one outcome worse than a refusal: the
+    # visitor built their day around it. Checked here: the pin exists in this
+    # corpus, is reachable on foot, is not closed-with-nothing-to-stand-
+    # outside-for (a closed pin WITH an exterior was already demoted to an
+    # outside-only stop by the clock rule and seats normally), and fits the
+    # walking budget. A beatless or off-band pin still seats — a silent stop
+    # at the visitor's own chosen place is honest; an overridden pin is not.
+    if pinned_ids:
+        poi_by_id = {poi.id: poi for poi in snapshot.pois}
+        for pin_id in input.pinned_poi_ids:
+            pin = poi_by_id.get(pin_id)
+            if pin is None:
+                raise TourabilityRefusedError(
+                    assessment,
+                    f"Pinned place {pin_id!r} is not in this city's corpus.",
+                )
+            if any(seated.id == pin.id for seated in selected):
+                continue  # the same place pinned twice
+            if not reach_contains(pin.lat, pin.lng):
+                raise TourabilityRefusedError(
+                    assessment,
+                    f"Pinned place '{pin.name}' is not reachable on foot within a "
+                    f"{input.duration_min}-min walk of this start.",
+                )
+            if (
+                clock_start is not None
+                and pin.opening_hours is not None
+                and pin.id not in closed_today_ids
+                and _clock_exclusion_reason(
+                    pin.opening_hours,
+                    pin.opening_hours_source,
+                    clock_start,
+                    input.duration_min,
+                )
+                is not None
+            ):
+                raise TourabilityRefusedError(
+                    assessment,
+                    f"Pinned place '{pin.name}' is closed for this entire visit "
+                    "window and has nothing to stand outside for.",
+                )
+            if input.end is not None:
+                extra, idx = _insertion_cost_with_fixed_end(
+                    pin,
+                    selected,
+                    start_lat=start_lat,
+                    start_lng=start_lng,
+                    fixed_end=input.end,
+                    leg_seconds_fn=leg_fn,
+                )
+            else:
+                extra, idx = insertion_cost_seconds(
+                    pin,
+                    selected,
+                    start_lat=start_lat,
+                    start_lng=start_lng,
+                    round_trip=input.round_trip,
+                    leg_seconds_fn=leg_fn,
+                )
+            if consumed_walk + extra > walk_budget:
+                raise TourabilityRefusedError(
+                    assessment,
+                    f"Pinned place '{pin.name}' cannot be reached inside this "
+                    f"request's walking budget — extend the duration or drop "
+                    "the pin.",
+                )
+            selected.insert(idx, pin)
+            consumed_walk += extra
+            consumed_dwell += _stop_cost(pin, exempt=False)
 
     while remaining:
         best_candidate: POI | None = None
@@ -2358,6 +2496,22 @@ def select_route(
     # don't truncate near the start. Re-orders the route end-to-end via
     # insertion-cost optimisation; respects the walk budget.
     pulled_endpoint_id: str | None = None
+    # THE AFTER-DARK FINISH (plan S3.7; design §4.3's dusk trigger; Sofia's
+    # swap rule, 11-solo-after-dark; row 6.4's good_after_dark finally
+    # consumed): on a DATED run whose nominal finish lands after civil dusk,
+    # the far-endpoint ranking below PREFERS a finisher that is good after
+    # dark — the user is never asked (Sofia's never-ask rule), an UNDATED run
+    # never enters (no clock = no dusk = today's ranking, byte-identical),
+    # and an unknown region prices no verdict (civil_dusk_local fails open).
+    # The projection is the request's own nominal length — what the plan aims
+    # to spend is known before any stop is chosen.
+    finish_after_dusk = False
+    if clock_start is not None:
+        dusk = civil_dusk_local(clock_start.date(), start_lat, start_lng)
+        finish_after_dusk = dusk is not None and (
+            clock_start + timedelta(seconds=planning_budget.nominal_elapsed_seconds)
+            > dusk
+        )
     if input.end is None and not input.round_trip and selected:
         far_radius_min = radius_m * ENDPOINT_PULL_FAR_FRACTION
         already = {p.id for p in selected}
@@ -2371,6 +2525,12 @@ def select_route(
             ranked_far = sorted(
                 far_candidates,
                 key=lambda c: (
+                    # Dusk first, and only when it binds: False sorts before
+                    # True, so a dark-good finisher outranks a dark-bad one of
+                    # ANY score on an after-dusk day — a rank preference, not
+                    # a gate: when no lit finisher fits the pull, the dark one
+                    # still serves, disclosed below.
+                    not c.good_after_dark if finish_after_dusk else False,
                     -poi_score(c, spine, interest, snapshot, penalty=score_penalty, party=party),
                     c.id,
                 ),
@@ -2389,6 +2549,8 @@ def select_route(
                     score_penalty=score_penalty,
                     max_leg_seconds=max_leg_seconds,
                     party=party,
+                    # A pin is never traded for a nicer ending (plan S3.6).
+                    protected_ids=pinned_ids,
                 )
                 if pulled is not selected and pulled[-1].id == cand.id:
                     selected = pulled
@@ -2459,8 +2621,22 @@ def select_route(
                 # The trim decides whether a rescued stop stays, so it has to
                 # price the same clock the tourist experiences. Without this the
                 # trial's visits are zero and the loop keeps a route it believes
-                # fits and the traveller will overrun by hours.
-                planned_visit_seconds={poi.id: _visit(poi) for poi in trial_selected},
+                # fits and the traveller will overrun by hours. Arrival-priced
+                # (deviation v's exact half), like the repair's trials.
+                planned_visit_seconds=_arrival_priced_visits(
+                    trial_selected,
+                    # trial_selected already ends at the materialized B, so the
+                    # chain needs no fixed-end coordinate appended.
+                    _full_route_leg_seconds(
+                        trial_selected,
+                        start_lat=start_lat,
+                        start_lng=start_lng,
+                        round_trip=False,
+                        leg_seconds_fn=leg_fn,
+                    ),
+                    clock_start=clock_start,
+                    price_visit=price_visit,
+                ),
                 costing_options_override=surface_override,
             ).model_copy(update={"fixed_end_poi_id": trial_end.id})
             trial_dwell = served_dwell_seconds(
@@ -2484,6 +2660,46 @@ def select_route(
             selected = [poi for poi in selected if poi.id != drop.id]
             rescue_ids.remove(drop.id)
 
+    # RESTS ARE PART OF THE DAY THE REPAIR PLANS (plan S3.6; §4.5.2 — rests
+    # are promise-grade this phase). Body stops seat AFTER the repair, on the
+    # final walking order — but their minutes are real, so a repair that fills
+    # the day to the nominal leaves them nowhere to stand: measured on a
+    # 60-minute fixture, the seated bench pushed a 3,560 s day to 3,849
+    # against a 3,600 s hard ceiling and the whole request REFUSED — a family
+    # asking for rest breaks on a full day got no day at all. The repair
+    # therefore aims at a clock shrunk by the expected rest time: cadence
+    # crossings the walking budget could produce, capped by how many body
+    # places exist, each priced at the pool's own mean seat time plus the
+    # seating rule's worst diversion walk. No cadence = no reserve = today.
+    repair_budget = planning_budget
+    body_pool = [p for p in snapshot.pois if p.poi_role == "body"]
+    if input.rest_cadence_minutes is not None and body_pool:
+        expected_rests = min(
+            planning_budget.walk_budget_seconds // (input.rest_cadence_minutes * 60),
+            len(body_pool),
+        )
+        mean_rest_seconds = round(
+            sum(p.typical_duration_min for p in body_pool) / len(body_pool) * 60
+        )
+        # A rest costs its seat time PLUS the walk off the path and back —
+        # measured on the founding fixture the detour (317 s) outweighed the
+        # seat (300 s), so a seat-only reserve still burst the ceiling. Priced
+        # at the engine's own pace over the seating rule's worst diversion.
+        rest_detour_seconds = pace_corrected_walk_seconds(2 * BODY_STOP_MAX_DETOUR_M)
+        rest_reserve = expected_rests * (mean_rest_seconds + rest_detour_seconds)
+        if rest_reserve > 0:
+            repair_budget = replace(
+                planning_budget,
+                minimum_elapsed_seconds=max(
+                    0, planning_budget.minimum_elapsed_seconds - rest_reserve
+                ),
+                nominal_elapsed_seconds=max(
+                    0, planning_budget.nominal_elapsed_seconds - rest_reserve
+                ),
+                maximum_elapsed_seconds=max(
+                    0, planning_budget.maximum_elapsed_seconds - rest_reserve
+                ),
+            )
     # The timebox repair now runs for EVERY route shape. It used to be gated on the
     # policy not being the legacy one, so an open or round-trip walk on the phone's
     # path never got band repair at all.
@@ -2497,18 +2713,34 @@ def select_route(
         score_penalty=score_penalty,
         leg_seconds_fn=leg_fn,
         planning_policy=planning_policy,
-        planning_budget=planning_budget,
+        planning_budget=repair_budget,
         # Certification must price what the ORDER pass below will actually build.
         # That pass pins the pulled endpoint last (see the `elif` there), so the
         # repair has to carry the same pin or it certifies a cheaper route than
         # the one the traveller is given.
         pulled_endpoint_id=pulled_endpoint_id,
+        # And it must price the same SHAPES on the same CLOCK the traveller is
+        # served: closed doors, queues at the arrival hour, weather, wall —
+        # the exact half of deviation v's estimate-then-exact contract.
+        price_visit=price_visit,
+        clock_start=clock_start,
+        # The pulled endpoint and every pin are PROMISES (plan S3.6;
+        # §4.5.2/§4.5.4): their selection encodes rules the repair's rank
+        # cannot see (the dusk preference; the visitor's own certainty), so
+        # no drop or exchange may remove them.
+        protected_promise_ids=(
+            set(pinned_ids)
+            | ({pulled_endpoint_id} if pulled_endpoint_id is not None else set())
+        )
+        or None,
     )
 
     # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
     # and demote the smaller-tier of each pair. Demoted POI beats are
     # merged into the host's pool by the harness via Route.demoted_beats.
-    selected, demoted_beats = apply_co_located_demotion(selected, snapshot)
+    selected, demoted_beats = apply_co_located_demotion(
+        selected, snapshot, never_fold=pinned_ids
+    )
     # Belt-and-suspenders against a place loaded twice (same display NAME, distinct
     # id): every dedup path above keys on POI id, and apply_co_located_demotion's
     # tier>=4 + cross-address-token gate can skip a bare same-name twin, so an
@@ -2516,7 +2748,9 @@ def select_route(
     # duplicate-stop bug — the beat-starved copy reads "Walk to the next stop."). Fold
     # twins by NAME here; the dropped twin's beats merge into the survivor. On a clean
     # corpus (globally unique names) this is a strict no-op.
-    selected, twin_beats = collapse_name_twins(selected, snapshot)
+    selected, twin_beats = collapse_name_twins(
+        selected, snapshot, never_fold=pinned_ids
+    )
     for host_id, beats in twin_beats.items():
         demoted_beats[host_id] = demoted_beats.get(host_id, ()) + beats
 
@@ -2545,6 +2779,16 @@ def select_route(
         round_trip=input.round_trip,
         routed_cost_fn=leg_fn,
     )
+    # A round trip's direction is chosen, not inherited from a tie-break
+    # (plan S3.8a): the marquee lands late when reversal is walk-free.
+    if input.round_trip:
+        selected = _orient_loop(
+            selected,
+            snapshot=snapshot,
+            interest=interest,
+            start=(start_lat, start_lng),
+            leg_seconds_fn=leg_fn,
+        )
 
     # Never ship a silent 0-stop tour. Even when REACH found candidates, the
     # greedy can seat NONE of them (every reachable anchor's round-trip insertion
@@ -2567,7 +2811,7 @@ def select_route(
     # of a round trip is not considered — Phase 2's mechanical-seating scope;
     # phase2-ledger.md records it.
     if input.rest_cadence_minutes is not None:
-        body_pool = [p for p in snapshot.pois if p.poi_role == "body"]
+        # body_pool was derived once, above the repair (its rest reserve).
         selected = _seat_body_stops(
             selected,
             start=(start_lat, start_lng),
@@ -2575,6 +2819,45 @@ def select_route(
             body_pool=body_pool,
             leg_seconds_fn=leg_fn,
         )
+    # Disclose a dark finish nothing could fix (plan S3.7): the day is dated,
+    # runs past dusk, ends where the walk ends (one-way — a loop finishes at
+    # the visitor's own start and a fixed B is their own choice), and that
+    # place is not good after dark. The pull preferred every lit finisher
+    # first, so reaching here means none fit — say so rather than let four
+    # confident stops imply the ending was judged fine (Sofia stands at the
+    # end of this day alone; 11-solo-after-dark).
+    if (
+        finish_after_dusk
+        and input.end is None
+        and not input.round_trip
+        and selected
+        and not selected[-1].good_after_dark
+    ):
+        clock_exclusions.append(
+            ClockExclusion(
+                poi_id=selected[-1].id,
+                name=selected[-1].name,
+                reason=(
+                    "finishes after civil dusk at a place not good after dark; "
+                    "no lit finisher fit this day"
+                ),
+            )
+        )
+    # The served order's ONE arrival walk (deviation v's exact half): visit
+    # prices and promise shapes both read it, so the two can never disagree
+    # about the hour a visitor stands anywhere.
+    final_arrivals = _walk_arrivals(
+        selected,
+        _full_route_leg_seconds(
+            selected,
+            start_lat=start_lat,
+            start_lng=start_lng,
+            round_trip=input.round_trip,
+            leg_seconds_fn=leg_fn,
+        ),
+        clock_start=clock_start,
+        price_visit=price_visit,
+    )
     route = summarise_route(
         selected,
         start_lat=start_lat,
@@ -2589,11 +2872,18 @@ def select_route(
         # set, so it is the only place the answer can be computed. Generation has
         # neither. Carrying it on the Route is what stops the planner and the
         # served tour disagreeing about how long a stop lasts.
-        # THE SAME MEMO THE GREEDY SPENT. `_visit` is what the search charged
-        # itself for seating each stop, so the route the traveller receives cannot
-        # book a different number than the planner paid — not "computed the same
-        # way", literally the same call.
-        planned_visit_seconds={poi.id: _visit(poi) for poi in selected},
+        # THE SAME CLOSURE THE GREEDY SPENT, AT THE SERVED CLOCK. The greedy
+        # budgeted each stop through `price_visit` at the request's START hour
+        # (its estimate); the served route prices each stop through the SAME
+        # closure at its ordered ARRIVAL hour — deviation v's estimate-then-
+        # exact, one pricing spelling, two clock reads. The repair's trials
+        # used this exact form, so the set it certified and the route served
+        # here are the same quantity by construction. At the identity defaults
+        # (dateless / no weather / no closures / unpassed queues) both reads
+        # are byte-identical to the pre-promise `visit_seconds`.
+        planned_visit_seconds={
+            poi.id: seconds for poi, _hour, seconds in final_arrivals
+        },
         costing_options_override=surface_override,
     )
     if demoted_beats:
@@ -2622,6 +2912,18 @@ def select_route(
         # Additive metadata (the vignettes mould): only a dated request can
         # collect these, so every dateless route stays byte-identical.
         route = route.model_copy(update={"clock_exclusions": tuple(clock_exclusions)})
+    # THE DAY'S PROMISES (plan S3.6; design §3.1): named off the served order,
+    # each shape priced at the hour the visitor stands there — the same
+    # arrival walk the visit prices used. Additive, the vignettes mould.
+    promises = _assemble_promises(
+        final_arrivals,
+        snapshot=snapshot,
+        interest=interest,
+        shape_visit=shape_visit,
+        pinned_ids=pinned_ids,
+    )
+    if promises:
+        route = route.model_copy(update={"promises": promises})
     # Last-line invariant, now applied to EVERY route shape: after materialization,
     # demotion, exact ordering and final-closing governance, the route must still sit
     # inside the same frozen band the repair used. The legacy fixed-end-only variant
@@ -2797,6 +3099,8 @@ def select_k_routes(
 def apply_co_located_demotion(
     selected: list[POI],
     snapshot: CorpusSnapshot,
+    *,
+    never_fold: frozenset[str] = frozenset(),
 ) -> tuple[list[POI], dict[str, tuple[BeatRef, ...]]]:
     """Return (selected_minus_demoted, host_id → demoted_beats).
 
@@ -2848,6 +3152,12 @@ def apply_co_located_demotion(
             if not _has_cross_poi_address_overlap(a, b, snapshot):
                 continue
             host, demote = _pick_demotion_host(a, b)
+            if demote.id in never_fold:
+                # A PINNED stop is never folded into a co-located host (plan
+                # S3.6): the visitor asked for THIS place as a stop of its
+                # own, and a merged host is exactly the silent override a pin
+                # forbids. The host being pinned is fine — it survives.
+                continue
             demoted_to_host[demote.id] = host.id
 
     if not demoted_to_host:
@@ -2957,6 +3267,8 @@ def _resolve_twin_host(host_id: str, dropped_to_host: dict[str, str]) -> str:
 def collapse_name_twins(
     selected: list[POI],
     snapshot: CorpusSnapshot,
+    *,
+    never_fold: frozenset[str] = frozenset(),
 ) -> tuple[list[POI], dict[str, tuple[BeatRef, ...]]]:
     """Collapse selected POIs that share a display NAME into one (name-keyed dedup).
 
@@ -3000,6 +3312,10 @@ def collapse_name_twins(
             if haversine_m(a.lat, a.lng, b.lat, b.lng) > NAME_TWIN_PROXIMITY_M:
                 continue
             host, drop = _pick_twin_host(a, b)
+            if drop.id in never_fold:
+                # A pinned twin keeps its own seat (plan S3.6) — same rule as
+                # co-located demotion above.
+                continue
             dropped_to_host[drop.id] = host.id
 
     if not dropped_to_host:
@@ -3582,6 +3898,61 @@ def _full_route_leg_seconds(
     return path_leg_seconds(coords, leg_seconds_fn)
 
 
+def _walk_arrivals(
+    ordered: list[POI] | tuple[POI, ...],
+    legs: list[int],
+    *,
+    clock_start: datetime | None,
+    price_visit: Callable[[POI, int | None], int],
+) -> list[tuple[POI, int | None, int]]:
+    """Walk a decided order once: ``(poi, arrival_hour, visit_seconds)`` each.
+
+    THE one accumulation behind the exact half of the estimate-then-exact
+    contract (plan S3.3, deviation v): the greedy budgeted every stop at the
+    request's start hour; anything that prices a DECIDED order — the repair's
+    trials, the rescue trim, the final Route, the promise assembly — walks
+    the chain instead, so a stop reached at 14:00 pays the 14:00 queue, not
+    the 09:00 one. A second walk of this accumulation anywhere is the fork
+    the phase forbids; `_arrival_priced_visits` and `_assemble_promises` are
+    both views of this one.
+
+    ``legs[i]`` is the walk INTO stop ``i`` (`_full_route_leg_seconds`' shape;
+    a round trip's closing leg is simply unused). The cursor advances by the
+    stop's own PRICED visit — narration that outruns the visit is not counted
+    here, an estimate the hour-band granularity absorbs (peak bands are hours
+    wide). A dateless request has no cursor and every stop prices at the
+    None-hour (off-peak) band.
+    """
+    out: list[tuple[POI, int | None, int]] = []
+    cursor = clock_start
+    for leg_seconds, poi in zip(legs, ordered, strict=False):
+        if cursor is not None:
+            cursor += timedelta(seconds=leg_seconds)
+        hour = cursor.hour if cursor is not None else None
+        seconds = price_visit(poi, hour)
+        out.append((poi, hour, seconds))
+        if cursor is not None:
+            cursor += timedelta(seconds=seconds)
+    return out
+
+
+def _arrival_priced_visits(
+    ordered: list[POI] | tuple[POI, ...],
+    legs: list[int],
+    *,
+    clock_start: datetime | None,
+    price_visit: Callable[[POI, int | None], int],
+) -> dict[str, int]:
+    """Per-stop visit seconds at each stop's ordered arrival hour — the
+    dict view of `_walk_arrivals` (see there for the contract)."""
+    return {
+        poi.id: seconds
+        for poi, _hour, seconds in _walk_arrivals(
+            ordered, legs, clock_start=clock_start, price_visit=price_visit
+        )
+    }
+
+
 @dataclass(frozen=True)
 class _CertificationRouteTrial:
     selected: tuple[POI, ...]
@@ -3623,6 +3994,8 @@ def _certification_route_trial(
     leg_seconds_fn: LegSecondsFn | None,
     planning_budget: RoutePlanningBudget,
     pulled_endpoint_id: str | None = None,
+    price_visit: Callable[[POI, int | None], int] | None = None,
+    clock_start: datetime | None = None,
 ) -> _CertificationRouteTrial | None:
     """Price one stop set in the exact routed/capped certification currency.
 
@@ -3665,17 +4038,20 @@ def _certification_route_trial(
         leg_seconds_fn=leg_seconds_fn,
     )
     walk_seconds = sum(legs)
-    route = Route(
-        pois=tuple(ordered),
-        transits=(),
-        total_walk_distance_m=0.0,
-        total_walk_seconds=walk_seconds,
-        fixed_end_poi_id=fixed_end.id if fixed_end is not None else None,
-        # WITHOUT THIS EVERY TRIAL PRICES ITS VISITS AT ZERO. The repair would
-        # then judge every candidate stop set by narration alone while the final
-        # gate judges the winner by visits, and the two would disagree about the
-        # same route by hours.
-        planned_visit_seconds={
+    # WITHOUT THIS EVERY TRIAL PRICES ITS VISITS AT ZERO. The repair would
+    # then judge every candidate stop set by narration alone while the final
+    # gate judges the winner by visits, and the two would disagree about the
+    # same route by hours. With `price_visit` given (select_route's own call),
+    # each stop prices at its ordered ARRIVAL hour — the exact half of the
+    # estimate-then-exact contract (deviation v), so the repair certifies the
+    # same clock the traveller is served. The bare fallback keeps every
+    # injected legacy caller (tests, doubles) on the pre-promise arithmetic.
+    if price_visit is not None:
+        planned = _arrival_priced_visits(
+            ordered, legs, clock_start=clock_start, price_visit=price_visit
+        )
+    else:
+        planned = {
             poi.id: visit_seconds(
                 poi,
                 interest,
@@ -3687,7 +4063,14 @@ def _certification_route_trial(
                 ),
             )
             for poi in ordered
-        },
+        }
+    route = Route(
+        pois=tuple(ordered),
+        transits=(),
+        total_walk_distance_m=0.0,
+        total_walk_seconds=walk_seconds,
+        fixed_end_poi_id=fixed_end.id if fixed_end is not None else None,
+        planned_visit_seconds=planned,
     )
     dwell_seconds = served_dwell_seconds(
         route, snapshot, interest=interest, end_is_none=input.end is None
@@ -3699,6 +4082,192 @@ def _certification_route_trial(
         dwell_seconds=dwell_seconds,
         max_leg_seconds=max(legs, default=0),
     )
+
+
+def _marquee_index(
+    ordered: list[POI] | tuple[POI, ...],
+    snapshot: CorpusSnapshot,
+    interest: frozenset[str],
+) -> int:
+    """The marquee stop's index: highest tier, ties → highest uncapped audio,
+    then id. The same identity the C9 governor exempts at emission
+    (build_poi_beat_plans_capped), restated because no Route exists at
+    planning time; the loop orientation (S3.8a) and the anchor promise
+    (S3.6) both read THIS one computation."""
+    return max(
+        range(len(ordered)),
+        key=lambda i: (
+            ordered[i].tier,
+            planned_capped_audio_seconds(ordered[i], snapshot, interest or None, None),
+            ordered[i].id,
+        ),
+    )
+
+
+def _orient_loop(
+    ordered: list[POI],
+    *,
+    snapshot: CorpusSnapshot,
+    interest: frozenset[str],
+    start: tuple[float, float],
+    leg_seconds_fn: LegSecondsFn | None,
+) -> list[POI]:
+    """Choose a round trip's direction deliberately (plan S3.8a, deviation vi).
+
+    A closed loop's two directions cost the same walk, so Held-Karp's pick
+    between them is a tie-break accident of ids. Nadia's concentration rule
+    (W1.9: "Tuesday's back-loaded anchor was right by luck; make it
+    deliberate") wants the marquee LATE — the day builds toward its anchor
+    and every prefix stays decent. The reversal is adopted only when the
+    marquee genuinely lands later AND the reversed loop does not cost
+    materially more walking (routed legs are near- but not exactly
+    symmetric; the band's own materiality tolerance is the line). LOOPS
+    ONLY: an open walk's order is geometry, and this function is never
+    called for one (the S3.8 sabotage line).
+
+    The marquee here is the same identity the C9 governor exempts at
+    emission — highest tier, ties → highest uncapped audio — restated
+    because no Route exists yet at ordering time; ids break the final tie
+    so the choice never depends on list order. S3.6's anchor promise reads
+    this same computation.
+    """
+    if len(ordered) < 2:
+        return ordered
+    marquee = _marquee_index(ordered, snapshot, interest)
+    if len(ordered) - 1 - marquee <= marquee:
+        return ordered  # the accident already landed it in the later half
+    reversed_order = list(reversed(ordered))
+    forward_walk = _full_route_walk_seconds(
+        ordered,
+        start_lat=start[0],
+        start_lng=start[1],
+        round_trip=True,
+        leg_seconds_fn=leg_seconds_fn,
+    )
+    reversed_walk = _full_route_walk_seconds(
+        reversed_order,
+        start_lat=start[0],
+        start_lng=start[1],
+        round_trip=True,
+        leg_seconds_fn=leg_seconds_fn,
+    )
+    if reversed_walk <= forward_walk + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS:
+        return reversed_order
+    return ordered
+
+
+#: The plan names at most this many promises (design §3.1: "2-5 PROMISES on a
+#: clock connected by FABRIC"). A cap on the NAMED list only — capping it
+#: drops no stop; a sixth pinned/rest stop is still seated and protected, it
+#: is simply not headlined. The phase's kill criterion may lower this to 3.
+MAX_PROMISES: int = 5
+
+
+def _assemble_promises(
+    arrivals: list[tuple[POI, int | None, int]],
+    *,
+    snapshot: CorpusSnapshot,
+    interest: frozenset[str],
+    shape_visit: Callable[[POI, int | None], PromiseShape],
+    pinned_ids: frozenset[str],
+) -> tuple[Promise, ...]:
+    """Name the day's 2-5 promises off the FINAL ordered walk (plan S3.6;
+    design §3.1 — the plan becomes promises on a clock connected by fabric).
+
+    ``arrivals`` is `_walk_arrivals`' output for the served order, so each
+    promise's shape is priced at the hour the visitor actually stands there.
+    Kinds, in the order the day earns them: every PINNED stop (the visitor's
+    own certainties, §3.2), the ANCHOR (the marquee — `_marquee_index`, the
+    governor-exempt identity), the FINISH (the last stop of the walk: the
+    materialized B, the pulled endpoint, or a loop's deliberate late marquee
+    — §3.5), and every REST (a seated body stop, §3.1). One promise per
+    stop: a pinned marquee is promised as PINNED (the stronger claim). The
+    list caps at MAX_PROMISES — pins first, then anchor, finish, rests — and
+    capping the LIST never unseats a stop. Promises are OUTPUT — the
+    planner's obligations, not knobs (the S3.2 sabotage line).
+
+    A one-stop day yields one promise; "2-5" is the design's range for a
+    normal day, not a floor a degenerate request must fake its way to.
+    """
+    if not arrivals:
+        return ()
+    ordered = [poi for poi, _hour, _seconds in arrivals]
+    hour_by_id = {poi.id: hour for poi, hour, _seconds in arrivals}
+    marquee_id = ordered[_marquee_index(ordered, snapshot, interest)].id
+    finish_id = ordered[-1].id
+
+    candidates: list[tuple[str, str]] = []  # (kind, poi_id), priority order
+    for poi in ordered:
+        if poi.id in pinned_ids:
+            candidates.append(("pinned", poi.id))
+    candidates.append(("anchor", marquee_id))
+    candidates.append(("finish", finish_id))
+    for poi in ordered:
+        if poi.poi_role == "body":
+            candidates.append(("rest", poi.id))
+
+    promised: dict[str, Promise] = {}
+    poi_by_id = {poi.id: poi for poi in ordered}
+    for kind, poi_id in candidates:
+        if poi_id in promised or len(promised) >= MAX_PROMISES:
+            continue
+        poi = poi_by_id[poi_id]
+        promised[poi_id] = Promise(
+            kind=kind, poi_id=poi_id, shape=shape_visit(poi, hour_by_id[poi_id])
+        )
+    return tuple(promised.values())
+
+
+#: Greta's "another one of those" dimmer (plan S3.8b; design §4.5.5 — the
+#: category-diverse replacement, row 6.7's planner consumer). A stop whose
+#: place_category is shared by at least two stops AND at least half of a set
+#: scores at this fraction of itself in the repair's rankings. BOUNDED, and
+#: the bound is the point (§2.4:130's principle, pinned by
+#: test_variety_never_beats_a_landmark): 0.8 re-orders near-ties toward
+#: variety while a two-tier landmark gap (5·0.8 = 4.0 > 3) survives it, so
+#: the dimmer can never trade a landmark away for the sake of a different
+#: kind of place.
+REPLACEMENT_CATEGORY_DIVERSITY_FACTOR: float = 0.8
+
+
+def _category_dominates(category: str, counts: Counter[str], set_size: int) -> bool:
+    """Whether ``category`` is "another one of those" within a set of stops:
+    present at least twice AND covering at least half the set. Empty
+    categories (unpassed corpus) never dominate — the safe default."""
+    if not category:
+        return False
+    count = counts.get(category, 0)
+    return count >= 2 and count * 2 >= set_size
+
+
+def _diversity_weighted_score(
+    pois: Iterable[POI],
+    *,
+    spine: str | None,
+    interest: frozenset[str],
+    snapshot: CorpusSnapshot,
+    score_penalty: dict[str, float] | None,
+    party: str | None,
+) -> float:
+    """Sum of ``poi_score`` over a candidate stop set with dominating
+    categories dimmed (plan S3.8b): each stop whose place_category dominates
+    THIS set scores at ``REPLACEMENT_CATEGORY_DIVERSITY_FACTOR``. Measured on
+    the trial's own composition, so the repair's rank genuinely prefers the
+    day with a different kind of place over the third museum when the two are
+    otherwise equal — a preference the pool ORDER alone could never express,
+    because rank decides among banked trials.
+    """
+    members = list(pois)
+    counts = Counter(poi.place_category for poi in members if poi.place_category)
+    total = 0.0
+    for poi in members:
+        score = poi_score(
+            poi, spine, interest, snapshot, penalty=score_penalty, party=party
+        )
+        if _category_dominates(poi.place_category, counts, len(members)):
+            score *= REPLACEMENT_CATEGORY_DIVERSITY_FACTOR
+        total += score
+    return total
 
 
 #: Most (incumbent, candidate) exchange trials the timebox repair will price.
@@ -3724,6 +4293,9 @@ def _apply_certification_timebox_repair(
     planning_policy: RoutePlanningPolicy,
     planning_budget: RoutePlanningBudget,
     pulled_endpoint_id: str | None = None,
+    price_visit: Callable[[POI, int | None], int] | None = None,
+    clock_start: datetime | None = None,
+    protected_promise_ids: set[str] | None = None,
 ) -> list[POI]:
     """Bounded add/exchange/drop repair for one frozen certification policy.
 
@@ -3732,6 +4304,15 @@ def _apply_certification_timebox_repair(
     is exactly ordered and priced with routed walk plus the same whole-beat cap
     emission uses.  Structural glue and observations are deliberately absent:
     neither is a legitimate source of duration padding.
+
+    ``protected_promise_ids`` (plan S3.6; design §4.5.2/§4.5.4 — the terminus
+    is not the shock absorber) are incumbents no DROP may remove: the pulled
+    endpoint (whose selection may encode a rule the rank cannot see — the
+    dusk-preferred lit finisher was measurably traded back for a richer dark
+    one before this existed), every pinned stop, and the stop carrying a
+    fixed destination B (which this function also derives itself, below).
+    Exchanges and adds still consider every trial; only removal of a promise
+    is refused.
     """
 
     base = _certification_route_trial(
@@ -3742,6 +4323,8 @@ def _apply_certification_timebox_repair(
         leg_seconds_fn=leg_seconds_fn,
         planning_budget=planning_budget,
         pulled_endpoint_id=pulled_endpoint_id,
+        price_visit=price_visit,
+        clock_start=clock_start,
     )
     preferred_trials: list[_CertificationRouteTrial] = []
     last_resort_trials: list[_CertificationRouteTrial] = []
@@ -3823,9 +4406,16 @@ def _apply_certification_timebox_repair(
             # as a last-resort slog. Priced in what the visitor gets, the same
             # stop rates under 1x and is preferred — which is correct, because
             # walking twenty minutes for forty-five minutes inside the
-            # Conciergerie is the best trade in Theo's afternoon.
-            added_dwell = stop_seconds(
-                visit_seconds(
+            # Conciergerie is the best trade in Theo's afternoon. The added
+            # stop's arrival hour is unknown before its trial orders it, so
+            # the slog ratio prices at the request's start hour — the same
+            # estimate the greedy budgets with (deviation v).
+            if price_visit is not None:
+                added_visit = price_visit(
+                    added, clock_start.hour if clock_start is not None else None
+                )
+            else:
+                added_visit = visit_seconds(
                     added,
                     interest,
                     snapshot,
@@ -3834,7 +4424,9 @@ def _apply_certification_timebox_repair(
                         if input.max_stop_minutes is not None
                         else None
                     ),
-                ),
+                )
+            added_dwell = stop_seconds(
+                added_visit,
                 planned_capped_audio_seconds(
                     added,
                     snapshot,
@@ -3873,6 +4465,8 @@ def _apply_certification_timebox_repair(
                 leg_seconds_fn=leg_seconds_fn,
                 planning_budget=planning_budget,
                 pulled_endpoint_id=pulled_endpoint_id,
+                price_visit=price_visit,
+                clock_start=clock_start,
             ),
             added=added,
             reference_walk_seconds=reference_walk_seconds,
@@ -3882,22 +4476,40 @@ def _apply_certification_timebox_repair(
     # trial ``consider(list(selected))`` would recompute.
     record(base)
     selected_ids = {poi.id for poi in selected}
-    # The one incumbent a DROP must never remove: the stop currently carrying a
-    # fixed destination B. Removing it does not lose B (each trial re-materializes
-    # it), but it re-materializes as a contentless sentinel at B's coordinate —
-    # trading a narrated stop for a bare pin while walking exactly as far.
-    protected_end_id: str | None = None
+    # THE PROTECTED SET a DROP must never remove (plan S3.6 generalising the
+    # old single protected_end_id). Always includes the stop currently
+    # carrying a fixed destination B: removing it does not lose B (each trial
+    # re-materializes it), but it re-materializes as a contentless sentinel at
+    # B's coordinate — trading a narrated stop for a bare pin while walking
+    # exactly as far.
+    protected = set(protected_promise_ids or ())
     if input.end is not None and selected:
         _, materialized_end = _materialize_fixed_end_b(
             selected, end_lat=input.end[0], end_lng=input.end[1]
         )
-        protected_end_id = materialized_end.id
+        protected.add(materialized_end.id)
+    # Pool enumeration order carries Greta's dimmer too (plan S3.8b): under
+    # the trial cap, the different-kind candidate should be PRICED before the
+    # third museum, not merely preferred if both happen to be priced. The
+    # decision itself lives in `rank`'s diversity-weighted score.
+    seated_category_counts = Counter(
+        poi.place_category for poi in selected if poi.place_category
+    )
+
+    def _pool_rank_score(candidate: POI) -> float:
+        score = poi_score(
+            candidate, spine, interest, snapshot, penalty=score_penalty, party=input.party
+        )
+        would_be = seated_category_counts.copy()
+        if candidate.place_category:
+            would_be[candidate.place_category] += 1
+        if _category_dominates(candidate.place_category, would_be, len(selected) + 1):
+            score *= REPLACEMENT_CATEGORY_DIVERSITY_FACTOR
+        return score
+
     pool = sorted(
         (candidate for candidate in candidates if candidate.id not in selected_ids),
-        key=lambda poi: (
-            -poi_score(poi, spine, interest, snapshot, penalty=score_penalty, party=input.party),
-            poi.id,
-        ),
+        key=lambda poi: (-_pool_rank_score(poi), poi.id),
     )
     if base is not None:
         for candidate in pool:
@@ -3907,6 +4519,13 @@ def _apply_certification_timebox_repair(
                 reference_walk_seconds=base.walk_seconds,
             )
     for incumbent in sorted(selected, key=lambda poi: poi.id):
+        if incumbent.id in protected:
+            # A promise is un-removable through EITHER door: not by the pure
+            # DROP below, and not by an EXCHANGE that swaps it for a pool
+            # candidate — an exchange removes the incumbent just the same,
+            # which is exactly how the dusk-preferred lit finisher was traded
+            # back for a richer dark one before this guard covered both.
+            continue
         retained = [poi for poi in selected if poi.id != incumbent.id]
         retained_trial = _certification_route_trial(
             retained,
@@ -3916,6 +4535,8 @@ def _apply_certification_timebox_repair(
             leg_seconds_fn=leg_seconds_fn,
             planning_budget=planning_budget,
             pulled_endpoint_id=pulled_endpoint_id,
+            price_visit=price_visit,
+            clock_start=clock_start,
         )
         reference_walk_seconds = (
             retained_trial.walk_seconds if retained_trial is not None else 0
@@ -3930,7 +4551,7 @@ def _apply_certification_timebox_repair(
         # audio), so it is never a last resort — and it still has to beat every
         # other in-band trial on ``rank`` to be chosen, where the score tie-break
         # favours the route that kept more stops.
-        if retained and incumbent.id != protected_end_id:
+        if retained and incumbent.id not in protected:
             record(retained_trial)
         for candidate in pool:
             consider(
@@ -3956,12 +4577,13 @@ def _apply_certification_timebox_repair(
                 under_ceiling_trials,
                 key=lambda trial: (
                     trial.elapsed_seconds,
-                    sum(
-                        poi_score(
-                            poi, spine, interest, snapshot,
-                            penalty=score_penalty, party=input.party,
-                        )
-                        for poi in trial.selected
+                    _diversity_weighted_score(
+                        trial.selected,
+                        spine=spine,
+                        interest=interest,
+                        snapshot=snapshot,
+                        score_penalty=score_penalty,
+                        party=input.party,
                     ),
                     tuple(sorted(poi.id for poi in trial.selected)),
                 ),
@@ -3994,11 +4616,17 @@ def _apply_certification_timebox_repair(
     def rank(
         trial: _CertificationRouteTrial,
     ) -> tuple[int, float, float, tuple[str, ...]]:
-        score = sum(
-            poi_score(
-                poi, spine, interest, snapshot, penalty=score_penalty, party=input.party
-            )
-            for poi in trial.selected
+        # Diversity-weighted (plan S3.8b): a trial's score dims its own
+        # dominating categories, so between two otherwise-equal repairs the
+        # one whose day is not "three museums" wins — Greta's rule reaching
+        # the DECISION, not just the enumeration order.
+        score = _diversity_weighted_score(
+            trial.selected,
+            spine=spine,
+            interest=interest,
+            snapshot=snapshot,
+            score_penalty=score_penalty,
+            party=input.party,
         )
         return (
             # THE LONGEST SINGLE WALK COMES FIRST, in ten-minute bands.
@@ -4054,11 +4682,16 @@ def _apply_endpoint_pull(
     score_penalty: dict[str, float] | None = None,
     max_leg_seconds: int | None = None,
     party: str | None = None,
+    protected_ids: frozenset[str] = frozenset(),
 ) -> list[POI]:
     """Insert `endpoint` as the closing stop, dropping at most
     ENDPOINT_PULL_MAX_DROPS weak incumbents to fit the walk budget. If the
     endpoint can't be made to fit within those drops, return the input
     unchanged (greedy result wins).
+
+    ``protected_ids`` (plan S3.6) are incumbents the pull may never trade for
+    its ending — pinned stops. When only protected incumbents remain to drop,
+    the pull abandons instead.
 
     The anchor-cap half of this loop was deleted 2026-08-04 with every other stop
     ceiling; only the walk-budget drop below remains, and it is what still makes
@@ -4096,15 +4729,23 @@ def _apply_endpoint_pull(
             return list(selected)
         if walk <= walk_budget:
             return candidate_route
-        if len(incumbents) <= 1 or drops_used >= ENDPOINT_PULL_MAX_DROPS:
+        droppable = [p for p in incumbents if p.id not in protected_ids]
+        if len(incumbents) <= 1 or not droppable or drops_used >= ENDPOINT_PULL_MAX_DROPS:
             # Bounded drops exhausted — or the next drop would evict the
-            # LAST incumbent, leaving [endpoint] alone. A one-stop route
-            # of just the pulled endpoint is a collapse, not a tour
-            # (2026-07-02 Rue Cler regression): abandon the pull and let
-            # the greedy result stand.
+            # LAST incumbent, leaving [endpoint] alone (a one-stop route
+            # of just the pulled endpoint is a collapse, not a tour —
+            # the 2026-07-02 Rue Cler regression), or only PINNED
+            # incumbents remain (a pin is never traded for an ending,
+            # plan S3.6): abandon the pull and let the greedy result stand.
             return list(selected)
         incumbents = _drop_weakest(
-            incumbents, spine, interest, snapshot, score_penalty, party=party
+            incumbents,
+            spine,
+            interest,
+            snapshot,
+            score_penalty,
+            party=party,
+            protected_ids=protected_ids,
         )
         drops_used += 1
 
@@ -4117,9 +4758,10 @@ def _drop_weakest(
     score_penalty: dict[str, float] | None = None,
     *,
     party: str | None = None,
+    protected_ids: frozenset[str] = frozenset(),
 ) -> list[POI]:
     weakest = min(
-        pois,
+        (p for p in pois if p.id not in protected_ids),
         key=lambda p: (
             poi_score(p, spine, interest, snapshot, penalty=score_penalty, party=party),
             p.id,
