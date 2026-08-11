@@ -214,6 +214,22 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             "sit_and_talk": poi.get("sit_and_talk"),
             "good_after_dark": poi.get("good_after_dark"),
             "judgement_basis": (poi.get("judgement_basis") or "").strip() or None,
+            # The queue (redesign row 6.5, plan S3.4) — the wait BEFORE entering,
+            # priced separately from visit time. `queue_peak_hours` is a list of
+            # [start, end] hour bands in poi-raw.json; JSON-encoded here exactly
+            # like `opening_hours` above and decoded by the pricing in
+            # src/tour/visit_time.py. Same no-defaults rule: absence stays
+            # absent, so a corpus the queue pass never reached prices no queue
+            # anywhere rather than a made-up zero-minute one.
+            "queue_class": (poi.get("queue_class") or "").strip() or None,
+            "queue_minutes_peak": poi.get("queue_minutes_peak"),
+            "queue_minutes_offpeak": poi.get("queue_minutes_offpeak"),
+            "queue_peak_hours": (
+                json.dumps(poi["queue_peak_hours"], ensure_ascii=False)
+                if isinstance(poi.get("queue_peak_hours"), list)
+                else None
+            ),
+            "queue_basis": (poi.get("queue_basis") or "").strip() or None,
         })
 
     result = session.run(
@@ -243,7 +259,12 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             p.children_can_run     = poi.children_can_run,
             p.sit_and_talk         = poi.sit_and_talk,
             p.good_after_dark      = poi.good_after_dark,
-            p.judgement_basis      = poi.judgement_basis
+            p.judgement_basis      = poi.judgement_basis,
+            p.queue_class          = poi.queue_class,
+            p.queue_minutes_peak   = poi.queue_minutes_peak,
+            p.queue_minutes_offpeak = poi.queue_minutes_offpeak,
+            p.queue_peak_hours     = poi.queue_peak_hours,
+            p.queue_basis          = poi.queue_basis
         RETURN count(p) AS total
         """,
         pois=params,

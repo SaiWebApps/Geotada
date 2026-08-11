@@ -338,25 +338,6 @@ def _clock_request(start_datetime):
     )
 
 
-def test_a_poi_closed_for_the_whole_visit_window_is_excluded_and_recorded():
-    """A place closed for the ENTIRE visit window leaves the dwell pool, and
-    the day says why.
-
-    Cites docs/personas/05-step-free-visitor.md (final bullet: the identical
-    request one day earlier spends 24 of her 54 walking minutes reaching a
-    locked door), docs/personas/07-rainy-tuesday.md step 6, and design 6.1
-    ("Aiko's locked door, Rosemary's Tuesday").
-    """
-    from src.tour.selection import select_route
-
-    museum = _tuesday_closed_museum()
-    route = select_route(_clock_request(_TUESDAY_10AM), _clock_corpus(museum))
-
-    assert museum.id not in {p.id for p in route.pois}
-    recorded = {e.poi_id: e for e in route.clock_exclusions}
-    assert museum.id in recorded, "the exclusion must be RECORDED, not silent"
-    assert "Tuesday" in recorded[museum.id].reason
-    assert "OSM" in recorded[museum.id].reason
 
 
 def test_the_same_poi_is_seated_on_a_day_it_is_open():

@@ -390,15 +390,17 @@ def test_the_contract_declares_the_queue_fields() -> None:
     assert poi.queue_basis.startswith("Airport"), "POI dropped queue_basis"
 
     # The defaults are load-bearing: a corpus the pass has not reached must
-    # price NOTHING — "" class (never "none", which is a judgement nobody
-    # made), None minutes (never 0, which claims a measured free door), None
-    # bands. Absence stays absent, the upload's own rule, and the planner
-    # treats an unpriced queue as costless — exactly today's behaviour.
+    # price NOTHING. The contract's shape (plan S3.2, implemented before this
+    # file's hops went green): `queue_class = None` is THE never-priced switch
+    # — None means "nobody judged this", distinct from "none" ("judged: no
+    # line") — and while it is None the int/str fields are INERT (nothing may
+    # read them), so their 0/"" defaults claim nothing. The pricing seam
+    # (src/tour/visit_time.py) prices a queue only off a set class.
     bare = POI(id="x", name="X", tier=3, poi_role="stop", lat=48.85, lng=2.35)
-    assert bare.queue_class == ""
-    assert bare.queue_minutes_peak is None
-    assert bare.queue_minutes_offpeak is None
-    assert bare.queue_peak_hours is None
+    assert bare.queue_class is None
+    assert bare.queue_minutes_peak == 0
+    assert bare.queue_minutes_offpeak == 0
+    assert bare.queue_peak_hours == ""
     assert bare.queue_basis == ""
 
 
@@ -475,10 +477,14 @@ def test_hop_round_trip_a_graph_record_lands_on_the_poi() -> None:
         "queue_basis": None,
     }
     poi = _snapshot_from_records([unpriced], [], [], []).pois[0]
-    assert poi.queue_class == ""
-    assert poi.queue_minutes_peak is None
-    assert poi.queue_minutes_offpeak is None
-    assert poi.queue_peak_hours is None
+    # The loader lands an unpriced record on the CONTRACT defaults (the
+    # closed-hop rule the visit/clock/judgement fields already follow):
+    # queue_class None = the never-priced switch; the inert ints/strings take
+    # their 0/"" defaults, which nothing may read while the class is None.
+    assert poi.queue_class is None
+    assert poi.queue_minutes_peak == 0
+    assert poi.queue_minutes_offpeak == 0
+    assert poi.queue_peak_hours == ""
     assert poi.queue_basis == ""
 
 

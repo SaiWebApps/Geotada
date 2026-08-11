@@ -149,10 +149,12 @@ This is not hypothetical. Trust in gravity scores was lost exactly this way once
 what production served. `tests/test_export_consistency.py` was written for that
 incident.
 
-If the Make target does not perform the sync itself, propagate the three fields from
-`poi-raw.json` into every export chunk before reporting anything — the same operation
-`.claude/commands/poi-gravity.md` describes, with
-`("typical_duration_min", "visit_seconds_inside", "visit_basis")` as the fields.
+The sync is one command now — `scripts/sync_poi_exports.py` owns the canonical field
+list (`SYNCED_FIELDS`), so never restate or hand-propagate fields:
+
+```bash
+make sync-poi-exports SLUG={city_slug}
+```
 
 Then run the regression tests:
 

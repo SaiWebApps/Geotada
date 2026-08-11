@@ -694,6 +694,11 @@ RETURN
   p.sit_and_talk  AS sit_and_talk,
   p.good_after_dark AS good_after_dark,
   p.judgement_basis AS judgement_basis,
+  p.queue_class   AS queue_class,
+  p.queue_minutes_peak AS queue_minutes_peak,
+  p.queue_minutes_offpeak AS queue_minutes_offpeak,
+  p.queue_peak_hours AS queue_peak_hours,
+  p.queue_basis   AS queue_basis,
   area_names      AS areas
 ORDER BY p.id
 """
@@ -982,6 +987,15 @@ def _snapshot_from_records(
                 sit_and_talk=bool(r.get("sit_and_talk")),
                 good_after_dark=bool(r.get("good_after_dark")),
                 judgement_basis=_clean(r.get("judgement_basis")) or "",
+                # The queue (redesign row 6.5, plan S3.4) — same closed-hop
+                # safe-default rule: an unpassed corpus returns None for all
+                # five, queue_class lands on the contract's None (= never
+                # priced), and the inert int/str defaults claim nothing.
+                queue_class=_clean(r.get("queue_class")),
+                queue_minutes_peak=int(r.get("queue_minutes_peak") or 0),
+                queue_minutes_offpeak=int(r.get("queue_minutes_offpeak") or 0),
+                queue_peak_hours=_clean(r.get("queue_peak_hours")) or "",
+                queue_basis=_clean(r.get("queue_basis")) or "",
             )
         )
 
@@ -3281,12 +3295,21 @@ def _reach_predicate(
     ``RoutingClient.isochrone``, which keeps today's costing, byte-identical.
     """
     if routing_client is not None:
-        walking_speed_kmh = (
-            None if pace_multiplier == 1.0 else REACH_PACE_KMH / pace_multiplier
-        )
-        iso = routing_client.isochrone(
-            start[0], start[1], iso_minutes, walking_speed_kmh=walking_speed_kmh
-        )
+        # The keyword rides ONLY when a real pace shrink is asked for — an
+        # injected legacy client (tests, doubles) need not know it at the 1.0
+        # identity, the same compatibility contract `_memoized_leg_fn` keeps
+        # for `costing_options_override`. A client asked for a shrunk contour
+        # must accept it: dropping the shrink would report a reach the party
+        # cannot walk.
+        if pace_multiplier == 1.0:
+            iso = routing_client.isochrone(start[0], start[1], iso_minutes)
+        else:
+            iso = routing_client.isochrone(
+                start[0],
+                start[1],
+                iso_minutes,
+                walking_speed_kmh=REACH_PACE_KMH / pace_multiplier,
+            )
         if iso is not None:
             try:
                 geoms = [
@@ -3416,16 +3439,29 @@ def _memoized_leg_fn(
     ``costing_options_override`` (plan S2.7) carries the route-surface axis's
     Valhalla costing on every call this closure makes — constant for the
     whole ``select_route`` invocation, so it is safe to close over rather
-    than fold into the cache key.
+    than fold into the cache key. Passed ONLY when an override is actually
+    set: an injected legacy client (tests, doubles) need not know the
+    keyword when no surface axis rides — the same explicit compatibility
+    contract ``routing._transit`` keeps for ``route_with_receipt``-less
+    clients. A client that IS asked for a surface must accept the keyword,
+    because silently dropping the override would route a step-free request
+    over stairs.
     """
     cache: dict[tuple[float, float, float, float], int] = {}
 
     def leg_fn(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
         key = (lat1, lng1, lat2, lng2)
         if key not in cache:
-            cache[key] = client.leg_seconds(
-                lat1, lng1, lat2, lng2, costing_options_override=costing_options_override
-            )
+            if costing_options_override is None:
+                cache[key] = client.leg_seconds(lat1, lng1, lat2, lng2)
+            else:
+                cache[key] = client.leg_seconds(
+                    lat1,
+                    lng1,
+                    lat2,
+                    lng2,
+                    costing_options_override=costing_options_override,
+                )
         return cache[key]
 
     return leg_fn

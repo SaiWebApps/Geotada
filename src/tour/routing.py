@@ -23,7 +23,9 @@ import itertools
 import math
 from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
+from datetime import UTC, date, datetime, timedelta
 from typing import TYPE_CHECKING
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from .contract import (
     POI,
@@ -231,6 +233,99 @@ def within_planning_timebox(
         <= elapsed_seconds
         <= budget.maximum_elapsed_seconds + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
     )
+
+
+#: Civil-twilight zenith: the sun 6° below the horizon (90° + 6°). Between
+#: sunset and this moment there is still usable sky light; after it there is
+#: not, which is what "after dark" means for a finish (design §4.3's dusk
+#: trigger; data row 6.4's good_after_dark, consumed at the finish by S3.7).
+CIVIL_TWILIGHT_ZENITH_DEG: float = 96.0
+
+#: IANA zone per coordinate region the corpus can serve. Dusk is solar
+#: arithmetic plus a POLITICAL clock: the sun's position falls out of
+#: (date, lat, lng), but "21:38" is a civil-timezone fact no geometry can
+#: derive (Paris sits at solar UTC+9min and civil UTC+1/+2). Keyed by a
+#: coordinate box because a coordinate is what selection has at plan time —
+#: the snapshot carries no timezone and no city fact reaches this depth. A
+#: new city adds one row here and one test. Outside every box the answer is
+#: None — no zone means no dusk verdict, and the after-dark finish rule
+#: degrades to today's behaviour: the same fail-open contract the clock
+#: filter (a table that does not parse seats the POI) and the weather door
+#: (no forecast plans a plain day) already keep.
+_DUSK_TZ_REGIONS: tuple[tuple[float, float, float, float, str], ...] = (
+    # lat_min, lat_max, lng_min, lng_max, IANA zone
+    (47.0, 51.0, -1.0, 5.0, "Europe/Paris"),
+)
+
+
+def civil_dusk_local(when: date, lat: float, lng: float) -> datetime | None:
+    """Civil dusk (sun 6° below the horizon) as a NAIVE LOCAL datetime, or None.
+
+    NOAA general solar position approximation (NOAA Global Monitoring
+    Division, "Solar Calculation Details" — the fractional-year Fourier
+    series for declination and the equation of time, then the hour angle at
+    the civil-twilight zenith). Deterministic, no network, accurate to a few
+    minutes — this prices a rank preference for where a day ENDS, not an
+    ephemeris.
+
+    None means "no verdict", and the caller plans exactly as it would today:
+    the coordinate lies outside every known civil-zone region, the zone
+    database is unavailable, or that latitude has no civil dusk on that date
+    (polar day/night).
+
+    NAIVE, deliberately: the planner's whole clock is the request's naive
+    local datetime (``TourInput.start_datetime``), so the only comparable
+    answer is the same kind of value.
+    """
+    tz_name = next(
+        (
+            name
+            for lat_min, lat_max, lng_min, lng_max, name in _DUSK_TZ_REGIONS
+            if lat_min <= lat <= lat_max and lng_min <= lng <= lng_max
+        ),
+        None,
+    )
+    if tz_name is None:
+        return None
+    try:
+        zone = ZoneInfo(tz_name)
+    except ZoneInfoNotFoundError:
+        return None
+
+    day_of_year = when.timetuple().tm_yday
+    # Fractional year at solar noon, radians. The 365-day form's leap-day
+    # error is under a minute of dusk — inside this approximation's tolerance.
+    gamma = 2.0 * math.pi / 365.0 * (day_of_year - 1 + 0.5)
+    eqtime_min = 229.18 * (
+        0.000075
+        + 0.001868 * math.cos(gamma)
+        - 0.032077 * math.sin(gamma)
+        - 0.014615 * math.cos(2 * gamma)
+        - 0.040849 * math.sin(2 * gamma)
+    )
+    decl_rad = (
+        0.006918
+        - 0.399912 * math.cos(gamma)
+        + 0.070257 * math.sin(gamma)
+        - 0.006758 * math.cos(2 * gamma)
+        + 0.000907 * math.sin(2 * gamma)
+        - 0.002697 * math.cos(3 * gamma)
+        + 0.00148 * math.sin(3 * gamma)
+    )
+    lat_rad = math.radians(lat)
+    cos_ha = math.cos(math.radians(CIVIL_TWILIGHT_ZENITH_DEG)) / (
+        math.cos(lat_rad) * math.cos(decl_rad)
+    ) - math.tan(lat_rad) * math.tan(decl_rad)
+    if not -1.0 <= cos_ha <= 1.0:
+        return None  # polar day/night: no civil dusk on this date
+    ha_deg = math.degrees(math.acos(cos_ha))
+    # NOAA: event UTC minutes = 720 - 4*(lng + ha) - eqtime, with ha positive
+    # at sunrise; the evening event is the negative branch, hence (lng - ha).
+    dusk_utc_min = 720.0 - 4.0 * (lng - ha_deg) - eqtime_min
+    dusk_utc = datetime(when.year, when.month, when.day, tzinfo=UTC) + timedelta(
+        minutes=dusk_utc_min
+    )
+    return dusk_utc.astimezone(zone).replace(tzinfo=None)
 
 # DELETED 2026-08-06: DWELL_SECONDS_BY_TIER / compute_dwell_seconds.
 #

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from datetime import date
 
 import pytest
 
@@ -14,6 +15,7 @@ from src.tour.routing import (
     REACH_PACE_KMH,
     WALK_FRACTION,
     beat_spoken_seconds,
+    civil_dusk_local,
     envelope_radius_m,
     governor_allowance_seconds,
     haversine_m,
@@ -360,3 +362,61 @@ def test_governor_allowance_divisor_floors_for_short_durations():
     assert governor_allowance_seconds(5) == target_dwell_seconds(5)
     # d in [20,29] -> d//10=2 -> budget/2.
     assert governor_allowance_seconds(25) == target_dwell_seconds(25) // 2
+
+
+# ---------------------------------------------------------------------------
+# Civil dusk (plan S3.7 — the after-dark finish's clock; design §4.3, row 6.4)
+# ---------------------------------------------------------------------------
+
+# Notre-Dame forecourt — the routing-engine test convention's Paris point.
+_DUSK_LAT, _DUSK_LNG = 48.8530, 2.3499
+
+
+def test_civil_dusk_paris_summer_evening():
+    """A Paris August evening keeps usable light until well past 21:00 local.
+
+    Reference: civil dusk in Paris on 2026-08-15 is ~21:35 CEST. The NOAA
+    approximation is good to a few minutes; the band below is wide enough to
+    hold it and narrow enough that a UTC-vs-local or solar-vs-civil confusion
+    (a 1-2 h error) cannot pass. Cites design §4.3 (the dusk trigger) and row
+    6.4 (good_after_dark, consumed at the finish).
+    """
+    dusk = civil_dusk_local(date(2026, 8, 15), _DUSK_LAT, _DUSK_LNG)
+    assert dusk is not None
+    assert dusk.tzinfo is None  # same naive-local clock as TourInput.start_datetime
+    assert dusk.date() == date(2026, 8, 15)
+    minutes = dusk.hour * 60 + dusk.minute
+    assert 21 * 60 + 20 <= minutes <= 22 * 60, f"August dusk landed at {dusk:%H:%M}"
+
+
+def test_civil_dusk_paris_winter_evening():
+    """A Paris December day goes dark before 18:00 (~17:30 CET on the 15th) —
+    the season the after-dark finish rule exists for (11-solo-after-dark;
+    Sofia's swap rule)."""
+    dusk = civil_dusk_local(date(2026, 12, 15), _DUSK_LAT, _DUSK_LNG)
+    assert dusk is not None
+    minutes = dusk.hour * 60 + dusk.minute
+    assert 17 * 60 + 10 <= minutes <= 17 * 60 + 50, f"December dusk landed at {dusk:%H:%M}"
+
+
+def test_civil_dusk_moves_with_the_season():
+    """June dusk is later than December dusk — the monotonic sanity check that
+    catches a sign error in the hour-angle without pinning exact ephemeris."""
+    june = civil_dusk_local(date(2026, 6, 20), _DUSK_LAT, _DUSK_LNG)
+    december = civil_dusk_local(date(2026, 12, 20), _DUSK_LAT, _DUSK_LNG)
+    assert june is not None and december is not None
+    assert (june.hour, june.minute) > (december.hour, december.minute)
+
+
+def test_civil_dusk_outside_known_regions_is_no_verdict():
+    """A coordinate outside every known civil-zone region answers None — no
+    zone means no dusk verdict, and the finish rule degrades to today's
+    behaviour (the weather door's fail-open contract; a wrong political
+    timezone would misjudge dusk by hours, worse than no answer)."""
+    assert civil_dusk_local(date(2026, 8, 15), 40.7128, -74.0060) is None  # New York
+
+
+def test_civil_dusk_is_deterministic():
+    a = civil_dusk_local(date(2026, 8, 15), _DUSK_LAT, _DUSK_LNG)
+    b = civil_dusk_local(date(2026, 8, 15), _DUSK_LAT, _DUSK_LNG)
+    assert a == b

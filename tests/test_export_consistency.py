@@ -144,6 +144,7 @@ def test_export_sync_carries_every_field_the_passes_write() -> None:
         "poi_visit_duration.py",  # visit-capacity trio
         "poi_opening_hours.py",  # opening-hours trio
         "poi_place_category.py",  # place_category
+        "poi_queues.py",  # queue quintet (row 6.5)
     )
     assignment = re.compile(r'\bpoi\["([a-z_]+)"\]\s*=')
     written: set[str] = set()
@@ -156,6 +157,13 @@ def test_export_sync_carries_every_field_the_passes_write() -> None:
             "update this scan so it keeps guarding the sync list"
         )
         written.update(fields)
+
+    # The judgements pass writes through a field-tuple loop (`poi[field] = ...`
+    # over JUDGEMENT_FIELDS), which the literal-assignment scan above cannot
+    # see by construction — so its coverage is asserted by IMPORT, the stronger
+    # form: the pass's own declared field list must be wholly inside the sync's.
+    judgements = importlib.import_module("scripts.poi_place_judgements")
+    written.update(judgements.JUDGEMENT_FIELDS)
 
     missing = written - synced
     assert not missing, (

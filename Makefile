@@ -89,6 +89,8 @@ LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 	scripts/score_gold_text.py scripts/human_reference_tours.py \
 	scripts/tour_golden_diff.py scripts/poi_visit_duration.py \
 	scripts/poi_opening_hours.py scripts/poi_place_category.py \
+	scripts/poi_body_places.py scripts/poi_place_judgements.py \
+	scripts/poi_queues.py scripts/sync_poi_exports.py \
 	scripts/report_visit_durations.py scripts/tour_build.py scripts/dedup_review.py
 
 # Reports a missing credential or a wrong endpoint as a sentence. This was a bare
@@ -127,7 +129,7 @@ check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
 	backfill-name-key wiki-fetch gen-within-edges validate-beats deploy prune-orphans \
 	fetch-boundary geocode-pois poi-visit-duration poi-opening-hours \
 	poi-place-category poi-visit-report poi-body-places poi-place-judgements \
-	sync-poi-exports tour-build \
+	poi-queues sync-poi-exports tour-build \
 	measure-planned-audio measure-governor \
 	onboard-city flutter-ipa testflight render-watch render-status setup-audio \
 	aura-resume-proof flutter-test clean \
@@ -652,6 +654,17 @@ poi-body-places: ## Fetch toilets/benches from OSM ($0). Usage: make poi-body-pl
 poi-place-judgements: ## Judge child/talk/dark affordances. Usage: make poi-place-judgements SLUG=paris [LIMIT=10].
 	@$(PREFLIGHT) --label poi-place-judgements $(PRE_PY) render-key
 	@$(RENDER_LOCAL_EXEC) uv run python scripts/poi_place_judgements.py \
+		--slug "$(or $(SLUG),paris)"$(if $(LIMIT), --limit $(LIMIT),) $(ARGS)
+
+# The wait BEFORE entering, priced separately from visit time (redesign data
+# row 6.5): class, peak/off-peak minutes, the peak hour bands, and the sentence
+# arguing for them. Spends real model credits, so LIMIT= runs a subset and
+# writes nothing — exactly the poi-visit-duration pattern, whose call door it
+# imports. Review at the standard rate with named spot checks (Louvre,
+# Sainte-Chapelle, Orsay, every `unpredictable`).
+poi-queues: ## Price POI queues (row 6.5). Usage: make poi-queues SLUG=paris [LIMIT=10].
+	@$(PREFLIGHT) --label poi-queues $(PRE_PY) render-key
+	@$(RENDER_LOCAL_EXEC) uv run python scripts/poi_queues.py \
 		--slug "$(or $(SLUG),paris)"$(if $(LIMIT), --limit $(LIMIT),) $(ARGS)
 
 # The third manual performance of the same block became the template

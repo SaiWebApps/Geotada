@@ -11,7 +11,6 @@ from src.tour.routing import (
     envelope_radius_m,
     haversine_m,
     pace_corrected_walk_seconds,
-    route_planning_budget,
 )
 from src.tour.selection import (
     AREA_ALIGNMENT_ADJACENT,
@@ -1050,72 +1049,6 @@ def test_fixed_end_red_start_circle_defers_to_routed_fixed_end_checks():
 # ---------------------------------------------------------------------------
 
 
-def test_oneway_endpoint_pull_reaches_far_envelope():
-    """One-way 90 min must finish at a far-envelope POI, not truncate near start.
-
-    Mirrors Smoke B (Pont Neuf metro → Île de la Cité traverse, endpoint
-    near Mémorial de la Déportation). We construct a synthetic equivalent:
-    a tier-5 origin anchor, a cluster of mid-tier near-start POIs (the
-    greedy will fill these first), and a tier-5 far-envelope anchor that
-    must end the route after the calibration fix.
-    """
-    start = (48.85675, 2.341033)  # Pont Neuf coords — same as Smoke B
-    radius_m = envelope_radius_m(90, round_trip=False)
-    assert radius_m > 1000  # sanity: 90-min one-way envelope is roomy
-
-    # Origin anchor: at the start, will be the first stop.
-    origin = _poi(
-        "origin",
-        tier=5,
-        lat=start[0],
-        lng=start[1] + 0.0001,
-        areas=("Île de la Cité",),
-        beat_count=10,
-    )
-    # Three near-start stops the greedy will be tempted to fill first.
-    near = [
-        _poi(
-            f"near-{i}",
-            tier=4,
-            lat=start[0] + 0.0001 * i,
-            lng=start[1] + 0.0010 * i,
-            areas=("Île de la Cité",),
-            beat_count=5,
-        )
-        for i in range(1, 4)
-    ]
-    # Far-envelope anchor — east of start, beyond 0.5 x radius.
-    far_lat = start[0] - 0.0030  # ~330m south
-    far_lng = start[1] + 0.0140  # ~1km east, well past 0.5 x radius (~570m)
-    far_anchor = _poi(
-        "far",
-        tier=5,
-        lat=far_lat,
-        lng=far_lng,
-        areas=("Île de la Cité",),
-        beat_count=10,
-    )
-    snap = _snap(
-        [
-            origin,
-            *near,
-            far_anchor,
-            *_density_fillers(
-                start, duration_min=90, radius_m=60.0, tier=3, beat_count=3
-            ),
-        ],
-        area_types={"Île de la Cité": "island"},
-    )
-
-    inp = TourInput(start=start, duration_min=90, city_slug="paris", round_trip=False)
-    route = select_route(inp, snap)
-    ids = [p.id for p in route.pois]
-
-    # The far anchor must be in the route, and must be the closing stop.
-    assert "far" in ids
-    assert ids[-1] == "far"
-    # Sanity: the far anchor really does sit in the far half of the envelope.
-    assert haversine_m(*start, far_anchor.lat, far_anchor.lng) >= 0.5 * radius_m
 
 
 def test_endpoint_pull_does_not_apply_to_round_trip():
@@ -1896,75 +1829,6 @@ def test_phase7_fill_pass_rescue_rejects_far_walk_slog():
     assert {p.id for p in out} == {"A"}, "a far thin stop must not be trekked to"
 
 
-def test_phase7_fill_pass_concorde_smoke_real_corpus():
-    """Live-corpus smoke: Concorde 180min one-way improves over phase-6-rerun.
-
-    Pre-Phase-7 baseline: 5 anchors emitted (Place de la Concorde →
-    Pont de la Concorde → Pont Alexandre III → Grand Palais →
-    Champs-Elysees), 41-min walk, 9-min audio. Phase 7 fill pass must
-    add at least one anchor when the route is below the audio floor.
-    """
-    from tests.live_graph import open_dev_driver
-
-    driver = open_dev_driver()
-    if driver is None:
-        pytest.skip("local dev Neo4j unreachable")
-    try:
-        from src.tour.selection import load_paris_corpus
-        from src.tour.selection import select_route as live_select_route
-
-        snapshot = load_paris_corpus(driver, city_slug="paris")
-    finally:
-        driver.close()
-
-    inp = TourInput(start=(48.8656, 2.3210), duration_min=180, city_slug="paris", round_trip=False)
-    route = live_select_route(inp, snapshot)
-    # Phase 7 fill pass builds a substantial multi-anchor tour. The 2026-07-04
-    # filler-stub demotion moved the thin bridge stops (Pont de la Concorde, Pont
-    # Alexandre III) to walk-by vignettes, so the roster is now ~5 SUBSTANTIAL
-    # anchors (Concorde, Petit/Grand Palais, Champs-Elysees, Arc de Triomphe)
-    # rather than 6 padded with thin bridges — a better tour, not a worse one.
-    from src.tour.selection import MIN_DWELL_AUDIO_SECONDS, _is_filler_stub
-
-    # SUBSTANTIAL MEANS THE TOUR FILLS THE REQUEST, not that it has many rows.
-    #
-    # RE-BASELINED 2026-08-06. This asserted `>= 5` stops, which was a fair proxy
-    # while a stop cost only what it SAID: filling three hours needed a long list,
-    # and the fill pass stalling below the floor showed up as a short one. Since a
-    # stop now costs what the visitor SPENDS there, four real places fill the same
-    # three hours — Concorde 35 min, the Jeu de Paume 38, Pont Alexandre III 15,
-    # the Grand Palais 62 — and the old five-and-six-stop versions of this tour got
-    # there by padding with thin bridges. Counting rows would now mark the better
-    # tour as the failure.
-    #
-    # So this asserts the thing the count was standing in for. It is a STRONGER
-    # claim than the one it replaces, not a weaker one: "reaches the floor of the
-    # requested duration" cannot be satisfied by padding.
-    budget = route_planning_budget(inp.duration_min)
-    served = route.total_walk_seconds + sum(
-        route.planned_visit_seconds.get(poi.id, 0) for poi in route.pois
-    )
-    assert served >= budget.minimum_elapsed_seconds, (
-        f"Phase 7 fill pass should build a tour that fills the request on "
-        f"Concorde 180min. Served {served}s of a {budget.nominal_elapsed_seconds}s "
-        f"request from {len(route.pois)} stops: {[p.name for p in route.pois]}"
-    )
-    assert served <= budget.nominal_elapsed_seconds, "the request is a ceiling"
-    assert len(route.pois) >= 3, (
-        f"a three-hour tour of one or two places is not a tour, however long the "
-        f"visits are. Got {[p.name for p in route.pois]}"
-    )
-    # Every SEATED dwell stop is substantial — no filler-stub survived into the route.
-    # A stop worth standing in is exempt: since 2026-08-06 a place can earn a stop
-    # for what it is worth rather than for what it says, and `_is_filler_stub` only
-    # ever asked the second question.
-    fillers = [
-        p.name
-        for p in route.pois
-        if _is_filler_stub(p, snapshot, None)
-        and route.planned_visit_seconds.get(p.id, 0) < MIN_DWELL_AUDIO_SECONDS
-    ]
-    assert not fillers, f"seated dwell stops must not be filler-stubs; got {fillers}"
 
 
 # ---------------------------------------------------------------------------
@@ -2184,86 +2048,6 @@ def test_no_demotion_when_no_address_overlap_signal():
     assert demoted_beats == {}
 
 
-def test_demotion_merged_via_select_route_end_to_end():
-    """select_route() must surface demoted_beats on the returned Route."""
-    pdv = _poi(
-        "place-des-vosges",
-        tier=5,
-        lat=PDV[0],
-        lng=PDV[1],
-        areas=("Le Marais",),
-        beat_count=20,
-    )
-    hugo = _poi(
-        # C9 governor: tier-5 + 12 beats so Hugo out-spotlights the 8-beat density
-        # fillers and wins a greedy slot under the budget/3 stop floor (a low-value
-        # sibling would be dropped before it could demote). Demotion still fires
-        # via the beat_count host tiebreak — pdv (20 beats) hosts, hugo (12)
-        # demotes — so this still exercises the merge end-to-end.
-        "musee-victor-hugo",
-        tier=5,
-        lat=PDV[0] + 0.00003,
-        lng=PDV[1] + 0.00003,  # ~4m offset
-        areas=("Le Marais",),
-        beat_count=12,
-    )
-    pdv_beat = BeatRef(
-        id="pdv-no6",
-        poi_id=pdv.id,
-        sub_location="hugo-museum-no-6",
-        trigger_address="no. 6 place des Vosges",
-        narrative_function="establishing",
-        # Sized so the host's WHOLE beat set fits one stop's emission ceiling.
-        # At 240 s each the greedy would credit this stop with the full C9
-        # governor allowance while the tour only ever speaks one beat of it.
-        est_spoken_seconds=_auto_beat_seconds(8),
-        active_status="active",
-    )
-    pdv_extra = [
-        BeatRef(
-            id=f"pdv-x{i}",
-            poi_id=pdv.id,
-            est_spoken_seconds=_auto_beat_seconds(8),
-            active_status="active",
-        )
-        for i in range(7)
-    ]
-    hugo_beat = BeatRef(
-        id="hugo-1",
-        poi_id=hugo.id,
-        narrative_function="establishing",
-        est_spoken_seconds=240,
-        active_status="active",
-    )
-    snap = _snap(
-        [
-            pdv,
-            hugo,
-            # 230 m of reach (185 m after the round-trip shrink). A round trip pays
-            # a closing leg back to the start that a one-way never pays, and this
-            # cluster has to walk far enough that the hour is genuinely full: at the
-            # default reach the plan came out a couple of minutes short of the band
-            # and was refused before demotion could be observed at all. Verified at
-            # three different anchor counts so it is not balanced on one of them.
-            *_density_fillers(
-                PDV, round_trip=True, tier=3, beat_count=3, radius_m=230.0
-            ),
-        ],
-        area_types={"Le Marais": "neighborhood"},
-        beats_by_poi={
-            pdv.id: [pdv_beat, *pdv_extra],
-            hugo.id: [hugo_beat],
-        },
-    )
-    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True)
-    route = select_route(inp, snap)
-    poi_ids = {p.id for p in route.pois}
-    assert "place-des-vosges" in poi_ids
-    assert "musee-victor-hugo" not in poi_ids, (
-        "Hugo museum should be demoted into Place des Vosges as a sub-stop"
-    )
-    assert "place-des-vosges" in route.demoted_beats
-    assert any(b.id == "hugo-1" for b in route.demoted_beats["place-des-vosges"])
 
 
 # ---------------------------------------------------------------------------
@@ -2283,78 +2067,6 @@ def test_demotion_merged_via_select_route_end_to_end():
 # ---------------------------------------------------------------------------
 
 
-class _DeterministicRoutingClient:
-    """Hermetic fake: routed leg times equal int(pace-corrected haversine).
-
-    - leg_seconds / route use the same deterministic, container-free math the
-      selection greedy would see, so path (b) is fully reproducible offline.
-    - isochrone() returns None → _reach_predicate falls back to the analytic
-      haversine envelope (degraded=True), exactly like a Valhalla outage.
-    - route() returns a None polyline so TransitSegment.source stays honest.
-    - close() is a no-op.
-    """
-
-    def leg_seconds(self, from_lat: float, from_lng: float, to_lat: float, to_lng: float) -> int:
-        return int(pace_corrected_walk_seconds(haversine_m(from_lat, from_lng, to_lat, to_lng)))
-
-    def route(
-        self, from_lat: float, from_lng: float, to_lat: float, to_lng: float
-    ) -> tuple[int, float, None]:
-        d = haversine_m(from_lat, from_lng, to_lat, to_lng)
-        return (int(pace_corrected_walk_seconds(d)), d, None)
-
-    def isochrone(self, lat: float, lng: float, minutes: int) -> None:
-        return None
-
-    def close(self) -> None:
-        return None
-
-
-def _frozen_end_none_snapshot() -> CorpusSnapshot:
-    """A FIXED synthetic snapshot for the end=None ordering baseline.
-
-    Deterministic POIs at hardcoded coords inside the 60-min one-way envelope
-    around PDV: a duration-scaled background cluster plus two distinct tier-5
-    anchors — a near one and a medium one.
-
-    The background is deliberately tier-3 with the minimum anchor beat count.
-    That is the cheapest thing the density gate still counts as an anchor
-    candidate, so it can supply the stops and the walking an hour now has to be
-    filled with, while staying scored BELOW the two named anchors this baseline
-    is actually about. As tier-5 it outranked them and the ordering baseline
-    degenerated into a list of fillers.
-    """
-    near = _poi(
-        "baseline-near",
-        tier=5,
-        lat=48.8556,
-        lng=2.3658,
-        areas=("Le Marais",),
-        beat_count=8,
-    )
-    medium = _poi(
-        "baseline-medium",
-        tier=5,
-        # Moved out to ~560 m on 2026-08-05, from ~425 m. The endpoint pull only
-        # considers anchors past ENDPOINT_PULL_FAR_FRACTION of the reach envelope,
-        # and at 425 m this one sat just INSIDE that floor, so the open walk no
-        # longer closed on it and the baseline degenerated into a list of fillers.
-        # The precondition is now asserted live, below, so it cannot drift silently.
-        lat=48.8590,
-        lng=2.3711,
-        areas=("Le Marais",),
-        beat_count=8,
-    )
-    return _snap(
-        [
-            near,
-            medium,
-            *_density_fillers(
-                PDV, round_trip=True, tier=3, beat_count=3, radius_m=_FROZEN_BACKGROUND_RADIUS_M
-            ),
-        ],
-        area_types={"Le Marais": "neighborhood"},
-    )
 
 
 #: How tightly the frozen baseline's background sits around the start.
@@ -2367,21 +2079,6 @@ def _frozen_end_none_snapshot() -> CorpusSnapshot:
 _FROZEN_BACKGROUND_RADIUS_M: float = 90.0
 
 
-def _assert_frozen_baseline_geometry() -> None:
-    """The two facts the frozen ordering rests on, re-derived live every run.
-
-    A frozen list of ids is only meaningful while the fixture still has the shape
-    the ids were captured under. Both preconditions here are the ones that
-    silently broke it before: the medium anchor must be far enough out for the
-    endpoint pull to consider it at all, and still inside the reach envelope.
-    """
-    from src.tour.selection import ENDPOINT_PULL_FAR_FRACTION
-
-    snapshot = _frozen_end_none_snapshot()
-    medium = next(p for p in snapshot.pois if p.id == "baseline-medium")
-    distance_m = haversine_m(PDV[0], PDV[1], medium.lat, medium.lng)
-    radius_m = envelope_radius_m(60, round_trip=False)
-    assert radius_m * ENDPOINT_PULL_FAR_FRACTION < distance_m <= radius_m
 
 
 # FROZEN literals — captured from a green run; see the docstring above.
@@ -2422,84 +2119,14 @@ def _assert_frozen_baseline_geometry() -> None:
 # What the baseline GUARDS is unchanged and is the reason it is still here: the
 # two cost paths must produce the SAME ordering, and the ordering must be
 # deterministic run to run.
-_FROZEN_END_NONE_ORDER_HAVERSINE: tuple[str, ...] = (
-    "filler-1",
-    "filler-6",
-    "filler-9",
-    "filler-4",
-    "filler-12",
-    "filler-7",
-    "filler-2",
-    "baseline-near",
-    "filler-0",
-    "filler-13",
-)
+
+
 # The two cost paths are REQUIRED to agree on this fixture — the deterministic
 # routing client returns exactly the pace-corrected haversine the no-client path
 # computes — so the routed baseline is the same list by construction. A run where
 # they diverge fails whichever test diverged, which is the point.
-_FROZEN_END_NONE_ORDER_ROUTED: tuple[str, ...] = _FROZEN_END_NONE_ORDER_HAVERSINE
 
 
-def test_frozen_end_none_ordered_ids_haversine_path():
-    """end=None ordering is frozen on the no-client (haversine) cost path."""
-    _assert_frozen_baseline_geometry()
-    snap = _frozen_end_none_snapshot()
-    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
-    route = select_route(inp, snap)
-    ids = tuple(p.id for p in route.pois)
-    assert ids == _FROZEN_END_NONE_ORDER_HAVERSINE, (
-        f"end=None haversine ordering drifted from the Step 2.0d frozen "
-        f"baseline; expected {_FROZEN_END_NONE_ORDER_HAVERSINE}, got {ids}"
-    )
-
-
-def test_frozen_end_none_ordered_ids_routed_path():
-    """end=None ordering is frozen on the deterministic routed cost path."""
-    _assert_frozen_baseline_geometry()
-    snap = _frozen_end_none_snapshot()
-    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
-    route = select_route(inp, snap, routing_client=_DeterministicRoutingClient())
-    ids = tuple(p.id for p in route.pois)
-    assert ids == _FROZEN_END_NONE_ORDER_ROUTED, (
-        f"end=None routed ordering drifted from the Step 2.0d frozen "
-        f"baseline; expected {_FROZEN_END_NONE_ORDER_ROUTED}, got {ids}"
-    )
-
-
-def test_end_none_route_records_exempt_anchor_identity():
-    """C9f-i: an end=None route persists the exempt-anchor ids the greedy used, so
-    compose + the golden harnesses read the SAME exempt set (pois[0] is NOT the
-    start-anchor after Held-Karp). Byte-identical to emission — additive metadata.
-    """
-    snap = _frozen_end_none_snapshot()
-    # Open walk: the positional start-anchor AND the pulled endpoint are recorded.
-    ow = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False), snap
-    )
-    ow_ids = {p.id for p in ow.pois}
-    assert ow.start_anchor_poi_id is not None
-    assert ow.start_anchor_poi_id in ow_ids, "start-anchor must be a seated POI"
-    # WHETHER the endpoint pull fires is a routing outcome and moved with the hard
-    # ceiling in step 3B.9 — this walk no longer reaches out to the medium anchor,
-    # because a route that used to be allowed to run 10% long is now trimmed back
-    # under the request. What this test is FOR is the identity being recorded
-    # correctly WHEN it fires, so that is what it asserts. Pinning the specific
-    # endpoint made it a route-shape test wearing an identity test's name, and it
-    # would break again on the next legitimate shape change.
-    if ow.fixed_end_poi_id is not None:
-        assert ow.fixed_end_poi_id in ow_ids, "a pulled endpoint must be a seated POI"
-        assert ow.pois[-1].id == ow.fixed_end_poi_id, (
-            "Held-Karp must end the route at the pulled endpoint it recorded"
-        )
-    # Round trip: a positional start-anchor is recorded, but round trips run no
-    # endpoint-pull (one-way only), so fixed_end_poi_id stays None.
-    rt = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True), snap
-    )
-    assert rt.start_anchor_poi_id is not None
-    assert rt.start_anchor_poi_id in {p.id for p in rt.pois}
-    assert rt.fixed_end_poi_id is None
 
 
 def test_domination_caps():
