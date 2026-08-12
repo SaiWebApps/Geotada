@@ -84,16 +84,21 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                 child: Wrap(
                   spacing: 10,
                   runSpacing: 12,
-                  children: [
-                    for (final entry in widget.lensesByParent.entries)
-                      for (final lens in entry.value)
+                  children: () {
+                    final lenses = [
+                      for (final entry in widget.lensesByParent.entries) ...entry.value,
+                    ];
+                    return [
+                      for (final (i, lens) in lenses.indexed)
                         LensChip(
                           name: lens.name,
                           label: lens.displayLabel,
                           selected: _selected.contains(lens.id),
+                          index: i,
                           onTap: () => _toggle(lens.id),
                         ),
-                  ],
+                    ];
+                  }(),
                 ),
               ),
             ),
