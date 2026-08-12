@@ -143,8 +143,8 @@ void main() {
         ),
       ));
 
-      await tester.tap(find.byIcon(Icons.person_outline)); // Profile -> branch 3
-      expect(tapped, 3);
+      await tester.tap(find.byIcon(Icons.person_outline)); // Profile -> branch 2
+      expect(tapped, 2);
     });
   });
 }

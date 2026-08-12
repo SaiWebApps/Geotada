@@ -73,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 TextButton(
-                  onPressed: () => context.go('/lenses'),
+                  onPressed: () => context.push('/lenses'),
                   child: const Text('Edit'),
                 ),
               ],

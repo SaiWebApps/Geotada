@@ -3,8 +3,9 @@ import 'package:ondoway/theme/dims.dart';
 import 'package:ondoway/theme/tokens.dart';
 
 /// App shell with the floating cobalt pill nav (wireframe): Explore · Trips ·
-/// Profile. These map to shell branch indices 0, 2, 3 (branch 1 = Lenses is
-/// reached from onboarding / Profile, not the nav). Feedback moved to Profile.
+/// Profile — shell branch indices 0, 1, 2. The lens editor is a pushed
+/// top-level route (reached from Profile / onboarding), not a tab. Feedback
+/// moved to Profile.
 class AppShell extends StatelessWidget {
   final int currentIndex; // shell BRANCH index (0..3)
   final Widget child;
@@ -19,8 +20,8 @@ class AppShell extends StatelessWidget {
 
   static const _items = <({IconData icon, String label, int branch})>[
     (icon: Icons.home_rounded, label: 'Explore', branch: 0),
-    (icon: Icons.map_outlined, label: 'Trips', branch: 2),
-    (icon: Icons.person_outline, label: 'Profile', branch: 3),
+    (icon: Icons.map_outlined, label: 'Trips', branch: 1),
+    (icon: Icons.person_outline, label: 'Profile', branch: 2),
   ];
 
   @override

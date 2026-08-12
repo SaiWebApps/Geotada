@@ -73,6 +73,17 @@ class _TourWalkPageState extends State<TourWalkPage> {
                         c: c, onDone: () => Navigator.of(context).maybePop())
                     : Stack(
                         children: [
+                          // Always-available exit from the immersive walk.
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: _WalkExitButton(
+                                c: c,
+                                onTap: () => Navigator.of(context).maybePop(),
+                              ),
+                            ),
+                          ),
                           if (stop != null)
                             Align(
                               alignment: Alignment.bottomCenter,
@@ -131,6 +142,33 @@ String _clock(double? seconds) {
   final m = s ~/ 60;
   final r = s % 60;
   return '$m:${r.toString().padLeft(2, '0')}';
+}
+
+/// Circular close button that exits the immersive walk. Sits over the dark map,
+/// so it carries its own translucent scrim for contrast.
+class _WalkExitButton extends StatelessWidget {
+  final OndowayColors c;
+  final VoidCallback onTap;
+  const _WalkExitButton({required this.c, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black.withValues(alpha: 0.45),
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: const Tooltip(
+          message: 'End walk',
+          child: Padding(
+            padding: EdgeInsets.all(9),
+            child: Icon(Icons.close, size: 22, color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// The real map behind the guide: a basic Apple Map centered on the current

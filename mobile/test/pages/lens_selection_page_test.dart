@@ -17,6 +17,14 @@ Widget _wrap(Widget child) {
   return MaterialApp(theme: buildOndowayTheme(Brightness.light), home: child);
 }
 
+/// The redesigned lens tiles are tall, so the default 800x600 test surface
+/// scrolls the first tiles off-screen. Tests that TAP a tile need a taller
+/// surface so the tap can hit-test; auto-reset after the test.
+Future<void> _tallSurface(WidgetTester tester) async {
+  await tester.binding.setSurfaceSize(const Size(800, 1600));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
+}
+
 void main() {
   group('LensSelectionPage onboarding mode', () {
     testWidgets('shows welcome header with user name', (tester) async {
@@ -26,14 +34,6 @@ void main() {
         lensesByParent: _testLenses,
       )));
       expect(find.text('WELCOME, SAIRAM'), findsOneWidget);
-    });
-
-    testWidgets('shows subtitle in onboarding mode', (tester) async {
-      await tester.pumpWidget(_wrap(LensSelectionPage(
-        isOnboarding: true,
-        lensesByParent: _testLenses,
-      )));
-      expect(find.textContaining('Pick at least 3'), findsOneWidget);
     });
 
     testWidgets('renders all lens tiles', (tester) async {
@@ -47,14 +47,6 @@ void main() {
       expect(find.text('Social Change'), findsOneWidget);
     });
 
-    testWidgets('renders category headers', (tester) async {
-      await tester.pumpWidget(_wrap(LensSelectionPage(
-        isOnboarding: true,
-        lensesByParent: _testLenses,
-      )));
-      expect(find.text('HISTORY'), findsOneWidget);
-    });
-
     testWidgets('continue button disabled with fewer than 3 selected', (tester) async {
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
@@ -66,6 +58,7 @@ void main() {
     });
 
     testWidgets('continue button enables after 3 selections', (tester) async {
+      await _tallSurface(tester);
       Set<String>? result;
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
@@ -93,6 +86,7 @@ void main() {
     });
 
     testWidgets('shows selection count', (tester) async {
+      await _tallSurface(tester);
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
         lensesByParent: _testLenses,
@@ -106,6 +100,7 @@ void main() {
     });
 
     testWidgets('tapping selected tile deselects it', (tester) async {
+      await _tallSurface(tester);
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
         lensesByParent: _testLenses,
@@ -158,6 +153,7 @@ void main() {
     });
 
     testWidgets('shows snackbar when trying to deselect last lens', (tester) async {
+      await _tallSurface(tester);
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: false,
         lensesByParent: _testLenses,
