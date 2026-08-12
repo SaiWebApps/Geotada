@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ondoway/widgets/feedback_overlay.dart';
+import 'package:ondoway/theme/dims.dart';
+import 'package:ondoway/theme/tokens.dart';
 
-class AppShell extends StatefulWidget {
-  final int currentIndex;
+/// App shell with the floating cobalt pill nav (wireframe): Explore · Trips ·
+/// Profile. These map to shell branch indices 0, 2, 3 (branch 1 = Lenses is
+/// reached from onboarding / Profile, not the nav). Feedback moved to Profile.
+class AppShell extends StatelessWidget {
+  final int currentIndex; // shell BRANCH index (0..3)
   final Widget child;
-  final void Function(int) onTabChanged;
+  final void Function(int branchIndex) onTabChanged;
 
   const AppShell({
     super.key,
@@ -13,60 +17,111 @@ class AppShell extends StatefulWidget {
     required this.onTabChanged,
   });
 
-  @override
-  State<AppShell> createState() => _AppShellState();
-}
-
-class _AppShellState extends State<AppShell> {
-  void _onDestinationSelected(int index) {
-    if (index == 4) {
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => const FeedbackSheet(),
-      );
-      return;
-    }
-    widget.onTabChanged(index);
-  }
+  static const _items = <({IconData icon, String label, int branch})>[
+    (icon: Icons.home_rounded, label: 'Explore', branch: 0),
+    (icon: Icons.map_outlined, label: 'Trips', branch: 2),
+    (icon: Icons.person_outline, label: 'Profile', branch: 3),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final c = Theme.of(context).extension<OndowayColors>()!;
     return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: widget.currentIndex,
-        onDestinationSelected: _onDestinationSelected,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        indicatorColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.explore_outlined),
-            selectedIcon: Icon(Icons.explore),
-            label: 'Explore',
+      extendBody: true, // content scrolls under the floating pill
+      body: child,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+              Dims.spaceLg, 0, Dims.spaceLg, Dims.spaceSm),
+          child: Container(
+            padding: const EdgeInsets.all(Dims.spaceXs),
+            decoration: BoxDecoration(
+              color: c.card,
+              borderRadius: BorderRadius.circular(Dims.radiusPill),
+              boxShadow: [
+                BoxShadow(
+                  color: c.ink.withValues(alpha: 0.12),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                for (final item in _items)
+                  _NavItem(
+                    icon: item.icon,
+                    label: item.label,
+                    selected: currentIndex == item.branch,
+                    accent: c.accent,
+                    onAccent: c.onAccent,
+                    inactive: c.inkMute,
+                    onTap: () => onTabChanged(item.branch),
+                  ),
+              ],
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.grid_view_outlined),
-            selectedIcon: Icon(Icons.grid_view),
-            label: 'Lenses',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.luggage_outlined),
-            selectedIcon: Icon(Icons.luggage),
-            label: 'Trips',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.mic_outlined),
-            selectedIcon: Icon(Icons.mic),
-            label: 'Feedback',
-          ),
-        ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final Color accent;
+  final Color onAccent;
+  final Color inactive;
+  final VoidCallback onTap;
+
+  const _NavItem({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.accent,
+    required this.onAccent,
+    required this.inactive,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(Dims.radiusPill),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.symmetric(
+          horizontal: selected ? Dims.spaceMd : Dims.spaceMd,
+          vertical: Dims.spaceSm + 2,
+        ),
+        decoration: BoxDecoration(
+          color: selected ? accent : Colors.transparent,
+          borderRadius: BorderRadius.circular(Dims.radiusPill),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 22, color: selected ? onAccent : inactive),
+            if (selected) ...[
+              const SizedBox(width: Dims.spaceSm),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Space Grotesk',
+                  color: onAccent,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

@@ -1,71 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:ondoway/pages/explore_page.dart';
+import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/trip_service.dart';
+import 'package:ondoway/theme/theme.dart';
+import 'package:provider/provider.dart';
 
-Widget _wrapWithRouter() {
+Widget _wrap() {
+  final client = MockClient((r) async => http.Response('', 200));
   final router = GoRouter(
     initialLocation: '/explore',
     routes: [
-      GoRoute(
-        path: '/explore',
-        builder: (context, state) => const ExplorePage(),
-      ),
+      GoRoute(path: '/explore', builder: (c, s) => const ExplorePage()),
       GoRoute(
         path: '/plan-trip/:citySlug',
-        builder: (context, state) => Scaffold(
-          body: Text('Plan trip: ${state.pathParameters['citySlug']}'),
-        ),
+        builder: (c, s) =>
+            Scaffold(body: Text('Plan trip: ${s.pathParameters['citySlug']}')),
       ),
     ],
   );
-  return MaterialApp.router(
-    routerConfig: router,
-    theme: ThemeData(
-      colorSchemeSeed: const Color(0xFF3D5AFE),
-      useMaterial3: true,
-      brightness: Brightness.dark,
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ProfileService>.value(
+          value: ProfileService(httpClient: client)),
+      ChangeNotifierProvider<TripService>.value(
+          value: TripService(httpClient: client)),
+    ],
+    child: MaterialApp.router(
+      routerConfig: router,
+      theme: buildOndowayTheme(Brightness.light),
     ),
   );
 }
 
 void main() {
   group('ExplorePage', () {
-    testWidgets('shows Paris city card', (tester) async {
-      await tester.pumpWidget(_wrapWithRouter());
-      await tester.pump();
+    testWidgets('shows the editorial hero (location pill + CTA) and plan card',
+        (tester) async {
+      await tester.pumpWidget(_wrap());
       await tester.pump();
 
-      expect(find.text('Paris'), findsOneWidget);
-      expect(
-        find.text('The city of light, scandal, and hidden stories'),
-        findsOneWidget,
-      );
-      expect(find.text('FRANCE'), findsOneWidget);
+      expect(find.text('You are in Paris'), findsOneWidget);
+      expect(find.text('Take a tour now'), findsOneWidget);
+      expect(find.text('Plan a tour for later'), findsOneWidget);
     });
 
-    testWidgets('tapping Paris navigates to plan-trip', (tester) async {
-      await tester.pumpWidget(_wrapWithRouter());
-      await tester.pump();
+    testWidgets('tapping "Take a tour now" navigates to plan-trip', (tester) async {
+      await tester.pumpWidget(_wrap());
       await tester.pump();
 
-      await tester.tap(find.text('Paris'));
-      await tester.pump();
-      await tester.pump();
+      await tester.tap(find.text('Take a tour now'));
+      await tester.pumpAndSettle();
 
       expect(find.text('Plan trip: paris'), findsOneWidget);
     });
 
-    testWidgets('shows page header and description', (tester) async {
-      await tester.pumpWidget(_wrapWithRouter());
-      await tester.pump();
+    testWidgets('resume card is hidden when there are no saved trips',
+        (tester) async {
+      await tester.pumpWidget(_wrap());
       await tester.pump();
 
-      expect(find.text('Explore'), findsOneWidget);
-      expect(
-        find.text('Choose a city to begin your audio tour'),
-        findsOneWidget,
-      );
+      // No saved trips -> the "Pick up where you left off" section is omitted.
+      expect(find.text('Pick up where you left off'), findsNothing);
     });
   });
 }

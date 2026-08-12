@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:ondoway/pages/explore_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
@@ -36,22 +35,6 @@ Widget _wrapProfilePage({
 }
 
 void main() {
-  group('ExplorePage', () {
-    testWidgets('shows Paris city card', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: const ExplorePage(),
-          theme: ThemeData(
-            colorSchemeSeed: const Color(0xFF3D5AFE),
-            useMaterial3: true,
-            brightness: Brightness.dark,
-          ),
-        ),
-      );
-      expect(find.text('Paris'), findsOneWidget);
-    });
-  });
-
   group('ProfilePage', () {
     testWidgets('shows email when authenticated', (tester) async {
       final mockClient = MockClient((request) async {
@@ -98,6 +81,12 @@ void main() {
         _wrapProfilePage(authService: authService),
       );
 
+      // Logout sits at the bottom of the scrolling profile list; scroll to it.
+      await tester.scrollUntilVisible(
+        find.byIcon(Icons.logout),
+        300,
+        scrollable: find.byType(Scrollable),
+      );
       expect(find.byIcon(Icons.logout), findsOneWidget);
     });
 

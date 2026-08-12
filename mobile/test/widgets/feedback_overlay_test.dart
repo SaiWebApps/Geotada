@@ -6,16 +6,17 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/feedback_service.dart';
+import 'package:ondoway/theme/theme.dart';
 import 'package:ondoway/widgets/app_shell.dart';
+import 'package:ondoway/widgets/feedback_overlay.dart';
 import 'package:provider/provider.dart';
 
 import '../services/auth_service_test.dart';
 
-Widget _wrap({
-  FeedbackService? feedbackService,
-  AuthService? authService,
-  int currentIndex = 0,
-}) {
+/// Renders a button that opens the FeedbackSheet in a modal — the same way
+/// Profile's "Send feedback" tile now surfaces it (feedback moved out of the
+/// nav when the nav dropped to Explore/Trips/Profile).
+Widget _wrap({FeedbackService? feedbackService, AuthService? authService}) {
   final defaultClient = MockClient((r) async => http.Response('', 200));
   return MultiProvider(
     providers: [
@@ -24,62 +25,47 @@ Widget _wrap({
       ),
       ChangeNotifierProvider<AuthService>.value(
         value: authService ??
-            AuthService(
-              storage: FakeSecureStorage(),
-              httpClient: defaultClient,
-            ),
+            AuthService(storage: FakeSecureStorage(), httpClient: defaultClient),
       ),
     ],
     child: MaterialApp(
-      home: AppShell(
-        currentIndex: currentIndex,
-        onTabChanged: (_) {},
-        child: const Scaffold(body: Text('App content')),
+      theme: buildOndowayTheme(Brightness.light),
+      home: Scaffold(
+        body: Builder(
+          builder: (ctx) => Center(
+            child: ElevatedButton(
+              onPressed: () => showModalBottomSheet<void>(
+                context: ctx,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => const FeedbackSheet(),
+              ),
+              child: const Text('open feedback'),
+            ),
+          ),
+        ),
       ),
     ),
   );
 }
 
+Future<void> _openSheet(WidgetTester tester) async {
+  await tester.tap(find.text('open feedback'));
+  await tester.pumpAndSettle();
+}
+
 void main() {
-  group('Feedback in NavigationBar', () {
-    testWidgets('feedback icon appears in NavigationBar', (tester) async {
+  group('FeedbackSheet', () {
+    testWidgets('opening shows the sheet with a text field', (tester) async {
       await tester.pumpWidget(_wrap());
-      expect(find.byIcon(Icons.mic_outlined), findsOneWidget);
-      expect(find.text('Feedback'), findsOneWidget);
-    });
-
-    testWidgets('app content renders with NavigationBar', (tester) async {
-      await tester.pumpWidget(_wrap());
-      expect(find.text('App content'), findsOneWidget);
-    });
-
-    testWidgets('tapping feedback icon opens bottom sheet', (tester) async {
-      await tester.pumpWidget(_wrap());
-      await tester.tap(find.text('Feedback'));
-      await tester.pumpAndSettle();
-
+      await _openSheet(tester);
       expect(find.text('Send Feedback'), findsOneWidget);
       expect(find.byType(TextField), findsOneWidget);
     });
 
-    testWidgets('selected tab does not change when feedback tapped',
-        (tester) async {
-      await tester.pumpWidget(_wrap(currentIndex: 0));
-      final navBar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-      expect(navBar.selectedIndex, 0);
-
-      await tester.tap(find.text('Feedback'));
-      await tester.pumpAndSettle();
-
-      // The sheet opened but selectedIndex stays at 0
-      expect(find.text('Send Feedback'), findsOneWidget);
-    });
-
     testWidgets('submit button disabled when text empty', (tester) async {
       await tester.pumpWidget(_wrap());
-      await tester.tap(find.text('Feedback'));
-      await tester.pumpAndSettle();
-
+      await _openSheet(tester);
       final button = tester.widget<FilledButton>(
         find.widgetWithText(FilledButton, 'Submit'),
       );
@@ -88,12 +74,9 @@ void main() {
 
     testWidgets('submit button enabled after typing', (tester) async {
       await tester.pumpWidget(_wrap());
-      await tester.tap(find.text('Feedback'));
-      await tester.pumpAndSettle();
-
+      await _openSheet(tester);
       await tester.enterText(find.byType(TextField), 'The map is broken');
       await tester.pump();
-
       final button = tester.widget<FilledButton>(
         find.widgetWithText(FilledButton, 'Submit'),
       );
@@ -101,7 +84,7 @@ void main() {
     });
 
     testWidgets('submit calls feedback service', (tester) async {
-      bool feedbackCalled = false;
+      var feedbackCalled = false;
       final mockClient = MockClient((request) async {
         if (request.url.path.contains('/feedback')) {
           feedbackCalled = true;
@@ -117,21 +100,51 @@ void main() {
         return http.Response('', 404);
       });
 
-      final feedbackService = FeedbackService(httpClient: mockClient);
-
-      await tester.pumpWidget(_wrap(feedbackService: feedbackService));
-      await tester.tap(find.text('Feedback'));
-      await tester.pumpAndSettle();
-
+      await tester
+          .pumpWidget(_wrap(feedbackService: FeedbackService(httpClient: mockClient)));
+      await _openSheet(tester);
       await tester.enterText(find.byType(TextField), 'The map is broken');
       await tester.pump();
-
       await tester.tap(find.widgetWithText(FilledButton, 'Submit'));
-      await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
       await tester.pumpAndSettle();
 
       expect(feedbackCalled, isTrue);
+    });
+  });
+
+  group('AppShell floating nav', () {
+    testWidgets('shows Explore/Trips/Profile and no Feedback item',
+        (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        theme: buildOndowayTheme(Brightness.light),
+        home: AppShell(
+          currentIndex: 0,
+          onTabChanged: (_) {},
+          child: const Scaffold(body: Text('content')),
+        ),
+      ));
+
+      expect(find.text('Explore'), findsOneWidget); // active pill label
+      expect(find.byIcon(Icons.map_outlined), findsOneWidget); // Trips
+      expect(find.byIcon(Icons.person_outline), findsOneWidget); // Profile
+      expect(find.text('Feedback'), findsNothing);
+      expect(find.byIcon(Icons.mic_outlined), findsNothing);
+    });
+
+    testWidgets('tapping a nav item reports its branch index', (tester) async {
+      int? tapped;
+      await tester.pumpWidget(MaterialApp(
+        theme: buildOndowayTheme(Brightness.light),
+        home: AppShell(
+          currentIndex: 0,
+          onTabChanged: (i) => tapped = i,
+          child: const Scaffold(body: Text('content')),
+        ),
+      ));
+
+      await tester.tap(find.byIcon(Icons.person_outline)); // Profile -> branch 3
+      expect(tapped, 3);
     });
   });
 }

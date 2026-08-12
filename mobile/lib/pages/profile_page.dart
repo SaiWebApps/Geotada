@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/widgets/feedback_overlay.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -50,6 +51,16 @@ class ProfilePage extends StatelessWidget {
             leading: const Icon(Icons.email_outlined),
             title: const Text('Email'),
             subtitle: Text(auth.userEmail ?? ''),
+          ),
+          ListTile(
+            leading: const Icon(Icons.feedback_outlined),
+            title: const Text('Send feedback'),
+            onTap: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (_) => const FeedbackSheet(),
+            ),
           ),
           const Divider(height: 32),
           Padding(

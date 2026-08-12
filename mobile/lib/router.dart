@@ -174,6 +174,16 @@ GoRouter createRouter(
         path: '/debug/style-gallery',
         builder: (context, state) => const StyleGalleryPage(),
       ),
+      GoRoute(
+        // Debug-only design preview: renders ExplorePage inside the shell (so the
+        // floating pill nav shows), without the auth gate.
+        path: '/debug/explore-preview',
+        builder: (context, state) => AppShell(
+          currentIndex: 0,
+          onTabChanged: (_) {},
+          child: const ExplorePage(),
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AppShell(

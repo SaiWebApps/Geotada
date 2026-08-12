@@ -1,42 +1,156 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ondoway/models/trip.dart';
+import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/trip_service.dart';
+import 'package:ondoway/theme/dims.dart';
+import 'package:ondoway/theme/tokens.dart';
+import 'package:provider/provider.dart';
 
+/// Home / Explore — editorial: photographic hero, resume card, plan card.
+/// (Wireframe screen 03.)
 class ExplorePage extends StatelessWidget {
   const ExplorePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final c = Theme.of(context).extension<OndowayColors>()!;
+    final text = Theme.of(context).textTheme;
+    final displayName = context.watch<ProfileService>().displayName;
+    final initial =
+        (displayName != null && displayName.isNotEmpty) ? displayName[0].toUpperCase() : 'A';
+    final savedTrips = context.watch<TripService>().savedTrips;
+    final resume = savedTrips.isNotEmpty ? savedTrips.first : null;
 
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(
+            Dims.spaceLg, Dims.spaceMd, Dims.spaceLg, Dims.spaceXl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Explore',
-              style: textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface,
+            _TopBar(c: c, text: text, initial: initial),
+            const SizedBox(height: Dims.spaceMd),
+            _Hero(c: c, onTakeTour: () => context.push('/plan-trip/paris')),
+            const SizedBox(height: Dims.spaceLg),
+            if (resume != null) ...[
+              Text('Pick up where you left off',
+                  style: _fraunces(c.ink, 22, FontWeight.w600)),
+              const SizedBox(height: Dims.spaceSm),
+              _ResumeCard(
+                c: c,
+                trip: resume,
+                onTap: () => context.push('/trip/${resume.tripId}'),
+              ),
+              const SizedBox(height: Dims.spaceMd),
+            ],
+            _PlanCard(c: c, onTap: () => context.push('/plan-trip/paris')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+TextStyle _fraunces(Color color, double size, FontWeight weight,
+        {FontStyle style = FontStyle.normal}) =>
+    TextStyle(
+        fontFamily: 'Fraunces',
+        color: color,
+        fontSize: size,
+        fontWeight: weight,
+        fontStyle: style,
+        height: 1.05);
+
+class _TopBar extends StatelessWidget {
+  final OndowayColors c;
+  final TextTheme text;
+  final String initial;
+  const _TopBar({required this.c, required this.text, required this.initial});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Icon(Icons.public, color: c.accent, size: 30),
+        CircleAvatar(
+          radius: 20,
+          backgroundColor: c.accent,
+          child: Text(initial,
+              style: text.labelLarge?.copyWith(
+                  color: c.onAccent, fontWeight: FontWeight.w700)),
+        ),
+      ],
+    );
+  }
+}
+
+class _Hero extends StatelessWidget {
+  final OndowayColors c;
+  final VoidCallback onTakeTour;
+  const _Hero({required this.c, required this.onTakeTour});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(28),
+      child: SizedBox(
+        height: 400,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/images/paris.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stack) =>
+                  ColoredBox(color: c.accentDeep),
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black54, Colors.black87],
+                  stops: [0.35, 0.75, 1.0],
+                ),
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Choose a city to begin your audio tour',
-              style: textTheme.bodyLarge?.copyWith(
-                color: colorScheme.onSurfaceVariant,
+            Padding(
+              padding: const EdgeInsets.all(Dims.spaceMd),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _LocationPill(c: c),
+                  const Spacer(),
+                  RichText(
+                    text: TextSpan(
+                      style: _fraunces(Colors.white, 36, FontWeight.w600),
+                      children: [
+                        const TextSpan(text: 'Start a walk,\n'),
+                        TextSpan(
+                          text: 'right here.',
+                          style: _fraunces(
+                              c.accentLight, 36, FontWeight.w500,
+                              style: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: Dims.spaceMd),
+                  FilledButton(
+                    onPressed: onTakeTour,
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Take a tour now'),
+                        SizedBox(width: Dims.spaceSm),
+                        Icon(Icons.arrow_forward, size: 20),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 32),
-            // Paris — active city card
-            _CityCard(
-              cityName: 'Paris',
-              subtitle: 'The city of light, scandal, and hidden stories',
-              country: 'France',
-              imagePath: 'assets/images/paris.jpg',
-              onTap: () => context.push('/plan-trip/paris'),
             ),
           ],
         ),
@@ -45,107 +159,142 @@ class ExplorePage extends StatelessWidget {
   }
 }
 
-class _CityCard extends StatelessWidget {
-  final String cityName;
-  final String subtitle;
-  final String country;
-  final String imagePath;
-  final VoidCallback? onTap;
-
-  const _CityCard({
-    required this.cityName,
-    required this.subtitle,
-    required this.country,
-    required this.imagePath,
-    this.onTap,
-  });
+class _LocationPill extends StatelessWidget {
+  final OndowayColors c;
+  const _LocationPill({required this.c});
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          horizontal: Dims.spaceMd, vertical: Dims.spaceSm),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(Dims.radiusPill),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: c.accentLight, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: Dims.spaceSm),
+          const Text('You are in Paris',
+              style: TextStyle(
+                  fontFamily: 'Space Grotesk',
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600)),
+        ],
+      ),
+    );
+  }
+}
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            SizedBox(
-              height: 240,
-              width: double.infinity,
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .surfaceContainerHighest,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported_outlined,
-                        size: 48,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurfaceVariant,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.7),
-                    ],
-                    stops: const [0.3, 1.0],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 24,
-              right: 24,
-              bottom: 24,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+class _ResumeCard extends StatelessWidget {
+  final OndowayColors c;
+  final GeneratedTrip trip;
+  final VoidCallback onTap;
+  const _ResumeCard({required this.c, required this.trip, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: c.card,
+      borderRadius: BorderRadius.circular(Dims.radiusCard),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Dims.radiusCard),
+        child: Padding(
+          padding: const EdgeInsets.all(Dims.spaceMd),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Text(
-                    country.toUpperCase(),
-                    style: textTheme.labelLarge?.copyWith(
-                      color: Colors.white70,
-                      letterSpacing: 2,
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: c.spark.withValues(alpha: 0.85),
+                      borderRadius: BorderRadius.circular(Dims.spaceMd),
+                    ),
+                    child: const Icon(Icons.route, color: Colors.white),
+                  ),
+                  const SizedBox(width: Dims.spaceMd),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(trip.tripName,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: _fraunces(c.ink, 17, FontWeight.w600)),
+                        const SizedBox(height: Dims.spaceXs),
+                        Text(
+                          '${trip.totalStops} stops · ${trip.totalDurationMin} min',
+                          style: const TextStyle(
+                              fontFamily: 'Space Grotesk', fontSize: 13),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    cityName,
-                    style: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    subtitle,
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.9),
-                    ),
-                  ),
+                  Icon(Icons.chevron_right, color: c.inkMute),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: Dims.spaceMd),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(Dims.radiusPill),
+                child: LinearProgressIndicator(
+                  value: 0.4,
+                  minHeight: 6,
+                  backgroundColor: c.line,
+                  valueColor: AlwaysStoppedAnimation<Color>(c.accent),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PlanCard extends StatelessWidget {
+  final OndowayColors c;
+  final VoidCallback onTap;
+  const _PlanCard({required this.c, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: c.panel,
+      borderRadius: BorderRadius.circular(Dims.radiusCard),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Dims.radiusCard),
+        child: Padding(
+          padding: const EdgeInsets.all(Dims.spaceMd),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: c.accent.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.add, color: c.accent),
+              ),
+              const SizedBox(width: Dims.spaceMd),
+              Expanded(
+                child: Text('Plan a tour for later',
+                    style: _fraunces(c.ink, 17, FontWeight.w600)),
+              ),
+              Icon(Icons.chevron_right, color: c.inkMute),
+            ],
+          ),
         ),
       ),
     );
