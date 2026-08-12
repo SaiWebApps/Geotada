@@ -75,17 +75,6 @@ class _TourWalkPageState extends State<TourWalkPage> {
                         children: [
                           if (stop != null)
                             Align(
-                              alignment: Alignment.topCenter,
-                              child: _DirectionBanner(
-                                c: c,
-                                headingStop: stop,
-                                nextStop: engine.nextStop,
-                                distanceMeters: engine.distanceToNext,
-                                noAudio: stop.audioUrl == null,
-                              ),
-                            ),
-                          if (stop != null)
-                            Align(
                               alignment: Alignment.bottomCenter,
                               child: audio.isPlaying
                                   ? _NowPlayingPlayer(
@@ -102,6 +91,7 @@ class _TourWalkPageState extends State<TourWalkPage> {
                                     )
                                   : _WalkingBar(
                                       c: c,
+                                      noAudio: stop.audioUrl == null,
                                       onSkip: () => engine.skipToStop(
                                           engine.currentStopIndex + 1),
                                     ),
@@ -170,70 +160,6 @@ class _MapBackdrop extends StatelessWidget {
             infoWindow: InfoWindow(title: s.poiName),
           ),
       },
-    );
-  }
-}
-
-class _DirectionBanner extends StatelessWidget {
-  final OndowayColors c;
-  final ItineraryStop headingStop;
-  final ItineraryStop? nextStop;
-  final double? distanceMeters;
-  final bool noAudio;
-  const _DirectionBanner({
-    required this.c,
-    required this.headingStop,
-    required this.nextStop,
-    required this.distanceMeters,
-    required this.noAudio,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final dist = distanceMeters == null
-        ? 'Finding your location…'
-        : distanceMeters! < 1000
-            ? '${distanceMeters!.round()} m to ${headingStop.poiName}'
-            : '${(distanceMeters! / 1000).toStringAsFixed(1)} km to ${headingStop.poiName}';
-    return Container(
-      margin: const EdgeInsets.all(Dims.spaceMd),
-      padding: const EdgeInsets.all(Dims.spaceMd),
-      decoration: BoxDecoration(
-        color: c.card.withValues(alpha: 0.92),
-        borderRadius: BorderRadius.circular(Dims.radiusCard),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: _cobalt,
-              borderRadius: BorderRadius.circular(Dims.spaceSm + Dims.spaceXs),
-            ),
-            child: const Icon(Icons.navigation_rounded,
-                color: Colors.white, size: 22),
-          ),
-          const SizedBox(width: Dims.spaceMd),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  noAudio ? 'No audio here — keep walking' : 'Head to your stop',
-                  style: TextStyle(
-                      color: c.ink,
-                      fontFamily: 'Space Grotesk',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15),
-                ),
-                const SizedBox(height: 2),
-                Text(dist, style: TextStyle(color: c.inkMute, fontSize: 13)),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -396,8 +322,10 @@ class _NowPlayingPlayer extends StatelessWidget {
 
 class _WalkingBar extends StatelessWidget {
   final OndowayColors c;
+  final bool noAudio;
   final VoidCallback onSkip;
-  const _WalkingBar({required this.c, required this.onSkip});
+  const _WalkingBar(
+      {required this.c, required this.onSkip, this.noAudio = false});
 
   @override
   Widget build(BuildContext context) {
@@ -415,7 +343,10 @@ class _WalkingBar extends StatelessWidget {
           Icon(Icons.directions_walk_rounded, color: c.inkSoft),
           const SizedBox(width: Dims.spaceSm),
           Expanded(
-            child: Text('Walk to the next stop — audio starts on arrival',
+            child: Text(
+                noAudio
+                    ? 'No audio here — walk to the next stop'
+                    : 'Walk to the next stop — audio starts on arrival',
                 style: TextStyle(color: c.inkSoft, fontSize: 13)),
           ),
           TextButton(
