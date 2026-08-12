@@ -9,6 +9,7 @@ import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
+import 'package:ondoway/theme/theme.dart';
 import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/trip_service.dart';
@@ -155,11 +156,7 @@ Widget _buildTestWidget({
     ],
     child: MaterialApp.router(
       routerConfig: router,
-      theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF3D5AFE),
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
+      theme: buildOndowayTheme(Brightness.light),
     ),
   );
 }
@@ -363,11 +360,7 @@ void main() {
                 ),
               ],
             ),
-            theme: ThemeData(
-              colorSchemeSeed: const Color(0xFF3D5AFE),
-              useMaterial3: true,
-              brightness: Brightness.dark,
-            ),
+            theme: buildOndowayTheme(Brightness.light),
           ),
         ),
       );
@@ -560,11 +553,7 @@ void main() {
                   ),
                 ],
               ),
-              theme: ThemeData(
-                colorSchemeSeed: const Color(0xFF3D5AFE),
-                useMaterial3: true,
-                brightness: Brightness.dark,
-              ),
+              theme: buildOndowayTheme(Brightness.light),
             ),
           ),
         );
@@ -1057,11 +1046,7 @@ void main() {
                 ),
               ],
             ),
-            theme: ThemeData(
-              colorSchemeSeed: const Color(0xFF3D5AFE),
-              useMaterial3: true,
-              brightness: Brightness.dark,
-            ),
+            theme: buildOndowayTheme(Brightness.light),
           ),
         ),
       );
