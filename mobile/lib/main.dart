@@ -32,10 +32,7 @@ void main() async {
     try {
       await Future.wait([
         lensService.fetchLenses(),
-        profileService.fetchProfile(
-          authService.userId!,
-          authService.accessToken!,
-        ),
+        profileService.fetchProfile(authService.accessToken!),
       ]);
     } catch (_) {
       // Non-fatal: app still works, onboarding detection may default to first-time
@@ -68,7 +65,7 @@ void main() async {
         ChangeNotifierProvider.value(value: tripService),
         ChangeNotifierProvider.value(value: feedbackService),
         ChangeNotifierProvider.value(value: locationService),
-        ChangeNotifierProvider.value(value: audioService),
+        ChangeNotifierProvider<AudioProvider>.value(value: audioService),
         ChangeNotifierProvider.value(value: tourPlaybackService),
       ],
       child: OndowayApp(router: router),

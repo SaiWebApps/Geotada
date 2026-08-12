@@ -9,6 +9,11 @@ import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/trip_service.dart';
+import 'package:ondoway/theme/dims.dart';
+import 'package:ondoway/theme/tokens.dart';
+
+TextStyle _fraunces(Color color, double size, FontWeight weight) => TextStyle(
+    fontFamily: 'Fraunces', color: color, fontSize: size, fontWeight: weight, height: 1.1);
 
 /// Builds a single itinerary stop card in isolation — the exact `_StopCard`
 /// the itinerary list renders. Exposed only so golden/screenshot tests can
@@ -70,6 +75,23 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
 
   /// Tracks which stops have had their audio URL resolved.
   late List<ItineraryStop> _stops;
+
+  /// The trip to hand to [TourWalkPage]: same trip, but with [_stops] — which
+  /// carry the `audioUrl`s the prepare/poll flow just resolved — instead of
+  /// [widget.trip]'s original stops (still null for a freshly generated trip).
+  /// [TourPlaybackService] plays directly off `stop.audioUrl`, so passing the
+  /// unresolved list would start a walk with no audio.
+  GeneratedTrip get _tripForWalk => GeneratedTrip(
+        tripId: widget.trip.tripId,
+        tripName: widget.trip.tripName,
+        profileId: widget.trip.profileId,
+        totalStops: widget.trip.totalStops,
+        totalDurationMin: widget.trip.totalDurationMin,
+        anchorCount: widget.trip.anchorCount,
+        flavourCount: widget.trip.flavourCount,
+        stops: _stops,
+        options: widget.trip.options,
+      );
 
   @override
   void initState() {
@@ -362,14 +384,37 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final c = Theme.of(context).extension<OndowayColors>()!;
 
     return Scaffold(
+      backgroundColor: c.bg,
       appBar: AppBar(
-        title: Text(widget.trip.tripName),
-        backgroundColor: colorScheme.surface,
+        backgroundColor: c.bg,
+        surfaceTintColor: c.bg,
+        elevation: 0,
+        centerTitle: false,
+        iconTheme: IconThemeData(color: c.ink),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('YOUR TOUR',
+                style: TextStyle(
+                    fontFamily: 'Space Mono',
+                    color: c.accent,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 2.0)),
+            const SizedBox(height: 2),
+            Text(widget.trip.tripName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: _fraunces(c.ink, 22, FontWeight.w600)),
+          ],
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: Icon(Icons.refresh, color: c.inkMute),
             tooltip: 'Regenerate',
             onPressed: () {
               context.pop();
@@ -508,12 +553,12 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
   Widget _buildFab(ColorScheme colorScheme) {
     if (_preparationDone) {
       return FloatingActionButton.extended(
-        onPressed: () {
-          // Navigate to tour playback (for now, go to saved-trips)
-          context.go('/saved-trips');
-        },
-        icon: const Icon(Icons.play_arrow),
-        label: const Text('Start Tour'),
+        onPressed: () => context.push(
+          '/trip/${widget.trip.tripId}/walk',
+          extra: _tripForWalk,
+        ),
+        icon: const Icon(Icons.directions_walk),
+        label: const Text('Start walking'),
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
       );
@@ -593,41 +638,44 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final c = Theme.of(context).extension<OndowayColors>()!;
 
-    return Card(
-      margin: const EdgeInsets.all(16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _SummaryItem(
-              icon: Icons.pin_drop,
-              label: 'Stops',
-              value: '${trip.totalStops}',
-              color: colorScheme.primary,
-            ),
-            _SummaryItem(
-              icon: Icons.timer,
-              label: 'Duration',
-              value: _formatDuration(trip.totalDurationMin),
-              color: colorScheme.secondary,
-            ),
-            _SummaryItem(
-              icon: Icons.star,
-              label: 'Anchors',
-              value: '${trip.anchorCount}',
-              color: colorScheme.tertiary,
-            ),
-            _SummaryItem(
-              icon: Icons.auto_awesome,
-              label: 'Flavour',
-              value: '${trip.flavourCount}',
-              color: colorScheme.primary,
-            ),
-          ],
-        ),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+      decoration: BoxDecoration(
+        color: c.card,
+        borderRadius: BorderRadius.circular(Dims.radiusCard),
+        border: Border.all(color: c.line),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _SummaryItem(
+            icon: Icons.pin_drop,
+            label: 'Stops',
+            value: '${trip.totalStops}',
+            color: c.accent,
+          ),
+          _SummaryItem(
+            icon: Icons.timer,
+            label: 'Duration',
+            value: _formatDuration(trip.totalDurationMin),
+            color: c.accent,
+          ),
+          _SummaryItem(
+            icon: Icons.star,
+            label: 'Anchors',
+            value: '${trip.anchorCount}',
+            color: c.spark,
+          ),
+          _SummaryItem(
+            icon: Icons.auto_awesome,
+            label: 'Flavour',
+            value: '${trip.flavourCount}',
+            color: c.accent,
+          ),
+        ],
       ),
     );
   }
@@ -656,25 +704,21 @@ class _SummaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
+    final c = Theme.of(context).extension<OndowayColors>()!;
 
     return Column(
       children: [
         Icon(icon, color: color, size: 20),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
-          ),
-        ),
+        const SizedBox(height: 6),
+        Text(value, style: _fraunces(c.ink, 20, FontWeight.w600)),
+        const SizedBox(height: 2),
         Text(
           label,
-          style: textTheme.bodySmall?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-          ),
+          style: TextStyle(
+              fontFamily: 'Space Mono',
+              color: c.inkMute,
+              fontSize: 11,
+              letterSpacing: 0.5),
         ),
       ],
     );
@@ -739,26 +783,37 @@ class _StopCardState extends State<_StopCard> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final c = Theme.of(context).extension<OndowayColors>()!;
     final isAnchor = stop.importanceTier == 5;
     final hasExtras = stop.extraBeatIds.isNotEmpty;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        color: c.card,
+        borderRadius: BorderRadius.circular(Dims.radiusCard),
+        border: Border.all(color: isAnchor ? c.accent.withValues(alpha: 0.5) : c.line),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: CircleAvatar(
-              backgroundColor: isAnchor
-                  ? colorScheme.primaryContainer
-                  : colorScheme.surfaceContainerHighest,
+            contentPadding: const EdgeInsets.fromLTRB(12, 6, 16, 6),
+            leading: Container(
+              width: 40,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: isAnchor ? c.accent : c.panel,
+                shape: BoxShape.circle,
+                border: isAnchor ? null : Border.all(color: c.line),
+              ),
               child: Text(
                 '${stop.sortOrder}',
                 style: TextStyle(
-                  color: isAnchor
-                      ? colorScheme.onPrimaryContainer
-                      : colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Space Grotesk',
+                  color: isAnchor ? c.onAccent : c.inkMute,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -767,49 +822,55 @@ class _StopCardState extends State<_StopCard> {
                 Expanded(
                   child: Text(
                     stop.poiName,
-                    style: textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: colorScheme.onSurface,
-                    ),
+                    style: _fraunces(c.ink, 16, FontWeight.w600),
                   ),
                 ),
                 if (stop.audioUrl != null)
-                  Icon(Icons.volume_up, size: 16, color: colorScheme.primary),
-                if (isAnchor)
-                  Icon(Icons.star, size: 16, color: colorScheme.tertiary),
+                  Icon(Icons.volume_up, size: 16, color: c.accent),
+                if (isAnchor) ...[
+                  const SizedBox(width: 4),
+                  Icon(Icons.star, size: 16, color: c.spark),
+                ],
               ],
             ),
-            subtitle: Row(
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: colorScheme.secondaryContainer,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    stop.lensDisplay,
-                    style: textTheme.labelSmall?.copyWith(
-                      color: colorScheme.onSecondaryContainer,
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Row(
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: c.accent.withValues(alpha: 0.10),
+                      borderRadius: BorderRadius.circular(Dims.radiusPill),
+                    ),
+                    child: Text(
+                      stop.lensDisplay,
+                      style: TextStyle(
+                        fontFamily: 'Space Grotesk',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: c.accentDeep,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '${stop.durationMin} min',
-                  style: textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                  const SizedBox(width: 8),
+                  Text(
+                    '${stop.durationMin} min',
+                    style: TextStyle(
+                        fontFamily: 'Space Grotesk',
+                        fontSize: 13,
+                        color: c.inkMute),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             trailing: Text(
               stop.startTime,
-              style: textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.primary,
-              ),
+              style: const TextStyle(
+                fontFamily: 'Space Mono',
+                fontWeight: FontWeight.w700,
+              ).copyWith(color: c.ink),
             ),
           ),
           // KE7: only stops with un-voiced extras offer a deeper dive.

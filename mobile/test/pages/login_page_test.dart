@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/theme/theme.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import '../services/auth_service_test.dart';
@@ -16,6 +17,7 @@ Widget _wrapWithProviders(Widget child, {AuthService? authService}) {
       );
 
   return MaterialApp(
+    theme: buildOndowayTheme(Brightness.light),
     home: ChangeNotifierProvider<AuthService>.value(
       value: service,
       child: child,
@@ -29,14 +31,14 @@ void main() {
       await tester.pumpWidget(_wrapWithProviders(const LoginPage()));
 
       expect(find.text('Email address'), findsOneWidget);
-      expect(find.text('Send Magic Link'), findsOneWidget);
-      expect(find.text('Sign in with Google'), findsOneWidget);
+      expect(find.text('Send magic link'), findsOneWidget);
+      expect(find.text('Continue with Google'), findsOneWidget);
     });
 
     testWidgets('shows validation error on empty email submit', (tester) async {
       await tester.pumpWidget(_wrapWithProviders(const LoginPage()));
 
-      await tester.tap(find.text('Send Magic Link'));
+      await tester.tap(find.text('Send magic link'));
       await tester.pumpAndSettle();
 
       expect(find.text('Please enter your email'), findsOneWidget);
@@ -46,7 +48,7 @@ void main() {
       await tester.pumpWidget(_wrapWithProviders(const LoginPage()));
 
       await tester.enterText(find.byType(TextFormField), 'not-an-email');
-      await tester.tap(find.text('Send Magic Link'));
+      await tester.tap(find.text('Send magic link'));
       await tester.pumpAndSettle();
 
       expect(find.text('Please enter a valid email'), findsOneWidget);
@@ -65,7 +67,7 @@ void main() {
       await tester.pumpWidget(_wrapWithProviders(const LoginPage(), authService: authService));
 
       await tester.enterText(find.byType(TextFormField), 'test@ondoway.app');
-      await tester.tap(find.text('Send Magic Link'));
+      await tester.tap(find.text('Send magic link'));
       await tester.pumpAndSettle();
 
       expect(find.text('Check your email'), findsOneWidget);
@@ -75,8 +77,8 @@ void main() {
     testWidgets('shows Ondoway branding', (tester) async {
       await tester.pumpWidget(_wrapWithProviders(const LoginPage()));
 
-      expect(find.text('Ondoway'), findsOneWidget);
-      expect(find.text('Your city, your story'), findsOneWidget);
+      expect(find.text('ondoway'), findsOneWidget);
+      expect(find.text('WELCOME'), findsOneWidget);
     });
 
     testWidgets('shows Apple Sign-In button on iOS', (tester) async {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:ondoway/pages/explore_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
@@ -36,22 +35,6 @@ Widget _wrapProfilePage({
 }
 
 void main() {
-  group('ExplorePage', () {
-    testWidgets('shows Paris city card', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: const ExplorePage(),
-          theme: ThemeData(
-            colorSchemeSeed: const Color(0xFF3D5AFE),
-            useMaterial3: true,
-            brightness: Brightness.dark,
-          ),
-        ),
-      );
-      expect(find.text('Paris'), findsOneWidget);
-    });
-  });
-
   group('ProfilePage', () {
     testWidgets('shows email when authenticated', (tester) async {
       final mockClient = MockClient((request) async {
@@ -98,6 +81,12 @@ void main() {
         _wrapProfilePage(authService: authService),
       );
 
+      // Logout sits at the bottom of the scrolling profile list; scroll to it.
+      await tester.scrollUntilVisible(
+        find.byIcon(Icons.logout),
+        300,
+        scrollable: find.byType(Scrollable),
+      );
       expect(find.byIcon(Icons.logout), findsOneWidget);
     });
 
@@ -179,31 +168,24 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/nodes/Lens')) {
+        if (request.url.path.endsWith('/lenses')) {
           return http.Response(
-            jsonEncode({
-              'items': [
-                {
-                  'id': 'lens1',
-                  'labels': ['Lens'],
-                  'properties': {
+            jsonEncode([
+              {
+                'id': 'parent1',
+                'name': 'history',
+                'display_label': 'History',
+                'is_parent': true,
+                'children': [
+                  {
                     'id': 'lens1',
                     'name': 'dark_history',
                     'display_label': 'Dark History',
                     'is_parent': false,
                   },
-                },
-              ],
-              'total': 1,
-              'skip': 0,
-              'limit': 200,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/edges/IS_PARENT_OF')) {
-          return http.Response(
-            jsonEncode({'items': [], 'total': 0, 'skip': 0, 'limit': 200}),
+                ],
+              },
+            ]),
             200,
           );
         }
@@ -268,34 +250,13 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+        if (request.url.path.endsWith('/profile')) {
           return http.Response(
             jsonEncode({
-              'items': [
-                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 10,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/nodes/Profile/')) {
-          return http.Response(
-            jsonEncode({
-              'id': 'profile-1',
-              'labels': ['Profile'],
-              'properties': {'display_name': 'Demo', 'theme_preference': 'dark'},
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/edges/PREFERS_LENS')) {
-          return http.Response(
-            jsonEncode({
-              'items': [
-                {'id': 'e-l1', 'type': 'PREFERS_LENS', 'source_id': 'profile-1', 'target_id': 'lens-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 200,
+              'profile_id': 'profile-1',
+              'display_name': 'Demo',
+              'selected_lens_ids': ['lens-1'],
+              'theme_preference': 'dark',
             }),
             200,
           );
@@ -310,7 +271,7 @@ void main() {
       await authService.verifyMagicLink('tok');
 
       final profileService = ProfileService(httpClient: mockClient);
-      await profileService.fetchProfile('user-1', 'tok');
+      await profileService.fetchProfile('tok');
 
       await tester.pumpWidget(
         _wrapProfilePage(
@@ -345,23 +306,13 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+        if (request.url.path.endsWith('/profile')) {
           return http.Response(
             jsonEncode({
-              'items': [
-                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 10,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/nodes/Profile/') && request.method == 'GET') {
-          return http.Response(
-            jsonEncode({
-              'id': 'profile-1',
-              'labels': ['Profile'],
-              'properties': {'display_name': 'Demo', 'theme_preference': 'system'},
+              'profile_id': 'profile-1',
+              'display_name': 'Demo',
+              'selected_lens_ids': ['lens-1'],
+              'theme_preference': 'system',
             }),
             200,
           );
@@ -377,17 +328,6 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/PREFERS_LENS')) {
-          return http.Response(
-            jsonEncode({
-              'items': [
-                {'id': 'e-l1', 'type': 'PREFERS_LENS', 'source_id': 'profile-1', 'target_id': 'lens-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 200,
-            }),
-            200,
-          );
-        }
         return http.Response('', 404);
       });
 
@@ -398,7 +338,7 @@ void main() {
       await authService.verifyMagicLink('tok');
 
       final profileService = ProfileService(httpClient: mockClient);
-      await profileService.fetchProfile('user-1', 'tok');
+      await profileService.fetchProfile('tok');
 
       await tester.pumpWidget(
         _wrapProfilePage(
@@ -495,23 +435,13 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+        if (request.url.path.endsWith('/profile')) {
           return http.Response(
             jsonEncode({
-              'items': [
-                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 10,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/nodes/Profile/') && request.method == 'GET') {
-          return http.Response(
-            jsonEncode({
-              'id': 'profile-1',
-              'labels': ['Profile'],
-              'properties': {'display_name': 'Demo User', 'theme_preference': 'system'},
+              'profile_id': 'profile-1',
+              'display_name': 'Demo User',
+              'selected_lens_ids': <String>[],
+              'theme_preference': 'system',
             }),
             200,
           );
@@ -527,15 +457,6 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/PREFERS_LENS')) {
-          return http.Response(
-            jsonEncode({
-              'items': [],
-              'total': 0, 'skip': 0, 'limit': 200,
-            }),
-            200,
-          );
-        }
         return http.Response('', 404);
       });
 
@@ -546,7 +467,7 @@ void main() {
       await authService.verifyMagicLink('tok');
 
       final profileService = ProfileService(httpClient: mockClient);
-      await profileService.fetchProfile('user-1', 'tok');
+      await profileService.fetchProfile('tok');
 
       await tester.pumpWidget(
         _wrapProfilePage(

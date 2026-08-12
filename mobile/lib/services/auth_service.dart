@@ -53,6 +53,13 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Public reactive refresh: exchange the stored refresh token for a fresh
+  /// access token. Returns true on success (a new access token is now in
+  /// [accessToken] and storage), false if there is no refresh token or the
+  /// exchange fails. Callers use this to recover from a mid-session 401 on an
+  /// ordinary authenticated request, then retry that request once.
+  Future<bool> refreshSession() => _tryRefresh();
+
   Future<bool> _tryRefresh() async {
     final refreshToken = await _storage.read(key: _refreshTokenKey);
     if (refreshToken == null) return false;

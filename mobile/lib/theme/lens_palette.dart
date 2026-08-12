@@ -33,3 +33,30 @@ const Map<String, Color> kLensCategoryColors = <String, Color>{
   'historic_markets': Color(0xFFAA653F),
   'science_tech': Color(0xFF3D6EA6),
 };
+
+/// A glyph per lens category, keyed by lens `name` — the icon each interest
+/// chip paints so a category reads at a glance. Kept beside the color map so
+/// the two stay in sync.
+const Map<String, IconData> kLensCategoryIcons = <String, IconData>{
+  'hidden_history': Icons.history_edu,
+  'war_conflict': Icons.shield_outlined,
+  'dark_history': Icons.nightlight_round,
+  'social_change': Icons.campaign_outlined,
+  'historic_arch': Icons.account_balance,
+  'modern_design': Icons.architecture,
+  'music_heritage': Icons.music_note,
+  'visual_art': Icons.palette_outlined,
+  'street_art': Icons.brush_outlined,
+  'film_tv': Icons.movie_outlined,
+  'historic_cuisine': Icons.restaurant,
+  'markets_street_food': Icons.storefront_outlined,
+  'local_legends': Icons.auto_stories_outlined,
+  'literary_heritage': Icons.menu_book_outlined,
+  'famous_residents': Icons.person_pin_circle_outlined,
+  'historic_worship': Icons.church_outlined,
+  'sacred_traditions': Icons.self_improvement,
+  'parks_gardens': Icons.park_outlined,
+  'waterways_views': Icons.sailing_outlined,
+  'historic_markets': Icons.storefront,
+  'science_tech': Icons.science_outlined,
+};

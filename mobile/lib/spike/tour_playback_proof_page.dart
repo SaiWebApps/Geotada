@@ -171,6 +171,54 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
         : 'startTour failed.');
   }
 
+  /// Same drop-around-me prep as [_startProof] (GPS fix + local audio cache +
+  /// widened radius + two stops along [_selectedDir]), but hands the trip to the
+  /// PRODUCTION `TourWalkPage` instead of this log UI — so a Katy tester can walk
+  /// the real screen. TourWalkPage calls startTour() itself, so we don't here.
+  Future<void> _startOnRealScreen() async {
+    final location = context.read<LocationService>();
+    final tour = context.read<TourPlaybackService>();
+
+    final started = await location.startTracking(background: true);
+    if (!started) {
+      _add('Could not get location permission/tracking.');
+      return;
+    }
+    await Future<void>.delayed(const Duration(seconds: 2));
+    final pos = location.lastPosition;
+    if (pos == null) {
+      _add('No position yet — try again.');
+      return;
+    }
+    location.stopTracking(); // TourWalkPage's startTour restarts it in background.
+
+    await _cacheClip('katy-1');
+    await _cacheClip('katy-2');
+    tour.triggerRadiusMeters = 20.0;
+
+    final bearing = _directions[_selectedDir]!;
+    final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 30.0, bearing);
+    final s2 = _offsetAlongBearing(pos.latitude, pos.longitude, 55.0, bearing);
+    final trip = GeneratedTrip(
+      tripId: 'katy-walk-test',
+      tripName: 'Katy walk test',
+      profileId: 'debug',
+      totalStops: 2,
+      totalDurationMin: 2,
+      anchorCount: 2,
+      flavourCount: 0,
+      stops: [
+        _proofStop(1, 'katy-1', s1.$1, s1.$2),
+        _proofStop(2, 'katy-2', s2.$1, s2.$2),
+      ],
+    );
+
+    if (!mounted) return;
+    _add('Launching real walk screen. Lock, pocket, walk $_selectedDir '
+        '~30m then ~55m.');
+    context.push('/trip/${trip.tripId}/walk', extra: trip);
+  }
+
   ItineraryStop _proofStop(int order, String beatId, double lat, double lng) =>
       ItineraryStop(
         sortOrder: order,
@@ -220,6 +268,11 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
             FilledButton(
               onPressed: _startProof,
               child: Text('Prepare & start proof tour ($_selectedDir)'),
+            ),
+            const SizedBox(height: 8),
+            FilledButton.tonal(
+              onPressed: _startOnRealScreen,
+              child: Text('Prepare & open REAL walk screen ($_selectedDir) →'),
             ),
             const SizedBox(height: 8),
             OutlinedButton(
