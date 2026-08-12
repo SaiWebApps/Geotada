@@ -16,6 +16,11 @@ Widget _wrap() {
     routes: [
       GoRoute(path: '/explore', builder: (c, s) => const ExplorePage()),
       GoRoute(
+        path: '/tour-now/:citySlug',
+        builder: (c, s) =>
+            Scaffold(body: Text('Tour now: ${s.pathParameters['citySlug']}')),
+      ),
+      GoRoute(
         path: '/plan-trip/:citySlug',
         builder: (c, s) =>
             Scaffold(body: Text('Plan trip: ${s.pathParameters['citySlug']}')),
@@ -48,14 +53,15 @@ void main() {
       expect(find.text('Plan a tour for later'), findsOneWidget);
     });
 
-    testWidgets('tapping "Take a tour now" navigates to plan-trip', (tester) async {
+    testWidgets('tapping "Take a tour now" navigates to the immediate tour-now flow',
+        (tester) async {
       await tester.pumpWidget(_wrap());
       await tester.pump();
 
       await tester.tap(find.text('Take a tour now'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Plan trip: paris'), findsOneWidget);
+      expect(find.text('Tour now: paris'), findsOneWidget);
     });
 
     testWidgets('resume card is hidden when there are no saved trips',

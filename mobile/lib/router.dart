@@ -9,6 +9,7 @@ import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/pages/saved_trips_page.dart';
 import 'package:ondoway/pages/style_gallery_page.dart';
+import 'package:ondoway/pages/tour_now_page.dart';
 import 'package:ondoway/pages/tour_walk_page.dart';
 import 'package:ondoway/pages/trip_duration_page.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
@@ -177,6 +178,13 @@ GoRouter createRouter(
         },
       ),
       // Full-screen trip planning routes (outside tab shell)
+      // Immediate: "Take a tour now" — one question (how long), builds from GPS.
+      GoRoute(
+        path: '/tour-now/:citySlug',
+        builder: (context, state) =>
+            TourNowPage(citySlug: state.pathParameters['citySlug'] ?? 'paris'),
+      ),
+      // Plan for later: dates, start-point picker, multi-day.
       GoRoute(
         path: '/plan-trip/:citySlug',
         builder: (context, state) {

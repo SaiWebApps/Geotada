@@ -31,7 +31,7 @@ class ExplorePage extends StatelessWidget {
           children: [
             _TopBar(c: c, text: text, initial: initial),
             const SizedBox(height: Dims.spaceMd),
-            _Hero(c: c, onTakeTour: () => context.push('/plan-trip/paris')),
+            _Hero(c: c, onTakeTour: () => context.push('/tour-now/paris')),
             const SizedBox(height: Dims.spaceLg),
             if (resume != null) ...[
               Text('Pick up where you left off',
