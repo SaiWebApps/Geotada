@@ -125,74 +125,11 @@ class ItineraryStop {
   }
 }
 
-/// One ordered stop inside a [RouteOption] flavour — the subset of the
-/// backend §2.8 RouteOptionStop shape the flavour picker needs.
-class RouteOptionStop {
-  final String name;
-  // Spotlight output band: "dwell" (full stop) or "vignette" (walk-past).
-  // Backend default is "dwell" (contract.py), mirrored here.
-  final String band;
-  final int minutes;
-  final double spotlight;
-
-  const RouteOptionStop({
-    required this.name,
-    this.band = 'dwell',
-    this.minutes = 0,
-    this.spotlight = 0.0,
-  });
-
-  factory RouteOptionStop.fromJson(Map<String, dynamic> json) {
-    return RouteOptionStop(
-      name: json['name'] as String,
-      band: (json['band'] as String?) ?? 'dwell',
-      minutes: (json['minutes'] as num?)?.toInt() ?? 0,
-      spotlight: (json['spotlight'] as num?)?.toDouble() ?? 0.0,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'band': band,
-        'minutes': minutes,
-        'spotlight': spotlight,
-      };
-}
-
-/// One tour flavour from POST /trips/generate `options` (§2.8) — the subset
-/// the flavour picker needs. options[0] is the backend-persisted default.
-class RouteOption {
-  final String routeId;
-  final List<RouteOptionStop> stops;
-  final int etaSeconds;
-  final String? lensCoverageNote;
-
-  const RouteOption({
-    required this.routeId,
-    required this.stops,
-    required this.etaSeconds,
-    this.lensCoverageNote,
-  });
-
-  factory RouteOption.fromJson(Map<String, dynamic> json) {
-    return RouteOption(
-      routeId: json['route_id'] as String,
-      stops: ((json['stops'] as List<dynamic>?) ?? const [])
-          .map((s) => RouteOptionStop.fromJson(s as Map<String, dynamic>))
-          .toList(),
-      etaSeconds: json['eta_seconds'] as int,
-      lensCoverageNote: json['lens_coverage_note'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'route_id': routeId,
-        'stops': stops.map((s) => s.toJson()).toList(),
-        'eta_seconds': etaSeconds,
-        'lens_coverage_note': lensCoverageNote,
-      };
-}
-
+// Phase 4 (design §8.1): POST /trips/generate still carries `options` on the
+// wire (a list of exactly one; the field stays a list because stored
+// pre-Phase-4 trips carry multi-option lists), but the phone neither parses
+// nor shows it. The one day's route id is always `{trip_id}-opt1`, so there
+// is nothing to choose and nothing to read — fromJson simply ignores the key.
 class GeneratedTrip {
   final String tripId;
   final String tripName;
@@ -202,10 +139,6 @@ class GeneratedTrip {
   final int anchorCount;
   final int flavourCount;
   final List<ItineraryStop> stops;
-  // k-flavour RouteOptions from POST /trips/generate. GET /trips never
-  // returns them, so absent parses to [] (back-compat) — the flavour picker
-  // only shows for a just-generated trip.
-  final List<RouteOption> options;
   // Everything that quietly went worse while this tour was built — most often
   // that the walking times between stops were estimated rather than measured.
   // Each entry is the plain-English sentence the backend wrote for a human to
@@ -223,7 +156,6 @@ class GeneratedTrip {
     required this.anchorCount,
     required this.flavourCount,
     required this.stops,
-    this.options = const [],
     this.degradationNotices = const [],
   });
 
@@ -240,9 +172,6 @@ class GeneratedTrip {
       anchorCount: json['anchor_count'] as int,
       flavourCount: json['flavour_count'] as int,
       stops: stopsList,
-      options: ((json['options'] as List<dynamic>?) ?? const [])
-          .map((o) => RouteOption.fromJson(o as Map<String, dynamic>))
-          .toList(),
       // Defensive by design: a missing key, a JSON null, a non-list value, a
       // non-map row, a row with no `human`, and a blank `human` all yield no
       // entry and none of them throws. An older server that sends no
@@ -265,7 +194,6 @@ class GeneratedTrip {
         'anchor_count': anchorCount,
         'flavour_count': flavourCount,
         'stops': stops.map((s) => s.toJson()).toList(),
-        'options': options.map((o) => o.toJson()).toList(),
         'degradations': [
           for (final notice in degradationNotices) {'human': notice},
         ],

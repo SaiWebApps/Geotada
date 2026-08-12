@@ -239,7 +239,8 @@ void main() {
       // (generate-trip-stops + stop-status), not the per-beat ones.
       var perStopTriggered = false;
       var perStopStatusPolled = false;
-      // Mock the backend: generate-trip for setup, then per-stop audio endpoints
+      // Mock the backend: generate-trip for setup, compose (the confirm tap
+      // writes the one day first — design §8.1), then per-stop audio.
       final mockClient = MockClient((request) async {
         if (request.url.path.contains('/trips/generate')) {
           return http.Response(
@@ -269,6 +270,33 @@ void main() {
               ],
             }),
             201,
+          );
+        }
+        if (request.url.path.contains('/trips/trip-gen/compose')) {
+          return http.Response(
+            jsonEncode({
+              'trip_id': 'trip-gen',
+              'route_id': 'trip-gen-opt1',
+              'attempts': 1,
+              'stops': [
+                {
+                  'sort_order': 1,
+                  'stop_id': 'stop-b1',
+                  'poi_id': 'poi-1',
+                  'poi_name': 'Test POI',
+                  'lat': 48.85,
+                  'lng': 2.34,
+                  'beat_id': 'b1',
+                  'lens_name': 'a',
+                  'lens_display': 'A',
+                  'duration_min': 5,
+                  'importance_tier': 3,
+                  'start_time': '09:00',
+                  'audio_url': null,
+                },
+              ],
+            }),
+            200,
           );
         }
         if (request.url.path.contains('/audio/generate-trip-stops/')) {
@@ -378,7 +406,8 @@ void main() {
       // Tap the "Confirm & Prepare" FAB
       expect(find.text('Confirm & Prepare'), findsOneWidget);
       await tester.tap(find.text('Confirm & Prepare'));
-      await tester.pump();
+      await tester.pump(); // compose request/response (design §8.1)
+      await tester.pump(); // post-compose setState + prepare flow start
 
       // saveTrip should have been called
       expect(service.savedTrips.length, 1);
@@ -499,10 +528,13 @@ void main() {
       expect(find.byIcon(Icons.info_outline), findsNothing);
     });
 
-    group('flavour picker (Phase 4 Step 4.10)', () {
-      // Generate response carrying 2 RouteOptions; options[0] is the
-      // backend-persisted default. Stops carry the ORIGINAL stop_id.
-      Map<String, dynamic> generateResponseWithOptions() => {
+    group('one-day confirm (Phase 4, design §8.1)', () {
+      // Generate response as the post-Phase-4 wire sends it: `options` is a
+      // list of EXACTLY ONE (the field stays a list because stored
+      // pre-Phase-4 trips carry multi-option lists). The phone ignores it —
+      // the one day's route id is always {trip_id}-opt1. Stops carry the
+      // ORIGINAL stop_id.
+      Map<String, dynamic> generateResponse() => {
             'trip_id': 'trip-gen',
             'trip_name': 'Generated',
             'profile_id': 'p1',
@@ -535,15 +567,6 @@ void main() {
                 ],
                 'eta_seconds': 3600,
               },
-              {
-                'route_id': 'trip-gen-opt2',
-                'stops': [
-                  {'name': 'B1', 'band': 'dwell', 'minutes': 10},
-                  {'name': 'B2', 'band': 'dwell', 'minutes': 5},
-                ],
-                'eta_seconds': 5400,
-                'lens_coverage_note': 'Dark History runs thin',
-              },
             ],
           };
 
@@ -551,7 +574,7 @@ void main() {
       // audio nulled (voiced afterwards by the per-stop flow).
       Map<String, dynamic> composeResponse() => {
             'trip_id': 'trip-gen',
-            'route_id': 'trip-gen-opt2',
+            'route_id': 'trip-gen-opt1',
             'attempts': 1,
             'stops': [
               {
@@ -643,70 +666,9 @@ void main() {
       }
 
       testWidgets(
-          'sheet renders k options with dwell counts BEFORE the prepare flow',
+          'confirm composes {tripId}-opt1 directly — no sheet, no pick — '
+          'rebuilds stops, audio flow hits the NEW stop ids (design §8.1)',
           (tester) async {
-        var perStopTriggered = false;
-        final mockClient = MockClient((request) async {
-          if (request.url.path.contains('/trips/generate')) {
-            return http.Response(
-                jsonEncode(generateResponseWithOptions()), 201);
-          }
-          if (request.url.path.contains('/audio/generate-trip-stops/')) {
-            perStopTriggered = true;
-            return http.Response(
-              jsonEncode({
-                'trip_id': 'trip-gen',
-                'generated': 1,
-                'skipped': 0,
-                'failed': 0,
-                'results': [],
-              }),
-              200,
-            );
-          }
-          return http.Response('', 200);
-        });
-
-        final service = TripService(httpClient: mockClient);
-        final audio = AudioService(httpClient: mockClient);
-        await service.generateTrip(
-          profileId: 'p1',
-          centerLat: 48.85,
-          centerLng: 2.34,
-          startDate: '2026-07-02',
-          endDate: '2026-07-02',
-          accessToken: 'tok',
-        );
-        final auth = await authedAuthService();
-
-        await pumpTripPage(
-          tester,
-          tripService: service,
-          audioService: audio,
-          authService: auth,
-          tripId: 'trip-gen',
-        );
-
-        await tester.tap(find.text('Confirm & Prepare'));
-        await tester.pumpAndSettle();
-
-        // k = 2 flavour rows, dwell-only counts, eta minutes, coverage note.
-        expect(find.text('Choose your tour flavour'), findsOneWidget);
-        expect(find.text('Flavour 1'), findsOneWidget);
-        expect(find.text('Flavour 2'), findsOneWidget);
-        expect(find.textContaining('1 dwell stops · 60 min'), findsOneWidget);
-        expect(find.textContaining('2 dwell stops · 90 min'), findsOneWidget);
-        expect(find.textContaining('Dark History runs thin'), findsOneWidget);
-        // The existing confirm flow is gated BEHIND the picker.
-        expect(perStopTriggered, isFalse,
-            reason: 'prepare flow must not run while the picker is open');
-
-        await tester.pumpWidget(const SizedBox());
-      });
-
-      testWidgets(
-          'tap composes exactly once, rebuilds stops, audio flow hits the '
-          'NEW stop ids', (tester) async {
         var composeCalls = 0;
         String? composedRouteId;
         var perStopTriggered = false;
@@ -714,8 +676,7 @@ void main() {
 
         final mockClient = MockClient((request) async {
           if (request.url.path.contains('/trips/generate')) {
-            return http.Response(
-                jsonEncode(generateResponseWithOptions()), 201);
+            return http.Response(jsonEncode(generateResponse()), 201);
           }
           if (request.url.path.contains('/trips/trip-gen/compose')) {
             composeCalls++;
@@ -774,17 +735,17 @@ void main() {
         expect(find.text('Old POI'), findsOneWidget);
 
         await tester.tap(find.text('Confirm & Prepare'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('Flavour 2'));
         // Discrete pumps, NOT pumpAndSettle: once the prepare flow starts,
         // the FAB shows an indeterminate spinner that never settles.
-        await tester.pump(); // compose request + sheet pop
-        await tester.pump(const Duration(milliseconds: 400)); // exit anim
+        await tester.pump(); // compose request + response
+        await tester.pump(); // post-compose setState, prepare flow starts
         await tester.pump(); // post-setState frame
 
-        // composeTrip called exactly once, with the picked flavour.
+        // The one day composed exactly once, addressed by its fixed route id
+        // {tripId}-opt1 — no sheet ever interposed, nothing to pick.
         expect(composeCalls, 1);
-        expect(composedRouteId, 'trip-gen-opt2');
+        expect(composedRouteId, 'trip-gen-opt1');
+        expect(find.text('Choose your tour flavour'), findsNothing);
         // The page rebuilt its stop list from the compose response.
         expect(find.text('Composed POI'), findsOneWidget);
         expect(find.text('Old POI'), findsNothing);
@@ -801,15 +762,15 @@ void main() {
         await tester.pumpWidget(const SizedBox());
       });
 
-      testWidgets('422 refusal keeps the sheet open with remaining flavours',
-          (tester) async {
+      testWidgets(
+          'a compose refusal shows the honest error card and stops the flow '
+          '(design §8.1)', (tester) async {
         var composeCalls = 0;
         var perStopTriggered = false;
 
         final mockClient = MockClient((request) async {
           if (request.url.path.contains('/trips/generate')) {
-            return http.Response(
-                jsonEncode(generateResponseWithOptions()), 201);
+            return http.Response(jsonEncode(generateResponse()), 201);
           }
           if (request.url.path.contains('/trips/trip-gen/compose')) {
             composeCalls++;
@@ -852,29 +813,43 @@ void main() {
 
         await tester.tap(find.text('Confirm & Prepare'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Flavour 1'));
-        await tester.pumpAndSettle();
 
-        // Refused: SnackBar + sheet stays open with the REMAINING flavour.
+        // Refused: the EXISTING error card carries the honest message — one
+        // day per trip means there is no second flavour to offer, so it says
+        // the way out is generating again. No sheet, no snackbar.
         expect(composeCalls, 1);
         expect(
-            find.text('This flavour failed verification'), findsOneWidget);
-        expect(find.text('Choose your tour flavour'), findsOneWidget);
-        expect(find.text('Flavour 1'), findsNothing);
-        expect(find.text('Flavour 2'), findsOneWidget);
-        // The prepare flow never ran — the user still gets to pick.
+          find.text("This day couldn't be written. Try generating again."),
+          findsOneWidget,
+        );
+        expect(find.byIcon(Icons.error_outline), findsOneWidget);
+        expect(find.text('Choose your tour flavour'), findsNothing);
+        // The prepare flow never ran, and the FAB is back for a retry.
         expect(perStopTriggered, isFalse);
+        expect(find.text('Confirm & Prepare'), findsOneWidget);
 
-        // Let the SnackBar's auto-dismiss timer elapse before teardown.
-        await tester.pump(const Duration(seconds: 5));
-        await tester.pumpAndSettle();
         await tester.pumpWidget(const SizedBox());
       });
 
-      testWidgets('no options renders no sheet — legacy flow untouched',
+      testWidgets(
+          'an already-written day (409) proceeds straight to audio — the '
+          'saved-trip path re-prepares with no error (design §8.1)',
           (tester) async {
         var perStopTriggered = false;
         final mockClient = MockClient((request) async {
+          if (request.url.path.contains('/trips/trip-1/compose')) {
+            // Confirm composes unconditionally; this saved trip's day was
+            // written long ago, and the server says so with a 409.
+            return http.Response(
+              jsonEncode({
+                'detail': {
+                  'reason': 'already_composed',
+                  'route_id': 'trip-1-opt1',
+                },
+              }),
+              409,
+            );
+          }
           if (request.url.path.contains('/audio/generate-trip-stops/')) {
             perStopTriggered = true;
             return http.Response(
@@ -903,7 +878,8 @@ void main() {
 
         final service = TripService(httpClient: mockClient);
         final audio = AudioService(httpClient: mockClient);
-        // Saved-trip path (e.g. after restart): options are ABSENT -> [].
+        // Saved-trip path (e.g. after restart): GET /trips sends no options
+        // and the day is already composed server-side.
         service.saveTrip(_sampleTrip());
         final auth = await authedAuthService();
 
@@ -921,7 +897,9 @@ void main() {
         await tester.pump();
         await tester.pump();
 
-        // No sheet — straight into the existing confirm flow.
+        // 409 means "nothing to write", not an error: no card, no sheet —
+        // straight into the existing confirm flow with the stops on hand.
+        expect(find.byIcon(Icons.error_outline), findsNothing);
         expect(find.text('Choose your tour flavour'), findsNothing);
         expect(perStopTriggered, isTrue);
 
@@ -1138,13 +1116,16 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      // Tap confirm button — will fail because accessToken is null
+      // Tap confirm button — the compose call (design §8.1) fails first on
+      // the null accessToken, is caught, and lands on the error card.
       await tester.tap(find.text('Confirm & Prepare'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Trip should still be saved (happens before the error)
+      // The failure never reached the prepare flow; the trip saved during
+      // setup is untouched.
       expect(service.savedTrips.length, 1);
+      expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
   });
 }

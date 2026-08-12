@@ -63,10 +63,9 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
   String? _prepareError;
   Timer? _pollTimer;
 
-  /// Phase 4 Step 4.10: set once the user has picked a flavour (composed) or
-  /// dismissed the picker (keeping options[0], the persisted default) — the
-  /// sheet never interposes twice.
-  bool _flavourResolved = false;
+  /// Phase 4 (design §8.1): true while the confirm tap's compose call is in
+  /// flight, so the FAB cannot double-fire the write of the one day.
+  bool _isComposing = false;
 
   /// Tracks which stops have had their audio URL resolved.
   late List<ItineraryStop> _stops;
@@ -137,111 +136,58 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
     }
   }
 
+  /// Phase 4 (design §8.1): the server plans ONE day per trip, addressed by
+  /// the fixed route id `{tripId}-opt1`. Confirming writes that day (compose)
+  /// and then runs the pre-existing prepare flow — no sheet, no pick. A trip
+  /// whose day is already written answers 409, which just means "nothing to
+  /// write": the flow proceeds with the stops on hand (saved trips, page
+  /// re-entry). A refusal — the backend could not write the day well enough
+  /// to ship — surfaces on the existing error card; one day per trip means
+  /// there is no second option to offer, so the message says the honest way
+  /// out is generating again.
   Future<void> _confirmAndPrepareAudio() async {
-    // Phase 4 Step 4.10: the flavour picker interposes BEFORE the existing
-    // confirm/poll/prefetch flow — only when the just-generated trip carries
-    // RouteOptions (GET /trips never returns them, so the restart/saved path
-    // keeps the legacy flow untouched).
-    if (!_flavourResolved && widget.trip.options.isNotEmpty) {
-      final composedStops = await _pickFlavour();
-      if (!mounted) return;
-      setState(() {
-        _flavourResolved = true;
-        // Non-null -> /compose re-persisted the stops: FRESH stop_ids,
-        // composed narration, audio nulled. Rebuild the page's list so the
-        // audio flow below runs against the NEW stop_ids.
-        // Null -> sheet dismissed: keep options[0], the persisted default.
-        if (composedStops != null) _stops = composedStops;
-      });
-    }
-    await _runPrepareFlow();
-  }
-
-  /// Shows the flavour bottom sheet; resolves with the composed stops, or
-  /// null when the sheet is dismissed (keep the default flavour). A 422
-  /// refusal keeps the sheet open with the remaining flavours.
-  Future<List<ItineraryStop>?> _pickFlavour() {
     final tripService = context.read<TripService>();
     final authService = context.read<AuthService>();
-    final messenger = ScaffoldMessenger.of(context);
 
-    return showModalBottomSheet<List<ItineraryStop>>(
-      context: context,
-      builder: (sheetContext) {
-        final navigator = Navigator.of(sheetContext);
-        // (original 1-based flavour number, option) — refused flavours drop
-        // out, but the surviving labels keep their numbers.
-        final remaining = [
-          for (var i = 0; i < widget.trip.options.length; i++)
-            (i + 1, widget.trip.options[i]),
-        ];
-        var composing = false;
+    setState(() {
+      _isComposing = true;
+      _prepareError = null;
+    });
 
-        return StatefulBuilder(
-          builder: (context, setSheetState) {
-            final textTheme = Theme.of(context).textTheme;
+    List<ItineraryStop>? composedStops;
+    try {
+      composedStops = await tripService.composeTrip(
+        widget.trip.tripId,
+        '${widget.trip.tripId}-opt1',
+        authService.accessToken!,
+      );
+    } on TripAlreadyComposedException {
+      // The day is already written — the stops on hand ARE the composed day.
+    } on ComposeVerificationException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isComposing = false;
+        _prepareError = e.message;
+      });
+      return;
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isComposing = false;
+        _prepareError = e.toString();
+      });
+      return;
+    }
 
-            Future<void> compose(RouteOption option) async {
-              setSheetState(() => composing = true);
-              try {
-                final stops = await tripService.composeTrip(
-                  widget.trip.tripId,
-                  option.routeId,
-                  authService.accessToken!,
-                );
-                navigator.pop(stops);
-              } on ComposeVerificationException {
-                messenger.showSnackBar(
-                  const SnackBar(
-                    content: Text('This flavour failed verification'),
-                  ),
-                );
-                setSheetState(() {
-                  composing = false;
-                  remaining.removeWhere(
-                    (entry) => entry.$2.routeId == option.routeId,
-                  );
-                });
-                // Every flavour refused — fall back to the persisted default.
-                if (remaining.isEmpty) navigator.pop(null);
-              } catch (e) {
-                messenger.showSnackBar(
-                  SnackBar(content: Text('Could not prepare flavour: $e')),
-                );
-                setSheetState(() => composing = false);
-              }
-            }
-
-            return SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    child: Text(
-                      'Choose your tour flavour',
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  if (composing) const LinearProgressIndicator(),
-                  for (final (number, option) in remaining)
-                    _FlavourTile(
-                      number: number,
-                      option: option,
-                      enabled: !composing,
-                      onTap: () => compose(option),
-                    ),
-                  const SizedBox(height: 8),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
+    if (!mounted) return;
+    setState(() {
+      _isComposing = false;
+      // Non-null -> /compose re-persisted the stops: FRESH stop_ids, composed
+      // narration, audio nulled. Rebuild the page's list so the audio flow
+      // below runs against the NEW stop_ids.
+      if (composedStops != null) _stops = composedStops;
+    });
+    await _runPrepareFlow();
   }
 
   /// The pre-existing Confirm & Prepare flow: save the trip, trigger per-stop
@@ -521,9 +467,12 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
       );
     }
 
+    // Busy covers both halves of the confirm tap: writing the day (compose,
+    // design §8.1) and preparing its audio.
+    final busy = _isPreparing || _isComposing;
     return FloatingActionButton.extended(
-      onPressed: _isPreparing ? null : _confirmAndPrepareAudio,
-      icon: _isPreparing
+      onPressed: busy ? null : _confirmAndPrepareAudio,
+      icon: busy
           ? SizedBox(
               width: 20,
               height: 20,
@@ -533,57 +482,11 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
               ),
             )
           : const Icon(Icons.headphones),
-      label: Text(_isPreparing ? 'Preparing...' : 'Confirm & Prepare'),
+      label: Text(busy ? 'Preparing...' : 'Confirm & Prepare'),
       backgroundColor:
-          _isPreparing ? colorScheme.surfaceContainerHighest : colorScheme.primary,
+          busy ? colorScheme.surfaceContainerHighest : colorScheme.primary,
       foregroundColor:
-          _isPreparing ? colorScheme.onSurfaceVariant : colorScheme.onPrimary,
-    );
-  }
-}
-
-/// One row in the flavour picker: label, DWELL stop count (band == "dwell"
-/// only), eta minutes, and the lens_coverage_note when present.
-class _FlavourTile extends StatelessWidget {
-  final int number;
-  final RouteOption option;
-  final bool enabled;
-  final VoidCallback onTap;
-
-  const _FlavourTile({
-    required this.number,
-    required this.option,
-    required this.enabled,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final dwellCount =
-        option.stops.where((s) => s.band == 'dwell').length;
-    final etaMin = (option.etaSeconds / 60).round();
-    final note = option.lensCoverageNote;
-
-    return ListTile(
-      enabled: enabled,
-      leading: CircleAvatar(
-        backgroundColor: colorScheme.primaryContainer,
-        child: Text(
-          '$number',
-          style: TextStyle(
-            color: colorScheme.onPrimaryContainer,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      title: Text('Flavour $number'),
-      subtitle: Text(
-        note == null
-            ? '$dwellCount dwell stops · $etaMin min'
-            : '$dwellCount dwell stops · $etaMin min\n$note',
-      ),
-      onTap: onTap,
+          busy ? colorScheme.onSurfaceVariant : colorScheme.onPrimary,
     );
   }
 }

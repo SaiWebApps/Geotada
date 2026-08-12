@@ -165,14 +165,20 @@ class TripService extends ChangeNotifier {
     }
   }
 
-  /// POST /trips/{tripId}/compose — compose the picked flavour (Phase 4
-  /// Step 4.10). Body: {"route_id": routeId}. Returns the re-persisted stops
-  /// with FRESH stop_ids (narration is the composed text, audio_url is null —
-  /// audio is generated afterwards by the existing per-stop flow).
+  /// POST /trips/{tripId}/compose — write the trip's ONE day (Phase 4,
+  /// design §8.1). The server plans a single day per trip, addressed by the
+  /// fixed route id `{tripId}-opt1`; the phone confirms the day by composing
+  /// it — there is no route choice. Body: {"route_id": routeId}. Returns the
+  /// re-persisted stops with FRESH stop_ids (narration is the composed text,
+  /// audio_url is null — audio is generated afterwards by the existing
+  /// per-stop flow).
   ///
-  /// Throws [ComposeVerificationException] when the backend REFUSES the
-  /// flavour (422 compose_verification_failed) so the caller can offer the
-  /// remaining flavours.
+  /// Throws [TripAlreadyComposedException] on 409 — the day is already
+  /// written (saved trip, re-entry), so the caller proceeds with the stops it
+  /// already holds. Throws [ComposeVerificationException] when the backend
+  /// REFUSES the day (422 compose_verification_failed); one day per trip
+  /// means there is no alternative to offer, so the caller surfaces the
+  /// refusal and suggests generating again.
   Future<List<ItineraryStop>> composeTrip(
     String tripId,
     String routeId,
@@ -195,7 +201,7 @@ class TripService extends ChangeNotifier {
     } else if (response.statusCode == 404) {
       throw TripServiceException('Trip or route not found');
     } else if (response.statusCode == 409) {
-      throw TripServiceException('Trip already composed');
+      throw TripAlreadyComposedException();
     } else if (response.statusCode == 422) {
       final detail = _detailMap(response.body);
       if (detail?['reason'] == 'compose_verification_failed') {
@@ -327,14 +333,23 @@ class KeepExploringException extends TripServiceException {
   KeepExploringException(super.message);
 }
 
-/// The backend REFUSED a flavour: /compose returned 422 with
+/// The backend REFUSED to write the trip's day: /compose returned 422 with
 /// detail.reason == "compose_verification_failed" (VERIFY failed after the
-/// recompose attempt). The user should pick another flavour.
+/// recompose attempt). One day per trip (Phase 4, design §8.1) means there is
+/// no alternative route to offer, so [message] says the honest way out —
+/// generating again — in plain language the UI shows verbatim.
 class ComposeVerificationException extends TripServiceException {
   final String reason;
   final int? attempts;
 
   ComposeVerificationException({this.attempts})
       : reason = 'compose_verification_failed',
-        super('This flavour failed verification');
+        super("This day couldn't be written. Try generating again.");
+}
+
+/// POST /trips/{id}/compose returned 409: the trip's day is already written
+/// server-side (saved trip, page re-entry). Not a failure — the caller
+/// already holds the composed stops and proceeds with them (design §8.1).
+class TripAlreadyComposedException extends TripServiceException {
+  TripAlreadyComposedException() : super('Trip already composed');
 }

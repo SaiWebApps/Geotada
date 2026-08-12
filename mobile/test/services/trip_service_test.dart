@@ -454,6 +454,9 @@ void main() {
       );
     });
 
+    // Phase 4 (design §8.1): the server plans ONE day per trip and its route
+    // id is always {trip_id}-opt1 — compose is the phone's confirm, not a
+    // choice among flavours.
     test('composeTrip POSTs route_id to the compose endpoint and parses stops',
         () async {
       Map<String, dynamic>? capturedBody;
@@ -467,7 +470,7 @@ void main() {
         return http.Response(
           jsonEncode({
             'trip_id': 'trip-123',
-            'route_id': 'trip-123-opt2',
+            'route_id': 'trip-123-opt1',
             'attempts': 1,
             'stops': [
               {
@@ -500,11 +503,11 @@ void main() {
       final service = TripService(httpClient: client);
       final stops = await service.composeTrip(
         'trip-123',
-        'trip-123-opt2',
+        'trip-123-opt1',
         'test-token',
       );
 
-      expect(capturedBody, {'route_id': 'trip-123-opt2'});
+      expect(capturedBody, {'route_id': 'trip-123-opt1'});
       expect(stops.length, 1);
       expect(stops[0].stopId, 'item-new-1');
       expect(stops[0].poiName, 'Eiffel Tower');
@@ -534,7 +537,14 @@ void main() {
         throwsA(
           isA<ComposeVerificationException>()
               .having((e) => e.reason, 'reason', 'compose_verification_failed')
-              .having((e) => e.attempts, 'attempts', 2),
+              .having((e) => e.attempts, 'attempts', 2)
+              // design §8.1: one day per trip means no second option to
+              // offer, so the message the UI shows says the honest way out.
+              .having(
+                (e) => e.message,
+                'message',
+                "This day couldn't be written. Try generating again.",
+              ),
         ),
       );
     });
@@ -649,8 +659,12 @@ void main() {
       );
     });
 
-    test('composeTrip throws plain TripServiceException on 409 '
-        'already_composed', () async {
+    test('composeTrip throws TripAlreadyComposedException on 409 '
+        'already_composed (design §8.1)', () async {
+      // Phase 4: confirm composes {trip_id}-opt1 unconditionally, so a trip
+      // whose day is already written answers 409 in the NORMAL saved-trip
+      // path. The typed exception lets the page treat it as "nothing to
+      // write, proceed" rather than an error.
       final client = MockClient((request) async {
         return http.Response(
           jsonEncode({
@@ -665,7 +679,7 @@ void main() {
       await expectLater(
         () => service.composeTrip('trip-123', 'trip-123-opt1', 'token'),
         throwsA(
-          isA<TripServiceException>().having(
+          isA<TripAlreadyComposedException>().having(
             (e) => e is ComposeVerificationException,
             'is not a verification refusal',
             isFalse,
