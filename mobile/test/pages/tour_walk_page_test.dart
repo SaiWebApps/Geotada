@@ -42,16 +42,18 @@ void main() {
     ));
     await tester.pumpAndSettle(); // let startTour() settle
 
-    // Walking: heading to the first stop, no audio yet.
-    expect(find.textContaining('The Louvre'), findsOneWidget);
+    // Walking: heading to the first stop, no audio yet -> the walking bar shows.
+    expect(find.byKey(const Key('tour-walking-skip')), findsOneWidget);
     expect(audio.playCount, 0);
 
     // Walk into the first stop's geofence.
     loc.simulatePosition(48.8606, 2.3376);
     await tester.pumpAndSettle();
 
-    expect(audio.playCount, 1);           // engine auto-played the stop
-    expect(find.textContaining('Playing'), findsOneWidget); // story card
+    expect(audio.playCount, 1); // engine auto-played the stop
+    // Story: the now-playing player shows the stop title + transport controls.
+    expect(find.textContaining('The Louvre'), findsWidgets);
+    expect(find.byKey(const Key('tour-playpause')), findsOneWidget);
   });
 
   testWidgets('Skip advances to the next stop', (tester) async {
@@ -174,7 +176,7 @@ void main() {
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
     await tester.pumpAndSettle();
 
-    expect(find.text('No audio for this stop'), findsOneWidget);
+    expect(find.textContaining('No audio here'), findsOneWidget);
     expect(find.byKey(const Key('tour-walking-skip')), findsOneWidget);
   });
 
