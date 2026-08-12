@@ -35,6 +35,6 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Ondoway'), findsOneWidget);
+    expect(find.text('ondoway'), findsOneWidget);
   });
 }
