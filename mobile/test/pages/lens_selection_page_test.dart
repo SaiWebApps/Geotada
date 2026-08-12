@@ -25,7 +25,7 @@ void main() {
         userName: 'Sairam',
         lensesByParent: _testLenses,
       )));
-      expect(find.text('Welcome, Sairam'), findsOneWidget);
+      expect(find.text('WELCOME, SAIRAM'), findsOneWidget);
     });
 
     testWidgets('shows subtitle in onboarding mode', (tester) async {
@@ -98,10 +98,11 @@ void main() {
         lensesByParent: _testLenses,
       )));
 
-      expect(find.text('0 selected'), findsOneWidget);
+      // Onboarding footer coaches toward the 3-lens minimum rather than a bare count.
+      expect(find.text('Choose 3 more'), findsOneWidget);
       await tester.tap(find.text('Hidden History'));
       await tester.pump();
-      expect(find.text('1 selected'), findsOneWidget);
+      expect(find.text('Choose 2 more'), findsOneWidget);
     });
 
     testWidgets('tapping selected tile deselects it', (tester) async {
@@ -112,11 +113,11 @@ void main() {
 
       await tester.tap(find.text('Hidden History'));
       await tester.pump();
-      expect(find.text('1 selected'), findsOneWidget);
+      expect(find.text('Choose 2 more'), findsOneWidget);
 
       await tester.tap(find.text('Hidden History'));
       await tester.pump();
-      expect(find.text('0 selected'), findsOneWidget);
+      expect(find.text('Choose 3 more'), findsOneWidget);
     });
   });
 
@@ -127,7 +128,7 @@ void main() {
         lensesByParent: _testLenses,
         initialSelection: {'l1', 'l3'},
       )));
-      expect(find.text('Your Lenses'), findsOneWidget);
+      expect(find.text('Your lenses'), findsOneWidget);
     });
 
     testWidgets('does not show subtitle', (tester) async {

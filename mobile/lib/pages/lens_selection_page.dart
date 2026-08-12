@@ -60,54 +60,17 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
     return Scaffold(
       backgroundColor: colors.bg,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.isOnboarding
-                              ? 'Welcome, ${widget.userName ?? "Explorer"}'
-                              : 'Your Lenses',
-                          style: TextStyle(
-                            color: colors.ink,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      // Debug escape hatch (removed with the spike scaffolding):
-                      // jumps to the auth-exempt tour-playback proof screen when a
-                      // persisted session strands the tester here (prod lens API
-                      // 404s). Header-right so it overlaps no tile or Continue.
-                      if (!kReleaseMode)
-                        IconButton(
-                          tooltip: 'Debug: tour playback proof',
-                          icon: Icon(Icons.headphones, color: colors.inkMute),
-                          onPressed: () =>
-                              context.push('/debug/tour-playback-proof'),
-                        ),
-                    ],
-                  ),
-                  if (widget.isOnboarding) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      'Pick at least 3 — you can always change these later.',
-                      style: TextStyle(color: colors.inkMute, fontSize: 15),
-                    ),
-                  ],
-                  const SizedBox(height: 20),
-                ],
-              ),
+            _Header(
+              c: colors,
+              isOnboarding: widget.isOnboarding,
+              userName: widget.userName,
             ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.fromLTRB(24, 4, 24, 24),
                 children: [
                   for (final entry in widget.lensesByParent.entries) ...[
                     Padding(
@@ -143,36 +106,146 @@ class _LensSelectionPageState extends State<LensSelectionPage> {
                 ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: colors.panel,
-                border: Border(top: BorderSide(color: colors.line)),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    '${_selected.length} selected',
-                    style: TextStyle(color: colors.inkMute, fontSize: 15),
-                  ),
-                  const Spacer(),
-                  if (widget.isOnboarding)
-                    FilledButton(
-                      onPressed: canContinue
-                          ? () => widget.onComplete?.call(_selected)
-                          : null,
-                      child: const Text('Continue'),
-                    )
-                  else
-                    FilledButton(
-                      onPressed: () => widget.onSave?.call(_selected),
-                      child: const Text('Save'),
-                    ),
-                ],
-              ),
+            _Footer(
+              c: colors,
+              isOnboarding: widget.isOnboarding,
+              selectedCount: _selected.length,
+              canContinue: canContinue,
+              onContinue: () => widget.onComplete?.call(_selected),
+              onSave: () => widget.onSave?.call(_selected),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+TextStyle _fraunces(Color color, double size, FontWeight weight) => TextStyle(
+    fontFamily: 'Fraunces', color: color, fontSize: size, fontWeight: weight, height: 1.05);
+
+class _Header extends StatelessWidget {
+  final OndowayColors c;
+  final bool isOnboarding;
+  final String? userName;
+  const _Header({required this.c, required this.isOnboarding, this.userName});
+
+  @override
+  Widget build(BuildContext context) {
+    final eyebrow = isOnboarding
+        ? (userName != null && userName!.isNotEmpty
+            ? 'WELCOME, ${userName!.toUpperCase()}'
+            : 'LET’S PERSONALIZE')
+        : 'PREFERENCES';
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      eyebrow,
+                      style: TextStyle(
+                        fontFamily: 'Space Mono',
+                        color: c.accent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 2.0,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      isOnboarding ? 'What are you\ncurious about?' : 'Your lenses',
+                      style: _fraunces(c.ink, 30, FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+              // Debug escape hatch (removed with the spike scaffolding): jumps to
+              // the auth-exempt tour-playback proof screen when a persisted session
+              // strands the tester here (prod lens API 404s).
+              if (!kReleaseMode)
+                IconButton(
+                  tooltip: 'Debug: tour playback proof',
+                  icon: Icon(Icons.headphones, color: c.inkMute),
+                  onPressed: () => context.push('/debug/tour-playback-proof'),
+                ),
+            ],
+          ),
+          if (isOnboarding) ...[
+            const SizedBox(height: 10),
+            Text(
+              'Pick at least 3 — you can always change these later.',
+              style: TextStyle(
+                  fontFamily: 'Space Grotesk', color: c.inkMute, fontSize: 15, height: 1.3),
+            ),
+          ],
+          const SizedBox(height: 12),
+        ],
+      ),
+    );
+  }
+}
+
+class _Footer extends StatelessWidget {
+  final OndowayColors c;
+  final bool isOnboarding;
+  final int selectedCount;
+  final bool canContinue;
+  final VoidCallback onContinue;
+  final VoidCallback onSave;
+  const _Footer({
+    required this.c,
+    required this.isOnboarding,
+    required this.selectedCount,
+    required this.canContinue,
+    required this.onContinue,
+    required this.onSave,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = 3 - selectedCount;
+    final status = (isOnboarding && !canContinue)
+        ? 'Choose $remaining more'
+        : '$selectedCount selected';
+    return Container(
+      padding: EdgeInsets.fromLTRB(24, 14, 24, 14 + MediaQuery.of(context).padding.bottom),
+      decoration: BoxDecoration(
+        color: c.panel,
+        border: Border(top: BorderSide(color: c.line)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            status,
+            style: TextStyle(
+              fontFamily: 'Space Mono',
+              color: (isOnboarding && !canContinue) ? c.accent : c.inkMute,
+              fontSize: 13,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          if (isOnboarding)
+            FilledButton(
+              onPressed: canContinue ? onContinue : null,
+              child: const Text('Continue'),
+            )
+          else
+            FilledButton(
+              onPressed: onSave,
+              child: const Text('Save'),
+            ),
+        ],
       ),
     );
   }
