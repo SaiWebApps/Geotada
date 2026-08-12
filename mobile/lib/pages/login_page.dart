@@ -97,6 +97,9 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           SafeArea(
+            // Bottom is handled inside _Panel so its background runs flush to
+            // the screen edge (no square corners peeking over the photo).
+            bottom: false,
             child: Column(
               children: [
                 // Hero region over the photo: wordmark + editorial tagline.
