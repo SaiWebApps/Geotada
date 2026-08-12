@@ -1,3 +1,4 @@
+import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
@@ -7,9 +8,11 @@ import 'package:ondoway/theme/tokens.dart';
 import 'package:provider/provider.dart';
 
 /// Full-screen hands-free audio walk (wireframe 05 · Live guide) — a dark,
-/// audio-led screen: a glowing route backdrop (a placeholder for the real
-/// MapView seam), a next-stop banner, and a premium now-playing player. A thin
-/// view over [TourPlaybackService]: the engine owns geofence/auto-play/advance.
+/// audio-led screen: a basic Apple Map with stop pins behind a next-stop banner
+/// and a premium now-playing player. A thin view over [TourPlaybackService]:
+/// the engine owns geofence/auto-play/advance. Dark map styling, the route
+/// polyline, camera-follow and a live scrubber are tracked in
+/// specs/2026-08-11-exec-live-walk/live-guide-backlog.md.
 class TourWalkPage extends StatefulWidget {
   final GeneratedTrip trip;
   const TourWalkPage({super.key, required this.trip});
@@ -60,7 +63,10 @@ class _TourWalkPageState extends State<TourWalkPage> {
           body: Stack(
             fit: StackFit.expand,
             children: [
-              const _RouteBackdrop(),
+              _MapBackdrop(
+                stops: widget.trip.stops,
+                currentIndex: engine.currentStopIndex,
+              ),
               SafeArea(
                 child: engine.state == TourState.completed
                     ? _CompletePanel(
@@ -137,65 +143,35 @@ String _clock(double? seconds) {
   return '$m:${r.toString().padLeft(2, '0')}';
 }
 
-class _RouteBackdrop extends StatelessWidget {
-  const _RouteBackdrop();
+/// The real map behind the guide: a basic Apple Map centered on the current
+/// stop, with a pin per stop. Dark map styling + the route polyline +
+/// camera-follow are tracked in live-guide-backlog.md (the MapView seam).
+class _MapBackdrop extends StatelessWidget {
+  final List<ItineraryStop> stops;
+  final int currentIndex;
+  const _MapBackdrop({required this.stops, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
-    final c = Theme.of(context).extension<OndowayColors>()!;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [c.panel, c.bg],
-        ),
+    if (stops.isEmpty) return const ColoredBox(color: Colors.black);
+    final idx = (currentIndex >= 0 && currentIndex < stops.length) ? currentIndex : 0;
+    final center = stops[idx];
+    return AppleMap(
+      initialCameraPosition: CameraPosition(
+        target: LatLng(center.lat, center.lng),
+        zoom: 15,
       ),
-      child: CustomPaint(painter: _RoutePainter(c.accent), size: Size.infinite),
+      myLocationEnabled: true,
+      annotations: {
+        for (final s in stops)
+          Annotation(
+            annotationId: AnnotationId(s.stopId ?? s.beatId),
+            position: LatLng(s.lat, s.lng),
+            infoWindow: InfoWindow(title: s.poiName),
+          ),
+      },
     );
   }
-}
-
-class _RoutePainter extends CustomPainter {
-  final Color color;
-  _RoutePainter(this.color);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final path = Path();
-    final x = size.width * 0.5;
-    path.moveTo(x + 40, size.height * 0.25);
-    path.cubicTo(
-      x + 40, size.height * 0.4,
-      x - 90, size.height * 0.45,
-      x - 60, size.height * 0.6,
-    );
-    path.cubicTo(
-      x - 40, size.height * 0.72,
-      x + 30, size.height * 0.72,
-      x, size.height * 0.85,
-    );
-
-    final glow = Paint()
-      ..color = color.withValues(alpha: 0.35)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 10
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
-    canvas.drawPath(path, glow);
-
-    // Dotted core along the path.
-    final metrics = path.computeMetrics().toList();
-    final dot = Paint()..color = color;
-    for (final m in metrics) {
-      for (double d = 0; d < m.length; d += 16) {
-        final pos = m.getTangentForOffset(d)?.position;
-        if (pos != null) canvas.drawCircle(pos, 3, dot);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _RoutePainter old) => old.color != color;
 }
 
 class _DirectionBanner extends StatelessWidget {
