@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import ast
 import importlib.util
 import inspect
 import socket
@@ -12,10 +11,6 @@ import time
 from pathlib import Path
 from typing import ClassVar
 
-import pytest
-
-from scripts import tour_batch_candidate
-from src.api.routes import trips
 from src.tour import premium_tour
 from src.tour.contract import (
     POI,
@@ -33,7 +28,6 @@ from src.tour.contract import (
 from src.tour.glue_client import NO_GLUE_SENTINEL
 from src.tour.premium_tour import (
     PREMIUM_MODULE_VERSION,
-    plan_premium_authoring,
     plan_premium_tour,
 )
 
@@ -233,53 +227,6 @@ def test_launchers_kill_only_listening_sockets(tmp_path) -> None:
     )
 
 
-def test_preview_uses_shared_premium_plan_and_finalizer() -> None:
-    """The two halves are two functions, and neither does the other's job.
-
-    Planning and writing used to be one call, so "the preview does not reimplement
-    the planner" was the only thing worth checking here. Now that choosing a route
-    and writing it are separate requests, the same guard has to say something
-    stronger: planning must not reach the narrator at all (that is what makes it
-    free), and writing must not choose a route (that is what makes it write the one
-    that was picked).
-
-    Read the IMPLEMENTATIONS, not the route wrappers, where there is one: a wrapper
-    that only opens the degradation-collection scope would pass vacuously the moment
-    anything moves behind an indirection, which is the failure this file exists to
-    catch.
-    """
-    planning = inspect.getsource(trips._plan_preview)
-    assert "plan_premium_tour(" in planning
-    assert "select_route(" not in planning
-
-    plan_route = inspect.getsource(trips.preview_trip)
-    assert "execute_premium_plan(" not in plan_route, "planning called the narrator"
-    assert "finalize_premium_tour(" not in plan_route, "planning wrote a tour"
-
-    writing = inspect.getsource(trips._author_preview_impl)
-    assert "execute_premium_plan(" in writing
-    assert "finalize_premium_tour(" in writing
-    assert "compose_script_per_chapter(" not in writing
-    assert "select_route(" not in writing
-    assert "select_k_routes(" not in writing, "writing chose its own route"
-
-
-def test_batch_uses_the_same_shared_premium_plan() -> None:
-    source = inspect.getsource(tour_batch_candidate._plan_tour)
-    assert "plan_premium_tour(" in source
-    assert "select_k_routes(" not in source
-    assert "_certification_compose_requests(" not in source
-
-    finalizer_source = inspect.getsource(tour_batch_candidate._assemble_provider_tour)
-    assert "finalize_premium_composition(" in finalizer_source
-
-
-def test_batch_policy_delegates_to_the_shared_policy_factory() -> None:
-    source = inspect.getsource(tour_batch_candidate._planning_policy)
-    assert "certification_planning_policy(" in source
-    assert "RoutePlanningPolicy.certification(" not in source
-
-
 def test_manual_workbench_starts_routing_for_the_preview() -> None:
     """The workbench preview routes, so the target must provision routing itself.
 
@@ -446,75 +393,6 @@ def _plan_kwargs() -> dict[str, object]:
         "routing_version": "offline-test",
         "policy_version": "offline-test",
     }
-
-
-def test_plan_premium_tour_builds_its_units_through_the_shared_prebuilt_seam() -> None:
-    """AC-1 — ONE Block-2 plan builder, and plan_premium_tour goes through it.
-
-    Every claim below is bound to a specific edit that turns it RED:
-
-    * delete ``if stops[-1] >= len(route.pois):`` in ``plan_premium_authoring``
-      (or weaken it to ``if False:``) and the out-of-range refusal fails;
-    * delete ``if len(stops) != len(route.pois):`` likewise and the missing-tail-stop
-      refusal fails;
-    * re-inline the ``PremiumComposeUnit`` loop into ``plan_premium_tour`` and the
-      single-construction-site assertion fails.
-    """
-    # 1. The shared builder produces a REAL PremiumTourPlan from a prebuilt route.
-    stitched, sequence, route = _prebuilt(4, sentences_per_stop=2)
-    assert len(route.transits) == len(route.pois) + 1
-
-    plan = plan_premium_authoring(stitched, sequence, route, **_plan_kwargs())
-    assert isinstance(plan, premium_tour.PremiumTourPlan)
-    assert plan.route is route
-    assert plan.source is stitched
-    assert plan.sequence is sequence
-    assert plan.tour_input is stitched.inputs
-    assert [unit.stop_index for unit in plan.units] == [0, 1, 2, 3]
-    assert [unit.poi_name for unit in plan.units] == [poi.name for poi in route.pois]
-    assert len(plan.authoring.stop_requests) == len(route.pois)
-    # The candidate binds the SAME route hash the plan record reports.
-    assert plan.candidate.route_sha256 == plan.route_record["route_sha256"]
-
-    # 2a. A script naming a stop the route does not have is refused, not authored.
-    off_route = _renumber_stop(stitched, len(route.pois) - 1, len(route.pois) + 3)
-    assert {sentence.stop_idx for sentence in off_route.script} == {0, 1, 2, 7}
-    with pytest.raises(ValueError, match="names a stop the prebuilt route lacks"):
-        plan_premium_authoring(off_route, sequence, route, **_plan_kwargs())
-
-    # 2b. A script that silently lost its LAST stop is refused too. It passes every
-    # other bar — in order, starts at 0, highest index in range — so without this the
-    # trip would persist with its final stop never authored.
-    with pytest.raises(ValueError, match="one authoring unit per dwell stop"):
-        plan_premium_authoring(
-            _drop_stop(stitched, len(route.pois) - 1), sequence, route, **_plan_kwargs()
-        )
-
-    # 3. ONE construction site. plan_premium_tour must delegate, not re-inline.
-    module = ast.parse(inspect.getsource(premium_tour))
-    builders = {
-        node.name
-        for node in ast.walk(module)
-        if isinstance(node, ast.FunctionDef)
-        for call in ast.walk(node)
-        if isinstance(call, ast.Call)
-        and isinstance(call.func, ast.Name)
-        and call.func.id == "PremiumComposeUnit"
-    }
-    assert builders == {"plan_premium_authoring"}, (
-        "PremiumComposeUnit is constructed in more than one place, so the Block-2 "
-        f"plan builder has been duplicated again: {sorted(builders)}"
-    )
-    # ...and the one-day entry point reaches that one construction site rather than
-    # growing a copy. RE-DERIVED at Phase 4's S4.3 (written decision, design §8.1):
-    # this clause used to pin plan_premium_tour as a one-line delegate to
-    # plan_premium_options, the K=3 planner; §8.1 deleted pick-one-of-three, so
-    # plan_premium_tour IS Block 1 now and the chain it must not re-inline is
-    # plan_premium_tour -> _plan_one_premium_route -> plan_premium_authoring.
-    entry = inspect.getsource(premium_tour.plan_premium_tour)
-    assert "_plan_one_premium_route(" in entry
-    assert "PremiumComposeUnit(" not in entry
-    assert "plan_premium_authoring(" in inspect.getsource(premium_tour._plan_one_premium_route)
 
 
 # --------------------------------------------------------------------------

@@ -208,21 +208,6 @@ def test_the_render_credential_accepts_an_environment_key_off_macos(monkeypatch)
     assert "not-a-real-key" not in result.detail, "a credential value must never be echoed"
 
 
-def test_deploy_watching_declares_the_render_cli_it_shells_out_to():
-    """The CLI is a separate dependency from the API key, and easy to miss.
-
-    `.claude/hooks/render-deploy-watch.sh` runs `render deploys list`, which needs
-    the CLI installed AND signed in through its own browser flow. Neither is the
-    Keychain API key the rest of the project uses.
-    """
-    hook = (ROOT / ".claude" / "hooks" / "render-deploy-watch.sh").read_text(encoding="utf-8")
-    assert "render deploys list" in hook, "this guard is pinned to a call that vanished"
-
-    declared = _declared_requirements("render-watch") or []
-    assert "render-cli" in declared
-    assert "render-cli-auth" in declared
-
-
 def test_database_specs_agree_with_the_committed_profiles():
     """The probe's port must match the profile the target actually executes under."""
     for spec in preflight.DATABASES:

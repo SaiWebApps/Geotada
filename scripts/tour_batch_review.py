@@ -972,8 +972,8 @@ def build_provider_free_review_context(
     )
     calibration_inputs = load_quality_calibration_inputs(
         repo_root=ROOT,
-        calibration_manifest_path=QUALITY_SPEC / "calibration-manifest.json",
-        reference_manifest_path=QUALITY_SPEC / "investigation-reference-manifest.json",
+        calibration_manifest_path=ROOT / "fixtures" / "tour-certification" / "calibration-manifest.json",
+        reference_manifest_path=ROOT / "fixtures" / "tour-certification" / "investigation-reference-manifest.json",
     )
     review_plan = build_batch_review_plan(
         inputs=inputs,

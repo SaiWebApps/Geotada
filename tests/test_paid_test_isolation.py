@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import ast
-import re
 import runpy
 import urllib.request
 from pathlib import Path
@@ -87,64 +86,22 @@ def test_makefile_live_target_fetches_render_and_enables_live_collection() -> No
     assert "-m live" in live
 
 
-def test_make_test_is_the_only_exhaustive_executor() -> None:
-    source = (REPO / "Makefile").read_text(encoding="utf-8")
-    test_target = source.split("\ntest:", 1)[1].split("\n\naudit:", 1)[0]
-
-    shards = (
-        "_test-python",
-        "flutter-test",
-        "test-workbench",
-        "_test-golden",
-        "_test-grade",
-        "_test-invariants",
-        "test-live",
-        "_test-cloud",
-    )
-    for shard in shards:
-        invocation = f"@$(MAKE) --no-print-directory {shard}"
-        assert test_target.count(invocation) == 1
-
-
-def test_makefile_has_no_legacy_environment_or_split_database_targets() -> None:
-    source = (REPO / "Makefile").read_text(encoding="utf-8")
-    assert "-include .env" not in source
-    for removed in (
-        "use-local:",
-        "use-cloud:",
-        "test-local:",
-        "test-cloud:",
-        "test-golden:",
-        "tour-grade:",
-        "tour-invariants:",
-        "db-test-up:",
-        "db-workbench-up:",
-        "deploy-cloud:",
-        "prune-orphans-cloud:",
-    ):
-        assert f"\n{removed}" not in source
-
-
 def test_database_reset_cannot_address_cloud_or_all_compose_volumes() -> None:
+    """A DATA-LOSS guard, kept at the 2026-08-18 test cull (owner ruling: keep the
+    incident guards, drop the shape checks). Re-derived to the CURRENT recipe: the
+    old pin named three volume literals and an Aura sentence the recipe no longer
+    contains, so it went red while the recipe got SAFER. What must hold: db-reset
+    goes through the one-local-DB check, removes exactly the ONE volume it was
+    told, and never runs a compose-wide down or a volume prune."""
     source = (REPO / "Makefile").read_text(encoding="utf-8")
-    reset = source.split("\ndb-reset:", 1)[1].split("\n\ndb-parity:", 1)[0]
+    reset = source.split("\ndb-reset:", 1)[1].split("\n\n", 1)[0]
+    assert "$(check_db)" in reset, "db-reset must refuse any DB outside LOCAL_DBS"
     assert "docker compose down" not in reset
-    assert "neo4j_data" in reset
-    assert "neo4j_test_data" in reset
-    assert "neo4j_workbench_data" in reset
-    assert "Aura is unreachable here" in reset
-
-
-def test_every_make_target_is_phony_and_documented() -> None:
-    source = (REPO / "Makefile").read_text(encoding="utf-8")
-    targets = set(re.findall(r"^([A-Za-z_][A-Za-z0-9_-]*):", source, re.MULTILINE))
-    phony_block = source.split(".PHONY:", 1)[1].split("\n\n", 1)[0]
-    phony = set(phony_block.replace("\\", " ").split())
-    inventory = (REPO / "Docs" / "MAKE_TARGETS.md").read_text(encoding="utf-8")
-    documented = set(re.findall(r"^\| `([^`]+)` \|", inventory, re.MULTILINE))
-
-    assert phony == targets
-    assert documented == targets
+    assert "volume prune" not in reset and "volume rm -f $(shell" not in reset
+    assert reset.count("docker volume rm") == 1, "exactly one volume, the one asked for"
+    assert "$(call db_volume,$(DB))" in reset
+    check = source.split("\ncheck_db = ", 1)[1].split("\n\n", 1)[0]
+    assert "$(LOCAL_DBS)" in check and "never cloud" in check
 
 
 def test_testflight_bumps_before_building_the_uploaded_ipa() -> None:

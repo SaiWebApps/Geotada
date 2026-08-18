@@ -78,8 +78,10 @@ from src.tour.quality_certification import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-CALIBRATION = ROOT / "specs/2026-07-21-tour-certification/calibration-manifest.json"
-REFERENCES = ROOT / "specs/2026-07-21-tour-certification/investigation-reference-manifest.json"
+# The calibration inputs are FIXTURES (moved out of specs/ 2026-08-18: specs/ is
+# planning prose, fixtures/ is what tests read — the reference-tours precedent).
+CALIBRATION = ROOT / "fixtures/tour-certification/calibration-manifest.json"
+REFERENCES = ROOT / "fixtures/tour-certification/investigation-reference-manifest.json"
 PROMPT_SHA = "9" * 64
 POLICY_SHA = "7" * 64
 

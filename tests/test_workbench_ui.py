@@ -2911,6 +2911,9 @@ class TestDetailViewAndEditing:
             sent = json.loads(captured["body"])
             assert sent.get("end_lat") == 48.8606, f"end_lat not sent: {sent}"
             assert sent.get("end_lng") == 2.3376, f"end_lng not sent: {sent}"
+            # The plan carries the CITY the page is connected to (2026-08-18: this
+            # replaced two static HTML scans with the real request the browser sent).
+            assert sent.get("city_slug"), f"city_slug not sent: {sent}"
 
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 stops, got {stops.count()}"

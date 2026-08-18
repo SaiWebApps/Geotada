@@ -14,7 +14,8 @@ path, the Premium blueprint builder and the certification replay all actually ne
 
 NOTHING here was edited during the move.  The policy hash is baked into committed
 certification candidate data, so a whitespace change is a data-invalidating change;
-``tests/test_tour_authoring_extraction.py`` pins it to its pre-move value.
+(The one-time extraction proof that pinned it was retired 2026-08-18; the hash is
+still sealed by the certification data itself.)
 """
 
 from __future__ import annotations

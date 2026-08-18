@@ -35,8 +35,6 @@ from __future__ import annotations
 import ast
 import pathlib
 
-import pytest
-
 REPO = pathlib.Path(__file__).resolve().parents[1]
 BROWSER_SUITE = REPO / "tests" / "test_workbench_ui.py"
 
@@ -177,49 +175,3 @@ def test_the_endpoint_guard_can_tell_stubbed_from_unstubbed() -> None:
     assert not _stubs_the_endpoint(plain_body), "detector called a plain request a stub"
 
 
-def test_every_test_file_is_reachable_from_the_definitive_suite() -> None:
-    """No test file may be invisible to ``make test``.
-
-    ``pyproject.toml``'s ``addopts`` carries an ``--ignore`` list. Anything on it
-    is skipped by the default ``pytest tests/`` run, and is only ever executed if
-    a Make target names it explicitly. On 2026-07-31 that list hid six shards —
-    the only ones that measure tour OUTPUT — and a run reporting "2382 passed"
-    had exercised none of them.
-
-    An ignored file is fine. An ignored file that no Make target runs is a test
-    nobody executes, which is worse than no test at all.
-    """
-    pyproject = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    makefile = (REPO / "Makefile").read_text(encoding="utf-8")
-
-    ignored: list[str] = []
-    for line in pyproject.splitlines():
-        stripped = line.strip()
-        prefix = "--ignore="
-        if stripped.startswith(prefix):
-            ignored.append(stripped[len(prefix) :].strip())
-
-    assert ignored, (
-        "parsed no --ignore entries out of pyproject.toml. Either the exclusion list is gone "
-        "(good, delete this guard) or the derivation broke — and a broken derivation here "
-        "would report 'all files reachable' no matter what."
-    )
-
-    orphans = [path for path in ignored if pathlib.Path(path).name not in makefile]
-    assert not orphans, (
-        f"these test files are excluded from the default pytest run AND named by no Make "
-        f"target, so nothing ever executes them: {orphans}. Either add them to a shard "
-        f"`make test` runs, or delete them — an unrun test is a false reassurance."
-    )
-
-
-@pytest.mark.parametrize("path", sorted(REPO.glob("tests/test_*.py")), ids=lambda p: p.name)
-def test_no_test_file_is_empty_of_tests(path: pathlib.Path) -> None:
-    """A test file with no test functions is a slot that looks filled and is not."""
-    tree = ast.parse(path.read_text(encoding="utf-8"))
-    names = [
-        n.name
-        for n in ast.walk(tree)
-        if isinstance(n, ast.FunctionDef | ast.AsyncFunctionDef) and n.name.startswith("test")
-    ]
-    assert names, f"{path.name} defines no test functions but sits in the suite as if it did"

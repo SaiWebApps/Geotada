@@ -2,7 +2,8 @@
 
 The source documents remain reviewable under ``specs/``.  Runtime code imports
 only these pins because production images deliberately exclude the specs tree.
-``tests/test_premium_authorities.py`` prevents either copy from drifting.
+The packaged copy here is what runs; the specs copy is a document. (The test that
+pinned the two together was retired 2026-08-18 with the other spec-artefact pins.)
 """
 
 from __future__ import annotations

@@ -1095,3 +1095,118 @@ def test_preview_never_scores_or_returns_mixed_fallback_as_an_llm_candidate(
     assert body["basic_tour"]["stops"]
 
 
+
+
+# ---------------------------------------------------------------------------
+# A band refusal reaches BOTH surfaces as a 422 with alternatives (q3)
+# ---------------------------------------------------------------------------
+# Rehomed 2026-08-18 from tests/test_tour_one_engine.py when that file's
+# deleted-stack tombstones were retired (owner ruling: keep the invariants,
+# drop the name-greps). The invariant: a request that cannot fit its time band
+# is a REFUSAL, never a crash — the band refusal carries the same
+# cause/reason/gap/alternatives payload the density refusal does, and the
+# phone's generate route catches it. Assertion 3 stays STRUCTURAL because
+# there is no hermetic generate path (the phone route persists a trip, which
+# the fake driver cannot answer); its docstring says so. The old assertion 4
+# ("no refusal body shows a human an identifier") is now proven on a REAL 422
+# by the ban-list on ``reason`` in test_preview_returns_the_plan_and_spends_nothing.
+
+
+def _minimal_assessment():
+    """The smallest valid TourabilityAssessment — context only, nothing asserted on it."""
+    from src.tour.contract import TourabilityAssessment
+
+    return TourabilityAssessment(
+        status="RED",
+        walk_radius_m=100.0,
+        fill_ratio=0.1,
+        dwell_capacity_seconds=10,
+        target_dwell_seconds=100,
+        reachable_poi_count=0,
+        reachable_beat_count=0,
+        anchor_candidate_count=0,
+        cluster_compactness=0.0,
+        duration_min=60,
+        round_trip=False,
+    )
+
+
+def test_a_band_refusal_reaches_both_surfaces_with_alternatives() -> None:
+    """A request that cannot fit its time band is a refusal, not a crash.
+
+    Two defects, both landed with the 2026-08-04 branch collapse: making the
+    timebox repair run for EVERY route shape put CertificationPlanningInfeasibleError
+    onto the phone's ``POST /trips/generate`` for the first time, and that route
+    caught only TourabilityRefusedError — a traveller whose walk did not fit got a
+    500 with a stack trace.
+
+    UNDO (each turns this RED): drop ``alternatives``/``gap_minutes`` from
+    CertificationPlanningInfeasibleError -> assertion 1; narrow the generate
+    route's except back to TourabilityRefusedError alone -> assertion 3.
+    """
+    import ast
+    from pathlib import Path
+
+    from src.api.routes.trips import _refusal_detail
+    from src.tour.contract import TourInput
+    from src.tour.density import FeasibilityAlternative, TourabilityRefusedError
+    from src.tour.routing import DEFAULT_ROUTE_PLANNING_POLICY
+    from src.tour.selection import CertificationPlanningInfeasibleError, _band_alternatives
+
+    # 1. The band refusal carries the SAME payload a fixed-destination refusal does.
+    tour_input = TourInput(start=(48.8567, 2.3410), duration_min=60, city_slug="paris")
+    alternatives, gap_minutes = _band_alternatives(
+        input=tour_input,
+        planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
+        best_elapsed_seconds=7200,
+    )
+    exc = CertificationPlanningInfeasibleError(
+        policy_id="certification-nominal-v1",
+        minimum_elapsed_seconds=3240,
+        maximum_elapsed_seconds=3960,
+        best_elapsed_seconds=7200,
+        reason="post-selection transforms moved the exact route outside the band",
+        alternatives=alternatives,
+        gap_minutes=gap_minutes,
+    )
+    detail = _refusal_detail(exc)
+    assert detail["cause"] == "time_budget"
+    assert isinstance(detail["reason"], str) and detail["reason"]
+    assert detail["gap_minutes"] == 54, detail
+    assert [a["kind"] for a in detail["alternatives"]] == ["extend"], detail
+    assert detail["alternatives"][0]["duration_min"] > tour_input.duration_min
+
+    # 2. The density refusal's shape is preserved byte-for-byte beside it.
+    density_detail = _refusal_detail(
+        TourabilityRefusedError(
+            _minimal_assessment(),
+            "nothing to see here",
+            gap_minutes=7,
+            alternatives=(
+                FeasibilityAlternative(kind="loop", duration_min=60, drop_end=True),
+            ),
+        )
+    )
+    assert density_detail["cause"] == "tourability"
+    assert density_detail["gap_minutes"] == 7
+    assert [a["kind"] for a in density_detail["alternatives"]] == ["loop"]
+
+    # 3. The phone's route catches BOTH, so neither escapes as a 500. STRUCTURAL,
+    #    and it says so: generate_trip persists a trip on success, so no hermetic
+    #    call can reach its refusal branch through the fake driver; the shape of
+    #    its except clauses is the honest hermetic proxy for "a 422, not a 500".
+    trips_path = Path(__file__).resolve().parent.parent / "src" / "api" / "routes" / "trips.py"
+    tree = ast.parse(trips_path.read_text(encoding="utf-8"), filename=str(trips_path))
+    generate = next(
+        n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name == "generate_trip"
+    )
+    caught: set[str] = set()
+    for handler in (h for n in ast.walk(generate) if isinstance(n, ast.Try) for h in n.handlers):
+        if handler.type is None:
+            continue
+        for node in ast.walk(handler.type):
+            if isinstance(node, ast.Name):
+                caught.add(node.id)
+    assert {"TourabilityRefusedError", "CertificationPlanningInfeasibleError"} <= caught, (
+        f"generate_trip does not catch the band refusal, so it escapes as a 500: {caught}"
+    )

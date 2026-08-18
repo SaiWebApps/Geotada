@@ -137,8 +137,7 @@ def _money_guard_no_live_compose(request, monkeypatch):
     ever CONSTRUCTING those billing clients: for every non-``live`` test, patch the
     real classes to their offline stubs. The hermetic Python shard then
     physically cannot make a paid Anthropic call — the real clients are never
-    instantiated (the armed set is pinned structurally by
-    ``test_tour_one_engine.test_whole_tour_composer_is_gone``).
+    instantiated.
     ``@pytest.mark.live`` tests run in ``make test`` through the dedicated
     ``test-live`` shard; they intentionally spend and bind the real client by direct
     import, so they are left untouched."""
@@ -152,9 +151,9 @@ def _money_guard_no_live_compose(request, monkeypatch):
     import src.tour.verify as _verify_mod
 
     # isort: split
-    # The arm below is pinned BYTE-FOR-BYTE by AC-9 (tests/test_tour_one_engine.py::
-    # test_whole_tour_composer_is_gone), so the import inside it may not be folded into
-    # the sorted block above. Do not reflow it.
+    # The import inside the arm below is deliberately local (it used to be pinned
+    # byte-for-byte by a structural test retired 2026-08-18); keep it local so the
+    # premium module is only imported when the guard actually arms.
 
     # PREMIUM authoring money-guard: the workbench now uses the same zero-retry,
     # receipt-preserving physical boundary as certification batches. Product

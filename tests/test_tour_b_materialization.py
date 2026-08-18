@@ -471,8 +471,14 @@ def test_one_story_fixed_end_corpus_is_refused_not_padded_with_a_sentinel():
     assert assessment.max_supportable_duration_min < duration
 
     # No route comes back at all, so there is nothing for a beatless sentinel to
-    # pad. The message names the band and the best it could actually build.
+    # pad. The refusal says, in a traveller's words, how much day this corpus can
+    # honestly build and what was asked (the sentence itself was re-derived at
+    # the Phase 4 close, W4.12 fix 10 — it used to name a "TIME band", which was
+    # engineer-speak, and this pin was the last reader of that wording).
     with pytest.raises(CertificationPlanningInfeasibleError) as excinfo:
         select_route(inp, snap)
-    assert "TIME band" in str(excinfo.value)
+    reason = excinfo.value.reason
+    assert "far short of the" in reason and "minutes asked for" in reason, reason
+    assert excinfo.value.best_elapsed_seconds is not None
+    assert excinfo.value.best_elapsed_seconds < excinfo.value.minimum_elapsed_seconds
 
