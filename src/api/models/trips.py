@@ -10,6 +10,26 @@ from src import city_registry
 from src.tour.candidate_eligibility import CandidateRejection
 from src.tour.contract import RouteOption, normalized_lens_list
 
+#: The party vocabulary, wire-form tolerant: the workbench (and any URL-ish
+#: caller) spells presets with hyphens; the engine's TourInput spells them with
+#: underscores. Normalized HERE, at the edge, so exactly one spelling exists
+#: inside the engine.
+_PARTY_PRESETS = ("solo", "couple", "family", "take_it_easy", "with_luggage")
+
+
+def _normalize_party(v: str | None) -> str | None:
+    if v is None:
+        return None
+    slug = v.strip().lower().replace("-", "_")
+    if not slug:
+        return None
+    if slug not in _PARTY_PRESETS:
+        raise ValueError(
+            f"party must be one of {sorted(_PARTY_PRESETS)} "
+            f"(hyphens accepted), got {v!r}"
+        )
+    return slug
+
 
 def _validate_city_slug(v: str) -> str:
     """Reject an unknown city at the edge (clear 422) instead of loading an
@@ -82,6 +102,31 @@ class TripGenerateRequest(BaseModel):
         description="How hard the end is: 'wall' keeps visible spare minutes, "
         "'firm' is today's behaviour, 'open' never pads toward the requested length",
     )
+    # WHO IS WALKING + THE DIALS (Phase 4, W4.2 panel — declared on BOTH request
+    # models for the same silently-dropped-field reason max_stop_minutes records
+    # above; every default is today's behaviour). See src/tour/contract.py for
+    # each axis's meaning; the route threads them onto TourInput verbatim.
+    party: str | None = Field(
+        default=None,
+        description="Party preset (solo|couple|family|take-it-easy|with-luggage; "
+        "hyphens or underscores)",
+    )
+    walking_pace: float | None = Field(default=None, ge=1.0)
+    max_leg_minutes: int | None = Field(default=None, ge=1)
+    rest_cadence_minutes: int | None = Field(default=None, ge=1)
+    weather: Literal["dry", "rain", "auto"] | None = Field(
+        default=None,
+        description="'auto' fetches the forecast for start_datetime at the start "
+        "point (fail-open: no answer plans as no signal)",
+    )
+    pinned_poi_ids: list[str] = Field(default_factory=list)
+    stop_density: Literal["fewer", "more"] | None = None
+    narration_density: Literal["less", "more"] | None = None
+    avoid_queues: bool = False
+    category_minus: list[str] = Field(default_factory=list)
+
+    _normalize_party_preset = field_validator("party")(_normalize_party)
+
     start_date: str = Field(..., description="ISO date for the trip start")
     end_date: str = Field(..., description="ISO date for the trip end")
     start_time: str = Field(default="09:00", description="Daily start time (HH:MM)")
@@ -191,8 +236,10 @@ class TripGenerateResponse(BaseModel):
     stops: list[GeneratedStop]
     options: list[RouteOption] = Field(
         default_factory=list,
-        description="M6 k-flavours (§2.8): up to 3 distinct tour options; options[0] "
-        "is the persisted trip. Computed per request, not persisted.",
+        description="THE day, as a one-element list (Phase 4, design §8.1 deleted "
+        "pick-one-of-three). Stays a LIST because trips persisted before Phase 4 "
+        "store multi-option lists and one client parser reads both. options[0] is "
+        "the persisted trip. Computed per request, not persisted.",
     )
     # EVERYTHING THAT SILENTLY DEGRADED while building this tour (owner ruling
     # 2026-07-31: "Don't just log errors. Actually show them in the workbench UI.
@@ -253,6 +300,23 @@ class TripPreviewRequest(BaseModel):
     # story. TripPreviewAuthorRequest subclasses this and inherits both.
     start_datetime: str | None = None
     end_hardness: Literal["wall", "firm", "open"] = "firm"
+    # WHO IS WALKING + THE DIALS (Phase 4, W4.2 panel — the workbench's whole
+    # request surface; TripPreviewAuthorRequest inherits every one, which is
+    # what lets the author call replay the exact dialed body). Same fields,
+    # same defaults, same normalization as TripGenerateRequest above.
+    party: str | None = None
+    walking_pace: float | None = Field(default=None, ge=1.0)
+    max_leg_minutes: int | None = Field(default=None, ge=1)
+    rest_cadence_minutes: int | None = Field(default=None, ge=1)
+    weather: Literal["dry", "rain", "auto"] | None = None
+    pinned_poi_ids: list[str] = Field(default_factory=list)
+    stop_density: Literal["fewer", "more"] | None = None
+    narration_density: Literal["less", "more"] | None = None
+    avoid_queues: bool = False
+    category_minus: list[str] = Field(default_factory=list)
+
+    _normalize_party_preset = field_validator("party")(_normalize_party)
+
     lenses: list[str] | None = None
     round_trip: bool = False
     city_slug: str = Field(
@@ -384,6 +448,23 @@ class TripPreviewBasicTour(BaseModel):
     stops: list[TripPreviewStop]
 
 
+class TripPreviewPromise(BaseModel):
+    """One promised item of the planned day, as the pre-commit surface shows it.
+
+    Phase 4 (W4.2 deviation v — ruled to land this phase): name + a COARSE
+    window (F&D: "not six minute-precision timestamps"; empty strings on a
+    dateless plan) + which side of the door and the wait, so the person can
+    judge the promise before anything is written.
+    """
+
+    kind: Literal["anchor", "pinned", "rest", "finish"]
+    name: str
+    arrives_hhmm: str = ""
+    departs_hhmm: str = ""
+    goes_inside: bool = False
+    queue_minutes: int = 0
+
+
 class TripPreviewResponse(BaseModel):
     """THE PLAN, and nothing else — route options, no narration, no spend.
 
@@ -399,12 +480,25 @@ class TripPreviewResponse(BaseModel):
     """
 
     spine_area: str | None = None
-    # The flavours: the same lens, duration, start and end; different places and a
-    # different walk. Each carries its own stops, its arrival time and its own
-    # per-corridor lens note. The first is the engine's own preferred one.
+    # THE day, as a one-element list (Phase 4, design §8.1). The field stays a list
+    # because the author route's opt-N ids and every stored pre-Phase-4 payload are
+    # list-shaped; there is simply exactly one entry now, carrying its stops, its
+    # arrival time and its per-corridor lens note.
     options: list[RouteOption] = Field(default_factory=list)
     # None = GREEN (no warning needed). RED never reaches a 200 response.
     tourability: TripPreviewTourability | None = None
+    # THE HONESTY SURFACE (Phase 4, W4.2 deviation v — ruled to land this
+    # phase, all eleven personas): what the day PROMISES, what the clock and
+    # the dials excluded (in plain sentences), and where the unplanned minutes
+    # live. All additive with empty defaults, so every earlier payload and
+    # every consumer that ignores them is untouched.
+    promises: list[TripPreviewPromise] = Field(default_factory=list)
+    day_notes: list[str] = Field(default_factory=list)
+    slack_minutes: int | None = None
+    # The longest single walk in the day, in minutes (W4.12 — the number the
+    # "Shorter walks" dial is named after; the surface used to print only the
+    # total). None only from an older server; 0 on a day with no walking legs.
+    longest_walk_minutes: int | None = None
     # EVERYTHING THAT SILENTLY DEGRADED while PLANNING this tour (owner ruling
     # 2026-07-31: "Don't just log errors. Actually show them in the workbench UI.
     # Otherwise, they're invisible."). A route built on estimated walking legs rather

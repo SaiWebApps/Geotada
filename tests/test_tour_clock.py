@@ -407,7 +407,13 @@ def test_a_closed_museum_with_an_exterior_becomes_an_outside_only_stop():
     )
     demoted = [e for e in tuesday.clock_exclusions if e.poi_id == museum.id]
     assert len(demoted) == 1, "the outside-only demotion must be disclosed"
-    assert "outside only" in demoted[0].reason
+    # Re-derived at W4.12: the DECISION is a flag, not words in the sentence. The
+    # panel ruled "seated outside only" out; the harness then string-matched the
+    # reason and went blank; and the traveller's sentence ("we will see it from
+    # the outside" vs "not in your day") depends on route membership only the
+    # wire knows. The DISCLOSURE this test defends is unchanged.
+    assert demoted[0].kept_outside is True
+    assert "closed" in demoted[0].reason and "Tuesday" in demoted[0].reason
     assert tuesday.planned_visit_seconds[museum.id] == 20 * 60, (
         "a closed interior (and any queue) must price at ZERO — the visitor "
         "stands outside for the exterior minutes and nothing else"
@@ -434,6 +440,55 @@ def test_a_closed_poi_with_nothing_to_stand_and_see_is_still_excluded():
     recorded = [e for e in tuesday.clock_exclusions if e.poi_id == museum.id]
     assert len(recorded) == 1, "the honest removal must still be recorded"
     assert "closed" in recorded[0].reason
+    assert recorded[0].kept_outside is False, "nothing to see from the street = left the pool"
+
+
+def test_a_closure_is_disclosed_in_plain_words_and_keeps_its_doubt():
+    """W4.12 (design deviation v; Paulo's wording rulings from the W4.2 panel).
+
+    This sentence goes on screen to a traveller, and the live Paris corpus was
+    printing it as:
+
+        "Marché Bastille — closed all day Wednesday (hours: OSM); closed today
+         — seated outside only"
+
+    which breaks two explicit rulings at once. "(hours: OSM)" is a provenance
+    tag no traveller can read. "seated" is the engine's own word for putting a
+    stop in the day, and on a MARKET the phrase reads as if a shut market had
+    tables outside.
+
+    The rulings did NOT ask for the doubt to be dropped with the tag. So the
+    doubt is now carried in words: an unverified table says so in the sentence,
+    a verified one simply states the closure. That is the pair this test pins —
+    forbidden vocabulary out, honesty in.
+    """
+    import datetime as dt
+    import json as _json
+
+    from src.tour.selection import _clock_exclusion_reason
+
+    closed_wed = _json.dumps({
+        "mon": [["09:00", "18:00"]], "tue": [["09:00", "18:00"]], "wed": [],
+        "thu": [["09:00", "18:00"]], "fri": [["09:00", "18:00"]],
+        "sat": [["09:00", "18:00"]], "sun": [["09:00", "18:00"]],
+    })
+    wednesday = dt.datetime(2026, 8, 12, 10, 0)
+
+    verified = _clock_exclusion_reason(closed_wed, "osm", wednesday, 180)
+    guessed = _clock_exclusion_reason(closed_wed, "ai", wednesday, 180)
+    unsourced = _clock_exclusion_reason(closed_wed, None, wednesday, 180)
+
+    for sentence in (verified, guessed, unsourced):
+        assert sentence is not None and "Wednesday" in sentence, sentence
+        # The ruled-out vocabulary, in one place so a re-introduction is loud.
+        for banned in ("hours:", "OSM", "AI", "seated", "gated", "err-short"):
+            assert banned not in sentence, f"{banned!r} is back in {sentence!r}"
+
+    # A table we trust asserts the closure and nothing more.
+    assert verified == "closed all day Wednesday", verified
+    # A table we guessed says we guessed, in words a person reads.
+    assert "could not confirm" in guessed, guessed
+    assert "could not confirm" in unsourced, unsourced
 
 
 # --- dusk, and the after-dark finish (S3.7; design §4.3; Sofia's swap rule) ---

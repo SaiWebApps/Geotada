@@ -39,6 +39,7 @@ from collections.abc import Iterable
 
 from .claim_dedup import suppress_exact_repeats, suppress_repeated_claims
 from .contract import (
+    END_B_SENTINEL_PREFIX,
     GENERIC_OPEN_TOUR_CLOSING,
     GENERIC_TOUR_SIGNOFF,
     BeatRef,
@@ -802,8 +803,9 @@ def _build_anchor_block(
 
 
 # The fixed-end sentinel id prefix (selection._materialize_fixed_end_b): a pinned
-# endpoint with no POI of its own is materialized as "__end_b__<lat>_<lng>".
-_END_B_SENTINEL_PREFIX: str = "__end_b__"
+# endpoint with no POI of its own is materialized as "__end_b__<lat>_<lng>". ONE
+# definition, in the contract (W4.12); this name is kept for its importers.
+_END_B_SENTINEL_PREFIX: str = END_B_SENTINEL_PREFIX
 
 # Varied deterministic connective-tissue templates, cycled by leg so the tour
 # never reads the identical nav line twice in a row (the "Walk to the next stop."

@@ -385,13 +385,20 @@ def test_the_second_authoring_seam_is_gone() -> None:
 # what the next refactor picks up by mistake. This node id answers the STRUCTURAL half —
 # there is only one such implementation in the tree at all — by reading the syntax tree.
 
-#: The two primitives that turn one request into the K route options a person chooses
-#: between. Naming them is not an allowlist: everything asserted below (who calls them,
-#: from where, and whether that set has one member) is derived from the tree.
-K_OPTION_PRIMITIVES = frozenset({"select_k_routes", "choose_discrete_route"})
+#: WRITTEN DECISION, Phase 4 D4.0 (redesign design §8.1 — "the product stops offering
+#: three routes; no persona ever wanted to compare routes"): ``select_k_routes`` is
+#: REMOVED from this set. It was the K-flavour selector; Phase 4 deletes it together
+#: with the diversity penalty and the Jaccard rejection (S4.5), and the product plans
+#: ONE day. ``choose_discrete_route`` survives as the container-identity refusal on the
+#: one route. This is a re-derivation of the clause-3 pin against the one-day planner,
+#: not an edit-to-pass: the invariant underneath — exactly one callable turns a request
+#: into the day a person is offered — is unchanged; only the number of days is.
+K_OPTION_PRIMITIVES = frozenset({"choose_discrete_route"})
 
 #: The one callable allowed to produce them, as ``(repo-relative file, function)``.
-THE_ONE_PLANNER = ("src/tour/premium_tour.py", "plan_premium_options")
+#: Phase 4's S4.3 collapsed ``plan_premium_options`` into ``plan_premium_tour``: the
+#: pin flipped in the same step that moved the call, so the guard never gapped red.
+THE_ONE_PLANNER = ("src/tour/premium_tour.py", "plan_premium_tour")
 
 #: The output contract the interleave assembles. Constructing either of these IS
 #: interleaving a route into cards, whatever the surrounding function is called.
@@ -485,12 +492,13 @@ def test_one_planner_produces_the_options_and_one_interleave_builds_them() -> No
        there" are the same sentence to a search and opposite outcomes to a product.
     2. The deleted second authoring seam has zero references anywhere in the Python
        tree, and so does the deleted private preview interleave.
-    3. EXACTLY ONE callable turns a request into the K route options. The two
-       primitives that do it may be called from one function in one file and nowhere
-       else, so a surface cannot quietly acquire its own definition of "the three
-       routes we offer" — which is what the phone had until 2026-08-04, when it called
-       the K-route selector directly with no walk-budget policy and produced a
-       measurably shorter tour than the workbench did for the same request.
+    3. EXACTLY ONE callable turns a request into THE DAY a person is offered
+       (one day since Phase 4, design §8.1). The primitives that do it may be called
+       from one function in one file and nowhere else, so a surface cannot quietly
+       acquire its own definition of "the day we offer" — which is what the phone had
+       until 2026-08-04, when it called the route selector directly with no
+       walk-budget policy and produced a measurably shorter tour than the workbench
+       did for the same request.
     4. EXACTLY ONE place assembles the option payload. Building either output-contract
        object IS interleaving a route into cards, so every such construction must live
        in the one builder module — and, inside it, in the public builder or its own
@@ -601,7 +609,7 @@ def test_one_planner_produces_the_options_and_one_interleave_builds_them() -> No
         f"and drop the clause rather than leaving a check that watches an empty set."
     )
 
-    # 3. EXACTLY ONE callable produces the K route options.
+    # 3. EXACTLY ONE callable produces the offered day.
     planners: dict[str, set[str]] = {}
     for path, tree in src_trees.items():
         relative = path.relative_to(REPO_ROOT).as_posix()
@@ -616,9 +624,9 @@ def test_one_planner_produces_the_options_and_one_interleave_builds_them() -> No
     for callee, sites in sorted(planners.items()):
         assert sites == expected_site, (
             f"{callee} is called from {sorted(sites)}. Exactly one callable may turn a "
-            f"request into the offered route options, and it is "
+            f"request into the offered day, and it is "
             f"{THE_ONE_PLANNER[1]} in {THE_ONE_PLANNER[0]}. A second caller is a second "
-            f"answer to 'which three walks are we offering', and the two clients would "
+            f"answer to 'which walk are we offering', and the two clients would "
             f"then be choosing from different menus."
         )
 
@@ -1585,6 +1593,78 @@ def test_the_legacy_err_short_planner_is_gone() -> None:
     assert seen == [half], (
         "select_route did not hand its planning policy to the density gate, so the "
         f"tourability verdict and the plan are priced in different currencies: {seen}"
+    )
+
+
+#: Phase 4 S4.5 (design §8.1) — the flavour machinery, deleted as SYMBOLS. The
+#: per-place score channel (``poi_score``'s ``penalty`` parameter and the
+#: ``score_penalty`` threading) deliberately SURVIVES: Phase 3's rain pricing
+#: rides it (selection.py, commit 71654c97 — "rain reaches the RANKING"), so
+#: deleting the threading would delete the rain product. The plan's claim that
+#: the knob existed "solely for flavour re-runs" was measured false at
+#: execution (§0.2 plan defect, phase4-ledger.md).
+#: Public names: swept across ALL of src/. ``_jaccard`` is private and therefore
+#: module-scoped — ``beat_select.py`` legitimately owns an unrelated private
+#: ``_jaccard`` for beat overlap — so it is asserted gone from selection.py only.
+FLAVOUR_MACHINERY_NAMES = frozenset(
+    {
+        "select_k_routes",
+        "DIVERSITY_PENALTY",
+        "JACCARD_OVERLAP_MAX",
+    }
+)
+
+
+def test_the_flavour_machinery_is_gone() -> None:
+    """Phase 4 S4.5 (design §8.1) — pick-one-of-three has no machinery left.
+
+    UNDO: re-add ``def select_k_routes(...)`` (or any of the four names) to
+    ``src/tour/selection.py`` and clause 2 goes RED; delete ``poi_score``'s
+    ``penalty`` parameter and clause 1 goes RED (over-deletion — the rain
+    channel died with the flavours, which §8.1 never ordered).
+    """
+    # 1. NON-VACUITY + anti-over-deletion: the one-day planner primitives and
+    #    the surviving per-place score channel are still defined.
+    selection_path = REPO_ROOT / "src" / "tour" / "selection.py"
+    tree = ast.parse(selection_path.read_text(encoding="utf-8"))
+    defined = {
+        node.name for node in tree.body if isinstance(node, ast.FunctionDef | ast.ClassDef)
+    }
+    assert {"select_route", "choose_discrete_route", "poi_score"} <= defined, (
+        "the deletion took the one-day planner with it"
+    )
+    poi_score_def = next(
+        node
+        for node in tree.body
+        if isinstance(node, ast.FunctionDef) and node.name == "poi_score"
+    )
+    poi_score_params = {a.arg for a in poi_score_def.args.args} | {
+        a.arg for a in poi_score_def.args.kwonlyargs
+    }
+    assert "penalty" in poi_score_params, (
+        "poi_score lost its per-place score channel — that is the RAIN pricing "
+        "(commit 71654c97), which survives the flavour deletion on purpose"
+    )
+
+    # 2. ZERO references to the flavour machinery anywhere under src/ (public
+    #    names), and selection.py no longer defines or names its private
+    #    ``_jaccard`` (module-scoped sweep — see the constant's note).
+    offenders: dict[str, set[str]] = {}
+    for path in _python_files():
+        if path.relative_to(REPO_ROOT).parts[0] != "src":
+            continue
+        file_tree = ast.parse(path.read_text(encoding="utf-8"))
+        hit = _every_referenced_name(file_tree) & FLAVOUR_MACHINERY_NAMES
+        if hit:
+            offenders[path.relative_to(REPO_ROOT).as_posix()] = hit
+    assert not offenders, (
+        f"the flavour machinery still has live references under src/: {offenders}. "
+        f"Design §8.1 deleted pick-one-of-three; a surviving symbol is the fork's "
+        f"front door."
+    )
+    assert "_jaccard" not in _every_referenced_name(tree), (
+        "selection.py still names its private _jaccard — the flavour overlap "
+        "filter survived its own deletion"
     )
 
 

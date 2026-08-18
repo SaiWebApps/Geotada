@@ -9,7 +9,7 @@ in ``src/tour/premium_tour.py``. The second implementation that used to live in
 The four properties the AUTHOR block is defined by (ledger decision D5):
 
 * it never reaches the planner — proven STRUCTURALLY as well as at runtime, because a
-  module-level ``from .selection import select_k_routes`` binds at import time and a
+  module-level ``from .selection import select_route`` binds at import time and a
   monkeypatch on the ``selection`` module can no longer see it. The structural guard is
   **FUNCTION-SCOPED**: ``premium_tour.py`` as a whole legitimately imports the planner for
   ``plan_premium_tour`` (which is BLOCK 1, and whose job IS to plan), so a module-scope
@@ -92,9 +92,9 @@ _PLANNING_MODULES = frozenset(
 )
 
 #: Planning entry points, by the name they are CALLED under (bare or attribute).
+#: (select_k_routes left the set at Phase 4 — design §8.1 deleted it outright.)
 _PLANNING_CALLS = frozenset(
     {
-        "select_k_routes",
         "choose_discrete_route",
         "plan_premium_tour",
         "certification_planning_policy",
@@ -333,7 +333,8 @@ def _forbid_planning(monkeypatch: pytest.MonkeyPatch) -> None:
     def _explode(*args: object, **kwargs: object) -> None:
         raise AssertionError("the prebuilt-route seam must never re-plan a route")
 
-    monkeypatch.setattr(selection, "select_k_routes", _explode)
+    # select_k_routes died at Phase 4 (design §8.1); select_route is the planner.
+    monkeypatch.setattr(selection, "select_route", _explode)
     monkeypatch.setattr(selection, "choose_discrete_route", _explode)
 
 

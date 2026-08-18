@@ -34,7 +34,6 @@ from src.tour.glue_client import NO_GLUE_SENTINEL
 from src.tour.premium_tour import (
     PREMIUM_MODULE_VERSION,
     plan_premium_authoring,
-    plan_premium_options,
     plan_premium_tour,
 )
 
@@ -250,7 +249,7 @@ def test_preview_uses_shared_premium_plan_and_finalizer() -> None:
     catch.
     """
     planning = inspect.getsource(trips._plan_preview)
-    assert "plan_premium_options(" in planning
+    assert "plan_premium_tour(" in planning
     assert "select_route(" not in planning
 
     plan_route = inspect.getsource(trips.preview_trip)
@@ -506,18 +505,20 @@ def test_plan_premium_tour_builds_its_units_through_the_shared_prebuilt_seam() -
         "PremiumComposeUnit is constructed in more than one place, so the Block-2 "
         f"plan builder has been duplicated again: {sorted(builders)}"
     )
-    # ...and the single-route entry point reaches that one construction site rather
-    # than growing a copy. It is now a one-line delegate to the all-routes planner, so
-    # the chain is checked at both links: the delegate hands off, and the thing it
-    # hands off to is what builds the units.
-    delegate = inspect.getsource(premium_tour.plan_premium_tour)
-    assert "plan_premium_options(" in delegate
-    assert "PremiumComposeUnit(" not in delegate
+    # ...and the one-day entry point reaches that one construction site rather than
+    # growing a copy. RE-DERIVED at Phase 4's S4.3 (written decision, design §8.1):
+    # this clause used to pin plan_premium_tour as a one-line delegate to
+    # plan_premium_options, the K=3 planner; §8.1 deleted pick-one-of-three, so
+    # plan_premium_tour IS Block 1 now and the chain it must not re-inline is
+    # plan_premium_tour -> _plan_one_premium_route -> plan_premium_authoring.
+    entry = inspect.getsource(premium_tour.plan_premium_tour)
+    assert "_plan_one_premium_route(" in entry
+    assert "PremiumComposeUnit(" not in entry
     assert "plan_premium_authoring(" in inspect.getsource(premium_tour._plan_one_premium_route)
 
 
 # --------------------------------------------------------------------------
-# STEP 7 — BLOCK 1 returns three plans, and planning is genuinely free
+# Phase 4 S4.3 — BLOCK 1 plans ONE day, and planning is genuinely free
 # --------------------------------------------------------------------------
 
 _BLOCK_ONE_BASE = (48.8568, 2.3414)
@@ -564,35 +565,30 @@ def _receipted_transit(from_id, to_id, a_lat, a_lng, b_lat, b_lng) -> TransitSeg
     )
 
 
-def _three_routes():
-    """Three receipt-backed flavours over nine disjoint POIs."""
+def _one_route():
+    """One receipt-backed route over three disjoint POIs."""
     from tests.test_tour_selection import _poi
 
-    routes = []
-    for flavour in range(3):
-        pois = tuple(
-            _poi(
-                f"f{flavour}-p{i}",
-                lat=_BLOCK_ONE_BASE[0] + 0.0006 * (flavour + 1),
-                lng=_BLOCK_ONE_BASE[1] + 0.0008 * (i + 1),
-            )
-            for i in range(3)
+    pois = tuple(
+        _poi(
+            f"day-p{i}",
+            lat=_BLOCK_ONE_BASE[0] + 0.0006,
+            lng=_BLOCK_ONE_BASE[1] + 0.0008 * (i + 1),
         )
-        prev = _BLOCK_ONE_BASE
-        transits = []
-        for poi in pois:
-            transits.append(_receipted_transit(None, poi.id, prev[0], prev[1], poi.lat, poi.lng))
-            prev = (poi.lat, poi.lng)
-        routes.append(
-            Route(
-                pois=pois,
-                transits=tuple(transits),
-                total_walk_distance_m=sum(t.distance_m for t in transits),
-                total_walk_seconds=sum(t.walk_seconds for t in transits),
-                routed=True,
-            )
-        )
-    return routes
+        for i in range(3)
+    )
+    prev = _BLOCK_ONE_BASE
+    transits = []
+    for poi in pois:
+        transits.append(_receipted_transit(None, poi.id, prev[0], prev[1], poi.lat, poi.lng))
+        prev = (poi.lat, poi.lng)
+    return Route(
+        pois=pois,
+        transits=tuple(transits),
+        total_walk_distance_m=sum(t.distance_m for t in transits),
+        total_walk_seconds=sum(t.walk_seconds for t in transits),
+        routed=True,
+    )
 
 
 def _snapshot_for(routes):
@@ -617,67 +613,72 @@ def _snapshot_for(routes):
     )
 
 
-def test_block_one_returns_three_priced_free_plans(monkeypatch) -> None:
-    """AC-1 / AC-2 / AC-3 / AC-23 — three plans, no provider, no prose.
+def test_block_one_plans_one_priced_free_day(monkeypatch) -> None:
+    """Phase 4 S4.3 (design §8.1) — ONE day, no provider, no prose.
 
-    Block 1 used to return exactly ONE plan: it asked the selector for three flavours,
-    threw two away, and authored the survivor. The workbench and the phone therefore
-    could not offer a choice at all, and the two ends disagreed about which route "the"
-    route was. It also was not free — ``generate`` defaults to the real paid Haiku glue
-    client, so planning made provider calls on the surface whose entire value
-    proposition is that it costs nothing, and fanning out to three would have TRIPLED
-    that spend rather than removing it.
+    §8.1: "the product stops offering three routes" — no persona ever wanted to
+    compare routes, and the W4.2 panel (2026-08-11, all eleven) ruled the same
+    way from the real tables: the product plans THE day, and the dials on the
+    request are how a person changes it. Block 1 is therefore ``plan_premium_tour``
+    itself: ONE ``select_route`` call, the container-identity refusal kept, and
+    no K-flavour machinery anywhere in the module.
 
-    The free half is asserted ON THE DEFAULT PATH, with no glue client passed, because
-    that is the only version of the claim that survives the next refactor: a path that
-    is free only when a caller remembers to ask is one edit away from being paid again.
+    The free half is asserted ON THE DEFAULT PATH, with no glue client passed,
+    because that is the only version of the claim that survives the next
+    refactor: a path that is free only when a caller remembers to ask is one
+    edit away from being paid again.
 
     UNDO (each turns this RED):
-      * change ``ordered = [chosen, *(...)]`` to ``ordered = [chosen]`` -> assertions 1-2;
-      * default ``glue_client`` back to None so ``generate`` builds a real Haiku client
+      * route the entry back through a K-selector (any ``select_k_routes``
+        reference in the module) -> assertion 1;
+      * drop the ``SilentGlueClient()`` substitution from ``plan_premium_tour``
         -> assertion 4;
-      * change ``plan_premium_options(...)[0]`` to ``[-1]`` in ``plan_premium_tour``
-        -> assertion 5.
+      * author anything at plan time (construct a paid client) -> the _Poison
+        arms raise.
     """
     from tests.test_trip_preview_contract import _FakeRoutingClient
 
-    routes = _three_routes()
-    snapshot = _snapshot_for(routes)
+    # 1. STRUCTURAL: the one-day entry plans via select_route, and the K-flavour
+    #    selector is gone from the module entirely (S4.5 deletes its definition;
+    #    this module may not even name it).
+    module_source = inspect.getsource(premium_tour)
+    entry = inspect.getsource(premium_tour.plan_premium_tour)
+    assert "select_route(" in entry, "plan_premium_tour is not the one-day planner"
+    assert "select_k_routes" not in module_source, (
+        "the K-flavour selector is still referenced by premium_tour; §8.1 deleted "
+        "pick-one-of-three"
+    )
+
+    route = _one_route()
+    snapshot = _snapshot_for([route])
     tour_input = TourInput(start=_BLOCK_ONE_BASE, duration_min=60, city_slug="paris")
-    monkeypatch.setattr(premium_tour, "select_k_routes", lambda *a, **k: list(routes))
-    # THE PROVIDER THAT RAISES ON ANY CALL (AC-2), on both doors it could come through.
+    monkeypatch.setattr(premium_tour, "select_route", lambda *a, **k: route)
+    # THE PROVIDER THAT RAISES ON ANY CALL, on both doors it could come through.
     monkeypatch.setattr("src.tour.generation.HaikuGlueClient", _Poison)
     monkeypatch.setattr(premium_tour, "AnthropicPremiumExecutor", _Poison)
 
-    plans = plan_premium_options(
+    plan = plan_premium_tour(
         tour_input,
         snapshot,
         routing_client=_FakeRoutingClient(),
     )
 
-    # 1. THREE plans, one per flavour.
-    assert len(plans) == 3
+    # 2. THE day: the plan is built on exactly the selected route.
+    assert [p.id for p in plan.route.pois] == [p.id for p in route.pois]
 
-    # 2. The three DISTINCT flavours, in the selector's order, chosen first.
-    assert [[p.id for p in plan.route.pois] for plan in plans] == [
-        [p.id for p in route.pois] for route in routes
-    ]
+    # 3. A complete, authorable plan — one compose unit per dwell stop.
+    assert len(plan.units) == len(plan.route.pois)
+    assert plan.policy_version == PREMIUM_MODULE_VERSION
 
-    # 3. Each is a complete, authorable plan — one compose unit per dwell stop.
-    for plan in plans:
-        assert len(plan.units) == len(plan.route.pois)
-        assert plan.policy_version == PREMIUM_MODULE_VERSION
-
-    # 4. AC-2, THE FREE CLAIM: nothing was authored and no paid client was ever built.
-    #    _Poison raises in __init__, so reaching here at all is the proof — but assert it
-    #    explicitly too, and assert the DEFAULT client is the silent one rather than
-    #    trusting that the poison would have fired.
+    # 4. THE FREE CLAIM: nothing was authored and no paid client was ever built.
+    #    _Poison raises in __init__, so reaching here at all is the proof — but assert
+    #    the DEFAULT client is the silent one rather than trusting the poison fired.
     assert isinstance(premium_tour.SilentGlueClient().stitch("GLUE_NAV", "", ""), str)
     assert premium_tour.SilentGlueClient().stitch("GLUE_STAGING", "", "").startswith("<<NO_GLUE")
-    glue_default = inspect.signature(plan_premium_options).parameters["glue_client"].default
+    glue_default = inspect.signature(plan_premium_tour).parameters["glue_client"].default
     assert glue_default is None, "the parameter still exists for AUTHOR to pass a real one"
-    assert "SilentGlueClient()" in inspect.getsource(premium_tour.plan_premium_options), (
-        "plan_premium_options no longer substitutes the silent client for None, so a "
+    assert "SilentGlueClient()" in entry, (
+        "plan_premium_tour no longer substitutes the silent client for None, so a "
         "default-path plan falls through to generate's PAID Haiku client"
     )
 
@@ -687,26 +688,45 @@ def test_block_one_returns_three_priced_free_plans(monkeypatch) -> None:
     #     claim is not that nobody asks, it is that nobody bills.
     _RecordingSilentGlue.asked = []
     monkeypatch.setattr(premium_tour, "SilentGlueClient", _RecordingSilentGlue)
-    quiet = plan_premium_options(
+    quiet = plan_premium_tour(
         tour_input,
         snapshot,
         routing_client=_FakeRoutingClient(),
     )
-    assert len(quiet) == 3
+    assert [p.id for p in quiet.route.pois] == [p.id for p in route.pois]
     assert _RecordingSilentGlue.asked, (
         "no stitch request reached the silent client on the default path, so this "
         "assertion is not watching the thing it claims to watch"
     )
 
-    # 5. THE PRESERVATION PIN: the single-plan entry point returns exactly plans[0].
-    single = plan_premium_tour(
-        tour_input,
+    # 5. A start with no end plans through without a 4xx-shaped failure.
+    assert tour_input.end is None
+
+    # 6. A ROUND TRIP plans through the premium gate (W4.10's live finding:
+    #    the leg-per-stop sanity check refused every round trip, because the
+    #    loop-home leg makes legs == stops + 1 — the shape _prebuilt in this
+    #    very file has always declared).
+    loop = route.model_copy(
+        update={
+            "transits": (
+                *route.transits,
+                _receipted_transit(
+                    route.pois[-1].id,
+                    None,
+                    route.pois[-1].lat,
+                    route.pois[-1].lng,
+                    _BLOCK_ONE_BASE[0],
+                    _BLOCK_ONE_BASE[1],
+                ),
+            )
+        }
+    )
+    monkeypatch.setattr(premium_tour, "select_route", lambda *a, **k: loop)
+    round_trip_plan = plan_premium_tour(
+        TourInput(
+            start=_BLOCK_ONE_BASE, duration_min=60, city_slug="paris", round_trip=True
+        ),
         snapshot,
         routing_client=_FakeRoutingClient(),
     )
-    assert single.route_record["route_sha256"] == plans[0].route_record["route_sha256"]
-    assert single.candidate.model_dump(mode="json") == plans[0].candidate.model_dump(mode="json")
-    assert [u.stop_index for u in single.units] == [u.stop_index for u in plans[0].units]
-
-    # 6. AC-23: a start with no end plans through without a 4xx-shaped failure.
-    assert tour_input.end is None
+    assert len(round_trip_plan.units) == len(loop.pois)

@@ -31,24 +31,7 @@ sync_playwright = playwright_sync.sync_playwright
 REVIEW_HTML = (Path(__file__).parent.parent / "frontend" / "review.html").resolve()
 
 
-def _find_chromium() -> str | None:
-    """Find a cached Playwright Chromium binary if the default isn't installed."""
-    cache_dir = Path.home() / "Library" / "Caches" / "ms-playwright"
-    if not cache_dir.exists():
-        return None
-    for d in sorted(cache_dir.glob("chromium-*"), reverse=True):
-        candidate = (
-            d
-            / "chrome-mac-arm64"
-            / "Google Chrome for Testing.app"
-            / "Contents"
-            / "MacOS"
-            / "Google Chrome for Testing"
-        )
-        if candidate.exists():
-            return str(candidate)
-    return None
-
+from tests.browser_launch import chromium_launch_options, find_chromium
 
 # A `window.fetch` stub installed BEFORE review.html runs. It records every call
 # as {method, url} on window.__fetchCalls and lets the test decide the response
@@ -83,11 +66,10 @@ window.L = new Proxy({}, { get: () => __noopFn });
 
 @pytest.fixture()
 def page():
-    exe = _find_chromium()
-    if exe is None:
+    if find_chromium() is None:
         pytest.skip("Playwright Chromium not installed")
     with sync_playwright() as p:
-        browser = p.chromium.launch(executable_path=exe, headless=True)
+        browser = p.chromium.launch(**chromium_launch_options())
         pg = browser.new_page()
         # Install the fetch stub before any page script executes so the workbench
         # module (an IIFE that captures `fetch`) uses our stub, not the real one.

@@ -158,6 +158,31 @@ class TourInput(BaseModel):
     # None = no signal fetched, which is today's behaviour, byte-identical
     # planning — the `start_datetime` None-means-no-clock precedent.
     weather: Literal["dry", "rain"] | None = None
+    # THE DIALS (Phase 4, W4.2 panel — all four rulings recorded in
+    # phase4-ledger.md; every default is today's behaviour, byte-identical).
+    # Adding fields moves every request_sha256 — declared, Phase 8 re-seals.
+    #
+    # "Fewer stops, longer at each" / "More stops, shorter at each". "more"
+    # resolves to the proven short-stop ceiling (resolve_party_axes); "fewer"
+    # concentrates the day in selection (drop the weakest, keep the anchors
+    # whole). The bare stop-minutes ceiling was REJECTED as the fewer-mechanism
+    # (a placebo in two of three measured starts).
+    stop_density: Literal["fewer", "more"] | None = None
+    # "Less talking / More talking" — narration SUPPLY, never topic (the panel
+    # retired the topic-narrowing strawman unanimously). Phase 4 consumes it as
+    # beats-per-stop; the full point-first mechanics are Phase 6's.
+    narration_density: Literal["less", "more"] | None = None
+    # "Skip the queues" — queue-heavy stops are DIMMED in selection (the score
+    # channel), on top of Phase 3's queues-are-budgeted-never-credited rule.
+    # Named plainly because "quieter" is retired as a word (a sound word —
+    # Paulo; dangerous after dark — Sofia).
+    avoid_queues: bool = False
+    # "Less of THIS today" — place kinds excluded from dwell seating (Greta's
+    # "not what I did yesterday", Julien's "zero museums today"). Excluded
+    # kinds SWAP other places in (the lens behaviour), never starve the day
+    # (the shaved-stop behaviour), and each exclusion is DISCLOSED on the
+    # day's notes channel like a closed door.
+    category_minus: tuple[str, ...] = ()
 
     @field_validator("start_datetime")
     @classmethod
@@ -268,9 +293,16 @@ def resolve_party_axes(inp: TourInput) -> TourInput:
     "any" beats the preset too. No party → the input comes back unchanged.
     Idempotent: re-resolving a resolved input moves nothing.
     """
-    if inp.party is None:
-        return inp
     updates: dict[str, object] = {}
+    # THE STOPS DIAL, "more" direction (Phase 4, W4.2): "More stops, shorter at
+    # each" resolves to the proven short-stop ceiling — the measured a-stop20
+    # shape — unless the caller set a ceiling explicitly (explicit wins, the
+    # rule of this whole function). The "fewer" direction has no axis mapping:
+    # it concentrates the day inside selection instead.
+    if inp.stop_density == "more" and inp.max_stop_minutes is None:
+        updates["max_stop_minutes"] = 20
+    if inp.party is None:
+        return inp.model_copy(update=updates) if updates else inp
     for axis, value in _PARTY_AXES[inp.party].items():
         if axis == "route_surface":
             if "route_surface" not in inp.model_fields_set:
@@ -660,12 +692,23 @@ class ReachVerdict(BaseModel):
 
 
 class ClockExclusion(BaseModel):
-    """One POI the clock kept off a dated tour, and the plain-English reason.
+    """One POI the clock found closed on a dated tour, and the plain-English fact.
 
     Recorded so the day can SAY why the museum is missing (redesign 6.1 —
-    Aiko's locked door, Rosemary's Tuesday). `reason` is written for the
-    person reading the breakdown, names the day and the hours' source, and
-    needs no other field to be understood.
+    Aiko's locked door, Rosemary's Tuesday). `reason` is the CLOSURE FACT,
+    written for a person ("closed all day Wednesday"), and nothing else.
+
+    `kept_outside` is the planner's DECISION, as a flag rather than as words:
+    True when the closed place has an exterior worth standing at and so stayed
+    in the pool at its outside price (W1.9 dissent 1 — a locked door is still a
+    facade); False when there was nothing to see from the street and it left the
+    pool. Two readers need the decision — the harness table marks outside-only
+    stops, and the wire writes the traveller's sentence — and both used to
+    recover it by string-matching the reason ("outside only"), which broke the
+    moment the wording was made plain (W4.12). What the traveller is TOLD
+    ("we will see it from the outside" vs "so it is not in your day") depends
+    on whether the place actually ended up ON the route, which only the reader
+    holding the route can know — so that sentence is composed there, never here.
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -673,6 +716,7 @@ class ClockExclusion(BaseModel):
     poi_id: str
     name: str
     reason: str
+    kept_outside: bool = False
 
 
 class PromiseShape(BaseModel):
@@ -717,6 +761,12 @@ class Promise(BaseModel):
     kind: Literal["anchor", "pinned", "rest", "finish"]
     poi_id: str
     shape: PromiseShape
+    # THE WINDOW (Phase 4, W4.2 deviation v — the pre-commit surface shows
+    # timed promise windows; F&D locked them COARSE, a window not a
+    # minute-contract). Read off THE one arrival accumulation at assembly;
+    # "" on a dateless day — additive, every existing Promise byte-identical.
+    arrives_hhmm: str = ""
+    departs_hhmm: str = ""
 
 
 class Route(BaseModel):
@@ -766,6 +816,14 @@ class Route(BaseModel):
     # build a Route without it (score_saved_tours, score_gold_text,
     # human_reference_tours, and the repair's throwaway trial) and inherit that.
     planned_visit_seconds: Mapping[str, int] = Field(default_factory=dict)
+    # THE HONESTY SURFACE'S PER-STOP FACTS (Phase 4, W4.2 deviation v — the
+    # panel ruled unanimously that queue minutes and the in/out shape must be
+    # visible BEFORE a person commits to a day). Priced at each stop's ordered
+    # ARRIVAL hour by the same shape closure the visits use, at the same one
+    # site, so the surface and the budget can never disagree. Empty = unpriced
+    # (dateless/legacy routes) = nothing rendered; the safe identity default.
+    planned_queue_seconds: Mapping[str, int] = Field(default_factory=dict)
+    visit_goes_inside: Mapping[str, bool] = Field(default_factory=dict)
     # HOW MUCH SHORTER THAN ASKED this tour actually runs, in seconds, and 0 when
     # it is not short enough to be worth saying.
     #
@@ -864,6 +922,21 @@ class BeatSequence(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+# The fixed-end sentinel (selection._materialize_fixed_end_b): an A→B request
+# whose end point is not within snapping distance of any seated place gets a
+# synthetic POI at B's exact coordinate so the ordering can pin it as the last
+# stop. It is a WAYPOINT, not a place — no beats, no dwell — and every surface
+# that meets it must know that: the narrator never voices its name
+# (generation.py), and the wire flags the card so a screen can say "ends at
+# your finish point" instead of counting a zero-minute stop (W4.12 closing
+# panel: "Destination: 0 min · outside" listed as stop 5 of 5, and promised as
+# `finish Destination 12:50-12:50`; Sofia: "a winter tour must never end at a
+# nameless place in the dark"). ONE definition, read by selection, generation
+# and options — it used to be spelled twice.
+END_B_SENTINEL_PREFIX: str = "__end_b__"
+END_B_SENTINEL_NAME: str = "Your finish point"
+
+
 SourceType = Literal["beat", "glue", "arith"]
 
 
@@ -953,6 +1026,20 @@ class RouteOptionStop(BaseModel):
     # KE9: this dwell stop has "keep exploring here" extras — beats the time budget
     # capped out. Always False on vignette and leg cards.
     has_deeper_dive: bool = False
+    # THE FIXED-END WAYPOINT, flagged (W4.12). True only on the card for the
+    # A→B sentinel (END_B_SENTINEL_PREFIX): the place a person asked to END at
+    # when no seated stop is near it. Zero minutes, no beats, not a place — a
+    # screen renders it as "ends at your finish point", never as a numbered
+    # stop, and never counts it. Additive with a False default, so every earlier
+    # payload and every consumer that ignores it is untouched.
+    is_finish_point: bool = False
+    # THE HONESTY SURFACE (Phase 4, W4.2 deviation v — the panel ruled queue
+    # minutes and the in/out side of the door must be visible BEFORE a person
+    # commits). Priced at this stop's ordered arrival hour by the planner (the
+    # Route's own maps); 0 / None on unpriced (dateless/legacy) plans, on
+    # vignette and leg cards, and on every pre-Phase-4 payload — additive.
+    queue_minutes: int = Field(default=0, ge=0)
+    goes_inside: bool | None = None
 
 
 class RouteOption(BaseModel):

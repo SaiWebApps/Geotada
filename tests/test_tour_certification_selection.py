@@ -862,7 +862,8 @@ def test_a_request_is_a_ceiling_and_the_planner_never_returns_more_than_it():
 
 
 def test_an_area_that_cannot_fill_the_request_returns_a_short_tour_not_a_refusal():
-    """THE FLOOR IS SOFT. A thin corridor gets a shorter tour and a sentence.
+    """THE FLOOR IS SOFT — for honest near-misses. A thin corridor gets a
+    shorter tour and a sentence.
 
     This is the last door through which the reported bug returns. A planner
     that MUST reach the floor has only one currency to pay in — distance — so
@@ -870,30 +871,38 @@ def test_an_area_that_cannot_fill_the_request_returns_a_short_tour_not_a_refusal
     a Rue Royale walk ended up at Parc de la Villette. Making the floor a
     disclosure instead of a refusal removes the pressure entirely.
 
-    Neither `CertificationPlanningInfeasibleError` nor `TourabilityRefusedError`
-    may be raised for under-fill. Naming only the first would let a density
-    refusal on the same underlying condition pass this assertion literally
-    while breaking its promise.
+    RE-DERIVED at Phase 4 S4.5 (a written decision, not an edit-to-pass): the
+    W4.2 panel — all eleven, unanimous on their worst finding — drew a line
+    UNDER the soft floor: a best-possible day under HALF the ask is "no day,
+    mislabelled" (the measured a-leg6 cell: one stop, 30 minutes, sold as
+    planned-180, GREEN) and REFUSES with the binding constraint named. This
+    fixture used to deliver ~22% of a 90-minute ask and pin that it shipped;
+    the same corpus now proves BOTH arms: at 30 minutes it is an honest
+    near-miss (~65%) and ships short with the disclosure; at 90 minutes it is
+    the extreme and refuses.
     """
     from src.tour.density import TourabilityRefusedError
+    from src.tour.selection import CertificationPlanningInfeasibleError
 
     # Real Paris degrees, no injected routing client, so the walk is the engine's
     # own pace-corrected haversine and the arithmetic below is the engine's.
-    # One nearby stop and a destination 600 m away, against a 90-minute request
-    # the corridor cannot honestly fill.
+    # One nearby stop and a destination 600 m away — a corridor supporting
+    # roughly twenty minutes of day.
     destination = _poi("destination", x=2.3229, y=48.8740, audio=60)
     nearby = _poi("nearby", x=2.3240, y=48.8710, audio=60, visit_min=3)
     pois = [destination, nearby]
     snap = _snapshot(pois, {destination.id: 60, nearby.id: 60})
+    policy = _policy()
+
+    # ARM 1 — the honest near-miss (asked 30, supportable ~20 = ~65%): ships
+    # short, discloses, never refuses.
     tour_input = TourInput(
         start=(48.8686, 2.3229),
         end=(48.8740, 2.3229),
-        duration_min=90,
+        duration_min=30,
         city_slug="test",
     )
-    policy = _policy()
-    budget = route_planning_budget(90, policy)
-
+    budget = route_planning_budget(30, policy)
     route = select_route(tour_input, snap, planning_policy=policy)
 
     served = route.total_walk_seconds + sum(
@@ -904,11 +913,27 @@ def test_an_area_that_cannot_fill_the_request_returns_a_short_tour_not_a_refusal
     )
     assert route.elapsed_shortfall_seconds > 0, (
         "an honestly short tour shipped with no disclosure, so the traveller is "
-        "told 90 minutes and given far less with no explanation"
+        "told 30 minutes and given less with no explanation"
     )
     # Measured against what was ASKED, not against the internal floor.
     assert route.elapsed_shortfall_seconds <= budget.nominal_elapsed_seconds
     assert not isinstance(route, TourabilityRefusedError)
+
+    # ARM 2 — the extreme (asked 90, supportable ~20 = ~22%): refuses, and the
+    # refusal names the truth (no false "overruns").
+    with pytest.raises(CertificationPlanningInfeasibleError) as caught:
+        select_route(
+            TourInput(
+                start=(48.8686, 2.3229),
+                end=(48.8740, 2.3229),
+                duration_min=90,
+                city_slug="test",
+            ),
+            snap,
+            planning_policy=policy,
+        )
+    assert "overruns" not in str(caught.value)
+    assert "far short" in str(caught.value)
 
 
 def test_a_tour_that_fills_the_request_carries_no_shortfall_disclosure():
@@ -952,8 +977,12 @@ def test_a_rich_stop_cannot_push_a_tour_past_the_duration_that_was_asked_for():
     """
     # Both carry enough narration to clear the filler-stub floor, so the point
     # under test is the CEILING and not whether the stop was admitted at all.
+    # The destination's own visit is sized so the day WITHOUT the big stop is a
+    # healthy ~60% of the ask (re-derived at Phase 4 S4.5: the old 5-minute
+    # remainder tripped the panel-ordered extreme-underfill refusal, which is
+    # not what this test is about — the ceiling is).
     big = _poi("big", x=2.3235, y=48.8691, audio=120, visit_min=27)
-    destination = _poi("destination", x=2.3229, y=48.8697, audio=120)
+    destination = _poi("destination", x=2.3229, y=48.8697, audio=120, visit_min=16)
     pois = [big, destination]
     snap = _snapshot(pois, {big.id: 120, destination.id: 120})
     tour_input = TourInput(

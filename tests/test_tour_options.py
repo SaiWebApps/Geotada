@@ -1,18 +1,22 @@
-"""M6 k-flavours — select_k_routes + RouteOption assembly. Hermetic.
+"""THE ONE INTERLEAVE — ``build_route_option`` assembles the day's cards. Hermetic.
 
-PROVE (IMPLEMENTATION-PLAN M6): dense GREEN fixture with mocked routing,
-k=3 → flavour count in {2,3}; every pair under 0.60 Jaccard; ordered paths
-pairwise differ; each flavour's Script passes validation.
+Moved intact from ``tests/test_tour_flavours.py`` at Phase 4's D4.0 (redesign plan,
+2026-08-07 folder): that file was the k-flavours suite and died with ``select_k_routes``
+and the diversity machinery (design §8.1 — "no persona ever wanted to compare routes"),
+but ``build_route_option`` is count-agnostic and SURVIVES as the one place a Route
+becomes user-facing cards (``test_tour_one_engine.py`` pins it as THE ONE INTERLEAVE).
+These are its tests: dwell/leg/vignette card assembly, spotlight and band scoring,
+lens coverage notes, and the contract round-trip.
+
+Deleting the flavour suite wholesale would have deleted this coverage with it — logged
+as a plan defect (§0.2) in phase4-ledger.md; the plan said "delete wholesale" before
+the file had been read end to end.
 """
 
 from __future__ import annotations
 
-import json
-
-import httpx
 import pytest
 
-from src.tour.beat_select import select_poi_beats
 from src.tour.contract import (
     POI,
     BeatRef,
@@ -27,329 +31,8 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
-from src.tour.density import TourabilityRefusedError
-from src.tour.generation import generate
 from src.tour.options import build_route_option
-from src.tour.routing_client import RoutingClient
-from src.tour.selection import (
-    DIVERSITY_PENALTY,
-    CertificationPlanningInfeasibleError,
-    _jaccard,
-    select_k_routes,
-    select_route,
-)
-from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
-
-# ---------------------------------------------------------------------------
-# Dense GREEN fixture: 4 directional clusters x 5 rich POIs (20 tier-5 anchors,
-# 300s dwell each), reaching ~533m from the start — still inside the 60-min
-# one-way envelope (738m).
-#
-# WAS 3 per cluster (12 anchors) until 2026-08-04. Deleting the legacy flat 0.83
-# planning policy made the certification band TWO-SIDED: a 60-minute request now
-# refuses unless the plan delivers ~54 minutes of active time. The 12-anchor grid
-# topped out at 3166s of bounded route against a 3240s floor — 74s short — so
-# every select_k_routes test here raised CertificationPlanningInfeasibleError on
-# a fixture that was simply too thin to fill an hour, not on a real defect. The
-# fixture was ENRICHED rather than the band relaxed: the band is the locked
-# decision, and the live Paris corpus plans cleanly at 60/120/240/400/600 min.
-# ---------------------------------------------------------------------------
-
-
-def _grid_pois() -> list[POI]:
-    out = []
-    directions = [(0.003, 0.0), (0.0, 0.0045), (-0.003, 0.0), (0.0, -0.0045)]
-    for d, (dlat, dlng) in enumerate(directions):
-        for i in range(5):
-            scale = 1.0 + 0.15 * i
-            out.append(
-                _poi(
-                    f"poi-{d}-{i}",
-                    lat=PDV[0] + dlat * scale,
-                    lng=PDV[1] + dlng * scale,
-                    areas=("Le Marais",),
-                )
-            )
-    return out
-
-
-def _rich_beats(pois) -> dict[str, list[BeatRef]]:
-    return {
-        p.id: [
-            BeatRef(
-                id=f"{p.id}-b{i}",
-                poi_id=p.id,
-                est_spoken_seconds=240,
-                active_status="active",
-                script_body=f"Story {i} about {p.id}.",
-                lenses=("hidden_history",) if i % 2 == 0 else ("historic_arch",),
-            )
-            for i in range(5)
-        ]
-        for p in pois
-    }
-
-
-def _dense_snap():
-    pois = _grid_pois()
-    return _snap(
-        pois,
-        area_types={"Le Marais": "neighborhood"},
-        beats_by_poi=_rich_beats(pois),
-    )
-
-
-def _sweep_snap(duration_min: int):
-    """A corpus sized to plan `duration_min`, for the duration-sweep guard below.
-
-    The fixed grid above is calibrated for one hour. The sweep test asks for
-    30, 60, 90 and 120 minutes from the same start, and since 2026-08-04 a plan
-    has to land inside the certification TIME band at whichever duration was
-    asked for. Both halves of that band scale: how many stops the tour needs and
-    how far it walks between them. This borrows the duration-scaled anchor spiral
-    the selection suite already calibrates over a 28-cell duration sweep, whose
-    beat lengths also make a POI's credited audio equal the audio it delivers —
-    without that, the planner believes it has filled the tour after three stops
-    and then tries to make up the difference by walking, which is what pushed the
-    30- and 60-minute cells past their walk budgets.
-    """
-    return _snap(
-        _density_fillers(PDV, duration_min=duration_min),
-        area_types={"Le Marais": "neighborhood"},
-    )
-
-
-def _mock_handler(request: httpx.Request) -> httpx.Response:
-    """Generous isochrone + haversine-proportional routed legs."""
-    if request.url.path == "/isochrone":
-        ring = [[2.20, 48.80], [2.45, 48.80], [2.45, 48.92], [2.20, 48.92], [2.20, 48.80]]
-        return httpx.Response(
-            200,
-            json={
-                "type": "FeatureCollection",
-                "features": [
-                    {"type": "Feature", "properties": {},
-                     "geometry": {"type": "Polygon", "coordinates": [ring]}}
-                ],
-            },
-        )
-    if request.url.path == "/route":
-        from src.tour.routing import haversine_m
-
-        body = json.loads(request.content)
-        a, b = body["locations"]
-        d = haversine_m(a["lat"], a["lon"], b["lat"], b["lon"])
-        return httpx.Response(
-            200,
-            json={"trip": {"legs": [{"summary": {"time": round(d * 1.3), "length": d / 1000.0},
-                                     "shape": "flavour_mock_shape"}]}},
-        )
-    return httpx.Response(404)
-
-
-def _client() -> RoutingClient:
-    http = httpx.Client(
-        transport=httpx.MockTransport(_mock_handler), base_url="http://valhalla.test"
-    )
-    return RoutingClient(client=http)
-
-
-_INPUT = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
-
-
-# ---------------------------------------------------------------------------
-# The M6 PROVE
-# ---------------------------------------------------------------------------
-
-
-def test_k3_yields_2_or_3_distinct_flavours():
-    snap = _dense_snap()
-    with _client() as rc:
-        flavours = select_k_routes(_INPUT, snap, 3, routing_client=rc)
-
-    assert 2 <= len(flavours) <= 3, f"got {len(flavours)} flavours"
-    id_sets = [{p.id for p in f.pois} for f in flavours]
-    id_seqs = [[p.id for p in f.pois] for f in flavours]
-    for i in range(len(flavours)):
-        for j in range(i + 1, len(flavours)):
-            assert _jaccard(id_sets[i], id_sets[j]) < 0.60, (
-                f"flavours {i},{j} overlap too much: {sorted(id_sets[i] & id_sets[j])}"
-            )
-            assert id_seqs[i] != id_seqs[j], "ordered paths must pairwise differ"
-
-
-def test_each_flavour_passes_validation():
-    snap = _dense_snap()
-    with _client() as rc:
-        flavours = select_k_routes(_INPUT, snap, 3, routing_client=rc)
-    assert flavours
-    for flavour in flavours:
-        plans = [select_poi_beats(p, snap.beats_for(p.id)) for p in flavour.pois]
-        script = generate(BeatSequence(poi_beats=tuple(plans)), flavour, _INPUT)
-        assert script.validation.passed, (
-            f"untraceable={[s.text[:60] for s in script.validation.untraceable_sentences]}"
-        )
-        assert any(s.source_type == "beat" for s in script.script)
-
-
-def test_k1_is_the_select_route_delegate():
-    snap = _dense_snap()
-    with _client() as rc:
-        only = select_k_routes(_INPUT, snap, 1, routing_client=rc)
-    with _client() as rc:
-        direct = select_route(_INPUT, snap, routing_client=rc)
-    assert len(only) == 1
-    assert [p.id for p in only[0].pois] == [p.id for p in direct.pois]
-
-
-def test_optional_infeasible_flavour_preserves_valid_primary(
-    monkeypatch: pytest.MonkeyPatch,
-):
-    from src.tour import selection as selection_module
-
-    primary = Route(
-        pois=(_poi("primary", lat=PDV[0], lng=PDV[1]),),
-        transits=(),
-        total_walk_distance_m=0,
-        total_walk_seconds=0,
-    )
-    calls = 0
-
-    def fake_select_route(*_args, **_kwargs):
-        nonlocal calls
-        calls += 1
-        if calls == 1:
-            return primary
-        raise CertificationPlanningInfeasibleError(
-            policy_id="test-policy",
-            minimum_elapsed_seconds=3240,
-            maximum_elapsed_seconds=3960,
-            best_elapsed_seconds=3207,
-            reason="optional penalized flavour cannot reach the band",
-        )
-
-    monkeypatch.setattr(selection_module, "select_route", fake_select_route)
-
-    assert selection_module.select_k_routes(_INPUT, _dense_snap(), 3) == [primary]
-    assert calls == 2
-
-
-def test_overlapping_penalized_flavour_gets_one_strict_exclusion_rerun(
-    monkeypatch: pytest.MonkeyPatch,
-):
-    from src.tour import selection as selection_module
-
-    primary = Route(
-        pois=tuple(_poi(poi_id, lat=PDV[0], lng=PDV[1]) for poi_id in ("a", "b", "c")),
-        transits=(),
-        total_walk_distance_m=0,
-        total_walk_seconds=0,
-    )
-    distinct = Route(
-        pois=tuple(_poi(poi_id, lat=PDV[0], lng=PDV[1]) for poi_id in ("d", "e")),
-        transits=(),
-        total_walk_distance_m=0,
-        total_walk_seconds=0,
-    )
-    penalties = []
-
-    def fake_select_route(*_args, **kwargs):
-        penalty = kwargs.get("score_penalty")
-        penalties.append(penalty)
-        if penalty is None:
-            return primary
-        if set(penalty.values()) == {DIVERSITY_PENALTY}:
-            return primary
-        assert set(penalty.values()) == {0.0}
-        return distinct
-
-    monkeypatch.setattr(selection_module, "select_route", fake_select_route)
-
-    assert selection_module.select_k_routes(_INPUT, _dense_snap(), 2) == [primary, distinct]
-    assert penalties == [None, {"a": 0.3, "b": 0.3, "c": 0.3}, {"a": 0.0, "b": 0.0, "c": 0.0}]
-
-
-def test_flavours_are_deterministic():
-    snap = _dense_snap()
-    with _client() as rc:
-        first = select_k_routes(_INPUT, snap, 3, routing_client=rc)
-    with _client() as rc:
-        second = select_k_routes(_INPUT, snap, 3, routing_client=rc)
-    assert [[p.id for p in f.pois] for f in first] == [[p.id for p in f.pois] for f in second]
-
-
-@pytest.mark.parametrize("duration_min", (30, 60, 90, 120))
-def test_all_flavours_multi_stop_when_primary_is_multi_stop(duration_min: int):
-    """2026-07-03 single-stop class guard: NO flavour may collapse to one stop.
-
-    DIVERSITY_PENALTY (0.3) multiplies used-POI scores on re-runs and feeds
-    THREE ranking sites — the greedy value, the endpoint-pull far ranking and
-    the fill-pass ranking. A re-run can therefore pick a pathological far
-    first anchor (the penalty flips the near/far value ordering), lose the
-    endpoint-pull that saved flavour 1, or starve the fill pass — collapsing
-    flavour 2/3 to one stop while flavour 1 stays healthy. Today that ships
-    as a 1-stop RouteOption card in /trips/generate options[] with zero test
-    coverage; the existing tests here check distinctness/validation/
-    determinism but never a stop count on the penalized re-runs.
-
-    The duration sweep matters because the penalty interacts with the
-    per-duration budgets: at d=30 the budgets are tightest (flavours reach
-    2-3 stops only via the pull/fill rescue); at d=120 flavour 1 uses most of
-    the grid so the re-run is near-uniformly penalized (an implementation
-    that divides by the penalty, or floors it at 0, collapses there first).
-    """
-    from src.tour.routing import walk_budget_seconds
-
-    snap = _sweep_snap(duration_min)
-    inp = TourInput(start=PDV, duration_min=duration_min, city_slug="paris", round_trip=False)
-    with _client() as rc:
-        flavours = select_k_routes(inp, snap, 3, routing_client=rc)
-
-    # Precondition: the dense fixture must yield a multi-stop primary. If
-    # THIS fails, the fixture broke (recalibrate it) — not the invariant.
-    assert len(flavours[0].pois) >= 2, (
-        f"fixture drifted: primary flavour is {[p.id for p in flavours[0].pois]}"
-    )
-    # At d=120 a near-uniformly penalized re-run may legitimately reproduce
-    # flavour 1's stop set (Jaccard >= 0.60 ends the search), so the flavour
-    # COUNT is only pinned on the cells verified multi-flavour at HEAD.
-    if duration_min in (30, 60, 90):
-        assert len(flavours) >= 2, f"d={duration_min}: expected >=2 flavours"
-
-    budget = walk_budget_seconds(duration_min)
-    for i, flavour in enumerate(flavours):
-        # The single-stop floor — the actual class guard.
-        assert len(flavour.pois) >= 2, (
-            f"d={duration_min} flavour {i} collapsed to "
-            f"{[p.id for p in flavour.pois]} — a 1-stop RouteOption card"
-        )
-        # Budget sanity on the divisor the engine actually enforces: with a
-        # routing client, greedy/pull/fill budget checks run on ROUTED leg
-        # seconds (the mock's 1.3 s/m), while Route.total_walk_seconds stays
-        # the pace-corrected haversine metadata (1.62 s/m, deliberately NOT
-        # budget-bounded under a faster routed divisor — see routing.py M2).
-        routed_walk = sum(
-            t.leg_seconds if t.leg_seconds is not None else t.walk_seconds
-            for t in flavour.transits
-        )
-        assert routed_walk <= budget + 5, (
-            f"d={duration_min} flavour {i}: routed walk {routed_walk}s > budget {budget}s"
-        )
-
-
-def test_red_density_raises_through_k_routes():
-    lone = _poi("lone", lat=PDV[0], lng=PDV[1])
-    snap = _snap([lone], beats_by_poi={"lone": []})
-    with pytest.raises(TourabilityRefusedError):
-        select_k_routes(_INPUT, snap, 3)
-
-
-def test_jaccard_basics():
-    assert _jaccard(set(), set()) == 0.0
-    assert _jaccard({"a"}, {"a"}) == 1.0
-    assert _jaccard({"a"}, {"b"}) == 0.0
-    assert _jaccard({"a", "b", "c"}, {"b", "c", "d"}) == pytest.approx(0.5)
-
+from tests.test_tour_selection import _snap
 
 # ---------------------------------------------------------------------------
 # RouteOption assembly
@@ -743,3 +426,58 @@ def test_route_option_round_trips_with_explicit_spotlight_fields():
     assert rebuilt.stops[0].band == "vignette"
     assert rebuilt.stops[0].spotlight == 0.42
     assert rebuilt.lens_coverage_note == "only 2 places on this route speak to film and TV"
+
+
+def test_the_fixed_end_waypoint_is_flagged_and_named_as_a_finish_point_not_a_place():
+    """W4.12 closing panel: an A→B day whose last real stop was dropped ended with
+    "- Destination: 0 min · outside" counted as stop 5 of 5 (Sofia: "a winter tour
+    must never end at a nameless place in the dark"). The sentinel is a WAYPOINT
+    (contract.END_B_SENTINEL_PREFIX): the card carries `is_finish_point=True` and
+    the honest name, so a screen ends the day there instead of counting it. A
+    real place keeps False. The prefix is the ONE definition every surface reads.
+
+    UNDO TEST: drop `is_finish_point=sp.id.startswith(END_B_SENTINEL_PREFIX)` from
+    the dwell card in options.py -> the sentinel's card reads False -> RED.
+    """
+    from src.tour.contract import END_B_SENTINEL_NAME, END_B_SENTINEL_PREFIX
+
+    end_id = f"{END_B_SENTINEL_PREFIX}48.852966_2.349902"
+    pois = (
+        POI(id="p1", name="Anchor", tier=5, poi_role="stop", lat=48.85, lng=2.35),
+        POI(id=end_id, name=END_B_SENTINEL_NAME, tier=3, poi_role="stop",
+            lat=48.852966, lng=2.349902),
+    )
+    transits = (
+        TransitSegment(from_poi_id=None, to_poi_id="p1", distance_m=500, walk_seconds=810),
+        TransitSegment(from_poi_id="p1", to_poi_id=end_id, distance_m=300, walk_seconds=486),
+    )
+    route = Route(pois=pois, transits=transits, total_walk_distance_m=800, total_walk_seconds=1296)
+    script = Script(
+        city_slug="paris", generated_at="2026-06-12T00:00:00Z",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris",
+                         end=(48.852966, 2.349902)),
+        total_audio_seconds=300, total_walking_seconds=1296, total_walk_distance_m=800,
+        total_planned_seconds=1600,
+        selected_pois=(
+            ScriptPOI(id="p1", name="Anchor", tier=5, lat=48.85, lng=2.35,
+                      dwell_seconds=300, beat_ids=("b1",)),
+            ScriptPOI(id=end_id, name=END_B_SENTINEL_NAME, tier=3, lat=48.852966,
+                      lng=2.349902, dwell_seconds=0, beat_ids=()),
+        ),
+        lens_coverage={}, script=(), validation=ValidationReport(),
+    )
+    beats_by_id = {"b1": BeatRef(id="b1", poi_id="p1", lenses=())}
+    snapshot = _snap(list(pois), beats_by_poi={"p1": [beats_by_id["b1"]], end_id: []})
+
+    opt = build_route_option(
+        route, script, beats_by_id, route_id="rt", snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=()),
+    )
+    by_id = {s.poi_id: s for s in opt.stops if s.band == "dwell"}
+    assert by_id["p1"].is_finish_point is False
+    end_card = by_id[end_id]
+    assert end_card.is_finish_point is True, "the A→B waypoint was not flagged"
+    assert end_card.name == END_B_SENTINEL_NAME == "Your finish point"
+    assert end_card.minutes == 0
+    # The old name must not come back through any door.
+    assert "Destination" not in {s.name for s in opt.stops}

@@ -513,13 +513,15 @@ class _ExplodingExecutor:
         raise AssertionError("the plan-only preview called the narrator")
 
 
-def test_preview_returns_three_options_and_spends_nothing(make_client, monkeypatch):
-    """AC-13/AC-24: the preview PLANS. It shows routes to choose from and pays nobody.
+def test_preview_returns_the_plan_and_spends_nothing(make_client, monkeypatch):
+    """AC-13/AC-24: the preview PLANS. It shows the day and pays nobody.
 
     This endpoint used to plan a tour and then immediately write it, one paid call per
-    stop, before anyone had chosen anything — on an anonymous route. It now returns the
-    three route options and stops there; the words are written only after an option is
-    picked, by POST /trips/preview/author.
+    stop, before anyone had chosen anything — on an anonymous route. It now returns
+    the planned day and stops there; the words are written only after the person
+    commits, by POST /trips/preview/author. (Renamed from "three_options" at Phase 4
+    S4.4 — design §8.1 deleted pick-one-of-three; the assertions below were already
+    count-agnostic and are unchanged.)
 
     Anything that could spend is booby-trapped: the narrator itself, and both halves of
     the authoring seam. If any of them is reached the request fails rather than quietly
@@ -553,9 +555,10 @@ def test_preview_returns_three_options_and_spends_nothing(make_client, monkeypat
         assert int(match.group(2)) == i
         assert option["stops"], "an option without stops is not an option"
         assert option["eta_seconds"] > 0
-    assert len(fingerprints) == 1, "all three options must share one plan fingerprint"
+    assert len(fingerprints) == 1, "every option must share one plan fingerprint"
 
-    # AC-3: the options are genuinely different walks.
+    # AC-3: any options are genuinely different walks (vacuous at one — kept so a
+    # future second option cannot arrive as a duplicate).
     dwell_sets = [
         {s["poi_id"] for s in o["stops"] if s["band"] == "dwell"} for o in body["options"]
     ]
@@ -597,8 +600,42 @@ def test_preview_returns_three_options_and_spends_nothing(make_client, monkeypat
             f"the plan-only preview still advertises {authored_field!r}, which only "
             f"means something once a tour has been written"
         )
-    assert set(body) == {"spine_area", "options", "tourability", "degradations"}
+    # promises/day_notes/slack_minutes joined at Phase 4 (W4.2 deviation v —
+    # the pre-commit honesty surface, ruled by all eleven personas). Still an
+    # EXHAUSTIVE set: anything else appearing here is an unreviewed leak.
+    assert set(body) == {
+        "spine_area",
+        "options",
+        "tourability",
+        "degradations",
+        "promises",
+        "day_notes",
+        "slack_minutes",
+        "longest_walk_minutes",  # W4.12: the number the shorter-walks dial is named after
+    }
     assert body["degradations"] == [], "an empty list is a statement; a missing key is not"
+
+    # THE UNPLANNED MINUTES ARE NAMED AGAINST THE ASK (W4.12 closing panel —
+    # Marcus, Sofia, Aiko, Julien; W4.2's ruling was "the unaccounted minutes are
+    # NAMED"). The number is `asked - taken`, on the same clock the day is priced
+    # on, and it is an INTEGER on every 200 — zero included. It used to ride the
+    # planner's `elapsed_shortfall_seconds`, which is set only under the internal
+    # band FLOOR, so a 170-of-180 day sent null and a 270-of-300 day hid thirty
+    # minutes: it blanked exactly when the margin got tight. Pinned as arithmetic
+    # so no future channel swap can quietly reintroduce the floor.
+    taken = body["options"][0]["eta_seconds"]
+    assert isinstance(body["slack_minutes"], int), (
+        f"slack_minutes must be a number on every plan, got {body['slack_minutes']!r}"
+    )
+    assert body["slack_minutes"] == max(0, 30 * 60 - taken) // 60, (
+        "slack is asked-minus-taken, not the planner's under-floor shortfall"
+    )
+    # THE LONGEST SINGLE WALK is on the wire as a number (W4.12 — Rosemary: "a
+    # walking budget is not one number"; the surface printed only the total, so
+    # the dial named after this number could not be checked). Pinned against
+    # the day's own legs, computed by hand from the option's leg cards.
+    assert isinstance(body["longest_walk_minutes"], int)
+    assert body["longest_walk_minutes"] >= 0
 
     # AC-24: a duration too short to seat a single stop is a structured refusal that
     # names the time budget — never a 200 with nothing in it, never a bare string.
@@ -616,9 +653,23 @@ def test_preview_returns_three_options_and_spends_nothing(make_client, monkeypat
     detail = short.json()["detail"]
     assert set(detail) >= {"cause", "reason", "gap_minutes", "alternatives"}
     assert detail["cause"] == "time_budget"
-    assert "required 3240-3960s" in detail["reason"], (
+    # WRITTEN DECISION (Phase 4 S4.5): the pinned range was "3240-3960s" — the
+    # old 1.10 band ceiling. The repair's ceiling is THE REQUEST ITSELF (60 min
+    # = 3600 s; "ask for five hours and the tour is at most five hours"), so
+    # the refusal now names the range it actually enforces. The invariant is
+    # unchanged: the refusal names the budget it could not fill.
+    # W4.12 (Paulo): the traveller's `reason` is the planner's plain clause and
+    # never the exception wrapper; the budget in seconds moved to `technical`,
+    # where the AC-24 invariant still holds — the refusal names the budget it
+    # could not fill, on the field an operator reads.
+    assert "required 3240-3600s" in detail["technical"], (
         "the refusal must name the time budget it could not fill"
     )
+    for engineer_word in ("Certification", "ondoway-premium-tour", "3240", "bounded route"):
+        assert engineer_word not in detail["reason"], (
+            f"{engineer_word!r} reached the sentence a traveller reads: {detail['reason']!r}"
+        )
+    assert "minutes" in detail["reason"], detail["reason"]
     assert detail["gap_minutes"] is None
     # And it offers a way out rather than just saying no. Every alternative is a
     # complete, actionable suggestion — not a bare string a surface has to parse.
@@ -893,7 +944,7 @@ def test_estimated_legs_are_labelled_not_silently_shipped(make_client):
 
     # 4. THE OPERATOR'S CAUSE, in the structured half where it belongs — never stuffed
     #    into the sentence above.
-    assert row["component"] == "premium_tour.plan_premium_options"
+    assert row["component"] == "premium_tour.plan_premium_tour"
     assert "routing service" in row["context"]["cause"]
     assert "straight-line" in row["context"]["cause"]
     assert int(row["context"]["estimated_legs"]) > 0

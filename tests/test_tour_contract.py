@@ -386,7 +386,19 @@ def test_promise_shape_and_promise_carry_the_visit_shape_and_nothing_else():
         "goes_inside",
         "closed_today",
     }
-    assert set(Promise.model_fields) == {"kind", "poi_id", "shape"}
+    # Phase 4 S4.6 (W4.2 deviation v): a promise also carries its clock WINDOW
+    # — arrival and departure, "" on a dateless day — read off THE one arrival
+    # accumulation. A window is an obligation ("Place des Vosges, around 11:30
+    # to noon"), not a knob; it is the third thing a promise IS (design §3.1:
+    # "each promise carries a clock window"). Still exhaustive: anything else
+    # landing here is a knob and this goes red.
+    assert set(Promise.model_fields) == {
+        "kind",
+        "poi_id",
+        "shape",
+        "arrives_hhmm",
+        "departs_hhmm",
+    }
 
 
 def test_promise_kinds_are_the_four_species_of_the_day():

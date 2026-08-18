@@ -418,8 +418,18 @@ def _print_breakdown(
         exclusions = getattr(route, "clock_exclusions", ()) if route is not None else ()
         print("  clock exclusions:")
         if exclusions:
+            # The record carries the closure FACT and the pool DECISION as a flag
+            # (ClockExclusion.kept_outside, W4.12); the harness spells the
+            # decision out so a breakdown reads the same as the wire's day notes.
+            on_route = {p.id for p in route.pois} if route is not None else set()
             for excl in exclusions:
-                print(f"    • {excl.name} — {excl.reason}")
+                if excl.poi_id in on_route and excl.kept_outside:
+                    tail = " — kept, from the outside"
+                elif excl.poi_id in on_route:
+                    tail = ""  # a disclosure about a stop that stayed (dusk)
+                else:
+                    tail = " — not in this day"
+                print(f"    • {excl.name} — {excl.reason}{tail}")
         else:
             print("    none")
     # PER-STOP TABLE (plan S2.1; promise columns plan S3.1) — the DAY, not the
@@ -439,12 +449,13 @@ def _print_breakdown(
         # so the printed window and the printed table can never disagree.
         promises_by_poi = {p.poi_id: p for p in route.promises}
         # A stop the clock voided but the day KEEPS, from the outside — the
-        # promise-native planner records it as a clock exclusion whose reason
-        # says "outside only". Distinct from an excluded-and-dropped POI,
-        # which never appears in route.pois and so never reaches this table.
-        outside_only = {
-            e.poi_id for e in route.clock_exclusions if "outside only" in e.reason
-        }
+        # promise-native planner records it as a clock exclusion flagged
+        # `kept_outside` (W4.12: this used to string-match the reason for
+        # "outside only", and went silently blank the day the wording was made
+        # plain — a decision belongs in a field, not in a sentence). Distinct
+        # from an excluded-and-dropped POI, which never appears in route.pois
+        # and so never reaches this table.
+        outside_only = {e.poi_id for e in route.clock_exclusions if e.kept_outside}
         priced = route.planned_visit_seconds
         start_dt = (
             datetime.fromisoformat(tour_input.start_datetime)

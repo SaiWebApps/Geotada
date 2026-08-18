@@ -36,7 +36,6 @@ from src.tour.selection import (
     bearing,
     in_wedge,
     poi_score,
-    select_k_routes,
     select_route,
 )
 from tests.test_tour_selection import _auto_beat_seconds, _density_fillers
@@ -208,17 +207,17 @@ def test_near_end_within_budget_does_not_raise():
 
 
 # ---------------------------------------------------------------------------
-# select_k_routes: an over-budget A→B raises on the FIRST flavour, not [].
+# An over-budget A→B raises, never returns an empty plan. (Re-derived at Phase 4
+# S4.5, design §8.1: the invariant lived in select_k_routes' first-flavour rule;
+# the flavours died, the invariant is select_route's own.)
 # ---------------------------------------------------------------------------
 
 
-def test_select_k_routes_raises_on_first_flavour_for_over_budget_end():
+def test_select_route_raises_for_over_budget_end():
     snap = _green_snapshot(30)
     inp = TourInput(start=PDV, end=FAR_EAST_END, duration_min=30, city_slug="paris")
-    # Mirrors RED density: the refusal propagates through the first
-    # select_route call, so select_k_routes raises rather than returning [].
     with pytest.raises(TourabilityRefusedError) as excinfo:
-        select_k_routes(inp, snap, 3)
+        select_route(inp, snap)
     assert excinfo.value.gap_minutes is not None
 
 

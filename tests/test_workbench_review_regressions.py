@@ -38,6 +38,8 @@ import pytest
 playwright_api = pytest.importorskip("playwright.sync_api")
 sync_playwright = playwright_api.sync_playwright
 
+from tests.browser_launch import chromium_launch_options
+
 REVIEW_HTML = (Path(__file__).parent.parent / "frontend" / "review.html").resolve()
 REVIEW_URL = REVIEW_HTML.as_uri()
 
@@ -72,7 +74,7 @@ LISTENER_SPY = """
 @pytest.fixture(scope="module")
 def browser():
     with sync_playwright() as p:
-        b = p.chromium.launch()
+        b = p.chromium.launch(**chromium_launch_options())
         yield b
         b.close()
 

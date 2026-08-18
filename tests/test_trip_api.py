@@ -35,10 +35,10 @@ from src.tour.contract import TourInput
 from src.tour.degradations import degradation_scope, record
 from src.tour.density import TourabilityRefusedError
 from src.tour.options import build_route_option
-from src.tour.premium_tour import ALLOW_DIRTY_LOCAL_BUILD_ENV, plan_premium_options
+from src.tour.premium_tour import ALLOW_DIRTY_LOCAL_BUILD_ENV, plan_premium_tour
 from src.tour.routing import haversine_m, pace_corrected_walk_seconds
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_k_routes, select_route
+from src.tour.selection import load_paris_corpus, select_route
 from tests.conftest import needs_neo4j
 from tests.live_graph import open_dev_driver
 
@@ -211,22 +211,23 @@ def ile_response(client):
 
 @needs_neo4j
 def test_generate_plans_through_the_shared_block_one(ile_response, snapshot):
-    """AC-4/AC-7: the phone's route options ARE Block 1's plans, not a second planner.
+    """AC-4/AC-7 (re-derived at Phase 4 S4.4, design §8.1): the phone's day IS
+    Block 1's plan, not a second planner's.
 
-    The generate endpoint used to call ``select_k_routes`` itself, take flavour one, and
-    then re-run the whole beat-planning and script-stitching pass by hand — so it never
-    applied the Premium route bar and never went through the one shared planner the
-    workbench uses. Two halves of proof, because on a corpus where both paths happen to
-    agree the behavioural half alone would pass without the fix:
+    §8.1 deleted pick-one-of-three, so Block 1 is ``plan_premium_tour`` and the
+    endpoint publishes exactly ONE option. The invariant this test has always
+    carried is unchanged: the endpoint plans through the one shared planner, and
+    what it publishes is byte-identical to what that planner produced for the
+    identical input. The K-diversity clause died with the flavours (a written
+    §0.1.2 decision — it pinned the deleted Jaccard machinery).
 
-    * STRUCTURAL — the handler calls the shared planner and no longer contains a second
-      route-selection or script-generation pass of its own. This is AC-4's own wording:
-      "select_k_routes is no longer reached at trips.py:325 with no planning_policy".
-    * BEHAVIOURAL — every option the endpoint publishes is byte-identical to the flavour
-      the shared planner produced for the identical input (AC-7).
+    * STRUCTURAL — the handler calls the shared planner and no longer contains a
+      second route-selection or script-generation pass of its own.
+    * BEHAVIOURAL — the published option is byte-identical to the shared
+      planner's plan (AC-7).
     """
     planner_source = inspect.getsource(trips.generate_trip)
-    assert "plan_premium_options(" in planner_source, (
+    assert "plan_premium_tour(" in planner_source, (
         "generate_trip must plan through the one shared planner"
     )
     for second_pass in (
@@ -249,48 +250,38 @@ def test_generate_plans_through_the_shared_block_one(ile_response, snapshot):
         round_trip=False,
     )
     with RoutingClient() as rc:
-        plans = plan_premium_options(tour_input, snapshot, routing_client=rc)
+        plan = plan_premium_tour(tour_input, snapshot, routing_client=rc)
 
-    assert plans, "the shared planner produced no flavour at all for the Île input"
-    assert len(body["options"]) == len(plans), (
-        f"the endpoint published {len(body['options'])} options for "
-        f"{len(plans)} planned flavours — it is still planning for itself"
+    assert len(body["options"]) == 1, (
+        f"the endpoint published {len(body['options'])} options; Phase 4 plans ONE day"
     )
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
-    for i, plan in enumerate(plans):
-        option = body["options"][i]
-        expected = build_route_option(
-            plan.route,
-            plan.source,
-            beats_by_id,
-            route_id=option["route_id"],
-            snapshot=snapshot,
-            sequence=plan.sequence,
-        ).model_dump(mode="json")
-        assert [s["poi_id"] for s in option["stops"] if s["band"] == "dwell"] == [
-            p.id for p in plan.route.pois
-        ], f"option {i + 1} visits different places from planned flavour {i + 1}"
-        assert option["eta_seconds"] > 0
-        assert option["eta_seconds"] == expected["eta_seconds"], (
-            f"option {i + 1} declares an arrival time the planned flavour did not"
-        )
-        assert [s["narration"] for s in option["stops"]] == [
-            s["narration"] for s in expected["stops"]
-        ], f"option {i + 1} was written by a second pass over the same route"
-        # Catch-all: nothing at all about the published option may differ from the
-        # flavour the shared planner produced.
-        assert option == expected, f"option {i + 1} diverged from planned flavour {i + 1}"
+    option = body["options"][0]
+    expected = build_route_option(
+        plan.route,
+        plan.source,
+        beats_by_id,
+        route_id=option["route_id"],
+        snapshot=snapshot,
+        sequence=plan.sequence,
+    ).model_dump(mode="json")
+    assert [s["poi_id"] for s in option["stops"] if s["band"] == "dwell"] == [
+        p.id for p in plan.route.pois
+    ], "the published day visits different places from the planned day"
+    assert option["eta_seconds"] > 0
+    assert option["eta_seconds"] == expected["eta_seconds"], (
+        "the published day declares an arrival time the planned day did not"
+    )
+    assert [s["narration"] for s in option["stops"]] == [
+        s["narration"] for s in expected["stops"]
+    ], "the published day was written by a second pass over the same route"
+    # Catch-all: nothing at all about the published option may differ from the
+    # plan the shared planner produced.
+    assert option == expected, "the published day diverged from the planned day"
 
-    # The trip actually saved is flavour one, not some other flavour.
-    assert [s["poi_id"] for s in body["stops"]] == [p.id for p in plans[0].route.pois]
-
-    # Diversity survived the change (JACCARD_OVERLAP_MAX, src/tour/selection.py).
-    id_sets = [{p.id for p in plan.route.pois} for plan in plans]
-    for i in range(len(id_sets)):
-        for j in range(i + 1, len(id_sets)):
-            overlap = len(id_sets[i] & id_sets[j]) / len(id_sets[i] | id_sets[j])
-            assert overlap < 0.60, f"flavours {i},{j} share {overlap:.0%} of their stops"
+    # The trip actually saved is THE day.
+    assert [s["poi_id"] for s in body["stops"]] == [p.id for p in plan.route.pois]
 
 
 @needs_neo4j
@@ -313,35 +304,33 @@ class TestTripGenerateEngine:
         # audio-already-exists fast path reads these fields).
         assert any(s["script_body"] for s in data["stops"])
 
-    def test_options_surface_k_flavours(self, ile_response):
-        """M6: the response carries 1-3 RouteOptions; options[0]'s DWELL stops
-        mirror the persisted trip; pairwise Jaccard over dwell sets < 0.60.
+    def test_options_surface_the_one_day(self, ile_response):
+        """Phase 4 S4.4 (design §8.1): the response carries exactly ONE RouteOption
+        — THE day — and its DWELL stops mirror the persisted trip.
+
+        Re-derived from the old K-flavours pin (a written §0.1.2 decision): the
+        1-to-3 count and the pairwise-Jaccard diversity clause pinned the deleted
+        flavour machinery; the surviving invariants — the option mirrors the trip,
+        carries a positive arrival time, and every card is one of the three known
+        kinds — are unchanged.
 
         Track B (B.3) interleaves band="vignette" walk-past stops into
-        RouteOption.stops — additive annotations, not itinerary stops — so
-        the mirror and diversity assertions are dwell-scoped (the persisted
-        trip and the selection-time diversity filter are both dwell-only).
+        RouteOption.stops — additive annotations, not itinerary stops — so the
+        mirror assertion is dwell-scoped.
         """
         options = ile_response["options"]
-        assert 1 <= len(options) <= 3
+        assert len(options) == 1, "Phase 4 plans ONE day (design §8.1)"
+        option = options[0]
 
-        def dwell_ids(option):
-            return [s["poi_id"] for s in option["stops"] if s["band"] == "dwell"]
-
-        assert dwell_ids(options[0]) == [s["poi_id"] for s in ile_response["stops"]]
-        id_sets = [set(dwell_ids(o)) for o in options]
-        for i in range(len(id_sets)):
-            for j in range(i + 1, len(id_sets)):
-                overlap = len(id_sets[i] & id_sets[j]) / len(id_sets[i] | id_sets[j])
-                assert overlap < 0.60, f"options {i},{j} share {overlap:.0%}"
-        for option in options:
-            assert option["route_id"].startswith(ile_response["trip_id"])
-            assert option["eta_seconds"] > 0
-            assert option["stops"], "an option without stops is not an option"
-            for stop in option["stops"]:
-                # Three kinds of card: a stop you stand at, a sight you pass, and the
-                # narration you hear on the way to the next stop.
-                assert stop["band"] in ("dwell", "vignette", "leg")
+        dwell_ids = [s["poi_id"] for s in option["stops"] if s["band"] == "dwell"]
+        assert dwell_ids == [s["poi_id"] for s in ile_response["stops"]]
+        assert option["route_id"] == f"{ile_response['trip_id']}-opt1"
+        assert option["eta_seconds"] > 0
+        assert option["stops"], "a day without stops is not a day"
+        for stop in option["stops"]:
+            # Three kinds of card: a stop you stand at, a sight you pass, and the
+            # narration you hear on the way to the next stop.
+            assert stop["band"] in ("dwell", "vignette", "leg")
 
     def test_stop_order_matches_select_route(self, ile_response, ile_engine_route):
         expected = [p.id for p in ile_engine_route.pois]
@@ -564,7 +553,7 @@ class TestTripGenerateFixedDestination:
             RoutingClient() as rc,
             pytest.raises(TourabilityRefusedError) as caught,
         ):
-            select_k_routes(tour_input, snapshot, 3, routing_client=rc)
+            select_route(tour_input, snapshot, routing_client=rc)
         exc = caught.value
         # Guard: this must be the FIXED-DESTINATION feasibility refusal (carries
         # gap_minutes + alternatives), not a plain density-RED refusal.

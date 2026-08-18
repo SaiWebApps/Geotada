@@ -110,6 +110,7 @@ the address, never to reach it).
 from __future__ import annotations
 
 import ast
+import contextlib
 import importlib
 import ipaddress
 import os
@@ -129,9 +130,13 @@ WORKBENCH_SH = REPO / "scripts" / "workbench.sh"
 MAKEFILE = REPO / "Makefile"
 PROFILE_DIR = REPO / "config" / "profiles"
 
-# The human-facing surfaces of the workbench: generating a tour, and hearing it.
+# The human-facing surfaces of the workbench: planning the day, writing the
+# tour, and hearing it. ``authorTourDay`` joined at Phase 4 (design §8.1): the
+# pick-one-of-three flow died, so the ONE "Write the tour" action is now the
+# workbench's paid call — exactly where a spend gate would go back first.
 TOURIST_FACING_FUNCTIONS = (
     "async function generateTourPreview()",
+    "async function authorTourDay()",
     "async function loadTtsProviders()",
     "async function ttsPlay(",
 )
@@ -1222,9 +1227,29 @@ for module_name, names in payload.items():
     for name in names:
         container = getattr(module, name, None)
         if isinstance(container, (dict, list, set)):
-            result[module_name + "." + name] = len(container)
+            try:
+                snapshot = json.loads(json.dumps(
+                    sorted(container) if isinstance(container, set) else container))
+            except (TypeError, ValueError):
+                snapshot = None  # unserializable content: never matches a literal
+            result[module_name + "." + name] = {
+                "len": len(container), "content": snapshot,
+            }
 print("<<<ondoway-probe>>>" + json.dumps(result))
 """
+
+#: Module-level containers that legitimately hold entries at boot, because their
+#: entries are a TRANSLATION TABLE declared as a source literal — not responses.
+#: Exactly like the consent test's pinned ``confirm(`` population: this is not an
+#: allowlist of implementations (the content equality below is still derived and
+#: enforced), it pins the accounted-for POPULATION so a NEW literal table on a
+#: route module forces a decision here — justify it in this comment or remove it.
+#: Do not simply add a name.
+#:
+#: - ``trips._RENAMED_TOURABILITY_FIELDS`` — stored-schema field renames, so a
+#:   tourability disclosure saved before a rename is translated instead of
+#:   silently dropped (see its comment in src/api/routes/trips.py).
+_BOOT_TIME_LITERAL_TABLES = frozenset({"src.api.routes.trips._RENAMED_TOURABILITY_FIELDS"})
 
 
 def test_no_response_cache_is_pre_seeded_before_the_first_request() -> None:
@@ -1237,8 +1262,14 @@ def test_no_response_cache_is_pre_seeded_before_the_first_request() -> None:
     green because the provider is untouched.
 
     Derived, not named: in a freshly booted server, every module-level container
-    on a route module must be EMPTY. A response cache with entries before the
-    first request has answers to questions nobody asked.
+    on a route module must be EMPTY — a response cache with entries before the
+    first request has answers to questions nobody asked — with ONE narrow,
+    pinned exception (``_BOOT_TIME_LITERAL_TABLES``): a container whose source
+    assignment is a pure literal may hold EXACTLY that literal, byte for byte,
+    because a declared translation table (a stored-schema rename map) is source
+    the reviewer reads, not data a warm-up smuggled in. The equality is strict
+    content, not length: anything an import-time hook adds, replaces or computes
+    diverges from the parsed source literal and still fails.
 
     Measured in a child process (see :func:`_probe_a_server_process`): by the
     time this test runs, the pytest interpreter has already served requests
@@ -1246,11 +1277,14 @@ def test_no_response_cache_is_pre_seeded_before_the_first_request() -> None:
     Only a fresh boot can distinguish "seeded at import" from "used since".
 
     UNDO TEST: seed one entry into any route module's cache at import -> RED.
+    Mutate the pinned table at import (``_RENAMED_TOURABILITY_FIELDS["x"] = "y"``
+    below its literal) -> live content no longer equals the source literal -> RED.
     """
     routes_dir = SRC / "api" / "routes"
     assert routes_dir.is_dir(), "src/api/routes is missing — the derivation is broken"
 
     request: dict[str, list[str]] = {}
+    declared_literals: dict[str, object] = {}
     for path in sorted(routes_dir.glob("*.py")):
         tree = ast.parse(path.read_text())
         module_name = ".".join(path.relative_to(REPO).with_suffix("").parts)
@@ -1258,21 +1292,65 @@ def test_no_response_cache_is_pre_seeded_before_the_first_request() -> None:
         for node in tree.body:
             if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
                 names.append(node.target.id)
-            elif isinstance(node, ast.Assign):
-                names.extend(t.id for t in node.targets if isinstance(t, ast.Name))
+                value, target = node.value, node.target.id
+            elif isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(
+                node.targets[0], ast.Name
+            ):
+                names.append(node.targets[0].id)
+                value, target = node.value, node.targets[0].id
+            else:
+                if isinstance(node, ast.Assign):
+                    names.extend(t.id for t in node.targets if isinstance(t, ast.Name))
+                continue
+            # The SOURCE literal, when the assignment is one: what the container
+            # must still equal, exactly, in the freshly booted process.
+            if value is not None:
+                try:
+                    literal = ast.literal_eval(value)
+                except (ValueError, TypeError, SyntaxError):
+                    literal = None
+                if isinstance(literal, (dict, list, set)):
+                    # An unsortable mixed-type set is never comparable, so it is
+                    # never pinned — suppressed rather than raised.
+                    with contextlib.suppress(TypeError):
+                        declared_literals[f"{module_name}.{target}"] = (
+                            sorted(literal) if isinstance(literal, set) else literal
+                        )
         if names:
             request[module_name] = names
     assert request, "found no module-level bindings on any route module"
 
-    sizes = _probe_a_server_process(_CONTAINER_PROBE, request)
-    assert sizes, "found no module-level containers on any route module to check"
-    filled = sorted(f"{name} ({count})" for name, count in sizes.items() if count)
+    observed = _probe_a_server_process(_CONTAINER_PROBE, request)
+    assert observed, "found no module-level containers on any route module to check"
+
+    filled = []
+    for name, report in sorted(observed.items()):
+        if not report["len"]:
+            continue
+        if name in _BOOT_TIME_LITERAL_TABLES:
+            assert name in declared_literals, (
+                f"{name} is pinned as a boot-time literal table, but its source "
+                f"assignment is not a pure literal any more — whatever fills it "
+                f"now runs at import, which is exactly what this guard exists to "
+                f"catch. Un-pin it or make it a literal again."
+            )
+            assert report["content"] == declared_literals[name], (
+                f"{name} no longer holds the literal its source declares.\n"
+                f"  source : {declared_literals[name]!r}\n"
+                f"  booted : {report['content']!r}\n"
+                f"Something mutated it at import time; a translation table that "
+                f"grows at boot is a cache wearing a constant's name."
+            )
+            continue
+        filled.append(f"{name} ({report['len']})")
     assert not filled, (
         f"{filled} already hold entries in a freshly booted server, before any "
         f"request has been served. A pre-filled container on a route module "
         f"answers requests with data that predates them, which is a canned "
         f"response no matter what produced it — and the provider it bypasses "
-        f"stays entirely honest while it happens."
+        f"stays entirely honest while it happens. If one of these is genuinely a "
+        f"source-declared translation table, pin it in _BOOT_TIME_LITERAL_TABLES "
+        f"with a justification; do not simply widen this assertion."
     )
 
 
@@ -1757,10 +1835,10 @@ def test_no_consent_gate_between_the_click_and_the_tourist_facing_call() -> None
     blocking modal also stalls any automated demo or screenshot run.
 
     SCOPE, widened after the first version: asserting ``confirm(`` absent from
-    three named function BODIES misses the place the gate would actually go.
+    the named function BODIES misses the place the gate would actually go.
     The tour surface is driven by ONE delegated click dispatcher
     (``detailBody.addEventListener('click', ...)``), an anonymous arrow function
-    that is none of the three declarations, and a ``confirm(`` on the line above
+    that is none of the declarations, and a ``confirm(`` on the line above
     ``generateTourPreview();`` sits outside every scanned body. So:
 
     * every click-listener body that reaches a tourist-facing function is
@@ -1770,15 +1848,24 @@ def test_no_consent_gate_between_the_click_and_the_tourist_facing_call() -> None
       ``showMergePreview``'s zero-beat branch, where OK deletes the source POI —
       a data-loss guard on an editor-only screen no tourist sees, and deleting
       it would defeat test_workbench_review_regressions.py::test_defect4_*); and
-    * the dispatch to the generate button must be the FIRST thing its branch
-      does, so a custom overlay, a required checkbox or a disabled-button gate
-      cannot be wired around the call site without a statement appearing in
-      between. That check names no dialog implementation at all — it asserts the
-      tourist's "one click, one tour" property.
+    * the dispatch to the plan AND the write buttons must be the FIRST thing
+      their branches do, so a custom overlay, a required checkbox or a
+      disabled-button gate cannot be wired around either call site without a
+      statement appearing in between. That check names no dialog implementation
+      at all — it asserts the tourist's "one click, one tour" property.
 
-    UNDO TEST: put any ``confirm(...)`` back into generateTourPreview or into
-    the click dispatcher, or insert ANY statement before the dispatcher's call
-    to generateTourPreview -> RED.
+    NAME ANCHORS RE-DERIVED at S4.8 (Phase 4, design §8.1 + W4.2): the generate
+    path kept its name (``generateTourPreview`` now plans THE day), the pick
+    (``authorTourOption``, one click per option card) died with the flavour UI,
+    and the paid call moved to the ONE ``authorTourDay`` behind "Write the tour"
+    — so the write dispatch is checked exactly like the plan dispatch. A dial
+    turn is the same one-tap promise through a change listener
+    (``scheduleTourReplan``), so that path is asserted gate-free too.
+
+    UNDO TEST: put any ``confirm(...)`` back into generateTourPreview,
+    authorTourDay or scheduleTourReplan, or into the click dispatcher, or insert
+    ANY statement before the dispatcher's call to generateTourPreview() or
+    authorTourDay() -> RED.
     """
     html = REVIEW_HTML.read_text()
 
@@ -1829,24 +1916,44 @@ def test_no_consent_gate_between_the_click_and_the_tourist_facing_call() -> None
         )
 
     # Scoped to what a PERSON's tap reaches, which is the whole claim: nothing
-    # stands between pressing the button and the tour being generated. The page's
-    # own automatic re-fetch (after the server reports the routes moved) is not a
-    # gate — nobody is being asked for anything — so it is deliberately not in
-    # scope here; it is a click listener that must be clean.
-    dispatching = [body for body in listeners if "generateTourPreview()" in body]
-    assert dispatching, "no click listener calls generateTourPreview() — the button is dead"
-    for body in dispatching:
-        for offset in _all_offsets(body, "generateTourPreview()"):
-            window_start = max(body.rfind("{", 0, offset), body.rfind(")", 0, offset))
-            assert window_start != -1, "cannot locate the dispatch branch for the generate button"
-            between = body[window_start + 1 : offset].strip()
-            assert between in ("", "{"), (
-                f"something runs between the click and generateTourPreview(): "
-                f"{between!r}. A tourist taps once and the tour generates; any "
-                f"acknowledgement, overlay, checkbox or gate in between makes the "
-                f"workbench a different product from the app — and none of them need "
-                f"to say the word confirm."
-            )
+    # stands between pressing a button and the day being planned or written. The
+    # page's own automatic re-fetch (after the server reports the plan moved) is
+    # not a gate — nobody is being asked for anything — so it is deliberately not
+    # in scope here; it is a click listener that must be clean. Both one-tap
+    # calls are held to the same window check: the free plan AND the paid write
+    # (design §8.1's one "Write the tour" action — the exact place a spend
+    # dialog would be reintroduced first).
+    for callee in ("generateTourPreview()", "authorTourDay()"):
+        dispatching = [body for body in listeners if callee in body]
+        assert dispatching, f"no click listener calls {callee} — the button is dead"
+        for body in dispatching:
+            for offset in _all_offsets(body, callee):
+                window_start = max(body.rfind("{", 0, offset), body.rfind(")", 0, offset))
+                assert window_start != -1, f"cannot locate the dispatch branch for {callee}"
+                between = body[window_start + 1 : offset].strip()
+                assert between in ("", "{"), (
+                    f"something runs between the click and {callee}: "
+                    f"{between!r}. A tourist taps once and the tour generates; any "
+                    f"acknowledgement, overlay, checkbox or gate in between makes the "
+                    f"workbench a different product from the app — and none of them need "
+                    f"to say the word confirm."
+                )
+
+    # THE DIAL PATH (Phase 4, W4.2 panel): a dial turn re-plans the day through
+    # one change listener -> scheduleTourReplan -> the debounced
+    # generateTourPreview(). The debounce is not a gate — nobody is asked
+    # anything; it folds a burst of turns into one request — so the scheduler
+    # must reach the planner and must hold no dialog of its own.
+    replan = _js_function_body(html, "function scheduleTourReplan()")
+    assert len(replan) > 80, "the extracted body of scheduleTourReplan() is implausibly short"
+    assert "generateTourPreview()" in replan, (
+        "scheduleTourReplan no longer reaches generateTourPreview(), so the dials "
+        "are dead and every 'the day re-plans itself' claim is unmeasured"
+    )
+    assert "confirm(" not in replan, (
+        "the dial path shows a confirmation modal; a tourist turning a dial is "
+        "never asked to approve anything"
+    )
 
 
 # --------------------------------------------------------------------------
@@ -1869,12 +1976,18 @@ def test_the_rendered_tour_is_exactly_the_server_response() -> None:
       judges by are forged.
 
     Both die on one derived property: the page renders the parsed response and
-    nothing else. The page now does this TWICE, because choosing a route and
+    nothing else. The page does this TWICE, because planning the day and
     writing it are two calls — so both stages are checked, each with exactly one
     call site, inside the function that performed its own fetch, whose first
     argument is the awaited JSON. No variable to patch, no second entry point, no
     wrapper. Both field lists are read off the endpoints' own Pydantic response
     models, so they cannot go stale.
+
+    STAGES RE-DERIVED at S4.8 (Phase 4, design §8.1): ``renderTourOptions`` WAS
+    the flavour UI and died with the pick — the plan reply's ``options[0]`` IS
+    the day and ``renderTourDay`` draws it straight from ``generateTourPreview``'s
+    fetch; the write moved from the per-card ``authorTourOption`` to the ONE
+    ``authorTourDay``, which still hands ``renderTourStops`` its parsed reply.
 
     UNDO TEST: add a second call to either renderer, wrap an argument in anything,
     or assign to a response field before rendering -> RED.
@@ -1887,12 +2000,12 @@ def test_the_rendered_tour_is_exactly_the_server_response() -> None:
     stages = [
         (
             "async function generateTourPreview()",
-            "renderTourOptions(",
+            "renderTourDay(",
             "/trips/preview",
             TripPreviewResponse,
         ),
         (
-            "async function authorTourOption(",
+            "async function authorTourDay()",
             "renderTourStops(",
             "/trips/preview/author",
             TripAuthoredTourResponse,
@@ -2399,7 +2512,12 @@ def test_a_flag_allowed_to_differ_never_steers_the_request_path() -> None:
 #: surfaces under test. They are not an allowlist of blessed implementations: which
 #: modules bind them, which handlers reach them, and whether each is one object or
 #: several, are all derived below rather than stated.
-PLAN_BLOCK = ("plan_premium_options", "plan_premium_tour")
+#:
+#: Re-derived at S4.8 (Phase 4, design §8.1): ``plan_premium_options`` — the
+#: K-option entry point ``plan_premium_tour`` used to delegate to — is deleted,
+#: so Block 1 is now literally ONE name. The invariant is unchanged: one planner,
+#: one authoring seam, on both surfaces.
+PLAN_BLOCK = ("plan_premium_tour",)
 AUTHOR_BLOCK = ("execute_premium_plan", "finalize_premium_tour")
 
 #: Where both blocks are defined. Everything else about them is derived.
@@ -2549,6 +2667,111 @@ class _StubGraph:
         return unit_of_work(self)
 
 
+# ---------------------------------------------------------------------------
+# The dense GREEN corpus + mock-transport routing client. MOVED HERE from
+# tests/test_tour_flavours.py at Phase 4's D4.0: that file was the k-flavours
+# suite and died with select_k_routes (design §8.1), and this file was the only
+# other importer of these two fixtures — an import that cannot resolve does not
+# fail loudly at collection, it fails at run time, so the fixtures move INTO
+# their importer before the file dies (audit E §5.3).
+#
+# 4 directional clusters x 5 rich POIs (20 tier-5 anchors, 300s dwell each),
+# reaching ~533m from the start — inside the 60-min one-way envelope (738m).
+# ---------------------------------------------------------------------------
+
+
+def _grid_pois() -> list:
+    from tests.test_tour_selection import PDV, _poi
+
+    out = []
+    directions = [(0.003, 0.0), (0.0, 0.0045), (-0.003, 0.0), (0.0, -0.0045)]
+    for d, (dlat, dlng) in enumerate(directions):
+        for i in range(5):
+            scale = 1.0 + 0.15 * i
+            out.append(
+                _poi(
+                    f"poi-{d}-{i}",
+                    lat=PDV[0] + dlat * scale,
+                    lng=PDV[1] + dlng * scale,
+                    areas=("Le Marais",),
+                )
+            )
+    return out
+
+
+def _rich_beats(pois) -> dict:
+    from src.tour.contract import BeatRef
+
+    return {
+        p.id: [
+            BeatRef(
+                id=f"{p.id}-b{i}",
+                poi_id=p.id,
+                est_spoken_seconds=240,
+                active_status="active",
+                script_body=f"Story {i} about {p.id}.",
+                lenses=("hidden_history",) if i % 2 == 0 else ("historic_arch",),
+            )
+            for i in range(5)
+        ]
+        for p in pois
+    }
+
+
+def _dense_snap():
+    from tests.test_tour_selection import _snap
+
+    pois = _grid_pois()
+    return _snap(
+        pois,
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi=_rich_beats(pois),
+    )
+
+
+def _flavour_mock_handler(request):
+    """Generous isochrone + haversine-proportional routed legs."""
+    import json
+
+    import httpx
+
+    if request.url.path == "/isochrone":
+        ring = [[2.20, 48.80], [2.45, 48.80], [2.45, 48.92], [2.20, 48.92], [2.20, 48.80]]
+        return httpx.Response(
+            200,
+            json={
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "properties": {},
+                     "geometry": {"type": "Polygon", "coordinates": [ring]}}
+                ],
+            },
+        )
+    if request.url.path == "/route":
+        from src.tour.routing import haversine_m
+
+        body = json.loads(request.content)
+        a, b = body["locations"]
+        d = haversine_m(a["lat"], a["lon"], b["lat"], b["lon"])
+        return httpx.Response(
+            200,
+            json={"trip": {"legs": [{"summary": {"time": round(d * 1.3), "length": d / 1000.0},
+                                     "shape": "flavour_mock_shape"}]}},
+        )
+    return httpx.Response(404)
+
+
+def _mock_routing_client():
+    import httpx
+
+    from src.tour.routing_client import RoutingClient
+
+    http = httpx.Client(
+        transport=httpx.MockTransport(_flavour_mock_handler), base_url="http://valhalla.test"
+    )
+    return RoutingClient(client=http)
+
+
 def _proof_client(monkeypatch, graph: _StubGraph):
     """A TestClient on the real app, given one fixed corpus and one routing client.
 
@@ -2559,7 +2782,7 @@ def _proof_client(monkeypatch, graph: _StubGraph):
     The corpus reader and the walking-times client are replaced ONCE, on the route
     module, so both surfaces get byte-identical inputs — that is what makes the
     output comparison in test 19 mean something. The routing client is the
-    mock-transport one the flavour suite already uses: a stubbed upstream SERVICE,
+    mock-transport one defined above: a stubbed upstream SERVICE,
     which the no-mocks rule permits and in fact requires, since the alternative is a
     live Valhalla whose answers can move between two back-to-back requests.
 
@@ -2572,8 +2795,6 @@ def _proof_client(monkeypatch, graph: _StubGraph):
     from src.api.auth.dependencies import get_current_user
     from src.api.dependencies import get_driver, get_session
     from src.api.routes import trips
-    from tests.test_tour_flavours import _client as _mock_routing_client
-    from tests.test_tour_flavours import _dense_snap
 
     monkeypatch.setenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", "1")
     snapshot = _dense_snap()
@@ -2651,7 +2872,7 @@ def test_the_phone_and_the_workbench_name_one_planner_and_one_author() -> None:
     tests 17 and 18, which break them and watch both surfaces fail.
 
     UNDO TEST: in ``src/api/routes/trips.py``, replace the
-    ``from src.tour.premium_tour import plan_premium_options`` binding with a local
+    ``from src.tour.premium_tour import plan_premium_tour`` binding with a local
     copy of the function (however faithful) -> RED on the PLAN block; do the same for
     ``execute_premium_plan`` -> RED on the AUTHOR block.
     """
@@ -2679,20 +2900,21 @@ def test_the_phone_and_the_workbench_name_one_planner_and_one_author() -> None:
             f"produce."
         )
 
-    # The delegate and the planner are one implementation, not two that agree: the
-    # single-route entry point must be a thin call into the K-option one. Asserted
-    # here because tests 17 and 18 patch BOTH names, and if the delegate were an
-    # independent implementation that double patch would hide the duplication rather
-    # than expose it.
-    import inspect
-
+    # Re-derived at S4.8 (Phase 4, design §8.1): plan_premium_tour IS Block 1 —
+    # the K-option entry point it used to delegate to was deleted with the
+    # flavours, so "ONE planner" is now literally one name. A returning
+    # plan_premium_options would hand the two surfaces a second planning name to
+    # drift through — exactly this test's subject — so its absence is asserted
+    # rather than assumed. (Which callers reach the one planner is
+    # tests/test_tour_one_engine.py's THE_ONE_PLANNER anchor, not restated here.)
     from src.tour import premium_tour
 
-    delegate = inspect.getsource(premium_tour.plan_premium_tour)
-    assert "plan_premium_options(" in delegate, (
-        "plan_premium_tour no longer delegates to plan_premium_options, so there are "
-        "two definitions of 'the' route and the batch runner, the phone and the "
-        "workbench can each pick a different one"
+    assert not hasattr(premium_tour, "plan_premium_options"), (
+        "plan_premium_options is back in src/tour/premium_tour.py. Phase 4 "
+        "(design §8.1) deleted the K-option planner and narrowed PLAN_BLOCK to "
+        "the one day-planner; a second planning entry point is a second name the "
+        "phone and the workbench can each pick, which is the divergence this "
+        "test exists to make impossible."
     )
 
 
@@ -2718,11 +2940,17 @@ def test_breaking_the_one_planner_breaks_both_surfaces(monkeypatch) -> None:
     Either assertion alone is weak. Together they are the whole claim: this surface
     went through that object, and it cannot produce a tour without it.
 
+    Re-derived at S4.8 (Phase 4, design §8.1): the one planner is
+    ``plan_premium_tour`` alone — ``select_k_routes`` and the K-option entry
+    point are deleted, so the stand-in now replaces exactly one name's bindings
+    and "fired exactly once" reads directly as "this surface planned its ONE day
+    through the one Block".
+
     UNDO TEST: reintroduce a private planning path on either handler — restore the
-    deleted ``_preview_stops`` interleave, or put a direct ``select_k_routes(...)``
-    call back into ``generate_trip`` where one lived until 2026-08-04 — and that
-    surface's pair of assertions goes RED: it answers 201/200 without the stand-in
-    ever firing.
+    deleted ``_preview_stops`` interleave, or inline a copy of the day-planner
+    into ``generate_trip`` the way a direct ``select_k_routes(...)`` call lived
+    there until 2026-08-04 — and that surface's pair of assertions goes RED: it
+    answers 201/200 without the stand-in ever firing.
     """
     bindings = _seam_bindings(PLAN_BLOCK)
     _assert_bindings_are_usable(bindings, PLAN_BLOCK)
@@ -2790,6 +3018,12 @@ def test_breaking_the_one_author_seam_breaks_both_surfaces(monkeypatch) -> None:
     therefore read off the BODY rather than the status — no authored option, and a
     narration kind that is explicitly not the LLM candidate. The phone's route has no
     such fallback and simply cannot answer.
+
+    Re-derived at S4.8 (Phase 4, design §8.1): the plan reply's ``options`` is a
+    one-element list — THE day — and its ``route_id`` is read off that reply
+    exactly as the page reads it; the opt-N spelling survives only as the wire
+    convention (deviation i: ``preview-<12hex>-opt1`` here, ``{trip_id}-opt1``
+    on the phone), not as a pick among N.
 
     UNDO TEST: give either handler its own authoring path — reintroduce the deleted
     ``author_prebuilt_route`` seam and call it from one of them — and that surface's
@@ -2903,13 +3137,14 @@ def test_both_surfaces_plan_the_identical_tour(monkeypatch) -> None:
     are minted from different things — and demanding those match would be demanding
     the two surfaces stop having different jobs.
 
-    The NUMBER of options is compared but not pinned to three; how many flavours
-    survive is AC-2/AC-3's subject, not this one. What matters here is that the two
-    surfaces agree.
+    Re-derived at S4.8 (Phase 4, design §8.1): there is ONE day now, not a set of
+    flavours to agree on. Both surfaces must return ``options`` as a one-element
+    list, and that one day must match stop for stop — ``zip(..., strict=True)``
+    over one element is exactly the claim.
 
-    UNDO TEST: make either surface plan from a different corpus, a different walk
-    budget or a different flavour order — for instance reverse the tuple the planner
-    returns for one of them — and the ordered-id assertion goes RED naming the option.
+    UNDO TEST: make either surface plan from a different corpus or a different walk
+    budget — or hand one of them a second option again — and the count or the
+    ordered-id assertion goes RED naming the option.
     """
     client = _proof_client(monkeypatch, _StubGraph(_PROOF_PROFILE_ID))
 
@@ -2929,10 +3164,16 @@ def test_both_surfaces_plan_the_identical_tour(monkeypatch) -> None:
         "distinguish agreement from coincidence — the fixture has drifted"
     )
 
-    assert len(workbench_options) == len(phone_options), (
-        f"the workbench offers {len(workbench_options)} route options and the phone "
-        f"offers {len(phone_options)} for the identical request, so the two surfaces "
-        f"are not choosing among the same set of walks."
+    # THE day, on both surfaces: a one-element list (design §8.1; the field stays
+    # a list because stored pre-Phase-4 payloads and the opt-N route ids are
+    # list-shaped — deviation i).
+    assert len(workbench_options) == 1, (
+        f"the workbench planned {len(workbench_options)} options; since design "
+        f"§8.1 the plan reply carries exactly ONE day"
+    )
+    assert len(phone_options) == 1, (
+        f"the phone planned {len(phone_options)} options; since design §8.1 the "
+        f"plan reply carries exactly ONE day"
     )
 
     for index, (mine, theirs) in enumerate(

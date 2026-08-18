@@ -686,12 +686,22 @@ def _transit(
     if routing_client is not None:
         route_with_receipt = getattr(routing_client, "route_with_receipt", None)
         if callable(route_with_receipt):
+            # The kwarg rides ONLY when a real surface override is set — the same
+            # explicit legacy-injected-client compatibility contract leg_seconds and
+            # isochrone honour (Phase 3 ledger): at the identity default every
+            # existing test double works unmodified, and a client actually asked
+            # for a surface MUST accept the keyword.
+            surface_kwargs = (
+                {"costing_options_override": costing_options_override}
+                if costing_options_override is not None
+                else {}
+            )
             leg_seconds, routed_m, polyline, receipt = route_with_receipt(
                 from_lat,
                 from_lng,
                 to_lat,
                 to_lng,
-                costing_options_override=costing_options_override,
+                **surface_kwargs,
             )
         else:
             # Explicit route-only compatibility for injected legacy clients.

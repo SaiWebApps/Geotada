@@ -1027,17 +1027,23 @@ def test_fixed_end_red_start_circle_defers_to_routed_fixed_end_checks():
     )
     assert assess_snapshot(viable, snap).status == "RED"
 
-    # Deferred: the density gate did NOT raise. It used to be provable by the
-    # refusal that arrived instead, which named the TIME band; since step 3B.9 the
-    # floor is soft, so a corpus that cannot fill the hour returns a SHORT tour
-    # with the shortfall disclosed rather than refusing. Deferral is now proved by
-    # the tour existing at all — a RED start circle produced a route — and the
-    # disclosure is what makes that honest rather than silent.
-    served = select_route(viable, snap)
-    assert served.pois, "a RED start circle refused a fixed-destination tour outright"
-    assert served.elapsed_shortfall_seconds > 0, (
-        "this corpus cannot fill an hour, so the tour must say how short it is"
-    )
+    # Deferred: the density gate did NOT raise. Since step 3B.9 the floor had
+    # been soft and this corpus SHIPPED a six-minute day for a sixty-minute
+    # ask, disclosed — which is exactly the cliff the W4.2 panel ruled out
+    # unanimously (Phase 4 S4.5, D-i: "a dial turn may refuse with a reason,
+    # or re-plan a full day; it may NEVER quietly hand back a sixth of what
+    # was asked for" — UNDERFILL_REFUSAL_FRACTION). So deferral is proved the
+    # way this test's own docstring first proved it: by WHICH refusal arrives.
+    # A RED start circle with a reachable end is refused by CERTIFICATION,
+    # naming the shortfall in minutes and what binds — never by the density
+    # gate. Written decision at the Phase 4 close (2026-08-18).
+    from src.tour.selection import CertificationPlanningInfeasibleError
+
+    with pytest.raises(CertificationPlanningInfeasibleError) as caught:
+        select_route(viable, snap)
+    reason = caught.value.reason
+    assert "far short of the 60 minutes asked for" in reason, reason
+    assert "not enough to visit near this start" in reason, reason
 
     impossible = viable.model_copy(update={"end": (PDV[0], PDV[1] + 0.1)})
     with pytest.raises(TourabilityRefusedError, match="Destination unreachable"):

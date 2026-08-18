@@ -53,25 +53,37 @@ REVIEW_HTML = REPO / "frontend" / "review.html"
 
 
 def test_preview_fetch_sends_city_slug() -> None:
-    """UNDO TEST: delete the ``city_slug:`` line from the preview fetch body and
-    this goes RED. Without it every city previews Paris."""
+    """UNDO TEST: delete the ``city_slug:`` line from the plan-body builder and
+    this goes RED. Without it every city previews Paris.
+
+    Since W4.2 the plan request is built ONCE, stored as ``lastTourPlanBody``
+    (the object every dial writes into and the author call replays verbatim),
+    and the fetch sends exactly that object — so the guard reads the builder
+    and the send, not a second body literal that no longer exists.
+    """
     html = REVIEW_HTML.read_text()
-    body = re.search(
-        r"fetch\(`\$\{API_BASE\}/trips/preview`.*?\}\),", html, re.S
+    plan = _js_function_body(html, "async function generateTourPreview()")
+    assert "/trips/preview" in plan, (
+        "the extracted generateTourPreview body issues no plan request, so this "
+        "guard is not reading the plan path"
     )
-    assert body, "could not locate the /trips/preview fetch call in review.html"
-    assert "city_slug:" in body.group(0), (
+    assert "city_slug:" in plan, (
         "generateTourPreview does not send city_slug — every preview silently "
         "falls back to TripPreviewRequest's 'paris' default, so a London/NY "
         "workbench session previews the wrong corpus and 422s."
+    )
+    assert "JSON.stringify(lastTourPlanBody)" in plan, (
+        "the plan fetch does not send lastTourPlanBody — the ONE body the dials "
+        "write into and the author call replays. A second body literal here is "
+        "exactly the drift the one-body rule exists to prevent."
     )
 
 
 def test_preview_city_slug_uses_the_canonical_city_variable() -> None:
     """It must send the same key the rest of the page uses, not a fresh guess."""
     html = REVIEW_HTML.read_text()
-    body = re.search(r"fetch\(`\$\{API_BASE\}/trips/preview`.*?\}\),", html, re.S)
-    assert body and re.search(r"city_slug:\s*cityName", body.group(0)), (
+    plan = _js_function_body(html, "async function generateTourPreview()")
+    assert re.search(r"city_slug:\s*cityName", plan), (
         "city_slug must come from cityName, the canonical key every other "
         "workbench fetch already sends."
     )
@@ -198,10 +210,10 @@ def test_generate_tour_preview_shows_no_spend_confirmation() -> None:
     UNDO TEST: paste any ``confirm(...)`` back into the function -> RED.
     """
     body = _js_function_body(REVIEW_HTML.read_text(), "async function generateTourPreview()")
-    # Prove we sliced the real function, so an absence is a real absence. Generate
-    # renders the three route OPTIONS; the narrated stops moved to authorTourOption
-    # when planning and authoring became two calls.
-    assert "/trips/preview" in body and "renderTourOptions(" in body, (
+    # Prove we sliced the real function, so an absence is a real absence. Plan
+    # renders THE day (the one-route plan, design §8.1); the narrated stops moved
+    # to authorTourDay when planning and authoring became two calls.
+    assert "/trips/preview" in body and "renderTourDay(" in body, (
         "the extracted generateTourPreview body is not the real function"
     )
     assert "confirm(" not in body, (
@@ -211,12 +223,16 @@ def test_generate_tour_preview_shows_no_spend_confirmation() -> None:
     )
 
 
-def test_generate_tour_options_is_a_separate_call_from_authoring() -> None:
-    """Pressing generate must PLAN and nothing else.
+def test_planning_the_day_is_a_separate_call_from_writing_it() -> None:
+    """Pressing plan must PLAN and nothing else.
 
-    The two-step split is only real if the generate handler cannot reach the
+    The two-step split is only real if the plan handler cannot reach the
     authoring endpoint or the audio endpoint. Both halves are asserted, so a
-    single function that plans and then authors in the same click cannot pass.
+    single function that plans and then writes in the same click cannot pass.
+    Since W4.2 there is no pick — the plan reply carries exactly one route —
+    but the split stands: planning is free and immediate (it IS the live dial
+    replan), and writing is the one deliberate action, taken by
+    ``authorTourDay`` with the day's ``route_id``.
 
     The authoring route is ``/trips/preview/author``. It is NOT
     ``/trips/preview/compose``: that name is already taken by the authenticated
@@ -224,7 +240,7 @@ def test_generate_tour_options_is_a_separate_call_from_authoring() -> None:
     never have used it.
 
     UNDO TEST: in review.html, change generateTourPreview's
-    ``renderTourOptions(await resp.json(), duration);`` to
+    ``renderTourDay(await resp.json(), duration);`` to
     ``renderTourStops(await resp.json(), duration);`` -> RED.
     """
     html = REVIEW_HTML.read_text()
@@ -232,43 +248,43 @@ def test_generate_tour_options_is_a_separate_call_from_authoring() -> None:
     plan = _js_function_body(html, "async function generateTourPreview()")
     assert "/trips/preview" in plan, (
         "the extracted generateTourPreview body issues no preview request, so "
-        "this guard is not reading the generate path"
+        "this guard is not reading the plan path"
     )
-    assert "renderTourOptions(" in plan, (
-        "generate must render the three route options; without this the operator "
-        "never gets to choose and the preview is whatever the server wrote first"
+    assert "renderTourDay(" in plan, (
+        "plan must render THE day; without this the operator never sees what a "
+        "dial did, and the preview is whatever the server wrote first"
     )
     assert "renderTourStops(" not in plan, (
-        "generate renders narrated stops, so scripts were written before the "
-        "operator picked a route — the whole point of the split is that pressing "
-        "generate costs nothing"
+        "plan renders narrated stops, so scripts were written before the "
+        "operator chose to write — the whole point of the split is that "
+        "planning costs nothing"
     )
     assert "/trips/preview/author" not in plan, (
-        "generate calls the authoring endpoint; planning must be one call"
+        "plan calls the authoring endpoint; planning must be one call"
     )
     assert "/audio/" not in plan, (
-        "generate reaches an audio endpoint; no voice may be made before a route "
-        "is chosen"
+        "plan reaches an audio endpoint; no voice may be made before the operator "
+        "chooses to write the day"
     )
 
-    author = _js_function_body(html, "async function authorTourOption(")
+    author = _js_function_body(html, "async function authorTourDay(")
     assert "/trips/preview/author" in author, (
-        "authorTourOption does not call the authoring endpoint"
+        "authorTourDay does not call the authoring endpoint"
     )
     assert "route_id" in author, (
-        "the authoring call does not carry the chosen option's identifier, so the "
-        "server cannot know which of the three routes the operator picked"
+        "the authoring call does not carry the day's route identifier, so the "
+        "server cannot prove it is writing the day the operator saw"
     )
     assert "renderTourStops(" in author, (
         "authoring does not render the narrated stops"
     )
 
 
-def test_the_authored_tour_renders_the_stops_of_the_option_that_was_written() -> None:
+def test_the_authored_tour_renders_the_stops_of_the_day_that_was_written() -> None:
     """The authored reply has no top-level stop list, so the renderer must read one.
 
-    There is exactly one interleave now, and the authored tour IS the option the
-    operator picked: its stops arrive on ``option.stops``. A renderer that reads
+    There is exactly one interleave now, and the authored tour IS the day the
+    operator wrote: its stops arrive on ``option.stops``. A renderer that reads
     only a top-level ``stops`` array draws an EMPTY tour against the real
     endpoint while every stubbed browser test stays green, because a stub is free
     to fulfil a shape the server can no longer produce. That gap is exactly what
@@ -294,34 +310,155 @@ def test_the_authored_tour_renders_the_stops_of_the_option_that_was_written() ->
     )
 
 
-def test_the_plan_screen_shows_what_degraded_before_anything_can_be_picked() -> None:
-    """A problem the operator cannot see before choosing is a problem they cannot act on.
+def test_the_plan_screen_shows_what_degraded_before_anything_can_be_written() -> None:
+    """A problem the operator cannot see before writing is a problem they cannot act on.
 
     Walking legs fall back to straight-line estimates when the routing service is
     unavailable, and that is reported as a degradation on the PLAN response. It
-    has to be on screen ABOVE the three cards: once a card is clicked the tour is
-    written and paid for, so a warning that only appears afterwards arrives too
-    late to change anything.
+    has to be on screen ABOVE the "Write the tour" action: once that is clicked
+    the tour is written and paid for, so a warning that only appears afterwards
+    arrives too late to change anything. (W4.2 panel: the pick is gone, but the
+    money moment moved onto the one write action — it did not go away.)
 
-    UNDO TEST: move the ``buildDegradationPanel`` block in renderTourOptions
-    below the ``tourOptions.forEach`` that builds the cards, or delete it -> RED.
+    UNDO TEST: move the ``buildDegradationPanel`` block in renderTourDay below
+    the block that creates the ``tourWriteBtn`` button, or delete it -> RED.
     """
-    body = _js_function_body(REVIEW_HTML.read_text(), "function renderTourOptions(")
+    body = _js_function_body(REVIEW_HTML.read_text(), "function renderTourDay(")
 
-    # Non-vacuity: prove we sliced the option renderer before asserting ordering.
-    assert "tour-option-card" in body, (
-        "the extracted renderTourOptions body builds no option cards, so this "
+    # Non-vacuity: prove we sliced the day renderer before asserting ordering.
+    assert "tourWriteBtn" in body, (
+        "the extracted renderTourDay body never creates the write action, so this "
         "guard is not reading the plan screen"
     )
     panel_at = body.find("buildDegradationPanel(")
-    cards_at = body.find("tour-option-card")
+    write_at = body.find("tourWriteBtn")
     assert panel_at != -1, (
         "the plan screen never builds the degradation panel, so a tour planned on "
         "estimated walking times looks exactly like a measured one"
     )
-    assert panel_at < cards_at, (
-        "the degradation panel is built after the option cards, so what went wrong "
-        "renders below the buttons that spend money on a tour"
+    assert panel_at < write_at, (
+        "the degradation panel is built after the write action, so what went wrong "
+        "renders below the button that spends money on a tour"
+    )
+
+
+# --------------------------------------------------------------------------
+# 6. the dials (W4.2 panel) — every control writes into the ONE plan body,
+#    every change replans automatically, and the day is honest about itself
+# --------------------------------------------------------------------------
+
+
+# (control id, locked wire field) — the dial vocabulary the W4.2 panel ruled.
+TOUR_DIALS = [
+    ("tourDate", "start_datetime"),
+    ("tourTime", "start_datetime"),
+    ("tourFinish", "end_hardness"),
+    ("tourParty", "party"),
+    ("tourMaxLeg", "max_leg_minutes"),
+    ("tourRestCadence", "rest_cadence_minutes"),
+    ("tourStopDensity", "stop_density"),
+    ("tourNarrationDensity", "narration_density"),
+    ("tourAvoidQueues", "avoid_queues"),
+    ("tourCategoryMinus", "category_minus"),
+    ("tourWeather", "weather"),
+]
+
+
+def test_every_dial_writes_into_the_one_plan_body() -> None:
+    """W4.2 panel: the author call replays ``lastTourPlanBody`` verbatim, so a
+    dial that skips the body authors yesterday's knobs and 409s. Three couplings
+    are asserted per dial: the control exists on the page, the plan builder
+    reads it, and the locked wire field is written in the same function that
+    assigns ``lastTourPlanBody`` and sends it.
+
+    UNDO TEST: delete any ``body.<field> =`` line (or the ``lastTourPlanBody =
+    body`` assignment) from generateTourPreview -> RED.
+    """
+    html = REVIEW_HTML.read_text()
+    plan = _js_function_body(html, "async function generateTourPreview()")
+    assert "lastTourPlanBody = body" in plan, (
+        "generateTourPreview no longer stores the one body it builds, so the "
+        "author call would replay something other than what was sent"
+    )
+    assert "JSON.stringify(lastTourPlanBody)" in plan, (
+        "the plan fetch does not send the stored body, so what the dials wrote "
+        "and what the server saw can drift"
+    )
+    for control_id, field in TOUR_DIALS:
+        assert f'id="{control_id}"' in html, (
+            f"the #{control_id} control is missing from the page"
+        )
+        assert control_id in plan, (
+            f"generateTourPreview never reads #{control_id}; that dial can be "
+            f"turned without ever reaching the request"
+        )
+        assert re.search(rf"body\.{field}\s*=|\b{field}:", plan), (
+            f"generateTourPreview never writes {field!r} into the plan body, so "
+            f"the #{control_id} dial is decorative"
+        )
+
+
+def test_dial_changes_replan_the_day_automatically() -> None:
+    """W4.2 panel: turning a dial IS asking for a new day. Every change on the
+    tour form funnels into one ~400ms debounce that re-runs the plan; while the
+    replan is in flight the dials are disabled and a small "replanning…" note
+    shows, so the screen is never silently stale.
+
+    UNDO TEST: remove the ``scheduleTourReplan()`` call from the form's change
+    listener, or the debounce body's ``generateTourPreview()`` call -> RED.
+    """
+    html = REVIEW_HTML.read_text()
+    sched = _js_function_body(html, "function scheduleTourReplan()")
+    assert "generateTourPreview()" in sched, "the debounce never re-plans the day"
+    assert "setTimeout" in sched and "400" in sched, (
+        "the replan is not debounced at ~400ms; either every change plans "
+        "immediately or the burst-folding is gone"
+    )
+    # The declaration alone is dead code: a call site must exist beyond it.
+    assert html.count("scheduleTourReplan(") >= 2, (
+        "scheduleTourReplan is declared but never called; no dial replans anything"
+    )
+    assert re.search(r"addEventListener\('change',", html), (
+        "no change listener exists, so no dial change can reach the debounce"
+    )
+    plan = _js_function_body(html, "async function generateTourPreview()")
+    assert 'id="tourReplanNote"' in html and "tourReplanNote" in plan, (
+        "the replanning note is missing, so a replan is invisible while in flight"
+    )
+    assert "disabled = true" in plan, (
+        "the dials stay live during a replan, so two plans can race each other"
+    )
+
+
+def test_queue_waits_are_spelled_min_wait() -> None:
+    """W4.2 panel: a queue price reads "12 min wait" — NEVER "12m", which a
+    reader takes for metres or a timestamp. Every render of ``queue_minutes``
+    must couple the number directly to the words " min wait".
+    """
+    html = REVIEW_HTML.read_text()
+    renders = list(re.finditer(r"\$\{s\.queue_minutes\}", html))
+    assert renders, "no card renders queue_minutes at all"
+    for m in renders:
+        following = html[m.end() : m.end() + len(" min wait")]
+        assert following == " min wait", (
+            f"a queue render is followed by {following!r} rather than ' min wait' "
+            f"— the panel-locked spelling"
+        )
+
+
+def test_the_plan_screen_renders_the_honesty_surface_when_present() -> None:
+    """W4.2 panel (deviation v): promises, day notes and unplanned slack render
+    from the plan response — conditionally, because the server lands those
+    fields in its own step and a missing field must never crash the screen.
+    """
+    body = _js_function_body(REVIEW_HTML.read_text(), "function renderTourDay(")
+    for field in ("promises", "day_notes", "slack_minutes"):
+        assert field in body, (
+            f"renderTourDay never reads {field!r}; the day renders without the "
+            f"honesty the panel ruled it owes"
+        )
+    assert "minutes unplanned — yours." in body, (
+        "the slack line lost its panel-locked wording"
     )
 
 

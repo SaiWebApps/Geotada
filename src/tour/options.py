@@ -18,7 +18,16 @@ from __future__ import annotations
 
 from src.audio.tts_normalize import normalize_dashes_for_reading
 
-from .contract import POI, BeatRef, BeatSequence, Route, RouteOption, RouteOptionStop, Script
+from .contract import (
+    END_B_SENTINEL_PREFIX,
+    POI,
+    BeatRef,
+    BeatSequence,
+    Route,
+    RouteOption,
+    RouteOptionStop,
+    Script,
+)
 from .generation import is_walk_concurrent, vignette_one_liner_text
 from .routing import leg_walk_seconds, total_walk_seconds
 from .selection import (
@@ -203,6 +212,10 @@ def build_route_option(
                 snapshot=snapshot,
                 narration=per_stop.get(i, ""),
                 has_deeper_dive=bool(sequence.overflow_by_poi.get(sp.id)),
+                # The honesty surface (W4.2 deviation v), straight off the
+                # Route the planner priced — never recomputed here.
+                queue_minutes=round(route.planned_queue_seconds.get(sp.id, 0) / 60),
+                goes_inside=route.visit_goes_inside.get(sp.id),
             )
         )
     interleaved.extend(
@@ -243,6 +256,8 @@ def _build_stop(
     snapshot: CorpusSnapshot,
     narration: str,
     has_deeper_dive: bool,
+    queue_minutes: int = 0,
+    goes_inside: bool | None = None,
 ) -> RouteOptionStop:
     """One RouteOptionStop with its Step 3.4 spotlight + band annotation.
 
@@ -272,6 +287,11 @@ def _build_stop(
         spotlight=score,
         narration=narration,
         has_deeper_dive=has_deeper_dive,
+        queue_minutes=queue_minutes,
+        goes_inside=goes_inside,
+        # The A→B waypoint is not a place: flagged so a screen ends the day
+        # at "your finish point" instead of counting a zero-minute stop.
+        is_finish_point=sp.id.startswith(END_B_SENTINEL_PREFIX),
     )
 
 

@@ -41,6 +41,8 @@ from .beat_select import (
     select_poi_beats,
 )
 from .contract import (
+    END_B_SENTINEL_NAME,
+    END_B_SENTINEL_PREFIX,
     POI,
     BeatRef,
     ClockExclusion,
@@ -72,6 +74,7 @@ from .routing import (
     haversine_m,
     insertion_cost_seconds,
     insertion_extra_at_index,
+    leg_walk_seconds,
     pace_corrected_walk_seconds,
     path_leg_seconds,
     planned_audio_seconds,
@@ -254,12 +257,6 @@ VIGNETTE_MAX_DETOUR_M: float = 50.0
 # At most this many vignettes per leg — more one-liners than this on a single
 # walk crowds the transit narration (locked deferred clarification: 2).
 VIGNETTE_MAX_PER_LEG: int = 2
-
-# §2.2 k-flavours (M6): diversity re-runs multiply already-used POIs' scores
-# by DIVERSITY_PENALTY; a candidate flavour whose stop set shares
-# >= JACCARD_OVERLAP_MAX (Jaccard) with any kept flavour is rejected.
-DIVERSITY_PENALTY: float = 0.3
-JACCARD_OVERLAP_MAX: float = 0.60
 
 AREA_ALIGNMENT_SPINE: float = 1.0
 AREA_ALIGNMENT_ADJACENT: float = 0.5
@@ -870,22 +867,29 @@ def _clock_exclusion_reason(
         open_windows_seen.extend(f"{w[0]}-{w[1]}" for w in windows)
         cursor = next_midnight
 
-    source_label = (source or "AI").upper()
+    # PLAIN LANGUAGE (W4.2 panel, Paulo's wording rulings; design deviation v).
+    # A person reads this sentence, so it carries no provenance tag: "(hours: OSM)"
+    # was ruled a failure of plain language. The DOUBT that tag encoded is not
+    # dropped — it is said in words, so the reader learns we are unsure without
+    # having to decode a label. A verified table simply states the closure.
+    doubt = (
+        "" if (source or "").lower() == "osm" else ", though we could not confirm its hours"
+    )
     if len(closed_day_names) == 1:
         day = closed_day_names[0]
         if open_windows_seen:
             detail = (
                 f"closed {day} {start.strftime('%H:%M')}-{end.strftime('%H:%M')} "
-                f"(open {', '.join(open_windows_seen)}; hours: {source_label})"
+                f"(open {', '.join(open_windows_seen)})"
             )
         else:
-            detail = f"closed all day {day} (hours: {source_label})"
+            detail = f"closed all day {day}"
     else:
         detail = (
-            f"closed for the entire {closed_day_names[0]}-{closed_day_names[-1]} "
-            f"visit window (hours: {source_label})"
+            f"closed for the whole of your visit "
+            f"({closed_day_names[0]}-{closed_day_names[-1]})"
         )
-    return detail
+    return detail + doubt
 
 
 def _is_unadopted_placeholder_beat(record: dict) -> bool:
@@ -1290,8 +1294,8 @@ def _materialize_fixed_end_b(
         return selected, nearest
 
     sentinel = POI(
-        id=f"__end_b__{end_lat:.6f}_{end_lng:.6f}",
-        name="Destination",
+        id=f"{END_B_SENTINEL_PREFIX}{end_lat:.6f}_{end_lng:.6f}",
+        name=END_B_SENTINEL_NAME,
         tier=B_SENTINEL_TIER,
         poi_role=B_SENTINEL_POI_ROLE,
         lat=end_lat,
@@ -1465,6 +1469,7 @@ def build_poi_beat_plans_capped(
     *,
     lenses: Iterable[str] | None,
     end_is_none: bool = False,
+    narration_density: str | None = None,
 ) -> tuple[tuple[POIBeats, tuple[str, ...]], ...]:
     """C9 governor v4 — the shared EMISSION choke point: ``(kept, overflow_ids)``
     per POI, in route order. All six build sites (generate, compose, preview,
@@ -1504,10 +1509,21 @@ def build_poi_beat_plans_capped(
     # Apply the absolute ceiling to EVERY stop: min(domination cap, MAX). A None
     # (exempt / uncapped-by-domination) stop is capped to the MAX; a domination-capped
     # stop keeps the tighter of the two.
-    final_caps = [
-        MAX_DWELL_AUDIO_SECONDS if c is None else min(c, MAX_DWELL_AUDIO_SECONDS)
-        for c in dom_caps
-    ]
+    #
+    # "LESS TALKING / MORE TALKING" (Phase 4 dial, W4.2 — Fiona & Dev's dial,
+    # Paulo's label): narration SUPPLY scales the per-stop ceiling at the ONE
+    # emission choke point, so every build site obeys it. "less" halves the
+    # ceiling (shorter pieces, more room to talk); "more" raises it by half.
+    # Whole-beat caps as ever — trimmed beats land in keep-exploring overflow,
+    # never on the floor. None = today's ceiling, byte-identical. The full
+    # point-first mechanics (walk-off-at-minute-eight, silent legs) are
+    # Phase 6's; this is the supply knob the dial needs to be real.
+    ceiling = MAX_DWELL_AUDIO_SECONDS
+    if narration_density == "less":
+        ceiling = MAX_DWELL_AUDIO_SECONDS // 2
+    elif narration_density == "more":
+        ceiling = MAX_DWELL_AUDIO_SECONDS + MAX_DWELL_AUDIO_SECONDS // 2
+    final_caps = [ceiling if c is None else min(c, ceiling) for c in dom_caps]
     capped = [
         govern_poi_beats(plan, cap) for plan, cap in zip(plans, final_caps, strict=True)
     ]
@@ -1531,6 +1547,7 @@ def served_dwell_seconds(
     *,
     interest: frozenset[str] | None,
     end_is_none: bool,
+    narration_density: str | None = None,
 ) -> int:
     """Standing-still seconds this route actually serves.
 
@@ -1552,8 +1569,14 @@ def served_dwell_seconds(
     """
     audio_by_id = {
         plan.poi_id: planned_audio_seconds(plan.beats)
+        # The density dial threads here so the gate prices the SAME capped
+        # audio emission will voice — certified and served stay one quantity.
         for plan, _ in build_poi_beat_plans_capped(
-            route, snapshot, lenses=interest or None, end_is_none=end_is_none
+            route,
+            snapshot,
+            lenses=interest or None,
+            end_is_none=end_is_none,
+            narration_density=narration_density,
         )
     }
     # Iterate the ROUTE's stops, not the plans: a stop with no beat plan at all
@@ -1706,9 +1729,11 @@ def select_route(
     routed leg_seconds/polylines (via summarise_route) — selection scoring
     stays on haversine until M3.
 
-    M6: ``score_penalty`` (poi_id → multiplicative factor) is the diversity
-    knob select_k_routes uses for flavour re-runs; leave None for normal
-    single-route selection.
+    ``score_penalty`` (poi_id → multiplicative factor) is the per-place score
+    channel. Its live producers are the RAIN pricing below (a stop with no
+    cover dims on a wet day — commit 71654c97) and the skip-the-queues dial;
+    leave None for normal selection. It was born as the k-flavours diversity
+    knob; the flavours died at Phase 4 (design §8.1) and the channel stayed.
 
     Phase 6 added two guards before the greedy:
 
@@ -1727,6 +1752,32 @@ def select_route(
             "typed corpus must be validated by materialize_corpus_snapshot "
             "before density or selection"
         )
+    # "ALREADY TRUE" — the leg cap's first answer (W4.2 locked semantics 1,
+    # measured at the W4.12 close). A cap that the un-capped day already
+    # satisfies cannot bind, and the ruling is that it then says so and changes
+    # nothing. It did not: the capped path plans by a bounded search whose
+    # timebox repair can only DROP stops, and dropping a middle stop merges two
+    # walks into one longer walk that breaks the cap — so under a cap the
+    # repair could not shrink an over-long day into band, and a 25-minute cap
+    # REFUSED the flagship (Tuileries→Notre-Dame, 300 min) whose un-capped day
+    # has an 18-minute longest walk and plans in 47 s. Loosening a limit
+    # deleted the tour (Camille), with the same numbers at 9 and 25 (Rosemary:
+    # "if loosening a limit changes not one digit, the limit is not in the
+    # sum"). So: plan without the cap first; if that day already honours the
+    # cap, it IS the day. Only a cap the un-capped day breaks reaches the
+    # bounded search below, which is the case that search exists for. The
+    # replan-capable repair (drop AND re-fill under a cap) is Phase 5's work.
+    if input.max_leg_minutes is not None:
+        relaxed = select_route(
+            input.model_copy(update={"max_leg_minutes": None}),
+            snapshot,
+            routing_client=routing_client,
+            score_penalty=score_penalty,
+            planning_policy=planning_policy,
+        )
+        longest = max((leg_walk_seconds(t) for t in relaxed.transits), default=0)
+        if longest <= input.max_leg_minutes * 60:
+            return relaxed
     start_lat, start_lng = input.start
     interest = frozenset(input.lenses or [])
     # The request's own hardness bends this ONE budget (redesign §2.3): every
@@ -1774,6 +1825,22 @@ def select_route(
             if not place_is_covered(poi):
                 rain_penalty[poi.id] = rain_penalty.get(poi.id, 1.0) * RAIN_DWELL_FRACTION
         score_penalty = rain_penalty
+    # "SKIP THE QUEUES" (Phase 4 dial, W4.2): peak-queue-heavy places dim
+    # through the same one per-place score knob the rain rides. Peak minutes
+    # are the honest yardstick — the dial holds whatever hour the day lands
+    # on, and a place that queues at peak is the risk being avoided. False =
+    # empty overlay = byte-identical.
+    if input.avoid_queues:
+        queue_penalty = dict(score_penalty or {})
+        for poi in snapshot.pois:
+            if (
+                poi.queue_class not in (None, "none")
+                and poi.queue_minutes_peak >= AVOID_QUEUES_MIN_PEAK_MINUTES
+            ):
+                queue_penalty[poi.id] = (
+                    queue_penalty.get(poi.id, 1.0) * AVOID_QUEUES_SCORE_FACTOR
+                )
+        score_penalty = queue_penalty
     # A fixed destination changes the SHAPE of the route, not how far a visitor can
     # walk. The 2026-08-04 "certification reach model" that used to branch here has
     # been deleted: it sized both the reach circle and the greedy's walking cap from
@@ -1822,9 +1889,9 @@ def select_route(
     # the greedy uses (leg_fn when a routing client is given, else the
     # pace-corrected haversine) — NEVER a straight-line haversine, which would
     # admit across-the-river endpoints no bridge serves. Raise BEFORE the
-    # greedy so it propagates on the first flavour through select_k_routes,
-    # exactly like RED density. (end is None for open/loop walks — they never
-    # enter this branch, so the Step-2.0d invariance baseline is untouched.)
+    # greedy, exactly like RED density. (end is None for open/loop walks —
+    # they never enter this branch, so the Step-2.0d invariance baseline is
+    # untouched.)
     if input.end is not None:
         leg_cost_fn = leg_fn  # never None (see the derivation above)
         t_ab = leg_cost_fn(start_lat, start_lng, input.end[0], input.end[1])
@@ -2075,6 +2142,26 @@ def select_route(
             # right layer -- it stays available as a walk-past vignette, which is
             # what a neighbourhood actually is.
             continue
+        if poi.place_category and poi.place_category in input.category_minus:
+            # "LESS OF THIS TODAY" (Phase 4 dial, W4.2 — Greta's "not what I did
+            # yesterday", Julien's "zero museums today"): an excluded KIND leaves
+            # the dwell pool entirely, so a different kind swaps in — the lens
+            # behaviour, never the shaved-stop behaviour. Recorded at the WIRE
+            # from the request itself (one note per excluded kind, not one row
+            # per museum in Paris) — the escape-radius disclosure precedent.
+            # Walking past one is still fine: vignettes are untouched.
+            continue
+        if (
+            input.avoid_queues
+            and poi.queue_class not in (None, "none")
+            and poi.queue_minutes_peak >= AVOID_QUEUES_EXCLUDE_PEAK_MINUTES
+        ):
+            # "SKIP THE QUEUES", the exclusion tier (see the constants above):
+            # a serious peak queue leaves the dwell pool under the dial — a
+            # score dim provably loses to proximity, and the person who turned
+            # this dial is refusing the stand, not asking for it to be
+            # slightly less likely. Disclosed at the wire from the request.
+            continue
         if clock_start is not None and poi.opening_hours is not None:
             # THE CLOCK RULE (redesign 6.1; re-ruled by the Phase 1 panel, W1.9
             # dissent 1 — plan S3.5): on a dated request, a place whose opening
@@ -2097,23 +2184,28 @@ def select_route(
                 input.duration_min,
             )
             if clock_reason is not None:
-                if poi.typical_duration_min > 0:
+                # The record carries the closure FACT and the pool DECISION, not the
+                # traveller's sentence. What a person is told depends on whether the
+                # place ends up ON the route — a closed facade the greedy never picks
+                # is "not in your day", not "we will see it from the outside" — and
+                # only the reader holding the finished route knows that (W4.12:
+                # "Lapin Agile — closed all day Wednesday — we will see it from the
+                # outside" printed on a Tuileries→Notre-Dame day; Lapin Agile is in
+                # Montmartre). "seated outside only" was already ruled out by the
+                # W4.2 panel: "seated" is the engine's word, and on a MARKET it read
+                # as tables outside a shut market.
+                kept_outside = poi.typical_duration_min > 0
+                if kept_outside:
                     closed_today_ids.add(poi.id)
-                    clock_exclusions.append(
-                        ClockExclusion(
-                            poi_id=poi.id,
-                            name=poi.name,
-                            reason=f"{clock_reason}; closed today — seated outside only",
-                        )
+                clock_exclusions.append(
+                    ClockExclusion(
+                        poi_id=poi.id,
+                        name=poi.name,
+                        reason=clock_reason,
+                        kept_outside=kept_outside,
                     )
-                else:
-                    clock_exclusions.append(
-                        ClockExclusion(
-                            poi_id=poi.id,
-                            name=poi.name,
-                            reason=f"{clock_reason}; would otherwise have been seated",
-                        )
-                    )
+                )
+                if not kept_outside:
                     continue
         if (
             input.escape_radius_m is not None
@@ -2671,7 +2763,11 @@ def select_route(
                 costing_options_override=surface_override,
             ).model_copy(update={"fixed_end_poi_id": trial_end.id})
             trial_dwell = served_dwell_seconds(
-                trial_route, snapshot, interest=interest, end_is_none=False
+                trial_route,
+                snapshot,
+                interest=interest,
+                end_is_none=False,
+                narration_density=input.narration_density,
             )
             trial_elapsed = served_elapsed_seconds(
                 trial_route.total_walk_seconds, trial_dwell
@@ -2768,6 +2864,57 @@ def select_route(
         # the rank's fit term reads elapsed minus these seconds.
         queue_visit=lambda cand, hour: shape_visit(cand, hour).queue_seconds,
     )
+
+    # "FEWER STOPS, LONGER AT EACH" (Phase 4 dial, W4.2 — Camille/Nadia's
+    # locked label). Concentrate AFTER the repair: drop the weakest
+    # unprotected stops so the day keeps its anchors whole and gains named
+    # slack. Bounded three ways (constants above): never below three stops,
+    # never below the concentrate floor (which sits above the underfill
+    # refusal line — a dial must never steer the day into its own refusal),
+    # never more than the drop fraction. Promises are never dropped —
+    # §4.5.2's rule reaching this pass too.
+    if input.stop_density == "fewer" and len(selected) > CONCENTRATE_MIN_STOPS:
+        protected_for_density = set(pinned_ids) | (
+            {pulled_endpoint_id} if pulled_endpoint_id is not None else set()
+        )
+        max_drops = max(1, round(len(selected) * CONCENTRATE_MAX_DROP_FRACTION))
+        drops = 0
+        while drops < max_drops and len(selected) > CONCENTRATE_MIN_STOPS:
+            droppable = [p for p in selected if p.id not in protected_for_density]
+            if not droppable:
+                break
+            weakest = min(
+                droppable,
+                key=lambda p: (
+                    poi_score(
+                        p, spine, interest, snapshot,
+                        penalty=score_penalty, party=input.party,
+                    ),
+                    p.id,
+                ),
+            )
+            trial_set = [p for p in selected if p.id != weakest.id]
+            trial = _certification_route_trial(
+                trial_set,
+                input=input,
+                snapshot=snapshot,
+                interest=interest,
+                leg_seconds_fn=leg_fn,
+                planning_budget=repair_budget,
+                pulled_endpoint_id=pulled_endpoint_id,
+                price_visit=price_visit,
+                clock_start=clock_start,
+                queue_visit=lambda cand, hour: shape_visit(cand, hour).queue_seconds,
+            )
+            if trial is None:
+                break
+            if (
+                trial.elapsed_seconds - trial.queue_seconds
+                < CONCENTRATE_FLOOR_FRACTION * planning_budget.nominal_elapsed_seconds
+            ):
+                break
+            selected = trial_set
+            drops += 1
 
     # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
     # and demote the smaller-tier of each pair. Demoted POI beats are
@@ -2916,13 +3063,31 @@ def select_route(
         # (dateless / no weather / no closures / unpassed queues) both reads
         # are byte-identical to the pre-promise `visit_seconds`.
         planned_visit_seconds={
-            poi.id: seconds for poi, _hour, seconds in final_arrivals
+            poi.id: seconds for poi, _hour, seconds, _clock in final_arrivals
         },
         costing_options_override=surface_override,
     )
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})
     route = route.model_copy(update={"reach": reach})
+    # THE HONESTY SURFACE'S PER-STOP FACTS (Phase 4, W4.2 deviation v): queue
+    # minutes and the in/out side of the door, priced at the SAME ordered
+    # arrival hours the visits were priced at — one clock read, so the surface
+    # a person commits on and the budget the day was planned on can never
+    # disagree (Camille's finding: a stop seated inside at peak with a blank
+    # queue column is a finish promise unpriced by half an hour).
+    route = route.model_copy(
+        update={
+            "planned_queue_seconds": {
+                poi.id: shape_visit(poi, hour).queue_seconds
+                for poi, hour, _seconds, _clock in final_arrivals
+            },
+            "visit_goes_inside": {
+                poi.id: shape_visit(poi, hour).inside_seconds > 0
+                for poi, hour, _seconds, _clock in final_arrivals
+            },
+        }
+    )
     # C9 governor exempt identity — record which POIs are EXEMPT from the per-stop
     # audio cap so compose and the golden harnesses (which lack the greedy locals,
     # and where pois[0] is NOT the start-anchor after Held-Karp) read the SAME
@@ -2975,7 +3140,11 @@ def select_route(
     # rule on the same capped plans, so certified and served are the same
     # quantity by construction rather than by coincidence.
     final_dwell = served_dwell_seconds(
-        route, snapshot, interest=interest, end_is_none=input.end is None
+        route,
+        snapshot,
+        interest=interest,
+        end_is_none=input.end is None,
+        narration_density=input.narration_density,
     )
     # THE CEILING IS HARD AND THE FLOOR IS SOFT.
     #
@@ -3056,78 +3225,6 @@ def select_route(
         ):
             assessment = assessment.model_copy(update={"delivered_thin": True})
     return _attach_tourability_if_yellow(route, assessment)
-
-
-def _jaccard(a: set[str], b: set[str]) -> float:
-    if not a and not b:
-        return 0.0
-    return len(a & b) / len(a | b)
-
-
-def select_k_routes(
-    input: TourInput,
-    snapshot: CorpusSnapshot,
-    k: int = 3,
-    *,
-    routing_client: RoutingClient | None = None,
-    planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
-) -> list[Route]:
-    """§2.2 k flavours (M6): up to ``k`` distinct stop sets, each
-    independently ordered (M4) and routed (M2/M3).
-
-    select_route is the k=1 delegate. Each additional flavour re-runs the
-    greedy with every already-used POI's score multiplied by
-    DIVERSITY_PENALTY; a candidate whose stop set shares
-    >= JACCARD_OVERLAP_MAX (Jaccard) with any kept flavour receives one bounded
-    stricter rerun in which already-used POIs score zero. If that result still
-    overlaps, the search ends. RED density raises TourabilityRefusedError on the
-    first run, exactly like select_route.
-    """
-    if k < 1:
-        return []
-    first = select_route(
-        input,
-        snapshot,
-        routing_client=routing_client,
-        planning_policy=planning_policy,
-    )
-    flavours = [first]
-    if not first.pois:
-        return flavours  # empty route: nothing to diversify against
-
-    strict_exclusion = False
-    while len(flavours) < k:
-        used = {p.id for f in flavours for p in f.pois}
-        penalty = dict.fromkeys(used, 0.0 if strict_exclusion else DIVERSITY_PENALTY)
-        try:
-            cand = select_route(
-                input,
-                snapshot,
-                routing_client=routing_client,
-                score_penalty=penalty,
-                planning_policy=planning_policy,
-            )
-        except CertificationPlanningInfeasibleError:
-            # Flavours after the first are optional product choices. A penalty
-            # can make an alternate unable to satisfy certification even when
-            # the unpenalized primary is valid; preserve that primary instead
-            # of turning optional diversity into a total-tour refusal.
-            break
-        if not cand.pois:
-            break
-        cand_ids = {p.id for p in cand.pois}
-        overlaps = any(
-            _jaccard(cand_ids, {p.id for p in f.pois}) >= JACCARD_OVERLAP_MAX
-            for f in flavours
-        )
-        if overlaps and not strict_exclusion:
-            strict_exclusion = True
-            continue
-        if overlaps:
-            break
-        flavours.append(cand)
-        strict_exclusion = False
-    return flavours
 
 
 def apply_co_located_demotion(
@@ -3938,8 +4035,11 @@ def _walk_arrivals(
     *,
     clock_start: datetime | None,
     price_visit: Callable[[POI, int | None], int],
-) -> list[tuple[POI, int | None, int]]:
-    """Walk a decided order once: ``(poi, arrival_hour, visit_seconds)`` each.
+) -> list[tuple[POI, int | None, int, datetime | None]]:
+    """Walk a decided order once: ``(poi, arrival_hour, visit_seconds,
+    arrival_clock)`` each — the clock minute-precise, the hour its pricing
+    band (Phase 4 added the clock so promise windows read off THE one
+    accumulation instead of a second arithmetic).
 
     THE one accumulation behind the exact half of the estimate-then-exact
     contract (plan S3.3, deviation v): the greedy budgeted every stop at the
@@ -3957,14 +4057,14 @@ def _walk_arrivals(
     wide). A dateless request has no cursor and every stop prices at the
     None-hour (off-peak) band.
     """
-    out: list[tuple[POI, int | None, int]] = []
+    out: list[tuple[POI, int | None, int, datetime | None]] = []
     cursor = clock_start
     for leg_seconds, poi in zip(legs, ordered, strict=False):
         if cursor is not None:
             cursor += timedelta(seconds=leg_seconds)
         hour = cursor.hour if cursor is not None else None
         seconds = price_visit(poi, hour)
-        out.append((poi, hour, seconds))
+        out.append((poi, hour, seconds, cursor))
         if cursor is not None:
             cursor += timedelta(seconds=seconds)
     return out
@@ -3981,7 +4081,7 @@ def _arrival_priced_visits(
     dict view of `_walk_arrivals` (see there for the contract)."""
     return {
         poi.id: seconds
-        for poi, _hour, seconds in _walk_arrivals(
+        for poi, _hour, seconds, _clock in _walk_arrivals(
             ordered, legs, clock_start=clock_start, price_visit=price_visit
         )
     }
@@ -4094,11 +4194,11 @@ def _certification_route_trial(
         arrivals = _walk_arrivals(
             ordered, legs, clock_start=clock_start, price_visit=price_visit
         )
-        planned = {poi.id: seconds for poi, _hour, seconds in arrivals}
+        planned = {poi.id: seconds for poi, _hour, seconds, _clock in arrivals}
         if queue_visit is not None:
             # The SAME arrival hours the visits priced — no second accumulation.
             trial_queue_seconds = sum(
-                queue_visit(poi, hour) for poi, hour, _seconds in arrivals
+                queue_visit(poi, hour) for poi, hour, _seconds, _clock in arrivals
             )
     else:
         planned = {
@@ -4123,7 +4223,11 @@ def _certification_route_trial(
         planned_visit_seconds=planned,
     )
     dwell_seconds = served_dwell_seconds(
-        route, snapshot, interest=interest, end_is_none=input.end is None
+        route,
+        snapshot,
+        interest=interest,
+        end_is_none=input.end is None,
+        narration_density=input.narration_density,
     )
     return _CertificationRouteTrial(
         selected=tuple(selected),
@@ -4225,7 +4329,7 @@ MAX_PROMISES: int = 3
 
 
 def _assemble_promises(
-    arrivals: list[tuple[POI, int | None, int]],
+    arrivals: list[tuple[POI, int | None, int, datetime | None]],
     *,
     snapshot: CorpusSnapshot,
     interest: frozenset[str],
@@ -4252,8 +4356,18 @@ def _assemble_promises(
     """
     if not arrivals:
         return ()
-    ordered = [poi for poi, _hour, _seconds in arrivals]
-    hour_by_id = {poi.id: hour for poi, hour, _seconds in arrivals}
+    ordered = [poi for poi, _hour, _seconds, _clock in arrivals]
+    hour_by_id = {poi.id: hour for poi, hour, _seconds, _clock in arrivals}
+    # The window, read off THE one accumulation (Phase 4, W4.2 deviation v):
+    # arrival clock in, arrival + priced visit out; "" on a dateless day.
+    window_by_id = {
+        poi.id: (
+            (clock.strftime("%H:%M"), (clock + timedelta(seconds=seconds)).strftime("%H:%M"))
+            if clock is not None
+            else ("", "")
+        )
+        for poi, _hour, seconds, clock in arrivals
+    }
     marquee_id = ordered[_marquee_index(ordered, snapshot, interest)].id
     finish_id = ordered[-1].id
 
@@ -4273,8 +4387,13 @@ def _assemble_promises(
         if poi_id in promised or len(promised) >= MAX_PROMISES:
             continue
         poi = poi_by_id[poi_id]
+        arrives, departs = window_by_id[poi_id]
         promised[poi_id] = Promise(
-            kind=kind, poi_id=poi_id, shape=shape_visit(poi, hour_by_id[poi_id])
+            kind=kind,
+            poi_id=poi_id,
+            shape=shape_visit(poi, hour_by_id[poi_id]),
+            arrives_hhmm=arrives,
+            departs_hhmm=departs,
         )
     return tuple(promised.values())
 
@@ -4339,6 +4458,39 @@ def _diversity_weighted_score(
 #: and the incumbents are id-sorted, so truncating at a fixed count is
 #: deterministic — the same tour is produced on every run.
 TIMEBOX_REPAIR_MAX_TRIALS: int = 4000
+
+# The under-fill fallback's own floor (Phase 4 S4.5, the W4.2 panel's unanimous
+# D-i finding). The band floor stays SOFT — an honestly short day ships with its
+# shortfall disclosed (design §8.3; the well-liked base days run 62-68%) — but a
+# best-possible day delivering under HALF the requested experience is "no day,
+# mislabelled" (Aiko: "never quietly hand back a sixth of what I asked";
+# Rosemary: "never silently return less day than asked"), and it REFUSES with
+# the binding constraint named instead. `open` end-hardness zeroes the band
+# floor and is exempt by construction.
+UNDERFILL_REFUSAL_FRACTION: float = 0.5
+
+# "SKIP THE QUEUES" (Phase 4 dial, W4.2 — the panel retired "quieter" as a word
+# and named the need: fewer people, fewer queues). Two tiers, because a score
+# dim measurably LOSES to proximity (a 30 m Louvre out-ranks a dimmed rival at
+# 300 m on value-per-second — found by this dial's own test): a door costing
+# SERIOUS peak standing time leaves the dwell pool entirely (Théo refuses the
+# 40-minute Notre-Dame stand outright; vignette walk-pasts untouched — the
+# category_minus precedent), while a token-to-moderate door is dimmed through
+# the one per-place score knob so a queue-free rival wins the near-tie. Both on
+# top of Phase 3's queues-are-budgeted-never-credited rule.
+AVOID_QUEUES_MIN_PEAK_MINUTES: int = 10
+AVOID_QUEUES_EXCLUDE_PEAK_MINUTES: int = 20
+AVOID_QUEUES_SCORE_FACTOR: float = 0.4
+
+# "FEWER STOPS, LONGER AT EACH" (Phase 4 dial, W4.2 — Camille: "stop count down
+# with the freed minutes flowing to the anchors"). The concentrate pass drops
+# the weakest unprotected stops AFTER the repair, never below three stops,
+# never below CONCENTRATE_FLOOR_FRACTION of the nominal (which keeps it above
+# the 0.5 underfill refusal line — a dial must not steer the day into its own
+# refusal), and at most this fraction of the seated count.
+CONCENTRATE_MIN_STOPS: int = 3
+CONCENTRATE_FLOOR_FRACTION: float = 0.55
+CONCENTRATE_MAX_DROP_FRACTION: float = 0.4
 
 #: How many times the repair may RE-RUN itself on its best over-ceiling set
 #: when no single move lands in-band. One enumeration can shed at most ONE
@@ -4649,42 +4801,84 @@ def _apply_certification_timebox_repair(
 
     eligible_trials = preferred_trials or last_resort_trials
     if not eligible_trials and under_ceiling_trials:
-        # UNDER-FILLED, NOT INFEASIBLE. Nothing reaches the floor, but something
-        # fits under the ceiling — so the area cannot support the length asked
-        # for, and the honest answer is the longest tour it CAN support. The gate
-        # downstream measures the shortfall and attaches the disclosure; this
-        # function only picks the set.
+        # UNDER-FILLED. Nothing reaches the floor, but something fits under the
+        # ceiling. The floor stays SOFT for honest near-misses (design §8.3:
+        # duration is a ceiling, not a contract to fill; the gate downstream
+        # measures the shortfall and attaches the disclosure) — but the W4.2
+        # panel's unanimous worst finding (D-i, phase4-ledger.md) drew a line
+        # under the fallback: a best-possible day under HALF the ask is not a
+        # short day, it is no day, and shipping it silently is the a-leg6 cell
+        # ("one stop, zero walking, 30 minutes, sold as planned-180"). Under
+        # the line: REFUSE, naming what binds. `open` hardness zeroes the
+        # minimum floor (design §2.3, Julien's leavable-blank clock), and an
+        # explicitly open day is never refused for being short.
         #
         # "The longest under the ceiling" is the same preference `rank` expresses
         # (nearest the nominal), stated directly because every candidate here is
         # below it. Ties break on the higher score, then on ids, so the choice is
         # deterministic exactly as `rank` is.
-        return list(
-            max(
-                under_ceiling_trials,
-                key=lambda trial: (
-                    # Longest EXPERIENCE under the ceiling — queue seconds spend
-                    # the budget but never count as the day (the same rule as
-                    # rank's fit term).
-                    trial.elapsed_seconds - trial.queue_seconds,
-                    _diversity_weighted_score(
-                        trial.selected,
-                        spine=spine,
-                        interest=interest,
-                        snapshot=snapshot,
-                        score_penalty=score_penalty,
-                        party=input.party,
-                    ),
-                    tuple(sorted(poi.id for poi in trial.selected)),
+        best_under = max(
+            under_ceiling_trials,
+            key=lambda trial: (
+                # Longest EXPERIENCE under the ceiling — queue seconds spend
+                # the budget but never count as the day (the same rule as
+                # rank's fit term).
+                trial.elapsed_seconds - trial.queue_seconds,
+                _diversity_weighted_score(
+                    trial.selected,
+                    spine=spine,
+                    interest=interest,
+                    snapshot=snapshot,
+                    score_penalty=score_penalty,
+                    party=input.party,
                 ),
-            ).selected
+                tuple(sorted(poi.id for poi in trial.selected)),
+            ),
         )
+        best_experience = best_under.elapsed_seconds - best_under.queue_seconds
+        floor_is_live = planning_budget.minimum_elapsed_seconds > 0
+        if (
+            floor_is_live
+            and best_experience
+            < UNDERFILL_REFUSAL_FRACTION * planning_budget.nominal_elapsed_seconds
+        ):
+            supportable_min = best_under.elapsed_seconds // 60
+            asked_min = planning_budget.nominal_elapsed_seconds // 60
+            # In the dial's own words (Paulo, W4.12: "a cap, on a leg, that
+            # binds — three second meanings of everyday words in one clause").
+            binding = (
+                f"the {input.max_leg_minutes}-minute limit on any single walk is "
+                f"what stops it — allow longer walks, or ask for a shorter day"
+                if input.max_leg_minutes is not None
+                else "there is not enough to visit near this start for a day this long"
+            )
+            alternatives, gap_minutes = _band_alternatives(
+                input=input,
+                planning_policy=planning_policy,
+                best_elapsed_seconds=best_under.elapsed_seconds,
+            )
+            raise CertificationPlanningInfeasibleError(
+                policy_id=planning_policy.policy_id,
+                minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
+                maximum_elapsed_seconds=planning_budget.nominal_elapsed_seconds,
+                best_elapsed_seconds=best_under.elapsed_seconds,
+                reason=(
+                    f"the longest day that can be built here is about "
+                    f"{supportable_min} minutes, far short of the {asked_min} "
+                    f"minutes asked for; {binding}"
+                ),
+                alternatives=alternatives,
+                gap_minutes=gap_minutes,
+            )
+        return list(best_under.selected)
     if not eligible_trials:
-        # EVERY trial overshoots the request. One enumeration can shed at most
-        # one stop, and an arrival-hour queue re-pricing can move the day by
-        # several stops' worth at once — so before refusing, run another pass
-        # from the best over-ceiling set this one found (strictly different,
-        # or there is nothing new to try). Bounded by TIMEBOX_REPAIR_MAX_PASSES.
+        # EVERY trial overshoots the request (an under-ceiling trial would have
+        # taken the branch above; a leg-cap-rejected one never banks). One
+        # enumeration can shed at most one stop, and an arrival-hour queue
+        # re-pricing can move the day by several stops' worth at once — so
+        # before refusing, run another pass from the best over-ceiling set this
+        # one found (strictly different, or there is nothing new to try).
+        # Bounded by TIMEBOX_REPAIR_MAX_PASSES.
         if (
             best_over
             and _pass_number < TIMEBOX_REPAIR_MAX_PASSES
@@ -4708,11 +4902,55 @@ def _apply_certification_timebox_repair(
                 queue_visit=queue_visit,
                 _pass_number=_pass_number + 1,
             )
-        # There is no shorter set to fall back to, so this genuinely cannot be
-        # served — and the message says OVERSHOOT rather than "band", because
-        # a reader who sees a band here reads it as the old bug (a tour
-        # refused for being too short).
+        # Nothing banked at all. TWO different worlds land here and the refusal
+        # must not confuse them (the c-leg12 defect, W4.2: the message claimed
+        # the day "overruns" while its own numbers showed 75 built against 270
+        # required): with a leg cap set, every candidate day may have been
+        # REJECTED AT THE CAP — the day starved, it did not overrun.
+        # THREE worlds, not two (W4.12 re-derivation of the D-ii template). The
+        # old test was `min(observed) < floor` and then REPORTED `max(observed)`,
+        # so a candidate set that straddled the band — some days too short, some
+        # too long, none in it — printed the longest OVERRUN as "the longest day
+        # that fits the cap" and advised a SHORTER day: on the flagship, "555
+        # minutes fits ... ask for a shorter day" against a 300-minute request
+        # (Théo, Camille, Rosemary, Marcus, Sofia, Julien, Paulo all read it).
+        floor = planning_budget.minimum_elapsed_seconds
+        ceiling = planning_budget.nominal_elapsed_seconds
+        under = [o for o in observed if o < floor]
+        over = [o for o in observed if o > ceiling]
         best = min(observed) if observed else None
+        capped = input.max_leg_minutes is not None
+        if under and not over and capped:
+            # STARVED under a cap: everything found is too short. Report the
+            # longest that fits, which is the honest ceiling of what the cap allows.
+            best = max(under)
+            reason = (
+                f"with no single walk longer than {input.max_leg_minutes} minutes, "
+                f"the most that can be built here is about {best // 60} minutes, "
+                f"not the {ceiling // 60} you asked for — allow longer walks, or "
+                f"ask for a shorter day"
+            )
+        elif under and over:
+            # THE BAND HAS A GAP: the routes found are either too long or too
+            # short, and nothing lands between. Say both numbers; advise both ways.
+            best = min(over)
+            walk_clause = (
+                f" with no single walk longer than {input.max_leg_minutes} minutes"
+                if capped
+                else ""
+            )
+            reason = (
+                f"no route lands between {floor // 60} and {ceiling // 60} minutes"
+                f"{walk_clause}: the ones found run about {max(under) // 60} minutes "
+                f"or less, or about {min(over) // 60} minutes or more — "
+                + ("allow longer walks, or " if capped else "")
+                + "ask for a longer or a shorter day"
+            )
+        else:
+            reason = (
+                "every route reachable from this start overruns the requested "
+                "duration; the shortest one found is still longer than asked for"
+            )
         alternatives, gap_minutes = _band_alternatives(
             input=input,
             planning_policy=planning_policy,
@@ -4723,10 +4961,7 @@ def _apply_certification_timebox_repair(
             minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
             maximum_elapsed_seconds=planning_budget.nominal_elapsed_seconds,
             best_elapsed_seconds=best,
-            reason=(
-                "every route reachable from this start overruns the requested "
-                "duration; the shortest one found is still longer than asked for"
-            ),
+            reason=reason,
             alternatives=alternatives,
             gap_minutes=gap_minutes,
         )
@@ -5049,8 +5284,9 @@ def poi_score(
 ) -> float:
     """The §3 per-POI score: importance x richness x lens_relevance x alignment x role.
 
-    M6: ``penalty`` (poi_id → factor) is the k-flavours diversity knob —
-    POIs already used by kept flavours score lower on re-runs.
+    ``penalty`` (poi_id → factor) is the per-place score channel; its live
+    producers are the rain pricing and the skip-the-queues dial. Born as
+    the k-flavours diversity knob; the flavours died at Phase 4 (§8.1).
 
     Phase 3 re-baseline (Step 3.5): the lens factor is now the POSITIVE-floored
     ``lens_relevance`` (miss -> LENS_FLOOR = 0.25), NOT the legacy hard-filter

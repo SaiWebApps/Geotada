@@ -773,6 +773,160 @@ def test_a_leg_cap_prefers_more_walking_in_shorter_pieces():
     assert capped_stones.total_walk_seconds > capped_stoneless.total_walk_seconds
 
 
+def test_a_leg_cap_the_uncapped_day_already_honours_is_already_true():
+    """W4.2 locked semantics 1, measured at the W4.12 close: "when a turn cannot
+    bind it SAYS already true" — and changes nothing. A cap the un-capped day
+    already satisfies must return THAT day, byte-identical, and never enter the
+    bounded search.
+
+    It did not. The bounded search's timebox repair can only DROP stops, and
+    dropping a middle stop merges two walks into one longer walk that breaks
+    the cap — so under a cap the repair could not shrink an over-long day into
+    band. On the live flagship (Tuileries→Notre-Dame, 300 min) whose un-capped
+    day has an 18-minute longest walk, a 25-MINUTE cap REFUSED with the same
+    numbers a 9-minute cap did (Camille: "loosening a constraint deleted my
+    tour"; Rosemary: "if loosening a limit changes not one digit, the limit is
+    not in the sum"). The fix is the ruling itself: plan without the cap first;
+    if it already honours the cap, it is the day.
+
+    UNDO TEST: delete the "ALREADY TRUE" block at the top of select_route ->
+    the 20-minute cap runs the bounded search and returns a different route
+    (more walking in shorter pieces) -> RED.
+    """
+    from src.tour.selection import select_route
+
+    corpus = _leg_cap_corpus(with_stones=False)  # the un-capped day marches ~15 min
+    uncapped = select_route(_leg_cap_request(), corpus)
+    longest = max(_route_leg_seconds(uncapped))
+    assert longest > _LEG_CAP_SECONDS, "fixture premise: the 12-minute cap must bind"
+    loose_cap = (longest // 60) + 5  # comfortably above the longest walk: cannot bind
+    assert loose_cap * 60 > longest
+
+    # THE SEAM, pinned directly: a cap that cannot bind must never ENTER the
+    # bounded search. `_insertion_legs_fit_cap` is that search's own admission
+    # rule and is called with a real cap only there (the un-capped plan calls
+    # it with None and returns at once) — so a call carrying a cap IS the
+    # bounded search running. On this small corpus the two paths happen to
+    # agree on the route, which is exactly why the invariant, not the route,
+    # is what this test holds.
+    import src.tour.selection as selection_mod
+
+    real_fit = selection_mod._insertion_legs_fit_cap
+
+    def _tripwire(*args, **kwargs):
+        if kwargs.get("max_leg_seconds") is not None:
+            raise AssertionError(
+                "the bounded search ran for a cap the un-capped day already honours"
+            )
+        return real_fit(*args, **kwargs)
+
+    selection_mod._insertion_legs_fit_cap = _tripwire
+    try:
+        already_true = select_route(_leg_cap_request(loose_cap), corpus)
+    finally:
+        selection_mod._insertion_legs_fit_cap = real_fit
+    assert already_true == uncapped, (
+        "a cap the un-capped day already honours must return that day unchanged"
+    )
+    # And a cap that DOES bind still reaches the bounded search (the sibling
+    # test above proves what that search does — here it trades the anchor
+    # away); this only pins the seam.
+    binding = select_route(_leg_cap_request(12), corpus)
+    assert max(_route_leg_seconds(binding), default=0) <= _LEG_CAP_SECONDS
+    assert binding != uncapped
+
+
+def test_a_leg_cap_that_starves_the_day_refuses_with_the_cap_named():
+    """Phase 4 S4.5, the W4.2 panel's unanimous worst finding (D-i): a dial turn
+    may refuse with a reason, or re-plan a full day; it may NEVER quietly hand
+    back a sixth of what was asked for.
+
+    Measured 2026-08-11 (evidence/phase4-dials/a-leg6, b-leg6): the "shorter
+    walks" strawman at 6 minutes collapsed a 180-minute round trip to ONE stop,
+    zero walking, ~30 minutes of day — shipped as "planned 180", tourability
+    GREEN. Cites the panel by name: Aiko ("a dial turn may refuse with a
+    reason, or re-plan a full day; it may never quietly hand back a sixth of
+    what I asked"), Greta ("c-leg12 shows the honest behaviour: it REFUSES —
+    make leg6 refuse like that"), Rosemary ("the dial must never silently
+    return less day than asked").
+
+    The floor stays SOFT for honest near-misses (design §8.3: duration is a
+    ceiling, not a contract to fill — the well-liked base days run 62-68% and
+    ship disclosed). What refuses is the EXTREME: a best-possible day under
+    HALF the ask. And the refusal must name what binds — the leg cap — not
+    claim the day "overruns" (the wrong-template defect the panel read at
+    c-leg12).
+    """
+    from src.tour.selection import CertificationPlanningInfeasibleError, select_route
+    from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
+
+    # One anchor beside the start; a RICH duration-calibrated cluster ~890 m
+    # north (inside the 180-min reach envelope, so the density gate stays
+    # GREEN — the day must starve at the CAP, not at the corpus). Uncapped
+    # this plans a real multi-stop day by walking the ~24-minute leg north;
+    # under a 6-minute leg cap only the near anchor is reachable, and one stop
+    # cannot fill half of three hours.
+    far_center = (PDV[0] + 0.008, PDV[1])
+    pois = [
+        _poi("near-anchor", lat=PDV[0] + 0.0008, lng=PDV[1]),
+        *_density_fillers(
+            far_center, duration_min=180, round_trip=True, radius_m=80.0
+        ),
+    ]
+    snap = _snap(pois)
+
+    # PREMISE — uncapped, the same corpus plans a multi-stop day (the corpus is
+    # not the problem; the cap is).
+    uncapped = select_route(
+        TourInput(start=PDV, duration_min=180, city_slug="paris", round_trip=True),
+        snap,
+    )
+    assert len(uncapped.pois) >= 2, "fixture premise: uncapped must be a real day"
+
+    # THE REFUSAL — capped at 6, the best buildable day is one near stop, far
+    # under half the ask: refuse, name the cap, never ship it silently.
+    with pytest.raises(CertificationPlanningInfeasibleError) as caught:
+        select_route(
+            TourInput(
+                start=PDV,
+                duration_min=180,
+                city_slug="paris",
+                round_trip=True,
+                max_leg_minutes=6,
+            ),
+            snap,
+        )
+    message = str(caught.value)
+    assert "overruns" not in message, (
+        "the refusal claims the day OVERRUNS while it starved — the c-leg12 "
+        "wrong-template defect the panel named"
+    )
+    # W4.12 (Paulo): named in the dial's own words — "the N-minute limit on any
+    # single walk" — never "walking-leg cap ... binds", which the language judge
+    # ruled three second meanings of everyday words in one clause.
+    assert "limit on any single walk" in message and "6-minute" in message, (
+        f"the refusal must name the constraint that binds, plainly: {message}"
+    )
+    assert "walking-leg cap" not in message and "binds" not in message, message
+    assert caught.value.alternatives, "a refusal must offer a way out"
+
+    # THE OPEN EXEMPTION — the same starved request under end_hardness='open'
+    # ships the short day instead of refusing: open means "however long it is"
+    # (design §2.3, Julien's leavable-blank clock).
+    open_day = select_route(
+        TourInput(
+            start=PDV,
+            duration_min=180,
+            city_slug="paris",
+            round_trip=True,
+            max_leg_minutes=6,
+            end_hardness="open",
+        ),
+        snap,
+    )
+    assert len(open_day.pois) >= 1, "open hardness keeps the honest short day"
+
+
 def test_breakdown_prints_the_resolved_party_even_when_it_moves_no_number(capsys):
     """Two runs whose axes tie on every NUMBER the table shows (a preset pair
     whose only new axis is the narration register, which touches none of

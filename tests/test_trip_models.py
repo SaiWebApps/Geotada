@@ -427,18 +427,30 @@ class TestTripPreviewSpotlightFields:
         return RouteOption(**kwargs)
 
     def test_preview_response_carries_only_what_planning_knows(self):
-        """The plan-only preview response has exactly four fields, and no more.
+        """The plan-only preview response carries exactly what PLANNING knows.
 
         Everything that described WRITTEN text — the flat stop list, the narrator
         name, the candidate lane, the Basic fallback, the quality verdicts — left
         with the authoring it described, to POST /trips/preview/author. A field
         that survives here would advertise something planning cannot produce.
+
+        Phase 4 (W4.2 deviation v, S4.6 + the W4.12 close) added the pre-commit
+        HONESTY SURFACE, all of it known at plan time and none of it authored
+        text: the day's promises with their coarse windows, the plain-language
+        day notes (closed doors, dial exclusions, unverified hours), the
+        unplanned minutes as a number, and the longest single walk. Still
+        exhaustive — the wire-contract twin (tests/test_trip_preview_contract.py)
+        pins the same set on a real 200.
         """
         assert set(TripPreviewResponse.model_fields) == {
             "spine_area",
             "options",
             "tourability",
             "degradations",
+            "promises",
+            "day_notes",
+            "slack_minutes",
+            "longest_walk_minutes",
         }
 
     def test_lens_coverage_note_lives_on_the_option_it_describes(self):

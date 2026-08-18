@@ -71,8 +71,7 @@ from .selection import (
     MaterializedCorpusSnapshot,
     build_poi_beat_plans_capped,
     choose_discrete_route,
-    route_has_container_identity_stop,
-    select_k_routes,
+    select_route,
 )
 from .verify import FaithfulnessChecker
 
@@ -386,19 +385,24 @@ def _premium_route_refusal(route: Route) -> str | None:
     ``record_routing_degradations`` — so the silent substitution is gone without the
     outage taking the product with it.
 
-    Still a predicate rather than a raise, so a NON-CHOSEN flavour can be dropped from
-    the options tuple while the CHOSEN one refuses the whole request.
+    Still a predicate rather than a raise: the caller owns the decision, and the
+    batch runner reads the reason without exception plumbing.
     """
 
     if not route.pois:
         return "Premium planning requires a route with at least one stop"
-    if len(route.transits) != len(route.pois):
+    # One leg INTO each stop, plus — on a round trip — the loop-home leg
+    # (W4.10's live-wire finding, 2026-08-11: the strict equality refused
+    # EVERY round-trip day on the API path with "one walking leg per stop";
+    # the harness never hit it because it plans without the premium gate, and
+    # no test had ever pushed a round trip through this door).
+    if len(route.transits) not in (len(route.pois), len(route.pois) + 1):
         return "Premium planning requires one walking leg per stop"
     return None
 
 
 def record_routing_degradations(
-    route: Route, *, component: str = "premium_tour.plan_premium_options"
+    route: Route, *, component: str = "premium_tour.plan_premium_tour"
 ) -> None:
     """Label a route whose walking times were estimated rather than measured.
 
@@ -528,6 +532,7 @@ def _plan_one_premium_route(
         snapshot,
         lenses=tour_input.lenses,
         end_is_none=tour_input.end is None,
+        narration_density=tour_input.narration_density,
     )
     vignette_beats = select_vignette_beats(
         route.vignettes,
@@ -559,72 +564,6 @@ def _plan_one_premium_route(
     )
 
 
-def plan_premium_options(
-    tour_input: TourInput,
-    snapshot: CorpusSnapshot,
-    *,
-    routing_client: RoutingClient,
-    planning_policy: RoutePlanningPolicy | None = None,
-    generation_time: dt.datetime | None = None,
-    authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
-    glue_client: GlueClient | None = None,
-) -> tuple[PremiumTourPlan, ...]:
-    """BLOCK 1 — every flavour of one request, planned, with no per-stop authoring.
-
-    Returns one plan per surviving flavour, CHOSEN FIRST. The chosen flavour is exactly
-    what ``choose_discrete_route`` picks, so ``plan_premium_options(...)[0]`` is the plan
-    ``plan_premium_tour`` has always returned for the same input. A flavour after the
-    first that cannot clear the Premium route bar is DROPPED from the tuple; the chosen
-    one refuses the whole request, as before.
-
-    FREE, and free BY DEFAULT. ``glue_client=None`` here means ``SilentGlueClient``, not
-    ``generate``'s paid Haiku default: planning a route is a places-and-times question
-    and makes no provider call at all (OWNER RULING 1). The DEFAULT is the part that
-    matters — a free path that is only free when a caller remembers to ask is one
-    refactor away from being paid again, on an endpoint Phase 1 leaves anonymous.
-    """
-
-    policy = planning_policy or certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
-    routing_version = resolve_routing_version(routing_client)
-    routes = select_k_routes(
-        tour_input,
-        snapshot,
-        3,
-        routing_client=routing_client,
-        planning_policy=policy,
-    )
-    chosen = choose_discrete_route(routes)
-    ordered = [
-        chosen,
-        *(
-            route
-            for route in routes
-            if route is not chosen and not route_has_container_identity_stop(route)
-        ),
-    ]
-    plans: list[PremiumTourPlan] = []
-    for index, route in enumerate(ordered):
-        refusal = _premium_route_refusal(route)
-        if refusal is not None:
-            if index == 0:
-                raise PremiumRouteInfeasibleError(refusal)
-            continue
-        record_routing_degradations(route)
-        plans.append(
-            _plan_one_premium_route(
-                tour_input,
-                snapshot,
-                route,
-                policy=policy,
-                routing_version=routing_version,
-                generation_time=generation_time,
-                authorities=authorities,
-                glue_client=glue_client if glue_client is not None else SilentGlueClient(),
-            )
-        )
-    return tuple(plans)
-
-
 def plan_premium_tour(
     tour_input: TourInput,
     snapshot: CorpusSnapshot,
@@ -635,23 +574,45 @@ def plan_premium_tour(
     authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
     glue_client: GlueClient | None = None,
 ) -> PremiumTourPlan:
-    """The ONE plan a single-route caller wants: the chosen flavour of Block 1.
+    """BLOCK 1 — THE day of one request, planned, with no per-stop authoring.
 
-    Deliberately a one-line delegate. The selection rule (``choose_discrete_route`` over
-    the K=3 flavours) lives in ``plan_premium_options`` and nowhere else, so the batch
-    runner and the two API surfaces cannot drift into different definitions of "the"
-    route.
+    Phase 4 (design §8.1) deleted pick-one-of-three: no persona ever wanted to
+    compare routes, so the planner plans ONE day — one ``select_route`` call — and
+    the dials on the request are how a person changes it. ``choose_discrete_route``
+    stays as the container-identity refusal on the one route: with containers
+    already excluded from the dwell pool the raise is a can't-happen guard, kept
+    because the one-engine suite pins the primitive as THE planner's own.
+
+    FREE, and free BY DEFAULT. ``glue_client=None`` here means ``SilentGlueClient``,
+    not ``generate``'s paid Haiku default: planning a route is a places-and-times
+    question and makes no provider call at all (OWNER RULING 1). The DEFAULT is the
+    part that matters — a free path that is only free when a caller remembers to ask
+    is one refactor away from being paid again, on an endpoint that stays anonymous.
     """
 
-    return plan_premium_options(
+    policy = planning_policy or certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
+    routing_version = resolve_routing_version(routing_client)
+    route = select_route(
         tour_input,
         snapshot,
         routing_client=routing_client,
-        planning_policy=planning_policy,
+        planning_policy=policy,
+    )
+    chosen = choose_discrete_route([route])
+    refusal = _premium_route_refusal(chosen)
+    if refusal is not None:
+        raise PremiumRouteInfeasibleError(refusal)
+    record_routing_degradations(chosen)
+    return _plan_one_premium_route(
+        tour_input,
+        snapshot,
+        chosen,
+        policy=policy,
+        routing_version=routing_version,
         generation_time=generation_time,
         authorities=authorities,
-        glue_client=glue_client,
-    )[0]
+        glue_client=glue_client if glue_client is not None else SilentGlueClient(),
+    )
 
 
 class PremiumComposeExecutor(Protocol):
@@ -1026,7 +987,6 @@ __all__ = [
     "finalize_premium_composition",
     "finalize_premium_tour",
     "plan_premium_authoring",
-    "plan_premium_options",
     "plan_premium_tour",
     "premium_authoring_policy_sha256",
     "record_routing_degradations",

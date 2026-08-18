@@ -330,10 +330,15 @@ def test_shape_column_renders_in_out_and_closed_out(capsys):
             ),
         ),
         clock_exclusions=(
+            # W4.12: the DECISION is the `kept_outside` flag, not words in the
+            # reason — the harness had string-matched "outside only" and went
+            # silently blank the day the sentence was made plain (Paulo's ruling
+            # against "seated outside only" / "(hours: OSM)").
             ClockExclusion(
                 poi_id="poi-c",
                 name="Musee de Cluny",
-                reason="closed Tuesday; kept as an outside only stop (hours: AI-judged)",
+                reason="closed Tuesday",
+                kept_outside=True,
             ),
         ),
     )

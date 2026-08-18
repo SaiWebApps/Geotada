@@ -196,11 +196,31 @@
   }
   .tour-stop--vignette { border-left: 3px dashed #3b82f6; }
   .tour-stop--vignette .meta { font-style: italic; }
-  /* PLAN screen: the three route options an operator chooses between before
-     anything is written or voiced. */
-  .tour-option-card { border-left: 3px solid var(--accent); }
-  .tour-option-card h4 { margin: 0 0 4px; }
-  .tour-option-card .tour-option-places { margin: 6px 0 10px; }
+  /* PLAN screen: THE day. Design §8.1 deleted the three-route pick — the plan
+     reply carries exactly one route — so what renders is one day plus the dial
+     controls (W4.2 panel) that reshape it live. */
+  .tour-preview select,
+  .tour-preview input[type="date"],
+  .tour-preview input[type="time"] {
+    width: 100%; padding: 0.5rem 0.7rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+    font-family: inherit; font-size: 0.9rem;
+  }
+  .tour-preview .tour-dial-sub {
+    color: var(--text-muted); font-size: 0.72rem; margin-top: 0.2rem;
+    text-transform: none; letter-spacing: normal;
+  }
+  /* "Less of this today" chips: labels styled as toggles. Scoped under
+     .tour-preview so they outrank the generic .field-group label block rule. */
+  .tour-preview .tour-chip {
+    display: inline-flex; align-items: center; gap: 4px; margin: 0 6px 6px 0;
+    padding: 3px 10px; border: 1px solid var(--border); border-radius: 12px;
+    cursor: pointer; font-size: 0.78rem; color: var(--text-muted);
+    text-transform: none; letter-spacing: normal; font-weight: 400; user-select: none;
+  }
+  .tour-preview .tour-chip:has(input:checked) {
+    border-color: var(--accent); color: var(--accent); background: var(--accent-dim);
+  }
   /* KE9: "keep exploring here" — a dwell stop whose budget capped out extra
      beats. A small chip on the stop title, matching the vignette-tag idiom but
      in the accent (amber) token so it reads as an opt-in, not a walk-past. */
@@ -1145,27 +1165,33 @@
   // Generate button and per-stop Listen buttons. Keyed on data-tour-stop, disjoint from the
   // incoming beat-TTS handler's data-beat-tts, so they never cross-fire.
   let tourStops = [];
-  // The 3 PLAN options currently on screen (RouteOption wire objects). Empty
-  // whenever the page is showing stops, a refusal, or nothing.
-  let tourOptions = [];
+  // THE planned day currently on screen (the plan reply's one RouteOption —
+  // design §8.1 deleted the pick, so `options` is a list of exactly one).
+  // Null whenever the page is showing written stops, a refusal, or nothing.
+  let tourDay = null;
   // The exact body of the last PLAN request, replayed verbatim on the AUTHOR
-  // call so the endpoint rebuilds the option the operator is looking at.
+  // call so the endpoint rebuilds the day the operator is looking at. EVERY
+  // dial writes into this object (W4.2 panel hazard: a dial that skips it
+  // authors yesterday's knobs and 409s).
   let lastTourPlanBody = null;
   // The minutes the operator asked for, needed by renderTourStops's thin-tour note.
   let lastTourRequestedMinutes = 60;
-  // A one-line message to show above the next set of option cards. Set only when
-  // the plan was re-fetched on the operator's behalf (see authorTourOption).
-  let tourOptionsNotice = null;
+  // A one-line message to show above the next rendered day. Set only when the
+  // plan was re-fetched on the operator's behalf (see authorTourDay).
+  let tourPlanNotice = null;
+  // Debounce handle for the live replan (W4.2 panel): a burst of dial changes
+  // costs ONE plan request, ~400ms after the last turn.
+  let tourReplanTimer = null;
+  // Stop-for-stop identity of the last day rendered, for the panel's dead-notch
+  // honesty: a dial that changes nothing must say "already true of this day".
+  let lastTourDaySignature = null;
   // Step B.6 click-to-set state: 0 -> next map click sets the start, 1 -> sets the
   // destination, 2 -> both set (further clicks ignored until Clear points).
   let tourClickStage = 0;
   let tourPointLayer = null;   // A/B pins dropped by map clicks (dies with the map on re-init)
   detailBody.addEventListener('click', (e) => {
     if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
-    const pick = e.target.closest('.tour-option-pick');
-    if (pick) { authorTourOption(parseInt(pick.dataset.tourOption, 10)); return; }
-    const showOn = e.target.closest('.tour-option-map');
-    if (showOn) { drawTourRoute(tourOptionMapStops(tourOptions[parseInt(showOn.dataset.tourOption, 10)])); return; }
+    if (e.target.closest('#tourWriteBtn')) { authorTourDay(); return; }
     if (e.target.closest('#tourClearBtn')) { clearTourPoints(); return; }
     if (e.target.closest('#tourFeedbackUp')) { submitTourFeedback('up'); return; }
     if (e.target.closest('#tourFeedbackDown')) { submitTourFeedback('down'); return; }
@@ -2171,7 +2197,13 @@
             <input type="text" id="tourStart" value="${escHtml(startVal)}" placeholder="48.8566,2.3522" /></div>
           <div class="field-row">
             <div class="field-group"><label>Duration (min)</label>
-              <input type="number" id="tourDuration" value="60" min="15" max="240" /></div>
+              <!-- max was 240: the flagship case this release exists to fix is a
+                   300-minute Rue Royale to Notre-Dame walk, and at 240 the control
+                   rendered invalid for it. There is no <form> here and the value is
+                   read with parseInt, so a script could always drive 300 — but the
+                   acceptance screenshot showed a red box. 600 matches the engine's
+                   own ceiling (src/tour/contract.py: duration_min le=600). -->
+              <input type="number" id="tourDuration" value="60" min="15" max="600" /></div>
             <div class="field-group"><label>Lenses (comma-separated, optional)</label>
               <!-- A free-text lens field silently produced the UN-LENSED tour on any
                    typo: an unknown lens scores a uniform LENS_FLOOR (0.25) across the
@@ -2199,15 +2231,110 @@
           <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip (mutually exclusive with a destination)</label></div>
           <div class="field-group" style="color:var(--text-muted);font-size:0.8rem;">
             Tip: click the map — 1st click sets the start, 2nd the destination.</div>
-          <button class="btn btn-primary" id="tourGenerateBtn">Generate tour options</button>
+          <!-- THE DIALS (W4.2 panel — the option labels below are panel-locked plain
+               language; keep them exactly). Every control writes into the ONE plan
+               body generateTourPreview() builds and stores as lastTourPlanBody, and
+               every change re-plans the day automatically (scheduleTourReplan). -->
+          <div class="field-row">
+            <div class="field-group"><label>Date</label>
+              <input type="date" id="tourDate" /></div>
+            <div class="field-group"><label>Start time</label>
+              <input type="time" id="tourTime" /></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Finish</label>
+              <select id="tourFinish">
+                <option value="wall">Hard finish — end on time with spare minutes</option>
+                <option value="firm" selected>Flexible finish</option>
+                <option value="open">However long it turns out</option>
+              </select></div>
+            <div class="field-group"><label>Party</label>
+              <select id="tourParty">
+                <option value="" selected>No preset</option>
+                <option value="solo">solo</option>
+                <option value="couple">couple</option>
+                <option value="family">family</option>
+                <option value="take-it-easy">take it easy</option>
+                <option value="with-luggage">with luggage</option>
+              </select></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Shorter walks</label>
+              <select id="tourMaxLeg">
+                <option value="" selected>Off</option>
+                <option value="12">12 min</option>
+                <option value="9">9 min</option>
+                <option value="6">6 min</option>
+              </select>
+              <div class="tour-dial-sub">No single walk longer than this</div></div>
+            <div class="field-group"><label>More breaks</label>
+              <select id="tourRestCadence">
+                <option value="" selected>Off</option>
+                <option value="40">Every 40 min</option>
+                <option value="25">Every 25 min</option>
+              </select>
+              <!-- CADENCE, not presence. The W4.2 panel locked benches and toilets
+                   as a FLOOR at every position of this dial, so a subtitle reading
+                   "benches and toilet stops on the plan" promised them as this
+                   dial's gift and implied the default day has none. It only
+                   changes how often the day stops to sit. -->
+              <div class="tour-dial-sub">How often the day pauses to sit</div></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Stops</label>
+              <select id="tourStopDensity">
+                <option value="fewer">Fewer stops, longer at each</option>
+                <option value="" selected>Default</option>
+                <option value="more">More stops, shorter at each</option>
+              </select></div>
+            <div class="field-group"><label>Talking</label>
+              <select id="tourNarrationDensity">
+                <option value="less">Less talking</option>
+                <option value="" selected>Default</option>
+                <option value="more">More talking</option>
+              </select></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label>Weather</label>
+              <select id="tourWeather">
+                <option value="" selected>Default</option>
+                <option value="dry">Dry</option>
+                <option value="rain">Rain</option>
+                <option value="auto">Auto — use the forecast</option>
+              </select></div>
+            <div class="field-group"><label><input type="checkbox" id="tourAvoidQueues" /> Skip the queues</label></div>
+          </div>
+          <div class="field-group"><label>Less of this today</label>
+            <div id="tourCategoryMinus">
+              <label class="tour-chip"><input type="checkbox" value="museum" /> museum</label>
+              <label class="tour-chip"><input type="checkbox" value="church" /> church</label>
+              <label class="tour-chip"><input type="checkbox" value="gallery" /> gallery</label>
+              <label class="tour-chip"><input type="checkbox" value="market" /> market</label>
+              <label class="tour-chip"><input type="checkbox" value="park" /> park</label>
+            </div></div>
+          <button class="btn btn-primary" id="tourGenerateBtn">Plan the day</button>
           <button class="btn btn-outline" id="tourClearBtn" title="Reset start/destination to an open walk">Clear points</button>
+          <span id="tourReplanNote" style="display:none;color:var(--text-muted);font-size:0.8rem;margin-left:8px;">replanning…</span>
           <div id="tourStops" class="tour-stops"></div>
         </div>`;
+      // THE LIVE REPLAN (W4.2 panel): any dial or input change re-plans the day
+      // automatically. 'change' rather than 'input' so a half-typed coordinate is
+      // never planned mid-keystroke; the debounce folds a burst of dial turns into
+      // one request. Controls inside #tourStops (the feedback note) are part of the
+      // rendered day, not dials, and must not trigger a replan. The listener dies
+      // with detailListeners on the next renderDetail(), like every other view's.
+      detailBody.querySelector('.tour-preview').addEventListener('change', (e) => {
+        if (e.target.closest('#tourStops')) return;
+        scheduleTourReplan();
+      }, { signal: detailListeners.signal });
       // Step B.6: (re)entering the tour view resets the click-to-set state — the inputs
-      // above rendered fresh, so any previously dropped A/B pins are stale.
+      // above rendered fresh, so any previously dropped A/B pins are stale. The
+      // dead-notch memory resets too: nothing is on screen to be "already true" of.
       tourClickStage = 0;
       clearTourPointPins();
-      // Step 4 wires #tourGenerateBtn -> POST /trips/preview and renders #tourStops.
+      lastTourDaySignature = null;
+      // The delegated listener wires #tourGenerateBtn -> POST /trips/preview and
+      // renders the day into #tourStops.
       return;
     }
 
@@ -3235,7 +3362,16 @@
     await ttsPlay({ text, cacheKey, btn, audioEl });
   }
 
-  // ── Tour preview: generate (POST /trips/preview) → render stops → play via shared ttsPlay ──
+  // ── Tour preview: plan (POST /trips/preview) → render THE day → write via authorTourDay ──
+
+  // The live replan (W4.2 panel): every dial change funnels here, and ~400ms
+  // after the last one the day is re-planned. One debounce, one request, however
+  // many dials were turned.
+  function scheduleTourReplan() {
+    if (tourReplanTimer) clearTimeout(tourReplanTimer);
+    tourReplanTimer = setTimeout(() => { tourReplanTimer = null; generateTourPreview(); }, 400);
+  }
+
   async function generateTourPreview() {
     const startEl = document.getElementById('tourStart');
     const stopsEl = document.getElementById('tourStops');
@@ -3262,41 +3398,73 @@
         return;
       }
     }
+    // THE DIALS (W4.2 panel). Read every control here so all of them land in the
+    // ONE body below — the author call replays that body verbatim, so a dial read
+    // anywhere else would author yesterday's knobs and 409. "Omit" semantics are
+    // literal: an off dial contributes NO field, never a null.
+    const dateVal = (document.getElementById('tourDate') || {}).value || '';
+    const timeVal = (document.getElementById('tourTime') || {}).value || '';
+    const finishEl = document.getElementById('tourFinish');
+    const partyVal = (document.getElementById('tourParty') || {}).value || '';
+    const maxLegVal = (document.getElementById('tourMaxLeg') || {}).value || '';
+    const restVal = (document.getElementById('tourRestCadence') || {}).value || '';
+    const stopDensityVal = (document.getElementById('tourStopDensity') || {}).value || '';
+    const narrationDensityVal = (document.getElementById('tourNarrationDensity') || {}).value || '';
+    const weatherVal = (document.getElementById('tourWeather') || {}).value || '';
+    const avoidQueuesEl = document.getElementById('tourAvoidQueues');
+    const categoryMinus = Array.from(
+      document.querySelectorAll('#tourCategoryMinus input:checked')).map(c => c.value);
     // One shared Premium algorithm, with one zero-retry authoring call per routed
     // stop. Certification reviewers are separate and do not run here.
     // NO spend confirmation here, ever. The owner ordered the cost dialog removed
     // on 2026-07-31: the workbench must replicate the tourist's app experience as
     // closely as possible, and a tourist is never asked to approve spend. Do not
     // reintroduce a spend dialog in this function.
-    genBtn.disabled = true; genBtn.textContent = '⏳ Finding routes…';
-    stopsEl.innerHTML = ''; tourStops = []; tourOptions = []; drawTourRoute([]);  // clear map unconditionally (D5a)
+    genBtn.disabled = true; genBtn.textContent = '⏳ Planning…';
+    // While replanning, the dials go quiet and a small note says so (W4.2 panel).
+    // Snapshot the controls OUTSIDE #tourStops: the stop area is about to be wiped.
+    const dialEls = Array.from(
+      document.querySelectorAll('.tour-preview input, .tour-preview select, .tour-preview button'))
+      .filter(el => !el.closest('#tourStops'));
+    dialEls.forEach(el => { el.disabled = true; });
+    const replanNote = document.getElementById('tourReplanNote');
+    if (replanNote) replanNote.style.display = '';
+    stopsEl.innerHTML = ''; tourStops = []; tourDay = null; drawTourRoute([]);  // clear map unconditionally (D5a)
     lastTourRequestedMinutes = duration;
     try {
-      // Remembered so the degradation panel's "Copy report for Claude" can say
-      // WHAT WAS ASKED FOR. Without it the first reply to any pasted report is
-      // always "what request produced this?", which costs a whole round trip.
-      // It is also replayed VERBATIM on the authoring call, so the endpoint
-      // rebuilds the very plan these three options came from.
-      lastTourPlanBody = {
+      // ONE body, built once. Remembered so the degradation panel's "Copy report
+      // for Claude" can say WHAT WAS ASKED FOR, and replayed VERBATIM on the
+      // authoring call so the endpoint rebuilds the very plan this day came from.
+      const body = {
         center_lat: lat, center_lng: lng, duration_min: duration,
         lenses: lenses.length ? lenses : null, round_trip: roundTrip,
-        end_lat: endLat, end_lng: endLng, city_slug: cityName || 'paris',
+        end_lat: endLat, end_lng: endLng,
+        // city_slug was OMITTED here until 2026-07-19, so TripPreviewRequest's
+        // default ("paris") applied to EVERY preview. A London or New York
+        // workbench session therefore previewed the PARIS corpus against a
+        // London/NY start, found nothing reachable, and 422'd — the workbench
+        // "tour generation is horribly broken" report. cityName is the same
+        // canonical key every other fetch on this page already sends.
+        city_slug: cityName || 'paris',
+        // The Finish dial always travels: "firm" is a named value, not an omission.
+        end_hardness: finishEl ? finishEl.value : 'firm',
       };
+      // start_datetime needs BOTH halves — a date without a clock (or a clock
+      // without a day) is not a start moment, so neither is sent alone.
+      if (dateVal && timeVal) body.start_datetime = `${dateVal}T${timeVal}`;
+      if (partyVal) body.party = partyVal;
+      if (maxLegVal) body.max_leg_minutes = parseInt(maxLegVal, 10);
+      if (restVal) body.rest_cadence_minutes = parseInt(restVal, 10);
+      if (stopDensityVal) body.stop_density = stopDensityVal;
+      if (narrationDensityVal) body.narration_density = narrationDensityVal;
+      if (avoidQueuesEl && avoidQueuesEl.checked) body.avoid_queues = true;
+      if (categoryMinus.length) body.category_minus = categoryMinus;
+      if (weatherVal) body.weather = weatherVal;
+      lastTourPlanBody = body;
       lastTourPreviewRequest = lastTourPlanBody;
       const resp = await fetch(`${API_BASE}/trips/preview`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          center_lat: lat, center_lng: lng, duration_min: duration,
-          lenses: lenses.length ? lenses : null, round_trip: roundTrip,
-          end_lat: endLat, end_lng: endLng,
-          // city_slug was OMITTED here until 2026-07-19, so TripPreviewRequest's
-          // default ("paris") applied to EVERY preview. A London or New York
-          // workbench session therefore previewed the PARIS corpus against a
-          // London/NY start, found nothing reachable, and 422'd — the workbench
-          // "tour generation is horribly broken" report. cityName is the same
-          // canonical key every other fetch on this page already sends.
-          city_slug: cityName || 'paris',
-        }),
+        body: JSON.stringify(lastTourPlanBody),
       });
       if (!resp.ok) {
         let detail = null;
@@ -3309,15 +3477,17 @@
         }
         return;
       }
-      renderTourOptions(await resp.json(), duration);
+      renderTourDay(await resp.json(), duration);
     } catch (err) {
-      showError('Tour options failed: ' + err.message);
+      showError('Planning the day failed: ' + err.message);
     } finally {
-      genBtn.disabled = false; genBtn.textContent = 'Generate tour options';
+      genBtn.disabled = false; genBtn.textContent = 'Plan the day';
+      dialEls.forEach(el => { el.disabled = false; });
+      if (replanNote) replanNote.style.display = 'none';
       // A successful render has already consumed it. Anything else — a refusal, an
       // error, a thrown request — means the line was never shown, and it must not
-      // survive to caption a later, unrelated set of options.
-      tourOptionsNotice = null;
+      // survive to caption a later, unrelated day.
+      tourPlanNotice = null;
     }
   }
 
@@ -3327,14 +3497,19 @@
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
     tourStops = [];
+    lastTourDaySignature = null;  // a refusal replaced the day — nothing to be "already true" of
     drawTourRoute([]);  // no route on a refusal — clear any prior line/pins
     stopsEl.innerHTML = '';
     const box = document.createElement('div');
     box.className = 'tour-refusal db-beat-card';
+    // `reason` is the sentence a person reads; `technical` (W4.12) is the
+    // operator's line — the policy id and the band in seconds — kept small
+    // and below it, never in the sentence itself.
     box.innerHTML = `
       <h4>⚠ Can't build this tour</h4>
       <div class="script-preview">${escHtml(detail.reason || 'No tourable route from here.')}</div>
-      ${detail.gap_minutes != null ? `<div class="meta">Over budget by ~${detail.gap_minutes} min.</div>` : ''}`;
+      ${detail.gap_minutes != null ? `<div class="meta">Over budget by ~${detail.gap_minutes} min.</div>` : ''}
+      ${detail.technical ? `<div class="meta" style="font-family:monospace;font-size:0.72rem;opacity:0.7;word-break:break-word;">${escHtml(detail.technical)}</div>` : ''}`;
     const alts = (detail.alternatives || []).map((a) => {
       if (a.kind === 'loop') return `Loop from the start (drop the destination) — ${a.duration_min} min`;
       if (a.kind === 'extend') return `Extend to ${a.duration_min} min to keep the destination`;
@@ -3450,6 +3625,10 @@
       minutes: s.minutes || 0,
       spotlight: s.spotlight,
       has_deeper_dive: !!s.has_deeper_dive,
+      // W4.2 honesty surface: per-stop queue price and door-side. Undefined until
+      // the server lands them; every consumer renders them conditionally.
+      queue_minutes: s.queue_minutes,
+      goes_inside: s.goes_inside,
     }));
   }
 
@@ -3728,6 +3907,40 @@
         + `an honest thin tour, not a data problem.`;
       stopsEl.appendChild(note);
     }
+    // HONESTLY SHORT. Duration is a ceiling, not a contract to fill: when the area
+    // cannot support the length asked for, the planner returns the longest tour it
+    // CAN support rather than walking the tourist somewhere pointless to pad the
+    // clock. That padding was the reported bug, so this sentence is what makes
+    // removing it safe — without it a five-hour request silently comes back as
+    // four hours forty and looks broken.
+    //
+    // READ FROM THE OPTION, NOT `data.tourability`. That channel is null on exactly
+    // this tour: the engine attaches it only when the assessment is YELLOW or the
+    // delivery is thin, and an honestly-short tour out of a rich area is neither.
+    //
+    // Two shapes, both deliberate: the authored reply carries the written route on
+    // `option`, and a plan-shaped reply carries THE day as `options` — a list of
+    // exactly one since design §8.1 deleted the pick, so options[0] IS the day,
+    // not a fallback among three.
+    const planDay = (data && Array.isArray(data.options) && data.options.length)
+      ? data.options[0] : null;
+    const shortfallSeconds =
+      (activeTour.option && activeTour.option.elapsed_shortfall_seconds)
+      || (planDay && planDay.elapsed_shortfall_seconds)
+      || 0;
+    if (shortfallSeconds > 0) {
+      const note = document.createElement('div');
+      note.className = 'tour-elapsed-shortfall-note';
+      note.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
+        + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 8px;';
+      const shortMin = Math.round(shortfallSeconds / 60);
+      const servedMin = requestedMinutes ? requestedMinutes - shortMin : null;
+      note.textContent = 'ⓘ Shorter than you asked for'
+        + (servedMin ? `: about ${servedMin} min rather than ${requestedMinutes}` : '')
+        + `. This area does not support ${shortMin} more minute${shortMin === 1 ? '' : 's'} `
+        + 'of tour without walking somewhere that is not worth the walk.';
+      stopsEl.appendChild(note);
+    }
     // Phase 3 spotlight: the per-corridor lens coverage note (present only when
     // the engine surfaces it — off-genre corridors read "only N places speak to …").
     // The live note now travels on the chosen option (RouteOption.lens_coverage_note);
@@ -3762,11 +3975,17 @@
       // graph: a 4-minute walk to the Conciergerie carries 11 words (4 seconds).
       const isLeg = s.band === 'leg';
       const legSecs = Math.round((String(s.narration || '').split(/\s+/).filter(Boolean).length / 150) * 60);
+      // W4.2 honesty surface, dwell stops only: which side of the door the visit
+      // lives on, and the queue price spelled "N min wait" (never "Nm"). Both are
+      // absent until the server sends them, so both render conditionally.
+      const doorTag = (typeof s.goes_inside === 'boolean')
+        ? (s.goes_inside ? ' · inside' : ' · outside') : '';
+      const queueTag = (s.queue_minutes > 0) ? ` · ${s.queue_minutes} min wait` : '';
       const dwellText = isVignette
         ? 'walk past · 0 min'
         : isLeg
           ? `walking · ${s.minutes} min · ${legSecs}s narrated`
-          : `~${s.minutes} min here`;
+          : `~${s.minutes} min here${doorTag}${queueTag}`;
       el.innerHTML = `
         <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}${bandTag}${deeperDiveTag}</h4>
         <div class="meta">${dwellText}${spot}</div>
@@ -3795,50 +4014,35 @@
     }
   }
 
-  // The PLAN screen. Three routes over the same start, end, lens and timing —
-  // they differ in how many places they stop at and how much of the time is
-  // spent walking. NOTHING has been written or voiced yet; the AUTHOR call is
-  // made only when the operator picks one. Places only, by owner ruling: names,
-  // order, walking time and ETA, and no descriptive text of any kind.
-  function renderTourOptions(data, requestedMinutes) {
+  // The PLAN screen: THE day. Design §8.1 deleted the three-route pick — the
+  // plan reply's `options` is a list of exactly ONE route, and that one day
+  // renders immediately: the map, the ordered places, the timing split, and the
+  // honesty surface (promises, day notes, unplanned slack — W4.2 panel). Places
+  // only, by owner ruling: names, order, walking time and ETA, and no
+  // descriptive text of any kind. NOTHING has been written or voiced yet; the
+  // one "Write the tour" action below is what calls the AUTHOR endpoint.
+  function renderTourDay(data, requestedMinutes) {
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
     tourStops = [];
-    tourOptions = Array.isArray(data && data.options) ? data.options : [];
+    const day = (data && Array.isArray(data.options) && data.options.length)
+      ? data.options[0] : null;
     if (requestedMinutes) lastTourRequestedMinutes = requestedMinutes;
-    drawTourRoute([]);
     stopsEl.innerHTML = '';
 
-    const head = document.createElement('div');
-    head.className = 'tour-options-head';
-    head.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
-    head.textContent = `${tourOptions.length} ways to walk this · spine: ${(data && data.spine_area) || '—'}`;
-    stopsEl.appendChild(head);
+    // Dead-notch honesty (W4.2 panel): a dial that changes nothing must say so,
+    // or the editor believes it did something. "Identical stop-for-stop" means
+    // the same places, order, timing, door-sides and queue prices — exactly what
+    // the cards below show.
+    const signature = day ? JSON.stringify((day.stops || []).map(s =>
+      [s.name, s.minutes, s.band, s.goes_inside, s.queue_minutes])) : null;
+    const unchanged = !!(signature && lastTourDaySignature && signature === lastTourDaySignature);
+    lastTourDaySignature = signature;
 
-    // Set only when these cards were re-fetched on the operator's behalf, because
-    // the ones they were looking at had gone stale. Shown once, then cleared.
-    if (tourOptionsNotice) {
-      const notice = document.createElement('div');
-      notice.className = 'tour-options-notice';
-      notice.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
-        + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 10px;';
-      notice.textContent = tourOptionsNotice;
-      stopsEl.appendChild(notice);
-      tourOptionsNotice = null;
-    }
+    tourDay = day;
+    drawTourRoute(day ? tourOptionMapStops(day) : []);
 
-    const note = document.createElement('div');
-    note.className = 'tour-options-note';
-    note.style.cssText = 'color:var(--text-muted);font-size:0.8rem;margin:0 0 10px;';
-    note.textContent = 'Nothing has been written or recorded yet. Pick one and the narration and audio are made for that route.';
-    stopsEl.appendChild(note);
-
-    // Anything that went wrong while PLANNING is shown here, before the operator
-    // can choose — the same panel the authored view uses.
-    const degradePanel = buildDegradationPanel(data);
-    if (degradePanel) stopsEl.appendChild(degradePanel);
-
-    if (!tourOptions.length) {
+    if (!day) {
       const empty = document.createElement('div');
       empty.className = 'tour-options-empty db-beat-card';
       empty.textContent = 'No route was found from here for this timing.';
@@ -3846,81 +4050,194 @@
       return;
     }
 
-    tourOptions.forEach((opt, i) => {
-      // A 'leg' card is narration heard on the WAY to a stop, not a place, and a
-      // 'vignette' is something walked past without stopping. Counting either as a
-      // stop is what made a 4-stop tour report 7 on the authored screen; the same
-      // arithmetic has to hold here or the two screens disagree about the same route.
-      const dwell = (opt.stops || []).filter(s => s.band !== 'vignette' && s.band !== 'leg');
-      const walkPast = (opt.stops || []).filter(s => s.band === 'vignette').length;
-      const dwellMin = dwell.reduce((sum, s) => sum + (s.minutes || 0), 0);
-      const totalMin = Math.round((opt.eta_seconds || 0) / 60);
-      const walkMin = Math.max(0, totalMin - dwellMin);
-      const names = dwell.map(s => s.name || '').filter(Boolean);
-      const shown = names.slice(0, 4).join(' · ') + (names.length > 4 ? ` · +${names.length - 4} more` : '');
+    // A 'leg' card is narration heard on the WAY to a stop, not a place, and a
+    // 'vignette' is something walked past without stopping. Counting either as a
+    // stop is what made a 4-stop tour report 7 on the authored screen; the same
+    // arithmetic has to hold here or the two screens disagree about the same route.
+    // The A→B finish point (is_finish_point, W4.12) is where the day ENDS, not
+    // a place: it is not a stop, it is not counted, and it renders as an ending.
+    const dwell = (day.stops || []).filter(
+      s => s.band !== 'vignette' && s.band !== 'leg' && !s.is_finish_point);
+    const finishPoint = (day.stops || []).find(s => s.is_finish_point) || null;
+    const walkPast = (day.stops || []).filter(s => s.band === 'vignette').length;
+    const dwellMin = dwell.reduce((sum, s) => sum + (s.minutes || 0), 0);
+    const totalMin = Math.round((day.eta_seconds || 0) / 60);
+    const walkMin = Math.max(0, totalMin - dwellMin);
 
-      const card = document.createElement('div');
-      card.className = 'tour-option-card db-beat-card';
-      card.dataset.tourOption = String(i);
+    const head = document.createElement('div');
+    head.className = 'tour-day-head';
+    head.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
+    // The longest single walk (W4.12): the number the "Shorter walks" dial is
+    // named after, so a person can see whether a turn had anything to do.
+    const longestWalk = (data && typeof data.longest_walk_minutes === 'number')
+      ? ` · longest single walk ${data.longest_walk_minutes} min` : '';
+    head.textContent = `${dwell.length} stops · ${totalMin} min total · `
+      + `about ${walkMin} min walking and ${dwellMin} min standing still${longestWalk}`
+      + (walkPast ? ` · ${walkPast} walk-past sight${walkPast === 1 ? '' : 's'}` : '')
+      + ` · spine: ${(data && data.spine_area) || '—'}`;
+    stopsEl.appendChild(head);
 
-      const title = document.createElement('h4');
-      title.textContent = `Option ${i + 1} · ${dwell.length} stops · ${totalMin} min total`;
-      card.appendChild(title);
+    // Set only when this day was re-fetched on the operator's behalf, because
+    // the one they were looking at had gone stale. Shown once, then cleared.
+    if (tourPlanNotice) {
+      const notice = document.createElement('div');
+      notice.className = 'tour-plan-notice';
+      notice.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
+        + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 10px;';
+      notice.textContent = tourPlanNotice;
+      stopsEl.appendChild(notice);
+      tourPlanNotice = null;
+    }
 
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      meta.textContent = `About ${walkMin} min walking and ${dwellMin} min standing still`
-        + (walkPast ? ` · ${walkPast} walk-past sight${walkPast === 1 ? '' : 's'}` : '');
-      card.appendChild(meta);
+    // The dead notch says so out loud, briefly — and TRUTHFULLY. "Already true"
+    // is only true if the day really honours what was asked. The leg cap is
+    // enforced by the planner on its estimated legs and the street-routed leg
+    // can land a little over (measured at the W4.12 close: 473 s estimated,
+    // 576 s routed, against a 540 s cap), so a 9-minute cap can hand back the
+    // identical day with a 10-minute longest walk on the head line. That is not
+    // "already true"; it is "the closest day", and it says so with the number.
+    if (unchanged) {
+      const capMin = lastTourPlanBody && Number(lastTourPlanBody.max_leg_minutes);
+      const longest = data && typeof data.longest_walk_minutes === 'number'
+        ? data.longest_walk_minutes : null;
+      const capMissed = capMin > 0 && longest !== null && longest > capMin;
+      const same = document.createElement('div');
+      same.className = 'tour-dead-notch-note';
+      same.style.cssText = 'color:var(--text-muted);font-size:0.82rem;font-style:italic;margin:0 0 8px;';
+      same.textContent = capMissed
+        ? `the closest day — its longest walk is ${longest} min by the street route, over the ${capMin}-minute limit`
+        : 'already true of this day';
+      stopsEl.appendChild(same);
+      if (!capMissed) setTimeout(() => { same.remove(); }, 2500);
+    }
 
-      const places = document.createElement('div');
-      places.className = 'tour-option-places script-preview';
-      places.textContent = shown;
-      card.appendChild(places);
+    const note = document.createElement('div');
+    note.className = 'tour-day-note';
+    note.style.cssText = 'color:var(--text-muted);font-size:0.8rem;margin:0 0 10px;';
+    note.textContent = 'Nothing has been written or recorded yet. Write the tour and the narration and audio are made for this day.';
+    stopsEl.appendChild(note);
 
-      const row = document.createElement('div');
-      row.className = 'tts-row';
-      const pick = document.createElement('button');
-      pick.className = 'btn btn-primary tour-option-pick';
-      pick.dataset.tourOption = String(i);
-      pick.title = 'Write and voice this route';
-      pick.textContent = 'Use this one — write the tour';
-      row.appendChild(pick);
-      const showOn = document.createElement('button');
-      showOn.className = 'btn btn-outline tour-option-map';
-      showOn.dataset.tourOption = String(i);
-      showOn.title = 'Draw this route on the map — nothing is generated';
-      showOn.textContent = 'Show on map';
-      row.appendChild(showOn);
-      card.appendChild(row);
+    // Anything that went wrong while PLANNING is shown here, before the operator
+    // can spend anything on writing — the same panel the authored view uses.
+    const degradePanel = buildDegradationPanel(data);
+    if (degradePanel) stopsEl.appendChild(degradePanel);
 
-      stopsEl.appendChild(card);
+    // ── The honesty surface (W4.2 panel, deviation v). Every field renders ONLY
+    // when the server sends it — these land server-side in their own step, and a
+    // missing field must never crash the plan screen. ──
+    if (Array.isArray(data.promises) && data.promises.length) {
+      const promises = document.createElement('div');
+      promises.className = 'tour-promises';
+      promises.style.cssText = 'color:var(--green);font-size:0.82rem;margin:0 0 8px;';
+      // The window is two wire fields (arrives_hhmm / departs_hhmm), not one —
+      // this used to read a `window` key that never existed, so the ruled-for
+      // windows were on the wire and never on the screen (W4.12). A finish
+      // point has no stay, so it shows one time, not "12:50-12:50".
+      const windowOf = (p) => {
+        if (!p || !p.arrives_hhmm) return '';
+        if (!p.departs_hhmm || p.departs_hhmm === p.arrives_hhmm) return p.arrives_hhmm;
+        return `${p.arrives_hhmm}-${p.departs_hhmm}`;
+      };
+      promises.textContent = 'Promises: ' + data.promises
+        .filter(p => p && !(p.kind === 'finish' && p.name === 'Your finish point'))
+        .map(p => [p.name, windowOf(p)].filter(Boolean).join(' ')).join(' · ');
+      stopsEl.appendChild(promises);
+    }
+    // Day notes are plain STRINGS on the wire (TripPreviewResponse.day_notes:
+    // list[str]). This read `n.text` — a shape that never existed — so every
+    // closed-today line and every "we could not confirm opening times" line the
+    // panel ruled for was sent and never shown (W4.12; visible in the D5 demo
+    // transcript, which has none of them). Tolerate an object with `.text` too,
+    // so a future richer note cannot blank the screen the same way.
+    (Array.isArray(data.day_notes) ? data.day_notes : []).forEach((n) => {
+      const text = (typeof n === 'string') ? n : (n && n.text);
+      if (!text) return;
+      const dayNote = document.createElement('div');
+      dayNote.className = 'tour-day-note';
+      dayNote.style.cssText = 'color:var(--text-muted);font-size:0.8rem;margin:0 0 6px;';
+      dayNote.textContent = text;
+      stopsEl.appendChild(dayNote);
     });
+    // Zero is a real answer and is said out loud (W4.12 panel, Marcus: "a day with
+    // 10 minutes of margin and a day with 0 are different days — one I take and
+    // one I refuse — and this screen rendered both with the same word"). Only a
+    // MISSING field stays silent, because an older server never sent it.
+    if (typeof data.slack_minutes === 'number') {
+      const slack = document.createElement('div');
+      slack.className = 'tour-slack-note';
+      slack.style.cssText = 'color:var(--text-muted);font-size:0.82rem;margin:0 0 8px;';
+      slack.textContent = data.slack_minutes > 0
+        ? `About ${data.slack_minutes} minutes unplanned — yours.`
+        : 'The day is full — no unplanned minutes.';
+      stopsEl.appendChild(slack);
+    }
+
+    // The places, in walking order — one compact card each, no narration (none
+    // exists yet). Legs are walks, not places, so they do not get a card here;
+    // neither does the finish point, which is said once at the end.
+    (day.stops || []).filter(s => s.band !== 'leg' && !s.is_finish_point).forEach((s, i) => {
+      const el = document.createElement('div');
+      const isVignette = s.band === 'vignette';
+      el.className = 'tour-stop db-beat-card' + (isVignette ? ' tour-stop--vignette' : '');
+      // Per-stop honesty (W4.2 panel): the queue price is spelled "N min wait"
+      // (never "Nm"), and the door-side tag says which side of the door this
+      // visit lives on. Both absent until the server sends them.
+      const doorTag = (typeof s.goes_inside === 'boolean')
+        ? (s.goes_inside ? ' · inside' : ' · outside') : '';
+      const queueTag = (s.queue_minutes > 0) ? ` · ${s.queue_minutes} min wait` : '';
+      const metaText = isVignette
+        ? 'walk past · 0 min'
+        : `~${s.minutes || 0} min here${doorTag}${queueTag}`;
+      el.innerHTML = `
+        <h4>${i + 1} · ${escHtml(s.name || '')}`
+        + `${isVignette ? ' <span class="tour-vignette-tag">walk past</span>' : ''}</h4>
+        <div class="meta">${metaText}</div>`;
+      stopsEl.appendChild(el);
+    });
+    if (finishPoint) {
+      const finishPromise = (Array.isArray(data.promises) ? data.promises : [])
+        .find(p => p && p.kind === 'finish');
+      const at = finishPromise && finishPromise.arrives_hhmm ? ` · about ${finishPromise.arrives_hhmm}` : '';
+      const endEl = document.createElement('div');
+      endEl.className = 'tour-finish-point';
+      endEl.style.cssText = 'color:var(--text-muted);font-size:0.85rem;margin:6px 0 4px;';
+      endEl.textContent = `Ends at your finish point${at}.`;
+      stopsEl.appendChild(endEl);
+    }
+
+    // ONE action. The pick is gone (§8.1): this day is the plan, and writing it
+    // is the only thing left to decide.
+    const row = document.createElement('div');
+    row.className = 'tts-row';
+    const writeBtn = document.createElement('button');
+    writeBtn.className = 'btn btn-primary';
+    writeBtn.id = 'tourWriteBtn';
+    writeBtn.title = 'Write and voice this day';
+    writeBtn.textContent = 'Write the tour';
+    row.appendChild(writeBtn);
+    stopsEl.appendChild(row);
   }
 
-  // The AUTHOR call. Exactly the option the operator clicked, identified by its
-  // route_id — the endpoint never re-plans and never picks for us.
-  async function authorTourOption(index) {
+  // The AUTHOR call. Exactly the day on screen, identified by its route_id —
+  // the endpoint never re-plans and never swaps in a different tour.
+  async function authorTourDay() {
     const stopsEl = document.getElementById('tourStops');
-    const opt = tourOptions[index];
-    if (!stopsEl || !opt || !lastTourPlanBody) return;
-    const buttons = stopsEl.querySelectorAll('.tour-option-pick, .tour-option-map');
-    buttons.forEach(b => { b.disabled = true; });
-    const picked = stopsEl.querySelector(`.tour-option-pick[data-tour-option="${index}"]`);
-    if (picked) picked.textContent = '⏳ Writing the tour…';
+    if (!stopsEl || !tourDay || !lastTourPlanBody) return;
+    const writeBtn = document.getElementById('tourWriteBtn');
+    if (writeBtn) { writeBtn.disabled = true; writeBtn.textContent = '⏳ Writing the tour…'; }
     try {
       const resp = await fetch(`${API_BASE}/trips/preview/author`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.assign({}, lastTourPlanBody, { route_id: opt.route_id })),
+        body: JSON.stringify(Object.assign({}, lastTourPlanBody, { route_id: tourDay.route_id })),
       });
       if (!resp.ok) {
-        // The routes on screen are no longer the ones this start, timing and lens
-        // produce — the corpus moved underneath them. Writing one anyway would voice
-        // a tour nobody chose, and the whole point of naming the option is to make
-        // that impossible. So say it in one plain line and fetch the current three,
-        // rather than leaving the operator on a screen whose buttons can never work.
+        // The day on screen is no longer the one this start, timing and dials
+        // produce — the corpus moved underneath it. Writing it anyway would voice
+        // a tour nobody chose, and the whole point of naming the route is to make
+        // that impossible. So say it in one plain line and re-plan, rather than
+        // leaving the operator on a screen whose button can never work.
         if (resp.status === 409) {
-          tourOptionsNotice = 'The routes changed since you loaded them, so these are the current three. Pick one again.';
+          tourPlanNotice = 'The plan changed since you loaded it, so this is the current day. Check it and write it again.';
           await generateTourPreview();
           return;
         }
@@ -3929,13 +4246,14 @@
         showError(typeof detail === 'string' ? detail : `Could not write this tour (${resp.status}).`);
         return;
       }
-      tourOptions = [];
+      tourDay = null;
       renderTourStops(await resp.json(), lastTourRequestedMinutes);
     } catch (err) {
       showError('Writing the tour failed: ' + err.message);
     } finally {
-      buttons.forEach(b => { b.disabled = false; });
-      if (picked) picked.textContent = 'Use this one — write the tour';
+      // After a successful render the button is gone with the plan screen; this
+      // restores it only on the error paths, where it is still on screen.
+      if (writeBtn) { writeBtn.disabled = false; writeBtn.textContent = 'Write the tour'; }
     }
   }
 

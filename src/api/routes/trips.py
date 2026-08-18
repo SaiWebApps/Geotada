@@ -40,6 +40,7 @@ from src.api.models.trips import (
     TripGenerateResponse,
     TripPreviewAuthorRequest,
     TripPreviewBasicTour,
+    TripPreviewPromise,
     TripPreviewRequest,
     TripPreviewResponse,
     TripPreviewStop,
@@ -57,6 +58,7 @@ from src.tour.contract import (
     RouteOption,
     TourabilityAssessment,
     TourInput,
+    resolve_party_axes,
 )
 from src.tour.degradations import degradation_scope, summarize
 from src.tour.density import TourabilityRefusedError
@@ -73,15 +75,16 @@ from src.tour.premium_tour import (
     execute_premium_plan,
     finalize_premium_tour,
     plan_premium_authoring,
-    plan_premium_options,
+    plan_premium_tour,
     record_routing_degradations,
     resolve_build_identity,
     resolve_routing_version,
 )
 from src.tour.quality_rubric import score_tour
-from src.tour.routing import summarise_route
+from src.tour.routing import leg_walk_seconds, summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
+    AVOID_QUEUES_EXCLUDE_PEAK_MINUTES,
     CertificationPlanningInfeasibleError,
     build_poi_beat_plans_capped,
     build_poi_extra_beats,
@@ -182,6 +185,50 @@ def _end_point(end_lat: float | None, end_lng: float | None) -> tuple[float, flo
     return (end_lat, end_lng)
 
 
+def _resolved_weather(
+    weather: str | None, start_datetime: str | None, lat: float, lng: float
+) -> str | None:
+    """The sky, resolved at the edge: 'auto' fetches the forecast (fail-open).
+
+    design §2.5 ("fetched, never asked") + the W4.2 panel (Aiko: weather stays
+    automatic; the day merely SHOWS what the sky did). 'auto' without a dated
+    request has nothing to fetch and plans as no signal. A forecast the module
+    cannot answer (horizon, outage, garbage) is None — no signal — never an
+    error: the fingerprint makes a between-calls forecast flip visible as the
+    honest 409 rather than silently authoring a different day.
+    """
+    if weather != "auto":
+        return weather
+    if start_datetime is None:
+        return None
+    from src.tour.weather import fetch_rain_likelihood
+
+    return fetch_rain_likelihood(start_datetime[:10], lat, lng)
+
+
+def _dial_kwargs(body) -> dict:
+    """The Phase-4 request axes, threaded onto TourInput verbatim (W4.2).
+
+    ONE mapping for all three construction sites (generate, preview, author),
+    so a dial cannot reach one surface and silently miss another — the exact
+    S1.3b lesson, one function instead of three copy-paste blocks.
+    """
+    return {
+        "party": body.party,
+        "walking_pace": body.walking_pace,
+        "max_leg_minutes": body.max_leg_minutes,
+        "rest_cadence_minutes": body.rest_cadence_minutes,
+        "weather": _resolved_weather(
+            body.weather, body.start_datetime, body.center_lat, body.center_lng
+        ),
+        "pinned_poi_ids": tuple(body.pinned_poi_ids),
+        "stop_density": body.stop_density,
+        "narration_density": body.narration_density,
+        "avoid_queues": body.avoid_queues,
+        "category_minus": tuple(body.category_minus),
+    }
+
+
 def _build_tour_input(**kwargs) -> TourInput:
     """Construct TourInput, mapping its contract ValidationError to a 422.
 
@@ -191,9 +238,22 @@ def _build_tour_input(**kwargs) -> TourInput:
     opaque HTTP 500 with a stack trace (app.py registers no ValidationError
     handler). It is a CLIENT error, so translate it to a 422 with the field
     messages the caller needs to correct the request.
+
+    RESOLVED, exactly as the harness resolves it (scripts/tour_build.py). The
+    party presets and the "more stops" dial are shortcuts over axes, and "the
+    axes are what the planner reads" (design §2.4) — but `resolve_party_axes`
+    was called by the harness ALONE. On this wire a preset never expanded and
+    `stop_density="more"` never became its stop ceiling, so the workbench's
+    Party dropdown and its More-stops dial were dead while the identical
+    request through the harness worked. MEASURED at the W4.12 close (2026-08-18):
+    the wire's "More stops" day was byte-identical to base and kept a 47-minute
+    museum, while an explicit 20-minute ceiling on the same request reshaped
+    the day. This is the ONE construction door for all three API sites
+    (generate, preview, author), so resolving here keeps the surfaces one
+    engine (tests/test_workbench_matches_the_app.py's whole reason to exist).
     """
     try:
-        return TourInput(**kwargs)
+        return resolve_party_axes(TourInput(**kwargs))
     except ValidationError as exc:
         raise HTTPException(
             422,
@@ -229,7 +289,22 @@ def _refusal_detail(
             if isinstance(exc, CertificationPlanningInfeasibleError)
             else "tourability"
         ),
-        "reason": str(exc),
+        # THE SENTENCE A PERSON READS, and the line an operator reads, apart
+        # (W4.12, Paulo — the panel's language judge): the workbench prints
+        # `reason` straight onto the page, and it carried the whole exception
+        # text — "Certification planning infeasible under ondoway-premium-tour-v1:
+        # ... required 9720-10800s, best eligible bounded route 4248s." — a
+        # product codename, the word "certification", and time in seconds, wrapped
+        # around the one plain clause the planner had written for a traveller.
+        # `reason` is now that clause alone; `technical` keeps the whole line, so
+        # nothing an operator needs is lost, and the AC-24 pin ("the refusal
+        # names the budget it could not fill") holds on the field that names it.
+        "reason": (
+            exc.reason
+            if isinstance(exc, CertificationPlanningInfeasibleError)
+            else str(exc)
+        ),
+        "technical": str(exc),
         "gap_minutes": exc.gap_minutes,
         "alternatives": [
             {
@@ -265,6 +340,7 @@ def _infeasible_detail() -> dict:
             "This walk could not be routed on the street network. "
             "Try a different start, or try again in a moment."
         ),
+        "technical": "premium_route_infeasible",
         "gap_minutes": None,
         "alternatives": [],
     }
@@ -464,22 +540,21 @@ def generate_trip(
         end=_end_point(body.end_lat, body.end_lng),
         start_datetime=body.start_datetime,
         end_hardness=body.end_hardness,
+        **_dial_kwargs(body),
     )
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
-        # ONE ALGORITHM. plan_premium_options is BLOCK 1, the only planner on either
-        # surface: it applies the certification walk budget (0.90-1.10, nominal 1.00),
-        # enforces the Premium receipt bar, and returns the same diverse flavours the
-        # workbench shows. This route used to call select_k_routes itself with no
-        # planning policy, so the phone silently planned on the legacy flat budget and
-        # skipped the route bar — about 20% less walking and audio than the workbench
-        # produced for the identical request.
+        # ONE ALGORITHM. plan_premium_tour is BLOCK 1, the only planner on either
+        # surface: it applies the certification walk budget (0.90-1.10, nominal 1.00)
+        # and enforces the Premium receipt bar. Phase 4 (design §8.1) deleted
+        # pick-one-of-three: the planner plans THE day, and the dials on the request
+        # are how a person changes it.
         #
-        # Provider-free: Block 1 defaults to the silent glue client, so planning three
-        # flavours here costs nothing. The words arrive at /trips/{id}/compose.
+        # Provider-free: Block 1 defaults to the silent glue client, so planning here
+        # costs nothing. The words arrive at /trips/{id}/compose.
         with RoutingClient() as routing_client:
-            plans = plan_premium_options(tour_input, snapshot, routing_client=routing_client)
+            plan = plan_premium_tour(tour_input, snapshot, routing_client=routing_client)
     except (TourabilityRefusedError, CertificationPlanningInfeasibleError) as exc:
         # The certification band refusal reaches this route for the first time in
         # 2026-08-04's collapse: the timebox repair used to run only on the preview
@@ -490,11 +565,14 @@ def generate_trip(
     except (PremiumRouteInfeasibleError, ValueError) as exc:
         raise HTTPException(422, _infeasible_detail()) from exc
 
-    flavours = [plan.route for plan in plans]
-    scripts = [plan.source for plan in plans]
+    # ONE-element lists on purpose (deviation i): trips persisted before Phase 4
+    # store multi-option lists and the compose reader serves them forever, so the
+    # stored shape stays a LIST — new trips simply always store one.
+    flavours = [plan.route]
+    scripts = [plan.source]
     # RETAINED, not discarded: build_route_option reads the vignette beats and the
     # governor's overflow off these sequences to voice the leg/vignette cards.
-    sequences = [plan.sequence for plan in plans]
+    sequences = [plan.sequence]
     route = flavours[0]
     script = scripts[0]
 
@@ -819,7 +897,11 @@ def compose_trip(
     # the cap exempt the marquee at compose too). v4 caps a dominating stop and
     # surfaces its overflow.
     capped = build_poi_beat_plans_capped(
-        route, snapshot, lenses=tour_input.lenses, end_is_none=tour_input.end is None
+        route,
+        snapshot,
+        lenses=tour_input.lenses,
+        end_is_none=tour_input.end is None,
+        narration_density=tour_input.narration_density,
     )
     plans = tuple(pb for pb, _ in capped)
     overflow_by_poi = {pb.poi_id: ov for pb, ov in capped if ov}
@@ -1091,20 +1173,23 @@ def _plan_options(plans, snapshot, *, fingerprint: str) -> list[RouteOption]:
 
 
 def _plan_preview(tour_input: TourInput, driver: Driver):
-    """BLOCK 1 for the anonymous surface: plan, refuse, or hand back the options.
+    """BLOCK 1 for the anonymous surface: plan the ONE day, refuse, or hand it back.
 
     Shared by the plan-only preview and by the author route, which re-derives the same
-    plan before authoring the option it was handed. Provider-free and $0.
+    plan before authoring the day it was handed. Provider-free and $0. Returns the
+    plan as a ONE-element list (deviation i): the wire keeps ``options`` a list, the
+    fingerprint hashes a list, and the author route's opt-N parse stays valid for
+    stored ids — there is simply exactly one now.
     """
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
         with RoutingClient() as routing_client:
-            plans = plan_premium_options(tour_input, snapshot, routing_client=routing_client)
+            plan = plan_premium_tour(tour_input, snapshot, routing_client=routing_client)
     except (TourabilityRefusedError, CertificationPlanningInfeasibleError) as exc:
         raise HTTPException(422, _refusal_detail(exc)) from exc
     except (PremiumRouteInfeasibleError, ValueError) as exc:
         raise HTTPException(422, _infeasible_detail()) from exc
-    return snapshot, plans
+    return snapshot, [plan]
 
 
 @router.post("/trips/preview", response_model=TripPreviewResponse)
@@ -1140,17 +1225,192 @@ def preview_trip(
             end=_end_point(body.end_lat, body.end_lng),
             start_datetime=body.start_datetime,
             end_hardness=body.end_hardness,
+            **_dial_kwargs(body),
         )
         snapshot, plans = _plan_preview(tour_input, driver)
+        route = plans[0].route
+        options = _plan_options(plans, snapshot, fingerprint=_preview_plan_fingerprint(plans))
         result = TripPreviewResponse(
-            spine_area=plans[0].route.spine_area,
-            options=_plan_options(
-                plans, snapshot, fingerprint=_preview_plan_fingerprint(plans)
+            spine_area=route.spine_area,
+            options=options,
+            tourability=_tourability_payload(route.tourability),
+            promises=_preview_promises(route),
+            day_notes=_preview_day_notes(route, body),
+            # THE UNPLANNED MINUTES, NAMED — against what was ASKED FOR, always a
+            # number (W4.12 panel, Marcus/Sofia/Aiko/Julien; the W4.2 ruling was
+            # "the unaccounted minutes are NAMED"). This used to ride
+            # `elapsed_shortfall_seconds`, which the planner sets ONLY when the day
+            # dips under its internal band FLOOR — so a 170-of-180 day printed no
+            # slack at all, and a 270-of-300 day hid thirty minutes. The field
+            # blanked exactly when the margin got tight, which is when a person
+            # with a train needs it most. `eta_seconds` is THE one elapsed formula
+            # (options.option_eta_seconds), so this is the same clock the day is
+            # priced on, not a second opinion. Zero is a real answer ("the day is
+            # full") and is sent as 0, never as null.
+            slack_minutes=max(
+                0, (tour_input.duration_min * 60 - options[0].eta_seconds) // 60
             ),
-            tourability=_tourability_payload(plans[0].route.tourability),
+            # THE LONGEST SINGLE WALK (W4.12 panel — Rosemary, Sofia, Marcus, Aiko,
+            # Julien, F&D): the number the "Shorter walks" dial is NAMED after, and
+            # the one number a person with a stick, a bag or a December dusk decides
+            # on. The surface printed only a walking TOTAL, so nobody could check
+            # the dial ("a walking budget is not one number" — Rosemary's headline
+            # breakage). Per-leg seconds come from THE one per-leg expression
+            # (routing.leg_walk_seconds), so this cannot disagree with the total.
+            longest_walk_minutes=max(
+                (round(leg_walk_seconds(t) / 60) for t in route.transits), default=0
+            ),
         )
         rows = summarize(collected)
     return result.model_copy(update={"degradations": rows}) if rows else result
+
+
+#: A promise window is COARSE on the surface (F&D's ruling, W4.2 deviation v,
+#: re-judged at W4.12 on the built thing): the planner records the exact minute
+#: — the fact Phase 5's replan will need — and the traveller reads a window
+#: rounded to marks a person would say out loud. Arrival rounds DOWN, departure
+#: rounds UP, so the spoken window always CONTAINS the planned one and never
+#: promises a minute earlier or later than the plan.
+PROMISE_WINDOW_GRAIN_MINUTES: int = 5
+
+
+def _coarse_window(arrives_hhmm: str, departs_hhmm: str) -> tuple[str, str]:
+    """"11:32"-"12:02" -> "11:30"-"12:05". Empty strings (a dateless day) pass through.
+
+    A zero-length window (the A→B finish point: arrival IS departure) rounds
+    both ends the same way, so it stays one time and never widens into a stay
+    that does not exist.
+    """
+    if not arrives_hhmm or not departs_hhmm:
+        return arrives_hhmm, departs_hhmm
+    grain = PROMISE_WINDOW_GRAIN_MINUTES
+
+    def _mins(hhmm: str) -> int:
+        h, m = hhmm.split(":")
+        return int(h) * 60 + int(m)
+
+    def _fmt(total: int) -> str:
+        total %= 24 * 60
+        return f"{total // 60:02d}:{total % 60:02d}"
+
+    a, d = _mins(arrives_hhmm), _mins(departs_hhmm)
+    a_r = (a // grain) * grain
+    d_r = a_r if d == a else -(-d // grain) * grain
+    return _fmt(a_r), _fmt(d_r)
+
+
+def _preview_promises(route) -> list[TripPreviewPromise]:
+    """The day's promises as the pre-commit surface shows them (W4.2 dev. v).
+
+    Names resolved off the route's own stops; shapes carried verbatim from the
+    planner's promise assembly. The WINDOW is the planner's exact minute made
+    coarse for a person (F&D at W4.12: "11:32 is not a thing anybody says" —
+    the model's own docstring quoted their ruling and shipped six
+    minute-precision timestamps under it).
+    """
+    names = {p.id: p.name for p in route.pois}
+    out: list[TripPreviewPromise] = []
+    for promise in route.promises:
+        arrives, departs = _coarse_window(promise.arrives_hhmm, promise.departs_hhmm)
+        out.append(
+            TripPreviewPromise(
+                kind=promise.kind,
+                name=names.get(promise.poi_id, promise.poi_id),
+                arrives_hhmm=arrives,
+                departs_hhmm=departs,
+                goes_inside=promise.shape.goes_inside,
+                queue_minutes=round(promise.shape.queue_seconds / 60),
+            )
+        )
+    return out
+
+
+def _preview_day_notes(route, body) -> list[str]:
+    """The day's plain-language notes (W4.2 deviation v; Paulo's wordings).
+
+    EVERY SENTENCE HERE IS A STATEMENT ABOUT THE BUILT DAY, never about the
+    request. The W4.12 closing panel caught two notes that were printed from the
+    request alone — "Left out today, as asked: museum." on a day byte-identical
+    to the un-dialled one, and "Places with long waits were left out, as asked."
+    above a stop whose wait had gone UP from 3 to 10 minutes — and ruled a
+    receipt for work not done the single most damaging string on the surface
+    (Julien: "if it will tell me it removed a museum it did not remove, I stop
+    believing whatever it tells me at Hôtel Lambert"). So a dial note now says
+    what is TRUE of this day: the kinds that are absent, or the ones that are
+    not; the longest wait that remains, by name. The exclusion RULE the dial
+    applied is stated as a rule ("nothing with a long queue was considered"),
+    which is true whether or not it changed anything.
+
+    Closed doors: the planner records the closure FACT and its pool DECISION
+    (ClockExclusion.kept_outside); which sentence the traveller reads depends
+    on whether the place is actually ON this route, which only this reader
+    knows — "we will see it from the outside" was printed for a Montmartre
+    cabaret on a Tuileries→Notre-Dame day (W4.12, Julien: "I live here. These
+    are checkable, and they are false.").
+
+    Unverified hours NAME the stops (Paulo: "gated" is jargon, an unnamed count
+    "is worse than silence").
+    """
+    on_route = {p.id for p in route.pois}
+    notes: list[str] = []
+    for ex in route.clock_exclusions:
+        if ex.poi_id in on_route:
+            if ex.kept_outside:
+                notes.append(f"{ex.name} — {ex.reason} — we will see it from the outside")
+            else:
+                # A disclosure about a stop that STAYED (the after-dusk finish):
+                # the planner's sentence is already the whole story.
+                notes.append(f"{ex.name} — {ex.reason}")
+        else:
+            notes.append(f"{ex.name} — {ex.reason}, so it is not in your day")
+
+    if body.category_minus:
+        asked = sorted(set(body.category_minus))
+        still_in = sorted(
+            {p.name for p in route.pois if p.place_category and p.place_category in asked}
+        )
+        kinds = ", ".join(asked)
+        if still_in:
+            # A pinned or protected place can outrank the dial; say so by name
+            # rather than claim an exclusion the list beneath disproves.
+            notes.append(
+                f"You asked for no {kinds} stops; still in this day: "
+                + ", ".join(still_in)
+                + "."
+            )
+        else:
+            notes.append(f"No {kinds} stops in this day, as asked.")
+
+    if body.avoid_queues:
+        waits = {
+            poi_id: seconds
+            for poi_id, seconds in (route.planned_queue_seconds or {}).items()
+            if seconds and poi_id in on_route
+        }
+        rule = (
+            f"Nothing with a wait over {AVOID_QUEUES_EXCLUDE_PEAK_MINUTES} minutes "
+            f"at its busiest was considered, as asked"
+        )
+        if waits:
+            worst_id = max(waits, key=waits.get)
+            worst_name = next(p.name for p in route.pois if p.id == worst_id)
+            notes.append(
+                f"{rule}; the longest wait left in this day is "
+                f"{max(1, round(waits[worst_id] / 60))} min, at {worst_name}."
+            )
+        else:
+            notes.append(f"{rule}; no waits in this day.")
+
+    unverified = [
+        p.name
+        for p in route.pois
+        if p.opening_hours is not None and p.opening_hours_source in (None, "ai")
+    ]
+    if unverified:
+        notes.append(
+            "We could not confirm opening times for " + ", ".join(unverified) + "."
+        )
+    return notes
 
 
 # The plan's own identity, and which of its routes. The hex is a fingerprint of the
@@ -1207,6 +1467,7 @@ def _author_preview_impl(
         end=_end_point(body.end_lat, body.end_lng),
         start_datetime=body.start_datetime,
         end_hardness=body.end_hardness,
+        **_dial_kwargs(body),
     )
     snapshot, plans = _plan_preview(tour_input, driver)
     if not 1 <= option_n <= len(plans):
