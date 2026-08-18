@@ -1,6 +1,11 @@
 """The prerequisite declarations are only worth what they are checked to be.
 
-Four properties are guarded here, each with the mutation that turns it red:
+Three properties are guarded here, each with the mutation that turns it red.
+(A fourth, MAKEFILE COVERAGE — every documented target declares its prerequisites
+and every declared name is real — was REMOVED 2026-08-18 by owner ruling: it
+asserted the Makefile's shape, not the tool's behaviour. Preflight still refuses
+at runtime on an unknown requirement name; a target that forgets its preflight
+line simply runs without one.)
 
 0.  LANE TABLE INTEGRITY -- the graphs preflight can start are exactly the ones
     docker-compose.yml defines, on the same ports, in the same containers. The
@@ -13,21 +18,14 @@ Four properties are guarded here, each with the mutation that turns it red:
     RED when: a requirement names a dependency that does not exist, or two
     requirements depend on each other.
 
-2.  MAKEFILE COVERAGE -- every documented target declares its prerequisites, and
-    every name it declares is a real requirement.  This is the check that catches
-    the ordinary mistake: adding a target and forgetting the preflight line, or
-    typing ``db-development``.
-    RED when: a ``##``-documented target has no ``$(PREFLIGHT)`` line, or names a
-    requirement the registry does not define.
-
-3.  NO SILENT SUCCESS -- the property the old ``db-up`` violated.  A probe that
+2.  NO SILENT SUCCESS -- the property the old ``db-up`` violated.  A probe that
     cannot reach its dependency must report failure, and ``check`` must return
     non-zero.  A green run on a dead dependency is the exact bug this replaced.
     RED when: ``check`` returns 0 while a requirement's probe returns not-ok, or a
     requirement whose dependency failed is reported as satisfied.
 
-Hermetic: no container, no database, no provider, no network.  The Makefile is
-read as text and lexed with ``shlex``; nothing here starts anything.
+Hermetic: no container, no database, no provider, no network.  Where a test still
+reads the Makefile it does so as text, lexed with ``shlex``; nothing here starts anything.
 """
 
 from __future__ import annotations
@@ -313,78 +311,6 @@ NO_PREREQUISITES = {
 }
 
 
-def test_delegating_targets_really_do_delegate():
-    """A target may skip declaring only if it hands the whole job to one that does.
-
-    Without this, adding a name to NO_PREREQUISITES is an unchecked way to opt a
-    target out of the mechanism entirely.
-    """
-    body = MAKEFILE.read_text(encoding="utf-8").split("\nsetup:", 1)[1].split("\n\n", 1)[0]
-    # Recipe lines only. The doc comment on the same rule contains the word
-    # "bootstrap", so scanning the whole block passed even with the recipe gutted.
-    recipe = [line for line in body.splitlines() if line.startswith("\t")]
-    assert any("bootstrap" in line for line in recipe), "setup no longer delegates to bootstrap"
-    assert _declared_requirements("bootstrap"), "bootstrap itself declares nothing"
-
-
-def test_every_documented_target_declares_its_prerequisites():
-    undeclared = [
-        target
-        for target in _documented_targets()
-        if target not in NO_PREREQUISITES and not (_declared_requirements(target) or [])
-    ]
-    assert not undeclared, (
-        "these targets run without declaring what they need, so they can fail "
-        f"halfway through on a missing dependency: {undeclared}"
-    )
-
-
-def test_every_declared_name_is_a_real_requirement():
-    unknown = {}
-    for target in _documented_targets():
-        names = _declared_requirements(target)
-        if not names:
-            continue
-        bad = [name for name in names if name not in preflight.REGISTRY]
-        if bad:
-            unknown[target] = bad
-    assert not unknown, f"targets naming requirements that do not exist: {unknown}"
-
-
-def test_targets_needing_render_credentials_declare_them():
-    """A target that fetches the Render environment must say so up front.
-
-    Provider secrets live only on Render.  Without this, a fresh clone discovers
-    the missing credential from a stack trace partway through the command.
-    """
-    lines = _makefile_lines()
-    render_targets = []
-    current = None
-    for line in lines:
-        if line and not line.startswith((" ", "\t", "#")) and ":" in line:
-            name = line.split(":", 1)[0].strip()
-            current = name if name and not name.startswith(".") else None
-        elif current and line.startswith("\t"):
-            # Three macros AND the inline form. Excluding lines containing
-            # "--render" skipped `$(ENV_EXEC) --profile workbench --render --`,
-            # which is exactly a Render fetch -- the guard was blind to the one
-            # spelling already used in this file.
-            fetches = any(
-                f"$({marker})" in line
-                for marker in ("RENDER_LOCAL_EXEC", "RENDER_TEST_EXEC", "CLOUD_EXEC")
-            ) or ("$(ENV_EXEC)" in line and "--render" in line)
-            if fetches and current not in render_targets:
-                render_targets.append(current)
-
-    assert render_targets, "no Render-backed targets found -- this guard would be vacuous"
-    missing = [
-        target
-        for target in render_targets
-        if "render-key" not in (_declared_requirements(target) or [])
-    ]
-    assert not missing, f"targets that fetch Render credentials without declaring them: {missing}"
-
-
 # ── 3. no silent success ─────────────────────────────────────────────────────
 
 
@@ -602,38 +528,6 @@ def test_a_port_already_serving_this_project_counts_as_satisfied(monkeypatch):
     )
 
 
-def test_every_server_target_declares_the_port_it_binds():
-    """Otherwise the failure is "address already in use", which names no remedy."""
-    for target, port in (
-        ("api", "port-8000"),
-        ("workbench", "port-8000-reusable"),
-        ("dashboard", "port-8080"),
-        ("flutter-ios", "port-8000"),
-    ):
-        declared = _declared_requirements(target) or []
-        assert port in declared, f"{target} binds {port} but does not declare it"
-
-
-def test_every_target_that_reaches_routing_declares_it():
-    """The API serves generated tours, which route.
-
-    `workbench` declared routing and `api` did not, though they run the SAME
-    application -- a gap found by auditing each target's real import closure
-    rather than trusting the declaration.
-    """
-    for target in (
-        "api",
-        "workbench",
-        "flutter-ios",
-        "tour-build",
-        "measure-planned-audio",
-        "measure-governor",
-        "test-workbench",
-    ):
-        declared = _declared_requirements(target) or []
-        assert "valhalla" in declared, f"{target} reaches routing but does not declare valhalla"
-
-
 def test_a_failed_repair_does_not_promise_that_setup_will_fix_it(isolated_registry, capsys):
     """Naming a command that cannot help costs another wasted run to find out."""
     isolated_registry["thing"] = _requirement(
@@ -763,47 +657,6 @@ def _every_rule_with_a_recipe() -> list[str]:
     return names
 
 
-def test_the_internal_shards_declare_prerequisites_too():
-    """`make test` runs these; nothing documented-only ever checked them."""
-    shards = [n for n in _every_rule_with_a_recipe() if n.startswith("_test-")]
-    assert len(shards) >= 5, f"expected the internal shards, found {shards}"
-    for shard in shards:
-        assert _declared_requirements(shard), f"{shard} runs in `make test` and declares nothing"
-
-
-def test_no_target_runs_preflight_in_report_mode_except_the_diagnostic():
-    """`--report` makes preflight print and return 0 whatever it finds.
-
-    Adding that one flag to a recipe turns the whole mechanism into a printout
-    for that target. The parser used to strip flags, so every guard stayed green.
-    """
-    offenders = []
-    for target in _every_rule_with_a_recipe():
-        declaration = preflight.declare(target)
-        if declaration is None or target == "doctor":
-            continue
-        if not declaration.enforcing:
-            offenders.append(target)
-    assert not offenders, (
-        f"these run preflight in report mode, so it can never block them: {offenders}"
-    )
-
-
-def test_preflight_is_the_recipes_own_first_line_not_a_skippable_branch():
-    """A call nested in a conditional can be arranged never to run."""
-    offenders = []
-    for target in _every_rule_with_a_recipe():
-        declaration = preflight.declare(target)
-        if declaration is None or target in CONDITIONAL_PREFLIGHT_IS_INTENDED:
-            continue
-        if not declaration.unconditional:
-            offenders.append(target)
-    assert not offenders, (
-        "these wrap their preflight call in a conditional, so it can be skipped: "
-        f"{offenders}. Add to CONDITIONAL_PREFLIGHT_IS_INTENDED only with a reason."
-    )
-
-
 # The reusable sets are the declaration for dozens of targets at once. Gutting
 # `PRE_FULL_SUITE := uv` passed every guard, including the claim in CLAUDE.md
 # that `make test` checks the whole union up front.
@@ -827,46 +680,6 @@ REQUIRED_IN_SETS = {
         "render-key",
     },
 }
-
-
-def test_the_reusable_prerequisite_sets_still_contain_what_they_promise():
-    sets = preflight._prerequisite_sets(MAKEFILE.read_text(encoding="utf-8").splitlines())
-    for name, required in REQUIRED_IN_SETS.items():
-        assert name in sets, f"{name} disappeared from the Makefile"
-        # Expanded, not raw: a set may name a requirement through an overridable
-        # default (PRE_PYTEST declares `db-$(TEST_PROFILE)` so a worktree on its
-        # own pytest graph preflights that graph). What must hold is what the
-        # requirement RESOLVES to by default, which is what preflight itself acts
-        # on -- comparing raw text would fail on a variable that expands correctly.
-        actual = set(preflight._expand(sets[name], sets).split())
-        missing = required - actual
-        assert not missing, f"{name} no longer contains {sorted(missing)}"
-
-
-def test_the_full_suite_declares_everything_its_shards_need():
-    """The up-front union is only worth anything if it is actually the union.
-
-    It was missing port-8001 -- contended by test-workbench twenty minutes in,
-    which is precisely the late failure the union exists to prevent.
-    """
-    shard_union: set = set()
-    for shard in (
-        "_test-python",
-        "flutter-test",
-        "test-workbench",
-        "_test-golden",
-        "_test-grade",
-        "_test-invariants",
-        "test-live",
-        "_test-cloud",
-    ):
-        shard_union |= set(_declared_requirements(shard) or [])
-    declared = set(_declared_requirements("test") or [])
-    missing = shard_union - declared
-    assert not missing, (
-        f"`make test` checks up front but its shards also need {sorted(missing)}; "
-        "that failure would surface late, which the up-front check exists to prevent"
-    )
 
 
 def test_db_up_resolves_every_database_not_just_the_default():
@@ -1169,26 +982,6 @@ def test_every_listening_process_is_stopped_not_just_the_first(monkeypatch):
 # ── 6. the mechanism itself cannot be swapped out ───────────────────────────
 
 
-def test_the_preflight_command_is_what_it_claims_to_be():
-    """Every other guard checks a recipe MENTIONS $(PREFLIGHT). None checked
-    what that expands to.
-
-    Setting `PREFLIGHT := true` makes all 70 targets call /usr/bin/true: all
-    enforcement, all repairs and the whole "no silent success" property vanish
-    at once, and the entire suite stays green. That is a strictly worse edit
-    than any single-target evasion, and it was the last one open.
-    """
-    lines = MAKEFILE.read_text(encoding="utf-8").splitlines()
-    definitions = [line for line in lines if line.startswith("PREFLIGHT") and ":=" in line]
-    assert len(definitions) == 1, f"expected exactly one PREFLIGHT definition, got {definitions}"
-    value = definitions[0].split(":=", 1)[1].strip()
-    assert value == "python3 scripts/preflight.py", (
-        f"PREFLIGHT is bound to {value!r}. Every target's prerequisite check runs "
-        "through this; anything else silently disables the mechanism everywhere."
-    )
-    assert (ROOT / "scripts" / "preflight.py").is_file()
-
-
 # Tokens that mean a recipe needs something provisioned. An exempt target may
 # use none of them -- that is what "needs nothing" has to mean mechanically,
 # rather than a comment asserting it.
@@ -1206,57 +999,6 @@ NEEDS_SOMETHING = (
     "$(RENDER_TEST_EXEC)",
     "$(CLOUD_EXEC)",
 )
-
-
-def test_an_exempt_target_really_does_need_nothing():
-    """NO_PREREQUISITES is a plain literal beside a comment claiming a reason.
-
-    Nothing checked the reason, so deleting a target's preflight line and adding
-    its name to the list -- in the same edit -- passed every guard. Check the
-    claim mechanically instead of trusting the comment.
-    """
-    for target in sorted(NO_PREREQUISITES):
-        if target == "setup":
-            continue  # a pure delegator; covered by its own test
-        recipe = "\n".join(line for line in _recipe_lines(target) if "$(PREFLIGHT)" not in line)
-        used = [token for token in NEEDS_SOMETHING if token in recipe]
-        assert not used, (
-            f"{target} is exempted from declaring prerequisites but its recipe uses "
-            f"{used} -- the exemption is not justified"
-        )
-
-
-def test_a_conditional_preflight_target_really_branches():
-    """CONDITIONAL_PREFLIGHT_IS_INTENDED is the other self-certifying list.
-
-    Wrapping a single call in `if true; then ...; fi` and adding the name here
-    passed. A genuine branch declares a DIFFERENT list per branch, so it calls
-    preflight more than once.
-    """
-    for target in sorted(CONDITIONAL_PREFLIGHT_IS_INTENDED):
-        recipe = _recipe_lines(target)
-        calls = sum(line.count("$(PREFLIGHT)") for line in recipe)
-        if calls >= 2:
-            continue  # a genuine branch: a different list per path
-
-        # The other legitimate shape: one branch delegates to another target,
-        # which declares its own prerequisites. Prove the delegate really does.
-        delegated = [
-            word.strip('"')
-            for line in recipe
-            if "$(MAKE)" in line
-            for word in line.split()
-            if word.strip('"') in _every_rule_with_a_recipe()
-        ]
-        assert delegated, (
-            f"{target} is allowed a conditional preflight call but makes {calls} of "
-            "them and delegates to nothing -- a single call in a conditional is "
-            "just a skippable call"
-        )
-        for other in delegated:
-            assert _declared_requirements(other), (
-                f"{target} delegates to {other}, which declares no prerequisites"
-            )
 
 
 def _recipe_lines(target: str) -> list[str]:

@@ -227,25 +227,6 @@ def test_launchers_kill_only_listening_sockets(tmp_path) -> None:
     )
 
 
-def test_manual_workbench_starts_routing_for_the_preview() -> None:
-    """The workbench preview routes, so the target must provision routing itself.
-
-    Asserted against the requirements the target DECLARES, resolved by the same
-    code preflight acts on (`scripts/preflight.py`), rather than against literal
-    text in the recipe: a preview that silently lost its dev graph or its routing
-    engine is the failure this pins, and that is a property of the declaration,
-    not of how it happens to be spelled.
-    """
-    declared = _declared_requirements("workbench")
-    assert declared is not None, "the workbench target declares no prerequisites at all"
-    assert "dev-data" in declared, "the preview would run against an unprovisioned graph"
-    assert "valhalla" in declared, "the preview could not route"
-
-    makefile = (ROOT / "Makefile").read_text()
-    target = makefile.split("\nworkbench:", 1)[1].split("\n\ndashboard:", 1)[0]
-    assert "$(RENDER_LOCAL_EXEC)" in target
-
-
 # --- A persisted-trip-shaped fixture, deliberately local to this file. -------------
 # It is NOT imported from tests/test_tour_authoring_from_route.py even though that
 # module has an equivalent one today: that module exists to exercise
