@@ -10,9 +10,11 @@ import re
 import sys
 from collections.abc import Callable
 from contextlib import contextmanager
+from datetime import date, datetime, time, timedelta
+from types import SimpleNamespace
 from typing import TypeVar
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Request
 from neo4j import Driver, Session
 from pydantic import ValidationError
 
@@ -21,9 +23,9 @@ from src.api.crud.trips import (
     create_trip_with_stops,
     get_trip_compose_inputs,
     list_trips_for_profile,
-    mark_trip_composed,
     replace_trip_stops,
     route_script_to_stops,
+    write_trip_session,
 )
 from src.api.dependencies import (
     get_driver,
@@ -33,6 +35,10 @@ from src.api.dependencies import (
 )
 from src.api.models.trips import (
     GeneratedStop,
+    SessionContingency,
+    SessionPlan,
+    SessionPromise,
+    SessionReplanRequest,
     TripAuthoredTourResponse,
     TripComposeRequest,
     TripComposeResponse,
@@ -52,15 +58,32 @@ from src.tour.candidate_eligibility import (
     CandidateRejectionCode,
 )
 from src.tour.compose_gate import ComposeVerificationError
+from src.tour.contingency import (
+    OWN_PLACE_RADIUS_M,
+    RETIME_TOLERANCE_SECONDS,
+    SESSION_CLOCK_DIVERGENCE,
+    ContingencySet,
+    _finish_of,
+    at_risk_choice,
+    build_contingency_set,
+    clock_divergence_seconds,
+    finish_clock,
+    hhmm,
+    own_place_ids,
+    question_text,
+    stop_clocks,
+)
 from src.tour.contract import (
+    END_B_SENTINEL_PREFIX,
     POI,
     BeatSequence,
+    ReplanContext,
     RouteOption,
     TourabilityAssessment,
     TourInput,
     resolve_party_axes,
 )
-from src.tour.degradations import degradation_scope, summarize
+from src.tour.degradations import degradation_scope, record, summarize
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.narration_quality import score_narration
@@ -81,7 +104,7 @@ from src.tour.premium_tour import (
     resolve_routing_version,
 )
 from src.tour.quality_rubric import score_tour
-from src.tour.routing import leg_walk_seconds, summarise_route
+from src.tour.routing import PACE_KMH, haversine_m, longest_walk_minutes, summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
     AVOID_QUEUES_EXCLUDE_PEAK_MINUTES,
@@ -91,6 +114,8 @@ from src.tour.selection import (
     build_poi_extra_narration,
     load_paris_corpus,
     pick_spine_area,
+    planned_audio_by_poi,
+    select_route,
 )
 from src.tour.verify import FaithfulnessChecker
 
@@ -229,6 +254,26 @@ def _dial_kwargs(body) -> dict:
     }
 
 
+def _restore_tour_input(tour_input_dict: dict) -> TourInput:
+    """The persisted request back as a TourInput — every stored axis, fail-open.
+
+    A record written before an axis existed simply lacks the key and lands on the
+    axis's identity default (dateless, `firm`, no party, no pins …), which is
+    exactly what that trip was planned with. ONE restorer for compose and both
+    session endpoints, so a key added to the record cannot reach one and miss
+    another (the S1.3b lesson).
+    """
+    known = set(TourInput.model_fields)
+    fields = {k: v for k, v in tour_input_dict.items() if k in known and v is not None}
+    fields["start"] = tuple(tour_input_dict["start"])
+    fields["end"] = tuple(tour_input_dict["end"]) if tour_input_dict.get("end") else None
+    fields["end_hardness"] = tour_input_dict.get("end_hardness") or "firm"
+    for tuple_key in ("pinned_poi_ids", "category_minus"):
+        if tuple_key in fields:
+            fields[tuple_key] = tuple(fields[tuple_key])
+    return _build_tour_input(**fields)
+
+
 def _build_tour_input(**kwargs) -> TourInput:
     """Construct TourInput, mapping its contract ValidationError to a 422.
 
@@ -300,9 +345,7 @@ def _refusal_detail(
         # nothing an operator needs is lost, and the AC-24 pin ("the refusal
         # names the budget it could not fill") holds on the field that names it.
         "reason": (
-            exc.reason
-            if isinstance(exc, CertificationPlanningInfeasibleError)
-            else str(exc)
+            exc.reason if isinstance(exc, CertificationPlanningInfeasibleError) else str(exc)
         ),
         "technical": str(exc),
         "gap_minutes": exc.gap_minutes,
@@ -391,9 +434,7 @@ def _restored_tourability(stored: dict | None) -> TourabilityAssessment | None:
     """
     if not stored:
         return None
-    migrated = {
-        _RENAMED_TOURABILITY_FIELDS.get(key, key): value for key, value in stored.items()
-    }
+    migrated = {_RENAMED_TOURABILITY_FIELDS.get(key, key): value for key, value in stored.items()}
     try:
         return TourabilityAssessment.model_validate(migrated)
     except ValidationError:
@@ -458,9 +499,7 @@ def _primary_beat_audio(session: Session, beat_ids: list[str]) -> dict[str, dict
 
 #: The two responses that gained a degradations list. Constrained rather than open, so
 #: a handler returning something with no such field cannot be decorated by mistake.
-_ReportsDegradations = TypeVar(
-    "_ReportsDegradations", TripGenerateResponse, TripComposeResponse
-)
+_ReportsDegradations = TypeVar("_ReportsDegradations", TripGenerateResponse, TripComposeResponse)
 
 
 def _reports_degradations(
@@ -538,7 +577,11 @@ def generate_trip(
         round_trip=body.round_trip,
         max_stop_minutes=body.max_stop_minutes,
         end=_end_point(body.end_lat, body.end_lng),
-        start_datetime=body.start_datetime,
+        # THE DAY HAS A CLOCK (Phase 5 S5.10, defect 13): the phone sends the date
+        # and the time as two halves and never the joined field, so every
+        # phone-planned day was "dateless" to the planner and the living session
+        # could not place NOW. Both halves are always present; join them.
+        start_datetime=body.start_datetime or f"{body.start_date}T{body.start_time}",
         end_hardness=body.end_hardness,
         **_dial_kwargs(body),
     )
@@ -594,8 +637,11 @@ def generate_trip(
         {sp.id: sp.beat_ids for sp in script.selected_pois},
         lenses=lenses,
     )
+    clocks, _audio = _wire_clocks(
+        route, tour_input, snapshot, clock_start=_day_start(tour_input, body.start_time)
+    )
     stops = route_script_to_stops(
-        script.selected_pois, beats_by_id, body.start_time, script=script, extra_by_poi=extra_by_poi
+        script.selected_pois, beats_by_id, clocks, script=script, extra_by_poi=extra_by_poi
     )
 
     # Step 4.6: persist the RESOLVED engine input + every flavour's ordered
@@ -603,6 +649,14 @@ def generate_trip(
     # selection (corpus/routing drift must never swap the picked route).
     tour_input_json = json.dumps(
         {
+            # THE WHOLE RESOLVED INPUT (Phase 5 S5.8): every axis and dial the
+            # day was planned with — pins, party, pace, cap, cadence, weather,
+            # the four dials — because the living session replans FROM this
+            # record and the person's protected set (pins, requested rests, a
+            # declared finish) lives in it. Additive over the legacy keys below,
+            # which stay spelled out so a reader of an older record sees the same
+            # shape it always did.
+            **tour_input.model_dump(mode="json"),
             "start": list(tour_input.start),
             "end": list(tour_input.end) if tour_input.end else None,
             "duration_min": tour_input.duration_min,
@@ -778,11 +832,10 @@ def compose_trip(
     inputs = get_trip_compose_inputs(session, trip_id)
     if inputs is None:
         raise HTTPException(404, f"Trip '{trip_id}' not found")
-    if inputs["composed_route_id"]:
-        raise HTTPException(
-            409,
-            {"reason": "already_composed", "composed_route_id": inputs["composed_route_id"]},
-        )
+    # THE FROZEN TRIP IS DELETED (Phase 5 S5.8, design §8.2): a second compose is
+    # not a conflict, it is the living session's version N+1 — the trip's stops are
+    # re-persisted through the same `replace_trip_stops`, and `composed_route_id`
+    # (read for legacy trips by the crud reader) is ignored.
     tour_input_dict, options = inputs["tour_input"], inputs["options"]
     if not tour_input_dict or not options:
         raise HTTPException(
@@ -802,22 +855,7 @@ def compose_trip(
         poi_ids = entry
         chosen = {}
 
-    tour_input = _build_tour_input(
-        start=tuple(tour_input_dict["start"]),
-        duration_min=tour_input_dict["duration_min"],
-        city_slug=tour_input_dict["city_slug"],
-        lenses=tour_input_dict["lenses"],
-        round_trip=tour_input_dict["round_trip"],
-        # Restored from the stored request. A trip saved before this key existed
-        # returns None, i.e. no ceiling, which is what it was planned with.
-        max_stop_minutes=tour_input_dict.get("max_stop_minutes"),
-        end=tuple(tour_input_dict["end"]) if tour_input_dict.get("end") else None,
-        # Same fail-open shape: a trip saved before the clock existed restores
-        # dateless and `firm` — `or "firm"` because None is not a legal
-        # hardness, and a legacy record must compose exactly as it always did.
-        start_datetime=tour_input_dict.get("start_datetime"),
-        end_hardness=tour_input_dict.get("end_hardness") or "firm",
-    )
+    tour_input = _restore_tour_input(tour_input_dict)
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     pois_by_id = {p.id: p for p in snapshot.pois}
@@ -953,8 +991,9 @@ def compose_trip(
             policy_version=planning_policy.policy_id,
         )
         # The physical calls are the REAL number this compose will make (one per
-        # dwell stop), and they happen HERE — after the already-composed 409 above,
-        # so a duplicate compose reserves nothing and calls nobody.
+        # dwell stop), and they happen HERE. (Until Phase 5 S5.8 a second compose was
+        # a 409 before this point; a second compose is now version N+1 of the session
+        # — design §8.2 — and pays for its authoring like the first.)
         with _upstream_provider_errors():
             physical_responses = execute_premium_plan(
                 plan,
@@ -1021,17 +1060,18 @@ def compose_trip(
         lenses=tour_input.lenses,
     )
     extra_narration_by_poi = build_poi_extra_narration(extra_by_poi, snapshot)
+    day_start = _day_start(tour_input, tour_input_dict.get("start_time"))
+    clocks, _audio = _wire_clocks(route, tour_input, snapshot, clock_start=day_start)
     stops = route_script_to_stops(
         composed.selected_pois,
         beats_by_id,
-        tour_input_dict.get("start_time"),
+        clocks,
         script=composed,
         extra_by_poi=extra_by_poi,
     )
     for stop in stops:
         stop["extra_narration"] = extra_narration_by_poi.get(stop["poi_id"])
     item_ids = replace_trip_stops(session, trip_id, stops)
-    mark_trip_composed(session, trip_id, body.route_id)
 
     display_map = _lens_display_map(session, {s["lens_name"] for s in stops if s["lens_name"]})
     stops_out = [
@@ -1056,12 +1096,633 @@ def compose_trip(
         )
         for i, s in enumerate(stops)
     ]
+    # THE LIVING SESSION, VERSION N+1 (Phase 5 S5.8): the day the person will
+    # stand in, with its contingency set beside it (§4.6), computed ONCE here on
+    # the server and persisted — the phone SELECTS from it, it never decides.
+    plan_version = int(inputs["plan_version"] or 0) + 1
+    session_plan = _session_plan(
+        trip_id,
+        tour_input,
+        route,
+        stops_out,
+        snapshot=snapshot,
+        plan_version=plan_version,
+        clock_start=day_start,
+        day_start_hhmm=hhmm(day_start),
+    )
+    write_trip_session(
+        session,
+        trip_id,
+        plan_version=plan_version,
+        session_json=session_plan.model_dump_json(),
+    )
     return TripComposeResponse(
         trip_id=trip_id,
         route_id=body.route_id,
         attempts=COMPOSE_ATTEMPTS,
         stops=stops_out,
+        plan_version=plan_version,
     )
+
+
+# ---------------------------------------------------------------------------
+# THE LIVING SESSION (Phase 5 S5.8, design §4.6/§8.2). The frozen trip — a stop list
+# written once, narrated once, refusing a second compose — is deleted. A trip's day
+# is a SESSION with versions: compose writes version N+1 of the stops and, beside
+# them, the CONTINGENCY SET the phone selects from; a replan mints version N+1 over
+# the SAME items (no re-authoring, so no audio is lost). One replan brain, here.
+# ---------------------------------------------------------------------------
+
+
+def _finish_name(tour_input: TourInput, route=None) -> str:
+    """What the finish is called in a line or an arm. The PLACE when the day ends at
+    one the person named (W5.14: "say 'the Orsay' — 'your finish' is your word");
+    else "your finish" / "your start"."""
+    if route is not None:
+        finish = tour_input.end if tour_input.end is not None else tour_input.start
+        for poi in route.pois:
+            if poi.poi_role == "body" or poi.id.startswith(END_B_SENTINEL_PREFIX):
+                continue
+            if haversine_m(finish[0], finish[1], poi.lat, poi.lng) <= OWN_PLACE_RADIUS_M:
+                return poi.name
+    return "your finish" if tour_input.end is not None else "your start"
+
+
+def _person_protected(tour_input: TourInput, route) -> tuple[str, ...]:
+    """W5.2 R1.5 — the person's own promises: the stops they pinned and the rests
+    the party or dial asked for (the body stops seated in the day), and — W5.14 —
+    the place they NAMED as where the day begins or ends when the day visits it
+    (`own_place_ids`). A declared finish is protected by construction (every tail
+    ends there); the planner's anchor is NOT protected on an open, unpinned walk —
+    a session never asks a question about it (Fiona & Dev, Julien)."""
+    rests = sorted(p.id for p in route.pois if p.poi_role == "body")
+    return tuple(
+        dict.fromkeys([*tour_input.pinned_poi_ids, *own_place_ids(route, tour_input), *rests])
+    )
+
+
+def _day_start(tour_input: TourInput, start_hhmm: str | None) -> datetime | None:
+    """When the day's clock starts, for the wire and for NOW: the planner's own
+    `start_datetime` when the day has one; a legacy record saved before the clock
+    existed (planned dateless, and it still plans dateless — the restorer is
+    untouched) is clocked from its HH:MM start on TODAY, the day the walk is
+    happening. None only when neither exists."""
+    if tour_input.start_datetime is not None:
+        return datetime.fromisoformat(tour_input.start_datetime)
+    if start_hhmm:
+        hh, mm = (int(x) for x in start_hhmm.split(":"))
+        return datetime.combine(date.today(), time(hh, mm))
+    return None
+
+
+def _wire_clocks(
+    route,
+    tour_input: TourInput,
+    snapshot,
+    *,
+    clock_start: datetime | None,
+    listening_rate: float = 1.0,
+) -> tuple[dict[str, str], dict[str, int]]:
+    """Every stop's HH:MM on the wire, from THE one expression (`stop_clocks`, Phase
+    5 S5.10) priced with the SAME audio map the final gate used — and that map,
+    for the contingency set. Until this helper the CRUD adapter ran a second,
+    walk-less clock (dwell only) that the phone showed as arrival times.
+    **Extends** `stop_clocks`; nothing here sums."""
+    audio = planned_audio_by_poi(
+        route,
+        snapshot,
+        interest=frozenset(tour_input.lenses or []),
+        end_is_none=tour_input.end is None,
+        narration_density=tour_input.narration_density,
+    )
+    clocks = {
+        poi.id: hhmm(arrival)
+        for poi, arrival, _dep in stop_clocks(
+            route,
+            tour_input,
+            clock_start=clock_start,
+            listening_rate=listening_rate,
+            audio_seconds_by_id=audio,
+        )
+        if arrival is not None
+    }
+    return clocks, audio
+
+
+def _session_promises(
+    route,
+    tour_input: TourInput,
+    protected: tuple[str, ...],
+    *,
+    clock_start: datetime | None,
+    listening_rate: float = 1.0,
+    audio_seconds_by_id: dict[str, int] | None = None,
+) -> list[SessionPromise]:
+    """The day's promises as the phone reads them, off THE one arrival walk
+    (`stop_clocks`) with the coarse windows the W4.2 panel locked (F&D)."""
+    marquee = route.start_anchor_poi_id
+    if marquee is None and route.pois:
+        marquee = max(route.pois, key=lambda p: (p.tier, p.id)).id
+    out: list[SessionPromise] = []
+    for poi, arrival, departure in stop_clocks(
+        route,
+        tour_input,
+        clock_start=clock_start,
+        listening_rate=listening_rate,
+        audio_seconds_by_id=audio_seconds_by_id,
+    ):
+        if poi.id.startswith(END_B_SENTINEL_PREFIX):
+            kind = "finish"
+        elif poi.id in tour_input.pinned_poi_ids:
+            kind = "pinned"
+        elif poi.poi_role == "body":
+            kind = "rest"
+        elif poi.id == marquee:
+            kind = "anchor"
+        else:
+            continue
+        arrives, departs = _coarse_window(hhmm(arrival), hhmm(departure))
+        out.append(
+            SessionPromise(
+                promise_id=poi.id,
+                kind=kind,
+                name=poi.name,
+                arrives_hhmm=arrives,
+                departs_hhmm=departs,
+                protected=(kind == "finish" or poi.id in protected),
+            )
+        )
+    return out
+
+
+def _session_plan(
+    trip_id: str,
+    tour_input: TourInput,
+    route,
+    stops_out: list[GeneratedStop],
+    *,
+    snapshot,
+    plan_version: int,
+    clock_start: datetime | None,
+    day_start_hhmm: str,
+    listening_rate: float = 1.0,
+    defer_set: bool = False,
+) -> SessionPlan:
+    """Version N of the living session: the stops, the promises, and the contingency
+    set — computed ONCE, here, on the server (§4.6). Every entry of the set is THE
+    planner (`select_route` under the certification policy — the same call
+    `plan_premium_tour` makes, without the premium wrapper's per-entry version read
+    and assembly) called with a `ReplanContext`; never a second decision procedure.
+
+    ``defer_set`` (W5.12, the design's own remedy for the LIVE REPLAN bar — "narrow
+    the live path"): the day, its clocks and its promises are assembled here and the
+    contingency set is left EMPTY for the caller to fill — a live replan answers with
+    the day at once and computes the full set right after the reply (see
+    `replan_trip_session`), so the set's ~0.4 s per entry never sits between the
+    phone's fire and the new day rendered.
+    """
+    protected = _person_protected(tour_input, route)
+    # THE SESSION'S CLOCK (S5.10): every stop's HH:MM re-read off the one
+    # expression for THIS version — a replan's stops would otherwise carry the
+    # clocks of the day they were composed into.
+    clocks, audio_by_id = _wire_clocks(
+        route, tour_input, snapshot, clock_start=clock_start, listening_rate=listening_rate
+    )
+    stops_out = [
+        st.model_copy(update={"start_time": clocks.get(st.poi_id, st.start_time)})
+        for st in stops_out
+    ]
+    planned_end = (
+        hhmm(clock_start + timedelta(minutes=tour_input.duration_min)) if clock_start else ""
+    )
+    finish = _finish_of(tour_input)
+    finish_fields = {
+        "finish_lat": finish[0] if finish else None,
+        "finish_lng": finish[1] if finish else None,
+        "finish_name": _finish_name(tour_input, route),
+        "end_hardness": tour_input.end_hardness,
+    }
+    if defer_set:
+        return SessionPlan(
+            trip_id=trip_id,
+            plan_version=plan_version,
+            stops=stops_out,
+            promises=_session_promises(
+                route,
+                tour_input,
+                protected,
+                clock_start=clock_start,
+                listening_rate=listening_rate,
+                audio_seconds_by_id=audio_by_id,
+            ),
+            retime_tolerance_seconds=RETIME_TOLERANCE_SECONDS,
+            contingencies=[],
+            walking_pace_kmh=PACE_KMH / float(tour_input.walking_pace or 1.0),
+            day_start_hhmm=day_start_hhmm,
+            planned_end_hhmm=planned_end,
+            party=tour_input.party,
+            **finish_fields,
+        )
+    policy = certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
+    with RoutingClient() as routing_client:
+
+        def plan(tail: TourInput, ctx: ReplanContext):
+            return select_route(
+                tail, snapshot, routing_client=routing_client, planning_policy=policy, replan=ctx
+            )
+
+        cset: ContingencySet = build_contingency_set(
+            route,
+            tour_input,
+            snapshot,
+            routing_client=routing_client,
+            person=ReplanContext(protected_poi_ids=protected, listening_rate=listening_rate),
+            plan_version=plan_version,
+            finish_name=_finish_name(tour_input, route),
+            plan=plan,
+            audio_seconds_by_id=audio_by_id,
+            clock_start=clock_start,
+        )
+    logging.getLogger("ondoway.api").info(
+        "session v%s for trip=%s: %d contingencies, %d alternate-authoring units "
+        "(stops not on the planned day — the spend, printed before it is billed)",
+        plan_version,
+        trip_id,
+        len(cset.entries),
+        cset.authoring_units,
+    )
+    contingencies = [
+        SessionContingency(
+            contingency_id=e.contingency_id,
+            trigger=e.trigger,
+            plan_version=plan_version,
+            stop_ids=[sid for sid in e.stop_ids if not sid.startswith(END_B_SENTINEL_PREFIX)],
+            screen_text=e.screen_text,
+            question=e.question,
+            default_arm=e.default_arm,
+            alternate_stop_ids=[
+                sid for sid in e.alternate_stop_ids if not sid.startswith(END_B_SENTINEL_PREFIX)
+            ],
+            at_risk_stop_id=e.at_risk_stop_id,
+            finish_hhmm=e.finish_hhmm,
+        )
+        for e in cset.entries
+    ]
+    return SessionPlan(
+        trip_id=trip_id,
+        plan_version=plan_version,
+        stops=stops_out,
+        promises=_session_promises(
+            route,
+            tour_input,
+            protected,
+            clock_start=clock_start,
+            listening_rate=listening_rate,
+            audio_seconds_by_id=audio_by_id,
+        ),
+        retime_tolerance_seconds=cset.retime_tolerance_seconds,
+        contingencies=contingencies,
+        # The preset the phone starts from until it has learned its own (§4.1):
+        # the speed THIS day was planned at.
+        walking_pace_kmh=PACE_KMH / float(tour_input.walking_pace or 1.0),
+        day_start_hhmm=day_start_hhmm,
+        planned_end_hhmm=planned_end,
+        party=tour_input.party,
+        **finish_fields,
+    )
+
+
+def _carry_forward_entries(previous: SessionPlan, new_day: SessionPlan) -> list[SessionContingency]:
+    """The previous version's answers that are still answers for the NEW day (W5.12,
+    "widen the precomputed set"): an entry whose trigger stop is still ahead and whose
+    stops (and alternate) all lie on the new day is a replan of a day the person is
+    still walking — it stays on the phone under the new version until the full set,
+    computed right after the reply, replaces it on the next fetch. Ids are kept (the
+    phone selects by id); the version is the new one."""
+    ahead = {st.poi_id for st in new_day.stops}
+    kept: list[SessionContingency] = []
+    for e in previous.contingencies:
+        if e.trigger.get("kind") == "live":
+            continue  # a live question was asked once, at its moment; it does not carry
+        trigger_stop = e.trigger.get("stop_id")
+        if trigger_stop is not None and trigger_stop not in ahead:
+            continue
+        if not set(e.stop_ids) <= ahead or not set(e.alternate_stop_ids) <= ahead:
+            continue
+        kept.append(e.model_copy(update={"plan_version": new_day.plan_version}))
+    return kept
+
+
+def _finish_session_set(
+    driver: Driver,
+    trip_id: str,
+    day: SessionPlan,
+    tour_input: TourInput,
+    route,
+    *,
+    snapshot,
+    clock_start: datetime | None,
+    listening_rate: float,
+) -> None:
+    """The second half of a live replan, off the live path: compute version N's FULL
+    contingency set through THE planner and persist it as the same version — unless
+    a newer version has landed meanwhile, in which case this set is stale and is
+    dropped (the newer replan computes its own)."""
+    full = _session_plan(
+        trip_id,
+        tour_input,
+        route,
+        day.stops,
+        snapshot=snapshot,
+        plan_version=day.plan_version,
+        clock_start=clock_start,
+        day_start_hhmm=day.day_start_hhmm,
+        listening_rate=listening_rate,
+    )
+    with driver.session() as session:
+        inputs = get_trip_compose_inputs(session, trip_id)
+        if inputs is None or int(inputs["plan_version"] or 0) != day.plan_version:
+            return
+        write_trip_session(
+            session, trip_id, plan_version=day.plan_version, session_json=full.model_dump_json()
+        )
+
+
+def _owned_trip_or_404(session: Session, user_id: str, trip_id: str) -> None:
+    owns_trip = session.run(
+        "MATCH (u:User {id: $uid})-[:HAS_PROFILE]->(:Profile)-[:IS_CAPTAIN_OF]"
+        "->(t:Trip {id: $tid}) RETURN t.id AS id",
+        uid=user_id,
+        tid=trip_id,
+    ).single()
+    if owns_trip is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+
+
+@router.get("/trips/{trip_id}/session", response_model=SessionPlan)
+def get_trip_session(
+    trip_id: str,
+    current_user: dict = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    """The current version of the living session — the day as it stands and the
+    contingency set the phone selects from (design §4.6). A trip that was never
+    composed has no session yet: 404 with a reason, never an empty plan."""
+    _owned_trip_or_404(session, current_user["id"], trip_id)
+    inputs = get_trip_compose_inputs(session, trip_id)
+    if inputs is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+    if not inputs["session"]:
+        raise HTTPException(404, {"reason": "no_session_yet", "detail": "compose the trip first"})
+    return SessionPlan(**inputs["session"])
+
+
+@router.post("/trips/{trip_id}/session/replan", response_model=SessionPlan)
+@_reports_degradations
+def replan_trip_session(
+    request: Request,
+    trip_id: str,
+    body: SessionReplanRequest,
+    background_tasks: BackgroundTasks,
+    current_user: dict = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    driver: Driver = Depends(get_driver),
+):
+    """The one replan brain (design §4.6): the phone reports where it is, its two
+    clocks and its learned rates; the server replans the REMAINDER of the day it is
+    standing in — through THE planner with a `ReplanContext` (the person's protected
+    set held, the pool the planned stops still ahead, a zero floor, the learned
+    pace and listening rate) — and mints version N+1 over the SAME items with a
+    fresh contingency set. It never hands back a different day than the one the
+    person is standing in (the plan's sabotage line): no new place, no
+    re-authoring, the audio already made is kept.
+    """
+    _owned_trip_or_404(session, current_user["id"], trip_id)
+    inputs = get_trip_compose_inputs(session, trip_id)
+    if inputs is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+    if not inputs["session"] or not inputs["tour_input"]:
+        raise HTTPException(404, {"reason": "no_session_yet", "detail": "compose the trip first"})
+    current = SessionPlan(**inputs["session"])
+    tour_input = _restore_tour_input(inputs["tour_input"])
+
+    k = min(body.next_stop_index, len(current.stops))
+    remaining, visited = current.stops[k:], current.stops[:k]
+    finish = (
+        tour_input.end
+        if tour_input.end is not None
+        else (tour_input.start if tour_input.round_trip else None)
+    )
+    start_clock = _day_start(tour_input, inputs["tour_input"].get("start_time"))
+    now = (
+        start_clock + timedelta(seconds=body.wall_elapsed_seconds)
+        if start_clock is not None
+        else None
+    )
+    minutes_left = max(1, tour_input.duration_min - body.wall_elapsed_seconds // 60)
+    tail = tour_input.model_copy(
+        update={
+            "start": (body.lat, body.lng),
+            "end": finish,
+            "round_trip": False,
+            "duration_min": minutes_left,
+            "start_datetime": now.isoformat(timespec="minutes") if now else None,
+            "pinned_poi_ids": (),
+            "rest_cadence_minutes": None,
+            "walking_pace": body.observed_pace or tour_input.walking_pace,
+        }
+    )
+    snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
+    remaining_ids = tuple(st.poi_id for st in remaining)
+    protected = tuple(
+        pid
+        for pid in _person_protected(tour_input, _stops_as_route_pois(remaining, snapshot))
+        if pid in remaining_ids
+    )
+    ctx = ReplanContext(
+        protected_poi_ids=protected,
+        keep_to_poi_ids=remaining_ids,
+        visited_poi_ids=tuple(st.poi_id for st in visited),
+        floor_zero=True,
+        listening_rate=body.listening_rate or 1.0,
+    )
+    policy = certification_planning_policy(policy_id=PREMIUM_MODULE_VERSION)
+    with RoutingClient() as routing_client:
+        try:
+            route = select_route(
+                tail, snapshot, routing_client=routing_client, planning_policy=policy, replan=ctx
+            )
+        except (CertificationPlanningInfeasibleError, TourabilityRefusedError) as exc:
+            raise HTTPException(422, _refusal_detail(exc)) from exc
+        record_routing_degradations(route, component="trips.replan_trip_session")
+
+    by_poi = {st.poi_id: st for st in current.stops}
+    new_stops = [
+        by_poi[p.id].model_copy(update={"sort_order": i + 1})
+        for i, p in enumerate(route.pois)
+        if p.id in by_poi
+    ]
+    plan_version = int(inputs["plan_version"] or 0) + 1
+    # THE LIVE PATH IS THE DAY (W5.12, measured: the set is ~0.4 s per entry and the
+    # planner ~1 s — the design's remedy is to narrow the live path). The reply
+    # carries the replanned day, its clocks and promises, and the previous
+    # version's answers that still hold; the full set is computed right after the
+    # reply and persisted as this same version for the phone's next fetch.
+    session_plan = _session_plan(
+        trip_id,
+        tail,
+        route,
+        new_stops,
+        snapshot=snapshot,
+        plan_version=plan_version,
+        clock_start=now,
+        day_start_hhmm=hhmm(start_clock),
+        listening_rate=body.listening_rate or 1.0,
+        defer_set=True,
+    )
+    live_question = _live_question(
+        route,
+        tail,
+        snapshot,
+        protected=protected,
+        remaining_ids=remaining_ids,
+        clock=now,
+        plan_version=plan_version,
+        policy=policy,
+        at_stop=visited[-1].poi_id if visited else (remaining[0].poi_id if remaining else None),
+    )
+    session_plan = session_plan.model_copy(
+        update={
+            "contingencies": [
+                *([live_question] if live_question is not None else []),
+                *_carry_forward_entries(current, session_plan),
+            ]
+        }
+    )
+    _report_phone_clock(body, session_plan, next_planned=remaining[0] if remaining else None)
+    write_trip_session(
+        session, trip_id, plan_version=plan_version, session_json=session_plan.model_dump_json()
+    )
+    background_tasks.add_task(
+        _finish_session_set,
+        driver,
+        trip_id,
+        session_plan,
+        tail,
+        route,
+        snapshot=snapshot,
+        clock_start=now,
+        listening_rate=body.listening_rate or 1.0,
+    )
+    return session_plan
+
+
+def _live_question(
+    route,
+    tail: TourInput,
+    snapshot,
+    *,
+    protected: tuple[str, ...],
+    remaining_ids: tuple[str, ...],
+    clock: datetime | None,
+    plan_version: int,
+    policy,
+    at_stop: str | None,
+) -> SessionContingency | None:
+    """THE PROMISE TIER ON THE LIVE PATH (W5.14, all eleven: the live replan dropped
+    Rosemary's Orsay in silence). When the replanned remainder still overruns with the
+    protected things kept, the reply carries the ONE question — the same R2 text the
+    precomputed set uses (`question_text`): keep the protected thing and arrive later,
+    or shorten the rest / go straight on and arrive by the clock. It rides as an entry
+    of kind "live" that the phone applies at once (default in force, two big buttons).
+    None when nothing overruns or the two arms are the same day."""
+    if route is None or route.overrun_seconds <= 0 or clock is None:
+        return None
+    at_risk_poi = at_risk_choice(route, list(protected))
+    if at_risk_poi is None:
+        return None
+    with RoutingClient() as routing_client:
+        alt = select_route(
+            tail,
+            snapshot,
+            routing_client=routing_client,
+            planning_policy=policy,
+            replan=ReplanContext(
+                protected_poi_ids=protected,
+                keep_to_poi_ids=tuple(pid for pid in remaining_ids if pid in protected),
+                floor_zero=True,
+            ),
+        )
+    keep_clock = finish_clock(route, tail, clock_start=clock)
+    alt_clock = finish_clock(alt, tail, clock_start=clock)
+    q, default_arm = question_text(
+        tail=route,
+        alt=alt,
+        at_risk_poi=at_risk_poi,
+        rest_seconds=int(route.planned_visit_seconds.get(at_risk_poi.id, 0)),
+        keep_clock=keep_clock,
+        alt_clock=alt_clock,
+        finish_name=_finish_name(tail, route),
+        end_hardness=tail.end_hardness,
+    )
+    if q is None:
+        return None
+    return SessionContingency(
+        contingency_id=f"v{plan_version}-live",
+        trigger={"kind": "live", "stop_id": at_stop},
+        plan_version=plan_version,
+        stop_ids=[p.id for p in route.pois if not p.id.startswith(END_B_SENTINEL_PREFIX)],
+        screen_text=q,
+        question=q,
+        default_arm=default_arm,
+        alternate_stop_ids=[p.id for p in alt.pois if not p.id.startswith(END_B_SENTINEL_PREFIX)],
+        at_risk_stop_id=at_risk_poi.id,
+        finish_hhmm=hhmm(keep_clock),
+    )
+
+
+def _report_phone_clock(
+    body: SessionReplanRequest, session_plan: SessionPlan, *, next_planned: GeneratedStop | None
+) -> None:
+    """THE SESSION CLOCK SEAM, server half (Phase 5 S5.10; design §4.6). The phone
+    sends its OWN re-timed clock for the stop it is heading to; the server compares
+    it with what its one expression says for the same stop in the version it just
+    minted, and a gap beyond the session's tolerance is REPORTED — a row on the
+    reply's `degradations` channel, both registers — and never corrected in either
+    direction: the reply keeps the server's clock, the phone keeps its own, and the
+    gap is visible. Nothing here assigns."""
+    phone = body.phone_next_stop_hhmm
+    if not phone or next_planned is None or not session_plan.stops:
+        return
+    first = session_plan.stops[0]
+    if first.poi_id != next_planned.poi_id:
+        return  # the replan re-ordered the day; the two clocks name different stops
+    gap = clock_divergence_seconds(phone, first.start_time)
+    if abs(gap) <= session_plan.retime_tolerance_seconds:
+        return
+    minutes = round(abs(gap) / 60)
+    ahead = "later" if gap > 0 else "earlier"
+    record(
+        kind=SESSION_CLOCK_DIVERGENCE,
+        human=(
+            f"Your phone reckons you reach {first.poi_name} about {minutes} minutes "
+            f"{ahead} than our planner does. Neither clock was changed to hide the gap; "
+            "the phone keeps its own and the planner keeps its own."
+        ),
+        component="trips.replan_trip_session",
+        stop=first.poi_name,
+        phone_hhmm=phone,
+        server_hhmm=first.start_time,
+        divergence_seconds=str(gap),
+        tolerance_seconds=str(session_plan.retime_tolerance_seconds),
+    )
+
+
+def _stops_as_route_pois(stops: list[GeneratedStop], snapshot):
+    """The corpus POIs behind a stop list, in stop order — a tiny Route-like view
+    for the protected-set rule, which reads `poi_role`."""
+    by_id = {p.id: p for p in snapshot.pois}
+    return SimpleNamespace(pois=[by_id[st.poi_id] for st in stops if st.poi_id in by_id])
 
 
 def _preview_cards(option: RouteOption) -> list[TripPreviewStop]:
@@ -1247,19 +1908,17 @@ def preview_trip(
             # (options.option_eta_seconds), so this is the same clock the day is
             # priced on, not a second opinion. Zero is a real answer ("the day is
             # full") and is sent as 0, never as null.
-            slack_minutes=max(
-                0, (tour_input.duration_min * 60 - options[0].eta_seconds) // 60
-            ),
+            slack_minutes=max(0, (tour_input.duration_min * 60 - options[0].eta_seconds) // 60),
             # THE LONGEST SINGLE WALK (W4.12 panel — Rosemary, Sofia, Marcus, Aiko,
             # Julien, F&D): the number the "Shorter walks" dial is NAMED after, and
             # the one number a person with a stick, a bag or a December dusk decides
             # on. The surface printed only a walking TOTAL, so nobody could check
             # the dial ("a walking budget is not one number" — Rosemary's headline
-            # breakage). Per-leg seconds come from THE one per-leg expression
-            # (routing.leg_walk_seconds), so this cannot disagree with the total.
-            longest_walk_minutes=max(
-                (round(leg_walk_seconds(t) / 60) for t in route.transits), default=0
-            ),
+            # breakage). THE one expression (routing.longest_walk_minutes) — the
+            # same number, through the same rounding, that the planner certifies
+            # the leg cap against (Phase 5 S5.4), so the head line and the cap can
+            # never disagree by a rounding.
+            longest_walk_minutes=longest_walk_minutes(route.transits),
         )
         rows = summarize(collected)
     return result.model_copy(update={"degradations": rows}) if rows else result
@@ -1275,7 +1934,7 @@ PROMISE_WINDOW_GRAIN_MINUTES: int = 5
 
 
 def _coarse_window(arrives_hhmm: str, departs_hhmm: str) -> tuple[str, str]:
-    """"11:32"-"12:02" -> "11:30"-"12:05". Empty strings (a dateless day) pass through.
+    """ "11:32"-"12:02" -> "11:30"-"12:05". Empty strings (a dateless day) pass through.
 
     A zero-length window (the A→B finish point: arrival IS departure) rounds
     both ends the same way, so it stays one time and never widens into a stay
@@ -1374,9 +2033,7 @@ def _preview_day_notes(route, body) -> list[str]:
             # A pinned or protected place can outrank the dial; say so by name
             # rather than claim an exclusion the list beneath disproves.
             notes.append(
-                f"You asked for no {kinds} stops; still in this day: "
-                + ", ".join(still_in)
-                + "."
+                f"You asked for no {kinds} stops; still in this day: " + ", ".join(still_in) + "."
             )
         else:
             notes.append(f"No {kinds} stops in this day, as asked.")
@@ -1407,9 +2064,7 @@ def _preview_day_notes(route, body) -> list[str]:
         if p.opening_hours is not None and p.opening_hours_source in (None, "ai")
     ]
     if unverified:
-        notes.append(
-            "We could not confirm opening times for " + ", ".join(unverified) + "."
-        )
+        notes.append("We could not confirm opening times for " + ", ".join(unverified) + ".")
     return notes
 
 

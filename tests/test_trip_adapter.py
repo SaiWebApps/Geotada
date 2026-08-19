@@ -25,7 +25,7 @@ def test_stops_preserve_route_order_and_sort_order():
         _poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600),
         _poi("p2", "Notre-Dame", tier=4, beat_ids=("b2",), dwell=300),
     ]
-    stops = route_script_to_stops(pois, {}, "09:00")
+    stops = route_script_to_stops(pois, {}, {})
     assert [s["poi_id"] for s in stops] == ["p1", "p2"]
     assert [s["sort_order"] for s in stops] == [1, 2]
 
@@ -37,7 +37,7 @@ def test_all_beats_kept_with_primary():
         "b3": _beat("b3", "p1", ("architecture",)),
     }
     pois = [_poi("p1", "Louvre", tier=5, beat_ids=("b1", "b2", "b3"), dwell=600)]
-    stops = route_script_to_stops(pois, beats, "09:00")
+    stops = route_script_to_stops(pois, beats, {})
     assert stops[0]["beat_ids"] == ["b1", "b2", "b3"]
     assert stops[0]["primary_beat_id"] == "b1"
     assert stops[0]["dwell_seconds"] == 600  # raw engine dwell passes through
@@ -50,7 +50,7 @@ def test_dominant_lens_is_most_common():
         "b3": _beat("b3", "p1", ("architecture",)),
     }
     pois = [_poi("p1", "Louvre", tier=5, beat_ids=("b1", "b2", "b3"), dwell=600)]
-    stops = route_script_to_stops(pois, beats, "09:00")
+    stops = route_script_to_stops(pois, beats, {})
     assert stops[0]["lens_name"] == "dark_history"
 
 
@@ -60,31 +60,41 @@ def test_dominant_lens_tie_breaks_by_name():
         "b2": _beat("b2", "p1", ("alpha",)),
     }
     pois = [_poi("p1", "Square", tier=3, beat_ids=("b1", "b2"), dwell=120)]
-    stops = route_script_to_stops(pois, beats, "09:00")
+    stops = route_script_to_stops(pois, beats, {})
     assert stops[0]["lens_name"] == "alpha"  # tie -> lexicographically smallest
 
 
 def test_no_lensed_beat_gives_none_lens():
     beats = {"b1": _beat("b1", "p1", ())}
     pois = [_poi("p1", "Plaque", tier=2, beat_ids=("b1",), dwell=60)]
-    stops = route_script_to_stops(pois, beats, "09:00")
+    stops = route_script_to_stops(pois, beats, {})
     assert stops[0]["lens_name"] is None
 
 
-def test_clock_advances_by_dwell():
+def test_the_adapter_never_spells_a_clock_it_writes_the_one_it_is_handed():
+    """Phase 5 S5.10 (design §4.6, the session clock seam): the server has ONE
+    re-timing expression — `src.tour.contingency.stop_clocks`, walks and priced
+    visits — and the wire's per-stop `start_time` is a view of it. This adapter
+    used to run a second, walk-less clock (dwell only) that the phone showed as
+    arrival times; it now writes exactly the HH:MM the caller hands it, per stop,
+    and "" for a stop nobody clocked. `duration_min` is still its own reading of
+    the stop's dwell."""
     pois = [
         _poi("p1", "A", tier=5, beat_ids=("b1",), dwell=3000),  # 50 min
         _poi("p2", "B", tier=4, beat_ids=("b2",), dwell=1800),  # 30 min
     ]
-    stops = route_script_to_stops(pois, {}, "09:00")
+    stops = route_script_to_stops(pois, {}, {"p1": "09:00", "p2": "10:04"})
     assert stops[0]["start_time"] == "09:00"
     assert stops[0]["duration_min"] == 50
-    assert stops[1]["start_time"] == "09:50"
+    # 09:00 + 50 min dwell would be 09:50 on the old dwell-only clock; the walk
+    # in between is the caller's expression's business, and it said 10:04.
+    assert stops[1]["start_time"] == "10:04"
     assert stops[1]["duration_min"] == 30
+    assert route_script_to_stops(pois, {}, {})[1]["start_time"] == ""
 
 
 def test_empty_selection_yields_no_stops():
-    assert route_script_to_stops([], {}, "09:00") == []
+    assert route_script_to_stops([], {}, {}) == []
 
 
 def _script(pois: list[ScriptPOI], sentences: list[Sentence]) -> Script:
@@ -120,14 +130,14 @@ def test_narration_attached_per_stop_when_script_passed():
             ),
         ],
     )
-    stops = route_script_to_stops(pois, {}, "09:00", script=script)
+    stops = route_script_to_stops(pois, {}, {}, script=script)
     assert stops[0]["narration"] == "Settle in. The tower opened in 1889."
     assert stops[1]["narration"] == "The cathedral began in 1160."
 
 
 def test_narration_empty_when_no_script():
     pois = [_poi("p1", "A", tier=5, beat_ids=("b1",), dwell=600)]
-    stops = route_script_to_stops(pois, {}, "09:00")
+    stops = route_script_to_stops(pois, {}, {})
     assert stops[0]["narration"] == ""
 
 
@@ -136,12 +146,12 @@ def test_stops_carry_extra_beat_ids_when_provided():
         _poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1", "b2"), dwell=600),
         _poi("p2", "Notre-Dame", tier=4, beat_ids=("b3",), dwell=300),
     ]
-    stops = route_script_to_stops(pois, {}, "09:00", extra_by_poi={"p1": ("x1", "x2"), "p2": ()})
+    stops = route_script_to_stops(pois, {}, {}, extra_by_poi={"p1": ("x1", "x2"), "p2": ()})
     assert stops[0]["extra_beat_ids"] == ["x1", "x2"]
     assert stops[1]["extra_beat_ids"] == []
 
 
 def test_stops_extra_beat_ids_default_empty_without_map():
     pois = [_poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600)]
-    stops = route_script_to_stops(pois, {}, "09:00")
+    stops = route_script_to_stops(pois, {}, {})
     assert stops[0]["extra_beat_ids"] == []

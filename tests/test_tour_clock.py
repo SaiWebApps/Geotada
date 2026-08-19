@@ -133,19 +133,22 @@ def _trips_route_source() -> str:
     ).read_text()
 
 
-def test_every_tour_input_construction_site_threads_the_clock():
-    """All THREE construction sites pass the clock through — never one or two.
+def test_the_request_sites_thread_the_clock_and_the_restorer_forwards_every_persisted_key():
+    """All construction sites pass the clock through — never one or two.
 
-    `generate_trip`, `preview_trip` and `_author_preview_impl` each build the
-    engine input via `_build_tour_input`; a site that omits `start_datetime` /
-    `end_hardness` degrades silently (the request accepts the field, the plan
-    ignores it). Plan S1.3b names exactly this sabotage. Source-scanning in the
-    `test_golden_diff_cli_reads_the_durable_key` genre, because a behaviour
-    test through the full engine cannot see a missed site hermetically.
-    Also: `compose_trip`'s rebuild passes them (restored, not defaulted), so
-    four `_build_tour_input` calls carry them in total.
+    RE-DERIVED at Phase 5 S5.8 (a written decision, phase5-ledger.md): the former
+    scan counted FOUR explicit `_build_tour_input(...)` sites and required
+    `start_datetime=` / `end_hardness=` at each. Compose (and both session
+    endpoints) now restore the persisted request through ONE door,
+    `_restore_tour_input`, which forwards EVERY persisted key by construction — so
+    the request-driven sites (generate, preview, author) still carry the clock
+    explicitly (the AST half below, plan S1.3b's sabotage), and the restorer is
+    proven BEHAVIOURALLY: a stored record with a clock restores that clock and its
+    hardness, together with the axes Phase 5 began persisting (pins, party, pace).
     """
     import ast
+
+    from src.api.routes.trips import _restore_tour_input
 
     tree = ast.parse(_trips_route_source())
     call_sites = [
@@ -155,24 +158,54 @@ def test_every_tour_input_construction_site_threads_the_clock():
         and isinstance(node.func, ast.Name)
         and node.func.id == "_build_tour_input"
     ]
-    assert len(call_sites) == 4, (
-        "expected the generate/compose/preview/author _build_tour_input sites, "
-        f"found {len(call_sites)}"
+    # A request site names its arguments (and splats the dials); the restorer only
+    # forwards the persisted record (`**fields`) and names nothing.
+    explicit = [c for c in call_sites if any(kw.arg is not None for kw in c.keywords)]
+    forwarding = [c for c in call_sites if all(kw.arg is None for kw in c.keywords)]
+    assert len(explicit) == 3, (
+        "expected the generate/preview/author _build_tour_input sites, "
+        f"found {len(explicit)}"
     )
-    for call in call_sites:
+    assert len(forwarding) == 1, "exactly ONE restorer forwards the persisted record"
+    for call in explicit:
         keywords = {kw.arg for kw in call.keywords}
         assert "start_datetime" in keywords, f"line {call.lineno} drops start_datetime"
         assert "end_hardness" in keywords, f"line {call.lineno} drops end_hardness"
 
+    restored = _restore_tour_input(
+        {
+            "start": [48.8568, 2.3414],
+            "end": None,
+            "duration_min": 90,
+            "city_slug": "paris",
+            "lenses": None,
+            "round_trip": False,
+            "start_datetime": "2026-08-19T14:00",
+            "end_hardness": "wall",
+            "pinned_poi_ids": ["poi-pinned"],
+            "party": "take_it_easy",
+            "walking_pace": 1.2,
+        }
+    )
+    assert restored.start_datetime == "2026-08-19T14:00"
+    assert restored.end_hardness == "wall"
+    assert restored.pinned_poi_ids == ("poi-pinned",)
+    assert restored.party == "take_it_easy" and restored.walking_pace == 1.2
 
-def test_generate_persists_the_clock_and_compose_restores_it_fail_open():
-    """The clock survives the save: persisted at generate, restored at compose.
 
-    Persist: the `tour_input_json` dict in `generate_trip` carries both keys.
-    Restore: `compose_trip` reads them with the fail-open `.get(...)` shape
-    `max_stop_minutes` already uses — a direct key access would 500 every trip
-    saved before the key existed (plan S1.3b sabotage list).
+def test_generate_persists_the_clock_and_the_restorer_reads_it_fail_open():
+    """The clock survives the save: persisted at generate, restored fail-open.
+
+    Persist: the `tour_input_json` dict in `generate_trip` carries both keys (a
+    source read — the record's spelling IS the contract older trips were written
+    in). Restore: RE-DERIVED at Phase 5 S5.8 — the former `.get(...)` literal scan
+    is replaced by the behaviour it guarded: a record saved before the clock
+    existed lands on the identity defaults, dateless and `firm`, so it composes
+    exactly as it always did (plan S1.3b's sabotage list: a direct key access
+    would 500 every legacy trip).
     """
+    from src.api.routes.trips import _restore_tour_input
+
     source = _trips_route_source()
     assert '"start_datetime": tour_input.start_datetime' in source, (
         "generate_trip's tour_input_json does not persist start_datetime"
@@ -180,12 +213,19 @@ def test_generate_persists_the_clock_and_compose_restores_it_fail_open():
     assert '"end_hardness": tour_input.end_hardness' in source, (
         "generate_trip's tour_input_json does not persist end_hardness"
     )
-    assert 'tour_input_dict.get("start_datetime")' in source, (
-        "compose_trip does not restore start_datetime with the fail-open .get shape"
+    legacy = _restore_tour_input(
+        {
+            "start": [48.8568, 2.3414],
+            "end": None,
+            "duration_min": 90,
+            "city_slug": "paris",
+            "lenses": None,
+            "round_trip": False,
+        }
     )
-    assert 'tour_input_dict.get("end_hardness")' in source, (
-        "compose_trip does not restore end_hardness with the fail-open .get shape"
-    )
+    assert legacy.start_datetime is None
+    assert legacy.end_hardness == "firm"
+    assert legacy.pinned_poi_ids == () and legacy.party is None
 
 
 def test_a_trip_saved_before_the_clock_existed_composes_exactly_as_it_always_did():

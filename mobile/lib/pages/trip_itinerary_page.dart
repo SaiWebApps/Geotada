@@ -8,6 +8,7 @@ import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 
 /// Builds a single itinerary stop card in isolation — the exact `_StopCard`
@@ -138,13 +139,15 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
 
   /// Phase 4 (design §8.1): the server plans ONE day per trip, addressed by
   /// the fixed route id `{tripId}-opt1`. Confirming writes that day (compose)
-  /// and then runs the pre-existing prepare flow — no sheet, no pick. A trip
-  /// whose day is already written answers 409, which just means "nothing to
-  /// write": the flow proceeds with the stops on hand (saved trips, page
-  /// re-entry). A refusal — the backend could not write the day well enough
-  /// to ship — surfaces on the existing error card; one day per trip means
-  /// there is no second option to offer, so the message says the honest way
-  /// out is generating again.
+  /// and then runs the pre-existing prepare flow — no sheet, no pick.
+  /// Phase 5 (design §8.2): the frozen trip is deleted, so "already written"
+  /// is no longer a 409 from compose — it is a session that EXISTS
+  /// (GET /trips/{id}/session answers 200): then the stops on hand ARE the
+  /// composed day and nothing is re-written; a trip with no session yet is
+  /// composed once (version 1). A refusal — the backend could not write the
+  /// day well enough to ship — surfaces on the existing error card; one day
+  /// per trip means there is no second option to offer, so the message says
+  /// the honest way out is generating again.
   Future<void> _confirmAndPrepareAudio() async {
     final tripService = context.read<TripService>();
     final authService = context.read<AuthService>();
@@ -156,13 +159,19 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
 
     List<ItineraryStop>? composedStops;
     try {
-      composedStops = await tripService.composeTrip(
-        widget.trip.tripId,
-        '${widget.trip.tripId}-opt1',
-        authService.accessToken!,
-      );
-    } on TripAlreadyComposedException {
-      // The day is already written — the stops on hand ARE the composed day.
+      try {
+        await tripService.fetchSession(
+          widget.trip.tripId,
+          authService.accessToken!,
+        );
+        // The day is already written — the stops on hand ARE the composed day.
+      } on NoSessionYetException {
+        composedStops = await tripService.composeTrip(
+          widget.trip.tripId,
+          '${widget.trip.tripId}-opt1',
+          authService.accessToken!,
+        );
+      }
     } on ComposeVerificationException catch (e) {
       if (!mounted) return;
       setState(() {
@@ -262,6 +271,11 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
           // id, falling back to the legacy per-beat id only when a stop has no
           // stopId (old data) — same key playback uses, so the cache hits.
           final audioKey = stop.stopId ?? stop.beatId;
+          if (audioKey == null) {
+            // A stop with no story (a rest) has no audio to wait for.
+            ready++;
+            continue;
+          }
           final status = stop.stopId != null
               ? await audioService.checkStopAudioStatus(
                   TripService.baseUrl,
@@ -269,7 +283,7 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
                 )
               : await audioService.checkAudioStatus(
                   TripService.baseUrl,
-                  stop.beatId,
+                  stop.beatId!,
                 );
 
           if (status != null && status['has_audio'] == true) {
@@ -453,13 +467,39 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
     );
   }
 
+  /// Start the walk (Phase 5 S5.11): the playback service takes the prepared
+  /// stops and HOLDS the living session — the plan and its contingency set
+  /// (design §4.6/§4.7) — then the session screen shows what it holds. A
+  /// session that cannot be fetched (offline) still starts the walk with the
+  /// stops on hand; the phone can only act from what it already holds.
+  Future<void> _startWalk() async {
+    final playback = context.read<TourPlaybackService>();
+    final tripService = context.read<TripService>();
+    final authService = context.read<AuthService>();
+    try {
+      final session = await tripService.fetchSession(
+        widget.trip.tripId,
+        authService.accessToken!,
+      );
+      playback.holdSession(session);
+    } catch (_) {
+      // Offline or not yet composed: the walk still starts from the stops.
+    }
+    final started = await playback.startTour(_stops);
+    if (!mounted) return;
+    if (!started) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Location is off — turn it on to walk.')),
+      );
+      return;
+    }
+    context.push('/session/${widget.trip.tripId}');
+  }
+
   Widget _buildFab(ColorScheme colorScheme) {
     if (_preparationDone) {
       return FloatingActionButton.extended(
-        onPressed: () {
-          // Navigate to tour playback (for now, go to saved-trips)
-          context.go('/saved-trips');
-        },
+        onPressed: _startWalk,
         icon: const Icon(Icons.play_arrow),
         label: const Text('Start Tour'),
         backgroundColor: colorScheme.primary,
@@ -659,7 +699,7 @@ class _StopCardState extends State<_StopCard> {
 
     try {
       final result = await tripService.generateDeeperDiveAudio(
-        stop.stopId ?? stop.beatId,
+        stop.stopId ?? stop.beatId ?? stop.poiId,
       );
       if (!mounted) return;
       setState(() => _generatingDeeperDive = false);
@@ -671,7 +711,7 @@ class _StopCardState extends State<_StopCard> {
       // Key off the stop so this clip is distinct from the scheduled per-stop
       // tour audio; isDeeperDive keeps auto-advance from firing on completion.
       await audioService.play(
-        '${stop.stopId ?? stop.beatId}-keep-exploring',
+        '${stop.stopId ?? stop.beatId ?? stop.poiId}-keep-exploring',
         url,
         isDeeperDive: true,
       );

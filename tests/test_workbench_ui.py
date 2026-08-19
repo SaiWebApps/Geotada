@@ -487,7 +487,12 @@ def _option_stop(stop: dict, *, index: int) -> dict:
         "lat": stop.get("lat", 48.8566),
         "lng": stop.get("lng", 2.3522),
         "lens": None,
-        "visit_or_walk_past": "walk_past" if band in ("vignette", "leg") else "visit",
+        # An explicit visit_or_walk_past wins (a SEATED stop can carry the "vignette"
+        # NARRATION band — Phase 5 W5.1); the old band-derived default stays for
+        # every stub that never said.
+        "visit_or_walk_past": stop.get(
+            "visit_or_walk_past", "walk_past" if band in ("vignette", "leg") else "visit"
+        ),
         "minutes": int(stop.get("minutes", 0)),
         "band": band,
         "spotlight": stop.get("spotlight", 0.0),
@@ -509,7 +514,14 @@ def _route_option(stops, *, route_id, eta_seconds=None):
     time either.
     """
     places = [s for s in stops if s.get("band") != "leg"]
-    dwell_minutes = sum(int(s.get("minutes", 0)) for s in places if s.get("band") != "vignette")
+    # Standing-still minutes are every SEATED place's minutes; a walk-past has none.
+    # (A stop's `visit_or_walk_past`, when it says so, beats its band — W5.1.)
+    dwell_minutes = sum(
+        int(s.get("minutes", 0))
+        for s in places
+        if s.get("visit_or_walk_past", "walk_past" if s.get("band") == "vignette" else "visit")
+        != "walk_past"
+    )
     return {
         "route_id": route_id,
         "stops": [
@@ -3053,6 +3065,96 @@ class TestDetailViewAndEditing:
                 "the vignette stop's pin should use the hollow tour-route-pin--vignette style"
             )
             _take_screenshot(page, "b5-vignette-tag-and-hollow-pin")
+        finally:
+            _unroute_two_step(page)
+
+    def test_tour_preview_seated_stop_with_a_low_spotlight_is_a_stop_not_a_walk_past(
+        self, browser_page
+    ):
+        """A stop the planner SEATED — with real minutes — is a stop on the screen,
+        whatever narration band its spotlight earned.
+
+        Phase 5 W5.1 (phase5-ledger.md, measured on the live wire): the wire's ``band``
+        is the NARRATION tier ``band_for_spotlight`` assigns ("vignette" = one line as
+        you pass), and a seated stop with a low spotlight carries it WITH minutes —
+        Rosemary's 8-minute Bench (05-step-free-visitor.md:25-27, "The bench is a
+        stop. It has a location, a duration, and content — it simply is not a sight")
+        and a 5-minute stand outside the Orangerie. Reading band as SHAPE rendered
+        both as "walk-past sights", dropped their minutes from "standing still", and
+        listed the Bench as a walk-past and as a rest promise on the same day (Phase 4
+        carried finding 8). Walked past vs stopped at is ``visit_or_walk_past``, the
+        field that says so (design §3.1: a rest is a stop; §1.1 truth 1: standing
+        still is most of the day).
+
+        UNDO: make ``isWalkPast`` in review.html read ``s.band === 'vignette'`` again
+        → the head says "2 stops · 1 walk-past sight" for a 3-stop day and the Bench
+        card reads "walk past · 0 min" → RED.
+        """
+        page, _seed_data, _reporter = browser_page
+        stops = [
+            {"sort_order": 1, "poi_name": "Musée de l'Orangerie", "minutes": 5,
+             "lat": 48.8638, "lng": 2.3226, "narration": "One line as you pass.",
+             "spotlight": 1.1, "band": "vignette", "visit_or_walk_past": "visit",
+             "goes_inside": False},
+            {"sort_order": 2, "poi_name": "Bench", "minutes": 8,
+             "lat": 48.8635, "lng": 2.3282, "narration": "Sit here a while.",
+             "spotlight": 0.9, "band": "vignette", "visit_or_walk_past": "visit",
+             "goes_inside": False},
+            {"sort_order": 3, "poi_name": "Pont Royal", "minutes": 0,
+             "lat": 48.8608, "lng": 2.3300, "narration": "On your left, the bridge.",
+             "spotlight": 1.0, "band": "vignette", "visit_or_walk_past": "walk_past"},
+            {"sort_order": 4, "poi_name": "Musée d'Orsay", "minutes": 100,
+             "lat": 48.8600, "lng": 2.3266, "narration": "The station clock.",
+             "spotlight": 5.0, "band": "dwell", "goes_inside": True},
+        ]
+        _route_two_step(
+            page,
+            plan=_plan_payload(stops),
+            compose=_authored_payload(
+                {"stops": stops, "spine_area": "Rive Gauche", "total_audio_min": 12}
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            _set_tour_inputs(page, start="48.8600,2.3266")
+            assert _plan_the_day(page).status == 200
+
+            # PLAN screen: three SEATED places are three stops; the one walk-past is
+            # counted apart; every seated minute is standing still.
+            head = page.locator("#tourStops .tour-day-head").text_content() or ""
+            assert "3 stops" in head, f"a seated stop was read as a walk-past: {head!r}"
+            assert "1 walk-past sight" in head, f"the real walk-past vanished: {head!r}"
+            assert "113 min standing still" in head, (
+                f"the seated minutes of a low-spotlight stop were dropped: {head!r}"
+            )
+            cards = page.locator("#tourStops .tour-stop")
+            texts = [cards.nth(i).text_content() or "" for i in range(cards.count())]
+            bench = next(t for t in texts if "Bench" in t)
+            assert "~8 min here" in bench, f"the Bench is a stop with minutes: {bench!r}"
+            assert "walk past" not in bench, f"the Bench is not walked past: {bench!r}"
+            orangerie = next(t for t in texts if "Orangerie" in t)
+            assert "~5 min here" in orangerie and "outside" in orangerie, orangerie
+            pont = next(t for t in texts if "Pont Royal" in t)
+            assert "walk past · 0 min" in pont, f"the real walk-past must still say so: {pont!r}"
+            assert page.locator("#tourStops .tour-stop--vignette").count() == 1, (
+                "only the walked-past place carries the walk-past styling"
+            )
+            assert page.locator(".tour-route-pin--vignette").count() == 1, (
+                "only the walked-past place pins hollow"
+            )
+
+            # AUTHORED screen: the same shape rule; the narration band tag may stay.
+            assert _write_the_tour(page).status == 200
+            cards = page.locator("#tourStops .tour-stop")
+            texts = [cards.nth(i).text_content() or "" for i in range(cards.count())]
+            bench = next(t for t in texts if "Bench" in t)
+            assert "~8 min here" in bench, f"authored screen: the Bench is a stop: {bench!r}"
+            assert "walk past" not in bench, bench
+            pont = next(t for t in texts if "Pont Royal" in t)
+            assert "walk past" in pont and "0 min" in pont, pont
+            assert page.locator("#tourStops .tour-stop--vignette").count() == 1
+            assert page.locator(".tour-route-pin--vignette").count() == 1
         finally:
             _unroute_two_step(page)
 

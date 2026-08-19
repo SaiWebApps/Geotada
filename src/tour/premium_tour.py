@@ -60,12 +60,16 @@ from .certification_provider import (
     CallPurpose,
     PhysicalProviderResponse,
 )
-from .contract import BeatSequence, Route, Script, TourInput
+from .contract import BeatSequence, ReplanContext, Route, Script, TourInput
 from .generation import CONCURRENT_GLUE_LABELS, generate
 from .glue_client import NO_GLUE_SENTINEL, GlueClient
 from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .routing import MAX_REQUESTED_FRACTION, MIN_REQUESTED_FRACTION, RoutePlanningPolicy
-from .routing_client import VALHALLA_ROUTING_CONFIG_SHA256, RoutingClient
+from .routing_client import (
+    THIS_BUILDS_ROUTING_CONFIG_SHA256S,
+    VALHALLA_ROUTING_CONFIG_SHA256,
+    RoutingClient,
+)
 from .selection import (
     CorpusSnapshot,
     MaterializedCorpusSnapshot,
@@ -448,7 +452,11 @@ def record_routing_degradations(
         for transit in route.transits
         if transit.valhalla_receipt is not None
     }
-    if receipt_configs and receipt_configs != {VALHALLA_ROUTING_CONFIG_SHA256}:
+    # THIS build's settings under ANY route-surface override are this build's
+    # settings (W5.14, Rosemary's step-free day was falsely labelled): only a
+    # receipt whose configuration matches none of them was routed by something else.
+    foreign = receipt_configs - THIS_BUILDS_ROUTING_CONFIG_SHA256S
+    if foreign:
         record(
             kind=ROUTING_CONFIG_DEGRADATION,
             human=(
@@ -457,12 +465,12 @@ def record_routing_degradations(
             ),
             component=component,
             cause=(
-                f"Leg receipts carry {len(receipt_configs)} distinct routing-config "
-                "hashes; this build expects exactly VALHALLA_ROUTING_CONFIG_SHA256 "
-                "(src/tour/routing_client.py). The deployed Valhalla configuration and "
-                "the one compiled into this build have diverged."
+                f"{len(foreign)} leg routing-config hash(es) match none of this build's "
+                "settings (src/tour/routing_client.py THIS_BUILDS_ROUTING_CONFIG_SHA256S, "
+                "the default and every route-surface override). The deployed Valhalla "
+                "configuration and the one compiled into this build have diverged."
             ),
-            expected_setups="1",
+            expected_setups=str(len(THIS_BUILDS_ROUTING_CONFIG_SHA256S)),
             observed_setups=str(len(receipt_configs)),
         )
 
@@ -573,8 +581,16 @@ def plan_premium_tour(
     generation_time: dt.datetime | None = None,
     authorities: PremiumAuthorityHashes = PREMIUM_AUTHORITIES,
     glue_client: GlueClient | None = None,
+    replan: ReplanContext | None = None,
 ) -> PremiumTourPlan:
     """BLOCK 1 — THE day of one request, planned, with no per-stop authoring.
+
+    ``replan`` (Phase 5 S5.6, `contract.ReplanContext`) plans RELATIVE to a day
+    that exists — the session's replans and the contingency set (S5.7) hand one
+    in; it rides straight through to `select_route`, THE one planner. There is
+    no second planner behind this door (plan §10.8.1). A replanned TAIL may be
+    the bare walk to its finish (one leg home, W5.2 R1.1): the end sentinel is
+    its one stop, so the structural refusal below still sees a route with a stop.
 
     Phase 4 (design §8.1) deleted pick-one-of-three: no persona ever wanted to
     compare routes, so the planner plans ONE day — one ``select_route`` call — and
@@ -597,6 +613,7 @@ def plan_premium_tour(
         snapshot,
         routing_client=routing_client,
         planning_policy=policy,
+        replan=replan,
     )
     chosen = choose_discrete_route([route])
     refusal = _premium_route_refusal(chosen)
@@ -802,35 +819,40 @@ def finalize_premium_composition(
     )
 
 
-ALLOW_DIRTY_LOCAL_BUILD_ENV = "ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD"
-
-
 @dataclass(frozen=True)
 class PremiumBuildIdentity:
     commit_sha: str
     tts_provider: str = "openai"
     tts_model: str = OpenAITTSProvider.DEFAULT_MODEL
     tts_voice: str = OpenAITTSProvider.DEFAULT_VOICE
-    # True only for a LOCAL workbench build authored off a dirty tree. commit_sha then
-    # names HEAD, which the working tree does NOT match — so this build is reproducible
-    # only by whoever ran it, and is never certification-eligible.
+    # True for a LOCAL build authored off a dirty tree. commit_sha then names HEAD,
+    # which the working tree does NOT match, so this build is reproducible only by
+    # whoever ran it. WHAT READS THIS: the server's WARNING log line, and nothing
+    # else — the BuildFingerprint on the blueprint carries only commit_sha, so a
+    # reader of the blueprint cannot tell (W5.15 judge: said plainly, not claimed
+    # otherwise). Certification builds its own candidates through
+    # scripts/tour_batch_candidate.py and never comes through this door; stamping
+    # this flag onto the fingerprint would change the sealed blueprint hash of every
+    # committed certification record, so whether it bites there is Phase 8's
+    # (the re-seal) to decide.
     local_dirty_tree: bool = False
 
 
 def resolve_build_identity() -> PremiumBuildIdentity:
-    """Resolve a deploy commit or a clean local HEAD; reject dirty local trees.
+    """The commit this build came from: the deployment's commit on Render, else the
+    local HEAD — tagged ``local_dirty_tree=True`` when the working tree has
+    uncommitted changes, and said out loud in the server log (the blueprint's
+    fingerprint carries only the commit — see `PremiumBuildIdentity`).
 
-    One narrow local concession: with ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1`` a dirty tree
-    yields HEAD's sha tagged ``local_dirty_tree=True`` instead of raising. Without it the
-    editorial workbench is unusable during normal development — every developer tree has
-    uncommitted work, so EVERY local Premium preview degraded to the Basic lane, and the
-    reason was reported as an LLM failure. See scripts/workbench.sh.
-
-    Deliberately NOT reusing GIT_COMMIT_SHA for this: that variable means "the deploy is
-    this commit" (its own error message below calls it a deployment fingerprint), so
-    setting it locally would assert clean provenance process-wide and silently. A
-    separate, explicitly-named opt-in keeps the lie from being told at all. It is fenced
-    to refuse whenever RENDER_GIT_COMMIT is present, so it can never fire on Render.
+    A dirty tree is NEVER a refusal and needs no opt-in (2026-08-18). Until then a
+    dirty local tree raised unless ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1`` was set, and
+    every entry point had to remember the flag — the workbench script and the test
+    conftest did, ``make api`` and ``make flutter-ios`` did not — so a normal local
+    run composed a 503 that read as a product fault. The class of that error is an
+    environment condition disguised as a product failure; the fix is that the code
+    decides from where it runs, not from a flag each caller must repeat. The deploy
+    stays strict by construction: on Render the commit is the deployment's and git is
+    never consulted.
     """
 
     deployed = os.getenv("RENDER_GIT_COMMIT") or os.getenv("GIT_COMMIT_SHA")
@@ -845,37 +867,23 @@ def resolve_build_identity() -> PremiumBuildIdentity:
         capture_output=True,
         text=True,
     ).stdout
-    if status.strip():
-        if os.getenv(ALLOW_DIRTY_LOCAL_BUILD_ENV, "").strip() != "1":
-            raise ValueError("Premium fingerprint requires a clean local git tree")
-        if os.getenv("RENDER_GIT_COMMIT"):
-            raise ValueError("dirty-tree local builds are never permitted on a deployment")
-        head = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            cwd=REPO_ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-        if not re.fullmatch(r"[0-9a-f]{40}", head):
-            raise ValueError("local commit fingerprint is not a full lowercase SHA")
-        logging.getLogger("ondoway.api").warning(
-            "Premium build authored from a DIRTY local tree at %s — %s=1 is set. "
-            "This build is not reproducible from the commit and is not certifiable.",
-            head,
-            ALLOW_DIRTY_LOCAL_BUILD_ENV,
-        )
-        return PremiumBuildIdentity(commit_sha=head, local_dirty_tree=True)
-    commit = subprocess.run(
+    head = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=REPO_ROOT,
         check=True,
         capture_output=True,
         text=True,
     ).stdout.strip()
-    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+    if not re.fullmatch(r"[0-9a-f]{40}", head):
         raise ValueError("local commit fingerprint is not a full lowercase SHA")
-    return PremiumBuildIdentity(commit_sha=commit)
+    if status.strip():
+        logging.getLogger("ondoway.api").warning(
+            "Premium build authored from a DIRTY local tree at %s. This build is not "
+            "reproducible from the commit and is not certifiable.",
+            head,
+        )
+        return PremiumBuildIdentity(commit_sha=head, local_dirty_tree=True)
+    return PremiumBuildIdentity(commit_sha=head)
 
 
 @dataclass(frozen=True)

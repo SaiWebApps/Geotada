@@ -536,6 +536,20 @@ def total_walk_seconds(transits: Iterable[TransitSegment]) -> int:
     return sum(leg_walk_seconds(t) for t in transits)
 
 
+def longest_walk_minutes(transits: Iterable[TransitSegment]) -> int:
+    """The longest single walk of a route, in the minutes a person reads.
+
+    THE ONE EXPRESSION for the number "Shorter walks = N min" is named after: the
+    head line prints it (``routes/trips.py``, W4.12 fix 6) and the planner certifies
+    the leg cap against it (Phase 5 S5.4) — the same per-leg number
+    (``leg_walk_seconds``, exact when the street engine answered) through the same
+    rounding, so what the planner promises and what the screen shows can never
+    disagree by a rounding. Two spellings of this existed for exactly one phase:
+    the certification was born reading it here, so there was never a second.
+    """
+    return max((round(leg_walk_seconds(t) / 60) for t in transits), default=0)
+
+
 def default_leg_seconds(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
     """The haversine LegSecondsFn — the M3 routed divisor's fallback."""
     return pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))

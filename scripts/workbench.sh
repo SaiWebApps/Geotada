@@ -43,12 +43,9 @@ else
   # into the dev placeholder — a local workbench server is never production.
   # WORKBENCH_API_ENABLED=true: the graph-CRUD gate is now fail-closed (app.py),
   # so the workbench routers this page needs must be opted in explicitly.
-  # ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1: resolve_build_identity() refuses a dirty tree,
-  # and a developer tree is essentially always dirty — so without this EVERY local
-  # Premium preview fell back to the Basic lane and blamed the LLM for it. The
-  # concession is local-only and self-announcing (the server logs a WARNING naming
-  # the commit); it refuses outright if RENDER_GIT_COMMIT is set, so it cannot reach
-  # a deployment. Not GIT_COMMIT_SHA — that one asserts deploy provenance.
+  # (ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD used to be set here. A dirty local tree is
+  # no longer a refusal anywhere — resolve_build_identity() stamps HEAD tagged
+  # dirty and warns, with no flag to remember — so the line is gone, 2026-08-18.)
   # TTS_PROVIDER=openai: OWNER RULING 2026-07-31 — the workbench must resolve the
   # SAME real implementations production resolves. Without this line the server
   # inherited get_provider()'s "mock" fallback (src/audio/provider.py), so any
@@ -69,7 +66,6 @@ else
   WORKBENCH_API_ENABLED=true \
     TTS_PROVIDER=openai \
     ONBOARD_PROVIDER=anthropic \
-    ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1 \
     NO_PROXY="$NP" no_proxy="$NP" ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS=1 \
     uv run uvicorn src.api.app:app --host 127.0.0.1 --port ${PORT} >/tmp/ondoway-workbench-api.log 2>&1 &
   API_PID=$!

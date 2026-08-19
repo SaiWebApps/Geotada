@@ -173,12 +173,14 @@ class TripService extends ChangeNotifier {
   /// audio_url is null — audio is generated afterwards by the existing
   /// per-stop flow).
   ///
-  /// Throws [TripAlreadyComposedException] on 409 — the day is already
-  /// written (saved trip, re-entry), so the caller proceeds with the stops it
-  /// already holds. Throws [ComposeVerificationException] when the backend
-  /// REFUSES the day (422 compose_verification_failed); one day per trip
-  /// means there is no alternative to offer, so the caller surfaces the
-  /// refusal and suggests generating again.
+  /// Phase 5 (design §8.2): the frozen trip is deleted — a second compose is
+  /// version N+1 of the living session, never a 409, so there is no
+  /// "already composed" exception any more; a day already written is found
+  /// through [fetchSession] (200) rather than by composing into a lock.
+  /// Throws [ComposeVerificationException] when the backend REFUSES the day
+  /// (422 compose_verification_failed); one day per trip means there is no
+  /// alternative to offer, so the caller surfaces the refusal and suggests
+  /// generating again.
   Future<List<ItineraryStop>> composeTrip(
     String tripId,
     String routeId,
@@ -200,8 +202,6 @@ class TripService extends ChangeNotifier {
           .toList();
     } else if (response.statusCode == 404) {
       throw TripServiceException('Trip or route not found');
-    } else if (response.statusCode == 409) {
-      throw TripAlreadyComposedException();
     } else if (response.statusCode == 422) {
       final detail = _detailMap(response.body);
       if (detail?['reason'] == 'compose_verification_failed') {
@@ -215,6 +215,78 @@ class TripService extends ChangeNotifier {
         'Compose failed (${response.statusCode}): ${response.body}',
       );
     }
+  }
+
+  /// GET /trips/{tripId}/session — the current version of the living session
+  /// (Phase 5, design §4.6/§8.2): the day the person is standing in and the
+  /// contingency set the phone SELECTS from. Throws [NoSessionYetException]
+  /// on 404 `no_session_yet` (generated, never composed) and a plain
+  /// [TripServiceException] on any other 404.
+  Future<SessionPlan> fetchSession(String tripId, String accessToken) async {
+    final response = await _httpClient.get(
+      Uri.parse('$baseUrl/trips/$tripId/session'),
+      headers: {'Authorization': 'Bearer $accessToken'},
+    );
+    if (response.statusCode == 200) {
+      return SessionPlan.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else if (response.statusCode == 404) {
+      final detail = _detailMap(response.body);
+      if (detail?['reason'] == 'no_session_yet') {
+        throw NoSessionYetException();
+      }
+      throw TripServiceException('Trip not found');
+    }
+    throw TripServiceException(
+      'Session fetch failed (${response.statusCode}): ${response.body}',
+    );
+  }
+
+  /// POST /trips/{tripId}/session/replan — REPORT the phone's observations
+  /// (where it is, its two clocks, its learned rates, the next planned stop)
+  /// and receive version N+1 of the session, replanned on the server (design
+  /// §4.6: the server is the only place a plan decision is made). The body
+  /// carries facts, never a decision.
+  Future<SessionPlan> replanSession(
+    String tripId,
+    String accessToken, {
+    required double lat,
+    required double lng,
+    required int wallElapsedSeconds,
+    required int tourElapsedSeconds,
+    double? observedPace,
+    double? listeningRate,
+    int nextStopIndex = 0,
+    String? phoneNextStopHhmm,
+  }) async {
+    final response = await _httpClient.post(
+      Uri.parse('$baseUrl/trips/$tripId/session/replan'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({
+        'lat': lat,
+        'lng': lng,
+        'wall_elapsed_seconds': wallElapsedSeconds,
+        'tour_elapsed_seconds': tourElapsedSeconds,
+        'observed_pace': ?observedPace,
+        'listening_rate': ?listeningRate,
+        'next_stop_index': nextStopIndex,
+        'phone_next_stop_hhmm': ?phoneNextStopHhmm,
+      }),
+    );
+    if (response.statusCode == 200) {
+      return SessionPlan.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else if (response.statusCode == 404) {
+      throw TripServiceException('Trip or session not found');
+    }
+    throw TripServiceException(
+      'Replan failed (${response.statusCode}): ${response.body}',
+    );
   }
 
   /// POST /audio/stops/{stopId}/keep-exploring — voice a stop's persisted
@@ -347,9 +419,9 @@ class ComposeVerificationException extends TripServiceException {
         super("This day couldn't be written. Try generating again.");
 }
 
-/// POST /trips/{id}/compose returned 409: the trip's day is already written
-/// server-side (saved trip, page re-entry). Not a failure — the caller
-/// already holds the composed stops and proceeds with them (design §8.1).
-class TripAlreadyComposedException extends TripServiceException {
-  TripAlreadyComposedException() : super('Trip already composed');
+/// GET /trips/{id}/session answered 404 `no_session_yet`: the trip has been
+/// generated but its day has not been written yet — compose it first (Phase 5,
+/// design §8.2). Not a failure; the caller's cue to compose.
+class NoSessionYetException extends TripServiceException {
+  NoSessionYetException() : super('No session yet — compose the trip first');
 }

@@ -6,6 +6,7 @@ import 'package:ondoway/pages/lens_selection_page.dart';
 import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/pages/saved_trips_page.dart';
+import 'package:ondoway/pages/session_page.dart';
 import 'package:ondoway/pages/trip_duration_page.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
@@ -93,6 +94,15 @@ GoRouter createRouter(
         builder: (context, state) {
           final tripId = state.pathParameters['tripId'] ?? '';
           return TripItineraryPage(tripId: tripId);
+        },
+      ),
+      // Phase 5 S5.11: the living session's screen — renders what the
+      // playback service holds; the walk itself is started from the itinerary.
+      GoRoute(
+        path: '/session/:tripId',
+        builder: (context, state) {
+          final tripId = state.pathParameters['tripId'] ?? '';
+          return SessionPage(tripId: tripId);
         },
       ),
       StatefulShellRoute.indexedStack(

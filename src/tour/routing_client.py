@@ -89,6 +89,35 @@ VALHALLA_ROUTING_CONFIG_SHA256 = hashlib.sha256(
     VALHALLA_ROUTING_CONFIG_JSON.encode("utf-8")
 ).hexdigest()
 
+#: The hashes of THIS build's routing configuration under every route-surface
+#: override it can ask for (W5.14, Rosemary: a step-free day was labelled "worked out
+#: with different settings than this version expects" on every leg — the check
+#: expected only the default). A receipt carrying any of these was routed by this
+#: build's settings; one carrying none was not.
+VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE: dict[str, str] = {
+    surface: (
+        VALHALLA_ROUTING_CONFIG_SHA256
+        if override is None
+        else hashlib.sha256(
+            _canonical_json(
+                {
+                    **_ROUTING_CONFIG,
+                    "costing_options": {
+                        "pedestrian": {
+                            **_PEDESTRIAN_COSTING_OPTIONS["pedestrian"],
+                            **override,
+                        }
+                    },
+                }
+            ).encode("utf-8")
+        ).hexdigest()
+    )
+    for surface, override in ROUTE_SURFACE_COSTING_OVERRIDES.items()
+}
+THIS_BUILDS_ROUTING_CONFIG_SHA256S: frozenset[str] = frozenset(
+    VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE.values()
+)
+
 DEFAULT_BASE_URL = "http://localhost:8002"
 BASE_URL_ENV = "VALHALLA_URL"
 DEFAULT_TIMEOUT_S = 2.0

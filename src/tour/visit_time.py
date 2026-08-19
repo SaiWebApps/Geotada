@@ -268,6 +268,28 @@ def shape_at_place_seconds(shape: PromiseShape) -> int:
     return shape.outside_seconds + shape.inside_seconds
 
 
+def visit_ceiling_seconds(poi: POI, *, party_ceiling_seconds: int | None = None) -> int:
+    """The MOST a visitor could justify standing at this place — its shape ceiling.
+
+    Design §3.1's shape has a top: the full interior for a place with one (the
+    "direct" relation already prices it there; a one-hop or no-lens visitor is
+    priced 60 % of the way, so that gap is their headroom), and the outside number
+    itself for a place with none — a square is not lengthened by a dial, because a
+    planner giving Place de la Concorde forty-five minutes is "walking you somewhere
+    pointless" (design §8.3); Camille's twenty silent minutes there are HER choice.
+    The party ceiling caps it like every other visit (a family's six-minute stop).
+
+    THE one spelling of the ceiling: the drop primitive's redistribution (Phase 5
+    S5.5, W4.2 locked semantics 4 — "freed minutes flow to the anchors within shape
+    ceilings") reads it, and nothing else may spell "as long as this place can be".
+    """
+    outside = poi.typical_duration_min * 60
+    top = poi.visit_seconds_inside if poi_has_interior(poi) else outside
+    if party_ceiling_seconds is not None:
+        top = min(top, party_ceiling_seconds)
+    return int(top)
+
+
 def poi_has_interior(poi: POI) -> bool:
     """Whether this place's interior is worth more than its outside view —
     THE one spelling of the uncapped interior test (`visit_shape`'s own gate
@@ -294,6 +316,18 @@ def visit_seconds(
     """
     shape = visit_shape(poi, interest, snapshot, party_ceiling_seconds=party_ceiling_seconds)
     return shape_total_seconds(shape)
+
+
+def listened_seconds(audio_seconds: int, listening_rate: float = 1.0) -> int:
+    """What a piece of narration COSTS this person, in seconds — its stated length
+    scaled by the learned listening rate (design §4.1: Paulo replays and consumes
+    narration at ~1.5x; the remaining day's estimates scale to the observed rate).
+    THE one place the rate meets narration on the server: the final gate, every
+    trial under a replan and the session's clock all price through it (Phase 5
+    S5.10), so the certified day and the wire clock agree by construction. 1.0 is
+    the identity. **Extends** `stop_seconds`, which then takes the longer of the
+    visit and THIS."""
+    return round(audio_seconds * listening_rate)
 
 
 def stop_seconds(visit_seconds: int, audio_seconds: int) -> int:

@@ -769,6 +769,57 @@ class Promise(BaseModel):
     departs_hhmm: str = ""
 
 
+class ReplanContext(BaseModel):
+    """What makes a replan RELATIVE — INPUT to THE one planner (Phase 5 S5.6).
+
+    Design §4.6: "the server is the only place a plan decision is made"; a
+    replan is `select_route` called again with this beside the request — never a
+    second planner (plan §10.8.1, the argument Phase 4 used to collapse
+    `plan_premium_options`). It carries what a fresh plan cannot know:
+
+    - ``protected_poi_ids`` — §4.5.2's protected class as the CALLER defines it.
+      For the "More breaks" dial (CARRIED 3) that is the base day's anchor and
+      promises (W4.2 locked semantics 2: "never fund a rest by shaving an
+      anchor"); for a session replan it is what the PERSON asked for — pins, a
+      declared finish, the rests/meals/toilets the party or dial requested — and
+      NOT the planner's own anchor on an open unpinned walk (W5.2 R1.5, Fiona &
+      Dev and Julien by name). The planner seats them, never drops, folds or
+      shaves them, and reports rather than refuses when they alone overrun.
+    - ``longest_leg_ceiling_seconds`` — §4.5.3: the base day's longest street
+      leg; a replan may not mint a longer one (Rosemary's 12 + 9 fusing into 21).
+    - ``keep_to_poi_ids`` — the pool. None = any candidate; a tuple = ONLY these
+      (a subset of the planned day, in whatever order fits): W5.2 R1.2/R1.4 — a
+      skip's or an early band's answer never adds a building or new narration.
+    - ``visited_poi_ids`` — already stood at or skipped; never re-seated.
+    - ``spent_categories`` — Greta: the category walked away from is spent for
+      the day (§4.5.5 read against the day AND the person's refusals).
+    - ``floor_zero`` — a TAIL has no floor: one leg home with no stop is a legal
+      answer (W5.2 R1.1, 11/11; W5.1 defect 6 — today's planner refuses 5 of 6
+      tails). The density gate does not refuse a thin remainder, the underfill
+      line does not bind, and a remainder that cannot fit its minutes comes back
+      as the protected day with ``Route.overrun_seconds`` REPORTED, never a 422.
+    - ``listening_rate`` — §4.1 (Paulo): scales the narration seconds left, never
+      planned stop minutes. The learned walking pace rides ``TourInput.walking_pace``,
+      the weather ``TourInput.weather``, the clock ``start_datetime``, the minutes
+      left ``duration_min``, the terminus ``end`` — the request already has them.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    protected_poi_ids: tuple[str, ...] = ()
+    longest_leg_ceiling_seconds: int | None = Field(default=None, ge=0)
+    keep_to_poi_ids: tuple[str, ...] | None = None
+    visited_poi_ids: tuple[str, ...] = ()
+    spent_categories: tuple[str, ...] = ()
+    floor_zero: bool = True
+    listening_rate: float = Field(default=1.0, ge=0.5, le=3.0)
+    # MINUTES A DROP OR A SKIP ALREADY HANDED THESE PLACES (poi id -> seconds),
+    # granted through the one drop primitive's grant rule before this replan runs
+    # (a skipped stop's minutes, an early band's minutes — W5.2 R1.2/R1.4: they
+    # LENGTHEN what is there); the planner seeds its extensions with them.
+    visit_extension_seconds: dict[str, int] = Field(default_factory=dict)
+
+
 class Route(BaseModel):
     """Selected POIs in walking order, with transit segments and budgets.
 
@@ -841,6 +892,20 @@ class Route(BaseModel):
     # A disclosure that rides a channel which is null in its own case discloses
     # nothing.
     elapsed_shortfall_seconds: int = Field(default=0, ge=0)
+    # HOW FAR OVER ITS MINUTES a REPLANNED remainder runs, in seconds — 0 for every
+    # fresh plan (a fresh plan over its ceiling is REFUSED, never served). Under a
+    # `ReplanContext` the protected stops alone may not fit the minutes left
+    # (Rosemary at her bench, 20.5 minutes from the Orsay with 15 left); the
+    # planner then hands back the protected day and SAYS the overrun here, because
+    # a tail is not a request the phone can take a 422 for (W5.2 R1.1) — the
+    # overrun is the raw material of the ONE question (§4.2), never a refusal.
+    overrun_seconds: int = Field(default=0, ge=0)
+    # HOW FAR the longest street leg of a REPLANNED remainder runs over the person's
+    # per-leg limit, in seconds — 0 for every fresh plan (a fresh plan is refused at
+    # the street certification, S5.4). A tail's walk home longer than the limit is a
+    # fact to say, not a 422 (W5.2 R1.1; Rosemary: "the entry must say where I sit on
+    # the way"): S5.11's one line reads it.
+    leg_cap_breach_seconds: int = Field(default=0, ge=0)
     # Track B (Step B.2): leg_idx -> walk-past vignette POIs on that leg.
     vignettes: dict[int, tuple[POI, ...]] = Field(default_factory=dict)
     # WHO THE CLOCK EXCLUDED, AND WHY (redesign 6.1) — additive metadata in the

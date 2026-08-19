@@ -982,3 +982,363 @@ def test_seven_number_block_is_unchanged_above_the_per_stop_table(capsys):
     assert out.index("walk:") < out.index("per-stop"), (
         "the per-stop table must sit BELOW the seven-number block"
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 5 S5.4 — the leg cap is certified on the EXACT legs of the FINAL route
+# ---------------------------------------------------------------------------
+
+
+def _ring_of(center, radius_m, count, prefix, **kw):
+    """`count` POIs on a ring around `center` (consecutive ones radius*sqrt(2)
+    apart at four points) — the same fixture shape S5.3 uses."""
+    import math
+
+    from tests.test_tour_selection import _poi
+
+    dlat_m = 1.0 / 111_320.0
+    dlng_m = 1.0 / (111_320.0 * math.cos(math.radians(center[0])))
+    return [
+        _poi(
+            f"{prefix}-{i}",
+            lat=center[0] + radius_m * math.cos(2 * math.pi * i / count) * dlat_m,
+            lng=center[1] + radius_m * math.sin(2 * math.pi * i / count) * dlng_m,
+            **kw,
+        )
+        for i in range(count)
+    ]
+
+
+def _street_minutes(transits) -> int:
+    """The test's OWN oracle for the longest street leg — deliberately spelled
+    apart from `routing.longest_walk_minutes`, because a certification that reads
+    the estimate would fool an assertion that reads it through the same helper
+    (S5.4's undo probe proved exactly that)."""
+    worst = 0
+    for t in transits:
+        exact = t.leg_seconds if (t.source == "valhalla" and t.leg_seconds is not None) else None
+        worst = max(worst, exact if exact is not None else t.walk_seconds)
+    return round(worst / 60)
+
+
+def _at(center, distance_m, bearing_deg, pid, **kw):
+    import math
+
+    from tests.test_tour_selection import _poi
+
+    dlat_m = 1.0 / 111_320.0
+    dlng_m = 1.0 / (111_320.0 * math.cos(math.radians(center[0])))
+    b = math.radians(bearing_deg)
+    return _poi(
+        pid,
+        lat=center[0] + distance_m * math.cos(b) * dlat_m,
+        lng=center[1] + distance_m * math.sin(b) * dlng_m,
+        **kw,
+    )
+
+
+def test_the_leg_cap_is_certified_on_the_street_route_not_the_estimate():
+    """Phase 5 S5.4 (Phase-4 CARRIED 1; W4.12 fix 11 made the screen honest
+    meanwhile): a day whose ESTIMATED legs honour "no single walk longer than N
+    minutes" and whose STREET-ROUTED legs do not must never ship with a head line
+    that contradicts the dial the person turned. Measured live at W5.1 (b)1:
+    Carnavalet -> Place des Vosges est 473 s <= 540 < exact 576 s under a 9-minute
+    cap; Rosemary's Tuileries -> Orsay est 11.1 min, 13.8 by the street under her
+    12 (05-step-free-visitor.md, breaks bullet 1: "A walking budget is not one
+    number ... a route with one 25-minute leg ... is unusable"). W5.2 R1.6 (Marcus,
+    Rosemary, Sofia, Nadia, Aiko): every entry is timed on the STREET route.
+
+    After ``summarise_route`` has produced the final routed transits, the cap is
+    certified on ``leg_walk_seconds`` — THE one expression, exact when a polyline
+    came back — through the same rounding the head line reads
+    (``routing.longest_walk_minutes``); on a breach the planner tightens once and
+    retries at the exceeded value, and if the street still breaks the cap it
+    REFUSES with the cap named (W4.12 fix 10's plain words) rather than shipping a
+    contradiction.
+
+    Arm A uses ``tests/routing_doubles.DivergentRoutingClient`` — the only double in
+    the repo whose exact != estimate (Extends: the two deterministic doubles were
+    considered and rejected as the home; both are defined to agree). UNDO: certify
+    on ``t.walk_seconds`` instead of ``leg_walk_seconds(t)`` -> the divergent day
+    ships again -> RED. Arm A's control (factor 1.0) proves the certification never
+    refuses a day whose street legs honour the cap.
+    """
+    from src.tour.selection import CertificationPlanningInfeasibleError, select_route
+    from tests.routing_doubles import DivergentRoutingClient
+    from tests.test_tour_selection import PDV, _snap
+
+    start = PDV
+    # Six 10-minute stands on a 200 m ring (a hexagon: every hop 200 m = 5.4 min
+    # by the estimate — under a 6-minute cap; x1.3 by the "street" = 7.0 min —
+    # over it). Six tier-5 anchors keep density GREEN on their own; the whole day
+    # is ~98 min estimated / ~109 by the street, inside a 120-minute request either
+    # way, so the ONLY thing at stake is the cap.
+    near = [
+        p.model_copy(update={"typical_duration_min": 10})
+        for p in _ring_of(start, 200.0, 6, "near")
+    ]
+    snap = _snap(near)
+    capped = TourInput(
+        start=start, duration_min=120, city_slug="paris", round_trip=True, max_leg_minutes=6
+    )
+
+    # CONTROL — street == estimate: the ring day ships and honours the cap.
+    honest = select_route(capped, snap, routing_client=DivergentRoutingClient(factor=1.0))
+    assert len(honest.pois) >= 3, "fixture premise: the capped ring day is real"
+    assert _street_minutes(honest.transits) <= 6, (
+        "control: the certification must not refuse a day whose street legs fit"
+    )
+
+    # THE FINDING — the estimate fits, the street does not: never shipped as-is.
+    divergent = DivergentRoutingClient(factor=1.3)
+    try:
+        day = select_route(capped, snap, routing_client=divergent)
+    except CertificationPlanningInfeasibleError as refused:
+        message = str(refused)
+        assert "6-minute limit on any single walk" in message, message
+        assert "street route" in message, (
+            f"the refusal must say the street route is what breaks the cap: {message}"
+        )
+        assert "overruns" not in message and "walking-leg cap" not in message, message
+        assert refused.alternatives, "a refusal must offer a way out"
+    else:
+        # A tighten-and-retry that landed is fine — but only if the street agrees.
+        assert _street_minutes(day.transits) <= 6, (
+            f"shipped a day whose street route breaks the 6-minute cap: "
+            f"{[t.leg_seconds for t in day.transits]}"
+        )
+    assert divergent.exact_calls > 0, "the double's exact legs were never read"
+
+
+def test_a_fold_that_merges_two_legs_cannot_leave_the_merged_leg_over_the_cap():
+    """Phase 5 S5.4, arm B — the LIVE mechanism behind Phase-4 CARRIED 1 (measured
+    in-process 2026-08-18, phase5-ledger.md defect 11): on the PdV cap-9 day the
+    repair certified Carnavalet -> Victor Hugo 538 s and Victor Hugo -> Place des
+    Vosges 176 s, both under 540; co-located demotion then folded Victor Hugo into
+    Place des Vosges and the MERGED leg Carnavalet -> Place des Vosges (576 s) was
+    never re-checked. Design §4.5.3: "Every drop re-checks the longest-single-walk
+    cap. Dropping a stop MERGES its two legs" — and a fold IS a drop.
+
+    Hermetic on default legs (no double): a name-twin pair on one bearing — the
+    lower-tier twin is the stepping stone the higher-tier twin needs to be reached
+    under the cap; the twin collapse drops the stepping stone and the merged leg
+    breaks the cap. The invariant, robust to HOW it is honoured (S5.4 certifies and
+    refuses; S5.5's one drop primitive may later re-check the fold itself and keep
+    the day): a shipped day's longest STREET leg honours the cap, or the day is
+    refused with the cap named. Never a shipped contradiction.
+    """
+    from src.tour.selection import CertificationPlanningInfeasibleError, select_route
+    from tests.test_tour_selection import _snap
+
+    start = (48.8555, 2.3656)
+    # A 100 m ring of four 7-minute stands (hops ~141 m = 3.8 min under a 4-min cap)
+    # and a twin pair on bearing 30 degrees: A at 140 m (tier 4), B at 280 m
+    # (tier 5), same display name — B is only reachable through A under the cap.
+    ring = [
+        p.model_copy(update={"typical_duration_min": 7})
+        for p in _ring_of(start, 100.0, 4, "ring")
+    ]
+    twin_a = _at(start, 140.0, 30.0, "twin-a", tier=4, beat_count=3).model_copy(
+        update={"name": "Twin", "typical_duration_min": 7}
+    )
+    twin_b = _at(start, 280.0, 30.0, "twin-b", tier=5, beat_count=5).model_copy(
+        update={"name": "Twin", "typical_duration_min": 7}
+    )
+    snap = _snap([*ring, twin_a, twin_b])
+    # An open walk (no closing leg), so the far twin can sit at the tail.
+    capped = TourInput(
+        start=start, duration_min=75, city_slug="paris", round_trip=False, max_leg_minutes=4
+    )
+    try:
+        day = select_route(capped, snap)
+    except CertificationPlanningInfeasibleError as refused:
+        assert "4-minute limit on any single walk" in str(refused), str(refused)
+        return
+    ids = [p.id for p in day.pois]
+    assert "twin-b" in ids, f"fixture premise: the far twin must be seated: {ids}"
+    assert _street_minutes(day.transits) <= 4, (
+        f"a fold merged two legs into one over the 4-minute cap and the day shipped: "
+        f"stops {ids}, legs {[t.walk_seconds for t in day.transits]}"
+    )
+
+
+def test_a_cap_retry_that_loses_a_rest_is_the_honest_line_not_a_gutted_day(monkeypatch):
+    """W5.14, all eleven (Q1), on Rosemary's real day: under her preset's 12-minute cap
+    the street-certified retry (S5.4) tightened to 11, dropped the Orangerie AND her
+    bench, and shipped a one-stop day with 80 unplanned minutes and no rest — while
+    the same build says the honest line for a ten-minute leg at Place des Vosges.
+    Rosemary: "removing my rest to satisfy my leg cap is backwards — the rest exists
+    because of the legs". So the retry may not pay with a rest: a retried day that
+    lost a rest the first day had seated is REFUSED with the line that names the
+    street number and her limit, and SHE decides (allow the longer walk, or a
+    shorter day). A retry that keeps every rest still ships. UNDO: return the retry
+    regardless of its rests -> RED (the gutted day ships)."""
+    from src.tour import selection
+    from src.tour.selection import CertificationPlanningInfeasibleError, select_route
+    from tests.routing_doubles import DivergentRoutingClient
+    from tests.test_tour_selection import PDV, _snap
+
+    # A real day with a bench: six stands on a 200 m ring (every hop 200 m = 5.4
+    # min by the estimate, under the 6-minute cap) and a bench beside the path, a
+    # rest every few minutes so the bench is seated.
+    near = [
+        p.model_copy(update={"typical_duration_min": 10})
+        for p in _ring_of(PDV, 200.0, 6, "near")
+    ]
+    bench = _at(PDV, 200.0, 30.0, "bench", role="body", tier=1, beat_count=0).model_copy(
+        update={"typical_duration_min": 6}
+    )
+    snap = _snap([*near, bench])
+    request = TourInput(
+        start=PDV,
+        duration_min=120,
+        city_slug="paris",
+        round_trip=True,
+        max_leg_minutes=6,
+        rest_cadence_minutes=6,
+    )
+    honest = select_route(request, snap, routing_client=DivergentRoutingClient(factor=1.0))
+    assert bench.id in {p.id for p in honest.pois}, "premise: the day seats the bench"
+
+    # The first pass breaks the cap on the street (one leg stretched); the retry
+    # "lands" under the cap but without the bench. Both are stand-ins for what the
+    # planner produced on Rosemary's day (a stretched leg; a retry that paid with
+    # her rest).
+    stretched = honest.model_copy(
+        update={
+            "transits": (
+                honest.transits[0].model_copy(
+                    update={
+                        "source": "valhalla",
+                        "leg_seconds": 8 * 60,
+                        "valhalla_receipt": None,
+                    }
+                ),
+                *honest.transits[1:],
+            )
+        }
+    )
+    without_bench = honest.model_copy(
+        update={"pois": tuple(p for p in honest.pois if p.id != bench.id)}
+    )
+    # The door plans TWICE before the cap check on a rest-cadence day (the base,
+    # then the "more breaks" replan over it), then once more for the cap retry.
+    calls: list[int | None] = []
+
+    def fake_once(input, snapshot, **kw):
+        calls.append(input.max_leg_minutes)
+        return stretched if len(calls) <= 2 else without_bench
+
+    monkeypatch.setattr(selection, "_select_route_once", fake_once)
+    with pytest.raises(CertificationPlanningInfeasibleError) as refused:
+        select_route(request, snap, routing_client=DivergentRoutingClient(factor=1.0))
+    message = str(refused.value)
+    assert "walk of about 8 minutes by the street route" in message, message
+    assert "6-minute limit on any single walk" in message, message
+    assert calls == [6, 6, 4], calls  # the one retry, at the exceeded value
+    # Control: a retry that keeps the rest still ships.
+    calls.clear()
+
+    def keeps_the_rest(input, snapshot, **kw):
+        calls.append(input.max_leg_minutes)
+        return stretched if len(calls) <= 2 else honest
+
+    monkeypatch.setattr(selection, "_select_route_once", keeps_the_rest)
+    shipped = select_route(request, snap, routing_client=DivergentRoutingClient(factor=1.0))
+    assert bench.id in {p.id for p in shipped.pois}
+
+
+def test_a_walking_cap_that_leaves_a_one_stop_day_says_what_a_longer_walk_would_buy():
+    """W5.14, all eleven (Q1), Rosemary's preset day: under her 12-minute cap the
+    planner's own estimate cannot reach the Orangerie, so she gets ONE stop, no walking,
+    no rest, 90 minutes of 180 — "a museum ticket", served with its shortfall
+    disclosed because the W4.2 line (50 %) stands. The panel: "say the line to me, and
+    offer the answer you already own". So a day of one or two story stops under a cap,
+    below its nominal, is looked at ONCE at a cap one to three minutes longer, and a
+    materially fuller day there becomes ONE honest line on the degradations channel
+    (the itinerary shows it): what the longer walk would buy, in her words — she
+    decides. Never a refusal, never on a three-stop day, never on a live tail.
+    UNDO: return before the look -> RED (no row)."""
+    from src.tour.degradations import degradation_scope
+    from src.tour.selection import WALK_LIMIT_BINDS_DEGRADATION, select_route
+    from tests.routing_doubles import DivergentRoutingClient
+    from tests.test_tour_selection import PDV, _snap
+
+    # One long stand 150 m from the start (5.4 min: inside a 6-minute cap; 50 minutes
+    # there, so the one-stop day sits ABOVE the 50 % line and ships) and a
+    # cluster 270 m out (7.3 min: over 6, under 8) — the cap is what keeps the day to
+    # one stop, exactly Rosemary's shape.
+    near = _at(PDV, 150.0, 0.0, "near", tier=5, beat_count=5).model_copy(
+        update={"typical_duration_min": 70}
+    )
+    far = [
+        _at(PDV, 270.0, b, f"far-{i}", tier=5, beat_count=5).model_copy(
+            update={"typical_duration_min": 12}
+        )
+        for i, b in enumerate((60.0, 120.0, 180.0))
+    ]
+    snap = _snap([near, *far])
+    capped = TourInput(
+        start=PDV, duration_min=130, city_slug="paris", round_trip=True, max_leg_minutes=6
+    )
+    with degradation_scope() as rows:
+        day = select_route(capped, snap, routing_client=DivergentRoutingClient(factor=1.0))
+    assert [p.id for p in day.pois] == ["near"], [p.id for p in day.pois]
+    offers = [r for r in rows if r.kind == WALK_LIMIT_BINDS_DEGRADATION]
+    assert len(offers) == 1, [r.kind for r in rows]
+    line = offers[0].human
+    assert line.startswith("With walks of up to 8 minutes this day would have"), line
+    assert "allow longer walks to get it" in line, line
+    assert "instead of" in line, line
+    # Control: a day of three stops or more under its cap (S5.4's six-stand ring,
+    # with the same far cluster beyond the cap) is never looked at again, and
+    # nothing is offered — the line is for the one-or-two-stop shape only.
+    ring = [
+        p.model_copy(update={"typical_duration_min": 10})
+        for p in _ring_of(PDV, 200.0, 6, "ring")
+    ]
+    with degradation_scope() as rows:
+        full = select_route(
+            capped, _snap([*ring, *far]), routing_client=DivergentRoutingClient(factor=1.0)
+        )
+    assert len(full.pois) >= 3, [p.id for p in full.pois]
+    assert not [r for r in rows if r.kind == WALK_LIMIT_BINDS_DEGRADATION]
+
+
+def test_a_step_free_day_is_not_labelled_as_routed_with_foreign_settings():
+    """W5.14 (Rosemary's dissent: "I will not sign 'a little off' as a degradation on
+    my legs"): every take-it-easy day carried `routing_setup_unexpected` — its legs
+    are routed STEP-FREE (plan S2.7's override), their receipts hash that
+    configuration, and the check expected only the default one. This build's
+    settings under ANY route-surface override are this build's settings; only a
+    receipt matching none of them was routed by something else. UNDO: compare
+    against the default hash alone -> RED (the step-free day is labelled again)."""
+    from types import SimpleNamespace
+
+    from src.tour.degradations import degradation_scope
+    from src.tour.premium_tour import ROUTING_CONFIG_DEGRADATION, record_routing_degradations
+    from src.tour.routing_client import (
+        ROUTE_SURFACE_COSTING_OVERRIDES,
+        VALHALLA_ROUTING_CONFIG_SHA256,
+        VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE,
+    )
+
+    assert set(VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE) == set(ROUTE_SURFACE_COSTING_OVERRIDES)
+    assert VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE["any"] == VALHALLA_ROUTING_CONFIG_SHA256
+    step_free = VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE["step_free"]
+    assert step_free != VALHALLA_ROUTING_CONFIG_SHA256
+
+    def day(sha: str):
+        leg = SimpleNamespace(valhalla_receipt=SimpleNamespace(routing_config_sha256=sha))
+        return SimpleNamespace(transits=[leg, leg], routed=True)
+
+    with degradation_scope() as rows:
+        record_routing_degradations(day(step_free), component="test")
+    assert not [r for r in rows if r.kind == ROUTING_CONFIG_DEGRADATION], (
+        "a step-free day routed by THIS build is not 'different settings'"
+    )
+    with degradation_scope() as rows:
+        record_routing_degradations(day("f" * 64), component="test")
+    assert [r for r in rows if r.kind == ROUTING_CONFIG_DEGRADATION], (
+        "a configuration none of this build's surfaces produce IS foreign"
+    )

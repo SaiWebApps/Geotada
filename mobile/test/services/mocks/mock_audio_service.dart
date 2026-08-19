@@ -6,6 +6,7 @@ class MockAudioService extends AudioProvider {
   String? _currentBeatId;
   bool _isPlaying = false;
   bool _isDeeperDive = false;
+  bool _isCompleted = false;
   int _playCount = 0;
 
   @override
@@ -14,6 +15,8 @@ class MockAudioService extends AudioProvider {
   bool get isPlaying => _isPlaying;
   @override
   bool get isDeeperDive => _isDeeperDive;
+  @override
+  bool get isCompleted => _isCompleted;
   int get playCount => _playCount;
 
   @override
@@ -22,17 +25,20 @@ class MockAudioService extends AudioProvider {
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
     _isPlaying = true;
+    _isCompleted = false;
     _playCount++;
     notifyListeners();
   }
 
-  void pause() {
+  @override
+  Future<void> pause() async {
     if (!_isPlaying) return;
     _isPlaying = false;
     notifyListeners();
   }
 
-  void resume() {
+  @override
+  Future<void> resume() async {
     if (_isPlaying || _currentBeatId == null) return;
     _isPlaying = true;
     notifyListeners();
@@ -41,14 +47,17 @@ class MockAudioService extends AudioProvider {
   @override
   void stop() {
     _isPlaying = false;
+    _isCompleted = false;
     _currentBeatId = null;
     _isDeeperDive = false;
     notifyListeners();
   }
 
-  /// Simulate audio completing playback.
+  /// Simulate audio completing playback — the piece reached its END on its own
+  /// (a pause is NOT this: it leaves [isCompleted] false).
   void simulateComplete() {
     _isPlaying = false;
+    _isCompleted = true;
     notifyListeners();
   }
 }

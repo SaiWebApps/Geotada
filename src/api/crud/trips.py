@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import uuid
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
 from src.tour.options import dominant_lens
@@ -19,7 +20,7 @@ if TYPE_CHECKING:
 def route_script_to_stops(
     selected_pois: list[ScriptPOI] | tuple[ScriptPOI, ...],
     beats_by_id: dict[str, BeatRef],
-    start_time: str,
+    clocks: Mapping[str, str],
     *,
     script: Script | None = None,
     extra_by_poi: dict[str, tuple[str, ...]] | None = None,
@@ -29,16 +30,20 @@ def route_script_to_stops(
     Pure function — no DB, no engine run. Each ScriptPOI becomes one stop in route
     order; ALL of its beats are kept (`beat_ids`) with `primary_beat_id` = the first
     (so single-beat read paths still work); the per-stop lens is the dominant lens of
-    its beats (computed, not fabricated); the clock advances by each stop's
-    `dwell_seconds`. See specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+    its beats (computed, not fabricated). See
+    specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+
+    THE CLOCK IS NOT SPELLED HERE (Phase 5 S5.10). ``clocks`` is poi id -> "HH:MM"
+    from THE one expression (`src.tour.contingency.stop_clocks`, walks and priced
+    visits); until then this adapter ran a second, walk-less clock (dwell only)
+    that the phone showed as arrival times. A stop the caller did not clock (a
+    dateless request with no start) reads "".
 
     Phase 1 (Step 1.2): when ``script`` is passed, each stop also carries its
     ``narration`` — the stitched per-stop text (cold-open, transit glue, beats,
     closing) from ``stop_narration_text``, the text Phase 1 hands to TTS. Omitted
     (``""``) when no script is given, so existing callers stay back-compatible.
     """
-    parts = start_time.split(":")
-    current_hour, current_minute = int(parts[0]), int(parts[1])
     narration_by_stop = stop_narration_text(script) if script is not None else {}
     extras = extra_by_poi or {}
 
@@ -46,7 +51,7 @@ def route_script_to_stops(
     for idx, sp in enumerate(selected_pois):
         beat_ids = list(sp.beat_ids)
         duration_min = max(1, round(sp.dwell_seconds / 60)) if sp.dwell_seconds else 1
-        time_str = f"{current_hour:02d}:{current_minute:02d}"
+        time_str = clocks.get(sp.id, "")
 
         stops.append(
             {
@@ -67,10 +72,6 @@ def route_script_to_stops(
                 "narration": narration_by_stop.get(idx, ""),
             }
         )
-
-        current_minute += duration_min
-        current_hour += current_minute // 60
-        current_minute %= 60
 
     return stops
 
@@ -249,27 +250,37 @@ def replace_trip_stops(
     return session.execute_write(_replace)
 
 
-def mark_trip_composed(session: Session, trip_id: str, route_id: str) -> None:
-    """Record the composed pick — a second /compose on the trip is a 409."""
+def write_trip_session(
+    session: Session, trip_id: str, *, plan_version: int, session_json: str
+) -> None:
+    """Persist the living session's current version (Phase 5 S5.8, design §8.2).
+
+    Replaces `mark_trip_composed` and its 409: a write is never a conflict, it is
+    version N+1. The trip's ItineraryItems are the composed day's stops (rewritten
+    only when narration changes — /compose); a replan mints a version OVER them.
+    """
     session.run(
-        "MATCH (t:Trip {id: $tid}) SET t.composed_route_id = $rid",
+        "MATCH (t:Trip {id: $tid}) SET t.plan_version = $pv, t.session_json = $sj",
         tid=trip_id,
-        rid=route_id,
+        pv=plan_version,
+        sj=session_json,
     )
 
 
 def get_trip_compose_inputs(session: Session, trip_id: str) -> dict[str, Any] | None:
-    """The persisted Phase-4 compose inputs for a trip; None if no such trip.
+    """The persisted compose inputs and session state for a trip; None if no such trip.
 
-    Returns ``{"tour_input": dict | None, "options": list[list[str]] | None,
-    "composed_route_id": str | None}`` parsed from the JSON properties Step
-    4.6 writes at generate time. Pre-Phase-4 trips read as None fields —
-    /compose refuses those rather than re-running selection.
+    Returns ``{"tour_input": dict | None, "options": list | None,
+    "composed_route_id": str | None, "plan_version": int, "session": dict | None}``.
+    ``composed_route_id`` is READ for trips written before Phase 5 and ignored —
+    the frozen trip's one-compose lock is deleted (design §8.2); nothing writes it
+    any more. ``plan_version`` is 0 for a trip that has never been composed.
     """
     record = session.run(
         "MATCH (t:Trip {id: $tid}) "
         "RETURN t.tour_input_json AS ti, t.options_json AS oj, "
-        "       t.composed_route_id AS composed",
+        "       t.composed_route_id AS composed, t.plan_version AS pv, "
+        "       t.session_json AS sj",
         tid=trip_id,
     ).single()
     if record is None:
@@ -278,6 +289,8 @@ def get_trip_compose_inputs(session: Session, trip_id: str) -> dict[str, Any] | 
         "tour_input": json.loads(record["ti"]) if record["ti"] else None,
         "options": json.loads(record["oj"]) if record["oj"] else None,
         "composed_route_id": record["composed"],
+        "plan_version": int(record["pv"] or 0),
+        "session": json.loads(record["sj"]) if record["sj"] else None,
     }
 
 

@@ -165,6 +165,20 @@ Widget _buildTestWidget({
   );
 }
 
+/// The server's answer to "GET /trips/{id}/session" BEFORE the day is composed
+/// (Phase 5, design §4.6/§8.2): 404 with the reason the phone reads as "compose
+/// first". Every confirm-flow double below answers the session probe with this so
+/// the flow reaches compose the way it does against the real server.
+http.Response noSessionYet() => http.Response(
+      jsonEncode({
+        'detail': {
+          'reason': 'no_session_yet',
+          'detail': 'compose the trip first'
+        },
+      }),
+      404,
+    );
+
 void main() {
   group('TripItineraryPage', () {
     late TripService tripService;
@@ -271,6 +285,10 @@ void main() {
             }),
             201,
           );
+        }
+        if (request.url.path.endsWith('/trips/trip-gen/session') &&
+            request.method == 'GET') {
+          return noSessionYet();
         }
         if (request.url.path.contains('/trips/trip-gen/compose')) {
           return http.Response(
@@ -678,6 +696,10 @@ void main() {
           if (request.url.path.contains('/trips/generate')) {
             return http.Response(jsonEncode(generateResponse()), 201);
           }
+          if (request.url.path.endsWith('/trips/trip-gen/session') &&
+              request.method == 'GET') {
+            return noSessionYet();
+          }
           if (request.url.path.contains('/trips/trip-gen/compose')) {
             composeCalls++;
             composedRouteId =
@@ -772,6 +794,10 @@ void main() {
           if (request.url.path.contains('/trips/generate')) {
             return http.Response(jsonEncode(generateResponse()), 201);
           }
+          if (request.url.path.endsWith('/trips/trip-gen/session') &&
+              request.method == 'GET') {
+            return noSessionYet();
+          }
           if (request.url.path.contains('/trips/trip-gen/compose')) {
             composeCalls++;
             return http.Response(
@@ -828,83 +854,6 @@ void main() {
         expect(perStopTriggered, isFalse);
         expect(find.text('Confirm & Prepare'), findsOneWidget);
 
-        await tester.pumpWidget(const SizedBox());
-      });
-
-      testWidgets(
-          'an already-written day (409) proceeds straight to audio — the '
-          'saved-trip path re-prepares with no error (design §8.1)',
-          (tester) async {
-        var perStopTriggered = false;
-        final mockClient = MockClient((request) async {
-          if (request.url.path.contains('/trips/trip-1/compose')) {
-            // Confirm composes unconditionally; this saved trip's day was
-            // written long ago, and the server says so with a 409.
-            return http.Response(
-              jsonEncode({
-                'detail': {
-                  'reason': 'already_composed',
-                  'route_id': 'trip-1-opt1',
-                },
-              }),
-              409,
-            );
-          }
-          if (request.url.path.contains('/audio/generate-trip-stops/')) {
-            perStopTriggered = true;
-            return http.Response(
-              jsonEncode({
-                'trip_id': 'trip-1',
-                'generated': 2,
-                'skipped': 0,
-                'failed': 0,
-                'results': [],
-              }),
-              200,
-            );
-          }
-          if (request.url.path.contains('/audio/status/')) {
-            return http.Response(
-              jsonEncode({
-                'beat_id': request.url.pathSegments.last,
-                'has_audio': true,
-                'audio_url': 'https://cdn.example.com/beat.mp3',
-              }),
-              200,
-            );
-          }
-          return http.Response('', 200);
-        });
-
-        final service = TripService(httpClient: mockClient);
-        final audio = AudioService(httpClient: mockClient);
-        // Saved-trip path (e.g. after restart): GET /trips sends no options
-        // and the day is already composed server-side.
-        service.saveTrip(_sampleTrip());
-        final auth = await authedAuthService();
-
-        await pumpTripPage(
-          tester,
-          tripService: service,
-          audioService: audio,
-          authService: auth,
-          tripId: 'trip-1',
-        );
-
-        await tester.tap(find.text('Confirm & Prepare'));
-        // Discrete pumps, NOT pumpAndSettle: the prepare flow's FAB spinner
-        // is indeterminate and never settles.
-        await tester.pump();
-        await tester.pump();
-
-        // 409 means "nothing to write", not an error: no card, no sheet —
-        // straight into the existing confirm flow with the stops on hand.
-        expect(find.byIcon(Icons.error_outline), findsNothing);
-        expect(find.text('Choose your tour flavour'), findsNothing);
-        expect(perStopTriggered, isTrue);
-
-        await tester.pump(const Duration(seconds: 3));
-        await tester.pump();
         await tester.pumpWidget(const SizedBox());
       });
     });

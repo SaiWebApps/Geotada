@@ -643,6 +643,159 @@ void main() {
       );
     });
 
+    // Phase 5 (design §4.6/§8.2): the living session on the wire.
+    test('fetchSession GETs the session and parses the plan, its promises and '
+        'its contingency set', () async {
+      final client = MockClient((request) async {
+        expect(request.method, 'GET');
+        expect(request.url.path, contains('/trips/trip-123/session'));
+        expect(request.headers['Authorization'], 'Bearer test-token');
+        return http.Response(
+          jsonEncode({
+            'trip_id': 'trip-123',
+            'plan_version': 2,
+            'stops': [
+              {
+                'sort_order': 1,
+                'stop_id': 'item-1',
+                'poi_id': 'poi-1',
+                'poi_name': 'Eiffel Tower',
+                'lat': 48.8584,
+                'lng': 2.2945,
+                'beat_id': 'beat-1',
+                'lens_name': 'dark_history',
+                'lens_display': 'Dark History',
+                'duration_min': 5,
+                'importance_tier': 5,
+                'start_time': '09:00',
+                'narration': 'Composed narration.',
+                'audio_url': null,
+                'audio_duration_sec': null,
+                'dwell_seconds': 300,
+                'transit_polyline': null,
+              },
+            ],
+            'promises': [
+              {
+                'promise_id': 'poi-1',
+                'kind': 'rest',
+                'name': 'Bench',
+                'arrives_hhmm': '14:20',
+                'departs_hhmm': '14:30',
+                'protected': true,
+              },
+            ],
+            'retime_tolerance_seconds': 180,
+            'contingencies': [
+              {
+                'contingency_id': 'v2-1',
+                'trigger': {'kind': 'wrap_up_from', 'stop_id': 'poi-1'},
+                'plan_version': 2,
+                'stop_ids': [],
+                'screen_text':
+                    'Straight to your finish · your finish about 15:09',
+                'question': null,
+                'default_arm': null,
+                'alternate_stop_ids': [],
+                'at_risk_stop_id': null,
+                'finish_hhmm': '15:09',
+              },
+            ],
+            'degradations': [],
+          }),
+          200,
+        );
+      });
+      final service = TripService(httpClient: client);
+      final plan = await service.fetchSession('trip-123', 'test-token');
+      expect(plan.planVersion, 2);
+      expect(plan.stops.single.stopId, 'item-1');
+      expect(plan.promises.single.protected, isTrue);
+      expect(plan.retimeToleranceSeconds, 180);
+      expect(plan.contingencies.single.kind, 'wrap_up_from');
+      expect(plan.contingencies.single.triggerStopId, 'poi-1');
+      expect(plan.contingencies.single.question, isNull);
+      expect(plan.contingencies.single.screenText, isNotEmpty);
+    });
+
+    test('fetchSession surfaces "no session yet" (404) as its own exception — '
+        'the cue to compose, not a failure', () async {
+      final client = MockClient(
+        (request) async => http.Response(
+          jsonEncode({
+            'detail': {
+              'reason': 'no_session_yet',
+              'detail': 'compose the trip first',
+            },
+          }),
+          404,
+        ),
+      );
+      final service = TripService(httpClient: client);
+      await expectLater(
+        () => service.fetchSession('trip-123', 'token'),
+        throwsA(isA<NoSessionYetException>()),
+      );
+    });
+
+    test('replanSession POSTs the phone\'s OBSERVATIONS — position, two clocks, '
+        'learned rates, next stop — and parses the next version', () async {
+      Map<String, dynamic>? sent;
+      final client = MockClient((request) async {
+        expect(request.method, 'POST');
+        expect(request.url.path, contains('/trips/trip-123/session/replan'));
+        sent = jsonDecode(request.body) as Map<String, dynamic>;
+        return http.Response(
+          jsonEncode({
+            'trip_id': 'trip-123',
+            'plan_version': 3,
+            'stops': [],
+            'promises': [],
+            'retime_tolerance_seconds': 180,
+            'contingencies': [],
+            'degradations': [
+              {
+                'human':
+                    'Walking times between stops are estimates, not measured '
+                    'routes, so the tour may run a little longer or shorter than it says.',
+              },
+            ],
+          }),
+          200,
+        );
+      });
+      final service = TripService(httpClient: client);
+      final plan = await service.replanSession(
+        'trip-123',
+        'token',
+        lat: 48.86,
+        lng: 2.33,
+        wallElapsedSeconds: 2400,
+        tourElapsedSeconds: 2100,
+        observedPace: 1.1,
+        listeningRate: 1.5,
+        nextStopIndex: 2,
+        phoneNextStopHhmm: '09:28',
+      );
+      expect(sent, {
+        'lat': 48.86,
+        'lng': 2.33,
+        'wall_elapsed_seconds': 2400,
+        'tour_elapsed_seconds': 2100,
+        'observed_pace': 1.1,
+        'listening_rate': 1.5,
+        'next_stop_index': 2,
+        // S5.10's seam: the phone's OWN clock for its next stop — an observation
+        // the server compares with, reports on, never adopts.
+        'phone_next_stop_hhmm': '09:28',
+      });
+      expect(plan.planVersion, 3);
+      expect(
+        plan.degradationNotices.single,
+        startsWith('Walking times between stops'),
+      );
+    });
+
     test('generateDeeperDiveAudio throws on 409 (no extras) (KE5)', () async {
       final client = MockClient((request) async {
         return http.Response(
@@ -656,35 +809,6 @@ void main() {
       await expectLater(
         () => service.generateDeeperDiveAudio('stop-77'),
         throwsA(isA<TripServiceException>()),
-      );
-    });
-
-    test('composeTrip throws TripAlreadyComposedException on 409 '
-        'already_composed (design §8.1)', () async {
-      // Phase 4: confirm composes {trip_id}-opt1 unconditionally, so a trip
-      // whose day is already written answers 409 in the NORMAL saved-trip
-      // path. The typed exception lets the page treat it as "nothing to
-      // write, proceed" rather than an error.
-      final client = MockClient((request) async {
-        return http.Response(
-          jsonEncode({
-            'detail': {'reason': 'already_composed', 'route_id': 'r1'},
-          }),
-          409,
-        );
-      });
-
-      final service = TripService(httpClient: client);
-
-      await expectLater(
-        () => service.composeTrip('trip-123', 'trip-123-opt1', 'token'),
-        throwsA(
-          isA<TripAlreadyComposedException>().having(
-            (e) => e is ComposeVerificationException,
-            'is not a verification refusal',
-            isFalse,
-          ),
-        ),
       );
     });
   });

@@ -3588,8 +3588,9 @@
       L.polyline(pts, { color: '#3b82f6', weight: 3, opacity: 0.85 }).addTo(tourRouteLayer);
     }
     located.forEach((s, i) => {
-      // Step B.5: walk-past vignettes get a distinct hollow, smaller pin.
-      const isVignette = s.band === 'vignette';
+      // Step B.5: walk-past sights get a distinct hollow, smaller pin (walked
+      // past, not a low narration band — see isWalkPast).
+      const isVignette = isWalkPast(s);
       L.marker([s.lat, s.lng], {
         icon: L.divIcon({
           className: isVignette ? 'tour-route-pin tour-route-pin--vignette' : 'tour-route-pin',
@@ -3614,11 +3615,30 @@
   // while walking rather than a place, and drawTourRoute drops it by that exact
   // value. Coercing it to 'dwell' here would stack a duplicate pin on the stop the
   // walk arrives at, which is the bug drawTourRoute's own comment exists to prevent.
+  // WALKED PAST vs STOPPED AT is `visit_or_walk_past` — the field that says so.
+  // `band` is the NARRATION tier the spotlight classifier assigns (selection.py
+  // band_for_spotlight: "vignette" = one line as you pass), and a SEATED stop with
+  // a low spotlight — Rosemary's 8-minute Bench, a 5-minute stand outside the
+  // Orangerie — carries band "vignette" WITH real minutes. Reading band as SHAPE
+  // rendered both as "walk-past sights", dropped their minutes from "standing
+  // still", and listed the Bench as a walk-past and a rest promise on the same day
+  // (Phase 5 W5.1, measured on the live wire; Phase 4 carried finding 8's root
+  // cause). A stop that never says (an older payload) falls back to band + no minutes.
+  function isWalkPast(s) {
+    if (!s) return false;
+    // A LEG is narration heard while walking — never a place walked past, whatever
+    // its visit_or_walk_past flag says (the server marks leg cards walk_past too).
+    if (s.band === 'leg') return false;
+    if (typeof s.visit_or_walk_past === 'string') return s.visit_or_walk_past === 'walk_past';
+    return s.band === 'vignette' && !(s.minutes > 0);
+  }
+
   function tourOptionMapStops(option) {
     const stops = (option && option.stops) || [];
     return stops.map((s, i) => ({
       lat: s.lat, lng: s.lng,
       band: s.band || 'dwell',
+      visit_or_walk_past: s.visit_or_walk_past,
       sort_order: i + 1,
       poi_name: s.name || '',
       narration: s.narration || '',
@@ -3957,9 +3977,11 @@
     }
     tourStops.forEach((s, i) => {
       const el = document.createElement('div');
-      // Step B.5: vignette stops render distinctly — a visible band tag on the title and
-      // 0-minute (walk past) styling; dwell stops are unchanged.
-      const isVignette = s.band === 'vignette';
+      // Step B.5: walk-past sights render distinctly — 0-minute (walk past) styling;
+      // a non-dwell NARRATION band still shows as a tag on the title, but only a
+      // place that is walked past (isWalkPast) is drawn as one. Seated stops keep
+      // their minutes whatever band their spotlight earned.
+      const isVignette = isWalkPast(s);
       el.className = 'tour-stop db-beat-card' + (isVignette ? ' tour-stop--vignette' : '');
       // Phase 3 spotlight score (and band, when not a plain dwell stop).
       const spot = (typeof s.spotlight === 'number') ? ` · spotlight ${s.spotlight.toFixed(2)}` : '';
@@ -4051,15 +4073,16 @@
     }
 
     // A 'leg' card is narration heard on the WAY to a stop, not a place, and a
-    // 'vignette' is something walked past without stopping. Counting either as a
-    // stop is what made a 4-stop tour report 7 on the authored screen; the same
-    // arithmetic has to hold here or the two screens disagree about the same route.
-    // The A→B finish point (is_finish_point, W4.12) is where the day ENDS, not
-    // a place: it is not a stop, it is not counted, and it renders as an ending.
+    // walk-past (isWalkPast) is something walked past without stopping. Counting
+    // either as a stop is what made a 4-stop tour report 7 on the authored screen;
+    // the same arithmetic has to hold here or the two screens disagree about the
+    // same route. A seated stop with a low narration band IS a stop and its minutes
+    // are standing still (W5.1). The A→B finish point (is_finish_point, W4.12) is
+    // where the day ENDS, not a place: not a stop, not counted, rendered as an ending.
     const dwell = (day.stops || []).filter(
-      s => s.band !== 'vignette' && s.band !== 'leg' && !s.is_finish_point);
+      s => !isWalkPast(s) && s.band !== 'leg' && !s.is_finish_point);
     const finishPoint = (day.stops || []).find(s => s.is_finish_point) || null;
-    const walkPast = (day.stops || []).filter(s => s.band === 'vignette').length;
+    const walkPast = (day.stops || []).filter(s => isWalkPast(s)).length;
     const dwellMin = dwell.reduce((sum, s) => sum + (s.minutes || 0), 0);
     const totalMin = Math.round((day.eta_seconds || 0) / 60);
     const walkMin = Math.max(0, totalMin - dwellMin);
@@ -4177,7 +4200,7 @@
     // neither does the finish point, which is said once at the end.
     (day.stops || []).filter(s => s.band !== 'leg' && !s.is_finish_point).forEach((s, i) => {
       const el = document.createElement('div');
-      const isVignette = s.band === 'vignette';
+      const isVignette = isWalkPast(s);
       el.className = 'tour-stop db-beat-card' + (isVignette ? ' tour-stop--vignette' : '');
       // Per-stop honesty (W4.2 panel): the queue price is spelled "N min wait"
       // (never "Nm"), and the door-side tag says which side of the door this

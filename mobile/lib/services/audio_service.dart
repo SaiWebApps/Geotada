@@ -6,6 +6,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ondoway/services/providers.dart';
 
+export 'package:ondoway/services/providers.dart' show BeatAudioInfo;
+
 class AudioService extends ChangeNotifier implements AudioProvider {
   final http.Client _httpClient;
   AudioPlayer? _playerInstance;
@@ -14,6 +16,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   bool _isPlaying = false;
   bool _isBuffering = false;
   bool _isDeeperDive = false;
+  bool _isCompleted = false;
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
 
@@ -41,6 +44,8 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   @override
   bool get isPlaying => _isPlaying;
   @override
+  bool get isCompleted => _isCompleted;
+  @override
   bool get isDeeperDive => _isDeeperDive;
   bool get isBuffering => _isBuffering;
   Duration get position => _position;
@@ -62,6 +67,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
     _isBuffering = true;
+    _isCompleted = false;
     notifyListeners();
 
     try {
@@ -79,13 +85,23 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     }
   }
 
+  @override
   Future<void> pause() async {
     await _player.pause();
   }
 
+  @override
   Future<void> resume() async {
     await _player.play();
   }
+
+  /// The session's own voice (design §4.4). The phone carries no text-to-speech
+  /// plugin today, so this door is SILENT: every line reaches it only after it
+  /// is on the screen (§4.4.2), and "mute beats graceful" (§4.4.4). Wiring a
+  /// voice is one implementation here; the etiquette (when a line may be said —
+  /// W5.2 R3/R4) lives in TourPlaybackService and does not change with it.
+  @override
+  Future<void> speak(String sentence) async {}
 
   @override
   Future<void> stop() async {
@@ -94,6 +110,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     _isDeeperDive = false;
     _position = Duration.zero;
     _isPlaying = false;
+    _isCompleted = false;
     notifyListeners();
   }
 
@@ -103,6 +120,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
   /// Pre-fetch audio files for a list of beats to device cache.
   /// Returns the number of files successfully cached.
+  @override
   Future<int> prefetchAudio(List<BeatAudioInfo> beats) async {
     final cacheDir = await _cacheDirectory();
     int cached = 0;
@@ -224,7 +242,8 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     _isBuffering = state.processingState == ProcessingState.loading ||
         state.processingState == ProcessingState.buffering;
 
-    if (state.processingState == ProcessingState.completed) {
+    _isCompleted = state.processingState == ProcessingState.completed;
+    if (_isCompleted) {
       _isPlaying = false;
       _position = _duration;
     }
@@ -240,12 +259,4 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     _duration = duration ?? Duration.zero;
     notifyListeners();
   }
-}
-
-/// Minimal info needed for prefetching audio.
-class BeatAudioInfo {
-  final String beatId;
-  final String? audioUrl;
-
-  const BeatAudioInfo({required this.beatId, this.audioUrl});
 }

@@ -176,6 +176,28 @@ class TestTripGenerateRequest:
 
 
 class TestGeneratedStop:
+    def test_a_rest_stop_has_no_beat_and_still_rides_the_wire(self):
+        """A rest — a bench the party or the "more breaks" dial seated — has no story
+        beat, so ``beat_id`` is None (design §4.5.2: rests are promise-grade stops of
+        the day, not narration). Until 2026-08-18 the field was required and every
+        day that seated a rest 500'd at generate on the app path; the class of that
+        error is a contract written for story stops applied to a rest. UNDO: make
+        beat_id required again -> RED."""
+        bench = GeneratedStop(
+            sort_order=2,
+            poi_id="bench-1",
+            poi_name="Bench",
+            lat=48.86,
+            lng=2.33,
+            beat_id=None,
+            duration_min=8,
+            importance_tier=1,
+            start_time="14:20",
+            dwell_seconds=480,
+        )
+        assert bench.beat_id is None and bench.beat_ids == []
+        assert GeneratedStop.model_validate(bench.model_dump()).beat_id is None
+
     """Validate GeneratedStop model."""
 
     # Acceptance Criterion: AC2 — Each stop has required fields

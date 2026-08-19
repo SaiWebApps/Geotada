@@ -42,26 +42,10 @@ if not _LIVE_PROVIDER_TESTS:
 os.environ["ONBOARD_PROVIDER"] = "mock"
 os.environ.setdefault("WORKBENCH_API_ENABLED", "true")
 
-# ── A local test run IS a local build (says so out loud, changes no check)
-#
-# Authoring a tour stamps it with a build fingerprint, and
-# ``src.tour.premium_tour.resolve_build_identity`` refuses a dirty local git tree
-# unless the caller opts in with ``ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1`` — the way
-# ``scripts/workbench.sh`` already does. Every developer tree has uncommitted work,
-# so without this every test that composes or previews a real tour fails on a normal
-# checkout, and it fails as an environment fault (a 503, or the Basic-lane fallback)
-# that looks nothing like whatever change is actually under test.
-#
-# This asserts nothing false. The tour is genuinely authored off a dirty tree, and
-# the identity it gets is tagged ``local_dirty_tree=True``, which is what makes it
-# non-certifiable. The refusal itself is untouched: nothing here weakens the check,
-# widens it to a deploy (it is fenced to refuse whenever RENDER_GIT_COMMIT is set),
-# or hides a failure — it only stops the suite lying to itself about being CI.
-#
-# ``setdefault``, so a deliberate override still wins, and a no-op on the clean tree
-# CI and Render builds run from. The literal is bound to the constant it must match
-# by tests/test_trip_api.py::test_compose_plans_and_authors_through_the_shared_premium_seam.
-os.environ.setdefault("ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD", "1")
+# (A local test run used to declare itself a local build here with
+# ONDOWAY_ALLOW_DIRTY_LOCAL_BUILD=1. A dirty tree is no longer a refusal anywhere —
+# src.tour.premium_tour.resolve_build_identity stamps HEAD tagged dirty and warns —
+# so there is nothing to declare, 2026-08-18.)
 
 import pytest
 from fastapi.testclient import TestClient

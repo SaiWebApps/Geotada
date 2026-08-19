@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import re
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from src import city_registry
 from src.tour.candidate_eligibility import CandidateRejection
@@ -183,7 +184,12 @@ class GeneratedStop(BaseModel):
     poi_name: str
     lat: float
     lng: float
-    beat_id: str
+    #: The primary story beat. None for a stop that HAS no story — a rest (a bench
+    #: seated by the party or the "more breaks" dial carries no beat). Until
+    #: 2026-08-18 this was required, so every day that seated a rest 500'd at
+    #: generate on the app path (the preview path uses another model and never saw
+    #: it). The class: a contract written for story stops applied to a rest.
+    beat_id: str | None = None
     lens_name: str | None = None
     lens_display: str | None = None
     duration_min: int
@@ -278,6 +284,134 @@ class TripComposeResponse(BaseModel):
     #: Everything that silently degraded while writing this tour — see the identical
     #: field on TripGenerateResponse for why it exists and what a row carries.
     degradations: list[dict] = Field(default_factory=list)
+    #: THE LIVING SESSION'S VERSION (Phase 5 S5.8, design §8.2): every write mints one
+    #: — a second compose is version 2, never a 409. 1 for the first write.
+    plan_version: int = 1
+
+
+class SessionPromise(BaseModel):
+    """One promise of the day as the phone reads it (design §3.1; W5.2 R1.5).
+
+    ``protected`` is the person's own class — a pin, a rest the party or dial asked
+    for, a declared finish — the only kinds a session ever asks a question about.
+    The planner's anchor rides here for the screen but is never protected on an
+    open, unpinned walk.
+    """
+
+    promise_id: str
+    kind: Literal["anchor", "pinned", "rest", "finish"]
+    name: str
+    arrives_hhmm: str = ""
+    departs_hhmm: str = ""
+    protected: bool = False
+
+
+class SessionContingency(BaseModel):
+    """One precomputed answer (design §4.6). ``trigger`` is a MATCHER, never a policy:
+    ``{"kind": "running_late", "stop_id": ..., "band_minutes": [10, 20]}``,
+    ``running_early``, ``minutes_left`` (an open day), ``{"kind": "stop_skipped",
+    "stop_id": ...}``, ``{"kind": "promise_at_risk", "stop_id": ...}``,
+    ``{"kind": "wrap_up_from", "stop_id": ...}``. The phone matches its measured
+    divergence against these, takes the FIRST in server order, and applies the
+    entry — it decides nothing. ``question`` is non-null only when the entry
+    touches a protected thing (§4.2's two tiers), and ``screen_text`` is never
+    empty (§4.4.2 — everything spoken is also on screen).
+    """
+
+    contingency_id: str
+    trigger: dict
+    plan_version: int
+    stop_ids: list[str] = Field(default_factory=list)
+    screen_text: str
+    question: str | None = None
+    default_arm: Literal["keep", "shorten"] | None = None
+    alternate_stop_ids: list[str] = Field(default_factory=list)
+    at_risk_stop_id: str | None = None
+    finish_hhmm: str = ""
+
+    # THE WIRE ENFORCES WHAT IT CAN (Phase 5 S5.11; design §4.4, W5.2 R2): the
+    # screen always carries the line (§4.4.2), a question is ONE sentence
+    # (§4.4.4, R2.1) and names its default (R2.4/R2.5). Wording itself is the
+    # server's business (`contingency.plain`, `one_sentence`); this is the last
+    # door before the phone.
+    @model_validator(mode="after")
+    def _etiquette(self) -> SessionContingency:
+        if not self.screen_text.strip():
+            raise ValueError("screen_text is empty: everything spoken is also on screen (§4.4.2)")
+        if self.question is not None:
+            if not self.question.strip():
+                raise ValueError("an empty question is not a question")
+            if self.default_arm is None:
+                raise ValueError("a question names its default arm (W5.2 R2.4)")
+            breaks = [
+                m.start()
+                for m in re.finditer(r"[.!?](?:\s|$)", self.question.strip())
+            ]
+            if len(breaks) != 1 or not self.question.strip().endswith("?"):
+                raise ValueError(
+                    "the question is ONE sentence ending in a question mark (§4.4.4, R2.1): "
+                    f"{self.question!r}"
+                )
+        return self
+
+
+class SessionPlan(BaseModel):
+    """GET /trips/{id}/session and every replan reply — the day the person is
+    standing in, versioned (design §8.2), with the contingency set beside it (§4.6).
+    """
+
+    trip_id: str
+    plan_version: int
+    stops: list[GeneratedStop]
+    promises: list[SessionPromise] = Field(default_factory=list)
+    retime_tolerance_seconds: int
+    contingencies: list[SessionContingency] = Field(default_factory=list)
+    degradations: list[dict] = Field(default_factory=list)
+    #: The walking speed this day was planned at — the preset the phone re-times
+    #: with until it has learned the person's own pace (design §4.1; S5.10).
+    walking_pace_kmh: float = Field(default=3.0, gt=0)
+    #: When the day's clock starts ("HH:MM") — the frame every stop clock and the
+    #: phone's own re-timing share (S5.10's seam compares in this frame).
+    day_start_hhmm: str = ""
+    #: When the day is planned to END ("HH:MM"): the phone's minutes-left on an OPEN
+    #: day (W5.2 R1.3 bands by minutes left) count down to this.
+    planned_end_hhmm: str = ""
+    #: Where the day ends (the declared end, or the start of a round trip) and what
+    #: to call it, so the phone re-times the finish itself (W5.13: a precomputed
+    #: line's clock is stale by the time it fires; the phone's clock is not). None
+    #: on an open walk with no end — the day ends where its last stop does.
+    finish_lat: float | None = None
+    finish_lng: float | None = None
+    finish_name: str = "your finish"
+    #: wall | firm | open — the phone says ONE screen line when a firm or wall finish
+    #: has moved past the tolerance (W5.14 Q3); an open day's finish moves in silence.
+    end_hardness: str = "firm"
+    #: The party the day was planned for (solo/couple/family/take_it_easy/
+    #: with_luggage or None): the phone's screen-only switch is per PARTY (W5.2 R4).
+    party: str | None = None
+
+
+class SessionReplanRequest(BaseModel):
+    """What the phone sends to POST /trips/{id}/session/replan — its observations,
+    never a decision (design §4.6): where it is, its two clocks, its two learned
+    rates, and which planned stop it is heading to."""
+
+    lat: float = Field(..., ge=-90, le=90)
+    lng: float = Field(..., ge=-180, le=180)
+    #: Real seconds since the day started (a pause does NOT stop this one).
+    wall_elapsed_seconds: int = Field(..., ge=0)
+    #: The tour clock — seconds since the day started with pauses suspended (§4.3).
+    tour_elapsed_seconds: int = Field(..., ge=0)
+    #: Learned walking pace as a multiplier on the preset (>= 1.0 slows), or None.
+    observed_pace: float | None = Field(default=None, ge=1.0)
+    #: Learned listening rate (1.5 = the person spends 1.5x a piece's length).
+    listening_rate: float | None = Field(default=None, ge=0.5, le=3.0)
+    #: Index into the current plan's stops of the next stop not yet reached.
+    next_stop_index: int = Field(default=0, ge=0)
+    #: The phone's OWN re-timed clock (HH:MM) for that next stop — an observation
+    #: the server compares with its one expression and REPORTS on, never adopts
+    #: (S5.10's seam).
+    phone_next_stop_hhmm: str | None = Field(default=None, pattern=r"^\d{2}:\d{2}$")
 
 
 class TripPreviewRequest(BaseModel):
