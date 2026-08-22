@@ -28,7 +28,7 @@ from src.tour.contract import (
     TransitSegment,
     ValidationReport,
 )
-from src.tour.generation import GLUE_NAV, SPOKEN_WPM, generate
+from src.tour.generation import GLUE_NAV, GLUE_REFLECTION, SPOKEN_WPM, generate
 from src.tour.glue_client import MockGlueClient
 from src.tour.reflection import reflection_slots
 from src.tour.render_md import stop_narration_text
@@ -235,9 +235,20 @@ def test_cited_vignette_body_joins_canonical_context_for_glue_scan():
     report = validate_script(script, _seq({1: (_vignette_beat(),)}))
     assert report.forbidden_phrase_hits == ()
 
-    # Without the vignette beat on the sequence, the noun is runtime invention.
-    bare = validate_script(_mini_script((glue,)), _seq())
+    # Without the vignette beat on the sequence, the noun is runtime invention —
+    # in STORY glue. Re-derived at Phase 6 W6.12: a navigation line is the map
+    # speaking and its nouns are places by nature, so GLUE_NAV is exempt from the
+    # proper-noun half of the scan (measured: "Walk northwest along the Seine"
+    # was refused as new_proper_noun:Seine and a real day 422'd three times);
+    # the same sentence as a story line keeps the full scan.
+    story = Sentence(
+        text="Walk past the Médicis fountain now.",
+        source_id=GLUE_REFLECTION, source_type="glue", stop_idx=1,
+    )
+    bare = validate_script(_mini_script((story,)), _seq())
     assert any("Médicis" in reason for _s, reason in bare.forbidden_phrase_hits)
+    nav_only = validate_script(_mini_script((glue,)), _seq())
+    assert not any("Médicis" in reason for _s, reason in nav_only.forbidden_phrase_hits)
 
 
 # ---------------------------------------------------------------------------

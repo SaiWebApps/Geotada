@@ -36,6 +36,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
 from .contract import POI, ReplanContext, Route, TourInput
+from .premium_tour import plan_premium_tour
 from .routing import haversine_m, leg_walk_seconds
 from .selection import _walk_arrivals, grant_freed_seconds
 from .visit_time import listened_seconds, stop_seconds, visit_ceiling_seconds
@@ -56,7 +57,8 @@ BANNED_WORDS: tuple[str, ...] = (
     "re-time",
     "retime",
     "band",
-    "contingenc",
+    "contingency",
+    "contingencies",
     "highlight",
     "famous",
     "must-see",
@@ -82,6 +84,12 @@ RETIME_TOLERANCE_SECONDS: int = 180
 #: A rest shortened below this is a rest removed (R2.3): three minutes is the shortest
 #: sit Rosemary's file records as a rest (05: "two more sits inside that stretch").
 SHORTEST_REST_SECONDS: int = 180
+#: The screen's line when an OPEN walk is wrapped up and nothing is left but the day
+#: itself (Phase 6 S6.4, W6.2 R2/R8): what the day was, handed back where they stand —
+#: never "Straight to your start". One sentence, no clock, no banned word.
+OPEN_WALK_DAY_LINE: str = "That's the walk — the rest of the day is yours from here."
+#: The screen's line when the wrap-up is from the place the day ends at: done.
+DAY_DONE_LINE: str = "That's the walk."
 
 
 @dataclass(frozen=True)
@@ -115,12 +123,26 @@ class ContingencySet:
     notes: tuple[str, ...] = field(default_factory=tuple)
 
 
+_BANNED_RE = re.compile(
+    r"(?<![A-Za-z])(?:" + "|".join(re.escape(w) for w in BANNED_WORDS) + r")(?![A-Za-z])",
+    re.IGNORECASE,
+)
+
+
 def plain(text: str) -> str:
-    """Refuse a sentence a person should never read (R2.2). Returns it unchanged."""
-    lowered = text.lower()
-    hit = next((w for w in BANNED_WORDS if w in lowered), None)
+    """Refuse a sentence a person should never read (R2.2). Returns it unchanged.
+
+    WORDS, not letters (Phase 6 W6.2, Théo and Camille): the first version matched
+    substrings, so "wallpaper" was a wall, "husband" a band, "compromise" a promise,
+    "later" late and "darkness" dark — and a close (narrator content, through this
+    same door) could not say true things. A banned word now matches only at word
+    boundaries; "contingenc" still catches contingency/contingencies, "re-time" and
+    "retime" their forms, "on time" and "hard finish" as phrases."""
+    hit = _BANNED_RE.search(text)
     if hit is not None:
-        raise ValueError(f"the panel banned {hit!r} from anything spoken or shown: {text!r}")
+        raise ValueError(
+            f"the panel banned {hit.group(0).lower()!r} from anything spoken or shown: {text!r}"
+        )
     return text
 
 
@@ -390,7 +412,6 @@ def build_contingency_set(
 
     if plan is None:
         if routing_client is not None:
-            from .premium_tour import plan_premium_tour
 
             def plan(inp: TourInput, ctx: ReplanContext) -> Route:
                 return plan_premium_tour(
@@ -539,27 +560,50 @@ def build_contingency_set(
         del clock
         if tail is None:
             return "Carry on — nothing changes from here."
-        return f"Next: {next_name}" if next_name else "Straight to " + finish_name
+        if next_name:
+            return f"Next: {next_name}"
+        # Nothing left but the way home. On an OPEN walk there is no home to head for
+        # (Phase 6 W6.2 R2/R8, 11/11: "Straight to your start" is a direction to
+        # nowhere — Fiona & Dev end at dinner, wherever that is): the day is handed
+        # back, where they stand. With a finish, the place (S5.19).
+        if _finish_of(tour_input) is None:
+            return OPEN_WALK_DAY_LINE
+        return "Straight to " + finish_name
+
+    # R1.1 — WRAP-UP FROM HERE, from EVERY stop the person can be at — rests included
+    # (Phase 6 W6.2, Rosemary: "the one place I am most likely to decide to go home is
+    # where the button does nothing"): one leg home, no stop, floor zero.
+    finish = _finish_of(tour_input)
+    for k, (poi, _arrival, departure) in enumerate(clocks):
+        if poi.id.startswith("__end_b"):
+            continue
+        left = _minutes_left(planned_end, departure) or 15
+        tail = replan(
+            _tail_input(tour_input, position=(poi.lat, poi.lng), clock=departure, minutes=left),
+            ctx_from(k, keep=(), visited=tuple(planned_ids[: k + 1])),
+        )
+        # Standing at the place the day ends at, a wrap-up has nowhere to send you
+        # (W6.2, Rosemary: "'Straight to Musée d'Orsay' to a woman standing in the
+        # Orsay"): the walk is done — the phone plays the day's close.
+        at_finish = (
+            finish is not None
+            and haversine_m(finish[0], finish[1], poi.lat, poi.lng) <= OWN_PLACE_RADIUS_M
+        )
+        add(
+            {"kind": "wrap_up_from", "stop_id": poi.id},
+            k,
+            tail,
+            screen_text=(
+                DAY_DONE_LINE if at_finish else screen_for(tail, departure, next_name=None)
+            ),
+            clock=departure,
+        )
 
     for k, poi, arrival, departure in story:
         position = (poi.lat, poi.lng)
         after = tuple(planned_ids[k + 1 :])
         after_story = [p for p in route.pois[k + 1 :] if _is_story_stop(p)]
         next_name = after_story[0].name if after_story else None
-
-        # R1.1 — WRAP-UP FROM HERE: one leg home, no stop, floor zero.
-        left = _minutes_left(planned_end, departure) or 15
-        tail = replan(
-            _tail_input(tour_input, position=position, clock=departure, minutes=left),
-            ctx_from(k, keep=(), visited=tuple(planned_ids[: k + 1])),
-        )
-        add(
-            {"kind": "wrap_up_from", "stop_id": poi.id},
-            k,
-            tail,
-            screen_text=screen_for(tail, departure, next_name=None),
-            clock=departure,
-        )
 
         # R1.2 — STOP SKIPPED: the remainder from this stop's DOOR, its minutes granted to
         # the survivors through the one grant rule; the category walked away from spent.
@@ -574,7 +618,13 @@ def build_contingency_set(
             sum(visit_of(p) for p in route.pois[k + 1 :]) // 60 + 30
         )
         skip_ctx = ctx_from(k, keep=after, visited=tuple(planned_ids[: k + 1]), grants=grants)
-        if poi.place_category:
+        # THE ABSENCE OF A CATEGORY IS NOT A CATEGORY (Phase 6 W6.11, measured on
+        # the F&D day): most of the corpus carries the default 'other', so
+        # spending it after ONE uncategorised skip marked every other stop spent
+        # and the tail seated NOTHING — the entry shipped stop_ids [] while its
+        # own screen text promised the next stop. Greta's satiation is per REAL
+        # kind ("galleries spent, churches down"); 'other' never spends.
+        if poi.place_category and poi.place_category != "other":
             skip_ctx = skip_ctx.model_copy(
                 update={"spent_categories": (*skip_ctx.spent_categories, poi.place_category)}
             )

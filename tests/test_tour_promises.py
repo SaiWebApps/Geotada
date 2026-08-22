@@ -464,7 +464,13 @@ def _pin_corpus(*, with_pin_seated_naturally: bool = False):
     from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
     chapel = _poi("chapelle-obscure", tier=2, lat=48.8555, lng=2.3697, beat_count=2)
-    fillers = _density_fillers(PDV, duration_min=60, n=5, radius_m=80)
+    # Filler COUNT derived by the helper from the planner's dwell target and stop
+    # ceiling (re-derived at the Phase 6 close: hand-pinned at five for the 270 s
+    # ceiling, the pool could build 25 of the asked 60 minutes once S6.6 made
+    # tellings three minutes; the pin and promise claims measured identical at
+    # the derived count — the chapel is never chosen on merit, always seated
+    # when pinned, an unknown pin still refuses by name).
+    fillers = _density_fillers(PDV, duration_min=60, radius_m=80)
     return _snap([chapel, *fillers])
 
 

@@ -380,7 +380,13 @@ def test_fixed_end_corridor_rich_route_keeps_multiple_beat_bearing_stops():
 
 def test_fixed_end_uses_a_nearby_poi_without_collapsing_the_greedy_cluster():
     """A fixed destination may snap to a nearby POI but keeps a rich route."""
-    duration = 75
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6, W6.2 R3): at 75
+    # minutes the six-background fixture went density-YELLOW (each stop supplies
+    # less capped audio), and backgrounds enough for GREEN out-competed the
+    # north cluster. Swept duration x background against every assertion:
+    # 55 minutes with seven background anchors holds them all, with holding
+    # neighbours on both sides (50-65 min, n 6-8).
+    duration = 55
     n1 = _anchor("n-1", 0.0018, 0.0, tier=5, beats=6)  # ~200m north
     n2 = _anchor("n-2", 0.0027, 0.0, tier=5, beats=6)  # ~300m north
     mountain = _anchor("far-mountain", 0.0, 0.00753, tier=5, beats=39)  # ~551m east
@@ -398,7 +404,7 @@ def test_fixed_end_uses_a_nearby_poi_without_collapsing_the_greedy_cluster():
     # the named cluster and the mountain rather than filling the hour next door.
     # Measured over a 4-10 sweep: four refuses, seven and ten drop the north
     # cluster, five and six both hold every assertion.
-    snap = _snap([n1, n2, mountain, *decoys, *_background(duration, n=6)])
+    snap = _snap([n1, n2, mountain, *decoys, *_background(duration, n=7)])
     end = (PDV[0], PDV[1] + 0.00685)  # ~500m due east
     assert _ab_in_budget(end, duration)
     assert haversine_m(*end, mountain.lat, mountain.lng) <= B_SNAP_PROXIMITY_M
@@ -482,3 +488,47 @@ def test_one_story_fixed_end_corpus_is_refused_not_padded_with_a_sentinel():
     assert excinfo.value.best_elapsed_seconds is not None
     assert excinfo.value.best_elapsed_seconds < excinfo.value.minimum_elapsed_seconds
 
+
+
+def test_the_end_sentinel_rebuilds_from_its_own_id():
+    """Phase 6 W6.12 (measured: Sofia's Châtelet day 409'd "corpus_changed" on
+    every compose — permanently uncomposable): the A→B end sentinel's id encodes
+    its coordinate, so a persisted route re-materializes it instead of mistaking
+    the engine's own marker for corpus drift. Malformed and non-sentinel ids
+    return None (the caller treats them as real POIs). The compose-side guard —
+    the one that goes RED when the rebuild is dropped from the corpus check —
+    is test_compose_corpus_check_rebuilds_the_end_sentinel below."""
+    from src.tour.selection import end_b_sentinel_from_id, end_b_sentinel_poi
+
+    original = end_b_sentinel_poi(48.8583, 2.347)
+    rebuilt = end_b_sentinel_from_id(original.id)
+    assert rebuilt is not None
+    assert (rebuilt.id, rebuilt.lat, rebuilt.lng) == (original.id, 48.8583, 2.347)
+    assert end_b_sentinel_from_id("a-real-poi-id") is None
+    assert end_b_sentinel_from_id("__end_b__not_numbers_x") is None
+
+
+def test_compose_corpus_check_rebuilds_the_end_sentinel():
+    """Phase 6 W6.12 finding 1, the compose-side guard (design §8.2: a persisted
+    day must stay composable). Sofia's Châtelet day persisted the engine's own
+    `__end_b__<lat>_<lng>` stop; the compose rebuild looked it up in the corpus,
+    found nothing, and refused 409 corpus_changed on every attempt. The corpus
+    check must re-materialize the sentinel from its id and still refuse a
+    genuinely missing corpus id. UNDO: delete the sentinel loop in
+    _resolve_persisted_pick -> the first call raises 409 corpus_changed."""
+    from fastapi import HTTPException
+
+    from src.api.routes.trips import _resolve_persisted_pick
+    from src.tour.selection import end_b_sentinel_poi
+
+    real = POI(id="p-real", name="Real stop", tier=1, poi_role="stop", lat=48.86, lng=2.35)
+    sentinel_id = end_b_sentinel_poi(48.8583, 2.347).id
+
+    picked = _resolve_persisted_pick([real.id, sentinel_id], {real.id: real})
+    assert [p.id for p in picked] == [real.id, sentinel_id]
+    assert (picked[1].lat, picked[1].lng) == (48.8583, 2.347)
+
+    with pytest.raises(HTTPException) as excinfo:
+        _resolve_persisted_pick([real.id, "p-gone", sentinel_id], {real.id: real})
+    assert excinfo.value.status_code == 409
+    assert excinfo.value.detail == {"reason": "corpus_changed", "missing_poi_ids": ["p-gone"]}

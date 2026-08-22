@@ -32,6 +32,30 @@ class ItineraryStop {
   // the phone's re-timing spends here (the longer of this and the narration
   // at the learned listening rate). Falls back to the rounded minutes.
   final int? dwellSeconds;
+  // Phase 6 S6.4: the stop's composed NARRATION — what its audio says (design
+  // §5.7: every word ever spoken exists as on-screen text). Until now the phone
+  // dropped it and showed the primary beat's raw body as "the transcript".
+  final String? narration;
+  // Phase 6 S6.4 (design §5.3): the stop's one-line CLOSE — the last sentence of
+  // its narration, the line [Head back now] shows and plays for this stretch —
+  // and its pre-voiced file when the narrator has one (S6.8).
+  final String? closeText;
+  final String? closeAudioUrl;
+  // Phase 6 S6.5 (design §5.4; W6.2 R5): THREADS — one sentence per stop that may
+  // come right BEFORE this one when the day is replanned, keyed by that stop's
+  // name. Spoken at the departure seam, on screen through the leg. Null when no
+  // replanned pair binds this stop (none rather than glue).
+  final Map<String, String>? threadLines;
+  // Phase 6 S6.6 (design §5.5; W6.2 R3): a MAJOR stop's FULL TELLING — the second
+  // composed piece from this stop's own second story, with its own close. Null on
+  // minor stops; the on-demand extras route still answers there.
+  final String? fullNarration;
+  final String? fullCloseText;
+  // Phase 6 S6.8 (owner ruling: the tour's own voice): the pre-recorded files
+  // for the authored session lines. Null until voiced; the phone falls back to
+  // the plain spoken line.
+  final Map<String, String>? threadAudioUrls;
+  final String? fullCloseAudioUrl;
 
   const ItineraryStop({
     required this.sortOrder,
@@ -53,11 +77,29 @@ class ItineraryStop {
     this.extraBeatIds = const [],
     this.extraNarration,
     this.dwellSeconds,
+    this.narration,
+    this.closeText,
+    this.closeAudioUrl,
+    this.threadLines,
+    this.fullNarration,
+    this.fullCloseText,
+    this.threadAudioUrls,
+    this.fullCloseAudioUrl,
   });
 
   /// Seconds the plan spends AT this stop (S5.10): the planner's exact visit
   /// when the wire carried it, else the rounded minutes.
   int get plannedVisitSeconds => dwellSeconds ?? durationMin * 60;
+
+  /// Minutes of the full telling at the engine's own reading rate (150 wpm),
+  /// for the offer's cost label (W6.2 R3 — Marcus: "the tap shows the full's
+  /// cost"). Zero when there is no full telling.
+  int get fullTellingMinutes {
+    final text = fullNarration;
+    if (text == null || text.trim().isEmpty) return 0;
+    final words = text.trim().split(RegExp(r'\s+')).length;
+    return (words / 150).ceil();
+  }
 
   factory ItineraryStop.fromJson(Map<String, dynamic> json) {
     return ItineraryStop(
@@ -85,6 +127,16 @@ class ItineraryStop {
           .toList(),
       extraNarration: json['extra_narration'] as String?,
       dwellSeconds: (json['dwell_seconds'] as num?)?.toInt(),
+      narration: json['narration'] as String?,
+      closeText: json['close_text'] as String?,
+      closeAudioUrl: json['close_audio_url'] as String?,
+      threadLines: (json['thread_lines'] as Map<String, dynamic>?)
+          ?.map((k, v) => MapEntry(k, v as String)),
+      fullNarration: json['full_narration'] as String?,
+      fullCloseText: json['full_close_text'] as String?,
+      threadAudioUrls: (json['thread_audio_urls'] as Map<String, dynamic>?)
+          ?.map((k, v) => MapEntry(k, v as String)),
+      fullCloseAudioUrl: json['full_close_audio_url'] as String?,
     );
   }
 
@@ -108,13 +160,26 @@ class ItineraryStop {
         'dwell_seconds': dwellSeconds,
         'extra_beat_ids': extraBeatIds,
         'extra_narration': extraNarration,
+        'narration': narration,
+        'close_text': closeText,
+        'close_audio_url': closeAudioUrl,
+        'thread_lines': threadLines,
+        'full_narration': fullNarration,
+        'full_close_text': fullCloseText,
+        'thread_audio_urls': threadAudioUrls,
+        'full_close_audio_url': fullCloseAudioUrl,
       };
 
   ItineraryStop copyWith({
     String? audioUrl,
     double? audioDurationSec,
     String? scriptBody,
+    String? closeAudioUrl,
+    String? fullCloseAudioUrl,
   }) {
+    // EVERY field rides through (Phase 6 S6.8 found the class: this copy used
+    // to drop narration, the closes, the threads and the full telling — the
+    // demo's stand-in audio then silently stripped the very lines under test).
     return ItineraryStop(
       sortOrder: sortOrder,
       stopId: stopId,
@@ -135,6 +200,14 @@ class ItineraryStop {
       extraBeatIds: extraBeatIds,
       extraNarration: extraNarration,
       dwellSeconds: dwellSeconds,
+      narration: narration,
+      closeText: closeText,
+      closeAudioUrl: closeAudioUrl ?? this.closeAudioUrl,
+      threadLines: threadLines,
+      threadAudioUrls: threadAudioUrls,
+      fullNarration: fullNarration,
+      fullCloseText: fullCloseText,
+      fullCloseAudioUrl: fullCloseAudioUrl ?? this.fullCloseAudioUrl,
     );
   }
 }

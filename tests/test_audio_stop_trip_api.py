@@ -21,6 +21,13 @@ N1 = "Settle in. Welcome to the Eiffel Tower."
 N2 = "Now walk on to the Arc de Triomphe."
 # KE3: item1 also carries a "keep exploring here" extra narration; item2 does not.
 KE_EXTRA = "The tower has three visitor levels. The top is 276 metres up."
+# Phase 6 S6.8: the authored session lines the owner ruled PRE-VOICED in the
+# narrator's own voice — each stop's close, its thread lines, the full telling's
+# close. The set's fixed lines stay screen-only and are never voiced.
+CLOSE1 = "And that's the tower — iron meant to stand twenty years."
+THREAD1 = "The same iron age built the next hall."
+FULL_CLOSE1 = "And that's the tower's second story."
+CLOSE2 = "That's the arch — an emperor's promise kept late."
 
 # A separate trip whose stops play real NarrativeBeats — used by the unknown-
 # provider tests for /audio/generate-trip and /audio/generate-batch (both go
@@ -72,8 +79,12 @@ def _seed(driver) -> None:
             CREATE (p1:POI {id: $tid + '-poi1', name: 'Eiffel Tower'})
             CREATE (p2:POI {id: $tid + '-poi2', name: 'Arc de Triomphe'})
             CREATE (i1:ItineraryItem {id: $tid + '-item1', sort_order: 1, narration: $n1,
-                                      extra_narration: $ke})
-            CREATE (i2:ItineraryItem {id: $tid + '-item2', sort_order: 2, narration: $n2})
+                                      extra_narration: $ke,
+                                      close_text: $close1,
+                                      thread_lines: $threads1,
+                                      full_close_text: $fullclose1})
+            CREATE (i2:ItineraryItem {id: $tid + '-item2', sort_order: 2, narration: $n2,
+                                      close_text: $close2})
             CREATE (i3:ItineraryItem {id: $tid + '-item3', sort_order: 3})
             CREATE (t)-[:HAS_STOP]->(i1)
             CREATE (t)-[:HAS_STOP]->(i2)
@@ -85,6 +96,10 @@ def _seed(driver) -> None:
             n1=N1,
             n2=N2,
             ke=KE_EXTRA,
+            close1=CLOSE1,
+            threads1='{"Eiffel Tower": "' + THREAD1 + '"}',
+            fullclose1=FULL_CLOSE1,
+            close2=CLOSE2,
         )
 
 
@@ -147,7 +162,11 @@ class TestGenerateTripStopAudio:
         assert data["failed"] == 0
 
         # The exact stitched narration is voiced — not a lone beat.
-        assert set(recorder.texts) == {N1, N2}
+        # RE-DERIVED at Phase 6 S6.8: the voicing pass now ALSO records each
+        # stop's authored session lines (close, threads, the full telling's
+        # close) in the same narrator voice — the owner's ruling. The narration
+        # is still voiced exactly once per stop.
+        assert set(recorder.texts) == {N1, N2, CLOSE1, THREAD1, FULL_CLOSE1, CLOSE2}
 
         # Audio persisted on each item, keyed by the stop id (not the beat).
         urls = _item_audio(clean_driver)
@@ -157,7 +176,9 @@ class TestGenerateTripStopAudio:
 
         # One artifact per generated stop on disk.
         files = list(_temp_audio_storage.rglob("*.mp3"))
-        assert len(files) == 2
+        # RE-DERIVED at Phase 6 S6.8: two narration pieces PLUS the authored
+        # session lines (item1's close, thread and full-close; item2's close).
+        assert len(files) == 6
 
     def test_second_call_skips_existing(self, client, clean_driver, _temp_audio_storage):
         _seed(clean_driver)
@@ -572,3 +593,96 @@ class TestUnknownProviderNever500:
         for item in data["results"]:
             if not item["success"]:
                 assert "evil" in (item["error"] or "").lower()
+
+
+@needs_neo4j
+class TestPreVoicedSessionLines:
+    """Phase 6 S6.8 (design §4.4; W6.2 R6a, 11/0; OWNER RULING 2026-08-19: the
+    tour's own voice, never the robot). The per-stop voicing pass ALSO records
+    each stop's authored session lines — the close, the thread lines, the full
+    telling's close — as their own small artifacts on the item, in the same
+    narrator voice, hash-guarded like the narration. The contingency set's fixed
+    lines ("Next: X") stay screen-only and are NEVER sent to TTS."""
+
+    def test_the_authored_lines_are_voiced_persisted_and_hash_guarded(
+        self, client, clean_driver, _temp_audio_storage
+    ):
+        _seed(clean_driver)
+        recorder = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+            resp = client.post(
+                f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
+            )
+        assert resp.status_code == 200
+        # The narrator said the lines — and ONLY the authored lines.
+        for line in (CLOSE1, THREAD1, FULL_CLOSE1, CLOSE2):
+            assert line in recorder.texts, f"not voiced: {line!r}"
+        assert not any("Next:" in t or "Straight to" in t for t in recorder.texts), (
+            "the set's fixed lines are screen-only (R6, 8/11)"
+        )
+        with clean_driver.session(database=get_database()) as s:
+            row = s.run(
+                "MATCH (i:ItineraryItem {id: $iid}) "
+                "RETURN i.close_audio_url AS c, i.thread_audio_urls AS t, "
+                "       i.full_close_audio_url AS f",
+                iid=f"{TRIP_ID}-item1",
+            ).single()
+        assert row["c"], "the close's file is on the item"
+        assert row["f"], "the full telling's close has its file"
+        import json as _json
+
+        thread_urls = _json.loads(row["t"])
+        assert set(thread_urls) == {"Eiffel Tower"} and thread_urls["Eiffel Tower"]
+
+        # Voiced once: the second run skips every line (the hash guard).
+        recorder2 = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder2):
+            resp2 = client.post(
+                f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
+            )
+        assert resp2.status_code == 200
+        assert recorder2.texts == [], "everything voiced already — nothing re-billed"
+
+
+@needs_neo4j
+class TestSessionCarriesLiveAudio:
+    """Phase 6 S6.8: audio facts live on the ITEMS; the saved session snapshots its
+    stops at compose time, BEFORE voicing — so the session GET overlays the items'
+    current audio fields at read time. Measured 2026-08-19: five voiced closes in
+    the graph, none on the wire, until this overlay. UNDO: return the saved payload
+    untouched -> RED."""
+
+    def test_the_overlay_reads_the_items_current_files(self, client, clean_driver):
+        from src.api.models.trips import GeneratedStop, SessionPlan
+        from src.api.routes.trips import _with_live_audio
+
+        _seed(clean_driver)
+        item1 = f"{TRIP_ID}-item1"
+        with clean_driver.session(database=get_database()) as s:
+            s.run(
+                "MATCH (i:ItineraryItem {id: $iid}) "
+                "SET i.audio_url = 'file:///narr.mp3', i.audio_duration_sec = 40, "
+                "    i.close_audio_url = 'file:///close.mp3', "
+                "    i.thread_audio_urls = '{\"Eiffel Tower\": \"file:///thread.mp3\"}', "
+                "    i.full_close_audio_url = 'file:///full-close.mp3'",
+                iid=item1,
+            )
+            saved = SessionPlan(
+                trip_id=TRIP_ID,
+                plan_version=1,
+                stops=[
+                    GeneratedStop(
+                        sort_order=1, stop_id=item1, poi_id="p", poi_name="Eiffel Tower",
+                        lat=48.85, lng=2.29, duration_min=5, importance_tier=5,
+                        start_time="10:00",
+                    )
+                ],
+                retime_tolerance_seconds=180,
+                day_start_hhmm="10:00",
+            )
+            live = _with_live_audio(s, saved)
+        stop = live.stops[0]
+        assert stop.audio_url == "file:///narr.mp3"
+        assert stop.close_audio_url == "file:///close.mp3"
+        assert stop.thread_audio_urls == {"Eiffel Tower": "file:///thread.mp3"}
+        assert stop.full_close_audio_url == "file:///full-close.mp3"

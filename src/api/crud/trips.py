@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
 from src.tour.options import dominant_lens
-from src.tour.render_md import stop_narration_text
+from src.tour.render_md import stop_close_text, stop_narration_text
 
 if TYPE_CHECKING:
     from neo4j import ManagedTransaction as Transaction
@@ -45,6 +45,8 @@ def route_script_to_stops(
     (``""``) when no script is given, so existing callers stay back-compatible.
     """
     narration_by_stop = stop_narration_text(script) if script is not None else {}
+    # Phase 6 S6.4: the stop's CLOSE travels beside its narration (design §5.3).
+    close_by_stop = stop_close_text(script) if script is not None else {}
     extras = extra_by_poi or {}
 
     stops: list[dict[str, Any]] = []
@@ -70,6 +72,7 @@ def route_script_to_stops(
                 "area": sp.area,
                 "dwell_seconds": sp.dwell_seconds,
                 "narration": narration_by_stop.get(idx, ""),
+                "close_text": close_by_stop.get(idx),
             }
         )
 
@@ -173,6 +176,10 @@ def _create_itinerary_items(
             lens_name: $lens_name,
             narration: $narration,
             extra_narration: $extra_narration,
+            close_text: $close_text,
+            thread_lines: $thread_lines,
+            full_narration: $full_narration,
+            full_close_text: $full_close_text,
             created_at: datetime()
         })
         CREATE (trip)-[:HAS_STOP]->(item)
@@ -202,6 +209,16 @@ def _create_itinerary_items(
             lens_name=stop["lens_name"],
             narration=stop.get("narration"),
             extra_narration=stop.get("extra_narration"),
+            close_text=stop.get("close_text"),
+            # Neo4j properties cannot hold maps: the THREADS travel as ONE JSON
+            # string; GeneratedStop's validator decodes rows back (Phase 6 S6.5).
+            thread_lines=(
+                json.dumps(stop["thread_lines"], ensure_ascii=False)
+                if stop.get("thread_lines")
+                else None
+            ),
+            full_narration=stop.get("full_narration"),
+            full_close_text=stop.get("full_close_text"),
         ).single()
         # The mid-query MATCH silently drops absent beat ids; fail loudly
         # rather than persist an item whose stored beat_ids cite beats it
@@ -370,6 +387,13 @@ def list_trips_for_profile(
                         ELSE '09:00' END AS start_time,
                    pb.script_body AS script_body,
                    item.narration AS narration,
+                   item.close_text AS close_text,
+                   item.thread_lines AS thread_lines,
+                   item.full_narration AS full_narration,
+                   item.full_close_text AS full_close_text,
+                   item.close_audio_url AS close_audio_url,
+                   item.thread_audio_urls AS thread_audio_urls,
+                   item.full_close_audio_url AS full_close_audio_url,
                    coalesce(item.audio_url, pb.audio_url) AS audio_url,
                    coalesce(item.audio_duration_sec, pb.duration_sec) AS audio_duration_sec
             ORDER BY item.sort_order

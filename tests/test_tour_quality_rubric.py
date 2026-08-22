@@ -2010,3 +2010,131 @@ def test_c9_fires_on_most_stops_of_the_human_authored_reference_tours() -> None:
             "C9 escalated above WARN while still firing on most positions of a "
             "human-approved tour — that would refuse to serve the reference."
         )
+
+
+# ---------------------------------------------------------------------------
+# C13 — POINT FIRST (WARN; Phase 6 S6.3). Design §5.2: "Every piece is written with its
+# point in the FIRST minute. Fiona and Dev walk off at minute eight of nine, routinely."
+# The W6.2 panel (11/11, R1): the point is the turn with its stakes, inside the stop's
+# first ~100 words, counted from the stop's OWN first sentence about the place — never
+# from the nav line or the recap ("the first 29 seconds are a recap of Henri IV's
+# mistresses I heard five minutes earlier" — Marcus; "count it in words, not seconds,
+# and count from the first sentence about the place I am standing in" — Paulo). What a
+# $0 check can see of that: (i) the STORY starts early — the words of glue before the
+# stop's first beat sentence (the recap, the walking line) stay under
+# POINT_FIRST_PREAMBLE_MAX_WORDS; (ii) the stop's PRIMARY beat — the first of its capped
+# plan, `ScriptPOI.beat_ids[0]` — is cited inside the first POINT_FIRST_STORY_WORDS of
+# the story. Whether that sentence IS the point is a reading, measured at W6.10 by the
+# personas, never gated here.
+# ---------------------------------------------------------------------------
+
+
+def _c13_stop(
+    *,
+    preamble_words: int,
+    primary_after_words: int,
+    pid: str = "c13",
+    stop_idx: int = 0,
+) -> tuple[list[Sentence], ScriptPOI]:
+    """One stop: ``preamble_words`` of glue (a recap), then ``primary_after_words`` of
+    OTHER beats' text, then the primary beat's sentence, then a tail. The primary beat
+    is ``beat_ids[0]`` of the ScriptPOI — the first of the capped plan."""
+    primary = f"{pid}-primary"
+    other = f"{pid}-other"
+    sents: list[Sentence] = []
+    if preamble_words:
+        sents.append(
+            Sentence(
+                text=_words(preamble_words, prefix=f"{pid}recap"),
+                source_id="GLUE_REFLECTION",
+                source_type="glue",
+                stop_idx=stop_idx,
+            )
+        )
+    if primary_after_words:
+        sents.append(
+            Sentence(
+                text=_words(primary_after_words, prefix=f"{pid}other"),
+                source_id=other,
+                source_type="beat",
+                stop_idx=stop_idx,
+            )
+        )
+    sents.append(
+        Sentence(
+            text=_words(12, prefix=f"{pid}point"),
+            source_id=primary,
+            source_type="beat",
+            stop_idx=stop_idx,
+        )
+    )
+    sents.append(
+        Sentence(
+            text=_words(40, prefix=f"{pid}tail"),
+            source_id=other,
+            source_type="beat",
+            stop_idx=stop_idx,
+        )
+    )
+    lat, lng = _coords(pid)
+    spoi = ScriptPOI(
+        id=pid, name=pid, tier=5, lat=lat, lng=lng, beat_ids=(primary, other)
+    )
+    return sents, spoi
+
+
+def test_c13_point_first_warns_when_the_story_starts_late_or_the_primary_beat_lands_late():
+    """Design §5.2 / W6.2 R1. A stop that opens with a 60-word recap (the measured FD
+    stop 4: 44 s of "think back over where we've walked") WARNs on its preamble; a stop
+    whose primary beat is first cited 150 words into the story WARNs on its point; a
+    stop that places the listener in one sentence and lands its primary beat inside the
+    first hundred words is silent. UNDO: drop C13 from score_tour -> RED."""
+    from src.tour.quality_rubric import (
+        POINT_FIRST_PREAMBLE_MAX_WORDS,
+        POINT_FIRST_STORY_WORDS,
+    )
+
+    # (i) the recap preamble
+    sents, spoi = _c13_stop(preamble_words=60, primary_after_words=0)
+    report = score_tour(_script(sents, [spoi]), _route([_poi("c13")]), {})
+    c13 = [f for f in report.findings if f.check == "C13-point-late"]
+    assert c13 and c13[0].severity is Severity.WARN, _checks(report)
+    assert "recap" in c13[0].message or "before the story" in c13[0].message, c13[0].message
+    assert POINT_FIRST_PREAMBLE_MAX_WORDS < 60
+
+    # (ii) the primary beat lands late
+    sents, spoi = _c13_stop(preamble_words=8, primary_after_words=150, pid="c13b")
+    report = score_tour(_script(sents, [spoi]), _route([_poi("c13b")]), {})
+    c13 = [f for f in report.findings if f.check == "C13-point-late"]
+    assert c13 and c13[0].severity is Severity.WARN, _checks(report)
+    assert "primary" in c13[0].message, c13[0].message
+    assert POINT_FIRST_STORY_WORDS < 150
+
+    # point first: one placing sentence, the primary beat at word 30 -> silent
+    sents, spoi = _c13_stop(preamble_words=8, primary_after_words=30, pid="c13c")
+    report = score_tour(_script(sents, [spoi]), _route([_poi("c13c")]), {})
+    assert "C13-point-late" not in _checks(report), _checks(report)
+
+
+def test_c13_skips_stops_with_no_story_and_the_pinned_end_sentinel():
+    """A rest (no beats) and the content-free pinned endpoint have no point to land;
+    C13 says nothing about them (C6 owns the empty stop)."""
+    from src.tour.generation import _END_B_SENTINEL_PREFIX
+
+    rest = ScriptPOI(id="bench", name="Bench", tier=1, lat=48.851, lng=2.35, beat_ids=())
+    end = ScriptPOI(
+        id=f"{_END_B_SENTINEL_PREFIX}x", name="Your finish point", tier=3, lat=48.852, lng=2.35
+    )
+    sents = [
+        Sentence(
+            text="Walk on for a minute.", source_id="GLUE_NAV", source_type="glue", stop_idx=0
+        ),
+        Sentence(
+            text="From here, make your way to your final destination.",
+            source_id="GLUE_NAV",
+            source_type="glue",
+            stop_idx=1,
+        ),
+    ]
+    report = score_tour(_script(sents, [rest, end]), _route([_poi("bench"), _poi("end")]), {})
+    assert "C13-point-late" not in _checks(report), _checks(report)

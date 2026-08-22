@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -138,6 +139,7 @@ class TourPlaybackService extends ChangeNotifier {
   // sentence EXPIRES undelivered — R3); the question is the one line that
   // survives to the next moment, said once (R2.5, R4).
   String? _queuedLine;
+  String? _queuedLineAudioUrl; // S6.8: the line's pre-voiced file, when it has one
   bool _queuedIsQuestion = false;
   bool _questionSpoken = false;
   final List<String> _spoken = [];
@@ -169,6 +171,24 @@ class TourPlaybackService extends ChangeNotifier {
   String? _screenText;
   String? _pendingQuestion;
 
+  // ---- Phase 6 S6.4: the CLOSE (design §5.3; W6.2 R8) ----------------------
+  // [Head back now] is the seam the person made: the current SENTENCE finishes,
+  // the piece does not; then the stretch's close — one line — then the way home
+  // on the screen; then nothing. The close is narrator CONTENT: it plays as its
+  // own pre-voiced file when the wire carries one (S6.8), else it is handed to
+  // the one door and is on the screen either way (§4.4.2).
+  String? _closeLine;
+  String? _threadLine;
+  final List<String> _closesPlayed = [];
+  Timer? _sentenceEndTimer;
+  ItineraryStop? _closePending;
+  bool _closePendingIsFull = false; // S6.6/S6.8: the pending cut is a FULL piece
+
+  /// Seconds a tapped piece may keep playing to reach its sentence end before
+  /// it is cut anyway — a person who tapped is not made to wait out a
+  /// forty-second sentence (Fiona: "five seconds is the whole budget").
+  static const int kSentenceEndCapSeconds = 12;
+
   VoidCallback? _locationListener;
   VoidCallback? _audioListener;
 
@@ -194,6 +214,68 @@ class TourPlaybackService extends ChangeNotifier {
   String? get screenText => _screenText;
   /// The ONE question, when a selected entry carries one (§4.2); null otherwise.
   String? get pendingQuestion => _pendingQuestion;
+  /// The close the last wrap-up put on the screen (S6.4) — the stretch's own
+  /// line, or the day's when no piece was playing. Null until a wrap-up.
+  String? get closeLine => _closeLine;
+
+  /// S6.5 (W6.2 R5): the THREAD of the pair the session just made — one
+  /// sentence, on screen through the leg, spoken once at a standing seam.
+  String? get threadLine => _threadLine;
+
+  /// S6.6 (design §5.5; W6.2 R3, 9/11 by name): THE LINGER RULE — a linger
+  /// OFFERS the full telling on the screen, silently; a TAP plays it. Never
+  /// auto-play on stillness. The offer shows only at a standing seam INSIDE the
+  /// stop's circle, after the stop's own tight piece ended on its own — never
+  /// while paused, never mid-piece, never at an unplanned place (only planned
+  /// stops carry a full telling), and it names its cost (Marcus: "Full telling
+  /// · 7 min"). Null when the stop has no authored full telling: the offer
+  /// simply never appears there.
+  String? get fullTellingOffer {
+    final stop = _offeredFullStop();
+    if (stop == null) return null;
+    return 'Full telling · ${stop.fullTellingMinutes} min';
+  }
+
+  ItineraryStop? _offeredFullStop() {
+    if (!isNaturalMoment) return null;
+    final fix = _lastFix;
+    if (fix == null) return null;
+    final stop = _stopUnderfoot(fix);
+    if (stop == null || stop.fullNarration == null) return null;
+    final key = _audioKeyOf(stop);
+    // The tight telling comes first: no offer before its piece has ENDED on its
+    // own (isNaturalMoment's not-begun arm must not offer).
+    if (key == null || !_played.contains(key) || !_pieceEndedNaturally) return null;
+    return stop;
+  }
+
+  /// The TAP on the offer: play the voiced full telling (the on-demand door's
+  /// artifact — S6.6 makes it the authored full telling, never the raw dump).
+  /// A second piece at this stop, through the player's own door.
+  void playFullTelling(String audioUrl, {num? durationSec}) {
+    final stop = _offeredFullStop();
+    if (stop == null) return;
+    _pieceEndedNaturally = false;
+    _fullPieceDurationSec = durationSec;
+    _audioService.play('${_audioKeyOf(stop)!}-full', audioUrl, isDeeperDive: true);
+    notifyListeners();
+  }
+
+  num? _fullPieceDurationSec; // S6.8: the playing full telling's length
+
+  /// "AGAIN" is a separate control from "more" (W6.2 R3, 8 personas by name:
+  /// the re-listen is not the full telling): replay THIS stop's tight piece.
+  void playAgain() {
+    final fix = _lastFix;
+    final stop = fix == null ? null : _stopUnderfoot(fix);
+    if (stop == null || stop.audioUrl == null) return;
+    _pieceEndedNaturally = false;
+    _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!);
+    notifyListeners();
+  }
+  /// Every close this session played or said, in order (for the screen's
+  /// record and for tests).
+  List<String> get closesPlayed => List.unmodifiable(_closesPlayed);
 
   TourPlaybackService({
     required LocationProvider locationService,
@@ -340,7 +422,14 @@ class TourPlaybackService extends ChangeNotifier {
     _lastSkippedPoiId = null;
     _wrapUpRequested = false;
     _clockNotices.clear();
+    _closeLine = null;
+    _threadLine = null;
+    _closesPlayed.clear();
+    _sentenceEndTimer?.cancel();
+    _sentenceEndTimer = null;
+    _closePending = null;
     _queuedLine = null;
+    _queuedLineAudioUrl = null;
     _queuedIsQuestion = false;
     _questionSpoken = false;
     _spoken.clear();
@@ -383,6 +472,9 @@ class TourPlaybackService extends ChangeNotifier {
     }
     _locationService.stopTracking();
     _audioService.stop();
+    _sentenceEndTimer?.cancel();
+    _sentenceEndTimer = null;
+    _closePending = null;
     _stops = [];
     _planned = [];
     _currentStopIndex = -1;
@@ -555,14 +647,24 @@ class TourPlaybackService extends ChangeNotifier {
     _queuedLine = null;
     if (_queuedIsQuestion) _questionSpoken = true;
     _queuedIsQuestion = false;
-    _spoken.add(line);
-    _audioService.speak(line);
+    // S6.8 (owner ruling: the tour's own voice): a line with a pre-voiced file
+    // plays through the narrator's door; only file-less lines use the plain
+    // voice. Same seam, same etiquette either way.
+    final url = _queuedLineAudioUrl;
+    _queuedLineAudioUrl = null;
+    if (url != null) {
+      _audioService.play('session-line', url, isDeeperDive: true);
+    } else {
+      _spoken.add(line);
+      _audioService.speak(line);
+    }
     notifyListeners();
   }
 
-  void _queue(String line, {required bool isQuestion}) {
+  void _queue(String line, {required bool isQuestion, String? audioUrl}) {
     if (_queuedIsQuestion && !isQuestion) return; // the question outranks
     _queuedLine = line;
+    _queuedLineAudioUrl = audioUrl;
     _queuedIsQuestion = isQuestion;
     if (isQuestion) _questionSpoken = false;
     _drainSpeech();
@@ -896,6 +998,9 @@ class TourPlaybackService extends ChangeNotifier {
     } else if (_queuedIsQuestion == false) {
       _queuedLine = null; // a superseded fabric line expires unsaid (R3)
     }
+    if (entry.kind == 'wrap_up_from') {
+      _wrapUp(entry);
+    }
     if (entry.question == null) {
       _reorderRemaining(entry, entry.stopIds);
     } else if (entry.defaultArm == 'shorten') {
@@ -927,6 +1032,199 @@ class TourPlaybackService extends ChangeNotifier {
       _queuedIsQuestion = false;
     }
     _reorderRemaining(entry, chosen);
+    notifyListeners();
+  }
+
+  // ---- S6.4: the tap is the seam -------------------------------------------
+
+  /// Seconds from [position] to the END OF THE CURRENT SENTENCE of [stop]'s
+  /// piece — arithmetic over the stop's own narration (its word count per
+  /// sentence against the file's length), capped at [kSentenceEndCapSeconds].
+  /// Zero when the stop carries no narration or no length, or the position is
+  /// past the last boundary. THE phone's one way of finding a sentence end
+  /// (W6.2 R8: "the current sentence finishes — never a cut word").
+  @visibleForTesting
+  static double secondsToSentenceEnd(ItineraryStop stop, Duration position) {
+    final text = stop.narration;
+    final length = stop.audioDurationSec;
+    if (text == null || text.trim().isEmpty || length == null || length <= 0) {
+      return 0;
+    }
+    final sentences = text
+        .split(RegExp(r'(?<=[.!?])\s+'))
+        .where((s) => s.trim().isNotEmpty)
+        .toList();
+    final words = sentences.map((s) => s.trim().split(RegExp(r'\s+')).length).toList();
+    final total = words.fold<int>(0, (a, b) => a + b);
+    if (total == 0) return 0;
+    final at = position.inMilliseconds / 1000.0;
+    var cumulative = 0;
+    for (final w in words) {
+      cumulative += w;
+      final boundary = length * cumulative / total;
+      if (boundary > at) {
+        return min(boundary - at, kSentenceEndCapSeconds.toDouble());
+      }
+    }
+    return 0;
+  }
+
+  /// [Head back now] applied (the matched wrap-up entry): if THIS stop's piece
+  /// is playing, let its sentence end, then cut it and play the stop's close;
+  /// if nothing is playing, the DAY's close (the last planned stop's) goes on
+  /// the screen at once and is said at the next natural moment. The way home
+  /// is the entry's screen line and is never spoken. Nothing else follows.
+  void _wrapUp(SessionContingency entry) {
+    final stop = currentStop;
+    // S6.6/S6.8: the FULL TELLING is a stretch of its own (§7.4.5 — every
+    // prefix ends decently): a tap mid-full finishes ITS sentence by ITS own
+    // arithmetic and plays ITS close. The playing KEY names its stop — the
+    // tour pointer may already sit a stop ahead (the tight completing advances
+    // it while the person lingers where they stand).
+    ItineraryStop? fullStop;
+    if (_audioService.isPlaying) {
+      final playingKey = _audioService.currentBeatId;
+      for (final s in _planned) {
+        final k = _audioKeyOf(s);
+        if (k != null && playingKey == '$k-full') {
+          fullStop = s;
+          break;
+        }
+      }
+    }
+    if (fullStop != null && (fullStop.fullCloseText ?? '').isNotEmpty) {
+      _closeLine = fullStop.fullCloseText;
+      _closePending = fullStop;
+      _closePendingIsFull = true;
+      final wait = secondsToSentenceEnd(
+        _fullArithmeticStop(fullStop),
+        _audioService.position,
+      );
+      _sentenceEndTimer?.cancel();
+      if (wait <= 0) {
+        finishSentenceNow();
+      } else {
+        _sentenceEndTimer = Timer(
+          Duration(milliseconds: (wait * 1000).round()),
+          finishSentenceNow,
+        );
+      }
+      return;
+    }
+    final playingThis = stop != null &&
+        _audioService.isPlaying &&
+        _audioService.currentBeatId == _audioKeyOf(stop) &&
+        (stop.closeText ?? '').isNotEmpty;
+    if (playingThis) {
+      _closeLine = stop.closeText;
+      _closePending = stop;
+      final wait = secondsToSentenceEnd(stop, _audioService.position);
+      _sentenceEndTimer?.cancel();
+      if (wait <= 0) {
+        finishSentenceNow();
+      } else {
+        _sentenceEndTimer = Timer(
+          Duration(milliseconds: (wait * 1000).round()),
+          finishSentenceNow,
+        );
+      }
+      return;
+    }
+    // No piece playing: the day's close — the last planned stop's — on screen
+    // now; said at the next natural moment (never on a leg, §4.4.1), through
+    // the queue like every session line. A stale queued fabric line expires.
+    final last = _planned.isNotEmpty ? _planned.last : stop;
+    final dayClose = last?.closeText ?? stop?.closeText;
+    if (dayClose == null || dayClose.isEmpty) return;
+    _closeLine = dayClose;
+    if (!_queuedIsQuestion) {
+      _queuedLine = dayClose;
+      // S6.8: the day's close in the narrator's own voice when the wire
+      // carries its file.
+      _queuedLineAudioUrl =
+          (last?.closeText == dayClose ? last?.closeAudioUrl : stop?.closeAudioUrl);
+      _queuedIsQuestion = false;
+    }
+    _closesPlayed.add(dayClose);
+    _drainSpeech();
+  }
+
+  /// The sentence end has come (or the cap): cut the piece and play the close.
+  /// Public so a test — and the timer — reach the same door.
+  @visibleForTesting
+  void finishSentenceNow() {
+    _sentenceEndTimer?.cancel();
+    _sentenceEndTimer = null;
+    final stop = _closePending;
+    final wasFull = _closePendingIsFull;
+    _closePending = null;
+    _closePendingIsFull = false;
+    if (stop == null) return;
+    final key = _audioKeyOf(stop);
+    final playingKey = wasFull && key != null ? '$key-full' : key;
+    if (_audioService.isPlaying && _audioService.currentBeatId == playingKey) {
+      _audioService.stop();
+    }
+    _pieceEndedNaturally = false; // a cut is not a seam for anything else (R3)
+    if (wasFull) {
+      _playFullClose(stop);
+    } else {
+      _playClose(stop);
+    }
+  }
+
+  /// S6.6/S6.8: the full telling's own close — its file through the narrator's
+  /// door when voiced, else the one silent door; on the screen either way.
+  void _playFullClose(ItineraryStop stop) {
+    final text = stop.fullCloseText;
+    if (text == null || text.isEmpty) return;
+    _closeLine = text;
+    _closesPlayed.add(text);
+    final key = _audioKeyOf(stop);
+    final url = stop.fullCloseAudioUrl;
+    if (url != null && key != null) {
+      _audioService.play('$key-full-close', url, isDeeperDive: true);
+    } else {
+      _spoken.add(text);
+      _audioService.speak(text);
+    }
+    notifyListeners();
+  }
+
+  /// The close of [stop]: its pre-voiced file through the narrator's own door
+  /// when the wire carries one (S6.8 — keyed `<stop>-close`, played as a deeper
+  /// dive so completion never auto-advances the tour), else said through the
+  /// one silent door; on the screen already either way (§4.4.2).
+  /// The full telling's sentence arithmetic rides the SAME static function as
+  /// the tight's, over the full's own text and length (S6.6/S6.8).
+  ItineraryStop _fullArithmeticStop(ItineraryStop stop) => ItineraryStop(
+        sortOrder: stop.sortOrder,
+        poiId: stop.poiId,
+        poiName: stop.poiName,
+        lat: stop.lat,
+        lng: stop.lng,
+        lensName: stop.lensName,
+        lensDisplay: stop.lensDisplay,
+        durationMin: stop.durationMin,
+        importanceTier: stop.importanceTier,
+        startTime: stop.startTime,
+        narration: stop.fullNarration,
+        audioDurationSec: _fullPieceDurationSec?.toDouble(),
+      );
+
+  void _playClose(ItineraryStop stop) {
+    final text = stop.closeText;
+    if (text == null || text.isEmpty) return;
+    _closeLine = text;
+    _closesPlayed.add(text);
+    final key = _audioKeyOf(stop);
+    final url = stop.closeAudioUrl;
+    if (url != null && key != null) {
+      _audioService.play('$key-close', url, isDeeperDive: true);
+    } else {
+      _spoken.add(text);
+      _audioService.speak(text);
+    }
     notifyListeners();
   }
 
@@ -970,6 +1268,34 @@ class TourPlaybackService extends ChangeNotifier {
     if (_currentStopIndex >= _stops.length) {
       _currentStopIndex = _stops.length - 1;
     }
+    _threadForNewPair(entry, keepCount);
+  }
+
+  /// S6.5 (design §5.4; W6.2 R5, 11/11): when a reorder makes two stops
+  /// consecutive that the plan never had consecutive, the writer's THREAD for
+  /// that pair — authored at compose time, riding the arriving stop as
+  /// `threadLines[predecessor name]` — goes on the screen for the whole leg
+  /// and into the speech queue for the next standing seam (departure; the one
+  /// lost on the move is waiting at the standstill). The pair the plan already
+  /// had keeps its thread inside the arriving stop's own narration. No line
+  /// for the pair means silence — none rather than glue. A wrap-up threads
+  /// nothing: the close owns that seam (R8), and the question outranks the
+  /// thread in the queue (R2.5).
+  void _threadForNewPair(SessionContingency entry, int keepCount) {
+    _threadLine = null;
+    if (entry.kind == 'wrap_up_from') return;
+    if (keepCount <= 0 || keepCount >= _stops.length) return;
+    final from = _stops[keepCount - 1];
+    final next = _stops[keepCount];
+    final plannedIdx = _planned.indexWhere((s) => s.poiId == from.poiId);
+    final plannedNext = plannedIdx >= 0 && plannedIdx + 1 < _planned.length
+        ? _planned[plannedIdx + 1]
+        : null;
+    if (plannedNext != null && plannedNext.poiId == next.poiId) return;
+    final line = next.threadLines?[from.poiName];
+    if (line == null || line.isEmpty) return;
+    _threadLine = line;
+    _queue(line, isQuestion: false, audioUrl: next.threadAudioUrls?[from.poiName]);
   }
 
   /// Prefetch the audio of every stop the held session may play (design §4.7:
@@ -1128,6 +1454,7 @@ class TourPlaybackService extends ChangeNotifier {
     final stop = _stops[_currentStopIndex];
     if (stop.audioUrl != null) {
       _startTourClockIfNeeded(); // the first play starts the tour clock (R1.3)
+      _threadLine = null; // the leg is over: the next story begins (S6.5)
       _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!);
       _state = TourState.active;
       notifyListeners();

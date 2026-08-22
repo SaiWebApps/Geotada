@@ -25,7 +25,6 @@ from src.tour.contract import (
 )
 from src.tour.generation import (
     FORBIDDEN_PHRASES,
-    GLUE_CLOSING,
     GLUE_LABELS,
     GLUE_NAV,
     GLUE_PACING,
@@ -678,58 +677,6 @@ def test_transit_glue_falls_back_to_default_on_no_glue_sentinel():
     nav = next(s for s in script.script if s.source_id == GLUE_NAV)
     # Default carries the next-stop name; no factual claim invented.
     assert "Stop B" in nav.text
-
-
-# ---------------------------------------------------------------------------
-# Closing
-# ---------------------------------------------------------------------------
-
-
-def test_closing_round_trip_single_stop_uses_circled_phrase():
-    poi = _poi("p1", "Place des Vosges")
-    orient = _beat("o", poi.id, body="Find a bench.", nf="stop_orientation")
-    body = _beat("b", poi.id, body="Henri IV built it.")
-    seq = BeatSequence(
-        poi_beats=(
-            POIBeats(
-                poi_id=poi.id,
-                poi_name=poi.name,
-                ordering_strategy="trigger_address",
-                beats=(orient, body),
-            ),
-        )
-    )
-    script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
-    closing = next(s for s in script.script if s.source_id == GLUE_CLOSING)
-    assert closing.text == "And that completes our circle of Place des Vosges."
-    # A warm sign-off (thanks + hand-off) follows so the tour ENDS, not just stops.
-    signoff = [s for s in script.script if s.source_id == GLUE_CLOSING][-1]
-    assert "Thank you" in signoff.text and "exploring on your own" in signoff.text
-
-
-def test_closing_oneway_no_thematic_summary():
-    p1 = _poi("p1", "Pont Neuf")
-    p2 = _poi("p2", "Notre-Dame Cathedral")
-    o = _beat("o", p1.id, body="Stand on the bridge.", nf="stop_orientation")
-    seq = BeatSequence(
-        poi_beats=(
-            POIBeats(
-                poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o,)
-            ),
-            POIBeats(
-                poi_id=p2.id,
-                poi_name=p2.name,
-                ordering_strategy="sub_location",
-                beats=(_beat("nd", p2.id, body="The cathedral, a Gothic masterpiece, rears up."),),
-            ),
-        )
-    )
-    script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=MockGlueClient())
-    closing = next(s for s in script.script if s.source_id == GLUE_CLOSING)
-    assert closing.text == "And that brings our walk to a close."
-    # The physical-closure phrase is followed by a warm guide sign-off + thanks.
-    signoff = [s for s in script.script if s.source_id == GLUE_CLOSING][-1]
-    assert "Thank you" in signoff.text and "keep exploring on your own" in signoff.text
 
 
 # ---------------------------------------------------------------------------

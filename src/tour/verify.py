@@ -29,7 +29,7 @@ from typing import Protocol
 from rapidfuzz import fuzz
 
 from .contract import BeatRef, BeatSequence, Script, Sentence
-from .generation import GLUE_REFLECTION, split_sentences
+from .generation import GLUE_CLOSING, GLUE_REFLECTION, is_fallback_close, split_sentences
 
 # A verbatim passage present in its chunk scores ~100 (partial_ratio is
 # substring-tolerant); 88 leaves headroom for whitespace/punctuation drift
@@ -163,6 +163,30 @@ def _visited_claims(
     return tuple(out)
 
 
+def _own_stop_support(
+    script: Script, beats_by_id: dict[str, BeatRef], stop_idx: int
+) -> tuple[str, ...]:
+    """The claims AND bodies of every beat cited AT ``stop_idx`` — what a close may land
+    (Phase 6 S6.4). The reflection's `_visited_claims` looks strictly BEFORE a stop;
+    a close looks at its own."""
+    cited: list[str] = []
+    for sentence in script.script:
+        if sentence.stop_idx != stop_idx or sentence.source_type != "beat":
+            continue
+        for bid in sentence.cited_beat_ids:
+            if bid not in cited:
+                cited.append(bid)
+    support: list[str] = []
+    for bid in cited:
+        beat = beats_by_id.get(bid)
+        if beat is None:
+            continue
+        support.extend(beat.key_claims)
+        if beat.script_body:
+            support.append(beat.script_body)
+    return tuple(support)
+
+
 def _normalize_for_verbatim(text: str) -> str:
     """Whitespace/case-fold so 'appears verbatim in the source' is robust to
     line wrapping and trivial spacing differences."""
@@ -197,11 +221,41 @@ def verify_faithfulness(
     checks: list[tuple[Sentence, tuple[str, ...] | None, str]] = []
     for sentence in script.script:
         if sentence.source_type == "glue" and sentence.source_id == GLUE_REFLECTION:
+            # Phase 6 S6.5 (design §5.4; W6.2 R1/R5): the slot holds THE THREAD — one
+            # sentence binding THIS stop to the walk through ONE fact of this stop,
+            # never a recap. Its support is what the walker has heard PLUS the
+            # arriving stop's own beats: Phase 4's visited-only window was the
+            # recap's, and it ruled the thread's defining fact inadmissible by
+            # construction. Still fail-closed on an empty union: an unverifiable
+            # line never ships.
             claims = _visited_claims(script, beats_by_id, sentence.stop_idx)
-            if not claims:
-                checks.append((sentence, None, "unverifiable_reflection:no_visited_claims"))
+            own = _own_stop_support(script, beats_by_id, sentence.stop_idx)
+            support = (*claims, *(piece for piece in own if piece not in claims))
+            if not support:
+                checks.append((sentence, None, "unverifiable_reflection:no_support"))
             else:
-                checks.append((sentence, claims, "unfaithful_reflection"))
+                checks.append((sentence, support, "unfaithful_reflection"))
+            continue
+        if sentence.source_type == "glue" and sentence.source_id == GLUE_CLOSING:
+            # Phase 6 S6.4 (design §5.3): an AUTHORED close lands only what ITS stop
+            # voiced — entailed against the claims and bodies of the beats cited at its
+            # own stop, the reflection's rule turned inward. The stitch's fallback
+            # template carries no fact and is exempt (never sent to the checker).
+            poi_name = (
+                script.selected_pois[sentence.stop_idx].name
+                if sentence.stop_idx < len(script.selected_pois)
+                else ""
+            )
+            if is_fallback_close(
+                sentence.text,
+                script.inputs,
+                poi_name=poi_name,
+                n_stops=len(script.selected_pois),
+            ):
+                continue
+            support = _own_stop_support(script, beats_by_id, sentence.stop_idx)
+            if support:
+                checks.append((sentence, support, "unfaithful_close"))
             continue
         if sentence.source_type != "beat":
             continue

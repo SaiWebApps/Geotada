@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import tempfile
 import time
@@ -796,6 +797,99 @@ def generate_audio_for_trip(
     )
 
 
+def _voice_session_lines(
+    session,
+    stop: dict,
+    *,
+    provider_name: str | None,
+    voice_id: str | None,
+    force: bool,
+) -> None:
+    """Voice one stop's authored session lines (Phase 6 S6.8) — see the caller."""
+    from src.tour.degradations import record
+
+    stop_id = stop["stop_id"]
+
+    def _voice_one(text: str, key: str) -> str | None:
+        try:
+            gen = generate_stop_audio(
+                text,
+                stop_key=key,
+                poi_name=stop.get("poi_name"),
+                provider_name=provider_name,
+                voice_id=voice_id,
+            )
+            return gen.audio_url
+        except PipelineError as exc:
+            record(
+                kind="session_line_not_voiced",
+                human=(
+                    "One short spoken line (a stop's goodbye or bridge line) could "
+                    "not be recorded; the phone will say it in the plain voice."
+                ),
+                component="audio._voice_session_lines",
+                cause=f"{key}: {exc}",
+                stop_index=stop_id,
+            )
+            return None
+
+    for text_field, url_field, hash_field, key_suffix in (
+        ("close_text", "close_audio_url", "close_audio_hash", "close"),
+        ("full_close_text", "full_close_audio_url", "full_close_audio_hash", "full-close"),
+    ):
+        text = stop.get(text_field)
+        if not text or not str(text).strip():
+            continue
+        line_hash = _stop_narration_hash(text, provider_name, voice_id)
+        if (
+            stop.get(url_field)
+            and stop.get(hash_field) == line_hash
+            and not force
+            and not _artifact_missing(stop[url_field])
+        ):
+            continue
+        url = _voice_one(text, f"{stop_id}-{key_suffix}")
+        if url is not None:
+            session.run(
+                f"MATCH (i:ItineraryItem {{id: $sid}}) "
+                f"SET i.{url_field} = $url, i.{hash_field} = $hash",
+                sid=stop_id,
+                url=url,
+                hash=line_hash,
+            )
+
+    raw_threads = stop.get("thread_lines")
+    if raw_threads:
+        try:
+            threads = json.loads(raw_threads)
+        except (TypeError, ValueError):
+            threads = {}
+        if threads:
+            combined_hash = _stop_narration_hash(
+                json.dumps(threads, sort_keys=True, ensure_ascii=False),
+                provider_name,
+                voice_id,
+            )
+            if not (
+                stop.get("thread_audio_urls")
+                and stop.get("thread_audio_hash") == combined_hash
+                and not force
+            ):
+                urls: dict[str, str] = {}
+                for from_name, text in threads.items():
+                    url = _voice_one(text, f"{stop_id}-thread-{abs(hash(from_name)) % 10**8}")
+                    if url is not None:
+                        urls[from_name] = url
+                if urls:
+                    session.run(
+                        "MATCH (i:ItineraryItem {id: $sid}) "
+                        "SET i.thread_audio_urls = $urls, i.thread_audio_hash = $hash",
+                        sid=stop_id,
+                        urls=json.dumps(urls, ensure_ascii=False),
+                        hash=combined_hash,
+                    )
+
+
 @router.post(
     "/audio/generate-trip-stops/{trip_id}",
     response_model=TripStopAudioGenerateResponse,
@@ -828,6 +922,15 @@ def generate_stop_audio_for_trip(
                item.narration AS narration,
                item.audio_url AS audio_url,
                item.audio_script_hash AS audio_script_hash,
+               item.close_text AS close_text,
+               item.close_audio_url AS close_audio_url,
+               item.close_audio_hash AS close_audio_hash,
+               item.full_close_text AS full_close_text,
+               item.full_close_audio_url AS full_close_audio_url,
+               item.full_close_audio_hash AS full_close_audio_hash,
+               item.thread_lines AS thread_lines,
+               item.thread_audio_urls AS thread_audio_urls,
+               item.thread_audio_hash AS thread_audio_hash,
                poi.name AS poi_name
         ORDER BY item.sort_order
         """,
@@ -898,6 +1001,22 @@ def generate_stop_audio_for_trip(
             StopAudioResultItem(stop_id=stop_id, status="generated", audio_url=gen.audio_url)
         )
 
+    # Phase 6 S6.8 (W6.2 R6a, 11/0; owner ruling 2026-08-19: the tour's own voice,
+    # never the robot). The AUTHORED SESSION LINES ride the same voicing pass as
+    # their own small artifacts — each stop's close, its thread lines, the full
+    # telling's close — hash-guarded exactly like the narration, so a line is
+    # billed once. The contingency set's fixed lines ("Next: X") stay SCREEN-ONLY
+    # (R6, 8/11) and are never sent here. A failed line leaves its url null (the
+    # phone falls back to the plain spoken line) and is recorded, never silent.
+    for stop in stops:
+        _voice_session_lines(
+            session,
+            stop,
+            provider_name=provider_name,
+            voice_id=voice_id,
+            force=force,
+        )
+
     return TripStopAudioGenerateResponse(
         trip_id=trip_id,
         generated=sum(1 for r in results if r.status == "generated"),
@@ -964,6 +1083,7 @@ def keep_exploring_stop_audio(
         "MATCH (i:ItineraryItem {id: $sid}) "
         "OPTIONAL MATCH (i)-[:AT_POI]->(poi:POI) "
         "RETURN i.extra_narration AS extra_narration, poi.name AS poi_name, "
+        "       i.full_narration AS full_narration, "
         "       i.keep_exploring_audio_url AS ke_url, "
         "       i.keep_exploring_audio_duration_sec AS ke_dur, "
         "       i.keep_exploring_audio_hash AS ke_hash",
@@ -972,7 +1092,11 @@ def keep_exploring_stop_audio(
     if rec is None:
         raise HTTPException(404, f"Stop '{stop_id}' not found")
 
-    narration = rec["extra_narration"]
+    # Phase 6 S6.6 (W6.2 R3, 11/11 "a dump, not a telling"): a MAJOR stop's tap
+    # for more plays THE FULL TELLING — the writer's second composed piece with
+    # its own close — never the raw keep-exploring stitch. Stops without an
+    # authored full telling keep the on-demand extras route exactly as before.
+    narration = rec["full_narration"] or rec["extra_narration"]
     if not narration or not narration.strip():
         raise HTTPException(409, f"Stop '{stop_id}' has no keep-exploring extras")
 

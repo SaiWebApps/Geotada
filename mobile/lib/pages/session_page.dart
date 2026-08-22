@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
+import 'package:ondoway/services/trip_service.dart';
 
 /// THE MINIMAL SESSION SCREEN (Phase 5 S5.11; plan defect 12 — the phone had no
 /// playback screen). It RENDERS what [TourPlaybackService] holds and decides
@@ -128,6 +129,51 @@ class _SessionPageState extends State<SessionPage> {
                       key: const Key('session-finish-line'),
                       style: text.titleMedium),
                 ),
+              // Phase 6 S6.4 (design §5.3, §5.7): the close the wrap-up put on
+              // the screen — the stretch's own line, or the day's — shown before
+              // the way home; it is the one sentence the tap buys (W6.2 R8).
+              if (service.closeLine != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: Text(service.closeLine!,
+                      key: const Key('session-close-line'),
+                      style: text.titleMedium),
+                ),
+              // Phase 6 S6.5 (design §5.4, §5.7; W6.2 R5): the thread of the
+              // pair the session just made — on screen for the whole leg, so
+              // the one lost on the move is waiting at the standstill.
+              if (service.threadLine != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: Text(service.threadLine!,
+                      key: const Key('session-thread-line'),
+                      style: text.titleMedium),
+                ),
+              // Phase 6 S6.6 (design §5.5; W6.2 R3): the LINGER OFFER — on the
+              // screen, silently, with its cost; a tap plays the full telling.
+              // "Again" is a separate control: the re-listen is not the full
+              // telling.
+              if (service.fullTellingOffer != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: Row(children: [
+                    Expanded(
+                      child: FilledButton.tonalIcon(
+                        key: const Key('session-full-offer'),
+                        onPressed: () => _playFullTelling(context, service),
+                        icon: const Icon(Icons.auto_stories_outlined),
+                        label: Text(service.fullTellingOffer!),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    IconButton(
+                      key: const Key('session-again'),
+                      onPressed: service.playAgain,
+                      icon: const Icon(Icons.replay),
+                      tooltip: 'Again',
+                    ),
+                  ]),
+                ),
               if (service.screenText != null && service.screenText != question)
                 Padding(
                   padding: const EdgeInsets.only(top: 14),
@@ -185,7 +231,11 @@ class _SessionPageState extends State<SessionPage> {
                       key: const Key('session-head-back'),
                       onPressed: () => _headBackNow(context, service),
                       icon: const Icon(Icons.home_outlined),
-                      label: const Text('Head back now'),
+                      // On an open walk there is no "back" (W6.2 R8, Fiona &
+                      // Dev: "the button is misnamed — call it Wrap up").
+                      label: Text(service.session?.finishLat == null
+                          ? 'Wrap up'
+                          : 'Head back now'),
                     ),
                   ),
                 ],
@@ -195,6 +245,26 @@ class _SessionPageState extends State<SessionPage> {
         ),
       ),
     );
+  }
+
+  /// The tap on the offer (S6.6): voice the full telling through the on-demand
+  /// door (which now serves the AUTHORED full telling, never the raw extras
+  /// dump) and play it as a second piece at this stop.
+  static Future<void> _playFullTelling(
+      BuildContext context, TourPlaybackService service) async {
+    final stop = service.currentStop;
+    if (stop == null) return;
+    final tripService = context.read<TripService>();
+    try {
+      final result = await tripService.generateDeeperDiveAudio(
+        stop.stopId ?? stop.beatId ?? stop.poiId,
+      );
+      final url = result.audioUrl;
+      if (url == null) return;
+      service.playFullTelling(url, durationSec: result.durationSec);
+    } catch (_) {
+      // A flaky provider never crashes the session; the offer stays on screen.
+    }
   }
 
   /// The ONE question as two big buttons, the default named in words (R2.5).

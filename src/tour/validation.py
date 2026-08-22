@@ -28,9 +28,16 @@ time. Validation guards against runtime invention only.
 from __future__ import annotations
 
 import re
+import unicodedata
 
 from .contract import BeatSequence, Script, Sentence, ValidationReport
-from .generation import FORBIDDEN_PHRASES, GLUE_LABELS
+from .generation import (
+    FORBIDDEN_PHRASES,
+    FORWARD_PROMISE_PHRASES,
+    FORWARD_SIGHT_PHRASES,
+    GLUE_LABELS,
+    GLUE_NAV,
+)
 
 # Capitalized tokens past the first word are candidate proper nouns.
 # Limited to 3+ letters so single-letter "I" and "A" don't trip it. The
@@ -198,7 +205,24 @@ def _forbidden_phrase_hits(
     # engine's own choice from the corpus rather than anything glue made up.
     if spine_area:
         cited_proper_nouns |= _proper_nouns_in(spine_area)
+    # THE CITY'S OWN NAME AND DEMONYM ARE THE WALK'S VOCABULARY (Phase 6 W6.12,
+    # measured: "the height of Parisian luxury" in an authored close was refused as
+    # new_proper_noun:Parisian, three attempts, the day dead). The tour's own city
+    # can never be an invention.
+    cited_proper_nouns |= _city_vocabulary(script.city_slug)
     cited_years = set(_YEAR_RE.findall(cited_text))
+
+    # Phase 6 S6.5 (W6.2 R4): the names of stops LATER than each stop index — a
+    # "you'll see"-class phrase is a promise only when it points past the stop.
+    stop_names = [poi.name for poi in script.selected_pois]
+
+    def _names_a_later_stop(text: str, stop_idx: int) -> bool:
+        folded = _fold(text).lower()
+        return any(
+            _fold(name).lower() in folded
+            for name in stop_names[stop_idx + 1 :]
+            if name
+        )
 
     for sentence in script.script:
         if sentence.source_type == "beat":
@@ -208,11 +232,32 @@ def _forbidden_phrase_hits(
             if phrase in lower:
                 out.append((sentence, f"forbidden_phrase:{phrase}"))
 
-        # Proper-noun + year leakage in glue.
+        # Phase 6 S6.5 (W6.2 R4, LOCKED 8/11): a stop's text may NAME its neighbour
+        # as a fact but never PROMISE it — the session may trade the next stop away.
+        # GLUE_NAV is the map speaking ("Next, walk to X" is its job) and is exempt.
+        if sentence.source_id != GLUE_NAV:
+            for phrase in FORWARD_PROMISE_PHRASES:
+                if phrase in lower:
+                    out.append((sentence, f"forward_promise:{phrase}"))
+            for phrase in FORWARD_SIGHT_PHRASES:
+                if phrase in lower and _names_a_later_stop(sentence.text, sentence.stop_idx):
+                    out.append((sentence, f"forward_promise:{phrase}"))
+
+        # Proper-noun + year leakage in glue. GLUE_NAV is exempt from the
+        # proper-noun half (Phase 6 W6.12, measured: "Walk northwest along the
+        # Seine" was refused as new_proper_noun:Seine): the nav line is the MAP
+        # speaking — its nouns are places by nature, exactly as the
+        # forward-promise scan already treats it. Years and the phrase list
+        # still apply to it; story glue keeps the full scan.
+        if sentence.source_id == GLUE_NAV:
+            for year in _YEAR_RE.findall(sentence.text):
+                if year not in cited_years:
+                    out.append((sentence, f"new_year:{year}"))
+            continue
         for token in _proper_nouns_in(sentence.text, drop_first_word=True):
             if token.lower() in _SENTENCE_HEAD_WORDS:
                 continue
-            if token in cited_proper_nouns:
+            if _name_is_licensed(token, cited_proper_nouns):
                 continue
             out.append((sentence, f"new_proper_noun:{token}"))
         for year in _YEAR_RE.findall(sentence.text):
@@ -220,6 +265,71 @@ def _forbidden_phrase_hits(
                 continue
             out.append((sentence, f"new_year:{year}"))
     return out
+
+
+#: The city's own name and demonym, licensed for glue in every tour of that city.
+#: Keyed by city_slug; an unknown slug licenses its title-cased form alone.
+_CITY_VOCABULARY: dict[str, tuple[str, ...]] = {
+    "paris": ("Paris", "Parisian", "Parisians"),
+    "london": ("London", "Londoner", "Londoners"),
+    "new_york": ("New", "York", "Yorker", "Yorkers"),
+}
+
+
+def _city_vocabulary(city_slug: str | None) -> set[str]:
+    if not city_slug:
+        return set()
+    return set(
+        _CITY_VOCABULARY.get(
+            city_slug.lower(), (city_slug.replace("_", " ").title(),)
+        )
+    )
+
+
+# The possessive, plural and plural-possessive endings the composer writes onto a
+# name — "Ravaillac's knife", "Ravaillac\u2019s" (the curly apostrophe), "the Ravaillacs'"
+# (the tokenizer drops a trailing bare apostrophe, so that one arrives as "Ravaillacs").
+_POSSESSIVE_ENDINGS: tuple[str, ...] = ("'s", "\u2019s", "s'", "s\u2019", "s", "'", "\u2019")
+
+
+def _fold(name: str) -> str:
+    """A name without its diacritics — "André" and "Andre" are one name."""
+    return "".join(
+        ch for ch in unicodedata.normalize("NFKD", name) if not unicodedata.combining(ch)
+    )
+
+
+def _name_is_licensed(token: str, licensed: set[str]) -> bool:
+    """Is ``token`` a name the cited corpus carries — in ANY orthographic form?
+
+    An INFLECTED or RE-ACCENTED form of a licensed name is the same name, not a new
+    one: the tokenizer (``_CAP_TOKEN_RE``) keeps an apostrophe-s inside the token, so
+    "Ravaillac's" was compared against a set holding "Ravaillac" and refused as an
+    invention; "André" was refused against a corpus that spells "Andre". Measured
+    2026-08-19 (Phase 6 W6.1): Fiona & Dev's compose was refused over the wire, every
+    attempt, for "…died under Francis Ravaillac's knife" and "André Maurois ranks
+    him…" — reflections drawing on a voiced beat's own key claims. Fold diacritics,
+    strip the possessive/plural endings, compare again; a genuinely different name
+    ("François" for a corpus that says "Francis") still fails — that is a rename, and
+    the prompt's own rule is to use the name the beats give.
+    """
+    if token in licensed:
+        return True
+    folded = {_fold(name) for name in licensed}
+    candidates = [token]
+    for ending in _POSSESSIVE_ENDINGS:
+        if token.endswith(ending) and len(token) > len(ending) + 2:
+            bare = token[: -len(ending)]
+            candidates.append(bare)
+            if ending in ("s'", "s\u2019"):
+                candidates.append(f"{bare}s")
+    # A HYPHENATED COMPOUND whose capitalised head is licensed is that name in
+    # adjectival dress, not a new one (Phase 6 W6.12, measured on Camille's day:
+    # "From a Roman-style arch for Napoleon…" was refused as
+    # new_proper_noun:Roman-style against a corpus that says "Roman" freely).
+    if "-" in token:
+        candidates.extend(part for part in token.split("-") if part and part[0].isupper())
+    return any(c in licensed or _fold(c) in folded for c in candidates)
 
 
 def _cited_beat_corpus_text(script: Script, beat_sequence: BeatSequence) -> str:

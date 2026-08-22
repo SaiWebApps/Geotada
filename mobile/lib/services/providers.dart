@@ -27,6 +27,12 @@ abstract class AudioProvider extends ChangeNotifier {
   /// — a deep dive is served off the tour budget and never moves the itinerary.
   bool get isDeeperDive;
 
+  /// Where the current piece is, from its start (Phase 6 S6.4): the session
+  /// uses it to stop a piece at the end of its CURRENT SENTENCE on [Head back
+  /// now] — never a cut word, never the whole piece (W6.2 R8). The default is
+  /// zero so a double that does not track position need not implement it.
+  Duration get position => Duration.zero;
+
   /// Play [audioUrl] under [beatId]. Set [isDeeperDive] for on-demand
   /// "keep exploring here" audio so completion does not auto-advance the tour.
   void play(String beatId, String audioUrl, {bool isDeeperDive = false});

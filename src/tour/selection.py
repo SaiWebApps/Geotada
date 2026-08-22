@@ -229,19 +229,24 @@ MIN_DWELL_AUDIO_SECONDS: int = 90
 # "can no longer drift" above is therefore false as written. Re-derived against 850 it
 # would be 850/150*60 - 30 = 310 s.
 #
-# LEFT AT 270 DELIBERATELY, PENDING AN OWNER DECISION (2026-07-27). Raising it is not a
-# bookkeeping fix — it lets every stop grow by up to 100 rendered words, which changes
-# what every tourist hears. The consequence of leaving it is equally real and must not
-# be misread: at 270 s a stop renders at most 675 beat words + ~75 glue = ~750, so
-# **C8 cannot fire on anything the engine builds today**. The 113/182 gorged tours in
-# `make score-saved-tours` are all OLDER output. If a future session sees C8 clean on
-# fresh tours, the honest reading is "this ceiling did it", NOT "the recalibration
-# worked".
+# LEFT AT 270 DELIBERATELY, PENDING AN OWNER DECISION (2026-07-27) — and the owner's
+# panel answered (2026-08-19, Phase 6 W6.2 R3, 11/11 LOCKED): "TIGHT = point-first,
+# about three minutes (~450 words)". The measured F&D big stops ran 4.5 and 4.9 min at
+# this 270 — past the panel's own four. 180 s at 150 wpm = 450 beat words, the panel's
+# number; the ~75-word glue reserve rides on top as before (a rendered stop ~525 words,
+# ~3.5 min spoken). The ceiling is ALSO the price of a stop's dwell in the budget
+# (planned_capped_audio_seconds), so tighter tellings seat more stops per day — one
+# constant, one truth; a compose-time-only trim would fork priced from voiced, the
+# drift class this comment already records twice. The gap to
+# GORGE_MAX_WORDS_PER_STOP (850) is now deliberate headroom: the stitch can no longer
+# gorge a stop, so C8 guards COMPOSE inflation only. The full telling (design §5.5,
+# S6.6) is a SECOND composed piece with its own budget (<= 3x tight, hard cap 12 min),
+# never this ceiling raised.
 # MINUS a MEASURED glue reserve: the ceiling caps BEAT audio, but a rendered stop also
 # carries generation glue (arrival line, look-cue, closer). Measured per-stop glue on
 # the Ile de la Cite tour: 2 / 65 / 16 / 12 / 73 words. Budgeting the worst case
 # (~75 words = 30 s) keeps the RENDERED stop inside the cap instead of landing at 765.
-MAX_DWELL_AUDIO_SECONDS: int = 270
+MAX_DWELL_AUDIO_SECONDS: int = 180
 
 # The five band labels, ordered loudest -> quietest. "silent" means excluded.
 BAND_HEADLINE: str = "headline"
@@ -1288,7 +1293,17 @@ def _materialize_fixed_end_b(
     if nearest is not None and nearest_dist <= B_SNAP_PROXIMITY_M:
         return selected, nearest
 
-    sentinel = POI(
+    sentinel = end_b_sentinel_poi(end_lat, end_lng)
+    return [*selected, sentinel], sentinel
+
+
+def end_b_sentinel_poi(end_lat: float, end_lng: float) -> POI:
+    """THE one constructor for the A→B end sentinel — its id encodes its own
+    coordinate, so a persisted trip can re-materialize it (see
+    ``end_b_sentinel_from_id``) instead of mistaking the engine's own marker for
+    corpus drift (Phase 6 W6.12: Sofia's day could never be composed — 409
+    "corpus_changed" over ``__end_b__48.858300_2.347000``)."""
+    return POI(
         id=f"{END_B_SENTINEL_PREFIX}{end_lat:.6f}_{end_lng:.6f}",
         name=END_B_SENTINEL_NAME,
         tier=B_SENTINEL_TIER,
@@ -1296,7 +1311,18 @@ def _materialize_fixed_end_b(
         lat=end_lat,
         lng=end_lng,
     )
-    return [*selected, sentinel], sentinel
+
+
+def end_b_sentinel_from_id(poi_id: str) -> POI | None:
+    """Rebuild the sentinel a persisted route carries, from its own id; None for
+    a non-sentinel or malformed id (the caller then treats it as a real POI)."""
+    if not poi_id.startswith(END_B_SENTINEL_PREFIX):
+        return None
+    try:
+        lat_s, lng_s = poi_id[len(END_B_SENTINEL_PREFIX):].split("_")
+        return end_b_sentinel_poi(float(lat_s), float(lng_s))
+    except ValueError:
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -2691,7 +2717,17 @@ def _select_route_once(
     # that post-step (open one-way — see Step 4 below, gated on
     # ``input.end is None and not input.round_trip``). A round trip and a fixed
     # destination never run it, so both get the whole allocation.
-    if certification_fixed_end or input.round_trip:
+    # A KEEP-CONSTRAINED REPLAN TAIL CANNOT PULL (Phase 6 W6.11, measured on the
+    # F&D day): with `keep_to_poi_ids` set, every non-keep candidate is filtered
+    # before the pull ever ranks a far anchor — so the reserve starved skip
+    # tails for nothing, and the set shipped entries whose screen text promised
+    # the next stop over an empty stop_ids. The pull-less shapes get the whole
+    # allocation.
+    if (
+        certification_fixed_end
+        or input.round_trip
+        or (replan is not None and replan.keep_to_poi_ids is not None)
+    ):
         greedy_walk_budget = walk_budget
     else:
         greedy_walk_budget = int(walk_budget * (1.0 - ENDPOINT_PULL_RESERVED_BUDGET_FRACTION))
@@ -5368,6 +5404,31 @@ def _apply_certification_timebox_repair(
         # the same total and is unusable" (05-step-free-visitor.md, bullet 1).
         if input.max_leg_minutes is not None and trial.max_leg_seconds > input.max_leg_minutes * 60:
             return
+        # THE WALKING BUDGET IS AN ADMISSION RULE HERE TOO — on days whose
+        # walking is DISCRETIONARY (Phase 6 S6.6). The repair's only currency is
+        # distance (the strict-improvement note above records the systemic
+        # pressure), and the three-minute tight (R3) makes routes arrive short
+        # more often — so the repair bought the band with walking: a 60-minute
+        # one-way day walked 40 s past its budget, a 105-minute one 145 s
+        # (measured 2026-08-19, the sweep's open one-way cells +
+        # test_select_route_respects_walk_budget; greedy, pull and fill all obey
+        # their own walk checks — this was the one door left open). A trial may
+        # never walk past the budget — or past the incumbent, when the incumbent
+        # is already over it (a replan tail's way home can exceed the walking
+        # fraction by construction; the repair may then only hold or shrink the
+        # walking, never grow it). FIXED-B DAYS ARE EXEMPT: the corridor to B is
+        # MANDATORY walking, priced by the elapsed ceiling, the per-leg cap and
+        # the walk-per-dwell slog ratio — a flat walking bound there refuses the
+        # very adds the corridor repair exists to seat (measured on this suite:
+        # the 12-minute A->B fixture's museum detour is the PRODUCT, and the
+        # thin-corridor day refused outright instead of shipping short).
+        if input.end is None:
+            walk_ceiling = max(
+                planning_budget.walk_budget_seconds,
+                base.walk_seconds if base is not None else 0,
+            )
+            if trial.walk_seconds > walk_ceiling:
+                return
         # Bank it as a fallback BEFORE the band test. A trial that fits under the
         # ceiling but cannot reach the floor is an honestly short tour, and an
         # honestly short tour is a better product than a refusal — it is also the

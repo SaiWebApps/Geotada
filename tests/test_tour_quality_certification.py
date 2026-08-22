@@ -1646,19 +1646,42 @@ def test_every_derived_sentence_reaches_semantic_fact_review() -> None:
 
 
 def test_fixed_real_tour_closing_can_finish_as_nonpropositional() -> None:
-    from src.tour.contract import GENERIC_OPEN_TOUR_CLOSING, GENERIC_TOUR_SIGNOFF
+    """RE-DERIVED at Phase 6 S6.4 (audit F: "D§5.3 replaces the generic sign-off with
+    authored per-stretch closes; extend this test to them rather than deleting it").
+    The stitch's FALLBACK closes — the day's physical closure, the loop line, the last
+    rest's line — are nonpropositional fixed text and certify PASS; an AUTHORED close (the
+    one writer's, a GLUE_CLOSING line that lands the stop's point) is narrator content and
+    is REVIEWED like every other derived sentence, never waved through on its label. The
+    old sign-off ("keep exploring on your own") is gone."""
+    from src.tour.contract import GENERIC_OPEN_TOUR_CLOSING, NONPROPOSITIONAL_GLUE_TEMPLATES
 
-    for text in (GENERIC_OPEN_TOUR_CLOSING, GENERIC_TOUR_SIGNOFF):
+    assert GENERIC_OPEN_TOUR_CLOSING in NONPROPOSITIONAL_GLUE_TEMPLATES
+    assert not any("exploring on your own" in t for t in NONPROPOSITIONAL_GLUE_TEMPLATES)
+    for text in sorted(NONPROPOSITIONAL_GLUE_TEMPLATES):
+        reviewer = _FactReviewer()
         report = certify_facts(
-            _blueprint(
-                text, source_type="glue", source_id="GLUE_CLOSING"
-            ),
+            _blueprint(text, source_type="glue", source_id="GLUE_CLOSING"),
             {},
             lambda item: b"",
             _quality_calibration(),
-            _FactReviewer(),
+            reviewer,
         )
         assert report.state == "PASS", text
+    # An authored close is content: reviewed.
+    reviewer = _FactReviewer()
+    report = certify_facts(
+        _blueprint(
+            "That's the Conciergerie — the Queen waited here, and so did the men who sent her.",
+            source_type="glue",
+            source_id="GLUE_CLOSING",
+        ),
+        {},
+        lambda item: b"",
+        _quality_calibration(),
+        reviewer,
+    )
+    assert report.state == "PASS"
+    assert reviewer.calls == 1
 
 
 def test_real_sensory_invitation_emits_as_finishable_pacing() -> None:

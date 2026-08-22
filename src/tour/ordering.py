@@ -192,10 +192,50 @@ def order_stops(
             round_trip=round_trip,
             routed_cost_fn=routed_cost_fn,
         )
-    return cheapest_insertion_open(
+    ordered = cheapest_insertion_open(
         points,
         fixed_start=fixed_start,
         fixed_end=fixed_end,
         round_trip=round_trip,
         routed_cost_fn=routed_cost_fn,
     )
+    # NEVER WORSE THAN THE ORDER GIVEN (Phase 6 S6.6). The heuristic builds its
+    # open chain blind to the pin and appends ``fixed_end`` after the fact, so a
+    # chain whose tail wandered away from the pin buys a huge closing leg: on the
+    # 120-minute one-way sweep (21 stops — heuristic territory only since the
+    # three-minute tight seats more stops) it returned an order 624 s of walking
+    # WORSE than the caller's own incoming order, the repair priced its incumbent
+    # off that inflated number, and the shipped day walked past its budget. An
+    # optimizer may trade away optimality, never feasibility: when the caller's
+    # input order already satisfies the same constraints, return whichever of the
+    # two walks less. (Exact Held-Karp needs no guard — it cannot be beaten.)
+    given = list(points)
+    given_feasible = fixed_end is None or (given and given[-1].id == fixed_end.id)
+    if given_feasible and _chain_seconds(
+        given, fixed_start=fixed_start, round_trip=round_trip, routed_cost_fn=routed_cost_fn
+    ) < _chain_seconds(
+        ordered, fixed_start=fixed_start, round_trip=round_trip, routed_cost_fn=routed_cost_fn
+    ):
+        return given
+    return ordered
+
+
+def _chain_seconds(
+    chain: list[POI],
+    *,
+    fixed_start: tuple[float, float],
+    round_trip: bool,
+    routed_cost_fn: LegSecondsFn | None,
+) -> int:
+    """Walking seconds of ``chain`` exactly as consumers price it: start -> each
+    stop in the given order (+ the return leg on a round trip), every leg through
+    the same currency the insertion heuristic itself uses."""
+    cost = routed_cost_fn or default_leg_seconds
+    total = 0
+    prev = fixed_start
+    for poi in chain:
+        total += cost(prev[0], prev[1], poi.lat, poi.lng)
+        prev = (poi.lat, poi.lng)
+    if round_trip and chain:
+        total += cost(prev[0], prev[1], fixed_start[0], fixed_start[1])
+    return total

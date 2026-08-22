@@ -23,6 +23,7 @@ from __future__ import annotations
 import hashlib
 import json
 from collections import defaultdict
+from collections.abc import Mapping
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -38,6 +39,7 @@ from .claim_dedup import (
 )
 from .compose_gate import ComposeVerificationError, build_full_verifier
 from .contract import (
+    END_B_SENTINEL_PREFIX,
     BeatRef,
     BeatSequence,
     Route,
@@ -72,6 +74,16 @@ class ComposeRequest(BaseModel):
     # single-stop rewrite still knows where it sits (cohesion) without re-writing
     # the other stops. Empty for a whole-tour compose.
     tour_context: tuple[str, ...] = ()
+    # Phase 6 S6.5 (design §5.4): the stops that may come RIGHT BEFORE this one when
+    # the day is replanned — the skip pairs the contingency set produces by
+    # construction (W5.2 R1.2: a skip for every stop, so stop k-2 -> k for every k).
+    # The writer answers with one THREAD per name (or leaves it out), inside this
+    # stop's own authoring call — zero extra calls.
+    thread_from: tuple[str, ...] = ()
+    # Phase 6 S6.6 (design §5.5; W6.2 R3): the FULL TELLING's request carries the
+    # TIGHT telling here — the continuation must repeat nothing of it. Empty on a
+    # tight (day) compose.
+    already_told: str = ""
 
 
 class CertificationComposition(BaseModel):
@@ -81,6 +93,11 @@ class CertificationComposition(BaseModel):
 
     script: Script
     composition_trace: tuple[CompositionTrace, ...]
+    #: Phase 6 S6.5 (design §5.4): the writer's THREADS by stop index, then by the
+    #: name of the stop that may come right before it — one sentence each, kept
+    #: beside the script (they are not part of any stop's narration: they play on the
+    #: leg into the stop only when the session makes that pair consecutive).
+    threads_by_stop: dict[int, dict[str, str]] = Field(default_factory=dict)
 
 
 class CompletedCertificationComposeUnit(BaseModel):
@@ -103,6 +120,9 @@ class CompletedCertificationComposeUnit(BaseModel):
     request_sha256: str = Field(..., pattern=r"^[0-9a-f]{64}$")
     response_sha256: str = Field(..., pattern=r"^[0-9a-f]{64}$")
     parsed_payload_sha256: str = Field(..., pattern=r"^[0-9a-f]{64}$")
+    #: Phase 6 S6.5: the writer's threads for this stop, (from-name, text) pairs as
+    #: parsed from the response — verified and kept by the finalizer.
+    parsed_threads: tuple[tuple[str, str], ...] = ()
 
 
 COMPOSE_MODEL = "claude-opus-4-8"
@@ -136,14 +156,35 @@ CRAFT, WHAT TO DO — build a story, not a recital. Write each stop the way a
 friend who loves this city would tell it on the walk: curious, specific,
 grounded in real stakes. Correctness with no person and no reason to care is
 the exact failure testers named ("like reading Wikipedia aloud").
-- OPEN ON A MOMENT. Start the tour, and each major stop, where something is
-  happening — a person acting, a conflict, a surprising claim the beats carry —
-  never on a label, a founding date, or a scene-description. The opener
-  (SYNTHESIZED_OPENER) should make a first-timer want to keep walking.
+- THE POINT FIRST. A walker may leave any stop at any sentence, and most leave
+  before the end; whatever a piece holds back to its last minute is heard by
+  nobody. So: ONE sentence of where to stand and what to look at, then the
+  stop's POINT — the turn with its stakes, through the one named person the
+  beats give you, what this is and the one thing that happened here — inside
+  the stop's first hundred words, counted from the stop's own first sentence
+  about the place. Never open a stop with a recap of an earlier stop or of the
+  walk so far (say it once), and never with the walking line. After the first
+  hundred words, deepen — the chain that earns the point, the second story,
+  the dispute kept whole — and let every later sentence be cuttable at its
+  boundary: a walker who leaves at minute three of four loses colour, never
+  the point. A kicker may still come last, as colour; the piece must never
+  depend on it, and it is never the only landing.
 - LEAD WITH THE STAKES. Facts are the material, not the point. Open on who
   wanted what, what was at risk, what changed — then hang the names, dates, and
   numbers off that spine. A stop that is only names and dates has failed even
   when every fact is present and nothing repeats.
+- THE CLOSE. Each stop's STITCHED SCRIPT ends with one sentence tagged
+  GLUE_CLOSING — the stretch's close, a fixed template. REWRITE it into the
+  stop's own close: ONE sentence, short words, that lands what this stop was —
+  name the place ("That's the Conciergerie — …"), a landing, never a summary
+  of the piece and never a lesson or a moral; use only facts this stop has
+  already voiced (it is checked against them) — no new name, date or number,
+  no clock, no direction, nothing about what comes next or what was left out,
+  no thanks, no "keep exploring". It is the LAST sentence of the stop and it is
+  what plays when someone leaves early, so write it to land after any sentence
+  of the stop. At the day's last stop it is the day's close ("That's the walk —
+  …"): one line, never the stop's and the day's in a row. A stop without its
+  close is rejected.
 - FAVOUR THE ONE PERSON. When a stop carries both aggregate history and a single
   named individual the beats give you, lead with that one person's story; prefer
   one concrete thing the walker can see now over abstract significance. (Still
@@ -168,12 +209,18 @@ the exact failure testers named ("like reading Wikipedia aloud").
   between two related facts. This OVERRIDES "one idea per sentence" whenever the
   ideas are causally linked — keep each sentence sayable in one breath, but let it
   carry a linked cause and effect, not a bare fact.
-- BUILD, DON'T FLATTEN. After the hook, keep raising the stakes or the open
-  question through the body toward a payoff near the end — never settle into a
-  level-pitch list where every beat lands at the same weight. Order what you can so
-  the tension deepens: the worst turn, the reversal, the twist comes LATE, not
-  buried in the middle. Flat, evenly-weighted event escalation is the measured tell
-  of this model specifically — fight it.
+- BUILD AFTER THE POINT, DON'T FLATTEN. Once the point has landed, do not
+  settle into a level-pitch list where every beat lands at the same weight:
+  deepen — the consequence, the reversal, the second person — so the body has a
+  shape. Flat, evenly-weighted event escalation is the measured tell of this
+  model specifically — fight it; but never hold the point back to make an
+  ending.
+- DENSITY (binds every register). At most one proper name a sentence — a walker
+  on their feet holds one name at a time, not three. Prefer the short word to
+  the long one. Gloss any term a visitor may not carry, hard English as well as
+  French ("a Jesuit — a priest of the order that ran the schools"; "the
+  Fronde — the nobles' revolt"). No idiom: "keep an eye out", "turning tides"
+  and their kin read as filler to a non-native ear and translate to nothing.
 - HOLD THE COMPLEXITY, don't tidy it away. Where the history is genuinely messy — a
   figure who is both villain and victim, accounts that disagree, a question left
   open — keep that tension rather than smoothing it into one neat, single-track
@@ -183,10 +230,25 @@ the exact failure testers named ("like reading Wikipedia aloud").
   death, render it plainly and precisely rather than hiding the documented event
   behind vague language or hurrying past it. Let it land, then move on.
   (Match the beats — invent no horror they don't state.)
-- BUILD MOMENTUM. Sometimes plant a question or a tension at one stop and pay it
-  off at the NEXT one, so the walk builds instead of resetting at each POI — the
-  answer need not land in the same stop. (Keep the stop order; never move content
-  between stops; a glue plant introduces no name or year no cited beat carries.)
+- NO FORWARD PROMISES. A plant pays off INSIDE this stop, and inside its first
+  three minutes — plant and payoff a minute or two apart, never a minute-two
+  hook for a minute-four answer. A stop may NAME its neighbour as a fact ("that
+  arcade was the entrance to the Conciergerie before 1825") but may never
+  PROMISE it: no "next", "in a minute", "coming up", "you'll see",
+  "we'll go inside", "later", "as we head to" — the session may trade the next
+  stop away, and a promise to a place the walker never reaches is a small shut
+  door. A payoff re-names its subject ("the house where Madame de Sévigné was
+  born"), so it stands without its plant. Never open a stop by recapping an
+  earlier one.
+- THE THREAD. When a stop's STITCHED SCRIPT carries a REFLECTION SLOT, write ONE
+  sentence there — under fifteen words, at most one proper name, no idiom — that
+  binds THIS stop to the walk's theme through ONE fact of this stop ("this
+  courtyard held prisoners of the same tribunal"), never a recap of the last
+  stop and never logistics; every fact in it must be in the slot's visited_claims
+  or in this stop's own beats. If no honest line exists, write none: silence
+  beats glue. When the prompt lists THREADS FROM (stops that may come right
+  before this one when the day is replanned), answer in the "threads" field with
+  one such sentence per listed stop — or leave a stop out if nothing binds it.
 - SIZE THE STOP TO THE WALK. Roughly 110-170 words for a standing single-idea
   stop, more for a dense multi-beat one but hard-capped near 750 words (five
   minutes); a minor stop can be one sharp sentence. Trim over-description and
@@ -250,17 +312,18 @@ GROUNDING (violations are rejected by an automated verifier):
   A requested reflection must use the source_id supplied in its REFLECTION SLOT.
   Never invent a source identity. Glue may not introduce proper nouns or years
   that no cited beat carries.
-- Reflections: at each given slot, add sentences with source_id
-  GLUE_REFLECTION and that slot's stop_idx, placed right after the slot's
-  transit opening. Slots not listed get NO reflection. HARD CONSTRAINT (an
-  automated entailment gate checks each reflection sentence against that
-  slot's visited_claims list ALONE): every factual assertion in a reflection
-  — every number, date, name, time, and event — must appear in that slot's
-  visited_claims. Do NOT add a precise time of day, a figure, or any detail you
-  happen to know but the list does not carry, even if it is true. Details from
-  the script or beats sections DO NOT COUNT. Recombine the listed claims; add
-  nothing.
+- The thread (formerly "reflection"): at each given slot, add AT MOST ONE
+  sentence with source_id GLUE_REFLECTION and that slot's stop_idx, placed
+  right after the slot's transit opening — THE THREAD of the CRAFT rules, never
+  a recap. Slots not listed get none. HARD CONSTRAINT (an automated entailment
+  gate checks it against the slot's visited_claims plus this stop's own beats):
+  every factual assertion in it — every number, date, name, time, and event —
+  must appear there. Do NOT add a figure or detail you happen to know but the
+  lists do not carry, even if it is true.
 - Keep every sentence's stop_idx (reflections use their slot's stop_idx).
+- Every stop's output ends with exactly ONE sentence whose source_id is
+  GLUE_CLOSING (its close, rewritten from the stitched one); a stop without
+  one, or with two, is rejected.
 - Keep the stop ORDER; improve flow, transitions, dynamics, and storytelling
   within it, following the CRAFT rules above."""
 
@@ -289,7 +352,24 @@ _COMPOSE_OUTPUT_SCHEMA = {
                 "required": ["text", "source_id", "source_type", "stop_idx"],
                 "additionalProperties": False,
             },
-        }
+        },
+        "threads": {
+            "type": "array",
+            "description": (
+                "Phase 6: one THREAD per stop listed under THREADS FROM — the sentence "
+                "that binds this stop to the walk's theme when that stop comes right "
+                "before it. Omit a stop when nothing honest binds it."
+            ),
+            "items": {
+                "type": "object",
+                "properties": {
+                    "from": {"type": "string"},
+                    "text": {"type": "string"},
+                },
+                "required": ["from", "text"],
+                "additionalProperties": False,
+            },
+        },
     },
     "required": ["sentences"],
     "additionalProperties": False,
@@ -343,6 +423,47 @@ def _compose_user_prompt(
         f"visited_claims list ALONE — nothing from elsewhere in this prompt):\n"
         f"{json.dumps(slots, ensure_ascii=False)}",
     ]
+    register = request.stitched.inputs.narration_register
+    if register in ("warm", "family"):
+        invariants = (
+            "What must NOT change: the facts and names, the length, the voice's "
+            "identity, point-first, and the close. The register never carries the "
+            "hour, the weather, or how anyone walks."
+        )
+        if register == "warm":
+            parts.append(
+                "REGISTER — WARM (two walking together): write \"you\" as the plural "
+                "it already is in English; NEVER \"you two\", \"both of you\", "
+                "\"your partner\", or \"lovers\" as an invitation; never a sentence "
+                "that addresses the relationship or stages a scene for it. Warm is "
+                "not chattier: a register may take a clause away, never add a "
+                f"sentence. {invariants}"
+            )
+        else:
+            parts.append(
+                "REGISTER — FAMILY (read aloud over small heads): short declarative "
+                "sentences, under about twenty words each. Give one thing to find "
+                "with the eyes inside the stop's first minute. You may address the "
+                "child directly ONCE per stop — a \"see/look/find\" line or one "
+                "question — never \"kids\", never a made-up name. You may LEAD with "
+                "the child-friendly true things and leave the rest to the full "
+                f"telling. Cushion DOWN from the telling as written. {invariants}"
+            )
+    if request.already_told:
+        parts.append(
+            "ALREADY TOLD (the tight telling of this stop, which the walker has just "
+            "heard — you are writing THE FULL TELLING, a continuation from the material "
+            "below that must repeat NOTHING of it: no fact, no phrase, no image already "
+            "used; point-first, with its own close):\n"
+            f"{request.already_told}"
+        )
+    if request.thread_from:
+        parts.append(
+            "THREADS FROM (stops that may come right before this one when the day is "
+            "replanned — answer in the \"threads\" field, one sentence under fifteen words "
+            "per stop, or leave a stop out when nothing honest binds it):\n"
+            f"{json.dumps(list(request.thread_from), ensure_ascii=False)}"
+        )
     if request.duplicate_pairs:
         dupes = [
             {"stop_idx": stop_idx, "a": a, "b": b} for stop_idx, a, b in request.duplicate_pairs
@@ -429,6 +550,28 @@ def candidate_compose_request_envelope(
     )
 
 
+def _threads_from_json(payload: dict) -> tuple[tuple[str, str], ...]:
+    """The writer's THREADS from a compose response's JSON (Phase 6 S6.5): the optional
+    ``threads`` array of ``{"from", "text"}`` pairs, shape-checked here (TypeError on a
+    malformed entry, caught by the caller as "not a valid Premium sentence payload");
+    the CONTENT rules — one sentence, under fifteen words, a name the request asked for —
+    are the finalizer's (``_keep_threads``)."""
+    raw = payload.get("threads", [])
+    if raw is None:
+        return ()
+    if not isinstance(raw, list):
+        raise TypeError("threads is not a list")
+    out: list[tuple[str, str]] = []
+    for entry in raw:
+        if not isinstance(entry, dict):
+            raise TypeError("a thread is not an object")
+        from_name, text = entry["from"], entry["text"]
+        if not isinstance(from_name, str) or not isinstance(text, str):
+            raise TypeError("a thread's from/text is not a string")
+        out.append((from_name, text.strip()))
+    return tuple(out)
+
+
 def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tuple[Sentence, ...]:
     """Build ``Sentence`` objects from a compose response's JSON, COERCING each BEAT
     sentence's ``stop_idx`` to its beat's TRUE stitched stop.
@@ -467,8 +610,15 @@ def _certification_compose_requests(
     stitched: Script,
     beat_sequence: BeatSequence,
     route: Route,
+    *,
+    already_told_by_stop: Mapping[int, str] | None = None,
 ) -> tuple[dict[str, BeatRef], list[int], dict[int, ComposeRequest]]:
-    """Rebuild the canonical per-stop requests from the grounded source."""
+    """Rebuild the canonical per-stop requests from the grounded source.
+
+    ``already_told_by_stop`` (Phase 6 S6.6): set only on a FULL-TELLING plan — the
+    stop's request carries the tight telling as ALREADY TOLD, and asks for NO
+    threads (a full telling plays inside its stop; threads belong to the day's
+    tight compose)."""
     beats_by_id = {beat.id: beat for plan in beat_sequence.poi_beats for beat in plan.beats}
     tour_context = tuple(poi.name for poi in route.pois)
     by_stop: dict[int, list[Sentence]] = defaultdict(list)
@@ -499,6 +649,17 @@ def _certification_compose_requests(
             for sentence in stop_sentences
             if sentence.source_type == "beat" and sentence.source_id in beats_by_id
         }
+        # Phase 6 S6.5: the skip pair. The set skips every stop (R1.2), so the stop
+        # two back may come right before this one; its name asks for a thread.
+        already_told = (already_told_by_stop or {}).get(stop_index, "")
+        thread_from = (
+            (route.pois[stop_index - 2].name,)
+            if not already_told
+            and stop_index >= 2
+            and stop_index - 2 < len(route.pois)
+            and not route.pois[stop_index - 2].id.startswith(END_B_SENTINEL_PREFIX)
+            else ()
+        )
         requests[stop_index] = ComposeRequest(
             stitched=mini,
             beats_by_id=stop_beats,
@@ -508,6 +669,8 @@ def _certification_compose_requests(
             },
             duplicate_pairs=(),
             tour_context=tour_context,
+            thread_from=thread_from,
+            already_told=already_told,
         )
     return beats_by_id, stops, requests
 
@@ -533,6 +696,143 @@ def _dedup_composed(sentences: list[Sentence], beat_sequence: BeatSequence) -> l
     return out
 
 
+#: W6.2 R5: a thread is under fifteen words (Paulo, F&D).
+THREAD_MAX_WORDS = 15
+THREAD_DROPPED_DEGRADATION = "thread_dropped"
+
+
+def _keep_threads(
+    units_by_stop: dict[int, CompletedCertificationComposeUnit],
+    stops: list[int],
+    requests: dict[int, ComposeRequest],
+    *,
+    composed: Script,
+    beats_by_id: dict[str, BeatRef],
+    checker: FaithfulnessChecker | None,
+) -> dict[int, dict[str, str]]:
+    """The writer's THREADS, kept by stop and predecessor (Phase 6 S6.5; design §5.4;
+    W6.2 R5): each ONE sentence and under THREAD_MAX_WORDS words, answering a name the
+    request actually asked for, and — when this run carries the real ``checker`` —
+    ENTAILED against the same union the in-script thread is gated on (what the walker
+    has heard plus the stop's own beats; a thread is content, fact-gated).
+
+    A thread that misses the bar is DROPPED AND REPORTED on the degradations channel
+    (``thread_dropped``), and the day ships without it — the panel's own remedy for the
+    pair is silence, never glue (R5: "none rather than glue"), and the S6.4 precedent
+    holds: a refusal is for missing MANDATORY content (a close), a quality miss on
+    OPTIONAL enrichment ships degraded and visibly. MEASURED 2026-08-19 (s65-proof,
+    this ledger's S6.5): with these as ValueError, two of three real F&D composes died
+    whole — a 16-word thread and one unentailed line each killed a day whose every
+    SENTENCE had passed the gate. Answering a name that was never asked for is not a
+    quality miss but a protocol violation, and still refuses (ValueError)."""
+    from .degradations import record
+    from .generation import split_sentences
+    from .verify import _own_stop_support
+
+    def drop(stop_index: int, from_name: str, text: str, why: str) -> None:
+        record(
+            kind=THREAD_DROPPED_DEGRADATION,
+            human=(
+                "One of the lines written to bridge a re-planned pair of stops was "
+                "dropped; if the day is re-planned there, the walk simply continues "
+                "without a bridging line."
+            ),
+            component="authoring._keep_threads",
+            cause=(
+                f"stop {stop_index}'s thread from {from_name!r} {why}: {text!r}. "
+                "R5: none rather than glue — the pair ships with silence."
+            ),
+            stop_index=str(stop_index),
+        )
+
+    out: dict[int, dict[str, str]] = {}
+    for stop_index in stops:
+        unit = units_by_stop[stop_index]
+        asked = set(requests[stop_index].thread_from)
+        kept: dict[str, str] = {}
+        for from_name, text in unit.parsed_threads:
+            if from_name not in asked:
+                raise ValueError(
+                    f"stop {stop_index} returned a thread from {from_name!r}, which was not "
+                    f"asked for (asked: {sorted(asked)})"
+                )
+            if len(split_sentences(text)) != 1:
+                drop(stop_index, from_name, text, "is not ONE sentence")
+                continue
+            if len(text.split()) > THREAD_MAX_WORDS:
+                drop(stop_index, from_name, text, f"is over {THREAD_MAX_WORDS} words")
+                continue
+            if checker is not None:
+                claims = _visited_claims(composed, beats_by_id, stop_index)
+                own = _own_stop_support(composed, beats_by_id, stop_index)
+                support = (*claims, *(piece for piece in own if piece not in claims))
+                if not support or not checker.entails(support, text):
+                    drop(
+                        stop_index, from_name, text,
+                        "is not entailed by what the walk carries",
+                    )
+                    continue
+            kept[from_name] = text
+        if kept:
+            out[stop_index] = kept
+    return out
+
+
+CLOSE_NOT_AUTHORED_DEGRADATION = "close_not_authored"
+
+
+def _require_one_close_per_stop(
+    sentences: list[Sentence], stitched: Script, stops: list[int], route: Route
+) -> None:
+    """Every composed stop ENDS on exactly one one-sentence GLUE_CLOSING (Phase 6 S6.4;
+    design §5.3, §7.4.5 "every prefix is decent"). Missing, doubled, not last, or more
+    than one sentence long → ValueError (the seam's refusal). A close byte-identical to
+    the stitch's template is NOT authored: it ships, and is reported."""
+    from .degradations import record
+    from .generation import GLUE_CLOSING, is_fallback_close, split_sentences
+
+    by_stop: dict[int, list[Sentence]] = defaultdict(list)
+    for sentence in sentences:
+        by_stop[sentence.stop_idx].append(sentence)
+    names = {index: poi.name for index, poi in enumerate(stitched.selected_pois)}
+    n_stops = len(stitched.selected_pois)
+    for stop_index in stops:
+        stop_sentences = by_stop.get(stop_index, [])
+        closes = [s for s in stop_sentences if s.source_id == GLUE_CLOSING]
+        if len(closes) != 1:
+            raise ValueError(
+                f"stop {stop_index} has {len(closes)} close(s); every composed stop ends on "
+                "exactly one GLUE_CLOSING sentence (design §5.3)"
+            )
+        if stop_sentences[-1] is not closes[0]:
+            raise ValueError(
+                f"stop {stop_index}'s close is not its last sentence — the close is what a "
+                "wrap-up plays and must land after every other line of the stop"
+            )
+        if len(split_sentences(closes[0].text)) != 1:
+            raise ValueError(
+                f"stop {stop_index}'s close is not ONE sentence (design §4.4.4): "
+                f"{closes[0].text!r}"
+            )
+        if is_fallback_close(
+            closes[0].text, stitched.inputs, poi_name=names.get(stop_index, ""), n_stops=n_stops
+        ):
+            record(
+                kind=CLOSE_NOT_AUTHORED_DEGRADATION,
+                human=(
+                    f"The last line at {names.get(stop_index, 'a stop')} is the fixed "
+                    "closing line, not one the narrator wrote for it."
+                ),
+                component="authoring.finalize_certification_composition",
+                cause=(
+                    "The composed stop kept the stitch's GLUE_CLOSING template verbatim; "
+                    "the one writer was asked to rewrite it (THE CLOSE) and did not. It "
+                    "ships as the fallback and is never counted as authored (plan S6.4)."
+                ),
+                stop_index=str(stop_index),
+            )
+
+
 def finalize_certification_composition(
     stitched: Script,
     beat_sequence: BeatSequence,
@@ -544,6 +844,8 @@ def finalize_certification_composition(
     faithfulness_checker: FaithfulnessChecker | None = None,
     enforce_claim_coverage: bool = False,
     scan_glue_for_invention: bool = False,
+    require_closes: bool = False,
+    already_told_by_stop: Mapping[int, str] | None = None,
 ) -> CertificationComposition:
     """Purely verify and finalize already-completed per-stop compose responses.
 
@@ -572,8 +874,17 @@ def finalize_certification_composition(
       of the authorized-sources traceability below.  Structural traceability cannot
       see invention, so without this the count on the compose 422 reads 0 by
       construction rather than by measurement.
+    * ``require_closes`` (Phase 6 S6.4; design §5.3, §7.4.5) — every composed stop
+      must END on exactly one GLUE_CLOSING sentence, one sentence long: the close is
+      what a wrap-up plays, so a stop without one cannot ship (refused here with a
+      ValueError, the seam's refusal shape). A close left as the stitch's TEMPLATE
+      is not authored: it ships (the fallback beats silence) and is REPORTED on the
+      degradations channel as ``close_not_authored``, never counted as the writer's.
+      OFF for the certification replay (the sealed candidates predate closes).
     """
-    beats_by_id, stops, requests = _certification_compose_requests(stitched, beat_sequence, route)
+    beats_by_id, stops, requests = _certification_compose_requests(
+        stitched, beat_sequence, route, already_told_by_stop=already_told_by_stop
+    )
     units_by_stop: dict[int, CompletedCertificationComposeUnit] = {}
     for unit in completed_units:
         if unit.unit_id != f"stop:{unit.stop_index}":
@@ -614,6 +925,8 @@ def finalize_certification_composition(
         [sentence for stop_index in stops for sentence in composed_by_stop[stop_index]],
         beat_sequence,
     )
+    if require_closes:
+        _require_one_close_per_stop(composed_sentences, stitched, stops, route)
     # ``composed_by_stop`` STAYS the raw provider payload. It is deliberately NOT
     # rebound to the post-dedup grouping.
     #
@@ -693,7 +1006,9 @@ def finalize_certification_composition(
     )
     report = verifier(composed)
 
-    def finish(final_script: Script) -> CertificationComposition:
+    def finish(
+        final_script: Script, threads_by_stop: dict[int, dict[str, str]]
+    ) -> CertificationComposition:
         traces: list[CompositionTrace] = []
         attested: set[int] = set()
         for stop_index in stops:
@@ -760,10 +1075,22 @@ def finalize_certification_composition(
                 f"composition trace (indexes {unattested[:5]}) — their stop_idx falls "
                 "outside the authored stop set"
             )
-        return CertificationComposition(script=final_script, composition_trace=tuple(traces))
+        return CertificationComposition(
+            script=final_script,
+            composition_trace=tuple(traces),
+            threads_by_stop=threads_by_stop,
+        )
 
+    threads_by_stop = _keep_threads(
+        units_by_stop,
+        stops,
+        requests,
+        composed=composed,
+        beats_by_id=beats_by_id,
+        checker=faithfulness_checker,
+    )
     if report.passed:
-        return finish(composed.model_copy(update={"validation": report}))
+        return finish(composed.model_copy(update={"validation": report}), threads_by_stop)
     raise ComposeVerificationError(report, 1)
 
 

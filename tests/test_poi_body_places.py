@@ -230,19 +230,27 @@ def test_rest_cadence_seats_the_nearest_bench_on_a_long_stretch() -> None:
     cadence gets the nearest body place seated as a stop — plan S2.5's
     seating rule (`src.tour.selection._seat_body_stops`).
 
-    Fixture: a tight cluster near the start plus one rich far anchor forces a
+    Fixture: a tight cluster near the start plus one PINNED far anchor forces a
     single ~15-minute leg (over an 8-minute cadence); a bench sits at that
     leg's midpoint. Cites Nadia step 5 ("Ten minutes, zero cultural content,
     entirely non-negotiable" — docs/personas/03-family-with-children.md) and
     Rosemary steps 3 and 7 (the bench IS a stop —
     docs/personas/05-step-free-visitor.md) and design §3.1 ("a rest window
     with no bench under it is thirteen minutes standing on a stick").
+
+    Re-derived at the Phase 6 close: the far anchor used to be taken on merit
+    because eight 270 s fillers could not fill ninety minutes without it; since
+    S6.6 made tellings three minutes the cluster either cannot build the day
+    (≤16 fillers) or fills it alone (≥17) and the far leg never happens. A pin
+    is a certainty (design §3.2) — it is the honest way to GUARANTEE the long
+    stretch at any ceiling — and the filler count is the helper's own, derived
+    from the planner's dwell target and stop ceiling.
     """
     from src.tour.contract import POI, TourInput
     from src.tour.selection import select_route
     from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
-    fillers = _density_fillers(PDV, duration_min=90, round_trip=True, n=8, radius_m=70.0)
+    fillers = _density_fillers(PDV, duration_min=90, round_trip=True, radius_m=70.0)
     far_anchor = _poi("far-anchor", lat=PDV[0] + 0.0055, lng=PDV[1], beat_count=15)
     by_lat_lng = {p.id: (p.lat, p.lng) for p in [far_anchor, *fillers]}
     f4 = by_lat_lng["filler-4"]
@@ -254,7 +262,11 @@ def test_rest_cadence_seats_the_nearest_bench_on_a_long_stretch() -> None:
     corpus = _snap([far_anchor, bench, *fillers])
 
     no_cadence = select_route(
-        TourInput(start=PDV, duration_min=90, city_slug="paris", round_trip=True), corpus
+        TourInput(
+            start=PDV, duration_min=90, city_slug="paris", round_trip=True,
+            pinned_poi_ids=("far-anchor",),
+        ),
+        corpus,
     )
     assert "bench-1" not in {p.id for p in no_cadence.pois}, (
         "fixture premise: with no cadence axis the bench must not seat on its own "
@@ -264,7 +276,7 @@ def test_rest_cadence_seats_the_nearest_bench_on_a_long_stretch() -> None:
     cadenced = select_route(
         TourInput(
             start=PDV, duration_min=90, city_slug="paris", round_trip=True,
-            rest_cadence_minutes=8,
+            pinned_poi_ids=("far-anchor",), rest_cadence_minutes=8,
         ),
         corpus,
     )

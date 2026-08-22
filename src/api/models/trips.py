@@ -217,7 +217,41 @@ class GeneratedStop(BaseModel):
         description="KE: composed 'keep exploring here' narration for this stop's extra beats, "
         "voiced on demand off the tour's time budget; null until /compose has run.",
     )
+    #: Phase 6 S6.4 (design §5.3 "closes that land anywhere"): the stop's one-line CLOSE —
+    #: the last sentence of its narration, and the line [Head back now] shows and plays
+    #: for this stretch. Also on screen (§5.7). None on a legacy item.
+    close_text: str | None = None
+    #: Phase 6 S6.5 (design §5.4; W6.2 R5): THREADS — one sentence per stop that may come
+    #: right BEFORE this one when the day is replanned, keyed by that stop's name. The
+    #: phone speaks the pair's line at the departure seam and keeps it on screen through
+    #: the leg. None when no replanned pair binds (none rather than glue), and always
+    #: None on the stitched-corpus lane (threads are authored at compose time).
+    thread_lines: dict[str, str] | None = None
+    #: Phase 6 S6.6 (design §5.5; W6.2 R3): a MAJOR stop's FULL TELLING — the second
+    #: composed piece from the stop's own second story, with its own close. None on a
+    #: minor stop, a legacy item, or when the writer's full telling was dropped by its
+    #: gates (the stop keeps the tight telling; the on-demand route still answers).
+    full_narration: str | None = None
+    full_close_text: str | None = None
+    #: Phase 6 S6.8 (owner ruling: the tour's own voice): the pre-recorded files for
+    #: the authored session lines — the stop's close, its thread lines (keyed like
+    #: thread_lines), the full telling's close. Null until the voicing pass has run;
+    #: the phone falls back to the plain spoken line.
+    close_audio_url: str | None = None
+    thread_audio_urls: dict[str, str] | None = None
+    full_close_audio_url: str | None = None
     dwell_seconds: int = Field(default=0, description="Engine-computed time spent at this stop")
+
+    @field_validator("thread_lines", "thread_audio_urls", mode="before")
+    @classmethod
+    def _thread_lines_from_json(cls, v: object) -> object:
+        """The graph stores thread_lines as ONE JSON string (Neo4j properties cannot
+        hold maps); the reader's rows hydrate through here. A dict passes untouched."""
+        if isinstance(v, str):
+            import json
+
+            return json.loads(v) if v else None
+        return v
     transit_polyline: str | None = Field(
         default=None,
         description="Encoded polyline (6-digit precision) of the walking leg INTO this stop; "

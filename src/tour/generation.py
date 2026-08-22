@@ -22,8 +22,9 @@ Design notes:
 - Stage 4 (transit) picks a corpus transit beat for the segment when
   one exists at either endpoint POI; otherwise emits a single
   ``GLUE_NAV`` glue sentence (Haiku or template).
-- Stage 5 (closing) emits a ``GLUE_CLOSING`` plus an optional callback
-  beat at the final POI.
+- Stage 5 (closing, Phase 6 S6.4) emits ONE ``GLUE_CLOSING`` fallback line at
+  the end of EVERY stop — the day's at the last stop — which the per-stop
+  writer rewrites into the authored close.
 
 Glue is the only place generation invents text. The whitelist
 categories below are the universe of valid glue ``source_id`` values;
@@ -41,7 +42,6 @@ from .claim_dedup import suppress_exact_repeats, suppress_repeated_claims
 from .contract import (
     END_B_SENTINEL_PREFIX,
     GENERIC_OPEN_TOUR_CLOSING,
-    GENERIC_TOUR_SIGNOFF,
     BeatRef,
     BeatSequence,
     POIBeats,
@@ -134,6 +134,42 @@ GLUE_LABELS: frozenset[str] = frozenset(
 
 # Phrases generation must never emit (rule 32 + feedback_tour_tone_default).
 FORBIDDEN_PHRASES: tuple[str, ...] = ("imagine", "picture this", "envision", "visualize")
+
+#: Phase 6 S6.5 (W6.2 R4, LOCKED 8/11): phrases that can ONLY be a promise of a later
+#: place or telling — banned from story glue outright. The session may trade the next
+#: stop away; a promise to a place the walker never reaches is a small shut door.
+FORWARD_PROMISE_PHRASES: tuple[str, ...] = (
+    "at the next stop",
+    "at our next stop",
+    "our next stop",
+    "the next stop",
+    "in a minute",
+    "in a moment",
+    "coming up",
+    "we'll go inside",
+    "we\u2019ll go inside",
+    "we'll get to",
+    "we\u2019ll get to",
+    "we'll come back",
+    "we\u2019ll come back",
+    "more on that",
+    "more on him",
+    "more on her",
+    "wait until",
+    "save that for",
+)
+
+#: "You'll see/reach" is a promise only when it points PAST the stop — at the thing in
+#: front of you it is direction-giving, and a validation failure on a correct tour is
+#: worse than no check. The scan pairs these with a LATER stop's name.
+FORWARD_SIGHT_PHRASES: tuple[str, ...] = (
+    "you'll see",
+    "you\u2019ll see",
+    "you'll reach",
+    "you\u2019ll reach",
+    "as we head to",
+    "on our way to",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -379,15 +415,17 @@ def generate(
         for s in anchor_sents:
             if s.source_type == "beat":
                 consumed_beat_ids.add(s.source_id)
-
-    if poi_beats:
-        sentences.extend(
-            _build_closing(
-                beat_sequence,
-                tour_input,
-                route,
-                client,
-                stop_idx=max(0, len(poi_beats) - 1),
+        # EVERY stop ends on a close (Phase 6 S6.4; design §5.3 "every named stretch
+        # carries a written one-line close that can play wherever the stretch actually
+        # ends"; §7.4.5 every prefix is decent). The stitch's line is the FALLBACK — the
+        # Basic lane plays it, and it is the GLUE_CLOSING source the one writer is
+        # licensed to rewrite into the authored close (the grounding rule: glue keeps a
+        # source_id supplied in THIS stop's stitched script). The last stop's close is
+        # the DAY's (W6.2 R2: one close at the end, never the stop's and the day's in
+        # a row).
+        sentences.append(
+            _build_stop_close(
+                beat_sequence, tour_input, route, stop_idx=stop_idx, n_stops=len(poi_beats)
             )
         )
 
@@ -1046,45 +1084,93 @@ def _find_transit_beat(stop: POIBeats, consumed: set[str] | None = None) -> Beat
 # ---------------------------------------------------------------------------
 
 
-def _build_closing(
+#: The one-line fallback close for a REST (a bench seated by the party or the dial —
+#: it has no story to land): nonpropositional, names the next stop so two rests on
+#: one day never repeat a sentence (the rubric's C5). Rosemary (05, step 3): "The
+#: bench is a stop. It has a location, a duration, and content."
+REST_CLOSE_TEMPLATE: str = "Sit as long as you like — {next} can wait."
+REST_CLOSE_LAST_TEMPLATE: str = "Sit as long as you like — that's the walk."
+#: The one-line fallback close for a story stop that is not the day's last.
+STOP_CLOSE_TEMPLATE: str = "And that's {name}."
+
+
+def fallback_close_text(
+    tour_input: TourInput,
+    *,
+    poi_name: str,
+    is_rest: bool,
+    is_last: bool,
+    n_stops: int,
+    next_name: str | None,
+) -> str:
+    """THE fallback close for one stretch — the stitch's line, and the sentence the
+    finalizer compares a composed close against to know whether the writer wrote one
+    (a template close is never counted as authored; Phase 6 S6.4). Deterministic and
+    name-only: the stop's own name is the one vocabulary glue is licensed to use."""
+    if is_last:
+        if is_rest:
+            return REST_CLOSE_LAST_TEMPLATE
+        if tour_input.round_trip and n_stops == 1:
+            return f"And that completes our circle of {poi_name}."
+        if tour_input.round_trip:
+            return "And that closes the loop, back where we started."
+        return GENERIC_OPEN_TOUR_CLOSING
+    if is_rest:
+        return REST_CLOSE_TEMPLATE.format(next=next_name or "the rest of the walk")
+    return STOP_CLOSE_TEMPLATE.format(name=poi_name)
+
+
+def is_fallback_close(text: str, tour_input: TourInput, *, poi_name: str, n_stops: int) -> bool:
+    """Is ``text`` one of the stitch's own closing templates for this stop (in ANY of its
+    positions)? The finalizer uses it: a composed close byte-identical to a template was
+    not authored. Whitespace-insensitive, never fuzzy."""
+    norm = " ".join(text.split())
+    candidates = {
+        fallback_close_text(
+            tour_input, poi_name=poi_name, is_rest=is_rest, is_last=is_last,
+            n_stops=n_stops, next_name=None,
+        )
+        for is_rest in (False, True)
+        for is_last in (False, True)
+    }
+    if norm in {" ".join(c.split()) for c in candidates}:
+        return True
+    # A rest close names the NEXT stop; match the shape without knowing it.
+    head = REST_CLOSE_TEMPLATE.split("{next}")[0].strip()
+    return norm.startswith(head) and norm.endswith("can wait.")
+
+
+def _build_stop_close(
     beat_sequence: BeatSequence,
     tour_input: TourInput,
     route: Route,
-    client: GlueClient,
     *,
     stop_idx: int,
-) -> list[Sentence]:
-    """Physical-closure phrase. No thematic summary.
+    n_stops: int,
+) -> Sentence:
+    """One GLUE_CLOSING line at the END of stop ``stop_idx`` — the fallback close.
 
-    Phase 7 (2026-04-29) removed the post-closing callback re-emission.
-    ``reorder_final_stop_for_closing`` now lifts the closing-friendly
-    beat to be the LAST beat at the final stop (preference order:
-    callback > climax > longest body), and the anchor block emits it
-    naturally at that position. The closing glue follows. Re-emitting
-    the callback beat *after* the closing glue duplicated content.
+    Until Phase 6 S6.4 only the final stop closed, with two generic lines (a physical
+    closure and a thank-you-and-keep-exploring sign-off). The sign-off is gone (W6.2 R2,
+    11/11: "keep exploring on your own" / the thank-you are not a close's job), and every
+    stop now ends on one line. Phase 7 (2026-04-29) ``reorder_final_stop_for_closing``
+    still lifts the closing-friendly beat to be the LAST beat at the final stop; this
+    line follows it. No thematic summary: the authored close (the one writer's) lands
+    the point; this template only names the place.
     """
-    out: list[Sentence] = []
-    last = beat_sequence.poi_beats[-1] if beat_sequence.poi_beats else None
-
-    if tour_input.round_trip and len(beat_sequence.poi_beats) == 1:
-        # PdV-style square circumnavigation: the canonical Pariswalks closing.
-        text = (
-            f"And that completes our circle of {last.poi_name}."
-            if last
-            else "And that completes the walk."
-        )
-    elif tour_input.round_trip:
-        text = "And that closes the loop, back where we started."
-    else:
-        text = GENERIC_OPEN_TOUR_CLOSING
-    # A warm sign-off so the tour ENDS rather than just stops (the user's "grand
-    # finale + sign off + thank the user" ask). Deterministic — the story-specific
-    # tie-off is the LLM /compose layer's job; this guarantees every tour signs off.
-    signoff = GENERIC_TOUR_SIGNOFF
-
-    for t in (text, signoff):
-        out.append(Sentence(text=t, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx))
-    return out
+    plan = beat_sequence.poi_beats[stop_idx]
+    poi = route.pois[stop_idx] if stop_idx < len(route.pois) else None
+    is_rest = bool(poi is not None and poi.poi_role == "body")
+    next_plan = beat_sequence.poi_beats[stop_idx + 1] if stop_idx + 1 < n_stops else None
+    text = fallback_close_text(
+        tour_input,
+        poi_name=plan.poi_name,
+        is_rest=is_rest,
+        is_last=stop_idx == n_stops - 1,
+        n_stops=n_stops,
+        next_name=next_plan.poi_name if next_plan is not None else None,
+    )
+    return Sentence(text=text, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx)
 
 
 # ---------------------------------------------------------------------------

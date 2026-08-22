@@ -457,7 +457,8 @@ def test_the_api_resolves_presets_and_the_more_dial_exactly_as_the_harness_does(
     easy = _build_tour_input(
         start=PDV, duration_min=180, city_slug="paris", round_trip=True, party="take_it_easy"
     )
-    assert easy.max_leg_minutes == 12 and easy.rest_cadence_minutes == 20, (
+    # 13: owner ruling 2026-08-19 (Phase 6, ruling 4).
+    assert easy.max_leg_minutes == 13 and easy.rest_cadence_minutes == 20, (
         "the take-it-easy preset did not expand into its axes on the API path"
     )
     # Explicit wins, on the wire as in the harness.

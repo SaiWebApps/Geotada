@@ -104,6 +104,26 @@ void main() {
       expect(find.byIcon(Icons.access_time), findsNWidgets(2));
     });
 
+    testWidgets(
+        'S6.9: the one end-time question shows in plain words, defaults to '
+        'a hard deadline, and a tap changes it', (tester) async {
+      await tester.pumpWidget(_buildTestWidget(
+        initialStartTime: const TimeOfDay(hour: 9, minute: 0),
+        initialEndTime: const TimeOfDay(hour: 18, minute: 0),
+      ));
+      await tester.pumpAndSettle();
+      expect(find.text('Is the end time fixed?'), findsOneWidget);
+      final seg = tester.widget<SegmentedButton<String>>(
+          find.byKey(const Key('end-hardness')));
+      expect(seg.selected, {'firm'},
+          reason: 'skipping the question means a hard deadline (owner ruling)');
+      await tester.tap(find.text('Just a guess'));
+      await tester.pumpAndSettle();
+      final after = tester.widget<SegmentedButton<String>>(
+          find.byKey(const Key('end-hardness')));
+      expect(after.selected, {'open'});
+    });
+
     testWidgets('shows duration summary for valid range', (tester) async {
       await tester.pumpWidget(_buildTestWidget());
       await tester.pumpAndSettle();

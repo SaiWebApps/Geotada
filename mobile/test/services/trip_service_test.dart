@@ -82,6 +82,27 @@ void main() {
       expect(capturedBody!['end_date'], '2026-05-06');
       expect(capturedBody!['start_time'], '09:00');
       expect(capturedBody!['kid_friendly_only'], false);
+      expect(capturedBody!['end_hardness'], 'firm',
+          reason: 'unanswered means a hard deadline (owner ruling 2026-08-19)');
+    });
+
+    test('generateTrip sends the chosen end_hardness (S6.9)', () async {
+      Map<String, dynamic>? capturedBody;
+      final client = MockClient((request) async {
+        capturedBody = jsonDecode(request.body) as Map<String, dynamic>;
+        return http.Response(jsonEncode(_sampleTripResponse()), 201);
+      });
+      final service = TripService(httpClient: client);
+      await service.generateTrip(
+        profileId: 'profile-abc',
+        centerLat: 48.8566,
+        centerLng: 2.3522,
+        startDate: '2026-05-04',
+        endDate: '2026-05-06',
+        accessToken: 'test-token',
+        endHardness: 'open',
+      );
+      expect(capturedBody!['end_hardness'], 'open');
     });
 
     test('generateTrip returns parsed GeneratedTrip on 201', () async {
@@ -813,3 +834,8 @@ void main() {
     });
   });
 }
+
+// Phase 6 S6.9 (design W5.14 — "is 18:00 a table or a guess?"; owner ruling
+// 2026-08-19: skipping the question means a HARD DEADLINE): the answer rides
+// the generate request as `end_hardness`, and an unanswered planner sends
+// "firm" explicitly — the server's own default, stated rather than implied.

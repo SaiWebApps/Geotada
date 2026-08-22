@@ -564,8 +564,14 @@ def _dusk_corpus(*, with_lit_finisher: bool):
     # that then appeared last was the dusk-blind fill pass's, not the pull's.
     # A tight cluster keeps the chain cheap so BOTH finishers are comfortably
     # affordable and rank alone — score undated, dusk-then-score after dusk —
-    # decides the finish.
-    fillers = _density_fillers(PDV, duration_min=60, n=5, radius_m=80)
+    # decides the finish. The COUNT is the helper's own (derived from the
+    # planner's dwell target and stop ceiling): it was hand-pinned at five for
+    # the 270 s ceiling, and Phase 6 S6.6's three-minute tellings (ceiling 180 s)
+    # left that pool at fill 0.50 — density RED, the dusk rule never reached.
+    # Re-derived at the Phase 6 close; the three dusk assertions measured
+    # identical at the derived count (dark-only evening ends at the dark
+    # finisher with one dusk note; lit evening ends lit; undated ends dark).
+    fillers = _density_fillers(PDV, duration_min=60, radius_m=80)
     pois = [rich_dark_bad, lit] if with_lit_finisher else [rich_dark_bad]
     return _snap([*pois, *fillers])
 

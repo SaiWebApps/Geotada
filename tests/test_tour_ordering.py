@@ -224,3 +224,66 @@ def test_edge_cases_and_contract_errors():
         held_karp_open(SEESAW, fixed_start=START, fixed_end=SEESAW[0], round_trip=True)
     with pytest.raises(ValueError, match="not among the points"):
         held_karp_open(SEESAW[:3], fixed_start=START, fixed_end=SEESAW[4])
+
+
+# ---------------------------------------------------------------------------
+# Phase 6 S6.6 — the heuristic is never worse than a feasible given order.
+# ---------------------------------------------------------------------------
+
+#: MEASURED 2026-08-19 (Phase 6 S6.6): the repair's 20-stop pinned incumbent on the
+#: 120-minute one-way sweep. In its OWN order this chain walks 2734 s; the pin-blind
+#: cheapest-insertion reorder walked 3358 s (+624). The repair priced its incumbent
+#: off that inflated number, admitted a worse trial against it, and the shipped day
+#: walked past its budget. Plain coordinates so the case cannot drift with fixtures.
+_MEASURED_START = (48.8555, 2.3656)
+_MEASURED_CHAIN = [
+    ("sweep-1", 48.855549, 2.364743), ("sweep-0", 48.855205, 2.366011),
+    ("sweep-3", 48.854712, 2.365388), ("sweep-19", 48.854354, 2.363512),
+    ("sweep-11", 48.854301, 2.364544), ("sweep-8", 48.854391, 2.366296),
+    ("sweep-16", 48.853852, 2.365704), ("sweep-29", 48.853381, 2.366449),
+    ("sweep-21", 48.85396, 2.367229), ("sweep-13", 48.854639, 2.367461),
+    ("sweep-5", 48.855246, 2.367038), ("sweep-2", 48.855922, 2.366436),
+    ("sweep-10", 48.855897, 2.367524), ("sweep-18", 48.855419, 2.368248),
+    ("sweep-31", 48.855883, 2.36899), ("sweep-23", 48.856475, 2.368185),
+    ("sweep-15", 48.856724, 2.367168), ("sweep-7", 48.856563, 2.36619),
+    ("sweep-20", 48.857317, 2.365972), ("sweep-12", 48.856909, 2.365129),
+]
+
+
+def test_a_heuristic_order_is_never_worse_than_the_feasible_order_given():
+    """An optimizer may trade away optimality, never feasibility (Phase 6 S6.6).
+
+    Above ORDERING_EXACT_MAX the dispatcher falls back to cheapest-insertion, which
+    builds its open chain BLIND to the pin and appends ``fixed_end`` afterwards — a
+    chain whose tail wandered from the pin buys a huge closing leg. The three-minute
+    tight (W6.2 R3) made >16-stop days routine, so this regime is newly hot: on the
+    measured chain below the reorder walked 624 s more than the caller's own order.
+    ``order_stops`` must return whichever of (heuristic, given-as-is) walks less when
+    the given order already satisfies the same pin. UNDO: return the heuristic
+    unconditionally -> RED."""
+    from src.tour.ordering import _chain_seconds, cheapest_insertion_open
+
+    given = [_poi(pid, lat, lng) for pid, lat, lng in _MEASURED_CHAIN]
+    pin = given[-1]
+    assert len(given) > ORDERING_EXACT_MAX, "the case must exercise the heuristic branch"
+
+    heuristic = cheapest_insertion_open(given, fixed_start=_MEASURED_START, fixed_end=pin)
+    given_walk = _chain_seconds(
+        given, fixed_start=_MEASURED_START, round_trip=False, routed_cost_fn=None
+    )
+    heuristic_walk = _chain_seconds(
+        heuristic, fixed_start=_MEASURED_START, round_trip=False, routed_cost_fn=None
+    )
+    assert heuristic_walk > given_walk, (
+        "premise: the raw heuristic must still be worse on the measured chain — if this "
+        "ever flips, the fixture no longer proves the guard and needs a new measured case"
+    )
+
+    dispatched = order_stops(given, fixed_start=_MEASURED_START, fixed_end=pin)
+    dispatched_walk = _chain_seconds(
+        dispatched, fixed_start=_MEASURED_START, round_trip=False, routed_cost_fn=None
+    )
+    assert dispatched_walk <= given_walk
+    assert dispatched == given, "the cheaper feasible order here IS the given one"
+    # The pin is still honoured either way.
+    assert dispatched[-1].id == pin.id

@@ -180,9 +180,13 @@ def fresh_trip(client):
 # ---------------------------------------------------------------------------
 
 
-def _offline_response(unit, sentences: list[dict]) -> PhysicalProviderResponse:
+def _offline_response(
+    unit, sentences: list[dict], *, extra: dict | None = None
+) -> PhysicalProviderResponse:
+    """``extra`` (Phase 6 S6.5): the whole payload when a test needs more than
+    ``sentences`` — e.g. the writer's ``threads``; default byte-identical to before."""
     body = json.dumps(
-        {"sentences": sentences},
+        extra if extra is not None else {"sentences": sentences},
         ensure_ascii=False,
         separators=(",", ":"),
         sort_keys=True,
@@ -354,10 +358,17 @@ def _refusal_detail(resp, caplog) -> dict:
     at zero" would be satisfied by a crash that never ran a gate at all.
     """
     assert resp.status_code == 422, resp.text
-    errors = [r for r in caplog.records if r.levelno >= logging.ERROR]
-    assert not errors, (
-        "the endpoint logged an error, so this 422 is the seam's ValueError branch "
-        f"rather than a VERIFY refusal: {[r.getMessage() for r in errors]}"
+    # RE-DERIVED 2026-08-19 (Phase 6 W6.1): the VERIFY branch now NAMES itself in the
+    # log ("Compose refused by VERIFY …" plus one line per blocking sentence — the
+    # author path's precedent), so the two branches are told apart POSITIVELY rather
+    # than by the absence of any error record, which was the only signal before.
+    messages = [r.getMessage() for r in caplog.records if r.levelno >= logging.ERROR]
+    assert not any(m.startswith("Per-stop authoring could not run") for m in messages), (
+        "the endpoint logged the seam's ValueError branch, so this 422 is not a VERIFY "
+        f"refusal: {messages}"
+    )
+    assert any(m.startswith("Compose refused by VERIFY") for m in messages), (
+        f"a VERIFY refusal names itself in the server log; saw: {messages}"
     )
     detail = resp.json()["detail"]
     assert detail["reason"] == "compose_verification_failed"
@@ -503,7 +514,12 @@ def test_a_faithful_tour_still_composes(client, live_neo4j, fresh_trip):
     finally:
         _clear_dep(client, target)
     assert resp.status_code == 200, resp.text
-    assert _persisted(live_neo4j, trip_id)["composed_route_id"] == f"{trip_id}-opt1"
+    # The frozen trip is deleted (design §8.2, Phase 5 S5.8): nothing writes
+    # `composed_route_id` any more — a compose is version 1 of the living session.
+    # (This line pinned the deleted writer and was red from S5.8 until Phase 6 D6.0
+    # re-derived it; audit C had not classified this file.)
+    assert resp.json()["plan_version"] == 1
+    assert _persisted(live_neo4j, trip_id)["composed_route_id"] is None
 
 
 def test_the_certification_replay_keeps_its_own_gate_defaults() -> None:
@@ -634,8 +650,19 @@ def _cross_stop_echo_fixture() -> tuple[Script, BeatSequence, Route]:
         lens_coverage={},
         script=(
             Sentence(text=_DUP_TEXT, source_id="b0", source_type="beat", stop_idx=0),
+            # Phase 6 S6.4: the stitch closes EVERY stop (the fallback the one writer
+            # rewrites); a persisted-trip-shaped fixture carries the same shape.
+            Sentence(
+                text="And that's Stop 0.", source_id="GLUE_CLOSING", source_type="glue", stop_idx=0
+            ),
             Sentence(text=_DUP_TEXT, source_id="b1", source_type="beat", stop_idx=1),
             Sentence(text=_NOVEL_TEXT, source_id="b1", source_type="beat", stop_idx=1),
+            Sentence(
+                text="And that brings our walk to a close.",
+                source_id="GLUE_CLOSING",
+                source_type="glue",
+                stop_idx=1,
+            ),
         ),
         validation=ValidationReport(),
     )
@@ -787,7 +814,9 @@ def test_cross_stop_echo_is_suppressed() -> None:
         "the dedup pass dropped stop 1's ONLY novel sentence, not just its echo "
         "of stop 0 — this would silently delete a fact, not suppress a repeat"
     )
-    stop0_texts = [s.text for s in script.script if s.stop_idx == 0]
+    # The stop's BEAT sentences (Phase 6 S6.4: every stop also ends on its close, which
+    # is glue and not part of the telling the dedup pass judges).
+    stop0_texts = [s.text for s in script.script if s.stop_idx == 0 and s.source_type == "beat"]
     assert stop0_texts == [_DUP_TEXT], "stop 0's own (first) telling must survive untouched"
 
     # --- surface 2: /trips/preview -----------------------------------------

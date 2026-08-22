@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import itertools
 import json
 from typing import Literal
 
@@ -152,7 +153,12 @@ class AuthoringCandidatePlan(BaseModel):
         if any(request.candidate != self.candidate for request in self.stop_requests):
             raise ValueError("candidate plan contains a request from another candidate")
         indexes = tuple(request.stop_index for request in self.stop_requests)
-        if indexes != tuple(range(len(self.stop_requests))):
+        # Strictly increasing, never dense-from-zero: a DAY plan is forced to
+        # 0..n-1 by plan_premium_authoring's own coverage checks (one unit per
+        # dwell stop, highest index in range), while a FULL-TELLING plan
+        # (Phase 6 S6.6, design §5.5) is one stop of the day at its own index —
+        # stop 3's second story is a plan of exactly (3,).
+        if any(b <= a for a, b in itertools.pairwise(indexes)):
             raise ValueError("candidate plan must cover every stop once in order")
         request_ids = tuple(request.request_id for request in self.stop_requests)
         if len(request_ids) != len(set(request_ids)):

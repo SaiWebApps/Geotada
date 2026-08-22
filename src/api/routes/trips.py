@@ -77,6 +77,7 @@ from src.tour.contract import (
     END_B_SENTINEL_PREFIX,
     POI,
     BeatSequence,
+    POIBeats,
     ReplanContext,
     RouteOption,
     TourabilityAssessment,
@@ -89,15 +90,20 @@ from src.tour.generation import generate
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option, option_eta_seconds
 from src.tour.premium_tour import (
+    FULL_TELLING_DROPPED_DEGRADATION,
     PREMIUM_MODULE_VERSION,
     EphemeralReceiptSink,
+    FullTelling,
     PremiumComposeExecutor,
     PremiumRouteInfeasibleError,
     certification_planning_policy,
     exact_snapshot_sha256,
     execute_premium_plan,
+    finalize_premium_full_telling,
     finalize_premium_tour,
+    full_telling_majors,
     plan_premium_authoring,
+    plan_premium_full_telling,
     plan_premium_tour,
     record_routing_degradations,
     resolve_build_identity,
@@ -105,13 +111,14 @@ from src.tour.premium_tour import (
 )
 from src.tour.quality_rubric import score_tour
 from src.tour.routing import PACE_KMH, haversine_m, longest_walk_minutes, summarise_route
-from src.tour.routing_client import RoutingClient
+from src.tour.routing_client import ROUTE_SURFACE_COSTING_OVERRIDES, RoutingClient
 from src.tour.selection import (
     AVOID_QUEUES_EXCLUDE_PEAK_MINUTES,
     CertificationPlanningInfeasibleError,
     build_poi_beat_plans_capped,
     build_poi_extra_beats,
     build_poi_extra_narration,
+    end_b_sentinel_from_id,
     load_paris_corpus,
     pick_spine_area,
     planned_audio_by_poi,
@@ -253,6 +260,26 @@ def _dial_kwargs(body) -> dict:
         "category_minus": tuple(body.category_minus),
     }
 
+
+
+def _resolve_persisted_pick(poi_ids: list[str], pois_by_id: dict[str, POI]) -> list[POI]:
+    """The compose rebuild's corpus check: every persisted stop id must still
+    resolve, or the trip is refused 409 corpus_changed.
+
+    THE ENGINE'S OWN END SENTINEL IS NOT CORPUS DRIFT (Phase 6 W6.12): an A→B
+    day whose destination has no corpus POI within snapping distance persists
+    a synthesized `__end_b__<lat>_<lng>` stop — its id carries its coordinate,
+    so the rebuild re-materializes it. Measured: Sofia's Châtelet day 409'd
+    "corpus_changed" on every compose, permanently uncomposable.
+    """
+    for pid in poi_ids:
+        sentinel = end_b_sentinel_from_id(pid)
+        if sentinel is not None:
+            pois_by_id[pid] = sentinel
+    missing = [pid for pid in poi_ids if pid not in pois_by_id]
+    if missing:
+        raise HTTPException(409, {"reason": "corpus_changed", "missing_poi_ids": missing})
+    return [pois_by_id[pid] for pid in poi_ids]
 
 def _restore_tour_input(tour_input_dict: dict) -> TourInput:
     """The persisted request back as a TourInput — every stored axis, fail-open.
@@ -747,6 +774,7 @@ def generate_trip(
             importance_tier=s["importance_tier"],
             start_time=s["start_time"],
             dwell_seconds=s["dwell_seconds"],
+            close_text=s.get("close_text"),
             transit_polyline=polyline_by_poi.get(s["poi_id"]),
             **audio_by_beat.get(s["primary_beat_id"], {}),
         )
@@ -859,10 +887,7 @@ def compose_trip(
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     pois_by_id = {p.id: p for p in snapshot.pois}
-    missing = [pid for pid in poi_ids if pid not in pois_by_id]
-    if missing:
-        raise HTTPException(409, {"reason": "corpus_changed", "missing_poi_ids": missing})
-    picked = [pois_by_id[pid] for pid in poi_ids]
+    picked = _resolve_persisted_pick(poi_ids, pois_by_id)
 
     spine = pick_spine_area(tour_input.start[0], tour_input.start[1], picked, snapshot)
     # The SAME certification walk budget the phone and the workbench plan with
@@ -924,6 +949,13 @@ def compose_trip(
             # existed restores at 0, which reads as "not short enough to mention"
             # and reproduces exactly how those trips have always composed.
             elapsed_shortfall_seconds=int(chosen.get("elapsed_shortfall_seconds") or 0),
+            # THE SURFACE THE DAY WAS PLANNED UNDER (Phase 6 S6.1a; design §2.4, plan
+            # S2.7: "never a route selected under one costing and reported under
+            # another"). Selection routes a take-it-easy day step-free; until this
+            # line the rebuild here routed the SAME pick on the default surface, so
+            # the composed day's legs, clocks and polylines were not the day the
+            # person was shown (measured 2026-08-19 on Rosemary's day). "any" = None.
+            costing_options_override=ROUTE_SURFACE_COSTING_OVERRIDES[tour_input.route_surface],
         )
         # SAY SO IF THE LEGS WERE ESTIMATED. This route is rebuilt here rather than
         # planned, so it never passes the planner that labels an unmeasured walk — and
@@ -1008,6 +1040,40 @@ def compose_trip(
             )
             composed = premium_result.blueprint.script
     except ComposeVerificationError as exc:
+        # NAME WHAT BLOCKED, server-side. The 422 below carries counts only — the wire
+        # must not leak provider prose — and a count is not enough to act on (the
+        # author path learned this first: see `_author_preview_impl`'s catch-all). Only
+        # the three STRUCTURAL classes block (contract.py `ValidationReport.passed`);
+        # each is logged with its provenance and truncated text so one refused
+        # compose identifies the rule instead of costing another paid run per guess.
+        _log = logging.getLogger("ondoway.api")
+        _log.error(
+            "Compose refused by VERIFY for trip=%s: %d untraceable, %d forbidden, "
+            "%d provenance (advisory: %d faithfulness, %d coverage)",
+            trip_id,
+            len(exc.report.untraceable_sentences),
+            len(exc.report.forbidden_phrase_hits),
+            len(exc.report.provenance_failures),
+            len(exc.report.faithfulness_failures),
+            len(exc.report.coverage_failures),
+        )
+        for _s in exc.report.untraceable_sentences:
+            _log.error(
+                "  UNTRACEABLE stop=%s source_type=%r source_id=%r cited=%r text=%.120r",
+                _s.stop_idx,
+                _s.source_type,
+                _s.source_id,
+                tuple(_s.cited_beat_ids or ()),
+                _s.text,
+            )
+        for _s, _code in exc.report.forbidden_phrase_hits:
+            _log.error(
+                "  FORBIDDEN %s stop=%s source_id=%r text=%.120r",
+                _code,
+                _s.stop_idx,
+                _s.source_id,
+                _s.text,
+            )
         raise HTTPException(
             422,
             {
@@ -1053,6 +1119,76 @@ def compose_trip(
     # script_bodies (build_poi_extra_narration), NOT re-composed through the LLM
     # VERIFY gate: there is nothing freely-composed to entail. The stops carry BOTH
     # extra_beat_ids (via route_script_to_stops) and extra_narration, keyed by poi.
+    # Phase 6 S6.6 (design §5.5; W6.2 R3): THE FULL TELLING for every MAJOR stop —
+    # a second COMPOSED piece from the stop's own second story (the overflow the cap
+    # trimmed), through the same one-stop seam, with the tight telling as ALREADY
+    # TOLD. Optional enrichment end to end: a gate miss or provider fault drops THAT
+    # stop's full telling (reported on the degradations channel) and never the day.
+    full_by_stop: dict[int, FullTelling] = {}
+    majors = full_telling_majors(composed, seq, route)
+    if majors:
+        overflow_refs_by_poi = {
+            poi.id: tuple(
+                beat
+                for beat in snapshot.beats_by_poi.get(poi.id, ())
+                if beat.id in set(seq.overflow_by_poi.get(poi.id, ()))
+            )
+            for poi in route.pois
+        }
+        full_seq = BeatSequence(
+            poi_beats=tuple(
+                POIBeats(
+                    poi_id=poi.id,
+                    poi_name=poi.name,
+                    ordering_strategy="narrative_function",
+                    beats=overflow_refs_by_poi.get(poi.id, ()),
+                )
+                for poi in route.pois
+                if overflow_refs_by_poi.get(poi.id)
+            ),
+            overflow_by_poi=seq.overflow_by_poi,
+        )
+        for stop_index, full_budget in majors.items():
+            try:
+                full_plan = plan_premium_full_telling(
+                    composed,
+                    full_seq,
+                    route,
+                    stop_index=stop_index,
+                    budget=full_budget,
+                    snapshot=snapshot,
+                    snapshot_sha256=exact_snapshot_sha256(snapshot),
+                    routing_version=routing_version,
+                    policy_version=planning_policy.policy_id,
+                )
+                full_responses = execute_premium_plan(
+                    full_plan,
+                    executor=premium_executor,
+                    receipt_sink=EphemeralReceiptSink(),
+                )
+                full = finalize_premium_full_telling(
+                    full_plan,
+                    full_responses,
+                    budget=full_budget,
+                    faithfulness_checker=faithfulness_checker,
+                )
+            except Exception as exc:  # provider weather or a plan fault: the stop
+                # keeps its tight telling; the on-demand route still answers.
+                record(
+                    kind=FULL_TELLING_DROPPED_DEGRADATION,
+                    human=(
+                        "The longer telling written for one of the main stops was "
+                        "dropped; the stop keeps its normal telling and the tap for "
+                        "more still works."
+                    ),
+                    component="trips.compose_trip",
+                    cause=f"authoring the full telling failed: {type(exc).__name__}: {exc}",
+                    stop_index=str(stop_index),
+                )
+                continue
+            if full is not None:
+                full_by_stop[stop_index] = full
+
     extra_by_poi = build_poi_extra_beats(
         route,
         snapshot,
@@ -1069,8 +1205,15 @@ def compose_trip(
         script=composed,
         extra_by_poi=extra_by_poi,
     )
-    for stop in stops:
+    for idx, stop in enumerate(stops):
         stop["extra_narration"] = extra_narration_by_poi.get(stop["poi_id"])
+        # Phase 6 S6.5: the writer's THREADS ride beside the narration, keyed by the
+        # name of the stop that may come right before this one when the day replans.
+        stop["thread_lines"] = premium_result.threads_by_stop.get(idx) or None
+        # Phase 6 S6.6: a major stop's full telling rides beside its tight one.
+        full = full_by_stop.get(idx)
+        stop["full_narration"] = full.narration if full else None
+        stop["full_close_text"] = full.close_text if full else None
     item_ids = replace_trip_stops(session, trip_id, stops)
 
     display_map = _lens_display_map(session, {s["lens_name"] for s in stops if s["lens_name"]})
@@ -1092,6 +1235,13 @@ def compose_trip(
             start_time=s["start_time"],
             narration=s.get("narration"),
             extra_narration=s.get("extra_narration"),
+            close_text=s.get("close_text"),
+            thread_lines=s.get("thread_lines"),
+            full_narration=s.get("full_narration"),
+            full_close_text=s.get("full_close_text"),
+            close_audio_url=s.get("close_audio_url"),
+            thread_audio_urls=s.get("thread_audio_urls"),
+            full_close_audio_url=s.get("full_close_audio_url"),
             dwell_seconds=s["dwell_seconds"],
         )
         for i, s in enumerate(stops)
@@ -1474,7 +1624,57 @@ def get_trip_session(
         raise HTTPException(404, f"Trip '{trip_id}' not found")
     if not inputs["session"]:
         raise HTTPException(404, {"reason": "no_session_yet", "detail": "compose the trip first"})
-    return SessionPlan(**inputs["session"])
+    plan = SessionPlan(**inputs["session"])
+    # Phase 6 S6.8: AUDIO FACTS LIVE ON THE ITEMS, THE SESSION HOLDS THE PLAN.
+    # The saved payload snapshots its stops at compose time; the voicing pass
+    # writes the narration and session-line files onto the ItineraryItems
+    # afterwards — so the session's audio fields are re-read from the live items
+    # at every GET, or the phone would forever see the nulls of compose time
+    # (measured 2026-08-19: five voiced closes in the graph, none on the wire).
+    return _with_live_audio(session, plan)
+
+
+def _with_live_audio(session: Session, plan: SessionPlan) -> SessionPlan:
+    """Overlay the items' current audio fields onto a saved session's stops."""
+    ids = [stop.stop_id for stop in plan.stops if stop.stop_id]
+    if not ids:
+        return plan
+    rows = session.run(
+        """
+        MATCH (item:ItineraryItem) WHERE item.id IN $ids
+        RETURN item.id AS id,
+               item.audio_url AS audio_url,
+               item.audio_duration_sec AS audio_duration_sec,
+               item.close_audio_url AS close_audio_url,
+               item.thread_audio_urls AS thread_audio_urls,
+               item.full_close_audio_url AS full_close_audio_url
+        """,
+        ids=ids,
+    )
+    by_id = {r["id"]: dict(r) for r in rows}
+    stops = []
+    for stop in plan.stops:
+        live = by_id.get(stop.stop_id or "")
+        if not live:
+            stops.append(stop)
+            continue
+        stops.append(
+            stop.model_copy(
+                update={
+                    "audio_url": live["audio_url"] or stop.audio_url,
+                    "audio_duration_sec": live["audio_duration_sec"] or stop.audio_duration_sec,
+                    "close_audio_url": live["close_audio_url"] or stop.close_audio_url,
+                    "thread_audio_urls": (
+                        json.loads(live["thread_audio_urls"])
+                        if live["thread_audio_urls"]
+                        else stop.thread_audio_urls
+                    ),
+                    "full_close_audio_url": live["full_close_audio_url"]
+                    or stop.full_close_audio_url,
+                }
+            )
+        )
+    return plan.model_copy(update={"stops": stops})
 
 
 @router.post("/trips/{trip_id}/session/replan", response_model=SessionPlan)

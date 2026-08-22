@@ -406,8 +406,18 @@ def test_a_replan_prices_the_day_at_the_persons_listening_rate():
     assert [p.id for p in normal.pois] == list(keep), [p.id for p in normal.pois]
     assert [p.id for p in paulo.pois] == list(keep), [p.id for p in paulo.pois]
     assert normal.overrun_seconds == 0, normal.overrun_seconds
-    # Three stops x (540 - 270) s of extra listening = 810 s over the same walk.
-    assert 700 <= paulo.overrun_seconds <= 900, paulo.overrun_seconds
+    # RE-DERIVED at Phase 6 S6.6 (the three-minute tight): the old band (700-900)
+    # hardcoded the 270-era fixture arithmetic (its beats derive their length from
+    # MAX_DWELL_AUDIO_SECONDS, so the ceiling move changed what the day voices).
+    # The MECHANISM is what this test pins, not the pricing formula: a doubled
+    # rate must overrun a day that fits at 1.0, and a tripled rate must overrun
+    # more than a doubled one — monotone in the rate, reported never refused.
+    assert paulo.overrun_seconds > 0, "rate 2.0 must overrun the same day"
+    heavier = tail(3.0)
+    assert heavier.overrun_seconds > paulo.overrun_seconds, (
+        heavier.overrun_seconds,
+        paulo.overrun_seconds,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -609,3 +619,230 @@ def test_the_finish_is_named_as_the_place_when_the_person_named_one():
     assert _finish_name(away, route) == "your start"
     declared = round_trip.model_copy(update={"round_trip": False, "end": (PDV[0] + 0.01, PDV[1])})
     assert _finish_name(declared, route) == "your finish"
+
+
+# ---------------------------------------------------------------------------
+# Phase 6 S6.4 — the wrap-up entry: what the screen says, and from where
+# ---------------------------------------------------------------------------
+
+
+def test_a_wrap_up_on_an_open_walk_never_says_straight_to_your_start():
+    """W6.2 R2/R8 (11/11): "'Straight to your start' is a direction to nowhere" (Nadia,
+    Marcus, Julien, F&D — 09:10 they restart where the conversation pauses and end at
+    dinner, wherever that is). On an OPEN one-way walk a wrap-up has no finish to head
+    for: the screen line says what the day was and that the rest of it is theirs from
+    here; it never names a start or a finish. On a day WITH a finish the line still
+    heads for the place (Place des Vosges, Notre-Dame — S5.19). UNDO: fall back to
+    `_finish_name`'s "your start" -> RED."""
+    from src.tour.contingency import build_contingency_set
+    from src.tour.contract import ReplanContext
+    from src.tour.selection import select_route
+
+    stand_a, stand_b, bench, stand_c, _end = _wall_day_corpus()
+    snap = _snap([stand_a, stand_b, bench, stand_c])
+    open_walk = TourInput(
+        start=PDV, duration_min=110, city_slug="paris", round_trip=False,
+        start_datetime="2026-08-23T15:00", end_hardness="open",
+    )
+    base = select_route(open_walk, snap)
+    cset = build_contingency_set(
+        base, open_walk, snap, routing_client=None, person=ReplanContext(), finish_name="your start"
+    )
+    wraps = [e for e in cset.entries if e.trigger["kind"] == "wrap_up_from"]
+    assert wraps, "premise: wrap-up entries exist"
+    for e in wraps:
+        low = e.screen_text.lower()
+        assert "your start" not in low and "straight to" not in low, e.screen_text
+        assert "yours" in low or "walk" in low, e.screen_text  # the day handed back
+    # Every other entry on the open walk keeps the same rule — no "Straight to your start".
+    for e in cset.entries:
+        assert "your start" not in e.screen_text.lower(), (e.trigger, e.screen_text)
+
+
+def test_a_rest_has_its_own_wrap_up_entry():
+    """Rosemary (05, step 3: "The bench is a stop") and W6.2 R2: "RO13 has a [Head back
+    now] entry at the Orangerie and the Orsay and none at the bench — the one place I
+    am most likely to decide to go home is where the button does nothing." A wrap-up
+    entry exists FROM every stop the person can be at — rests included. UNDO: build
+    wrap-ups from story stops only -> RED."""
+    from src.tour.contingency import build_contingency_set
+    from src.tour.contract import ReplanContext
+    from src.tour.selection import select_route
+
+    stand_a, stand_b, bench, stand_c, end = _wall_day_corpus()
+    snap = _snap([stand_a, stand_b, bench, stand_c])
+    request = TourInput(
+        start=PDV, end=(end.lat, end.lng), duration_min=110, city_slug="paris",
+        round_trip=False, start_datetime="2026-08-19T14:00", rest_cadence_minutes=6,
+    )
+    base = select_route(request, snap)
+    assert bench.id in {p.id for p in base.pois}, "premise: the bench is on the day"
+    cset = build_contingency_set(
+        base, request, snap, routing_client=None,
+        person=ReplanContext(protected_poi_ids=(bench.id,)),
+    )
+    wrap_from = {e.trigger["stop_id"] for e in cset.entries if e.trigger["kind"] == "wrap_up_from"}
+    assert bench.id in wrap_from, sorted(wrap_from)
+
+
+def test_the_banned_list_binds_words_not_fragments():
+    """W5.2 R2.2's list binds plan-words on screen and aloud; the W6.2 panel found the
+    check reads LETTERS: "wallpaper" carries "wall", "husband" "band", "compromise"
+    "promise", "later" "late", "darkness" "dark" (Théo, Camille: "bind the planner's
+    meanings, not the letters, or my closes can't say true things"). A close is narrator
+    content and goes through the same door. UNDO: substring matching -> RED."""
+    import pytest
+
+    from src.tour.contingency import plain
+
+    for ok in (
+        "The wallpaper in the Queen's cell is a reconstruction.",
+        "Her husband was killed in a duel in 1651.",
+        "No compromise was possible; later that year the kings left.",
+        "The nave is cool and the aisles are in darkness by four.",
+    ):
+        assert plain(ok) == ok
+    for banned in (
+        "You are running late.",
+        "We hit a wall at 16:40.",
+        "That is a promise we keep.",
+        "The band is 10 to 20 minutes.",
+    ):
+        with pytest.raises(ValueError):
+            plain(banned)
+
+
+def test_a_wrap_up_from_the_place_the_day_ends_at_does_not_send_you_there():
+    """W6.2 R2 (Rosemary): "my wrap-up at the Orsay shows 'Straight to Musée d'Orsay' to
+    a woman standing in the Orsay — the day's close is what belongs there." When the
+    wrap-up is from the stop the day ends at (the start of a round trip that is a stop,
+    a declared end that is a stop), the screen says the walk is done — never a direction
+    to where they stand. UNDO: "Straight to <finish>" regardless -> RED."""
+    from src.tour.contingency import build_contingency_set
+    from src.tour.contract import ReplanContext
+    from src.tour.selection import select_route
+
+    museum = _stand(_at(PDV, 0.0, 0.0, "museum", tier=5, beat_count=5), 40)
+    bench = _bench(_at(PDV, 250.0, 30.0, "bench"), 8)
+    stand = _stand(_at(PDV, 450.0, 40.0, "stand", tier=4, beat_count=4), 12)
+    snap = _snap([museum, bench, stand])
+    round_trip = TourInput(
+        start=PDV, duration_min=110, city_slug="paris", round_trip=True,
+        start_datetime="2026-08-19T14:00", rest_cadence_minutes=6,
+    )
+    route = select_route(round_trip, snap)
+    ids = [p.id for p in route.pois]
+    assert museum.id in ids, "premise: the day visits the start's museum"
+    cset = build_contingency_set(
+        route, round_trip, snap, routing_client=None, person=ReplanContext(),
+        finish_name=museum.name,
+    )
+    wraps = {e.trigger["stop_id"]: e for e in cset.entries if e.trigger["kind"] == "wrap_up_from"}
+    assert museum.id in wraps
+    at_finish = wraps[museum.id].screen_text.lower()
+    assert "straight to" not in at_finish and museum.name.lower() not in at_finish, at_finish
+    assert "walk" in at_finish, at_finish
+    # From a stop that is NOT the finish, the line still heads for the place.
+    others = [e for sid, e in wraps.items() if sid != museum.id]
+    assert others and all("Straight to" in e.screen_text for e in others), [
+        e.screen_text for e in others
+    ]
+
+
+def test_skipping_an_uncategorised_stop_spends_no_category():
+    """Phase 6 W6.11's demo found the class: a skip marks the skipped stop's
+    place_category SPENT (Greta's satiation — "galleries spent, churches down"),
+    but most of the corpus carries the default category 'other', so skipping ONE
+    uncategorised stop marked 'other' spent and the tail replan seated NOTHING —
+    measured on the F&D day: every skip entry after the first shipped stop_ids []
+    while its own screen text promised "Next: Conciergerie". The absence of a
+    category is not a category: 'other' (and None) is never spent. A REAL
+    category still spends. UNDO: spend 'other' again -> RED."""
+    from src.tour.contingency import build_contingency_set
+    from src.tour.contract import ReplanContext
+    from src.tour.selection import select_route
+
+    stand_a, stand_b, bench, stand_c, end = _wall_day_corpus()
+    # stand_a carries no real category (the corpus default); stand_b carries one.
+    stand_a = stand_a.model_copy(update={"place_category": "other"})
+    stand_b = stand_b.model_copy(update={"place_category": "museum"})
+    snap = _snap([stand_a, stand_b, bench, stand_c])
+    request = TourInput(
+        start=PDV,
+        end=(end.lat, end.lng),
+        duration_min=110,
+        city_slug="paris",
+        round_trip=False,
+        start_datetime="2026-08-19T14:00",
+        rest_cadence_minutes=6,
+    )
+    base = select_route(request, snap)
+    assert stand_a.id in [p.id for p in base.pois], "premise: the 'other' stop is seated"
+
+    seen: list[tuple[str, tuple]] = []
+    real_select = select_route
+
+    def spy_plan(inp, ctx):
+        seen.append((f"{inp.start[0]:.5f}", tuple(ctx.spent_categories)))
+        return real_select(inp, snap, replan=ctx)
+
+    build_contingency_set(
+        base, request, snap, routing_client=None,
+        person=ReplanContext(), plan_version=1, plan=spy_plan,
+    )
+    all_spent = [cats for _pos, cats in seen]
+    assert not any("other" in cats for cats in all_spent), (
+        f"'other' must never be spent; ctx rows: {all_spent}"
+    )
+    assert any("museum" in cats for cats in all_spent), (
+        "a REAL category is still spent when its stop is skipped"
+    )
+
+
+def test_a_keep_constrained_tail_spends_its_whole_walking_budget():
+    """Phase 6 W6.11's demo found the second half of the empty-tail class: on an
+    open one-way day the greedy RESERVES a quarter of the walking budget for the
+    endpoint pull — but a replan tail with `keep_to_poi_ids` set can never pull
+    (every non-keep candidate is filtered before the pull ranks them), so the
+    reserve starved tails for nothing. Measured on the F&D day: the skip-of-BHV
+    tail (one keep, Place des Vosges, a 1291 s walk) seated NOTHING below a
+    72-minute remainder because 0.75 x its walking budget fell 157 s short —
+    while the entry's own screen text promised "Next: Place des Vosges". A
+    keep-constrained tail gets the whole allocation. UNDO: reserve again on
+    keep-constrained tails -> RED."""
+    from src.tour.contract import ReplanContext
+    from src.tour.routing import walk_budget_seconds
+    from src.tour.selection import select_route
+
+    # One keepable stop whose straight walk costs ~0.8 of the walking budget:
+    # over the 0.75 the pull reserve leaves, under the budget itself.
+    minutes = 30
+    budget = walk_budget_seconds(minutes)
+    # default_leg_seconds is pace-corrected haversine; place the keep by metres.
+    from src.tour.routing import pace_corrected_walk_seconds
+
+    target_walk = int(budget * 0.8)
+    metres = 100.0
+    while pace_corrected_walk_seconds(metres) < target_walk:
+        metres += 25.0
+    far_keep = _stand(_at(PDV, metres, 0.0, "far-keep", tier=5, beat_count=5), 5)
+    # Background anchors so the DENSITY gate sees a live area (they are all
+    # filtered by keep_to before seating — only the far keep may seat).
+    background = [
+        _stand(_at(PDV, 60.0 + 30.0 * i, 90.0, f"bg-{i}", tier=4, beat_count=3), 5)
+        for i in range(8)
+    ]
+    snap = _snap([far_keep, *background])
+    ctx = ReplanContext(keep_to_poi_ids=(far_keep.id,), floor_zero=True)
+    tail = select_route(
+        TourInput(
+            start=PDV, duration_min=minutes, city_slug="paris", round_trip=False,
+            start_datetime="2026-08-19T16:00",
+        ),
+        snap,
+        replan=ctx,
+    )
+    assert [p.id for p in tail.pois] == [far_keep.id], (
+        f"the keep must be seated — walk {pace_corrected_walk_seconds(metres)}s "
+        f"against budget {budget}s; got {[p.id for p in tail.pois]}"
+    )

@@ -186,23 +186,34 @@ def _beat_sentence(bid: str, stop_idx: int, text: str = "A beat sentence.") -> S
     return Sentence(text=text, source_id=bid, source_type="beat", stop_idx=stop_idx)
 
 
-def test_reflection_entails_against_union_of_visited_claims():
+def test_the_thread_entails_against_visited_claims_plus_its_own_stops_beats():
+    """RE-DERIVED for Phase 6 S6.5 (design §5.4; W6.2 R5): the GLUE_REFLECTION slot
+    holds THE THREAD — one sentence binding THIS stop to the walk through ONE fact of
+    this stop, never a recap. Its support is therefore what the walker has heard PLUS
+    the arriving stop's own beats; under Phase 4's visited-only window the thread's
+    defining fact was inadmissible by construction. UNDO: drop the own-stop half of
+    the support -> RED (the union below loses b3's claim and body)."""
     b1 = _beat("b1", key_claims=("Henri IV built it", "completed 1612"))
     b2 = _beat("b2", key_claims=("Hugo lived at number 6",))
+    b3 = _beat("b3", key_claims=("the same tribunal sat here",), script_body="Body three.")
     checker = MockFaithfulnessChecker()
     sentences = [
         _beat_sentence("b1", 0),
         _beat_sentence("b2", 1),
-        _reflection("Kings built it; a writer made it famous.", 2),
+        _reflection("The tribunal you heard about sat here too.", 2),
+        _beat_sentence("b3", 2),
     ]
-    fails = verify_faithfulness(_script(sentences), {"b1": b1, "b2": b2}, checker)
+    fails = verify_faithfulness(_script(sentences), {"b1": b1, "b2": b2, "b3": b3}, checker)
     assert fails == []
-    # The reflection's entailment call received the ORDERED union of claims from
-    # BOTH visited stops. Find it by content, not position: the per-sentence
-    # entailment calls now run concurrently, so call order is non-deterministic.
-    union = ("Henri IV built it", "completed 1612", "Hugo lived at number 6")
-    reflection_calls = [c for c in checker.calls if c[0] == union]
-    assert len(reflection_calls) == 1
+    union = (
+        "Henri IV built it",
+        "completed 1612",
+        "Hugo lived at number 6",
+        "the same tribunal sat here",
+        "Body three.",
+    )
+    thread_calls = [c for c in checker.calls if c[0] == union]
+    assert len(thread_calls) == 1
 
 
 def test_unfaithful_reflection_is_flagged():
@@ -214,30 +225,34 @@ def test_unfaithful_reflection_is_flagged():
     assert fails == [(bad, "unfaithful_reflection")]
 
 
-def test_reflection_window_is_strictly_before_its_stop():
-    """Claims at the reflection's OWN stop are not yet heard — a reflection
-    on the leg into stop 1 whose only claims live at stop 1 is unverifiable."""
+def test_a_threads_own_stops_facts_are_admissible_support():
+    """RE-DERIVED for Phase 6 S6.5: Phase 4 pinned the OPPOSITE here ("claims at the
+    reflection's own stop are not yet heard" — the recap's window). The thread binds
+    the ARRIVING stop through one of ITS facts (W6.2 R5), so a slot whose only claims
+    live at its own stop is now verifiable, entailed against them."""
     b1 = _beat("b1", key_claims=("only claim, at the same stop",))
     checker = MockFaithfulnessChecker()
-    reflection = _reflection("Consider what you have seen.", 1)
+    thread = _reflection("Consider the one claim of this stop.", 1)
     fails = verify_faithfulness(
-        _script([reflection, _beat_sentence("b1", 1)]), {"b1": b1}, checker
+        _script([thread, _beat_sentence("b1", 1)]), {"b1": b1}, checker
     )
-    assert fails == [(reflection, "unverifiable_reflection:no_visited_claims")]
-    # Fail-closed BEFORE the checker: the reflection never reached entailment
-    # (the only call is the beat sentence's own).
-    assert all("Consider" not in text for _claims, text in checker.calls)
+    assert fails == []
+    thread_calls = [c for c in checker.calls if "Consider" in c[1]]
+    assert len(thread_calls) == 1
 
 
-def test_reflection_with_no_claims_anywhere_fails_closed():
-    b1 = _beat("b1")  # visited, but claimless
+def test_a_thread_with_no_support_anywhere_fails_closed():
+    """A claimless, bodiless walk gives the thread nothing to entail from — it fails
+    BEFORE the checker (an unverifiable line never ships; unchanged from Phase 4,
+    re-labelled for the union window of S6.5)."""
+    b1 = _beat("b1")  # visited, but claimless and bodiless
     checker = MockFaithfulnessChecker()
-    reflection = _reflection("A synthesis of nothing.", 1)
+    thread = _reflection("A synthesis of nothing.", 1)
     fails = verify_faithfulness(
-        _script([_beat_sentence("b1", 0), reflection]), {"b1": b1}, checker
+        _script([_beat_sentence("b1", 0), thread]), {"b1": b1}, checker
     )
-    assert fails == [(reflection, "unverifiable_reflection:no_visited_claims")]
-    assert checker.calls == []  # claimless beat skipped; reflection failed pre-checker
+    assert fails == [(thread, "unverifiable_reflection:no_support")]
+    assert checker.calls == []  # claimless beat skipped; the thread failed pre-checker
 
 
 def test_validation_report_passed_gates_on_new_teeth():

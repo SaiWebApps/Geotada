@@ -2215,8 +2215,14 @@ def test_duration_is_the_only_stop_bound_on_the_planning_path(monkeypatch) -> No
     from tests.test_tour_selection import _poi, _snap
 
     # 1. A dense start area and a duration long enough to seat well past the old
-    #    ceiling. Two beats per POI keeps the greedy ANCHOR-bound rather than
-    #    letting it terminate audio-bound after a handful of beat-rich stops.
+    #    ceiling. Each place takes eight minutes to SEE (re-derived at the Phase 6
+    #    close): a stop's length is max(visit, audio), and since S6.6 capped
+    #    tellings at three minutes a lattice of talk-only places could not build
+    #    half of 400 minutes — the one underfill line (Phase 5 S5.3) refused it
+    #    at 156 of the 200 minutes required. A dense area of real places is
+    #    places you go inside; with the visit priced, the fixture seats 31 (measured)
+    #    in about three seconds. Two beats per POI keeps the greedy visit-bound
+    #    rather than letting it terminate audio-bound.
     pois = [
         _poi(
             f"p{i:02d}",
@@ -2224,7 +2230,7 @@ def test_duration_is_the_only_stop_bound_on_the_planning_path(monkeypatch) -> No
             lat=_PDV[0] + (i % 6) * 0.0004,
             lng=_PDV[1] + (i // 6) * 0.0004,
             beat_count=2,
-        )
+        ).model_copy(update={"typical_duration_min": 8})
         for i in range(40)
     ]
     snap = _snap(pois)
@@ -2251,11 +2257,13 @@ def test_duration_is_the_only_stop_bound_on_the_planning_path(monkeypatch) -> No
     route = select_route(inp, snap, planning_policy=no_cap_policy)
 
     # 3. THE AC-16 BEHAVIOUR: far more dwell stops than any deleted ceiling could
-    #    produce. MEASURED on this fixture: 32 uncapped, against exactly 16 with
-    #    the old ceilings restored (15 greedy anchors plus the one stop the
-    #    certification repair's add-pass can contribute). So the threshold is 20,
-    #    not 16 — ">15" would have passed with every ceiling still in place, which
-    #    is the precise way this assertion could have been a passenger.
+    #    produce. MEASURED on this fixture: 31 uncapped (32 before the Phase 6
+    #    ceiling move), against exactly 16 with the old ceilings restored (15
+    #    greedy anchors plus the one stop the certification repair's add-pass can
+    #    contribute — a COUNT cap, which the visit re-derivation does not move).
+    #    So the threshold is 20, not 16 — ">15" would have passed with every
+    #    ceiling still in place, which is the precise way this assertion could
+    #    have been a passenger.
     #
     #    20 is also past ORDERING_EXACT_MAX, so this route was ordered by the
     #    cheapest-insertion FALLBACK end to end: the assertion below is
@@ -2264,7 +2272,7 @@ def test_duration_is_the_only_stop_bound_on_the_planning_path(monkeypatch) -> No
     assert len(route.pois) >= 20, (
         f"a 400-minute request in a dense area seated only {len(route.pois)} stops. "
         f"16 or fewer means a stop ceiling survives somewhere on the planning path; "
-        f"this fixture seats 32 when duration is genuinely the only bound"
+        f"this fixture seats 31 when duration is genuinely the only bound"
     )
     assert len(route.pois) > ORDERING_EXACT_MAX, (
         "the fixture no longer exercises the cheapest-insertion fallback inside "
@@ -2645,6 +2653,13 @@ class _StubGraph:
             "ti": None,
             "oj": None,
             "composed": None,
+            # Phase 5 (design §4) gave the trip a plan_version (``pv``, 0 on a
+            # fresh graph) and a session blob (``sj``, none until the day starts)
+            # that the compose-inputs read returns. Re-derived at the Phase 6
+            # close: this STORE must answer every record-shaped read the routes
+            # make, and the Phase 5 commit grew the read without growing it.
+            "pv": 0,
+            "sj": None,
             "edges": 0,
         }
 

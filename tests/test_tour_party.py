@@ -57,7 +57,7 @@ def test_presets_are_shortcuts_over_axes_and_explicit_axes_win():
     assert kept_ceiling.walking_pace == 2.0, "unset axes still fill from the preset"
 
     kept_cap = _resolved(party="take_it_easy", max_leg_minutes=20)
-    assert kept_cap.max_leg_minutes == 20, "explicit leg cap must beat the preset's 12"
+    assert kept_cap.max_leg_minutes == 20, "explicit leg cap must beat the preset's 13"
 
     kept_surface = _resolved(party="family", route_surface="any")
     assert kept_surface.route_surface == "any", (
@@ -130,7 +130,7 @@ def test_family_preset_matches_nadias_day():
 
 
 def test_take_it_easy_slows_the_walking_never_the_talking():
-    """`take-it-easy` caps the leg at ~12 minutes, goes step-free, slows the
+    """`take-it-easy` caps the leg at 13 minutes, goes step-free, slows the
     pace, keeps the rest cadence — and leaves the register ALONE.
 
     Cites docs/personas/05-step-free-visitor.md bullet 1 (lines 48-50): "Her
@@ -141,7 +141,10 @@ def test_take_it_easy_slows_the_walking_never_the_talking():
     Rosemary's day sits on benches (her steps 3 and 7).
     """
     resolved = _resolved(party="take_it_easy")
-    assert resolved.max_leg_minutes == 12
+    # OWNER RULING 2026-08-19 (Phase 6, ruling 4): 12 produced a one-stop day on
+    # Rosemary's own ground; her doctor's measured number is 13, the cap every
+    # good demo day already uses. RE-DERIVED from 12 with that written reason.
+    assert resolved.max_leg_minutes == 13
     assert resolved.route_surface == "step_free"
     assert resolved.walking_pace is not None and resolved.walking_pace > 1.0
     assert resolved.rest_cadence_minutes is not None
@@ -379,7 +382,11 @@ def test_select_route_prices_a_slower_partys_legs_when_seating_stops():
     from src.tour.selection import select_route
     from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
-    fillers = _density_fillers(PDV, duration_min=60, round_trip=True, n=6, radius_m=60.0)
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6): six fillers filled an
+    # hour at 270 s a stop; at 180 the same pool is "far short" and the day
+    # refuses before the pace question is even asked. n=None derives the pool
+    # from the planner's own constants (the sweep's fix).
+    fillers = _density_fillers(PDV, duration_min=60, round_trip=True, radius_m=60.0)
     edge_lat = PDV[0] + 0.0030  # ~333 m north: inside normal RT reach (444 m),
     # outside halved RT reach (222 m) — envelope_radius_m halves for round trips.
     edge_anchor = _poi("edge-anchor", lat=edge_lat, lng=PDV[1], beat_count=15)
@@ -651,7 +658,12 @@ def test_escape_radius_refuses_a_far_anchor_on_family_but_seats_it_on_solo():
     from src.tour.selection import select_route
     from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
-    fillers = _density_fillers(PDV, duration_min=90, round_trip=True, n=8, radius_m=70.0)
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6): eight fillers filled
+    # 90 minutes at 270 s a stop; at 180 the day is "far short" and refuses before
+    # the axis is asked. Swept 14-22: 14-18 hold both arms (solo seats the far
+    # anchor, the family radius refuses it); 20+ out-competes it even solo. 16 is
+    # the middle of the window.
+    fillers = _density_fillers(PDV, duration_min=90, round_trip=True, n=16, radius_m=70.0)
     far_lat = PDV[0] + 0.0045  # ~500 m north
     far_anchor = _poi("far-anchor", lat=far_lat, lng=PDV[1], beat_count=15)
     corpus = _snap([far_anchor, *fillers])
@@ -691,11 +703,18 @@ _LEG_CAP_SECONDS = 12 * 60
 def _leg_cap_corpus(*, with_stones: bool):
     from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
 
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6): 13/15 fillers filled
+    # 120 minutes at 270 s a stop; at 180 the pool starves and every arm refuses,
+    # while the fully-derived pool (32) is so rich the far anchor is out-competed
+    # and never seated. Swept 18-30 against every arm: 18-24 hold all of them
+    # (uncapped seats the far anchor over an over-cap leg; the capped stoneless
+    # day trades it away; the capped stones day keeps it leg-legal). 22 is the
+    # middle of the window; the stones still replace two.
     fillers = _density_fillers(
         PDV,
         duration_min=120,
         round_trip=True,
-        n=13 if with_stones else 15,
+        n=20 if with_stones else 22,
         radius_m=80.0,
     )
     pois = [
@@ -1342,3 +1361,106 @@ def test_a_step_free_day_is_not_labelled_as_routed_with_foreign_settings():
     assert [r for r in rows if r.kind == ROUTING_CONFIG_DEGRADATION], (
         "a configuration none of this build's surfaces produce IS foreign"
     )
+
+
+# --- Phase 6 S6.1a: the route surface rides through compose and finalize -----
+
+
+def test_a_surface_routed_day_finalizes_under_its_own_routing_identity():
+    """A day routed under a surface override (step-free, no-stairs) is finalized
+    under THAT routing identity — the build fingerprint stamps the override's
+    config hash, so the blueprint's self-consistency check passes and the
+    workbench can author a take-it-easy or family day at all.
+
+    Cites design §2.4 (route surface: "no stairs (buggy)" / "step-free") and plan
+    S2.7's own sentence ("never a route selected under one costing and reported
+    under another"). MEASURED 2026-08-19 (Phase 6 W6.1, the in-process compose of
+    Rosemary's take-it-easy day): `finalize_premium_tour` stamped the DEFAULT
+    `VALHALLA_ROUTING_CONFIG_SHA256` into the fingerprint while every leg receipt
+    carried the step-free hash, so `FinalTourBlueprint` raised "Valhalla receipt
+    routing configuration differs from build fingerprint" — three attempts, three
+    refusals, one Opus call each. On the workbench that is the Basic fallback for
+    every surface-constrained day; on the phone it only LOOKED fine because compose
+    rebuilt the route on the default surface (its sibling test in
+    tests/test_trip_api.py). UNDO: stamp the default hash again -> RED here.
+    """
+    from src.tour.premium_tour import (
+        EphemeralReceiptSink,
+        OfflinePremiumExecutor,
+        PremiumBuildIdentity,
+        execute_premium_plan,
+        finalize_premium_tour,
+        plan_premium_authoring,
+    )
+    from src.tour.routing_client import (
+        ROUTE_SURFACE_COSTING_OVERRIDES,
+        VALHALLA_ROUTING_CONFIG_SHA256,
+        VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE,
+    )
+    from src.tour.verify import MockFaithfulnessChecker
+    from tests.test_tour_authoring_gates import _cross_stop_echo_fixture
+    from tests.test_tour_routing_engine import _client, _valhalla_handler
+
+    def day(surface: str):
+        stitched, sequence, route = _cross_stop_echo_fixture()
+        override = ROUTE_SURFACE_COSTING_OVERRIDES[surface]
+        # Real receipts from the real client over a mock transport, routed under
+        # the surface's costing exactly as selection routes them (S2.7).
+        legs = []
+        with _client(_valhalla_handler) as rc:
+            prev = route.pois[0]
+            for transit, poi in zip(route.transits, route.pois, strict=True):
+                frm = (poi.lat, poi.lng) if transit.from_poi_id is None else (prev.lat, prev.lng)
+                kwargs = {"costing_options_override": override} if override else {}
+                seconds, distance_m, shape, receipt = rc.route_with_receipt(
+                    *frm, poi.lat, poi.lng, **kwargs
+                )
+                assert receipt is not None
+                legs.append(
+                    transit.model_copy(
+                        update={
+                            "leg_seconds": seconds,
+                            "leg_distance_m": distance_m,
+                            "polyline": shape,
+                            "source": "valhalla",
+                            "valhalla_receipt": receipt,
+                        }
+                    )
+                )
+                prev = poi
+        route = route.model_copy(update={"transits": tuple(legs), "routed": True})
+        inputs = stitched.inputs.model_copy(update={"route_surface": surface})
+        stitched = stitched.model_copy(update={"inputs": inputs})
+        plan = plan_premium_authoring(
+            stitched,
+            sequence,
+            route,
+            snapshot=None,
+            snapshot_sha256="0" * 64,
+            routing_version="offline-test",
+            policy_version="offline-test",
+        )
+        responses = execute_premium_plan(
+            plan, executor=OfflinePremiumExecutor(), receipt_sink=EphemeralReceiptSink()
+        )
+        return finalize_premium_tour(
+            plan,
+            responses,
+            faithfulness_checker=MockFaithfulnessChecker(),
+            build_identity=PremiumBuildIdentity(commit_sha="a" * 40),
+        ).blueprint
+
+    step_free = day("step_free")
+    expected = VALHALLA_ROUTING_CONFIG_SHA256_BY_SURFACE["step_free"]
+    assert expected != VALHALLA_ROUTING_CONFIG_SHA256, (
+        "fixture premise: the override has its own hash"
+    )
+    assert step_free.build.routing_config_sha256 == expected, (
+        "the fingerprint must name the routing identity the legs were ACTUALLY routed under"
+    )
+    receipt_hashes = {t.valhalla_receipt.routing_config_sha256 for t in step_free.route.transits}
+    assert receipt_hashes == {expected}
+
+    # The unconstrained day is byte-identical to before: the default hash.
+    plain = day("any")
+    assert plain.build.routing_config_sha256 == VALHALLA_ROUTING_CONFIG_SHA256

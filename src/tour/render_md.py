@@ -138,6 +138,18 @@ def stop_narration_text(script: Script) -> dict[int, str]:
     return {idx: " ".join(s.text for s in sents) for idx, sents in grouped.items()}
 
 
+def stop_close_text(script: Script) -> dict[int, str]:
+    """Per-stop CLOSE: the text of the stop's GLUE_CLOSING sentence (Phase 6 S6.4; design
+    §5.3) — the one line [Head back now] plays and shows for THIS stretch, travelling
+    beside the narration it ends (`stop_narration_text`) rather than being parsed out of
+    it. A stop with no close (a legacy script) is absent from the map."""
+    out: dict[int, str] = {}
+    for sentence in script.script:
+        if sentence.source_id == "GLUE_CLOSING" and sentence.source_type == "glue":
+            out[sentence.stop_idx] = sentence.text
+    return out
+
+
 def _render_stop_block(
     sentences: list[Sentence],
     sub_lookup: dict[str, tuple[str | None, str | None]],
@@ -384,4 +396,4 @@ def _quality_hints(
     return hints
 
 
-__all__ = ["render_markdown"]
+__all__ = ["render_markdown", "stop_close_text", "stop_narration_text"]

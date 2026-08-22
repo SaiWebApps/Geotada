@@ -27,17 +27,19 @@ from src.tour.corpus_places import CoordinateProvenance, valid_coordinates
 SUPPORTED_CITIES: frozenset[str] = frozenset(city_registry.supported_cities())
 
 GENERIC_OPEN_TOUR_CLOSING = "And that brings our walk to a close."
-GENERIC_TOUR_SIGNOFF = (
-    "Thank you for coming along with me today. When you're ready, "
-    "take your time to keep exploring on your own."
-)
+# GENERIC_TOUR_SIGNOFF ("Thank you for coming along with me today. When you're ready,
+# take your time to keep exploring on your own.") was DELETED at Phase 6 S6.4: the W6.2
+# panel ruled 11/11 that a close never says "keep exploring on your own" (to someone
+# alone it is a remark — Greta, Sofia) and that a thank-you is not a close's job; every
+# stop now ends on one close, the day's at the last stop (generation._build_stop_close).
 NONPROPOSITIONAL_GLUE_TEMPLATES: frozenset[str] = frozenset(
     {
         "Settle in.",
         "Take a moment.",
         "Take a moment to take it in.",
         GENERIC_OPEN_TOUR_CLOSING,
-        GENERIC_TOUR_SIGNOFF,
+        "And that closes the loop, back where we started.",
+        "Sit as long as you like — that's the walk.",
     }
 )
 
@@ -270,7 +272,11 @@ _PARTY_AXES: dict[str, dict[str, object]] = {
     },
     "take_it_easy": {
         "walking_pace": 1.2,
-        "max_leg_minutes": 12,  # the table's one numbered leg cap (Rosemary)
+        # The table's one numbered leg cap. 12 produced a ONE-STOP day on
+        # Rosemary's own ground; her doctor's measured number is 13, and the
+        # 13-minute day (Orangerie -> bench -> Orsay) is the one every demo
+        # uses. OWNER RULING 2026-08-19 (Phase 6, ruling 4): raise to 13.
+        "max_leg_minutes": 13,
         "rest_cadence_minutes": 20,
         "route_surface": "step_free",
         # register DELIBERATELY absent: "slow the walking, never the talking".

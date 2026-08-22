@@ -311,11 +311,11 @@ def _check_invariants(route, script) -> list[str]:
                     f"cap {_MAX_STOP_DETOUR_RATIO:.1f}x / {_MIN_DETOUR_EXTRA_SECONDS}s)"
                 )
 
-    # INV3 — the LAST stop carries a closing sign-off that thanks the walker.
-    if stop_idxs:
-        last = " ".join(s.text for s in by_stop[stop_idxs[-1]])
-        if "thank you" not in last.lower():
-            v.append(f"INV3 no closing sign-off on last stop: ...{last[-80:]!r}")
+    # INV3 (a literal "thank you" sign-off on the LAST stop) was DELETED at Phase 6 D6.0
+    # of the tour-algorithm redesign (audit F: PINS-THE-OLD-ALGORITHM). Design §5.3 gives
+    # every named stretch a written one-line close that plays wherever the stretch ends,
+    # and §7.4.5 requires every PREFIX of a day to end with a close — the every-prefix
+    # close assertion in the Phase 6 suite replaces it.
 
     return v
 

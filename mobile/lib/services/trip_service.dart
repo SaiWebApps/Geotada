@@ -37,6 +37,11 @@ class TripService extends ChangeNotifier {
     String startTime = '09:00',
     bool kidFriendlyOnly = false,
     String? tripName,
+    // Phase 6 S6.9: "is 6pm a hard deadline or a rough idea?" — the planner's one
+    // question. 'firm' (the default, per the owner's ruling: skipping the question
+    // means a hard deadline), 'open' (a rough idea), or 'wall' (booked — a train,
+    // a table; the day must end early enough to make it).
+    String endHardness = 'firm',
   }) async {
     _isGenerating = true;
     _error = null;
@@ -56,6 +61,7 @@ class TripService extends ChangeNotifier {
       };
       if (durationMin != null) body['duration_min'] = durationMin;
       if (tripName != null) body['trip_name'] = tripName;
+      body['end_hardness'] = endHardness;
 
       final response = await _httpClient.post(
         Uri.parse('$baseUrl/trips/generate'),

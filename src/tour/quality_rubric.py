@@ -27,7 +27,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import StrEnum
 
-from src.tour.contract import BeatSequence, Route, Script
+from src.tour.contract import BeatSequence, Route, Script, Sentence
 from src.tour.generation import (
     _END_B_SENTINEL_PREFIX,
     SPOKEN_WPM,
@@ -225,6 +225,18 @@ MIN_AUDIO_FRAC_OF_WALKING: float = 0.12
 #: Revisit if a future corpus's distribution shifts (see standard §8's own
 #: admission that external audio-guide research is "in flight").
 OUTLIER_YEAR_DENSITY_MULTIPLE: float = 2.0
+
+#: JUDGEMENT, anchored on the W6.2 panel (phase6-ledger.md R1, 11/11) and MEASURED on the
+#: W6.1 days. POINT FIRST (design §5.2): the point of a stop lands inside its first ~100
+#: words, counted from the stop's OWN first sentence about the place — "never from the nav
+#: line or the recap". Today's stops opened with 24-44 s of recap ("think back over where
+#: we've walked" — 60-110 words) before the place was named. A stop's story must START
+#: inside this many words of glue; one placing sentence ("Stand by the horseman.") is 8-25.
+POINT_FIRST_PREAMBLE_MAX_WORDS: int = 40
+#: The panel's "first hundred words" (Paulo, R1) ≈ 40 s at SPOKEN_WPM — where the stop's
+#: PRIMARY beat (the first of its capped plan, ScriptPOI.beat_ids[0]) must be cited by.
+#: A $0 proxy: whether THAT sentence is the point is a reading (W6.10), never this check.
+POINT_FIRST_STORY_WORDS: int = 100
 
 
 class Severity(StrEnum):
@@ -807,6 +819,70 @@ def score_tour(
                 for stop_idx, density in sorted(stop_year_densities.items())
                 if density > outlier_threshold
             }
+
+    # ── C13: POINT FIRST (WARN; Phase 6 S6.3; design §5.2, W6.2 R1) ──────────
+    # Two things a $0 check can see of "the point lands in the first minute": the
+    # STORY starts early (the glue before the stop's first beat sentence — the recap,
+    # the walking line — stays under POINT_FIRST_PREAMBLE_MAX_WORDS), and the stop's
+    # PRIMARY beat (ScriptPOI.beat_ids[0], the first of its capped plan) is cited
+    # inside the first POINT_FIRST_STORY_WORDS of the story. WARN until W6.10 has
+    # measured its pass rate on real days (the plan: BLOCKER then, never before).
+    # Stops with no story — a rest, the pinned end sentinel — have no point to land.
+    sentences_by_stop: dict[int, list[Sentence]] = {}
+    for sentence in script.script:
+        sentences_by_stop.setdefault(sentence.stop_idx, []).append(sentence)
+    for stop_idx, poi in enumerate(script.selected_pois):
+        if poi.id.startswith(_END_B_SENTINEL_PREFIX) or not poi.beat_ids:
+            continue
+        sents = sentences_by_stop.get(stop_idx, [])
+        if not any(s.source_type == "beat" for s in sents):
+            continue  # C6's case, or a stop whose story never rendered — not C13's
+        primary = poi.beat_ids[0]
+        preamble = 0
+        for s in sents:
+            if s.source_type == "beat":
+                break
+            preamble += _words(s.text)
+        if preamble > POINT_FIRST_PREAMBLE_MAX_WORDS:
+            report.findings.append(
+                Finding(
+                    check="C13-point-late",
+                    severity=Severity.WARN,
+                    message=(
+                        f"{preamble} words of glue (a recap or a walking line) before the "
+                        f"story starts (cap {POINT_FIRST_PREAMBLE_MAX_WORDS}) — the point "
+                        "cannot land in the first minute if the stop opens elsewhere"
+                    ),
+                    stop_idx=stop_idx,
+                    poi_name=poi.name,
+                    context={"preamble_words": preamble},
+                )
+            )
+        story_words = 0
+        landed: int | None = None
+        for s in sents:
+            if s.source_type != "beat":
+                continue
+            if primary in s.cited_beat_ids:
+                landed = story_words
+                break
+            story_words += _words(s.text)
+        if landed is None or landed > POINT_FIRST_STORY_WORDS:
+            where = "never" if landed is None else f"{landed} words in"
+            report.findings.append(
+                Finding(
+                    check="C13-point-late",
+                    severity=Severity.WARN,
+                    message=(
+                        f"the stop's primary beat is first cited {where} (cap "
+                        f"{POINT_FIRST_STORY_WORDS} words of story) — the point the capped "
+                        "plan leads with is not in the first minute"
+                    ),
+                    stop_idx=stop_idx,
+                    poi_name=poi.name,
+                    context={"primary_first_cited_words": landed},
+                )
+            )
 
     # ── S1: spatial claim geometry — DELIBERATELY NOT WIRED ─────────────────
     # `src/tour/spatial_check.py` exists and is tested, but it is NOT called here.

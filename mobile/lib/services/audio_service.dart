@@ -48,6 +48,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   @override
   bool get isDeeperDive => _isDeeperDive;
   bool get isBuffering => _isBuffering;
+  @override
   Duration get position => _position;
   Duration get duration => _duration;
   bool get isActive => _currentBeatId != null;

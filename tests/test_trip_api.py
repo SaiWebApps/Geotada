@@ -1082,15 +1082,26 @@ class TestLivingSession:
     ):
         """W5.14 / S5.16 — THE PROMISE TIER ON THE LIVE PATH, on Rosemary's own day
         (Orsay round trip, take-it-easy, art lens, her doc's 13-minute legs: the
-        Orangerie, her bench, the Orsay). Fifty minutes late out of the Orangerie —
-        beyond every precomputed band — the live replan used to hand back "Bench" alone,
+        Orangerie, her bench, the Orsay). Forty-six minutes late out of the Orangerie —
+        beyond every precomputed band (the last late band ends at 40) — the live replan
+        used to hand back "Bench" alone,
         the Orsay dropped as fabric to keep an 8-minute rest, in silence (the D6
         transcript, W5.13). Now: the place she named as where the day begins and ends
         is a promise (`own_place_ids`), the replanned remainder KEEPS it, and because
         keeping everything overruns her clock the reply carries the ONE question of
         R2 — keep the full rest and be back later, or sit fewer minutes and be back by
         the clock — as an entry of kind "live" the phone applies at once. UNDO: drop the
-        own place from `_person_protected` -> the Orsay is gone from the reply -> RED."""
+        own place from `_person_protected` -> the Orsay is gone from the reply -> RED.
+
+        RE-DERIVED 2026-08-19 (Phase 6 S6.1a, a written decision, not a quiet edit): the
+        lateness was FIFTY minutes, tuned while compose rebuilt her day on the default
+        routing surface (stairs allowed) and the session's clocks came from those legs.
+        On the step-free legs she was actually planned with, 50 minutes late leaves the
+        remainder 340 s over her 17:00 with everything kept — more than her 8-minute
+        bench can give up above the 3-minute shortest rest (R2.3: shortened, never
+        removed), so the product correctly asks NOTHING and lets the finish move with
+        one screen line (R2.4/R2.5, S5.18). Forty-six minutes is the same scenario on
+        the right clocks: 100 s over, a 6-minute sit absorbs it, the question fires."""
         gen = client.post(
             "/api/v1/trips/generate",
             json=_body(
@@ -1121,7 +1132,7 @@ class TestLivingSession:
         # Standing at the first stop, having stayed 50 minutes past its clock.
         hh, mm = (int(x) for x in first["start_time"].split(":"))
         dh, dm = (int(x) for x in session["day_start_hhmm"].split(":"))
-        elapsed = (hh * 60 + mm - dh * 60 - dm) * 60 + int(first["dwell_seconds"]) + 50 * 60
+        elapsed = (hh * 60 + mm - dh * 60 - dm) * 60 + int(first["dwell_seconds"]) + 46 * 60
         reply = client.post(
             f"/api/v1/trips/{trip_id}/session/replan",
             json={
@@ -1219,3 +1230,57 @@ class TestLivingSession:
             "the server keeps its own clock — the phone's is reported, never adopted"
         )
         assert diverged.json()["stops"][0]["start_time"] != phone_hhmm
+
+    def test_compose_rebuilds_the_day_under_the_surface_it_was_planned_with(
+        self, client, live_neo4j, monkeypatch
+    ):
+        """Phase 6 S6.1a — the route surface rides through compose. A take-it-easy
+        day is planned step-free (design §2.4; plan S2.7: "never a route selected
+        under one costing and reported under another"), and compose REBUILDS the
+        persisted pick through `summarise_route` — which, measured 2026-08-19 (Phase
+        6 W6.1), was handed no costing override: every leg of Rosemary's composed
+        day was re-routed on the default surface (stairs allowed), and the composed
+        clocks, legs and polylines the phone plays were not the day she was shown.
+        (It composed at all only because `finalize_premium_tour` stamped the
+        default hash — the sibling test in tests/test_tour_party.py.) Here: the
+        router is asked, on EVERY leg compose routes, for the step-free costing, and
+        the compose still lands (the fingerprint now names that identity). UNDO:
+        drop the override from compose's `summarise_route` call -> the recorded
+        overrides are all None -> RED."""
+        from src.tour import routing_client as routing_client_module
+        from src.tour.routing_client import ROUTE_SURFACE_COSTING_OVERRIDES
+
+        gen = client.post(
+            "/api/v1/trips/generate",
+            json=_body(
+                LENSED_PROFILE_ID,
+                center_lat=48.859962,
+                center_lng=2.326561,
+                duration_min=180,
+                round_trip=True,
+                start_date="2026-08-19",
+                end_date="2026-08-19",
+                start_time="14:00",
+                party="take_it_easy",
+                lenses=["visual_art"],
+                max_leg_minutes=13,
+            ),
+        )
+        assert gen.status_code == 201, gen.text
+        trip_id = gen.json()["trip_id"]
+        seen: list[dict | None] = []
+        real = routing_client_module.RoutingClient.route_with_receipt
+
+        def spy(self, *args, costing_options_override=None, **kwargs):
+            seen.append(costing_options_override)
+            return real(self, *args, costing_options_override=costing_options_override, **kwargs)
+
+        monkeypatch.setattr(routing_client_module.RoutingClient, "route_with_receipt", spy)
+        composed = _compose(client, trip_id, _MarkerAuthoringExecutor())
+        assert composed.status_code == 200, composed.text
+        assert seen, "fixture premise: compose must route the rebuilt day's legs"
+        expected = ROUTE_SURFACE_COSTING_OVERRIDES["step_free"]
+        assert all(o == expected for o in seen), (
+            f"compose routed {sum(o != expected for o in seen)} of {len(seen)} legs under a "
+            f"costing other than the step-free one the day was planned with: {seen[:4]}"
+        )

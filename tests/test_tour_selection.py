@@ -169,16 +169,23 @@ _FILLER_RADIUS_PER_SQRT_MIN: float = 23.0
 def _anchors_for_duration(duration_min: int) -> int:
     """How many filler anchors a tour of `duration_min` needs to be plannable.
 
-    The greedy seats stops until it reaches the audio target (0.60 x requested)
-    and every stop is capped at MAX_DWELL_AUDIO_SECONDS, so it seats about
-    ``duration_min * 60 * 0.60 / 270`` = ``duration_min / 7.5`` of them. A
-    proportional third on top, floored at six, keeps the pool non-empty for the
-    endpoint pull, the fill pass and the certification repair, all of which need
-    somewhere left to go after the greedy has stopped — and the headroom has to
-    GROW with duration, because a flat six spare anchors is most of the pool at
-    30 minutes and almost none of it at 400.
+    The greedy seats stops until it reaches the dwell target
+    (``target_dwell_seconds``) and every stop is capped at
+    ``MAX_DWELL_AUDIO_SECONDS``, so it seats about ``target / ceiling`` of them —
+    DERIVED from the planner's own constants, because the first version baked
+    the arithmetic in as ``duration_min / 7.5`` (0.60 x 60 / 270) and went stale
+    the day Phase 6 S6.6 moved the ceiling to the panel's three minutes (R3):
+    the 120-minute sweep cells starved and flagged tourability on a fixture
+    that claims to be rich by construction. A proportional third on top,
+    floored at six, keeps the pool non-empty for the endpoint pull, the fill
+    pass and the certification repair, all of which need somewhere left to go
+    after the greedy has stopped — and the headroom has to GROW with duration,
+    because a flat six spare anchors is most of the pool at 30 minutes and
+    almost none of it at 400.
     """
-    seated = math.ceil(duration_min / 7.5)
+    from src.tour.routing import target_dwell_seconds
+
+    seated = math.ceil(target_dwell_seconds(duration_min) / MAX_DWELL_AUDIO_SECONDS)
     return seated + max(6, math.ceil(seated / 3))
 
 
@@ -2188,12 +2195,18 @@ def test_governor_v4_marquee_exempt_domination_gated():
     marquee = _poi("marquee", tier=5, lat=48.8556, lng=2.3658, areas=("Le Marais",))
     dump = _poi("dump", tier=4, lat=48.8560, lng=2.3665, areas=("Le Marais",))
     peer = _poi("peer", tier=4, lat=48.8564, lng=2.3670, areas=("Le Marais",))
-    # Realistic beat audio, all stops UNDER MAX_DWELL_AUDIO_SECONDS so this test
-    # isolates the DOMINATION governor (the absolute ceiling is tested separately).
+    # Beat audio DERIVED from the ceiling so every stop stays UNDER it whatever its
+    # value — this test isolates the DOMINATION governor (the absolute ceiling is
+    # tested separately). The first version hardcoded 40/33/40-second beats sized to
+    # the 270 era; Phase 6 S6.6's three-minute tight (R3) put the 198-second dump
+    # OVER the new ceiling and the A->B "byte-identical" premise silently changed.
+    from src.tour.selection import MAX_DWELL_AUDIO_SECONDS as _MAX
+
+    unit = _MAX // 6
     beats = {
-        "marquee": _b("marquee", 3, 40),  # 120s — exempt by tier, under the ceiling
-        "dump": _b("dump", 6, 33),  # 198s — the dominating outlier
-        "peer": _b("peer", 2, 40),  # 80s — thin peer
+        "marquee": _b("marquee", 3, unit),  # 3u — exempt by tier, under the ceiling
+        "dump": _b("dump", 6, int(unit * 0.9)),  # ~5.4u — the dominating outlier, under
+        "peer": _b("peer", 2, unit),  # 2u — thin peer
     }
     snap = _snap(
         [marquee, dump, peer], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats
@@ -2207,7 +2220,9 @@ def test_governor_v4_marquee_exempt_domination_gated():
     assert len(m_kept.beats) == 3 and m_ov == (), "the tier-5 marquee is exempt (not the seed)"
     d_kept, d_ov = by_id["dump"]
     assert len(d_ov) > 0, "the lower-tier dominating dump overflows"
-    assert planned_audio_seconds(d_kept.beats) <= delivered // 3 + 40, "dump within 1/3 (+1 beat)"
+    assert planned_audio_seconds(d_kept.beats) <= delivered // 3 + int(unit * 0.9), (
+        "dump within 1/3 (+1 beat)"
+    )
     assert len(by_id["peer"][0].beats) == 2, "thin peer untouched"
     plain = {p.poi_id: p for p in build_poi_beat_plans(route, snap, lenses=None)}
     assert {b.id for b in d_kept.beats} | set(d_ov) == {b.id for b in plain["dump"].beats}

@@ -179,14 +179,20 @@ def test_timebox_drop_never_removes_the_materialized_fixed_destination():
     # the ranking prefers keeping it anyway, and the guard this test exists for is
     # never asked to do anything. 22 minutes, because that is where both drops are
     # admissible and keeping both still overshoots.
-    destination = _poi("destination", x=100.0, audio=180)
-    filler = _poi("filler", x=50.0, audio=270)
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6, W6.2 R3): the old pair
+    # (destination 180, filler 270) relied on audio ABOVE the new ceiling — the cap
+    # flattened both to 180 and "dropping the destination lands nearest" stopped
+    # being true. The differentiation now lives BELOW the ceiling (120 vs 180) and
+    # the duration moved to 21 minutes, where keeping both still overshoots and
+    # dropping the destination still wins the ranking — the guard's premise.
+    destination = _poi("destination", x=100.0, audio=120)
+    filler = _poi("filler", x=50.0, audio=180)
     pois = [destination, filler]
-    snap = _snapshot(pois, {destination.id: 180, filler.id: 270})
+    snap = _snapshot(pois, {destination.id: 120, filler.id: 180})
     tour_input = TourInput(
         start=(0.0, 0.0),
         end=(0.0, 100.0),
-        duration_min=22,
+        duration_min=21,
         city_slug="test",
         round_trip=False,
     )
@@ -252,14 +258,18 @@ def test_repair_never_trades_an_in_band_route_for_a_materially_longer_walk():
     walking, no more narration.
     """
 
-    keep_a = _poi("keep-a", x=10.0, audio=270)
-    keep_b = _poi("keep-b", x=40.0, audio=270)
-    keep_c = _poi("keep-c", x=89.0, audio=270)
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6, W6.2 R3): each stop's
+    # dwell fell 270 -> 180 s, so the walk grew (x scaled ~1.3) to keep the
+    # incumbent in the same 30-minute band. The point — an in-band incumbent is
+    # never traded for a materially longer walk — is ceiling-independent.
+    keep_a = _poi("keep-a", x=13.0, audio=180)
+    keep_b = _poi("keep-b", x=52.0, audio=180)
+    keep_c = _poi("keep-c", x=116.0, audio=180)
     # Same audio, further away: swapping it in moves elapsed nearer the nominal
     # while buying the tourist nothing but 90 extra seconds of walking.
-    far_swap = _poi("far-swap", x=98.0, audio=270)
+    far_swap = _poi("far-swap", x=125.0, audio=180)
     pois = [keep_a, keep_b, keep_c, far_swap]
-    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    snap = _snapshot(pois, {poi.id: 180 for poi in pois})
     tour_input = TourInput(
         start=(0.0, 0.0),
         duration_min=30,
@@ -332,12 +342,16 @@ def test_repair_prices_the_route_with_the_pulled_endpoint_actually_pinned():
 
     # Colinear and east of the start, except the endpoint, which sits nearest the
     # start — so pinning it last forces a full backtrack down the whole route.
-    endpoint = _poi("endpoint", x=5.0, audio=270)
-    near = _poi("near", x=25.0, audio=270)
-    middle = _poi("middle", x=50.0, audio=270)
-    far = _poi("far", x=70.0, audio=270)
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6, W6.2 R3): dwell fell
+    # 270 -> 180 s per stop, so the geometry scaled (x1.30) to keep the free
+    # order in the 30-minute band, the pinned order over it, and the drop-far
+    # rescue under the repair's own ceiling (the nominal request, 1800 s).
+    endpoint = _poi("endpoint", x=6.5, audio=180)
+    near = _poi("near", x=32.5, audio=180)
+    middle = _poi("middle", x=65.0, audio=180)
+    far = _poi("far", x=91.0, audio=180)
     pois = [endpoint, near, middle, far]
-    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    snap = _snapshot(pois, {poi.id: 180 for poi in pois})
     tour_input = TourInput(
         start=(0.0, 0.0),
         duration_min=30,
@@ -522,11 +536,18 @@ def test_final_certification_guard_rechecks_every_route_shape_after_transforms(
     """
     from src.tour import selection as selection_module
 
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6, W6.2 R3): the drift
+    # mock zeroes walking, so the underfill day is seated dwell ALONE — at 270
+    # four seats made 1080 s (above half, ships with the disclosure); at 180
+    # they made 720 s, under half of the ask, and the refusal arm swallowed the
+    # disclosure arm. Real spacing seats more stops, keeping the underfill day
+    # above half and the arm's point intact (0.0004 deg steps: all eight inside
+    # the 30-minute round-trip reach circle; 0.002 put the tail outside it).
     pois = [
-        _poi(f"candidate-{index}", x=0.0001 * (index + 1), audio=270)
+        _poi(f"candidate-{index}", x=0.0004 * (index + 1), audio=180)
         for index in range(8)
     ]
-    snap = _snapshot(pois, {poi.id: 270 for poi in pois})
+    snap = _snapshot(pois, {poi.id: 180 for poi in pois})
     tour_input = TourInput(
         start=(0.0, 0.0),
         duration_min=30,
@@ -1103,7 +1124,7 @@ def test_a_drop_that_merges_two_legs_past_the_cap_is_refused():
     into one longer than the per-leg cap is not a legal repair, because under
     the axis a route with one over-cap leg "has the same total and is
     unusable" (docs/personas/05-step-free-visitor.md). Here every
-    ceiling-fitting drop mints a 200 s merged leg against a 180 s cap, so the
+    ceiling-fitting drop mints a 160 s merged leg against a 120 s cap, so the
     honest answer is a refusal — not a served route with an unwalkable leg.
 
     Born green against the mechanism S2.3 built (the repair's `record` gate);
@@ -1111,17 +1132,27 @@ def test_a_drop_that_merges_two_legs_past_the_cap_is_refused():
     `record` lets the in-band cap-busting drop win and this test fail), as
     the plan states.
     """
-    a = _poi("a", x=10.0, audio=270)
-    b = _poi("b", x=20.0, audio=270)
-    c = _poi("c", x=30.0, audio=30)
+    # RE-DERIVED for the three-minute tight (Phase 6 S6.6, W6.2 R3): the old
+    # shape needed per-stop dwell ABOVE 180 s — with the cap at three minutes,
+    # "[a, b] overshoots while [a, c] and [b, c] both fit" is arithmetically
+    # impossible on a 10-minute ask with a 3-minute leg cap (2L + 360 > 600 and
+    # 3L + 210 <= 600 have no common L above the 90 s the merged leg must
+    # exceed). The same guard premise rebuilt at an 8-minute ask with a
+    # 2-minute leg cap (found by sweeping the fixture space against the real
+    # repair): keeping any two full stops overshoots 480 s, both merged-leg
+    # drops bust the 120 s cap, and the repair's later passes find nothing
+    # bankable either — the refusal is the only honest exit.
+    a = _poi("a", x=8.0, audio=180)
+    b = _poi("b", x=16.0, audio=180)
+    c = _poi("c", x=24.0, audio=30)
     pois = [a, b, c]
-    snap = _snapshot(pois, {a.id: 270, b.id: 270, c.id: 30})
+    snap = _snapshot(pois, {a.id: 180, b.id: 180, c.id: 30})
     tour_input = TourInput(
         start=(0.0, 0.0),
-        duration_min=10,
+        duration_min=8,
         city_slug="test",
         round_trip=False,
-        max_leg_minutes=3,
+        max_leg_minutes=2,
     )
     policy = _policy()
     budget = route_planning_budget(tour_input.duration_min, policy)

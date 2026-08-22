@@ -493,7 +493,14 @@ def test_routed_divisor_inverts_greedy_choice():
             for pid, lat, lng in _WALLED_STOPS
         ),
         _poi("far", lat=_FAR_ANCHOR[0], lng=_FAR_ANCHOR[1], areas=("Le Marais",)),
-        *_density_fillers(PDV, radius_m=60.0, tier=3, beat_count=3),
+        # Twelve background stops, pinned (the helper's ``n`` exists for exactly
+        # this). Re-derived at the Phase 6 close: the helper's duration-derived
+        # count grew from 14 to 18 when S6.6 made tellings three minutes, and at
+        # eighteen the straight-line run trades the THIRD colocated walled stop
+        # for fillers (measured: bare seated c2 and near, not c1) — a pool-size
+        # effect, not the pricing contrast this test is about. At twelve the
+        # premise holds as written: bare seats all three, routed seats none.
+        *_density_fillers(PDV, radius_m=60.0, tier=3, beat_count=3, n=12),
     ]
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
     tour_input = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
