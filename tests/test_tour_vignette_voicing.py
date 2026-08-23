@@ -154,11 +154,18 @@ def test_two_vignettes_on_one_leg_voiced_in_order():
     assert script.validation.passed
 
 
-def test_stop_narration_text_places_one_liner_in_the_legs_stop_block():
+def test_stop_narration_text_places_one_liner_in_the_legs_piece_not_the_stops():
+    """RE-DERIVED at Phase 7 S7.7 (design §5.6 C7; plan defect 7): the walk-past
+    one-liner is heard ON THE LEG into stop 1, so it rides stop 1's LEG piece
+    (`stop_leg_text`), never either stop's STORY piece. Before S7.7 it was folded into
+    stop 1's narration and played at arrival."""
+    from src.tour.render_md import stop_leg_text
+
     script = _generate(_seq({1: (_vignette_beat(),)}))
     narration = stop_narration_text(script)
-    assert _VIGNETTE_ONE_LINER in narration[1]
-    assert _VIGNETTE_ONE_LINER not in narration[0]
+    assert _VIGNETTE_ONE_LINER not in narration.get(1, "")
+    assert _VIGNETTE_ONE_LINER not in narration.get(0, "")
+    assert _VIGNETTE_ONE_LINER in stop_leg_text(script)[1]
 
 
 def test_empty_vignette_beats_is_todays_script():

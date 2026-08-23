@@ -5,7 +5,7 @@
     "latitude": 48.860657,
     "longitude": 2.352095,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -122,7 +122,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Security screening and ticket gates at the entrance form a modest line at busy afternoon hours, short at opening and near closing."
+    "queue_basis": "Security screening and ticket gates at the entrance form a modest line at busy afternoon hours, short at opening and near closing.",
+    "anchors": null
   },
   {
     "name": "Atelier Brancusi",
@@ -223,7 +224,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A small free-admission studio with a single controlled entrance and light bag check that forms only a brief line at busy afternoon hours."
+    "queue_basis": "A small free-admission studio with a single controlled entrance and light bag check that forms only a brief line at busy afternoon hours.",
+    "anchors": null
   },
   {
     "name": "Stravinsky Fountain",
@@ -284,7 +286,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public fountain in a square with no door and no line to enter."
+    "queue_basis": "An open public fountain in a square with no door and no line to enter.",
+    "anchors": null
   },
   {
     "name": "Eglise Saint-Merri",
@@ -429,7 +432,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A Gothic parish church with an open door you walk through without a ticket desk or security screening."
+    "queue_basis": "A Gothic parish church with an open door you walk through without a ticket desk or security screening.",
+    "anchors": null
   },
   {
     "name": "Rue de la Verrerie",
@@ -487,7 +491,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open medieval street with no interior and no line to enter."
+    "queue_basis": "An open medieval street with no interior and no line to enter.",
+    "anchors": null
   },
   {
     "name": "Hotel de Ville",
@@ -495,7 +500,7 @@
     "latitude": 48.856373,
     "longitude": 2.35221,
     "importance_tier": 5,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -585,7 +590,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The City Hall interior is only open by occasional booked exhibition or event, so a walking-tour stop views the facade and forecourt from the open square with no line."
+    "queue_basis": "The City Hall interior is only open by occasional booked exhibition or event, so a walking-tour stop views the facade and forecourt from the open square with no line.",
+    "anchors": null
   },
   {
     "name": "BHV (Bazar de l'Hotel de Ville)",
@@ -686,7 +692,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A department store with wide open doors and multiple entrances that visitors walk straight into without a queue."
+    "queue_basis": "A department store with wide open doors and multiple entrances that visitors walk straight into without a queue.",
+    "anchors": null
   },
   {
     "name": "Eglise des Billettes",
@@ -767,7 +774,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A church with an open door you walk through without a ticket desk or security line."
+    "queue_basis": "A church with an open door you walk through without a ticket desk or security line.",
+    "anchors": null
   },
   {
     "name": "Fondation Azzedine Alaia",
@@ -820,7 +828,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by foundation viewed from the street; no public entry queue applies to this stop."
+    "queue_basis": "A walk-by foundation viewed from the street; no public entry queue applies to this stop.",
+    "anchors": null
   },
   {
     "name": "Half-Timbered Houses (Rue Francois-Miron)",
@@ -876,7 +885,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Historic house facades viewed from the open street with no interior entry to queue for."
+    "queue_basis": "Historic house facades viewed from the open street with no interior entry to queue for.",
+    "anchors": null
   },
   {
     "name": "Hotel de Beauvais",
@@ -991,7 +1001,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A mansion now housing administrative offices, seen as a walk-by from the street with no visitor entry line."
+    "queue_basis": "A mansion now housing administrative offices, seen as a walk-by from the street with no visitor entry line.",
+    "anchors": null
   },
   {
     "name": "Memorial de la Shoah",
@@ -999,7 +1010,7 @@
     "latitude": 48.854985,
     "longitude": 2.356636,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [],
@@ -1093,7 +1104,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "Entry is free but airport-style security screening at this memorial creates a real bag-check line that stays modest at busy hours."
+    "queue_basis": "Entry is free but airport-style security screening at this memorial creates a real bag-check line that stays modest at busy hours.",
+    "anchors": null
   },
   {
     "name": "Hotel Chalons de Luxembourg",
@@ -1151,7 +1163,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private Marais mansion viewed from the street as a walk-by; there is no public entry to queue for."
+    "queue_basis": "A private Marais mansion viewed from the street as a walk-by; there is no public entry to queue for.",
+    "anchors": null
   },
   {
     "name": "Eglise Saint-Gervais-Saint-Protais",
@@ -1292,7 +1305,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door and free entry: worshippers and visitors walk straight in with no ticket desk or security screening, so no line forms."
+    "queue_basis": "A parish church with an open door and free entry: worshippers and visitors walk straight in with no ticket desk or security screening, so no line forms.",
+    "anchors": null
   },
   {
     "name": "Hotel d'Aumont",
@@ -1352,6 +1366,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by mansion now housing administrative offices with no public interior visit, so there is no entry line to stand in on the street outside."
+    "queue_basis": "A walk-by mansion now housing administrative offices with no public interior visit, so there is no entry line to stand in on the street outside.",
+    "anchors": null
   }
 ]

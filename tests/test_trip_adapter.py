@@ -135,6 +135,38 @@ def test_narration_attached_per_stop_when_script_passed():
     assert stops[1]["narration"] == "The cathedral began in 1160."
 
 
+def test_the_leg_line_rides_the_stop_as_its_own_leg_narration():
+    """Phase 7 S7.7 (design §5.6 C7; plan defect 7): the stop's walk-concurrent sentences
+    (the nav line into it) are its LEG piece — `leg_narration`, voiced as its own file and
+    played on the leg — and `narration` is the STORY alone, opening on the stop's own first
+    story sentence. Split by THE one rule (`generation.is_walk_concurrent`); a stop whose leg
+    carries nothing has no leg piece (None — an empty card would imply content)."""
+    pois = [
+        _poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600),
+        _poi("p2", "Notre-Dame", tier=4, beat_ids=("b2",), dwell=300),
+    ]
+    script = _script(
+        pois,
+        [
+            Sentence(text="Settle in.", source_id="GLUE_PACING", source_type="glue", stop_idx=0),
+            Sentence(text="The tower opened in 1889.", source_id="b1", source_type="beat",
+                     stop_idx=0),
+            Sentence(text="Walk southeast along the river for about ten minutes.",
+                     source_id="GLUE_NAV", source_type="glue", stop_idx=1),
+            Sentence(text="The cathedral began in 1160.", source_id="b2", source_type="beat",
+                     stop_idx=1),
+            Sentence(text="And that's Notre-Dame.", source_id="GLUE_CLOSING", source_type="glue",
+                     stop_idx=1),
+        ],
+    )
+    stops = route_script_to_stops(pois, {}, {}, script=script)
+    assert stops[0]["narration"] == "Settle in. The tower opened in 1889."
+    assert stops[0]["leg_narration"] is None
+    assert stops[1]["narration"] == "The cathedral began in 1160. And that's Notre-Dame."
+    assert stops[1]["leg_narration"] == "Walk southeast along the river for about ten minutes."
+    assert route_script_to_stops(pois, {}, {})[1]["leg_narration"] is None
+
+
 def test_narration_empty_when_no_script():
     pois = [_poi("p1", "A", tier=5, beat_ids=("b1",), dwell=600)]
     stops = route_script_to_stops(pois, {}, {})

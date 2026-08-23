@@ -52,6 +52,9 @@ ItineraryStop _stop(int n, {required double lat, Map<String, String>? threads}) 
       dwellSeconds: 300,
       closeText: "And that's Stop $n.",
       threadLines: threads,
+      // S7.3: the footprint these fixtures assumed (the phone's old 40 m
+      // circle) is now STATED on each stop, as the wire carries it.
+      trigger: const StopTrigger(radiusM: 40),
     );
 
 SessionContingency _skipOf(String skippedPoi, List<String> rest) =>

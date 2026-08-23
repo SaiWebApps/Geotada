@@ -5,7 +5,7 @@
     "latitude": 48.8653911,
     "longitude": 2.3112134,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -228,7 +228,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small landscaped ravine garden off the Champs-Élysées with open pathways and no ticketed entrance, so there is no queue."
+    "queue_basis": "A small landscaped ravine garden off the Champs-Élysées with open pathways and no ticketed entrance, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Petit Palais",
@@ -236,7 +237,7 @@
     "latitude": 48.86595,
     "longitude": 2.3143,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -381,7 +382,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "The permanent collection is free with no ticket desk, but a bag-check at the door creates a brief moving line at midday that clears quickly in the early morning and late afternoon."
+    "queue_basis": "The permanent collection is free with no ticket desk, but a bag-check at the door creates a brief moving line at midday that clears quickly in the early morning and late afternoon.",
+    "anchors": null
   },
   {
     "name": "Grand Palais",
@@ -389,7 +391,7 @@
     "latitude": 48.866096,
     "longitude": 2.312156,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -460,7 +462,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Entry to the exhibition hall runs through security bag checks and timed-ticket scanning at a controlled entrance, so the line builds midday during major shows; the numbers reflect a busy exhibition period and drop at opening."
+    "queue_basis": "Entry to the exhibition hall runs through security bag checks and timed-ticket scanning at a controlled entrance, so the line builds midday during major shows; the numbers reflect a busy exhibition period and drop at opening.",
+    "anchors": null
   },
   {
     "name": "Champs-Elysees",
@@ -584,7 +587,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is an open public avenue with no door and no ticket, so there is nothing to stand in line for."
+    "queue_basis": "This is an open public avenue with no door and no ticket, so there is nothing to stand in line for.",
+    "anchors": null
   },
   {
     "name": "Place des Vosges",
@@ -592,7 +596,7 @@
     "latitude": 48.8555,
     "longitude": 2.3656,
     "importance_tier": 5,
-    "trigger_radius": 40,
+    "trigger_radius": 70,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1062,7 +1066,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for."
+    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Jardin Saint-Gilles Grand Veneur",
@@ -1070,7 +1075,7 @@
     "latitude": 48.8592366,
     "longitude": 2.3668079,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1162,7 +1167,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small free Marais garden entered through an open gate you walk straight through — no ticket, no line."
+    "queue_basis": "A small free Marais garden entered through an open gate you walk straight through — no ticket, no line.",
+    "anchors": null
   },
   {
     "name": "Hotel de Sully",
@@ -1285,7 +1291,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Entry is through a courtyard and bookshop of the heritage centre with no mass ticketing, so only a brief wait at the single door forms at busy hours."
+    "queue_basis": "Entry is through a courtyard and bookshop of the heritage centre with no mass ticketing, so only a brief wait at the single door forms at busy hours.",
+    "anchors": null
   },
   {
     "name": "Place du Marché Sainte-Catherine",
@@ -1384,7 +1391,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open Marais square entered freely from the surrounding streets with no gate or ticket."
+    "queue_basis": "An open Marais square entered freely from the surrounding streets with no gate or ticket.",
+    "anchors": null
   },
   {
     "name": "Musee Carnavalet",
@@ -1392,7 +1400,7 @@
     "latitude": 48.855076,
     "longitude": 2.361661,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1791,7 +1799,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "The permanent collection is free so there is no ticket-purchase line, but a bag check at the mansion entrance forms a small moving queue at midday."
+    "queue_basis": "The permanent collection is free so there is no ticket-purchase line, but a bag check at the mansion entrance forms a small moving queue at midday.",
+    "anchors": null
   },
   {
     "name": "La Tartine",
@@ -1799,7 +1808,7 @@
     "latitude": 48.8560492,
     "longitude": 2.3584052,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1895,6 +1904,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A café/eatery passed on the walk with no admission line; any wait is for a table, not a queue to enter."
+    "queue_basis": "A café/eatery passed on the walk with no admission line; any wait is for a table, not a queue to enter.",
+    "anchors": null
   }
 ]

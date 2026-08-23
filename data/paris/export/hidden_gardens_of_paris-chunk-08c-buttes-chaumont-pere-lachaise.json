@@ -441,7 +441,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free public park with open gates you walk straight through — no ticket, no security, no line."
+    "queue_basis": "A free public park with open gates you walk straight through — no ticket, no security, no line.",
+    "anchors": null
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -449,7 +450,7 @@
     "latitude": 48.860764,
     "longitude": 2.393646,
     "importance_tier": 4,
-    "trigger_radius": 100,
+    "trigger_radius": 500,
     "typical_duration_min": 75,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1088,7 +1089,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting."
+    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting.",
+    "anchors": null
   },
   {
     "name": "Parc de la Villette",
@@ -1096,7 +1098,7 @@
     "latitude": 48.8948898,
     "longitude": 2.3884384,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 300,
     "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1187,7 +1189,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large open urban park with multiple unbarred entrances and no ticket or bag check, so there is no line to enter the grounds."
+    "queue_basis": "A large open urban park with multiple unbarred entrances and no ticket or bag check, so there is no line to enter the grounds.",
+    "anchors": null
   },
   {
     "name": "Parc de Belleville",
@@ -1195,7 +1198,7 @@
     "latitude": 48.8715484,
     "longitude": 2.384229,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1340,7 +1343,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A hillside public park entered freely through open gates with no admission or screening, so visitors walk straight in."
+    "queue_basis": "A hillside public park entered freely through open gates with no admission or screening, so visitors walk straight in.",
+    "anchors": null
   },
   {
     "name": "Jardin Naturel",
@@ -1348,7 +1352,7 @@
     "latitude": 48.85882,
     "longitude": 2.3989622,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1430,7 +1434,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small public wild garden near Père-Lachaise entered through an open gate with no ticket or security check, so there is no queue."
+    "queue_basis": "A small public wild garden near Père-Lachaise entered through an open gate with no ticket or security check, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Cemetery of Eglise Saint-Germain de Charonne",
@@ -1528,6 +1533,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small parish churchyard cemetery entered freely from the street with no ticket desk or screening, so there is no line to stand in."
+    "queue_basis": "A small parish churchyard cemetery entered freely from the street with no ticket desk or screening, so there is no line to stand in.",
+    "anchors": null
   }
 ]

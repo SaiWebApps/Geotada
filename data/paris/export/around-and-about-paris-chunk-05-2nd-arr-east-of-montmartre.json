@@ -68,7 +68,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by-only former stock exchange now used as an event venue; no public ticketed entry means there is no queue to price."
+    "queue_basis": "A walk-by-only former stock exchange now used as an event venue; no public ticketed entry means there is no queue to price.",
+    "anchors": null
   },
   {
     "name": "Grands Boulevards",
@@ -76,7 +77,7 @@
     "latitude": 48.87116,
     "longitude": 2.34346,
     "importance_tier": 3,
-    "trigger_radius": 15,
+    "trigger_radius": 75,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -131,7 +132,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open promenade corridor with no door and no admission; there is nothing to stand in line for."
+    "queue_basis": "An open promenade corridor with no door and no admission; there is nothing to stand in line for.",
+    "anchors": null
   },
   {
     "name": "Porte Saint-Denis",
@@ -221,7 +223,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A triumphal arch in the middle of a street, seen from the pavement; no interior and no line."
+    "queue_basis": "A triumphal arch in the middle of a street, seen from the pavement; no interior and no line.",
+    "anchors": null
   },
   {
     "name": "Passage de la Trinite",
@@ -229,7 +232,7 @@
     "latitude": 48.86468,
     "longitude": 2.35052,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
@@ -284,7 +287,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered passage you walk straight through with no gate or ticket; nothing to queue for."
+    "queue_basis": "A covered passage you walk straight through with no gate or ticket; nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -292,7 +296,7 @@
     "latitude": 48.86383,
     "longitude": 2.34983,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -385,7 +389,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open covered arcade entered freely from the street; no door check and no line to enter."
+    "queue_basis": "An open covered arcade entered freely from the street; no door check and no line to enter.",
+    "anchors": null
   },
   {
     "name": "Tour Jean sans Peur",
@@ -393,7 +398,7 @@
     "latitude": 48.86372,
     "longitude": 2.34912,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -495,7 +500,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A small medieval tower museum with a single ticket desk that admits a trickle of visitors; the desk can hold a few people at busy afternoon hours but the modest interior draws no substantial line."
+    "queue_basis": "A small medieval tower museum with a single ticket desk that admits a trickle of visitors; the desk can hold a few people at busy afternoon hours but the modest interior draws no substantial line.",
+    "anchors": null
   },
   {
     "name": "Rue Montorgueil",
@@ -503,7 +509,7 @@
     "latitude": 48.86358,
     "longitude": 2.34715,
     "importance_tier": 3,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "typical_duration_min": 22,
     "kid_friendly": "no",
     "name_variations": [
@@ -596,7 +602,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A pedestrian market street entered freely; the value is in the open air with no gate to pass."
+    "queue_basis": "A pedestrian market street entered freely; the value is in the open air with no gate to pass.",
+    "anchors": null
   },
   {
     "name": "Place du Caire",
@@ -604,7 +611,7 @@
     "latitude": 48.86708,
     "longitude": 2.34857,
     "importance_tier": 2,
-    "trigger_radius": 12,
+    "trigger_radius": 20,
     "typical_duration_min": 8,
     "kid_friendly": "caution",
     "name_variations": [
@@ -663,7 +670,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open square viewed from the pavement; no interior and no admission means no queue."
+    "queue_basis": "An open square viewed from the pavement; no interior and no admission means no queue.",
+    "anchors": null
   },
   {
     "name": "Rue de Clery",
@@ -671,7 +679,7 @@
     "latitude": 48.86825,
     "longitude": 2.3467,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -754,7 +762,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open historic street with no door or ticket; there is nothing to stand in line for."
+    "queue_basis": "An open historic street with no door or ticket; there is nothing to stand in line for.",
+    "anchors": null
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -762,7 +771,7 @@
     "latitude": 48.87055,
     "longitude": 2.33187,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
@@ -819,7 +828,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A commemorative building facade seen from the street with no public entry; no queue to price."
+    "queue_basis": "A commemorative building facade seen from the street with no public entry; no queue to price.",
+    "anchors": null
   },
   {
     "name": "Place de Louvois",
@@ -827,7 +837,7 @@
     "latitude": 48.86822,
     "longitude": 2.33764,
     "importance_tier": 1,
-    "trigger_radius": 15,
+    "trigger_radius": 30,
     "typical_duration_min": 8,
     "kid_friendly": "caution",
     "name_variations": [
@@ -882,7 +892,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small open square with a fountain, entered freely; no door and no line."
+    "queue_basis": "A small open square with a fountain, entered freely; no door and no line.",
+    "anchors": null
   },
   {
     "name": "Cafe du Croissant",
@@ -890,7 +901,7 @@
     "latitude": 48.86883,
     "longitude": 2.3425,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "caution",
     "name_variations": [
@@ -953,6 +964,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working café passed on the street; there is no admission line, only ordinary café seating, so no entry queue to price."
+    "queue_basis": "A working café passed on the street; there is no admission line, only ordinary café seating, so no entry queue to price.",
+    "anchors": null
   }
 ]

@@ -18,35 +18,22 @@ from neo4j import Session
 from src.api.dependencies import get_session
 from src.api.models.audio import (
     AudioPreviewRequest,
-    AudioStatusResponse,
-    BatchGenerateRequest,
-    BatchGenerateResponse,
-    BatchResultItem,
     CompareRequest,
     CompareResponse,
     CompareResultItem,
     EvalRequest,
     EvalResponse,
     GenerateRequest,
-    GenerateResponse,
     KeepExploringAudioResponse,
     ProviderInfo,
     ProviderListResponse,
     StopAudioResultItem,
     StopAudioStatusResponse,
-    TripAudioGenerateResponse,
-    TripAudioResultItem,
     TripStopAudioGenerateResponse,
 )
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
-from src.audio.pipeline import (
-    PipelineError,
-    check_audio_status,
-    generate_batch,
-    generate_beat_audio,
-    generate_stop_audio,
-)
+from src.audio.pipeline import PipelineError, generate_stop_audio
 from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
 
@@ -56,17 +43,17 @@ router = APIRouter(tags=["audio"])
 #
 # The audio router is mounted UNCONDITIONALLY (mobile + the editorial workbench
 # need the playback/preview routes), but several of its routes are an
-# unauthenticated *spend* and *write* surface:
+# unauthenticated *spend* surface:
 #
-#   POST /audio/generate-batch  -> paid TTS over EVERY NarrativeBeat in the
-#                                  connected graph + overwrites every audio_url
-#   POST /audio/generate/{id}   -> paid TTS + graph write
 #   POST /audio/compare         -> up to 5 paid TTS calls + writes files to disk
 #   GET  /audio/compare/download-> serves those files
 #   POST /audio/eval            -> up to 3 paid TTS + 9 paid Whisper calls
 #
-# None of these has a product caller (mobile uses generate-trip*/keep-exploring;
-# the web preview uses /audio/preview) — they are operator/workbench tools. Gate
+# (The per-beat library — POST /audio/generate-batch, /audio/generate/{id},
+# /audio/generate-trip, GET /audio/status/{id} — was DELETED at Phase 7 S7.10,
+# design §8.5: the per-stop path and the keep-exploring door are the only voicing
+# doors.) None of these has a product caller (mobile uses generate-trip-stops /
+# keep-exploring; the web preview uses /audio/preview) — they are operator tools. Gate
 # them behind the SAME fail-closed flag that already protects the workbench CRUD
 # routers in src/api/app.py, so the public Render deployment (which pins
 # WORKBENCH_API_ENABLED="false") never exposes them.
@@ -544,257 +531,7 @@ def serve_audio_file(key: str):
     return FileResponse(filepath, media_type=media_type, filename=Path(key).name)
 
 
-# ── Pipeline endpoints (require Neo4j) ──
-
-
-@router.get("/audio/status/{beat_id}", response_model=AudioStatusResponse)
-def get_audio_status(beat_id: str, session: Session = Depends(get_session)):
-    """Check audio status for a beat, including staleness detection.
-
-    Returns whether audio exists, its URL, duration, and whether the
-    script_body has changed since the audio was last generated (is_stale).
-    """
-    try:
-        status = check_audio_status(session, beat_id)
-    except PipelineError as e:
-        raise HTTPException(404, str(e)) from None
-
-    return AudioStatusResponse(
-        beat_id=status.beat_id,
-        has_audio=status.has_audio,
-        audio_url=status.audio_url,
-        duration_sec=status.duration_sec,
-        is_stale=status.is_stale,
-    )
-
-
-@router.post(
-    "/audio/generate/{beat_id}",
-    response_model=GenerateResponse,
-    dependencies=[Depends(require_audio_admin)],
-)
-def generate_audio(
-    beat_id: str,
-    body: GenerateRequest,
-    session: Session = Depends(get_session),
-):
-    """Generate audio for a single NarrativeBeat.
-
-    Fetches the beat's script_body from Neo4j, runs TTS, uploads to storage,
-    and updates the beat's audio_url.
-
-    Operator/workbench tool (mobile drives audio through /audio/generate-trip*),
-    so it is admin-gated: paid TTS + a graph write must never be anonymous on
-    the public deployment.
-    """
-    try:
-        result = generate_beat_audio(
-            session,
-            beat_id,
-            provider_name=body.provider,
-            voice_id=body.voice_id,
-            force=body.force,
-        )
-    except PipelineError as e:
-        raise HTTPException(400, str(e)) from None
-
-    return GenerateResponse(
-        beat_id=result.beat_id,
-        provider=result.provider,
-        storage=result.storage,
-        audio_url=result.audio_url,
-        size_bytes=result.size_bytes,
-    )
-
-
-@router.post(
-    "/audio/generate-batch",
-    response_model=BatchGenerateResponse,
-    dependencies=[Depends(require_audio_admin)],
-)
-def generate_audio_batch(
-    body: BatchGenerateRequest,
-    session: Session = Depends(get_session),
-):
-    """Generate audio for all NarrativeBeats that need it.
-
-    Processes all beats without audio, with placeholder URLs, or with stale audio.
-    Returns summary stats including timing and total bytes generated.
-
-    THE highest-blast-radius route in this module: generate_batch matches EVERY
-    NarrativeBeat in the connected graph (Paris alone is ~1539) and, with
-    force=true, re-voices and overwrites all of them through a paid provider.
-    It is an operator tool with no product caller, so it is admin-gated and must
-    never be mounted on the public deployment.
-    """
-    summary = generate_batch(
-        session,
-        provider_name=body.provider,
-        voice_id=body.voice_id,
-        force=body.force,
-    )
-
-    items: list[BatchResultItem] = []
-    for r in summary.results:
-        if isinstance(r, PipelineError):
-            items.append(
-                BatchResultItem(
-                    beat_id="unknown",
-                    success=False,
-                    error=str(r),
-                )
-            )
-        else:
-            items.append(
-                BatchResultItem(
-                    beat_id=r.beat_id,
-                    success=True,
-                    audio_url=r.audio_url,
-                    size_bytes=r.size_bytes,
-                )
-            )
-
-    return BatchGenerateResponse(
-        total_found=summary.total_found,
-        total_processed=summary.succeeded + summary.failed,
-        succeeded=summary.succeeded,
-        failed=summary.failed,
-        skipped=summary.skipped,
-        total_bytes=summary.total_bytes,
-        elapsed_sec=summary.elapsed_sec,
-        results=items,
-    )
-
-
-@router.post("/audio/generate-trip/{trip_id}", response_model=TripAudioGenerateResponse)
-def generate_audio_for_trip(
-    trip_id: str,
-    body: GenerateRequest | None = None,
-    session: Session = Depends(get_session),
-):
-    """Generate audio for each stop's primary beat that doesn't have audio yet.
-
-    Finds each ItineraryItem's primary beat (HAS_STOP -> ItineraryItem ->
-    PLAYS_BEAT, filtered to `item.primary_beat_id`), filters to those without
-    audio, and runs TTS generation for each. Non-primary PLAYS_BEAT beats are
-    deliberately excluded: mobile plays only the primary beat, and M7's COMPOSE
-    layer replaces per-beat audio with one composed MP3 per stop
-    (specs/2026-06-12-tour-algorithm-decision/ALGORITHM-SPEC.md §2.5).
-    """
-    # Verify trip exists
-    trip_check = session.run(
-        "MATCH (t:Trip {id: $tid}) RETURN t.id AS id",
-        tid=trip_id,
-    ).single()
-    if trip_check is None:
-        raise HTTPException(404, f"Trip '{trip_id}' not found")
-
-    # Find each item's primary beat without audio. The coalesce fallback
-    # mirrors list_trips_for_profile (src/api/crud/trips.py): legacy items
-    # that predate M0b's multi-beat persistence have no primary_beat_id
-    # property and exactly one PLAYS_BEAT edge.
-    #
-    # The list-index projection (`[...][0]`) replaces an UNWIND: when
-    # primary_beat_id names a beat with no PLAYS_BEAT edge, UNWIND over the
-    # resulting EMPTY list deleted the row outright, so the stop was neither
-    # generated NOR reported — the caller saw a fully successful run while that
-    # stop shipped silently with no audio. Indexing yields a NULL beat instead,
-    # keeping the row alive so it can be classified (and reported) in Python.
-    query = """
-        MATCH (t:Trip {id: $trip_id})-[:HAS_STOP]->(item:ItineraryItem)
-        MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)
-        WITH item, collect(beat) AS beats
-        WITH item, beats, coalesce(item.primary_beat_id, beats[0].id) AS primary_id
-        WITH item, primary_id, [b IN beats WHERE b.id = primary_id][0] AS beat
-        WHERE beat IS NULL OR beat.audio_url IS NULL OR beat.audio_url = ''
-        RETURN item.id AS stop_id, primary_id AS primary_id,
-               beat.id AS beat_id, beat.script_body AS script_body
-    """
-    records = session.run(query, trip_id=trip_id)
-    rows = [dict(r) for r in records]
-
-    # The old query used DISTINCT to guard against two items sharing a primary
-    # beat (generate it once, not once per item). Rows are now per-ITEM, so
-    # dedupe on beat_id here instead. Orphan rows (beat_id is null) are reported
-    # rather than generated.
-    beats_to_generate: list[dict] = []
-    orphans: list[dict] = []
-    seen_beat_ids: set[str] = set()
-    for row in rows:
-        if row["beat_id"] is None:
-            orphans.append(row)
-            continue
-        if row["beat_id"] in seen_beat_ids:
-            continue
-        seen_beat_ids.add(row["beat_id"])
-        beats_to_generate.append(row)
-
-    if not beats_to_generate and not orphans:
-        return TripAudioGenerateResponse(
-            trip_id=trip_id,
-            generated=0,
-            skipped=0,
-            failed=0,
-            results=[],
-        )
-
-    provider_name = body.provider if body else None
-    voice_id = body.voice_id if body else None
-    force = body.force if body else False
-
-    results: list[TripAudioResultItem] = []
-    for orphan in orphans:
-        results.append(
-            TripAudioResultItem(
-                beat_id=orphan["primary_id"] or orphan["stop_id"],
-                status="failed",
-                error=(
-                    f"primary beat {orphan['primary_id']!r} has no PLAYS_BEAT edge "
-                    f"from stop {orphan['stop_id']!r}"
-                ),
-            )
-        )
-    for beat in beats_to_generate:
-        if not beat["script_body"]:
-            results.append(
-                TripAudioResultItem(
-                    beat_id=beat["beat_id"],
-                    status="skipped",
-                    reason="no script_body",
-                )
-            )
-            continue
-        try:
-            gen_result = generate_beat_audio(
-                session,
-                beat["beat_id"],
-                provider_name=provider_name,
-                voice_id=voice_id,
-                force=force,
-            )
-            results.append(
-                TripAudioResultItem(
-                    beat_id=beat["beat_id"],
-                    status="generated",
-                    audio_url=gen_result.audio_url,
-                )
-            )
-        except PipelineError as e:
-            results.append(
-                TripAudioResultItem(
-                    beat_id=beat["beat_id"],
-                    status="failed",
-                    error=str(e),
-                )
-            )
-
-    return TripAudioGenerateResponse(
-        trip_id=trip_id,
-        generated=sum(1 for r in results if r.status == "generated"),
-        skipped=sum(1 for r in results if r.status == "skipped"),
-        failed=sum(1 for r in results if r.status == "failed"),
-        results=results,
-    )
+# ── Pipeline endpoints (require Neo4j) — the PER-STOP path ──
 
 
 def _voice_session_lines(
@@ -810,7 +547,7 @@ def _voice_session_lines(
 
     stop_id = stop["stop_id"]
 
-    def _voice_one(text: str, key: str) -> str | None:
+    def _voice_one(text: str, key: str) -> tuple[str, float] | None:
         try:
             gen = generate_stop_audio(
                 text,
@@ -819,7 +556,7 @@ def _voice_session_lines(
                 provider_name=provider_name,
                 voice_id=voice_id,
             )
-            return gen.audio_url
+            return gen.audio_url, gen.duration_sec
         except PipelineError as exc:
             record(
                 kind="session_line_not_voiced",
@@ -833,9 +570,15 @@ def _voice_session_lines(
             )
             return None
 
-    for text_field, url_field, hash_field, key_suffix in (
-        ("close_text", "close_audio_url", "close_audio_hash", "close"),
-        ("full_close_text", "full_close_audio_url", "full_close_audio_hash", "full-close"),
+    # THE ONE TABLE of a stop's small authored pieces, each voiced once and
+    # hash-guarded: the close, the full telling's close, and — Phase 7 S7.7 (design
+    # §5.6 C7; plan defect 7) — the LEG piece, the walking line into the stop, played
+    # on the leg. The leg piece also stores its measured length (the phone's clocks
+    # read it); the closes need none.
+    for text_field, url_field, hash_field, key_suffix, duration_field in (
+        ("close_text", "close_audio_url", "close_audio_hash", "close", None),
+        ("full_close_text", "full_close_audio_url", "full_close_audio_hash", "full-close", None),
+        ("leg_narration", "leg_audio_url", "leg_audio_hash", "leg", "leg_audio_duration_sec"),
     ):
         text = stop.get(text_field)
         if not text or not str(text).strip():
@@ -848,14 +591,17 @@ def _voice_session_lines(
             and not _artifact_missing(stop[url_field])
         ):
             continue
-        url = _voice_one(text, f"{stop_id}-{key_suffix}")
-        if url is not None:
+        voiced = _voice_one(text, f"{stop_id}-{key_suffix}")
+        if voiced is not None:
+            url, duration = voiced
+            duration_set = f", i.{duration_field} = $dur" if duration_field else ""
             session.run(
                 f"MATCH (i:ItineraryItem {{id: $sid}}) "
-                f"SET i.{url_field} = $url, i.{hash_field} = $hash",
+                f"SET i.{url_field} = $url, i.{hash_field} = $hash{duration_set}",
                 sid=stop_id,
                 url=url,
                 hash=line_hash,
+                dur=duration,
             )
 
     raw_threads = stop.get("thread_lines")
@@ -877,9 +623,9 @@ def _voice_session_lines(
             ):
                 urls: dict[str, str] = {}
                 for from_name, text in threads.items():
-                    url = _voice_one(text, f"{stop_id}-thread-{abs(hash(from_name)) % 10**8}")
-                    if url is not None:
-                        urls[from_name] = url
+                    voiced = _voice_one(text, f"{stop_id}-thread-{abs(hash(from_name)) % 10**8}")
+                    if voiced is not None:
+                        urls[from_name] = voiced[0]
                 if urls:
                     session.run(
                         "MATCH (i:ItineraryItem {id: $sid}) "
@@ -888,6 +634,44 @@ def _voice_session_lines(
                         urls=json.dumps(urls, ensure_ascii=False),
                         hash=combined_hash,
                     )
+
+    # Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): a marquee's CHAPTERS — each
+    # voiced once as its own file, `{stop}-seg-{i}`, hash-guarded like the lines above;
+    # the url, the measured length and the hash are written back INTO the item's
+    # chapter list (the thread-urls precedent), which the session GET overlays.
+    raw_segments = stop.get("segments_json")
+    if raw_segments:
+        try:
+            segments = json.loads(raw_segments)
+        except (TypeError, ValueError):
+            segments = []
+        changed = False
+        for i, seg in enumerate(segments if isinstance(segments, list) else []):
+            if not isinstance(seg, dict):
+                continue
+            text = str(seg.get("narration") or "").strip()
+            if not text:
+                continue
+            seg_hash = _stop_narration_hash(text, provider_name, voice_id)
+            if (
+                seg.get("audio_url")
+                and seg.get("audio_hash") == seg_hash
+                and not force
+                and not _artifact_missing(seg["audio_url"])
+            ):
+                continue
+            voiced = _voice_one(text, f"{stop_id}-seg-{i}")
+            if voiced is None:
+                continue
+            seg["audio_url"], seg["audio_duration_sec"] = voiced
+            seg["audio_hash"] = seg_hash
+            changed = True
+        if changed:
+            session.run(
+                "MATCH (i:ItineraryItem {id: $sid}) SET i.segments_json = $segments",
+                sid=stop_id,
+                segments=json.dumps(segments, ensure_ascii=False),
+            )
 
 
 @router.post(
@@ -903,9 +687,8 @@ def generate_stop_audio_for_trip(
 
     Iterates the trip's ItineraryItems, voices each stop's stitched ``narration``
     (Step 1.2) via ``generate_stop_audio``, and stores the result ON THE ITEM
-    (``audio_url``/``audio_duration_sec``), keyed by the item id. This is the
-    per-stop replacement for the per-primary-beat ``/audio/generate-trip``;
-    mobile switches to it in Step 1.4c and the per-beat path is retired later.
+    (``audio_url``/``audio_duration_sec``), keyed by the item id. THE voicing door
+    for a trip (the per-beat ``/audio/generate-trip`` was deleted at Phase 7 S7.10).
     Items with no narration are skipped; existing audio is skipped unless force.
     """
     trip_check = session.run(
@@ -931,6 +714,10 @@ def generate_stop_audio_for_trip(
                item.thread_lines AS thread_lines,
                item.thread_audio_urls AS thread_audio_urls,
                item.thread_audio_hash AS thread_audio_hash,
+               item.leg_narration AS leg_narration,
+               item.leg_audio_url AS leg_audio_url,
+               item.leg_audio_hash AS leg_audio_hash,
+               item.segments_json AS segments_json,
                poi.name AS poi_name
         ORDER BY item.sort_order
         """,
@@ -1030,9 +817,9 @@ def generate_stop_audio_for_trip(
 def get_stop_audio_status(stop_id: str, session: Session = Depends(get_session)):
     """Per-stop audio status by ItineraryItem id (Phase 1, Step 1.4b).
 
-    Additive to /audio/status/{beat_id}: reads the per-stop audio persisted by
-    /audio/generate-trip-stops (Step 1.4a) so mobile can poll/play per stop.
-    404 if the stop doesn't exist.
+    Reads the per-stop audio persisted by /audio/generate-trip-stops (Step 1.4a) so
+    mobile can poll/play per stop — the ONLY status poll since Phase 7 S7.10 deleted
+    the per-beat one. 404 if the stop doesn't exist.
     """
     rec = session.run(
         "MATCH (i:ItineraryItem {id: $sid}) "

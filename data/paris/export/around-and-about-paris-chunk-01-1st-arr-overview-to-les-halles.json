@@ -64,7 +64,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it."
+    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it.",
+    "anchors": null
   },
   {
     "name": "Jardin des Tuileries",
@@ -72,7 +73,7 @@
     "latitude": 48.8636,
     "longitude": 2.3274,
     "importance_tier": 5,
-    "trigger_radius": 100,
+    "trigger_radius": 300,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -201,7 +202,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in."
+    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in.",
+    "anchors": null
   },
   {
     "name": "Les Halles",
@@ -374,7 +376,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The Forum des Halles is an open shopping centre with multiple free entrances and no admission control, so nobody waits to enter."
+    "queue_basis": "The Forum des Halles is an open shopping centre with multiple free entrances and no admission control, so nobody waits to enter.",
+    "anchors": null
   },
   {
     "name": "Louvre Museum",
@@ -382,7 +385,7 @@
     "latitude": 48.8609,
     "longitude": 2.3358,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -731,7 +734,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "Security into the glass pyramid, then ticket gates, produce a substantial line at midday; timed tickets shorten but do not remove it, and off-peak means opening or late afternoon."
+    "queue_basis": "Security into the glass pyramid, then ticket gates, produce a substantial line at midday; timed tickets shorten but do not remove it, and off-peak means opening or late afternoon.",
+    "anchors": null
   },
   {
     "name": "Paris Catacombs",
@@ -739,7 +743,7 @@
     "latitude": 48.83388,
     "longitude": 2.33225,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 10,
     "kid_friendly": "no",
     "name_variations": [
@@ -801,7 +805,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "Occupancy underground is capped to a few hundred people at once, so entry moves at a trickle and the wall-standing wait can be twenty minutes or three hours with no reliable way to predict which, making any bound untrustworthy."
+    "queue_basis": "Occupancy underground is capped to a few hundred people at once, so entry moves at a trickle and the wall-standing wait can be twenty minutes or three hours with no reliable way to predict which, making any bound untrustworthy.",
+    "anchors": null
   },
   {
     "name": "Pavillon de Flore",
@@ -809,7 +814,7 @@
     "latitude": 48.859382,
     "longitude": 2.336574,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -864,7 +869,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is a walk-by-only wing of the Louvre Palace viewed from the street or riverside with no separate entrance, so there is nothing to queue for."
+    "queue_basis": "This is a walk-by-only wing of the Louvre Palace viewed from the street or riverside with no separate entrance, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Place Vendome",
@@ -872,7 +878,7 @@
     "latitude": 48.8677,
     "longitude": 2.3292,
     "importance_tier": 4,
-    "trigger_radius": 40,
+    "trigger_radius": 80,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -927,7 +933,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square walked into freely from surrounding streets with no gate or ticket, so there is no line."
+    "queue_basis": "An open public square walked into freely from surrounding streets with no gate or ticket, so there is no line.",
+    "anchors": null
   },
   {
     "name": "Saint-Eustache",
@@ -935,7 +942,7 @@
     "latitude": 48.863,
     "longitude": 2.3456,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1142,6 +1149,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large free-entry church near Les Halles with open doors and no ticket or security check, so entry is immediate and no line forms."
+    "queue_basis": "A large free-entry church near Les Halles with open doors and no ticket or security check, so entry is immediate and no line forms.",
+    "anchors": null
   }
 ]

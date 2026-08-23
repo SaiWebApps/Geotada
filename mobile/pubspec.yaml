@@ -21,6 +21,9 @@ dependencies:
   sign_in_with_apple: ^6.1.0
   apple_maps_flutter: ^1.4.0
   just_audio: ^0.9.40
+  # Phase 7 S7.9 (W7.2 R5): the audio session — background spoken playback and
+  # the interruption events; just_audio's own session library, now used directly.
+  audio_session: ^0.1.25
   path_provider: ^2.1.0
 
 dev_dependencies:

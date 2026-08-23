@@ -5,7 +5,7 @@
     "latitude": 48.8881918,
     "longitude": 2.3372245,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 50,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -317,7 +317,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public neighborhood garden entered through an open gate with no ticket or screening, so no wait exists before entering."
+    "queue_basis": "A public neighborhood garden entered through an open gate with no ticket or screening, so no wait exists before entering.",
+    "anchors": null
   },
   {
     "name": "Musée de Montmartre",
@@ -325,7 +326,7 @@
     "latitude": 48.8880499,
     "longitude": 2.3406297,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -826,7 +827,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A small museum with a single ticket desk and no airport-style security, so a modest line forms at midday but stays minor at its worst."
+    "queue_basis": "A small museum with a single ticket desk and no airport-style security, so a modest line forms at midday but stays minor at its worst.",
+    "anchors": null
   },
   {
     "name": "Square Carpeaux",
@@ -834,7 +836,7 @@
     "latitude": 48.8916601,
     "longitude": 2.331571,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1003,7 +1005,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public garden with an open gate and no ticket or check, so there is no line before entering."
+    "queue_basis": "A public garden with an open gate and no ticket or check, so there is no line before entering.",
+    "anchors": null
   },
   {
     "name": "Square Léon-Serpollet",
@@ -1011,7 +1014,7 @@
     "latitude": 48.8920023,
     "longitude": 2.3384538,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 110,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1104,7 +1107,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public neighborhood garden entered freely through an open gate, so no queue exists."
+    "queue_basis": "A public neighborhood garden entered freely through an open gate, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Parc Turlure",
@@ -1112,7 +1116,7 @@
     "latitude": 48.8876809,
     "longitude": 2.3437147,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1214,7 +1218,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public hillside park with open gates and no ticket or security, so there is nothing to wait in."
+    "queue_basis": "A public hillside park with open gates and no ticket or security, so there is nothing to wait in.",
+    "anchors": null
   },
   {
     "name": "Square Louise-Michel",
@@ -1222,7 +1227,7 @@
     "latitude": 48.885382,
     "longitude": 2.3435393,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 140,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1366,7 +1371,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The open terraced garden below Sacré-Cœur is entered freely from the street with no gate or check, so no line exists."
+    "queue_basis": "The open terraced garden below Sacré-Cœur is entered freely from the street with no gate or check, so no line exists.",
+    "anchors": null
   },
   {
     "name": "Square des Abbesses",
@@ -1374,7 +1380,7 @@
     "latitude": 48.8843999,
     "longitude": 2.3383885,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1486,7 +1492,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small public square-garden entered through an open gate with no ticket, so there is no queue to price."
+    "queue_basis": "A small public square-garden entered through an open gate with no ticket, so there is no queue to price.",
+    "anchors": null
   },
   {
     "name": "Montmartre Cemetery",
@@ -1494,7 +1501,7 @@
     "latitude": 48.884898,
     "longitude": 2.330804,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 340,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1639,7 +1646,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free public cemetery entered through open gates with no ticketing or bag check, so there is no line to join."
+    "queue_basis": "A free public cemetery entered through open gates with no ticketing or bag check, so there is no line to join.",
+    "anchors": null
   },
   {
     "name": "Lapin Agile",
@@ -1647,7 +1655,7 @@
     "latitude": 48.888731,
     "longitude": 2.339975,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1712,6 +1720,7 @@
         "21:30"
       ]
     ],
-    "queue_basis": "A small cabaret admitted by a single door at the start of an evening show, so a brief cluster forms at doors-open time but there is no security screening or all-day line."
+    "queue_basis": "A small cabaret admitted by a single door at the start of an evening show, so a brief cluster forms at doors-open time but there is no security screening or all-day line.",
+    "anchors": null
   }
 ]

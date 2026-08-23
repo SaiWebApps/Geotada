@@ -5,7 +5,7 @@
     "latitude": 48.8617295,
     "longitude": 2.3790253,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 90,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -419,7 +419,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public neighbourhood garden square with open gates and no ticket or bag check, so visitors walk straight in with no wait."
+    "queue_basis": "A public neighbourhood garden square with open gates and no ticket or bag check, so visitors walk straight in with no wait.",
+    "anchors": null
   },
   {
     "name": "Square de la Roquette",
@@ -427,7 +428,7 @@
     "latitude": 48.8596137,
     "longitude": 2.3846173,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 110,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -698,7 +699,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public garden square entered freely through open gates with no screening or admission, so there is no queue to stand in."
+    "queue_basis": "A public garden square entered freely through open gates with no screening or admission, so there is no queue to stand in.",
+    "anchors": null
   },
   {
     "name": "Canal Saint-Martin",
@@ -816,7 +818,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open waterway with footbridges and towpaths that are walked straight onto, with no gate or ticket, so there is no queue."
+    "queue_basis": "An open waterway with footbridges and towpaths that are walked straight onto, with no gate or ticket, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -824,7 +827,7 @@
     "latitude": 48.860764,
     "longitude": 2.393646,
     "importance_tier": 4,
-    "trigger_radius": 100,
+    "trigger_radius": 500,
     "typical_duration_min": 75,
     "kid_friendly": "yes",
     "name_variations": [
@@ -958,7 +961,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting."
+    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting.",
+    "anchors": null
   },
   {
     "name": "Eglise Notre-Dame de la Croix",
@@ -966,7 +970,7 @@
     "latitude": 48.8686159,
     "longitude": 2.3874443,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1103,7 +1107,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church in Ménilmontant with an open door you walk straight through, with no ticket desk or security screening, so there is no line."
+    "queue_basis": "A parish church in Ménilmontant with an open door you walk straight through, with no ticket desk or security screening, so there is no line.",
+    "anchors": null
   },
   {
     "name": "La Maison des Metallos",
@@ -1111,7 +1116,7 @@
     "latitude": 48.8673647,
     "longitude": 2.3780287,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1201,6 +1206,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public cultural centre and event venue entered freely from the street outside of ticketed shows, with no standing security line, so it is priced as no queue."
+    "queue_basis": "A public cultural centre and event venue entered freely from the street outside of ticketed shows, with no standing security line, so it is priced as no queue.",
+    "anchors": null
   }
 ]

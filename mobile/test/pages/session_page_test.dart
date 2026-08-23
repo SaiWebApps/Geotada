@@ -34,6 +34,9 @@ ItineraryStop _stop(int n, {required double lat}) => ItineraryStop(
   audioUrl: 'https://cdn.example.com/$n.mp3',
   audioDurationSec: 100,
   dwellSeconds: 300,
+  // S7.3: the footprint this fixture assumed (the phone's old 40 m circle) is
+  // now STATED on each stop, as the wire carries it.
+  trigger: const StopTrigger(radiusM: 40),
 );
 
 const _question =
@@ -166,6 +169,98 @@ void main() {
     expect(after.data, startsWith('Gare du Nord by '));
     expect(after.data!.compareTo(finishLine.data!) < 0, isTrue,
         reason: 'wrap-up: ${after.data} should be earlier than ${finishLine.data}');
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  // Phase 7 S7.5 (design §5.6; W7.2 R2 — Fiona & Dev, Nadia): at a stop whose
+  // arrival hour prices a line, a couple's piece waits for a TAP; the screen
+  // carries the offer and the tap plays it. The screen renders what the service
+  // holds and decides nothing.
+  testWidgets('at a queued stop a couple sees the offer and the tap plays the piece',
+      (tester) async {
+    var now = DateTime(2026, 8, 19, 9, 0);
+    final gps = MockLocationService();
+    final audio = MockAudioService();
+    final service = TourPlaybackService(
+      locationService: gps,
+      audioService: audio,
+      now: () => now,
+    );
+    final queued = [
+      ItineraryStop(
+        sortOrder: 0, stopId: 'item-0', poiId: 'poi-0', poiName: 'Sainte-Chapelle',
+        lat: base, lng: 2.35, beatId: 'beat-0', lensName: 'history',
+        lensDisplay: 'History', durationMin: 5, importanceTier: 5, startTime: '',
+        audioUrl: 'https://cdn.example.com/0.mp3', audioDurationSec: 100,
+        dwellSeconds: 300,
+        trigger: const StopTrigger(radiusM: 30, queueSeconds: 28 * 60),
+      ),
+    ];
+    await service.startTour(queued);
+    service.holdSession(SessionPlan(
+      tripId: 'trip-1', planVersion: 1, stops: queued,
+      retimeToleranceSeconds: 180, dayStartHhmm: '09:00', party: 'couple',
+      placement: const PlacementPolicy(ownPlaceM: 60, queuePiece: 'tap'),
+    ));
+    gps.simulatePosition(base + 10 * _degPerMeterLat, 2.35); // in the line
+    now = now.add(const Duration(seconds: 40));
+    service.tick();
+    expect(audio.isPlaying, isFalse);
+
+    await tester.pumpWidget(_app(service));
+    await tester.pump();
+    expect(find.byKey(const Key('session-armed-offer')), findsOneWidget);
+    expect(find.textContaining('Sainte-Chapelle'), findsWidgets);
+    await tester.tap(find.byKey(const Key('session-armed-offer')));
+    await tester.pump();
+    expect(audio.isPlaying, isTrue);
+    expect(find.byKey(const Key('session-armed-offer')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  // Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): under a roof a chapter is
+  // offered on the screen — the tap plays it; the screen renders the offer the
+  // service holds and decides nothing.
+  testWidgets('an indoor chapter is offered on the screen and the tap plays it',
+      (tester) async {
+    var now = DateTime(2026, 8, 19, 9, 0);
+    final gps = MockLocationService();
+    final audio = MockAudioService();
+    final service = TourPlaybackService(
+      locationService: gps,
+      audioService: audio,
+      now: () => now,
+    );
+    final marquee = [
+      ItineraryStop(
+        sortOrder: 0, stopId: 'item-0', poiId: 'nd', poiName: 'Notre-Dame Cathedral',
+        lat: base, lng: 2.35, beatId: 'beat-0', lensName: 'history',
+        lensDisplay: 'History', durationMin: 25, importanceTier: 5, startTime: '',
+        audioUrl: 'https://cdn.example.com/0.mp3', audioDurationSec: 100,
+        dwellSeconds: 1500,
+        trigger: const StopTrigger(radiusM: 100),
+        segments: const [
+          StopSegment(label: 'Inside', lat: base, lng: 2.35, radiusM: 60, indoor: true,
+              narration: 'The nave.', audioUrl: 'https://cdn.example.com/inside.mp3'),
+        ],
+      ),
+    ];
+    await service.startTour(marquee);
+    gps.simulatePosition(base - 200 * _degPerMeterLat, 2.35);
+    gps.simulatePosition(base, 2.35); // arrive: the story
+    audio.simulateComplete();
+    now = now.add(const Duration(seconds: 40));
+    service.tick();
+    expect(audio.isPlaying, isFalse, reason: 'under a roof nothing starts itself');
+
+    await tester.pumpWidget(_app(service));
+    await tester.pump();
+    expect(find.byKey(const Key('session-chapter-offer')), findsOneWidget);
+    expect(find.textContaining('Inside'), findsWidgets);
+    await tester.tap(find.byKey(const Key('session-chapter-offer')));
+    await tester.pump();
+    expect(audio.currentBeatId, 'item-0-seg-0');
+    expect(find.byKey(const Key('session-chapter-offer')), findsNothing);
     await tester.pumpWidget(const SizedBox());
   });
 

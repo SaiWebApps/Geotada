@@ -5,7 +5,7 @@
     "latitude": 48.8522,
     "longitude": 2.3447,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -208,7 +208,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The gardens are a free open enclosure entered directly from the street without ticket or screening, so no line forms to reach them."
+    "queue_basis": "The gardens are a free open enclosure entered directly from the street without ticket or screening, so no line forms to reach them.",
+    "anchors": null
   },
   {
     "name": "Square Paul-Painleve",
@@ -216,7 +217,7 @@
     "latitude": 48.8517,
     "longitude": 2.3443,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -300,7 +301,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open street-side square you walk into freely with no door or ticket, so no line exists."
+    "queue_basis": "An open street-side square you walk into freely with no door or ticket, so no line exists.",
+    "anchors": null
   },
   {
     "name": "Square Paul-Langevin",
@@ -308,7 +310,7 @@
     "latitude": 48.8509,
     "longitude": 2.3507,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -535,7 +537,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small open garden entered directly from the street with no ticket or screening, so there is nothing to queue for."
+    "queue_basis": "A small open garden entered directly from the street with no ticket or screening, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Jardin Carre",
@@ -543,7 +546,7 @@
     "latitude": 48.8481,
     "longitude": 2.3505,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -633,7 +636,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public courtyard garden reached through an open passage with no ticket, so no line forms."
+    "queue_basis": "A public courtyard garden reached through an open passage with no ticket, so no line forms.",
+    "anchors": null
   },
   {
     "name": "Musee de Cluny",
@@ -641,7 +645,7 @@
     "latitude": 48.850474,
     "longitude": 2.343391,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
@@ -775,7 +779,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A single ticket desk and bag check at this modest medieval museum produce a small moving line rather than a substantial one."
+    "queue_basis": "A single ticket desk and bag check at this modest medieval museum produce a small moving line rather than a substantial one.",
+    "anchors": null
   },
   {
     "name": "Ecole Normale Superieure",
@@ -1075,7 +1080,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working academic institution, not a ticketed attraction; the tour views it from the street with no public entry line to stand in."
+    "queue_basis": "A working academic institution, not a ticketed attraction; the tour views it from the street with no public entry line to stand in.",
+    "anchors": null
   },
   {
     "name": "Montagne Sainte-Genevieve",
@@ -1083,7 +1089,7 @@
     "latitude": 48.8446766,
     "longitude": 2.3472341,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1167,6 +1173,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is a hill and its network of open streets in the Latin Quarter, with no door or ticket, so the whole value stands in the open with no queue."
+    "queue_basis": "This is a hill and its network of open streets in the Latin Quarter, with no door or ticket, so the whole value stands in the open with no queue.",
+    "anchors": null
   }
 ]

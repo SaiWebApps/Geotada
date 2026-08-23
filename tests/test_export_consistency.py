@@ -26,17 +26,21 @@ DATA_ROOT = REPO_ROOT / "data"
 
 # Fields that must agree EXACTLY between poi-raw.json and every export entry.
 # Skipped: name_variations / short_description (exports may carry chunk-specific
-# framing); trigger_radius (currently inconsistent — see TODO below); lat/lng
-# (compared with tolerance further down).
+# framing); lat/lng (compared with tolerance further down).
 STRICT_FIELDS = ("importance_tier",)
+
+# `trigger_radius` joined the strict set at Phase 7 S7.4 (design §5.6 C7) for every
+# city whose footprint pass has run: poi-raw.json is the canonical record, the pass
+# (scripts/poi_trigger_radius.py) writes it there and the export sync carries it
+# (SYNCED_FIELDS), so the 19 Paris entries that had drifted (Notre-Dame export 100 /
+# raw 10; Luxembourg 100 / 390) can never come back. A city not yet through the pass
+# (New York: 4-space files the one serialiser refuses to rewrite) keeps the looser
+# check until its own normalise-then-sync job runs — the allow-list says which.
+STRICT_FIELDS_AFTER_FOOTPRINT_PASS = ("trigger_radius",)
 
 # Coordinate tolerance: ~0.0005 deg ≈ 55m at Paris latitude. Tighter than this
 # is just rounding noise from JSON serialization.
 COORD_TOLERANCE = 0.001
-
-# TODO: trigger_radius is currently drifting — exports have curated larger
-# radii for famous POIs (Notre-Dame=100m), poi-raw has stale defaults (10m).
-# Decide which is canonical and add to STRICT_FIELDS once aligned.
 
 
 def _city_dirs() -> list[Path]:
@@ -49,8 +53,13 @@ def _city_dirs() -> list[Path]:
 def test_export_matches_poi_raw(city_dir: Path) -> None:
     """For each city: every POI in every export file must match poi-raw.json
     on tier, lat, lng, and trigger_radius."""
+    from scripts.poi_trigger_radius import CITIES_WITH_FOOTPRINTS
+
     poi_raw = json.loads((city_dir / "poi-raw.json").read_text())
     canonical = {p["name"].lower(): p for p in poi_raw}
+    strict = STRICT_FIELDS + (
+        STRICT_FIELDS_AFTER_FOOTPRINT_PASS if city_dir.name in CITIES_WITH_FOOTPRINTS else ()
+    )
 
     export_dir = city_dir / "export"
     if not export_dir.exists():
@@ -85,8 +94,8 @@ def test_export_matches_poi_raw(city_dir: Path) -> None:
                 )
                 continue
 
-            # Strict equality fields (e.g. importance_tier)
-            for field in STRICT_FIELDS:
+            # Strict equality fields (importance_tier; trigger_radius once sized)
+            for field in strict:
                 exp_val = poi.get(field)
                 canon_val = canon.get(field)
                 if canon_val is None:

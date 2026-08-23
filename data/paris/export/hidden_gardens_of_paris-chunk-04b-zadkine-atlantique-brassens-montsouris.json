@@ -319,7 +319,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A small free city studio-museum with one entrance and a bag check that can back up briefly in the afternoon, but the intimate size keeps any wait minor even though the group is only walking by."
+    "queue_basis": "A small free city studio-museum with one entrance and a bag check that can back up briefly in the afternoon, but the intimate size keeps any wait minor even though the group is only walking by.",
+    "anchors": null
   },
   {
     "name": "Musee Bourdelle",
@@ -327,7 +328,7 @@
     "latitude": 48.843302,
     "longitude": 2.3186277,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -449,7 +450,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A small sculpture museum in the artist's former studio with a modest reception desk and light bag check; free permanent collection keeps the line short, peaking to about 10 minutes midday and a few minutes otherwise."
+    "queue_basis": "A small sculpture museum in the artist's former studio with a modest reception desk and light bag check; free permanent collection keeps the line short, peaking to about 10 minutes midday and a few minutes otherwise.",
+    "anchors": null
   },
   {
     "name": "La Closerie des Lilas",
@@ -457,7 +459,7 @@
     "latitude": 48.840092,
     "longitude": 2.335973,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -590,7 +592,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Priced as a walk-by brasserie with no entry line — you pass its facade and plaques from the street, and any table wait is seating, not a queue to enter a monument."
+    "queue_basis": "Priced as a walk-by brasserie with no entry line — you pass its facade and plaques from the street, and any table wait is seating, not a queue to enter a monument.",
+    "anchors": null
   },
   {
     "name": "Montparnasse Cemetery",
@@ -598,7 +601,7 @@
     "latitude": 48.839956,
     "longitude": 2.327684,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 410,
     "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [
@@ -730,7 +733,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Free open gates and no entry control mean visitors pass straight in with no queue."
+    "queue_basis": "Free open gates and no entry control mean visitors pass straight in with no queue.",
+    "anchors": null
   },
   {
     "name": "Parc Georges-Brassens",
@@ -738,7 +742,7 @@
     "latitude": 48.8315234,
     "longitude": 2.2999921,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1202,7 +1206,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large open public park entered freely through gates with no ticket or screening, so no queue forms."
+    "queue_basis": "A large open public park entered freely through gates with no ticket or screening, so no queue forms.",
+    "anchors": null
   },
   {
     "name": "La Ruche",
@@ -1210,7 +1215,7 @@
     "latitude": 48.8323665,
     "longitude": 2.2972385,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1236,7 +1241,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is an artists' residence complex viewed from the outside only on a walk-by; there is no public entrance line to stand in."
+    "queue_basis": "This is an artists' residence complex viewed from the outside only on a walk-by; there is no public entrance line to stand in.",
+    "anchors": null
   },
   {
     "name": "Parc Montsouris",
@@ -1244,7 +1250,7 @@
     "latitude": 48.8219907,
     "longitude": 2.3377922,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1610,7 +1616,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large public park with open gates you walk straight through — no ticket, no security, no line."
+    "queue_basis": "A large public park with open gates you walk straight through — no ticket, no security, no line.",
+    "anchors": null
   },
   {
     "name": "Villa Santos-Dumont",
@@ -1618,7 +1625,7 @@
     "latitude": 48.8333588,
     "longitude": 2.3046557,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1698,7 +1705,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private residential lane admired from the street; there is no door or ticket and thus no queue."
+    "queue_basis": "A private residential lane admired from the street; there is no door or ticket and thus no queue.",
+    "anchors": null
   },
   {
     "name": "Butte-aux-Cailles",
@@ -1734,6 +1742,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open hilltop neighbourhood of cobbled streets and murals with no door or gate to enter, so there is nothing to queue for."
+    "queue_basis": "An open hilltop neighbourhood of cobbled streets and murals with no door or gate to enter, so there is nothing to queue for.",
+    "anchors": null
   }
 ]

@@ -56,6 +56,9 @@ ItineraryStop _stop(int n, {required double lat, bool major = false}) => Itinera
   closeText: "And that's Stop $n.",
   fullNarration: major ? _fullText : null,
   fullCloseText: major ? 'And that closes the second story.' : null,
+  // S7.3: the footprint these fixtures assumed (the phone's old 40 m circle) is
+  // now STATED on each stop, as the wire carries it.
+  trigger: const StopTrigger(radiusM: 40),
 );
 
 void main() {
@@ -155,6 +158,7 @@ ItineraryStop _voicedStop(int n, {required double lat}) => ItineraryStop(
   fullNarration: _fullText,
   fullCloseText: 'And that closes the second story.',
   fullCloseAudioUrl: 'https://cdn.example.com/$n-full-close.mp3',
+  trigger: const StopTrigger(radiusM: 40), // S7.3: the footprint, stated
 );
 
 void _s68Tests() {

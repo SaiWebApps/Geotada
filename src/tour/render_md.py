@@ -12,13 +12,16 @@ Pure function on a Script; no Neo4j, no LLM. Used by the
 
 from __future__ import annotations
 
-from .contract import BeatSequence, Script, Sentence
+from collections.abc import Callable
+
+from .contract import Anchor, BeatSequence, Script, Sentence
 from .density import (
     EMPIRICAL_FILL_BAR,
     GREEN_ANCHOR_CANDIDATES_MIN,
     GREEN_CLUSTER_COMPACTNESS_MAX,
     GREEN_FILL_RATIO_MIN,
 )
+from .generation import is_walk_concurrent
 
 
 def render_markdown(
@@ -125,17 +128,125 @@ def _group_by_stop(sentences: tuple[Sentence, ...]) -> dict[int, list[Sentence]]
     return groups
 
 
-def stop_narration_text(script: Script) -> dict[int, str]:
-    """Per-stop spoken narration: each stop's sentences joined in order.
+def _vignette_beat_ids(script: Script) -> frozenset[str]:
+    """The beat ids a script voices that no stop SEATS — the walk-past vignettes,
+    heard on the leg. Derived the way the blueprint's playback freeze tells them
+    apart (`artifact.derive_playback_assignments`: seated ids come off
+    ``selected_pois[].beat_ids``); never a second rule."""
+    seated = {beat_id for poi in script.selected_pois for beat_id in poi.beat_ids}
+    return frozenset(
+        s.source_id for s in script.script if s.source_type == "beat" and s.source_id not in seated
+    )
 
-    Groups ``script.script`` by ``stop_idx`` (cold-open, transit glue, beat
-    sentences and closing all included) and joins each stop's sentence texts
-    with a single space — the text that becomes one audio file per stop (M0b
-    discards this today; Phase 1 wires it to TTS). Pure: no DB, no audio.
-    Empty script → ``{}``.
+
+def _partition_by_stop(script: Script) -> dict[int, tuple[list[Sentence], list[Sentence]]]:
+    """Per stop: (the LEG sentences — spoken on the walk INTO the stop; the STOP
+    sentences — spoken standing there), split by THE one leg-vs-stop rule
+    (`generation.is_walk_concurrent` — the same rule the workbench's leg cards and the
+    blueprint's playback assignments read), in order. Phase 7 S7.7, design §5.6 C7."""
+    vignettes = _vignette_beat_ids(script)
+    out: dict[int, tuple[list[Sentence], list[Sentence]]] = {}
+    for sentence in script.script:
+        legs, stops = out.setdefault(sentence.stop_idx, ([], []))
+        (legs if is_walk_concurrent(sentence, vignettes) else stops).append(sentence)
+    return out
+
+
+AnchorOf = Callable[[Sentence], "Anchor | None"]
+
+
+def _is_close(sentence: Sentence) -> bool:
+    """The stop's GOODBYE — the one line `stop_close_text` travels beside."""
+    return sentence.source_id == "GLUE_CLOSING" and sentence.source_type == "glue"
+
+
+def _anchored_stops(script: Script, anchor_of: AnchorOf | None) -> set[int]:
+    """The stop indices whose telling is CUT INTO CHAPTERS on this day."""
+    if anchor_of is None:
+        return set()
+    return {s.stop_idx for s in script.script if anchor_of(s) is not None}
+
+
+def stop_narration_text(script: Script, *, anchor_of: AnchorOf | None = None) -> dict[int, str]:
+    """Per-stop spoken STORY: each stop's stationary sentences joined in order —
+    the cold-open, the beat sentences and (unless the stop is chaptered) the close;
+    NOT the walking line into it, and NOT the chapters cut out to a reviewed anchor.
+
+    The text that becomes the stop's own audio file, placed at the footprint (Phase 1
+    wired it to TTS; Phase 7 S7.7 took the leg out of it — design §5.6 C7, plan defect 7:
+    the piece used to OPEN with the walk the person had already walked). The leg's
+    sentences are `stop_leg_text`. ``anchor_of`` (S7.7 B, design §5.6 "segments") names
+    the reviewed anchor a sentence is told AT, if any — built by THE placement rule
+    (`placement.anchor_of`) — and such a sentence belongs to `stop_segment_text`, never
+    here.
+
+    W7.11 defect 15 (the blind panel, all eleven): a CHAPTERED stop's story does not carry
+    its GOODBYE. The close used to end the story piece, so a marquee said farewell on
+    arrival and then spoke again at the chapter — "a farewell said at hello" (Julien);
+    "the goodbye is the last thing said at the last place, or it is not said" (Marcus).
+    The close is already its own hash-guarded artifact (`stop_close_text`), and the phone
+    plays it when the last chapter has been told. A stop with NO chapters is untouched.
+
+    Pure: no DB, no audio. A stop left with no story sentence is absent; empty → ``{}``.
     """
-    grouped = _group_by_stop(script.script)
-    return {idx: " ".join(s.text for s in sents) for idx, sents in grouped.items()}
+    chaptered = _anchored_stops(script, anchor_of)
+    out: dict[int, str] = {}
+    for idx, (_legs, stops) in _partition_by_stop(script).items():
+        text = " ".join(
+            s.text
+            for s in stops
+            if (anchor_of is None or anchor_of(s) is None)
+            and not (idx in chaptered and _is_close(s))
+        )
+        if text:
+            out[idx] = text
+    return out
+
+
+def stop_segment_text(
+    script: Script, anchor_of: AnchorOf
+) -> dict[int, tuple[tuple[Anchor, str], ...]]:
+    """Per stop, the CHAPTERS: one entry per reviewed anchor a sentence is told at, in
+    first-appearance order, each the anchor and its sentences joined in SCRIPT order
+    (Phase 7 S7.7 B; design §5.6 "segments"). A stop with no anchored sentence is absent —
+    its story stays whole.
+
+    Every sentence of the stop is considered, not only the stationary ones: an anchored
+    sentence belongs AT its anchor wherever the leg-vs-stop rule would otherwise put it
+    (W7.11 defect 17), so the walk this reads and the leg `stop_leg_text` builds partition
+    the stop's sentences between them with nothing lost and nothing said twice."""
+    out: dict[int, dict[str, tuple[Anchor, list[str]]]] = {}
+    for sentence in script.script:
+        anchor = anchor_of(sentence)
+        if anchor is None:
+            continue
+        chapters = out.setdefault(sentence.stop_idx, {})
+        chapters.setdefault(anchor.label, (anchor, []))[1].append(sentence.text)
+    return {
+        idx: tuple((anchor, " ".join(texts)) for anchor, texts in chapters.values())
+        for idx, chapters in out.items()
+    }
+
+
+def stop_leg_text(script: Script, *, anchor_of: AnchorOf | None = None) -> dict[int, str]:
+    """Per-stop spoken LEG: the walk-concurrent sentences INTO the stop — its nav line,
+    a reflection placed on that leg, the walk-past one-liners — joined in order: the
+    stop's LEG piece, voiced as its own file and played on the leg (Phase 7 S7.7).
+    A stop whose leg carries nothing is absent (silence, never an empty piece).
+
+    ``anchor_of`` (W7.11 defect 17): a sentence belonging to a reviewed anchor is told AT
+    that anchor and never on the walk toward it. Aiko, on a real leg piece: "'These facade
+    kings' is wrong twice. *These* points at a facade I cannot see for another ten minutes,
+    and it spends the reveal early." Such a sentence rides `stop_segment_text` instead."""
+    return {
+        idx: text
+        for idx, (legs, _stops) in _partition_by_stop(script).items()
+        if (
+            text := " ".join(
+                s.text for s in legs if anchor_of is None or anchor_of(s) is None
+            )
+        )
+    }
 
 
 def stop_close_text(script: Script) -> dict[int, str]:
@@ -396,4 +507,10 @@ def _quality_hints(
     return hints
 
 
-__all__ = ["render_markdown", "stop_close_text", "stop_narration_text"]
+__all__ = [
+    "render_markdown",
+    "stop_close_text",
+    "stop_leg_text",
+    "stop_narration_text",
+    "stop_segment_text",
+]

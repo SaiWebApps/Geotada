@@ -48,6 +48,9 @@ ItineraryStop _stop(int n, {required double lat}) => ItineraryStop(
   audioUrl: 'https://cdn.example.com/$n.mp3',
   audioDurationSec: 100,
   dwellSeconds: 300,
+  // S7.3: the footprint these fixtures assumed (the phone's old 40 m circle) is
+  // now STATED on each stop, as the wire carries it.
+  trigger: const StopTrigger(radiusM: 40),
 );
 
 const _question =
@@ -87,6 +90,12 @@ void main() {
     contingencies: [_questionEntry(), _fabricEntry()],
     dayStartHhmm: '09:00',
     party: party,
+    // S7.3 (W7.2 R1): the day's placement policy rides the session — the
+    // family piece starts at the first standstill inside the footprint.
+    placement: PlacementPolicy(
+      startAt: party == 'family' ? 'standstill' : 'arrival',
+      ownPlaceM: 60,
+    ),
   );
 
   // A person walking north from 600 m south of Stop 0, 45 m every 30 s.
@@ -111,7 +120,12 @@ void main() {
         'leg — audit F :282\'s C7 ("audio overlaps the walking") holds for '
         'stories, not for announcements; it is said once at the seam after the '
         'settling period', () async {
-      final w = await walking();
+      // A FAMILY day (S7.3, W7.2 R1): the stop's piece ARMS at the footprint
+      // edge and starts at the first standstill, so the seam at Stop 0 is a
+      // standstill with the first piece not yet begun — the question goes
+      // first, then the story. (Before S7.3 the fixture stood 25 m out of a
+      // 10 m auto-play circle to get the same seam; that circle is gone.)
+      final w = await walking(party: 'family');
       var lat = base - 600 * _degPerMeterLat;
       expect(w.service.applyContingency('v1-q'), isTrue);
       expect(w.service.pendingQuestion, _question); // on screen at once
@@ -129,8 +143,8 @@ void main() {
       w.clock.tick(45);
       w.service.tick();
       expect(w.voice.said, isEmpty, reason: 'still on a leg is not a stop');
-      // Arrive at Stop 0's circle (25 m out: inside 40 m, outside the 10 m
-      // auto-play) with the first piece not begun. Still 20 s: too soon.
+      // Arrive inside Stop 0's footprint (25 m in, a 40 m place): the family
+      // piece is armed, not begun. Still 20 s: too soon.
       w.gps.simulatePosition(base - 25 * _degPerMeterLat, 2.35);
       w.clock.tick(20);
       w.service.tick();
@@ -211,6 +225,12 @@ void main() {
         'said once; one touch restores the voice', () async {
       final w = await walking(party: 'family');
       w.gps.simulatePosition(base, 2.35);
+      // S7.3 (W7.2 R1): on the family day the piece starts at the first
+      // STANDSTILL inside the footprint, not at the edge — stand still for the
+      // settling period so the piece plays, then let it end on its own.
+      w.clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      w.service.tick();
+      expect(w.voice.isPlaying, isTrue, reason: 'the standstill starts the family piece');
       w.voice.simulateComplete();
       w.service.pauseTour();
       w.clock.tick(60);

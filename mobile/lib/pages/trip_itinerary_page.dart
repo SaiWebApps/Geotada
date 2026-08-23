@@ -268,23 +268,18 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
           }
 
           // Per-stop narration (Step 1.4d): poll + cache by the ItineraryItem
-          // id, falling back to the legacy per-beat id only when a stop has no
-          // stopId (old data) — same key playback uses, so the cache hits.
-          final audioKey = stop.stopId ?? stop.beatId;
+          // id — the same key playback uses, so the cache hits. A stop with no
+          // item id has nothing to poll (a rest, or data older than the per-stop
+          // path: the per-beat poll was deleted at Phase 7 S7.10).
+          final audioKey = stop.stopId;
           if (audioKey == null) {
-            // A stop with no story (a rest) has no audio to wait for.
             ready++;
             continue;
           }
-          final status = stop.stopId != null
-              ? await audioService.checkStopAudioStatus(
-                  TripService.baseUrl,
-                  stop.stopId!,
-                )
-              : await audioService.checkAudioStatus(
-                  TripService.baseUrl,
-                  stop.beatId!,
-                );
+          final status = await audioService.checkStopAudioStatus(
+            TripService.baseUrl,
+            audioKey,
+          );
 
           if (status != null && status['has_audio'] == true) {
             final url = status['audio_url'] as String;
@@ -476,16 +471,22 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
     final playback = context.read<TourPlaybackService>();
     final tripService = context.read<TripService>();
     final authService = context.read<AuthService>();
+    // Phase 7 S7.7 (plan defect 9's class): the SESSION's stops are the one source
+    // that carries every placed and voiced field — the trigger geometry, the leg
+    // piece, the closes' files — overlaid live by the server at every GET. The
+    // walk starts from them; the stops on hand are the offline fallback only.
+    var stops = _stops;
     try {
       final session = await tripService.fetchSession(
         widget.trip.tripId,
         authService.accessToken!,
       );
       playback.holdSession(session);
+      if (session.stops.isNotEmpty) stops = session.stops;
     } catch (_) {
       // Offline or not yet composed: the walk still starts from the stops.
     }
-    final started = await playback.startTour(_stops);
+    final started = await playback.startTour(stops);
     if (!mounted) return;
     if (!started) {
       ScaffoldMessenger.of(context).showSnackBar(

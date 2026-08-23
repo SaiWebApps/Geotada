@@ -755,6 +755,9 @@ def summarise_route(
     planned_visit_seconds: Mapping[str, int] | None = None,
     elapsed_shortfall_seconds: int = 0,
     costing_options_override: dict | None = None,
+    planned_queue_seconds: Mapping[str, int] | None = None,
+    visit_goes_inside: Mapping[str, bool] | None = None,
+    planned_outside_seconds: Mapping[str, int] | None = None,
 ) -> Route:
     """Build a Route from an ordered POI list.
 
@@ -780,10 +783,17 @@ def summarise_route(
     with a copy-and-update per piece — four chances for the rebuilt tour to
     quietly stop being the tour the traveller chose.
 
-    ``planned_visit_seconds`` is the newest of them and the one that cannot be
-    recomputed at all: it is priced against a CorpusSnapshot and this function
-    has none. A rebuild that omits it silently collapses every stop to the length
-    of its own narration.
+    ``planned_visit_seconds`` is the one that cannot be recomputed at all: it is
+    priced against a CorpusSnapshot and this function has none. A rebuild that
+    omits it silently collapses every stop to the length of its own narration.
+    ``planned_queue_seconds`` (Phase 7 S7.5, the seventh extra) is priced at the
+    same one site in selection — the seconds of line at each stop's arrival hour
+    — and rides the same way: the audio placement rule reads it to decide which
+    stop's piece waits for the line, so a rebuild that omits it silently unqueues
+    every stop. Empty is the identity every other caller gets. ``visit_goes_inside``
+    and ``planned_outside_seconds`` (S7.6, the eighth and ninth) are the door and
+    the seconds before it, from the same site — a rebuild without them has no
+    door anywhere, and a marquee's piece runs on under the roof.
     """
     ordered = tuple(pois)
     transits: list[TransitSegment] = []
@@ -844,4 +854,11 @@ def summarise_route(
             planned_visit_seconds if planned_visit_seconds is not None else {}
         ),
         elapsed_shortfall_seconds=elapsed_shortfall_seconds,
+        planned_queue_seconds=(
+            planned_queue_seconds if planned_queue_seconds is not None else {}
+        ),
+        visit_goes_inside=visit_goes_inside if visit_goes_inside is not None else {},
+        planned_outside_seconds=(
+            planned_outside_seconds if planned_outside_seconds is not None else {}
+        ),
     )

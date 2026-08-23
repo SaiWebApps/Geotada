@@ -5,7 +5,7 @@
     "latitude": 48.862817,
     "longitude": 2.342836,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -405,6 +405,7 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A ticketed contemporary-art museum with a bag check and ticket scan at a single entrance under the dome; the line moves but bunches midday, so peak runs about 15 minutes and off-peak near opening only a few."
+    "queue_basis": "A ticketed contemporary-art museum with a bag check and ticket scan at a single entrance under the dome; the line moves but bunches midday, so peak runs about 15 minutes and off-peak near opening only a few.",
+    "anchors": null
   }
 ]

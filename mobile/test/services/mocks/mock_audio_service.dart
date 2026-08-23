@@ -1,13 +1,36 @@
+import 'dart:async';
+
 import 'package:ondoway/services/providers.dart';
 
 /// Mock AudioService for unit testing.
 /// Tracks play calls without actual audio playback.
 class MockAudioService extends AudioProvider {
+  /// S7.9: the platform's interruptions, simulated (a call, a nav prompt).
+  final StreamController<AudioInterruptionKind> _interruptions =
+      StreamController<AudioInterruptionKind>.broadcast(sync: true);
+
+  @override
+  Stream<AudioInterruptionKind> get interruptions => _interruptions.stream;
+
+  /// Simulate what the audio session would report. A pause-kind interruption
+  /// also pauses the player, as iOS does before telling the app.
+  void simulateInterruption(AudioInterruptionKind kind) {
+    if (kind == AudioInterruptionKind.pauseBegin && _isPlaying) {
+      _isPlaying = false;
+      notifyListeners();
+    }
+    _interruptions.add(kind);
+  }
+
   String? _currentBeatId;
   bool _isPlaying = false;
   bool _isDeeperDive = false;
   bool _isCompleted = false;
   int _playCount = 0;
+
+  /// Every id handed to [play], in order — so a test can count REPLAYS of one
+  /// piece (W7.13: a told chapter replays by tap, never by itself).
+  final List<String> playedIds = [];
 
   @override
   String? get currentBeatId => _currentBeatId;
@@ -22,6 +45,7 @@ class MockAudioService extends AudioProvider {
   @override
   void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
     if (_currentBeatId == beatId && _isPlaying) return;
+    playedIds.add(beatId);
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
     _isPlaying = true;
@@ -51,6 +75,19 @@ class MockAudioService extends AudioProvider {
     _currentBeatId = null;
     _isDeeperDive = false;
     notifyListeners();
+  }
+
+  /// S7.6: where the last seek landed (the keep-listening tap), for tests.
+  Duration? lastSeek;
+
+  /// S7.8 (W7.2 R6): the length the PLAYER knows for the loaded file — a test
+  /// sets it to stand in for the real player's decoded duration. Zero = unknown.
+  @override
+  Duration duration = Duration.zero;
+
+  @override
+  Future<void> seek(Duration position) async {
+    lastSeek = position;
   }
 
   /// Simulate audio completing playback — the piece reached its END on its own

@@ -44,6 +44,9 @@ ItineraryStop _stop(
   audioUrl: 'https://cdn.example.com/$n.mp3',
   audioDurationSec: audioSeconds,
   dwellSeconds: dwellSeconds,
+  // S7.3: the footprint these fixtures assumed (the phone's old 40 m circle) is
+  // now STATED on each stop, as the wire carries it; the phone draws no circle.
+  trigger: const StopTrigger(radiusM: 40),
 );
 
 class _Clock {
@@ -73,6 +76,9 @@ void main() {
     retimeToleranceSeconds: 180,
     walkingPaceKmh: 3.0,
     dayStartHhmm: '09:00',
+    // S7.3: the day's own-place radius — the start square's width — comes off
+    // the wire (the server's one number), never a circle of the phone's.
+    placement: const PlacementPolicy(ownPlaceM: 60),
   );
 
   group('S5.10 the phone learns (design §4.1)', () {
@@ -232,8 +238,9 @@ void main() {
       expect(service.wallElapsedSeconds, 360);
       expect(service.tourElapsedSeconds, 0, reason: 'not the tour yet');
       expect(service.tourClockRunning, isFalse);
-      // The first step off the square starts it.
-      location.simulatePosition(square + 60 * _degPerMeterLat, 2.35);
+      // The first step off the square starts it — the square's width is the
+      // day's own-place radius from the wire (S7.3: 60 m), so 80 m is off it.
+      location.simulatePosition(square + 80 * _degPerMeterLat, 2.35);
       expect(service.tourClockRunning, isTrue);
       clock.tick(600);
       expect(service.tourElapsedSeconds, 600);

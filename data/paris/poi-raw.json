@@ -48,7 +48,8 @@
         "placement": "Northwest leg entrance area on Quai Branly",
         "trigger_radius_reasoning": "Expanded to 30m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The four feet span a 125 m square; under the tower is at the tower."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -58,7 +59,7 @@
     "importance_tier": 5,
     "latitude": 48.858093,
     "longitude": 2.294694,
-    "trigger_radius": 30,
+    "trigger_radius": 80,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -176,7 +177,8 @@
         "placement": "Pyramid entrance in Cour Napoleon",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The Cour Napoleon around the pyramid is 150 m across and the Cour Carree another 120 m east of it: a walker at the Louvre is anywhere in those courts (Greta, Aiko)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -186,7 +188,7 @@
     "importance_tier": 5,
     "latitude": 48.8609,
     "longitude": 2.3358,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -298,7 +300,8 @@
         "placement": "West facade main entrance on Parvis",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The pin sits in the building; the parvis where a walker stands runs about 100 m west of the facade, so the footprint reaches it (Camille's pin check: the pin itself stays where the corpus put it — a carried data row)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -308,7 +311,7 @@
     "importance_tier": 5,
     "latitude": 48.852966,
     "longitude": 2.349902,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -332,7 +335,54 @@
         "17:00"
       ]
     ],
-    "queue_basis": "Since the post-fire reopening entry is managed through a controlled single access point with high demand, forming a substantial line to walk into a free cathedral that eases only at opening and near closing."
+    "queue_basis": "Since the post-fire reopening entry is managed through a controlled single access point with high demand, forming a substantial line to walk into a free cathedral that eases only at opening and near closing.",
+    "anchors": [
+      {
+        "label": "The west front",
+        "sub_locations": [
+          "parvis",
+          "kilometre-zero",
+          "facade",
+          "central-portal",
+          "side-portals",
+          "facade-side-portals",
+          "right-portal",
+          "facade-gallery-of-kings",
+          "towers",
+          "left-tower"
+        ],
+        "lat": 48.85325,
+        "lng": 2.34875,
+        "radius_m": 80.0,
+        "indoor": false,
+        "basis": "The whole facade — rose window, gallery and the row of kings together — is only visible from well back: a person STANDS on the parvis paving, sixty to eighty metres out, near the kilometre-zero star, and walks backwards until it fits (W7.11, 11/11: 45 m put the listener under the tympanum, craning). Eighty metres covers the paving people actually stand on and still stops short of the apse."
+      },
+      {
+        "label": "Inside",
+        "sub_locations": [
+          "interior-bell-tower-vestibule",
+          "interior-nave",
+          "interior-treasury",
+          "choir"
+        ],
+        "lat": 48.853,
+        "lng": 2.34975,
+        "radius_m": 60.0,
+        "indoor": true,
+        "basis": "Under the roof: the nave runs about sixty metres east from the door to the choir; GPS is unreliable inside, so this chapter is offered on the screen and never starts itself."
+      },
+      {
+        "label": "The east end",
+        "sub_locations": [
+          "exterior-east-end-square-jean-xxiii"
+        ],
+        "lat": 48.85265,
+        "lng": 2.35095,
+        "radius_m": 55.0,
+        "indoor": false,
+        "basis": "Square Jean-XXIII is the strip you STAND in to look back along the flying buttresses; the view needs the length of the garden, not its gate. Fifty-five metres covers the walk without reaching the parvis (W7.11 defect 16)."
+      }
+    ]
   },
   {
     "name": "Arc de Triomphe",
@@ -380,7 +430,8 @@
         "placement": "Centre of Place Charles de Gaulle roundabout — pedestrian tunnel entrance",
         "trigger_radius_reasoning": "Expanded to 30m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The arch stands in the Etoile roundabout; the pavement ring and the underpass mouths are fifty metres out."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -390,7 +441,7 @@
     "importance_tier": 5,
     "latitude": 48.873756,
     "longitude": 2.294946,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=30m or area keywords in name/description)",
     "city_name": "paris",
@@ -505,7 +556,8 @@
         "placement": "Front steps at Parvis du Sacre-Coeur",
         "trigger_radius_reasoning": "Expanded to 30m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The parvis and the top of the stairs in front of the facade."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -515,7 +567,7 @@
     "importance_tier": 5,
     "latitude": 48.886452,
     "longitude": 2.343121,
-    "trigger_radius": 30,
+    "trigger_radius": 50,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -625,7 +677,8 @@
         "placement": "Main entrance on Rue de la Legion d'Honneur",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The forecourt between the river quay and the door is about 60 m deep; Rosemary's bench sits on it."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -635,7 +688,7 @@
     "importance_tier": 5,
     "latitude": 48.859962,
     "longitude": 2.326561,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -903,7 +956,8 @@
         "placement": "Entrance via Cour de Mai on Boulevard du Palais",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Inside the Palais de Justice enclosure: the courtyard in front of the chapel door, reached through the security line — the line is the place."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -913,7 +967,7 @@
     "importance_tier": 5,
     "latitude": 48.855358,
     "longitude": 2.34483,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1028,7 +1082,8 @@
         "placement": "Front steps facing Place du Pantheon",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The Place du Pantheon in front of the portico."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1038,7 +1093,7 @@
     "importance_tier": 4,
     "latitude": 48.846217,
     "longitude": 2.34604,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1155,7 +1210,8 @@
         "placement": "Front steps on Place de l'Opera",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The steps and the Place de l'Opera front."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1165,7 +1221,7 @@
     "importance_tier": 5,
     "latitude": 48.872536,
     "longitude": 2.331355,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1279,7 +1335,8 @@
         "placement": "Main entrance on piazza, Rue Beaubourg side",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The sloping piazza in front of the building is 60 m deep."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1289,7 +1346,7 @@
     "importance_tier": 4,
     "latitude": 48.860657,
     "longitude": 2.352095,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1401,7 +1458,8 @@
         "placement": "North entrance on Esplanade des Invalides",
         "trigger_radius_reasoning": "Expanded to 30m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The cour d'honneur and the north front; the esplanade beyond is its own walk."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1411,7 +1469,7 @@
     "importance_tier": 4,
     "latitude": 48.856892,
     "longitude": 2.3125,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1527,7 +1585,8 @@
         "placement": "Centre of square near Luxor Obelisk",
         "trigger_radius_reasoning": "Expanded to 50m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The square is 360 m by 210 m; Theo's three positions on it span the middle."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1537,7 +1596,7 @@
     "importance_tier": 5,
     "latitude": 48.865608,
     "longitude": 2.321038,
-    "trigger_radius": 50,
+    "trigger_radius": 120,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=50m or area keywords in name/description)",
     "city_name": "paris",
@@ -1605,7 +1664,8 @@
         "placement": "Terrace overlooking Eiffel Tower",
         "trigger_radius_reasoning": "Expanded to 50m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The esplanade between the two wings is 150 m wide; the view of the tower is the whole of it."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1615,7 +1675,7 @@
     "importance_tier": 5,
     "latitude": 48.862725,
     "longitude": 2.287592,
-    "trigger_radius": 50,
+    "trigger_radius": 80,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1688,7 +1748,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Fully reopened June 2025 after a four-year, EUR466M restoration (free summer access under the glass roof).",
         "source": "https://www.dezeen.com/2025/06/19/grand-palais-fully-reopens-chatillon-architectes/"
-      }
+      },
+      "trigger_radius_basis": "A 240 m nave; the avenue Winston-Churchill front and its steps."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1698,7 +1759,7 @@
     "importance_tier": 5,
     "latitude": 48.866096,
     "longitude": 2.312156,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1808,7 +1869,8 @@
         "placement": "Main entrance on Avenue Winston Churchill",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The entrance portico on the avenue and the garden court behind it."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1818,7 +1880,7 @@
     "importance_tier": 4,
     "latitude": 48.86595,
     "longitude": 2.3143,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -1934,7 +1996,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Cabaret operating; windmill blades fell 25 Apr 2024 and were restored by early July 2024 ahead of the Olympic torch relay.",
         "source": "https://www.cbsnews.com/news/moulin-rouge-windmill-sails-restored-collapse-paris-olympics-montmartre/"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -1944,7 +2007,7 @@
     "importance_tier": 5,
     "latitude": 48.884129,
     "longitude": 2.3324,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2013,7 +2076,8 @@
         "placement": "Garden entrance on Rue de Montpensier",
         "trigger_radius_reasoning": "Expanded to 30m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The garden is 275 m by 100 m behind the Cour d'Honneur; Greta's columns, Aiko's no. 177 and the three galleries are all inside that footprint."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2023,7 +2087,7 @@
     "importance_tier": 5,
     "latitude": 48.8637,
     "longitude": 2.3372,
-    "trigger_radius": 30,
+    "trigger_radius": 100,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2093,7 +2157,8 @@
         "placement": "Centre of square",
         "trigger_radius_reasoning": "Expanded to 40m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "A 140 m square: the arcade runs seventy metres from the central statue, and stepping under the arcade is being there (Nadia, W7.2 R1)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2103,7 +2168,7 @@
     "importance_tier": 5,
     "latitude": 48.8555,
     "longitude": 2.3656,
-    "trigger_radius": 40,
+    "trigger_radius": 70,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)",
     "city_name": "paris",
@@ -2171,7 +2236,8 @@
         "placement": "South bank end near Place Dauphine",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The bridge is 238 m long across both arms of the river: its half-length from the Vert-Galant point is 120 m (Theo, Fiona & Dev, Sofia)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2181,7 +2247,7 @@
     "importance_tier": 5,
     "latitude": 48.85675,
     "longitude": 2.341033,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2245,7 +2311,8 @@
         "placement": "South bank end near Invalides",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: bridge"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2255,7 +2322,7 @@
     "importance_tier": 3,
     "latitude": 48.8637,
     "longitude": 2.3138,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2323,7 +2390,8 @@
         "placement": "Front facade on Place de l'Hotel de Ville",
         "trigger_radius_reasoning": "Expanded to 30m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The parvis in front of the facade is 80 m deep; Paulo stands on it."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2333,7 +2401,7 @@
     "importance_tier": 5,
     "latitude": 48.856373,
     "longitude": 2.35221,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2437,7 +2505,8 @@
         "placement": "Centre near July Column",
         "trigger_radius_reasoning": "Expanded to 40m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "A 200 m roundabout-square around the July Column."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2447,7 +2516,7 @@
     "importance_tier": 3,
     "latitude": 48.8532,
     "longitude": 2.3691,
-    "trigger_radius": 40,
+    "trigger_radius": 80,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=40m or area keywords in name/description)",
     "city_name": "paris",
@@ -2516,7 +2585,8 @@
         "placement": "Main entrance near Place de la Concorde",
         "trigger_radius_reasoning": "Expanded to 100m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The garden runs about 900 m gate to gate and the pin sits mid-garden: at the old 100 the Concorde gate stood 325 m outside the circle, so entering there played nothing for a five-minute walk (W7.13, Camille). 300 reaches the central alleys and both terraces — the Luxembourg's 390 is the precedent scale for a royal garden; the gates themselves are the carried polygon row."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2526,7 +2596,7 @@
     "importance_tier": 5,
     "latitude": 48.8636,
     "longitude": 2.3274,
-    "trigger_radius": 100,
+    "trigger_radius": 300,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)",
     "city_name": "paris",
@@ -2638,7 +2708,8 @@
         "placement": "Entrance at 2 Boulevard du Palais",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "The quay facade is 100 m long; the entrance on the boulevard du Palais and the Seine-side view of the towers both count as being there."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2648,7 +2719,7 @@
     "importance_tier": 5,
     "latitude": 48.8558,
     "longitude": 2.3458,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2763,7 +2834,8 @@
         "placement": "Nominatim result for: 126 Rue de l'Universite, 75007 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 126, Rue de l'Université, Quartier des Invalides, Paris 7e Arrondissement, Paris, Île-de-France, Fra. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2773,7 +2845,7 @@
     "importance_tier": 3,
     "latitude": 48.860862,
     "longitude": 2.318389,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -2839,7 +2911,8 @@
         "placement": "Nominatim result for: Quai Francois Mitterrand, 75001 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Quai François Mitterrand, Quartier Saint-Germain-l'Auxerrois, Paris 1er Arrondissement, Paris, Île-d. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2849,7 +2922,7 @@
     "importance_tier": 1,
     "latitude": 48.859382,
     "longitude": 2.336574,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -2915,7 +2988,8 @@
         "placement": "Nominatim result for: Cour du Commerce-Saint-Andre, 75006 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Cour du Commerce Saint-André, Quartier de la Monnaie, Paris 6e Arrondissement, Paris, Île-de-France,. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: arcade"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -2925,7 +2999,7 @@
     "importance_tier": 1,
     "latitude": 48.85253,
     "longitude": 2.339298,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -2992,7 +3066,8 @@
         "placement": "Nominatim result for: 35 Rue de Picpus, 75012 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 35, Rue de Picpus, Quartier de Picpus, Paris 12e Arrondissement, Paris, Île-de-France, France métrop. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3002,7 +3077,7 @@
     "importance_tier": 1,
     "latitude": 48.844232,
     "longitude": 2.396359,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -3227,7 +3302,8 @@
         "placement": "Main entrance on Boulevard de Menilmontant",
         "trigger_radius_reasoning": "Expanded to 100m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Forty-four hectares inside walls; the 2026-06-16 area fix sized it at the setting cap and Julien's wall, the columbarium and the memorials are all inside it — kept (the walls themselves are a carried polygon row)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3589,7 +3665,8 @@
         "placement": "Nominatim result for: 23 Rue de Sevigne, 75003 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Rue de Sévigné, Quartier Saint-Gervais, Paris 4e Arrondissement, Paris, Île-de-France, France métrop. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3599,7 +3676,7 @@
     "importance_tier": 3,
     "latitude": 48.855076,
     "longitude": 2.361661,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -3709,7 +3786,8 @@
         "placement": "Nominatim result for: Jardin des Tuileries, 75001 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Jardin des Tuileries, Terrasse du Bord de l'Eau, Quartier Saint-Germain-l'Auxerrois, Paris 1er Arron. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "A pavilion at the Tuileries' west end: the door on the terrace (Rosemary's day)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3719,7 +3797,7 @@
     "importance_tier": 4,
     "latitude": 48.862813,
     "longitude": 2.325314,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -3828,7 +3906,8 @@
         "placement": "Nominatim result for: 77 Rue de Varenne, 75007 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Musée Rodin, 77, Rue de Varenne, Quartier des Invalides, Paris 7e Arrondissement, Paris, Île-de-Fran. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3838,7 +3917,7 @@
     "importance_tier": 3,
     "latitude": 48.854747,
     "longitude": 2.315867,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -3948,7 +4027,8 @@
         "placement": "Nominatim result for: 5 Rue de Thorigny, 75003 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Musée national Picasso-Paris, 5, Rue de Thorigny, Quartier des Archives, Paris 3e Arrondissement, Pa. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3958,7 +4038,7 @@
     "importance_tier": 3,
     "latitude": 48.85987,
     "longitude": 2.362115,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -4070,7 +4150,8 @@
         "placement": "Nominatim result for: 28 Rue du Sommerard, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 28, Rue du Sommerard, Quartier de la Sorbonne, Paris 5e Arrondissement, Paris, Île-de-France, France. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4080,7 +4161,7 @@
     "importance_tier": 3,
     "latitude": 48.850474,
     "longitude": 2.343391,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -4187,7 +4268,8 @@
         "placement": "Nominatim result for: 13 Avenue du President Wilson, 75016 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 13, Avenue du Président Wilson, Chaillot, Paris 16e Arrondissement, Paris, Île-de-France, France mét. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4197,7 +4279,7 @@
     "importance_tier": 2,
     "latitude": 48.864631,
     "longitude": 2.29647,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -4309,7 +4391,8 @@
         "placement": "Nominatim result for: 17 Rue Geoffroy l'Asnier, 75004 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Rue Geoffroy l'Asnier, Quartier Saint-Gervais, Paris 4e Arrondissement, Paris, Île-de-France, France. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4319,7 +4402,7 @@
     "importance_tier": 3,
     "latitude": 48.854985,
     "longitude": 2.356636,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -4428,7 +4511,8 @@
         "placement": "Nominatim result for: 16 Rue de la Faisanderie, 75016 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 16, Rue de la Faisanderie, Quartier de la Porte-Dauphine, Paris 16e Arrondissement, Paris, Île-de-Fr. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4438,7 +4522,7 @@
     "importance_tier": 1,
     "latitude": 48.870158,
     "longitude": 2.276777,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -4510,7 +4594,8 @@
         "placement": "Nominatim result for: 53 Avenue des Terroirs de France, 75012 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Pavillons de Bercy, 53, Avenue des Terroirs de France, Quartier de Bercy, Paris 12e Arrondissement, . May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4520,7 +4605,7 @@
     "importance_tier": 1,
     "latitude": 48.832766,
     "longitude": 2.389338,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -4593,7 +4678,8 @@
         "placement": "Nominatim result for: 30 Avenue Corentin Cariou, 75019 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Cité des Sciences et de l'Industrie, 30, Avenue Corentin Cariou, Quartier du Pont-de-Flandre, Paris . May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4603,7 +4689,7 @@
     "importance_tier": 4,
     "latitude": 48.895752,
     "longitude": 2.387976,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -4714,7 +4800,8 @@
         "placement": "Nominatim result for: 60 Rue Reaumur, 75003 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Musée des Arts et Métiers, 60, Rue Réaumur, Quartier des Arts-et-Métiers, Paris 3e Arrondissement, P. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4724,7 +4811,7 @@
     "importance_tier": 3,
     "latitude": 48.866098,
     "longitude": 2.355414,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -4835,7 +4922,8 @@
         "placement": "Nominatim result for: 25 Rue du Docteur Roux, 75015 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Musée Pasteur, 25, Rue du Docteur Roux, Quartier Necker, Paris 15e Arrondissement, Paris, Île-de-Fra. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4845,7 +4933,7 @@
     "importance_tier": 1,
     "latitude": 48.840383,
     "longitude": 2.311366,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -4917,7 +5005,8 @@
         "placement": "Nominatim result for: 8 Avenue du Mahatma Gandhi, 75116 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Fondation Louis Vuitton, 8, Avenue du Mahatma Gandhi, Quartier de la Porte-Dauphine, Paris 16e Arron. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -4927,7 +5016,7 @@
     "importance_tier": 3,
     "latitude": 48.87665,
     "longitude": 2.263338,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5038,7 +5127,8 @@
         "placement": "Nominatim result for: Quai Francois Mauriac, 75013 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Quai François Mauriac, Quartier de la Gare, Paris 13e Arrondissement, Paris, Île-de-France, France m. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5048,7 +5138,7 @@
     "importance_tier": 3,
     "latitude": 48.834283,
     "longitude": 2.377128,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5116,7 +5206,8 @@
         "placement": "Nominatim result for: 3 Place Saint-Germain des Pres, 75006 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Église Saint-Germain des Prés, 3, Place Saint-Germain des Prés, Quartier de Saint-Germain-des-Prés, . May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5126,7 +5217,7 @@
     "importance_tier": 3,
     "latitude": 48.853968,
     "longitude": 2.334518,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5236,7 +5327,8 @@
         "placement": "Nominatim result for: 2 Rue Palatine, 75006 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Église Saint-Sulpice, 2, Rue Palatine, Quartier de l'Odéon, Paris 6e Arrondissement, Paris, Île-de-F. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5246,7 +5338,7 @@
     "importance_tier": 3,
     "latitude": 48.850987,
     "longitude": 2.33487,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5354,7 +5446,8 @@
         "placement": "Nominatim result for: Place Sainte-Genevieve, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Place Sainte-Geneviève, Quartier de la Sorbonne, Paris 5e Arrondissement, Paris, Île-de-France, Fran. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5364,7 +5457,7 @@
     "importance_tier": 2,
     "latitude": 48.8466,
     "longitude": 2.347344,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5482,7 +5575,8 @@
         "placement": "Front facade facing Les Halles garden",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5492,7 +5586,7 @@
     "importance_tier": 3,
     "latitude": 48.863,
     "longitude": 2.3456,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5602,7 +5696,8 @@
         "placement": "Nominatim result for: Place de la Madeleine, 75008 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Place de la Madeleine, Quartier de la Madeleine, Paris 8e Arrondissement, Paris, Île-de-France, Fran. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5612,7 +5707,7 @@
     "importance_tier": 3,
     "latitude": 48.870202,
     "longitude": 2.325391,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5679,7 +5774,8 @@
         "placement": "Nominatim result for: 2bis Place du Puits de l'Ermite, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Grande Mosquée de Paris, 2 bis, Place du Puits de l'Ermite, Quartier du Jardin des Plantes, Paris 5e. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5689,7 +5785,7 @@
     "importance_tier": 2,
     "latitude": 48.842071,
     "longitude": 2.355103,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5762,7 +5858,8 @@
         "placement": "Nominatim result for: 28 Boulevard des Capucines, 75009 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 28, Boulevard des Capucines, Quartier de la Chaussée-d'Antin, Paris 9e Arrondissement, Paris, Île-de. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5772,7 +5869,7 @@
     "importance_tier": 3,
     "latitude": 48.870144,
     "longitude": 2.328372,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5839,7 +5936,8 @@
         "placement": "Nominatim result for: 50 Boulevard Voltaire, 75011 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 50, Boulevard Voltaire, Quartier Saint-Ambroise, Paris 11e Arrondissement, Paris, Île-de-France, Fra. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5849,7 +5947,7 @@
     "importance_tier": 3,
     "latitude": 48.863166,
     "longitude": 2.370809,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -5914,7 +6012,8 @@
         "placement": "Nominatim result for: 5 Rue de la Huchette, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Caveau de la Huchette, 5, Rue de la Huchette, Quartier de la Sorbonne, Paris 5e Arrondissement, Pari. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -5924,7 +6023,7 @@
     "importance_tier": 1,
     "latitude": 48.852787,
     "longitude": 2.346298,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -5991,7 +6090,8 @@
         "placement": "Nominatim result for: 39 Rue de Bretagne, 75003 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Les Enfants du Marché, 39, Rue de Bretagne, Quartier des Enfants-Rouges, Paris 3e Arrondissement, Pa. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: market"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6001,7 +6101,7 @@
     "importance_tier": 2,
     "latitude": 48.862792,
     "longitude": 2.361978,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -6144,7 +6244,8 @@
         "placement": "Nominatim result for: 51 Rue Montorgueil, 75002 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Stohrer, 51, Rue Montorgueil, Quartier du Mail, Paris 2e Arrondissement, Paris, Île-de-France, Franc. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6154,7 +6255,7 @@
     "importance_tier": 1,
     "latitude": 48.865249,
     "longitude": 2.346817,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -6345,7 +6446,8 @@
         "placement": "Nominatim result for: 29-31 Rue Saint-Louis en l'Ile, 75004 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Rue Saint-Louis en l'Île, Quartier Les Îles, Paris 4e Arrondissement, Paris, Île-de-France, France m. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6355,7 +6457,7 @@
     "importance_tier": 1,
     "latitude": 48.851111,
     "longitude": 2.358565,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -6460,7 +6562,8 @@
         "placement": "Nominatim result for: 37 Rue de la Bucherie, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Shakespeare and Company, 37, Rue de la Bûcherie, Quartier de la Sorbonne, Paris 5e Arrondissement, P. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6470,7 +6573,7 @@
     "importance_tier": 4,
     "latitude": 48.852575,
     "longitude": 2.347112,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -6586,7 +6689,8 @@
         "placement": "Nominatim result for: 15 Rue Lepic, 75018 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 15, Rue Lepic, Quartier des Grandes-Carrières, Paris 18e Arrondissement, Paris, Île-de-France, Franc. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6596,7 +6700,7 @@
     "importance_tier": 2,
     "latitude": 48.884899,
     "longitude": 2.333703,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -6661,7 +6765,8 @@
         "placement": "Nominatim result for: 172 Boulevard Saint-Germain, 75006 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 172, Boulevard Saint-Germain, Quartier de Saint-Germain-des-Prés, Paris 6e Arrondissement, Paris, Îl. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6671,7 +6776,7 @@
     "importance_tier": 4,
     "latitude": 48.854128,
     "longitude": 2.33255,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -6743,7 +6848,8 @@
         "placement": "Nominatim result for: 2 Rue de l'Abreuvoir, 75018 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 2, Rue de l'Abreuvoir, Quartier des Grandes-Carrières, Paris 18e Arrondissement, Paris, Île-de-Franc. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6753,7 +6859,7 @@
     "importance_tier": 2,
     "latitude": 48.887974,
     "longitude": 2.339609,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -6869,7 +6975,8 @@
         "placement": "Nominatim result for: 171 Boulevard du Montparnasse, 75006 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 171, Boulevard du Montparnasse, Quartier Notre-Dame-des-Champs, Paris 6e Arrondissement, Paris, Île-. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -6879,7 +6986,7 @@
     "importance_tier": 1,
     "latitude": 48.840092,
     "longitude": 2.335973,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -7063,7 +7170,8 @@
         "placement": "Nominatim result for: Pont des Arts, 75006 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Pont des Arts, Quartier de la Monnaie, Paris 6e Arrondissement, Paris, Île-de-France, France métropo. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: bridge"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -7073,7 +7181,7 @@
     "importance_tier": 4,
     "latitude": 48.858408,
     "longitude": 2.337548,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -7140,7 +7248,8 @@
         "placement": "Nominatim result for: Pont de Bir-Hakeim, 75015 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Pont de Bir-Hakeim, Pont de Bir Hakeim, Quartier de la Muette, Paris 16e Arrondissement, Paris, Île-. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: bridge"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -7150,7 +7259,7 @@
     "importance_tier": 3,
     "latitude": 48.855725,
     "longitude": 2.287548,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -7418,7 +7527,8 @@
         "placement": "Nominatim result for: Avenue de Paris, 94300 Vincennes",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Avenue de Paris, Centre Ville, Vincennes, Nogent-sur-Marne, Val-de-Marne, Île-de-France, France métr. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -7428,7 +7538,7 @@
     "importance_tier": 3,
     "latitude": 48.844673,
     "longitude": 2.438338,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -7890,7 +8000,8 @@
         "placement": "Nominatim result for: 51 Rue de Montmorency, 75003 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Maison de Nicolas Flamel, 51, Rue de Montmorency, Quartier Sainte-Avoye, Paris 3e Arrondissement, Pa. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -7900,7 +8011,7 @@
     "importance_tier": 1,
     "latitude": 48.863538,
     "longitude": 2.35314,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -7967,7 +8078,8 @@
         "placement": "Nominatim result for: Rue des Saules, 75018 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Rue des Saules, Quartier de Clignancourt, Paris 18e Arrondissement, Paris, Île-de-France, France mét. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -7977,7 +8089,7 @@
     "importance_tier": 1,
     "latitude": 48.888201,
     "longitude": 2.339765,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -8192,7 +8304,8 @@
         "placement": "Nominatim result for: 29 Avenue Rapp, 75007 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 29, Avenue Rapp, Quartier du Gros-Caillou, Paris 7e Arrondissement, Paris, Île-de-France, France mét. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8202,7 +8315,7 @@
     "importance_tier": 1,
     "latitude": 48.859127,
     "longitude": 2.300876,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -8268,7 +8381,8 @@
         "placement": "Nominatim result for: Quai de l'Horloge, 75001 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Quai de l'Horloge, Quartier Saint-Germain-l'Auxerrois, Paris 1er Arrondissement, Paris, Île-de-Franc. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8278,7 +8392,7 @@
     "importance_tier": 1,
     "latitude": 48.856865,
     "longitude": 2.343955,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -8344,7 +8458,8 @@
         "placement": "Nominatim result for: 29 Rue de la Parcheminerie, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 29, Rue de la Parcheminerie, Quartier de la Sorbonne, Paris 5e Arrondissement, Paris, Île-de-France,. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: street"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8354,7 +8469,7 @@
     "importance_tier": 1,
     "latitude": 48.851794,
     "longitude": 2.344529,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -8422,7 +8537,8 @@
         "placement": "Nominatim result for: 83 Rue Lepic, 75018 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Moulin de la Galette, 83, Rue Lepic, Quartier des Grandes-Carrières, Paris 18e Arrondissement, Paris. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8432,7 +8548,7 @@
     "importance_tier": 2,
     "latitude": 48.887351,
     "longitude": 2.337141,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -8506,7 +8622,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Flagship on Boulevard Haussmann operating; free rooftop terrace open ~10am-8pm as of 2026.",
         "source": "https://haussmann.galerieslafayette.com/en/the-terrace-at-galeries-lafayette/"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: gallery"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8516,7 +8633,7 @@
     "importance_tier": 5,
     "latitude": 48.8739,
     "longitude": 2.3322,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -8629,7 +8746,8 @@
         "placement": "Centre of square near column",
         "trigger_radius_reasoning": "Expanded to 40m for larger POI footprint",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "224 m by 213 m with the column at its centre."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8639,7 +8757,7 @@
     "importance_tier": 4,
     "latitude": 48.8677,
     "longitude": 2.3292,
-    "trigger_radius": 40,
+    "trigger_radius": 80,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)",
     "city_name": "paris",
@@ -8781,7 +8899,8 @@
         "placement": "Nominatim result for: 107 Rue Oberkampf, 75011 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Rue Oberkampf, Quartier Saint-Ambroise, Paris 11e Arrondissement, Paris, Île-de-France, France métro. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: street"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8791,7 +8910,7 @@
     "importance_tier": 1,
     "latitude": 48.864964,
     "longitude": 2.374194,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -8938,7 +9057,8 @@
         "placement": "Nominatim result for: Place de la Sorbonne, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Place de la Sorbonne, Quartier de la Sorbonne, Paris 5e Arrondissement, Paris, Île-de-France, France. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -8948,7 +9068,7 @@
     "importance_tier": 4,
     "latitude": 48.848643,
     "longitude": 2.342038,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
@@ -9020,7 +9140,8 @@
         "placement": "Nominatim result for: 4 Avenue du Colonel Henri Rol-Tanguy, 75014 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: Musée de la Libération de Paris, 4, Avenue du Colonel Henri Rol Tanguy, Quartier du Montparnasse, Pa. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -9030,7 +9151,7 @@
     "importance_tier": 1,
     "latitude": 48.834111,
     "longitude": 2.331722,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -9149,7 +9270,8 @@
         "checked_at": "2026-04-03T14:00:00Z",
         "notes": "Closed since Nov 2025 for electrical, fire safety, and air handling upgrades. Reopens 8 April 2026 with new scenography, audio guide headsets, and enhanced lighting. Five-month renovation.",
         "source": "https://www.catacombes.paris.fr/en/news"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -9159,7 +9281,7 @@
     "importance_tier": 4,
     "latitude": 48.83388,
     "longitude": 2.33225,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -9232,7 +9354,8 @@
         "placement": "Main entrance on Avenue du Maine",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -9242,7 +9365,7 @@
     "importance_tier": 4,
     "latitude": 48.8422,
     "longitude": 2.3219,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris",
@@ -9358,7 +9481,8 @@
         "placement": "Nominatim result for: 49 Rue Monge, 75005 Paris",
         "trigger_radius_reasoning": "Default 10m",
         "notes": "Nominatim display: 49, Rue Monge, Quartier Saint-Victor, Paris 5e Arrondissement, Paris, Île-de-France, France métropol. May need entrance verification for large buildings."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -9368,7 +9492,7 @@
     "importance_tier": 1,
     "latitude": 48.845126,
     "longitude": 2.352309,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -9701,7 +9825,7 @@
     "kid_friendly": "yes",
     "latitude": 48.859,
     "longitude": 2.342,
-    "trigger_radius": 20,
+    "trigger_radius": 60,
     "importance_tier": 5,
     "_pipeline": {
       "address": "9 Rue de la Monnaie, 75001 Paris",
@@ -9730,7 +9854,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Reopened June 2021 after 16-yr closure (LVMH/SANAA); department store + Cheval Blanc hotel. Reported in 2024 to be struggling to attract customers, but open.",
         "source": "https://en.wikipedia.org/wiki/La_Samaritaine"
-      }
+      },
+      "trigger_radius_basis": "A four-building block about 100 m deep between rue de Rivoli and the quay: at the old 20 the circle sat inside the store, so the piece could only start indoors (W7.1's inverted-threshold list) and leaving the circle happened under the roof (W7.13, Marcus). 60 from the pin covers the street doors on all sides."
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -9814,7 +9939,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8598,
     "longitude": 2.341,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "importance_tier": 3,
     "_pipeline": {
       "address": "2 Place du Louvre, 75001 Paris",
@@ -9839,7 +9964,8 @@
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
         "scored_at": "2026-05-01T15:45:48.181108+00:00",
         "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only pro-T4 signal is the 71.0 clone (dual proxies, zerogap_backfill, 75.0 mismatch); every honestly-scored peer church is T3 (Saint-Sulpice/Saint-Eustache/Madeleine/Saint-Germain-des-Prés 49.2; control Saint-Roch 48.0, identical profile); Wikivoyage two-sentence mention, Rick Steves absent (live-checked); free parish church, no visitor/review data; honest ~48–52; own role stamp says Tier 3."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -9876,7 +10002,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8618,
     "longitude": 2.3408,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 2,
     "_pipeline": {
       "address": "19 Rue du Bouloi, 75001 Paris",
@@ -9900,7 +10026,8 @@
         "prior_reasoning": "Charming covered passage, niche tourist interest",
         "reasoning": "Composite 43.5: trends=low; wiki=moderate; gb=RARE",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: arcade"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -9934,7 +10061,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8641,
     "longitude": 2.339,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "importance_tier": 2,
     "_pipeline": {
       "address": "31 Rue Croix des Petits Champs, 75001 Paris",
@@ -9958,7 +10085,8 @@
         "prior_reasoning": "Rarely open to public, niche architectural interest",
         "reasoning": "Composite 43.5: trends=low; wiki=moderate; gb=RARE",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -10055,7 +10183,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8634,
     "longitude": 2.3367,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "importance_tier": 3,
     "_pipeline": {
       "address": "1 Place Colette, 75001 Paris",
@@ -10080,7 +10208,8 @@
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
         "scored_at": "2026-05-01T15:45:48.181108+00:00",
         "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only pro-T4 datum is the 71.0 clone (~44 POIs, T5→T3 span; 75.0 mismatch, dual proxies, nulls); performance-based fame with no general interior access; 2 beats cannot fill 300s; Place Colette gravity accrues to adjacent T5 Palais-Royal; T5 theatre benchmark Palais Garnier is 7x on views (189,450 vs 27,148, live) with 36,845 reviews and paid visits; famous-institution-not-a-sight precedent (Matignon, École Militaire, 80e0d7f); role says Tier 3."
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -10118,7 +10247,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8651,
     "longitude": 2.3283,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "importance_tier": 3,
     "_pipeline": {
       "address": "228 Rue de Rivoli, 75001 Paris",
@@ -10149,7 +10278,8 @@
         "checked_at": "2026-07-03T05:21:55Z",
         "notes": "Operating luxury hotel (Dorchester Collection). short_description corrected: removed the Orwell-dishwasher attribution (Hotel X of Down and Out is identified by biographers as the Lotti or Crillon, not the Meurice; no Orwell in EN/FR Wikipedia patron lists). 1835 move to 228 rue de Rivoli and WWII HQ confirmed.",
         "source": "https://fr.wikipedia.org/wiki/H%C3%B4tel_Meurice"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -10186,7 +10316,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8639,
     "longitude": 2.3324,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "importance_tier": 3,
     "_pipeline": {
       "address": "286 Rue Saint-Honoré, 75001 Paris",
@@ -10210,7 +10340,8 @@
         "prior_reasoning": "Historic burials, niche interest, not a major tourist draw",
         "reasoning": "Composite 52.7: trends=low; wiki=extensive; gb=RARE",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -10403,7 +10534,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8713,
     "longitude": 2.3417,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "importance_tier": 3,
     "_pipeline": {
       "address": "11 Boulevard Montmartre, 75002 Paris",
@@ -10437,7 +10568,8 @@
         "confidence": "HIGH",
         "placement": "Southern entrance on Boulevard Montmartre",
         "trigger_radius_reasoning": "15m for arcade entrance area"
-      }
+      },
+      "trigger_radius_basis": "A passage under glass 133 m long: you are in it from either mouth (Aiko's arcades)."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -10474,7 +10606,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8714,
     "longitude": 2.3421,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "importance_tier": 3,
     "_pipeline": {
       "address": "7 Boulevard Montmartre, 75002 Paris",
@@ -10508,7 +10640,8 @@
         "placement": "Theatre entrance at 7 Boulevard Montmartre",
         "trigger_radius_reasoning": "10m for building entrance",
         "notes": "PROXIMITY: 31m from Passage des Panoramas"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -10542,7 +10675,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8696,
     "longitude": 2.3416,
-    "trigger_radius": 15,
+    "trigger_radius": 40,
     "importance_tier": 3,
     "_pipeline": {
       "address": "Place de la Bourse, 75002 Paris",
@@ -10575,7 +10708,8 @@
         "confidence": "HIGH",
         "placement": "Centre of Place de la Bourse",
         "trigger_radius_reasoning": "15m for open square"
-      }
+      },
+      "trigger_radius_basis": "The open square in front of the Palais Brongniart's colonnade (Aiko's day)."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -10612,7 +10746,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8665,
     "longitude": 2.341,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "importance_tier": 3,
     "_pipeline": {
       "address": "Place des Petits-Pères, 75002 Paris",
@@ -10646,7 +10780,8 @@
         "confidence": "HIGH",
         "placement": "Church entrance on Place des Petits-Pères",
         "trigger_radius_reasoning": "10m for church entrance"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -10760,7 +10895,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8667,
     "longitude": 2.3398,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 3,
     "_pipeline": {
       "address": "4 rue des Petits-Champs, 75002 Paris",
@@ -10793,7 +10928,8 @@
         "confidence": "HIGH",
         "placement": "Southern entrance on rue des Petits-Champs",
         "trigger_radius_reasoning": "10m for arcade entrance"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: arcade"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -10867,7 +11003,7 @@
     "kid_friendly": "yes",
     "latitude": 48.868,
     "longitude": 2.3376,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 2,
     "_pipeline": {
       "address": "Square Louvois, 75002 Paris",
@@ -10900,7 +11036,8 @@
         "placement": "Centre of square near fountain",
         "trigger_radius_reasoning": "10m for small park",
         "notes": "PROXIMITY: 89m from BnF Richelieu"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -10937,7 +11074,7 @@
     "kid_friendly": "yes",
     "latitude": 48.868,
     "longitude": 2.3355,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 3,
     "_pipeline": {
       "address": "40 rue des Petits-Champs, 75002 Paris",
@@ -10970,7 +11107,8 @@
         "confidence": "HIGH",
         "placement": "Southern entrance on rue des Petits-Champs",
         "trigger_radius_reasoning": "10m for arcade entrance"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: arcade"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11147,7 +11285,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8693,
     "longitude": 2.3312,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "importance_tier": 4,
     "_pipeline": {
       "address": "Rue de la Paix, 75002 Paris",
@@ -11180,7 +11318,8 @@
         "confidence": "HIGH",
         "placement": "Midpoint of rue de la Paix",
         "trigger_radius_reasoning": "15m for street-level trigger on a major thoroughfare"
-      }
+      },
+      "trigger_radius_basis": "A 230 m street of jewellers between the Opera and Vendome: half a block (Theo's day)."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11285,7 +11424,7 @@
     "kid_friendly": "yes",
     "latitude": 48.87116,
     "longitude": 2.34346,
-    "trigger_radius": 15,
+    "trigger_radius": 75,
     "importance_tier": 3,
     "_pipeline": {
       "address": "Boulevard Montmartre / Boulevard Poissonnière, 75009 Paris",
@@ -11317,7 +11456,8 @@
         "confidence": "HIGH",
         "placement": "Metro station entrance on south side of Boulevard Montmartre",
         "trigger_radius_reasoning": "15m for busy intersection"
-      }
+      },
+      "trigger_radius_basis": "A two-kilometre arc of boulevards; 75 m is one block of them."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11420,7 +11560,7 @@
     "kid_friendly": "yes",
     "latitude": 48.86468,
     "longitude": 2.35052,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 1,
     "_pipeline": {
       "address": "164 Rue Saint-Denis, 75002 Paris",
@@ -11452,7 +11592,8 @@
         "confidence": "MEDIUM",
         "placement": "Entrance at 164 Rue Saint-Denis",
         "trigger_radius_reasoning": "10m default for address-specific location"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: arcade"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11488,7 +11629,7 @@
     "kid_friendly": "yes",
     "latitude": 48.86383,
     "longitude": 2.34983,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 2,
     "_pipeline": {
       "address": "145 Rue Saint-Denis, 75002 Paris",
@@ -11519,7 +11660,8 @@
         "confidence": "HIGH",
         "placement": "Rue Saint-Denis entrance at n°145, arched glass-roofed arcade",
         "trigger_radius_reasoning": "10m for arcade entrance"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: arcade"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11594,7 +11736,7 @@
     "kid_friendly": "yes",
     "latitude": 48.86372,
     "longitude": 2.34912,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "importance_tier": 2,
     "_pipeline": {
       "address": "20 Rue Etienne Marcel, 75002 Paris",
@@ -11626,7 +11768,8 @@
         "confidence": "HIGH",
         "placement": "Street-level entrance at 20 Rue Étienne Marcel",
         "trigger_radius_reasoning": "10m for building entrance"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11667,7 +11810,7 @@
     "kid_friendly": "no",
     "latitude": 48.86358,
     "longitude": 2.34715,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "importance_tier": 3,
     "_pipeline": {
       "address": "Rue Montorgueil, 75002 Paris",
@@ -11699,7 +11842,8 @@
         "confidence": "HIGH",
         "placement": "Center of pedestrian market street near n°59-61",
         "trigger_radius_reasoning": "15m for linear street experience"
-      }
+      },
+      "trigger_radius_basis": "A 400 m market street; half a block of it."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11735,7 +11879,7 @@
     "kid_friendly": "caution",
     "latitude": 48.86708,
     "longitude": 2.34857,
-    "trigger_radius": 12,
+    "trigger_radius": 20,
     "importance_tier": 2,
     "_pipeline": {
       "address": "Place du Caire, 75002 Paris",
@@ -11767,7 +11911,8 @@
         "confidence": "HIGH",
         "placement": "In front of Egyptian-facade building at 2 Place du Caire",
         "trigger_radius_reasoning": "12m for small square"
-      }
+      },
+      "trigger_radius_basis": "A small triangular place in front of the Egyptian facade."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11803,7 +11948,7 @@
     "kid_friendly": "yes",
     "latitude": 48.86825,
     "longitude": 2.3467,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "importance_tier": 1,
     "_pipeline": {
       "address": "29 Rue de Cléry, 75002 Paris",
@@ -11835,7 +11980,8 @@
         "confidence": "MEDIUM",
         "placement": "Sidewalk in front of n°29 Rue de Cléry",
         "trigger_radius_reasoning": "10m default for address-specific location"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: street"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11872,7 +12018,7 @@
     "kid_friendly": "yes",
     "latitude": 48.87055,
     "longitude": 2.33187,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "importance_tier": 2,
     "_pipeline": {
       "address": "35 Boulevard des Capucines, 75002 Paris",
@@ -11903,7 +12049,8 @@
         "confidence": "HIGH",
         "placement": "Sidewalk in front of 35 Boulevard des Capucines",
         "trigger_radius_reasoning": "10m for address-specific location"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -11937,7 +12084,7 @@
     "kid_friendly": "caution",
     "latitude": 48.86822,
     "longitude": 2.33764,
-    "trigger_radius": 15,
+    "trigger_radius": 30,
     "importance_tier": 1,
     "_pipeline": {
       "address": "Place de Louvois, 75002 Paris",
@@ -11969,7 +12116,8 @@
         "confidence": "HIGH",
         "placement": "Center of the square at the Louvois fountain",
         "trigger_radius_reasoning": "15m for open square"
-      }
+      },
+      "trigger_radius_basis": "A small square around its fountain, opposite the old library."
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -12007,7 +12155,7 @@
     "kid_friendly": "caution",
     "latitude": 48.86883,
     "longitude": 2.3425,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "importance_tier": 2,
     "_pipeline": {
       "address": "146 Rue Montmartre, 75002 Paris",
@@ -12038,7 +12186,8 @@
         "confidence": "HIGH",
         "placement": "Corner of 146 Rue Montmartre and Rue du Croissant",
         "trigger_radius_reasoning": "10m for café entrance"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -12311,7 +12460,7 @@
     "latitude": 48.8646,
     "longitude": 2.3568,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "kid_friendly": "yes",
     "name_variations": [
       "Maison 3 rue Volta"
@@ -12337,7 +12486,8 @@
           "Multiple English travel sites cover it; half-timbered house dated to 1644-1654; now Vietnamese restaurant; no dedicated English Wikipedia article found."
         ],
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "geocode_source": "web search",
@@ -12430,7 +12580,7 @@
     "latitude": 48.8663,
     "longitude": 2.3585,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "kid_friendly": "yes",
     "name_variations": [
       "Fontaine Wallace"
@@ -12456,7 +12606,8 @@
           "English Wikipedia article on 'Wallace fountain' is extensive; this specific Passage du Pont-aux-Biches fountain is one of ~100 in Paris; no individual visitor stats."
         ],
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "geocode_source": "web search",
@@ -14982,7 +15133,8 @@
         "placement": "",
         "trigger_radius_reasoning": "",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14992,7 +15144,7 @@
     "importance_tier": 3,
     "latitude": 48.853,
     "longitude": 2.3454,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -15128,7 +15280,8 @@
         "placement": "",
         "trigger_radius_reasoning": "",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15138,7 +15291,7 @@
     "importance_tier": 3,
     "latitude": 48.8463,
     "longitude": 2.3462,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
     "city_name": "paris",
@@ -15591,7 +15744,8 @@
         "placement": "",
         "trigger_radius_reasoning": "",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15601,7 +15755,7 @@
     "importance_tier": 1,
     "latitude": 48.8457,
     "longitude": 2.3488,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -16176,7 +16330,8 @@
         "placement": "",
         "trigger_radius_reasoning": "",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16186,7 +16341,7 @@
     "importance_tier": 2,
     "latitude": 48.8522,
     "longitude": 2.3383,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)",
     "city_name": "paris",
@@ -16246,7 +16401,8 @@
         "placement": "",
         "trigger_radius_reasoning": "",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: street"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16256,7 +16412,7 @@
     "importance_tier": 1,
     "latitude": 48.8533,
     "longitude": 2.3433,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -16602,7 +16758,8 @@
         "placement": "",
         "trigger_radius_reasoning": "",
         "notes": ""
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16612,7 +16769,7 @@
     "importance_tier": 3,
     "latitude": 48.8543,
     "longitude": 2.3332,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris",
@@ -19771,7 +19928,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "The boulevard du Palais front is 80 m of gilded gates; standing before them is being at the Palais (Fiona & Dev's and Sofia's days)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -19782,7 +19940,7 @@
     "importance_tier": 4,
     "latitude": 48.855675,
     "longitude": 2.345924,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building (trigger 10m) described as a fixed judicial complex on the site of the kings' palace, with beats contemplating events that happened there — a stand-before stop.",
     "typical_duration_min": 18,
@@ -20028,7 +20186,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -20039,7 +20198,7 @@
     "importance_tier": 2,
     "latitude": 48.859471,
     "longitude": 2.357625,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 2 but the transit beat explicitly says \"Stop at the imposing Mont de Piete\" (trigger 10m) and beats stand before the discrete building describing the institution inside — a deliberate stop.",
     "typical_duration_min": 6,
@@ -20117,7 +20276,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.47442832946514174
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -20128,7 +20288,7 @@
     "importance_tier": 4,
     "latitude": 48.858003,
     "longitude": 2.348922,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete 52m bell tower (trigger 10m); beats \"Walk into square de la Tour St-Jacques\" and describe standing before the lone Gothic tower — a stand-before stop.",
     "typical_duration_min": 15,
@@ -20567,7 +20727,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.38727847050761693
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -20578,7 +20739,7 @@
     "importance_tier": 1,
     "latitude": 48.879432,
     "longitude": 2.312564,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "[reviewed] The transit beat explicitly stages a stop at this discrete museum building (\"stop in front of the Musee Cernuschi to the right\"), satisfying the rule's tier-1/2 'stop' exception (explicit staged stop), so not walk_by_only.",
     "typical_duration_min": 6,
@@ -20694,7 +20855,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.47057483368927794
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -20705,7 +20867,7 @@
     "importance_tier": 3,
     "latitude": 48.877613,
     "longitude": 2.301992,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete cathedral (trigger 10m); beats describe standing before the Russian church with its five gilded onion domes and entering \"Little Russia\" — a stand-before stop.",
     "typical_duration_min": 12,
@@ -20785,7 +20947,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "hand_located_after_nominatim_failed"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -20796,7 +20959,7 @@
     "importance_tier": 2,
     "latitude": 48.857421,
     "longitude": 2.336212,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 single statue (trigger 10m); beats reach it by walking through a passageway and note the statue of Voltaire in Square Honoré-Champion — a minor landmark passed, per tier-1/2 default.",
     "typical_duration_min": 4,
@@ -21287,7 +21450,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21298,7 +21462,7 @@
     "importance_tier": 5,
     "latitude": 48.871432,
     "longitude": 2.301308,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete brasserie at radius 10m whose beats describe it as \"the place to enjoy a slow coffee\" and a declared historic monument, a destination you stand before.",
     "typical_duration_min": 6,
@@ -21373,7 +21537,8 @@
         "notes": "Statue was relocated 2018 to Jardin Tino Rossi (5e arr); Vallois beats reference the historic Sully-Morland location",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "hand_located_after_nominatim_failed"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21384,7 +21549,7 @@
     "importance_tier": 2,
     "latitude": 48.85083,
     "longitude": 2.362532,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 minor statue/landmark whose beats merely point it out (\"On your left is a modern statue\") while moving toward the central garden, a passing reference.",
     "typical_duration_min": 5,
@@ -21459,7 +21624,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.33155205287302
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21470,7 +21636,7 @@
     "importance_tier": 4,
     "latitude": 48.886825,
     "longitude": 2.341821,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete church at radius 10m whose beats establish you arriving at and standing before this ancient sanctuary, the default stop-and-listen destination.",
     "typical_duration_min": 6,
@@ -21546,7 +21712,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21557,7 +21724,7 @@
     "importance_tier": 4,
     "latitude": 48.888731,
     "longitude": 2.339975,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete cabaret building at radius 10m that the beats single out as a picturesque destination (\"Just below the vineyard stands the picturesque little cabaret bar\"), a place to stop and contemplate.",
     "typical_duration_min": 8,
@@ -21663,7 +21830,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21674,7 +21842,7 @@
     "importance_tier": 3,
     "latitude": 48.878851,
     "longitude": 2.312881,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete museum mansion at radius 10m whose transit beat ends \"Stop behind the first big house... the Musee Nissim de Camondo,\" explicitly a stop-and-listen destination.",
     "typical_duration_min": 6,
@@ -21785,7 +21953,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21796,7 +21965,7 @@
     "importance_tier": 3,
     "latitude": 48.875253,
     "longitude": 2.310789,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 discrete museum mansion at radius 10m described as a \"splendid museum left to the nation,\" a discrete building destination you stop before.",
     "typical_duration_min": 6,
@@ -21958,7 +22127,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.4591681490368309
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: bridge"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -21969,7 +22139,7 @@
     "importance_tier": 4,
     "latitude": 48.863378,
     "longitude": 2.319598,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "setting",
     "_poi_role_reasoning": "[reviewed] Bridge (rule lists bridges as 'setting'); beat \"stopping at Pont de la Concorde to admire the spectacular views before crossing back over\" uses it as a crossing/vantage, and every other bridge in the set (266 Pont d'Iéna, 292 Pont de la Tournelle, 299 Passerelle) is 'setting'.",
     "typical_duration_min": 12,
@@ -22041,7 +22211,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "A walled cemetery of two hectares behind the Trocadero; the gate."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22052,7 +22223,7 @@
     "importance_tier": 4,
     "latitude": 48.861904,
     "longitude": 2.285157,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 cemetery at radius 10m whose beats direct you to \"Go into the Cimetiere de Passy\" and wander among its tombs, a discrete destination you enter and contemplate.",
     "typical_duration_min": 8,
@@ -22126,7 +22297,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.49352556223521465
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: bridge"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22137,7 +22309,7 @@
     "importance_tier": 5,
     "latitude": 48.859833,
     "longitude": 2.292035,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "setting",
     "_poi_role_reasoning": "A bridge named in the description as linking the Eiffel Tower to the Trocadéro, with a transit/scene_setter beat reading \"go on downhill towards the Seine and Pont d'Iéna,\" used as a through-route crossing rather than a stop.",
     "typical_duration_min": 14,
@@ -22216,7 +22388,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Main house of the Paris National Opera; operating.",
         "source": "https://www.operadeparis.fr/en/about/theaters-and-workshops/bastille-opera"
-      }
+      },
+      "trigger_radius_basis": "The curved glass front on the Place de la Bastille and its steps."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22227,7 +22400,7 @@
     "importance_tier": 5,
     "latitude": 48.851517,
     "longitude": 2.370108,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete opera house at radius 10m with rich establishing/architectural beats describing standing before its \"curving glass front,\" a major building destination to stop and listen at.",
     "typical_duration_min": 8,
@@ -22644,7 +22817,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22655,7 +22829,7 @@
     "importance_tier": 4,
     "latitude": 48.857357,
     "longitude": 2.347783,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-4 discrete theatre building with a character_story hook about Sarah Bernhardt owning it; a standalone monument you contemplate.",
     "typical_duration_min": 10,
@@ -22810,7 +22984,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "A 500 m marina basin; the quay along it."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22821,7 +22996,7 @@
     "importance_tier": 4,
     "latitude": 48.848061,
     "longitude": 2.367385,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-4 discrete marina basin at 10m radius with a sensory establishing beat inviting you to take in the moorings and garden — a place to pause.",
     "typical_duration_min": 25,
@@ -22900,7 +23075,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Monument standing at the centre of Place de la Bastille; viewable from the square (interior access only via occasional CMN-led tours).",
         "source": "https://www.culture.gouv.fr/en/documentation-area/Inventory-of-Information-Resources/Monuments-nationaux/July-Column-Place-de-la-Bastille"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22911,7 +23087,7 @@
     "importance_tier": 5,
     "latitude": 48.85262,
     "longitude": 2.368776,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-5 discrete 47m column monument at 10m radius with 8 beats establishing/deepening its history — clearly a stand-and-listen destination, not an area.",
     "typical_duration_min": 20,
@@ -22984,7 +23160,8 @@
         "notes": "Phase 5d: LOW-confidence Nominatim importance score on linear feature (street/passage) — geocoded location confirmed correct via display_name street match. Promoted to MEDIUM.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_via_osm_feature_lookup"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -22995,7 +23172,7 @@
     "importance_tier": 1,
     "latitude": 48.853556,
     "longitude": 2.367116,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-1 statue at 10m with a single establishing beat naming the subject; a minor landmark passed by.",
     "typical_duration_min": 4,
@@ -23066,7 +23243,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.053426505683985624
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -23077,7 +23255,7 @@
     "importance_tier": 3,
     "latitude": 48.853843,
     "longitude": 2.367778,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-3 brasserie whose only beat is a transit/scene_setter describing \"walking past Restaurant Bofinger at No. 3\" — narrated in passing, not stopped at.",
     "typical_duration_min": 5,
@@ -23151,7 +23329,8 @@
         "notes": "Phase 5d: LOW-confidence Nominatim importance score on linear feature (street/passage) — geocoded location confirmed correct via display_name street match. Promoted to MEDIUM.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_via_osm_feature_lookup"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: market"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -23162,7 +23341,7 @@
     "importance_tier": 3,
     "latitude": 48.854837,
     "longitude": 2.369892,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier-3 open-air market stretching along boulevard Richard-Lenoir with a single bare factoid about market days — an area market you traverse, giving contextual walking narration.",
     "typical_duration_min": 30,
@@ -23334,7 +23513,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -23345,7 +23525,7 @@
     "importance_tier": 1,
     "latitude": 48.853292,
     "longitude": 2.370218,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-1 bar/club whose single beat is a transit/scene_setter routing you along rue de Charonne to No. 46 — a minor mention while walking.",
     "typical_duration_min": 3,
@@ -23501,7 +23681,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.3544115905399448
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -23512,7 +23693,7 @@
     "importance_tier": 2,
     "latitude": 48.850335,
     "longitude": 2.372021,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-2 hospital with a single anecdote explaining the \"Quinze-Vingts\" name as you turn beside it — a minor landmark referenced in passing.",
     "typical_duration_min": 6,
@@ -23669,7 +23850,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -23680,7 +23862,7 @@
     "importance_tier": 2,
     "latitude": 48.857196,
     "longitude": 2.336427,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-2 photo agency with one anecdote telling you to \"look in the windows\" at displays — a minor walk-past glance, not a stop-and-listen destination.",
     "typical_duration_min": 3,
@@ -23834,7 +24016,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: monument"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -23845,7 +24028,7 @@
     "importance_tier": 3,
     "latitude": 48.855413,
     "longitude": 2.336824,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-3 café (radius 10) where the beat invites \"sitting\" at an outdoor table for a café crème, a destination to stop and listen at.",
     "typical_duration_min": 6,
@@ -24004,7 +24187,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24015,7 +24199,7 @@
     "importance_tier": 2,
     "latitude": 48.854226,
     "longitude": 2.334763,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-2 building (radius 10) with a single factoid beat noting it is \"Today, a Catholic school,\" a minor walk-past reference.",
     "typical_duration_min": 10,
@@ -24087,7 +24271,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.46747621576595166
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24098,7 +24283,7 @@
     "importance_tier": 3,
     "latitude": 48.867622,
     "longitude": 2.321366,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-3 discrete palace hotel (radius 10) with an anecdote/hook beat contemplating its facade and history, a stop-and-listen destination.",
     "typical_duration_min": 8,
@@ -24255,7 +24440,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24266,7 +24452,7 @@
     "importance_tier": 2,
     "latitude": 48.852149,
     "longitude": 2.355558,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-2 mansion (radius 10) whose beat explicitly directs \"Stop at No. 51, Hotel Chenizot, and admire its facade,\" overriding the tier default to a stop.",
     "typical_duration_min": 8,
@@ -24337,7 +24523,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.4255759689944641
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: bridge"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24348,7 +24535,7 @@
     "importance_tier": 3,
     "latitude": 48.850614,
     "longitude": 2.355444,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "poi_role": "setting",
     "_poi_role_reasoning": "Name is a bridge (Pont de la Tournelle) and the beat reads as crossing-narration (\"On the bridge is a statue... Look towards the Left Bank\"), a through-route, not a destination.",
     "typical_duration_min": 12,
@@ -24506,7 +24693,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.1679799034751623
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: gallery"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24517,7 +24705,7 @@
     "importance_tier": 2,
     "latitude": 48.876749,
     "longitude": 2.307738,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier-2 pagoda (radius 10) with one hook beat read as \"At the end of the street you will see,\" observed in passing with no stop.",
     "typical_duration_min": 8,
@@ -24589,7 +24777,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24600,7 +24789,7 @@
     "importance_tier": 2,
     "latitude": 48.878457,
     "longitude": 2.305936,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-2 mansion (radius 10) whose beat explicitly directs \"Stop at 5 avenue Van Dyck to view the Menier Mansion,\" overriding the tier default to a stop.",
     "typical_duration_min": 7,
@@ -24674,7 +24863,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.46097369385693177
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24685,7 +24875,7 @@
     "importance_tier": 3,
     "latitude": 48.877302,
     "longitude": 2.331398,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-3 discrete 19th-century church (radius 10) with an architectural_detail establishing beat, a stand-before destination.",
     "typical_duration_min": 8,
@@ -24759,7 +24949,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -24770,7 +24961,7 @@
     "importance_tier": 3,
     "latitude": 48.870738,
     "longitude": 2.330241,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-3 discrete grand hotel building (radius 10) with an establishing beat about the structure, a stop-and-listen destination.",
     "typical_duration_min": 7,
@@ -25021,7 +25212,8 @@
         "checked_at": "2026-05-29T04:13:51+00:00",
         "notes": "Contemporary-art museum (Pinault Collection); opened 22 May 2021, operating.",
         "source": "https://www.museos.com/en/paris/bourse-de-commerce/"
-      }
+      },
+      "trigger_radius_basis": "A rotunda 60 m across with its portico and the Medici column on its flank (Aiko's day)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -25032,7 +25224,7 @@
     "importance_tier": 5,
     "latitude": 48.862817,
     "longitude": 2.342836,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-5 discrete circular museum building (radius 10) with nine beats devoted to the rotunda's architecture and history, a stop-and-listen destination.",
     "typical_duration_min": 8,
@@ -25147,7 +25339,8 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.4853471968552425
-      }
+      },
+      "trigger_radius_basis": "A free-standing arch in the open Place du Carrousel: within thirty metres you are at it (Aiko's and Greta's days)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",
@@ -25158,7 +25351,7 @@
     "importance_tier": 5,
     "latitude": 48.861727,
     "longitude": 2.332909,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier-5 discrete triumphal arch (radius 10) with seven beats on the monument itself, a stand-before destination.",
     "typical_duration_min": 10,
@@ -25301,7 +25494,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8517,
     "longitude": 2.3443,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
@@ -25321,7 +25514,8 @@
         "reasoning": "composite=34.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25356,7 +25550,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8509,
     "longitude": 2.3507,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
@@ -25376,7 +25570,8 @@
         "reasoning": "composite=16.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25412,7 +25607,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8481,
     "longitude": 2.3505,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
@@ -25432,7 +25627,8 @@
         "reasoning": "composite=17.6, signals: visitors=None, reviews=None, trends='minimal', wiki='stub', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25468,7 +25664,7 @@
     "kid_friendly": "yes",
     "latitude": 48.844,
     "longitude": 2.3597,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
@@ -25488,7 +25684,8 @@
         "reasoning": "composite=34.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25523,7 +25720,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8497,
     "longitude": 2.355,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02c-arenes-jardin-des-plantes",
       "source_book": "hidden_gardens_of_paris",
@@ -25543,7 +25740,8 @@
         "reasoning": "composite=34.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25579,7 +25777,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8476,
     "longitude": 2.333,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
@@ -25599,7 +25797,8 @@
         "reasoning": "composite=41.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25634,7 +25833,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8582,
     "longitude": 2.3358,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
@@ -25654,7 +25853,8 @@
         "reasoning": "composite=16.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25687,7 +25887,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8498,
     "longitude": 2.3268,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
@@ -25707,7 +25907,8 @@
         "reasoning": "composite=16.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25740,7 +25941,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8561,
     "longitude": 2.3098,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-04a-recamier-champ-de-mars-santiago",
       "source_book": "hidden_gardens_of_paris",
@@ -25760,7 +25961,8 @@
         "reasoning": "composite=17.6, signals: visitors=None, reviews=None, trends='minimal', wiki='stub', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25793,7 +25995,7 @@
     "kid_friendly": "yes",
     "latitude": 48.843302,
     "longitude": 2.3186277,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "_pipeline": {
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
@@ -25813,7 +26015,8 @@
         "reasoning": "composite=49.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25889,7 +26092,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8315234,
     "longitude": 2.2999921,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
@@ -25909,7 +26112,8 @@
         "reasoning": "composite=41.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -25985,7 +26189,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8323665,
     "longitude": 2.2972385,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
@@ -26005,7 +26209,8 @@
         "reasoning": "composite=41.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26038,7 +26243,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8219907,
     "longitude": 2.3377922,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
@@ -26058,7 +26263,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26134,7 +26340,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8333588,
     "longitude": 2.3046557,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
       "source_book": "hidden_gardens_of_paris",
@@ -26154,7 +26360,8 @@
         "reasoning": "composite=17.6, signals: visitors=None, reviews=None, trends='minimal', wiki='stub', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26187,7 +26394,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8703675,
     "longitude": 2.2481493,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
@@ -26207,7 +26414,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26288,7 +26496,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8552005,
     "longitude": 2.2808879,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
@@ -26308,7 +26516,8 @@
         "reasoning": "composite=49.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26384,7 +26593,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8531182,
     "longitude": 2.28408,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-05a-bagatelle-balzac",
       "source_book": "hidden_gardens_of_paris",
@@ -26404,7 +26613,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: street"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26502,7 +26712,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8653911,
     "longitude": 2.3112134,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
@@ -26522,7 +26732,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26555,7 +26766,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8592366,
     "longitude": 2.3668079,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
@@ -26575,7 +26786,8 @@
         "reasoning": "composite=16.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26608,7 +26820,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8560492,
     "longitude": 2.3584052,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
       "source_book": "hidden_gardens_of_paris",
@@ -26628,7 +26840,8 @@
         "reasoning": "composite=28.0, signals: visitors=None, reviews=None, trends='low', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26661,7 +26874,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8580078,
     "longitude": 2.3627314,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-06b-georges-cain-temple",
       "source_book": "hidden_gardens_of_paris",
@@ -26681,7 +26894,8 @@
         "reasoning": "composite=16.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26714,7 +26928,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8583587,
     "longitude": 2.363193,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-06b-georges-cain-temple",
       "source_book": "hidden_gardens_of_paris",
@@ -26734,7 +26948,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26767,7 +26982,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8585695,
     "longitude": 2.3564592,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-06b-georges-cain-temple",
       "source_book": "hidden_gardens_of_paris",
@@ -26787,7 +27002,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26820,7 +27036,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8813455,
     "longitude": 2.3335217,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "_pipeline": {
       "source_chunk": "chunk-07a-monceau-vie-romantique-batignolles",
       "source_book": "hidden_gardens_of_paris",
@@ -26841,7 +27057,8 @@
         "reasoning": "composite=44.6, signals: visitors=145000, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -26970,7 +27187,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8774069,
     "longitude": 2.3360446,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-07a-monceau-vie-romantique-batignolles",
       "source_book": "hidden_gardens_of_paris",
@@ -26990,7 +27207,8 @@
         "reasoning": "composite=41.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27023,7 +27241,7 @@
     "kid_friendly": "yes",
     "latitude": 48.878378,
     "longitude": 2.3374403,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "_pipeline": {
       "source_chunk": "chunk-07a-monceau-vie-romantique-batignolles",
       "source_book": "hidden_gardens_of_paris",
@@ -27043,7 +27261,8 @@
         "reasoning": "composite=34.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: square"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27129,7 +27348,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8880499,
     "longitude": 2.3406297,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -27150,7 +27369,8 @@
         "reasoning": "composite=58.8, signals: visitors=180000, reviews=None, trends='high', wiki='moderate', guidebook='UBIQUITOUS'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27337,7 +27557,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8876809,
     "longitude": 2.3437147,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -27357,7 +27577,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27486,7 +27707,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8843999,
     "longitude": 2.3383885,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -27506,7 +27727,8 @@
         "reasoning": "composite=51.0, signals: visitors=None, reviews=None, trends='moderate', wiki='none', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27539,7 +27761,7 @@
     "kid_friendly": "yes",
     "latitude": 48.840833,
     "longitude": 2.437923,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
@@ -27559,7 +27781,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27597,7 +27820,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8421861,
     "longitude": 2.3875338,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
@@ -27617,7 +27840,8 @@
         "reasoning": "composite=34.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27650,7 +27874,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8529881,
     "longitude": 2.3773247,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
@@ -27670,7 +27894,8 @@
         "reasoning": "composite=28.0, signals: visitors=None, reviews=None, trends='low', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27756,7 +27981,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8356447,
     "longitude": 2.3817168,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
@@ -27776,7 +28001,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -27809,7 +28035,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8369987,
     "longitude": 2.3826352,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
@@ -27829,7 +28055,8 @@
         "reasoning": "composite=71.0, signals: visitors=None, reviews=None, trends='moderate', wiki='extensive', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28076,7 +28303,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8686159,
     "longitude": 2.3874443,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "_pipeline": {
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
@@ -28096,7 +28323,8 @@
         "reasoning": "composite=34.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: church"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28167,7 +28395,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8673647,
     "longitude": 2.3780287,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
@@ -28187,7 +28415,8 @@
         "reasoning": "composite=17.6, signals: visitors=None, reviews=None, trends='minimal', wiki='stub', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28220,7 +28449,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8948898,
     "longitude": 2.3884384,
-    "trigger_radius": 10,
+    "trigger_radius": 300,
     "_pipeline": {
       "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
       "source_book": "hidden_gardens_of_paris",
@@ -28241,7 +28470,8 @@
         "reasoning": "composite=81.3, signals: visitors=10000000, reviews=None, trends='high', wiki='extensive', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Fifty-five hectares of park; sized at a setting's cap, the way the cemeteries and the Luxembourg were."
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28274,7 +28504,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8715484,
     "longitude": 2.384229,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "_pipeline": {
       "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
       "source_book": "hidden_gardens_of_paris",
@@ -28294,7 +28524,8 @@
         "reasoning": "composite=56.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: park"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28370,7 +28601,7 @@
     "kid_friendly": "yes",
     "latitude": 48.85882,
     "longitude": 2.3989622,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
       "source_book": "hidden_gardens_of_paris",
@@ -28390,7 +28621,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28486,7 +28718,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8518,
     "longitude": 2.3195,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-03b-boucicaut-clinique-rodin",
       "source_book": "hidden_gardens_of_paris",
@@ -28506,7 +28738,8 @@
         "reasoning": "composite=41.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28542,7 +28775,7 @@
     "kid_friendly": "no",
     "latitude": 48.8506,
     "longitude": 2.3233,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-03b-boucicaut-clinique-rodin",
       "source_book": "hidden_gardens_of_paris",
@@ -28562,7 +28795,8 @@
         "reasoning": "composite=71.0, signals: visitors=None, reviews=None, trends='moderate', wiki='extensive', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28595,7 +28829,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8546415,
     "longitude": 2.3353937,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "_pipeline": {
       "source_chunk": "chunk-03a-luxembourg-delacroix",
       "source_book": "hidden_gardens_of_paris",
@@ -28615,7 +28849,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: museum"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28653,7 +28888,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8398756,
     "longitude": 2.3189805,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "unknown",
       "source_book": "hidden_gardens_of_paris",
@@ -28673,7 +28908,8 @@
         "reasoning": "composite=56.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28753,7 +28989,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8524,
     "longitude": 2.3126,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-03b-boucicaut-clinique-rodin",
       "source_book": "hidden_gardens_of_paris",
@@ -28773,7 +29009,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28806,7 +29043,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8650224,
     "longitude": 2.3285487,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
@@ -28826,7 +29063,8 @@
         "reasoning": "composite=42.6, signals: visitors=None, reviews=None, trends='low', wiki='stub', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28861,7 +29099,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8508,
     "longitude": 2.3179,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-03b-boucicaut-clinique-rodin",
       "source_book": "hidden_gardens_of_paris",
@@ -28881,7 +29119,8 @@
         "reasoning": "composite=16.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='RARE'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28914,7 +29153,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8516585,
     "longitude": 2.3302873,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "unknown",
       "source_book": "hidden_gardens_of_paris",
@@ -28934,7 +29173,8 @@
         "reasoning": "composite=49.2, signals: visitors=None, reviews=None, trends='low', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -28972,7 +29212,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8650778,
     "longitude": 2.3284104,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "chunk-05b-tuileries-palais-royal",
       "source_book": "hidden_gardens_of_paris",
@@ -28992,7 +29232,8 @@
         "reasoning": "composite=74.6, signals: visitors=None, reviews=None, trends='high', wiki='stub', guidebook='UBIQUITOUS'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -29034,7 +29275,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8522,
     "longitude": 2.3447,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
       "source_book": "hidden_gardens_of_paris",
@@ -29054,7 +29295,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: garden"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -29087,7 +29329,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8446766,
     "longitude": 2.3472341,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "unknown",
       "source_book": "hidden_gardens_of_paris",
@@ -29107,7 +29349,8 @@
         "reasoning": "composite=64.2, signals: visitors=None, reviews=None, trends='moderate', wiki='moderate', guidebook='COMMON'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -29140,7 +29383,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8487137,
     "longitude": 2.3536556,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "_pipeline": {
       "source_chunk": "unknown",
       "source_book": "hidden_gardens_of_paris",
@@ -29160,7 +29403,8 @@
         "reasoning": "composite=11.0, signals: visitors=None, reviews=None, trends='minimal', wiki='none', guidebook='ABSENT'",
         "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: other"
     },
     "_meta": {
       "prompt_version": "unified_v2",
@@ -29307,7 +29551,8 @@
         "trigger_radius_reasoning": "Single building/entrance, default 10m",
         "notes": "Nominatim display: Place de la Concorde, Quartier des Champs-Élysées, Paris 8e Arrondissement, Paris, Île-de-France, France métropolitaine, 75008, France",
         "geocoded_at": "2026-06-02T02:49:54+00:00"
-      }
+      },
+      "trigger_radius_basis": "Sized by place kind: gallery"
     },
     "_meta": {
       "prompt_version": "manual_add_v1",
@@ -29317,7 +29562,7 @@
     "importance_tier": 3,
     "latitude": 48.865572,
     "longitude": 2.321225,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "poi_role": "stop",
     "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
     "city_name": "paris",

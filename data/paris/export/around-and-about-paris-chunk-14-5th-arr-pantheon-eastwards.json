@@ -5,7 +5,7 @@
     "latitude": 48.846217,
     "longitude": 2.34604,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -235,7 +235,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A single ticket desk and bag check at the front portico creates a minor line at busy midday hours that clears quickly at opening or late in the day."
+    "queue_basis": "A single ticket desk and bag check at the front portico creates a minor line at busy midday hours that clears quickly at opening or late in the day.",
+    "anchors": null
   },
   {
     "name": "Bibliotheque Sainte-Genevieve",
@@ -243,7 +244,7 @@
     "latitude": 48.8463,
     "longitude": 2.3462,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -306,7 +307,8 @@
         "12:00"
       ]
     ],
-    "queue_basis": "A working university library where access is controlled by a single entry desk with bag check and reader registration, producing a modest line at morning opening that eases through the day."
+    "queue_basis": "A working university library where access is controlled by a single entry desk with bag check and reader registration, producing a modest line at morning opening that eases through the day.",
+    "anchors": null
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -314,7 +316,7 @@
     "latitude": 48.8466,
     "longitude": 2.347344,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -445,7 +447,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free parish church with an open door and no admission control, so visitors enter without stopping and there is nothing to queue for."
+    "queue_basis": "A free parish church with an open door and no admission control, so visitors enter without stopping and there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Lycee Henri IV",
@@ -509,7 +512,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working secondary school closed to casual visitors and seen only from the street or via rare booked tours, so there is no walk-up admission line."
+    "queue_basis": "A working secondary school closed to casual visitors and seen only from the street or via rare booked tours, so there is no walk-up admission line.",
+    "anchors": null
   },
   {
     "name": "Place de la Contrescarpe",
@@ -570,7 +574,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no door and no ticket; the whole value stands in the open air with nothing to wait for."
+    "queue_basis": "An open public square with no door and no ticket; the whole value stands in the open air with nothing to wait for.",
+    "anchors": null
   },
   {
     "name": "Rue Mouffetard",
@@ -629,7 +634,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open market street with no door or ticket; the whole value is walked through in the open air, so there is no queue."
+    "queue_basis": "An open market street with no door or ticket; the whole value is walked through in the open air, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Eglise Saint-Medard",
@@ -759,7 +765,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door and free entry; visitors walk straight in without any security screening or ticket desk."
+    "queue_basis": "A parish church with an open door and free entry; visitors walk straight in without any security screening or ticket desk.",
+    "anchors": null
   },
   {
     "name": "Grand Mosque of Paris",
@@ -767,7 +774,7 @@
     "latitude": 48.842071,
     "longitude": 2.355103,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 7,
     "kid_friendly": "yes",
     "name_variations": [
@@ -830,7 +837,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "The visitor areas require a small paid ticket at a single desk that forms a modest, moving line, peaking on weekend afternoons when tourists and tea-salon visitors overlap."
+    "queue_basis": "The visitor areas require a small paid ticket at a single desk that forms a modest, moving line, peaking on weekend afternoons when tourists and tea-salon visitors overlap.",
+    "anchors": null
   },
   {
     "name": "Jardin des Plantes",
@@ -920,7 +928,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line."
+    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line.",
+    "anchors": null
   },
   {
     "name": "Arenes de Lutece",
@@ -928,7 +937,7 @@
     "latitude": 48.845126,
     "longitude": 2.352309,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -983,7 +992,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line."
+    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line.",
+    "anchors": null
   },
   {
     "name": "Institut du Monde Arabe",
@@ -1047,7 +1057,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This stop is walk-by only to see Nouvel's photo-sensitive facade from outside, so no interior entry line is priced."
+    "queue_basis": "This stop is walk-by only to see Nouvel's photo-sensitive facade from outside, so no interior entry line is priced.",
+    "anchors": null
   },
   {
     "name": "La Tour d'Argent",
@@ -1110,7 +1121,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A restaurant entered by reservation, not a queued attraction; there is no public standing line outside to price."
+    "queue_basis": "A restaurant entered by reservation, not a queued attraction; there is no public standing line outside to price.",
+    "anchors": null
   },
   {
     "name": "Verlaine's Garret",
@@ -1118,7 +1130,7 @@
     "latitude": 48.8457,
     "longitude": 2.3488,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 4,
     "kid_friendly": "caution",
     "name_variations": [
@@ -1171,7 +1183,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private residence viewed only from the street as a plaque-marked facade, with no interior to enter and thus no line."
+    "queue_basis": "A private residence viewed only from the street as a plaque-marked facade, with no interior to enter and thus no line.",
+    "anchors": null
   },
   {
     "name": "College des Bernardins",
@@ -1277,6 +1290,7 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A cultural center with a single reception desk and light bag check that moves quickly; the small afternoon flow to the Cistercian nave rarely holds more than a few people."
+    "queue_basis": "A cultural center with a single reception desk and light bag check that moves quickly; the small afternoon flow to the Cistercian nave rarely holds more than a few people.",
+    "anchors": null
   }
 ]

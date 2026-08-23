@@ -2661,6 +2661,10 @@ class _StubGraph:
             "pv": 0,
             "sj": None,
             "edges": 0,
+            # W7.13 (Sofia's finish): the item CREATE now reports whether the stop's
+            # POI exists (`poi_found`) so a wrong id fails loudly and the A→B finish
+            # sentinel is stored. On this stand-in every non-sentinel POI "exists".
+            "poi_found": True,
         }
 
     def run(self, _cypher: str, **params: Any) -> _StubGraph:

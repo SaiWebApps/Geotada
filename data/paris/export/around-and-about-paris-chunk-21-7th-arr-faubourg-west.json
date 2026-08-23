@@ -124,7 +124,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The Prime Minister's residence is closed to the public and walked past only; there is no visitor entrance and therefore no line."
+    "queue_basis": "The Prime Minister's residence is closed to the public and walked past only; there is no visitor entrance and therefore no line.",
+    "anchors": null
   },
   {
     "name": "Musee de la Legion d'Honneur",
@@ -251,7 +252,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A small free museum with a single reception desk and light bag check; the mechanism is one modest door with few visitors, so any line is brief even at its worst."
+    "queue_basis": "A small free museum with a single reception desk and light bag check; the mechanism is one modest door with few visitors, so any line is brief even at its worst.",
+    "anchors": null
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -340,7 +342,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A neo-Gothic parish church with an open door and free entry; visitors walk straight in without a ticket or screening."
+    "queue_basis": "A neo-Gothic parish church with an open door and free entry; visitors walk straight in without a ticket or screening.",
+    "anchors": null
   },
   {
     "name": "Hotel de Gallifet",
@@ -407,7 +410,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An embassy and cultural institute walked past from the street; there is no public ticket entrance and thus no queue to enter."
+    "queue_basis": "An embassy and cultural institute walked past from the street; there is no public ticket entrance and thus no queue to enter.",
+    "anchors": null
   },
   {
     "name": "Musee Rodin",
@@ -415,7 +419,7 @@
     "latitude": 48.854747,
     "longitude": 2.315867,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -571,7 +575,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A single ticket desk and bag check at the Hotel Biron gate create a modest wait at peak hours that stays manageable."
+    "queue_basis": "A single ticket desk and bag check at the Hotel Biron gate create a modest wait at peak hours that stays manageable.",
+    "anchors": null
   },
   {
     "name": "Musee d'Orsay",
@@ -579,7 +584,7 @@
     "latitude": 48.859962,
     "longitude": 2.326561,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -761,7 +766,8 @@
         "14:00"
       ]
     ],
-    "queue_basis": "Security screening and ticket checks at the single main entrance of the converted railway station form a substantial midday line, shortest at opening and late afternoon."
+    "queue_basis": "Security screening and ticket checks at the single main entrance of the converted railway station form a substantial midday line, shortest at opening and late afternoon.",
+    "anchors": null
   },
   {
     "name": "Assemblee Nationale",
@@ -769,7 +775,7 @@
     "latitude": 48.860862,
     "longitude": 2.318389,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -979,6 +985,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The working parliament is not a walk-in attraction and interior access is only by rare booked visit, so a tour stop views the Palais Bourbon facade from the open street with no line."
+    "queue_basis": "The working parliament is not a walk-in attraction and interior access is only by rare booked visit, so a tour stop views the Palais Bourbon facade from the open street with no line.",
+    "anchors": null
   }
 ]

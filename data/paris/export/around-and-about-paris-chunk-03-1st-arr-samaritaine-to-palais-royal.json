@@ -5,7 +5,7 @@
     "latitude": 48.8558,
     "longitude": 2.3458,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -199,7 +199,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "Entry to the medieval prison passes through a security bag-check and a single ticket desk at one narrow entrance, so a substantial line forms midday and thins near opening and late afternoon."
+    "queue_basis": "Entry to the medieval prison passes through a security bag-check and a single ticket desk at one narrow entrance, so a substantial line forms midday and thins near opening and late afternoon.",
+    "anchors": null
   },
   {
     "name": "Ile de la Cite",
@@ -291,7 +292,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it."
+    "queue_basis": "This is an open island of streets, bridges, and squares with no gated interior, so there is no line to enter it.",
+    "anchors": null
   },
   {
     "name": "Place Dauphine",
@@ -378,7 +380,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A triangular open square on the Île de la Cité entered freely from the street, with no gate or ticket and therefore no queue."
+    "queue_basis": "A triangular open square on the Île de la Cité entered freely from the street, with no gate or ticket and therefore no queue.",
+    "anchors": null
   },
   {
     "name": "Place du Châtelet",
@@ -529,7 +532,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with a fountain, freely crossed on foot with no door or admission, so there is no line."
+    "queue_basis": "An open public square with a fountain, freely crossed on foot with no door or admission, so there is no line.",
+    "anchors": null
   },
   {
     "name": "Pont Neuf",
@@ -537,7 +541,7 @@
     "latitude": 48.85675,
     "longitude": 2.341033,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -586,7 +590,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
+    "anchors": null
   },
   {
     "name": "Sainte-Chapelle",
@@ -594,7 +599,7 @@
     "latitude": 48.855358,
     "longitude": 2.34483,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -747,7 +752,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Airport-style security shared with the Palais de Justice plus a ticket check funnels visitors ahead of a small chapel, so the line runs long at midday and thins near opening and late afternoon."
+    "queue_basis": "Airport-style security shared with the Palais de Justice plus a ticket check funnels visitors ahead of a small chapel, so the line runs long at midday and thins near opening and late afternoon.",
+    "anchors": null
   },
   {
     "name": "Tour de l'Horloge",
@@ -755,7 +761,7 @@
     "latitude": 48.856865,
     "longitude": 2.343955,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -808,6 +814,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A clock tower viewed from the street corner with no visitor entry, so there is nothing to queue for."
+    "queue_basis": "A clock tower viewed from the street corner with no visitor entry, so there is nothing to queue for.",
+    "anchors": null
   }
 ]

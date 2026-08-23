@@ -44,6 +44,7 @@ from .contract import (
     END_B_SENTINEL_NAME,
     END_B_SENTINEL_PREFIX,
     POI,
+    Anchor,
     BeatRef,
     ClockExclusion,
     PhysicalCue,
@@ -709,6 +710,8 @@ RETURN
   p.queue_minutes_offpeak AS queue_minutes_offpeak,
   p.queue_peak_hours AS queue_peak_hours,
   p.queue_basis   AS queue_basis,
+  p.trigger_radius AS trigger_radius,
+  p.anchors       AS anchors,
   area_names      AS areas
 ORDER BY p.id
 """
@@ -1017,6 +1020,17 @@ def _snapshot_from_records(
                 queue_minutes_peak=int(r.get("queue_minutes_peak") or 0),
                 queue_minutes_offpeak=int(r.get("queue_minutes_offpeak") or 0),
                 queue_peak_hours=_clean(r.get("queue_peak_hours")) or "",
+                # THE FOOTPRINT (Phase 7 S7.4; design §5.6 C7) — the same closed-hop
+                # rule: the graph's metres land on the POI; a record carrying none (or
+                # the graph's 0) lands on the contract's None, and the audio placement
+                # rule (src/tour/placement.py) falls to its door-sized default.
+                trigger_radius=(
+                    float(r["trigger_radius"]) if r.get("trigger_radius") else None
+                ),
+                # THE REVIEWED ANCHORS (Phase 7 S7.7 B) — the same closed-hop rule: the
+                # graph's JSON list lands on the POI; a record carrying none lands on
+                # the contract's empty tuple and the story is told uncut.
+                anchors=_decode_anchors(r.get("anchors")),
                 queue_basis=_clean(r.get("queue_basis")) or "",
             )
         )
@@ -1041,6 +1055,35 @@ def _snapshot_from_records(
         lens_neighbors=_lens_neighbor_map(lens_records or []),
         place_manifest=place_manifest,
     )
+
+
+def _decode_anchors(raw) -> tuple[Anchor, ...]:
+    """Decode a POI's reviewed anchors (Phase 7 S7.7 B) from the graph's JSON string (the
+    `opening_hours` / `physical_cues` precedent) or a plain list. Fails OPEN like the cue
+    decoder: nothing, an empty string, a malformed payload or a malformed entry reads as
+    no anchor — an uncut story — never a refusal to load the corpus."""
+    if raw is None:
+        return ()
+    if isinstance(raw, str):
+        if not raw.strip():
+            return ()
+        try:
+            decoded = json.loads(raw)
+        except (json.JSONDecodeError, ValueError):
+            return ()
+    else:
+        decoded = raw
+    if not isinstance(decoded, list):
+        return ()
+    out: list[Anchor] = []
+    for entry in decoded:
+        if not isinstance(entry, dict):
+            continue
+        try:
+            out.append(Anchor.model_validate(entry))
+        except ValueError:
+            continue
+    return tuple(out)
 
 
 def _clean(v) -> str | None:
@@ -3634,6 +3677,12 @@ def _select_route_once(
             },
             "visit_goes_inside": {
                 poi.id: shape_visit(poi, hour).inside_seconds > 0
+                for poi, hour, _seconds, _clock in final_arrivals
+            },
+            # Phase 7 S7.6: the placed OUTSIDE seconds — the same shape at the same
+            # hour; the audio placement rule's threshold before a door.
+            "planned_outside_seconds": {
+                poi.id: shape_visit(poi, hour).outside_seconds
                 for poi, hour, _seconds, _clock in final_arrivals
             },
         }

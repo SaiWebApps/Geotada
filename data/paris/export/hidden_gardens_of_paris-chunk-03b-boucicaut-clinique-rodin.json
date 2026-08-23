@@ -5,7 +5,7 @@
     "latitude": 48.8508,
     "longitude": 2.3179,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -203,7 +203,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no gate and no interior to enter, so there is no line to stand in at any hour."
+    "queue_basis": "An open public square with no gate and no interior to enter, so there is no line to stand in at any hour.",
+    "anchors": null
   },
   {
     "name": "Jardin de la Clinique Saint-Jean de Dieu",
@@ -211,7 +212,7 @@
     "latitude": 48.8524,
     "longitude": 2.3126,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -419,7 +420,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A hidden hospital-grounds rose garden entered during visiting hours with no ticket desk or security line, so there is no queue to stand in."
+    "queue_basis": "A hidden hospital-grounds rose garden entered during visiting hours with no ticket desk or security line, so there is no queue to stand in.",
+    "anchors": null
   },
   {
     "name": "Musee Rodin",
@@ -427,7 +429,7 @@
     "latitude": 48.854747,
     "longitude": 2.315867,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -801,7 +803,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A single ticket desk and bag check at the Hotel Biron gate create a modest wait at peak hours that stays manageable."
+    "queue_basis": "A single ticket desk and bag check at the Hotel Biron gate create a modest wait at peak hours that stays manageable.",
+    "anchors": null
   },
   {
     "name": "Le Bon Marché",
@@ -896,7 +899,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A department store with wide free-entry doors and no ticket or security line to enter; any waiting happens at checkout tills inside, not at the threshold."
+    "queue_basis": "A department store with wide free-entry doors and no ticket or security line to enter; any waiting happens at checkout tills inside, not at the threshold.",
+    "anchors": null
   },
   {
     "name": "Hotel Lutetia",
@@ -904,7 +908,7 @@
     "latitude": 48.8506,
     "longitude": 2.3233,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 12,
     "kid_friendly": "no",
     "name_variations": [
@@ -1014,7 +1018,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working luxury hotel walked past or entered through its lobby doors with no admission line or screening, so there is no queue to price."
+    "queue_basis": "A working luxury hotel walked past or entered through its lobby doors with no admission line or screening, so there is no queue to price.",
+    "anchors": null
   },
   {
     "name": "Jardin Catherine-Laboure",
@@ -1022,7 +1027,7 @@
     "latitude": 48.8518,
     "longitude": 2.3195,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1108,7 +1113,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A convent-grounds public garden on rue de Babylone entered freely through an open gate with no ticket or bag check, so there is no queue."
+    "queue_basis": "A convent-grounds public garden on rue de Babylone entered freely through an open gate with no ticket or bag check, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -1209,6 +1215,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A neo-Gothic parish church with an open door and free entry; visitors walk straight in without a ticket or screening."
+    "queue_basis": "A neo-Gothic parish church with an open door and free entry; visitors walk straight in without a ticket or screening.",
+    "anchors": null
   }
 ]

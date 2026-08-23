@@ -59,7 +59,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by-only synagogue with no public tourist admission; there is no line for a passing visitor to stand in."
+    "queue_basis": "A walk-by-only synagogue with no public tourist admission; there is no line for a passing visitor to stand in.",
+    "anchors": null
   },
   {
     "name": "Priory of Saint-Martin-des-Champs",
@@ -215,7 +216,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Now the Musée des Arts et Métiers, entry is through a single ticket and bag-check desk that gathers a few people at midday but the line stays minor and moves steadily."
+    "queue_basis": "Now the Musée des Arts et Métiers, entry is through a single ticket and bag-check desk that gathers a few people at midday but the line stays minor and moves steadily.",
+    "anchors": null
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -223,7 +225,7 @@
     "latitude": 48.866098,
     "longitude": 2.355414,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -319,7 +321,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A mid-sized ticketed museum with a bag check and ticket desk that rarely backs up; the line is minor and moves, peaking only midday when school and tour groups arrive."
+    "queue_basis": "A mid-sized ticketed museum with a bag check and ticket desk that rarely backs up; the line is minor and moves, peaking only midday when school and tour groups arrive.",
+    "anchors": null
   },
   {
     "name": "Porte Saint-Martin",
@@ -410,7 +413,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A freestanding triumphal arch on a street island with no interior and no door, so there is nothing to queue for."
+    "queue_basis": "A freestanding triumphal arch on a street island with no interior and no door, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Saint-Nicolas-des-Champs",
@@ -497,7 +501,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working parish church with an open door and free entry, walked into without any ticket desk or security check."
+    "queue_basis": "A working parish church with an open door and free entry, walked into without any ticket desk or security check.",
+    "anchors": null
   },
   {
     "name": "3 Rue Volta",
@@ -505,7 +510,7 @@
     "latitude": 48.8646,
     "longitude": 2.3568,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
@@ -560,7 +565,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private half-timbered house seen only from the street; there is no admission and no interior to enter, so no line forms."
+    "queue_basis": "A private half-timbered house seen only from the street; there is no admission and no interior to enter, so no line forms.",
+    "anchors": null
   },
   {
     "name": "Convent of the Madelonnettes",
@@ -622,6 +628,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The convent was demolished in the 1860s and only a street site remains, so there is nothing to enter and no queue."
+    "queue_basis": "The convent was demolished in the 1860s and only a street site remains, so there is nothing to enter and no queue.",
+    "anchors": null
   }
 ]

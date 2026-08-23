@@ -183,6 +183,151 @@ void main() {
       expect(rebuilt.lat, original.lat);
       expect(rebuilt.lng, original.lng);
     });
+
+    // Phase 7 S7.3 (design §5.6; W7.2 R1): the stop's placed trigger geometry
+    // rides the wire and the phone READS it — the footprint is the server's
+    // number, never a circle of the phone's. A legacy item carries none.
+    test('fromJson reads the placed trigger geometry (S7.3) and keeps it '
+        'through toJson and copyWith', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'poi-123',
+        'poi_name': 'Place des Vosges',
+        'lat': 48.8556,
+        'lng': 2.3655,
+        'beat_id': 'beat-456',
+        'lens_name': 'history',
+        'lens_display': 'History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '10:30',
+        'trigger': {'kind': 'circle', 'radius_m': 140},
+      };
+      final stop = ItineraryStop.fromJson(json);
+      expect(stop.trigger, isNotNull);
+      expect(stop.trigger!.kind, 'circle');
+      expect(stop.trigger!.radiusM, 140.0);
+      final rebuilt = ItineraryStop.fromJson(stop.toJson());
+      expect(rebuilt.trigger!.radiusM, 140.0);
+      expect(stop.copyWith(audioUrl: 'https://cdn/x.mp3').trigger!.radiusM, 140.0);
+    });
+
+    // Phase 7 S7.7 (design §5.6 C7): the stop's LEG piece — its walking line,
+    // voiced as its own file — rides the wire beside the story and survives the
+    // round trip and copyWith.
+    test('fromJson reads the leg piece (S7.7) and keeps it through toJson and '
+        'copyWith', () {
+      final json = {
+        'sort_order': 2,
+        'poi_id': 'poi-2',
+        'poi_name': 'Notre-Dame',
+        'lat': 48.853,
+        'lng': 2.3499,
+        'beat_id': 'beat-2',
+        'lens_name': 'history',
+        'lens_display': 'History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '10:30',
+        'leg_narration': 'Walk southeast along the river for about ten minutes.',
+        'leg_audio_url': 'https://cdn.example.com/stop-2-leg.mp3',
+        'leg_audio_duration_sec': 9.5,
+      };
+      final stop = ItineraryStop.fromJson(json);
+      expect(stop.legNarration, startsWith('Walk southeast'));
+      expect(stop.legAudioUrl, 'https://cdn.example.com/stop-2-leg.mp3');
+      expect(stop.legAudioDurationSec, 9.5);
+      final rebuilt = ItineraryStop.fromJson(stop.toJson());
+      expect(rebuilt.legAudioUrl, stop.legAudioUrl);
+      expect(stop.copyWith(audioUrl: 'https://cdn/x.mp3').legAudioUrl, stop.legAudioUrl);
+    });
+
+    // Phase 7 S7.7 (B): a marquee's chapters ride the wire as a list, each with
+    // its own place, radius, roof flag, text and (once voiced) file.
+    test('fromJson reads the chapters (S7.7 B); a legacy item has none', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'nd',
+        'poi_name': 'Notre-Dame Cathedral',
+        'lat': 48.852966,
+        'lng': 2.349902,
+        'beat_id': 'b',
+        'lens_name': 'history',
+        'lens_display': 'History',
+        'duration_min': 25,
+        'importance_tier': 5,
+        'start_time': '10:30',
+        'segments': [
+          {
+            'label': 'The west front', 'lat': 48.85325, 'lng': 2.34875, 'radius_m': 45.0,
+            'indoor': false, 'narration': 'The facade.', 'audio_url': 'https://cdn/w.mp3',
+            'audio_duration_sec': 31.5,
+          },
+          {
+            'label': 'Inside', 'lat': 48.853, 'lng': 2.34975, 'radius_m': 60.0,
+            'indoor': true, 'narration': 'The nave.', 'audio_url': null,
+            'audio_duration_sec': null,
+          },
+        ],
+      };
+      final stop = ItineraryStop.fromJson(json);
+      expect(stop.segments.length, 2);
+      expect(stop.segments[0].label, 'The west front');
+      expect(stop.segments[0].radiusM, 45.0);
+      expect(stop.segments[0].indoor, isFalse);
+      expect(stop.segments[0].audioUrl, 'https://cdn/w.mp3');
+      expect(stop.segments[0].audioDurationSec, 31.5);
+      expect(stop.segments[1].indoor, isTrue);
+      expect(stop.segments[1].audioUrl, isNull);
+      final rebuilt = ItineraryStop.fromJson(stop.toJson());
+      expect(rebuilt.segments.map((s) => s.label), ['The west front', 'Inside']);
+      expect(stop.copyWith(audioUrl: 'x').segments.length, 2);
+      json.remove('segments');
+      expect(ItineraryStop.fromJson(json).segments, isEmpty);
+    });
+
+    test('a legacy item without a trigger reads null — no geometry (S7.3)', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'poi-123',
+        'poi_name': 'Old item',
+        'lat': 48.8584,
+        'lng': 2.2945,
+        'beat_id': 'beat-456',
+        'lens_name': 'history',
+        'lens_display': 'History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '09:00',
+      };
+      expect(ItineraryStop.fromJson(json).trigger, isNull);
+      expect(ItineraryStop.fromJson(json).toJson()['trigger'], isNull);
+    });
+  });
+
+  group('SessionPlan placement (S7.3)', () {
+    test('fromJson reads the day\'s placement policy; an older server sends none',
+        () {
+      final base = {
+        'trip_id': 'trip-1',
+        'plan_version': 1,
+        'stops': <dynamic>[],
+        'retime_tolerance_seconds': 180,
+      };
+      final family = SessionPlan.fromJson({
+        ...base,
+        'placement': {'start_at': 'standstill', 'own_place_m': 60},
+      });
+      expect(family.placement, isNotNull);
+      expect(family.placement!.startsAtStandstill, isTrue);
+      expect(family.placement!.ownPlaceM, 60.0);
+      final solo = SessionPlan.fromJson({
+        ...base,
+        'placement': {'start_at': 'arrival', 'own_place_m': 60},
+      });
+      expect(solo.placement!.startsAtStandstill, isFalse);
+      expect(SessionPlan.fromJson(base).placement, isNull);
+    });
   });
 
   group('GeneratedTrip', () {

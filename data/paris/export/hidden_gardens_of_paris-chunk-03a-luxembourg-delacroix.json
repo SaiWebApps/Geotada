@@ -5,7 +5,7 @@
     "latitude": 48.846222,
     "longitude": 2.337051,
     "importance_tier": 5,
-    "trigger_radius": 100,
+    "trigger_radius": 390,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -409,7 +409,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening."
+    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening.",
+    "anchors": null
   },
   {
     "name": "Fontaine Médicis",
@@ -568,7 +569,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A fountain inside the freely-entered Luxembourg Gardens, viewed in the open with no gate or ticket to queue for."
+    "queue_basis": "A fountain inside the freely-entered Luxembourg Gardens, viewed in the open with no gate or ticket to queue for.",
+    "anchors": null
   },
   {
     "name": "Palais du Luxembourg",
@@ -733,7 +735,8 @@
         "13:00"
       ]
     ],
-    "queue_basis": "As the seat of the French Senate, public access is limited and gated by security screening on booked-visit days, giving a modest controlled line rather than a mass tourist queue; without booking most tours only see the exterior and the surrounding gardens, which are free and unqueued."
+    "queue_basis": "As the seat of the French Senate, public access is limited and gated by security screening on booked-visit days, giving a modest controlled line rather than a mass tourist queue; without booking most tours only see the exterior and the surrounding gardens, which are free and unqueued.",
+    "anchors": null
   },
   {
     "name": "Musée Eugène Delacroix",
@@ -741,7 +744,7 @@
     "latitude": 48.8546415,
     "longitude": 2.3353937,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1083,7 +1086,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A small apartment-and-studio museum with a single ticket desk and modest capacity, so a few visitors may briefly queue at midday but the line is minor and moves."
+    "queue_basis": "A small apartment-and-studio museum with a single ticket desk and modest capacity, so a few visitors may briefly queue at midday but the line is minor and moves.",
+    "anchors": null
   },
   {
     "name": "Place de Furstemberg",
@@ -1178,7 +1182,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no door and no gate; the Musée Delacroix on it has its own small desk, but the square itself is walked into freely with no line."
+    "queue_basis": "An open public square with no door and no gate; the Musée Delacroix on it has its own small desk, but the square itself is walked into freely with no line.",
+    "anchors": null
   },
   {
     "name": "Institut Catholique",
@@ -1186,7 +1191,7 @@
     "latitude": 48.8476,
     "longitude": 2.333,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1343,7 +1348,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working university passed on the street as a walk-by with no public ticketed entry, so there is no visitor queue."
+    "queue_basis": "A working university passed on the street as a walk-by with no public ticketed entry, so there is no visitor queue.",
+    "anchors": null
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -1457,7 +1463,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Walked by only; the art school's courtyard and street facade are viewed without any ticketed entry or line."
+    "queue_basis": "Walked by only; the art school's courtyard and street facade are viewed without any ticketed entry or line.",
+    "anchors": null
   },
   {
     "name": "9 Quai Malaquais (George Sand)",
@@ -1465,7 +1472,7 @@
     "latitude": 48.8582,
     "longitude": 2.3358,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1554,7 +1561,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private residential address viewed from the street with no interior to enter, so there is no queue."
+    "queue_basis": "A private residential address viewed from the street with no interior to enter, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Saint-Sulpice",
@@ -1562,7 +1570,7 @@
     "latitude": 48.850987,
     "longitude": 2.33487,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1699,7 +1707,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering."
+    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering.",
+    "anchors": null
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -1781,7 +1790,7 @@
       "source_book": "hidden_gardens_of_paris",
       "is_new_poi": false
     },
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "kid_friendly": "yes",
     "name_variations": [
       "Eglise Saint-Germain-des-Pres",
@@ -1850,6 +1859,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An active parish church with an open door and free entry that visitors walk straight into, so there is no ticket desk or security to stand in."
+    "queue_basis": "An active parish church with an open door and free entry that visitors walk straight into, so there is no ticket desk or security to stand in.",
+    "anchors": null
   }
 ]

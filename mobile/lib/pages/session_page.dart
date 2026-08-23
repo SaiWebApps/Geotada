@@ -149,6 +149,83 @@ class _SessionPageState extends State<SessionPage> {
                       key: const Key('session-thread-line'),
                       style: text.titleMedium),
                 ),
+              // Phase 7 S7.5 (design §5.6; W7.2 R2 — Fiona & Dev, Nadia): at a
+              // stop whose arrival hour prices a line, a couple's or a family's
+              // piece waits for THEIR tap; the offer names the stop, the tap
+              // plays it. The screen renders what the service holds.
+              if (service.armedOffer != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: FilledButton.tonalIcon(
+                    key: const Key('session-armed-offer'),
+                    onPressed: service.startArmedPiece,
+                    icon: const Icon(Icons.play_arrow),
+                    label: Text('Hear the story · ${service.armedOffer}'),
+                  ),
+                ),
+              // Phase 7 S7.6 (design §5.6 threshold silence, §5.7; W7.2 R3): a
+              // piece cut at its door leaves its transcript on the screen and a
+              // keep-listening tap that resumes from the cut sentence's start.
+              // Nothing resumes by itself.
+              if (service.keepListeningOffer != null) ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: FilledButton.tonalIcon(
+                    key: const Key('session-keep-listening'),
+                    onPressed: service.keepListening,
+                    icon: const Icon(Icons.headphones),
+                    label: Text('Keep listening · ${service.keepListeningOffer}'),
+                  ),
+                ),
+                // W7.13 (Marcus, R3 "transcript and leave-by on screen"): when to
+                // leave the interior to keep the plan — shown, never spoken.
+                if (service.doorLeaveByHhmm != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text('Leave by ${service.doorLeaveByHhmm}',
+                        key: const Key('session-door-leave-by'),
+                        style: text.bodyMedium),
+                  ),
+                if (service.keepListeningTranscript != null)
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: SingleChildScrollView(
+                        child: Text(service.keepListeningTranscript!,
+                            key: const Key('session-transcript'),
+                            style: text.bodySmall
+                                ?.copyWith(color: colors.onSurfaceVariant)),
+                      ),
+                    ),
+                  ),
+              ],
+              // Phase 7 S7.9 (W7.2 R5 — Fiona & Dev): after a call the couple's
+              // piece waits for THEIR tap; the offer names the stop, the tap
+              // resumes from the cut sentence's start.
+              if (service.resumeOffer != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: FilledButton.tonalIcon(
+                    key: const Key('session-resume-offer'),
+                    onPressed: service.resumeInterrupted,
+                    icon: const Icon(Icons.play_arrow),
+                    label: Text('Carry on · ${service.resumeOffer}'),
+                  ),
+                ),
+              // Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): a chapter of
+              // the marquee due at the walker's spot — under a roof always by
+              // tap, outdoors a tap for the couple and the family (solo days
+              // hear it at the standstill). The screen renders the offer.
+              if (service.segmentOffer != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: FilledButton.tonalIcon(
+                    key: const Key('session-chapter-offer'),
+                    onPressed: service.startSegment,
+                    icon: const Icon(Icons.place_outlined),
+                    label: Text('Hear about ${service.segmentOffer}'),
+                  ),
+                ),
               // Phase 6 S6.6 (design §5.5; W6.2 R3): the LINGER OFFER — on the
               // screen, silently, with its cost; a tap plays the full telling.
               // "Again" is a separate control: the re-listen is not the full

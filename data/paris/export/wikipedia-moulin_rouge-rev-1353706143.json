@@ -5,7 +5,7 @@
     "latitude": 48.884129,
     "longitude": 2.3324,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "no",
     "name_variations": [
@@ -359,6 +359,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This is a cabaret with timed evening show admission, not a walk-in attraction, so a daytime walking-tour stop views the facade from the open street with no line to stand in."
+    "queue_basis": "This is a cabaret with timed evening show admission, not a walk-in attraction, so a daytime walking-tour stop views the facade from the open street with no line to stand in.",
+    "anchors": null
   }
 ]

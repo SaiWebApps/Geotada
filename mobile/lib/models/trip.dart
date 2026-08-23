@@ -1,3 +1,97 @@
+/// Phase 7 S7.3 (design §5.6; W7.2 R1): WHERE a stop's piece plays — the
+/// place's own footprint, placed by the server's ONE rule
+/// (src/tour/placement.py) and READ here. The phone draws no circle of its
+/// own: until S7.3 it decided "at the stop" with two literals (10 m to start a
+/// piece, 40 m to be "at" a place) for a 140 m square and a doorway alike.
+/// `kind` is "circle" this phase; a line or polygon is a carried data row.
+class StopTrigger {
+  final String kind;
+  final double radiusM;
+  // S7.5 (design §5.6; W7.2 R2): the seconds of line the planner priced at
+  // this stop's arrival hour. 0 = no line: the piece keeps the arrival rule;
+  // > 0 = the line is the place: the piece waits for the first standstill
+  // inside the footprint, or for the tap under the day's `tap` policy.
+  final int queueSeconds;
+  // S7.6 (design §5.6 threshold silence; W7.2 R3): this stop is a DOOR — the
+  // plan's visit goes inside a place you enter — and the placed OUTSIDE seconds
+  // before it. At a door the piece ends at its current sentence when those
+  // seconds have run, then the close plays; inside, nothing auto-plays.
+  final bool door;
+  final int outsideSeconds;
+
+  const StopTrigger({
+    this.kind = 'circle',
+    required this.radiusM,
+    this.queueSeconds = 0,
+    this.door = false,
+    this.outsideSeconds = 0,
+  });
+
+  factory StopTrigger.fromJson(Map<String, dynamic> json) => StopTrigger(
+        kind: (json['kind'] as String?) ?? 'circle',
+        radiusM: (json['radius_m'] as num).toDouble(),
+        queueSeconds: (json['queue_seconds'] as num?)?.toInt() ?? 0,
+        door: (json['door'] as bool?) ?? false,
+        outsideSeconds: (json['outside_seconds'] as num?)?.toInt() ?? 0,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'kind': kind,
+        'radius_m': radiusM,
+        'queue_seconds': queueSeconds,
+        'door': door,
+        'outside_seconds': outsideSeconds,
+      };
+}
+
+/// The day's placement POLICY (S7.3): whether an armed piece starts as the
+/// footprint is entered or at the first standstill inside it (the family day —
+/// Nadia, design §4.4.4), and the radius of the person's OWN place — the start
+/// square and the named finish. Decided on the server from the party; the phone
+/// reads it and invents no branch of its own.
+class PlacementPolicy {
+  final String startAt; // 'arrival' | 'standstill'
+  final double ownPlaceM;
+  // S7.5 (W7.2 R2): how a QUEUED stop's piece starts — 'auto' at the first
+  // standstill inside the footprint; 'tap' the screen offers and the person's
+  // tap starts it (the couple, the family); 'none' a wall prices no line.
+  final String queuePiece;
+  // W7.13 (F&D): the R6 sentence cap and the R5 resume rule ride the policy —
+  // decided on the server from the party and the hardness, never a phone
+  // branch. Null = an older session: the phone's party fallback stands in.
+  final double? sentenceCapS;
+  final String? interruptionResume; // 'auto' | 'tap'
+
+  const PlacementPolicy({
+    this.startAt = 'arrival',
+    required this.ownPlaceM,
+    this.queuePiece = 'auto',
+    this.sentenceCapS,
+    this.interruptionResume,
+  });
+
+  bool get startsAtStandstill => startAt == 'standstill';
+  bool get queuePieceByTap => queuePiece == 'tap';
+  bool get interruptionResumeByTap => interruptionResume == 'tap';
+
+  factory PlacementPolicy.fromJson(Map<String, dynamic> json) =>
+      PlacementPolicy(
+        startAt: (json['start_at'] as String?) ?? 'arrival',
+        ownPlaceM: (json['own_place_m'] as num).toDouble(),
+        queuePiece: (json['queue_piece'] as String?) ?? 'auto',
+        sentenceCapS: (json['sentence_cap_s'] as num?)?.toDouble(),
+        interruptionResume: json['interruption_resume'] as String?,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'start_at': startAt,
+        'own_place_m': ownPlaceM,
+        'queue_piece': queuePiece,
+        if (sentenceCapS != null) 'sentence_cap_s': sentenceCapS,
+        if (interruptionResume != null) 'interruption_resume': interruptionResume,
+      };
+}
+
 class ItineraryStop {
   final int sortOrder;
   // ItineraryItem id — addresses this stop for per-stop narration audio
@@ -56,6 +150,22 @@ class ItineraryStop {
   // the plain spoken line.
   final Map<String, String>? threadAudioUrls;
   final String? fullCloseAudioUrl;
+  // Phase 7 S7.3 (design §5.6; W7.2 R1): the stop's placed trigger geometry —
+  // the place's own footprint, from the server's one rule. Null on an item
+  // written before the rule existed: no geometry, so nothing auto-plays there
+  // (a tap still does).
+  final StopTrigger? trigger;
+  // Phase 7 S7.7 (design §5.6 C7; plan defect 7): the stop's LEG piece — its
+  // walking line, voiced as its own file and played ON THE LEG (the first
+  // stop's at the start; every later stop's once the walker leaves the
+  // previous footprint). Null when the leg carries nothing / not yet voiced.
+  final String? legNarration;
+  final String? legAudioUrl;
+  final double? legAudioDurationSec;
+  // Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): a marquee's CHAPTERS
+  // — its story cut at the reviewed anchors, each its own piece at its own
+  // place inside the footprint. Empty for every stop without anchors.
+  final List<StopSegment> segments;
 
   const ItineraryStop({
     required this.sortOrder,
@@ -85,6 +195,11 @@ class ItineraryStop {
     this.fullCloseText,
     this.threadAudioUrls,
     this.fullCloseAudioUrl,
+    this.trigger,
+    this.legNarration,
+    this.legAudioUrl,
+    this.legAudioDurationSec,
+    this.segments = const [],
   });
 
   /// Seconds the plan spends AT this stop (S5.10): the planner's exact visit
@@ -137,6 +252,16 @@ class ItineraryStop {
       threadAudioUrls: (json['thread_audio_urls'] as Map<String, dynamic>?)
           ?.map((k, v) => MapEntry(k, v as String)),
       fullCloseAudioUrl: json['full_close_audio_url'] as String?,
+      trigger: json['trigger'] == null
+          ? null
+          : StopTrigger.fromJson(json['trigger'] as Map<String, dynamic>),
+      legNarration: json['leg_narration'] as String?,
+      legAudioUrl: json['leg_audio_url'] as String?,
+      legAudioDurationSec: (json['leg_audio_duration_sec'] as num?)?.toDouble(),
+      segments: [
+        for (final s in (json['segments'] as List<dynamic>? ?? const []))
+          StopSegment.fromJson(s as Map<String, dynamic>),
+      ],
     );
   }
 
@@ -168,6 +293,11 @@ class ItineraryStop {
         'full_close_text': fullCloseText,
         'thread_audio_urls': threadAudioUrls,
         'full_close_audio_url': fullCloseAudioUrl,
+        'trigger': trigger?.toJson(),
+        'leg_narration': legNarration,
+        'leg_audio_url': legAudioUrl,
+        'leg_audio_duration_sec': legAudioDurationSec,
+        'segments': [for (final s in segments) s.toJson()],
       };
 
   ItineraryStop copyWith({
@@ -208,8 +338,62 @@ class ItineraryStop {
       fullNarration: fullNarration,
       fullCloseText: fullCloseText,
       fullCloseAudioUrl: fullCloseAudioUrl ?? this.fullCloseAudioUrl,
+      trigger: trigger,
+      legNarration: legNarration,
+      legAudioUrl: legAudioUrl,
+      legAudioDurationSec: legAudioDurationSec,
+      segments: segments,
     );
   }
+}
+
+/// Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): ONE CHAPTER of a
+/// marquee stop — the reviewed anchor's place and radius (read by the phone's
+/// one `_within`), whether it is under a roof (then a tap, never auto), its
+/// text, and its own file once voiced. The server cuts the story; the phone
+/// plays what it holds.
+class StopSegment {
+  final String label;
+  final double lat;
+  final double lng;
+  final double radiusM;
+  final bool indoor;
+  final String narration;
+  final String? audioUrl;
+  final double? audioDurationSec;
+
+  const StopSegment({
+    required this.label,
+    required this.lat,
+    required this.lng,
+    required this.radiusM,
+    this.indoor = false,
+    required this.narration,
+    this.audioUrl,
+    this.audioDurationSec,
+  });
+
+  factory StopSegment.fromJson(Map<String, dynamic> json) => StopSegment(
+        label: json['label'] as String,
+        lat: (json['lat'] as num).toDouble(),
+        lng: (json['lng'] as num).toDouble(),
+        radiusM: (json['radius_m'] as num).toDouble(),
+        indoor: json['indoor'] as bool? ?? false,
+        narration: json['narration'] as String? ?? '',
+        audioUrl: json['audio_url'] as String?,
+        audioDurationSec: (json['audio_duration_sec'] as num?)?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'label': label,
+        'lat': lat,
+        'lng': lng,
+        'radius_m': radiusM,
+        'indoor': indoor,
+        'narration': narration,
+        'audio_url': audioUrl,
+        'audio_duration_sec': audioDurationSec,
+      };
 }
 
 // Phase 4 (design §8.1): POST /trips/generate still carries `options` on the
@@ -426,6 +610,12 @@ class SessionPlan {
   /// earns one screen line (W5.14 Q3); an open day's finish moves in silence.
   final String endHardness;
 
+  /// Phase 7 S7.3: the day's placement policy (who starts a piece at the
+  /// footprint's edge, who at the first standstill; the own-place radius).
+  /// Null from an older server: the phone starts at arrival and has no own
+  /// place to measure the first step off the square against.
+  final PlacementPolicy? placement;
+
   const SessionPlan({
     required this.tripId,
     required this.planVersion,
@@ -442,6 +632,7 @@ class SessionPlan {
     this.finishLng,
     this.finishName = 'your finish',
     this.endHardness = 'firm',
+    this.placement,
   });
 
   factory SessionPlan.fromJson(Map<String, dynamic> json) => SessionPlan(
@@ -472,5 +663,8 @@ class SessionPlan {
     finishLng: (json['finish_lng'] as num?)?.toDouble(),
     finishName: (json['finish_name'] as String?) ?? 'your finish',
     endHardness: (json['end_hardness'] as String?) ?? 'firm',
+    placement: json['placement'] == null
+        ? null
+        : PlacementPolicy.fromJson(json['placement'] as Map<String, dynamic>),
   );
 }

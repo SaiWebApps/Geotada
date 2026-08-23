@@ -7,14 +7,17 @@ import uuid
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
+from src.tour.contract import END_B_SENTINEL_PREFIX
 from src.tour.options import dominant_lens
-from src.tour.render_md import stop_close_text, stop_narration_text
+from src.tour.placement import anchor_of, place_segments
+from src.tour.render_md import stop_close_text, stop_leg_text, stop_narration_text
 
 if TYPE_CHECKING:
     from neo4j import ManagedTransaction as Transaction
     from neo4j import Session
 
-    from src.tour.contract import BeatRef, Script, ScriptPOI
+    from src.tour.contract import Anchor, BeatRef, Script, ScriptPOI
+    from src.tour.placement import StopTrigger
 
 
 def route_script_to_stops(
@@ -24,6 +27,8 @@ def route_script_to_stops(
     *,
     script: Script | None = None,
     extra_by_poi: dict[str, tuple[str, ...]] | None = None,
+    triggers: Mapping[str, StopTrigger] | None = None,
+    anchors: Mapping[str, tuple[Anchor, ...]] | None = None,
 ) -> list[dict[str, Any]]:
     """Adapt the engine's ordered ScriptPOIs into the stop dicts create_trip_with_stops expects.
 
@@ -43,11 +48,38 @@ def route_script_to_stops(
     ``narration`` — the stitched per-stop text (cold-open, transit glue, beats,
     closing) from ``stop_narration_text``, the text Phase 1 hands to TTS. Omitted
     (``""``) when no script is given, so existing callers stay back-compatible.
+
+    THE FOOTPRINT IS NOT SPELLED HERE EITHER (Phase 7 S7.3; design §5.6). ``triggers``
+    is poi id -> the stop's placed trigger geometry from THE one rule
+    (`src.tour.placement.place_stops`, the same shape as ``clocks`` above); each stop
+    carries it as a plain dict (``trigger``) so the item stores it and the wire model
+    validates it. A stop the caller did not place reads None — no geometry.
     """
-    narration_by_stop = stop_narration_text(script) if script is not None else {}
+    # Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): a marquee's reviewed anchors
+    # — ``anchors``, poi id -> its anchors from THE one rule (`place_anchors(route)`,
+    # the `triggers` shape) — cut its STORY into chapters: the resolver says which
+    # anchor a sentence is told at, the story keeps the rest, and each chapter rides
+    # the stop as its own piece (``segments``). No anchors: one uncut story, None.
+    resolve = (
+        anchor_of(selected_pois, beats_by_id, anchors) if script is not None and anchors else None
+    )
+    narration_by_stop = (
+        stop_narration_text(script, anchor_of=resolve) if script is not None else {}
+    )
+    segments_by_stop = (
+        place_segments(script, resolve) if script is not None and resolve is not None else {}
+    )
     # Phase 6 S6.4: the stop's CLOSE travels beside its narration (design §5.3).
     close_by_stop = stop_close_text(script) if script is not None else {}
+    # Phase 7 S7.7 (design §5.6 C7; plan defect 7): the stop's LEG piece — its walking
+    # line, a reflection on that leg, the walk-past one-liners — travels beside the
+    # STORY, its own file played on the leg; the story opens on the stop's own first
+    # sentence. None when the leg carries nothing. The SAME resolver the story is cut
+    # by is passed here (W7.11 defect 17): a sentence belonging to a reviewed anchor is
+    # told AT that anchor and never on the walk toward it.
+    leg_by_stop = stop_leg_text(script, anchor_of=resolve) if script is not None else {}
     extras = extra_by_poi or {}
+    placed = triggers or {}
 
     stops: list[dict[str, Any]] = []
     for idx, sp in enumerate(selected_pois):
@@ -73,6 +105,13 @@ def route_script_to_stops(
                 "dwell_seconds": sp.dwell_seconds,
                 "narration": narration_by_stop.get(idx, ""),
                 "close_text": close_by_stop.get(idx),
+                "leg_narration": leg_by_stop.get(idx),
+                "trigger": placed[sp.id].model_dump() if sp.id in placed else None,
+                "segments": (
+                    [seg.model_dump() for seg in segments_by_stop[idx]]
+                    if idx in segments_by_stop
+                    else None
+                ),
             }
         )
 
@@ -160,11 +199,20 @@ def _create_itinerary_items(
     """Create one ItineraryItem (+ edges) per stop; item ids in stop order.
 
     A null $lens_name is simply not stored (Cypher drops null map entries).
+
+    W7.13 (Sofia; the closing panel): the POI match is OPTIONAL. The old
+    ``MATCH (poi:POI {id: $poi_id})`` made the whole CREATE silently match
+    nothing for the A→B finish SENTINEL (whose id names no POI node), so the
+    finish stop — the day's goodbye — was never stored, never under HAS_STOP,
+    and therefore invisible to the voicing pass forever, while its minted item
+    id was returned and saved into the session as a phantom. The sentinel's
+    item is now real (stored, voiced); a NON-sentinel stop whose POI is
+    genuinely absent RAISES instead of vanishing (the same silent-no-op class).
     """
     item_query = """
         MATCH (trip:Trip {id: $trip_id})
-        MATCH (poi:POI {id: $poi_id})
         MATCH (profile:Profile {id: $profile_id})
+        OPTIONAL MATCH (poi:POI {id: $poi_id})
         CREATE (item:ItineraryItem {
             id: $item_id,
             sort_order: $sort_order,
@@ -180,16 +228,21 @@ def _create_itinerary_items(
             thread_lines: $thread_lines,
             full_narration: $full_narration,
             full_close_text: $full_close_text,
+            trigger_json: $trigger_json,
+            leg_narration: $leg_narration,
+            segments_json: $segments_json,
             created_at: datetime()
         })
         CREATE (trip)-[:HAS_STOP]->(item)
         CREATE (item)-[:ASSIGNED_TO]->(profile)
-        CREATE (item)-[:AT_POI]->(poi)
-        WITH item
-        UNWIND $beat_ids AS bid
-        MATCH (beat:NarrativeBeat {id: bid})
-        CREATE (item)-[:PLAYS_BEAT]->(beat)
-        RETURN count(beat) AS edges
+        FOREACH (p IN CASE WHEN poi IS NULL THEN [] ELSE [poi] END |
+            CREATE (item)-[:AT_POI]->(p))
+        WITH item, poi
+        UNWIND (CASE WHEN size($beat_ids) = 0 THEN [null] ELSE $beat_ids END) AS bid
+        OPTIONAL MATCH (beat:NarrativeBeat {id: bid})
+        FOREACH (b IN CASE WHEN beat IS NULL THEN [] ELSE [beat] END |
+            CREATE (item)-[:PLAYS_BEAT]->(b))
+        RETURN poi IS NOT NULL AS poi_found, count(beat) AS edges
     """
     item_ids: list[str] = []
     for stop in stops:
@@ -219,14 +272,39 @@ def _create_itinerary_items(
             ),
             full_narration=stop.get("full_narration"),
             full_close_text=stop.get("full_close_text"),
+            # Phase 7 S7.3: the stop's placed trigger geometry, ONE JSON string (the
+            # thread_lines precedent) — the saved-trips reader hands it back so a
+            # walk started from a saved trip has the same geometry the session has.
+            trigger_json=(
+                json.dumps(stop["trigger"], ensure_ascii=False) if stop.get("trigger") else None
+            ),
+            # Phase 7 S7.7: the stop's leg piece text; its file lands on the item when
+            # the voicing pass runs (leg_audio_url / leg_audio_duration_sec).
+            leg_narration=stop.get("leg_narration"),
+            # Phase 7 S7.7 (B): the chapters as a JSON list (the thread_lines precedent);
+            # the voicing pass writes each chapter's file back INTO this list.
+            segments_json=(
+                json.dumps(stop["segments"], ensure_ascii=False) if stop.get("segments") else None
+            ),
         ).single()
+        # The RETURN now always yields one row (the sentinel-safe UNWIND above), so a
+        # missing row is a broken query, never a shrug.
+        if record is None:
+            raise ValueError(f"Stop {stop['poi_id']!r}: the item CREATE returned no row")
+        # A stop naming a POI the graph does not hold fails LOUDLY — the sentinel (a
+        # waypoint at the person's own finish, not a place) is the one id allowed to
+        # have none (W7.13, Sofia: the silent no-op class).
+        if not record["poi_found"] and not stop["poi_id"].startswith(END_B_SENTINEL_PREFIX):
+            raise ValueError(
+                f"Stop {stop['poi_id']!r}: no POI with that id in the graph — the item "
+                "would have vanished silently (W7.13)"
+            )
         # The mid-query MATCH silently drops absent beat ids; fail loudly
         # rather than persist an item whose stored beat_ids cite beats it
         # has no PLAYS_BEAT edge to (corpus changed mid-request?).
-        edges = record["edges"] if record else 0
-        if edges != len(stop["beat_ids"]):
+        if record["edges"] != len(stop["beat_ids"]):
             raise ValueError(
-                f"Stop {stop['poi_id']!r}: created {edges} PLAYS_BEAT edges "
+                f"Stop {stop['poi_id']!r}: created {record['edges']} PLAYS_BEAT edges "
                 f"for {len(stop['beat_ids'])} beat_ids — beats missing from graph"
             )
         item_ids.append(item_id)
@@ -394,12 +472,23 @@ def list_trips_for_profile(
                    item.close_audio_url AS close_audio_url,
                    item.thread_audio_urls AS thread_audio_urls,
                    item.full_close_audio_url AS full_close_audio_url,
+                   item.trigger_json AS trigger_json,
+                   item.leg_narration AS leg_narration,
+                   item.leg_audio_url AS leg_audio_url,
+                   item.leg_audio_duration_sec AS leg_audio_duration_sec,
+                   item.segments_json AS segments_json,
                    coalesce(item.audio_url, pb.audio_url) AS audio_url,
                    coalesce(item.audio_duration_sec, pb.duration_sec) AS audio_duration_sec
             ORDER BY item.sort_order
         """
         stop_records = session.run(stops_query, tid=trip["trip_id"])
         stops = [dict(r) for r in stop_records]
+        for s in stops:
+            # Phase 7 S7.3: the placed geometry back as the dict the wire model reads.
+            raw = s.pop("trigger_json", None)
+            s["trigger"] = json.loads(raw) if raw else None
+            raw_segments = s.pop("segments_json", None)
+            s["segments"] = json.loads(raw_segments) if raw_segments else []
 
         total_duration = sum(s["duration_min"] for s in stops)
         anchor_count = sum(1 for s in stops if s["importance_tier"] == 5)

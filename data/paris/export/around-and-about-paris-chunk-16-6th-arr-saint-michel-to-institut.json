@@ -5,7 +5,7 @@
     "latitude": 48.854128,
     "longitude": 2.33255,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -96,7 +96,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A famous cafe where a short wait for a table can form at peak lunch hours as the host seats people, but there is no ticket or security and off-peak you walk straight to a seat."
+    "queue_basis": "A famous cafe where a short wait for a table can form at peak lunch hours as the host seats people, but there is no ticket or security and off-peak you walk straight to a seat.",
+    "anchors": null
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -104,7 +105,7 @@
     "latitude": 48.853968,
     "longitude": 2.334518,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -309,7 +310,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An active parish church with an open door and free entry that visitors walk straight into, so there is no ticket desk or security to stand in."
+    "queue_basis": "An active parish church with an open door and free entry that visitors walk straight into, so there is no ticket desk or security to stand in.",
+    "anchors": null
   },
   {
     "name": "Le Procope",
@@ -411,7 +413,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by restaurant entered by reservation, not a ticketed sight, so there is no public queue to stand in outside."
+    "queue_basis": "A walk-by restaurant entered by reservation, not a ticketed sight, so there is no public queue to stand in outside.",
+    "anchors": null
   },
   {
     "name": "Cour du Commerce-Saint-Andre",
@@ -419,7 +422,7 @@
     "latitude": 48.85253,
     "longitude": 2.339298,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -596,7 +599,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open covered passage walked through freely from either end with no door or ticket, so no queue exists."
+    "queue_basis": "An open covered passage walked through freely from either end with no door or ticket, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Fontaine Saint-Michel",
@@ -654,7 +658,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A monumental street fountain seen from the open square; there is no interior and no line of any kind."
+    "queue_basis": "A monumental street fountain seen from the open square; there is no interior and no line of any kind.",
+    "anchors": null
   },
   {
     "name": "Rue de l'Hirondelle",
@@ -662,7 +667,7 @@
     "latitude": 48.8533,
     "longitude": 2.3433,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
@@ -715,7 +720,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A medieval public alley admired for its carved facade; an open street has no door and no line."
+    "queue_basis": "A medieval public alley admired for its carved facade; an open street has no door and no line.",
+    "anchors": null
   },
   {
     "name": "Caveau de la Bolee",
@@ -777,7 +783,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by cellar cabaret seen from the alley, not a ticketed daytime entry, so no public queue is priced."
+    "queue_basis": "A walk-by cellar cabaret seen from the alley, not a ticketed daytime entry, so no public queue is priced.",
+    "anchors": null
   },
   {
     "name": "Cour de Rohan",
@@ -785,7 +792,7 @@
     "latitude": 48.8522,
     "longitude": 2.3383,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -837,7 +844,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A set of hidden courtyards entered through a passage with no ticket or gate check, so there is nothing to wait in."
+    "queue_basis": "A set of hidden courtyards entered through a passage with no ticket or gate check, so there is nothing to wait in.",
+    "anchors": null
   },
   {
     "name": "Theatre de l'Odeon",
@@ -937,7 +945,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Viewed only from outside as a neoclassical facade; there is no daytime visitor entry queue apart from ticketed performance times, which this walk-by does not use."
+    "queue_basis": "Viewed only from outside as a neoclassical facade; there is no daytime visitor entry queue apart from ticketed performance times, which this walk-by does not use.",
+    "anchors": null
   },
   {
     "name": "Institut de France",
@@ -1099,7 +1108,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working academy building admired from the quay as a domed facade; no general public entry line exists to price."
+    "queue_basis": "A working academy building admired from the quay as a domed facade; no general public entry line exists to price.",
+    "anchors": null
   },
   {
     "name": "Hotel de la Monnaie",
@@ -1215,7 +1225,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A modest coin museum with a single ticket desk and light bag check; the small visitor volume keeps any line brief even at midday."
+    "queue_basis": "A modest coin museum with a single ticket desk and light bag check; the small visitor volume keeps any line brief even at midday.",
+    "anchors": null
   },
   {
     "name": "Shakespeare and Company",
@@ -1223,7 +1234,7 @@
     "latitude": 48.852575,
     "longitude": 2.347112,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1329,7 +1340,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A tiny bookshop that caps how many people fit inside and meters entry through one narrow door, so a short line forms at midday tourist peaks but clears quickly at opening; no security screening."
+    "queue_basis": "A tiny bookshop that caps how many people fit inside and meters entry through one narrow door, so a short line forms at midday tourist peaks but clears quickly at opening; no security screening.",
+    "anchors": null
   },
   {
     "name": "Pont Neuf",
@@ -1337,7 +1349,7 @@
     "latitude": 48.85675,
     "longitude": 2.341033,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1390,6 +1402,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
+    "anchors": null
   }
 ]

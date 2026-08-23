@@ -5,7 +5,7 @@
     "latitude": 48.8532,
     "longitude": 2.3691,
     "importance_tier": 3,
-    "trigger_radius": 40,
+    "trigger_radius": 80,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -111,7 +111,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open traffic square with the July Column at its centre, entered from the surrounding streets with no door or ticket."
+    "queue_basis": "An open traffic square with the July Column at its centre, entered from the surrounding streets with no door or ticket.",
+    "anchors": null
   },
   {
     "name": "Temple du Marais",
@@ -203,7 +204,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working Protestant temple with an open door and free entry, walked straight into with no ticket desk or screening."
+    "queue_basis": "A working Protestant temple with an open door and free entry, walked straight into with no ticket desk or screening.",
+    "anchors": null
   },
   {
     "name": "Hotel de Mayenne",
@@ -261,7 +263,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private Marais mansion (now a school) viewed only from the street, with no public interior and therefore no queue."
+    "queue_basis": "A private Marais mansion (now a school) viewed only from the street, with no public interior and therefore no queue.",
+    "anchors": null
   },
   {
     "name": "Place des Vosges",
@@ -269,7 +272,7 @@
     "latitude": 48.8555,
     "longitude": 2.3656,
     "importance_tier": 5,
-    "trigger_radius": 40,
+    "trigger_radius": 70,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -375,7 +378,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for."
+    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Musee Victor Hugo",
@@ -467,7 +471,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A small apartment-museum on Place des Vosges with free permanent collection but one narrow entrance and a bag check, so a modest line forms midday when capacity throttles arrivals."
+    "queue_basis": "A small apartment-museum on Place des Vosges with free permanent collection but one narrow entrance and a bag check, so a modest line forms midday when capacity throttles arrivals.",
+    "anchors": null
   },
   {
     "name": "Hotel de Sully",
@@ -559,7 +564,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Entry is through a courtyard and bookshop of the heritage centre with no mass ticketing, so only a brief wait at the single door forms at busy hours."
+    "queue_basis": "Entry is through a courtyard and bookshop of the heritage centre with no mass ticketing, so only a brief wait at the single door forms at busy hours.",
+    "anchors": null
   },
   {
     "name": "Hotel de Sens",
@@ -668,7 +674,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "The building houses the Forney library with a single reception entrance rather than mass ticketing, so only a few people wait at busy hours."
+    "queue_basis": "The building houses the Forney library with a single reception entrance rather than mass ticketing, so only a few people wait at busy hours.",
+    "anchors": null
   },
   {
     "name": "Saint-Paul-Saint-Louis",
@@ -755,7 +762,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A Baroque church with an open door and free entry on rue Saint-Antoine, walked into without any ticket or security line."
+    "queue_basis": "A Baroque church with an open door and free entry on rue Saint-Antoine, walked into without any ticket or security line.",
+    "anchors": null
   },
   {
     "name": "Village Saint-Paul",
@@ -811,7 +819,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open cluster of antique courtyards with multiple street passages and no gate or ticketing, so there is no line to enter."
+    "queue_basis": "An open cluster of antique courtyards with multiple street passages and no gate or ticketing, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Hotel Lamoignon",
@@ -919,7 +928,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A Renaissance mansion seen from the street as a walk-by; its historical library is reached through open courtyard access rather than a queued entrance, so no line forms for the passer-by."
+    "queue_basis": "A Renaissance mansion seen from the street as a walk-by; its historical library is reached through open courtyard access rather than a queued entrance, so no line forms for the passer-by.",
+    "anchors": null
   },
   {
     "name": "Synagogue de la rue Pavee",
@@ -981,7 +991,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by-only facade viewed from the street with no public entry to queue for."
+    "queue_basis": "A walk-by-only facade viewed from the street with no public entry to queue for.",
+    "anchors": null
   },
   {
     "name": "Rue des Rosiers",
@@ -1068,7 +1079,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open street with no door and no line; its value is walked past in the open."
+    "queue_basis": "An open street with no door and no line; its value is walked past in the open.",
+    "anchors": null
   },
   {
     "name": "Hotel Amelot de Bisseuil",
@@ -1129,7 +1141,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private mansion seen from the street as a walk-by; there is no visitor entry to queue for."
+    "queue_basis": "A private mansion seen from the street as a walk-by; there is no visitor entry to queue for.",
+    "anchors": null
   },
   {
     "name": "Notre-Dame-des-Blancs-Manteaux",
@@ -1233,7 +1246,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door you walk straight through without any ticket desk or security line."
+    "queue_basis": "A parish church with an open door you walk straight through without any ticket desk or security line.",
+    "anchors": null
   },
   {
     "name": "La Force Prison Site",
@@ -1290,6 +1304,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A demolished prison marked only by a street site with no interior and nothing to queue for."
+    "queue_basis": "A demolished prison marked only by a street site with no interior and nothing to queue for.",
+    "anchors": null
   }
 ]

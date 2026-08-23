@@ -1,53 +1,39 @@
-"""Audio pipeline — orchestrates TTS generation, storage, and Neo4j updates.
+"""Audio pipeline — TTS generation and storage for ONE STOP's narration.
 
-Pipeline: NarrativeBeat.script_body → TTS Provider → Storage → update audio_url
+Pipeline: a stop's stitched narration → TTS Provider → Storage → the caller persists
+the url and the MEASURED duration on the ItineraryItem (src/api/routes/audio.py).
+
+The per-beat library — ``generate_beat_audio`` / ``generate_batch`` / ``check_audio_status``
+over ``NarrativeBeat.audio_url`` — was DELETED at Phase 7 S7.10 (design §8.5): the per-stop
+path (``generate_stop_audio``) and the keep-exploring door are the only voicing doors.
 
 Usage:
-    from src.audio.pipeline import generate_beat_audio
-    result = generate_beat_audio(session, beat_id)
+    from src.audio.pipeline import generate_stop_audio
+    result = generate_stop_audio(narration, stop_key=item_id, poi_name=name)
 """
 
 from __future__ import annotations
 
-import hashlib
 import struct
-import time
 import wave
-from collections.abc import Callable
 from dataclasses import dataclass
 from io import BytesIO
-from typing import TYPE_CHECKING
 
-from src.api.crud.nodes import get_node, update_node
 from src.audio.provider import TTSError, get_provider
 from src.audio.storage import StorageError, get_storage
-
-if TYPE_CHECKING:
-    from neo4j import Session
 
 
 class PipelineError(Exception):
     """Raised when the audio generation pipeline fails."""
 
 
-@dataclass
-class GenerationResult:
-    """Result of generating audio for a single NarrativeBeat."""
-
-    beat_id: str
-    provider: str
-    storage: str
-    audio_url: str
-    size_bytes: int
-    duration_sec: float
-    script_body: str
-
-
 def _get_duration(audio_bytes: bytes) -> float:
     """Extract duration in seconds from audio bytes (WAV or MP3).
 
     WAV: parsed exactly via stdlib wave module.
-    MP3: decoded from the first valid frame header (bitrate + total size).
+    MP3: MEASURED from the frame table (Phase 7 S7.8) — every Layer III frame
+    walked and its samples summed, exact for constant- and variable-bitrate files
+    and for MPEG-1, MPEG-2 and MPEG-2.5 alike.
     Returns 0.0 if the format cannot be determined.
     """
     # Try WAV first (starts with RIFF header)
@@ -58,214 +44,93 @@ def _get_duration(audio_bytes: bytes) -> float:
         except Exception:
             return 0.0
 
-    # Try MP3 — find first valid frame sync (0xFF 0xE0+ bits)
     return _mp3_duration(audio_bytes)
 
 
-# ── MP3 bitrate tables (MPEG1 Layer III) ──
-_BITRATES_V1_L3 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0]
-_SAMPLE_RATES_V1 = [44100, 48000, 32000, 0]
+# ── MPEG audio frame tables, Layer III (ISO/IEC 11172-3 and 13818-3) ──
+# Bitrates in kbps by header index; MPEG-2 and MPEG-2.5 share the low table.
+_L3_BITRATES_KBPS: dict[int, tuple[int, ...]] = {
+    1: (0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0),
+    2: (0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0),
+}
+_SAMPLE_RATES: dict[int, tuple[int, int, int]] = {
+    1: (44100, 48000, 32000),
+    2: (22050, 24000, 16000),
+    25: (11025, 12000, 8000),
+}
+_SAMPLES_PER_FRAME: dict[int, int] = {1: 1152, 2: 576, 25: 576}
+# Bytes a sync scan may wander before the first frame (a stray prefix, not a tag).
+_MP3_SYNC_SCAN_BYTES = 8192
+
+
+def _id3v2_size(data: bytes) -> int:
+    """Bytes of a leading ID3v2 tag (header + syncsafe size), or 0."""
+    if len(data) < 10 or data[:3] != b"ID3":
+        return 0
+    size = 0
+    for b in data[6:10]:
+        if b & 0x80:
+            return 0  # not syncsafe: not a tag we trust; scan from the start
+        size = (size << 7) | b
+    return 10 + size
+
+
+def _l3_frame(data: bytes, i: int) -> tuple[int, float] | None:
+    """The Layer III frame at ``data[i:]`` as (byte length, seconds), or None when no
+    valid frame header starts there. Sync is 11 set bits; version 01 is reserved."""
+    if i + 4 > len(data):
+        return None
+    hdr = struct.unpack(">I", data[i : i + 4])[0]
+    if (hdr >> 21) != 0x7FF:
+        return None
+    version_bits = (hdr >> 19) & 0x3
+    layer_bits = (hdr >> 17) & 0x3
+    if layer_bits != 1 or version_bits == 1:  # Layer III only; reserved version
+        return None
+    version = {3: 1, 2: 2, 0: 25}[version_bits]
+    bitrate_idx = (hdr >> 12) & 0xF
+    sr_idx = (hdr >> 10) & 0x3
+    padding = (hdr >> 9) & 0x1
+    if bitrate_idx in (0, 15) or sr_idx == 3:
+        return None
+    bitrate_bps = _L3_BITRATES_KBPS[1 if version == 1 else 2][bitrate_idx] * 1000
+    rate = _SAMPLE_RATES[version][sr_idx]
+    per_frame = 144 if version == 1 else 72
+    length = per_frame * bitrate_bps // rate + padding
+    return length, _SAMPLES_PER_FRAME[version] / rate
 
 
 def _mp3_duration(data: bytes) -> float:
-    """Estimate MP3 duration from the first valid frame header and file size.
+    """MEASURE an MP3's duration from its frame table (Phase 7 S7.8; W7.2 R6).
 
-    Scans for the frame sync word (11 set bits), extracts bitrate from the
-    header, then computes duration = (file_size * 8) / bitrate_bps.
-    Only handles MPEG1 Layer III (the common case for TTS output).
+    Skips a leading ID3v2 tag, scans to the first valid Layer III frame, then walks
+    frame by frame — each frame's length from its own header, each frame's seconds
+    as samples / sample rate — and sums. Exact for CBR and VBR, MPEG-1/2/2.5. A
+    truncated tail counts no frame; the walk ends at the first non-frame after the
+    stream (an ID3v1 tag, trailing garbage). 0.0 when no frame is found. Until S7.8
+    this read ONE header and divided the file size by that bitrate: a VBR file was off
+    by the bitrate ratio and every MPEG-2 / 2.5 file measured 0.0 — the phone's
+    sentence arithmetic then cut at the wrong place, or at once.
     """
-    for i in range(min(len(data) - 4, 8192)):
-        if data[i] != 0xFF:
+    i = _id3v2_size(data)
+    end = len(data)
+    total = 0.0
+    found = False
+    scan_until = min(end, i + _MP3_SYNC_SCAN_BYTES)
+    while i + 4 <= end:
+        frame = _l3_frame(data, i)
+        if frame is None:
+            if found or i >= scan_until:
+                break
+            i += 1
             continue
-        hdr = struct.unpack(">I", data[i : i + 4])[0]
-
-        # Check sync: 11 bits set
-        if (hdr >> 21) != 0x7FF:
-            continue
-
-        version = (hdr >> 19) & 0x3  # 0x3 = MPEG1
-        layer = (hdr >> 17) & 0x3  # 0x1 = Layer III
-        bitrate_idx = (hdr >> 12) & 0xF
-        sr_idx = (hdr >> 10) & 0x3
-
-        if version != 3 or layer != 1:  # Only MPEG1 Layer III
-            continue
-        if bitrate_idx == 0 or bitrate_idx == 15 or sr_idx == 3:
-            continue
-
-        bitrate_kbps = _BITRATES_V1_L3[bitrate_idx]
-        if bitrate_kbps == 0:
-            continue
-
-        # Duration = total bits / bitrate
-        return (len(data) * 8) / (bitrate_kbps * 1000)
-
-    return 0.0
-
-
-def _build_storage_key(beat_id: str, poi_name: str | None = None) -> str:
-    """Build a deterministic storage key for a beat's audio file.
-
-    Format: beats/{poi_slug}/{beat_id}.mp3
-    """
-    slug = "unknown"
-    if poi_name:
-        slug = poi_name.lower().replace(" ", "_").replace("'", "")
-    return f"beats/{slug}/{beat_id}.mp3"
-
-
-def _script_hash(text: str) -> str:
-    """SHA-256 hash of script_body, used to detect stale audio."""
-    return hashlib.sha256(text.encode()).hexdigest()
-
-
-def _is_stale(stored_hash: str | None, script_body: str | None) -> bool:
-    """Single source of truth for 'this beat's audio needs regenerating'.
-
-    Stale when there is a script to voice AND either no hash was ever stored
-    (legacy audio predating the hash feature) or the stored hash no longer
-    matches the current script_body. Used by check_audio_status, the
-    generate_beat_audio guard, and the generate_batch selector so the status
-    endpoint and the regeneration paths can never disagree.
-    """
-    if not script_body:
-        return False
-    return not stored_hash or stored_hash != _script_hash(script_body)
-
-
-@dataclass
-class AudioStatus:
-    """Status of a beat's audio, including staleness detection."""
-
-    beat_id: str
-    has_audio: bool
-    audio_url: str | None
-    duration_sec: float | None
-    is_stale: bool
-
-
-def check_audio_status(session: Session, beat_id: str) -> AudioStatus:
-    """Check audio status for a beat, including whether the audio is stale.
-
-    Audio is stale when the script_body has changed since audio was generated
-    (i.e. the stored hash no longer matches the current script_body).
-    """
-    beat = get_node(session, "NarrativeBeat", beat_id)
-    if beat is None:
-        raise PipelineError(f"NarrativeBeat '{beat_id}' not found")
-
-    props = beat["properties"]
-    audio_url = props.get("audio_url", "")
-    has_audio = bool(audio_url) and "placeholder" not in audio_url
-    duration_sec = props.get("duration_sec")
-
-    # Check staleness
-    is_stale = has_audio and _is_stale(
-        props.get("audio_script_hash", ""), props.get("script_body", "")
-    )
-
-    return AudioStatus(
-        beat_id=beat_id,
-        has_audio=has_audio,
-        audio_url=audio_url if has_audio else None,
-        duration_sec=duration_sec,
-        is_stale=is_stale,
-    )
-
-
-def generate_beat_audio(
-    session: Session,
-    beat_id: str,
-    *,
-    provider_name: str | None = None,
-    storage_name: str | None = None,
-    voice_id: str | None = None,
-    force: bool = False,
-) -> GenerationResult:
-    """Generate audio for a single NarrativeBeat and store it.
-
-    1. Fetch the beat from Neo4j
-    2. Skip if audio_url already exists (unless force=True)
-    3. Generate audio via TTS provider
-    4. Upload to storage
-    5. Update the beat's audio_url in Neo4j
-    """
-    # Step 1: Fetch the beat
-    beat = get_node(session, "NarrativeBeat", beat_id)
-    if beat is None:
-        raise PipelineError(f"NarrativeBeat '{beat_id}' not found")
-
-    props = beat["properties"]
-    script_body = props.get("script_body")
-    if not script_body:
-        raise PipelineError(f"Beat '{beat_id}' has no script_body")
-
-    # Step 2: Check if audio already exists (skip stale audio — regenerate it)
-    existing_url = props.get("audio_url", "")
-    stored_hash = props.get("audio_script_hash", "")
-    current_hash = _script_hash(script_body)
-    is_stale = _is_stale(stored_hash, script_body)
-
-    if existing_url and "placeholder" not in existing_url and not force and not is_stale:
-        raise PipelineError(
-            f"Beat '{beat_id}' already has audio at '{existing_url}'. Use force=True to regenerate."
-        )
-
-    # Fetch POI name for the storage key
-    poi_result = session.run(
-        "MATCH (p:POI)-[:HAS_BEAT]->(b:NarrativeBeat {id: $beat_id}) RETURN p.name AS poi_name",
-        beat_id=beat_id,
-    ).single()
-    poi_name = poi_result["poi_name"] if poi_result else None
-
-    # Step 3: Generate audio. get_provider() is inside the try so an unknown
-    # provider name (ValueError) becomes a PipelineError — the per-beat/per-stop
-    # handlers turn that into status='failed', never an uncaught 500.
-    try:
-        provider = get_provider(provider_name)
-    except ValueError as e:
-        raise PipelineError(f"TTS failed for beat '{beat_id}': {e}") from e
-    try:
-        audio_bytes = provider.generate(script_body, voice_id=voice_id)
-    except TTSError as e:
-        raise PipelineError(f"TTS failed for beat '{beat_id}': {e}") from e
-
-    # Step 4: Upload to storage. get_storage() is inside the try for the same
-    # reason as get_provider(): a misconfigured storage backend (ValueError) or
-    # an unwritable local path (OSError) must become a PipelineError, never an
-    # uncaught 500.
-    try:
-        storage = get_storage(storage_name)
-    except (StorageError, ValueError, OSError) as e:
-        raise PipelineError(f"Storage failed for beat '{beat_id}': {e}") from e
-    key = _build_storage_key(beat_id, poi_name)
-    try:
-        audio_url = storage.upload(audio_bytes, key)
-    except StorageError as e:
-        raise PipelineError(f"Storage failed for beat '{beat_id}': {e}") from e
-
-    # Step 5: Update Neo4j
-    duration = round(_get_duration(audio_bytes), 2)
-    update_node(
-        session,
-        "NarrativeBeat",
-        beat_id,
-        {
-            "audio_url": audio_url,
-            "duration_sec": duration,
-            "audio_script_hash": current_hash,
-        },
-    )
-
-    return GenerationResult(
-        beat_id=beat_id,
-        provider=provider.name,
-        storage=storage.name,
-        audio_url=audio_url,
-        size_bytes=len(audio_bytes),
-        duration_sec=duration,
-        script_body=script_body,
-    )
+        length, seconds = frame
+        if i + length > end:
+            break
+        found = True
+        total += seconds
+        i += length
+    return total
 
 
 @dataclass
@@ -341,96 +206,4 @@ def generate_stop_audio(
         audio_url=audio_url,
         size_bytes=len(audio_bytes),
         duration_sec=duration,
-    )
-
-
-@dataclass
-class BatchSummary:
-    """Summary statistics for a batch generation run."""
-
-    results: list[GenerationResult | PipelineError]
-    total_found: int
-    skipped: int = 0
-    succeeded: int = 0
-    failed: int = 0
-    total_bytes: int = 0
-    elapsed_sec: float = 0.0
-
-
-def generate_batch(
-    session: Session,
-    *,
-    provider_name: str | None = None,
-    storage_name: str | None = None,
-    voice_id: str | None = None,
-    force: bool = False,
-    progress_callback: Callable[[int, int, str], None] | None = None,
-) -> BatchSummary:
-    """Generate audio for all NarrativeBeats that need it.
-
-    Args:
-        progress_callback: Optional callback(current, total, beat_id) called
-            after each beat is processed.
-
-    Returns a BatchSummary with results and stats.
-    """
-    start = time.monotonic()
-
-    # Find all beats
-    result = session.run(
-        "MATCH (b:NarrativeBeat) "
-        "RETURN b.id AS id, b.audio_url AS audio_url, b.audio_script_hash AS hash, "
-        "       b.script_body AS script_body"
-    )
-
-    all_beats = list(result)
-    total_found = len(all_beats)
-
-    beat_ids = []
-    for record in all_beats:
-        url = record["audio_url"] or ""
-        if force or not url or "placeholder" in url:
-            beat_ids.append(record["id"])
-        elif _is_stale(record["hash"], record["script_body"]):
-            # Also include stale beats (same predicate the status endpoint uses,
-            # so a beat reported stale is always actually regenerated)
-            beat_ids.append(record["id"])
-
-    skipped = total_found - len(beat_ids)
-
-    results: list[GenerationResult | PipelineError] = []
-    succeeded = 0
-    failed = 0
-    total_bytes = 0
-
-    for i, beat_id in enumerate(beat_ids):
-        try:
-            r = generate_beat_audio(
-                session,
-                beat_id,
-                provider_name=provider_name,
-                storage_name=storage_name,
-                voice_id=voice_id,
-                force=force,
-            )
-            results.append(r)
-            succeeded += 1
-            total_bytes += r.size_bytes
-        except PipelineError as e:
-            results.append(e)
-            failed += 1
-
-        if progress_callback:
-            progress_callback(i + 1, len(beat_ids), beat_id)
-
-    elapsed = round(time.monotonic() - start, 2)
-
-    return BatchSummary(
-        results=results,
-        total_found=total_found,
-        skipped=skipped,
-        succeeded=succeeded,
-        failed=failed,
-        total_bytes=total_bytes,
-        elapsed_sec=elapsed,
     )

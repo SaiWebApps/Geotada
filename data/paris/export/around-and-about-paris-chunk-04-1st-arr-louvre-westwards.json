@@ -5,7 +5,7 @@
     "latitude": 48.859,
     "longitude": 2.342,
     "importance_tier": 5,
-    "trigger_radius": 20,
+    "trigger_radius": 60,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -136,7 +136,8 @@
         "18:00"
       ]
     ],
-    "queue_basis": "A free-entry department store whose doors carry a bag check that can back up briefly at peak shopping hours but otherwise flows straight through."
+    "queue_basis": "A free-entry department store whose doors carry a bag check that can back up briefly at peak shopping hours but otherwise flows straight through.",
+    "anchors": null
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -144,7 +145,7 @@
     "latitude": 48.8598,
     "longitude": 2.341,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -229,7 +230,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working parish church with an open door you walk straight through without ticket or check, so there is no queue."
+    "queue_basis": "A working parish church with an open door you walk straight through without ticket or check, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Galerie Vero-Dodat",
@@ -237,7 +239,7 @@
     "latitude": 48.8618,
     "longitude": 2.3408,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -293,7 +295,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered shopping passage open to the street at both ends with no admission control, so there is nothing to wait in."
+    "queue_basis": "A covered shopping passage open to the street at both ends with no admission control, so there is nothing to wait in.",
+    "anchors": null
   },
   {
     "name": "Banque de France",
@@ -301,7 +304,7 @@
     "latitude": 48.8641,
     "longitude": 2.339,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -357,7 +360,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working central bank not open to walk-in visitors; passed only from the street outside, so there is no public entry line to price."
+    "queue_basis": "A working central bank not open to walk-in visitors; passed only from the street outside, so there is no public entry line to price.",
+    "anchors": null
   },
   {
     "name": "Place des Victoires",
@@ -446,7 +450,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A circular open square around a royal statue, freely entered from the surrounding streets with no gate or ticket, so there is no queue."
+    "queue_basis": "A circular open square around a royal statue, freely entered from the surrounding streets with no gate or ticket, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Palais-Royal",
@@ -454,7 +459,7 @@
     "latitude": 48.8637,
     "longitude": 2.3372,
     "importance_tier": 5,
-    "trigger_radius": 30,
+    "trigger_radius": 100,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -565,7 +570,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in."
+    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in.",
+    "anchors": null
   },
   {
     "name": "Comedie-Francaise",
@@ -573,7 +579,7 @@
     "latitude": 48.8634,
     "longitude": 2.3367,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -635,7 +641,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working theatre entered on a ticket for a performance rather than by a walk-in queue; on a walking tour it is a facade you pass with no standing line."
+    "queue_basis": "A working theatre entered on a ticket for a performance rather than by a walk-in queue; on a walking tour it is a facade you pass with no standing line.",
+    "anchors": null
   },
   {
     "name": "Hotel Le Meurice",
@@ -643,7 +650,7 @@
     "latitude": 48.8651,
     "longitude": 2.3283,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -725,7 +732,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A luxury hotel with no public ticketed entry and no queue mechanism; visitors on a tour view it from the street, so there is nothing to stand in."
+    "queue_basis": "A luxury hotel with no public ticketed entry and no queue mechanism; visitors on a tour view it from the street, so there is nothing to stand in.",
+    "anchors": null
   },
   {
     "name": "Eglise Saint-Roch",
@@ -733,7 +741,7 @@
     "latitude": 48.8639,
     "longitude": 2.3324,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -791,7 +799,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door and no ticket or security screening; worshippers and visitors walk straight in without stopping."
+    "queue_basis": "A parish church with an open door and no ticket or security screening; worshippers and visitors walk straight in without stopping.",
+    "anchors": null
   },
   {
     "name": "Place Vendome",
@@ -799,7 +808,7 @@
     "latitude": 48.8677,
     "longitude": 2.3292,
     "importance_tier": 4,
-    "trigger_radius": 40,
+    "trigger_radius": 80,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -859,6 +868,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square walked into freely from surrounding streets with no gate or ticket, so there is no line."
+    "queue_basis": "An open public square walked into freely from surrounding streets with no gate or ticket, so there is no line.",
+    "anchors": null
   }
 ]

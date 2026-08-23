@@ -5,7 +5,7 @@
     "latitude": 48.859,
     "longitude": 2.342,
     "importance_tier": 5,
-    "trigger_radius": 20,
+    "trigger_radius": 60,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -304,6 +304,7 @@
         "18:00"
       ]
     ],
-    "queue_basis": "A free-entry department store whose doors carry a bag check that can back up briefly at peak shopping hours but otherwise flows straight through."
+    "queue_basis": "A free-entry department store whose doors carry a bag check that can back up briefly at peak shopping hours but otherwise flows straight through.",
+    "anchors": null
   }
 ]

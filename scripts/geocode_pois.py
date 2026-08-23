@@ -46,7 +46,38 @@ def nominatim(query: str) -> tuple[float, float, str] | None:
     return None
 
 
-def trigger_radius_for(name: str, default: int) -> tuple[int, str]:
+#: THE one footprint table by PLACE KIND (Phase 7 S7.4; design §5.6 C7; W7.2 R1): how far
+#: from the pin a walker is AT a place of this kind, in metres, for a record nobody has
+#: reviewed by name. Keyed by the closed place-category vocabulary
+#: (scripts/poi_place_category.py). A place you are IN (a garden, a bridge, an arcade, a
+#: street) is sized to be entered at its edge; a place you stand AT (a door, a fountain, a
+#: café) to the pavement in front of it. The marquees are reviewed by name in
+#: scripts/poi_trigger_radius.py — never sized from this table.
+FOOTPRINT_BY_KIND: dict[str, int] = {
+    "arcade": 60,  # a passage under glass 100-130 m long: you are in it from either mouth
+    "bridge": 80,  # a Seine bridge is 150-240 m long: its half
+    "church": 25,  # the door and the parvis step
+    "gallery": 25,  # a department store's doors
+    "garden": 60,  # a Paris square-garden is 80-150 m across: its gate
+    "market": 40,  # a market hall or a street market's block
+    "monument": 25,  # a fountain, a statue, an arch: within a glance
+    "museum": 30,  # the forecourt and the door
+    "park": 100,  # gates and lawns; the big parks are reviewed by name
+    "square": 40,  # an open place; the marquee squares are reviewed by name
+    "street": 60,  # a block of it
+    "other": 15,  # a building, a café, a hôtel particulier: its door
+}
+
+
+def trigger_radius_for(
+    name: str, default: int, *, place_category: str | None = None
+) -> tuple[int, str]:
+    """The footprint for a record nobody reviewed by name: by PLACE KIND when the record
+    carries one (the Paris corpus, redesign 6.7), else by name token (the New York
+    corpus, which has no kinds yet) — the original table, unchanged. Returns (metres,
+    the sentence that argues it)."""
+    if place_category in FOOTPRINT_BY_KIND:
+        return FOOTPRINT_BY_KIND[place_category], f"Sized by place kind: {place_category}"
     n = name.lower()
     if any(w in n for w in ("botanic", "botanical")):
         return 150, "Large garden, multiple approaches"

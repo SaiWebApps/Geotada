@@ -5,7 +5,7 @@
     "latitude": 48.85262,
     "longitude": 2.368776,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -315,6 +315,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A column standing on a traffic-island square, viewed from the open; the crypt is not routinely open to visitors, so there is no entry line to stand in."
+    "queue_basis": "A column standing on a traffic-island square, viewed from the open; the crypt is not routinely open to visitors, so there is no entry line to stand in.",
+    "anchors": null
   }
 ]

@@ -402,6 +402,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A vast open public park with no enclosing gate to queue at; you simply walk in from any edge."
+    "queue_basis": "A vast open public park with no enclosing gate to queue at; you simply walk in from any edge.",
+    "anchors": null
   }
 ]

@@ -127,6 +127,22 @@ class ItineraryItemCreate(BaseModel):
 POIRole = Literal["stop", "setting", "walk_by_only"]
 
 
+class POIAnchor(BaseModel):
+    """One reviewed anchor of a marquee place (Phase 7 S7.7 B) as the export chunks
+    carry it — the API-side twin of `src.tour.contract.Anchor`, declared here because
+    POICreate ignores undeclared fields (see the capacity trio below). Stored
+    JSON-encoded by `_encode_complex_props` (a list of dicts), read back by the corpus
+    loader."""
+
+    label: str
+    sub_locations: list[str]
+    lat: float
+    lng: float
+    radius_m: float
+    indoor: bool = False
+    basis: str = ""
+
+
 class POICreate(BaseModel):
     name: str = Field(max_length=500)
     city_name: str  # REQUIRED — matches AreaCreate.city_name convention.
@@ -158,6 +174,8 @@ class POICreate(BaseModel):
     kid_friendly: str = Field(default="yes", max_length=50)
     name_variations: list[str] = []
     poi_role: POIRole = "stop"
+    # The reviewed anchors (Phase 7 S7.7 B); null/absent = none, the safe default.
+    anchors: list[POIAnchor] | None = None
     parent_poi: str | None = None  # Set on sub-POIs; names the parent POI
     source_passage: str = ""  # Required when parent_poi is set (AC-9):
     # verbatim/near-verbatim quote from source

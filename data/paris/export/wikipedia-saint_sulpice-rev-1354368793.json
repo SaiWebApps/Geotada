@@ -5,7 +5,7 @@
     "latitude": 48.850987,
     "longitude": 2.33487,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -346,6 +346,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering."
+    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering.",
+    "anchors": null
   }
 ]

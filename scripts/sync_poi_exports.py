@@ -81,6 +81,13 @@ SYNCED_FIELDS: tuple[str, ...] = (
     "queue_minutes_offpeak",
     "queue_peak_hours",
     "queue_basis",
+    # The footprint — scripts/poi_trigger_radius.py (Phase 7 S7.4, design §5.6 C7).
+    # Registered with the pass, the S2.9 precedent; this is the field the
+    # tests/test_export_consistency.py TODO had recorded as drifting (19 entries).
+    "trigger_radius",
+    # The reviewed anchors of a marquee (Phase 7 S7.7 B, design §5.6 segments) —
+    # placed by hand on poi-raw.json; the graph reads them through the upload.
+    "anchors",
 )
 
 

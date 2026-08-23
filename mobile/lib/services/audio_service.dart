@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
@@ -11,6 +13,49 @@ export 'package:ondoway/services/providers.dart' show BeatAudioInfo;
 class AudioService extends ChangeNotifier implements AudioProvider {
   final http.Client _httpClient;
   AudioPlayer? _playerInstance;
+
+  // ---- Phase 7 S7.9 (W7.2 R5): the audio SESSION and its interruptions -----
+  // The session is configured for SPOKEN playback (background audio — the
+  // walk keeps talking pocketed; iOS ducks us for a navigation prompt on its
+  // own and interrupts us for a call or another app's music). The platform's
+  // events are TRANSLATED here into the provider's one door; the policy is the
+  // playback service's. Ducking is mechanics and stays here.
+  bool _sessionReady = false;
+  bool _ducked = false;
+  final StreamController<AudioInterruptionKind> _interruptions =
+      StreamController<AudioInterruptionKind>.broadcast();
+
+  @override
+  Stream<AudioInterruptionKind> get interruptions => _interruptions.stream;
+
+  Future<void> _ensureSession() async {
+    if (_sessionReady) return;
+    _sessionReady = true;
+    try {
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.speech());
+      session.interruptionEventStream.listen((event) {
+        if (event.begin) {
+          if (event.type == AudioInterruptionType.duck) {
+            _ducked = true;
+            _player.setVolume(0.25);
+            _interruptions.add(AudioInterruptionKind.duckBegin);
+          } else {
+            _interruptions.add(AudioInterruptionKind.pauseBegin);
+          }
+        } else {
+          if (_ducked) {
+            _ducked = false;
+            _player.setVolume(1.0);
+          }
+          _interruptions.add(AudioInterruptionKind.ended);
+        }
+      });
+    } catch (_) {
+      // No session on this platform (a plain unit test, the web): the piece
+      // still plays; there is simply nothing to translate.
+    }
+  }
 
   String? _currentBeatId;
   bool _isPlaying = false;
@@ -24,7 +69,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
       : _httpClient = httpClient ?? http.Client();
 
   /// The just_audio player, created lazily on first playback. HTTP-only
-  /// operations (checkAudioStatus, prefetch, cache queries) never touch it,
+  /// operations (checkStopAudioStatus, prefetch, cache queries) never touch it,
   /// so they don't boot the audio engine / its platform channels — which also
   /// lets them run in plain unit tests without a Flutter binding.
   AudioPlayer get _player {
@@ -50,6 +95,8 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   bool get isBuffering => _isBuffering;
   @override
   Duration get position => _position;
+  /// S7.8: the player's decoded length, through the provider door (R6).
+  @override
   Duration get duration => _duration;
   bool get isActive => _currentBeatId != null;
 
@@ -64,7 +111,26 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     bool isDeeperDive = false,
   }) async {
     if (_currentBeatId == beatId && _isPlaying) return;
+    await _start(beatId, audioUrl, isDeeperDive: isDeeperDive, from: null);
+  }
 
+  /// Phase 7 S7.6 (W7.2 R3): the keep-listening tap at a door resumes the cut
+  /// piece from the START of its cut sentence — the source is set, the player
+  /// seeks, then plays; never a cut word. `void` because the provider's door is
+  /// synchronous; the work is the same one start path [play] uses.
+  @override
+  void playFrom(String beatId, String audioUrl, Duration from) {
+    _start(beatId, audioUrl, isDeeperDive: false, from: from);
+  }
+
+  /// THE one start path: source (the cache, else the URL), an optional seek,
+  /// play. [play] and [playFrom] are its two doors.
+  Future<void> _start(
+    String beatId,
+    String audioUrl, {
+    required bool isDeeperDive,
+    required Duration? from,
+  }) async {
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
     _isBuffering = true;
@@ -72,11 +138,15 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     notifyListeners();
 
     try {
+      await _ensureSession(); // S7.9: spoken playback, interruptions heard
       final cachedPath = await _getCachedPath(beatId);
       if (cachedPath != null) {
         await _player.setFilePath(cachedPath);
       } else {
         await _player.setUrl(audioUrl);
+      }
+      if (from != null && from > Duration.zero) {
+        await _player.seek(from);
       }
       await _player.play();
     } catch (e) {
@@ -115,6 +185,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     notifyListeners();
   }
 
+  @override
   Future<void> seek(Duration position) async {
     await _player.seek(position);
   }
@@ -152,28 +223,13 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     return path != null;
   }
 
-  /// Check audio status for a specific beat via the backend API.
-  Future<Map<String, dynamic>?> checkAudioStatus(
-    String baseUrl,
-    String beatId,
-  ) async {
-    try {
-      final resp = await _httpClient.get(
-        Uri.parse('$baseUrl/audio/status/$beatId'),
-      );
-      if (resp.statusCode == 200) {
-        return jsonDecode(resp.body) as Map<String, dynamic>;
-      }
-    } catch (_) {}
-    return null;
-  }
-
-  /// Check PER-STOP audio status by ItineraryItem id (Phase 1, Step 1.4d).
+  /// Check PER-STOP audio status by ItineraryItem id (Phase 1, Step 1.4d) —
+  /// THE status poll (the per-beat one was deleted at Phase 7 S7.10).
   ///
-  /// Additive to [checkAudioStatus] (per-beat): GET /audio/stop-status/{stopId}
-  /// reads the per-stop narration audio persisted by /audio/generate-trip-stops,
-  /// so the itinerary flow polls/plays per stop. Returns the parsed body
-  /// ({has_audio, audio_url, duration_sec}) on 200, null otherwise.
+  /// GET /audio/stop-status/{stopId} reads the per-stop narration audio
+  /// persisted by /audio/generate-trip-stops, so the itinerary flow polls/plays
+  /// per stop. Returns the parsed body ({has_audio, audio_url, duration_sec})
+  /// on 200, null otherwise.
   Future<Map<String, dynamic>?> checkStopAudioStatus(
     String baseUrl,
     String stopId,
@@ -216,6 +272,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
   @override
   void dispose() {
+    _interruptions.close();
     _playerInstance?.dispose();
     super.dispose();
   }

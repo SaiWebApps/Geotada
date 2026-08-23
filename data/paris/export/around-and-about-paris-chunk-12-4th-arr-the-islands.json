@@ -105,7 +105,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working hospital, not a ticketed attraction; a tourist stops to look at the facade and courtyard from the street and never joins any admission line."
+    "queue_basis": "A working hospital, not a ticketed attraction; a tourist stops to look at the facade and courtyard from the street and never joins any admission line.",
+    "anchors": null
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -113,7 +114,7 @@
     "latitude": 48.852966,
     "longitude": 2.349902,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [
@@ -354,7 +355,54 @@
         "17:00"
       ]
     ],
-    "queue_basis": "Since the post-fire reopening entry is managed through a controlled single access point with high demand, forming a substantial line to walk into a free cathedral that eases only at opening and near closing."
+    "queue_basis": "Since the post-fire reopening entry is managed through a controlled single access point with high demand, forming a substantial line to walk into a free cathedral that eases only at opening and near closing.",
+    "anchors": [
+      {
+        "label": "The west front",
+        "sub_locations": [
+          "parvis",
+          "kilometre-zero",
+          "facade",
+          "central-portal",
+          "side-portals",
+          "facade-side-portals",
+          "right-portal",
+          "facade-gallery-of-kings",
+          "towers",
+          "left-tower"
+        ],
+        "lat": 48.85325,
+        "lng": 2.34875,
+        "radius_m": 80.0,
+        "indoor": false,
+        "basis": "The whole facade — rose window, gallery and the row of kings together — is only visible from well back: a person STANDS on the parvis paving, sixty to eighty metres out, near the kilometre-zero star, and walks backwards until it fits (W7.11, 11/11: 45 m put the listener under the tympanum, craning). Eighty metres covers the paving people actually stand on and still stops short of the apse."
+      },
+      {
+        "label": "Inside",
+        "sub_locations": [
+          "interior-bell-tower-vestibule",
+          "interior-nave",
+          "interior-treasury",
+          "choir"
+        ],
+        "lat": 48.853,
+        "lng": 2.34975,
+        "radius_m": 60.0,
+        "indoor": true,
+        "basis": "Under the roof: the nave runs about sixty metres east from the door to the choir; GPS is unreliable inside, so this chapter is offered on the screen and never starts itself."
+      },
+      {
+        "label": "The east end",
+        "sub_locations": [
+          "exterior-east-end-square-jean-xxiii"
+        ],
+        "lat": 48.85265,
+        "lng": 2.35095,
+        "radius_m": 55.0,
+        "indoor": false,
+        "basis": "Square Jean-XXIII is the strip you STAND in to look back along the flying buttresses; the view needs the length of the garden, not its gate. Fifty-five metres covers the walk without reaching the parvis (W7.11 defect 16)."
+      }
+    ]
   },
   {
     "name": "Rue Chanoinesse",
@@ -467,7 +515,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open medieval street with no interior and no gate, so nothing is ever queued for."
+    "queue_basis": "An open medieval street with no interior and no gate, so nothing is ever queued for.",
+    "anchors": null
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -475,7 +524,7 @@
     "latitude": 48.852192,
     "longitude": 2.351968,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [],
@@ -567,7 +616,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "The memorial is free but entered by a narrow staircase that admits only a few visitors at once, so a small line can form at midday while it is otherwise walk-straight-in."
+    "queue_basis": "The memorial is free but entered by a narrow staircase that admits only a few visitors at once, so a small line can form at midday while it is otherwise walk-straight-in.",
+    "anchors": null
   },
   {
     "name": "Ile Saint-Louis",
@@ -730,7 +780,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A residential island of open streets and shopfronts with no controlled entrance, so nothing is queued before you walk onto it."
+    "queue_basis": "A residential island of open streets and shopfronts with no controlled entrance, so nothing is queued before you walk onto it.",
+    "anchors": null
   },
   {
     "name": "Berthillon",
@@ -738,7 +789,7 @@
     "latitude": 48.851111,
     "longitude": 2.358565,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -824,7 +875,8 @@
         "18:00"
       ]
     ],
-    "queue_basis": "A small ice-cream counter whose line is limited by one serving window, so afternoon and warm-season crowds form a real but bounded queue that shrinks to a few people off-peak; no security or ticket."
+    "queue_basis": "A small ice-cream counter whose line is limited by one serving window, so afternoon and warm-season crowds form a real but bounded queue that shrinks to a few people off-peak; no security or ticket.",
+    "anchors": null
   },
   {
     "name": "Pont-Marie",
@@ -883,7 +935,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A stone bridge with no door and no ticket: you simply walk across it in the open, so there is no line."
+    "queue_basis": "A stone bridge with no door and no ticket: you simply walk across it in the open, so there is no line.",
+    "anchors": null
   },
   {
     "name": "Hotel de Lauzun",
@@ -976,7 +1029,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A walk-by private mansion closed to the general public except rare special events, so no ticket line exists on an ordinary day."
+    "queue_basis": "A walk-by private mansion closed to the general public except rare special events, so no ticket line exists on an ordinary day.",
+    "anchors": null
   },
   {
     "name": "Hotel Lambert",
@@ -1067,7 +1121,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private residence viewed only from the street; with no public admission there is no queue to price."
+    "queue_basis": "A private residence viewed only from the street; with no public admission there is no queue to price.",
+    "anchors": null
   },
   {
     "name": "Quai de Bourbon",
@@ -1150,7 +1205,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open riverside quay with no door and no ticket; the whole experience is outdoors, so no line forms."
+    "queue_basis": "An open riverside quay with no door and no ticket; the whole experience is outdoors, so no line forms.",
+    "anchors": null
   },
   {
     "name": "Crypte Archeologique de l'Ile de la Cite",
@@ -1209,7 +1265,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A small municipal museum with a single ticket desk at the entrance; a modest queue can build midday when Notre-Dame crowds spill in, but it stays minor and moves quickly."
+    "queue_basis": "A small municipal museum with a single ticket desk at the entrance; a modest queue can build midday when Notre-Dame crowds spill in, but it stays minor and moves quickly.",
+    "anchors": null
   },
   {
     "name": "Saint-Louis-en-l'Ile Church",
@@ -1267,6 +1324,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with free open-door entry and no security screening, so visitors walk in directly without waiting in line."
+    "queue_basis": "A parish church with free open-door entry and no security screening, so visitors walk in directly without waiting in line.",
+    "anchors": null
   }
 ]

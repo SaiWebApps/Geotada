@@ -5,7 +5,7 @@
     "latitude": 48.8558,
     "longitude": 2.3458,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -107,7 +107,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "Entry to the medieval prison passes through a security bag-check and a single ticket desk at one narrow entrance, so a substantial line forms midday and thins near opening and late afternoon."
+    "queue_basis": "Entry to the medieval prison passes through a security bag-check and a single ticket desk at one narrow entrance, so a substantial line forms midday and thins near opening and late afternoon.",
+    "anchors": null
   },
   {
     "name": "Fontaine des Innocents",
@@ -175,7 +176,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A Renaissance fountain standing in an open square with no interior or gate, so there is nothing to queue for."
+    "queue_basis": "A Renaissance fountain standing in an open square with no interior or gate, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Les Halles",
@@ -340,7 +342,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The Forum des Halles is an open shopping centre with multiple free entrances and no admission control, so nobody waits to enter."
+    "queue_basis": "The Forum des Halles is an open shopping centre with multiple free entrances and no admission control, so nobody waits to enter.",
+    "anchors": null
   },
   {
     "name": "Place de la Concorde",
@@ -348,7 +351,7 @@
     "latitude": 48.865608,
     "longitude": 2.321038,
     "importance_tier": 5,
-    "trigger_radius": 50,
+    "trigger_radius": 120,
     "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
@@ -405,7 +408,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no interior, door, or ticket, so there is no line to stand in."
+    "queue_basis": "An open public square with no interior, door, or ticket, so there is no line to stand in.",
+    "anchors": null
   },
   {
     "name": "Pont Neuf",
@@ -413,7 +417,7 @@
     "latitude": 48.85675,
     "longitude": 2.341033,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -468,6 +472,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
+    "anchors": null
   }
 ]

@@ -5,7 +5,7 @@
     "latitude": 48.840092,
     "longitude": 2.335973,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -172,7 +172,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Priced as a walk-by brasserie with no entry line — you pass its facade and plaques from the street, and any table wait is seating, not a queue to enter a monument."
+    "queue_basis": "Priced as a walk-by brasserie with no entry line — you pass its facade and plaques from the street, and any table wait is seating, not a queue to enter a monument.",
+    "anchors": null
   },
   {
     "name": "Statue of Marshal Ney",
@@ -238,7 +239,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public statue on a street corner with no interior and no admission line."
+    "queue_basis": "A public statue on a street corner with no interior and no admission line.",
+    "anchors": null
   },
   {
     "name": "Fontaine des Quatre-Parties-du-Monde",
@@ -303,7 +305,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open-air fountain in a public garden on Avenue de l'Observatoire; nothing is ticketed or gated."
+    "queue_basis": "An open-air fountain in a public garden on Avenue de l'Observatoire; nothing is ticketed or gated.",
+    "anchors": null
   },
   {
     "name": "Rue Notre-Dame-des-Champs",
@@ -364,7 +367,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public street walked past; there is no entrance or line."
+    "queue_basis": "A public street walked past; there is no entrance or line.",
+    "anchors": null
   },
   {
     "name": "Ecole Alsacienne",
@@ -425,7 +429,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working private school viewed only from the street; there is no visitor entrance or queue."
+    "queue_basis": "A working private school viewed only from the street; there is no visitor entrance or queue.",
+    "anchors": null
   },
   {
     "name": "College Stanislas",
@@ -484,7 +489,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A functioning school seen from outside; no public entry line exists."
+    "queue_basis": "A functioning school seen from outside; no public entry line exists.",
+    "anchors": null
   },
   {
     "name": "3 Rue Joseph-Bara",
@@ -549,7 +555,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private residential building admired from the street facade; there is no interior to enter and no line."
+    "queue_basis": "A private residential building admired from the street facade; there is no interior to enter and no line.",
+    "anchors": null
   },
   {
     "name": "Musee Zadkine",
@@ -655,7 +662,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A small free city studio-museum with one entrance and a bag check that can back up briefly in the afternoon, but the intimate size keeps any wait minor even though the group is only walking by."
+    "queue_basis": "A small free city studio-museum with one entrance and a bag check that can back up briefly in the afternoon, but the intimate size keeps any wait minor even though the group is only walking by.",
+    "anchors": null
   },
   {
     "name": "Reid Hall",
@@ -720,7 +728,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A university academic centre not open as a visitor attraction; seen from the street with no public queue."
+    "queue_basis": "A university academic centre not open as a visitor attraction; seen from the street with no public queue.",
+    "anchors": null
   },
   {
     "name": "Academie de la Grande-Chaumiere",
@@ -831,7 +840,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working art academy viewed from the street; there is no ticketed entry or line."
+    "queue_basis": "A working art academy viewed from the street; there is no ticketed entry or line.",
+    "anchors": null
   },
   {
     "name": "26 Rue Vavin (Sauvage Building)",
@@ -892,7 +902,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private tiled apartment building appreciated from the pavement; no interior access and no queue."
+    "queue_basis": "A private tiled apartment building appreciated from the pavement; no interior access and no queue.",
+    "anchors": null
   },
   {
     "name": "La Rotonde",
@@ -985,6 +996,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A café you walk to and enter or seat at will; there is no security or ticket line to price before entering."
+    "queue_basis": "A café you walk to and enter or seat at will; there is no security or ticket line to price before entering.",
+    "anchors": null
   }
 ]

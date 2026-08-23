@@ -8,6 +8,7 @@ the ItineraryItem, keyed by the stop id (not the beat).
 
 from __future__ import annotations
 
+import json
 from unittest.mock import patch
 
 import pytest
@@ -28,12 +29,19 @@ CLOSE1 = "And that's the tower — iron meant to stand twenty years."
 THREAD1 = "The same iron age built the next hall."
 FULL_CLOSE1 = "And that's the tower's second story."
 CLOSE2 = "That's the arch — an emperor's promise kept late."
-
-# A separate trip whose stops play real NarrativeBeats — used by the unknown-
-# provider tests for /audio/generate-trip and /audio/generate-batch (both go
-# through generate_beat_audio, not generate_stop_audio).
-BEATS_TRIP_ID = "stop-audio-beats-trip"
-BEATS_PREFIX = "stop-audio-beats-"
+# Phase 7 S7.7 (design §5.6 C7; plan defect 7): the stop's LEG piece — the walking line
+# into it — voiced as its own file through the same narrator voice, played on the leg.
+LEG2 = "Walk north up the avenue for about twelve minutes."
+# Phase 7 S7.7 (B) (design §5.6 segments; W7.2 R4): a marquee's CHAPTER — the story cut at
+# a reviewed anchor — voiced as its own file, its url and length written back into the
+# item's chapter list.
+SEG1 = "The iron lattice was meant to come down after twenty years."
+SEGMENTS1 = [
+    {
+        "label": "The lattice", "lat": 48.8584, "lng": 2.2945, "radius_m": 40.0,
+        "indoor": False, "narration": SEG1,
+    }
+]
 
 
 class _Recorder:
@@ -83,8 +91,9 @@ def _seed(driver) -> None:
                                       close_text: $close1,
                                       thread_lines: $threads1,
                                       full_close_text: $fullclose1})
+            SET i1.segments_json = $segments1
             CREATE (i2:ItineraryItem {id: $tid + '-item2', sort_order: 2, narration: $n2,
-                                      close_text: $close2})
+                                      close_text: $close2, leg_narration: $leg2})
             CREATE (i3:ItineraryItem {id: $tid + '-item3', sort_order: 3})
             CREATE (t)-[:HAS_STOP]->(i1)
             CREATE (t)-[:HAS_STOP]->(i2)
@@ -100,35 +109,8 @@ def _seed(driver) -> None:
             threads1='{"Eiffel Tower": "' + THREAD1 + '"}',
             fullclose1=FULL_CLOSE1,
             close2=CLOSE2,
-        )
-
-
-def _seed_beats(driver) -> None:
-    """A trip whose one stop's primary beat has a script_body — so both
-    /audio/generate-trip and /audio/generate-batch have a beat to voice."""
-    beat_id = f"{BEATS_PREFIX}b1"
-    with driver.session(database=get_database()) as s:
-        s.run(
-            "MATCH (t:Trip {id: $tid}) OPTIONAL MATCH (t)-[:HAS_STOP]->(i:ItineraryItem) "
-            "DETACH DELETE t, i",
-            tid=BEATS_TRIP_ID,
-        )
-        s.run(
-            "MATCH (b:NarrativeBeat) WHERE b.id STARTS WITH $prefix DETACH DELETE b",
-            prefix=BEATS_PREFIX,
-        )
-        s.run(
-            """
-            CREATE (t:Trip {id: $tid, name: 'Beats trip', status: 'planning',
-                            created_at: datetime()})
-            CREATE (b1:NarrativeBeat {id: $b1, script_body: 'Welcome to this stop.'})
-            CREATE (i1:ItineraryItem {id: $tid + '-item1', sort_order: 1,
-                                      beat_ids: [$b1], primary_beat_id: $b1})
-            CREATE (t)-[:HAS_STOP]->(i1)
-            CREATE (i1)-[:PLAYS_BEAT]->(b1)
-            """,
-            tid=BEATS_TRIP_ID,
-            b1=beat_id,
+            leg2=LEG2,
+            segments1=json.dumps(SEGMENTS1),
         )
 
 
@@ -165,20 +147,44 @@ class TestGenerateTripStopAudio:
         # RE-DERIVED at Phase 6 S6.8: the voicing pass now ALSO records each
         # stop's authored session lines (close, threads, the full telling's
         # close) in the same narrator voice — the owner's ruling. The narration
-        # is still voiced exactly once per stop.
-        assert set(recorder.texts) == {N1, N2, CLOSE1, THREAD1, FULL_CLOSE1, CLOSE2}
+        # is still voiced exactly once per stop. RE-DERIVED at Phase 7 S7.7: the
+        # stop's LEG piece (item2's walking line) is voiced as its own file too.
+        # RE-DERIVED at Phase 7 S7.7 (B): item1's chapter is voiced as its own file too.
+        assert set(recorder.texts) == {N1, N2, CLOSE1, THREAD1, FULL_CLOSE1, CLOSE2, LEG2, SEG1}
 
         # Audio persisted on each item, keyed by the stop id (not the beat).
         urls = _item_audio(clean_driver)
         assert urls[f"{TRIP_ID}-item1"] and f"{TRIP_ID}-item1" in urls[f"{TRIP_ID}-item1"]
         assert urls[f"{TRIP_ID}-item2"] and f"{TRIP_ID}-item2" in urls[f"{TRIP_ID}-item2"]
         assert urls[f"{TRIP_ID}-item3"] is None
+        # S7.7: the leg piece's file and its measured length live on the item.
+        with clean_driver.session(database=get_database()) as s:
+            leg = s.run(
+                "MATCH (i:ItineraryItem {id: $iid}) "
+                "RETURN i.leg_audio_url AS u, i.leg_audio_duration_sec AS d",
+                iid=f"{TRIP_ID}-item2",
+            ).single()
+        assert leg["u"] and f"{TRIP_ID}-item2-leg" in leg["u"], leg
+        assert leg["d"] and leg["d"] > 0
+        # S7.7 (B): the chapter's file and length are written back INTO the item's
+        # chapter list (the thread-urls precedent), never beside it.
+        with clean_driver.session(database=get_database()) as s:
+            raw = s.run(
+                "MATCH (i:ItineraryItem {id: $iid}) RETURN i.segments_json AS j",
+                iid=f"{TRIP_ID}-item1",
+            ).single()["j"]
+        segments = json.loads(raw)
+        assert [seg["label"] for seg in segments] == ["The lattice"]
+        assert segments[0]["narration"] == SEG1
+        assert segments[0]["audio_url"] and f"{TRIP_ID}-item1-seg-0" in segments[0]["audio_url"]
+        assert segments[0]["audio_duration_sec"] and segments[0]["audio_duration_sec"] > 0
 
         # One artifact per generated stop on disk.
         files = list(_temp_audio_storage.rglob("*.mp3"))
         # RE-DERIVED at Phase 6 S6.8: two narration pieces PLUS the authored
         # session lines (item1's close, thread and full-close; item2's close).
-        assert len(files) == 6
+        # RE-DERIVED at Phase 7 S7.7: plus item2's leg piece; (B): plus item1's chapter.
+        assert len(files) == 8
 
     def test_second_call_skips_existing(self, client, clean_driver, _temp_audio_storage):
         _seed(clean_driver)
@@ -528,11 +534,16 @@ class TestKeepExploringStopAudio:
 
 @needs_neo4j
 class TestUnknownProviderNever500:
-    """Defects 7/8/10/14: an unknown provider name must be a soft per-stop/beat
-    failure, never an uncaught ValueError → 500. Each of the four routes that
-    catch only PipelineError is exercised with {"provider": "evil"} against the
+    """Defects 7/8/10/14: an unknown provider name must be a soft per-stop
+    failure, never an uncaught ValueError → 500. Each per-stop route that
+    catches only PipelineError is exercised with {"provider": "evil"} against the
     REAL get_provider (no patch) so the unknown-provider ValueError actually
-    fires at its true source (pipeline.get_provider)."""
+    fires at its true source (pipeline.get_provider).
+
+    PHASE 7 D7.0 TOMBSTONE: the two per-BEAT rows — ``/audio/generate-trip`` and
+    ``/audio/generate-batch`` (with ``_seed_beats``) — were DELETED, not adapted:
+    those routes are the per-beat audio library design §8.5 deletes (plan S7.10).
+    """
 
     def test_keep_exploring_unknown_provider_soft_fails(
         self, client, clean_driver, _temp_audio_storage
@@ -562,36 +573,6 @@ class TestUnknownProviderNever500:
         assert data["failed"] == 2
         for item in data["results"]:
             if item["status"] == "failed":
-                assert "evil" in (item["error"] or "").lower()
-
-    def test_generate_trip_unknown_provider_soft_fails(
-        self, client, clean_driver, _temp_audio_storage
-    ):
-        _seed_beats(clean_driver)
-        resp = client.post(
-            f"/api/v1/audio/generate-trip/{BEATS_TRIP_ID}", json={"provider": "evil"}
-        )
-        assert resp.status_code == 200, resp.text
-        data = resp.json()
-        assert data["generated"] == 0
-        assert data["failed"] >= 1
-        for item in data["results"]:
-            if item["status"] == "failed":
-                assert "evil" in (item["error"] or "").lower()
-
-    def test_generate_batch_unknown_provider_soft_fails(
-        self, client, clean_driver, _temp_audio_storage
-    ):
-        _seed_beats(clean_driver)
-        resp = client.post(
-            "/api/v1/audio/generate-batch", json={"provider": "evil"}
-        )
-        assert resp.status_code == 200, resp.text
-        data = resp.json()
-        assert data["succeeded"] == 0
-        assert data["failed"] >= 1
-        for item in data["results"]:
-            if not item["success"]:
                 assert "evil" in (item["error"] or "").lower()
 
 
@@ -664,8 +645,19 @@ class TestSessionCarriesLiveAudio:
                 "SET i.audio_url = 'file:///narr.mp3', i.audio_duration_sec = 40, "
                 "    i.close_audio_url = 'file:///close.mp3', "
                 "    i.thread_audio_urls = '{\"Eiffel Tower\": \"file:///thread.mp3\"}', "
-                "    i.full_close_audio_url = 'file:///full-close.mp3'",
+                "    i.full_close_audio_url = 'file:///full-close.mp3', "
+                "    i.leg_audio_url = 'file:///leg.mp3', i.leg_audio_duration_sec = 9, "
+                "    i.segments_json = $segments",
                 iid=item1,
+                segments=json.dumps(
+                    [
+                        {
+                            **SEGMENTS1[0],
+                            "audio_url": "file:///seg.mp3",
+                            "audio_duration_sec": 7.5,
+                        }
+                    ]
+                ),
             )
             saved = SessionPlan(
                 trip_id=TRIP_ID,
@@ -686,3 +678,113 @@ class TestSessionCarriesLiveAudio:
         assert stop.close_audio_url == "file:///close.mp3"
         assert stop.thread_audio_urls == {"Eiffel Tower": "file:///thread.mp3"}
         assert stop.full_close_audio_url == "file:///full-close.mp3"
+        # S7.7: the leg piece's file rides the same overlay.
+        assert stop.leg_audio_url == "file:///leg.mp3"
+        assert stop.leg_audio_duration_sec == 9
+        # S7.7 (B): the chapters — with their files — ride the same overlay.
+        assert [seg.label for seg in stop.segments] == ["The lattice"]
+        assert stop.segments[0].audio_url == "file:///seg.mp3"
+        assert stop.segments[0].audio_duration_sec == 7.5
+
+
+@needs_neo4j
+class TestTheFinishSentinelIsARealStop:
+    """W7.13 (Sofia): her A→B day's finish stop — "the place where I stand still in the
+    dark at 16:56" — carried its goodbye as TEXT ONLY: no file could ever exist for it.
+    Mechanism, measured on her trip: `_create_itinerary_items`'s Cypher opens with
+    `MATCH (poi:POI {id: $poi_id})`, the finish sentinel's id names no POI node, so the
+    whole CREATE silently matched nothing — no item, no HAS_STOP — while the minted item
+    id was returned and embedded in the saved session as a phantom. The voicing pass
+    iterates HAS_STOP, so the finish could never be voiced. The CLASS is wider than the
+    sentinel: ANY stop whose poi id is absent from the graph vanished silently instead
+    of failing loudly (the guard below only counted beats).
+
+    The fix: the POI match is OPTIONAL; the sentinel's item is CREATED (stored, voiced,
+    its id real); a NON-sentinel stop whose POI is genuinely missing now raises."""
+
+    TRIP2 = "finish-sentinel-test-trip"
+    DAY_CLOSE = "That's the walk — a quai that still carries the old tanners' name."
+
+    def _seed_trip(self, driver) -> None:
+        with driver.session(database=get_database()) as s:
+            s.run(
+                "MATCH (t:Trip {id: $tid}) OPTIONAL MATCH (t)-[:HAS_STOP]->(i) "
+                "DETACH DELETE t, i",
+                tid=self.TRIP2,
+            )
+            s.run(
+                "MATCH (p:POI {id: $pid}) DETACH DELETE p", pid=f"{self.TRIP2}-poi1"
+            )
+            s.run(
+                "MERGE (pr:Profile {id: $prid}) "
+                "CREATE (t:Trip {id: $tid, name: 'Finish test', status: 'planning', "
+                "                created_at: datetime()}) "
+                "CREATE (p1:POI {id: $pid, name: 'Palais de Justice'})",
+                prid=f"{self.TRIP2}-profile",
+                tid=self.TRIP2,
+                pid=f"{self.TRIP2}-poi1",
+            )
+
+    @staticmethod
+    def _stop(poi_id: str, order: int, narration: str) -> dict:
+        return {
+            "poi_id": poi_id, "sort_order": order, "duration_min": 5,
+            "start_time": f"16:0{order}", "beat_ids": [], "extra_beat_ids": [],
+            "primary_beat_id": None, "lens_name": None, "narration": narration,
+        }
+
+    def test_the_sentinel_is_stored_and_voiced_and_a_wrong_poi_fails_loudly(
+        self, client, clean_driver, _temp_audio_storage
+    ):
+        from src.api.crud.trips import _create_itinerary_items
+        from src.tour.contract import END_B_SENTINEL_PREFIX
+
+        self._seed_trip(clean_driver)
+        stops = [
+            self._stop(f"{self.TRIP2}-poi1", 1, "The last real stop's story."),
+            self._stop(f"{END_B_SENTINEL_PREFIX}48.858_2.347", 2, self.DAY_CLOSE),
+        ]
+        with clean_driver.session(database=get_database()) as s:
+            ids = s.execute_write(
+                lambda tx: _create_itinerary_items(
+                    tx, self.TRIP2, f"{self.TRIP2}-profile", stops
+                )
+            )
+            rows = s.run(
+                "MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) "
+                "RETURN i.id AS id, i.narration AS narr ORDER BY i.sort_order",
+                tid=self.TRIP2,
+            ).data()
+        assert [r["id"] for r in rows] == ids, (
+            "every returned item id must be a STORED item — a phantom id is the defect"
+        )
+        assert rows[1]["narr"] == self.DAY_CLOSE
+
+        # The voicing pass now SEES the finish: its goodbye gets a file.
+        recorder = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+            resp = client.post(
+                f"/api/v1/audio/generate-trip-stops/{self.TRIP2}", json={"provider": "mock"}
+            )
+        assert resp.status_code == 200, resp.text
+        assert resp.json()["generated"] == 2, resp.text
+        assert self.DAY_CLOSE in recorder.texts
+        with clean_driver.session(database=get_database()) as s:
+            url = s.run(
+                "MATCH (i:ItineraryItem {id: $iid}) RETURN i.audio_url AS u",
+                iid=ids[1],
+            ).single()["u"]
+        assert url, "the finish goodbye has its file at last"
+
+        # And the CLASS guard: a NON-sentinel stop whose POI is missing fails loudly.
+        self._seed_trip(clean_driver)
+        with (
+            clean_driver.session(database=get_database()) as s,
+            pytest.raises(ValueError, match="no POI"),
+        ):
+            s.execute_write(
+                lambda tx: _create_itinerary_items(
+                    tx, self.TRIP2, f"{self.TRIP2}-profile",
+                    [self._stop("no-such-poi-anywhere", 1, "text")],
+                )
+            )

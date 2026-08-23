@@ -57,7 +57,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open street fountain with no interior and no door; the whole value stands in the open, so there is nothing to queue for."
+    "queue_basis": "An open street fountain with no interior and no door; the whole value stands in the open, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Église Saint-Pierre du Gros Caillou",
@@ -120,7 +121,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door and free entry walked straight into; no ticket desk or screening creates a line."
+    "queue_basis": "A parish church with an open door and free entry walked straight into; no ticket desk or screening creates a line.",
+    "anchors": null
   },
   {
     "name": "Rue Cler",
@@ -178,7 +180,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A pedestrian market street with no door or gate; the whole experience is in the open air with nothing to enter."
+    "queue_basis": "A pedestrian market street with no door or gate; the whole experience is in the open air with nothing to enter.",
+    "anchors": null
   },
   {
     "name": "Ecole Militaire",
@@ -241,7 +244,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working military academy closed to general public entry and viewed from the exterior; there is no visitor line."
+    "queue_basis": "A working military academy closed to general public entry and viewed from the exterior; there is no visitor line.",
+    "anchors": null
   },
   {
     "name": "UNESCO Headquarters Paris",
@@ -309,7 +313,8 @@
         "12:00"
       ]
     ],
-    "queue_basis": "Public access requires advance registration and passes an airport-style security check at the gate, but visitor volume is low, so the screening line stays minor even at its busiest."
+    "queue_basis": "Public access requires advance registration and passes an airport-style security check at the gate, but visitor volume is low, so the screening line stays minor even at its busiest.",
+    "anchors": null
   },
   {
     "name": "Champ de Mars",
@@ -489,7 +494,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side."
+    "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side.",
+    "anchors": null
   },
   {
     "name": "Les Invalides",
@@ -497,7 +503,7 @@
     "latitude": 48.856892,
     "longitude": 2.3125,
     "importance_tier": 4,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [
@@ -807,7 +813,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "The wide complex has a ticket desk and light bag check for Napoleon's tomb and the Army Museum, producing only a minor midday line that clears early or late."
+    "queue_basis": "The wide complex has a ticket desk and light bag check for Napoleon's tomb and the Army Museum, producing only a minor midday line that clears early or late.",
+    "anchors": null
   },
   {
     "name": "29 Avenue Rapp",
@@ -815,7 +822,7 @@
     "latitude": 48.859127,
     "longitude": 2.300876,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -868,7 +875,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An ornate apartment facade admired from the pavement with no public interior, so there is no queue to enter."
+    "queue_basis": "An ornate apartment facade admired from the pavement with no public interior, so there is no queue to enter.",
+    "anchors": null
   },
   {
     "name": "Eiffel Tower",
@@ -876,7 +884,7 @@
     "latitude": 48.858093,
     "longitude": 2.294694,
     "importance_tier": 5,
-    "trigger_radius": 30,
+    "trigger_radius": 80,
     "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1028,6 +1036,7 @@
         "17:00"
       ]
     ],
-    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening."
+    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening.",
+    "anchors": null
   }
 ]

@@ -5,6 +5,12 @@ import 'package:ondoway/services/tour_playback_service.dart';
 import 'mocks/mock_audio_service.dart';
 import 'mocks/mock_location_service.dart';
 
+// Phase 7 S7.3 (design §5.6; W7.2 R1): every fixture STATES its footprint. These
+// tests were written against the phone's own 10 m circle; that circle is gone
+// and "at the stop" is the wire's per-place radius, so the doorway-sized
+// footprint the old tests assumed is now an explicit 10 m trigger on each stop
+// (re-derived with the same meaning — plan: tests derive from the design). A
+// null radius is a legacy item: no geometry.
 ItineraryStop _makeStop({
   required int sortOrder,
   required String beatId,
@@ -12,6 +18,15 @@ ItineraryStop _makeStop({
   required double lng,
   String? audioUrl,
   String? stopId,
+  double? radiusM = 10,
+  int queueSeconds = 0,
+  bool door = false,
+  int outsideSeconds = 0,
+  String? narration,
+  double? audioDurationSec,
+  String? closeText,
+  String? legAudioUrl,
+  List<StopSegment> segments = const [],
 }) {
   return ItineraryStop(
     sortOrder: sortOrder,
@@ -27,7 +42,57 @@ ItineraryStop _makeStop({
     importanceTier: sortOrder == 1 ? 5 : 3,
     startTime: '09:0$sortOrder',
     audioUrl: audioUrl,
+    narration: narration,
+    audioDurationSec: audioDurationSec,
+    closeText: closeText,
+    legAudioUrl: legAudioUrl,
+    segments: segments,
+    trigger: radiusM == null
+        ? null
+        : StopTrigger(
+            radiusM: radiusM,
+            queueSeconds: queueSeconds,
+            door: door,
+            outsideSeconds: outsideSeconds,
+          ),
   );
+}
+
+/// A player that records every door it is handed (S7.6).
+class _DoorPlayer extends MockAudioService {
+  final List<String> said = [];
+  final List<(String, Duration)> playedFrom = [];
+  int stops = 0;
+  Duration pos = Duration.zero;
+  @override
+  Duration get position => pos;
+  @override
+  Future<void> speak(String sentence) async => said.add(sentence);
+  @override
+  void playFrom(String beatId, String audioUrl, Duration from) {
+    playedFrom.add((beatId, from));
+    super.playFrom(beatId, audioUrl, from);
+  }
+
+  @override
+  void stop() {
+    stops++;
+    super.stop();
+  }
+}
+
+// A 40-second piece of four sentences of 10 words each: boundaries at 10, 20,
+// 30 and 40 s (the S6.4 wrap-up fixture's shape).
+const _fourSentences =
+    'One two three four five six seven eight nine ten. '
+    'Eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty. '
+    'Twenty-one two three four five six seven eight nine thirty. '
+    "That's the stop, the close that ends it all here.";
+
+class _Clock {
+  DateTime now;
+  _Clock(this.now);
+  void tick(int seconds) => now = now.add(Duration(seconds: seconds));
 }
 
 void main() {
@@ -329,7 +394,7 @@ void main() {
       // Simulate: play current stop, then user arrives at next
       audioService.play('beat-1', 'https://cdn.ondoway.com/beat-1.mp3');
 
-      // Simulate position at stop 2 (within 10m)
+      // Simulate position at stop 2 (inside its 10 m footprint)
       locationService.simulatePosition(48.8606, 2.3376);
 
       expect(service.state, TourState.approaching);
@@ -397,7 +462,7 @@ void main() {
       locationService.simulatePosition(48.8600, 2.2945);
       expect(audioService.isPlaying, false);
 
-      // User enters geofence (within 10m)
+      // User enters the stop's footprint (its 10 m trigger)
       locationService.simulatePosition(48.8584, 2.2945);
       expect(audioService.isPlaying, true);
       expect(audioService.currentBeatId, 'beat-1');
@@ -564,6 +629,643 @@ void main() {
 
       expect(audioService.isPlaying, false);
       expect(audioService.currentBeatId, isNull);
+    });
+  });
+
+  // Phase 7 S7.3 — THE AUDIO PLACEMENT RULE, the phone's half (design §5.6 C7,
+  // §4.6; W7.2 R1, 11/11). "At the stop" is the place's OWN footprint, placed on
+  // the server and read off the wire; the phone draws no circle. The piece ARMS
+  // at the first touch of the footprint (the edge you arrive by, never the pin)
+  // and STARTS at arrival — the FAMILY day starts at the first standstill inside
+  // it (Nadia, §4.4.4). Told once is told: re-entering never replays; a tap
+  // does. A stop with no trigger has no geometry: nothing auto-plays there.
+  group('the footprint is the place (S7.3; design §5.6; W7.2 R1)', () {
+    const base = 48.85;
+    const degPerMeterLat = 1.0 / 111320.0;
+    const url = 'https://cdn.ondoway.com/piece.mp3';
+    late MockLocationService gps;
+    late MockAudioService audio;
+    late _Clock clock;
+    late TourPlaybackService service;
+
+    setUp(() {
+      gps = MockLocationService();
+      audio = MockAudioService();
+      clock = _Clock(DateTime(2026, 8, 22, 10, 0));
+      service = TourPlaybackService(
+        locationService: gps,
+        audioService: audio,
+        now: () => clock.now,
+      );
+    });
+
+    tearDown(() => service.dispose());
+
+    test('a 140 m courtyard triggers at its edge, ~130 m from the centroid — '
+        'never 10 m from the pin (Place des Vosges, Nadia)', () async {
+      await service.startTour([
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 140),
+      ]);
+      gps.simulatePosition(base + 160 * degPerMeterLat, 2.35); // outside
+      expect(audio.isPlaying, isFalse, reason: '160 m out is not the square');
+      gps.simulatePosition(base + 130 * degPerMeterLat, 2.35); // the arcade edge
+      expect(audio.isPlaying, isTrue, reason: 'the first touch of the footprint arms and starts');
+      expect(audio.currentBeatId, 'b1');
+    });
+
+    test('a 10 m doorway stays silent at 30 m and plays at 5 m', () async {
+      await service.startTour([
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 10),
+      ]);
+      gps.simulatePosition(base + 30 * degPerMeterLat, 2.35);
+      expect(audio.isPlaying, isFalse, reason: 'a door is not a 40 m circle');
+      gps.simulatePosition(base + 5 * degPerMeterLat, 2.35);
+      expect(audio.isPlaying, isTrue);
+    });
+
+    test('a stop with no trigger never auto-plays (a legacy item: no geometry); '
+        'a tap still does', () async {
+      await service.startTour([
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: null),
+      ]);
+      gps.simulatePosition(base, 2.35); // standing on the pin itself
+      expect(audio.isPlaying, isFalse, reason: 'the phone invents no circle');
+      service.skipToStop(0); // the tap
+      expect(audio.isPlaying, isTrue);
+    });
+
+    test('the family day: the piece ARMS at the footprint edge and STARTS at '
+        'the first standstill inside it (Nadia, §4.4.4); walking out before '
+        'the standstill disarms it', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 60),
+      ];
+      await service.startTour(stops);
+      service.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops,
+        retimeToleranceSeconds: 180, party: 'family',
+        placement: const PlacementPolicy(startAt: 'standstill', ownPlaceM: 60),
+      ));
+      gps.simulatePosition(base + 50 * degPerMeterLat, 2.35); // in, on the move
+      expect(audio.isPlaying, isFalse, reason: 'armed, not started: a child crosses any circle');
+      clock.tick(10);
+      gps.simulatePosition(base + 35 * degPerMeterLat, 2.35); // still moving
+      clock.tick(10);
+      service.tick();
+      expect(audio.isPlaying, isFalse, reason: 'not yet still for the settling period');
+      clock.tick(TourPlaybackService.kSettleSeconds + 1); // the buggy stops
+      service.tick();
+      expect(audio.isPlaying, isTrue, reason: 'the first standstill inside starts it');
+
+      // Walking out before the standstill disarms; nothing fires on the leg.
+      final again = TourPlaybackService(
+        locationService: gps, audioService: MockAudioService(), now: () => clock.now,
+      );
+      final stops2 = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 60),
+      ];
+      await again.startTour(stops2);
+      again.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops2,
+        retimeToleranceSeconds: 180, party: 'family',
+        placement: const PlacementPolicy(startAt: 'standstill', ownPlaceM: 60),
+      ));
+      gps.simulatePosition(base + 50 * degPerMeterLat, 2.35); // in
+      clock.tick(5);
+      gps.simulatePosition(base + 120 * degPerMeterLat, 2.35); // out again
+      clock.tick(TourPlaybackService.kSettleSeconds + 5);
+      again.tick();
+      expect((again.session != null), isTrue);
+      expect(again.currentStopIndex, 0);
+      expect(again.state, TourState.active);
+      again.dispose();
+    });
+
+    test('told once is told: leaving and re-entering the footprint never '
+        'replays a piece — a tap does', () async {
+      await service.startTour([
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 40),
+        _makeStop(sortOrder: 2, beatId: 'b2', lat: base + 500 * degPerMeterLat,
+            lng: 2.35, audioUrl: url, radiusM: 40),
+      ]);
+      gps.simulatePosition(base + 30 * degPerMeterLat, 2.35); // enter: plays
+      expect(audio.playCount, 1);
+      audio.stop(); // the piece is cut short (a call, a tap) — not completed
+      expect(service.currentStopIndex, 0);
+      gps.simulatePosition(base + 200 * degPerMeterLat, 2.35); // out
+      gps.simulatePosition(base + 20 * degPerMeterLat, 2.35); // back in
+      expect(audio.playCount, 1, reason: 'told once is told');
+      expect(audio.isPlaying, isFalse);
+      service.skipToStop(0); // the tap replays
+      expect(audio.playCount, 2);
+    });
+
+    // Phase 7 S7.5 — THE QUEUE PIECE (design §5.6; W7.2 R2). At a stop whose
+    // arrival hour prices a line (the trigger's queue seconds), the piece does
+    // not start at the footprint's edge: a solo walker's starts at the first
+    // STANDSTILL inside the footprint — standing in the line is the place —
+    // and a couple's or a family's waits for a TAP (a still phone among them is
+    // a conversation or a sandpit, never "in the line"). An unqueued stop keeps
+    // the arrival rule. The policy rides the session; the phone selects.
+    test('a solo walker\'s piece at a queued stop waits for the first '
+        'standstill inside the footprint, never the edge', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 30, queueSeconds: 28 * 60),
+      ];
+      await service.startTour(stops);
+      service.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops,
+        retimeToleranceSeconds: 180,
+        placement: const PlacementPolicy(ownPlaceM: 60, queuePiece: 'auto'),
+      ));
+      gps.simulatePosition(base + 25 * degPerMeterLat, 2.35); // the edge, on the move
+      expect(audio.isPlaying, isFalse, reason: 'the line is the place, not the edge');
+      clock.tick(10);
+      gps.simulatePosition(base + 15 * degPerMeterLat, 2.35); // shuffling in
+      clock.tick(10);
+      service.tick();
+      expect(audio.isPlaying, isFalse, reason: 'not still for the settling period');
+      clock.tick(TourPlaybackService.kSettleSeconds + 1); // standing in the line
+      service.tick();
+      expect(audio.isPlaying, isTrue, reason: 'the first standstill inside starts it');
+      expect(service.armedOffer, isNull, reason: 'auto: nothing to tap');
+    });
+
+    test('a couple\'s piece at a queued stop waits for the TAP: the screen offers, '
+        'a standstill alone starts nothing, startArmedPiece plays', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 30, queueSeconds: 28 * 60),
+      ];
+      await service.startTour(stops);
+      service.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops,
+        retimeToleranceSeconds: 180, party: 'couple',
+        placement: const PlacementPolicy(ownPlaceM: 60, queuePiece: 'tap'),
+      ));
+      gps.simulatePosition(base + 10 * degPerMeterLat, 2.35); // in
+      clock.tick(TourPlaybackService.kSettleSeconds + 5);
+      service.tick();
+      expect(audio.isPlaying, isFalse, reason: 'a still couple is a conversation');
+      expect(service.armedOffer, 'Stop 1', reason: 'the offer names the stop');
+      service.startArmedPiece(); // the tap
+      expect(audio.isPlaying, isTrue);
+      expect(audio.currentBeatId, 'b1');
+      expect(service.armedOffer, isNull);
+    });
+
+    test('a stop with no priced line keeps the arrival rule under the same '
+        'policy', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 30, queueSeconds: 0),
+      ];
+      await service.startTour(stops);
+      service.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops,
+        retimeToleranceSeconds: 180, party: 'couple',
+        placement: const PlacementPolicy(ownPlaceM: 60, queuePiece: 'tap'),
+      ));
+      gps.simulatePosition(base + 25 * degPerMeterLat, 2.35);
+      expect(audio.isPlaying, isTrue, reason: 'no line: the edge starts it (R1)');
+      expect(service.armedOffer, isNull);
+    });
+
+    // Phase 7 S7.6 — THE DOOR (design §5.6 threshold silence, §7.4.5; W7.2 R3,
+    // 11/11). At a stop whose visit goes INSIDE, the piece ends at the end of its
+    // current sentence when the placed OUTSIDE seconds have run (the phone's only
+    // threshold under a roof), then the stop's CLOSE plays; inside, the screen
+    // carries the transcript and a keep-listening tap that resumes from the cut
+    // sentence's START; nothing resumes by itself. A stop that is not a door
+    // plays on untouched.
+    test('at a door stop the piece ends at its sentence when the outside seconds '
+        'have run, the close plays, and keep-listening resumes from the cut '
+        'sentence\'s start', () async {
+      final player = _DoorPlayer();
+      final doorService = TourPlaybackService(
+        locationService: gps, audioService: player, now: () => clock.now,
+      );
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 40, door: true, outsideSeconds: 120,
+            narration: _fourSentences, audioDurationSec: 40,
+            closeText: "That's the stop, the close that ends it all here."),
+      ];
+      await doorService.startTour(stops);
+      gps.simulatePosition(base + 10 * degPerMeterLat, 2.35); // arrive: plays
+      expect(player.isPlaying, isTrue);
+      clock.tick(60);
+      doorService.tick();
+      expect(player.stops, 0, reason: 'the outside minutes are not up');
+      expect(doorService.keepListeningOffer, isNull);
+      // Two minutes outside: the door. 13 s into the piece, the sentence ends
+      // at 20 s — the cut waits for it (S6.4's one arithmetic), never a word.
+      player.pos = const Duration(seconds: 13);
+      clock.tick(60);
+      doorService.tick();
+      expect(player.stops, 0, reason: 'the sentence finishes first');
+      doorService.finishSentenceNow(); // the sentence end comes (the timer's door)
+      expect(player.stops, 1, reason: 'the piece is cut at the sentence');
+      expect(player.said, ["That's the stop, the close that ends it all here."],
+          reason: 'the close plays at the door');
+      expect(doorService.closesPlayed, ["That's the stop, the close that ends it all here."]);
+      // Inside: the transcript and the keep-listening tap; nothing auto.
+      expect(doorService.keepListeningOffer, 'Stop 1');
+      expect(doorService.keepListeningTranscript, _fourSentences);
+      clock.tick(300);
+      doorService.tick();
+      expect(player.playedFrom, isEmpty, reason: 'nothing resumes by itself');
+      doorService.keepListening(); // the tap
+      expect(player.playedFrom, [('b1', const Duration(seconds: 10))],
+          reason: 'resumes from the START of the cut sentence (the 10 s boundary)');
+      expect(doorService.keepListeningOffer, isNull);
+      doorService.dispose();
+    });
+
+    test('S7.6: the start of the current sentence comes off the SAME boundary '
+        'table as its end', () {
+      final stop = _makeStop(sortOrder: 1, beatId: 'b', lat: 0, lng: 0,
+          narration: _fourSentences, audioDurationSec: 40);
+      expect(TourPlaybackService.sentenceStartSeconds(stop, const Duration(seconds: 13)), 10);
+      expect(TourPlaybackService.sentenceStartSeconds(stop, const Duration(seconds: 3)), 0);
+      expect(TourPlaybackService.sentenceStartSeconds(stop, const Duration(seconds: 35)), 30);
+      expect(TourPlaybackService.sentenceStartSeconds(stop, const Duration(seconds: 45)), 30,
+          reason: 'past the last boundary: the last sentence');
+      final mute = _makeStop(sortOrder: 2, beatId: 'm', lat: 0, lng: 0);
+      expect(TourPlaybackService.sentenceStartSeconds(mute, const Duration(seconds: 5)), 0);
+    });
+
+    test('a stop that is not a door plays on when its outside seconds have run; '
+        'the door fires once', () async {
+      final player = _DoorPlayer();
+      final plain = TourPlaybackService(
+        locationService: gps, audioService: player, now: () => clock.now,
+      );
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 40, door: false, outsideSeconds: 30,
+            narration: _fourSentences, audioDurationSec: 40,
+            closeText: 'A close.'),
+      ];
+      await plain.startTour(stops);
+      gps.simulatePosition(base + 10 * degPerMeterLat, 2.35);
+      expect(player.isPlaying, isTrue);
+      clock.tick(90);
+      plain.tick();
+      plain.finishSentenceNow(); // nothing is pending: a no-op
+      expect(player.stops, 0);
+      expect(player.isPlaying, isTrue, reason: 'no door: the piece plays on');
+      expect(plain.keepListeningOffer, isNull);
+      plain.dispose();
+    });
+
+    // Phase 7 S7.7 — THE LEG PIECE (design §5.6 C7 "audio overlaps the walking";
+    // plan defect 7 — Théo, Greta, Aiko, Marcus: the stop's piece opened with the
+    // walking line the person had already walked). The stop's walking line is its
+    // own file, played ON THE LEG: the first stop's at the first fix (the tap —
+    // "Settle in, you're starting in…"), every later stop's once the walker has
+    // left the previous stop's footprint. Told once; the story at the footprint
+    // waits for the leg piece to end.
+    test('the first stop\'s leg piece plays at the first fix; a later stop\'s '
+        'once the walker leaves the previous footprint; told once; the story '
+        'waits for it', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,
+            radiusM: 20, legAudioUrl: 'https://cdn.ondoway.com/leg1.mp3'),
+        _makeStop(sortOrder: 2, beatId: 'b2', lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20, legAudioUrl: 'https://cdn.ondoway.com/leg2.mp3'),
+      ];
+      await service.startTour(stops);
+      gps.simulatePosition(base - 300 * degPerMeterLat, 2.35); // the first fix, far off
+      expect(audio.currentBeatId, 'b1-leg', reason: 'the opening walk is spoken at the start');
+      expect(audio.playCount, 1);
+      gps.simulatePosition(base - 250 * degPerMeterLat, 2.35);
+      expect(audio.playCount, 1, reason: 'told once is told');
+      audio.simulateComplete(); // the leg piece ends on the way
+      expect(service.currentStopIndex, 0, reason: 'a leg piece never advances the tour');
+      gps.simulatePosition(base, 2.35); // arrive: the story plays
+      expect(audio.currentBeatId, 'b1');
+      audio.simulateComplete();
+      expect(service.currentStopIndex, 1);
+      gps.simulatePosition(base + 10 * degPerMeterLat, 2.35); // still inside stop 0's footprint
+      expect(audio.isPlaying, isFalse, reason: 'the next leg has not begun');
+      gps.simulatePosition(base + 60 * degPerMeterLat, 2.35); // out of the footprint: the leg
+      expect(audio.currentBeatId, 'b2-leg');
+      gps.simulatePosition(base + 395 * degPerMeterLat, 2.35); // arrive while the leg still plays
+      expect(audio.currentBeatId, 'b2-leg', reason: 'the story waits for the leg piece');
+      audio.simulateComplete();
+      service.tick();
+      expect(audio.currentBeatId, 'b2', reason: 'then the story starts');
+    });
+
+    // Phase 7 S7.7 (B) — THE CHAPTERS (design §5.6 "segments"; W7.2 R4): a
+    // marquee's story is cut at its reviewed anchors; each chapter is its own
+    // file at its own place inside the footprint. Outdoors it plays by itself
+    // at the first standstill inside the anchor's radius; under a roof it is
+    // offered on the screen and the tap plays it (GPS is useless inside); the
+    // couple and the family tap for every chapter; told once is told.
+    test('an outdoor chapter plays at the standstill inside its anchor; the '
+        'indoor one is offered and tapped; told once', () async {
+      const westLat = base + 50 * degPerMeterLat; // inside the 100 m footprint
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+          StopSegment(label: 'Inside', lat: base, lng: 2.35, radiusM: 60, indoor: true,
+              narration: 'The nave.', audioUrl: 'https://cdn/inside.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35); // arrive: the story plays first
+      expect(audio.currentBeatId, 'nd');
+      audio.simulateComplete();
+      expect(service.state, TourState.completed, reason: 'the one stop is told');
+      // Walk to the west front: not yet standing — the chapter waits, offered.
+      gps.simulatePosition(westLat, 2.35);
+      expect(audio.isPlaying, isFalse);
+      expect(service.segmentOffer, 'The west front');
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.currentBeatId, 'nd-seg-0', reason: 'outdoor: auto at the standstill');
+      audio.simulateComplete();
+      // Told once: standing here again plays nothing; the indoor chapter is only offered.
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.isPlaying, isFalse);
+      expect(service.segmentOffer, 'Inside', reason: 'under a roof: the tap, never auto');
+      service.startSegment();
+      expect(audio.currentBeatId, 'nd-seg-1');
+      audio.simulateComplete();
+      // RE-DERIVED at W7.13 (Camille, R1(c) "told once is told … a tap replays"):
+      // this line used to assert NO offer once every chapter was told — the exact
+      // shape the closing panel rejected ("a told chapter gives my thumb nothing
+      // to replay"). Standing at a told chapter's own anchor, the offer RETURNS
+      // as a replay; only the AUTO-play is once-only.
+      expect(service.segmentOffer, 'The west front',
+          reason: 'standing at a told chapter: the tap can replay it');
+    });
+
+    // W7.13 (F&D): the sentence cap and the resume rule ride the WIRE's policy
+    // block — the server decided them from the party and the hardness. The wire
+    // outranks the phone's party stand-in: a SOLO session whose policy says
+    // cap 5 and resume-by-tap behaves as the policy says, not as 'solo' would.
+    test('the wire policy outranks the party for the cap and the resume rule',
+        () async {
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'p1', lat: base, lng: 2.35, audioUrl: url,
+        radiusM: 60, narration: _fourSentences, audioDurationSec: 40,
+      );
+      await service.startTour([stop]);
+      service.holdSession(SessionPlan(
+        tripId: 't', planVersion: 1, stops: [stop], retimeToleranceSeconds: 180,
+        party: 'solo',
+        placement: const PlacementPolicy(
+            ownPlaceM: 60, sentenceCapS: 5, interruptionResume: 'tap'),
+      ));
+      expect(service.sentenceEndCapSeconds, 5.0,
+          reason: 'the cap is the wire policy, not the solo default of 8');
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35); // arrive: the piece plays
+      expect(audio.currentBeatId, 'p1');
+      audio.simulateInterruption(AudioInterruptionKind.pauseBegin);
+      audio.simulateInterruption(AudioInterruptionKind.ended);
+      expect(service.resumeOffer, 'Stop 1',
+          reason: 'the policy says resume by tap — even for a solo party');
+      expect(audio.isPlaying, isFalse);
+      service.resumeInterrupted();
+      expect(audio.currentBeatId, 'p1');
+    });
+
+    // W7.13, Marcus — R3 quoted him into the locked ruling ("transcript and
+    // leave-by on screen") and S7.6 built the transcript half only. At the door
+    // the screen carries WHEN TO LEAVE the interior to keep the plan: the cut
+    // stop's own planned departure (its arrival clock plus its dwell), on the
+    // screen beside the keep-listening offer, never spoken.
+    test('the door shows a leave-by clock beside the transcript (R3, Marcus)', () async {
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'd1', lat: base, lng: 2.35, audioUrl: url,
+        radiusM: 30, door: true, outsideSeconds: 60,
+        narration: _fourSentences, audioDurationSec: 40,
+        closeText: 'That is the store.',
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 100 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35); // arrive: the piece plays
+      expect(audio.currentBeatId, 'd1');
+      clock.tick(61); // the placed outside minute has run
+      service.tick(); // the door fires: sentence end pends
+      service.finishSentenceNow();
+      audio.simulateComplete(); // the close ends: the offer stands
+      expect(service.keepListeningOffer, 'Stop 1');
+      // startTime '09:01' + durationMin 5 -> leave by 09:06, on the screen.
+      expect(service.doorLeaveByHhmm, '09:06',
+          reason: 'the door screen says when to leave to keep the plan');
+      service.keepListening();
+      expect(service.doorLeaveByHhmm, isNull,
+          reason: 'the tap spends the offer; the clock goes with it');
+    });
+
+    // W7.13, Camille — R1(c)'s second half was locked at W7.2 and never built:
+    // "leaving and re-entering the footprint never replays; A TAP DOES." Fix four
+    // kept a never-heard chapter on the screen; a HEARD one still vanished from
+    // the thumb. The offer returns for a told chapter the walker is STANDING AT;
+    // the tap replays it; the auto-play stays once-only.
+    test('a told chapter can be replayed by tap where you stand — never by itself',
+        () async {
+      const westLat = base + 50 * degPerMeterLat;
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete(); // the story
+      gps.simulatePosition(westLat, 2.35);
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.currentBeatId, 'nd-seg-0'); // told, once, by standing
+      audio.simulateComplete(); // the chapter ends (and the goodbye, none here)
+      // Still standing at the anchor: the offer RETURNS, and only the tap plays.
+      final playsBefore =
+          audio.playedIds.where((k) => k == 'nd-seg-0').length;
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.playedIds.where((k) => k == 'nd-seg-0').length, playsBefore,
+          reason: 'auto-play is once-only — R1(c) first half');
+      expect(service.segmentOffer, 'The west front',
+          reason: 'the tap replays — R1(c) second half');
+      service.startSegment();
+      expect(audio.playedIds.where((k) => k == 'nd-seg-0').length, playsBefore + 1);
+      // Away from the anchor (still at the stop): a told chapter is NOT offered —
+      // the screen offers what the thumb can use where the feet are.
+      audio.simulateComplete();
+      gps.simulatePosition(base - 80 * degPerMeterLat, 2.35);
+      expect(service.segmentOffer, isNull,
+          reason: 'off its anchor a told chapter rests; only an unheard one follows you');
+    });
+
+    // W7.11 defect 15 (the blind listening panel, ALL ELEVEN): the stop's GOODBYE
+    // used to end the story piece, so a chaptered marquee said farewell on arrival
+    // and then spoke again at the chapter. Théo would "take the earbud out and put
+    // the phone away"; Rosemary heard it "in the wind, and gone, and never learned
+    // there were twenty-seven kings". The server no longer puts the close in a
+    // chaptered story (render_md); the phone plays it when the LAST chapter is told.
+    test('the goodbye is said after the LAST chapter, never before them', () async {
+      const westLat = base + 50 * degPerMeterLat;
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        closeText: "That's Notre-Dame, the symbolic heart of France.",
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35);
+      expect(audio.currentBeatId, 'nd');
+      audio.simulateComplete(); // the story ends on its last STORY sentence
+      expect(service.closesPlayed, isEmpty,
+          reason: 'the farewell must not be said while a chapter is still owed');
+      gps.simulatePosition(westLat, 2.35);
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.currentBeatId, 'nd-seg-0');
+      audio.simulateComplete(); // the last chapter is told: NOW the goodbye
+      expect(service.closesPlayed,
+          ["That's Notre-Dame, the symbolic heart of France."]);
+    });
+
+    test('an unreached chapter leaves the goodbye unsaid, never said early', () async {
+      const westLat = base + 50 * degPerMeterLat;
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        closeText: "That's Notre-Dame.",
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete();
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      // She never walked to the front. Marcus: "the goodbye is the last thing said
+      // at the last place, or it is not said."
+      expect(service.closesPlayed, isEmpty);
+    });
+
+    // W7.11, Aiko's dissent — the ONE reason she rejected the chaptered telling:
+    // "TWO's second half is gated on my walking to the west front and STOPPING
+    // MOVING there. Today I will not stop moving in the open… Under TWO I never
+    // hear the facade… I would lose it silently and never find out it existed."
+    // "Silence and 'there is nothing here' sound identical" (Paulo). Told-once
+    // (R4, 11/11) is about a piece ALREADY HEARD; a piece never heard is not that.
+    // So: the chapter still STARTS ITSELF only where you stand at it, but the
+    // OFFER stays on the screen anywhere at the stop, and the tap plays it.
+    test('an untold outdoor chapter is offered anywhere at the stop, and the tap '
+        'plays it — but it still starts itself only where you stand at it', () async {
+      const westLat = base + 80 * degPerMeterLat; // inside the footprint, off the anchor
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35); // at the stop, 80 m from the anchor
+      audio.simulateComplete(); // the story is told
+      // She crosses the square without stopping at the front: no auto-play…
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.isPlaying, isFalse,
+          reason: 'it must never start itself where she is not standing at it');
+      // …but it is THERE, on the screen, and her tap plays it.
+      expect(service.segmentOffer, 'The west front',
+          reason: 'a chapter she has never heard must not be invisible');
+      service.startSegment();
+      expect(audio.currentBeatId, 'nd-seg-0');
+    });
+
+    test('the chapter you are standing in is the one offered, not merely the first',
+        () async {
+      const westLat = base + 80 * degPerMeterLat;
+      const eastLat = base - 80 * degPerMeterLat;
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+          StopSegment(label: 'The east end', lat: eastLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The buttresses.', audioUrl: 'https://cdn/east.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete();
+      gps.simulatePosition(eastLat, 2.35); // standing at the EAST end
+      expect(service.segmentOffer, 'The east end',
+          reason: 'standing at one chapter must not offer the other');
+    });
+
+    test('a couple taps for every chapter, outdoors too (R4)', () async {
+      const westLat = base + 50 * degPerMeterLat;
+      final stop = _makeStop(
+        sortOrder: 1, beatId: 'nd', lat: base, lng: 2.35, audioUrl: url, radiusM: 100,
+        segments: const [
+          StopSegment(label: 'The west front', lat: westLat, lng: 2.35, radiusM: 30,
+              indoor: false, narration: 'The facade.', audioUrl: 'https://cdn/west.mp3'),
+        ],
+      );
+      await service.startTour([stop]);
+      service.holdSession(SessionPlan(
+        tripId: 't', planVersion: 1, stops: [stop], retimeToleranceSeconds: 180,
+        party: 'couple', placement: const PlacementPolicy(ownPlaceM: 60, queuePiece: 'tap'),
+      ));
+      gps.simulatePosition(base - 200 * degPerMeterLat, 2.35);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete(); // the story
+      gps.simulatePosition(westLat, 2.35);
+      clock.tick(TourPlaybackService.kSettleSeconds + 1);
+      service.tick();
+      expect(audio.isPlaying, isFalse, reason: 'no chapter starts itself for a couple');
+      expect(service.segmentOffer, 'The west front');
+      service.startSegment();
+      expect(audio.currentBeatId, 'nd-seg-0');
+    });
+
+    test('the approach nudge fires at the NEXT stop\'s footprint edge, not at '
+        '10 m from its pin', () async {
+      await service.startTour([
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35,
+            audioUrl: url, radiusM: 10),
+        _makeStop(sortOrder: 2, beatId: 'b2', lat: base + 300 * degPerMeterLat,
+            lng: 2.35, audioUrl: url, radiusM: 60),
+      ]);
+      audio.play('b1', url); // the first piece is playing
+      gps.simulatePosition(base + 230 * degPerMeterLat, 2.35); // 70 m short of stop 2
+      expect(service.state, TourState.active);
+      gps.simulatePosition(base + 250 * degPerMeterLat, 2.35); // 50 m: inside 60
+      expect(service.state, TourState.approaching);
+      expect(service.pendingStopIndex, 1);
     });
   });
 }

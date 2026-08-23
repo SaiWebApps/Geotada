@@ -36,6 +36,12 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
 from .contract import POI, ReplanContext, Route, TourInput
+
+# A story stop this close to where the person said the day begins or ends IS that
+# place (W5.14: Rosemary's "start Musée d'Orsay, end Musée d'Orsay"). ONE definition,
+# in the audio placement rule (Phase 7 S7.3; W7.2 R1 — the finish and the start square
+# take the same radius on the phone): read here, never restated.
+from .placement import OWN_PLACE_RADIUS_M
 from .premium_tour import plan_premium_tour
 from .routing import haversine_m, leg_walk_seconds
 from .selection import _walk_arrivals, grant_freed_seconds
@@ -292,11 +298,6 @@ def _tail_input(
             "rest_cadence_minutes": None,  # rests already seated ride as protected stops
         }
     )
-
-
-#: A story stop this close to where the person said the day begins or ends IS that
-#: place (W5.14: Rosemary's "start Musée d'Orsay, end Musée d'Orsay").
-OWN_PLACE_RADIUS_M: float = 60.0
 
 
 def own_place_ids(route: Route, tour_input: TourInput) -> tuple[str, ...]:

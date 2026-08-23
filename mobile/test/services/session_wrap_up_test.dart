@@ -48,7 +48,8 @@ class _Clock {
 }
 
 // A 40-second piece of four sentences of 10 words each: boundaries at 10, 20,
-// 30 and 40 s (inside the 12-second cap a tapped piece may keep playing).
+// 30 and 40 s (a tap at 13 s waits 7 s — inside the 8-second cap a tapped piece
+// may keep playing; W7.2 R6 lowered the cap from 12).
 const _narration =
     'One two three four five six seven eight nine ten. '
     'Eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty. '
@@ -73,6 +74,9 @@ ItineraryStop _stop(int n, {required double lat, String? close}) => ItinerarySto
   audioDurationSec: 40,
   dwellSeconds: 300,
   closeText: close ?? "That's Stop $n, the close that ends it all here.",
+  // S7.3: the footprint these fixtures assumed (the phone's old 40 m circle) is
+  // now STATED on each stop, as the wire carries it.
+  trigger: const StopTrigger(radiusM: 40),
 );
 
 SessionContingency _wrapUp(String fromPoi, {String screen = 'Straight to Stop 2'}) =>
@@ -190,7 +194,12 @@ void main() {
     test('a piece of four equal sentences has its ends at quarter marks; past the '
         'last boundary the wait is zero; no text or length means no wait', () {
       final stop = stops[0];
-      expect(TourPlaybackService.secondsToSentenceEnd(stop, Duration.zero), closeTo(10, 1));
+      // RE-DERIVED at S7.8 (W7.2 R6): the first sentence ends at 10 s, past the
+      // 8 s cap — a tap at 0 s waits the cap, not the sentence.
+      expect(TourPlaybackService.secondsToSentenceEnd(stop, Duration.zero),
+          TourPlaybackService.kSentenceEndCapSeconds);
+      expect(TourPlaybackService.secondsToSentenceEnd(stop, const Duration(seconds: 3)),
+          closeTo(7, 1));
       expect(TourPlaybackService.secondsToSentenceEnd(stop, const Duration(seconds: 29)),
           closeTo(1, 1));
       expect(TourPlaybackService.secondsToSentenceEnd(stop, const Duration(seconds: 39)),
@@ -210,6 +219,55 @@ void main() {
       );
       expect(TourPlaybackService.secondsToSentenceEnd(long, Duration.zero),
           TourPlaybackService.kSentenceEndCapSeconds);
+      expect(TourPlaybackService.kSentenceEndCapSeconds, 8,
+          reason: 'W7.2 R6: eight seconds is the whole budget (Fiona, Nadia, Marcus)');
+    });
+  });
+
+  // Phase 7 S7.8 (design: "the duration is MEASURED, and the clocks trust it";
+  // W7.2 R6): the seam is reckoned from the PLAYER's real length when the file is
+  // loaded — the wire's length is the estimate, the player's is the fact — and
+  // the cap is the party's: 8 s, the family 0 (cut at once), a `wall` day 5 s.
+  // An unknown length cuts at once and the close plays.
+  group('S7.8 the seam trusts the player\'s length and the party\'s cap (W7.2 R6)', () {
+    test('the player\'s length wins over the wire\'s; the wire\'s is the fallback', () async {
+      final t = await atStopZero();
+      // The wire says 40 s; the loaded file is really 80 s long: at 25 s the
+      // wire's boundary would be 30 s (5 s away) but the real sentence ends at
+      // 40 s — 15 s away, capped at 8.
+      t.player.pos = const Duration(seconds: 25);
+      t.player.duration = const Duration(seconds: 80);
+      expect(t.service.sentenceWaitFor(stops[0]), 8);
+      t.player.duration = Duration.zero; // the player does not know yet: the wire's
+      expect(t.service.sentenceWaitFor(stops[0]), closeTo(5, 1));
+      expect(
+        TourPlaybackService.secondsToSentenceEnd(stops[0], const Duration(seconds: 25),
+            lengthSec: 80),
+        TourPlaybackService.kSentenceEndCapSeconds,
+      );
+    });
+
+    test('the family cuts at once; a wall day waits at most 5 s; unknown length cuts '
+        'at once', () async {
+      final t = await atStopZero();
+      t.player.pos = const Duration(seconds: 13); // 7 s to the sentence end
+      expect(t.service.sentenceWaitFor(stops[0]), closeTo(7, 1));
+      t.service.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops, retimeToleranceSeconds: 180,
+        dayStartHhmm: '15:00', party: 'family',
+      ));
+      expect(t.service.sentenceWaitFor(stops[0]), 0, reason: 'Nadia: cut at once');
+      t.service.holdSession(SessionPlan(
+        tripId: 'trip-1', planVersion: 1, stops: stops, retimeToleranceSeconds: 180,
+        dayStartHhmm: '15:00', endHardness: 'wall',
+      ));
+      expect(t.service.sentenceWaitFor(stops[0]), 5, reason: 'Marcus: five seconds');
+      final mute = ItineraryStop(
+        sortOrder: 9, poiId: 'p', poiName: 'P', lat: 0, lng: 0, lensName: '',
+        lensDisplay: '', durationMin: 1, importanceTier: 1, startTime: '',
+        narration: _narration,
+      );
+      expect(t.service.sentenceWaitFor(mute), 0, reason: 'no length: cut at once');
     });
   });
 }

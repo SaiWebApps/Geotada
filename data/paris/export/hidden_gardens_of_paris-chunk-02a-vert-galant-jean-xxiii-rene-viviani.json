@@ -5,7 +5,7 @@
     "latitude": 48.85717,
     "longitude": 2.341516,
     "importance_tier": 3,
-    "trigger_radius": 40,
+    "trigger_radius": 50,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -183,7 +183,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public pocket-park with a free open gate at the island's tip; visitors walk straight down the steps with no door, ticket, or screening."
+    "queue_basis": "An open public pocket-park with a free open gate at the island's tip; visitors walk straight down the steps with no door, ticket, or screening.",
+    "anchors": null
   },
   {
     "name": "Place Dauphine",
@@ -283,7 +284,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A triangular open square on the Île de la Cité entered freely from the street, with no gate or ticket and therefore no queue."
+    "queue_basis": "A triangular open square on the Île de la Cité entered freely from the street, with no gate or ticket and therefore no queue.",
+    "anchors": null
   },
   {
     "name": "Pont des Arts",
@@ -291,7 +293,7 @@
     "latitude": 48.858408,
     "longitude": 2.337548,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -393,7 +395,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A pedestrian bridge you walk straight onto from either bank — no door, no ticket, no line."
+    "queue_basis": "A pedestrian bridge you walk straight onto from either bank — no door, no ticket, no line.",
+    "anchors": null
   },
   {
     "name": "Voltaire Statue (Square Honoré-Champion)",
@@ -401,7 +404,7 @@
     "latitude": 48.857421,
     "longitude": 2.336212,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
@@ -492,7 +495,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An outdoor statue in an open square passed on the walk; there is no door, ticket, or line."
+    "queue_basis": "An outdoor statue in an open square passed on the walk; there is no door, ticket, or line.",
+    "anchors": null
   },
   {
     "name": "Square Jean XXIII",
@@ -500,7 +504,7 @@
     "latitude": 48.852574,
     "longitude": 2.350971,
     "importance_tier": 3,
-    "trigger_radius": 15,
+    "trigger_radius": 130,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
@@ -772,7 +776,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open cathedral garden entered through a gate off the street with no ticket or screening, so no line forms."
+    "queue_basis": "An open cathedral garden entered through a gate off the street with no ticket or screening, so no line forms.",
+    "anchors": null
   },
   {
     "name": "Square Rene Viviani",
@@ -780,7 +785,7 @@
     "latitude": 48.8513,
     "longitude": 2.3418,
     "importance_tier": 3,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "typical_duration_min": 14,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1007,7 +1012,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small open public square with an open gate and no ticket, so there is no queue."
+    "queue_basis": "A small open public square with an open gate and no ticket, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Shakespeare and Company",
@@ -1015,7 +1021,7 @@
     "latitude": 48.852575,
     "longitude": 2.347112,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1164,7 +1170,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A tiny bookshop that caps how many people fit inside and meters entry through one narrow door, so a short line forms at midday tourist peaks but clears quickly at opening; no security screening."
+    "queue_basis": "A tiny bookshop that caps how many people fit inside and meters entry through one narrow door, so a short line forms at midday tourist peaks but clears quickly at opening; no security screening.",
+    "anchors": null
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -1172,7 +1179,7 @@
     "latitude": 48.852192,
     "longitude": 2.351968,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "no",
     "name_variations": [
@@ -1308,7 +1315,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "The memorial is free but entered by a narrow staircase that admits only a few visitors at once, so a small line can form at midday while it is otherwise walk-straight-in."
+    "queue_basis": "The memorial is free but entered by a narrow staircase that admits only a few visitors at once, so a small line can form at midday while it is otherwise walk-straight-in.",
+    "anchors": null
   },
   {
     "name": "Hotel-Dieu",
@@ -1410,7 +1418,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working hospital, not a ticketed attraction; a tourist stops to look at the facade and courtyard from the street and never joins any admission line."
+    "queue_basis": "A working hospital, not a ticketed attraction; a tourist stops to look at the facade and courtyard from the street and never joins any admission line.",
+    "anchors": null
   },
   {
     "name": "Pont Neuf",
@@ -1418,7 +1427,7 @@
     "latitude": 48.85675,
     "longitude": 2.341033,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 120,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1503,6 +1512,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
+    "anchors": null
   }
 ]

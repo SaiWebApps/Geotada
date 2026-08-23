@@ -318,6 +318,28 @@ def resolve_party_axes(inp: TourInput) -> TourInput:
     return inp.model_copy(update=updates) if updates else inp
 
 
+class Anchor(BaseModel):
+    """ONE REVIEWED ANCHOR of a marquee place (Phase 7 S7.7 B; design §5.6 "segments";
+    W7.2 R4, all eleven): a spot inside the place's footprint where a person PLACED the
+    coordinates by hand — never derived from the pin — naming the beat sub-locations it
+    stands for, its own radius, whether it is under a roof (GPS is useless there: a tap,
+    never auto), and the sentence that argues it. The story of the stop is cut at these
+    and only these (`src/tour/placement.py::place_segments`). Carried on the corpus record
+    (`anchors` on poi-raw.json, JSON-encoded on the graph — the `opening_hours` precedent)
+    so a POI with no reviewed anchors has none: the safe default, an uncut story."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    label: str = Field(..., min_length=1)
+    sub_locations: tuple[str, ...] = Field(..., min_length=1)
+    lat: float
+    lng: float
+    radius_m: float = Field(..., gt=0)
+    indoor: bool = False
+    basis: str = ""
+
+
+
 class POI(BaseModel):
     """A POI loaded from the Neo4j corpus, snapshot-frozen for selection."""
 
@@ -412,6 +434,19 @@ class POI(BaseModel):
     queue_minutes_offpeak: int = 0
     queue_peak_hours: str = ""
     queue_basis: str = ""
+    # HOW BIG THE PLACE IS ON THE GROUND (Phase 7 S7.3/S7.4; design §5.6, W7.2 R1):
+    # the radius, in metres, within which a walker is AT this place — the place's
+    # FOOTPRINT. The corpus has carried it on every record (`trigger_radius`, written
+    # by upload_paris) and nothing in the engine read it: the phone drew one 10 m
+    # circle for every place, a 140 m square and a doorway alike. THE one audio
+    # placement rule (src/tour/placement.py) reads it and puts it on the wire. None =
+    # the record was never measured (or the loader has not yet carried it — the hop is
+    # S7.4): the rule falls to its door-sized default, never to a second circle.
+    trigger_radius: float | None = Field(default=None, gt=0)
+    # THE REVIEWED ANCHORS (Phase 7 S7.7 B; design §5.6 "segments"; W7.2 R4): the spots
+    # inside the footprint where a person placed a chapter of the story — marquee
+    # places only, Notre-Dame first. Empty = no chapters, the story is told whole.
+    anchors: tuple[Anchor, ...] = ()
 
     @model_validator(mode="after")
     def _playback_flags_are_consistent(self) -> POI:
@@ -881,6 +916,12 @@ class Route(BaseModel):
     # (dateless/legacy routes) = nothing rendered; the safe identity default.
     planned_queue_seconds: Mapping[str, int] = Field(default_factory=dict)
     visit_goes_inside: Mapping[str, bool] = Field(default_factory=dict)
+    # THE PLACED OUTSIDE SECONDS per stop (Phase 7 S7.6; design §5.6 threshold
+    # silence) — the same shape, priced at the same one site and the same arrival
+    # hour as the two maps above, carried so the audio placement rule can say how
+    # long a piece has before the door: the only threshold a phone can see under a
+    # roof. Empty = unpriced = no door anywhere; the safe identity default.
+    planned_outside_seconds: Mapping[str, int] = Field(default_factory=dict)
     # HOW MUCH SHORTER THAN ASKED this tour actually runs, in seconds, and 0 when
     # it is not short enough to be worth saying.
     #

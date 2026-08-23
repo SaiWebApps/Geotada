@@ -5,7 +5,7 @@
     "latitude": 48.8713,
     "longitude": 2.3417,
     "importance_tier": 3,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -58,7 +58,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered public passage open at both ends with no door, ticket, or screening; you walk through freely."
+    "queue_basis": "A covered public passage open at both ends with no door, ticket, or screening; you walk through freely.",
+    "anchors": null
   },
   {
     "name": "Theatre des Varietes",
@@ -66,7 +67,7 @@
     "latitude": 48.8714,
     "longitude": 2.3421,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -126,7 +127,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A performance theatre with no walk-in queue; entry is by show ticket and on a tour it is only viewed from the boulevard."
+    "queue_basis": "A performance theatre with no walk-in queue; entry is by show ticket and on a tour it is only viewed from the boulevard.",
+    "anchors": null
   },
   {
     "name": "Place de la Bourse",
@@ -134,7 +136,7 @@
     "latitude": 48.8696,
     "longitude": 2.3416,
     "importance_tier": 3,
-    "trigger_radius": 15,
+    "trigger_radius": 40,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
@@ -191,7 +193,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no gate or ticket; the whole value stands in the open with no line."
+    "queue_basis": "An open public square with no gate or ticket; the whole value stands in the open with no line.",
+    "anchors": null
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -199,7 +202,7 @@
     "latitude": 48.8665,
     "longitude": 2.341,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -284,7 +287,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A basilica with an open door and no ticket or security check, entered directly without stopping."
+    "queue_basis": "A basilica with an open door and no ticket or security check, entered directly without stopping.",
+    "anchors": null
   },
   {
     "name": "Bibliotheque Nationale de France - Richelieu",
@@ -379,7 +383,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "Public access to the museum and gallery passes a reception and bag check that moves steadily, giving only a brief line at midday peak."
+    "queue_basis": "Public access to the museum and gallery passes a reception and bag check that moves steadily, giving only a brief line at midday peak.",
+    "anchors": null
   },
   {
     "name": "Galerie Vivienne",
@@ -387,7 +392,7 @@
     "latitude": 48.8667,
     "longitude": 2.3398,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -480,7 +485,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered arcade open at both ends with no door or ticket; visitors stroll through with no queue."
+    "queue_basis": "A covered arcade open at both ends with no door or ticket; visitors stroll through with no queue.",
+    "anchors": null
   },
   {
     "name": "Square Louvois",
@@ -488,7 +494,7 @@
     "latitude": 48.868,
     "longitude": 2.3376,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -634,7 +640,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small free public garden entered through an open gate with no ticket or check, so no line exists."
+    "queue_basis": "A small free public garden entered through an open gate with no ticket or check, so no line exists.",
+    "anchors": null
   },
   {
     "name": "Passage Choiseul",
@@ -642,7 +649,7 @@
     "latitude": 48.868,
     "longitude": 2.3355,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -703,7 +710,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered public passage open at both ends with no door or ticket; you walk straight through."
+    "queue_basis": "A covered public passage open at both ends with no door or ticket; you walk straight through.",
+    "anchors": null
   },
   {
     "name": "Restaurant Drouant",
@@ -774,7 +782,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A restaurant with no public queue for entry; on a walking tour it is a facade passed by, with dining by reservation not a standing line."
+    "queue_basis": "A restaurant with no public queue for entry; on a walking tour it is a facade passed by, with dining by reservation not a standing line.",
+    "anchors": null
   },
   {
     "name": "Harry's New York Bar",
@@ -841,7 +850,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A bar you walk into off the street with no ticket or security screening; any wait is for a seat inside, not a line to enter."
+    "queue_basis": "A bar you walk into off the street with no ticket or security screening; any wait is for a seat inside, not a line to enter.",
+    "anchors": null
   },
   {
     "name": "Rue de la Paix",
@@ -849,7 +859,7 @@
     "latitude": 48.8693,
     "longitude": 2.3312,
     "importance_tier": 4,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
@@ -993,6 +1003,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open shopping street with no gate or ticket; the whole value stands in the open, so there is no line to enter."
+    "queue_basis": "An open shopping street with no gate or ticket; the whole value stands in the open, so there is no line to enter.",
+    "anchors": null
   }
 ]

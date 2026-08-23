@@ -5,7 +5,7 @@
     "latitude": 48.861727,
     "longitude": 2.332909,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -278,6 +278,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A freestanding triumphal arch in the open Tuileries axis with no interior and no ticket, so there is nothing to queue for."
+    "queue_basis": "A freestanding triumphal arch in the open Tuileries axis with no interior and no ticket, so there is nothing to queue for.",
+    "anchors": null
   }
 ]

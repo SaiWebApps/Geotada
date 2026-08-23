@@ -233,6 +233,39 @@ def test_summarise_route_round_trip_appends_return_segment():
     assert len(r.transits) == 3
 
 
+def test_summarise_route_carries_the_queue_map_a_rebuild_hands_back():
+    """Phase 7 S7.5 (design §5.6; W7.2 R2): the seconds of line the planner priced at
+    each stop's arrival hour are priced at selection's one site against the corpus
+    snapshot — compose's rebuild has no such site, so the map is the seventh keyword
+    extra, handed back exactly as `planned_visit_seconds` is. Omitted, it is the empty
+    map every caller got before: no stop is queued, byte-identical."""
+    r = summarise_route(
+        [_poi("a", 48.86, 2.35), _poi("b", 48.87, 2.36)],
+        start_lat=48.85,
+        start_lng=2.35,
+        round_trip=False,
+        duration_min=60,
+        spine_area=None,
+        planned_queue_seconds={"a": 28 * 60},
+    )
+    assert r.planned_queue_seconds == {"a": 28 * 60}
+    bare = summarise_route(
+        [_poi("a", 48.86, 2.35)],
+        start_lat=48.85, start_lng=2.35, round_trip=False, duration_min=60, spine_area=None,
+    )
+    assert bare.planned_queue_seconds == {}
+    # S7.6: the door (which side of the door the visit lives on) and the placed OUTSIDE
+    # seconds ride the same way — the eighth and ninth extras, empty by default.
+    doors = summarise_route(
+        [_poi("a", 48.86, 2.35)],
+        start_lat=48.85, start_lng=2.35, round_trip=False, duration_min=60, spine_area=None,
+        visit_goes_inside={"a": True}, planned_outside_seconds={"a": 15 * 60},
+    )
+    assert doors.visit_goes_inside == {"a": True}
+    assert doors.planned_outside_seconds == {"a": 15 * 60}
+    assert bare.visit_goes_inside == {} and bare.planned_outside_seconds == {}
+
+
 def test_summarise_route_totals_use_routed_time_and_distance_when_available():
     class _Routed:
         def route(self, *_coords):

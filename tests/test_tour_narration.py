@@ -10,10 +10,10 @@ from __future__ import annotations
 import datetime as _dt
 
 from src.tour.contract import Script, ScriptPOI, Sentence, TourInput, ValidationReport
-from src.tour.render_md import stop_narration_text
+from src.tour.render_md import stop_leg_text, stop_narration_text
 
 
-def _script(sentences: list[Sentence]) -> Script:
+def _script(sentences: list[Sentence], *, seated: tuple[str, ...] = ("b1", "b2")) -> Script:
     return Script(
         city_slug="paris",
         generated_at=_dt.datetime(2026, 6, 13, tzinfo=_dt.UTC).isoformat(),
@@ -23,7 +23,9 @@ def _script(sentences: list[Sentence]) -> Script:
         total_walk_distance_m=0,
         total_planned_seconds=0,
         selected_pois=(
-            ScriptPOI(id="p1", name="Place des Vosges", tier=5, lat=48.85, lng=2.36),
+            ScriptPOI(
+                id="p1", name="Place des Vosges", tier=5, lat=48.85, lng=2.36, beat_ids=seated
+            ),
         ),
         lens_coverage={},
         script=tuple(sentences),
@@ -31,7 +33,14 @@ def _script(sentences: list[Sentence]) -> Script:
     )
 
 
-def test_groups_by_stop_and_joins_in_order_including_glue() -> None:
+def test_groups_by_stop_and_the_leg_line_is_the_leg_piece_not_the_stop_s() -> None:
+    """RE-DERIVED at Phase 7 S7.7 (design §5.6 C7 "audio overlaps the walking"; W7.2 plan
+    defect 7 — Théo, Greta, Aiko, Marcus: the stop's piece opened with the walking line the
+    person had already walked). A stop's sentences split by THE one leg-vs-stop rule
+    (`generation.is_walk_concurrent`, the rule the workbench's leg cards and the blueprint's
+    playback assignments already use): the walk-concurrent sentences are the stop's LEG
+    piece, spoken on the leg; the rest are its STORY, the file placed at the footprint.
+    Before S7.7 this test pinned `{0: "s0a s0b"}` — the nav line folded into the stop."""
     script = _script(
         [
             Sentence(text="s0a", source_id="b1", source_type="beat", stop_idx=0),
@@ -39,7 +48,36 @@ def test_groups_by_stop_and_joins_in_order_including_glue() -> None:
             Sentence(text="s1a", source_id="b2", source_type="beat", stop_idx=1),
         ]
     )
-    assert stop_narration_text(script) == {0: "s0a s0b", 1: "s1a"}
+    assert stop_narration_text(script) == {0: "s0a", 1: "s1a"}
+    assert stop_leg_text(script) == {0: "s0b"}
+
+
+def test_the_leg_piece_holds_the_walking_line_the_reflection_and_the_one_liner() -> None:
+    """The leg INTO stop 1 carries its nav line, a reflection and a walk-past one-liner
+    (a beat the plan did NOT seat — a vignette); the story opens on the stop's own first
+    story sentence and still ends on its close. Nothing is voiced twice."""
+    script = _script(
+        [
+            Sentence(text="Settle in.", source_id="GLUE_PACING", source_type="glue", stop_idx=0),
+            Sentence(text="Story zero.", source_id="b1", source_type="beat", stop_idx=0),
+            Sentence(text="Walk north for five minutes.", source_id="GLUE_NAV",
+                     source_type="glue", stop_idx=1),
+            Sentence(text="Think back on the square.", source_id="GLUE_REFLECTION",
+                     source_type="glue", stop_idx=1),
+            Sentence(text="The fountain dates from 1685.", source_id="vb-fountain",
+                     source_type="beat", stop_idx=1),
+            Sentence(text="Story one.", source_id="b2", source_type="beat", stop_idx=1),
+            Sentence(text="And that's stop one.", source_id="GLUE_CLOSING",
+                     source_type="glue", stop_idx=1),
+        ]
+    )
+    assert stop_narration_text(script) == {
+        0: "Settle in. Story zero.",
+        1: "Story one. And that's stop one.",
+    }
+    assert stop_leg_text(script) == {
+        1: "Walk north for five minutes. Think back on the square. The fountain dates from 1685."
+    }
 
 
 def test_empty_script_returns_empty_dict() -> None:
@@ -152,3 +190,87 @@ def test_yellow_banner_genuine_low_fill_keeps_below_bar_message():
 
     banner = _yellow_banner(_yellow_assessment(None), None)
     assert "ran below the empirical" in banner
+
+
+# ── Phase 7 W7.11 — the two defects the blind panel found in S7.7's own cut ──
+
+
+def _west_front():
+    """The reviewed anchor of a marquee's front, as the corpus carries it."""
+    from src.tour.contract import Anchor
+
+    return Anchor(
+        label="The west front",
+        sub_locations=["facade"],
+        lat=48.85325,
+        lng=2.34875,
+        radius_m=80.0,
+    )
+
+
+def _chaptered_script():
+    """One stop whose story has an ANCHORED sentence, a plain story sentence, its close,
+    and a leg that carries BOTH a walking line and an anchored walk-past one-liner."""
+    return _script(
+        [
+            Sentence(text="Walk north for five minutes.", source_id="GLUE_NAV",
+                     source_type="glue", stop_idx=1),
+            Sentence(text="The Revolution felled these facade kings.",
+                     source_id="vb-facade", source_type="beat", stop_idx=1),
+            Sentence(text="Story one.", source_id="b2", source_type="beat", stop_idx=1),
+            Sentence(text="Look at the row of twenty-seven kings.",
+                     source_id="b-facade", source_type="beat", stop_idx=1),
+            Sentence(text="That's the walk — the symbolic heart of France.",
+                     source_id="GLUE_CLOSING", source_type="glue", stop_idx=1),
+        ],
+        seated=("b1", "b2", "b-facade"),
+    )
+
+
+def _resolve_facade():
+    west = _west_front()
+    return lambda s: west if s.source_id in ("b-facade", "vb-facade") else None
+
+
+def test_a_chaptered_stop_does_not_say_goodbye_before_its_chapters() -> None:
+    """W7.11 defect 15 — ALL ELEVEN personas, on the blind review of the real Notre-Dame
+    telling: the story piece ended with the stop's GOODBYE, so the farewell was said on
+    arrival and the chapter played after it. Théo: "That is a goodbye, and in Two it lands
+    while I am still round the side of the building with the entire facade half owed to me.
+    I would take the earbud out and put the phone away." Marcus: "the goodbye is the last
+    thing said at the last place, or it is not said." Rosemary heard it "in the wind, and
+    gone, and never learned there were twenty-seven kings."
+
+    So: a stop CUT INTO CHAPTERS does not carry its close in the story piece. The close is
+    already its own hash-guarded artifact (`stop_close_text` → `close_audio_url`, S6.4/S6.8)
+    and the phone plays it when the LAST chapter has been told. A stop with no chapters is
+    untouched — its story still ends on its close, exactly as Phase 6 left it.
+    """
+    script = _chaptered_script()
+    story = stop_narration_text(script, anchor_of=_resolve_facade())
+    assert story[1] == "Story one.", (
+        "a chaptered stop's story must not end with its goodbye — the chapter comes after it"
+    )
+    # The close is still recoverable as its own line, and the chapter still holds its text.
+    from src.tour.render_md import stop_close_text, stop_segment_text
+
+    assert stop_close_text(script)[1] == "That's the walk — the symbolic heart of France."
+    chapters = stop_segment_text(script, _resolve_facade())[1]
+    assert [a.label for a, _ in chapters] == ["The west front"]
+
+    # A stop with NO anchors keeps the Phase 6 shape: the close ends the story.
+    assert stop_narration_text(script)[1].endswith("the symbolic heart of France.")
+
+
+def test_an_anchored_sentence_never_rides_the_leg() -> None:
+    """W7.11 defect 17 — S7.7 B applied the anchor cut to the STORY but not to the LEG, so
+    a sentence belonging to a reviewed anchor could be spoken while walking toward it. Aiko,
+    on the real leg piece: "'These facade kings' is wrong twice. *These* points at a facade I
+    cannot see for another ten minutes, and it spends the reveal early." An anchored sentence
+    belongs AT its anchor, wherever the leg-vs-stop rule would otherwise put it."""
+    script = _chaptered_script()
+    assert stop_leg_text(script, anchor_of=_resolve_facade()) == {
+        1: "Walk north for five minutes."
+    }, "the leg must carry the walking line only — the anchored one-liner belongs at its anchor"
+    # Without a resolver the leg is unchanged (no anchors on this day).
+    assert stop_leg_text(script)[1].startswith("Walk north for five minutes.")

@@ -5,7 +5,7 @@
     "latitude": 48.8580078,
     "longitude": 2.3627314,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -272,7 +272,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small free public square entered through an open gate; there is no ticket or security and thus no queue."
+    "queue_basis": "A small free public square entered through an open gate; there is no ticket or security and thus no queue.",
+    "anchors": null
   },
   {
     "name": "Square Léopold-Achille",
@@ -280,7 +281,7 @@
     "latitude": 48.8583587,
     "longitude": 2.363193,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -365,7 +366,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small free neighborhood garden with an open gate you walk straight into — no line to enter."
+    "queue_basis": "A small free neighborhood garden with an open gate you walk straight into — no line to enter.",
+    "anchors": null
   },
   {
     "name": "Clos des Blancs-Manteaux",
@@ -373,7 +375,7 @@
     "latitude": 48.8585695,
     "longitude": 2.3564592,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -477,7 +479,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small open community garden/green space with no ticket or controlled entry, so there is no queue."
+    "queue_basis": "A small open community garden/green space with no ticket or controlled entry, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Square du Temple",
@@ -968,7 +971,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free public garden entered through an open gate with no ticket or bag check, so there is no line to price."
+    "queue_basis": "A free public garden entered through an open gate with no ticket or bag check, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -976,7 +980,7 @@
     "latitude": 48.862792,
     "longitude": 2.361978,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1056,7 +1060,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered public market with open entrances and no admission control, so visitors walk straight in and there is no line to enter."
+    "queue_basis": "A covered public market with open entrances and no admission control, so visitors walk straight in and there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -1064,7 +1069,7 @@
     "latitude": 48.866098,
     "longitude": 2.355414,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1201,6 +1206,7 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A mid-sized ticketed museum with a bag check and ticket desk that rarely backs up; the line is minor and moves, peaking only midday when school and tour groups arrive."
+    "queue_basis": "A mid-sized ticketed museum with a bag check and ticket desk that rarely backs up; the line is minor and moves, peaking only midday when school and tour groups arrive.",
+    "anchors": null
   }
 ]

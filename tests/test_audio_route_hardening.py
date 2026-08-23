@@ -18,6 +18,15 @@ Each test here is red-first against a specific defect:
    was replaced by the one that pins the opposite.)
 5. /audio/compare's on-disk cache was bounded only by AGE, so a caller could
    fill the container's ephemeral disk within the retention window.
+
+PHASE 7 D7.0 TOMBSTONE (design §8.5; plan S7.10 deletes the per-beat audio
+library; phase7-ledger.md §D7.0): the rows that pinned the per-beat routes —
+``test_generate_batch_is_not_reachable_on_prod_profile``, the ``generate-batch``
+and ``generate/{beat_id}`` rows of ``test_spend_routes_404_on_prod_profile``, and
+the whole "silently-dropped stop" section (``TestGenerateTripReportsOrphanPrimary``
+over ``POST /audio/generate-trip``) — were DELETED, not adapted. The gate's
+invariant (the paid admin surface is closed on the public deployment) still
+holds for compare / compare-download / eval below.
 """
 
 from __future__ import annotations
@@ -30,8 +39,6 @@ from fastapi.testclient import TestClient
 
 from src.api.app import create_app
 from src.api.routes import audio as audio_routes
-from src.connection import get_database
-from tests.conftest import needs_neo4j
 
 
 @pytest.fixture(autouse=True)
@@ -68,19 +75,11 @@ def admin_client(monkeypatch):
 
 
 class TestAdminGate:
-    """Defects 1/4/7: unauthenticated paid-TTS + graph-write routes on prod."""
-
-    def test_generate_batch_is_not_reachable_on_prod_profile(self, prod_client):
-        """THE critical one: one anonymous request re-voiced and overwrote the
-        whole corpus. It must be indistinguishable from an unmounted route."""
-        resp = prod_client.post("/api/v1/audio/generate-batch", json={"force": True})
-        assert resp.status_code == 404, resp.text
+    """Defects 1/4/7: unauthenticated paid-TTS (+ graph-write, until S7.10) routes on prod."""
 
     @pytest.mark.parametrize(
         ("method", "path", "payload"),
         [
-            ("post", "/api/v1/audio/generate-batch", {"force": True}),
-            ("post", "/api/v1/audio/generate/beat-1", {"force": True}),
             ("post", "/api/v1/audio/compare", {"text": "hi", "providers": ["openai"]}),
             ("post", "/api/v1/audio/eval", {"text": "hi", "provider": "openai"}),
         ],
@@ -95,14 +94,23 @@ class TestAdminGate:
 
     def test_gate_is_fail_closed_on_unset_and_garbage(self, monkeypatch):
         """An unset or typo'd flag must keep the surface CLOSED, matching
-        app._workbench_api_enabled's fail-closed contract."""
+        app._workbench_api_enabled's fail-closed contract.
+
+        RE-DERIVED at Phase 7 D7.0 (written decision, plan §0.1.3): the probe used
+        to be ``POST /audio/generate-batch``, a route S7.10 deletes — against a
+        deleted route a 404 proves nothing about the gate, so the probe is now
+        ``/audio/compare``, a paid route that stays admin-gated. The invariant
+        is unchanged; with the gate ON the same request answers 200
+        (``test_compare_is_reachable_when_admin_gate_is_on``).
+        """
+        probe = {"text": "hi", "providers": ["mock"]}
         monkeypatch.delenv("WORKBENCH_API_ENABLED", raising=False)
         with _client() as c:
-            assert c.post("/api/v1/audio/generate-batch", json={}).status_code == 404
+            assert c.post("/api/v1/audio/compare", json=probe).status_code == 404
         for garbage in ("", "flase", "disbaled", "no", "0"):
             monkeypatch.setenv("WORKBENCH_API_ENABLED", garbage)
             with _client() as c:
-                assert c.post("/api/v1/audio/generate-batch", json={}).status_code == 404, garbage
+                assert c.post("/api/v1/audio/compare", json=probe).status_code == 404, garbage
 
     def test_public_playback_routes_stay_mounted_on_prod_profile(self, prod_client):
         """The gate must NOT take the mobile/web surface down with it."""
@@ -336,87 +344,9 @@ class TestArtifactMissing:
         assert audio_routes._artifact_missing(url) is False
 
 
-# ── The silently-dropped stop ─────────────────────────────────────────────
-
-ORPHAN_TRIP_ID = "audio-orphan-test-trip"
-ORPHAN_PREFIX = "audio-orphan-test-"
-ORPHAN_LINKED_BEAT = f"{ORPHAN_PREFIX}b-linked"
-ORPHAN_DANGLING_ID = f"{ORPHAN_PREFIX}b-dangling"
-
-
-def _seed_orphan_trip(driver) -> None:
-    """A trip with two stops: one healthy, one whose primary_beat_id names a
-    beat that has NO PLAYS_BEAT edge from that item (the stop is wired to some
-    other beat instead)."""
-    with driver.session(database=get_database()) as s:
-        s.run(
-            "MATCH (t:Trip {id: $tid}) "
-            "OPTIONAL MATCH (t)-[:HAS_STOP]->(i:ItineraryItem) "
-            "DETACH DELETE t, i",
-            tid=ORPHAN_TRIP_ID,
-        )
-        s.run(
-            "MATCH (b:NarrativeBeat) WHERE b.id STARTS WITH $prefix DETACH DELETE b",
-            prefix=ORPHAN_PREFIX,
-        )
-        s.run(
-            """
-            CREATE (t:Trip {id: $tid, name: 'Orphan primary test', status: 'planning',
-                            created_at: datetime()})
-            CREATE (ok:NarrativeBeat {id: $linked, script_body: 'A healthy beat.'})
-            CREATE (other:NarrativeBeat {id: $other, script_body: 'Wired but not primary.'})
-            CREATE (good:ItineraryItem {id: $tid + '-item-good', sort_order: 1,
-                                        beat_ids: [$linked], primary_beat_id: $linked})
-            CREATE (broken:ItineraryItem {id: $tid + '-item-broken', sort_order: 2,
-                                          beat_ids: [$dangling],
-                                          primary_beat_id: $dangling})
-            CREATE (t)-[:HAS_STOP]->(good)
-            CREATE (t)-[:HAS_STOP]->(broken)
-            CREATE (good)-[:PLAYS_BEAT]->(ok)
-            CREATE (broken)-[:PLAYS_BEAT]->(other)
-            """,
-            tid=ORPHAN_TRIP_ID,
-            linked=ORPHAN_LINKED_BEAT,
-            other=f"{ORPHAN_PREFIX}b-other",
-            dangling=ORPHAN_DANGLING_ID,
-        )
-
-
-@needs_neo4j
-class TestGenerateTripReportsOrphanPrimary:
-    """Defect 11: `UNWIND [b IN beats WHERE b.id = primary_id]` over an EMPTY
-    list deleted the row, so a stop whose primary_beat_id matches no PLAYS_BEAT
-    edge was neither generated NOR reported — the caller saw a fully successful
-    run while that stop shipped silently with no audio."""
-
-    @pytest.fixture()
-    def orphan_trip(self, clean_driver):
-        _seed_orphan_trip(clean_driver)
-        return ORPHAN_TRIP_ID
-
-    def test_orphan_stop_is_reported_not_dropped(self, client, orphan_trip):
-        resp = client.post(
-            f"/api/v1/audio/generate-trip/{orphan_trip}", json={"provider": "mock"}
-        )
-        assert resp.status_code == 200, resp.text
-        data = resp.json()
-
-        reported = {r["beat_id"] for r in data["results"]}
-        assert ORPHAN_DANGLING_ID in reported, (
-            "the stop whose primary beat has no PLAYS_BEAT edge vanished from "
-            f"the response entirely: {data}"
-        )
-        orphan = next(r for r in data["results"] if r["beat_id"] == ORPHAN_DANGLING_ID)
-        assert orphan["status"] == "failed"
-        assert "PLAYS_BEAT" in (orphan["error"] or "")
-        assert data["failed"] == 1
-
-    def test_healthy_stop_still_generates(self, client, orphan_trip):
-        """The diagnostic must not come at the cost of the working stop."""
-        resp = client.post(
-            f"/api/v1/audio/generate-trip/{orphan_trip}", json={"provider": "mock"}
-        )
-        data = resp.json()
-        good = next(r for r in data["results"] if r["beat_id"] == ORPHAN_LINKED_BEAT)
-        assert good["status"] == "generated"
-        assert data["generated"] == 1
+# ── The silently-dropped stop — TOMBSTONE (Phase 7 D7.0) ─────────────────
+# ``TestGenerateTripReportsOrphanPrimary`` (+ ``_seed_orphan_trip`` and the
+# ORPHAN_* ids) pinned ``POST /audio/generate-trip``'s per-beat orphan report.
+# That route is the per-beat audio library design §8.5 deletes (plan S7.10); the
+# per-stop path it is replaced by voices an item's own ``narration`` and has no
+# primary-beat edge to orphan. Deleted, not adapted (plan §0.1.2).

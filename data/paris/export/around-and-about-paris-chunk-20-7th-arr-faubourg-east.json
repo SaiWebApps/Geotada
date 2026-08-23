@@ -5,7 +5,7 @@
     "latitude": 48.858093,
     "longitude": 2.294694,
     "importance_tier": 5,
-    "trigger_radius": 30,
+    "trigger_radius": 80,
     "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [
@@ -217,7 +217,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening."
+    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening.",
+    "anchors": null
   },
   {
     "name": "Quai Voltaire",
@@ -408,7 +409,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open riverside embankment with no door or admission; the whole value stands in the open."
+    "queue_basis": "An open riverside embankment with no door or admission; the whole value stands in the open.",
+    "anchors": null
   },
   {
     "name": "Fontaine des Quatre Saisons",
@@ -471,7 +473,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A monumental wall fountain on a public street, viewed in the open with no gate or ticket."
+    "queue_basis": "A monumental wall fountain on a public street, viewed in the open with no gate or ticket.",
+    "anchors": null
   },
   {
     "name": "Saint-Thomas-d'Aquin",
@@ -533,7 +536,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door you walk straight through; there is no ticket desk or security screening to queue for."
+    "queue_basis": "A parish church with an open door you walk straight through; there is no ticket desk or security screening to queue for.",
+    "anchors": null
   },
   {
     "name": "Le Bon Marché",
@@ -625,7 +629,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A department store with wide free-entry doors and no ticket or security line to enter; any waiting happens at checkout tills inside, not at the threshold."
+    "queue_basis": "A department store with wide free-entry doors and no ticket or security line to enter; any waiting happens at checkout tills inside, not at the threshold.",
+    "anchors": null
   },
   {
     "name": "La Pagode",
@@ -689,6 +694,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A neighbourhood cinema entered directly off the street; there is no standing queue to reach the building, only a box office for showtimes."
+    "queue_basis": "A neighbourhood cinema entered directly off the street; there is no standing queue to reach the building, only a box office for showtimes.",
+    "anchors": null
   }
 ]

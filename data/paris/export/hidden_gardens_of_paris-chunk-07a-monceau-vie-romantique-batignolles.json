@@ -399,7 +399,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free public park entered through open railing gates without a ticket or check; there is no line to enter."
+    "queue_basis": "A free public park entered through open railing gates without a ticket or check; there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Musée Jacquemart-André",
@@ -407,7 +408,7 @@
     "latitude": 48.875253,
     "longitude": 2.310789,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -494,7 +495,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A popular mansion museum with a narrow entrance, bag check and ticket control feeding a limited-capacity house, so blockbuster exhibitions produce a real mid-day line that timed slots only partly relieve."
+    "queue_basis": "A popular mansion museum with a narrow entrance, bag check and ticket control feeding a limited-capacity house, so blockbuster exhibitions produce a real mid-day line that timed slots only partly relieve.",
+    "anchors": null
   },
   {
     "name": "Musée de la Vie Romantique",
@@ -502,7 +504,7 @@
     "latitude": 48.8813455,
     "longitude": 2.3335217,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -757,7 +759,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A modest house-museum with a single reception desk and free permanent collection, so only a brief desk/bag-check line forms at busy midday hours."
+    "queue_basis": "A modest house-museum with a single reception desk and free permanent collection, so only a brief desk/bag-check line forms at busy midday hours.",
+    "anchors": null
   },
   {
     "name": "Square des Batignolles",
@@ -765,7 +768,7 @@
     "latitude": 48.8875484,
     "longitude": 2.3162267,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 130,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1085,7 +1088,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public English-style garden with open gates you walk straight through — no admission and no queue."
+    "queue_basis": "A public English-style garden with open gates you walk straight through — no admission and no queue.",
+    "anchors": null
   },
   {
     "name": "Square d'Orléans",
@@ -1093,7 +1097,7 @@
     "latitude": 48.8774069,
     "longitude": 2.3360446,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1210,7 +1214,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private residential courtyard-garden you walk into through an open gate with no ticket or security, so there is no line to price."
+    "queue_basis": "A private residential courtyard-garden you walk into through an open gate with no ticket or security, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Cathédrale Saint-Alexandre-Nevsky",
@@ -1218,7 +1223,7 @@
     "latitude": 48.877613,
     "longitude": 2.301992,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1303,7 +1308,8 @@
         "17:00"
       ]
     ],
-    "queue_basis": "A working Orthodox cathedral with restricted visiting hours entered through one door; a small line can form only within its limited opening windows and is otherwise negligible."
+    "queue_basis": "A working Orthodox cathedral with restricted visiting hours entered through one door; a small line can form only within its limited opening windows and is otherwise negligible.",
+    "anchors": null
   },
   {
     "name": "Place Saint-Georges",
@@ -1311,7 +1317,7 @@
     "latitude": 48.878378,
     "longitude": 2.3374403,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 12,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1337,6 +1343,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no door and no interior; the whole value stands in the open, so there is nothing to queue for."
+    "queue_basis": "An open public square with no door and no interior; the whole value stands in the open, so there is nothing to queue for.",
+    "anchors": null
   }
 ]

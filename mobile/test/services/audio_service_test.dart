@@ -6,60 +6,10 @@ import 'package:ondoway/services/audio_service.dart';
 
 void main() {
   group('AudioService', () {
-    test('checkAudioStatus returns parsed response on 200', () async {
-      final client = MockClient((request) async {
-        expect(request.url.path, contains('/audio/status/beat-1'));
-        return http.Response(
-          jsonEncode({
-            'has_audio': true,
-            'audio_url': 'https://cdn.example.com/beat-1.mp3',
-            'duration_sec': 120,
-            'is_stale': false,
-          }),
-          200,
-        );
-      });
-
-      final service = AudioService(httpClient: client);
-      final result = await service.checkAudioStatus(
-        'http://localhost:8000/api/v1',
-        'beat-1',
-      );
-
-      expect(result, isNotNull);
-      expect(result!['has_audio'], true);
-      expect(result['audio_url'], 'https://cdn.example.com/beat-1.mp3');
-      expect(result['duration_sec'], 120);
-      expect(result['is_stale'], false);
-    });
-
-    test('checkAudioStatus returns null on non-200 response', () async {
-      final client = MockClient((request) async {
-        return http.Response('not found', 404);
-      });
-
-      final service = AudioService(httpClient: client);
-      final result = await service.checkAudioStatus(
-        'http://localhost:8000/api/v1',
-        'beat-nonexistent',
-      );
-
-      expect(result, isNull);
-    });
-
-    test('checkAudioStatus returns null on network error', () async {
-      final client = MockClient((request) async {
-        throw Exception('Network error');
-      });
-
-      final service = AudioService(httpClient: client);
-      final result = await service.checkAudioStatus(
-        'http://localhost:8000/api/v1',
-        'beat-1',
-      );
-
-      expect(result, isNull);
-    });
+    // PHASE 7 D7.0 TOMBSTONE (design §8.5; plan S7.10; phase7-ledger.md §D7.0):
+    // the three `checkAudioStatus` tests pinned the phone's PER-BEAT status
+    // poll (GET /audio/status/{beatId}) — the per-beat audio library the
+    // design deletes. Deleted, not adapted; the per-STOP poll below survives.
 
     test('checkStopAudioStatus hits the per-STOP endpoint and parses on 200',
         () async {

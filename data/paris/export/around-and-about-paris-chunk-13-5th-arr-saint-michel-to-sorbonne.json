@@ -5,7 +5,7 @@
     "latitude": 48.848643,
     "longitude": 2.342038,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -315,7 +315,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "The historic university is not a free walk-in; visitor access runs through a controlled entrance with ID and bag check, producing a modest line at midday that thins outside guided-visit windows."
+    "queue_basis": "The historic university is not a free walk-in; visitor access runs through a controlled entrance with ID and bag check, producing a modest line at midday that thins outside guided-visit windows.",
+    "anchors": null
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -323,7 +324,7 @@
     "latitude": 48.8466,
     "longitude": 2.347344,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -483,7 +484,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free parish church with an open door and no admission control, so visitors enter without stopping and there is nothing to queue for."
+    "queue_basis": "A free parish church with an open door and no admission control, so visitors enter without stopping and there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Lycee Henri IV",
@@ -544,7 +546,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working secondary school closed to casual visitors and seen only from the street or via rare booked tours, so there is no walk-up admission line."
+    "queue_basis": "A working secondary school closed to casual visitors and seen only from the street or via rare booked tours, so there is no walk-up admission line.",
+    "anchors": null
   },
   {
     "name": "College de France",
@@ -610,7 +613,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A research institution walked past from the street; its free public lectures involve no security or ticket line for a passing visitor."
+    "queue_basis": "A research institution walked past from the street; its free public lectures involve no security or ticket line for a passing visitor.",
+    "anchors": null
   },
   {
     "name": "Jardin des Plantes",
@@ -672,7 +676,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line."
+    "queue_basis": "The botanical garden itself has free open gates you walk through without stopping; the paid museum and zoo inside have their own desks, but entering the garden has no line.",
+    "anchors": null
   },
   {
     "name": "Caveau de la Huchette",
@@ -680,7 +685,7 @@
     "latitude": 48.852787,
     "longitude": 2.346298,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 4,
     "kid_friendly": "no",
     "name_variations": [],
@@ -796,7 +801,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A cellar jazz club with no daytime entry; it is only walked past on a tour, so there is no queue to price during the day."
+    "queue_basis": "A cellar jazz club with no daytime entry; it is only walked past on a tour, so there is no queue to price during the day.",
+    "anchors": null
   },
   {
     "name": "Theatre de la Huchette",
@@ -804,7 +810,7 @@
     "latitude": 48.853,
     "longitude": 2.3454,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 4,
     "kid_friendly": "yes",
     "name_variations": [
@@ -862,7 +868,8 @@
         "21:00"
       ]
     ],
-    "queue_basis": "A tiny theatre where the only wait is at the box-office window before a performance; the small door and single desk make a brief line just before curtain, but there is no daytime queue."
+    "queue_basis": "A tiny theatre where the only wait is at the box-office window before a performance; the small door and single desk make a brief line just before curtain, but there is no daytime queue.",
+    "anchors": null
   },
   {
     "name": "Ecole Normale Superieure",
@@ -923,7 +930,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working academic institution, not a ticketed attraction; the tour views it from the street with no public entry line to stand in."
+    "queue_basis": "A working academic institution, not a ticketed attraction; the tour views it from the street with no public entry line to stand in.",
+    "anchors": null
   },
   {
     "name": "Arenes de Lutece",
@@ -931,7 +939,7 @@
     "latitude": 48.845126,
     "longitude": 2.352309,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -984,6 +992,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line."
+    "queue_basis": "The Roman arena is a free public open space entered through an unstaffed passage with no ticket or check, so there is no line.",
+    "anchors": null
   }
 ]

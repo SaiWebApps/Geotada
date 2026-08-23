@@ -230,6 +230,16 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
                 else None
             ),
             "queue_basis": (poi.get("queue_basis") or "").strip() or None,
+            # The reviewed anchors (Phase 7 S7.7 B, design §5.6 segments): a list of
+            # dicts in poi-raw.json, JSON-encoded here exactly like `opening_hours`
+            # and decoded by the corpus loader (src/tour/selection.py). Same
+            # no-defaults rule: absence stays absent, so a place nobody reviewed has
+            # no chapters rather than made-up ones.
+            "anchors": (
+                json.dumps(poi["anchors"], ensure_ascii=False)
+                if isinstance(poi.get("anchors"), list) and poi["anchors"]
+                else None
+            ),
         })
 
     result = session.run(
@@ -264,7 +274,8 @@ def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict
             p.queue_minutes_peak   = poi.queue_minutes_peak,
             p.queue_minutes_offpeak = poi.queue_minutes_offpeak,
             p.queue_peak_hours     = poi.queue_peak_hours,
-            p.queue_basis          = poi.queue_basis
+            p.queue_basis          = poi.queue_basis,
+            p.anchors              = poi.anchors
         RETURN count(p) AS total
         """,
         pois=params,

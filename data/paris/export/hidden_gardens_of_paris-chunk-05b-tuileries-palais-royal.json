@@ -5,7 +5,7 @@
     "latitude": 48.8636,
     "longitude": 2.3274,
     "importance_tier": 5,
-    "trigger_radius": 100,
+    "trigger_radius": 300,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -700,7 +700,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in."
+    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in.",
+    "anchors": null
   },
   {
     "name": "Palais-Royal",
@@ -708,7 +709,7 @@
     "latitude": 48.8637,
     "longitude": 2.3372,
     "importance_tier": 5,
-    "trigger_radius": 30,
+    "trigger_radius": 100,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1104,7 +1105,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in."
+    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in.",
+    "anchors": null
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -1112,7 +1114,7 @@
     "latitude": 48.8598,
     "longitude": 2.341,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1274,7 +1276,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working parish church with an open door you walk straight through without ticket or check, so there is no queue."
+    "queue_basis": "A working parish church with an open door you walk straight through without ticket or check, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Eglise Saint-Roch",
@@ -1282,7 +1285,7 @@
     "latitude": 48.8639,
     "longitude": 2.3324,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1369,7 +1372,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A parish church with an open door and no ticket or security screening; worshippers and visitors walk straight in without stopping."
+    "queue_basis": "A parish church with an open door and no ticket or security screening; worshippers and visitors walk straight in without stopping.",
+    "anchors": null
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -1377,7 +1381,7 @@
     "latitude": 48.8665,
     "longitude": 2.341,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1466,7 +1470,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A basilica with an open door and no ticket or security check, entered directly without stopping."
+    "queue_basis": "A basilica with an open door and no ticket or security check, entered directly without stopping.",
+    "anchors": null
   },
   {
     "name": "Galerie Vivienne",
@@ -1474,7 +1479,7 @@
     "latitude": 48.8667,
     "longitude": 2.3398,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1599,7 +1604,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered arcade open at both ends with no door or ticket; visitors stroll through with no queue."
+    "queue_basis": "A covered arcade open at both ends with no door or ticket; visitors stroll through with no queue.",
+    "anchors": null
   },
   {
     "name": "Comedie-Francaise",
@@ -1607,7 +1613,7 @@
     "latitude": 48.8634,
     "longitude": 2.3367,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1699,7 +1705,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A working theatre entered on a ticket for a performance rather than by a walk-in queue; on a walking tour it is a facade you pass with no standing line."
+    "queue_basis": "A working theatre entered on a ticket for a performance rather than by a walk-in queue; on a walking tour it is a facade you pass with no standing line.",
+    "anchors": null
   },
   {
     "name": "Galignani",
@@ -1707,7 +1714,7 @@
     "latitude": 48.8650224,
     "longitude": 2.3285487,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1733,7 +1740,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A rue de Rivoli bookshop entered straight from the street with no admission or screening, so there is no queue to enter."
+    "queue_basis": "A rue de Rivoli bookshop entered straight from the street with no admission or screening, so there is no queue to enter.",
+    "anchors": null
   },
   {
     "name": "Angelina Paris",
@@ -1741,7 +1749,7 @@
     "latitude": 48.8650778,
     "longitude": 2.3284104,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 3,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1772,6 +1780,7 @@
         "16:00"
       ]
     ],
-    "queue_basis": "This is a small famous tea room with limited table seating and no reservations for walk-ins, so patrons queue on the pavement for a table through the midday and afternoon tea rush, with only a short wait at opening."
+    "queue_basis": "This is a small famous tea room with limited table seating and no reservations for walk-ins, so patrons queue on the pavement for a table through the midday and afternoon tea rush, with only a short wait at opening.",
+    "anchors": null
   }
 ]

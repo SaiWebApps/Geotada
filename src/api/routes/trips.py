@@ -89,6 +89,7 @@ from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option, option_eta_seconds
+from src.tour.placement import StopSegment, place_anchors, place_day, place_stops
 from src.tour.premium_tour import (
     FULL_TELLING_DROPPED_DEGRADATION,
     PREMIUM_MODULE_VERSION,
@@ -668,7 +669,17 @@ def generate_trip(
         route, tour_input, snapshot, clock_start=_day_start(tour_input, body.start_time)
     )
     stops = route_script_to_stops(
-        script.selected_pois, beats_by_id, clocks, script=script, extra_by_poi=extra_by_poi
+        script.selected_pois,
+        beats_by_id,
+        clocks,
+        script=script,
+        extra_by_poi=extra_by_poi,
+        # Phase 7 S7.3: WHERE each stop's piece plays — placed ONCE by the one rule,
+        # stored on the item, carried on the wire (design §5.6; W7.2 R1).
+        triggers=place_stops(route),
+        # Phase 7 S7.7 (B): the marquee's reviewed anchors, off the same route — the
+        # story is cut at them into chapters (design §5.6 segments; W7.2 R4).
+        anchors=place_anchors(route),
     )
 
     # Step 4.6: persist the RESOLVED engine input + every flavour's ordered
@@ -729,6 +740,16 @@ def generate_trip(
                 # collapses back to the length of its own narration, which is the
                 # planned tour quietly becoming a different, shorter tour.
                 "planned_visit_seconds": dict(flavour.planned_visit_seconds),
+                # The seconds of line priced at each stop's arrival hour (Phase 7
+                # S7.5; design §5.6): priced at selection's one site against the
+                # snapshot, like the visit above, and read by the audio placement
+                # rule — a rebuild without it silently unqueues every stop.
+                "planned_queue_seconds": dict(flavour.planned_queue_seconds),
+                # The door and the seconds before it (Phase 7 S7.6): which side
+                # of the door each visit lives on and the placed outside seconds
+                # — priced at the same site; the rule's threshold under a roof.
+                "visit_goes_inside": dict(flavour.visit_goes_inside),
+                "planned_outside_seconds": dict(flavour.planned_outside_seconds),
                 # How far short of the request this tour honestly runs. It cannot
                 # be recomputed on compose either: it is the planner's verdict at
                 # the gate, and a rebuild has no gate. Dropping it would silently
@@ -775,6 +796,9 @@ def generate_trip(
             start_time=s["start_time"],
             dwell_seconds=s["dwell_seconds"],
             close_text=s.get("close_text"),
+            trigger=s.get("trigger"),
+            leg_narration=s.get("leg_narration"),
+            segments=s.get("segments") or [],
             transit_polyline=polyline_by_poi.get(s["poi_id"]),
             **audio_by_beat.get(s["primary_beat_id"], {}),
         )
@@ -949,6 +973,24 @@ def compose_trip(
             # existed restores at 0, which reads as "not short enough to mention"
             # and reproduces exactly how those trips have always composed.
             elapsed_shortfall_seconds=int(chosen.get("elapsed_shortfall_seconds") or 0),
+            # The SEVENTH extra (Phase 7 S7.5): the priced line per stop, so the
+            # composed day's triggers carry the queue the planned day's did. A trip
+            # saved before this key restores to the empty map — no stop queued,
+            # exactly how those trips have always composed.
+            planned_queue_seconds={
+                str(poi_id): int(seconds)
+                for poi_id, seconds in (chosen.get("planned_queue_seconds") or {}).items()
+            },
+            # The EIGHTH and NINTH (Phase 7 S7.6): the door and the placed outside
+            # seconds, the same fail-open shape — an older trip has no door anywhere.
+            visit_goes_inside={
+                str(poi_id): bool(inside)
+                for poi_id, inside in (chosen.get("visit_goes_inside") or {}).items()
+            },
+            planned_outside_seconds={
+                str(poi_id): int(seconds)
+                for poi_id, seconds in (chosen.get("planned_outside_seconds") or {}).items()
+            },
             # THE SURFACE THE DAY WAS PLANNED UNDER (Phase 6 S6.1a; design §2.4, plan
             # S2.7: "never a route selected under one costing and reported under
             # another"). Selection routes a take-it-easy day step-free; until this
@@ -1204,6 +1246,12 @@ def compose_trip(
         clocks,
         script=composed,
         extra_by_poi=extra_by_poi,
+        # Phase 7 S7.3: the rebuilt route's stops placed by the SAME one rule generate
+        # used — the composed day's geometry is the day's geometry.
+        triggers=place_stops(route),
+        # Phase 7 S7.7 (B): the marquee's reviewed anchors, off the same route — the
+        # story is cut at them into chapters (design §5.6 segments; W7.2 R4).
+        anchors=place_anchors(route),
     )
     for idx, stop in enumerate(stops):
         stop["extra_narration"] = extra_narration_by_poi.get(stop["poi_id"])
@@ -1243,6 +1291,9 @@ def compose_trip(
             thread_audio_urls=s.get("thread_audio_urls"),
             full_close_audio_url=s.get("full_close_audio_url"),
             dwell_seconds=s["dwell_seconds"],
+            trigger=s.get("trigger"),
+            leg_narration=s.get("leg_narration"),
+            segments=s.get("segments") or [],
         )
         for i, s in enumerate(stops)
     ]
@@ -1451,6 +1502,8 @@ def _session_plan(
         "finish_lng": finish[1] if finish else None,
         "finish_name": _finish_name(tour_input, route),
         "end_hardness": tour_input.end_hardness,
+        # Phase 7 S7.3: the day's placement policy, from the party (design §5.6; R1).
+        "placement": place_day(tour_input),
     }
     if defer_set:
         return SessionPlan(
@@ -1647,7 +1700,10 @@ def _with_live_audio(session: Session, plan: SessionPlan) -> SessionPlan:
                item.audio_duration_sec AS audio_duration_sec,
                item.close_audio_url AS close_audio_url,
                item.thread_audio_urls AS thread_audio_urls,
-               item.full_close_audio_url AS full_close_audio_url
+               item.full_close_audio_url AS full_close_audio_url,
+               item.leg_audio_url AS leg_audio_url,
+               item.leg_audio_duration_sec AS leg_audio_duration_sec,
+               item.segments_json AS segments_json
         """,
         ids=ids,
     )
@@ -1671,6 +1727,18 @@ def _with_live_audio(session: Session, plan: SessionPlan) -> SessionPlan:
                     ),
                     "full_close_audio_url": live["full_close_audio_url"]
                     or stop.full_close_audio_url,
+                    # Phase 7 S7.7: the leg piece's file rides the same overlay.
+                    "leg_audio_url": live["leg_audio_url"] or stop.leg_audio_url,
+                    "leg_audio_duration_sec": (
+                        live["leg_audio_duration_sec"] or stop.leg_audio_duration_sec
+                    ),
+                    # Phase 7 S7.7 (B): the chapters, with the files the voicing pass
+                    # wrote into the item's list, ride the same overlay.
+                    "segments": (
+                        [StopSegment.model_validate(d) for d in json.loads(live["segments_json"])]
+                        if live["segments_json"]
+                        else stop.segments
+                    ),
                 }
             )
         )

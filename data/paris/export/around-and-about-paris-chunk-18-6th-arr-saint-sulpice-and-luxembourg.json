@@ -5,7 +5,7 @@
     "latitude": 48.850987,
     "longitude": 2.33487,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 25,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [
@@ -324,7 +324,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering."
+    "queue_basis": "A large free-entry church you walk directly into through its main doors with no ticketing or security, so no queue forms before entering.",
+    "anchors": null
   },
   {
     "name": "Marché Saint-Germain",
@@ -484,7 +485,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A covered market walked into freely through open doors with no ticket or security check."
+    "queue_basis": "A covered market walked into freely through open doors with no ticket or security check.",
+    "anchors": null
   },
   {
     "name": "Café de la Mairie",
@@ -547,7 +549,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Walked by only and in any case a café entered directly with no security or ticket gate; there is no queue before entering."
+    "queue_basis": "Walked by only and in any case a café entered directly with no security or ticket gate; there is no queue before entering.",
+    "anchors": null
   },
   {
     "name": "Palais du Luxembourg",
@@ -683,7 +686,8 @@
         "13:00"
       ]
     ],
-    "queue_basis": "As the seat of the French Senate, public access is limited and gated by security screening on booked-visit days, giving a modest controlled line rather than a mass tourist queue; without booking most tours only see the exterior and the surrounding gardens, which are free and unqueued."
+    "queue_basis": "As the seat of the French Senate, public access is limited and gated by security screening on booked-visit days, giving a modest controlled line rather than a mass tourist queue; without booking most tours only see the exterior and the surrounding gardens, which are free and unqueued.",
+    "anchors": null
   },
   {
     "name": "Luxembourg Gardens",
@@ -691,7 +695,7 @@
     "latitude": 48.846222,
     "longitude": 2.337051,
     "importance_tier": 5,
-    "trigger_radius": 100,
+    "trigger_radius": 390,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -839,7 +843,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening."
+    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening.",
+    "anchors": null
   },
   {
     "name": "Musée du Luxembourg",
@@ -907,7 +912,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A small exhibition space in the orangery with a single ticket desk and a bag check; without a timed ticket a line forms during a popular show midday but stays minor at opening and late afternoon."
+    "queue_basis": "A small exhibition space in the orangery with a single ticket desk and a bag check; without a timed ticket a line forms during a popular show midday but stays minor at opening and late afternoon.",
+    "anchors": null
   },
   {
     "name": "27 Rue de Fleurus",
@@ -970,7 +976,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A private apartment building marked only by a plaque and seen from the street; there is no public interior and no line."
+    "queue_basis": "A private apartment building marked only by a plaque and seen from the street; there is no public interior and no line.",
+    "anchors": null
   },
   {
     "name": "Rue Férou",
@@ -1034,7 +1041,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open street you walk past; there is no door, ticket, or line of any kind."
+    "queue_basis": "An open street you walk past; there is no door, ticket, or line of any kind.",
+    "anchors": null
   },
   {
     "name": "Fontaine Médicis",
@@ -1148,6 +1156,7 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A fountain inside the freely-entered Luxembourg Gardens, viewed in the open with no gate or ticket to queue for."
+    "queue_basis": "A fountain inside the freely-entered Luxembourg Gardens, viewed in the open with no gate or ticket to queue for.",
+    "anchors": null
   }
 ]

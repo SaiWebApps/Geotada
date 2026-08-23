@@ -5,7 +5,7 @@
     "latitude": 48.866096,
     "longitude": 2.312156,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -400,6 +400,7 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Entry to the exhibition hall runs through security bag checks and timed-ticket scanning at a controlled entrance, so the line builds midday during major shows; the numbers reflect a busy exhibition period and drop at opening."
+    "queue_basis": "Entry to the exhibition hall runs through security bag checks and timed-ticket scanning at a controlled entrance, so the line builds midday during major shows; the numbers reflect a busy exhibition period and drop at opening.",
+    "anchors": null
   }
 ]

@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from src import city_registry
 from src.tour.candidate_eligibility import CandidateRejection
 from src.tour.contract import RouteOption, normalized_lens_list
+from src.tour.placement import PlacementPolicy, StopSegment, StopTrigger
 
 #: The party vocabulary, wire-form tolerant: the workbench (and any URL-ish
 #: caller) spells presets with hyphens; the engine's TourInput spells them with
@@ -241,6 +242,25 @@ class GeneratedStop(BaseModel):
     thread_audio_urls: dict[str, str] | None = None
     full_close_audio_url: str | None = None
     dwell_seconds: int = Field(default=0, description="Engine-computed time spent at this stop")
+    #: Phase 7 S7.3 (design §5.6; W7.2 R1): WHERE this stop's piece plays — the place's
+    #: own footprint, placed ONCE by the one rule (src/tour/placement.py) at generate and
+    #: compose, persisted on the item, and carried here so the phone SELECTS from it and
+    #: draws no circle of its own. None on an item written before the rule existed: no
+    #: geometry, so nothing auto-plays there (a tap still does).
+    trigger: StopTrigger | None = None
+    #: Phase 7 S7.7 (design §5.6 C7; plan defect 7): the stop's LEG piece — its walking
+    #: line (and a reflection or walk-past one-liner on that leg), split from the story by
+    #: the one leg-vs-stop rule and voiced as its own file, played ON THE LEG: the first
+    #: stop's at the start, every later stop's once the walker leaves the previous
+    #: footprint. None when the leg carries nothing; the file fields null until voiced.
+    leg_narration: str | None = None
+    leg_audio_url: str | None = None
+    leg_audio_duration_sec: float | None = None
+    #: Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): a marquee's CHAPTERS — its
+    #: story cut at the reviewed anchors, each its own piece at its own place inside the
+    #: footprint (outdoor: auto at a standstill; under a roof: a tap). Empty for every
+    #: stop without reviewed anchors; the file fields fill when the voicing pass runs.
+    segments: list[StopSegment] = Field(default_factory=list)
 
     @field_validator("thread_lines", "thread_audio_urls", mode="before")
     @classmethod
@@ -423,6 +443,12 @@ class SessionPlan(BaseModel):
     #: The party the day was planned for (solo/couple/family/take_it_easy/
     #: with_luggage or None): the phone's screen-only switch is per PARTY (W5.2 R4).
     party: str | None = None
+    #: Phase 7 S7.3 (design §5.6; W7.2 R1): the day's placement POLICY — who starts a
+    #: piece at the footprint's edge and who at the first standstill inside it, and the
+    #: radius of the person's own place — decided on the server from the party
+    #: (src/tour/placement.py), never a branch the phone invents. None from an older
+    #: server: the phone then starts at arrival and uses the rule's own-place default.
+    placement: PlacementPolicy | None = None
 
 
 class SessionReplanRequest(BaseModel):

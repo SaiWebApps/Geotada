@@ -10,9 +10,22 @@ abstract class LocationProvider extends ChangeNotifier {
   void stopTracking();
 }
 
+/// Phase 7 S7.9 (W7.2 R5): what the platform's audio session tells the walk,
+/// reduced to the three things the policy distinguishes — an interruption that
+/// PAUSES the piece (a call, Siri, another app's music), one that only DUCKS
+/// it (a navigation prompt: the piece carries on), and the end of either.
+enum AudioInterruptionKind { pauseBegin, duckBegin, ended }
+
 /// Abstract interface for audio playback.
 /// Allows mocking in tests without depending on an audio plugin.
 abstract class AudioProvider extends ChangeNotifier {
+  /// The platform's interruptions, through ONE door (S7.9; W7.2 R5). The
+  /// policy — pause, resume at the cut sentence's start, the couple's tap,
+  /// the missed close — lives in the playback service; the player only
+  /// translates. The default never emits, so a double that has no session
+  /// need not implement it.
+  Stream<AudioInterruptionKind> get interruptions => const Stream.empty();
+
   String? get currentBeatId;
   bool get isPlaying;
 
@@ -33,10 +46,29 @@ abstract class AudioProvider extends ChangeNotifier {
   /// zero so a double that does not track position need not implement it.
   Duration get position => Duration.zero;
 
+  /// The REAL length of the loaded piece, as the player decoded it (Phase 7
+  /// S7.8; W7.2 R6): the sentence arithmetic trusts this over the wire's stored
+  /// length once the file is loaded. Zero = not known (nothing loaded, or a
+  /// double that never reports one).
+  Duration get duration => Duration.zero;
+
   /// Play [audioUrl] under [beatId]. Set [isDeeperDive] for on-demand
   /// "keep exploring here" audio so completion does not auto-advance the tour.
   void play(String beatId, String audioUrl, {bool isDeeperDive = false});
   void stop();
+
+  /// Move the current piece to [position] (Phase 7 S7.6). The default does
+  /// nothing so a double that never seeks need not implement it.
+  Future<void> seek(Duration position) => Future.value();
+
+  /// Play [audioUrl] under [beatId] FROM [from] — the keep-listening tap at a
+  /// door resumes a cut piece from the start of its cut sentence (S7.6; W7.2
+  /// R3). ONE door to a position: the default plays, then seeks, so a double
+  /// need not implement it; the real player seeks before it starts.
+  void playFrom(String beatId, String audioUrl, Duration from) {
+    play(beatId, audioUrl);
+    seek(from);
+  }
 
   /// Pause / resume the current piece. Phase 5 (design §4.3): the tour's own
   /// pause goes through this door so the session can suspend its clock beside

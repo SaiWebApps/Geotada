@@ -283,7 +283,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open elevated park entered by ramps and staircases with no gate, ticket, or bag check, so there is no line to price."
+    "queue_basis": "An open elevated park entered by ramps and staircases with no gate, ticket, or bag check, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Viaduc des Arts",
@@ -395,7 +396,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A row of street-level artisan shops beneath a viaduct, entered freely from the pavement with no single controlled door."
+    "queue_basis": "A row of street-level artisan shops beneath a viaduct, entered freely from the pavement with no single controlled door.",
+    "anchors": null
   },
   {
     "name": "Bois de Vincennes",
@@ -547,7 +549,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A vast open public park with no enclosing gate to queue at; you simply walk in from any edge."
+    "queue_basis": "A vast open public park with no enclosing gate to queue at; you simply walk in from any edge.",
+    "anchors": null
   },
   {
     "name": "Chateau de Vincennes",
@@ -555,7 +558,7 @@
     "latitude": 48.844673,
     "longitude": 2.438338,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -707,7 +710,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A ticketed medieval fortress with a single ticket desk and bag check that draws a modest midday line in summer, shrinking to a few people at opening; the monument is not high-volume enough for a substantial queue."
+    "queue_basis": "A ticketed medieval fortress with a single ticket desk and bag check that draws a modest midday line in summer, shrinking to a few people at opening; the monument is not high-volume enough for a substantial queue.",
+    "anchors": null
   },
   {
     "name": "Bibliotheque Francois Mitterrand",
@@ -715,7 +719,7 @@
     "latitude": 48.834283,
     "longitude": 2.377128,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [
@@ -745,7 +749,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The library's esplanade and glass-tower plaza are open public space you walk straight onto with no ticket or door, so there is no line to stand in before reaching the value of the stop."
+    "queue_basis": "The library's esplanade and glass-tower plaza are open public space you walk straight onto with no ticket or door, so there is no line to stand in before reaching the value of the stop.",
+    "anchors": null
   },
   {
     "name": "Parc Floral",
@@ -753,7 +758,7 @@
     "latitude": 48.840833,
     "longitude": 2.437923,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -910,7 +915,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A public park that charges a small entry fee on event days handled at a ticket booth, so a brief line can form at midday but never a substantial one."
+    "queue_basis": "A public park that charges a small entry fee on event days handled at a ticket booth, so a brief line can form at midday but never a substantial one.",
+    "anchors": null
   },
   {
     "name": "Jardin de Reuilly",
@@ -918,7 +924,7 @@
     "latitude": 48.8421861,
     "longitude": 2.3875338,
     "importance_tier": 2,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1000,7 +1006,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public garden entered freely through open gates with no ticket or security, so no wait exists."
+    "queue_basis": "A public garden entered freely through open gates with no ticket or security, so no wait exists.",
+    "anchors": null
   },
   {
     "name": "Bistro du Peintre",
@@ -1008,7 +1015,7 @@
     "latitude": 48.8529881,
     "longitude": 2.3773247,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1158,7 +1165,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A street-front bistro walked past on the tour, not a ticketed interior, so there is no entry line to price."
+    "queue_basis": "A street-front bistro walked past on the tour, not a ticketed interior, so there is no entry line to price.",
+    "anchors": null
   },
   {
     "name": "Square Raoul Nordling",
@@ -1166,7 +1174,7 @@
     "latitude": 48.8526572,
     "longitude": 2.38156,
     "importance_tier": 1,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1258,7 +1266,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A small public garden entered through an open gate with no ticket or check, so no queue exists."
+    "queue_basis": "A small public garden entered through an open gate with no ticket or check, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Parc de Bercy",
@@ -1266,7 +1275,7 @@
     "latitude": 48.8356447,
     "longitude": 2.3817168,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 35,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1435,7 +1444,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large public park with multiple open entrances and no ticket or security, so there is nothing to wait in before entering."
+    "queue_basis": "A large public park with multiple open entrances and no ticket or security, so there is nothing to wait in before entering.",
+    "anchors": null
   },
   {
     "name": "Cinematheque Française",
@@ -1443,7 +1453,7 @@
     "latitude": 48.8369987,
     "longitude": 2.3826352,
     "importance_tier": 4,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1545,7 +1555,8 @@
         "15:00"
       ]
     ],
-    "queue_basis": "A film archive and museum with a ticket desk and light bag check but no airport-style screening, so only a minor line forms before screenings and exhibitions."
+    "queue_basis": "A film archive and museum with a ticket desk and light bag check but no airport-style screening, so only a minor line forms before screenings and exhibitions.",
+    "anchors": null
   },
   {
     "name": "Buddhist Temple Lac Daumesnil",
@@ -1635,7 +1646,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "This Buddhist temple pavilion by Lac Daumesnil in the Bois de Vincennes is entered through open grounds with no security screening or ticket gate, so there is no line to price."
+    "queue_basis": "This Buddhist temple pavilion by Lac Daumesnil in the Bois de Vincennes is entered through open grounds with no security screening or ticket gate, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Sainte-Chapelle",
@@ -1643,7 +1655,7 @@
     "latitude": 48.855358,
     "longitude": 2.34483,
     "importance_tier": 5,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1786,6 +1798,7 @@
         "16:00"
       ]
     ],
-    "queue_basis": "Airport-style security shared with the Palais de Justice plus a ticket check funnels visitors ahead of a small chapel, so the line runs long at midday and thins near opening and late afternoon."
+    "queue_basis": "Airport-style security shared with the Palais de Justice plus a ticket check funnels visitors ahead of a small chapel, so the line runs long at midday and thins near opening and late afternoon.",
+    "anchors": null
   }
 ]

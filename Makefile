@@ -90,7 +90,7 @@ LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 	scripts/tour_golden_diff.py scripts/poi_visit_duration.py \
 	scripts/poi_opening_hours.py scripts/poi_place_category.py \
 	scripts/poi_body_places.py scripts/poi_place_judgements.py \
-	scripts/poi_queues.py scripts/sync_poi_exports.py \
+	scripts/poi_queues.py scripts/poi_trigger_radius.py scripts/sync_poi_exports.py \
 	scripts/report_visit_durations.py scripts/tour_build.py scripts/dedup_review.py
 
 # Reports a missing credential or a wrong endpoint as a sentence. This was a bare
@@ -129,7 +129,7 @@ check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
 	backfill-name-key wiki-fetch gen-within-edges validate-beats deploy prune-orphans \
 	fetch-boundary geocode-pois poi-visit-duration poi-opening-hours \
 	poi-place-category poi-visit-report poi-body-places poi-place-judgements \
-	poi-queues sync-poi-exports tour-build \
+	poi-queues poi-trigger-radius sync-poi-exports tour-build \
 	measure-planned-audio measure-governor \
 	onboard-city flutter-ipa testflight render-watch render-status setup-audio \
 	aura-resume-proof flutter-test clean \
@@ -628,6 +628,15 @@ poi-opening-hours: ## Learn POI opening hours. Usage: make poi-opening-hours SLU
 poi-place-category: ## Categorise every POI (deterministic, $0). Usage: make poi-place-category SLUG=paris.
 	@$(PREFLIGHT) --label poi-place-category $(PRE_PY)
 	@$(LOCAL_EXEC) uv run python scripts/poi_place_category.py \
+		--slug "$(or $(SLUG),paris)" $(ARGS)
+
+# The FOOTPRINT pass (Phase 7 S7.4; design §5.6): how far from the pin a walker is AT
+# each place — `trigger_radius`, the field the audio placement rule reads. Deterministic,
+# $0: the kind table over the records still at the uploader's default, the marquees and
+# the eleven personas' stops reviewed by name with a basis sentence each.
+poi-trigger-radius: ## Size every POI footprint by place kind ($0). Usage: make poi-trigger-radius SLUG=paris [ARGS=--dry-run].
+	@$(PREFLIGHT) --label poi-trigger-radius $(PRE_PY)
+	@$(LOCAL_EXEC) uv run python -m scripts.poi_trigger_radius \
 		--slug "$(or $(SLUG),paris)" $(ARGS)
 
 # The audit table for the pass above. Reads the committed JSON only -- no graph,

@@ -5,7 +5,7 @@
     "latitude": 48.8703675,
     "longitude": 2.2481493,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 100,
     "typical_duration_min": 45,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -557,7 +557,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "This walled garden charges a small admission at a staffed gate, so a brief ticket-desk line can form on summer weekends but it moves quickly through the kiosk."
+    "queue_basis": "This walled garden charges a small admission at a staffed gate, so a brief ticket-desk line can form on summer weekends but it moves quickly through the kiosk.",
+    "anchors": null
   },
   {
     "name": "Maison de Balzac",
@@ -565,7 +566,7 @@
     "latitude": 48.8552005,
     "longitude": 2.2808879,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 15,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1001,7 +1002,8 @@
         "16:00"
       ]
     ],
-    "queue_basis": "A small writer's-house museum with a single reception desk; the free permanent collection means only a minor bag-check and desk line at busy midday hours."
+    "queue_basis": "A small writer's-house museum with a single reception desk; the free permanent collection means only a minor bag-check and desk line at busy midday hours.",
+    "anchors": null
   },
   {
     "name": "Allée des Cygnes",
@@ -1009,7 +1011,7 @@
     "latitude": 48.8531182,
     "longitude": 2.28408,
     "importance_tier": 3,
-    "trigger_radius": 10,
+    "trigger_radius": 60,
     "typical_duration_min": 22,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -1116,7 +1118,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A narrow walkable island path in the Seine with open access at both ends — no door and no line."
+    "queue_basis": "A narrow walkable island path in the Seine with open access at both ends — no door and no line.",
+    "anchors": null
   },
   {
     "name": "Trocadero",
@@ -1124,7 +1127,7 @@
     "latitude": 48.862725,
     "longitude": 2.287592,
     "importance_tier": 5,
-    "trigger_radius": 50,
+    "trigger_radius": 80,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1298,7 +1301,8 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open terrace and public gardens facing the Eiffel Tower with no gate or ticket, so visitors arrive freely without queuing."
+    "queue_basis": "An open terrace and public gardens facing the Eiffel Tower with no gate or ticket, so visitors arrive freely without queuing.",
+    "anchors": null
   },
   {
     "name": "Parc des Serres d'Auteuil",
@@ -1400,6 +1404,7 @@
         "16:00"
       ]
     ],
-    "queue_basis": "This botanical greenhouse garden has open park access but a controlled entrance to the historic glasshouses, producing only a short desk or bag-check line at peak midday."
+    "queue_basis": "This botanical greenhouse garden has open park access but a controlled entrance to the historic glasshouses, producing only a short desk or bag-check line at peak midday.",
+    "anchors": null
   }
 ]

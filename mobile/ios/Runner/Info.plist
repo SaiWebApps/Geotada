@@ -48,6 +48,13 @@
 	<string>Ondoway uses speech recognition to convert your voice feedback into text.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- Phase 7 S7.9 (W7.2 R5, 11/11): the walk keeps talking pocketed — audio
+	     for the piece, location so the next footprint is still reached. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>location</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
