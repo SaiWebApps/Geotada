@@ -27,7 +27,8 @@ class _RecordingAudio extends AudioProvider {
   @override
   bool get isDeeperDive => false;
   @override
-  void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {}
+  void play(String beatId, String audioUrl,
+      {bool isDeeperDive = false, String? title}) {}
   @override
   void stop() {}
   @override

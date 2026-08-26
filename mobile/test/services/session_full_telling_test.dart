@@ -20,9 +20,10 @@ const double _degPerMeterLat = 1.0 / 111320.0;
 class _Player extends MockAudioService {
   final List<String> played = [];
   @override
-  void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
+  void play(String beatId, String audioUrl,
+      {bool isDeeperDive = false, String? title}) {
     played.add(beatId);
-    super.play(beatId, audioUrl, isDeeperDive: isDeeperDive);
+    super.play(beatId, audioUrl, isDeeperDive: isDeeperDive, title: title);
   }
 }
 

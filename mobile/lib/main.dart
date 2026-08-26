@@ -1,5 +1,6 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/router.dart';
 import 'package:ondoway/services/audio_service.dart';
@@ -13,6 +14,15 @@ import 'package:ondoway/services/trip_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Phase 8 S8.7 (persona 09, Fiona & Dev step 4): the lock screen's transport,
+  // wired before anything can play. Dev's phone stays in his pocket, so the
+  // pause he reaches is this one — and it arrives at the tour's own pause door
+  // (TourPlaybackService), never at the player alone.
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ondoway.app.channel.audio',
+    androidNotificationChannelName: 'Tour audio',
+    androidNotificationOngoing: true,
+  );
   final authService = AuthService();
   final audioService = AudioService();
   final lensService = LensService();

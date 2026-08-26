@@ -69,9 +69,9 @@ class _DoorPlayer extends MockAudioService {
   @override
   Future<void> speak(String sentence) async => said.add(sentence);
   @override
-  void playFrom(String beatId, String audioUrl, Duration from) {
+  void playFrom(String beatId, String audioUrl, Duration from, {String? title}) {
     playedFrom.add((beatId, from));
-    super.playFrom(beatId, audioUrl, from);
+    super.playFrom(beatId, audioUrl, from, title: title);
   }
 
   @override

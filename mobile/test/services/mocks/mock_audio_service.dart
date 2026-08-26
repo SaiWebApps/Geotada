@@ -22,6 +22,25 @@ class MockAudioService extends AudioProvider {
     _interruptions.add(kind);
   }
 
+  /// S8.7: the platform's transport buttons, simulated.
+  final StreamController<AudioRemoteCommand> _remoteCommands =
+      StreamController<AudioRemoteCommand>.broadcast(sync: true);
+
+  @override
+  Stream<AudioRemoteCommand> get remoteCommands => _remoteCommands.stream;
+
+  /// Simulate a press on the LOCK SCREEN. The buttons there reach the player
+  /// first — the platform's transport moves it — and the app hears about it
+  /// afterwards, which is the whole reason the command needs a door of its own.
+  void simulateRemoteCommand(AudioRemoteCommand command) {
+    final wants = command == AudioRemoteCommand.play;
+    if (_isPlaying != wants && _currentBeatId != null) {
+      _isPlaying = wants;
+      notifyListeners();
+    }
+    _remoteCommands.add(command);
+  }
+
   String? _currentBeatId;
   bool _isPlaying = false;
   bool _isDeeperDive = false;
@@ -31,6 +50,10 @@ class MockAudioService extends AudioProvider {
   /// Every id handed to [play], in order — so a test can count REPLAYS of one
   /// piece (W7.13: a told chapter replays by tap, never by itself).
   final List<String> playedIds = [];
+
+  /// S8.7: the title handed with each played id — what the lock screen would
+  /// show. A test asserts it is the place's own name, never a stand-in.
+  final Map<String, String?> titles = {};
 
   @override
   String? get currentBeatId => _currentBeatId;
@@ -43,9 +66,15 @@ class MockAudioService extends AudioProvider {
   int get playCount => _playCount;
 
   @override
-  void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
+  void play(
+    String beatId,
+    String audioUrl, {
+    bool isDeeperDive = false,
+    String? title,
+  }) {
     if (_currentBeatId == beatId && _isPlaying) return;
     playedIds.add(beatId);
+    titles[beatId] = title;
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
     _isPlaying = true;

@@ -16,6 +16,14 @@ abstract class LocationProvider extends ChangeNotifier {
 /// it (a navigation prompt: the piece carries on), and the end of either.
 enum AudioInterruptionKind { pauseBegin, duckBegin, ended }
 
+/// Phase 8 S8.7 (persona 09, Fiona & Dev step 4): what the person asked of the
+/// TRANSPORT CONTROLS the platform owns — the lock screen, the earbud, the car
+/// — reduced to the two the walk answers. Dev's phone is in his pocket and the
+/// pause he presses there is the TOUR's pause, never the player's alone: "the
+/// pause is not an interruption of the product, it is the product being used
+/// correctly".
+enum AudioRemoteCommand { play, pause }
+
 /// Abstract interface for audio playback.
 /// Allows mocking in tests without depending on an audio plugin.
 abstract class AudioProvider extends ChangeNotifier {
@@ -25,6 +33,14 @@ abstract class AudioProvider extends ChangeNotifier {
   /// translates. The default never emits, so a double that has no session
   /// need not implement it.
   Stream<AudioInterruptionKind> get interruptions => const Stream.empty();
+
+  /// The platform's TRANSPORT BUTTONS, through ONE door (S8.7) — the same shape
+  /// as [interruptions] and for the same reason: the player only TRANSLATES
+  /// what the lock screen did; the policy — the tour's clock suspended beside
+  /// the audio, the pause counted as the person's — is the playback service's,
+  /// and it is the very same policy an in-app pause runs. The default never
+  /// emits, so a double with no remote surface need not implement it.
+  Stream<AudioRemoteCommand> get remoteCommands => const Stream.empty();
 
   String? get currentBeatId;
   bool get isPlaying;
@@ -54,7 +70,16 @@ abstract class AudioProvider extends ChangeNotifier {
 
   /// Play [audioUrl] under [beatId]. Set [isDeeperDive] for on-demand
   /// "keep exploring here" audio so completion does not auto-advance the tour.
-  void play(String beatId, String audioUrl, {bool isDeeperDive = false});
+  ///
+  /// [title] is what the LOCK SCREEN shows while this piece plays (S8.7) — the
+  /// place's own name, or the line being said. Null when the caller has no name
+  /// for it; the piece's id then stands in, and nothing is invented.
+  void play(
+    String beatId,
+    String audioUrl, {
+    bool isDeeperDive = false,
+    String? title,
+  });
   void stop();
 
   /// Move the current piece to [position] (Phase 7 S7.6). The default does
@@ -65,8 +90,8 @@ abstract class AudioProvider extends ChangeNotifier {
   /// door resumes a cut piece from the start of its cut sentence (S7.6; W7.2
   /// R3). ONE door to a position: the default plays, then seeks, so a double
   /// need not implement it; the real player seeks before it starts.
-  void playFrom(String beatId, String audioUrl, Duration from) {
-    play(beatId, audioUrl);
+  void playFrom(String beatId, String audioUrl, Duration from, {String? title}) {
+    play(beatId, audioUrl, title: title);
     seek(from);
   }
 

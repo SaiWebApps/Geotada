@@ -29,9 +29,10 @@ class _Player extends MockAudioService {
   @override
   Future<void> speak(String sentence) async => said.add(sentence);
   @override
-  void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
+  void play(String beatId, String audioUrl,
+      {bool isDeeperDive = false, String? title}) {
     played.add(beatId);
-    super.play(beatId, audioUrl, isDeeperDive: isDeeperDive);
+    super.play(beatId, audioUrl, isDeeperDive: isDeeperDive, title: title);
   }
 
   @override

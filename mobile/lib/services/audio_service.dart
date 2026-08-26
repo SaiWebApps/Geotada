@@ -5,6 +5,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ondoway/services/providers.dart';
 
@@ -22,6 +23,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   // playback service's. Ducking is mechanics and stays here.
   bool _sessionReady = false;
   bool _ducked = false;
+  bool _interrupted = false;
   final StreamController<AudioInterruptionKind> _interruptions =
       StreamController<AudioInterruptionKind>.broadcast();
 
@@ -41,6 +43,10 @@ class AudioService extends ChangeNotifier implements AudioProvider {
             _player.setVolume(0.25);
             _interruptions.add(AudioInterruptionKind.duckBegin);
           } else {
+            // S8.7: the platform is TAKING the audio, so the pause that follows
+            // is not a button anyone pressed. Held while it lasts so the remote
+            // door below stays quiet — an interruption is never their pause.
+            _interrupted = true;
             _interruptions.add(AudioInterruptionKind.pauseBegin);
           }
         } else {
@@ -48,6 +54,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
             _ducked = false;
             _player.setVolume(1.0);
           }
+          _interrupted = false;
           _interruptions.add(AudioInterruptionKind.ended);
         }
       });
@@ -56,6 +63,43 @@ class AudioService extends ChangeNotifier implements AudioProvider {
       // still plays; there is simply nothing to translate.
     }
   }
+
+  // ---- Phase 8 S8.7: THE LOCK SCREEN, translated (persona 09, Fiona & Dev) --
+  // just_audio_background owns the platform's command centre: a press on the
+  // lock screen, the earbud or the car moves the PLAYER and tells the app
+  // afterwards. So the app's own INTENT is remembered here, and a reported
+  // state that disagrees with it is the platform's doing — that disagreement IS
+  // the command, and it goes out of the one door for the playback service to
+  // answer. Nothing here decides anything: the policy (the tour's clock
+  // suspended beside the audio) is TourPlaybackService's, exactly as with the
+  // interruptions above.
+  bool _appWantsPlaying = false;
+  final StreamController<AudioRemoteCommand> _remoteCommands =
+      StreamController<AudioRemoteCommand>.broadcast();
+
+  @override
+  Stream<AudioRemoteCommand> get remoteCommands => _remoteCommands.stream;
+
+  void _translateRemoteCommand(PlayerState state) {
+    // An interruption's pause is the platform TAKING the audio (S7.9), not a
+    // button; loading and finishing are the app's own business either way.
+    if (_interrupted ||
+        state.processingState == ProcessingState.idle ||
+        state.processingState == ProcessingState.completed) {
+      return;
+    }
+    if (state.playing == _appWantsPlaying) return;
+    _appWantsPlaying = state.playing;
+    _remoteCommands.add(
+      state.playing ? AudioRemoteCommand.play : AudioRemoteCommand.pause,
+    );
+  }
+
+  /// What the lock screen SHOWS while [beatId] plays (S8.7). The title is the
+  /// caller's real name for the piece — the place, the chapter, the line being
+  /// said; with none, the piece's own id stands in and nothing is invented.
+  static MediaItem _mediaItem(String beatId, String? title) =>
+      MediaItem(id: beatId, title: title ?? beatId);
 
   String? _currentBeatId;
   bool _isPlaying = false;
@@ -109,9 +153,16 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     String beatId,
     String audioUrl, {
     bool isDeeperDive = false,
+    String? title,
   }) async {
     if (_currentBeatId == beatId && _isPlaying) return;
-    await _start(beatId, audioUrl, isDeeperDive: isDeeperDive, from: null);
+    await _start(
+      beatId,
+      audioUrl,
+      isDeeperDive: isDeeperDive,
+      from: null,
+      title: title,
+    );
   }
 
   /// Phase 7 S7.6 (W7.2 R3): the keep-listening tap at a door resumes the cut
@@ -119,8 +170,8 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   /// seeks, then plays; never a cut word. `void` because the provider's door is
   /// synchronous; the work is the same one start path [play] uses.
   @override
-  void playFrom(String beatId, String audioUrl, Duration from) {
-    _start(beatId, audioUrl, isDeeperDive: false, from: from);
+  void playFrom(String beatId, String audioUrl, Duration from, {String? title}) {
+    _start(beatId, audioUrl, isDeeperDive: false, from: from, title: title);
   }
 
   /// THE one start path: source (the cache, else the URL), an optional seek,
@@ -130,6 +181,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     String audioUrl, {
     required bool isDeeperDive,
     required Duration? from,
+    String? title,
   }) async {
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
@@ -139,15 +191,21 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
     try {
       await _ensureSession(); // S7.9: spoken playback, interruptions heard
+      // S8.7: every source carries its MediaItem tag, or the lock screen has
+      // nothing to show and just_audio_background refuses the source outright.
+      final tag = _mediaItem(beatId, title);
       final cachedPath = await _getCachedPath(beatId);
       if (cachedPath != null) {
-        await _player.setFilePath(cachedPath);
+        await _player.setAudioSource(AudioSource.file(cachedPath, tag: tag));
       } else {
-        await _player.setUrl(audioUrl);
+        await _player.setAudioSource(
+          AudioSource.uri(Uri.parse(audioUrl), tag: tag),
+        );
       }
       if (from != null && from > Duration.zero) {
         await _player.seek(from);
       }
+      _appWantsPlaying = true; // S8.7: the intent, before the player reports it
       await _player.play();
     } catch (e) {
       _isBuffering = false;
@@ -158,11 +216,13 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
   @override
   Future<void> pause() async {
+    _appWantsPlaying = false; // S8.7: ours, so it is not read back as a command
     await _player.pause();
   }
 
   @override
   Future<void> resume() async {
+    _appWantsPlaying = true;
     await _player.play();
   }
 
@@ -176,6 +236,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
   @override
   Future<void> stop() async {
+    _appWantsPlaying = false; // S8.7
     await _player.stop();
     _currentBeatId = null;
     _isDeeperDive = false;
@@ -273,6 +334,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   @override
   void dispose() {
     _interruptions.close();
+    _remoteCommands.close();
     _playerInstance?.dispose();
     super.dispose();
   }
@@ -305,6 +367,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
       _isPlaying = false;
       _position = _duration;
     }
+    _translateRemoteCommand(state); // S8.7: the lock screen, heard here
     notifyListeners();
   }
 

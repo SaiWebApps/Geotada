@@ -6,7 +6,11 @@ import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/services/providers.dart';
 
 export 'package:ondoway/services/providers.dart'
-    show LocationProvider, AudioProvider, AudioInterruptionKind;
+    show
+        LocationProvider,
+        AudioProvider,
+        AudioInterruptionKind,
+        AudioRemoteCommand;
 
 enum TourState { idle, active, approaching, completed }
 
@@ -183,7 +187,8 @@ class TourPlaybackService extends ChangeNotifier {
     }
     _doorCutStop = null;
     _pieceEndedNaturally = false;
-    _audioService.playFrom(key, stop.audioUrl!, Duration(seconds: _doorCutFrom));
+    _audioService.playFrom(key, stop.audioUrl!, Duration(seconds: _doorCutFrom),
+        title: stop.poiName);
     notifyListeners();
   }
 
@@ -523,7 +528,8 @@ class TourPlaybackService extends ChangeNotifier {
     _resumeOffered = false;
     if (stop == null || key == null || url == null) return;
     _pieceEndedNaturally = false;
-    _audioService.playFrom(key, url, Duration(seconds: _interruptedFrom));
+    _audioService.playFrom(key, url, Duration(seconds: _interruptedFrom),
+        title: stop.poiName);
     notifyListeners();
   }
 
@@ -537,6 +543,48 @@ class TourPlaybackService extends ChangeNotifier {
     _closesPlayed.add(text);
     _queue(text, isQuestion: false, audioUrl: stop.closeAudioUrl);
     notifyListeners();
+  }
+
+  // ---- Phase 8 S8.7: THE LOCK SCREEN (persona 09, Fiona & Dev step 4) -------
+  // "Dev pauses the tour without mentioning it, mid-sentence, because a voice in
+  // his ear is now in the way. The pause is not an interruption of the product.
+  // It is the product being used correctly." They do it five times in three
+  // hours and the phone never leaves the pocket, so the button they actually
+  // reach is the platform's, on the lock screen.
+  //
+  // It arrives HERE, at the door the in-app pause already uses. F&D's pause
+  // suspends the TOUR — the clock stops, the pause is counted as theirs, the
+  // wall keeps spending (§4.3) — and a press that stopped only the player would
+  // leave the session clock running and the plan drifting, which is their own
+  // step-4 complaint ("from here the app's finish time is fiction") made worse.
+  // There is no second pause path: the command IS [pauseTour] / [resumeTour].
+  //
+  // This is NOT S7.9. An interruption is the platform TAKING the audio and is
+  // never counted against the person; a transport button is the person ASKING.
+  StreamSubscription<AudioRemoteCommand>? _remoteSub;
+
+  void _onRemoteCommand(AudioRemoteCommand command) {
+    switch (command) {
+      case AudioRemoteCommand.pause:
+        pauseTour();
+      case AudioRemoteCommand.play:
+        resumeTour();
+    }
+  }
+
+  /// Is a piece of the CURRENT stop loaded and unfinished — something a resume
+  /// should bring back? The lock screen's button moves the PLAYER first and
+  /// reaches the pause door a beat later, so "was a piece running" cannot be
+  /// asked of the instant. A piece the walk has already left behind is not one
+  /// of these: an abandoned stop's (S7.9) and a finished telling's keys no
+  /// longer belong to the stop underfoot, and an INTERRUPTED piece is S7.9's
+  /// policy to bring back — by itself or by the couple's tap — never this one's.
+  bool get _pieceOfThisStopIsSuspended {
+    final key = _audioKeyOf(currentStop);
+    final loaded = _audioService.currentBeatId;
+    if (key == null || loaded == null) return false;
+    if (_audioService.isCompleted || _interruptedStop != null) return false;
+    return loaded == key || loaded.startsWith('$key-');
   }
 
   // Getters
@@ -604,7 +652,8 @@ class TourPlaybackService extends ChangeNotifier {
     if (stop == null) return;
     _pieceEndedNaturally = false;
     _fullPieceDurationSec = durationSec;
-    _audioService.play('${_audioKeyOf(stop)!}-full', audioUrl, isDeeperDive: true);
+    _audioService.play('${_audioKeyOf(stop)!}-full', audioUrl,
+        isDeeperDive: true, title: stop.poiName);
     notifyListeners();
   }
 
@@ -617,7 +666,7 @@ class TourPlaybackService extends ChangeNotifier {
     final stop = fix == null ? null : _stopUnderfoot(fix);
     if (stop == null || stop.audioUrl == null) return;
     _pieceEndedNaturally = false;
-    _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!);
+    _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!, title: stop.poiName);
     notifyListeners();
   }
   /// Every close this session played or said, in order (for the screen's
@@ -815,6 +864,9 @@ class TourPlaybackService extends ChangeNotifier {
     _resumeOffered = false;
     _interruptionSub?.cancel();
     _interruptionSub = _audioService.interruptions.listen(_onInterruption);
+    // S8.7: the lock screen's transport, through the ONE pause door.
+    _remoteSub?.cancel();
+    _remoteSub = _audioService.remoteCommands.listen(_onRemoteCommand);
 
     notifyListeners();
     return true;
@@ -837,6 +889,8 @@ class TourPlaybackService extends ChangeNotifier {
     _closePending = null;
     _interruptionSub?.cancel();
     _interruptionSub = null;
+    _remoteSub?.cancel(); // S8.7
+    _remoteSub = null;
     _interruptedStop = null;
     _interruptedKey = null;
     _resumeOffered = false;
@@ -869,8 +923,11 @@ class TourPlaybackService extends ChangeNotifier {
     final key = _audioKeyOf(currentStop);
     if (key != null) _pausesAtStop[key] = (_pausesAtStop[key] ?? 0) + 1;
     // A piece cut off mid-way is not a seam (R3); a conversation after a
-    // piece ended on its own leaves that seam where it was.
-    _pausedMidPiece = _audioService.isPlaying;
+    // piece ended on its own leaves that seam where it was. S8.7: the lock
+    // screen pauses the player a beat BEFORE its command reaches this door, so
+    // the second arm asks the piece, not the instant — without it a tour paused
+    // from the pocket and resumed in the app comes back in silence.
+    _pausedMidPiece = _audioService.isPlaying || _pieceOfThisStopIsSuspended;
     if (_pausedMidPiece) _pieceEndedNaturally = false;
     _audioService.pause();
     _maybeAnnounceScreenOnly();
@@ -1038,7 +1095,8 @@ class TourPlaybackService extends ChangeNotifier {
     final url = stop.segments[index].audioUrl;
     if (key == null || url == null) return;
     _pieceEndedNaturally = false;
-    _audioService.play(_segmentKey(key, index), url);
+    _audioService.play(_segmentKey(key, index), url,
+        title: stop.segments[index].label);
     notifyListeners();
   }
 
@@ -1165,7 +1223,7 @@ class TourPlaybackService extends ChangeNotifier {
     final url = _queuedLineAudioUrl;
     _queuedLineAudioUrl = null;
     if (url != null) {
-      _audioService.play('session-line', url, isDeeperDive: true);
+      _audioService.play('session-line', url, isDeeperDive: true, title: line);
     } else {
       _spoken.add(line);
       _audioService.speak(line);
@@ -1705,7 +1763,8 @@ class TourPlaybackService extends ChangeNotifier {
     final key = _audioKeyOf(stop);
     final url = stop.fullCloseAudioUrl;
     if (url != null && key != null) {
-      _audioService.play('$key-full-close', url, isDeeperDive: true);
+      _audioService.play('$key-full-close', url,
+          isDeeperDive: true, title: stop.poiName);
     } else {
       _spoken.add(text);
       _audioService.speak(text);
@@ -1742,7 +1801,8 @@ class TourPlaybackService extends ChangeNotifier {
     final key = _audioKeyOf(stop);
     final url = stop.closeAudioUrl;
     if (url != null && key != null) {
-      _audioService.play('$key-close', url, isDeeperDive: true);
+      _audioService.play('$key-close', url,
+          isDeeperDive: true, title: stop.poiName);
     } else {
       _spoken.add(text);
       _audioService.speak(text);
@@ -1944,7 +2004,7 @@ class TourPlaybackService extends ChangeNotifier {
       return; // still at the previous stop: its story, not the next walk
     }
     _startTourClockIfNeeded(); // the first play starts the tour clock (R1.3)
-    _audioService.play(legKey, url);
+    _audioService.play(legKey, url, title: target.poiName);
     notifyListeners();
   }
 
@@ -2042,7 +2102,7 @@ class TourPlaybackService extends ChangeNotifier {
       _startTourClockIfNeeded(); // the first play starts the tour clock (R1.3)
       _threadLine = null; // the leg is over: the next story begins (S6.5)
       _doorCutStop = null; // a new piece: the old door's offer is spent (S7.6)
-      _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!);
+      _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!, title: stop.poiName);
       _pieceStartedAt = _now(); // the outside seconds count from here (S7.6)
       _pieceStartedKey = _audioKeyOf(stop);
       _state = TourState.active;

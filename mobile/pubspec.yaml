@@ -24,6 +24,10 @@ dependencies:
   # Phase 7 S7.9 (W7.2 R5): the audio session — background spoken playback and
   # the interruption events; just_audio's own session library, now used directly.
   audio_session: ^0.1.25
+  # Phase 8 S8.7 (persona 09, Fiona & Dev step 4): the LOCK SCREEN's transport —
+  # what is playing, and a pause button that reaches a pocketed phone. Without it
+  # the phone must be unlocked and the app opened to stop a voice in your ear.
+  just_audio_background: ^0.0.1-beta.17
   path_provider: ^2.1.0
 
 dev_dependencies:

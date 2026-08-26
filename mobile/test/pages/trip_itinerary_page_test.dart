@@ -72,6 +72,7 @@ class _FakeAudioService extends AudioService {
     String beatId,
     String audioUrl, {
     bool isDeeperDive = false,
+    String? title,
   }) async {
     lastPlayedBeatId = beatId;
     lastPlayedDeeperDive = isDeeperDive;
