@@ -224,7 +224,11 @@ class _RewritingExecutor:
         sentences = []
         for sentence in _stitched(unit):
             if sentence["source_type"] == "beat":
-                sentence = {**sentence, "text": f"Here is the thing, {sentence['text']}"}
+                # "As it happens" and not "Here is the thing": a floor-neutral
+                # prefix, because a vignette one-liner is LEG-placed and the S8.3
+                # deixis floor rightly refuses "Here …" on a leg — this double's
+                # job is to trip ONLY the entailment checker.
+                sentence = {**sentence, "text": f"As it happens, {sentence['text']}"}
             sentences.append(sentence)
         return _offline_response(unit, sentences)
 
@@ -372,7 +376,10 @@ def _refusal_detail(resp, caplog) -> dict:
     )
     detail = resp.json()["detail"]
     assert detail["reason"] == "compose_verification_failed"
-    assert detail["attempts"] == 1, "the phone reads detail['attempts']"
+    # Phase 8 S8.4: one bounded targeted re-roll of the failing stops precedes a
+    # VERIFY refusal; these doubles fail every roll, so the refusal stands at an
+    # honestly-counted attempts=2 (the phone reads detail['attempts']).
+    assert detail["attempts"] == 2, "the phone reads detail['attempts']"
     return detail
 
 
@@ -475,7 +482,14 @@ def test_a_tour_with_deleted_facts_composes_because_coverage_only_advises(
     It is replaced, not abandoned: the scored fact-check runs the same judge in reverse
     ("is this source claim still present?"), which distinguishes a reworded fact from a
     missing one. See the run-context addendum.
-    """
+
+    RE-DERIVED at Phase 8 S8.4 (design §7.2): a claim-blurred day now DOES refuse —
+    but on the QUALITY FLOOR, never on coverage. Every beat sentence collapsed to
+    "That much is written down." is a rich corpus STARVED to a line (C1) and a
+    silent walk (C3) — the exact defects the rubric names — so the refusal must be
+    ``tour_quality_blocked`` with those checks, while the VERIFY layer's coverage
+    stays advisory (the old 200-assertion's whole point, now proven by the refusal
+    REASON rather than by serving a starved day)."""
     trip_id = fresh_trip["trip_id"]
     executor_target = _override_dep(
         client, "get_premium_compose_executor", _ClaimBlurringExecutor()
@@ -483,9 +497,17 @@ def test_a_tour_with_deleted_facts_composes_because_coverage_only_advises(
     try:
         with caplog.at_level(logging.ERROR, logger="ondoway.api"):
             resp = _compose(client, trip_id)
-        assert resp.status_code == 200, (
-            "a tour whose facts were blurred was refused on coverage — that check counts "
-            f"words, over-fires on paraphrase, and must only advise. {resp.text[:400]}"
+        assert resp.status_code == 422, resp.text
+        detail = resp.json()["detail"]
+        assert detail["reason"] == "tour_quality_blocked", (
+            "a blurred tour must die on the QUALITY FLOOR; coverage stays advisory "
+            f"and compose_verification_failed would mean it blocked at VERIFY: {detail}"
+        )
+        checks = {b["check"] for b in detail["blockers"]}
+        assert checks & {"C1-starved", "C3-thin"}, detail
+        assert not any(m.startswith("Compose refused by VERIFY") for m in
+                       (r.getMessage() for r in caplog.records)), (
+            "the VERIFY layer refused the blur — coverage stopped advising"
         )
     finally:
         _clear_dep(client, executor_target)
@@ -544,6 +566,279 @@ def test_the_certification_replay_keeps_its_own_gate_defaults() -> None:
     seam = inspect.signature(finalize_premium_composition).parameters
     for name in ("faithfulness_checker", "enforce_claim_coverage", "scan_glue_for_invention"):
         assert name in seam, f"the Block-2 finalizer cannot pass {name} through"
+
+    # Phase 8 S8.3: the placement floors are the FOURTH knob, same contract —
+    # OFF for the sealed certification replay, hard-coded ON for the live door.
+    assert finalize["enforce_placement_floors"].default is False
+    assert "enforce_placement_floors" in seam
+    assert seam["enforce_placement_floors"].default is False
+    from src.tour.premium_tour import finalize_premium_tour as _live_door
+
+    assert "enforce_placement_floors=True" in inspect.getsource(_live_door), (
+        "the live finalizer must hard-code the placement floors ON — an omitted "
+        "knob is exactly how the workbench ran no gates for three days"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Phase 8 S8.3 — the writer's words match the geometry they play in
+# (W8.2 R1/R2/R4/R5; phase7-ledger carry 1 + carry 8; W8.1(f) mechanisms
+# (a) mangled beat id, (c) fusion crossing playback contexts).
+# ---------------------------------------------------------------------------
+
+
+def _words_match_geometry_fixture() -> tuple[Script, BeatSequence, Route]:
+    """Three stops, one walk-past vignette on leg 1, a thread asked of stop 2.
+
+    Floor-clean by construction: the only leg-placed sentence (the vignette
+    one-liner) carries no arrived words, every stop piece is still, and every
+    stop ends on its close — so a floors-ON finalize of the ECHO of this stitch
+    passes, and each test's executor introduces exactly ONE defect.
+    """
+    pois = (
+        POI(id="p0", name="Stop Zero", tier=3, poi_role="anchor", lat=48.850, lng=2.350),
+        POI(id="p1", name="Stop One", tier=3, poi_role="anchor", lat=48.851, lng=2.351),
+        POI(id="p2", name="Stop Two", tier=3, poi_role="anchor", lat=48.852, lng=2.352),
+    )
+    vignette_poi = POI(
+        id="vp", name="The Fortress", tier=2, poi_role="stop", lat=48.8505, lng=2.3505
+    )
+    transits = tuple(
+        TransitSegment(
+            from_poi_id=None if i == 0 else pois[i - 1].id,
+            to_poi_id=p.id,
+            distance_m=100.0,
+            walk_seconds=90,
+            leg_seconds=100,
+            leg_distance_m=110.0,
+            source="valhalla",
+        )
+        for i, p in enumerate(pois)
+    )
+    route = Route(
+        pois=pois,
+        transits=transits,
+        total_walk_distance_m=300.0,
+        total_walk_seconds=300,
+        vignettes={1: (vignette_poi,)},
+    )
+    alpha = BeatRef(
+        id="story-alpha", poi_id="p0",
+        script_body="Henri the Fourth paid for the first terrace himself.",
+        key_claims=("henri the fourth paid for the first terrace",),
+    )
+    beta = BeatRef(
+        id="story-beta", poi_id="p1",
+        script_body="The workshops sold silk under the arcades.",
+        key_claims=("the workshops sold silk under the arcades",),
+    )
+    gamma = BeatRef(
+        id="story-gamma", poi_id="p1",
+        script_body="A printing press ran in the corner house.",
+        key_claims=("a printing press ran in the corner house",),
+    )
+    delta = BeatRef(
+        id="story-delta", poi_id="p2",
+        script_body="The stone for the whole terrace came from a quarry near Fontainebleau.",
+        key_claims=("the stone came from a quarry near fontainebleau",),
+    )
+    vig = BeatRef(
+        id="vig-fortress", poi_id="vp",
+        script_body="The fortress kept the crown jewels for a century.",
+        key_claims=("the fortress kept the crown jewels",),
+    )
+    sequence = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id="p0", poi_name="Stop Zero",
+                     ordering_strategy="narrative_function", beats=(alpha,)),
+            POIBeats(poi_id="p1", poi_name="Stop One",
+                     ordering_strategy="narrative_function", beats=(beta, gamma)),
+            POIBeats(poi_id="p2", poi_name="Stop Two",
+                     ordering_strategy="narrative_function", beats=(delta,)),
+        ),
+        vignette_beats={1: (vig,)},
+    )
+    stitched = Script(
+        city_slug="paris",
+        generated_at="2026-08-23T00:00:00Z",
+        inputs=TourInput(start=(48.850, 2.350), duration_min=45, city_slug="paris"),
+        total_audio_seconds=30,
+        total_walking_seconds=300,
+        total_walk_distance_m=300,
+        total_planned_seconds=2700,
+        selected_pois=(
+            ScriptPOI(id="p0", name="Stop Zero", tier=3, lat=48.850, lng=2.350,
+                      beat_ids=("story-alpha",)),
+            ScriptPOI(id="p1", name="Stop One", tier=3, lat=48.851, lng=2.351,
+                      beat_ids=("story-beta", "story-gamma")),
+            ScriptPOI(id="p2", name="Stop Two", tier=3, lat=48.852, lng=2.352,
+                      beat_ids=("story-delta",)),
+        ),
+        lens_coverage={},
+        script=(
+            Sentence(text="Henri the Fourth paid for the first terrace himself.",
+                     source_id="story-alpha", source_type="beat", stop_idx=0),
+            Sentence(text="And that's Stop Zero.", source_id="GLUE_CLOSING",
+                     source_type="glue", stop_idx=0),
+            Sentence(text="The fortress kept the crown jewels for a century.",
+                     source_id="vig-fortress", source_type="beat", stop_idx=1),
+            Sentence(text="The workshops sold silk under the arcades.",
+                     source_id="story-beta", source_type="beat", stop_idx=1),
+            Sentence(text="A printing press ran in the corner house.",
+                     source_id="story-gamma", source_type="beat", stop_idx=1),
+            Sentence(text="And that's Stop One.", source_id="GLUE_CLOSING",
+                     source_type="glue", stop_idx=1),
+            Sentence(
+                text="The stone for the whole terrace came from a quarry near Fontainebleau.",
+                source_id="story-delta", source_type="beat", stop_idx=2),
+            Sentence(text="And that brings our walk to a close.", source_id="GLUE_CLOSING",
+                     source_type="glue", stop_idx=2),
+        ),
+        validation=ValidationReport(),
+    )
+    return stitched, sequence, route
+
+
+class _MutatingEchoExecutor:
+    """Echoes the stitch, applying one caller-supplied mutation to the payload."""
+
+    cost_bearing = False
+    provider_name = "offline"
+
+    def __init__(self, mutate, extra_by_stop: dict[int, dict] | None = None) -> None:
+        self._mutate = mutate
+        self._extra_by_stop = extra_by_stop or {}
+
+    def execute(self, unit) -> PhysicalProviderResponse:
+        sentences = [self._mutate(dict(s), unit.stop_index) for s in _stitched(unit)]
+        extra = self._extra_by_stop.get(unit.stop_index)
+        payload = {"sentences": sentences, **extra} if extra else None
+        return _offline_response(unit, sentences, extra=payload)
+
+
+def _finalized_with(mutate, *, extra_by_stop=None, **gates):
+    stitched, sequence, route = _words_match_geometry_fixture()
+    plan = plan_premium_authoring(
+        stitched, sequence, route,
+        snapshot=None, snapshot_sha256="0" * 64,
+        routing_version="offline-test", policy_version="offline-test",
+    )
+    executor = _MutatingEchoExecutor(mutate, extra_by_stop)
+    responses = execute_premium_plan(
+        plan, executor=executor, receipt_sink=EphemeralReceiptSink()
+    )
+    return finalize_premium_composition(plan, responses, **gates)
+
+
+def test_a_beat_id_the_writer_mangled_by_one_character_is_corrected_not_refused():
+    """W8.2 R4 (Camille): a cited id at edit distance 1 from exactly ONE id the
+    request supplied is a copy error, corrected deterministically — the day
+    composes and the citation is the TRUE id (so entailment still gates it).
+    W7.14's live instance: the writer cited `1311cfd-…` for `1311cf7d-…` and the
+    day died 422, three attempts. UNDO: drop the correction in
+    ``_sentences_from_json`` -> the refusal returns -> RED."""
+
+    def mangle_source(sentence: dict, stop_index: int) -> dict:
+        if sentence["source_id"] == "story-beta":
+            return {**sentence, "source_id": "story-betaa"}  # one inserted character
+        return sentence
+
+    composition = _finalized_with(mangle_source)
+    corrected = [s for s in composition.script.script if s.text.startswith("The workshops")]
+    assert corrected and corrected[0].source_id == "story-beta", corrected
+
+    def mangle_also_cites(sentence: dict, stop_index: int) -> dict:
+        if sentence["source_id"] == "story-beta":
+            return {**sentence, "also_cites": ["story-gamm"]}  # one deleted character
+        return sentence
+
+    composition = _finalized_with(mangle_also_cites)
+    fused = [s for s in composition.script.script if s.text.startswith("The workshops")]
+    assert fused and fused[0].also_cites == ("story-gamma",), fused
+
+
+def test_a_mangled_id_with_no_close_neighbour_still_refuses():
+    """Fail-closed stays: an id at edit distance 2+ from everything the request
+    supplied is not a copy error — it is an invention, and traceability blocks."""
+    from src.tour.compose_gate import ComposeVerificationError
+
+    def mangle_far(sentence: dict, stop_index: int) -> dict:
+        if sentence["source_id"] == "story-beta":
+            return {**sentence, "source_id": "story-bxtaa"}
+        return sentence
+
+    with pytest.raises(ComposeVerificationError) as excinfo:
+        _finalized_with(mangle_far)
+    assert excinfo.value.report.untraceable_sentences
+
+
+def test_the_correction_never_guesses_between_two_close_ids():
+    """Deterministic means UNIQUE: a mangle at edit distance 1 from TWO known ids
+    is left alone (and traceability refuses it), never resolved by guessing."""
+    from src.tour.authoring import _corrected_citation
+
+    known = frozenset({"story-beta", "story-gamma"})
+    assert _corrected_citation("story-betaa", known) == "story-beta"
+    assert _corrected_citation("story-gamm", known) == "story-gamma"
+    assert _corrected_citation("story-beta", known) == "story-beta"  # already known
+    two_close = frozenset({"beat-a", "beat-b"})
+    assert _corrected_citation("beat-c", two_close) == "beat-c"  # ambiguous: untouched
+    assert _corrected_citation("beat-xy", two_close) == "beat-xy"  # distance 2: untouched
+
+
+def test_a_fusion_across_playback_contexts_is_refused_by_name():
+    """W8.1(f) mechanism (c), live on 2026-08-23 (trip 45819603, twice): the
+    writer fused a stop STORY sentence with a walk-past VIGNETTE beat and the
+    day died on a bare ValueError from ``partition_final_script`` — surfaced as
+    `compose_verification_failed` with every count 0, the unnamed refusal R8
+    forbids. With the floors ON, the SAME defect is a NAMED verification
+    finding, so the bounded retry can tell the writer which sentence to unfuse.
+    UNDO: drop the fused-context floor -> the bare ValueError returns -> RED."""
+    from src.tour.compose_gate import ComposeVerificationError
+
+    def fuse_across(sentence: dict, stop_index: int) -> dict:
+        if sentence["source_id"] == "story-beta":
+            return {**sentence, "also_cites": ["vig-fortress"]}
+        return sentence
+
+    with pytest.raises(ComposeVerificationError) as excinfo:
+        _finalized_with(fuse_across, enforce_placement_floors=True)
+    codes = [code for _, code in excinfo.value.report.forbidden_phrase_hits]
+    assert "fused_across_playback_contexts" in codes, codes
+
+    # The sealed certification replay is untouched: floors OFF composes this.
+    composition = _finalized_with(fuse_across)
+    assert composition.script.script
+
+
+def test_floors_on_the_clean_echo_still_compose():
+    """The floors are not a blanket refusal: the fixture's own echo passes them."""
+    composition = _finalized_with(
+        lambda sentence, stop_index: sentence, enforce_placement_floors=True
+    )
+    assert composition.script.script
+
+
+def test_a_thread_that_repeats_its_stops_own_telling_is_dropped():
+    """W8.2 R3 (11/11): one fact, one voice, per day — a thread that repeats the
+    stop's own narration is dropped (Greta's coronation story+thread, Sofia's
+    Templar bridge leg+thread). The drop rides the existing R5 channel: the day
+    ships without the line, reported, never refused. UNDO: drop the
+    near-verbatim check in ``_keep_threads`` -> the repeat ships -> RED."""
+    echo = lambda sentence, stop_index: sentence  # noqa: E731
+
+    repeat = {"threads": [{"from": "Stop Zero",
+                           "text": "The stone for the terrace came from a quarry "
+                                   "near Fontainebleau."}]}
+    composition = _finalized_with(echo, extra_by_stop={2: repeat})
+    assert 2 not in composition.threads_by_stop, composition.threads_by_stop
+
+    honest = {"threads": [{"from": "Stop Zero",
+                           "text": "The same king paid for both terraces."}]}
+    composition = _finalized_with(echo, extra_by_stop={2: honest})
+    assert composition.threads_by_stop.get(2) == {
+        "Stop Zero": "The same king paid for both terraces."
+    }
 
 
 # ---------------------------------------------------------------------------

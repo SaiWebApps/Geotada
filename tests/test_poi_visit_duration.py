@@ -331,3 +331,111 @@ def test_hop_2_an_unpriced_record_lands_on_the_safe_defaults() -> None:
     assert poi.typical_duration_min == 0
     assert poi.visit_seconds_inside is None
     assert poi.visit_basis == ""
+
+
+# ---------------------------------------------------------------------------
+# The one reply-reader every pass shares. `records_for_batch` is where the
+# markdown-fence strip, the JSON parse and the count check live for the
+# capacity, opening-hours, queue and place-judgement passes alike. Both halves
+# of its contract are pinned here: a change that only LOOSENED it is the
+# dangerous one, because a reply quietly paired against the wrong places
+# stamps one place's answer onto another's row.
+# ---------------------------------------------------------------------------
+
+REFUSAL = "refusing to guess the alignment"
+
+
+def test_a_batch_of_one_accepts_the_bare_object_the_model_returns() -> None:
+    """One place, one record — there is no alignment left to guess.
+
+    The retry path re-asks a SINGLE failed row, and a model answering a
+    one-item request routinely hands back the object rather than an array of
+    one. Reading that shape is not guessing: the record can only belong to the
+    one place that was asked about.
+    """
+    from scripts.poi_visit_duration import records_for_batch
+
+    reply = (
+        '{"name": "Pont Neuf", "typical_duration_min": 12, '
+        '"visit_seconds_inside": null, "visit_basis": "A road bridge; nothing to enter."}'
+    )
+    assert records_for_batch(reply, [{"name": "Pont Neuf"}]) == [json.loads(reply)]
+
+    # Fenced, because the same reply arrives wrapped just as often.
+    fenced = f"```json\n{reply}\n```"
+    assert records_for_batch(fenced, [{"name": "Pont Neuf"}]) == [json.loads(reply)]
+
+
+@pytest.mark.parametrize(
+    ("reply", "batch_size"),
+    [
+        # A bare object for TWO places: which of the two is it about? Unknowable.
+        ('{"name": "Pont Neuf"}', 2),
+        # Fewer records than places, and more records than places.
+        ('[{"name": "A"}, {"name": "B"}]', 3),
+        ('[{"name": "A"}, {"name": "B"}]', 1),
+        # Neither a list nor an object at all.
+        ('"Pont Neuf"', 1),
+    ],
+    ids=["bare-object-for-two", "too-few", "too-many", "not-an-object"],
+)
+def test_a_reply_that_does_not_align_with_the_batch_is_still_refused(
+    reply: str, batch_size: int
+) -> None:
+    """Every length but one keeps refusing, exactly as before."""
+    from scripts.poi_visit_duration import records_for_batch
+
+    batch = [{"name": f"Place {i}"} for i in range(batch_size)]
+    with pytest.raises(SystemExit) as raised:
+        records_for_batch(reply, batch)
+    assert REFUSAL in str(raised.value)
+    assert f"batch of {batch_size}" in str(raised.value)
+
+
+def test_a_fenced_array_is_read_in_the_batch_s_order() -> None:
+    """The ordinary path: strip the fence, parse, hand back one record per
+    place in the order they were asked about."""
+    from scripts.poi_visit_duration import records_for_batch
+
+    batch = [{"name": "A"}, {"name": "B"}]
+    fenced = '```json\n[{"name": "A"}, {"name": "B"}]\n```'
+    assert records_for_batch(fenced, batch) == [{"name": "A"}, {"name": "B"}]
+
+
+def test_unparseable_json_reports_the_raw_reply() -> None:
+    """A reply that is not JSON at all is fatal AND shows what arrived — the
+    excerpt is the only way an operator can see what the model actually said."""
+    from scripts.poi_visit_duration import records_for_batch
+
+    with pytest.raises(SystemExit) as raised:
+        records_for_batch("Sorry, I cannot do that.", [{"name": "A"}])
+    message = str(raised.value)
+    assert "unparseable JSON" in message
+    assert "--- raw ---" in message
+    assert "Sorry, I cannot do that." in message
+
+
+def test_every_pass_reads_its_reply_through_the_one_function() -> None:
+    """One question, one answer, in one place.
+
+    This block used to sit byte-identically in all four passes, so the
+    single-place fix above would have left three of them still refusing. The
+    scan is what stops the copy coming back: the refusal message exists once,
+    in the template, and every sibling pass calls the template's function.
+    """
+    scripts_root = REPO_ROOT / "scripts"
+    template = (scripts_root / "poi_visit_duration.py").read_text()
+    assert template.count(REFUSAL) == 1, (
+        "the alignment refusal is stated more than once inside the template itself"
+    )
+
+    for sibling in ("poi_queues.py", "poi_place_judgements.py", "poi_opening_hours.py"):
+        source = (scripts_root / sibling).read_text()
+        assert "records_for_batch(" in source, (
+            f"scripts/{sibling} does not read its model reply through "
+            "records_for_batch — it has its own copy of the parse and the count check"
+        )
+        assert REFUSAL not in source, (
+            f"scripts/{sibling} still carries its own alignment refusal; a fix to the "
+            "template would leave this copy behind"
+        )

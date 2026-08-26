@@ -647,13 +647,81 @@ def test_transit_falls_back_to_glue_when_no_corpus_beat():
             ),
         )
     )
-    client = MockGlueClient(responses={"GLUE_NAV": "Walk south for two minutes."})
+    client = MockGlueClient(responses={"GLUE_NAV": "Walk on to the gate, just ahead."})
     script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=client)
     nav_sentences = [s for s in script.script if s.source_id == GLUE_NAV]
     assert len(nav_sentences) == 1
-    assert nav_sentences[0].text == "Walk south for two minutes."
+    assert nav_sentences[0].text == "Walk on to the gate, just ahead."
     assert nav_sentences[0].stop_idx == 1
     assert client.calls and client.calls[0][0] == GLUE_NAV
+
+
+# ---------------------------------------------------------------------------
+# Phase 8 S8.3a (W8.2 R1, 11/11): the nav glue knows its leg — the request
+# hands Haiku the routed minutes and the leg-voice rules (never compass;
+# left/right/straight-ahead or a visible landmark), and the coercion guard
+# refuses an output that breaks them, falling back to the deterministic
+# template (which is compass-free and speaks the routed number by
+# construction). Carried instances: Camille/Théo/Aiko x2/Paulo/Greta/Sofia x3
+# wrong-compass/wrong-minutes lines (phase7-ledger carry 1).
+# ---------------------------------------------------------------------------
+
+
+def test_nav_glue_request_carries_the_routed_minutes_and_the_leg_voice_rules():
+    p1 = _poi("p1", "Place des Vosges")
+    p2 = _poi("p2", "Hôtel de Sully")
+    o = _beat("o", p1.id, body="Find a bench.", nf="stop_orientation")
+    a = _beat("a", p1.id, body="A fact.")
+    b = _beat("b", p2.id, body="Another fact.")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=p1.id, poi_name=p1.name,
+                     ordering_strategy="narrative_function", beats=(o, a)),
+            POIBeats(poi_id=p2.id, poi_name=p2.name,
+                     ordering_strategy="narrative_function", beats=(b,)),
+        )
+    )
+    client = MockGlueClient()
+    pois = (p1, p2)
+    route = _route(pois)
+    route = route.model_copy(
+        update={
+            "transits": (
+                route.transits[0],
+                route.transits[1].model_copy(update={"walk_seconds": 540}),  # 9 min
+            )
+        }
+    )
+    generate(seq, route, _input(round_trip=False), glue_client=client)
+    assert client.calls and client.calls[0][0] == GLUE_NAV
+    request = client.calls[0][2]
+    assert "about 9 minutes" in request, request
+    lowered = request.lower()
+    assert "never compass" in lowered, request
+    assert "left" in lowered and "landmark" in lowered, request
+
+
+def test_coerce_glue_output_rejects_compass_and_wrong_minutes():
+    """The guard is the second line of defence behind the prompt: an output that
+    speaks compass, or a minute count that is not the routed leg's own number
+    (digits or words), falls back to the deterministic template. A line in the
+    legal voice passes through untouched."""
+    from src.tour.generation import _coerce_glue_output
+
+    default = "From A, carry on to B, just ahead."
+    assert _coerce_glue_output(
+        "Walk northwest along the Seine.", default=default, leg_minutes=3
+    ) == default
+    assert _coerce_glue_output(
+        "Carry on for about ten minutes.", default=default, leg_minutes=3
+    ) == default
+    assert _coerce_glue_output(
+        "Head for the gate, a five-minute walk.", default=default, leg_minutes=9
+    ) == default
+    kept = "Turn left and follow the quai for about three minutes."
+    assert _coerce_glue_output(kept, default=default, leg_minutes=3) == kept
+    no_number = "Cross the bridge ahead toward the tower."
+    assert _coerce_glue_output(no_number, default=default, leg_minutes=3) == no_number
 
 
 def test_transit_glue_falls_back_to_default_on_no_glue_sentinel():
@@ -1358,37 +1426,97 @@ def _route_with_first_leg(secs: int) -> Route:
 
 
 def test_first_leg_text_names_stop_and_walk_minutes():
-    text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(300))  # 5 min
-    assert text == "When you're ready, head for Pantheon — about a 5-minute walk from here."
+    line = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(300))  # 5 min
+    assert line.text == "When you're ready, head for Pantheon — about a 5-minute walk from here."
 
 
 def test_first_leg_text_uses_an_before_vowel_minutes():
-    text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(480))  # 8 min
-    assert "about an 8-minute walk" in text
+    line = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(480))  # 8 min
+    assert "about an 8-minute walk" in line.text
 
 
 def test_first_leg_text_lowercases_leading_the():
-    text = _synth_first_leg_text(_stop("The Sorbonne"), _route_with_first_leg(300))
-    assert "head for the Sorbonne" in text
-    assert "The Sorbonne" not in text
+    line = _synth_first_leg_text(_stop("The Sorbonne"), _route_with_first_leg(300))
+    assert "head for the Sorbonne" in line.text
+    assert "The Sorbonne" not in line.text
 
 
 def test_first_leg_text_short_leg_is_just_ahead():
-    text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(40))  # <1 min
-    assert text == "When you're ready, head for Pantheon — it's just ahead."
+    line = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(40))  # <1 min
+    assert line.text == "When you're ready, head for Pantheon — it's just ahead."
 
 
 def test_first_leg_text_at_the_stop_does_not_say_head_for():
     """When the first stop is essentially where the walker is already standing
     (routed leg under ~20s), don't tell them to 'head for' a place they're on
     top of — the Tuileries/Concorde 'walk to where you already are' complaint."""
-    text = _synth_first_leg_text(_stop("Place de la Concorde"), _route_with_first_leg(5))
-    assert text == "You're starting right at Place de la Concorde. Take a moment to take it in."
-    assert "head for" not in text
+    line = _synth_first_leg_text(_stop("Place de la Concorde"), _route_with_first_leg(5))
+    assert line.text == (
+        "You're starting right at Place de la Concorde. Take a moment to take it in."
+    )
+    assert "head for" not in line.text
 
 
 def test_first_leg_text_none_without_stop_name():
     assert _synth_first_leg_text(_stop(""), _route_with_first_leg(300)) is None
+
+
+# ---------------------------------------------------------------------------
+# Phase 8 S8.3c (W8.2 R2; phase7-ledger carry 1, Paulo's Finding 14): the
+# opener's WALKING line rides the first LEG, not the standing cold-open — a
+# queued first stop must not auto-play "head for X" to someone standing in
+# its queue. The one leg-vs-stop rule (``is_walk_concurrent``) is untouched;
+# the line's LABEL moves to GLUE_NAV, whose placement is already the leg's.
+# ---------------------------------------------------------------------------
+
+
+def test_first_leg_walking_line_rides_the_leg_and_the_standing_line_does_not():
+    """UNDO: emit the head-for line as SYNTHESIZED_OPENER again -> RED."""
+    from src.tour.generation import is_walk_concurrent
+
+    walking = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(300))
+    assert walking.source_id == GLUE_NAV, (
+        "the head-for line is navigation and must ride the first leg"
+    )
+    assert is_walk_concurrent(walking), "the leg's own rule must claim the walking line"
+
+    # Standing right at the first stop: nothing is walking anywhere — the line
+    # stays a stationary opener piece.
+    standing = _synth_first_leg_text(_stop("Concorde"), _route_with_first_leg(5))
+    assert standing.source_id == SYNTHESIZED_OPENER
+    assert not is_walk_concurrent(standing)
+
+    # No leg at all (fixture routes): there is no leg to ride — stationary, so
+    # the playback partition never points at an absent transit.
+    poi = _poi("p", "x")
+    no_leg = Route(
+        pois=(poi,), transits=(), total_walk_distance_m=0.0, total_walk_seconds=0,
+        spine_area="Le Marais",
+    )
+    line = _synth_first_leg_text(_stop("Pantheon"), no_leg)
+    assert line.source_id == SYNTHESIZED_OPENER
+    assert not is_walk_concurrent(line)
+
+
+def test_generate_puts_the_opening_walk_line_on_the_leg():
+    """Through ``generate`` itself: the head-for sentence lands with GLUE_NAV at
+    stop 0, so the phone's frozen playback assignment books it onto leg 0."""
+    poi = _poi("p1", "Pantheon")
+    body = _beat_with_cues("body", poi.id, body="A grounded fact.")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name,
+                     ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    route = _route((poi,))
+    route = route.model_copy(
+        update={"transits": (route.transits[0].model_copy(update={"walk_seconds": 300}),)}
+    )
+    script = generate(seq, route, _input(round_trip=True), glue_client=MockGlueClient())
+    head_for = [s for s in script.script if "head for Pantheon" in s.text]
+    assert head_for, [s.text for s in script.script]
+    assert all(s.source_id == GLUE_NAV and s.stop_idx == 0 for s in head_for)
 
 
 # ---------------------------------------------------------------------------

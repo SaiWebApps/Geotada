@@ -672,6 +672,78 @@ class _ColdStartingRoutingClient:
         return None
 
 
+#: Phase 8 S8.4 — the C5 payload: one ≥5-word sentence injected verbatim at TWO
+#: stops. Floor-neutral on purpose (no motion verb, no leg deixis, no compass):
+#: the ONLY defect it carries is the cross-stop repeat the rubric's C5 names.
+_C5_DUP_TEXT = "The very same words end this story once more."
+
+
+def _c5_repeat_defect(sentences: list[dict]) -> list[dict]:
+    """Rewrite the stop's close to the shared C5 payload (still one close, last)."""
+    out = list(sentences)
+    for i in range(len(out) - 1, -1, -1):
+        if out[i].get("source_id") == "GLUE_CLOSING":
+            out[i] = {**out[i], "text": _C5_DUP_TEXT}
+            break
+    return out
+
+
+def _hallucinate_defect(sentences: list[dict]) -> list[dict]:
+    """The untraceable-citation defect (a VERIFY blocker), on the first sentence."""
+    out = list(sentences)
+    out[0] = {
+        **out[0],
+        "source_id": "beat-that-was-never-in-the-corpus",
+        "source_type": "beat",
+        "also_cites": [],
+    }
+    return out
+
+
+class _OneBadRollExecutor:
+    """A stateful roll-dependent author: the DAY compose of each `bad_stops` stop
+    gets `defect` applied on its first roll (every roll when `always`), and every
+    later roll echoes the stitch clean — the measured live shape of the writer's
+    stochastic collisions (Camille run 1 vs runs 2-3, 2026-08-23). Full-telling
+    calls (already_told set) are never defected and are excluded from
+    `day_calls_by_stop`, so assertions about the bounded targeted re-roll count
+    only the day's own composes."""
+
+    cost_bearing = False
+    provider_name = "offline"
+
+    def __init__(self, defect, *, bad_stops: frozenset[int] | set[int], always: bool = False):
+        self._defect = defect
+        self._bad = set(bad_stops)
+        self._always = always
+        self._day_calls: dict[int, int] = {}
+        self._lock = threading.Lock()
+
+    def day_calls_by_stop(self) -> dict[int, int]:
+        with self._lock:
+            return dict(self._day_calls)
+
+    def execute(self, unit) -> PhysicalProviderResponse:
+        is_day_compose = not unit.authorized_request.already_told
+        if is_day_compose:
+            with self._lock:
+                n = self._day_calls[unit.stop_index] = self._day_calls.get(unit.stop_index, 0) + 1
+        sentences = [s.model_dump(mode="json") for s in unit.authorized_request.stitched.script]
+        if is_day_compose and unit.stop_index in self._bad and (self._always or n == 1):
+            sentences = self._defect(sentences)
+        return _offline_response(unit, sentences)
+
+
+def _persisted_stop_narrations(live_neo4j, trip_id: str) -> list[dict]:
+    with live_neo4j.session() as s:
+        return s.run(
+            "MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) "
+            "RETURN i.id AS id, i.narration AS narration, i.close_text AS close_text "
+            "ORDER BY i.sort_order",
+            tid=trip_id,
+        ).data()
+
+
 def _override_dep(client, dep: str, value):
     """Swap a FastAPI dependency for a test double; returns the override key."""
     from src.api import dependencies
@@ -928,7 +1000,11 @@ class TestLivingSession:
         assert refused.status_code == 422, refused.text
         detail = refused.json()["detail"]
         assert detail["reason"] == "compose_verification_failed"
-        assert detail["attempts"] == 1
+        # Phase 8 S8.4: a VERIFY refusal now spends ONE bounded targeted re-roll
+        # of the failing stops before refusing (Camille run 1, 2026-08-23: one
+        # bad roll killed a day two clean rolls served). This executor fails
+        # EVERY roll, so the refusal stands — at attempts=2, honestly counted.
+        assert detail["attempts"] == 2
         assert detail["untraceable"] > 0
         assert narrations() == before, "a refusal must leave the trip exactly as it was"
         with live_neo4j.session() as s:
@@ -1116,6 +1192,14 @@ class TestLivingSession:
                 party="take_it_easy",
                 lenses=["visual_art"],
                 max_leg_minutes=13,
+                # Phase 8 S8.4: the serving gate (§7.2) measures this day's echo at
+                # ~0.117 audio-per-walking — a coin-flip under C3's 0.12 floor,
+                # whose calibration corpus held no take-it-easy day (the W8.6
+                # disposition row in phase8-ledger.md). Her "More talking" dial
+                # keeps the day HER day (bench, 13-minute legs, step-free) and
+                # feeds it the narration her own carried ask wants at the bench —
+                # a day the product serves, which is this test's premise.
+                narration_density="more",
             ),
         )
         assert gen.status_code == 201, gen.text
@@ -1231,6 +1315,98 @@ class TestLivingSession:
         )
         assert diverged.json()["stops"][0]["start_time"] != phone_hhmm
 
+    def test_a_day_failing_the_rubric_floor_is_refused_and_the_trip_untouched(
+        self, client, live_neo4j, cutover_trip
+    ):
+        """Phase 8 S8.4 (design §7.2; quality standard §7): `score_tour`'s `passed`
+        finally GATES SERVING on the persisted path. W8.1(b) proved the gap live:
+        Greta's served day carried `BLOCKER C3-thin` and was composed, persisted,
+        voiced and served, because nothing on this path ran the rubric. Here a
+        C5 cross-stop verbatim repeat — a blocker `_dedup_composed` cannot remove
+        (glue is never deduped) — survives one bounded targeted recompose (the
+        executor keeps injecting it), so the day is REFUSED by name (R8: the named
+        gate, the stop, our own message — never provider prose) and the trip is
+        byte-untouched with no session written. This is audit F's ordered
+        caller-side test, beside `test_passed_is_false…`, never an edit of it.
+        UNDO: drop the `score_tour` call from `compose_trip` -> the repeat is
+        served 200 -> RED."""
+        trip_id = cutover_trip["trip_id"]
+        before = _persisted_stop_narrations(live_neo4j, trip_id)
+
+        executor = _OneBadRollExecutor(_c5_repeat_defect, bad_stops={0, 1}, always=True)
+        resp = _compose(client, trip_id, executor)
+        assert resp.status_code == 422, resp.text
+        detail = resp.json()["detail"]
+        assert detail["reason"] == "tour_quality_blocked", detail
+        assert any(b["check"] == "C5-verbatim-repeat" for b in detail["blockers"]), detail
+        named = next(b for b in detail["blockers"] if b["check"] == "C5-verbatim-repeat")
+        assert named["stop_idx"] is not None and named["message"], named
+        assert detail["recomposed_stops"], (
+            "C5 is compose-fixable; the gate must spend its one bounded recompose "
+            f"before refusing: {detail}"
+        )
+        assert _persisted_stop_narrations(live_neo4j, trip_id) == before, (
+            "a quality refusal must leave the trip exactly as it was"
+        )
+        with live_neo4j.session() as s:
+            row = s.run(
+                "MATCH (t:Trip {id: $tid}) RETURN t.plan_version AS pv, t.session_json AS sj",
+                tid=trip_id,
+            ).single()
+        assert not row["pv"] and row["sj"] is None, "a quality refusal writes no session"
+
+    def test_a_fixable_rubric_blocker_gets_one_targeted_recompose(
+        self, client, live_neo4j, cutover_trip
+    ):
+        """Phase 8 S8.4: `compose_fixable` + `StopMaterial` authorize AT MOST ONE
+        targeted per-stop recompose before the refusal — same request, fresh roll,
+        ONLY the failing stop (a whole-day re-roll would burn every stop's spend
+        on one stop's defect). The C5 injector is transient (first roll only), so
+        the recompose clears it: the day serves 200 and the persisted day carries
+        no repeated sentence. UNDO: recompose every stop instead -> the
+        per-stop call counts flatten -> RED."""
+        trip_id = cutover_trip["trip_id"]
+        executor = _OneBadRollExecutor(_c5_repeat_defect, bad_stops={0, 1})
+        resp = _compose(client, trip_id, executor)
+        assert resp.status_code == 200, resp.text
+        assert resp.json()["plan_version"] == 1
+
+        repeat_carriers = [
+            st for st in resp.json()["stops"] if _C5_DUP_TEXT in (st.get("close_text") or "")
+        ]
+        assert len(repeat_carriers) <= 1, (
+            "the served day still repeats the injected close at "
+            f"{len(repeat_carriers)} stops — the recompose did not clear the C5"
+        )
+        # TARGETED: C5 names its SECOND occurrence (stop 1); only that stop
+        # re-rolls. Full tellings ride the same executor afterwards, so the
+        # bound is per-DAY-COMPOSE calls: stop 1 exactly one more than stop 0.
+        day_calls = executor.day_calls_by_stop()
+        assert day_calls.get(1, 0) == day_calls.get(0, 0) + 1, day_calls
+
+    def test_a_verify_refusal_gets_one_targeted_reroll_before_the_422(
+        self, client, live_neo4j, cutover_trip
+    ):
+        """Phase 8 S8.3's bounded retry (the step's own words: untraceable writer
+        output "refuses at AUTHORING time with the bounded retry, so her day
+        composes deterministically") — measured live 2026-08-23: Camille's run-1
+        compose died 422 on ONE bad roll (`fused_across_playback_contexts`,
+        stop 3) while the identical request rolled clean twice after. One
+        targeted same-request re-roll of ONLY the stops the VERIFY report names
+        turns a one-bad-roll day into a served day; a stop that fails twice
+        still refuses (the always-bad case keeps
+        `test_a_verification_failure_is_a_422_that_persists_nothing` honest,
+        now at attempts=2). UNDO: drop the re-roll -> this day dies on the
+        first roll -> RED."""
+        trip_id = cutover_trip["trip_id"]
+        executor = _OneBadRollExecutor(_hallucinate_defect, bad_stops={1})
+        resp = _compose(client, trip_id, executor)
+        assert resp.status_code == 200, resp.text
+        day_calls = executor.day_calls_by_stop()
+        assert day_calls.get(1, 0) == day_calls.get(0, 0) + 1, (
+            f"only the failing stop re-rolls: {day_calls}"
+        )
+
     def test_compose_rebuilds_the_day_under_the_surface_it_was_planned_with(
         self, client, live_neo4j, monkeypatch
     ):
@@ -1264,6 +1440,11 @@ class TestLivingSession:
                 party="take_it_easy",
                 lenses=["visual_art"],
                 max_leg_minutes=13,
+                # Phase 8 S8.4: same re-derivation as the promise-tier test above —
+                # this test's concern is the ROUTE SURFACE through compose, so its
+                # day must be one the serving gate serves (the thin echo variant is
+                # the W8.6 disposition row, not this fixture's job).
+                narration_density="more",
             ),
         )
         assert gen.status_code == 201, gen.text

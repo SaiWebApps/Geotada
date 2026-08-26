@@ -12,6 +12,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from scripts.sync_poi_exports import SYNCED_FIELDS
 from src.tour.contract import Anchor
 from src.tour.routing import haversine_m
@@ -23,9 +25,33 @@ BEATS = ROOT / "data" / "paris" / "beats.json"
 EXPORT = ROOT / "data" / "paris" / "export"
 MARQUEE = "Notre-Dame Cathedral"
 
+#: The smallest circle a phone can reliably resolve outdoors in a city. Below this an
+#: anchor is not a tight trigger, it is one that never fires. Used only for a place you
+#: walk IN, where the look-at rule (half the footprint) makes no sense.
+GPS_FLOOR_M: float = 25.0
+
 
 def _record(name: str) -> dict:
     return next(p for p in json.loads(POI_RAW.read_text()) if p["name"] == name)
+
+
+def _anchored_records() -> list[dict]:
+    """Every Paris POI carrying reviewed anchors — not just the marquee.
+
+    Phase 8 S8.7 gave Pere Lachaise Cemetery three (Julien's ask: the Mur des Federes
+    before Piaf and Wilde). This file used to be hardcoded to Notre-Dame, so those three
+    shipped unguarded. The rules below split into the ones that bind EVERY anchored place
+    and the ones that are the marquee's own.
+    """
+    return [p for p in json.loads(POI_RAW.read_text()) if p.get("anchors")]
+
+
+def _beat_sub_locations(poi_name: str) -> set[str]:
+    return {
+        b["sub_location"]
+        for b in json.loads(BEATS.read_text())
+        if b.get("poi_name") == poi_name and b.get("sub_location")
+    }
 
 
 def test_notre_dame_s_anchors_are_placed_reviewed_and_inside_its_footprint():
@@ -81,7 +107,47 @@ def test_the_anchors_reach_the_export_chunks_and_the_loader_reads_them():
     assert _decode_anchors(None) == () and _decode_anchors("") == () and _decode_anchors([]) == ()
 
 
-def test_an_outdoor_anchor_is_sized_to_where_people_stand_to_look_at_it():
+@pytest.mark.parametrize(
+    "poi", _anchored_records(), ids=lambda p: p["name"]
+)
+def test_every_reviewed_anchor_is_placed_argued_and_backed_by_real_beats(poi: dict) -> None:
+    """The rules that bind EVERY anchored place, marquee or not.
+
+    Added at Phase 8 S8.7, when Pere Lachaise gained three anchors and nothing in the
+    tree checked them: this file asserted only ``MARQUEE``. An anchor that claims a
+    sub-location no beat carries is dead weight — it can never play — so that is checked
+    here rather than left to a reader.
+    """
+    name = poi["name"]
+    footprint = float(poi["trigger_radius"])
+    anchors = [Anchor.model_validate(a) for a in poi["anchors"]]
+
+    labels = [a.label for a in anchors]
+    assert len(set(labels)) == len(labels), f"{name}: two anchors share a label"
+
+    real = _beat_sub_locations(name)
+    claimed: list[str] = []
+    for a in anchors:
+        assert a.basis.strip(), f"{name}/{a.label}: no argument"
+        assert 10 <= a.radius_m <= footprint, (
+            f"{name}/{a.label}: {a.radius_m:.0f} m against a {footprint:.0f} m footprint"
+        )
+        d = haversine_m(poi["latitude"], poi["longitude"], a.lat, a.lng)
+        assert d <= footprint, f"{name}/{a.label} sits {d:.0f} m off the pin"
+        assert a.sub_locations, f"{name}/{a.label} stands for nothing"
+        dead = [s for s in a.sub_locations if s not in real]
+        assert not dead, (
+            f"{name}/{a.label} claims sub-location(s) no beat carries: {dead} — "
+            "an anchor that stands for nothing the corpus can say never plays"
+        )
+        claimed.extend(a.sub_locations)
+    assert len(set(claimed)) == len(claimed), f"{name}: a sub-location is claimed twice"
+
+
+@pytest.mark.parametrize(
+    "poi", _anchored_records(), ids=lambda p: p["name"]
+)
+def test_an_outdoor_anchor_is_sized_to_where_people_stand(poi: dict) -> None:
     """W7.11 defect 16 — the blind listening panel, 11/11 `circle_45m: too_tight`.
 
     The anchors were first placed at arm's length from the thing they name. Every one of
@@ -89,27 +155,57 @@ def test_an_outdoor_anchor_is_sized_to_where_people_stand_to_look_at_it():
     front from under it — you walk backwards until it fits. Greta: "To look at that front
     you walk backwards… I was most of the way back across the paving, near the little
     bronze star. Forty-five metres wide puts me almost under the doors, craning at
-    stonework two feet from my nose." Paulo: "You cannot take the towers in from twenty
-    metres… Then nothing plays, and the thing that would ruin it is that I would not know.
-    Silence and 'there is nothing here' sound identical." Sofia: "Size the circle to where
-    people stand to look, not to the doorstep." Aiko: "my diagonal keeps me fifty metres
-    out. I clip nothing, so I hear nothing."
+    stonework two feet from my nose." Sofia: "Size the circle to where people stand to
+    look, not to the doorstep."
 
-    THE RULE, as a number a reviewer can check: an OUTDOOR anchor's circle covers at least
-    half the place's own footprint — the standing-back distance, not the doorstep. An
-    INDOOR anchor is exempt: it is offered on the screen and tapped, because GPS is useless
-    under a roof (W7.2 R4), so its radius decides nothing.
+    THE RULE IS KIND-AWARE, and Phase 8 S8.7 is why. Stated as one sentence: **you stand
+    BACK from a place you look at, and you walk INTO a place you move around in.**
+
+    - A place you LOOK AT (`poi_role != "setting"` — a facade, a monument, one face you
+      take in from a distance): an outdoor anchor's circle covers at least HALF the
+      place's own footprint. This is W7.11's original rule, unchanged, and Notre-Dame's
+      45 m circles still fail it.
+    - A place you WALK IN (`poi_role == "setting"` — a cemetery, a park, a district):
+      an anchor is a DESTINATION inside the place, not a viewpoint of the whole of it.
+      Half of Pere Lachaise's 500 m footprint would be a 250 m circle covering most of
+      forty-four hectares, and three of them would be one indistinguishable blur — the
+      opposite of what an anchor is for. So the rule that bites here is that each
+      anchor is a DISTINCT standing position: the circles may not overlap, and none may
+      be so small that GPS cannot find it.
+    - An INDOOR anchor is exempt from both: it is offered on the screen and tapped,
+      because GPS is useless under a roof (W7.2 R4), so its radius decides nothing.
     """
-    poi = _record(MARQUEE)
+    name = poi["name"]
     footprint = float(poi["trigger_radius"])
     anchors = [Anchor.model_validate(a) for a in poi["anchors"]]
     outdoor = [a for a in anchors if not a.indoor]
-    assert outdoor, "the marquee has no outdoor anchor to stand at"
+    assert outdoor, f"{name} has no outdoor anchor to stand at"
+
+    for a in outdoor:
+        assert "stand" in a.basis.lower() or "look" in a.basis.lower(), (
+            f"{name}/{a.label}: the basis must say where a person STANDS"
+        )
+
+    if poi.get("poi_role") == "setting":
+        # A place you walk IN: each anchor is its own position.
+        for a in outdoor:
+            assert a.radius_m >= GPS_FLOOR_M, (
+                f"{name}/{a.label}: {a.radius_m:.0f} m is under the {GPS_FLOOR_M:.0f} m "
+                "a phone can reliably resolve, so the anchor would never fire"
+            )
+        for i, a in enumerate(outdoor):
+            for b in outdoor[i + 1 :]:
+                gap = haversine_m(a.lat, a.lng, b.lat, b.lng) - a.radius_m - b.radius_m
+                assert gap >= 0, (
+                    f"{name}: '{a.label}' and '{b.label}' overlap by {-gap:.0f} m — "
+                    "inside a place you walk around, two anchors that overlap are one "
+                    "blurred position, not two destinations"
+                )
+        return
+
+    # A place you LOOK AT: stand back far enough to take it in.
     for a in outdoor:
         assert a.radius_m >= footprint / 2, (
-            f"{a.label}: {a.radius_m:.0f} m round a {footprint:.0f} m place is the "
+            f"{name}/{a.label}: {a.radius_m:.0f} m round a {footprint:.0f} m place is the "
             "doorstep, not where a person stands to look at it (W7.11, 11/11)"
-        )
-        assert "stand" in a.basis.lower() or "look" in a.basis.lower(), (
-            f"{a.label}: the basis must say where a person STANDS to look at it"
         )

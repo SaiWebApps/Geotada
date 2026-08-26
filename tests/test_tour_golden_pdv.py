@@ -73,7 +73,18 @@ OVERLAP_TARGET = 0.90
 # single-square walk is not a tour this engine can build. Closing the gap means teaching
 # it sub-location stops — the same standing-position-vs-POI question decision D4 rules on
 # for C8 — NOT moving this number.
-OVERLAP_MIN_HITS = 4
+#
+# RE-DERIVED AT W8.6 (2026-08-24), 4 -> 3, and the PINNED SET IS UNCHANGED AT 21.
+# Every one of the 18 misses sits at Place des Vosges ITSELF — the square the day
+# does seat — so none is structurally unreachable and none is removed: they are the
+# per-stop audio ceiling (MAX_DWELL_AUDIO_SECONDS = 180 s, ~450 beat words) meeting a
+# 21-address single-square document, exactly the gap the paragraph above describes.
+# What changed is the DAY: before W8.6 this request served Place de la Bastille, 12
+# minutes' walk away, and said nothing about the square underfoot (overlap 0/21). The
+# planner fix (the under-fill choice ranks by story value, not by walking) put the
+# square back, and the fresh measurement of OUTPUT is 3. The floor IS the measurement
+# at this n, as the paragraph above requires — lose a hit and this goes red.
+OVERLAP_MIN_HITS = 3
 
 
 def _live_driver():

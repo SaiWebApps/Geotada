@@ -389,6 +389,7 @@ def test_dry_main_never_constructs_paid_client(
 
 
 def test_wrong_live_hash_rejects_before_execution(
+    tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     plan, runtime = _fixture_plan()
@@ -415,4 +416,58 @@ def test_wrong_live_hash_rejects_before_execution(
     )
 
     with pytest.raises(ValueError, match="dry batch plan"):
-        runner.main(["--live", "--approve-plan-sha256", "b" * 64])
+        runner.main(
+            [
+                "--live",
+                "--approve-plan-sha256",
+                "b" * 64,
+                "--output-root",
+                str(tmp_path / "tour-batch-v2"),
+            ]
+        )
+
+
+def test_live_without_output_root_refuses_the_frozen_control_arm(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Omitting --output-root lands on DEFAULT_OUTPUT_ROOT — the sealed batch the
+    release gate compares against — so --live refuses instead of authoring over it,
+    before the manifest, the graph or the router are touched."""
+    monkeypatch.setattr(
+        runner,
+        "create_driver",
+        lambda: pytest.fail("a refused live run reached the graph"),
+    )
+
+    with pytest.raises(ValueError, match="frozen control arm"):
+        runner.main(["--live", "--approve-plan-sha256", "a" * 64])
+
+
+@pytest.mark.parametrize(
+    "spelling",
+    [
+        "data/certification/tour-batch-v1",
+        "data/certification/tour-batch-v1/",
+        "./data/certification/tour-batch-v1",
+        "data/certification/tour-batch-v2/../tour-batch-v1",
+        str(runner.DEFAULT_OUTPUT_ROOT),
+    ],
+)
+def test_live_refuses_every_spelling_of_the_frozen_control_arm(
+    spelling: str,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The control arm is refused by RESOLVED path, never by string match, so a
+    trailing slash, a leading ./, a .. segment and the absolute spelling are one
+    refusal rather than four holes."""
+    monkeypatch.chdir(runner.ROOT)
+    monkeypatch.setattr(
+        runner,
+        "create_driver",
+        lambda: pytest.fail("a refused live run reached the graph"),
+    )
+
+    with pytest.raises(ValueError, match="frozen control arm"):
+        runner.main(
+            ["--live", "--approve-plan-sha256", "a" * 64, "--output-root", spelling]
+        )

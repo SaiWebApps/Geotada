@@ -170,7 +170,7 @@ def goldens() -> dict[str, dict]:
 #
 # So the sizes are pinned. Growing a pinned set is allowed, but not silently: it turns
 # this RED and the same change must re-derive the overlap floor from a fresh measurement.
-PINNED_SET_SIZES = {"ile_oneway_90min": 31, "pdv_round_trip_60min": 21}
+PINNED_SET_SIZES = {"ile_oneway_90min": 17, "pdv_round_trip_60min": 21}
 
 
 def test_pinned_set_growth_forces_the_overlap_floor_to_be_rederived():

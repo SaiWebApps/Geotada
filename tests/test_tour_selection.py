@@ -1782,6 +1782,22 @@ def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
     Mirrors the live Latin Quarter 60-min loop: greedy seats one stop (Pantheon),
     the second (Sorbonne) round-trip detour busts walk_budget, yet audio is far
     under target and total time has ample slack. The under-fill rescue admits it.
+
+    **THE SECOND STOP'S WORTH WAS RE-DERIVED AT W8.6 (2026-08-24), a written
+    decision under §0.1.3, not a nursed number.** This fixture used to seat B on a
+    370-second dwell against 1420 seconds of marginal walking — a ratio of 3.84,
+    i.e. TWENTY-FOUR MINUTES OF WALKING FOR A SIX-MINUTE LOOK. The eleven-persona
+    panel ruled exactly that shape out, and Rosemary named this fixture's own
+    arithmetic without having seen it: 4.5 "would march me twenty-two minutes for
+    a five-minute look. That is not a tour; that is how you put me in a taxi
+    home." What the test EXISTS for — a one-stop tour is lifted to two by the
+    rescue, and the ordinary pass alone would not do it — is unchanged and still
+    proven by both arms below. What changed is that the stop it reaches for now
+    EARNS its walk: B is a fifteen-minute stop (900 s), so the trade is 1420:900
+    = 1.58 — inside Théo's own dearest trade (1.8, sixteen minutes' walk for nine
+    silent minutes at the deportation memorial) and under the locked 2.0 cap.
+    The geometry is untouched; only the claim about what is worth walking to
+    moved, which is the half the panel actually ruled on.
     """
     from src.tour.routing import walk_budget_seconds
     from src.tour.selection import _apply_fill_pass, target_dwell_seconds
@@ -1798,7 +1814,7 @@ def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
     snap = _snap([a, b], area_types={"Latin Quarter": "neighborhood"})
 
     def capped(p, *, exempt):  # small audio -> well under the fill floor
-        return 260 if p.id == "A" else 370
+        return 260 if p.id == "A" else 900
 
     common = dict(
         candidates=[a, b], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
@@ -2938,6 +2954,278 @@ def test_min_stop_separation_guard_seats_both_of_an_86m_pair():
 
 
 
+# ---------------------------------------------------------------------------
+# Phase 8 W8.6 — walking is the PRICE of a day, never its value.
+#
+# The W8.6 eleven-persona panel (2026-08-24, verdicts/w86-*.md) ruled 11/11 on
+# the measured Place des Vosges / Panthéon day shapes: (Q1) when the asked-for
+# length cannot be filled honestly, the day handed over is the most STORIED one,
+# honestly short — "padding the length with pavement is a walk filed as dwell"
+# (Théo); (Q2) a stop is never admitted past the product's own 2.0x detour gate
+# — the 4.5 walk-per-dwell allowance "would march me twenty-two minutes for a
+# five-minute look" (Rosemary); (Q4) a route within one displayed minute of its
+# ceiling is the same customer timebox (routing.py's own materiality rule) and
+# serves. Design §8.3 (fill-the-requested-time is deleted; "the only way a
+# planner can guarantee filling one is by walking you somewhere pointless") and
+# §4.5.1 (price in visitor-time) are the underlying citations.
+# ---------------------------------------------------------------------------
+
+
+def _priced_poi(pid: str, *, tier: int, lng_offset_deg: float, visit_min: int,
+                beat_count: int) -> POI:
+    """A candidate at PDV's latitude, `lng_offset_deg` east, with a real priced
+    visit (`typical_duration_min`) — the field `visit_seconds` reads."""
+    return _poi(
+        pid, tier=tier, lat=PDV[0], lng=PDV[1] + lng_offset_deg,
+        areas=("Le Marais",), beat_count=beat_count,
+    ).model_copy(update={"typical_duration_min": visit_min})
+
+
+def test_an_under_filled_day_is_the_most_storied_one_never_the_longest_walk():
+    """W8.6 panel Q1, 11/11 (a): the measured Shape A — a 60-minute round trip
+    standing IN a tier-5 square with the most to tell served ONE stop: a lesser
+    square 12 minutes' walk away, because 'longest day under the ceiling'
+    counted the walking as day-length (2636s of walk-padded 'day' beat 1800s of
+    standing at the best place). Rosemary: "the square I am standing in, told
+    honestly short, beats any day padded longer with my steps."
+
+    Unit seam: the timebox repair's under-fill choice, with the live PdV
+    geometry in miniature — the rich square AT the start (visit 30 min, zero
+    walking), the lesser one 410 m out (visit 20 min). Both days sit UNDER the
+    band floor, so the under-fill branch is what decides; the lesser day's
+    1328 s round trip stays inside the 1440 s walking allocation, so the walk
+    admission rule does not decide it either (at 450 m it does, which is how
+    this fixture was first written and why it proved nothing).
+
+    Walk-padded arithmetic today: 1200 s standing + 1328 s walking = 2528 s
+    "day" beats 1800 s of standing at the best place — the live Bastille shape
+    (1436 s of walking inside a 1440 s allocation) in miniature.
+
+    UNDO: return the under-fill choice to max(elapsed minus queue) -> the lesser
+    walk-padded day wins again -> RED."""
+    from src.tour.routing import DEFAULT_ROUTE_PLANNING_POLICY, route_planning_budget
+    from src.tour.selection import _apply_certification_timebox_repair
+
+    rich = _priced_poi("rich-square", tier=5, lng_offset_deg=0.0, visit_min=30,
+                       beat_count=24)
+    lesser = _priced_poi("lesser-square", tier=3, lng_offset_deg=0.005600,
+                         visit_min=20, beat_count=4)
+    snap = _snap([rich, lesser], area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True)
+
+    out = _apply_certification_timebox_repair(
+        [rich],
+        [rich, lesser],
+        input=inp,
+        snapshot=snap,
+        spine="Le Marais",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=None,
+        planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
+        planning_budget=route_planning_budget(60),
+    )
+    assert [p.id for p in out] == ["rich-square"], (
+        f"the under-filled day must be the most storied one (the square the "
+        f"walker stands in), never the longest walk; got {[p.id for p in out]}"
+    )
+
+    # ...AND STORIED IS NOT THE SAME AS LONG (the panel's Q1 again: every one of
+    # the eleven chose (a) "the most storied day" over (b) "the longest standing
+    # time"; Camille: "maximised standing time still picks quantity over the best
+    # places"). A quiet place with a LONGER visit must not beat the storied square
+    # — the live Place des Vosges golden picked Musee Victor Hugo, tier 4 with TWO
+    # beats and a 35-minute visit, over the 64-story square, when this key read
+    # dwell. Both candidates sit AT the start here, so walking cannot decide it and
+    # only the currency can.
+    quiet_but_long = _priced_poi("quiet-but-long", tier=4, lng_offset_deg=0.00002,
+                                 visit_min=35, beat_count=2)
+    snap2 = _snap([rich, quiet_but_long], area_types={"Le Marais": "neighborhood"})
+    out2 = _apply_certification_timebox_repair(
+        [rich],
+        [rich, quiet_but_long],
+        input=inp,
+        snapshot=snap2,
+        spine="Le Marais",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=None,
+        planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
+        planning_budget=route_planning_budget(60),
+    )
+    assert "rich-square" in {p.id for p in out2}, (
+        "a 2-beat place with a longer visit must not displace the 24-story square "
+        f"— storied is not the same as long; got {[p.id for p in out2]}"
+    )
+
+    # ...AND THE MEASURE IS MONOTONE: a day that keeps everything another day has
+    # PLUS one more real place is never the poorer day. Two stops of the SAME
+    # category are the case that breaks a naive answer — Greta's diversity dimmer
+    # fires when a category covers half a set, so ranking by the dimmed score made
+    # a two-museum day score BELOW a one-museum day and the planner dropped a
+    # stop to "improve" the day. Measured live on Rosemary's own request: her day
+    # collapsed from [Musee de l'Orangerie, Musee d'Orsay] to [Musee d'Orsay], and
+    # with the walking went the cadence crossing that seats her BENCH.
+    #
+    # UNDO: rank the under-fill choice by `_diversity_weighted_score` instead of
+    # the plain sum -> the single stop wins -> RED.
+    # Sized so the PAIR fits under the 3600 s ceiling (1200 + 900 of standing plus
+    # 713 s of walking = 2813 s) and both days sit under the 3240 s floor, so the
+    # under-fill branch is what decides — and so the two keys genuinely disagree:
+    # the plain sum prefers the pair (16.09 + 3.30), while Greta's dimmer fires on
+    # a set that is two-thirds one category and scores it 0.8 x 19.39 = 15.51,
+    # UNDER the 16.09 of the single stop. Without that gap the test would pass
+    # under either key and prove nothing.
+    same_category_pair = [
+        _priced_poi("gallery-a", tier=5, lng_offset_deg=0.0, visit_min=20, beat_count=24)
+        .model_copy(update={"place_category": "gallery"}),
+        _priced_poi("gallery-b", tier=3, lng_offset_deg=0.00300, visit_min=15,
+                    beat_count=2).model_copy(update={"place_category": "gallery"}),
+    ]
+    snap3 = _snap(same_category_pair, area_types={"Le Marais": "neighborhood"})
+    out3 = _apply_certification_timebox_repair(
+        [same_category_pair[0]],
+        same_category_pair,
+        input=inp,
+        snapshot=snap3,
+        spine="Le Marais",
+        interest=frozenset(),
+        score_penalty=None,
+        leg_seconds_fn=None,
+        planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
+        planning_budget=route_planning_budget(60),
+    )
+    assert {p.id for p in out3} == {"gallery-a", "gallery-b"}, (
+        "two same-category places must not score BELOW one of them — the variety "
+        f"dimmer is a tie-break, never a reason to drop a stop; got "
+        f"{[p.id for p in out3]}"
+    )
+
+
+def test_a_stop_is_never_admitted_past_the_walking_worth_line():
+    """W8.6 panel Q2, 11/11: never past the product's own detour gate. The
+    admission line is TWO bounds on an added stop's marginal walking — at most
+    ``STOP_WALK_WORTH_MAX`` (2.0) seconds of walking per second it earns the
+    visitor standing there, AND at most ``MAX_STOP_PURE_DETOUR_SECONDS``
+    (1800 s — the same 30-minute line the illogical-detour invariant enforces,
+    tests/test_tour_invariants_live.py). The measured Shape A cousin: the
+    Panthéon 120 loop walked 43 minutes to a bookshop because 4.5:1 admitted it.
+    Théo's own dearest trade — 16 minutes' walk for a 9-minute stand at the
+    memorial, 1.8:1 — stays admissible: the panel's cap is the loosest line no
+    panelist's chosen trade breaks.
+
+    EACH BOUND IS ISOLATED BY ITS OWN CANDIDATE, so each mutation has something
+    to break — the first version of this test used one candidate that tripped
+    BOTH bounds, so neither mutation flipped it and it proved nothing (caught by
+    its own UNDO pass, sabotage mode 5). Every candidate is offered alone, since
+    admitting one would move the next one's marginal walk.
+
+    UNDO: return RESCUE_MAX_WALK_PER_DWELL_SECOND to 4.5 -> `ratio-slog` seats
+    -> RED. Drop the MAX_STOP_PURE_DETOUR_SECONDS half -> `detour-slog` seats
+    -> RED."""
+    from src.tour.selection import _apply_fill_pass
+
+    a = _priced_poi("a-anchor", tier=4, lng_offset_deg=0.0, visit_min=15, beat_count=5)
+    # 462 m out: marginal loop walk 1498 s. UNDER the 1800 s absolute ceiling, so
+    # only the RATIO can refuse it — 1498 vs 2.0 x 400 s of standing (3.7:1, the
+    # "twenty-two minutes for a five-minute look" Rosemary named). At 4.5 it
+    # seats (1498 <= 1800).
+    ratio_slog = _priced_poi("ratio-slog", tier=5, lng_offset_deg=0.006318,
+                             visit_min=7, beat_count=8)
+    # 616 m out: marginal 1996 s against a 20-minute stop. INSIDE the ratio
+    # (1996 <= 2.0 x 1200), so only the ABSOLUTE ceiling can refuse it — half an
+    # hour of pure detour is the line the product's own INV8 gate draws.
+    detour_slog = _priced_poi("detour-slog", tier=5, lng_offset_deg=0.008420,
+                              visit_min=20, beat_count=8)
+    # 500 m out: marginal 1618 s for a 15-minute stop — 1.8:1, exactly Théo's
+    # dearest trade (sixteen minutes' walk for nine silent minutes at the
+    # deportation memorial), and inside both bounds. It must still seat, or the
+    # line has stopped being a worth test and become a distance cap.
+    worth_it = _priced_poi("worth-it", tier=4, lng_offset_deg=-0.006828,
+                           visit_min=15, beat_count=5)
+    dwell_by_id = {"a-anchor": 900, "ratio-slog": 400, "detour-slog": 1200,
+                   "worth-it": 900}
+    snap = _snap([a, ratio_slog, detour_slog, worth_it],
+                 area_types={"Le Marais": "neighborhood"})
+
+    def offered_alone(candidate: POI) -> set[str]:
+        return {
+            p.id
+            for p in _apply_fill_pass(
+                [a],
+                [a, candidate],
+                spine="Le Marais",
+                interest=frozenset(),
+                snapshot=snap,
+                start_lat=PDV[0],
+                start_lng=PDV[1],
+                round_trip=True,
+                walk_budget=2160,
+                dwell_budget=3240,
+                stop_cost_fn=lambda p, *, exempt: dwell_by_id[p.id],
+                exempt_anchor_id="a-anchor",
+                rescue_floor=2,
+            )
+        }
+
+    assert "ratio-slog" not in offered_alone(ratio_slog), (
+        "a stop costing more walking than it earns the visitor must stay out "
+        "(the ratio half of the worth line)"
+    )
+    assert "detour-slog" not in offered_alone(detour_slog), (
+        "a stop bought with more than half an hour of pure detour must stay out "
+        "(the absolute half of the worth line)"
+    )
+    assert "worth-it" in offered_alone(worth_it), (
+        "the 1.8:1 trade (Théo's memorial shape) must still seat"
+    )
+
+
+def test_a_route_within_one_displayed_minute_of_its_ceiling_serves(monkeypatch):
+    """W8.6 panel Q4, 11/11 serve: the measured Shape D — a 250-minute request
+    refused at 250 minutes and 22 SECONDS, while routing.py's own
+    TIMEBOX_MATERIALITY_TOLERANCE_SECONDS declares a route within one displayed
+    minute "materially in the same customer timebox". Rosemary: "an engine that
+    declares that and then refuses over twenty-two seconds does not have a
+    rule; it has a mood." §10.8.2: one definition of material.
+
+    Same drift mechanism as the exact-elapsed guard test above, sized to 22
+    seconds instead of a preposterous number. UNDO: drop the tolerance from the
+    final ceiling check -> this refuses again -> RED."""
+    from src.tour import selection as selection_module
+    from src.tour.routing import route_planning_budget
+    from src.tour.selection import served_dwell_seconds
+    from src.tour.visit_time import served_elapsed_seconds
+
+    start = PDV
+    end = (start[0], start[1] + 0.008)
+    pois = _density_fillers(start, duration_min=60, radius_m=90.0)
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=start, end=end, duration_min=60, city_slug="paris")
+
+    control = select_route(inp, snap)
+    assert control.pois
+    control_dwell = served_dwell_seconds(
+        control, snap, interest=frozenset(), end_is_none=False
+    )
+    control_elapsed = served_elapsed_seconds(control.total_walk_seconds, control_dwell)
+    ceiling = route_planning_budget(60).nominal_elapsed_seconds
+    drift = ceiling - control_elapsed + 22
+    assert drift > 0, "fixture drifted: the control day already fills its ceiling"
+
+    real_summarise = selection_module.summarise_route
+
+    def drifted_summarise(*args, **kwargs):
+        route = real_summarise(*args, **kwargs)
+        return route.model_copy(
+            update={"total_walk_seconds": route.total_walk_seconds + drift}
+        )
+
+    monkeypatch.setattr(selection_module, "summarise_route", drifted_summarise)
+    served = select_route(inp, snap)
+    assert served.pois, "a day 22 seconds over its ceiling is the same customer timebox"
+
+
 # --- the loop's direction is a choice (S3.8a; deviation vi; Nadia's rule) ----
 
 
@@ -3015,3 +3303,503 @@ def test_direction_choice_never_buys_walking():
     assert [p.id for p in oriented] == [p.id for p in ordered], (
         "the reversal bought materially more walking and must be refused"
     )
+
+
+# ---------------------------------------------------------------------------
+# The timebox repair's FOURTH MOVE — "step outside".
+#
+# Add, drop and exchange can only answer "which places". A fixed-end request
+# whose DESTINATION is too big for the hour therefore had no answer at all: the
+# destination is protected from every drop, so its interior plus its line is a
+# floor no move can lower, and the day was refused outright. The engine already
+# knows how to keep a place and drop its door — a locked door, a `wall` end and
+# a party ceiling each trigger that one collapse in `visit_shape` — so the
+# fourth move simply lets the requested DURATION trigger it too, as a LAST
+# RESORT, and the day says so.
+# ---------------------------------------------------------------------------
+
+_ND_START = (48.85675, 2.341033)  # Pont Neuf
+_ND_END = (48.85675, 2.341033 + 0.0090)  # ~658 m east — the cathedral
+
+
+def _pont_neuf_to_cathedral() -> tuple[POI, POI, CorpusSnapshot]:
+    """Pont Neuf to a cathedral, in the live case's own arithmetic.
+
+    The bridge is a place with no interior: 12 minutes on it, 720 s. The
+    cathedral has 25 minutes of facade, 50 minutes of interior and a 15-minute
+    line, and the requested lens is a DIRECT hit on its beats, so `visit_shape`
+    prices the whole 50-minute interior plus the line — 3900 s at one stop. The
+    walk between them is ~1067 s. Those are the frozen
+    `paris-pont-neuf-notre-dame-60` numbers to within a few seconds.
+    """
+    bridge = _poi(
+        "bridge",
+        tier=5,
+        lat=_ND_START[0],
+        lng=_ND_START[1],
+        areas=("Île de la Cité",),
+        beat_count=5,
+    ).model_copy(update={"typical_duration_min": 12})
+    cathedral = _poi(
+        "cathedral",
+        tier=5,
+        lat=_ND_END[0],
+        lng=_ND_END[1],
+        areas=("Île de la Cité",),
+        beat_count=8,
+    ).model_copy(
+        update={
+            "typical_duration_min": 25,
+            "visit_seconds_inside": 50 * 60,
+            "visit_basis": "fifty minutes under the vaults, twenty-five on the parvis",
+            "queue_class": "long",
+            "queue_minutes_peak": 15,
+            "queue_minutes_offpeak": 15,
+        }
+    )
+    snap = _snap(
+        [bridge, cathedral],
+        area_types={"Île de la Cité": "island"},
+        beats_by_poi={
+            "bridge": _lensed_beats("bridge", ("historic_arch",)),
+            "cathedral": _lensed_beats("cathedral", ("historic_arch",), n=8),
+        },
+    )
+    return bridge, cathedral, snap
+
+
+def _elapsed_of(route, snap) -> int:
+    from src.tour.selection import served_dwell_seconds
+    from src.tour.visit_time import served_elapsed_seconds
+
+    return served_elapsed_seconds(
+        route.total_walk_seconds,
+        served_dwell_seconds(
+            route, snap, interest=frozenset({"historic_arch"}), end_is_none=False
+        ),
+    )
+
+
+def test_a_destination_too_big_for_the_hour_is_served_from_the_outside():
+    """The visitor asks for an hour from Pont Neuf ending at the cathedral, and
+    gets one — standing outside the cathedral rather than being told no.
+
+    Going IN costs 50 minutes plus a 15-minute line, so the smallest possible
+    day with the interior is 4967 s against a 3600 s request, and every add,
+    drop and exchange leaves it there: the destination is protected, so nothing
+    the repair could remove touches that number. The honest answer is not a
+    refusal — it is the hour the visitor asked for, with the facade instead of
+    the nave, said out loud. 3287 s: 720 s on the bridge, 1067 s of walking,
+    1500 s in front of the cathedral, no line.
+    """
+    from src.tour.routing import route_planning_budget
+    from src.tour.visit_time import shape_total_seconds, visit_shape
+
+    bridge, cathedral, snap = _pont_neuf_to_cathedral()
+    lens = frozenset({"historic_arch"})
+    band = route_planning_budget(60)
+
+    # The premise: going inside is a bigger number than the whole request, and
+    # it belongs to the DESTINATION, which no drop may remove.
+    inside = visit_shape(cathedral, lens, snap)
+    assert inside.goes_inside is True
+    assert shape_total_seconds(inside) > band.nominal_elapsed_seconds
+
+    inp = TourInput(
+        start=_ND_START,
+        end=_ND_END,
+        duration_min=60,
+        city_slug="paris",
+        lenses=["historic_arch"],
+    )
+    route = select_route(inp, snap)
+
+    assert [p.id for p in route.pois] == [bridge.id, cathedral.id]
+    elapsed = _elapsed_of(route, snap)
+    assert band.minimum_elapsed_seconds <= elapsed <= band.nominal_elapsed_seconds, elapsed
+
+    # The stop the visitor stands at, priced as the exterior it now is: no
+    # interior, no line, the facade minutes kept.
+    assert route.visit_goes_inside[cathedral.id] is False
+    assert route.planned_queue_seconds[cathedral.id] == 0
+    assert route.planned_visit_seconds[cathedral.id] == 25 * 60
+
+    # NEVER SILENTLY (W8.2 R8). The day carries the fact on the same notes
+    # channel a locked door and an unlit finish use, in one self-contained
+    # sentence a stranger can judge — and NOT flagged `kept_outside`, which is
+    # where every reader gets the word "closed" (the harness's own column reads
+    # "closed — outside only"). This cathedral is open; the hour is the problem.
+    said = [ex for ex in route.clock_exclusions if ex.poi_id == cathedral.id]
+    assert len(said) == 1, route.clock_exclusions
+    assert said[0].kept_outside is False, "the place is not closed — the day is short"
+    assert said[0].reason == (
+        "its interior does not fit the 60 minutes you asked for, "
+        "so we will see it from the outside"
+    ), said[0].reason
+    # ...and the promise the planner swore says the same thing.
+    finish = next(p for p in route.promises if p.poi_id == cathedral.id)
+    assert finish.shape.goes_inside is False
+    assert finish.shape.queue_seconds == 0
+
+
+def test_a_day_that_fits_with_the_interior_never_steps_outside():
+    """LAST RESORT, and the ordering is the point: the same request with room
+    for the interior keeps the interior.
+
+    100 minutes fits the whole thing — bridge, walk, 50 minutes inside, and the
+    line: 5687 s inside a 5400-6000 s band. A repair that reached for the
+    exterior whenever it was cheaper would hand this visitor a facade and half
+    an hour of nothing. Nothing is stepped outside, and nothing is disclosed,
+    because nothing was taken away.
+    """
+    from src.tour.routing import route_planning_budget
+
+    bridge, cathedral, snap = _pont_neuf_to_cathedral()
+    band = route_planning_budget(100)
+
+    inp = TourInput(
+        start=_ND_START,
+        end=_ND_END,
+        duration_min=100,
+        city_slug="paris",
+        lenses=["historic_arch"],
+    )
+    route = select_route(inp, snap)
+
+    assert [p.id for p in route.pois] == [bridge.id, cathedral.id]
+    elapsed = _elapsed_of(route, snap)
+    assert band.minimum_elapsed_seconds <= elapsed <= band.nominal_elapsed_seconds, elapsed
+
+    assert route.visit_goes_inside[cathedral.id] is True, (
+        "an interior that fits the day must never be traded for its facade"
+    )
+    # The whole stop: 50 minutes of building plus the 15-minute line it costs
+    # to get into it (`planned_visit_seconds` is the shape's total).
+    assert route.planned_visit_seconds[cathedral.id] == 50 * 60 + 15 * 60
+    assert route.planned_queue_seconds[cathedral.id] == 15 * 60
+    assert route.clock_exclusions == (), (
+        f"nothing was taken away, so there is nothing to disclose; "
+        f"got {route.clock_exclusions}"
+    )
+
+
+def test_a_replanned_remainder_reports_its_overrun_instead_of_stepping_outside():
+    """A TAIL never buys its clock with an interior — it hands the overrun back.
+
+    The fourth move exists to save a day whose only alternative is a REFUSAL.
+    A replanned remainder is never refused (W5.2 R1.1): the best over-ceiling
+    day comes back with `overrun_seconds` on it, and that number is the raw
+    material of the ONE question the person answers ("keep your full rest and
+    be at the Orsay about 17:02, or sit six minutes and be back by 17:00" —
+    W5.2 R2, `contingency.question_text`). A repair that steps a stop outside
+    on this path answers the question FOR her and hands back a quietly thinner
+    day instead. Measured 2026-08-25 on Rosemary's own day, forty-six minutes
+    late out of the Orangerie: the remainder priced 100 s over her clock, the
+    move shed an interior to absorb them, the overrun came back 0, and the live
+    reply carried NO question at all.
+
+    Same request and same corpus as
+    `test_a_destination_too_big_for_the_hour_is_served_from_the_outside`, which
+    is the deliberate contrast: a FRESH plan of this hour steps the cathedral
+    outside, because there the alternative really is a refusal. Both stops are
+    the person's own here — the bridge held, the cathedral her declared finish —
+    so no drop or exchange can shorten the day either, exactly as Rosemary's
+    Orsay and her bench cannot.
+
+    UNDO: try the fourth move before the `report_overrun` return -> the
+    cathedral's interior is traded away and the overrun comes back 0 -> RED.
+    """
+    from src.tour.contract import ReplanContext
+    from src.tour.routing import route_planning_budget
+
+    bridge, cathedral, snap = _pont_neuf_to_cathedral()
+    band = route_planning_budget(60)
+    inp = TourInput(
+        start=_ND_START,
+        end=_ND_END,
+        duration_min=60,
+        city_slug="paris",
+        lenses=["historic_arch"],
+    )
+
+    route = select_route(
+        inp,
+        snap,
+        replan=ReplanContext(floor_zero=True, protected_poi_ids=(bridge.id, cathedral.id)),
+    )
+
+    assert [p.id for p in route.pois] == [bridge.id, cathedral.id]
+    assert route.visit_goes_inside[cathedral.id] is True, (
+        "a remainder must not trade an interior away to fit the minutes left — "
+        "the person decides that, through the question"
+    )
+    # The whole stop, interior and line, exactly as the day that fits keeps it.
+    assert route.planned_visit_seconds[cathedral.id] == 50 * 60 + 15 * 60
+    assert route.planned_queue_seconds[cathedral.id] == 15 * 60
+    # And the number the question is built from rides back on the route.
+    elapsed = _elapsed_of(route, snap)
+    assert route.overrun_seconds == elapsed - band.nominal_elapsed_seconds > 0, (
+        f"the tail must REPORT its overrun; got {route.overrun_seconds}"
+    )
+    assert route.clock_exclusions == (), (
+        f"nothing was stepped outside, so there is nothing to disclose; "
+        f"got {route.clock_exclusions}"
+    )
+
+
+def test_a_repair_that_has_spent_its_trial_budget_still_steps_outside(monkeypatch):
+    """The fourth move must not be starved by the trial budget the FIRST
+    enumeration spent.
+
+    ``observed`` does double duty — it is the refusal's evidence list AND the
+    counter the trial cap reads — and the fourth move re-ran the whole
+    enumeration without resetting it. So on any repair whose first enumeration
+    reached ``TIMEBOX_REPAIR_MAX_TRIALS``, every exterior-only enumeration
+    returned before pricing a thing and the move silently never ran: the
+    traveller got the refusal back, not the day. (Measured on a 400-minute
+    request over a 214-place pool, round one spends the whole cap.)
+
+    TWO is exactly what the first enumeration prices here, measured
+    2026-08-25: the incumbent, and the one add the two-place pool offers. The
+    destination is protected, so there is no drop and no exchange. A cap of two
+    therefore takes NOTHING away from that enumeration — it banks every trial
+    it would have banked at four thousand — while leaving the fourth move
+    nothing at all. The pool size is asserted below so the count cannot drift
+    out from under this.
+    """
+    from src.tour import selection as selection_module
+
+    bridge, cathedral, snap = _pont_neuf_to_cathedral()
+    assert len(snap.pois) == 2, "the trial count in this docstring assumes the pair"
+    inp = TourInput(
+        start=_ND_START,
+        end=_ND_END,
+        duration_min=60,
+        city_slug="paris",
+        lenses=["historic_arch"],
+    )
+
+    monkeypatch.setattr(selection_module, "TIMEBOX_REPAIR_MAX_TRIALS", 2)
+    route = select_route(inp, snap)
+
+    assert [p.id for p in route.pois] == [bridge.id, cathedral.id]
+    assert route.visit_goes_inside[cathedral.id] is False, (
+        "a spent trial budget must not silently disable the step-outside move"
+    )
+    assert route.planned_visit_seconds[cathedral.id] == 25 * 60
+
+
+def _two_interiors_one_hour() -> tuple[POI, POI, CorpusSnapshot, TourInput]:
+    """A pinned hall at the start and a destination hall, both too big together.
+
+    Both stops are PROTECTED — one by the visitor's pin, one by being the fixed
+    destination — so no drop or exchange exists and the repair reaches its
+    fourth move with TWO interiors to choose between. That is the only shape in
+    which the choice is a choice: where a stop can be dropped, dropping it is
+    tried first.
+
+    The arithmetic (60 minutes = a 3240-3600 s band; 474 s of walking):
+      - both interiors:      1900 + 2200 + 474 = 4574 s — over the ceiling;
+      - `a-pin` outside:      480 + 2200 + 474 = 3154 s — under the ceiling but
+                                                          SHORT of the band;
+      - `z-dest` outside:    1900 + 1200 + 474 = 3574 s — squarely in the band.
+    """
+    a_pin = _poi(
+        "a-pin", tier=5, lat=_ND_START[0], lng=_ND_START[1],
+        areas=("Île de la Cité",), beat_count=5,
+    ).model_copy(update={"typical_duration_min": 8, "visit_seconds_inside": 1900})
+    z_dest = _poi(
+        "z-dest", tier=5, lat=_ND_START[0], lng=_ND_START[1] + 0.0040,
+        areas=("Île de la Cité",), beat_count=5,
+    ).model_copy(update={"typical_duration_min": 20, "visit_seconds_inside": 2200})
+    snap = _snap(
+        [a_pin, z_dest],
+        area_types={"Île de la Cité": "island"},
+        beats_by_poi={
+            "a-pin": _lensed_beats("a-pin", ("historic_arch",)),
+            "z-dest": _lensed_beats("z-dest", ("historic_arch",)),
+        },
+    )
+    inp = TourInput(
+        start=_ND_START,
+        end=(z_dest.lat, z_dest.lng),
+        duration_min=60,
+        city_slug="paris",
+        lenses=["historic_arch"],
+        pinned_poi_ids=["a-pin"],
+    )
+    return a_pin, z_dest, snap, inp
+
+
+def test_which_stop_steps_outside_is_ranked_never_alphabetical():
+    """With several interiors on offer, the day kept is the best day the repair
+    can rank — never whichever stop's id sorts first.
+
+    Stepping outside `a-pin` leaves a 3154 s day: under the ceiling, but short
+    of the band by a minute and a half, and the visitor loses a 32-minute
+    interior to keep an 8-minute facade. Stepping outside `z-dest` leaves a
+    3574 s day, squarely inside the band. Taking the first offer that yields
+    anything hands over the worse day for no reason but the alphabet.
+    """
+    from src.tour.routing import (
+        DEFAULT_ROUTE_PLANNING_POLICY,
+        default_leg_seconds,
+        route_planning_budget,
+    )
+    from src.tour.selection import _apply_certification_timebox_repair
+    from src.tour.visit_time import shape_total_seconds, visit_shape
+
+    a_pin, z_dest, snap, inp = _two_interiors_one_hour()
+    lens = frozenset({"historic_arch"})
+    band = route_planning_budget(60)
+
+    # THE ONE pricing channel `_select_route_once` wires, wired the same way
+    # here: the shape reads the set, the total reads the shape.
+    exterior_only_ids: set[str] = set()
+
+    def shape_visit(poi: POI, hour: int | None):
+        return visit_shape(poi, lens, snap, exterior_only=poi.id in exterior_only_ids)
+
+    def price_visit(poi: POI, hour: int | None) -> int:
+        return shape_total_seconds(shape_visit(poi, hour))
+
+    # The premise, priced live: both stops go inside, `a-pin` is the one whose
+    # id sorts first (so first-offer-wins and best-offer-wins disagree), and
+    # only ONE of the two exterior-priced days lands in the band.
+    walk = default_leg_seconds(*_ND_START, z_dest.lat, z_dest.lng)
+    assert shape_visit(a_pin, None).goes_inside is True
+    assert shape_visit(z_dest, None).goes_inside is True
+    assert sorted([a_pin.id, z_dest.id]) == [a_pin.id, z_dest.id]
+    facades = {p.id: p.typical_duration_min * 60 for p in (a_pin, z_dest)}
+    interiors = {p.id: p.visit_seconds_inside for p in (a_pin, z_dest)}
+    step_a = facades[a_pin.id] + interiors[z_dest.id] + walk
+    step_z = interiors[a_pin.id] + facades[z_dest.id] + walk
+    assert interiors[a_pin.id] + interiors[z_dest.id] + walk > band.nominal_elapsed_seconds
+    assert step_a < band.minimum_elapsed_seconds, "the alphabetical day is short of the band"
+    assert band.minimum_elapsed_seconds <= step_z <= band.nominal_elapsed_seconds
+
+    out = _apply_certification_timebox_repair(
+        [a_pin, z_dest],
+        [a_pin, z_dest],
+        input=inp,
+        snapshot=snap,
+        spine="Île de la Cité",
+        interest=lens,
+        score_penalty=None,
+        leg_seconds_fn=None,
+        planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
+        planning_budget=band,
+        price_visit=price_visit,
+        protected_promise_ids={a_pin.id},
+        exterior_only_ids=exterior_only_ids,
+        shape_visit=shape_visit,
+    )
+
+    assert {p.id for p in out} == {a_pin.id, z_dest.id}, [p.id for p in out]
+    assert exterior_only_ids == {z_dest.id}, (
+        "the stop that steps outside must be the one that leaves the better "
+        f"day, not the one whose id sorts first; got {exterior_only_ids}"
+    )
+    # And the day it leaves is the in-band one priced above, not the short one.
+    assert sum(price_visit(p, None) for p in out) + walk == step_z
+
+
+# ---------------------------------------------------------------------------
+# The refusal a repair raises has to tell ONE true story.
+# ---------------------------------------------------------------------------
+
+
+def test_the_refusal_tells_one_true_story_whether_or_not_a_route_was_priced():
+    """Measured 2026-08-25 on a New York 60-minute start, the refusal read:
+    "every route reachable from this start overruns the requested duration; the
+    shortest one found is still longer than asked for; required 3240-3600s, and
+    no bounded route could be priced at all." Three claims, and they cannot all
+    be true: every route overran, a shortest one was found, nothing was priced.
+
+    Both states are pinned here, whole sentence and all, because the defect was
+    a sentence rather than a number.
+    """
+    import math as _math
+
+    from src.tour.routing import (
+        DEFAULT_ROUTE_PLANNING_POLICY,
+        TIMEBOX_MATERIALITY_TOLERANCE_SECONDS,
+        route_planning_budget,
+    )
+    from src.tour.selection import _apply_certification_timebox_repair
+    from src.tour.visit_time import visit_seconds
+
+    band = route_planning_budget(60)
+    policy_id = DEFAULT_ROUTE_PLANNING_POLICY.policy_id
+
+    def _repair(selected: list[POI], candidates: list[POI], snapshot: CorpusSnapshot):
+        return _apply_certification_timebox_repair(
+            selected,
+            candidates,
+            input=TourInput(
+                start=PDV, duration_min=60, city_slug="paris", round_trip=True
+            ),
+            snapshot=snapshot,
+            spine="Le Marais",
+            interest=frozenset(),
+            score_penalty=None,
+            leg_seconds_fn=None,
+            planning_policy=DEFAULT_ROUTE_PLANNING_POLICY,
+            planning_budget=band,
+        )
+
+    # STATE ONE — a route WAS priced, and every one of them overran. The
+    # sentence may say so, and the tail carries the number it found.
+    huge = _poi(
+        "huge", tier=5, lat=PDV[0], lng=PDV[1], areas=("Le Marais",), beat_count=5
+    ).model_copy(update={"typical_duration_min": 200})
+    huge_snap = _snap([huge], area_types={"Le Marais": "neighborhood"})
+    best = visit_seconds(huge, frozenset(), huge_snap)
+    assert best > band.nominal_elapsed_seconds, "the premise: one stop overruns the hour"
+
+    with pytest.raises(CertificationPlanningInfeasibleError) as overran:
+        _repair([huge], [huge], huge_snap)
+
+    assert str(overran.value) == (
+        f"Certification planning infeasible under {policy_id}: "
+        "every route reachable from this start overruns the requested duration; "
+        "the shortest one found is still longer than asked for; "
+        f"required {band.minimum_elapsed_seconds}-{band.nominal_elapsed_seconds}s, "
+        f"best eligible bounded route {best}s."
+    ), str(overran.value)
+    assert overran.value.best_elapsed_seconds == best
+    assert overran.value.gap_minutes == _math.ceil(
+        (best - band.maximum_elapsed_seconds) / 60
+    )
+    # An open walk has no destination to drop, so the only way out is a longer
+    # day — the least one whose ceiling covers what the best route costs.
+    ((extend,),) = (overran.value.alternatives,)
+    assert (extend.kind, extend.drop_end) == ("extend", False)
+    assert (
+        route_planning_budget(extend.duration_min).maximum_elapsed_seconds
+        + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+        >= best
+    )
+    assert (
+        route_planning_budget(extend.duration_min - 1).maximum_elapsed_seconds
+        + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS
+        < best
+    )
+
+    # STATE TWO — nothing was priced at all. Nothing overran, nothing was
+    # found, and the sentence has to say the one thing that is true.
+    with pytest.raises(CertificationPlanningInfeasibleError) as nothing:
+        _repair([], [], _snap([], area_types={"Le Marais": "neighborhood"}))
+
+    assert str(nothing.value) == (
+        f"Certification planning infeasible under {policy_id}: "
+        "no stop near this start could be seated into a route — try a longer "
+        "day, or a start with more within walking distance; "
+        f"required {band.minimum_elapsed_seconds}-{band.nominal_elapsed_seconds}s, "
+        "and no bounded route could be priced at all."
+    ), str(nothing.value)
+    assert nothing.value.best_elapsed_seconds is None
+    # Nothing actionable is KNOWN, so nothing is offered: an "extend" duration
+    # is derived from what the best route costs, and there was no best route.
+    assert nothing.value.alternatives == ()
+    assert nothing.value.gap_minutes is None

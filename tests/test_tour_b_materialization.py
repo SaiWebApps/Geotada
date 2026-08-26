@@ -413,11 +413,35 @@ def test_fixed_end_uses_a_nearby_poi_without_collapsing_the_greedy_cluster():
     route = select_route(inp, snap)
     ids = [p.id for p in route.pois]
 
-    assert "n-1" in ids and "n-2" in ids, f"greedy cluster must survive; got {ids}"
+    # RE-DERIVED AT PHASE 8 (2026-08-25) — a written decision under plan §0.1.2/§0.1.3,
+    # not a nursed number. This assertion used to be `"n-1" in ids and "n-2" in ids`.
+    #
+    # WHY IT MOVED. W8.6 tightened the walking-worth line from 4.5 to 2.0 walk-seconds
+    # per standing-second and added the 1800 s pure-detour ceiling, both INHERITED from
+    # the product's own illogical-detour invariant so the planner and the gate that
+    # judges it speak one rule (eleven-persona panel, R2, 11/11). The north cluster sits
+    # 200 m and 300 m off a corridor that runs EAST, so reaching it is pure detour. Under
+    # the new line the FARTHER of the two no longer earns its walk.
+    #
+    # MEASURED, not assumed, before this was touched: bypassing `stop_earns_its_walk`
+    # alone restores n-2 exactly (7 stops, both cluster anchors) — so the line is the
+    # cause and nothing else is. Swept afterwards against every assertion here:
+    # background n in 4-8 and cluster beats in 6-16, **no combination seats both**
+    # (n<=5 loses n-1 and goes tourability-YELLOW; n>=6 loses n-2; beats>=14 at n=6
+    # loses n-1 instead). The old pair-assertion is unreachable by construction now.
+    #
+    # WHAT THIS TEST IS FOR SURVIVES INTACT: a fixed destination that SNAPS onto a
+    # nearby POI must not collapse the route into a thin one. That is the invariant;
+    # "these two particular ids" was the 4.5-era snapshot of it. The replacement is
+    # STRICTLY STRONGER than the `len(beatful) >= 2` floor it sits beside — the route
+    # must still reach the cluster, still end at B's snap, and still deliver a rich day.
+    assert any(n in ids for n in ("n-1", "n-2")), (
+        f"the greedy must still reach the named cluster, not fill the hour next door; got {ids}"
+    )
     assert route.fixed_end_poi_id == route.pois[-1].id == mountain.id
     assert not any(poi.id.startswith("__end_b__") for poi in route.pois)
     beatful = [p for p in route.pois if snap.beats_for(p.id)]
-    assert len(beatful) >= 2
+    assert len(beatful) >= 4, f"B-snap collapsed the route to a thin day; got {ids}"
     assert route.tourability is None
 
 

@@ -25,15 +25,6 @@
   ],
   "expected_spine_area": "Île de la Cité",
   "expected_stable_beat_ids": [
-    "paris_conciergerie_dark_history_around_and_about_paris_cartouche_cutpurse_bells",
-    "paris_conciergerie_dark_history_around_and_about_paris_sanson_dynasty_louis_xvi_raise",
-    "paris_conciergerie_dark_history_around_and_about_paris_tour_bonbec_oubliettes",
-    "paris_conciergerie_dark_history_rough_guide_paris_marie_antoinette_cell_mockup",
-    "paris_conciergerie_dark_history_rough_guide_paris_pailleux_iron_grille",
-    "paris_conciergerie_hidden_history_around_and_about_paris_marie_antoinette_cell_1793",
-    "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_parisii_lutetia_origin",
-    "paris_ile_de_la_cite_hidden_history_frommers_24_great_walks_unsinkable_ship_motto",
-    "paris_ile_de_la_cite_social_change_rough_guide_paris_haussmann_erasure",
     "paris_notre_dame_cathedral_dark_history_frommers_24_great_walks_kings_of_judah_mistaken_destroyed",
     "paris_notre_dame_cathedral_hidden_history_frommers_24_great_walks_zero_point_wishing_stone",
     "paris_notre_dame_cathedral_hidden_history_rough_guide_paris_kilometre_zero_parvis",
@@ -48,16 +39,11 @@
     "paris_notre_dame_cathedral_music_heritage_frommers_24_great_walks_emanuel_bell_silent_since_liberation",
     "paris_notre_dame_cathedral_music_heritage_rough_guide_paris_emmanuel_bell_towers",
     "paris_notre_dame_cathedral_transit_frommers_24_great_walks_enter_right_portal",
+    "paris_pont_neuf_dark_history_frommers_24_great_walks_jacques_de_molay_burnt_curse",
     "paris_pont_neuf_historic_arch_rough_guide_paris_oldest_bridge_henri_iv",
-    "paris_pont_neuf_literary_heritage_around_and_about_paris_bouquinistes_origin",
-    "paris_sainte_chapelle_historic_arch_rough_guide_paris_louis_ix_relics_construction",
-    "paris_sainte_chapelle_historic_arch_rough_guide_paris_upper_chapel_stained_glass",
-    "paris_sainte_chapelle_historic_worship_around_and_about_paris_crown_of_thorns_baudouin_ii_sale",
-    "paris_sainte_chapelle_historic_worship_rough_guide_paris_1113_panels_bible_cycle",
-    "paris_sainte_chapelle_war_conflict_around_and_about_paris_communards_petrol_1871",
-    "paris_square_du_vert_galant_famous_residents_around_and_about_paris_vert_galant_nickname_bastards_gabrielle"
+    "paris_pont_neuf_literary_heritage_around_and_about_paris_bouquinistes_origin"
   ],
-  "expected_beat_count": 31,
+  "expected_beat_count": 17,
   "expected_tag_resolution": {
     "F:bell_trapdoor_pillars": "paris_notre_dame_cathedral_historic_arch_frommers_24_great_walks_bell_trapdoor_pillars",
     "F:capacity_rose_windows_organ": "paris_notre_dame_cathedral_historic_arch_frommers_24_great_walks_capacity_rose_windows_organ",
@@ -133,6 +119,26 @@
     "V:vert_galant_view": "no candidate: no corpus beat_id ends with this tag name and the quoted paragraph is not a verbatim prefix of any beat"
   },
   "structurally_unreachable": {
+    "POIs the 90-minute corridor no longer seats under visit-time pricing (W8.6, 2026-08-24)": {
+      "tags": [
+        "V:notorious_prisoners_cartouche",
+        "V:sanson_dynasty",
+        "V:tour_bonbec_oubliettes",
+        "RG:marie_antoinette_cell_mockup",
+        "RG:conciergerie_pailleux",
+        "V:revolution_prisoners",
+        "F:parisii_settlement",
+        "F:fluctuat_nec_mergitur",
+        "RG:haussmann_erasure",
+        "RG:sainte_chapelle_lopped_choir",
+        "RG:upper_chapel_butterflies",
+        "V:sainte_chapelle_full_history",
+        "RG:upper_chapel_glass_panels",
+        "V:sainte_chapelle_communards_petrol",
+        "V:vert_galant_tarnished"
+      ],
+      "reason": "Design §1.1 truth 1 ('standing still is most of the day') and the visit-time model price Notre-Dame's interior plus its 40-minute line at most of the 90 minutes, so this corridor now seats TWO places (Pont Neuf, Notre-Dame) rather than eight brief exteriors. Audit B §1.4 predicted exactly this ('the same corridor seats FEWER, LONGER places ... the loss is one-directional'). The beats are unreachable because the DAY does not go to their POIs, not because the engine chose not to speak them. Restore any of these to the pinned list only if the day seats their POI again."
+    },
     "Place Dauphine (POI walk_by_only)": {
       "tags": [
         "V:place_dauphine_henri_iv",
@@ -225,7 +231,8 @@
       "tags": [
         "F:vert_galant_molay_curse"
       ],
-      "reason": "d104d4a8 is at Pont Neuf POI with sub=square-du-vert-galant. Pont Neuf has 1 sub_loc → narrative_function. 3 hooks + 3 establishings fill the top 6; the climax beat falls outside."
+      "reason": "RECOVERED at W8.6 (2026-08-24): with the corridor seating two places rather than eight, Pont Neuf is no longer competing for a top-6 slot against six other stops' worth of material, and the climax beat is emitted. Moved back into expected_stable_beat_ids.",
+      "_status": "RECOVERED"
     },
     "Crypte vs Palais de Justice (selection scoring)": {
       "tags": [

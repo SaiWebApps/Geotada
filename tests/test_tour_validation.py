@@ -500,13 +500,17 @@ def test_a_forward_promise_in_story_glue_is_refused_and_navigation_is_not():
 def test_the_citys_own_vocabulary_and_the_maps_voice_are_not_inventions():
     """Phase 6 W6.12 (measured on Greta's day, three 422s, the day DEAD): the
     invention scan refused "the height of Parisian luxury" in an authored close
-    (new_proper_noun:Parisian — the tour's own CITY as an invention) and "Walk
-    northwest along the Seine" in the nav line (new_proper_noun:Seine — the MAP
-    naming the river it routes along). The city's name and demonym are the walk's
-    own vocabulary; GLUE_NAV is navigation, not story (the forward-promise scan
-    already exempts it) — its proper nouns are places by nature. STORY glue naming
-    an unlicensed place is still refused: the teeth stay. UNDO: drop either
-    exemption -> RED."""
+    (new_proper_noun:Parisian — the tour's own CITY as an invention) and the nav
+    line's "Seine" (new_proper_noun:Seine — the MAP naming the river it routes
+    along). The city's name and demonym are the walk's own vocabulary; GLUE_NAV
+    is navigation, not story (the forward-promise scan already exempts it) — its
+    proper nouns are places by nature. STORY glue naming an unlicensed place is
+    still refused: the teeth stay. UNDO: drop either exemption -> RED.
+
+    RE-DERIVED at Phase 8 S8.3 (W8.2 R1, 11/11): the ORIGINAL Greta nav line
+    ("Walk northwest along the Seine") is itself no longer legal — a leg line
+    never speaks compass — so the licensed-proper-noun clause now rides a
+    compass-free wording of the same sentence."""
     beat = _beat("b1", body="A shop rose here in 1855. It sold silk.")
     seq = _seq([beat])
 
@@ -521,7 +525,7 @@ def test_the_citys_own_vocabulary_and_the_maps_voice_are_not_inventions():
 
     # The map naming the river it walks along: navigation, not invention.
     report = validate_script(
-        _script([glue("Walk northwest along the Seine for about ten minutes.",
+        _script([glue("Follow the Seine for about ten minutes.",
                       label=GLUE_NAV)]), seq
     )
     assert report.forbidden_phrase_hits == (), report.forbidden_phrase_hits
@@ -546,3 +550,240 @@ def test_the_citys_own_vocabulary_and_the_maps_voice_are_not_inventions():
     bad = glue("See the Gothic-era doorway that survives.", label=GLUE_PACING)
     report = validate_script(_script([cited, bad]), seq2)
     assert any(code.startswith("new_proper_noun") for _s, code in report.forbidden_phrase_hits)
+
+
+# ---------------------------------------------------------------------------
+# Phase 8 S8.3 — the writer's words match the geometry they play in
+# (W8.2 LOCKED RULINGS R1/R2/R5; phase7-ledger.md carry 1; design §5.6/§8.2).
+# The nav-voice compass ban is part of the always-on scan (source-derivable);
+# the placement floors need route/placement context and ride
+# ``placement_floor_hits``, wired by the authoring finalizer's closure.
+# ---------------------------------------------------------------------------
+
+
+def _nav(text: str, stop: int = 1) -> Sentence:
+    return Sentence(text=text, source_id=GLUE_NAV, source_type="glue", stop_idx=stop)
+
+
+def test_a_nav_line_never_speaks_compass():
+    """W8.2 R1 (11/11): a leg line names direction ONLY as left/right/straight-ahead
+    or a visible landmark — NEVER compass. Measured instances: Greta's "Walk
+    northwest along the Seine"; Théo's "written northwest, five minutes; measured
+    south-south-east, nine". UNDO: drop the compass scan from
+    ``_forbidden_phrase_hits`` -> RED."""
+    beat = _beat("b1", body="A history beat.")
+    seq = _seq([beat])
+    for text in (
+        "Walk northwest along the Seine for about ten minutes.",
+        "Head north on the quai.",
+        "The gate is to the south-east.",
+        "Continue west, then east again.",
+    ):
+        report = validate_script(_script([_nav(text, stop=0)]), seq)
+        codes = [c for _, c in report.forbidden_phrase_hits]
+        assert any(c.startswith("leg_voice_compass:") for c in codes), (text, codes)
+        assert not report.passed
+
+    # The legal vocabulary is untouched: relative direction and landmarks.
+    for text in (
+        "Turn left at the corner and follow the quai.",
+        "Cross the bridge ahead, straight on to the tower.",
+        "Follow the Seine for about ten minutes.",
+    ):
+        report = validate_script(_script([_nav(text, stop=0)]), seq)
+        codes = [c for _, c in report.forbidden_phrase_hits]
+        assert not any(c.startswith("leg_voice_compass:") for c in codes), (text, codes)
+
+    # Compass words INSIDE story prose are the corpus's own business (beat text is
+    # never scanned), and story glue may say "the north tower" — the ban is the
+    # NAV VOICE's alone.
+    story = Sentence(
+        text="The north tower held the bell.", source_id=GLUE_PACING,
+        source_type="glue", stop_idx=0,
+    )
+    report = validate_script(_script([story]), seq)
+    codes = [c for _, c in report.forbidden_phrase_hits]
+    assert not any(c.startswith("leg_voice_compass:") for c in codes), codes
+
+
+def _floor_script(sentences: list[Sentence]) -> Script:
+    return _script(sentences)
+
+
+def test_placement_floor_flags_wrong_minutes_in_the_nav_line():
+    """W8.2 R1: a leg line speaks minutes ONLY as the routed leg's own priced
+    number (Théo's model line: "written northwest, five minutes; measured
+    south-south-east, nine"). A nav line naming any other minute count is a hit;
+    the routed number itself, or no number at all, is clean; a leg with no
+    routed minutes known is skipped, never guessed."""
+    from src.tour.validation import placement_floor_hits
+
+    script = _floor_script([
+        _nav("Leaving the square behind, head for the tower, about a five-minute walk away."),
+    ])
+    hits = placement_floor_hits(
+        script, vignette_beat_ids=frozenset(), leg_minutes_by_stop={1: 9},
+        goes_inside_by_stop={},
+    )
+    assert any(code.startswith("leg_voice_minutes:") for _, code in hits), hits
+
+    for text, minutes in (
+        ("Leaving the square behind, head for the tower, about a 9-minute walk away.", {1: 9}),
+        ("Carry on to the tower, just ahead.", {1: 9}),
+        ("Head for the tower, about a five-minute walk.", {}),  # unknown leg: skipped
+    ):
+        clean = placement_floor_hits(
+            _floor_script([_nav(text)]), vignette_beat_ids=frozenset(),
+            leg_minutes_by_stop=minutes, goes_inside_by_stop={},
+        )
+        assert not any(code.startswith("leg_voice_minutes:") for _, code in clean), (text, clean)
+
+
+def test_placement_floor_flags_arrived_words_on_leg_pieces():
+    """W8.2 R2 (11/11): no standing verb or arrived deictic — here, this, you're
+    standing, look up — in ANY leg piece, checked sentence by sentence (Marcus:
+    never the opening alone). The measured class: 4 of 27 leg sentences were
+    standing lines (Aiko's Louvre, F&D's Rivoli, Sofia's quai, +1). Applies to
+    every sentence that PLAYS on a leg: nav glue, the thread, and a walk-past
+    vignette one-liner (beat-sourced, identified by id)."""
+    from src.tour.validation import placement_floor_hits
+
+    vignette = Sentence(
+        text="Here stood the fortress that held the crown.",
+        source_id="vig-1", source_type="beat", stop_idx=1,
+    )
+    thread = Sentence(
+        text="You're standing where the tribunal sat.",
+        source_id="GLUE_REFLECTION", source_type="glue", stop_idx=1,
+    )
+    later_sentence_nav = _nav("Carry on past the gate. Look up at the rose window.")
+    for sentence in (vignette, thread, later_sentence_nav):
+        hits = placement_floor_hits(
+            _floor_script([sentence]), vignette_beat_ids=frozenset({"vig-1"}),
+            leg_minutes_by_stop={}, goes_inside_by_stop={},
+        )
+        assert any(code.startswith("arrived_word_on_leg:") for _, code in hits), (
+            sentence.text, hits,
+        )
+
+    # "From here" at the leg's start is true where it plays (the final-destination
+    # template's own words), and the SAME arrived words at a STOP piece are fine.
+    ok_nav = _nav("From here, make your way to your final destination.")
+    stop_piece = Sentence(
+        text="You're standing where the tribunal sat.", source_id="b1",
+        source_type="beat", stop_idx=1,
+    )
+    for sentence in (ok_nav, stop_piece):
+        hits = placement_floor_hits(
+            _floor_script([sentence]), vignette_beat_ids=frozenset(),
+            leg_minutes_by_stop={}, goes_inside_by_stop={},
+        )
+        assert not any(code.startswith("arrived_word_on_leg:") for _, code in hits), (
+            sentence.text, hits,
+        )
+
+
+def test_placement_floor_flags_moving_lines_in_auto_played_stop_pieces():
+    """W8.2 R2 + R5 (11/11): no imperative of motion in any AUTO-PLAYED stop
+    piece — moving sentences are tap-only or leg-only. The measured instances:
+    Rosemary's story sentence "Step around the corner to 31 rue de Bellechasse"
+    (the exact address she forbade at W7.2), route directions inside story
+    fields (Julien). A tap-only stop (the full telling) is exempt; the nav line
+    is exempt (navigation is its job)."""
+    from src.tour.validation import placement_floor_hits
+
+    moving_story = Sentence(
+        text="Step around the corner to 31 rue de Bellechasse.",
+        source_id="b1", source_type="beat", stop_idx=0,
+    )
+    hits = placement_floor_hits(
+        _floor_script([moving_story]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={},
+    )
+    assert any(code.startswith("moving_line_auto_played:") for _, code in hits), hits
+
+    # Tap-only stop: the same sentence is legal (moving lines are tap-only or leg-only).
+    hits = placement_floor_hits(
+        _floor_script([moving_story]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={},
+        tap_only_stops=frozenset({0}),
+    )
+    assert hits == [], hits
+
+    # The nav line commands movement by design; a still stop piece is clean.
+    ok_nav = _nav("Walk on to the tower, just ahead.")
+    still_story = Sentence(
+        text="The corner house at 31 rue de Bellechasse was hers.",
+        source_id="b1", source_type="beat", stop_idx=0,
+    )
+    for sentence in (ok_nav, still_story):
+        hits = placement_floor_hits(
+            _floor_script([sentence]), vignette_beat_ids=frozenset(),
+            leg_minutes_by_stop={}, goes_inside_by_stop={},
+        )
+        assert not any(code.startswith("moving_line_auto_played:") for _, code in hits), (
+            sentence.text, hits,
+        )
+
+
+def test_placement_floor_allows_a_door_line_only_where_the_wire_says_door():
+    """W8.2 R2, Aiko's door rule: a through-the-door sentence plays only where
+    the wire says door=true. At a stop the plan prices INSIDE, "step inside" is
+    staging; anywhere else it is an invitation through a door that does not
+    exist (Aiko's Bourse: the words invited her into a closed rotunda)."""
+    from src.tour.validation import placement_floor_hits
+
+    door_line = Sentence(
+        text="Step inside and let your eyes adjust.",
+        source_id="GLUE_STAGING", source_type="glue", stop_idx=0,
+    )
+    hits = placement_floor_hits(
+        _floor_script([door_line]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={0: False},
+    )
+    assert any(code.startswith("door_line_without_door:") for _, code in hits), hits
+
+    hits = placement_floor_hits(
+        _floor_script([door_line]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={0: True},
+    )
+    assert not any(code.startswith("door_line_without_door:") for _, code in hits), hits
+
+
+def test_placement_floor_flags_a_fusion_that_crosses_playback_contexts():
+    """Phase 8 W8.1(f), mechanism (c) of the Camille class: the writer's
+    FUSE-REPEATS rule merged a stop STORY sentence with a walk-past VIGNETTE
+    beat's fact, producing a citation that cannot be placed —
+    ``partition_final_script`` then exploded with a bare ValueError and the
+    phone saw an unnamed refusal (R8 forbids exactly that). The floor NAMES it
+    at verification time, so the bounded retry tells the writer which sentence
+    to unfuse."""
+    from src.tour.validation import placement_floor_hits
+
+    fused = Sentence(
+        text="The square was royal, and the fortress on your way in held the crown.",
+        source_id="b1", source_type="beat", stop_idx=1, also_cites=("vig-1",),
+    )
+    hits = placement_floor_hits(
+        _floor_script([fused]), vignette_beat_ids=frozenset({"vig-1"}),
+        leg_minutes_by_stop={}, goes_inside_by_stop={},
+    )
+    assert any(code == "fused_across_playback_contexts" for _, code in hits), hits
+
+    # A pure vignette citation and a pure story citation are both clean.
+    pure_vignette = Sentence(
+        text="The fortress held the crown.", source_id="vig-1",
+        source_type="beat", stop_idx=1,
+    )
+    pure_story = Sentence(
+        text="The square was royal.", source_id="b1",
+        source_type="beat", stop_idx=1, also_cites=("b2",),
+    )
+    for sentence in (pure_vignette, pure_story):
+        hits = placement_floor_hits(
+            _floor_script([sentence]), vignette_beat_ids=frozenset({"vig-1"}),
+            leg_minutes_by_stop={}, goes_inside_by_stop={},
+        )
+        assert not any(code == "fused_across_playback_contexts" for _, code in hits), (
+            sentence.text, hits,
+        )

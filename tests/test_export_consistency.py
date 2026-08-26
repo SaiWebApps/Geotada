@@ -34,8 +34,12 @@ STRICT_FIELDS = ("importance_tier",)
 # (scripts/poi_trigger_radius.py) writes it there and the export sync carries it
 # (SYNCED_FIELDS), so the 19 Paris entries that had drifted (Notre-Dame export 100 /
 # raw 10; Luxembourg 100 / 390) can never come back. A city not yet through the pass
-# (New York: 4-space files the one serialiser refuses to rewrite) keeps the looser
-# check until its own normalise-then-sync job runs — the allow-list says which.
+# keeps the looser check — the allow-list says which. New York's own
+# normalise-then-sync job HAS now run (Phase 8 S8.7): 15 of its 34 chunks had been
+# committed at 1-space indent, which the one serialiser refuses to rewrite, and all
+# 34 are byte-faithful and fully synced since — see
+# test_export_chunks_are_byte_faithful_to_the_serialiser below. What still holds New
+# York out of the strict set is the footprint pass itself, not its formatting.
 STRICT_FIELDS_AFTER_FOOTPRINT_PASS = ("trigger_radius",)
 
 # Coordinate tolerance: ~0.0005 deg ≈ 55m at Paris latitude. Tighter than this
@@ -122,6 +126,63 @@ def test_export_matches_poi_raw(city_dir: Path) -> None:
         pytest.fail(
             f"Export/poi-raw drift in {city_dir.name} ({len(offenders)} issues):\n"
             + "\n".join(f"  {o}" for o in offenders[:50])
+            + (f"\n  ... and {len(offenders) - 50} more" if len(offenders) > 50 else "")
+        )
+
+
+def test_export_chunks_are_byte_faithful_to_the_serialiser() -> None:
+    """Every corpus file a pass writes must re-serialise to its own bytes, or it cannot run.
+
+    Covers BOTH halves of the write path: each city's canonical `poi-raw.json` — which
+    every enrichment pass writes through `dump_pois` — and every `export/*.json` chunk
+    the sync propagates into. Guarding only the chunks left the real hole: New York's
+    `poi-raw.json` stayed unfaithful after its chunks were fixed, so `poi_trigger_radius`
+    (and every other pass) still could not write that city at all.
+
+    The test above guards what the chunks SAY; this one guards that they can still be
+    WRITTEN. `scripts/sync_poi_exports.py` writes through `dump_pois`, whose round-trip
+    guard (scripts/poi_visit_duration.py) refuses any write that would reformat the
+    whole file and bury the real change. So a chunk that is not byte-faithful does not
+    merely look untidy — it stops that city's fields from ever reaching Neo4j.
+
+    History, and why this test exists: it used to stop the sync MID-WRITE. A New York
+    run wrote frommers-nyc-2024-chunk-01 and -02, then hit chunk-03 — the first of 15
+    chunks committed at 1-space indent — and SystemExited, leaving two half-synced
+    files in the tree and 32 untouched ones, against a comment in the sync promising
+    that "an abort leaves nothing half-synced". The sync now proves faithfulness for
+    every pending chunk during PLANNING and aborts before any write; this test keeps
+    the tree from drifting back, so no city has to be normalised before it can sync.
+
+    Fast, no DB, no provider: parse and re-serialise, nothing else.
+    """
+    from scripts.poi_visit_duration import serialise
+
+    targets: list[Path] = []
+    for city_dir in _city_dirs():
+        targets.append(city_dir / "poi-raw.json")
+        targets.extend(sorted((city_dir / "export").glob("*.json")))
+
+    offenders: list[str] = []
+    checked = 0
+    for path in targets:
+        checked += 1
+        original = path.read_text(encoding="utf-8")
+        try:
+            parsed = json.loads(original)
+        except json.JSONDecodeError as exc:
+            offenders.append(f"{path.parent.name}/{path.name}: invalid JSON ({exc})")
+            continue
+        if serialise(parsed) != original:
+            offenders.append(f"{path.parent.name}/{path.name}")
+
+    assert checked, "no corpus files found under data/ — this test guarded nothing"
+    if offenders:
+        pytest.fail(
+            f"{len(offenders)} of {checked} corpus file(s) are not byte-faithful to "
+            "scripts/poi_visit_duration.serialise, so make sync-poi-exports refuses to "
+            "write them and their city's enriched fields never reach the graph. "
+            "Re-serialise each through that same serialise() (content must not change) "
+            "and re-run the sync:\n" + "\n".join(f"  {o}" for o in offenders[:50])
             + (f"\n  ... and {len(offenders) - 50} more" if len(offenders) > 50 else "")
         )
 

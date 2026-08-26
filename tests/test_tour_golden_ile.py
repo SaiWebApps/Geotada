@@ -53,11 +53,26 @@ OVERLAP_TARGET = 0.90
 # GOLDEN-GAP-DIAGNOSTIC.md and tests/test_tour_beat_select.py. Do not repeat the claim
 # that it could never pass.
 #
-# OVERLAP_TARGET (90%) stays as the unmet aspiration. The gap is a tour-SHAPE difference,
-# not a tuning knob: the human document walks Notre-Dame's portals and the Conciergerie's
-# halls as many standing positions at one place, while the engine caps a single stop at
-# MAX_DWELL_AUDIO_SECONDS=270 (~675 words) and seats more POIs instead.
-OVERLAP_MIN_HITS = 15
+# OVERLAP_TARGET (90%) stays as the unmet aspiration.
+#
+# RE-DERIVED AT W8.6 (2026-08-24), 15 -> 5, AND THE DENOMINATOR MOVED WITH IT.
+# The pinned set went 31 -> 17: fifteen beats sit at POIs this 90-minute corridor
+# no longer seats under visit-time pricing and are now recorded in
+# structurally_unreachable with that reason; one (the Pont Neuf vert-galant climax)
+# became reachable and moved back in. Against the NEW 17-id set the fresh
+# `make golden-probe` measurement of OUTPUT is 6 hits (35.3%), so decision D6's
+# 'floor = 85% of the measurement' gives 0.85 x 6 = 5.1 -> 5.
+#
+# STATE IT PLAINLY: as an absolute count this floor DROPPED from 15 to 5. As a
+# share of what the day can still reach it ROSE, 15/31 (48%) -> 5/17 (29%) of a set
+# that no longer contains places the day does not visit. Both readings are true and
+# the first is the one to argue with.
+#
+# The eleven-persona panel ruled the day shape 10/11 at W8.6 Q6(i) (Camille: 'eight
+# exteriors in ninety minutes is a checklist'); Nadia dissented for her family's
+# six-minute per-stop ceiling and Théo for deriving the golden from the lens. Both
+# dissents are recorded in evidence/phase8-gates/verdicts/w86-*.md.
+OVERLAP_MIN_HITS = 5
 
 
 def _live_driver():

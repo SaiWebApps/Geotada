@@ -144,15 +144,17 @@ def test_deploy_spawns_area_server_when_areas_present(monkeypatch, tmp_path) -> 
 
 
 # ---------------------------------------------------------------------------
-# deploy._deploy_api_port — default 8000, overridable via ONBOARD_DEPLOY_API_PORT.
+# deploy.deploy_api_port — default 8000, overridable via ONBOARD_DEPLOY_API_PORT.
+# PUBLIC on purpose: scripts/upload_areas.py imports it, so the server the deploy
+# starts and the client that POSTs to it read ONE value (see its docstring).
 # ---------------------------------------------------------------------------
 def test_deploy_api_port_default_and_override(monkeypatch) -> None:
     monkeypatch.delenv("ONBOARD_DEPLOY_API_PORT", raising=False)
-    assert deploy._deploy_api_port() == 8000
+    assert deploy.deploy_api_port() == 8000
     monkeypatch.setenv("ONBOARD_DEPLOY_API_PORT", "8123")
-    assert deploy._deploy_api_port() == 8123
+    assert deploy.deploy_api_port() == 8123
     monkeypatch.setenv("ONBOARD_DEPLOY_API_PORT", "")  # empty → default
-    assert deploy._deploy_api_port() == 8000
+    assert deploy.deploy_api_port() == 8000
 
 
 def test_transient_api_env_opts_into_workbench_routes() -> None:
