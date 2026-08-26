@@ -6,8 +6,9 @@ that script prices how long a place absorbs a visitor, this one learns WHEN the
 place can be entered at all. Different question, different prompt, different
 calibration, different failure modes. What IS shared is imported rather than
 copied: `load_pois` / `serialise` / `dump_pois` (the refuse-to-write-on-reformat
-round-trip guard) come straight from the capacity pass, so the two passes can
-never drift into different file conventions.
+round-trip guard) and `records_for_batch` (the one reader of a model reply — the
+fence strip, the parse and the alignment check) come straight from the capacity
+pass, so the two passes can never drift into different file conventions.
 
 WHAT IT PRODUCES, per POI in ``data/{slug}/poi-raw.json``:
 
@@ -56,7 +57,12 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
-from scripts.poi_visit_duration import DEFAULT_MODEL, dump_pois, load_pois
+from scripts.poi_visit_duration import (
+    DEFAULT_MODEL,
+    dump_pois,
+    load_pois,
+    records_for_batch,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -308,20 +314,7 @@ def price_batch(
         messages=[{"role": "user", "content": prompt}],
     )
     text = "".join(block.text for block in response.content if block.type == "text").strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-    try:
-        records = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise SystemExit(
-            f"✗ model returned unparseable JSON: {exc}\n--- raw ---\n{text[:2000]}"
-        ) from exc
-    if not isinstance(records, list) or len(records) != len(batch):
-        raise SystemExit(
-            f"✗ model returned {len(records) if isinstance(records, list) else '?'} records "
-            f"for a batch of {len(batch)}; refusing to guess the alignment."
-        )
-    return records
+    return records_for_batch(text, batch)
 
 
 def main(argv: list[str] | None = None) -> int:

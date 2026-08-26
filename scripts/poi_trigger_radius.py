@@ -54,9 +54,12 @@ UPLOADER_DEFAULT_M: int = 10
 #: Cities whose corpus has been through THIS pass — the declaring act, read by the two
 #: guards (tests/test_poi_trigger_radius.py, tests/test_export_consistency.py). Adding a
 #: slug says "this city's footprints are sized and its export chunks carry them";
-#: removing one to reach green is forbidden. New York is not here yet: its poi-raw.json
-#: and 15 of its 34 export chunks pre-date the one serialiser (4-space files that
-#: `dump_pois` refuses to reformat), so its pass is a normalise-then-sync job of its own.
+#: removing one to reach green is forbidden. New York is not here yet — but the reason
+#: has changed: its normalise-then-sync job HAS run (Phase 8 S8.7). Its poi-raw.json and
+#: 15 of its 34 export chunks had been committed at 1-SPACE indent (not 4, as this
+#: comment used to say), which `dump_pois` refuses to reformat; all of them are
+#: byte-faithful and fully synced now, and `tests/test_export_consistency.py` pins it.
+#: What still holds New York out is only that this pass has not been run over it.
 CITIES_WITH_FOOTPRINTS: tuple[str, ...] = ("paris",)
 
 #: THE REVIEWED FOOTPRINTS, by the corpus name, each with its argument. The marquees, the
@@ -87,7 +90,13 @@ REVIEWED: dict[str, tuple[int, str]] = {
     "Place des Vosges": (
         70,
         "A 140 m square: the arcade runs seventy metres from the central statue, and "
-        "stepping under the arcade is being there (Nadia, W7.2 R1).",
+        "stepping under the arcade is being there (Nadia, W7.2 R1). Her day starts, "
+        "stops and finishes here, and the ten metres between this 70 and the 60 m "
+        "own-place radius are NOT what starts her clock during the fifteen minutes she "
+        "stands in the square before moving: the own-place circle is drawn round her "
+        "FIRST FIX and this one round the pin, so on a square this wide she can leave "
+        "the first while still standing inside the second. 70 kept; where the clock's "
+        "circle is centred is the carried item, not the footprint (W7.13 carry 6).",
     ),
     "Notre-Dame Cathedral": (
         100,
@@ -120,11 +129,38 @@ REVIEWED: dict[str, tuple[int, str]] = {
         "The bridge is 238 m long across both arms of the river: its half-length from "
         "the Vert-Galant point is 120 m (Theo, Fiona & Dev, Sofia).",
     ),
+    "Square du Vert-Galant": (
+        50,
+        "The triangular pocket-park at the island's western tip, seven metres below the "
+        "street: the pin sits mid-square and fifty metres reaches both the staircase "
+        "down from the bridge and the point itself. Its circle lies WHOLLY inside the "
+        "Pont Neuf's 120 m one — the pins are 59 m apart and the bridge passes overhead "
+        "— so a walker on the point is in both footprints at once. They are at the "
+        "SQUARE: the smaller circle is the more specific place, and the bridge's piece "
+        "belongs to the people on the deck above (Fiona & Dev's nested-footprint edge, "
+        "W7.13 carry 5). Pont Neuf's 120 is derived from its 238 m span and stands.",
+    ),
+    "Place Dauphine": (
+        60,
+        "A triangular place 120 m long from its apex at the Pont Neuf to the Palais de "
+        "Justice front, with the pin in the middle: at the old 30 the circle held the "
+        "central gravel only, and Fiona & Dev spend their first twelve minutes over "
+        "café menus at the apex end, outside it. Sixty metres is the place's "
+        "half-length, and is also the own-place radius the wire gives a start square "
+        "(placement.py), so the square they set out from is ONE circle whichever of the "
+        "two is read. It overlaps the Pont Neuf's footprint by geometry, not by error: "
+        "the apex IS the bridge's approach, 125 m pin to pin, so stop one's piece arms "
+        "over those twelve minutes — the carried edge (W7.13 carry 5).",
+    ),
     "Pere Lachaise Cemetery": (
         500,
         "Forty-four hectares inside walls; the 2026-06-16 area fix sized it at the "
         "setting cap and Julien's wall, the columbarium and the memorials are all "
-        "inside it — kept (the walls themselves are a carried polygon row).",
+        "inside it — kept (the walls themselves are a carried polygon row). The other "
+        "half of his ask is answered beside this number rather than in it: three "
+        "reviewed ANCHORS ride the record — the Mur des Fédérés first, then Edith "
+        "Piaf's grave and Oscar Wilde's tomb — so the 500 m disc says which cemetery "
+        "you are in and the anchor says where in it you are standing.",
     ),
     "Conciergerie": (
         40,

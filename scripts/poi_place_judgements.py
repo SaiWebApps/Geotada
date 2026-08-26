@@ -2,7 +2,8 @@
 
 EXTENDS ``scripts/poi_visit_duration.py`` — same corpus file, same batched audited-AI
 shape, same round-trip write guard (``load_pois`` / ``dump_pois`` are IMPORTED from it,
-not copied, so the refuse-to-write-on-reformat guard stays defined once). It is a
+not copied, so the refuse-to-write-on-reformat guard stays defined once) and the same
+reader of a model reply (``records_for_batch``: fence, parse, alignment). It is a
 separate script rather than a flag on that one because it answers a DIFFERENT QUESTION:
 social and physical affordances — can a child run here, can two people sit and talk
 here, is it OK to be left standing here after dark — not time. Folding it in would fuse
@@ -51,18 +52,26 @@ from typing import Any
 
 # The load/serialise/dump mechanics are the sibling pass's, imported so the
 # refuse-to-write-on-reformat guard (dump_pois proves serialise() round-trips the
-# original bytes before writing) lives in exactly one place. DEFAULT_MODEL and
-# DEFAULT_BATCH_SIZE ride along deliberately: both passes are corpus-judgement
-# work on the same file, and retuning the model or batch shape should move them
-# together, once.
+# original bytes before writing) lives in exactly one place, and records_for_batch
+# with them so the fence strip, the parse and the alignment check are also stated
+# once. DEFAULT_MODEL and DEFAULT_BATCH_SIZE ride along deliberately: both passes
+# are corpus-judgement work on the same file, and retuning the model or batch
+# shape should move them together, once.
 try:  # run directly as `python scripts/poi_place_judgements.py` — scripts/ is sys.path[0]
-    from poi_visit_duration import DEFAULT_BATCH_SIZE, DEFAULT_MODEL, dump_pois, load_pois
+    from poi_visit_duration import (
+        DEFAULT_BATCH_SIZE,
+        DEFAULT_MODEL,
+        dump_pois,
+        load_pois,
+        records_for_batch,
+    )
 except ModuleNotFoundError:  # imported as `scripts.poi_place_judgements` (pytest)
     from scripts.poi_visit_duration import (
         DEFAULT_BATCH_SIZE,
         DEFAULT_MODEL,
         dump_pois,
         load_pois,
+        records_for_batch,
     )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -196,20 +205,7 @@ def judge_batch(client: Any, model: str, batch: list[dict[str, Any]]) -> list[di
         messages=[{"role": "user", "content": prompt}],
     )
     text = "".join(block.text for block in response.content if block.type == "text").strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-    try:
-        records = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise SystemExit(
-            f"✗ model returned unparseable JSON: {exc}\n--- raw ---\n{text[:2000]}"
-        ) from exc
-    if not isinstance(records, list) or len(records) != len(batch):
-        raise SystemExit(
-            f"✗ model returned {len(records) if isinstance(records, list) else '?'} records "
-            f"for a batch of {len(batch)}; refusing to guess the alignment."
-        )
-    return records
+    return records_for_batch(text, batch)
 
 
 def main(argv: list[str] | None = None) -> int:

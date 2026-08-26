@@ -117,12 +117,19 @@ never null and never below 2: a place nobody pauses at for two minutes is \
 something you walk past, not a stop. A street or a square's whole value is \
 outside, so this is its real number, not a token one.
 
-2. `visit_seconds_inside` — integer SECONDS a visitor usefully spends INSIDE, \
-INCLUDING any security or ticket queue. Use null when there is no interior to \
-enter, or when entering is not a normal part of visiting: streets, bridges, \
-squares, gardens, monuments you view from outside, statues, fountains. When it is \
-not null it must be at least `typical_duration_min * 60`, and never more than \
-5400 (90 minutes). **5400 is a hard ceiling, not a target.** A place that would \
+2. `visit_seconds_inside` — integer SECONDS a visitor usefully spends AT THE \
+PLACE IN TOTAL when they go in: the outside time PLUS the interior PLUS any \
+security or ticket queue. **It is a TOTAL, not the interior on its own**, so it \
+can never be smaller than `typical_duration_min * 60` — a visitor who goes in \
+also stood outside first. THE COMMON MISTAKE, and the one that gets a record \
+rejected: a landmark with a spectacular exterior and a small interior. The \
+Chrysler Building is fifteen minutes of looking up at the spire from the street \
+and about ten in the lobby, so it is `typical_duration_min` 15 and \
+`visit_seconds_inside` **1500** (900 + 600) — NOT 600. Add them. Use null when \
+there is no interior to enter, or when entering is not a normal part of \
+visiting: streets, bridges, squares, gardens, monuments you view from outside, \
+statues, fountains. Never more than 5400 (90 minutes). **5400 is a hard \
+ceiling, not a target.** A place that would \
 genuinely absorb longer — a major national museum — returns 5400 AND says so in \
 its basis, e.g. "would absorb three hours; capped at the 90-minute tour maximum". \
 Do not drift other places up toward the ceiling to look consistent with it.
@@ -251,6 +258,45 @@ def validate(record: dict[str, Any], *, name: str) -> str | None:
     return None
 
 
+def records_for_batch(text: str, batch: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """The model's reply as one record per place in ``batch``, in the batch's order.
+
+    ONE READER FOR EVERY PASS. Capacity, opening hours, queues and place
+    judgements all ask the model for the same thing — "an array, one object per
+    place, in the same order" — and all four used to strip the fence, parse the
+    JSON and check the count in their own copy of this block, so a fix to one
+    left three unfixed. This is that block, defined once and imported.
+
+    THE COUNT CHECK IS THE POINT, AND IT STAYS. A reply carrying a different
+    number of records than the batch has no knowable alignment, and pairing
+    them up anyway would stamp one place's answer onto another place's row.
+
+    A BARE OBJECT IS READ AS ONE RECORD WHEN — AND ONLY WHEN — THE BATCH IS ONE
+    PLACE. The retry path re-asks a SINGLE failed row, and a model answering a
+    one-item request routinely returns the object rather than an array of one.
+    With one place there is no alignment left to guess: the record can only be
+    about the place that was asked about, so reading the other shape the same
+    answer commonly arrives in is not guessing. At every other length, and for
+    anything that is neither a list nor an object, it refuses as before.
+    """
+    if text.startswith("```"):
+        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+    try:
+        records = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise SystemExit(
+            f"✗ model returned unparseable JSON: {exc}\n--- raw ---\n{text[:2000]}"
+        ) from exc
+    if isinstance(records, dict) and len(batch) == 1:
+        return [records]
+    if not isinstance(records, list) or len(records) != len(batch):
+        raise SystemExit(
+            f"✗ model returned {len(records) if isinstance(records, list) else '?'} records "
+            f"for a batch of {len(batch)}; refusing to guess the alignment."
+        )
+    return records
+
+
 def price_batch(client: Any, model: str, batch: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """One model call for one batch. Returns the parsed records, unvalidated."""
     prompt = PROMPT_HEADER + "\n".join(describe(p) for p in batch)
@@ -260,20 +306,7 @@ def price_batch(client: Any, model: str, batch: list[dict[str, Any]]) -> list[di
         messages=[{"role": "user", "content": prompt}],
     )
     text = "".join(block.text for block in response.content if block.type == "text").strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-    try:
-        records = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise SystemExit(
-            f"✗ model returned unparseable JSON: {exc}\n--- raw ---\n{text[:2000]}"
-        ) from exc
-    if not isinstance(records, list) or len(records) != len(batch):
-        raise SystemExit(
-            f"✗ model returned {len(records) if isinstance(records, list) else '?'} records "
-            f"for a batch of {len(batch)}; refusing to guess the alignment."
-        )
-    return records
+    return records_for_batch(text, batch)
 
 
 def main(argv: list[str] | None = None) -> int:

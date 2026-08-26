@@ -2,7 +2,8 @@
 
 EXTENDS ``scripts/poi_visit_duration.py`` — same corpus file, same batched audited-AI
 shape, same round-trip write guard (``load_pois`` / ``dump_pois`` are IMPORTED from it,
-not copied, so the refuse-to-write-on-reformat guard stays defined once), and the same
+not copied, so the refuse-to-write-on-reformat guard stays defined once), the same
+reader of a model reply (``records_for_batch``: fence, parse, alignment), and the same
 window grammar as the opening-hours pass (``_TIME_RE`` is imported, not restated, so
 "what is a valid HH:MM" keeps exactly one definition). It is a separate script because
 it answers a DIFFERENT QUESTION (the header rule in ``scripts/poi_visit_duration.py``):
@@ -63,14 +64,21 @@ from pathlib import Path
 from typing import Any
 
 # The load/serialise/dump mechanics are the capacity pass's, imported so the
-# refuse-to-write-on-reformat guard lives in exactly one place; DEFAULT_MODEL and
-# DEFAULT_BATCH_SIZE ride along so retuning corpus-judgement work moves every pass
-# at once (the poi_place_judgements precedent). _TIME_RE is the opening-hours
-# pass's one definition of a valid HH:MM — queue peak bands reuse its grammar
-# rather than fork it.
+# refuse-to-write-on-reformat guard lives in exactly one place; records_for_batch
+# is its one reader of a model reply (fence, parse, alignment), imported for the
+# same reason; DEFAULT_MODEL and DEFAULT_BATCH_SIZE ride along so retuning
+# corpus-judgement work moves every pass at once (the poi_place_judgements
+# precedent). _TIME_RE is the opening-hours pass's one definition of a valid
+# HH:MM — queue peak bands reuse its grammar rather than fork it.
 try:  # run directly as `python scripts/poi_queues.py` — scripts/ is sys.path[0]
     from poi_opening_hours import _TIME_RE
-    from poi_visit_duration import DEFAULT_BATCH_SIZE, DEFAULT_MODEL, dump_pois, load_pois
+    from poi_visit_duration import (
+        DEFAULT_BATCH_SIZE,
+        DEFAULT_MODEL,
+        dump_pois,
+        load_pois,
+        records_for_batch,
+    )
 except ModuleNotFoundError:  # imported as `scripts.poi_queues` (pytest)
     from scripts.poi_opening_hours import _TIME_RE
     from scripts.poi_visit_duration import (
@@ -78,6 +86,7 @@ except ModuleNotFoundError:  # imported as `scripts.poi_queues` (pytest)
         DEFAULT_MODEL,
         dump_pois,
         load_pois,
+        records_for_batch,
     )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -325,20 +334,7 @@ def price_batch(client: Any, model: str, batch: list[dict[str, Any]]) -> list[di
                     f"(first POI: {batch[0].get('name', '?')}): {exc}"
                 ) from exc
     text = "".join(block.text for block in response.content if block.type == "text").strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-    try:
-        records = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise SystemExit(
-            f"✗ model returned unparseable JSON: {exc}\n--- raw ---\n{text[:2000]}"
-        ) from exc
-    if not isinstance(records, list) or len(records) != len(batch):
-        raise SystemExit(
-            f"✗ model returned {len(records) if isinstance(records, list) else '?'} records "
-            f"for a batch of {len(batch)}; refusing to guess the alignment."
-        )
-    return records
+    return records_for_batch(text, batch)
 
 
 def main(argv: list[str] | None = None) -> int:

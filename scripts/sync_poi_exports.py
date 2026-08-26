@@ -28,11 +28,14 @@ NULL IS A STATEMENT (W1.8's ledger: "nulls propagated deliberately"). A null
 gated". So a null — and an absent field, for a pass that has not run on this city
 yet — propagates as an explicit null rather than being skipped.
 
-BYTE-SAFE, two ways. A chunk whose parsed content the sync would not change is never
+BYTE-SAFE, three ways. A chunk whose parsed content the sync would not change is never
 rewritten, so a formatting-only difference can never masquerade as a data change. A
 chunk that does change is written through ``dump_pois`` — imported from
 ``scripts/poi_visit_duration.py``, never copied — whose round-trip guard refuses any
-write that would reformat the whole file and bury the real diff.
+write that would reformat the whole file and bury the real diff. And that same guard is
+asked during PLANNING, of every chunk that would be written, so an unfaithful file
+stops the run before the first write instead of after the third — the New York abort
+that left two chunks half-synced.
 
 POIs are matched canonical -> chunk by lower-cased ``name``, the same key
 ``tests/test_export_consistency.py`` has always matched on (there is no id field in
@@ -50,7 +53,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from scripts.poi_visit_duration import dump_pois, load_pois
+from scripts.poi_visit_duration import dump_pois, load_pois, serialise
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -136,13 +139,25 @@ def main(argv: list[str] | None = None) -> int:
     canonical = {p["name"].lower(): p for p in pois}
 
     # Plan every chunk before writing any, so an abort leaves nothing half-synced.
+    # That means EVERY reason to abort has to be found here, in the planning phase.
+    # ``dump_pois``'s round-trip guard is one of them, and it used to be discovered
+    # mid-write instead: a New York run wrote chunks 01 and 02, then SystemExited on
+    # chunk 03 — the first one committed at a different indent — and left two
+    # half-synced files behind. So faithfulness is proven here, for every chunk that
+    # would be written, using the same ``serialise`` ``dump_pois`` writes through.
     pending: list[tuple[Path, list[dict[str, Any]], str, int]] = []
     unknown: list[str] = []
+    unfaithful: list[str] = []
     for chunk_path in chunk_paths:
         chunk, original = load_pois(chunk_path)
+        # Before sync_chunk mutates it, `chunk` IS the file's own parse — so this is
+        # exactly dump_pois's guard, asked early enough to stop the whole run.
+        round_trips = serialise(chunk) == original
         changes = sync_chunk(chunk, canonical, chunk_path.name, unknown)
         if changes:
             pending.append((chunk_path, chunk, original, changes))
+            if not round_trips:
+                unfaithful.append(chunk_path.name)
 
     if unknown:
         print(
@@ -153,6 +168,19 @@ def main(argv: list[str] | None = None) -> int:
         )
         for line in unknown:
             print(f"    {line}", file=sys.stderr)
+        return 1
+
+    if unfaithful:
+        print(
+            f"✗ {len(unfaithful)} of the {len(pending)} chunk(s) that need syncing are not "
+            "byte-faithful to the serialiser, so writing them would reformat the whole file "
+            "and bury the real change; syncing nothing — normalise those files first by "
+            "re-serialising each through scripts/poi_visit_duration.serialise, which changes "
+            "formatting only (tests/test_export_consistency.py fails on exactly this):",
+            file=sys.stderr,
+        )
+        for name in unfaithful:
+            print(f"    {name}", file=sys.stderr)
         return 1
 
     total = sum(changes for _, _, _, changes in pending)

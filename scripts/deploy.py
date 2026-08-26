@@ -43,9 +43,16 @@ def _run(cmd: list[str]) -> None:
     subprocess.run(cmd, check=True, cwd=str(ROOT))
 
 
-def _deploy_api_port() -> int:
+def deploy_api_port() -> int:
     """Port for the transient areas-upload API. ``$ONBOARD_DEPLOY_API_PORT`` when
-    set (non-empty), else 8000 — so a hermetic deploy can dodge a busy :8000."""
+    set (non-empty), else 8000 — so a hermetic deploy can dodge a busy :8000.
+
+    PUBLIC, and imported by ``scripts/upload_areas.py``, because this knob has to
+    move BOTH halves or it moves neither. Measured 2026-08-25: this function sent
+    the transient server to :8123 while ``upload_areas`` still called :8000 from a
+    hardcoded constant, so the areas step died on connection-refused AFTER step 1
+    had written every POI and beat — the partial deploy this file's own comment at
+    ``_port_busy`` warns about, caused by the mitigation for it."""
     raw = (os.environ.get("ONBOARD_DEPLOY_API_PORT") or "").strip()
     return int(raw) if raw else _DEFAULT_DEPLOY_API_PORT
 
@@ -122,7 +129,7 @@ def _upload_areas_step(slug: str, py: str) -> None:
         print(f"  [2/3] {slug}: no areas (areas.json empty/absent) — skipping areas upload")
         return
 
-    port = _deploy_api_port()
+    port = deploy_api_port()
     if _port_busy(port):
         sys.exit(f"ERROR: :{port} is already in use — deploy manages its own API; free it first.")
     env = _transient_api_env()

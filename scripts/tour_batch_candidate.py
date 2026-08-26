@@ -386,6 +386,27 @@ def _summary(plan: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _live_output_root(output_root: Path) -> Path:
+    """The directory a live batch may author into, or a refusal.
+
+    ``DEFAULT_OUTPUT_ROOT`` is the FROZEN control arm the release gate compares a
+    regeneration AGAINST, so authoring into it destroys the baseline the new batch is
+    measured by. The comparison is on the RESOLVED path, so every spelling of that one
+    directory is the same refusal: a trailing slash, a leading ``./``, an absolute
+    path, a ``..`` segment. Omitting ``--output-root`` lands on the default and is
+    refused for the same reason, which is why ``make tour-batch-live`` requires
+    ``OUTPUT_ROOT`` — that recipe is convenience, and this is the guard a direct
+    ``python -m scripts.tour_batch_candidate --live`` cannot walk around.
+    """
+    resolved = output_root.resolve()
+    if resolved == DEFAULT_OUTPUT_ROOT.resolve():
+        raise ValueError(
+            f"--output-root {resolved} is the frozen control arm the release gate "
+            "compares against; live authoring must write elsewhere"
+        )
+    return resolved
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--live", action="store_true")
@@ -394,6 +415,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--case")
     args = parser.parse_args(argv)
+    # Settled before the manifest, the graph or the router are touched, so a live run
+    # aimed at the control arm dies without doing anything. Dry planning never reads
+    # this value, so it keeps the default and is unaffected.
+    live_output_root = _live_output_root(args.output_root) if args.live else None
     manifest = load_frozen_tour_batch(MANIFEST_PATH)
     driver = create_driver()
     try:
@@ -432,7 +457,7 @@ def main(argv: list[str] | None = None) -> int:
     result = _execute_batch(
         plan,
         runtime,
-        output_root=args.output_root,
+        output_root=live_output_root,
         client_factory=certification_batch_compose_client,
         max_workers=args.max_workers,
     )

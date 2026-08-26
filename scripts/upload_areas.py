@@ -24,10 +24,15 @@ from shapely.geometry import Polygon
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from scripts.deploy import deploy_api_port
 from src.city_registry import onboard_data_root
 from src.utils.spatial import coords_to_wkt, fetch_osm_boundary, simplify_polygon
 
-API = "http://localhost:8000/api/v1"
+# The transient API the deploy starts. The PORT is not spelled here: it comes from
+# scripts/deploy.py, which is what actually starts that server, so the two cannot
+# disagree. They did — a hardcoded 8000 here against a moved server there produced a
+# partial deploy on 2026-08-25.
+API = f"http://localhost:{deploy_api_port()}/api/v1"
 
 
 def _city_data_dir(slug: str) -> Path:

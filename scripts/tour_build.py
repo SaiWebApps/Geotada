@@ -526,10 +526,21 @@ def _print_breakdown(
                 side = "in" if promise.shape.goes_inside else "out"
                 shape = f"{round(at_place / 60)} min {side}"
             else:
-                # Pre-promise fallback — the planner has not shaped this stop:
-                # minutes from the route's own pricing, in/out from the
-                # pricer's own interior test.
-                side = "in" if poi_has_interior(poi) else "out"
+                # Pre-promise fallback — the planner named no promise for this
+                # stop (the list caps at MAX_PROMISES). The minutes come from the
+                # route's own pricing, and so does the SIDE OF THE DOOR whenever
+                # the route carries one: `visit_goes_inside` is what the planner
+                # DECIDED at this stop's arrival hour, while `poi_has_interior`
+                # only says the building HAS an interior. They disagree exactly
+                # when the planner collapsed a stop to its exterior — a party
+                # ceiling, a `wall` end, or the timebox repair's step outside —
+                # and the raw test then prints "in" over a visit that never goes
+                # in. The unpriced legacy harnesses carry no such map and keep
+                # the raw test, which is all they ever had.
+                inside = route.visit_goes_inside.get(poi.id)
+                if inside is None:
+                    inside = poi_has_interior(poi)
+                side = "in" if inside else "out"
                 shape = f"{round(visit_s / 60)} min {side}" if visit_s is not None else f"— {side}"
             queue_s = promise.shape.queue_seconds if promise is not None else 0
             queue = f"{round(queue_s / 60)}m" if queue_s else "—"
