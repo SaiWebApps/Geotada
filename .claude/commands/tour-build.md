@@ -73,7 +73,7 @@ Exit codes: 0 = pass, 1 = validation fail, 2 = input/resolution error, 3 = densi
 
 - TTS generation (downstream).
 - Real-time GPS triggering (downstream runtime).
-- Beat re-extraction or POI cleanup (separate `/beat-from-book` / `/poi-generate` pipelines).
+- Beat re-extraction or POI cleanup (separate `/unified-beat-extract` / `/poi-generate` pipelines).
 - Claim-level dedup across tours (B8, deferred).
 - Stop_orientation gap-fill via re-extraction (post-launch backlog item 4).
 

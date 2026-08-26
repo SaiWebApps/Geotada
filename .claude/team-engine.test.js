@@ -12,7 +12,7 @@
 // The /team engine replaced a prose orchestrator whose "loop until the team agrees" had
 // no terminator — that unbounded loop is the exact defect the rewrite was for. Its hard
 // caps are the whole point, and an innocuous edit could silently reintroduce an infinite
-// loop or let the paid bar (`make audit`, real money) run inside it. Nothing else guards
+// loop or let the definitive bar (`make audit`) run inside the loop. Nothing else guards
 // them: no hook fires inside the Workflow runtime, and the engine is never exercised by
 // the product suite.
 //
@@ -28,7 +28,7 @@
 // adding a cap means adding its row.
 //
 //   maxAttempts                 `cap = Math.min(...)` -> `cap = 99999`        => terminates:*
-//   paidGateRun one-shot        drop `anyCompleted &&` at the close gate      => paid-only-on-shipped-work:*
+//   closeBarRun one-shot        drop `anyCompleted &&` at the close gate      => paid-only-on-shipped-work:*
 //   PARALLEL_SAFE_REPRO         widen it to include `test-workbench`          => shared-repro-runs-serially
 //   FAKE-mutation-is-terminal   accept a FAKE mutation verdict                => ships-nothing:fake-test
 //   empty-diff short circuit    remove the zero-file-diff branch              => ships-nothing:empty-diff
@@ -70,7 +70,7 @@ const STEPS = (n, chained) => Array.from({ length: n }, (_, i) => ({
   id: String(i + 1), name: `step ${i + 1}`, status: 'pending',
   test_command: `make test-file FILE="tests/test_fx${i + 1}.py::T::t"`,
   criterion_ids: [`AC-${i + 1}`], files: [`src/fx${i + 1}.py`],
-  cost_class: '$0', maxAttempts: 2, attempts: 0, command_valid: true,
+  maxAttempts: 2, attempts: 0, command_valid: true,
   gate_commands: ['make lint'],
   ...(chained && i > 0 ? { depends_on: [String(i)] } : {}),
 }))
@@ -214,7 +214,7 @@ function makeAgent(mode, tally) {
     }
 
     if (label === 'close-gate') {
-      tally.paidRuns += 1 // `make audit` — the only real-money command in a run
+      tally.paidRuns += 1 // `make audit` — the definitive bar; belongs at close, once
       return { passed: true, checks: [{ command: 'make audit', exit_code: 0, summary: 'all green' }], mutation: { verdict: 'NOT_RUN' }, unverified: [] }
     }
     if (label === 'acceptance') return { verdict: 'SHIP', artifact_produced: true, evidence: ['read it'], top_improvement: 'none' }
@@ -227,7 +227,7 @@ const parallel = async (thunks) => Promise.all(thunks.map((t) => t().catch(() =>
 async function runMode(mode) {
   const tally = {
     calls: [], paidRuns: 0, serialVerifies: 0, phaseRepairs: 0,
-    steps: MODE_STEPS[mode] || 3, tier: 2, approved: !MODE_UNAPPROVED.has(mode),
+    steps: MODE_STEPS[mode] || 3, tier: 3, approved: !MODE_UNAPPROVED.has(mode),
     chained: MODE_CHAINED.has(mode), guard: !MODE_GUARD_RED.has(mode),
   }
   const args = { spec: 'specs/9999-01-01-harness', now: '2026-01-01T00:00:00Z', ...(MODE_ARGS[mode] || {}) }

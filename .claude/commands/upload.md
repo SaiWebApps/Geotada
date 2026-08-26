@@ -44,6 +44,10 @@ When building POI payloads to send to the API, ALWAYS read these fields from
 - `trigger_radius`
 - `name_variations`
 - `short_description`
+- `typical_duration_min`, `visit_seconds_inside`, `visit_basis` — the visit
+  capacities written by `/poi-visit-duration`. Same reason as `importance_tier`:
+  the capacity pass writes `poi-raw.json` and syncs the exports afterwards, so an
+  export chunk written before that pass carries stale or absent capacities.
 
 The export file is the source of truth ONLY for `beats[]`. Defense in depth:
 even if a sync step is skipped upstream, this rule prevents stale tier data
@@ -129,6 +133,12 @@ For each POI in the export file:
 - `importance_tier` — required, no default
 - `short_description`
 - `trigger_radius`, `typical_duration_min`
+- `visit_seconds_inside` — seconds spent INSIDE; `null` where there is no
+  interior (street, bridge, square). Note the unit split: `typical_duration_min`
+  is MINUTES outside, this one is SECONDS inside.
+- `visit_basis` — the sentence arguing for both capacities. Unlike the POI
+  `source_passage` below, this is our own generated reasoning, not book text, so
+  it is safe to forward — and it is the only audit trail a capacity has.
 - `kid_friendly`
 - `name_variations`
 - `poi_role` — stop | setting | walk_by_only

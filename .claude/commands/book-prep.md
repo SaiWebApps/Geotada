@@ -33,7 +33,7 @@ Scan the text for logical break points, in order of preference:
 4. **Paragraph breaks** — Only as a last resort if a section is extremely long
 
 ### Step 3 — Chunk size targeting
-Chunk at the **lowest logical structural level** the book provides. The goal is chunks small enough for `beat-from-book` to process thoroughly without context pressure or quality degradation.
+Chunk at the **lowest logical structural level** the book provides. The goal is chunks small enough for `unified-beat-extract` to process thoroughly without context pressure or quality degradation.
 
 **Priority order:**
 1. If the book has sub-sections within chapters (e.g., walking tour sections, neighbourhood sections), chunk at that level
@@ -42,7 +42,7 @@ Chunk at the **lowest logical structural level** the book provides. The goal is 
 
 - If a section is very short (under ~100 lines), combine it with an adjacent section
 - Never split to hit an exact line count — always defer to the nearest logical break point
-- When in doubt, make chunks smaller rather than larger — `beat-from-book` can always process multiple small chunks, but it cannot reliably process one huge chunk
+- When in doubt, make chunks smaller rather than larger — `unified-beat-extract` can always process multiple small chunks, but it cannot reliably process one huge chunk
 
 ### Step 4 — Create output structure
 

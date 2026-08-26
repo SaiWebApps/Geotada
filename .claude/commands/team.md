@@ -1,5 +1,5 @@
 ---
-description: Run a task through the Ondoway agentic team. Plans it into atomic steps with testable acceptance criteria, shows you the plan and its cost estimate, and waits — then, once you say go, executes it with hard caps (per-step gates, an adversarial panel, a judge, and the paid bar exactly once). This is the ONLY command you type; say "go" in chat to approve. Invoke as `/team <task>`.
+description: Run a task through the Ondoway agentic team. Plans it into atomic steps with testable acceptance criteria, shows you the plan and how many agents it will spawn, and waits — then, once you say go, executes it with hard caps (per-step gates, an adversarial panel, a judge, and the definitive bar exactly once). This is the ONLY command you type; say "go" in chat to approve. Invoke as `/team <task>`.
 argument-hint: "<the task, in plain English>"
 ---
 
@@ -46,25 +46,38 @@ work will actually touch. Highest matching row wins.
 |---|---|---|
 | **0** | `Docs/`, `*.md`, comments only | Developer → Gate |
 | **1** | `src/`, `tests/`, `scripts/` | Planner(light) → Developer → QA(undo-test) → Judge |
-| **2** | `src/tour/`, `mobile/`, `src/api/routes/`, `frontend/` | + Product Owner → Skeptic panel (2) → Acceptance |
+| **2** | `src/tour/`, `mobile/`, `src/api/routes/`, `frontend/` | + Requirements → Acceptance |
 | **3** | `Makefile`, `.claude/`, deploy/infra, DB/data, `.github/` | + real-device/browser proof + human sign-off |
 
-Tier controls skeptic panel size `P = {0:0, 1:0, 2:2, 3:3}` and whether
-acceptance runs. **Tier 1 gets no skeptic** — a one-member panel is vacuous,
-since "kill a finding if a majority refute" needs N≥2. If a T1 change worries
-you, raise judge effort, don't fake a panel.
+Tier controls skeptic panel size `P = {0:0, 1:0, 2:0, 3:3}` and whether
+acceptance runs. **Only Tier 3 gets a panel.** Below it the undo test, the judge
+and (at Tier 2) acceptance already cover what a panel is aimed at, and the panel
+is the longest serial wait in a run. If a specific Tier 2 change worries you, say
+so and plan it as Tier 3 — never fake a one-member panel, since "kill a finding
+if a majority refute" needs N≥2.
 
-## Step 2 — Product Owner (Tier 2+; skip for T0/T1 when "done" is already obvious)
+## Step 2 — Requirements (Tier 2+; skip for T0/T1 when "done" is already obvious)
 
-`Agent(subagent_type:'product-owner')`. Returns the real need, the smallest
-valuable slice, what is explicitly OUT of scope, and numbered acceptance
-criteria — each objectively checkable by a command, including the negative and
+**Invoke `Skill(superpowers:brainstorming)`.** It is the maintained process for
+turning a request into intent, requirements and design before any code. Do not
+fork a second version of it into this file, and do not delegate it to an agent —
+the value is in the conversation you have while doing it.
+
+From what it produces, write down: the real need, the smallest valuable slice,
+what is explicitly OUT of scope, and numbered acceptance criteria — each
+objectively checkable by a command, including the negative and
 thin/degraded-input cases. These become `acceptance_criteria[]` in the ledger.
 
 ## Step 3 — Planner → the atomic step ledger
 
-`Agent(subagent_type:'Plan')`, or a panel of N approaches scored and synthesized
-when the solution space is genuinely wide. Its output must be a step list where
+**Invoke `Skill(superpowers:writing-plans)`.** That skill owns how a plan is
+shaped, sequenced and written down; this file owns only the extra constraint the
+back half mechanically requires — that every step be atomic in the sense below,
+and that the result be serialized as the ledger. Where the two disagree about
+plan *structure*, the skill wins.
+
+Then `Agent(subagent_type:'Plan')`, or a panel of N approaches scored and
+synthesized when the solution space is genuinely wide. Its output must be a step list where
 every step is **atomic**:
 
 > **Atomic** = one file-scoped change whose success is proven by exactly ONE
@@ -72,7 +85,12 @@ every step is **atomic**:
 > that command, the step is not atomic — split it until you can.
 
 Each step carries: `id`, `name`, `test_command`, `criterion_ids`, `files`,
-`cost_class`, `maxAttempts` (default 2), `depends_on`, `complexity`.
+`maxAttempts` (default 2), `depends_on`, `complexity`.
+
+If the steps are independent enough to build in parallel, follow
+`Skill(superpowers:using-git-worktrees)` and CLAUDE.md §3: one track per worktree,
+all branched from the same commit, each on its own database lane, all merged back
+into main at the end.
 
 ### The `test_command` rule — non-negotiable
 
@@ -113,17 +131,17 @@ Then present to the human, in one screen:
 
 1. The real need and the smallest slice; what is out of scope.
 2. The numbered acceptance criteria.
-3. The step table: id, name, `test_command`, criteria covered, cost class.
+3. The step table: id, name, `test_command`, criteria covered.
 4. The tier, with the path-glob row that set it.
-5. The **cost estimate** — call the engine (see Step 5) with
-   `estimateOnly: true`, which prints the agent/unit table and fans out **zero**
-   agents. Never start execution without showing this first. It answers on the
-   still-unapproved ledger by design (the estimate block sits above every gate),
-   and it reports what a real run *would* refuse — `invalid_commands`,
+5. The **size of the fan-out** — call the engine (see Step 5) with
+   `estimateOnly: true`, which prints how many agents the run will spawn and fans
+   out **zero**. Never start execution without showing this first. It answers on
+   the still-unapproved ledger by design (that block sits above every gate), and
+   it reports what a real run *would* refuse — `invalid_commands`,
    `criteria_uncovered`, `runnable_steps`, `infra` — as diagnostics rather than
-   aborting, so one call gives you both the price and the fix list.
-   State the **blast radius** alongside it: the per-step gate is $0 in
-   provider spend but is NOT read-only — `make test-file` pulls in
+   aborting, so one call gives you both the shape and the fix list.
+   State the **blast radius** alongside it: the per-step gate takes seconds but
+   is NOT read-only — `make test-file` pulls in
    `_ensure-test-db`, `_ensure-dev-data` and `valhalla-up` (`Makefile:144-146`),
    so it starts the shared 7688/7687 Neo4j containers, **writes to the shared
    7687 dev graph** via `scripts/ensure_dev_data.py`, and brings up Valhalla via
@@ -133,7 +151,7 @@ Then present to the human, in one screen:
 6. One plain-English line asking whether to go, e.g.:
 
 > Say **go** to execute this, or tell me what to change. Nothing has been built
-> yet and no money has been spent.
+> yet.
 
 **End your turn here and wait.** Do not execute. Do not set
 `approved_by_human`. The human has not approved anything until they say so in
@@ -161,7 +179,7 @@ Only after the human says go, in this order:
    Add `retryBlocked: true` when re-running after fixing a blocked step.
 
 4. Report what it returns: steps completed/blocked with reasons, the close-gate
-   result, `paid_gate_runs` (must be 0 or 1), and `panel_findings_unverified_infra`
+   result, `close_bar_runs` (must be 0 or 1), and `panel_findings_unverified_infra`
    (non-zero means the skeptic panel judged NOTHING — never report that as an
    adversarial all-clear). The engine does not commit; the human does.
 

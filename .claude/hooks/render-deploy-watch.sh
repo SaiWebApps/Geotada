@@ -13,12 +13,30 @@ MAX_POLLS="${RENDER_WATCH_MAX_POLLS:-45}"  # 15 min
 MAX_NO_MATCH_POLLS="${RENDER_WATCH_MAX_NO_MATCH_POLLS:-10}"
 
 # Gate: only act on git push (hook fires for every Bash call in this project).
+# Two stages, so the common case costs no interpreter at all: a pure-shell scan of the
+# raw payload rules out every call that never mentions a push, and only a possible
+# match pays for python3 to confirm it was the COMMAND and not echoed output.
 if [ "${RENDER_WATCH_FORCE:-0}" != "1" ]; then
-  cmd=$(python3 -c "import json,sys; print(json.load(sys.stdin).get('tool_input',{}).get('command',''))" 2>/dev/null)
-  case "$cmd" in
+  payload=$(cat 2>/dev/null)
+  case "$payload" in
     *"git push"*) ;;
     *) exit 0 ;;
   esac
+  # Stage 2 must decide whether the command PERFORMS a push, not whether it mentions
+  # one. MEASURED 2026-08-24: a substring test fired on `git diff` of this very file,
+  # because the diff text contains "git push" — and on any script, test or doc that
+  # quotes the phrase. So: drop quoted spans, then require `git push` to open a segment.
+  if ! printf '%s' "$payload" | python3 -c "
+import json, re, sys
+try:
+    cmd = (json.load(sys.stdin).get('tool_input') or {}).get('command') or ''
+except Exception:
+    sys.exit(1)
+bare = re.sub(r\"'[^']*'|\\\"[^\\\"]*\\\"\", ' ', cmd)
+sys.exit(0 if re.search(r'(?:^|[;&|)]|\n)\s*(?:sudo\s+)?git\s+push\b', bare) else 1)
+" 2>/dev/null; then
+    exit 0
+  fi
 fi
 
 if ! command -v render >/dev/null 2>&1; then
@@ -44,6 +62,18 @@ try:
 except Exception:
     pass"
 }
+
+# Can the CLI read this service AT ALL? One real read before committing to a
+# 15-minute watch, using the SAME call the loop makes so the two can never disagree.
+# It separates "the CLI cannot talk to Render" — fail now, in a second, with the
+# remedy — from "the deploy is not registered yet", which is what the loop is for.
+# MEASURED 2026-08-24: `render workspace current` is the WRONG probe. It fails with
+# "no workspace set" on a CLI that lists this service's deploys perfectly well, and
+# an unauthenticated CLI otherwise burns all 45 polls before saying anything.
+if [ -z "$(latest_deploy)" ]; then
+  echo "render CLI cannot read deploys for $SERVICE_ID — Render deploy NOT monitored. Fix: run 'render login', then 'make render-watch' to check this deploy." >&2
+  exit 2
+fi
 
 for i in $(seq 1 "$MAX_POLLS"); do
   read -r dep_id status commit <<<"$(latest_deploy)"

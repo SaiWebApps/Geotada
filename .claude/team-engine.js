@@ -1,15 +1,15 @@
 export const meta = {
   name: 'team-engine',
-  description: 'INTERNAL execution engine for /team — not a command you type. /team invokes it after you approve its plan in chat. Executes an approved specs/{date}-{slug}/state.json step ledger: per step Build -> $0 Gate -> tier-sized skeptic panel -> Judge -> persist. Cost-laddered and hard-capped, so it always terminates and reports. Does NOT commit.',
-  whenToUse: 'Do NOT invoke this directly — use `/team <task>` and say "go"; it calls this for you. Direct invocation is for resuming a partially-run ledger only. Requires a state.json with approved_by_human:true (it refuses to fan out otherwise). args: {spec: "specs/2026-07-25-slug" (required), now: ISO-8601 (required — Date.now() is forbidden in workflow scripts), estimateOnly?: bool, maxSteps?: int, maxAttempts?: int (default 2), stepsPerPhase?: int (default 3), budgetUnits?: int, retryBlocked?: bool}.',
+  description: 'INTERNAL execution engine for /team — not a command you type. /team invokes it after you approve its plan in chat. Executes an approved specs/{date}-{slug}/state.json step ledger: per step Build -> Gate -> tier-sized skeptic panel -> Judge -> persist. Hard-capped, so it always terminates and reports. Does NOT commit.',
+  whenToUse: 'Do NOT invoke this directly — use `/team <task>` and say "go"; it calls this for you. Direct invocation is for resuming a partially-run ledger only. Requires a state.json with approved_by_human:true (it refuses to fan out otherwise). args: {spec: "specs/2026-07-25-slug" (required), now: ISO-8601 (required — Date.now() is forbidden in workflow scripts), estimateOnly?: bool, maxSteps?: int, maxAttempts?: int (default 2), stepsPerPhase?: int (default 3), retryBlocked?: bool}.',
   phases: [
-    { title: 'Preflight', detail: 'load ledger, check approval, validate every command against the LIVE Makefile, probe infra, self-test the engine, print the cost estimate' },
+    { title: 'Preflight', detail: 'load ledger, check approval, validate every command against the LIVE Makefile, probe infra, self-test the engine, print the size of the fan-out' },
     { title: 'Build', detail: 'one developer per step, red-first, minimal diff' },
-    { title: 'Gate', detail: 'no provider spend: derived lint + the step node-id test + the undo/mutation test (NOTE: starts/uses the SHARED local containers)' },
+    { title: 'Gate', detail: 'seconds, not minutes: derived lint + the step node-id test + the undo/mutation test (NOTE: starts/uses the SHARED local containers)' },
     { title: 'Challenge', detail: 'tier-sized hostile panel on different models; only a VERIFIED repro can block' },
     { title: 'Rule', detail: 'judge PROCEED / PROVE-FIRST / STOP, then the scribe rewrites state.json' },
-    { title: 'PhaseGate', detail: 'non-paid shards, serialized (they share the 7688 DB, dev data and Valhalla)' },
-    { title: 'Close', detail: '`make audit` exactly ONCE (paid), acceptance for tier >= 2, final report' },
+    { title: 'PhaseGate', detail: 'the fast shards, serialized (they share the 7688 DB, dev data and Valhalla)' },
+    { title: 'Close', detail: '`make audit` exactly ONCE, acceptance for tier >= 2, final report' },
   ],
 }
 
@@ -29,8 +29,8 @@ const REPO_FROM_NODE =
     ? (process.env.CLAUDE_PROJECT_DIR ?? process.cwd())
     : null
 
-// ── BLAST RADIUS — read before changing the cost ladder ──────────────────────
-// "$0" in this file means ZERO PROVIDER SPEND. It does NOT mean read-only.
+// ── BLAST RADIUS — read before changing the gate ladder ──────────────────────
+// A cheap rung here is cheap in TIME. It is never read-only.
 // `make test-file` depends on _ensure-test-db + _ensure-dev-data + valhalla-up
 // (Makefile:144-146), so a per-step gate will START the shared 7688/7687 Neo4j
 // containers, RUN scripts/ensure_dev_data.py which WRITES to the shared 7687 dev
@@ -40,21 +40,28 @@ const REPO_FROM_NODE =
 // containers. Never run it concurrently with `make test`, `make test-workbench`,
 // or a sibling session's suite.
 
-// ── Cost model ───────────────────────────────────────────────────────────────
-// Model-weighted AGENT INVOCATIONS, not dollars and not tokens: the script
-// cannot observe real spend. The ONE genuinely structural dollar guard is the
-// `paidGateRun` one-shot around `make audit`. ALLOWED_REPRO below is NOT a
-// second one — see the note on it.
-const WEIGHT = { opus: 5, sonnet: 2, haiku: 1 }
-const PANEL_MODELS = { 0: [], 1: [], 2: ['opus', 'sonnet'], 3: ['opus', 'sonnet', 'haiku'] }
+// ── Fan-out model ────────────────────────────────────────────────────────────
+// The engine reports how many agents a run will spawn, so the SHAPE of the plan
+// is visible before it starts. There is deliberately NO spend throttle: a run
+// ends on the termination caps below (attempts, ping-pong, circuit breaker), and
+// never on a quota, because a run that halts mid-ledger leaves the tree
+// half-changed and the human holding the pieces. `closeBarRun` stays a
+// structural one-shot for a different reason: the definitive bar returns the
+// same answer twice, so a second run buys nothing and costs everyone the wait.
+// Only Tier 3 gets a panel. Below it the undo test, the judge and (at Tier 2)
+// acceptance already cover what a panel is aimed at, and the panel is the longest
+// serial wait in a run. A one-member panel is never an option: "kill a finding if
+// a majority refute" needs N>=2, so a worrying Tier 2 change is planned as Tier 3.
+const PANEL_MODELS = { 0: [], 1: [], 2: [], 3: ['opus', 'sonnet', 'haiku'] }
 
-// MONEY FILTER — NOT an execution guard. Be precise about this; overstating it is
+// SCOPE FILTER — NOT an execution guard. Be precise about this; overstating it is
 // the same sin as the phantom "lint-enforcer hook" that sat in CLAUDE.md for months.
 // ALLOWED_REPRO is consulted only when deciding whether a RETURNED finding counts
 // (wellFormed / verifyRepros). It cannot stop a command from running: skeptic agents
-// have Bash, so one that runs `make test` really does spend the money
-// (Makefile sets ONDOWAY_LIVE_TESTS=1) and this regex merely declines to
-// reward the finding afterward. The prompt is the only thing ASKING an agent not to,
+// have Bash, so one that runs `make test` really does run the whole suite
+// (Makefile sets ONDOWAY_LIVE_TESTS=1), holding the shared containers against every
+// sibling track, and this regex merely declines to reward the finding afterward.
+// The prompt is the only thing ASKING an agent not to,
 // and no hook can back it up — PreToolUse was measured NOT to fire inside the
 // Workflow runtime. Treat this as "refuses to pay attention", never "refuses to run".
 const ALLOWED_REPRO = /^make (lint|flutter-analyze|golden-probe|test-workbench|_test-python|_test-golden|_test-grade|_test-invariants|test-file FILE="[^"]+")\s*$/
@@ -84,7 +91,6 @@ const STEP_FIELDS = {
   criterion_ids: { type: 'array', items: { type: 'string' } },
   files: { type: 'array', items: { type: 'string' } },
   depends_on: { type: 'array', items: { type: 'string' } },
-  cost_class: { type: 'string', enum: ['$0', 'paid'] },
   complexity: { type: 'string', enum: ['low', 'normal', 'high'] },
   maxAttempts: { type: 'integer' }, attempts: { type: 'integer' },
   command_valid: { type: 'boolean' }, command_problem: { type: 'string' },
@@ -108,7 +114,7 @@ const LEDGER = {
         engine_guard: { type: 'boolean', description: 'Did `node .claude/team-engine.test.js` exit 0? Required, so it cannot be silently skipped.' },
       },
     },
-    steps: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['id', 'name', 'status', 'test_command', 'criterion_ids', 'files', 'cost_class', 'maxAttempts', 'attempts', 'command_valid'], properties: STEP_FIELDS } },
+    steps: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['id', 'name', 'status', 'test_command', 'criterion_ids', 'files', 'maxAttempts', 'attempts', 'command_valid'], properties: STEP_FIELDS } },
   },
 }
 
@@ -203,15 +209,10 @@ const LEDGER_WRITE = {
   properties: { ok: { type: 'boolean' }, step_id: { type: 'string' }, status: { type: 'string' }, path: { type: 'string' }, error: { type: 'string' } },
 }
 
-// ── Budget: every agent() in this file goes through call(), nothing escapes ───
-let spent = 0
+// ── Every agent() goes through call(), so the count is complete by construction ─
 let agentCount = 0
-const bank = { total: 0, remaining: () => bank.total - spent, ok: (w) => spent + w <= bank.total }
 
 const call = async (model, opts, prompt) => {
-  const w = WEIGHT[model] ?? 2
-  if (bank.total > 0 && !bank.ok(w)) throw new Error(`BUDGET_EXHAUSTED before ${opts.label}`)
-  spent += w
   agentCount += 1
   // judge.md pins `model: opus` in its own frontmatter; never override it here.
   const o = model === null ? opts : { ...opts, model }
@@ -248,7 +249,7 @@ const L = await call('sonnet', { label: 'preflight', phase: 'Preflight', schema:
 2. For EACH step, validate test_command and set command_valid:
    - It MUST be exactly \`make test-file FILE="<path>::<pytest node id>"\`.
    - REJECT any command containing a bare \`-k\`: Makefile:139-149 is \`$(TEST_EXEC) uv run pytest "$(FILE)" -o addopts= -v\` with NO $(PYTEST_ARGS) passthrough, so make consumes -k as --keep-going and the selector becomes a make goal ("No rule to make target"). Verified behaviour, not theory.
-   - REJECT LIVE=1 (routes to test-live -> ONDOWAY_LIVE_TESTS=1, real money).
+   - REJECT LIVE=1 (routes to test-live -> ONDOWAY_LIVE_TESTS=1, and serializes the run behind the live shard).
    - REJECT any Make target absent from the LIVE ${REPO}/Makefile. \`make test-local\` and \`make test-collect\` are cited in older ledgers and NO LONGER EXIST.
    Put the reason in command_problem.
 3. Derive gate_commands from each step's files[]: \`make lint\` for src/|tests/|scripts/ (it covers ONLY those — Makefile:103-106); \`make flutter-analyze\` for mobile/ (it is in NEITHER make lint NOR make test, so without this a Dart error survives the whole ladder); a targeted \`make test-file FILE="tests/test_workbench_ui.py::..."\` for frontend/. Never put \`make test\`, \`make audit\`, \`make test-live\` or \`make test-workbench\` (minutes-long) in a per-step gate.
@@ -270,44 +271,36 @@ const P = PANEL_MODELS[L.tier] ?? []
 const todo = L.steps.filter((s) => s.status === 'pending' || s.status === 'in_progress' || ((s.status === 'blocked' || s.status === 'skipped') && A.retryBlocked))
 const badCmd = L.steps.filter((s) => !s.command_valid)
 
-// ── Cost estimate BEFORE any fan-out (the PRE-FLIGHT GATE) ───────────────────
+// ── Fan-out size BEFORE any fan-out (the PRE-FLIGHT GATE) ────────────────────
 // This block sits ABOVE every gate below — the approval gate included — on
-// purpose. /team shows the human the plan AND its price and only THEN asks for a
+// purpose. /team shows the human the plan AND its size and only THEN asks for a
 // go-ahead, so the ledger is necessarily `approved_by_human: false` at the moment
-// the estimate is requested (`.claude/commands/team.md` Step 4.5). Pricing a run
+// the estimate is requested (`.claude/commands/team.md` Step 4.5). Sizing a run
 // must therefore never require prior approval — nor a booted Docker/Neo4j/Valhalla.
 // It is pure arithmetic over the ledger and spawns nothing, so answering early is
 // free, while refusing early made the documented /team flow impossible (until
 // 2026-07-25 the gate below returned first and estimateOnly was dead code).
 // Per step: 2 scribes (in_progress + final). Per attempt: dev + QA + panel + judge.
-const panelUnits = P.reduce((n, m) => n + WEIGHT[m], 0)
 const perAttemptAgents = 3 + P.length
-const perAttemptUnits = WEIGHT.sonnet /* dev */ + WEIGHT.sonnet /* qa */ + panelUnits + WEIGHT.opus /* judge */
-const perAttemptUnitsRetry = perAttemptUnits + (WEIGHT.opus - WEIGHT.sonnet) // dev escalates to opus
 const S = todo.length
 const phaseGates = Math.ceil(S / STEPS_PER_PHASE)
 const fixed = 1 /* preflight */ + phaseGates + 1 /* close */ + (L.tier >= 2 ? 1 : 0) + 1 /* run scribe */
-const fixedUnits = WEIGHT.sonnet + phaseGates * WEIGHT.haiku + WEIGHT.haiku + (L.tier >= 2 ? WEIGHT.opus : 0) + WEIGHT.haiku
 
 const est = {
   steps: S, tier: L.tier, panel: P.length,
   minAgents: fixed + S * (2 + perAttemptAgents),
   maxAgents: fixed + S * (2 + 2 * perAttemptAgents) + 2 /* phase repair */,
-  minUnits: fixedUnits + S * (2 * WEIGHT.haiku + perAttemptUnits),
-  maxUnits: fixedUnits + S * (2 * WEIGHT.haiku + perAttemptUnits + perAttemptUnitsRetry) + (WEIGHT.haiku + WEIGHT.opus),
-  paid_commands: 'exactly one `make audit` at close',
 }
-bank.total = A.budgetUnits ?? Math.ceil(est.maxUnits * 1.05)
-log(`ESTIMATE: ${est.minAgents}-${est.maxAgents} agents, ${est.minUnits}-${est.maxUnits} weighted units (opus 5 / sonnet 2 / haiku 1). Budget ${bank.total}. Paid commands: ${est.paid_commands}.`)
+log(`PLAN: ${S} step(s), tier ${L.tier}, panel of ${P.length} — ${est.minAgents}-${est.maxAgents} agents.`)
 
 // estimateOnly is a pure planning query, so it ANSWERS instead of aborting: every
 // condition that would refuse a real run is reported as a diagnostic field here.
-// A planner asking "what would this cost?" needs the price AND the list of things
+// A planner asking "how big is this?" needs the size AND the list of things
 // to fix before saying go — being handed one refusal at a time costs a round trip
 // each and, for approval, could never be satisfied at that point in the flow.
 if (A.estimateOnly) return {
   spec: SPEC, ran: false, stopped_because: 'estimate only — no agents were fanned out',
-  estimate: est, budget_units: bank.total,
+  estimate: est,
   approved_by_human: L.approved_by_human === true,
   invalid_commands: badCmd.map((s) => ({ id: s.id, test_command: s.test_command, problem: s.command_problem })),
   criteria_uncovered: L.criteria_uncovered ?? [],
@@ -334,7 +327,6 @@ if (L.criteria_uncovered?.length) {
 }
 if (!todo.length) return { spec: SPEC, ran: false, stopped_because: 'no runnable steps — all completed/skipped', steps: L.steps.map((s) => ({ id: s.id, status: s.status })) }
 
-if (est.maxUnits > bank.total) log(`WARNING: worst case ${est.maxUnits} exceeds budget ${bank.total} — the run will stop early if it gets there.`)
 
 // Every cap below this line rests on guards that only ONE thing verifies:
 // `node .claude/team-engine.test.js`. It is deliberately not in `make test` (it is agent
@@ -429,12 +421,11 @@ let phaseRepairs = 0
 let infraStrikes = 0
 let infraBlindTotal = 0 // panel findings left unjudged because infra was unavailable
 let stopped = null
-let paidGateRun = false
+let closeBarRun = false
 
 for (const step of todo) {
   if (stopped) break
   if (stepsRun >= (A.maxSteps ?? todo.length)) { stopped = 'maxSteps'; break }
-  if (bank.total > 0 && !bank.ok(WEIGHT.opus)) { stopped = 'budget'; break }
   if ((step.depends_on || []).some((id) => statusOf(id) !== 'completed')) {
     await scribe(step, 'skipped', { proof: 'dependency not completed' })
     report.push({ id: step.id, name: step.name, status: 'skipped', why: 'dependency not completed' })
@@ -463,7 +454,7 @@ ACCEPTANCE COMMAND — must be RED before your change and GREEN after:
     ${step.test_command}
 
 Protocol, in order: (1) write the test FIRST, run the acceptance command, PASTE the red output; (2) make the MINIMAL change; (3) run it again, PASTE the green output; (4) run ${gates}; (5) \`git diff --stat\`.
-Do NOT commit. Do NOT weaken or delete an existing test to go green. Do NOT run \`make test\`, \`make audit\` or anything with LIVE=1 — they cost real money and are reserved for the close gate.
+Do NOT commit. Do NOT weaken or delete an existing test to go green. Do NOT run \`make test\`, \`make audit\` or anything with LIVE=1 — they take minutes, they hold the shared containers against every parallel track, and they are the close gate's job.
 If the step turns out to be already satisfied or impossible, return built:false with blocked_reason rather than inventing work.${a > 1 ? `\n\nPRIOR ATTEMPT FAILED — fix exactly this:\n${feedback}` : ''}`)
 
     if (!dev) { outcome = { status: 'blocked', why: 'developer agent returned nothing' }; break }
@@ -474,11 +465,11 @@ If the step turns out to be already satisfied or impossible, return built:false 
       break
     }
 
-    // ── Gate ($0, seconds) ───────────────────────────────────────────────────
+    // ── Gate (seconds) ───────────────────────────────────────────────────────
     const qa = await call('sonnet', { label: `gate:${step.id}:a${a}`, phase: 'Gate', schema: GATE_RESULT, agentType: 'qa', effort: 'high' },
       `Repo ${REPO}. ${CTX}
 Run EXACTLY these and nothing else — ${gates}, then ${step.test_command}.
-Do NOT run \`make test\`, \`make audit\`, \`make test-live\`, or \`make tour-grade\` (that target does not exist; the real ones are \`make _test-grade\` and \`make golden-probe\`). Those are the close gate's job and two of them cost real money.
+Do NOT run \`make test\`, \`make audit\`, \`make test-live\`, or \`make tour-grade\` (that target does not exist; the real ones are \`make _test-grade\` and \`make golden-probe\`). Those are the close gate's job: they take minutes and hold the shared containers.
 
 Then the UNDO TEST on the developer's change in ${(dev.files_touched || []).join(', ')}: revert ONLY the source fix (not the test), re-run ${step.test_command} — it MUST go RED; restore, it MUST go GREEN. Paste both. A test that still passes with the fix reverted is FAKE.
 Developer's diff: ${dev.diff_stat}
@@ -521,7 +512,7 @@ CRITICAL RULE: a finding BLOCKS only on a real reproduction. Never fabricate one
 You are running CONCURRENTLY with ${P.length - 1} other skeptic(s), so what you may execute yourself is limited:
   - SAFE TO RUN NOW (no shared state): \`make lint\` only — it is pure ruff. Run it yourself; set repro_verified=true and the real exit code.
   - PROPOSE ONLY, DO NOT RUN: \`make test-file FILE="..."\`, \`make golden-probe\`, \`make test-workbench\`, \`make flutter-analyze\`, \`make _test-python\`, \`make _test-golden\`, \`make _test-grade\`, \`make _test-invariants\`. These start or use the SHARED 7688 test DB, the 7687 dev graph, the Valhalla container, :8001, or mobile/.dart_tool — running one while a sibling skeptic runs another corrupts both results. Put the exact command in repro_command, set repro_verified=false, and a single serial verifier will run it for you. It still counts if it reproduces.
-  - NEVER, under any circumstances: \`make test\`, \`make audit\`, \`make test-live\`, or anything with LIVE=1 — those cost real money.
+  - NEVER, under any circumstances: \`make test\`, \`make audit\`, \`make test-live\`, or anything with LIVE=1 — you run in parallel with the rest of the panel, and those hold the shared containers for minutes.
 If you have no reproduction at all, set repro_command to null. An honest advisory finding is worth more than a fake blocker.
 Write your full write-up to ${L.findings_dir}/step-${step.id}-skeptic-${m}.md, stamped with the commit you verified against.`)
       ))).filter(Boolean)
@@ -587,14 +578,14 @@ If PROCEED, return proof_line: ONE dense line in the house style used by existin
 
   outcome ||= { status: 'blocked', why: 'attempts exhausted' }
   await scribe(step, outcome.status, {
-    attempts: outcome.attempts ?? cap, cost: '$0', cost_class: '$0',
+    attempts: outcome.attempts ?? cap,
     proof: outcome.proof || outcome.why, commit: 'pending',
   })
   report.push({ id: step.id, name: step.name, ...outcome })
   stepsRun += 1
-  log(`Step ${step.id} "${step.name}": ${outcome.status}${outcome.why ? ` — ${outcome.why}` : ''} (${agentCount} agents, ${spent}/${bank.total} units)`)
+  log(`Step ${step.id} "${step.name}": ${outcome.status}${outcome.why ? ` — ${outcome.why}` : ''} (${agentCount} agents)`)
 
-  // ── PhaseGate: non-paid shards, SERIAL (they share 7688 / dev data / Valhalla)
+  // ── PhaseGate: the fast shards, SERIAL (they share 7688 / dev data / Valhalla)
   const last = step === todo[todo.length - 1]
   if (!stopped && (stepsRun % STEPS_PER_PHASE === 0 || last) && report.some((r) => r.status === 'completed')) {
     const g = await call('haiku', { label: `phasegate:${stepsRun}`, phase: 'PhaseGate', schema: GATE_RESULT, agentType: 'general-purpose', effort: 'low' },
@@ -603,7 +594,7 @@ If PROCEED, return proof_line: ONE dense line in the house style used by existin
   make flutter-test
   make test-workbench
   make _test-golden
-Do NOT run \`make test\`, \`make test-live\`, \`make _test-cloud\` or \`make audit\` — those cost real money and are the close gate's job.
+Do NOT run \`make test\`, \`make test-live\`, \`make _test-cloud\` or \`make audit\` — those are the close gate's job and hold the shared containers for minutes.
 Report each exit code with a verbatim excerpt. Stop at the first failure and paste the full failing test name and traceback. Fix NOTHING. Set mutation.verdict="NOT_RUN".`)
     phaseGateLog.push({ after_steps: stepsRun, passed: !!g?.passed, checks: g?.checks })
 
@@ -613,7 +604,7 @@ Report each exit code with a verbatim excerpt. Stop at the first failure and pas
       log(`Phase gate RED after ${stepsRun} steps — one targeted repair, then re-gate. This never re-enters the step loop.`)
       await call('opus', { label: `phase-repair:${stepsRun}`, phase: 'PhaseGate', schema: STEP_RESULT, agentType: 'general-purpose', effort: 'high' },
         `Repo ${REPO}. ${CTX}
-A phase gate went RED after steps that each passed their own $0 gate — so this is very likely a CROSS-STEP interaction, not a single step's bug.
+A phase gate went RED after steps that each passed their own per-step gate — so this is very likely a CROSS-STEP interaction, not a single step's bug.
 Failing checks: ${JSON.stringify(g.checks)}
 Diagnose the root cause (read the exact error and traceback first — do not guess), then apply the MINIMAL fix. Touch only what the diagnosis requires. Do NOT commit, do NOT weaken a test, do NOT run \`make test\`/\`make audit\`. Re-run only the specific failing shard to confirm.`)
       const g2 = await call('haiku', { label: `phasegate:${stepsRun}:retry`, phase: 'PhaseGate', schema: GATE_RESULT, agentType: 'general-purpose', effort: 'low' },
@@ -630,11 +621,11 @@ const anyCompleted = report.some((r) => r.status === 'completed')
 let close = null
 let accept = null
 
-if (anyCompleted && !stopped && !paidGateRun) {
-  paidGateRun = true // structural one-shot: the paid bar can never run twice
+if (anyCompleted && !stopped && !closeBarRun) {
+  closeBarRun = true // structural one-shot: the definitive bar never runs twice
   close = await call('haiku', { label: 'close-gate', phase: 'Close', schema: GATE_RESULT, agentType: 'general-purpose', effort: 'low' },
     `Repo ${REPO}. Run \`make audit\` ONCE. That is \`make lint\` then \`make test\` (Makefile:135-137) — closing on \`make test\` alone would certify green with a dirty linter, since \`test\` does not include \`lint\`.
-This is the ONLY paid command of the entire run: test-live sets ONDOWAY_LIVE_TESTS=1 and _test-cloud resumes Aura. Run it EXACTLY once. Do NOT re-run it on failure, do NOT run individual shards to "check", do NOT retry a flake — an intermittent failure is a real signal to report, not to re-roll.
+Run it EXACTLY once: it is the slowest rung and it serializes against every other track (test-live sets ONDOWAY_LIVE_TESTS=1 and _test-cloud resumes Aura). Do NOT re-run it on failure, do NOT run individual shards to "check", do NOT retry a flake — an intermittent failure is a real signal to report, not to re-roll.
 Also run \`make flutter-analyze\` (it is in neither \`lint\` nor \`test\`, so a Dart analyzer error would otherwise survive the whole ladder).
 Report every shard's result verbatim, including any skips (a skip is a failure in disguise — say which and why). Fix NOTHING. Set mutation.verdict="NOT_RUN".`)
 } else if (!anyCompleted) {
@@ -654,7 +645,7 @@ Write your write-up to ${L.findings_dir}/acceptance.md.`)
 
 await call('haiku', { label: 'scribe:run', phase: 'Close', schema: LEDGER_WRITE, agentType: 'general-purpose', effort: 'low' },
   `In ${SPEC}/state.json merge this into the top-level "run" object (create it if absent), preserving everything else byte-for-byte:
-${JSON.stringify({ last_run: A.now, agents: agentCount, budget_units: `${spent}/${bank.total}`, stopped_because: stopped ?? 'all steps processed', paid_gate_runs: paidGateRun ? 1 : 0, panel_findings_unverified_infra: infraBlindTotal, phase_gates: phaseGateLog, close_gate: close ? { passed: close.passed, checks: close.checks } : null, acceptance: accept ? accept.verdict : null })}
+${JSON.stringify({ last_run: A.now, agents: agentCount, stopped_because: stopped ?? 'all steps processed', close_bar_runs: closeBarRun ? 1 : 0, panel_findings_unverified_infra: infraBlindTotal, phase_gates: phaseGateLog, close_gate: close ? { passed: close.passed, checks: close.checks } : null, acceptance: accept ? accept.verdict : null })}
 Return {ok, step_id:"run", status:"recorded"}.`)
 
 return {
@@ -667,8 +658,7 @@ return {
   close_gate: close ? { passed: close.passed, checks: close.checks, unverified: close.unverified } : null,
   acceptance: accept,
   agents: agentCount,
-  budget_units: `${spent}/${bank.total}`,
-  paid_gate_runs: paidGateRun ? 1 : 0,
+  close_bar_runs: closeBarRun ? 1 : 0,
   // Non-zero means the skeptic panel's verdict is INCOMPLETE, not clean: that many
   // proposed reproductions could not be run because infrastructure was unavailable.
   panel_findings_unverified_infra: infraBlindTotal,

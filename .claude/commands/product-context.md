@@ -137,7 +137,7 @@ Phase 1 — Discovery (run once per city)
 
 Phase 2 — Content (run per book)
   5. /book-prep                    → chunks book into processable sections
-  6. /beat-from-book {city}        → extracts beats from each chunk (repeat per chunk)
+  6. /unified-beat-extract {city}  → extracts + classifies beats per chunk (repeat per chunk)
 
 Phase 3 — QA (run after all content is extracted)
   7. /fact-check {city}            → verifies beats + POI status

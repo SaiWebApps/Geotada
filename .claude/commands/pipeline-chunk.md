@@ -33,7 +33,7 @@ When the pipeline finishes, set stage to `"complete"`.
 
 Run these steps IN ORDER. Do not skip steps. Do not ask the user for confirmation between steps — collect all issues for one final report.
 
-### Step 1 — BEAT EXTRACTION (beat-from-book logic)
+### Step 1 — BEAT EXTRACTION (unified-beat-extract logic)
 
 Read the chunk file. Read existing data:
 - `data/{city_slug}/poi-raw.json`
@@ -41,7 +41,7 @@ Read the chunk file. Read existing data:
 - `data/{city_slug}/book-log.json`
 - `src/schema/definitions.py`
 
-Extract beats following the beat-from-book skill rules:
+Extract beats following the unified-beat-extract skill rules:
 - Zero hallucination policy — every fact traceable to source text
 - One story = one beat
 - Exhaustive lens scan per POI
