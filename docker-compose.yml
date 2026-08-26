@@ -5,89 +5,68 @@
 # ondoway_* volumes (docker volume rm -f exits 0 on a missing volume).
 name: ondoway
 
+# ── shared service templates ────────────────────────────────────────────────
+# Every graph below is the same Neo4j with a different name, port, password and
+# heap. Those four things are all a service should have to state. Anything
+# spelled out per-service instead of anchored here drifts: the fleet ends up
+# with two definitions of the same thing and a fix lands on only one of them.
+x-neo4j: &neo4j
+  image: neo4j:5
+
+x-neo4j-env: &neo4j-env
+  NEO4J_PLUGINS: '["apoc"]'
+
+x-neo4j-health: &neo4j-health
+  interval: 5s
+  timeout: 5s
+  retries: 30
+
+# A graph holding a full city corpus (the parallel-lane pytest and dev graphs).
+# Capped because these run alongside the uncapped canonical pair: an uncapped
+# third JVM is what killed dockerd on 2026-07-02, and 768m/256m still seats a
+# full pytest fixture corpus where the workbench's 512m/128m would not.
+x-neo4j-heap-corpus: &neo4j-heap-corpus
+  NEO4J_server_memory_heap_initial__size: 256m
+  NEO4J_server_memory_heap_max__size: 768m
+  NEO4J_server_memory_pagecache_size: 256m
+
+# A graph holding the workbench's ~50-node per-run corpus.
+x-neo4j-heap-small: &neo4j-heap-small
+  NEO4J_server_memory_heap_initial__size: 256m
+  NEO4J_server_memory_heap_max__size: 512m
+  NEO4J_server_memory_pagecache_size: 128m
+
 services:
+  # ── canonical lane (the main checkout) ────────────────────────────────────
   neo4j:
-    image: neo4j:5
+    <<: *neo4j
     container_name: ondoway-neo4j
     ports:
       - "7474:7474"  # HTTP browser
       - "7687:7687"  # Bolt protocol
     environment:
+      <<: *neo4j-env
       NEO4J_AUTH: neo4j/ondoway_dev_2026
-      NEO4J_PLUGINS: '["apoc"]'
     volumes:
       - neo4j_data:/data
     healthcheck:
+      <<: *neo4j-health
       test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_dev_2026", "RETURN 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
 
   neo4j-test:
-    image: neo4j:5
+    <<: *neo4j
     container_name: ondoway-neo4j-test
     ports:
       - "7475:7474"  # HTTP browser (test)
       - "7688:7687"  # Bolt protocol (test)
     environment:
+      <<: *neo4j-env
       NEO4J_AUTH: neo4j/ondoway_test_2026
-      NEO4J_PLUGINS: '["apoc"]'
     volumes:
       - neo4j_test_data:/data
     healthcheck:
+      <<: *neo4j-health
       test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test_2026", "RETURN 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
-
-  # Parallel-lane pytest graphs. Same role as neo4j-test (:7688), one per
-  # concurrent worktree, so two agents running `make test-file` at once cannot
-  # wipe each other's fixtures: the pytest suite full-wipes its graph per-module,
-  # which turns a shared graph into phantom failures rather than a slow queue.
-  # Heap is capped below the uncapped :7688 default because these run alongside
-  # it plus dev, workbench and Valhalla in one 8GiB Colima VM (a third uncapped
-  # Neo4j killed dockerd on 2026-07-02) — 768m/256m leaves headroom while still
-  # seating a full pytest fixture corpus, which the workbench's 512m/128m would
-  # not.
-  neo4j-test2:
-    image: neo4j:5
-    container_name: ondoway-neo4j-test2
-    ports:
-      - "7477:7474"  # HTTP browser (lane 2)
-      - "7690:7687"  # Bolt protocol (lane 2)
-    environment:
-      NEO4J_AUTH: neo4j/ondoway_test2_2026
-      NEO4J_PLUGINS: '["apoc"]'
-      NEO4J_server_memory_heap_initial__size: 256m
-      NEO4J_server_memory_heap_max__size: 768m
-      NEO4J_server_memory_pagecache_size: 256m
-    volumes:
-      - neo4j_test2_data:/data
-    healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test2_2026", "RETURN 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
-
-  neo4j-test3:
-    image: neo4j:5
-    container_name: ondoway-neo4j-test3
-    ports:
-      - "7478:7474"  # HTTP browser (lane 3)
-      - "7691:7687"  # Bolt protocol (lane 3)
-    environment:
-      NEO4J_AUTH: neo4j/ondoway_test3_2026
-      NEO4J_PLUGINS: '["apoc"]'
-      NEO4J_server_memory_heap_initial__size: 256m
-      NEO4J_server_memory_heap_max__size: 768m
-      NEO4J_server_memory_pagecache_size: 256m
-    volumes:
-      - neo4j_test3_data:/data
-    healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test3_2026", "RETURN 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
 
   # Dedicated instance for the Playwright workbench suite (make test-workbench)
   # and the manual workbench API (make api-test). NEVER shared with the pytest
@@ -95,33 +74,129 @@ services:
   # asserting exact DB state on 7688 is broken by a concurrent run. The
   # workbench suite pre-wipes this instance in its seed fixture instead.
   neo4j-workbench:
-    image: neo4j:5
+    <<: *neo4j
     container_name: ondoway-neo4j-workbench
     ports:
       - "7476:7474"  # HTTP browser (workbench)
       - "7689:7687"  # Bolt protocol (workbench)
     environment:
+      <<: [*neo4j-env, *neo4j-heap-small]
       NEO4J_AUTH: neo4j/ondoway_workbench_2026
-      NEO4J_PLUGINS: '["apoc"]'
-      # Tiny corpus (~50 nodes/run): cap the JVM so a third Neo4j doesn't
-      # push the Colima VM (8GiB, shared with dev+test Neo4j and Valhalla's
-      # tile load) into OOM — observed 2026-07-02: dockerd died mid-gate.
-      NEO4J_server_memory_heap_initial__size: 256m
-      NEO4J_server_memory_heap_max__size: 512m
-      NEO4J_server_memory_pagecache_size: 128m
     volumes:
       - neo4j_workbench_data:/data
     healthcheck:
+      <<: *neo4j-health
       test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_workbench_2026", "RETURN 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
 
-  # M1 routing engine. Never started by the db-* targets (they are
-  # service-scoped); use `make valhalla-up`. First start builds tiles from
-  # any .osm.pbf in ./valhalla/custom_files (`make valhalla-build-tiles`
-  # downloads the Île-de-France extract there). Tiles live in the bind
-  # mount, so `docker compose down -v` cannot destroy them.
+  # ── parallel lanes 2 and 3 (concurrent worktrees) ─────────────────────────
+  # A lane owns every graph it writes, so two agents can run at once without
+  # one wiping the other's fixtures: the pytest suite full-wipes its graph
+  # per-module and the workbench suite pre-wipes its own, which turns any
+  # sharing into phantom failures rather than a slow queue. Routing (Valhalla,
+  # below) is deliberately NOT duplicated -- it is stateless read-only lookup
+  # with no write conflict to protect against, and a copy would mean a second
+  # 1.6 GB of identical tiles.
+  neo4j-dev2:
+    <<: *neo4j
+    container_name: ondoway-neo4j-dev2
+    ports:
+      - "7479:7474"  # HTTP browser (lane 2 dev)
+      - "7692:7687"  # Bolt protocol (lane 2 dev)
+    environment:
+      <<: [*neo4j-env, *neo4j-heap-corpus]
+      NEO4J_AUTH: neo4j/ondoway_dev2_2026
+    volumes:
+      - neo4j_dev2_data:/data
+    healthcheck:
+      <<: *neo4j-health
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_dev2_2026", "RETURN 1"]
+
+  neo4j-test2:
+    <<: *neo4j
+    container_name: ondoway-neo4j-test2
+    ports:
+      - "7477:7474"  # HTTP browser (lane 2 pytest)
+      - "7690:7687"  # Bolt protocol (lane 2 pytest)
+    environment:
+      <<: [*neo4j-env, *neo4j-heap-corpus]
+      NEO4J_AUTH: neo4j/ondoway_test2_2026
+    volumes:
+      - neo4j_test2_data:/data
+    healthcheck:
+      <<: *neo4j-health
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test2_2026", "RETURN 1"]
+
+  neo4j-workbench2:
+    <<: *neo4j
+    container_name: ondoway-neo4j-workbench2
+    ports:
+      - "7481:7474"  # HTTP browser (lane 2 workbench)
+      - "7694:7687"  # Bolt protocol (lane 2 workbench)
+    environment:
+      <<: [*neo4j-env, *neo4j-heap-small]
+      NEO4J_AUTH: neo4j/ondoway_workbench2_2026
+    volumes:
+      - neo4j_workbench2_data:/data
+    healthcheck:
+      <<: *neo4j-health
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_workbench2_2026", "RETURN 1"]
+
+  neo4j-dev3:
+    <<: *neo4j
+    container_name: ondoway-neo4j-dev3
+    ports:
+      - "7480:7474"  # HTTP browser (lane 3 dev)
+      - "7693:7687"  # Bolt protocol (lane 3 dev)
+    environment:
+      <<: [*neo4j-env, *neo4j-heap-corpus]
+      NEO4J_AUTH: neo4j/ondoway_dev3_2026
+    volumes:
+      - neo4j_dev3_data:/data
+    healthcheck:
+      <<: *neo4j-health
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_dev3_2026", "RETURN 1"]
+
+  neo4j-test3:
+    <<: *neo4j
+    container_name: ondoway-neo4j-test3
+    ports:
+      - "7478:7474"  # HTTP browser (lane 3 pytest)
+      - "7691:7687"  # Bolt protocol (lane 3 pytest)
+    environment:
+      <<: [*neo4j-env, *neo4j-heap-corpus]
+      NEO4J_AUTH: neo4j/ondoway_test3_2026
+    volumes:
+      - neo4j_test3_data:/data
+    healthcheck:
+      <<: *neo4j-health
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test3_2026", "RETURN 1"]
+
+  neo4j-workbench3:
+    <<: *neo4j
+    container_name: ondoway-neo4j-workbench3
+    ports:
+      - "7482:7474"  # HTTP browser (lane 3 workbench)
+      - "7695:7687"  # Bolt protocol (lane 3 workbench)
+    environment:
+      <<: [*neo4j-env, *neo4j-heap-small]
+      NEO4J_AUTH: neo4j/ondoway_workbench3_2026
+    volumes:
+      - neo4j_workbench3_data:/data
+    healthcheck:
+      <<: *neo4j-health
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_workbench3_2026", "RETURN 1"]
+
+  # M1 routing engine, shared by every lane. Never started by the db-* targets
+  # (they are service-scoped); use `make valhalla-up`. First start builds tiles
+  # from any .osm.pbf in ./valhalla/custom_files (`make valhalla-build-tiles`
+  # downloads the Île-de-France extract there). Tiles live in the bind mount, so
+  # `docker compose down -v` cannot destroy them.
+  #
+  # One instance is correct: routing is a stateless read-only lookup, so
+  # concurrent lanes cannot corrupt each other through it. What a lane CAN do is
+  # stop or restart it, which is why that is forbidden from a lane -- and why
+  # VALHALLA_ROOT resolves to the main checkout, so a worktree cannot start a
+  # second engine against an empty tile directory.
   valhalla:
     image: ghcr.io/valhalla/valhalla-scripted:latest
     container_name: ondoway-valhalla
@@ -141,6 +216,10 @@ services:
 volumes:
   neo4j_data:
   neo4j_test_data:
-  neo4j_test2_data:
-  neo4j_test3_data:
   neo4j_workbench_data:
+  neo4j_dev2_data:
+  neo4j_test2_data:
+  neo4j_workbench2_data:
+  neo4j_dev3_data:
+  neo4j_test3_data:
+  neo4j_workbench3_data:

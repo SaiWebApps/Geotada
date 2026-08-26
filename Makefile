@@ -297,12 +297,17 @@ test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 768
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
 
+# The filter matches the marker ANYWHERE in the line, not at its start. `-q -s` makes
+# pytest write its progress dots to stdout with no newline, so the test's own print
+# lands on the same line as them (`.GOLDEN-OVERLAP Ile 6/17 …`). `lstrip()` strips
+# whitespace, never dots, so a start-anchored match found nothing and this target
+# exited 2 on every run — green goldens included. Measured 2026-08-24 at W8.6.
 golden-probe: ## Print golden overlap counts using provisioned dev data and Valhalla.
 	@$(PREFLIGHT) --label golden-probe $(PRE_PYTEST)
 	@set -o pipefail; $(TEST_EXEC) uv run pytest $(GOLDEN_TEST_FILES) \
 		-o addopts= -m golden -q -s 2>&1 | tee /dev/stderr | \
 		python3 -c 'import sys; \
-lines=[l for l in sys.stdin if l.lstrip().startswith("GOLDEN-OVERLAP")]; \
+lines=[l[l.index("GOLDEN-OVERLAP"):] for l in sys.stdin if "GOLDEN-OVERLAP" in l]; \
 sys.stdout.writelines(lines); \
 sys.exit(0 if lines else "no GOLDEN-OVERLAP lines were printed (see the run above)")'
 
@@ -357,12 +362,33 @@ tour-batch-plan: ## Build the sealed Premium plan without constructing a paid cl
 	@$(PREFLIGHT) --label tour-batch-plan $(PRE_TOUR)
 	@$(LOCAL_EXEC) uv run python -m scripts.tour_batch_candidate $(if $(CASE),--case "$(CASE)",)
 
-tour-batch-live: ## Execute an approved Premium plan with fresh Render credentials.
+# Refuses an OUTPUT_ROOT that RESOLVES to the frozen control arm, however it is spelled
+# — trailing slash, leading ./, an absolute path, a .. segment. Resolved and compared,
+# never string-matched. $(CURDIR) is the base for both sides so the answer does not
+# depend on where make was invoked from.
+CHECK_BATCH_ROOT := import os,sys; \
+given,root=sys.argv[1],sys.argv[2]; \
+frozen=os.path.realpath(os.path.join(root,"data/certification/tour-batch-v1")); \
+sys.exit(f"ERROR: OUTPUT_ROOT {given!r} resolves to the frozen control arm {frozen}, which the release gate compares against. Write elsewhere.") if os.path.realpath(os.path.join(root,given))==frozen else None
+
+# OUTPUT_ROOT is how you avoid overwriting the frozen control arm, so it is REQUIRED.
+# The script defaults --output-root to data/certification/tour-batch-v1/ — the sealed
+# batch the release gate compares AGAINST — and until 2026-08-25 this recipe had no way
+# to pass anything else, so the documented way to run a regeneration was also the way to
+# destroy its own baseline. Passing it OPTIONALLY was the same defect one step quieter:
+# omitting it silently authored into the control arm. Both refusals here are convenience;
+# scripts/tour_batch_candidate.py refuses the same root itself, which is the guard a
+# direct `python -m` call cannot walk around.
+#   make tour-batch-live PLAN_SHA256=... OUTPUT_ROOT=data/certification/tour-batch-v2
+tour-batch-live: ## Execute an approved Premium plan. PLAN_SHA256=... and OUTPUT_ROOT=... both required.
 	@test -n "$(PLAN_SHA256)" || { echo "ERROR: PLAN_SHA256 is required." >&2; exit 2; }
+	@test -n "$(OUTPUT_ROOT)" || { echo "ERROR: OUTPUT_ROOT is required; it must not be the frozen control arm data/certification/tour-batch-v1." >&2; exit 2; }
+	@python3 -c '$(CHECK_BATCH_ROOT)' "$(OUTPUT_ROOT)" "$(CURDIR)"
 	@$(PREFLIGHT) --label tour-batch-live $(PRE_TOUR) render-key
 	@$(RENDER_LOCAL_EXEC) env ONDOWAY_TOUR_BATCH_APPROVED=1 \
 		uv run python -m scripts.tour_batch_candidate --live \
-		--approve-plan-sha256 "$(PLAN_SHA256)" --max-workers "$(or $(MAX_WORKERS),4)"
+		--approve-plan-sha256 "$(PLAN_SHA256)" --max-workers "$(or $(MAX_WORKERS),4)" \
+		--output-root "$(OUTPUT_ROOT)"
 
 tour-batch-review-plan: ## Rebuild a sealed semantic-review plan without provider calls.
 	@$(PREFLIGHT) --label tour-batch-review-plan $(PRE_TOUR)
