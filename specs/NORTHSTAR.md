@@ -106,3 +106,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 
 1. **Between-trip retention scheduling:** Monetization strategy requires journaling + memory reels by Month 4–5. Milestones place personalization at Month 7+. CTO must make a build/defer call before Phase 3 planning.
 2. **Runway floor:** Actual burn rate and downside scenario (1K MAU at Month 6) not yet modeled. Must complete before Phase 3.
+3. **Tour-design questions carried forward from the retired rule-forward design doc** (`Docs/tour-builder/design.md`, deprecated 2026-04-22, deleted 2026-08-05 — every beat-schema field it proposed shipped, so only these are still unanswered):
+   - **Thin-coverage interests.** When an interest lens has a very small beat pool, does the builder widen the interest multiplier, lean on proxy lenses at the same POIs, or tell the user plainly that the tour is thin?
+   - **Multi-city generalisation.** Every tour rule in force was derived from Paris data and has never been tested against a second city.
+   - **"Extend my tour" UX.** When we honestly deliver 70 minutes against a 2-hour ask, how does the user get more — a pre-computed longer alternative, or on-demand extension?

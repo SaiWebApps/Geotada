@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "ondoway/team-state.schema.json",
   "title": "Ondoway /team step ledger",
-  "description": "The contract between /team's planning half (writes it) and its execution engine at .claude/team-engine.js (reads it). Extends the shape proven in specs/2026-07-12-new-city-onboarding/state.json: same `steps` key, same free-text `cost`, same tri-state `commit`. Step ids are OPAQUE STRINGS and may be non-integer (that file has an inserted step 6.5) — never treat an id as an array index and never renumber.",
+  "description": "The contract between /team's planning half (writes it) and its execution engine at .claude/team-engine.js (reads it). Extends the shape proven in specs/2026-07-12-new-city-onboarding/state.json: same `steps` key, same free-text `cost`, same tri-state `commit`. Step ids are OPAQUE STRINGS and may be non-integer (that file has an inserted step 6.5) \u2014 never treat an id as an array index and never renumber.",
   "type": "object",
   "required": [
     "topic",
@@ -17,48 +17,66 @@
       "type": "string",
       "description": "Slug matching the containing directory, e.g. 'team-refactor'."
     },
-    "created": { "type": "string", "description": "YYYY-MM-DD." },
-
+    "created": {
+      "type": "string",
+      "description": "YYYY-MM-DD."
+    },
     "tier": {
       "type": "integer",
-      "enum": [0, 1, 2, 3],
-      "description": "Set MECHANICALLY from the path-glob table in .claude/commands/team.md — never by judgment. Controls skeptic panel size P = {0:0, 1:0, 2:2, 3:3} and whether acceptance runs."
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "description": "Set MECHANICALLY from the path-glob table in .claude/commands/team.md \u2014 never by judgment. Controls skeptic panel size P = {0:0, 1:0, 2:2, 3:3} and whether acceptance runs."
     },
-
     "approved_by_human": {
       "type": "boolean",
-      "description": "THE GATE. /team writes false, presents the plan, and ends its turn. It flips to true ONLY after the human says go in chat — the agent transcribes that decision, it never makes it. The execution engine aborts before any fan-out while this is false, which is what stops a different or unattended session running a ledger nobody blessed. The human never edits this by hand."
+      "description": "THE GATE. /team writes false, presents the plan, and ends its turn. It flips to true ONLY after the human says go in chat \u2014 the agent transcribes that decision, it never makes it. The execution engine aborts before any fan-out while this is false, which is what stops a different or unattended session running a ledger nobody blessed. The human never edits this by hand."
     },
     "approved_at": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "ISO-8601, stamped when the human gives their go-ahead in chat. Null until approved."
     },
-
     "decisions": {
       "type": "object",
       "description": "Free-form record of choices already locked, so no agent relitigates them.",
       "additionalProperties": true
     },
-
     "baseline": {
       "type": "object",
       "description": "Green-before-work evidence (CLAUDE.md: 'Step 0 baseline must be green').",
       "properties": {
-        "lint": { "type": "string" },
-        "commit": { "type": "string" },
-        "note": { "type": "string" }
+        "lint": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
       },
       "additionalProperties": true
     },
-
     "acceptance_criteria": {
       "type": "array",
-      "description": "From the product-owner agent. Every criterion must be objectively checkable by a command. A criterion covered by no step is a GAP and blocks approval.",
+      "description": "From Step 2 of /team (superpowers:brainstorming). Every criterion must be objectively checkable by a command. A criterion covered by no step is a GAP and blocks approval.",
       "items": {
         "type": "object",
-        "required": ["id", "text"],
+        "required": [
+          "id",
+          "text"
+        ],
         "properties": {
-          "id": { "type": "string", "description": "e.g. 'AC-3'." },
+          "id": {
+            "type": "string",
+            "description": "e.g. 'AC-3'."
+          },
           "text": {
             "type": "string",
             "description": "Given <state>, when <action>, then <observable outcome>."
@@ -71,7 +89,6 @@
         "additionalProperties": false
       }
     },
-
     "steps": {
       "type": "array",
       "description": "The atomic state machine. Atomic = binary DONE/NOT-DONE, provable by ONE executable command.",
@@ -84,7 +101,6 @@
           "test_command",
           "criterion_ids",
           "files",
-          "cost_class",
           "maxAttempts",
           "attempts"
         ],
@@ -93,8 +109,9 @@
             "type": "string",
             "description": "Opaque. Stringified because ids may be non-integer ('6.5')."
           },
-          "name": { "type": "string" },
-
+          "name": {
+            "type": "string"
+          },
           "status": {
             "type": "string",
             "enum": [
@@ -107,55 +124,54 @@
             ],
             "description": "Resume table (mirrors .claude/commands/pipeline-batch.md): completed/no-op/skipped -> skip; in_progress -> re-run from Build WITHOUT resetting attempts; blocked -> skip unless retryBlocked; pending -> run."
           },
-
           "test_command": {
             "type": "string",
             "pattern": "^make test-file FILE=\"[^\"]+::[^\"]+\"$",
-            "description": "MUST be a pytest NODE ID inside FILE: make test-file FILE=\"tests/test_x.py::TestY::test_z\". A bare -k is INVALID: Makefile:139-149 has no $(PYTEST_ARGS) passthrough, so make consumes -k as --keep-going and the selector becomes a make goal ('No rule to make target'). FILE is quoted in the recipe, so :: survives. Never LIVE=1 — that routes to test-live, which sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1."
+            "description": "MUST be a pytest NODE ID inside FILE: make test-file FILE=\"tests/test_x.py::TestY::test_z\". A bare -k is INVALID: Makefile:139-149 has no $(PYTEST_ARGS) passthrough, so make consumes -k as --keep-going and the selector becomes a make goal ('No rule to make target'). FILE is quoted in the recipe, so :: survives. Never LIVE=1 \u2014 that routes to test-live, which sets ONDOWAY_ENABLE_PAID_LLM_CALLS=1."
           },
-
           "criterion_ids": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "minItems": 1,
-            "description": "Acceptance criteria this step satisfies. A step citing none is CUT — that is the zero-agent completeness check."
+            "description": "Acceptance criteria this step satisfies. A step citing none is CUT \u2014 that is the zero-agent completeness check."
           },
-
           "files": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "minItems": 1,
             "description": "The only files the developer may touch. Also drives gate_commands."
           },
-
           "gate_commands": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Derived from files by preflight. `make lint` covers ONLY src/ tests/ scripts/{5 files} (Makefile:103-106), so a mobile/ step needs `make flutter-analyze` (which is in neither `lint` nor `test`) and a frontend/ step needs a targeted workbench node id."
           },
-
           "depends_on": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Step ids that must be `completed` first; otherwise this step is skipped."
-          },
-
-          "cost_class": {
-            "type": "string",
-            "enum": ["$0", "paid"],
-            "description": "Per-step work is always $0. The ONE paid command of a run is the close gate (`make audit`)."
           },
           "cost": {
             "type": "string",
             "description": "Free text, for continuity with the existing ledgers ('$0', 'LIVE-estimated')."
           },
-
           "complexity": {
             "type": "string",
-            "enum": ["low", "normal", "high"],
+            "enum": [
+              "low",
+              "normal",
+              "high"
+            ],
             "description": "'high' starts the developer on opus instead of escalating only on retry."
           },
-
           "maxAttempts": {
             "type": "integer",
             "minimum": 1,
@@ -169,16 +185,19 @@
             "default": 0,
             "description": "Persists across resume so a crashed retry does NOT refund budget."
           },
-
           "command_valid": {
             "type": "boolean",
             "description": "Set by preflight after grepping the LIVE Makefile. Stale commands are a proven hazard: specs/2026-07-12-new-city-onboarding/state.json cites `make test-local` and `make test-collect` as proof and neither target exists any more."
           },
-          "command_problem": { "type": "string" },
-
+          "command_problem": {
+            "type": "string"
+          },
           "commit": {
-            "type": ["string", "null"],
-            "description": "Tri-state for continuity: a sha, \"pending\", or null. The engine NEVER commits — the human does."
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Tri-state for continuity: a sha, \"pending\", or null. The engine NEVER commits \u2014 the human does."
           },
           "proof": {
             "type": "string",
@@ -188,18 +207,37 @@
         "additionalProperties": false
       }
     },
-
     "run": {
       "type": "object",
-      "description": "Instrumentation appended by the engine after every run. This is the measurement baseline — no prior /team run exists to compare against, so these numbers ARE the before/after ledger the FOUNDING-CASE rule requires.",
+      "description": "Instrumentation appended by the engine after every run. This is the measurement baseline \u2014 no prior /team run exists to compare against, so these numbers ARE the before/after ledger the FOUNDING-CASE rule requires.",
       "properties": {
-        "last_run": { "type": "string" },
-        "agents": { "type": "integer" },
-        "budget_units": { "type": "string" },
-        "wall_clock": { "type": "string" },
-        "stopped_because": { "type": "string" },
-        "phase_gates": { "type": "array", "items": { "type": "object" } },
-        "close_gate": { "type": ["object", "null"] },
+        "last_run": {
+          "type": "string"
+        },
+        "agents": {
+          "type": "integer"
+        },
+        "budget_units": {
+          "type": "string"
+        },
+        "wall_clock": {
+          "type": "string"
+        },
+        "stopped_because": {
+          "type": "string"
+        },
+        "phase_gates": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "close_gate": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
         "paid_gate_runs": {
           "type": "integer",
           "description": "MUST be 0 or 1. Anything higher is a defect in the one-shot guard."

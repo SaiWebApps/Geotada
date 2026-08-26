@@ -92,8 +92,6 @@
         "tests/test_tour_certification_compose_replay.py",
         "tests/test_compose_gate_forbidden_scan.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "high",
       "maxAttempts": 3,
       "attempts": 2,
@@ -115,8 +113,6 @@
         "tests/test_tour_authoring_from_route.py",
         "tests/test_tour_candidate_authoring.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "high",
       "maxAttempts": 3,
       "attempts": 2,
@@ -140,8 +136,6 @@
         "tests/test_trip_api.py",
         "tests/test_trips_spend_and_authz.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "high",
       "maxAttempts": 3,
       "attempts": 2,
@@ -165,8 +159,6 @@
         "tests/test_tour_authoring_gates.py",
         "tests/test_compose_gate_forbidden_scan.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "high",
       "maxAttempts": 3,
       "attempts": 1,
@@ -189,8 +181,6 @@
         "src/tour/authoring.py",
         "tests/test_tour_authoring_gates.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "normal",
       "maxAttempts": 2,
       "attempts": 2,
@@ -221,8 +211,6 @@
         "tests/conftest.py",
         "tests/test_tour_one_engine.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "normal",
       "maxAttempts": 3,
       "attempts": 2,
@@ -250,8 +238,6 @@
         "tests/test_narration_quality.py",
         "tests/test_tour_one_engine.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "normal",
       "maxAttempts": 2,
       "attempts": 1,
@@ -291,8 +277,6 @@
         "tests/test_factcheck.py",
         "tests/test_tour_one_engine.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "high",
       "maxAttempts": 3,
       "attempts": 1,
@@ -325,8 +309,6 @@
         "tests/test_trip_preview_contract.py",
         "tests/test_tour_one_engine.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "high",
       "maxAttempts": 3,
       "attempts": 3,
@@ -365,8 +347,6 @@
         "Docs/bug-reports/2026-07-27-preview-failure-observability-salvage.md",
         "tests/test_tour_one_engine.py"
       ],
-      "cost_class": "$0",
-      "cost": "$0",
       "complexity": "normal",
       "maxAttempts": 3,
       "attempts": 0,

@@ -409,8 +409,11 @@ provenance on the phone.
 `src/tour/quality_rubric.py` exposes:
 
 ```python
-def score_tour(script, route, snapshot, *, tour_input) -> RubricReport
+def score_tour(script, route, beats_by_poi, *, beat_sequence=None) -> RubricReport
 ```
+
+(The signature above was corrected 2026-08-23 — it had drifted to a
+`snapshot`/`tour_input` shape this module never actually had.)
 
 `RubricReport` carries per-check results, the blocker list, and an overall verdict.
 The compose path calls it after composition.
@@ -435,6 +438,21 @@ regenerates the script" — conflates two different questions:
    without `compose_fixable` a naive retry loop burns Opus calls on blockers that
    provably cannot converge. Do not write enforcement language here until a caller
    actually honours `passed`.
+
+   **CLOSED 2026-08-23 (Phase 8 S8.4; design §7.2).** A caller now honours
+   `passed`: `POST /trips/{id}/compose` runs `score_tour` after composition —
+   BEFORE the full tellings' spend and before any write — and refuses a
+   blocker-carrying day `422 tour_quality_blocked`, naming each blocker's check,
+   stop and message on the wire (the rubric's own prose, never the provider's).
+   The refusal comes only after at most ONE `compose_fixable`-authorized
+   targeted recompose of the failing stops (same request, fresh roll), and the
+   VERIFY layer independently spends at most one targeted re-roll of the stops
+   its report names before ITS refusal stands. `/trips/preview` stays the
+   editor's advisory surface (200 + report). Caller-side proof:
+   `tests/test_trip_api.py::test_a_day_failing_the_rubric_floor_is_refused_and_the_trip_untouched`.
+   (The `src/api/dependencies.py` comment this section used to cite had already
+   been removed; the gap it described is now closed in
+   `src/api/routes/trips.py::compose_trip`.)
 2. **Is looping the compose step, for one stop, worth the spend?** This is the
    separate question `src/tour/quality_rubric.py::compose_fixable(finding,
    material)` answers. A BLOCKER whose defect is upstream of compose — selection
