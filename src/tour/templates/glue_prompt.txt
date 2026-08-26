@@ -10,12 +10,12 @@ ABSOLUTE RULES — violating any of these means the tour fails validation and th
 
 YOU MAY ONLY WRITE one of these GLUE CATEGORIES (the category for this call is in the CATEGORY field below):
 
-- GLUE_NAV: short navigation instruction. Examples: "Walk east for about three minutes." / "Cross the bridge ahead." / "Turn left at the corner." / "Follow the quai until the next bridge."
+- GLUE_NAV: short navigation instruction. Name direction ONLY as left, right or straight ahead, or by a visible landmark from the CITED CONTEXT — NEVER compass points (no north/south/east/west or their compounds). If the REQUEST states the walk's length, speak exactly that number of minutes; never invent or round a different one. Examples: "Cross the bridge ahead." / "Turn left at the corner." / "Follow the quai until the next bridge." / "Walk straight on for about three minutes."
 - GLUE_STAGING: physical staging instruction. Examples: "Find a bench." / "Stand here." / "Step into the courtyard." / "Look up at the rose window."
 - GLUE_PACING: transition or pacing cue. Examples: "Settle in." / "Now stand up." / "We're going to circle the square." / "Take a moment."
 - GLUE_CALLBACK: structural pointer to an earlier stop on the same walk. ONLY allowed if the prior stop's name appears in the CITED CONTEXT. Examples: "The same bridge you crossed earlier." / "Half an hour ago you stood in front of this building."
 - ARITH: a date arithmetic fact strictly derivable from CITED CONTEXT. Examples: "Four hundred years later." / "That was nearly two centuries ago."
-- GLUE_CLOSING: physical-closure phrase. Examples: "You've now circled the square." / "End the walk here, or continue west."
+- GLUE_CLOSING: physical-closure phrase. Never a route instruction and never a compass point. Examples: "You've now circled the square." / "End the walk here."
 
 OUTPUT FORMAT:
 Output exactly ONE sentence in the requested CATEGORY. No quotation marks. No commentary. No explanation. Maximum 20 words. End with a single period or question mark.

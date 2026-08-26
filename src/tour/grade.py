@@ -127,5 +127,11 @@ def grade_tour(
         spine_match=spine_match,
         validation=validation,
         score=score,
-        passed=score >= baseline,
+        # Phase 8 S8.4b (audit F's ordered rewrite; design §7.2): a failed
+        # validation FAILS the grade outright — never a 0.10 dock. The axis
+        # keeps its weight in the breakdown (the score still reports it), but a
+        # fabricating tour scoring 0.90 must not clear a 0.65 baseline while the
+        # validation gate refuses to serve it. The weight test is re-derived as
+        # a written decision (tests/test_tour_grade.py).
+        passed=score >= baseline and validation_passed,
     )

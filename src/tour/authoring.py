@@ -47,9 +47,10 @@ from .contract import (
     Sentence,
     ValidationReport,
 )
-from .generation import GLUE_REFLECTION, _sum_audio
+from .generation import GLUE_REFLECTION, _nav_walk_minutes, _sum_audio
 from .reflection import reflection_slots
-from .validation import validate_script, validate_source_traceability
+from .routing import leg_walk_seconds
+from .validation import placement_floor_hits, validate_script, validate_source_traceability
 from .verify import FaithfulnessChecker, _visited_claims
 
 
@@ -242,9 +243,11 @@ the exact failure testers named ("like reading Wikipedia aloud").
   earlier one.
 - THE THREAD. When a stop's STITCHED SCRIPT carries a REFLECTION SLOT, write ONE
   sentence there — under fifteen words, at most one proper name, no idiom — that
-  binds THIS stop to the walk's theme through ONE fact of this stop ("this
-  courtyard held prisoners of the same tribunal"), never a recap of the last
-  stop and never logistics; every fact in it must be in the slot's visited_claims
+  binds THIS stop to the walk's theme through ONE fact of this stop ("the same
+  tribunal kept its prisoners at the courtyard ahead"), never a recap of the
+  last stop, never logistics, and never a repeat of a sentence this stop
+  already speaks — say the binding fact in its own words or not at all; every
+  fact in it must be in the slot's visited_claims
   or in this stop's own beats. If no honest line exists, write none: silence
   beats glue. When the prompt lists THREADS FROM (stops that may come right
   before this one when the day is replanned), answer in the "threads" field with
@@ -283,7 +286,11 @@ tells that make generated prose feel generated:
   Carrying over EVERY year, date, number, and proper noun from both sentences is
   non-negotiable — fuse the wording, never lose a fact. Fuse only propositions
   that are actually equivalent; factual review judges their meaning, not shared
-  wording.
+  wording. NEVER FUSE ACROSS PLAYBACK CONTEXTS: a walk-past vignette line (a
+  beat voiced on the leg) and a stop's own sentences play in different places,
+  so a stop sentence may never carry a vignette beat in also_cites and a
+  vignette line may never absorb a stop beat's fact — keep the two tellings
+  separate even when the fact overlaps.
 - CITE EVERY BEAT YOU MERGE. When the two sentences you fuse come from DIFFERENT
   beats (different source_id), the merged sentence MUST keep one source_id as its
   primary AND list the OTHER merged beat id(s) in its "also_cites" field. This is
@@ -304,8 +311,25 @@ tells that make generated prose feel generated:
   oldest to newest), or open on what's in front of the walker and step back in
   time. Never move content between stops.
 
+WHERE A SENTENCE PLAYS (the gate refuses a line untrue for its place):
+- Navigation lines (GLUE_NAV) and walk-past vignette lines play WHILE WALKING;
+  every other sentence plays standing at its stop.
+- A line that plays while walking never uses arrived words — here, this,
+  you're standing, look up — name the place instead ("the fortress on the
+  right", never "this fortress").
+- A navigation line gives direction only as left, right or straight ahead, or
+  by a visible landmark — never compass points — and speaks the walk's length
+  only as the minutes the stitched line already carries, never a new number.
+- A sentence that plays standing at a stop never commands movement (walk,
+  head, turn, cross, continue, follow, step around) — moving instructions
+  belong to navigation lines alone — and invites the listener through a door
+  ("step inside") only when this stop's visit goes inside.
+
 GROUNDING (violations are rejected by an automated verifier):
 - Output the FULL sentence list. Every sentence carries source attribution.
+- COPY IDS EXACTLY: every source_id and every also_cites entry is copied
+  character for character from this prompt — never retyped, trimmed or
+  abbreviated.
 - A sentence with source_type "beat" keeps its source_id and may only restate
   what that beat's key claims support — never add names, dates, or facts.
 - A glue sentence must keep a source_id supplied in this stop's STITCHED SCRIPT.
@@ -572,6 +596,39 @@ def _threads_from_json(payload: dict) -> tuple[tuple[str, str], ...]:
     return tuple(out)
 
 
+def _edit_distance_at_most_1(a: str, b: str) -> bool:
+    """One substitution, insertion or deletion apart (equal strings excluded)."""
+    if a == b:
+        return False
+    la, lb = len(a), len(b)
+    if abs(la - lb) > 1:
+        return False
+    if la == lb:
+        return sum(1 for x, y in zip(a, b, strict=True) if x != y) == 1
+    shorter, longer = (a, b) if la < lb else (b, a)
+    i = 0
+    while i < len(shorter) and shorter[i] == longer[i]:
+        i += 1
+    return shorter[i:] == longer[i + 1 :]
+
+
+def _corrected_citation(cited_id: str, known_ids: frozenset[str]) -> str:
+    """The one deterministic copy-error correction (Phase 8 S8.3e; W8.2 R4).
+
+    A cited id at edit distance 1 from exactly ONE id the request supplied is a
+    WRITER'S TYPO, corrected — W7.14's live instance killed Camille's day 422
+    three times over one dropped character (`1311cfd-…` for `1311cf7d-…`). A
+    known id, an id with no close neighbour, or one with TWO close neighbours
+    (never guess) comes back untouched, and traceability still blocks the
+    untraceable. The corrected citation flows into every downstream gate —
+    entailment judges the sentence against the TRUE beat, never a free pass.
+    """
+    if cited_id in known_ids:
+        return cited_id
+    candidates = [known for known in known_ids if _edit_distance_at_most_1(cited_id, known)]
+    return candidates[0] if len(candidates) == 1 else cited_id
+
+
 def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tuple[Sentence, ...]:
     """Build ``Sentence`` objects from a compose response's JSON, COERCING each BEAT
     sentence's ``stop_idx`` to its beat's TRUE stitched stop.
@@ -583,14 +640,22 @@ def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tupl
     is unambiguous from the stitch, so we take it from ``beat_stop[source_id]`` and ignore
     the model's echo. Non-beat glue/reflection sentences (no source beat) keep their given
     slot ``stop_idx``; an unknown ``source_id`` (a hallucinated beat) is left as-given for
-    the traceability gate to reject."""
+    the traceability gate to reject.
+
+    Phase 8 S8.3e: a beat citation (``source_id`` or an ``also_cites`` entry) one
+    character off exactly ONE id of this stop's stitch is corrected first
+    (``_corrected_citation``) — the mechanical consequence of W8.2 R4: the
+    writer's typos stop killing days, and everything else still fails closed."""
     beat_stop = {
         s.source_id: s.stop_idx for s in request.stitched.script if s.source_type == "beat"
     }
+    known_ids = frozenset(beat_stop)
     out: list[Sentence] = []
     for s in sentences:
         stype = s["source_type"]
         sid = s["source_id"]
+        if stype == "beat":
+            sid = _corrected_citation(sid, known_ids)
         stop_idx = beat_stop.get(sid, s["stop_idx"]) if stype == "beat" else s["stop_idx"]
         out.append(
             Sentence(
@@ -600,7 +665,14 @@ def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tupl
                 stop_idx=stop_idx,
                 # Only beat sentences carry fused citations; ignore any stray also_cites
                 # the model attaches to glue.
-                also_cites=(tuple(s.get("also_cites") or ()) if stype == "beat" else ()),
+                also_cites=(
+                    tuple(
+                        _corrected_citation(cited, known_ids)
+                        for cited in (s.get("also_cites") or ())
+                    )
+                    if stype == "beat"
+                    else ()
+                ),
             )
         )
     return tuple(out)
@@ -701,6 +773,28 @@ THREAD_MAX_WORDS = 15
 THREAD_DROPPED_DEGRADATION = "thread_dropped"
 
 
+def _thread_repeats_the_telling(thread_text: str, own_sentences: list[str]) -> bool:
+    """Is this thread a near-verbatim restatement of its stop's own telling?
+
+    The claim_dedup near-dup detector applied to the one pair R3 names: the
+    thread against the sentences the same stop already voices. Token-set ratio
+    at ``claim_dedup._NEAR_DUP_RATIO`` (90 — the Abelard echo measured 98-100,
+    two different facts ~37); very short lines are never judged (the
+    ``_repeat_key`` length guard), same as everywhere else."""
+    from rapidfuzz import fuzz
+
+    from .claim_dedup import _NEAR_DUP_RATIO, _repeat_key
+
+    key = _repeat_key(thread_text)
+    if len(key) < 25:
+        return False
+    return any(
+        fuzz.token_set_ratio(key, other) >= _NEAR_DUP_RATIO
+        for sentence in own_sentences
+        if len(other := _repeat_key(sentence)) >= 25
+    )
+
+
 def _keep_threads(
     units_by_stop: dict[int, CompletedCertificationComposeUnit],
     stops: list[int],
@@ -761,6 +855,16 @@ def _keep_threads(
                 continue
             if len(text.split()) > THREAD_MAX_WORDS:
                 drop(stop_index, from_name, text, f"is over {THREAD_MAX_WORDS} words")
+                continue
+            # Phase 8 S8.3d (W8.2 R3, 11/11): ONE FACT, ONE VOICE, PER DAY — a
+            # thread that near-verbatim repeats a sentence of its OWN stop's
+            # telling is the measured repeat class (Greta's coronation
+            # story+thread; Sofia's Templar bridge leg+thread). Same detector as
+            # the composed-script near-dup pass (rapidfuzz token_set_ratio at
+            # claim_dedup's threshold); the remedy stays R5's — silence.
+            own_sentences = [s.text for s in composed.script if s.stop_idx == stop_index]
+            if _thread_repeats_the_telling(text, own_sentences):
+                drop(stop_index, from_name, text, "repeats the stop's own telling")
                 continue
             if checker is not None:
                 claims = _visited_claims(composed, beats_by_id, stop_index)
@@ -845,6 +949,7 @@ def finalize_certification_composition(
     enforce_claim_coverage: bool = False,
     scan_glue_for_invention: bool = False,
     require_closes: bool = False,
+    enforce_placement_floors: bool = False,
     already_told_by_stop: Mapping[int, str] | None = None,
 ) -> CertificationComposition:
     """Purely verify and finalize already-completed per-stop compose responses.
@@ -881,6 +986,13 @@ def finalize_certification_composition(
       is not authored: it ships (the fallback beats silence) and is REPORTED on the
       degradations channel as ``close_not_authored``, never counted as the writer's.
       OFF for the certification replay (the sealed candidates predate closes).
+    * ``enforce_placement_floors`` (Phase 8 S8.3; W8.2 R1/R2/R5) — a sentence must
+      be TRUE WHERE IT PLAYS: ``validation.placement_floor_hits`` over the composed
+      script, route-aware through this finalizer's own closure (the legs' routed
+      minutes, each stop's door, the tap-only full-telling stops). Hits land on
+      ``forbidden_phrase_hits`` — named, blocking, and carried into the bounded
+      retry's failure list. OFF for the certification replay (the sealed
+      candidates predate the rulings).
     """
     beats_by_id, stops, requests = _certification_compose_requests(
         stitched, beat_sequence, route, already_told_by_stop=already_told_by_stop
@@ -963,22 +1075,55 @@ def finalize_certification_composition(
         if sentence.source_type != "beat"
     ) | ({GLUE_REFLECTION} if any(request.slots for request in requests.values()) else set())
 
+    # Phase 8 S8.3: the route-aware inputs the placement floors need, computed
+    # once from what this finalizer already holds — placement itself stays THE
+    # frozen rule (is_walk_concurrent + these vignette ids), never re-derived.
+    vignette_beat_ids = frozenset(
+        beat.id for beats in beat_sequence.vignette_beats.values() for beat in beats
+    )
+    leg_minutes_by_stop = {
+        index: minutes
+        for index, transit in enumerate(route.transits)
+        if (minutes := _nav_walk_minutes(leg_walk_seconds(transit)))
+    }
+    goes_inside_by_stop = {
+        index: bool(route.visit_goes_inside.get(poi.id, False))
+        for index, poi in enumerate(route.pois)
+    }
+    tap_only_stops = frozenset(already_told_by_stop or ())
+
     def validate_authorized_sources(script: Script, sequence: BeatSequence) -> ValidationReport:
         report = validate_source_traceability(
             script,
             sequence,
             allowed_derived_source_ids=frozenset(authorized_derived_source_ids),
         )
+        floor_hits: tuple[tuple[Sentence, str], ...] = ()
+        if enforce_placement_floors:
+            floor_hits = tuple(
+                placement_floor_hits(
+                    script,
+                    vignette_beat_ids=vignette_beat_ids,
+                    leg_minutes_by_stop=leg_minutes_by_stop,
+                    goes_inside_by_stop=goes_inside_by_stop,
+                    tap_only_stops=tap_only_stops,
+                )
+            )
         if not scan_glue_for_invention:
+            if floor_hits:
+                return report.model_copy(update={"forbidden_phrase_hits": floor_hits})
             return report
         # Full ``validate_script`` parity. Only the forbidden-phrase half is taken
         # from it: its traceability half does not know THIS run's authorized derived
         # source ids, so it would reject legitimately-authorized glue.
         return report.model_copy(
             update={
-                "forbidden_phrase_hits": validate_script(
-                    script, sequence, spine_area=route.spine_area
-                ).forbidden_phrase_hits
+                "forbidden_phrase_hits": (
+                    validate_script(
+                        script, sequence, spine_area=route.spine_area
+                    ).forbidden_phrase_hits
+                    + floor_hits
+                )
             }
         )
 

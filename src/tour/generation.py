@@ -171,6 +171,34 @@ FORWARD_SIGHT_PHRASES: tuple[str, ...] = (
     "on our way to",
 )
 
+#: Phase 8 S8.3 (W8.2 R1, 11/11): the LEG'S VOICE knows its geometry. A nav line
+#: names direction ONLY as left/right/straight-ahead or a visible landmark \u2014
+#: NEVER compass (compounds included; a chained "south-south-east" is caught by
+#: its first component) \u2014 and speaks minutes ONLY as the routed leg's own
+#: number. ONE vocabulary, shared by the coercion guard here and the validation
+#: floors (validation.py imports these), so the two cannot drift.
+_COMPASS_RE = re.compile(
+    r"\b(?:north|south)(?:-?(?:east|west))?\b|\b(?:east|west)\b", re.IGNORECASE
+)
+_MINUTE_WORDS: dict[str, int] = {
+    "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
+    "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13,
+    "fourteen": 14, "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18,
+    "nineteen": 19, "twenty": 20,
+}
+_SPOKEN_MINUTES_RE = re.compile(
+    r"\b(\d{1,3}|" + "|".join(_MINUTE_WORDS) + r")[- ]minutes?\b", re.IGNORECASE
+)
+
+
+def spoken_minute_counts(text: str) -> set[int]:
+    """Every minute count a line speaks, as integers (digits or number words)."""
+    out: set[int] = set()
+    for match in _SPOKEN_MINUTES_RE.finditer(text):
+        raw = match.group(1).lower()
+        out.add(int(raw) if raw.isdigit() else _MINUTE_WORDS[raw])
+    return out
+
 
 # ---------------------------------------------------------------------------
 # Sentence splitting
@@ -598,17 +626,12 @@ def _build_synthesized_opener(
 
     # 1b. Ground the walk ahead: name the first stop and how far it is. Honest —
     # the walker is still EN ROUTE (never "you're standing at {stop}"). Uses the
-    # routed first-leg time, so it also sets pace/anticipation.
-    walk_text = _synth_first_leg_text(first_stop, route)
-    if walk_text:
-        out.append(
-            Sentence(
-                text=walk_text,
-                source_id=SYNTHESIZED_OPENER,
-                source_type="glue",
-                stop_idx=stop_idx,
-            )
-        )
+    # routed first-leg time, so it also sets pace/anticipation. The line arrives
+    # already placed (S8.3c): head-for rides the first leg as GLUE_NAV; standing
+    # variants stay stationary opener pieces.
+    walk_line = _synth_first_leg_text(first_stop, route, stop_idx)
+    if walk_line is not None:
+        out.append(walk_line)
 
     # 2. Pronunciation if present.
     pronunciation_text = _synth_pronunciation(poi_beats, first_stop.poi_name)
@@ -680,33 +703,55 @@ def _minute_article(minutes: int) -> str:
     return "an" if minutes in (8, 11, 18) or 80 <= minutes <= 89 else "a"
 
 
-def _synth_first_leg_text(first_stop: POIBeats, route: Route) -> str | None:
-    """Name the first stop and how far the opening walk is (honest — en route).
+def _synth_first_leg_text(
+    first_stop: POIBeats, route: Route, stop_idx: int = 0
+) -> Sentence | None:
+    """The first-leg line, fully placed: name the first stop and how far the
+    opening walk is (honest — en route).
 
     Uses the routed first-leg seconds when available (``route.transits[0]``);
     a very short leg reads "just ahead", a longer one "about an N-minute walk".
-    Returns None when there is no transit (test fixtures) or no stop name.
+    Returns None when there is no stop name.
+
+    Phase 8 S8.3c (W8.2 R2; Paulo's Finding 14): the HEAD-FOR line is
+    navigation, so it returns labelled ``GLUE_NAV`` — the frozen playback rule
+    (``is_walk_concurrent``, untouched) then books it onto the first LEG, and a
+    queued first stop no longer auto-plays a walking instruction to someone
+    standing still. The two branches with nothing to walk — already standing at
+    the stop, or a route with no transit to ride — stay a stationary
+    ``SYNTHESIZED_OPENER`` piece, so the playback partition never points at an
+    absent leg. The line's minutes are the routed leg's own number, the same
+    figure the validation floor checks nav lines against.
     """
     name = (first_stop.poi_name or "").strip()
     if not name:
         return None
+
+    def _line(text: str, source_id: str) -> Sentence:
+        return Sentence(text=text, source_id=source_id, source_type="glue", stop_idx=stop_idx)
+
     # Lowercase a leading "The " so the name reads naturally mid-sentence
     # ("head for the Sorbonne", not "...for The Sorbonne" — a raw title-case field).
     if name.startswith("The "):
         name = "the " + name[4:]
     if not route.transits:
-        return f"When you're ready, head for {name} — it's just ahead."
+        return _line(
+            f"When you're ready, head for {name} — it's just ahead.", SYNTHESIZED_OPENER
+        )
     leg = route.transits[0]
     secs = leg.leg_seconds or leg.walk_seconds or 0
     if secs < 20:
         # You're already standing at the first stop — don't tell the walker to
         # "head for" a place they're on top of (the Tuileries/Concorde complaint).
-        return f"You're starting right at {name}. {SENSORY_INVITATION}"
+        return _line(f"You're starting right at {name}. {SENSORY_INVITATION}", SYNTHESIZED_OPENER)
     minutes = round(secs / 60)
     if minutes <= 1:
-        return f"When you're ready, head for {name} — it's just ahead."
+        return _line(f"When you're ready, head for {name} — it's just ahead.", GLUE_NAV)
     article = _minute_article(minutes)
-    return f"When you're ready, head for {name} — about {article} {minutes}-minute walk from here."
+    return _line(
+        f"When you're ready, head for {name} — about {article} {minutes}-minute walk from here.",
+        GLUE_NAV,
+    )
 
 
 def _synth_location_anchor(first_stop: POIBeats, route: Route) -> str:
@@ -965,14 +1010,30 @@ def _build_transit(
             # "walk to" a placeholder named "Destination". Skip the glue client.
             text = template_nav
         else:
+            # Phase 8 S8.3a (W8.2 R1, 11/11): the nav glue KNOWS ITS LEG — the
+            # request hands Haiku the routed minutes (the same number the tour
+            # was budgeted with) and the leg-voice rules, so the line cannot
+            # guess a bearing or a length. The coercion guard below is the
+            # second line of defence; validation's floor is the third.
+            minutes = _nav_walk_minutes(leg_seconds)
             distance_clause = f", distance approx {round(distance_m)}m" if distance_m else ""
+            length_clause = (
+                f" The walk is about {minutes} minutes; if you say its length, use "
+                f"exactly that number."
+                if minutes >= 2
+                else " The walk is under two minutes; say 'just ahead' rather than a number."
+            )
             request = (
                 f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
                 f"Use only navigation language, no facts, no names, no dates."
+                f"{length_clause} Name direction only as left, right or straight ahead, "
+                f"or by a visible landmark from the context — never compass points."
             )
             context = _format_glue_context(previous, current)
             out = client.stitch(GLUE_NAV, context, request)
-            text = _coerce_glue_output(out, default=template_nav)
+            # minutes==0 means the leg carries no budget to check against (the
+            # `or None` below); any other count must be spoken exactly.
+            text = _coerce_glue_output(out, default=template_nav, leg_minutes=minutes or None)
         out_sentences = [
             Sentence(text=text, source_id=GLUE_NAV, source_type="glue", stop_idx=stop_idx)
         ]
@@ -1222,8 +1283,16 @@ def _head_sentence(stop: POIBeats) -> str:
     return ""
 
 
-def _coerce_glue_output(raw: str, *, default: str) -> str:
-    """Defang the LLM output: empty / sentinel → default; trim quotes."""
+def _coerce_glue_output(raw: str, *, default: str, leg_minutes: int | None = None) -> str:
+    """Defang the LLM output: empty / sentinel → default; trim quotes.
+
+    Phase 8 S8.3a (W8.2 R1): a nav line that speaks COMPASS, or a minute count
+    that is not the routed leg's own number (``leg_minutes``; None = no budget
+    to check), falls back to the deterministic template — which is compass-free
+    and speaks the routed number by construction. The guard sits behind the
+    prompt and in front of validation's floor, so a bad roll costs one nicety,
+    never a refusal.
+    """
     if not raw:
         return default
     text = raw.strip().strip('"').strip("'").strip()
@@ -1233,6 +1302,12 @@ def _coerce_glue_output(raw: str, *, default: str) -> str:
     parts = split_sentences(text)
     candidate = parts[0] if parts else text
     if any(p in candidate.lower() for p in FORBIDDEN_PHRASES):
+        return default
+    if _COMPASS_RE.search(candidate):
+        return default
+    if leg_minutes is not None and any(
+        count != leg_minutes for count in spoken_minute_counts(candidate)
+    ):
         return default
     return candidate
 
@@ -1374,4 +1449,5 @@ __all__ = [
     "SYNTHESIZED_OPENER",
     "generate",
     "split_sentences",
+    "spoken_minute_counts",
 ]

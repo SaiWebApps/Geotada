@@ -29,14 +29,19 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Mapping
 
 from .contract import BeatSequence, Script, Sentence, ValidationReport
 from .generation import (
+    _COMPASS_RE,
     FORBIDDEN_PHRASES,
     FORWARD_PROMISE_PHRASES,
     FORWARD_SIGHT_PHRASES,
     GLUE_LABELS,
     GLUE_NAV,
+    is_walk_concurrent,
+    split_sentences,
+    spoken_minute_counts,
 )
 
 # Capitalized tokens past the first word are candidate proper nouns.
@@ -244,12 +249,18 @@ def _forbidden_phrase_hits(
                     out.append((sentence, f"forward_promise:{phrase}"))
 
         # Proper-noun + year leakage in glue. GLUE_NAV is exempt from the
-        # proper-noun half (Phase 6 W6.12, measured: "Walk northwest along the
-        # Seine" was refused as new_proper_noun:Seine): the nav line is the MAP
+        # proper-noun half (Phase 6 W6.12, measured: the nav line naming the
+        # Seine was refused as new_proper_noun:Seine): the nav line is the MAP
         # speaking — its nouns are places by nature, exactly as the
         # forward-promise scan already treats it. Years and the phrase list
-        # still apply to it; story glue keeps the full scan.
+        # still apply to it; story glue keeps the full scan. What the nav voice
+        # may NOT do is speak compass (Phase 8 S8.3, W8.2 R1 11/11): a leg line
+        # names direction only as left/right/straight-ahead or a visible
+        # landmark — "Walk northwest along the Seine" pointed Greta the wrong
+        # way because the words never knew the route's own bearing.
         if sentence.source_id == GLUE_NAV:
+            for match in _COMPASS_RE.finditer(sentence.text):
+                out.append((sentence, f"leg_voice_compass:{match.group(0).lower()}"))
             for year in _YEAR_RE.findall(sentence.text):
                 if year not in cited_years:
                     out.append((sentence, f"new_year:{year}"))
@@ -372,6 +383,127 @@ def _cited_beat_corpus_text(script: Script, beat_sequence: BeatSequence) -> str:
     return "\n".join(chunks)
 
 
+# ---------------------------------------------------------------------------
+# Phase 8 S8.3 — the placement floors: a sentence is true where it PLAYS
+# (W8.2 LOCKED RULINGS R1/R2/R5; phase7-ledger carry 1; design §5.6/§8.2).
+# Pure text checks over the composed script; the ROUTE-aware inputs (the legs'
+# routed minutes, each stop's door, which stops are tap-only) arrive as plain
+# mappings built by the authoring finalizer's closure, so this module stays
+# route-free and there is ONE definition of every floor.
+# ---------------------------------------------------------------------------
+
+#: Arrived deixis — words only true standing AT the place (R2's own list: here,
+#: this, you're standing, look up). "From here" is the leg's START and is true
+#: where it plays (the final-destination template's own words).
+_ARRIVED_DEIXIS_RES: tuple[re.Pattern[str], ...] = (
+    re.compile(r"\byou'?re standing\b|\byou are standing\b", re.IGNORECASE),
+    re.compile(r"\blook up\b", re.IGNORECASE),
+    re.compile(r"(?<![Ff]rom )\bhere\b", re.IGNORECASE),
+    re.compile(r"\bthis\b|\bthese\b", re.IGNORECASE),
+)
+
+#: A through-the-door line — legal ONLY where the wire says door=true (R2,
+#: Aiko's rule: her Bourse's words invited her into a closed rotunda). Verb
+#: phrases only: "a walk in the park" or "the walk to the tower" are nouns and
+#: must never read as an invitation.
+_DOOR_LINE_RE = re.compile(
+    r"\b(?:step in(?:side|to)?|go in(?:side)?|head inside|enter)\b",
+    re.IGNORECASE,
+)
+
+#: An imperative of motion — navigation language. Legal only in the nav line
+#: (R5: "navigation lives only in leg lines"); auto-played at a stop it MOVES
+#: the listener (Rosemary's "Step around the corner to 31 rue de Bellechasse").
+#: The mid-sentence half fires only on unambiguous VERB uses — an unambiguous
+#: phrase, or a motion verb chained after and/then/now/a comma — so a close's
+#: "brings our walk to a close" (the noun) never reads as an instruction.
+_MOTION_LEAD_RE = re.compile(
+    r"^\W*(?:walk|head|turn|cross|continue|follow|climb|leave|exit|go|"
+    r"carry on|make your way|step around)\b",
+    re.IGNORECASE,
+)
+_MOTION_MID_RE = re.compile(
+    r"\b(?:step around the corner|make your way|carry on to|head (?:for|to)|"
+    r"turn (?:left|right))\b"
+    r"|(?:\b(?:and|then|now)\b|,)\s+(?:walk|cross|turn|continue|follow)\b",
+    re.IGNORECASE,
+)
+
+
+def _arrived_word_in(unit: str) -> str | None:
+    for pattern in _ARRIVED_DEIXIS_RES:
+        match = pattern.search(unit)
+        if match:
+            return match.group(0).lower()
+    return None
+
+
+def placement_floor_hits(
+    script: Script,
+    *,
+    vignette_beat_ids: frozenset[str] | set[str],
+    leg_minutes_by_stop: Mapping[int, int],
+    goes_inside_by_stop: Mapping[int, bool],
+    tap_only_stops: frozenset[int] | set[int] = frozenset(),
+) -> list[tuple[Sentence, str]]:
+    """(sentence, code) for every sentence untrue WHERE IT PLAYS (W8.2 R1/R2/R5).
+
+    Placement is the frozen rule itself (``is_walk_concurrent`` + the vignette
+    ids), never inferred from prose. Checked SENTENCE BY SENTENCE within each
+    piece (R2, Marcus: "never the opening alone"). The floors:
+
+    - ``fused_across_playback_contexts`` — one sentence citing both a seated
+      beat and a walk-past vignette beat cannot be placed at all (W8.1(f)
+      mechanism (c): the bare ``partition_final_script`` ValueError, named).
+    - ``arrived_word_on_leg:<word>`` — no standing verb or arrived deictic in
+      any leg piece (nav, thread, vignette one-liner alike).
+    - ``leg_voice_minutes:<spoken>_routed_<n>`` — the nav line speaks minutes
+      only as the routed leg's own number (Théo: "written five, measured
+      nine"). A leg whose routed minutes are unknown is skipped, never guessed.
+    - ``moving_line_auto_played:<phrase>`` / ``door_line_without_door:<phrase>``
+      — no imperative of motion in an auto-played stop piece; a through-the-door
+      line only where the wire says door=true. Tap-only stops (the full
+      telling) are exempt: moving sentences are tap-only or leg-only.
+    """
+    out: list[tuple[Sentence, str]] = []
+    vignettes = frozenset(vignette_beat_ids)
+    for sentence in script.script:
+        cited = set(sentence.cited_beat_ids)
+        if cited & vignettes and cited - vignettes:
+            out.append((sentence, "fused_across_playback_contexts"))
+        units = split_sentences(sentence.text) or [sentence.text]
+        if is_walk_concurrent(sentence, vignettes):
+            for unit in units:
+                word = _arrived_word_in(unit)
+                if word:
+                    out.append((sentence, f"arrived_word_on_leg:{word}"))
+            if sentence.source_id == GLUE_NAV:
+                routed = leg_minutes_by_stop.get(sentence.stop_idx)
+                if routed is not None:
+                    for count in spoken_minute_counts(sentence.text):
+                        if count != routed:
+                            out.append(
+                                (sentence, f"leg_voice_minutes:{count}_routed_{routed}")
+                            )
+            continue
+        if sentence.stop_idx in tap_only_stops:
+            continue
+        for unit in units:
+            door = _DOOR_LINE_RE.search(unit)
+            if door:
+                if not goes_inside_by_stop.get(sentence.stop_idx, False):
+                    out.append(
+                        (sentence, f"door_line_without_door:{door.group(0).lower()}")
+                    )
+                continue  # a licensed door line is staging, not a moving line
+            move = _MOTION_LEAD_RE.match(unit) or _MOTION_MID_RE.search(unit)
+            if move:
+                out.append(
+                    (sentence, f"moving_line_auto_played:{move.group(0).strip().lower()}")
+                )
+    return out
+
+
 def _proper_nouns_in(text: str, *, drop_first_word: bool = False) -> set[str]:
     """Return the set of capitalized multi-letter tokens.
 
@@ -401,4 +533,4 @@ def _proper_nouns_in(text: str, *, drop_first_word: bool = False) -> set[str]:
     return out
 
 
-__all__ = ["validate_script"]
+__all__ = ["placement_floor_hits", "validate_script"]

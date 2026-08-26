@@ -423,14 +423,74 @@ FILL_PASS_WALK_BUDGET_FRAC: float = 0.95
 # Tuned on the live routed corpus, which showed a clean gap on the OLD
 # denominator: rich stops the fix SHOULD add rated 3.2-4.2 (Pantheon 3.47, Louvre
 # Museum 3.2-3.3, Palais-Royal 4.19), thin slogs >=5.0 (Pont des Arts 5.0, thin
-# streets 5.7-16). 4.5 sits squarely in that gap. Moving the denominator can only
-# LOWER a candidate's ratio (dwell >= audio always), so 4.5 stays a valid divider
-# and every stop that passed before still passes; what changes is that
-# interior-heavy stops stop being rejected. Re-tuning it belongs with a fresh
-# corpus measurement, not with this rename. (A marginal ratio is used, not a
+# streets 5.7-16). 4.5 sat squarely in that gap. Moving the denominator can only
+# LOWER a candidate's ratio (dwell >= audio always), so 4.5 stayed a valid divider
+# and every stop that passed before still passed; what changed is that
+# interior-heavy stops stopped being rejected. (A marginal ratio is used, not a
 # total-walk cap: the fill-pass insertion cost is a PRE-Held-Karp overestimate,
 # so a total-walk threshold wrongly rejects good stops once re-optimised.)
-RESCUE_MAX_WALK_PER_DWELL_SECOND: float = 4.5
+#
+# RE-DERIVED 4.5 -> 2.0 BY THE ELEVEN, 2026-08-24 (Phase 8 W8.6, Q2; verdicts in
+# evidence/phase8-gates/verdicts/w86-*.md). 4.5 was tuned on the engine's own
+# corpus gap — never on what a traveller will actually walk — and it CONTRADICTED
+# the product's own illogical-detour gate, which calls anything past 2.0x the
+# direct walk (and 1800 s of pure detour) a defect
+# (tests/test_tour_invariants_live.py::_MAX_STOP_DETOUR_RATIO). The planner was
+# buying days its own invariant then flagged: the measured Panthéon 120-minute
+# loop walked 43 minutes to a bookshop at 60.7x, and four live fixtures failed
+# INV8 on windows this line admitted.
+#
+# The panel's own numbers, each from their documented day: Aiko 1:3 · Paulo 1:2 ·
+# Fiona & Dev 1:2 · Camille 1:1 (her dearest leg, Pont Neuf, ran exactly 1:1) ·
+# Nadia 1:1 at her measured half-pace · Marcus 1:1 with the bag · Rosemary 1:1
+# (and never a leg over 12 min) · Sofia 1:1 · Greta 1.5 · Théo 2.0 · Julien 2.0
+# for SILENT walking (told walking, he rules, costs nothing). 2.0 is the loosest
+# line no panelist's OWN defended trade breaks — Théo's 16-minute walk for nine
+# silent minutes at the deportation memorial (1.8) and Greta's narrated 2:1
+# Orangerie leg both survive — and it is the single number all eleven named as
+# the gate. Rosemary on the old value, verbatim: 4.5 "would march me twenty-two
+# minutes for a five-minute look. That is not a tour; that is how you put me in
+# a taxi home."
+#
+# Greta's standing dissent, recorded rather than averaged away: do not treat one
+# constant as the answer forever — read a traveller's walking appetite when the
+# system can hold one. Aiko's: the price of walking is condition-scaled (rain).
+RESCUE_MAX_WALK_PER_DWELL_SECOND: float = 2.0
+
+#: The ABSOLUTE half of the same W8.6 ruling: however much a stop earns the
+#: visitor, no single added stop may cost more than this much PURE detour. Both
+#: halves are needed because a ratio alone cannot catch a rich stop bought with an
+#: hour of walking, and an absolute alone cannot catch a thin one bought with ten
+#: minutes. INHERITED, not invented: it is the same 1800 s the illogical-detour
+#: invariant pairs with its 2.0x ratio (`_MIN_DETOUR_EXTRA_SECONDS`), so the
+#: planner and the gate that judges it now speak one rule instead of two — the
+#: §10.8.2 discipline applied to a threshold rather than a formula.
+MAX_STOP_PURE_DETOUR_SECONDS: int = 1800
+
+
+def stop_earns_its_walk(marginal_walk_seconds: int, stop_dwell_seconds: int) -> bool:
+    """THE ONE walking-worth line (Phase 8 W8.6; the panel's Q2, 11/11).
+
+    Is this stop worth the walking it costs to add? Both halves of the ruling,
+    in one definition every site that ADDS a stop calls — the ordinary fill, the
+    under-fill rescue, and the timebox repair's slog test — because a rule that
+    lives in three places is a rule that forks (§10.8.2, §0.4). Before this, the
+    rescue applied a ratio, the repair applied the same ratio, and the ordinary
+    fill applied NOTHING but the walk budget, so a stop the rescue would refuse
+    was bought a line earlier as long as the budget had room. That is the
+    measured Shape B zig-zag (concorde-250 at 3.5-7.8x, greenwich at 2.7-4.1x)
+    and Nadia named it: "a planner that flags 60.7x with one hand and buys it
+    with the other is not planning, it is arguing with itself."
+
+    The currency is VISITOR-TIME on both sides (design §4.5.1): seconds of
+    walking against the seconds the stop earns the visitor standing there —
+    never against what it says, because "a forty-minute interior carrying ninety
+    seconds of audio" is the shape this release exists to seat.
+    """
+    return (
+        marginal_walk_seconds <= RESCUE_MAX_WALK_PER_DWELL_SECOND * max(1, stop_dwell_seconds)
+        and marginal_walk_seconds <= MAX_STOP_PURE_DETOUR_SECONDS
+    )
 # The rescue lifts a tour to at least this many stops (the reported failure was a
 # 60-min tour seating only ONE). Kept modest so two far-ish rich stops can't
 # accumulate into a walk-heavy route — a 1->2 stop lift is the fix; a rich dense
@@ -520,11 +580,21 @@ class CertificationPlanningInfeasibleError(Exception):
         # fit.
         self.gap_minutes = gap_minutes
         self.alternatives = alternatives
-        best = "none" if best_elapsed_seconds is None else str(best_elapsed_seconds)
+        # The tail is a whole clause, not a substituted number, because there are two
+        # different truths to tell and one of them has no number in it. Measured
+        # 2026-08-25 on a New York 60-minute start: `best_elapsed_seconds` was None and
+        # the old form rendered "best eligible bounded route nones." — the word "none"
+        # with the seconds unit glued on, in a sentence that had already claimed "the
+        # shortest one found is still longer than asked for" while nothing had been
+        # found at all. W8.2's ruling R8 requires an editor-facing refusal to be "a line
+        # edit, not a guess"; a sentence that contradicts itself is neither.
+        if best_elapsed_seconds is None:
+            tail = "and no bounded route could be priced at all"
+        else:
+            tail = f"best eligible bounded route {best_elapsed_seconds}s"
         super().__init__(
             f"Certification planning infeasible under {policy_id}: {reason}; "
-            f"required {minimum_elapsed_seconds}-{maximum_elapsed_seconds}s, "
-            f"best eligible bounded route {best}s."
+            f"required {minimum_elapsed_seconds}-{maximum_elapsed_seconds}s, {tail}."
         )
 
 
@@ -2460,6 +2530,16 @@ def _select_route_once(
         replan.visit_extension_seconds if replan is not None else {}
     )
 
+    # STOPS THE DAY HAS NO ROOM TO GO INSIDE (the timebox repair's fourth move,
+    # "step outside"). THE MIRROR of `visit_extension_seconds` above, and
+    # deliberately built the same way: a per-POI channel, written by one pass and
+    # read by THE one pricing closure below, so the repair's trials, the served
+    # arrivals and the promise shapes all price the same visit. That channel
+    # LENGTHENS a stop; this one prices it exterior-only — through `visit_shape`'s
+    # OWN collapse, never a second rule here. Empty = every interior fits = today,
+    # byte-identical.
+    exterior_only_ids: set[str] = set()
+
     def shape_visit(cand: POI, clock_hour: int | None) -> PromiseShape:
         shape = visit_shape(
             cand,
@@ -2470,6 +2550,7 @@ def _select_route_once(
             closed_today=cand.id in closed_today_ids,
             weather=input.weather,
             wall=wall_hardness,
+            exterior_only=cand.id in exterior_only_ids,
         )
         extra = visit_extension_seconds.get(cand.id, 0)
         if extra <= 0:
@@ -3312,7 +3393,32 @@ def _select_route_once(
         queue_visit=lambda cand, hour: shape_visit(cand, hour).queue_seconds,
         report_overrun=replan is not None and replan.floor_zero,
         listening_rate=listening_rate,
+        # THE FOURTH MOVE'S CHANNEL (design §4.5.1). Add, drop and exchange all
+        # speak through the returned stop list; "keep this stop, price it
+        # exterior-only" has nowhere to go in a list of POIs, so it rides this
+        # set — the one THE pricing closure above already reads. `shape_visit`
+        # comes with it because the move only offers a stop the visitor would
+        # otherwise have gone INSIDE.
+        #
+        # PLANNING ONLY — NEVER ON A LIVE REPLAN, and this is the whole rule.
+        # Design §4.3: "fabric may change silently; promises may not." At planning
+        # time nothing has been promised yet, so trading a cathedral's interior for
+        # its facade is an honest way to serve the hour that was asked for. Once the
+        # day is on the wire that interior IS a promise, and withdrawing it because
+        # the walker is running late is a silently thinner day — exactly what W8.2's
+        # ruling R8 forbids. The session's own machinery already owns that moment:
+        # it ASKS ("keep the rest, or shorten?") rather than deciding for her.
+        # MEASURED 2026-08-25: with the move live on the replan path,
+        # `test_a_day_built_around_one_place_asks_rather_than_dropping_it` lost its
+        # question entirely — the engine stepped Rosemary's Orsay outside instead of
+        # asking her. Forcing `exterior_only` off restored the question exactly.
+        exterior_only_ids=exterior_only_ids if replan is None else None,
+        shape_visit=shape_visit if replan is None else None,
     )
+    for stepped_id in exterior_only_ids:
+        # The greedy's estimate memo predates the step outside (the same
+        # staleness the concentrate pass clears after a drop's grant).
+        _visit_memo.pop(stepped_id, None)
 
     # "FEWER STOPS, LONGER AT EACH" (Phase 4 dial, W4.2 — Camille/Nadia's
     # locked label). Concentrate AFTER the repair: drop the weakest
@@ -3375,7 +3481,6 @@ def _select_route_once(
                     price_visit=price_visit,
                     clock_start=clock_start,
                     queue_visit=lambda cand, hour: shape_visit(cand, hour).queue_seconds,
-
                     listening_rate=listening_rate,
                 )
                 if trial is None or (
@@ -3619,6 +3724,26 @@ def _select_route_once(
                 ),
             )
         )
+    # SAY THE STEP OUTSIDE (W8.2 ruling R8 — a silently thinner day is
+    # forbidden). The repair's fourth move kept these stops and dropped their
+    # interiors, which changes what the visitor was promised, so the day carries
+    # the fact on the SAME notes channel a locked door and an unlit finish
+    # already use. The sentence, and the `kept_outside` left False beside it,
+    # are `interior_did_not_fit_reason`'s; its docstring says why. Only stops
+    # that actually SURVIVED onto the day are named: one the repair stepped
+    # outside and then traded away is not in the day at all. A stop the clock
+    # already spoke for keeps that sentence — its door was shut before the
+    # minutes were ever the question.
+    already_disclosed = {excl.poi_id for excl in clock_exclusions}
+    for poi in selected:
+        if poi.id in exterior_only_ids and poi.id not in already_disclosed:
+            clock_exclusions.append(
+                ClockExclusion(
+                    poi_id=poi.id,
+                    name=poi.name,
+                    reason=interior_did_not_fit_reason(input.duration_min),
+                )
+            )
     # The served order's ONE arrival walk (deviation v's exact half): visit
     # prices and promise shapes both read it, so the two can never disagree
     # about the hour a visitor stands anywhere.
@@ -3726,10 +3851,6 @@ def _select_route_once(
     # demotion, exact ordering and final-closing governance, the route must still sit
     # inside the same frozen band the repair used. The legacy fixed-end-only variant
     # of this guard was deleted 2026-08-04 with the policy it belonged to.
-    # Last-line invariant: after materialization, demotion, exact ordering,
-    # and final-closing governance, a certification route of ANY shape must
-    # remain inside the same frozen band used by repair.  Legacy keeps its
-    # historical fixed-end-only over-ceiling guard byte-for-byte below.
     #
     # THE ONE DEFINITION OF ELAPSED: walking plus standing still, where standing
     # still is `served_dwell_seconds` — the same function the repair's trials and
@@ -3765,7 +3886,28 @@ def _select_route_once(
         # with the overrun on it — the raw material of the ONE question — because
         # a tail is not a request the phone can take a 422 for.
         route = route.model_copy(update={"overrun_seconds": final_elapsed - elapsed_ceiling})
-    elif final_elapsed > elapsed_ceiling:
+    elif final_elapsed > elapsed_ceiling + TIMEBOX_MATERIALITY_TOLERANCE_SECONDS:
+        # THE CEILING IS HARD, AND "OVER" MEANS MATERIALLY OVER (Phase 8 W8.6,
+        # the panel's Q4, 11/11 SERVE). This compared strictly, so a route
+        # pricing its request plus TWENTY-TWO SECONDS was refused outright —
+        # measured live on the paris never-empty invariant, 15022 s against
+        # 15000 s (evidence/phase8-gates/w86-invariants-fresh.log). The engine's
+        # own `TIMEBOX_MATERIALITY_TOLERANCE_SECONDS` already declares a route
+        # within one displayed minute "materially in the same customer timebox",
+        # and `within_planning_timebox` has applied it on both sides of the band
+        # since it was written — this one gate did not, so the product
+        # contradicted its own definition of material. Rosemary: "an engine that
+        # declares that and then refuses over twenty-two seconds does not have a
+        # rule; it has a mood." Sofia: "no gate may refuse on a quantity below
+        # one displayed minute." Marcus, whose train is the reason the ceiling is
+        # hard at all: "22 seconds is under one traffic light of noise … my
+        # margin lives in whole minutes I build myself."
+        #
+        # Nothing else moves. The tolerance is the SAME one minute the band check
+        # uses (§10.8.2 — one definition of material), a route genuinely over its
+        # request still refuses with its alternatives, and the replanned-tail
+        # branch above still REPORTS its overrun from the raw ceiling because a
+        # tail never refuses and its number is the question's raw material.
         alternatives, gap_minutes = _band_alternatives(
             input=input,
             planning_policy=planning_policy,
@@ -4285,6 +4427,12 @@ def _apply_fill_pass(
             extra, idx = _insertion(cand, selected)
             if consumed_walk + extra > walk_cap:
                 continue
+            # THE WORTH LINE BINDS HERE TOO (Phase 8 W8.6, Q2 11/11). Walk slack
+            # is permission to walk, never a reason to: this arm used to admit
+            # any candidate the budget could still afford, so a stop the rescue
+            # below would refuse as a slog was bought here a few lines earlier.
+            if not stop_earns_its_walk(extra, stop_cost_fn(cand, exempt=False)):
+                continue
             if not _insertion_legs_fit_cap(
                 cand,
                 selected,
@@ -4359,7 +4507,12 @@ def _apply_fill_pass(
             # so a forty-minute interior carrying ninety seconds of audio was
             # classified a walk-slog and refused — which is exactly the shape of
             # stop this release exists to seat.
-            if extra > RESCUE_MAX_WALK_PER_DWELL_SECOND * cand_dwell:
+            #
+            # THE W8.6 WORTH LINE (the panel's Q2, 11/11), through its one
+            # definition. A stop that cannot earn its walk is not rescued into
+            # the day — "walking is the price I pay, not part of the day I
+            # bought" (Nadia).
+            if not stop_earns_its_walk(extra, cand_dwell):
                 continue
             # MOVE CEILING: walking + standing still is the tourist's real elapsed
             # time. Cap it at the engine's own nominal total, or filling to the
@@ -5334,6 +5487,32 @@ def drop_stop(
 TIMEBOX_REPAIR_MAX_PASSES: int = 4
 
 
+def interior_did_not_fit_reason(duration_min: int) -> str:
+    """THE sentence a stepped-outside stop carries, in one place.
+
+    Written for a person and checkable by a stranger, like every other
+    `ClockExclusion.reason` (W4.2 panel, Paulo's wording rulings). It takes the
+    after-dusk disclosure's shape, not the closed door's: this is a note about a
+    stop that STAYED, so the planner's sentence is the whole story, with no
+    second half for a reader to compose.
+
+    `kept_outside` stays FALSE for the same reason, and it is load-bearing rather
+    than a nicety. That flag means the CLOCK voided a door and the facade was
+    kept, and every reader draws the word "closed" from it — the harness's
+    per-stop column renders `closed — outside only`. Notre-Dame is not closed;
+    the day simply has no room to go in. A decision belongs in a field (W4.12),
+    and this is a different decision, so it must not borrow that field.
+
+    On the wire and in the harness alike this reads as "Notre-Dame Cathedral —
+    its interior does not fit the 60 minutes you asked for, so we will see it
+    from the outside", and the per-stop table prints the true `25 min out`.
+    """
+    return (
+        f"its interior does not fit the {duration_min} minutes you asked for, "
+        "so we will see it from the outside"
+    )
+
+
 def _apply_certification_timebox_repair(
     selected: list[POI],
     candidates: list[POI],
@@ -5353,9 +5532,11 @@ def _apply_certification_timebox_repair(
     queue_visit: Callable[[POI, int | None], int] | None = None,
     report_overrun: bool = False,
     listening_rate: float = 1.0,
+    exterior_only_ids: set[str] | None = None,
+    shape_visit: Callable[[POI, int | None], PromiseShape] | None = None,
     _pass_number: int = 1,
 ) -> list[POI]:
-    """Bounded add/exchange/drop repair for one frozen certification policy.
+    """Bounded add/exchange/drop/step-outside repair for one frozen policy.
 
     ``report_overrun`` (Phase 5 S5.6, a ReplanContext's remainder): when nothing
     banks, hand back the best over-ceiling set instead of refusing — the final
@@ -5375,22 +5556,33 @@ def _apply_certification_timebox_repair(
     fixed destination B (which this function also derives itself, below).
     Exchanges and adds still consider every trial; only removal of a promise
     is refused.
+
+    THE FOURTH MOVE — "STEP OUTSIDE" (``exterior_only_ids`` + ``shape_visit``).
+    Add, drop and exchange all speak through the returned stop list, so this
+    function could only ever answer "which places", never "how much of this
+    place". That silence is what made a fixed-end day refusable by arithmetic no
+    move could touch: the destination is PROTECTED from every drop, so its price
+    is a floor — Notre-Dame's fifty-minute interior plus its line is 65 minutes
+    of a 60-minute request before a step is walked, and the day was refused with
+    "every route reachable from this start overruns the requested duration".
+    The engine already knew how to say "you will not have time to go in, but the
+    place is still worth standing at" — that is `visit_shape`'s collapse, which a
+    locked door, a `wall` end and a party ceiling each trigger — it simply had no
+    way to be told so by the DURATION the visitor asked for. This set is that
+    way: the repair writes a stop into it and re-runs its own enumeration with
+    the stop priced exterior-only through that same collapse.
+
+    It is a LAST RESORT, and the ordering is the whole guarantee: a day that fits
+    with everyone's interior intact must never lose an interior, so this runs
+    only after every add, drop, exchange and repair pass has failed to put ANY
+    day under the ceiling — and only where the alternative is a REFUSAL, which is
+    why a ``report_overrun`` remainder returns before reaching it. It applies to
+    the protected destination too — that is
+    the point, since the destination is the one stop no other move can reach.
+    ``select_route`` reads the set afterwards and discloses each stepped stop on
+    the day's own notes channel; a silently thinner day is forbidden (W8.2 R8).
     """
 
-    base = _certification_route_trial(
-        selected,
-        input=input,
-        snapshot=snapshot,
-        interest=interest,
-        leg_seconds_fn=leg_seconds_fn,
-        planning_budget=planning_budget,
-        pulled_endpoint_id=pulled_endpoint_id,
-        price_visit=price_visit,
-        clock_start=clock_start,
-        queue_visit=queue_visit,
-
-        listening_rate=listening_rate,
-    )
     preferred_trials: list[_CertificationRouteTrial] = []
     last_resort_trials: list[_CertificationRouteTrial] = []
     #: Every trial that fits UNDER the ceiling, whether or not it reaches the
@@ -5415,9 +5607,12 @@ def _apply_certification_timebox_repair(
     # materiality tolerance the band itself uses: seconds too few to change what
     # the tourist experiences are not worth defending, and inventing a second
     # tolerance would mean two different definitions of "material" in one function.
-    incumbent_in_band = base is not None and within_planning_timebox(
-        base.elapsed_seconds, planning_budget
-    )
+    #
+    # Both of these are re-derived by ``enumerate_moves`` on every round, because
+    # the fourth move re-prices the incumbent: a day whose destination has stepped
+    # outside is a different base with a different band answer.
+    base: _CertificationRouteTrial | None = None
+    incumbent_in_band = False
 
     def record(
         trial: _CertificationRouteTrial | None,
@@ -5529,7 +5724,11 @@ def _apply_certification_timebox_repair(
                     MAX_DWELL_AUDIO_SECONDS,
                 ),
             )
-            ratio_exceeded = marginal_walk > RESCUE_MAX_WALK_PER_DWELL_SECOND * max(1, added_dwell)
+            # THE SAME WORTH LINE the fill pass applies, through its one
+            # definition (W8.6 Q2, 11/11): a trial that buys its stop with more
+            # walking than the stop earns — or with more than the absolute
+            # pure-detour ceiling — is a last resort, never a preferred repair.
+            ratio_exceeded = not stop_earns_its_walk(marginal_walk, added_dwell)
         if within_planning_timebox(trial.elapsed_seconds, planning_budget):
             if (
                 incumbent_in_band
@@ -5566,9 +5765,6 @@ def _apply_certification_timebox_repair(
             reference_walk_seconds=reference_walk_seconds,
         )
 
-    # ``base`` is the incumbent priced above; banking it directly is the same
-    # trial ``consider(list(selected))`` would recompute.
-    record(base)
     selected_ids = {poi.id for poi in selected}
     # THE PROTECTED SET a DROP must never remove (plan S3.6 generalising the
     # old single protected_end_id). Always includes the stop currently
@@ -5603,24 +5799,19 @@ def _apply_certification_timebox_repair(
         (candidate for candidate in candidates if candidate.id not in selected_ids),
         key=lambda poi: (-_pool_rank_score(poi), poi.id),
     )
-    if base is not None:
-        for candidate in pool:
-            consider(
-                [*selected, candidate],
-                added=candidate,
-                reference_walk_seconds=base.walk_seconds,
-            )
-    for incumbent in sorted(selected, key=lambda poi: poi.id):
-        if incumbent.id in protected:
-            # A promise is un-removable through EITHER door: not by the pure
-            # DROP below, and not by an EXCHANGE that swaps it for a pool
-            # candidate — an exchange removes the incumbent just the same,
-            # which is exactly how the dusk-preferred lit finisher was traded
-            # back for a richer dark one before this guard covered both.
-            continue
-        retained = [poi for poi in selected if poi.id != incumbent.id]
-        retained_trial = _certification_route_trial(
-            retained,
+    def enumerate_moves() -> None:
+        """Price the incumbent and every ADD, DROP and EXCHANGE around it.
+
+        A function rather than a straight-line block because the fourth move
+        re-runs exactly this enumeration with one stop priced exterior-only —
+        the adds matter there as much as anywhere (the day that fits is
+        Notre-Dame's facade PLUS the bridge the visitor is standing on), and a
+        second copy of the enumeration written for that round is the fork this
+        module exists to avoid.
+        """
+        nonlocal base, incumbent_in_band
+        base = _certification_route_trial(
+            selected,
             input=input,
             snapshot=snapshot,
             interest=interest,
@@ -5630,37 +5821,172 @@ def _apply_certification_timebox_repair(
             price_visit=price_visit,
             clock_start=clock_start,
             queue_visit=queue_visit,
-
             listening_rate=listening_rate,
         )
-        reference_walk_seconds = retained_trial.walk_seconds if retained_trial is not None else 0
-        # The DROP itself is a solution, not merely a pricing reference for the
-        # exchanges below. Every other move here holds the stop count (exchange)
-        # or raises it (add), so without this a route that overshoots the ceiling
-        # has NO move that shortens it and the whole option is refused — the
-        # 2026-08-04 collapse to a single walk. Stop ceilings used to make the
-        # overshoot impossible; with duration as the only stop bound it is
-        # routine. A removal cannot be a walk-slog (it adds no walk and no
-        # audio), so it is never a last resort — and it still has to beat every
-        # other in-band trial on ``rank`` to be chosen, where the score tie-break
-        # favours the route that kept more stops.
-        if retained and incumbent.id not in protected:
-            record(retained_trial)
-        for candidate in pool:
-            consider(
-                [*retained, candidate],
-                added=candidate,
-                reference_walk_seconds=reference_walk_seconds,
+        incumbent_in_band = base is not None and within_planning_timebox(
+            base.elapsed_seconds, planning_budget
+        )
+        # ``base`` is the incumbent priced just above; banking it directly is the
+        # same trial ``consider(list(selected))`` would recompute.
+        record(base)
+        if base is not None:
+            for candidate in pool:
+                consider(
+                    [*selected, candidate],
+                    added=candidate,
+                    reference_walk_seconds=base.walk_seconds,
+                )
+        for incumbent in sorted(selected, key=lambda poi: poi.id):
+            if incumbent.id in protected:
+                # A promise is un-removable through EITHER door: not by the pure
+                # DROP below, and not by an EXCHANGE that swaps it for a pool
+                # candidate — an exchange removes the incumbent just the same,
+                # which is exactly how the dusk-preferred lit finisher was traded
+                # back for a richer dark one before this guard covered both.
+                continue
+            retained = [poi for poi in selected if poi.id != incumbent.id]
+            retained_trial = _certification_route_trial(
+                retained,
+                input=input,
+                snapshot=snapshot,
+                interest=interest,
+                leg_seconds_fn=leg_seconds_fn,
+                planning_budget=planning_budget,
+                pulled_endpoint_id=pulled_endpoint_id,
+                price_visit=price_visit,
+                clock_start=clock_start,
+                queue_visit=queue_visit,
+                listening_rate=listening_rate,
             )
+            reference_walk_seconds = (
+                retained_trial.walk_seconds if retained_trial is not None else 0
+            )
+            # The DROP itself is a solution, not merely a pricing reference for the
+            # exchanges below. Every other move here holds the stop count (exchange)
+            # or raises it (add), so without this a route that overshoots the ceiling
+            # has NO move that shortens it and the whole option is refused — the
+            # 2026-08-04 collapse to a single walk. Stop ceilings used to make the
+            # overshoot impossible; with duration as the only stop bound it is
+            # routine. A removal cannot be a walk-slog (it adds no walk and no
+            # audio), so it is never a last resort — and it still has to beat every
+            # other in-band trial on ``rank`` to be chosen, where the score tie-break
+            # favours the route that kept more stops.
+            if retained and incumbent.id not in protected:
+                record(retained_trial)
+            for candidate in pool:
+                consider(
+                    [*retained, candidate],
+                    added=candidate,
+                    reference_walk_seconds=reference_walk_seconds,
+                )
 
-    eligible_trials = preferred_trials or last_resort_trials
-    if not eligible_trials and under_ceiling_trials:
+    def _storied_rank(
+        trial: _CertificationRouteTrial,
+    ) -> tuple[float, float, int, tuple[str, ...]]:
+        """How good a day is when no day can reach the floor — bigger is better.
+
+        THE ONE such ordering, because two places choose among under-ceiling
+        days: the branch below, and the fourth move deciding which stop should
+        step outside. A second spelling of "the most storied day" would let the
+        two disagree about the same pair of days.
+
+        THE MOST STORIED DAY, NOT THE LONGEST WALK (Phase 8 W8.6, the panel's
+        Q1 ruling, 11/11; design §8.3's deleted fill-the-requested-time and
+        §4.5.1's price-in-visitor-time).
+
+        This key read ELAPSED — walking plus standing — so a day was "longer"
+        for having walked further, and the pick padded with pavement. Measured
+        live on the PdV golden (2026-08-24, evidence/phase8-gates/w86-*): a
+        60-minute round trip starting in the MIDDLE of Place des Vosges (tier
+        5, 64 beats, 30 minutes of standing) served ONE stop — Place de la
+        Bastille (tier 3, 15 beats), 12 minutes' walk away — and never said a
+        word about the square the walker was standing in, because 1200 s of
+        standing + 1436 s of walking beat 1800 s of standing at the best
+        place. The Panthéon 120-minute loop is the same shape (43 minutes of
+        walking to a bookshop, its own INV8 gate rating the detour 60.7x).
+
+        The panel, all eleven, ruled the arithmetic backwards. Théo: "padding
+        the length with pavement is a walk filed as dwell." Camille: "length
+        made of walking is not length." Nadia: "walking is the price I pay, at
+        half speed, often with a five-year-old on my hip." Rosemary: "the
+        square I am standing in, told honestly short, beats any day padded
+        longer with my steps." So the currency here is STANDING STILL — the
+        day's own places — and walking is what it costs, never what it is
+        worth.
+
+        Queue seconds still spend the budget and still never count as the day
+        (unchanged, the same rule rank's fit term keeps). Ties break on the
+        diversity-weighted score, then on ids, so the choice stays
+        deterministic exactly as `rank` is. The CEILING is untouched: every
+        candidate compared here already fits, and a day is never lengthened by
+        this.
+        """
+        return (
+            # THE BEST PLACES FIRST — the day's own story value, which is what
+            # "storied" means to the engine: tier x richness x lens fit x
+            # alignment, summed over the day's stops.
+            #
+            # UNDIMMED HERE, AND THAT IS THE SECOND MEASURED CORRECTION.
+            # Ranking by the DIVERSITY-WEIGHTED score made this key prefer a
+            # strictly SMALLER day: Greta's dimmer fires when a category covers
+            # half a set, so a two-museum day dims BOTH its stops to 0.8 while
+            # a one-museum day keeps full marks, and 0.8 x (Orangerie + Orsay)
+            # came out under Orsay alone. Measured live on Rosemary's own
+            # request (Orsay round trip, take-it-easy, 13-minute cap): the day
+            # collapsed from [Musee de l'Orangerie, Musee d'Orsay] with 19
+            # minutes of walking to [Musee d'Orsay] with none — and with the
+            # walking went the cadence crossing that seats her BENCH, the one
+            # stop her whole persona is about (`test_a_day_with_a_rest_
+            # generates_on_the_app_path` caught it).
+            #
+            # A "most storied day" measure must be MONOTONE: a day that keeps
+            # everything another day has, plus one more real place, is never
+            # the poorer day. The plain sum is monotone; the dimmed sum is not.
+            # Greta's rule keeps its job as the TIE-BREAK below — choosing
+            # between days of equal story value, which is what "between two
+            # otherwise-equal repairs" meant when it was written — and never
+            # decides that fewer places is more storied.
+            sum(
+                poi_score(
+                    poi, spine, interest, snapshot,
+                    penalty=score_penalty, party=input.party,
+                )
+                for poi in trial.selected
+            ),
+            # Greta's dimmer, among days the sum above cannot separate.
+            # MEASURED CORRECTION, 2026-08-24: this key first read
+            # `dwell - queue`, the LONGEST STANDING TIME — and that is option
+            # (b) of the panel's own Q1, which every one of the eleven
+            # REJECTED in favour of (a), the most storied day. Camille said
+            # exactly why: "maximised standing time still picks quantity over
+            # the best places, and could still skip the square I am in." The
+            # golden proved her right within the hour: on the Place des Vosges
+            # 60-minute round trip the dwell key picked Musee Victor Hugo —
+            # tier 4, TWO beats, a 35-minute visit — over Place des Vosges
+            # itself, tier 5 with SIXTY-FOUR stories and a 30-minute visit.
+            # A longer stand at a quieter place is not a better day.
+            _diversity_weighted_score(
+                trial.selected,
+                spine=spine,
+                interest=interest,
+                snapshot=snapshot,
+                score_penalty=score_penalty,
+                party=input.party,
+            ),
+            # Between days of equal story value, the one that gives more time
+            # AT those places wins — standing still, minus the minutes spent
+            # in line for it (queues are budgeted, never credited).
+            trial.dwell_seconds - trial.queue_seconds,
+            tuple(sorted(poi.id for poi in trial.selected)),
+        )
+
+    def best_under_ceiling() -> list[POI]:
         # UNDER-FILLED. Nothing reaches the floor, but something fits under the
         # ceiling. The floor stays SOFT for honest near-misses (design §8.3:
         # duration is a ceiling, not a contract to fill; the gate downstream
         # measures the shortfall and attaches the disclosure). Hand back the
-        # longest day under the ceiling and let THE ONE UNDERFILL LINE at the
-        # final band check decide (Phase 5 S5.3): the W4.2 panel's unanimous
+        # most storied day under the ceiling and let THE ONE UNDERFILL LINE at
+        # the final band check decide (Phase 5 S5.3): the W4.2 panel's unanimous
         # worst finding (D-i) — a best-possible day under HALF the ask is no day
         # — used to be enforced HERE, against THIS budget, and this budget is the
         # repair's: a rest cadence has already shrunk it by its rest reserve, so
@@ -5668,128 +5994,7 @@ def _apply_certification_timebox_repair(
         # after the repair ran downstream of it (W4.11's carried composition hole,
         # re-measured at W5.1: 68 of 180 shipped). The line now lives once, after
         # every pass, on the request's own budget.
-        #
-        # "The longest under the ceiling" is the same preference `rank` expresses
-        # (nearest the nominal), stated directly because every candidate here is
-        # below it. Ties break on the higher score, then on ids, so the choice is
-        # deterministic exactly as `rank` is.
-        best_under = max(
-            under_ceiling_trials,
-            key=lambda trial: (
-                # Longest EXPERIENCE under the ceiling — queue seconds spend
-                # the budget but never count as the day (the same rule as
-                # rank's fit term).
-                trial.elapsed_seconds - trial.queue_seconds,
-                _diversity_weighted_score(
-                    trial.selected,
-                    spine=spine,
-                    interest=interest,
-                    snapshot=snapshot,
-                    score_penalty=score_penalty,
-                    party=input.party,
-                ),
-                tuple(sorted(poi.id for poi in trial.selected)),
-            ),
-        )
-        return list(best_under.selected)
-    if not eligible_trials:
-        # EVERY trial overshoots the request (an under-ceiling trial would have
-        # taken the branch above; a leg-cap-rejected one never banks). One
-        # enumeration can shed at most one stop, and an arrival-hour queue
-        # re-pricing can move the day by several stops' worth at once — so
-        # before refusing, run another pass from the best over-ceiling set this
-        # one found (strictly different, or there is nothing new to try).
-        # Bounded by TIMEBOX_REPAIR_MAX_PASSES.
-        if (
-            best_over
-            and _pass_number < TIMEBOX_REPAIR_MAX_PASSES
-            and {poi.id for poi in best_over[0].selected} != selected_ids
-        ):
-            return _apply_certification_timebox_repair(
-                list(best_over[0].selected),
-                candidates,
-                input=input,
-                snapshot=snapshot,
-                spine=spine,
-                interest=interest,
-                score_penalty=score_penalty,
-                leg_seconds_fn=leg_seconds_fn,
-                planning_policy=planning_policy,
-                planning_budget=planning_budget,
-                pulled_endpoint_id=pulled_endpoint_id,
-                price_visit=price_visit,
-                clock_start=clock_start,
-                protected_promise_ids=protected_promise_ids,
-                queue_visit=queue_visit,
-                report_overrun=report_overrun,
-                listening_rate=listening_rate,
-                _pass_number=_pass_number + 1,
-            )
-        if report_overrun:
-            return list(best_over[0].selected) if best_over else list(selected)
-        # Nothing banked at all. TWO different worlds land here and the refusal
-        # must not confuse them (the c-leg12 defect, W4.2: the message claimed
-        # the day "overruns" while its own numbers showed 75 built against 270
-        # required): with a leg cap set, every candidate day may have been
-        # REJECTED AT THE CAP — the day starved, it did not overrun.
-        # THREE worlds, not two (W4.12 re-derivation of the D-ii template). The
-        # old test was `min(observed) < floor` and then REPORTED `max(observed)`,
-        # so a candidate set that straddled the band — some days too short, some
-        # too long, none in it — printed the longest OVERRUN as "the longest day
-        # that fits the cap" and advised a SHORTER day: on the flagship, "555
-        # minutes fits ... ask for a shorter day" against a 300-minute request
-        # (Théo, Camille, Rosemary, Marcus, Sofia, Julien, Paulo all read it).
-        floor = planning_budget.minimum_elapsed_seconds
-        ceiling = planning_budget.nominal_elapsed_seconds
-        under = [o for o in observed if o < floor]
-        over = [o for o in observed if o > ceiling]
-        best = min(observed) if observed else None
-        capped = input.max_leg_minutes is not None
-        if under and not over and capped:
-            # STARVED under a cap: everything found is too short. Report the
-            # longest that fits, which is the honest ceiling of what the cap allows.
-            best = max(under)
-            reason = (
-                f"with no single walk longer than {input.max_leg_minutes} minutes, "
-                f"the most that can be built here is about {best // 60} minutes, "
-                f"not the {ceiling // 60} you asked for — allow longer walks, or "
-                f"ask for a shorter day"
-            )
-        elif under and over:
-            # THE BAND HAS A GAP: the routes found are either too long or too
-            # short, and nothing lands between. Say both numbers; advise both ways.
-            best = min(over)
-            walk_clause = (
-                f" with no single walk longer than {input.max_leg_minutes} minutes"
-                if capped
-                else ""
-            )
-            reason = (
-                f"no route lands between {floor // 60} and {ceiling // 60} minutes"
-                f"{walk_clause}: the ones found run about {max(under) // 60} minutes "
-                f"or less, or about {min(over) // 60} minutes or more — "
-                + ("allow longer walks, or " if capped else "")
-                + "ask for a longer or a shorter day"
-            )
-        else:
-            reason = (
-                "every route reachable from this start overruns the requested "
-                "duration; the shortest one found is still longer than asked for"
-            )
-        alternatives, gap_minutes = _band_alternatives(
-            input=input,
-            planning_policy=planning_policy,
-            best_elapsed_seconds=best,
-        )
-        raise CertificationPlanningInfeasibleError(
-            policy_id=planning_policy.policy_id,
-            minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
-            maximum_elapsed_seconds=planning_budget.nominal_elapsed_seconds,
-            best_elapsed_seconds=best,
-            reason=reason,
-            alternatives=alternatives,
-            gap_minutes=gap_minutes,
-        )
+        return list(max(under_ceiling_trials, key=_storied_rank).selected)
 
     def rank(
         trial: _CertificationRouteTrial,
@@ -5838,6 +6043,280 @@ def _apply_certification_timebox_repair(
             ),
             -score,
             tuple(sorted(poi.id for poi in trial.selected)),
+        )
+
+    def step_outside_repair() -> list[POI] | None:
+        """THE FOURTH MOVE, and the LAST one tried: keep a stop, drop its door.
+
+        Reached only when no add, no drop, no exchange and no further repair pass
+        could put ANY day under the ceiling — so by the time this runs it is
+        already established that no day exists with every interior intact. That
+        ordering is the guarantee, and it is what the test named
+        ``test_a_day_that_fits_with_the_interior_never_steps_outside`` pins.
+
+        EVERY incumbent the visitor would have gone INSIDE is offered, and the
+        BEST day wins — through ``rank`` and ``_storied_rank``, the two orderings
+        this repair already decides everything else by. Taking the first offer
+        that yielded anything handed the choice to the alphabet: measured on a
+        pinned hall and a destination hall, stepping outside the stop whose id
+        sorted first left a day a minute and a half SHORT of the band and cost
+        the visitor a thirty-two-minute interior, while the other offer's day sat
+        squarely inside it. A day in the band beats a merely-under-ceiling one,
+        exactly as it does in the main body below; inside each kind the ranking
+        decides. Offers are built in ascending-id order and ``min``/``max`` keep
+        the first extreme, so the choice stays deterministic.
+
+        Each offer prices its own enumeration on its OWN trial budget — the banks
+        AND the counter are cleared for it, and restored afterwards. They used to
+        share the counter with the first enumeration, so a repair that had
+        already spent ``TIMEBOX_REPAIR_MAX_TRIALS`` offered every stop and priced
+        none of them: the move silently never ran and the traveller got the
+        refusal back instead of the day. (Measured on a 400-minute request over a
+        214-place pool, round one spends the whole cap.) The work this buys is
+        real — at most one enumeration per interior stop — and it is only ever
+        spent on a day whose alternative is a REFUSAL. A replanned remainder is
+        not such a day: it hands its overrun back for the person to answer, and
+        the caller returns before this is ever called.
+
+        A stop that yields nothing is put back, so a failed offer leaves no trace
+        on the pricing. The PROTECTED destination is offered like any other — it
+        is the stop no drop can reach, which is exactly why this move exists.
+
+        ``None`` means nothing was gained and the caller refuses as before.
+        """
+        if exterior_only_ids is None or shape_visit is None:
+            return None
+        # The window's MIDPOINT hour, the same estimate the slog ratio above uses:
+        # a stop's true arrival hour is only known once a trial has ordered it.
+        estimate_hour = (
+            (clock_start + timedelta(minutes=input.duration_min // 2)).hour
+            if clock_start is not None
+            else None
+        )
+        # A FAILED OFFER LEAVES NO TRACE. The refusal below reads `observed` and
+        # `best_over` to say WHICH days were found and how far off they were, and
+        # that sentence must describe the days the visitor could have had with
+        # every interior intact — not the exterior-priced trials this move tried
+        # and could not use. So the banks are restored whole, exactly as the
+        # pricing channel itself is.
+        was = (
+            list(observed),
+            list(best_over),
+            list(preferred_trials),
+            list(last_resort_trials),
+            list(under_ceiling_trials),
+        )
+        in_band: list[tuple[tuple, str, list[POI]]] = []
+        short_of_band: list[tuple[_CertificationRouteTrial, str]] = []
+        for incumbent in sorted(selected, key=lambda poi: poi.id):
+            if incumbent.id in exterior_only_ids:
+                continue
+            if not shape_visit(incumbent, estimate_hour).goes_inside:
+                continue  # nothing to step out of
+            exterior_only_ids.add(incumbent.id)
+            observed.clear()
+            preferred_trials.clear()
+            last_resort_trials.clear()
+            under_ceiling_trials.clear()
+            best_over.clear()
+            enumerate_moves()
+            stepped = preferred_trials or last_resort_trials
+            if stepped:
+                banked = min(stepped, key=rank)
+                in_band.append((rank(banked), incumbent.id, list(banked.selected)))
+            elif under_ceiling_trials:
+                short_of_band.append(
+                    (max(under_ceiling_trials, key=_storied_rank), incumbent.id)
+                )
+            exterior_only_ids.discard(incumbent.id)
+        (
+            observed[:],
+            best_over[:],
+            preferred_trials[:],
+            last_resort_trials[:],
+            under_ceiling_trials[:],
+        ) = was
+        if in_band:
+            _key, stepped_id, stops = min(in_band, key=lambda offer: offer[0])
+        elif short_of_band:
+            banked, stepped_id = max(
+                short_of_band, key=lambda offer: _storied_rank(offer[0])
+            )
+            stops = list(banked.selected)
+        else:
+            return None
+        exterior_only_ids.add(stepped_id)
+        return stops
+
+    enumerate_moves()
+
+    eligible_trials = preferred_trials or last_resort_trials
+    if not eligible_trials and under_ceiling_trials:
+        return best_under_ceiling()
+    if not eligible_trials:
+        # EVERY trial overshoots the request (an under-ceiling trial would have
+        # taken the branch above; a leg-cap-rejected one never banks). One
+        # enumeration can shed at most one stop, and an arrival-hour queue
+        # re-pricing can move the day by several stops' worth at once — so
+        # before refusing, run another pass from the best over-ceiling set this
+        # one found (strictly different, or there is nothing new to try).
+        # Bounded by TIMEBOX_REPAIR_MAX_PASSES.
+        if (
+            best_over
+            and _pass_number < TIMEBOX_REPAIR_MAX_PASSES
+            and {poi.id for poi in best_over[0].selected} != selected_ids
+        ):
+            try:
+                return _apply_certification_timebox_repair(
+                    list(best_over[0].selected),
+                    candidates,
+                    input=input,
+                    snapshot=snapshot,
+                    spine=spine,
+                    interest=interest,
+                    score_penalty=score_penalty,
+                    leg_seconds_fn=leg_seconds_fn,
+                    planning_policy=planning_policy,
+                    planning_budget=planning_budget,
+                    pulled_endpoint_id=pulled_endpoint_id,
+                    price_visit=price_visit,
+                    clock_start=clock_start,
+                    protected_promise_ids=protected_promise_ids,
+                    queue_visit=queue_visit,
+                    report_overrun=report_overrun,
+                    listening_rate=listening_rate,
+                    exterior_only_ids=exterior_only_ids,
+                    shape_visit=shape_visit,
+                    _pass_number=_pass_number + 1,
+                )
+            except CertificationPlanningInfeasibleError:
+                # Every deeper drop pass failed too — including their own fourth
+                # moves. THIS pass's stop set has not been offered one yet, and
+                # dropping stops is always tried before dropping an interior, so
+                # the move gets its turn here. If it finds nothing either, the
+                # DEEPER refusal is re-raised unchanged: it counted the days that
+                # search actually priced, and a refusal must keep saying exactly
+                # what it said before this move existed.
+                stepped_after_deeper = step_outside_repair()
+                if stepped_after_deeper is not None:
+                    return stepped_after_deeper
+                raise
+        if report_overrun:
+            # A TAIL NEVER TRADES AN INTERIOR AWAY, and it is reached BEFORE the
+            # fourth move because the fourth move's own precondition is a REFUSAL.
+            # `report_overrun` is a replanned REMAINDER (W5.2 R1.1/R2): it never
+            # refuses — the best over-ceiling day comes back with its overrun on it,
+            # and that number is the raw material of the ONE question the person
+            # answers ("keep your full rest and be at the Orsay about 17:02, or sit
+            # six minutes and be back by 17:00"). Stepping a stop outside here
+            # answers that question FOR her and hands back a quietly thinner day
+            # instead. Measured 2026-08-25 on Rosemary's own day, forty-six minutes
+            # late out of the Orangerie: the remainder priced 100 s over her clock,
+            # the move shed an interior to absorb those 100 s, `overrun_seconds` came
+            # back 0, and the live reply carried NO question at all — the exact
+            # silent shedding W5.14 exists to stop. Below, where the alternative
+            # really is a refusal, the move runs exactly as before.
+            return list(best_over[0].selected) if best_over else list(selected)
+        stepped_outside = step_outside_repair()
+        if stepped_outside is not None:
+            return stepped_outside
+        # Nothing banked at all. TWO different worlds land here and the refusal
+        # must not confuse them (the c-leg12 defect, W4.2: the message claimed
+        # the day "overruns" while its own numbers showed 75 built against 270
+        # required): with a leg cap set, every candidate day may have been
+        # REJECTED AT THE CAP — the day starved, it did not overrun.
+        # THREE worlds, not two (W4.12 re-derivation of the D-ii template). The
+        # old test was `min(observed) < floor` and then REPORTED `max(observed)`,
+        # so a candidate set that straddled the band — some days too short, some
+        # too long, none in it — printed the longest OVERRUN as "the longest day
+        # that fits the cap" and advised a SHORTER day: on the flagship, "555
+        # minutes fits ... ask for a shorter day" against a 300-minute request
+        # (Théo, Camille, Rosemary, Marcus, Sofia, Julien, Paulo all read it).
+        floor = planning_budget.minimum_elapsed_seconds
+        ceiling = planning_budget.nominal_elapsed_seconds
+        under = [o for o in observed if o < floor]
+        over = [o for o in observed if o > ceiling]
+        best = min(observed) if observed else None
+        capped = input.max_leg_minutes is not None
+        if not observed:
+            # A FOURTH WORLD, and the one the tail was rewritten for. NOTHING was
+            # priced: the repair was handed no stop it could seat, so there is no
+            # route to have overrun anything and no shortest one to have been
+            # found. Measured 2026-08-25 on a New York 60-minute start, the
+            # sentence made all three claims at once — every route overran, the
+            # shortest was still too long, and (in its own tail) no bounded route
+            # had been priced at all. `reason` is ALSO the clause a traveller
+            # reads on its own, with none of the rest of the line beside it
+            # (src/api/routes/trips.py::_refusal_detail prints `reason` and files
+            # the whole sentence under `technical`), so it has to be true alone.
+            reason = (
+                "no stop near this start could be seated into a route — try a "
+                "longer day, or a start with more within walking distance"
+            )
+        elif under and not over and capped:
+            # STARVED under a cap: everything found is too short. Report the
+            # longest that fits, which is the honest ceiling of what the cap allows.
+            best = max(under)
+            reason = (
+                f"with no single walk longer than {input.max_leg_minutes} minutes, "
+                f"the most that can be built here is about {best // 60} minutes, "
+                f"not the {ceiling // 60} you asked for — allow longer walks, or "
+                f"ask for a shorter day"
+            )
+        elif under and over:
+            # THE BAND HAS A GAP: the routes found are either too long or too
+            # short, and nothing lands between. Say both numbers; advise both ways.
+            best = min(over)
+            walk_clause = (
+                f" with no single walk longer than {input.max_leg_minutes} minutes"
+                if capped
+                else ""
+            )
+            reason = (
+                f"no route lands between {floor // 60} and {ceiling // 60} minutes"
+                f"{walk_clause}: the ones found run about {max(under) // 60} minutes "
+                f"or less, or about {min(over) // 60} minutes or more — "
+                + ("allow longer walks, or " if capped else "")
+                + "ask for a longer or a shorter day"
+            )
+        elif over:
+            reason = (
+                "every route reachable from this start overruns the requested "
+                "duration; the shortest one found is still longer than asked for"
+            )
+        else:
+            # THE OVERRUN SENTENCE IS NOW GUARDED BY ITS OWN PREMISE. It used to
+            # be the bare `else`, so it claimed an overrun in any world the three
+            # branches above did not name — including two where nothing had
+            # overrun at all: every day too short with no leg cap to blame, and
+            # every day IN band but rejected on its walking.
+            #
+            # MEASURED 2026-08-25, and this is why there is no branch per world:
+            # I could not construct either state. Five attempts against the real
+            # repair — a lone over-long stop, an in-band pair under a tight cap,
+            # the same pair with a fixed end so the far stop could not be dropped,
+            # and two distance/dwell tunings — every one was resolved first by
+            # drop, by the under-ceiling bank, or by the straddle branch above.
+            # They are unreachable through today's three moves. So rather than
+            # enumerate worlds nobody can reach, the claim is simply not made
+            # unless its own evidence is present, and anything else says only what
+            # is certain: days were found, none could be served.
+            reason = (
+                "no route from this start could be served at the requested length"
+            )
+        alternatives, gap_minutes = _band_alternatives(
+            input=input,
+            planning_policy=planning_policy,
+            best_elapsed_seconds=best,
+        )
+        raise CertificationPlanningInfeasibleError(
+            policy_id=planning_policy.policy_id,
+            minimum_elapsed_seconds=planning_budget.minimum_elapsed_seconds,
+            maximum_elapsed_seconds=planning_budget.nominal_elapsed_seconds,
+            best_elapsed_seconds=best,
+            reason=reason,
+            alternatives=alternatives,
+            gap_minutes=gap_minutes,
         )
 
     return list(min(eligible_trials, key=rank).selected)

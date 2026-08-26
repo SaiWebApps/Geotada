@@ -146,6 +146,7 @@ def visit_shape(
     closed_today: bool = False,
     weather: Literal["dry", "rain"] | None = None,
     wall: bool = False,
+    exterior_only: bool = False,
 ) -> PromiseShape:
     """THE promise pricing — what standing at this place costs, as a shape.
 
@@ -168,8 +169,16 @@ def visit_shape(
        minutes of line for the zero minutes the ceiling has left; 4. a `wall`
        end refuses ANY audited line ("no stop whose duration is unboundable",
        design §2.3) but never the place; 5. `closed_today` voids the door and
-       keeps the exterior (delete-vs-demote, panel W1.9 dissent 1); 6. rain
+       keeps the exterior (delete-vs-demote, panel W1.9 dissent 1);
+       5b. `exterior_only` is THE DAY'S OWN CLOCK saying the same thing — the
+       planner's last-resort "step outside" repair move, for a stop whose
+       interior the requested minutes cannot hold; 6. rain
        halves an uncovered place's dwell worth, never its queue.
+
+    Rules 3, 4, 5 and 5b are ONE collapse with four ways in, deliberately: the
+    stop survives as its exterior, the door and the door's line drop, the facade
+    is kept. A second exterior rule written anywhere else is the fork
+    `tests/test_one_promise_pricing.py` scans the engine for.
     """
     from .selection import _lens_relation  # single source of truth for the hop model
 
@@ -215,6 +224,13 @@ def visit_shape(
         # A wall refuses ANY audited line, not only the unpredictable class:
         # Marcus is four minutes from £180 (04-layover-sprinter.md:45-47).
         or (wall and poi.queue_class in _QUEUE_CLAIMS)
+        # THE DAY'S OWN CLOCK. The other three triggers are facts about the
+        # PLACE (a locked door, an unboundable line) or about the PARTY (a stop
+        # ceiling); this is the only one the requested DURATION can raise, and
+        # it is what lets the planner say "you will not have time to go in, but
+        # the place is still worth standing at" instead of refusing the day.
+        # Set per stop by the timebox repair's fourth move, as a last resort.
+        or exterior_only
         # The queue is indivisible and the ceiling covers the WHOLE stop; when
         # visit + wait exceed it, the visitor does not join the line. Never
         # triggers without a queue, since base_visit is already ceiling-capped.

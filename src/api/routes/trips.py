@@ -110,7 +110,7 @@ from src.tour.premium_tour import (
     resolve_build_identity,
     resolve_routing_version,
 )
-from src.tour.quality_rubric import score_tour
+from src.tour.quality_rubric import RubricReport, StopMaterial, compose_fixable, score_tour
 from src.tour.routing import PACE_KMH, haversine_m, longest_walk_minutes, summarise_route
 from src.tour.routing_client import ROUTE_SURFACE_COSTING_OVERRIDES, RoutingClient
 from src.tour.selection import (
@@ -835,12 +835,43 @@ def generate_trip(
     )
 
 
-# The per-stop authoring seam fires exactly ONE physical call per dwell stop and
-# never retries (src/tour/premium_tour.py::execute_premium_plan), so the attempt count
-# the response has always carried is now a constant rather than a counter — there is
-# no recompose round trip left to report. The field stays on the wire because the
-# phone reads it out of the 422 detail (mobile/lib/services/trip_service.dart:229).
+# The per-stop authoring seam fires exactly ONE physical call per dwell stop with no
+# retry of its own (src/tour/premium_tour.py::execute_premium_plan). Phase 8 S8.3/S8.4
+# re-derived the attempt count into a real counter again: the compose endpoint may
+# spend ONE bounded targeted re-roll of only the failing stops after a VERIFY refusal
+# (S8.3's "bounded retry" — measured live 2026-08-23: Camille's day died 422 on one
+# bad roll that two clean rolls served) and ONE more after a fixable rubric blocker
+# (S8.4, `compose_fixable`), so the count the phone reads out of the 422 detail
+# (mobile/lib/services/trip_service.dart:229) is 1, 2 or 3 — honestly counted.
 COMPOSE_ATTEMPTS = 1
+
+
+def _rubric_fixable_stops(rubric: RubricReport, composed, seq: BeatSequence) -> set[int]:
+    """The stops whose BLOCKERs one targeted recompose could plausibly fix.
+
+    THE one classifier is ``quality_rubric.compose_fixable`` (standard §7's
+    amendment: servable and loop-worthy are different predicates); this helper
+    only builds each finding's ``StopMaterial`` from what the composer actually
+    HAD (the seated beats' body words) and PRODUCED (the rendered words the
+    rubric already counted). Findings with no stop (C3, C7) classify themselves
+    unfixable; a stop index outside the roster is skipped, never guessed."""
+    beats_by_poi_id = {pb.poi_id: pb.beats for pb in seq.poi_beats}
+    words_by_stop = rubric.stats.get("words_by_stop", {})
+    out: set[int] = set()
+    for finding in rubric.blockers:
+        if finding.stop_idx is None or finding.stop_idx >= len(composed.selected_pois):
+            continue
+        poi = composed.selected_pois[finding.stop_idx]
+        material = StopMaterial(
+            seated_body_words=sum(
+                len((beat.script_body or "").split())
+                for beat in beats_by_poi_id.get(poi.id, ())
+            ),
+            composed_words=int(words_by_stop.get(finding.stop_idx, 0)),
+        )
+        if compose_fixable(finding, material):
+            out.add(finding.stop_idx)
+    return out
 
 
 @router.post("/trips/{trip_id}/compose", response_model=TripComposeResponse)
@@ -1054,6 +1085,34 @@ def compose_trip(
             headers={"Retry-After": "30"},
         ) from exc
 
+    attempts = COMPOSE_ATTEMPTS
+    rerolled_for_rubric: set[int] = set()
+
+    def _reroll_stops(stop_indexes: set[int], responses):
+        """ONE targeted same-request re-roll (Phase 8 S8.3/S8.4): fresh provider
+        rolls for ONLY the named stops — the SAME unit and the SAME envelope, so
+        every replay hash still binds — spliced into the response set. Recorded
+        on the degradations channel: a re-roll is real spend and a real signal,
+        never silent."""
+        nonlocal attempts
+        attempts += 1
+        unit_index = {unit.stop_index: i for i, unit in enumerate(plan.units)}
+        patched = list(responses)
+        for stop_index in sorted(stop_indexes):
+            patched[unit_index[stop_index]] = premium_executor.execute(
+                plan.units[unit_index[stop_index]]
+            )
+        record(
+            kind="compose_stop_rerolled",
+            human=(
+                "One or more stops were written a second time before serving, "
+                "because the first attempt failed a quality or grounding check."
+            ),
+            component="trips.compose_trip",
+            stops=",".join(str(s) for s in sorted(stop_indexes)),
+        )
+        return tuple(patched)
+
     try:
         plan = plan_premium_authoring(
             stitched,
@@ -1074,12 +1133,48 @@ def compose_trip(
                 executor=premium_executor,
                 receipt_sink=EphemeralReceiptSink(),
             )
-            premium_result = finalize_premium_tour(
-                plan,
-                physical_responses,
-                faithfulness_checker=faithfulness_checker,
-                build_identity=build_identity,
-            )
+            try:
+                premium_result = finalize_premium_tour(
+                    plan,
+                    physical_responses,
+                    faithfulness_checker=faithfulness_checker,
+                    build_identity=build_identity,
+                )
+            except ComposeVerificationError as refusal:
+                # Phase 8 S8.3 — THE BOUNDED RETRY, the step's own words:
+                # untraceable writer output "refuses at AUTHORING time with the
+                # bounded retry, so her day composes deterministically". Measured
+                # live 2026-08-23: Camille's run-1 compose died 422 on ONE bad
+                # roll (`fused_across_playback_contexts`, stop 3) while the
+                # identical request rolled clean twice after. The failing stops
+                # are the ones the report NAMES; a provenance failure is
+                # corpus-side and a re-roll cannot converge on it, so it refuses
+                # at once. A stop that fails twice still refuses — bounded means
+                # bounded.
+                failing = {
+                    s.stop_idx
+                    for s in refusal.report.untraceable_sentences
+                    if s.stop_idx is not None
+                } | {
+                    s.stop_idx
+                    for s, _code in refusal.report.forbidden_phrase_hits
+                    if s.stop_idx is not None
+                }
+                if refusal.report.provenance_failures or not failing:
+                    raise
+                logging.getLogger("ondoway.api").warning(
+                    "Compose VERIFY failed on stop(s) %s for trip=%s; spending the "
+                    "one targeted re-roll before refusing",
+                    sorted(failing),
+                    trip_id,
+                )
+                physical_responses = _reroll_stops(failing, physical_responses)
+                premium_result = finalize_premium_tour(
+                    plan,
+                    physical_responses,
+                    faithfulness_checker=faithfulness_checker,
+                    build_identity=build_identity,
+                )
             composed = premium_result.blueprint.script
     except ComposeVerificationError as exc:
         # NAME WHAT BLOCKED, server-side. The 422 below carries counts only — the wire
@@ -1120,7 +1215,9 @@ def compose_trip(
             422,
             {
                 "reason": "compose_verification_failed",
-                "attempts": exc.attempts,
+                # The REAL count this endpoint made (S8.3's bounded retry may
+                # have spent a targeted re-roll before this refusal stood).
+                "attempts": attempts,
                 "untraceable": len(exc.report.untraceable_sentences),
                 "forbidden": len(exc.report.forbidden_phrase_hits),
                 "provenance": len(exc.report.provenance_failures),
@@ -1144,13 +1241,90 @@ def compose_trip(
             422,
             {
                 "reason": "compose_verification_failed",
-                "attempts": COMPOSE_ATTEMPTS,
+                "attempts": attempts,
                 "untraceable": 0,
                 "forbidden": 0,
                 "provenance": 0,
                 "faithfulness": 0,
             },
         ) from exc
+
+    # ── Phase 8 S8.4 (design §7.2; quality standard §7): THE FLOOR GATES SERVING.
+    # W8.1(b) proved the gap live: Greta's served W7.11 day carried `BLOCKER
+    # C3-thin` and was composed, persisted, voiced and served, because only the
+    # workbench's advisory preview ever ran `score_tour`. The persisted path now
+    # refuses a blocker-carrying day BEFORE the full tellings' spend and BEFORE
+    # any write — after spending at most ONE targeted recompose on the stops
+    # `compose_fixable` says a fresh roll could plausibly fix (the standard §7
+    # amendment: a defect that is upstream of compose reproduces identically, so
+    # looping there is spend with zero chance of convergence).
+    rubric = score_tour(composed, route, snapshot.beats_by_poi, beat_sequence=seq)
+    if not rubric.passed:
+        rerolled_for_rubric = _rubric_fixable_stops(rubric, composed, seq)
+        if rerolled_for_rubric and attempts < 3:
+            logging.getLogger("ondoway.api").warning(
+                "Compose failed the quality floor on stop(s) %s for trip=%s; spending "
+                "the one targeted recompose before refusing",
+                sorted(rerolled_for_rubric),
+                trip_id,
+            )
+            try:
+                with _upstream_provider_errors():
+                    physical_responses = _reroll_stops(rerolled_for_rubric, physical_responses)
+                    premium_result = finalize_premium_tour(
+                        plan,
+                        physical_responses,
+                        faithfulness_checker=faithfulness_checker,
+                        build_identity=build_identity,
+                    )
+                composed = premium_result.blueprint.script
+                rubric = score_tour(composed, route, snapshot.beats_by_poi, beat_sequence=seq)
+            except (ComposeVerificationError, ValueError):
+                # The recompose wrote something VERIFY refuses; the day already
+                # carries rubric blockers, so the refusal below stands on those.
+                logging.getLogger("ondoway.api").exception(
+                    "The targeted recompose itself failed VERIFY for trip=%s; refusing "
+                    "on the original rubric blockers",
+                    trip_id,
+                )
+        if not rubric.passed:
+            _log = logging.getLogger("ondoway.api")
+            _log.error(
+                "Compose refused by the QUALITY FLOOR for trip=%s: %d blocker(s), "
+                "%d warning(s)",
+                trip_id,
+                len(rubric.blockers),
+                len(rubric.warnings),
+            )
+            # R8 (W8.2): the named gate, the stop, and OUR OWN message with its
+            # numbers — logged in full here, and carried on the wire below (the
+            # rubric's prose is this engine's, never the provider's).
+            for finding in rubric.blockers:
+                _log.error(
+                    "  BLOCKER %s stop=%s poi=%r: %s",
+                    finding.check,
+                    finding.stop_idx,
+                    finding.poi_name,
+                    finding.message,
+                )
+            raise HTTPException(
+                422,
+                {
+                    "reason": "tour_quality_blocked",
+                    "attempts": attempts,
+                    "blockers": [
+                        {
+                            "check": finding.check,
+                            "stop_idx": finding.stop_idx,
+                            "poi_name": finding.poi_name,
+                            "message": finding.message,
+                        }
+                        for finding in rubric.blockers
+                    ],
+                    "warnings": len(rubric.warnings),
+                    "recomposed_stops": sorted(rerolled_for_rubric),
+                },
+            )
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     # KE2: recompute the keep-exploring extras HERE (never trust generate-time
@@ -1320,7 +1494,7 @@ def compose_trip(
     return TripComposeResponse(
         trip_id=trip_id,
         route_id=body.route_id,
-        attempts=COMPOSE_ATTEMPTS,
+        attempts=attempts,
         stops=stops_out,
         plan_version=plan_version,
     )
@@ -1424,6 +1598,17 @@ def _session_promises(
     marquee = route.start_anchor_poi_id
     if marquee is None and route.pois:
         marquee = max(route.pois, key=lambda p: (p.tier, p.id)).id
+    # THE PLACE THE PERSON NAMED IS ON THE LIST (Phase 8 S8.5; W5.14, design
+    # §3.1 — a promise is "the finish — a place and a time"). `_person_protected`
+    # has held it since S5.16 through `own_place_ids`, but this list only ever
+    # emitted four shapes, and a declared end that snapped onto a REAL stop is
+    # none of them: it is not the A→B sentinel, not pinned, not a rest, and only
+    # by luck the marquee. MEASURED 2026-08-24 on Camille's own day
+    # (01-architecture-pilgrim.md: "end Notre-Dame"): her end sits 0.0 m from the
+    # Notre-Dame POI, the session protects it through every replan — and the wire
+    # listed ONE promise, the Arc de Triomphe du Carrousel, marked unprotected.
+    # The day protected a promise the phone could not see it had.
+    own = set(own_place_ids(route, tour_input))
     out: list[SessionPromise] = []
     for poi, arrival, departure in stop_clocks(
         route,
@@ -1439,7 +1624,12 @@ def _session_promises(
         elif poi.poi_role == "body":
             kind = "rest"
         elif poi.id == marquee:
+            # A stop that is BOTH the day's anchor and the place the person named
+            # (Rosemary's Orsay round trip) keeps the anchor's name, as it has
+            # since S5.8 — it is already protected either way, below.
             kind = "anchor"
+        elif poi.id in own:
+            kind = "finish"
         else:
             continue
         arrives, departs = _coarse_window(hhmm(arrival), hhmm(departure))
@@ -1811,6 +2001,17 @@ def replan_trip_session(
         protected_poi_ids=protected,
         keep_to_poi_ids=remaining_ids,
         visited_poi_ids=tuple(st.poi_id for st in visited),
+        # §4.5.3's CEILING IS DELIBERATELY NOT PASSED HERE, and that is a measured
+        # decision, not an omission (Phase 8 S8.5, 2026-08-24). Handing the base
+        # day's longest leg to this replan as `longest_leg_ceiling_seconds` was
+        # tried and REVERTED: on Camille's day it made things worse, measured with
+        # one variable moved — the planner refused the middle stops because their
+        # insertion legs breached the 17-minute ceiling, and handed back the Arc
+        # straight to Notre-Dame as a single THIRTY-NINE minute walk, longer than
+        # anything it had just rejected. The ceiling bounds what may be inserted;
+        # it cannot bound the walk that is left when nothing is. Honouring §4.5.3
+        # on this path needs the planner to prefer KEEPING a stop over minting a
+        # longer leg — planner work, carried to W8.6, not a parameter.
         floor_zero=True,
         listening_rate=body.listening_rate or 1.0,
     )

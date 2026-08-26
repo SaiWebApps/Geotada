@@ -974,6 +974,7 @@ def finalize_premium_composition(
     enforce_claim_coverage: bool = False,
     scan_glue_for_invention: bool = False,
     require_closes: bool = False,
+    enforce_placement_floors: bool = False,
 ) -> CertificationComposition:
     """Purely bind physical response bytes and run the certification finalizer.
 
@@ -1058,6 +1059,7 @@ def finalize_premium_composition(
         enforce_claim_coverage=enforce_claim_coverage,
         scan_glue_for_invention=scan_glue_for_invention,
         require_closes=require_closes,
+        enforce_placement_floors=enforce_placement_floors,
     )
 
 
@@ -1168,6 +1170,10 @@ def finalize_premium_tour(
         # Phase 6 S6.4: a live day's every stop ends on its close (design §5.3); the
         # certification replay's default stays OFF — the sealed candidates predate it.
         require_closes=True,
+        # Phase 8 S8.3 (W8.2 R1/R2/R5): a live day's every sentence must be true
+        # WHERE IT PLAYS; the certification replay's default stays OFF — the
+        # sealed candidates predate the rulings.
+        enforce_placement_floors=True,
     )
     identity = build_identity or resolve_build_identity()
     vignette_beat_ids = frozenset(
