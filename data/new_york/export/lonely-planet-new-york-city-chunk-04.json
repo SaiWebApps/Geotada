@@ -105,7 +105,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A residential West Village apartment building recognized as a filming location; the stoop and facade are viewed from the street with nothing to enter.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private apartment building viewed only from the public sidewalk, with no interior access and therefore no line to stand in.",
+    "anchors": null
   },
   {
     "name": "Abingdon Square",
@@ -212,7 +229,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Quarter-acre green with grassy knolls, flower beds and bluestone paths to stroll and sit; open space with nothing to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "market",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open public green with paths and a weekend market you walk straight into, with no controlled entry to line up for.",
+    "anchors": null
   },
   {
     "name": "Artechouse",
@@ -328,7 +362,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Immersive digital-art gallery in a former boiler room; projection-mapped rooms are walked through slowly and typically hold visitors 40-50 minutes; no meaningful exterior.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "market",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "This immersive gallery admits visitors in timed slots through a single small entrance, so a short ticket-scan line forms at busy afternoon slots but stays minor.",
+    "anchors": null
   },
   {
     "name": "Blue Note",
@@ -438,7 +494,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Jazz club storefront on West 3rd St, seen from the sidewalk; the interior is experienced only during ticketed shows or brunch, not a walk-in visit.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "19:30",
+        "20:30"
+      ]
+    ],
+    "queue_basis": "A jazz club where the wait is the reserved-seating line queuing at the door before each set is admitted, minor outside show-start times.",
+    "anchors": null
   },
   {
     "name": "Chelsea",
@@ -555,7 +633,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "neighborhood of art-gallery blocks, Chelsea Market and the High Line above; walking the streets and elevated park fills about half an hour, an area rather than one interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Manhattan neighborhood of public streets with no single entrance or admission control.",
+    "anchors": null
   },
   {
     "name": "Chelsea Hotel",
@@ -789,7 +884,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "1880s red-brick facade with ornate iron balconies and literary-landmark plaques to read from the sidewalk; the lobby may be glimpsed but it is a working hotel, not a public interior.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working hotel viewed from the street and lobby with no ticketed public entry, so there is no visitor line to stand in.",
+    "anchors": null
   },
   {
     "name": "Cherry Lane Theatre",
@@ -897,7 +1009,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic off-Broadway theater facade on a quiet mews street, seen from outside; interior is only accessible for ticketed performances, not a normal walk-in visit.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "A small off-Broadway house where the only wait is the ticket-holder line forming at the single lobby door just before a show begins, moving quickly otherwise.",
+    "anchors": null
   },
   {
     "name": "Christopher Park",
@@ -1074,7 +1208,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Small triangular park anchoring the Stonewall National Monument, with the George Segal statues, plaques and the adjacent Stonewall Inn to take in; open space with nothing to enter.",
+    "typical_duration_min": 18,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open triangular park within the Stonewall National Monument that you walk into from the sidewalk, with no gate, ticket, or screening.",
+    "anchors": null
   },
   {
     "name": "Comedy Cellar",
@@ -1183,7 +1334,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Basement comedy club entrance on MacDougal St, viewed from the street; interior is accessed only for ticketed shows, not a normal walk-in stop.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "19:30",
+        "21:30"
+      ]
+    ],
+    "queue_basis": "A small basement club where ticket-holders line on the sidewalk to be admitted and seated per show, a bounded wait that peaks just before evening sets.",
+    "anchors": null
   },
   {
     "name": "Gagosian",
@@ -1287,7 +1460,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Chelsea gallery with rotating exhibitions of blue-chip artists in free-entry rooms; a focused visitor browses the current show in around 25-30 minutes.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "gallery",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free commercial gallery with open doors during exhibition hours and no ticketing or screening, so nothing is waited on before entering.",
+    "anchors": null
   },
   {
     "name": "General Theological Seminary",
@@ -1397,7 +1587,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Oldest Episcopal seminary with a garden-like Chelsea campus viewed through its gates and along the historic block; the grounds and chapel are only sometimes open to the public.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "church",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "A seminary campus whose garden close is entered through a gate or reception where a guard may briefly check visitors, a minor pause rather than a real line.",
+    "anchors": null
   },
   {
     "name": "Grace Church",
@@ -1570,7 +1782,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Gothic Revival marble facade with a prominent spire, seen from the Broadway sidewalk; interior nave with notable stained glass takes about 15-20 minutes with no queue.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "church",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An active Episcopal church with open doors that you walk straight into for services and quiet visits, with no security screening or ticket desk to stand in.",
+    "anchors": null
   },
   {
     "name": "Greenwich Village",
@@ -1737,7 +1966,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Whole historic neighborhood of townhouse-lined streets, cafes and squares; wandering its blocks and taking in the atmosphere easily absorbs three quarters of an hour, all outdoors.",
+    "typical_duration_min": 45,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open neighborhood explored on foot with no gate or ticket, so there is nothing to queue for to enter it.",
+    "anchors": null
   },
   {
     "name": "Hudson River Park",
@@ -1914,7 +2160,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long linear waterfront park of piers, lawns and the river promenade; you walk a stretch between piers and viewpoints, nothing to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A long open riverside park with many street entrances and no ticket or screening, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Jefferson Market Library",
@@ -2022,7 +2285,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1000,
+    "visit_basis": "Ornate 1885 red-brick former courthouse with a tower, viewed from the street and its adjoining garden; interior library reading rooms can be walked through in 15-20 minutes.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "garden",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "A working public branch library you walk into freely, with at most a brief pause at a bag check or the door during midday peaks and its garden open without ticket.",
+    "anchors": null
   },
   {
     "name": "Meatpacking District",
@@ -2134,7 +2419,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "compact area of cobbled streets, warehouse-turned-boutique buildings and the High Line entry; the small core is walked in about twenty minutes, an area to stroll.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street district with no gate or ticket, so there is no queue to enter.",
+    "anchors": null
   },
   {
     "name": "New York University",
@@ -2302,7 +2604,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Sprawling campus centered on Washington Square with academic buildings and streetscape to walk among; a setting to move through rather than a single interior to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open urban campus experienced by walking its public streets and squares, with no single ticketed entrance to line up at.",
+    "anchors": null
   },
   {
     "name": "Pace Gallery",
@@ -2414,7 +2733,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Eight-story flagship gallery with a distinctive volcanic-ash exterior; 75,000 sq ft of exhibition floors free to enter absorb a substantial browse of major artists.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "gallery",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free-admission commercial gallery you walk straight into during opening hours, with no ticket desk or security screening to line up at.",
+    "anchors": null
   },
   {
     "name": "Pier 45",
@@ -2526,7 +2862,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "An 850ft finger pier out into the Hudson with river and skyline views, benches and lawn to walk the length of and back; nothing to enter.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public finger pier in Hudson River Park with no door, gate, or ticket, so nothing is waited on before walking on.",
+    "anchors": null
   },
   {
     "name": "Salmagundi Club",
@@ -2634,7 +2987,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Historic Fifth Ave brownstone art club with gallery rooms of representational American art; ornate exterior merits a few minutes, interior galleries absorb 25 min.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "square",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 3,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small historic art club whose free galleries are entered through a staffed front door; at most a brief pause to be greeted or sign in, never a substantial line.",
+    "anchors": null
   },
   {
     "name": "Sheridan Square",
@@ -2743,7 +3118,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Small triangular park at the heart of the Village with civil-rights history to read and paths to circle; open space, nothing to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small open triangular park with no door or ticket, so there is nothing to wait in before entering the open space.",
+    "anchors": null
   },
   {
     "name": "The High Line",
@@ -3289,7 +3681,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long elevated linear park built on old rail tracks; walking its full length with plantings, art and city views absorbs about three quarters of an hour, all outdoors.",
+    "typical_duration_min": 45,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "The park is free with no ticket, but the elevated deck is reached only by narrow stairways and elevators at each access point, so a brief bottleneck forms at the stairs on busy afternoons in summer while quiet hours have none.",
+    "anchors": null
   },
   {
     "name": "Washington Square Park",
@@ -3677,7 +4091,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Large iconic square with the Stanford White marble arch, central fountain, chess tables and performers; you walk between positions and linger, absorbing well over half an hour outdoors with nothing to enter.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "square",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with the marble arch entered freely from every side, so there is no gate or line despite heavy foot traffic.",
+    "anchors": null
   },
   {
     "name": "White Columns",
@@ -3780,7 +4211,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Multiroom alternative-art space with rotating installations and exhibits; plain Meatpacking-district frontage, interior galleries take around 20 min to view.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free alternative art space you walk straight into during gallery hours, with no admission desk or security screening to wait at.",
+    "anchors": null
   },
   {
     "name": "Whitney Museum of American Art",
@@ -4023,6 +4471,28 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Angular Renzo Piano building with outdoor terraces beside the High Line; inside, multiple large floors of American art with terrace views would absorb well over two hours, capped at the 90-minute tour maximum.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A major museum beside the High Line channels visitors through a lobby security bag check and ticket gates, where afternoon and weekend crowds build a substantial line even with timed tickets.",
+    "anchors": null
   }
 ]

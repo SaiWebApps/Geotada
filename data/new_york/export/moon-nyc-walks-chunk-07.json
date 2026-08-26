@@ -21,7 +21,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "Despite the 50m radius and 'seven-block stretch' framing, beats center on standing before the Secretariat and the tourable interior, so a stop.",
     "_poi_role_source": "guided tours cover the restored General Assembly Hall",
-    "typical_duration_min": 45,
+    "typical_duration_min": 10,
     "beats": [
       {
         "city_name": "new_york",
@@ -68,7 +68,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The plaza, flags and sculptures take 10 min outside; the guided tour of the General Assembly, Security Council chambers and Chagall window plus security screening runs about 90 min.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 15,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Entry requires airport-grade security screening and identity check at a controlled visitor gate, so a substantial line forms midday even with booked tour tickets.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Museum",
@@ -92,7 +113,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A single encyclopedic museum building with floor-specific interior galleries, a discrete stop.",
     "_poi_role_source": "The Decorative Arts Galleries on the fourth floor re-create important rooms",
-    "typical_duration_min": 45,
+    "typical_duration_min": 8,
     "beats": [
       {
         "city_name": "new_york",
@@ -138,7 +159,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Major encyclopedic art museum, five floors including a world-class Egyptian collection, would absorb three-plus hours; capped at the 90-minute tour maximum plus a short entry line; grand Beaux-Arts facade and plaza outside.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A large-lobby encyclopedic museum where the only wait is a ticket desk and bag check that moves steadily; the spacious entrance prevents a substantial backup.",
+    "anchors": null
   },
   {
     "name": "The Cloisters",
@@ -162,7 +204,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "Despite the 50m radius, beats describe standing before a single hilltop museum building with discrete interior galleries, so a stop.",
     "_poi_role_source": "The Cloisters building on its hilltop with Moorish terra-cotta roofs and courtyard archways",
-    "typical_duration_min": 45,
+    "typical_duration_min": 12,
     "beats": [
       {
         "city_name": "new_york",
@@ -209,7 +251,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Interior of reassembled medieval monastery buildings with cloisters, chapels, tapestries and gardens in Fort Tryon Park, would absorb well over two hours; capped at the 90-minute tour maximum, plus grounds and approach outside.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "This remote Met branch has a single ticket/admissions desk and a bag check; its distance thins the crowd, so the line stays minor even at midday peak.",
+    "anchors": null
   },
   {
     "name": "Wyckoff House Museum",
@@ -236,7 +299,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A discrete historic house museum with a 'here' building cue, small radius.",
     "_poi_role_source": "The Dutch Colonial H-frame house with shingled walls, split doors and a vegetable garden",
-    "typical_duration_min": 30,
+    "typical_duration_min": 10,
     "beats": [
       {
         "city_name": "new_york",
@@ -282,7 +345,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "A small 1652 Dutch Colonial farmhouse, New York's oldest building; the modest interior of period rooms with a short guided visit takes around 40 minutes, the frame and yard a brief look from outside.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A tiny historic farmhouse admitting small groups through one door with a ticket desk; the line is brief because attendance is modest, with no security throttle.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Heights Promenade",
@@ -309,7 +393,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A walking strip you move along for views, not a single standing point.",
     "_poi_role_source": "a narrow, paved walking strip with breathtaking views of Lower Manhattan",
-    "typical_duration_min": 45,
+    "typical_duration_min": 25,
     "beats": [
       {
         "city_name": "new_york",
@@ -358,7 +442,23 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A raised walking strip with panoramic views of Lower Manhattan and the harbor; strolling its length, stopping at the viewpoints and sitting takes around 25 minutes, nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open public walking strip with no gate or ticket, so the entire experience stands in the open with no queue.",
+    "anchors": null
   },
   {
     "name": "Prospect Park",
@@ -382,7 +482,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A large Brooklyn park (radius 120) of woodland and meadows you move through, a diffuse contextual area.",
     "_poi_role_source": "this 562-acre expanse of woodland, meadows, and ponds",
-    "typical_duration_min": 90,
+    "typical_duration_min": 55,
     "beats": [
       {
         "city_name": "new_york",
@@ -435,7 +535,23 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "large Olmsted-designed park with Long Meadow, lake, wooded paths and Grand Army Plaza arch; walking between the main features fills close to an hour, nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Olmsted & Vaux park with multiple street-level entrances and no gate or ticket, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Hudson River Park",
@@ -459,7 +575,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A 500-acre, four-mile-long waterfront park you move along; a setting, and itself a candidate parent.",
     "_poi_role_source": "This 500-acre park runs for four miles ... a string of parks and playspaces",
-    "typical_duration_min": 90,
+    "typical_duration_min": 30,
     "beats": [
       {
         "city_name": "new_york",
@@ -507,7 +623,23 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long linear waterfront park of piers, lawns and the river promenade; you walk a stretch between piers and viewpoints, nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A long open riverside park with many street entrances and no ticket or screening, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "The Museum at FIT",
@@ -531,7 +663,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A discrete museum destination, trigger_radius 25m.",
     "_poi_role_source": "the museum of NYC's premier design school",
-    "typical_duration_min": 15,
+    "typical_duration_min": 3,
     "beats": [
       {
         "city_name": "new_york",
@@ -578,7 +710,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Free fashion museum with rotating garment exhibitions across a couple of gallery floors; an engaged visit runs about 45-50 minutes; the entrance is an ordinary campus building.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 3,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A free fashion museum inside a college building with a simple desk or bag glance, so the wait rarely exceeds a few people even at its busiest.",
+    "anchors": null
   },
   {
     "name": "Rockaway Beach",
@@ -605,7 +758,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A large beach/coastal area spanning Fort Tilden and Jamaica Bay, moved through not stood at.",
     "_poi_role_source": "this is America's largest urban beach ... with a wilder feel",
-    "typical_duration_min": 75,
+    "typical_duration_min": 40,
     "beats": [
       {
         "city_name": "new_york",
@@ -654,7 +807,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Large ocean beach with boardwalk, surf breaks and wide sand; walking the shore and taking in the coastal setting easily fills half an hour or more, with nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public urban beach with open boardwalk access and no ticket or gate, so visitors walk straight on without waiting.",
+    "anchors": null
   },
   {
     "name": "Coney Island",
@@ -678,7 +847,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A large seaside amusement district (radius 150) with diffuse attractions you move through, a contextual area.",
     "_poi_role_source": "Come here to taste the vintage pleasures of what was once New York City's favorite summer playground",
-    "typical_duration_min": 75,
+    "typical_duration_min": 40,
     "beats": [
       {
         "city_name": "new_york",
@@ -724,7 +893,23 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Diffuse seaside amusement district with boardwalk, beach and rides; walking the boardwalk and taking in the scene absorbs well over half an hour outdoors, with no single interior to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The boardwalk, beach, and amusement district are open-access with no gate; individual rides sell their own tickets, but there is no line to enter the area itself.",
+    "anchors": null
   },
   {
     "name": "Manhattan Beach",
@@ -744,7 +929,7 @@
     "longitude": -73.9389,
     "trigger_radius": 40,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 35,
     "poi_role": null,
     "beats": [
       {
@@ -792,7 +977,23 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Small waterfront family beach with picnic and barbecue areas; the whole value is outside walking the sand and shoreline, with nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public beach with no gate or ticket, so there is nothing to wait in before entering.",
+    "anchors": null
   },
   {
     "name": "Governors Island",
@@ -816,7 +1017,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A 172-acre island with 150m radius you explore through; a setting, and itself a candidate parent.",
     "_poi_role_source": "the 172-acre Governors Island ... Four man-made hills with stellar Manhattan views",
-    "typical_duration_min": 45,
+    "typical_duration_min": 60,
     "beats": [
       {
         "city_name": "new_york",
@@ -864,6 +1065,27 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Car-free harbor island reached by ferry with historic fort areas, lawns, hills and harbor views; walking or cycling the loop and paths absorbs well over an hour, treated as an outdoor setting.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "Access is by ferry, so the wait is the boarding line at the terminal, which builds before the popular late-morning departures on summer weekends but is bounded by scheduled sailings.",
+    "anchors": null
   }
 ]

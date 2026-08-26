@@ -60,7 +60,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Compact Manhattan neighborhood of boutiques, cafes and cast-iron streets; the value is walking the blocks and pausing at shopfronts, an area not a single interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A neighborhood of open streets with no entrance or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "SoHo",
@@ -84,7 +100,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A large neighborhood (radius 350) of cobbled streets and cast-iron lofts you move through, a contextual area.",
     "_poi_role_source": "Cobblestoned streets lined with cast-iron buildings",
-    "typical_duration_min": 75,
+    "typical_duration_min": 30,
     "beats": [
       {
         "city_name": "new_york",
@@ -124,7 +140,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "district of cast-iron loft facades, cobbled streets and boutiques; walking the grid to take in the architecture and shopfronts fills about half an hour, an area to stroll.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open shopping district of public streets with no gate or ticket; nothing throttles entry.",
+    "anchors": null
   },
   {
     "name": "Greenwich Village",
@@ -148,7 +180,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A neighborhood with large radius described as walked-through streets and alleys, contextual area narration rather than a point.",
     "_poi_role_source": "you're more likely to see dads with strollers than long-haired poets walking these streets",
-    "typical_duration_min": 90,
+    "typical_duration_min": 45,
     "beats": [
       {
         "city_name": "new_york",
@@ -194,7 +226,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Whole historic neighborhood of townhouse-lined streets, cafes and squares; wandering its blocks and taking in the atmosphere easily absorbs three quarters of an hour, all outdoors.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open neighborhood explored on foot with no gate or ticket, so there is nothing to queue for to enter it.",
+    "anchors": null
   },
   {
     "name": "Meatpacking District",
@@ -218,7 +266,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A neighborhood (radius 250) explicitly described as a stroll past boutiques and clubs, a contextual walking area.",
     "_poi_role_source": "A stroll through the Meatpacking District ... takes you past sleek boutiques and roaring nightclubs",
-    "typical_duration_min": 45,
+    "typical_duration_min": 20,
     "beats": [
       {
         "city_name": "new_york",
@@ -264,7 +312,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "compact area of cobbled streets, warehouse-turned-boutique buildings and the High Line entry; the small core is walked in about twenty minutes, an area to stroll.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street district with no gate or ticket, so there is no queue to enter.",
+    "anchors": null
   },
   {
     "name": "The High Line",
@@ -288,7 +352,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A linear 1.5-mile elevated park you walk along (radius 120), contextual area narration as you move through it.",
     "_poi_role_source": "Snaking through the Meatpacking District at 30ft above street level, this 1.5-mile urban park",
-    "typical_duration_min": 90,
+    "typical_duration_min": 45,
     "beats": [
       {
         "city_name": "new_york",
@@ -391,7 +455,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long elevated linear park built on old rail tracks; walking its full length with plantings, art and city views absorbs about three quarters of an hour, all outdoors.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "The park is free with no ticket, but the elevated deck is reached only by narrow stairways and elevators at each access point, so a brief bottleneck forms at the stairs on busy afternoons in summer while quiet hours have none.",
+    "anchors": null
   },
   {
     "name": "Bowery Mural",
@@ -413,7 +498,7 @@
     "longitude": -73.99368,
     "trigger_radius": 25,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 12,
     "poi_role": null,
     "beats": [
       {
@@ -463,7 +548,23 @@
         },
         "fact_check_status": "corrected"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Open-air rotating graffiti-art wall at Houston and Bowery; you view it from the sidewalk across the street and read the current work, absorbing about ten minutes, with nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Bowery Mural is an open-air wall on a street corner with no enclosure, door, or ticket, so it is viewed directly from the sidewalk with no line.",
+    "anchors": null
   },
   {
     "name": "New Museum of Contemporary Art",
@@ -487,7 +588,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A single landmark museum building you stand before; small radius, building cues.",
     "_poi_role_source": "The massive steel-and-glass tower rising over the Bowery",
-    "typical_duration_min": 30,
+    "typical_duration_min": 6,
     "beats": [
       {
         "city_name": "new_york",
@@ -527,7 +628,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Striking stacked-box SANAA building viewed from the Bowery; inside, several stacked gallery floors of contemporary art plus ticket queue absorb around 70 min for an engaged visitor.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A single lobby ticket desk with bag check funnels visitors into a narrow entrance, producing a modest afternoon line that moves steadily and stays minor.",
+    "anchors": null
   },
   {
     "name": "Italian American Museum",
@@ -547,7 +669,7 @@
     "longitude": -73.99762,
     "trigger_radius": 15,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 4,
     "poi_role": null,
     "beats": [
       {
@@ -588,7 +710,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Small Little Italy museum in the former Banca Stabile building on Mulberry Street; the exhibits on Italian-American history fill a modest few rooms that a genuinely interested visitor works through in about forty minutes, with a brief facade outside.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small Little Italy museum in a former bank building with a single ticket desk and no airport-style security, the wait is a brief line at the desk that peaks midday but stays minor given its modest size.",
+    "anchors": null
   },
   {
     "name": "Singer Building",
@@ -609,7 +752,7 @@
     "longitude": -73.9982,
     "trigger_radius": 15,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 10,
     "poi_role": null,
     "beats": [
       {
@@ -656,7 +799,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "The Little Singer Building, a landmark cast-iron-and-terracotta SoHo facade with delicate ironwork balconies best appreciated from the street; it is an office/retail building with no visitor interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A landmark commercial building admired from the sidewalk with no public ticketed interior, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "105 Mercer Street",
@@ -674,7 +833,7 @@
     "longitude": -73.99932,
     "trigger_radius": 12,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 4,
     "poi_role": null,
     "beats": [
       {
@@ -719,7 +878,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Small 1831 SoHo house tied to the neighborhood's red-light history; a modest private facade seen briefly from the sidewalk, nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A small private SoHo townhouse with no public interior, viewed only from the sidewalk, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Greene Street",
@@ -739,7 +914,7 @@
     "longitude": -74.00073,
     "trigger_radius": 20,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 20,
     "poi_role": null,
     "beats": [
       {
@@ -786,7 +961,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "SoHo street famed for its cast-iron architecture including the 'King of Greene Street' at nos. 72-76; walking the cobbled block and studying the ornate facades absorbs about twenty minutes, and it is a street with nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Greene Street is a public SoHo street whose cast-iron facades are admired from the open sidewalk with no door, ticket, or screening, so there is no wait to enter.",
+    "anchors": null
   },
   {
     "name": "66 Perry Street",
@@ -812,7 +1003,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A specific apartment building facade at a single address.",
     "_poi_role_source": "Façade of 66 Perry Street, the Sex and the City apartment building",
-    "typical_duration_min": 15,
+    "typical_duration_min": 8,
     "beats": [
       {
         "city_name": "new_york",
@@ -859,7 +1050,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A residential West Village apartment building recognized as a filming location; the stoop and facade are viewed from the street with nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private apartment building viewed only from the public sidewalk, with no interior access and therefore no line to stand in.",
+    "anchors": null
   },
   {
     "name": "Whitney Museum of American Art",
@@ -883,7 +1090,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A single landmark museum building you stand before and enter; small radius, building cues.",
     "_poi_role_source": "The Renzo Piano building next to the High Line park",
-    "typical_duration_min": 30,
+    "typical_duration_min": 8,
     "beats": [
       {
         "city_name": "new_york",
@@ -970,7 +1177,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Angular Renzo Piano building with outdoor terraces beside the High Line; inside, multiple large floors of American art with terrace views would absorb well over two hours, capped at the 90-minute tour maximum.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A major museum beside the High Line channels visitors through a lobby security bag check and ticket gates, where afternoon and weekend crowds build a substantial line even with timed tickets.",
+    "anchors": null
   },
   {
     "name": "Bookmarc",
@@ -990,7 +1218,7 @@
     "longitude": -74.00461,
     "trigger_radius": 12,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 3,
     "poi_role": null,
     "beats": [
       {
@@ -1034,7 +1262,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Small curated West Village bookshop; the storefront is a quick glance from outside, while browsing the coffee-table books and stationery inside occupies roughly fifteen minutes.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A small West Village retail bookshop with a single door and no ticket or security, the only wait is a brief checkout or doorway backup during busy afternoon browsing hours.",
+    "anchors": null
   },
   {
     "name": "Magnolia Bakery",
@@ -1052,7 +1301,7 @@
     "longitude": -74.005,
     "trigger_radius": 12,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 4,
     "poi_role": null,
     "beats": [
       {
@@ -1099,7 +1348,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Small West Village bakery known for cupcakes; the interior is a compact counter where ordering and eating, plus a possible short queue, takes about fifteen minutes, with a modest storefront outside.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 25,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "19:00"
+      ]
+    ],
+    "queue_basis": "This tourist-famous cupcake bakery has one small counter and door, and its Sex-and-the-City renown drives a substantial single-file counter line down the sidewalk through midday and evening, though it is an ordinary retail queue that shortens at opening.",
+    "anchors": null
   },
   {
     "name": "Stonewall Inn",
@@ -1123,7 +1393,7 @@
     "parent_poi": "Greenwich Village",
     "_poi_role_reasoning": "A single named storefront/monument you stand before, modest radius, located within Greenwich Village.",
     "_poi_role_source": "The Stonewall Inn storefront on Christopher Street, site of the June 1969 raid",
-    "typical_duration_min": 75,
+    "typical_duration_min": 15,
     "beats": [
       {
         "city_name": "new_york",
@@ -1170,7 +1440,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "National Monument bar and adjacent Christopher Park; the facade, plaques and memorial statues take about 15 min outside, and the small historic barroom absorbs roughly 40 min inside.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "23:00"
+      ]
+    ],
+    "queue_basis": "The monument's exterior and adjacent park are walked into freely, and entering the bar itself involves only a single-door ID check that can back up in the evening, so any wait is minor.",
+    "anchors": null
   },
   {
     "name": "Chelsea Market",
@@ -1188,7 +1479,7 @@
     "longitude": -74.00601,
     "trigger_radius": 25,
     "importance_tier": 4,
-    "typical_duration_min": 75,
+    "typical_duration_min": 5,
     "poi_role": null,
     "beats": [
       {
@@ -1237,6 +1528,27 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Large indoor food hall and shopping arcade in the former Nabisco factory beneath the High Line; the block-long interior of food stalls and shops easily absorbs an hour of browsing and eating, while the exterior is just a factory facade.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Chelsea Market is a free-entry food hall with wide open doors and no ticket or security screening, so the only wait is pedestrian congestion at the entrance during lunch hours, not a controlled queue.",
+    "anchors": null
   }
 ]

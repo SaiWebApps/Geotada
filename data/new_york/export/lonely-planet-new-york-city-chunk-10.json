@@ -102,7 +102,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1800,
+    "visit_basis": "A 40,000-sq-ft arts complex with galleries, a theater and public spaces; when exhibitions are open the interior galleries fill about half an hour, the modern facade only a short look.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "18:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "An arts complex whose galleries are free walk-in, but ticketed evening events create a brief box-office and door check that stays minor outside of showtime.",
+    "anchors": null
   },
   {
     "name": "Brighton Beach",
@@ -224,7 +246,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Seaside neighbourhood with boardwalk, beach and shopping street walked along; an outdoor setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open beachfront neighborhood with no entrance to control, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Brooklyn",
@@ -330,7 +369,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Very large borough of distinct neighbourhoods and waterfront walked through; a broad setting with no single interior to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An entire borough of open streets with no single entrance, so no line applies.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Botanic Garden",
@@ -513,7 +569,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Large garden with cherry esplanade, Japanese garden, rose garden and conservatory, would absorb two-plus hours in season; capped at the 90-minute maximum, entered by ticket.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "garden",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "The ticket gate is minor most of the year, but during peak cherry-blossom weekends in spring the timed-entry crowd pushes the line to its worst; priced here for that busy season.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Brewery",
@@ -616,7 +694,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Craft brewery whose interior offers a guided tour and tasting room; the tour plus sampling runs around an hour, while the exterior is a plain industrial frontage worth only a brief pause.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A tasting room where weekend afternoons bring a brief wait at the door or bar for the free tours and tokens, but no security or timed-entry throttle bounds it to minutes.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Bridge",
@@ -957,7 +1057,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A long elevated pedestrian promenade with Gothic stone towers and cable views over the East River; the crossing itself with stops to look is the destination, and there is nothing to enter.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The bridge is an open pedestrian walkway with no door, no ticket, and no screening — you simply walk on from either end.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Bridge Park",
@@ -1387,7 +1504,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long waterfront park of piers, lawns, promenade and framed Manhattan skyline and bridge views; you walk between piers and viewpoints, easily half an hour to forty minutes, nothing to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open waterfront park with multiple street-level entrances and no ticket or security, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Children's Museum",
@@ -1506,7 +1640,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Multi-floor hands-on children's museum where engaged families move slowly through many interactive galleries; over an hour of real use.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "A ticket desk with stroller-heavy family groups checking in builds a short morning line at opening and weekends, but the desk moves and it stays minor.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Heights",
@@ -1683,7 +1839,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "historic district of brownstone streets plus the waterfront Promenade with harbor and skyline views; walking the streets and the length of the promenade absorbs well over half an hour, nothing to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A residential historic district and open promenade you walk into freely from the sidewalk; no door, no ticket, no line.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Heights Promenade",
@@ -1794,7 +1967,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A raised walking strip with panoramic views of Lower Manhattan and the harbor; strolling its length, stopping at the viewpoints and sitting takes around 25 minutes, nothing to enter.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open public walking strip with no gate or ticket, so the entire experience stands in the open with no queue.",
+    "anchors": null
   },
   {
     "name": "Center for Brooklyn History",
@@ -1905,7 +2095,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 2700,
+    "visit_basis": "Landmarked 1881 terracotta building admired outside; inside are Brooklyn history galleries and the Othmer Library, around 45 minutes for an interested visitor.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "This small museum admits visitors through a single lobby desk with a light bag check, so any wait is brief and driven only by the one small entrance.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Museum",
@@ -2329,7 +2541,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Major encyclopedic art museum, five floors including a world-class Egyptian collection, would absorb three-plus hours; capped at the 90-minute tour maximum plus a short entry line; grand Beaux-Arts facade and plaza outside.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A large-lobby encyclopedic museum where the only wait is a ticket desk and bag check that moves steadily; the spacious entrance prevents a substantial backup.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Navy Yard",
@@ -2495,7 +2729,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Historic 300-acre industrial complex you move through on foot, with a free interpretive museum (BLDG 92) giving about 45-50 min inside plus grounds and dockside views taking real time outside.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The complex and its free Building 92 museum have open walk-in access with no ticket gate or screening line before entering.",
+    "anchors": null
   },
   {
     "name": "Bushwick Collective",
@@ -2603,7 +2854,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "An outdoor street-art district of large changing murals along several blocks of Jefferson and Troutman Sts; walking the streets to see the work fills about half an hour, entirely outdoors.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An outdoor mural gallery along open public streets; there is no door, ticket, or line at all.",
+    "anchors": null
   },
   {
     "name": "City Reliquary",
@@ -2718,7 +2986,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Tiny single-room neighborhood museum of NYC curiosities, engaged browse around 25 min; storefront exterior with little to see.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 3,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A tiny storefront museum where the only possible wait is a couple of visitors at the small door and donation desk.",
+    "anchors": null
   },
   {
     "name": "Coffey Park",
@@ -2820,7 +3110,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A neighborhood park with lawns, courts and a playground; a stroll through and a sit fill about 20 minutes, and there is no interior to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood park entered freely from the street with no gate or ticket.",
+    "anchors": null
   },
   {
     "name": "Coney Art Walls",
@@ -2930,7 +3237,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Open-air lot of 35 freestanding painted murals you walk among and photograph; browsing every wall takes about half an hour, and the whole experience is outdoors with nothing to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open-air free street-art lot with no ticket or door; visitors walk straight in among the walls.",
+    "anchors": null
   },
   {
     "name": "Coney Island",
@@ -3232,7 +3556,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Diffuse seaside amusement district with boardwalk, beach and rides; walking the boardwalk and taking in the scene absorbs well over half an hour outdoors, with no single interior to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The boardwalk, beach, and amusement district are open-access with no gate; individual rides sell their own tickets, but there is no line to enter the area itself.",
+    "anchors": null
   },
   {
     "name": "East River State Park",
@@ -3340,7 +3681,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A 7-acre waterfront park with cobbled industrial remnants and open Manhattan views across the river; you walk the shoreline, stop at viewpoints and linger, which fills half an hour, with no building to enter.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "market",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free open waterfront park with no entry gate; Smorgasburg is browsed freely with lines only at individual food vendors, not at any park door.",
+    "anchors": null
   },
   {
     "name": "Empire Stores",
@@ -3449,7 +3807,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1800,
+    "visit_basis": "Restored Civil War-era brick warehouses; the courtyard and rooftop are the draw outside, and the interior of shops, food and the rooftop overlook absorbs around 30 minutes.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open retail and dining complex you walk into freely off the street with no central security or ticket gate, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Fort Greene Park",
@@ -3622,7 +3997,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "30-acre hilly Olmsted-and-Vaux park with the Prison Ship Martyrs' Monument on its summit; climbing to the column and walking the paths fills about half an hour, nothing to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open public park with no gate or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Fulton Ferry Landing",
@@ -3724,7 +4116,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A historic waterfront landing under the Brooklyn Bridge with river and Manhattan views and a small pier to walk out on; taking in the views and setting absorbs around 15 minutes, with nothing to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open historic waterfront landing under the bridge with no interior, gate, or ticket.",
+    "anchors": null
   },
   {
     "name": "Green-Wood Cemetery",
@@ -3967,7 +4376,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic 478-acre arboretum-cemetery of rolling paths, monuments and notable graves you explore entirely outdoors on foot; the Gothic gatehouse itself rewards a stop, but there is no single interior to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A historic cemetery-arboretum entered freely through open gates with no ticket or screening required to walk in.",
+    "anchors": null
   },
   {
     "name": "Invisible Dog",
@@ -4075,7 +4501,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1800,
+    "visit_basis": "A converted 1863 factory arts center with an airy three-story space and free ground-floor exhibitions; browsing the interior shows runs about half an hour, the industrial facade a short look.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An arts center with free walk-in ground-floor exhibitions and no ticket desk or screening at the door.",
+    "anchors": null
   },
   {
     "name": "Jane's Carousel",
@@ -4188,7 +4631,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Restored 1922 carousel in a glass pavilion by the waterfront; viewing and a ride, roughly 15 minutes inside the pavilion.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Ride tickets are sold at one small window and the pavilion seats a fixed number per turn, so a modest line forms on warm weekend afternoons but stays minor and vanishes at quiet hours.",
+    "anchors": null
   },
   {
     "name": "McCarren Park",
@@ -4295,7 +4760,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A 35-acre open park with lawns, sports fields and a historic pool building; walking through and pausing at the pool and open spaces absorbs half an hour, and there is no single interior to price.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public park with no gate or ticket; the pool may have its own line but the park itself is walked straight into.",
+    "anchors": null
   },
   {
     "name": "Museum of Contemporary African Diasporan Arts",
@@ -4399,7 +4881,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "A small brownstone museum with rotating multidisciplinary installations; the compact interior of a few gallery spaces absorbs around 40 minutes, and the townhouse frontage warrants only a brief stop.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small brownstone museum with a single admission desk; any wait is brief because the space is intimate and there is no security line or timed entry.",
+    "anchors": null
   },
   {
     "name": "New York Transit Museum",
@@ -4511,7 +5015,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Museum set in a decommissioned subway station, with signal and fare exhibits and a platform of vintage subway cars to board, engaged visit around 70 min plus a short entry line; entrance is a stairwell with no exterior to view.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 6,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Housed in a former subway station, entry is via a single small admissions desk that only draws a short line at midday weekends.",
+    "anchors": null
   },
   {
     "name": "Park Slope",
@@ -4619,7 +5145,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Leafy residential neighbourhood of brownstone streets beside the park walked through; a setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open residential neighborhood with no admission point, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Plymouth Church",
@@ -4723,7 +5266,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 1500,
+    "visit_basis": "A 19th-century abolitionist church with a historic sanctuary and Lincoln associations; the interior with its pews, memorials and stained glass takes about 25 minutes, the brick exterior a short pause.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "church",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working church entered without a ticket or screening; you walk straight through the door during open hours.",
+    "anchors": null
   },
   {
     "name": "Prospect Park",
@@ -5108,7 +5668,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "large Olmsted-designed park with Long Meadow, lake, wooded paths and Grand Army Plaza arch; walking between the main features fills close to an hour, nothing to enter.",
+    "typical_duration_min": 55,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Olmsted & Vaux park with multiple street-level entrances and no gate or ticket, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Red Hook Winery",
@@ -5218,7 +5795,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 2700,
+    "visit_basis": "A waterside tasting room producing wine on-site; a seated tasting flight over the water takes around 45 minutes, while the pier-shed exterior warrants only a brief pause.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A waterside tasting room where weekend afternoons can bring a short wait for a table or the tasting bar, but no security or capped entry bounds it past minutes.",
+    "anchors": null
   },
   {
     "name": "Sunset Park",
@@ -5327,7 +5926,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Hilltop park with an outdoor pool, courts and sweeping harbor views to the Statue of Liberty; the climb to the crest and time at the viewpoint absorb half an hour, with no interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open hilltop public park entered freely from the street with no gate or ticket.",
+    "anchors": null
   },
   {
     "name": "Weeksville Heritage Center",
@@ -5437,7 +6053,29 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 3300,
+    "visit_basis": "Historic site preserving several restored 19th-century Hunterfly Road houses of a free Black community; a guided interior visit through the period rooms plus grounds runs close to an hour, the exterior a short look.",
+    "typical_duration_min": 10,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small historic site with a reception desk and guided-tour check-in that seldom builds more than a brief wait, since visitor numbers are low and there is no security screening.",
+    "anchors": null
   },
   {
     "name": "Williamsburg",
@@ -5546,7 +6184,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Neighbourhood of warehouse-conversion streets, waterfront and shops walked through between stops; a setting, not one interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of streets with no gate or ticket, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Williamsburg Bridge",
@@ -5657,7 +6312,24 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long steel suspension bridge with a foot and bike path over the East River; walking a meaningful stretch for the views takes around 20 minutes, nothing to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a public bridge with an open foot and bike path, so there is no door and no line.",
+    "anchors": null
   },
   {
     "name": "Wyckoff House Museum",
@@ -5767,6 +6439,28 @@
           "checked_at": null
         }
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "A small 1652 Dutch Colonial farmhouse, New York's oldest building; the modest interior of period rooms with a short guided visit takes around 40 minutes, the frame and yard a brief look from outside.",
+    "typical_duration_min": 10,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A tiny historic farmhouse admitting small groups through one door with a ticket desk; the line is brief because attendance is modest, with no security throttle.",
+    "anchors": null
   }
 ]

@@ -21,7 +21,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A neighborhood with split character experienced by walking its streets, trigger_radius 400m.",
     "_poi_role_source": "walk the streets peopled by this sect",
-    "typical_duration_min": 75,
+    "typical_duration_min": 30,
     "beats": [
       {
         "city_name": "new_york",
@@ -147,7 +147,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Neighbourhood of warehouse-conversion streets, waterfront and shops walked through between stops; a setting, not one interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of streets with no gate or ticket, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Williamsburg Bridge",
@@ -173,7 +189,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A bridge with foot/bike paths you cross for East River views, traversed rather than stood at a single point.",
     "_poi_role_source": "The bridge's all-steel towers and foot/bike paths with East River views",
-    "typical_duration_min": 30,
+    "typical_duration_min": 20,
     "beats": [
       {
         "city_name": "new_york",
@@ -220,7 +236,23 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long steel suspension bridge with a foot and bike path over the East River; walking a meaningful stretch for the views takes around 20 minutes, nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a public bridge with an open foot and bike path, so there is no door and no line.",
+    "anchors": null
   },
   {
     "name": "Williamsburg Art & Historical Center",
@@ -242,7 +274,7 @@
     "longitude": -73.9668,
     "trigger_radius": 25,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 6,
     "poi_role": null,
     "beats": [
       {
@@ -289,7 +321,28 @@
         },
         "fact_check_status": "corrected"
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Gallery in a grand former Beaux-Arts bank building; the exterior columns are a brief look, and inside the vaulted banking hall holds rotating painting, sculpture and installation shows worth roughly 35-45 min.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "gallery",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A modest neighborhood gallery in a former bank building with a single admission desk and no security screening, so any wait is a few people at the desk at most.",
+    "anchors": null
   },
   {
     "name": "City Reliquary",
@@ -313,7 +366,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A tiny discrete niche museum with interior display cues, a single stop.",
     "_poi_role_source": "A tiny museum that seems to take its aesthetic from flea markets",
-    "typical_duration_min": 15,
+    "typical_duration_min": 4,
     "beats": [
       {
         "city_name": "new_york",
@@ -360,7 +413,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Tiny single-room neighborhood museum of NYC curiosities, engaged browse around 25 min; storefront exterior with little to see.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 3,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A tiny storefront museum where the only possible wait is a couple of visitors at the small door and donation desk.",
+    "anchors": null
   },
   {
     "name": "Republic of Booza",
@@ -381,7 +455,7 @@
     "longitude": -73.9617,
     "trigger_radius": 15,
     "importance_tier": 2,
-    "typical_duration_min": 30,
+    "typical_duration_min": 3,
     "poi_role": null,
     "beats": [
       {
@@ -433,7 +507,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Small Williamsburg ice cream shop serving elastic Levantine booza; a visit is ordering and eating at the counter, roughly 15 minutes, with a modest storefront.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small ice cream shop whose only wait is the order counter, which builds during warm afternoons and weekends.",
+    "anchors": null
   },
   {
     "name": "The Knitting Factory",
@@ -454,7 +549,7 @@
     "longitude": -73.9514,
     "trigger_radius": 20,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 3,
     "poi_role": null,
     "beats": [
       {
@@ -497,7 +592,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Williamsburg music venue and bar hosting live acts; attending inside for a set runs about an hour, while the exterior is an unremarkable storefront.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "19:30",
+        "21:30"
+      ]
+    ],
+    "queue_basis": "A music venue where the wait is the door check and ticket scan clustered just before showtime, minor but real on a gig night.",
+    "anchors": null
   },
   {
     "name": "Partners Coffee",
@@ -519,7 +635,7 @@
     "longitude": -73.9577,
     "trigger_radius": 15,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 3,
     "poi_role": null,
     "beats": [
       {
@@ -570,7 +686,28 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Williamsburg specialty coffeehouse; the experience is ordering and drinking an Australian-style coffee at the counter or a seat, about 15 minutes, with a minimal exterior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "08:00",
+        "10:30"
+      ]
+    ],
+    "queue_basis": "A popular coffeehouse whose only wait is the order line at the counter, which lengthens during the morning coffee rush.",
+    "anchors": null
   },
   {
     "name": "Filthy Rich Barbershop",
@@ -591,7 +728,7 @@
     "longitude": -73.956,
     "trigger_radius": 15,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 3,
     "poi_role": null,
     "beats": [
       {
@@ -632,7 +769,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A working Williamsburg barbershop; unless getting a cut there is only the storefront to note from the sidewalk, so priced as a brief exterior pause with no visitor interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A Williamsburg barbershop with a single door and no ticket or security, any wait is a walk-in queue for a chair rather than an entry line, minor and peaking through the day.",
+    "anchors": null
   },
   {
     "name": "The Gutter",
@@ -654,7 +812,7 @@
     "longitude": -73.9568,
     "trigger_radius": 15,
     "importance_tier": 1,
-    "typical_duration_min": 15,
+    "typical_duration_min": 3,
     "poi_role": null,
     "beats": [
       {
@@ -701,7 +859,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Retro Williamsburg bowling alley with a 1950s-style bar and board games; an actual bowling session and drink fills around an hour inside, with a plain exterior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "23:00"
+      ]
+    ],
+    "queue_basis": "A bowling alley and bar where the only entry wait is a front-desk lane sign-up or ID check that backs up on weekend nights.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Brewery",
@@ -727,7 +906,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A discrete brewery venue you visit, small radius.",
     "_poi_role_source": "the Brooklyn Brewery brews local suds and offers 45-minute tours of its facilities",
-    "typical_duration_min": 30,
+    "typical_duration_min": 5,
     "beats": [
       {
         "city_name": "new_york",
@@ -767,7 +946,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Craft brewery whose interior offers a guided tour and tasting room; the tour plus sampling runs around an hour, while the exterior is a plain industrial frontage worth only a brief pause.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "18:00"
+      ]
+    ],
+    "queue_basis": "A tasting room where weekend afternoons bring a brief wait at the door or bar for the free tours and tokens, but no security or timed-entry throttle bounds it to minutes.",
+    "anchors": null
   },
   {
     "name": "East River State Park",
@@ -793,7 +993,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A 7-acre waterfront park you walk through, named as a park.",
     "_poi_role_source": "This 7-acre waterfront park is a slice of greenery with sublime views of Manhattan",
-    "typical_duration_min": 15,
+    "typical_duration_min": 35,
     "beats": [
       {
         "city_name": "new_york",
@@ -840,6 +1040,22 @@
         },
         "fact_check_status": "verified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A 7-acre waterfront park with cobbled industrial remnants and open Manhattan views across the river; you walk the shoreline, stop at viewpoints and linger, which fills half an hour, with no building to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "market",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free open waterfront park with no entry gate; Smorgasburg is browsed freely with lines only at individual food vendors, not at any park door.",
+    "anchors": null
   }
 ]

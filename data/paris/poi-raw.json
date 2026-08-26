@@ -2158,7 +2158,7 @@
         "trigger_radius_reasoning": "Expanded to 40m for larger POI footprint",
         "notes": ""
       },
-      "trigger_radius_basis": "A 140 m square: the arcade runs seventy metres from the central statue, and stepping under the arcade is being there (Nadia, W7.2 R1)."
+      "trigger_radius_basis": "A 140 m square: the arcade runs seventy metres from the central statue, and stepping under the arcade is being there (Nadia, W7.2 R1). Her day starts, stops and finishes here, and the ten metres between this 70 and the 60 m own-place radius are NOT what starts her clock during the fifteen minutes she stands in the square before moving: the own-place circle is drawn round her FIRST FIX and this one round the pin, so on a square this wide she can leave the first while still standing inside the second. 70 kept; where the clock's circle is centred is the carried item, not the footprint (W7.13 carry 6)."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3303,7 +3303,7 @@
         "trigger_radius_reasoning": "Expanded to 100m for larger POI footprint",
         "notes": ""
       },
-      "trigger_radius_basis": "Forty-four hectares inside walls; the 2026-06-16 area fix sized it at the setting cap and Julien's wall, the columbarium and the memorials are all inside it — kept (the walls themselves are a carried polygon row)."
+      "trigger_radius_basis": "Forty-four hectares inside walls; the 2026-06-16 area fix sized it at the setting cap and Julien's wall, the columbarium and the memorials are all inside it — kept (the walls themselves are a carried polygon row). The other half of his ask is answered beside this number rather than in it: three reviewed ANCHORS ride the record — the Mur des Fédérés first, then Edith Piaf's grave and Oscar Wilde's tomb — so the 500 m disc says which cemetery you are in and the anchor says where in it you are standing."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1",
@@ -3375,7 +3375,43 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting."
+    "queue_basis": "Entry is through free open gates with no ticket desk or security screening, so visitors walk straight in without waiting.",
+    "anchors": [
+      {
+        "label": "The Mur des Fédérés",
+        "sub_locations": [
+          "mur-des-federes",
+          "wwii-memorials-corner"
+        ],
+        "lat": 48.85917,
+        "lng": 2.39722,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The Communards' wall is a fifty-metre stretch of the cemetery's own eastern boundary in division 76, reached down a few steps off the avenue Circulaire, and the memorials to the deported stand directly opposite it across that alley — the corpus beat says so and Julien gives the pair twenty unbroken minutes as ONE place (06-resident-novelty-seeker.md). Forty metres from the middle of the wall covers the strip of flowers and wreaths in front of it and the memorials facing it, and stops short of the graves eighty metres north. Placed by hand from the wall's own published position, never derived from the cemetery pin 316 m away."
+      },
+      {
+        "label": "Edith Piaf's grave",
+        "sub_locations": [
+          "edith-piaf-grave"
+        ],
+        "lat": 48.8598,
+        "lng": 2.39672,
+        "radius_m": 35.0,
+        "indoor": false,
+        "basis": "The most visited grave in the cemetery, in division 97 among the memorials to the Resistants — the corpus beat places her beside them, and that corner is about eighty metres north of the Communards' wall. Thirty-five metres covers the plot and the gravel path people stand on to look at it, and does not reach the wall's own chapter."
+      },
+      {
+        "label": "Oscar Wilde's tomb",
+        "sub_locations": [
+          "oscar-wilde-tomb"
+        ],
+        "lat": 48.86139,
+        "lng": 2.39583,
+        "radius_m": 35.0,
+        "indoor": false,
+        "basis": "Epstein's winged figure stands alone on the avenue Carette in division 89, a quarter of a kilometre north of the Communards' wall — far enough that nobody at the wall hears it by accident, which is what Julien's ordering asks for. Thirty-five metres covers the avenue in front of the monument, where a person stands back far enough to see the whole of it, and the rows either side."
+      }
+    ]
   },
   {
     "name": "Montmartre Cemetery",
@@ -9785,7 +9821,8 @@
         "prior_reasoning": "Romantic hidden gem on Île de la Cité, Henri IV creation. Signoret/Montand home. Explicitly 'less known' — perfect Gravity 2 that rewards explorers.",
         "reasoning": "Composite 43.5: trends=low; wiki=moderate; gb=RARE",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      }
+      },
+      "trigger_radius_basis": "A triangular place 120 m long from its apex at the Pont Neuf to the Palais de Justice front, with the pin in the middle: at the old 30 the circle held the central gravel only, and Fiona & Dev spend their first twelve minutes over café menus at the apex end, outside it. Sixty metres is the place's half-length, and is also the own-place radius the wire gives a start square (placement.py), so the square they set out from is ONE circle whichever of the two is read. It overlaps the Pont Neuf's footprint by geometry, not by error: the apex IS the bridge's approach, 125 m pin to pin, so stop one's piece arms over those twelve minutes — the carried edge (W7.13 carry 5)."
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -9794,7 +9831,7 @@
     },
     "latitude": 48.856407,
     "longitude": 2.342655,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "importance_tier": 2,
     "poi_role": "walk_by_only",
     "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
@@ -20017,7 +20054,8 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
-      }
+      },
+      "trigger_radius_basis": "The triangular pocket-park at the island's western tip, seven metres below the street: the pin sits mid-square and fifty metres reaches both the staircase down from the bridge and the point itself. Its circle lies WHOLLY inside the Pont Neuf's 120 m one — the pins are 59 m apart and the bridge passes overhead — so a walker on the point is in both footprints at once. They are at the SQUARE: the smaller circle is the more specific place, and the bridge's piece belongs to the people on the deck above (Fiona & Dev's nested-footprint edge, W7.13 carry 5). Pont Neuf's 120 is derived from its 238 m span and stands."
     },
     "_meta": {
       "prompt_version": "poi_generate_v1_targeted",

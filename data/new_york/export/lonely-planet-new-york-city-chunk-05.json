@@ -241,7 +241,24 @@
         "script_body_hash": "198387c3df187297e7c7a75519b8c6b3f15160991f3335c044a83887f002b53c",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Iconic triangular skyscraper viewed from the surrounding plaza and street corners; you circle it and take in the wedge from several angles, but it is an office building with no public interior.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "It is an office building admired from the sidewalk with no public interior to enter, so there is no line to stand in.",
+    "anchors": null
   },
   {
     "name": "Gramercy Park",
@@ -475,7 +492,24 @@
         "script_body_hash": "bc724483f65a4ac59a7c0621f26bb640eb2d86b60b11d1c0c7f6505026b4f24a",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "small locked private garden square viewed only through its railings, ringed by historic townhouses; a walk around the perimeter takes about ten minutes, no public entry.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private locked garden the public cannot enter and otherwise viewed from the open sidewalk, so there is no admission line to stand in.",
+    "anchors": null
   },
   {
     "name": "Madison Square Park",
@@ -704,7 +738,24 @@
         "script_body_hash": "b80a799cece48c0d611c7daf0e30836cf7248678ecff5bc72eb22e8230765f7a",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Open city park with lawns, tree-lined paths, rotating art installations and framing views of the Flatiron and Metropolitan Life Tower; you circulate between viewpoints and benches, nothing to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "park",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public park with multiple street-level entrances and no gate or ticket, so there is nothing to wait in before entering.",
+    "anchors": null
   },
   {
     "name": "Metropolitan Life Tower",
@@ -821,7 +872,24 @@
         "script_body_hash": "103a87dadee7ccab5c4bbedf55b44c86000b9e8e972ac31182ab36b4d86bf7ab",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "700-foot Italianate campanile-style clock tower seen from the street and the adjacent park; it is a working office building not open for general touring, so its value is the exterior view.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An office and hotel tower viewed from the street with no public visitor entrance to queue for, so it is admired from the open with no line.",
+    "anchors": null
   },
   {
     "name": "National Arts Club",
@@ -931,7 +999,29 @@
         "script_body_hash": "b494e4963c46f0973a7b412a1f5037101d660632903ca36cacc356337c8f1fc7",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Calvert Vaux mansion with an ornate Victorian facade viewable from the street; interior galleries and period rooms are open to visitors for exhibitions, a modest walk-through of about 25 minutes.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "A private club whose interior is only accessible via occasional gallery hours or tours, where entry is a single reception desk check-in rather than a security line, so any wait is minor and brief.",
+    "anchors": null
   },
   {
     "name": "Theodore Roosevelt Birthplace",
@@ -1039,7 +1129,29 @@
         "script_body_hash": "0771723e9225eb03ae5292171bcd70d4afbddbfcc96a3d53e28d50163a814b13",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Reconstructed brownstone townhouse; the facade is a brief pause, but inside a ranger-led tour covers several period rooms with original furniture plus a small museum, roughly 40 minutes including a short wait.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small National Historic Site entered through one door with a ranger desk and timed guided tours of the house, so a modest line forms when a tour group gathers but never grows substantial.",
+    "anchors": null
   },
   {
     "name": "Union Square",
@@ -1465,6 +1577,23 @@
         "script_body_hash": "6830d6cfc8a6badf0b309b03f18e626044224bce5e66febe4eb1fc43c920a86d",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "big public square with greenmarket stalls, statues and busy steps; walking between its positions and through the market absorbs around twenty-five minutes, an open square with nothing to enter.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square and park you walk into freely from the surrounding streets; no door, no ticket, no line.",
+    "anchors": null
   }
 ]

@@ -196,7 +196,29 @@
         "script_body_hash": "d8c564be622b189276608bd8cfb42b096b2c494f63dcf11e6faf6187e287fa5d"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The facade and Central Park West steps take 10 min; inside, the dinosaur halls, dioramas and new Gilder Center would absorb several hours, capped at the 90-minute tour maximum.",
+    "typical_duration_min": 10,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Bag check plus a busy ticket/admission desk gate a school-and-family crowd through limited entrances, so the line builds substantially midday and clears at opening.",
+    "anchors": null
   },
   {
     "name": "Cathedral of St. John the Divine",
@@ -416,7 +438,29 @@
         "script_body_hash": "8f6a75ede9301452d6ee8cca13e0bf30ee68eeb3dc06fc318b6a04f7a275a622"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Enormous unfinished Gothic cathedral; the facade and grounds take about 12 min, while the immense nave, chapels and art inside absorb roughly 50 min including any admission wait.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry requires a suggested-admission or ticket desk at the door, so a modest line can form at that single point during midday visiting hours but it moves steadily.",
+    "anchors": null
   },
   {
     "name": "Museum of Arts and Design",
@@ -511,7 +555,29 @@
         "script_body_hash": "a2a5a643aa96b9447d5b0205325497444e3e9782f5475745fa80649340498d65"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Interior museum on several floors at Columbus Circle, contemporary craft and design galleries plus a studio floor, typical engaged visit about 60 min plus a short ticket queue; modest exterior.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 8,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small ticketed museum on Columbus Circle where the only wait is a ticket desk and light bag check that moves quickly, peaking midday on weekends.",
+    "anchors": null
   },
   {
     "name": "New-York Historical Society",
@@ -667,7 +733,29 @@
         "script_body_hash": "14f6edeeeb4f2366150daad3696ba4fc36cc1332f7e699f79486be2fccfa0e4b"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 4500,
+    "visit_basis": "Interior museum with painting galleries, the Tiffany lamp collection and history exhibits over several floors, engaged visit 70-75 min plus a short admission line; exterior is a single columned facade.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry involves a ticket desk and a bag check that forms a modest line at midday but never a substantial one for this mid-size museum.",
+    "anchors": null
   },
   {
     "name": "The Cloisters",
@@ -914,7 +1002,29 @@
         "script_body_hash": "c9e05205ca9801dceff7553f91a7d448ea71702eacda636a93aaec60af0b55f0"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Interior of reassembled medieval monastery buildings with cloisters, chapels, tapestries and gardens in Fort Tryon Park, would absorb well over two hours; capped at the 90-minute tour maximum, plus grounds and approach outside.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "This remote Met branch has a single ticket/admissions desk and a bag check; its distance thins the crowd, so the line stays minor even at midday peak.",
+    "anchors": null
   },
   {
     "name": "El Museo del Barrio",
@@ -1015,7 +1125,29 @@
         "script_body_hash": "3b5f563eca23f487719e1947417102f508d2ba3ad38f6733e8e737c2b56b4492"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 3300,
+    "visit_basis": "Interior museum of Latino and Latin American art, a manageable set of galleries on Museum Mile, engaged visit around 55 min plus a short entry line; plain streetfront exterior.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 6,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small East Harlem cultural museum with a single admissions desk that rarely backs up beyond a few visitors.",
+    "anchors": null
   },
   {
     "name": "Morris-Jumel Mansion",
@@ -1174,6 +1306,28 @@
         "script_body_hash": "1ab9b01267fd813f2a7f1ee2757073d927be2ea50e666af5166d465db6839a91"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Interior of Manhattan's oldest house, a Georgian mansion of period rooms over two floors, engaged self-guided visit around 50 min; the grounds and colonial facade are worth a short walk outside.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A tiny historic-house museum with a single small entrance and staffed desk; any wait is only a handful of people at most.",
+    "anchors": null
   }
 ]

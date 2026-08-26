@@ -192,7 +192,7 @@
     "latitude": 48.856407,
     "longitude": 2.342655,
     "importance_tier": 2,
-    "trigger_radius": 30,
+    "trigger_radius": 60,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
     "name_variations": [],

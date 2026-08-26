@@ -99,7 +99,24 @@
         "script_body_hash": "c56a1a159835a029554607f83776d06fd1f10736abc69fd7955608db1a62e8bf"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "A long elevated pedestrian promenade with Gothic stone towers and cable views over the East River; the crossing itself with stops to look is the destination, and there is nothing to enter.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The bridge is an open pedestrian walkway with no door, no ticket, and no screening — you simply walk on from either end.",
+    "anchors": null
   },
   {
     "name": "Chrysler Building",
@@ -199,7 +216,24 @@
         "script_body_hash": "733104bba9216ca3c7fb13c1c35e1760a4da189f2ce93f52a80981a1cfa48e76"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Art Deco skyscraper best seen from the street looking up at the spire and eagles, about 15 min outside; the lobby with its marble and ceiling mural is the only accessible interior, roughly 10 min, for a 25-min total.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The building is an office tower with no public observation deck; visitors admire the exterior and can step into the lobby freely, so there is no entrance line.",
+    "anchors": null
   },
   {
     "name": "Grand Central Terminal",
@@ -300,7 +334,24 @@
         "script_body_hash": "5cdb84d9f96aac6f8e1e759879f8b78029a773dfd9b93b5cf99e6e4b6a2d4b2b"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Beaux Arts exterior facade with its sculpture takes about 15 min outside; inside, the vast Main Concourse, celestial ceiling, whispering gallery and lower dining hall absorb around an hour.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an active transit hall with many wide doors and no security screening or ticket gate to enter the concourse, so visitors walk straight in without a line.",
+    "anchors": null
   },
   {
     "name": "Cathedral of St. John the Divine",
@@ -398,7 +449,29 @@
         "script_body_hash": "b41460955b589d54a5e9f99988924092b900f3bbae1e15c9cefdf7c208a3a35c"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Enormous unfinished Gothic cathedral; the facade and grounds take about 12 min, while the immense nave, chapels and art inside absorb roughly 50 min including any admission wait.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry requires a suggested-admission or ticket desk at the door, so a modest line can form at that single point during midday visiting hours but it moves steadily.",
+    "anchors": null
   },
   {
     "name": "Coney Island",
@@ -496,7 +569,24 @@
         "script_body_hash": "9c0bbf7c76783dba7cbe5f8d3abdde13193677fabb0d1f6d42e9585cec6cc034"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Diffuse seaside amusement district with boardwalk, beach and rides; walking the boardwalk and taking in the scene absorbs well over half an hour outdoors, with no single interior to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The boardwalk, beach, and amusement district are open-access with no gate; individual rides sell their own tickets, but there is no line to enter the area itself.",
+    "anchors": null
   },
   {
     "name": "Central Park",
@@ -592,7 +682,24 @@
         "script_body_hash": "77e659b6025f54e0c00d8fe8ffeb3641fb6c2641ff1438fa741b56751afd0e47"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "Flagship park spanning many paths, lakes, fountains and landmarks; even a focused walk between key features absorbs an hour, and it is entirely an outdoor experience.",
+    "typical_duration_min": 60,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The park has open perimeter entrances on all sides with no gate or ticket, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Domino Park",
@@ -695,7 +802,24 @@
         "script_body_hash": "e19c216e4ca34becba6a6a735e17d05a3b9abacab4f19c6164fd67dd2eddab42"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "Waterfront park on a former sugar refinery site with an elevated walkway, salvaged industrial artifacts and East River skyline views; strolling its length takes about half an hour outdoors.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a free open waterfront park with unrestricted entrances, so there is no queue to get in.",
+    "anchors": null
   },
   {
     "name": "The High Line",
@@ -791,7 +915,29 @@
         "script_body_hash": "f218c703f167a3c0665e40b93ce36f7907d88842a304579f8933f7e804cc919c"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "Long elevated linear park built on old rail tracks; walking its full length with plantings, art and city views absorbs about three quarters of an hour, all outdoors.",
+    "typical_duration_min": 45,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "The park is free with no ticket, but the elevated deck is reached only by narrow stairways and elevators at each access point, so a brief bottleneck forms at the stairs on busy afternoons in summer while quiet hours have none.",
+    "anchors": null
   },
   {
     "name": "Prospect Park",
@@ -882,7 +1028,24 @@
         "script_body_hash": "24e5cc915f0df0be670ccc4e9c24410f13b63140be74c8b1103164cf3f4f3d9e"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "large Olmsted-designed park with Long Meadow, lake, wooded paths and Grand Army Plaza arch; walking between the main features fills close to an hour, nothing to enter.",
+    "typical_duration_min": 55,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Olmsted & Vaux park with multiple street-level entrances and no gate or ticket, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Heights",
@@ -986,7 +1149,24 @@
         "script_body_hash": "55d38c40331c0c142286c480cacb556bf938a5f1eb8cc82266792bf78b5ec53d"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "historic district of brownstone streets plus the waterfront Promenade with harbor and skyline views; walking the streets and the length of the promenade absorbs well over half an hour, nothing to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A residential historic district and open promenade you walk into freely from the sidewalk; no door, no ticket, no line.",
+    "anchors": null
   },
   {
     "name": "The Public Theater",
@@ -1076,7 +1256,29 @@
         "script_body_hash": "54912ca9d64d2794d3be46dc0a6d1dbe230defe7a2934b0ac72c4b8ef8fbfd54"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 1200,
+    "visit_basis": "landmark off-Broadway theater in a former library building; the facade is seen in minutes, while the lobby and bar can be looked into briefly when not attending a full show.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "A ticketed theater where the only wait is a box-office and ticket-scan line that forms just before curtain; there is no security screening, so it stays minor.",
+    "anchors": null
   },
   {
     "name": "PDT",
@@ -1172,7 +1374,29 @@
         "script_body_hash": "5edc03127bff49d718d5018772202b006ada43d35d8826fa8fb443490adcd846"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 2400,
+    "visit_basis": "concealed speakeasy reached via a phone-booth door inside a diner; the street exterior is nondescript, but a seated drink in the intimate bar is the experience.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "21:00",
+        "23:00"
+      ]
+    ],
+    "queue_basis": "A small reservation-based speakeasy entered one party at a time through a phone-booth door, so the wait is a brief bottleneck at the single small entrance, not a security line.",
+    "anchors": null
   },
   {
     "name": "Roosevelt Island Tram",
@@ -1270,6 +1494,28 @@
         "script_body_hash": "0a3ee8d130b14c3226e1d6998a96830eebc1b93801cbd115fa60dd5137d9295c"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 1200,
+    "visit_basis": "aerial tram over the East River; a short wait at the station plus the roughly 4-minute ride with skyline and bridge views, counted as the boarded experience.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "16:00",
+        "19:00"
+      ]
+    ],
+    "queue_basis": "Boarding is gated to each cabin's departure through a MetroCard/OMNY turnstile, so a line builds for the next tram at commuter hours but clears each cycle.",
+    "anchors": null
   }
 ]

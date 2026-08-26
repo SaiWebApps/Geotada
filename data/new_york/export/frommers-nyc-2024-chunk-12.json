@@ -147,7 +147,29 @@
         "script_body_hash": "b501311a62cc9799de8bdf1611217a3d16844424a4da100319b235fb766cf4a4"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Ornate 1891 concert-hall facade on a busy corner; exterior seen in a few minutes, interior is auditorium plus a small music museum and guided tours running about an hour.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This concert hall admits ticket-holders through door and bag-check screening that clusters in the half-hour before a performance; there is no all-day tourist line, so the wait is minor and peaks only at curtain time.",
+    "anchors": null
   },
   {
     "name": "Lincoln Center",
@@ -366,7 +388,24 @@
         "script_body_hash": "4931544a3b238a4d0cff7563c736f1a71bab52220ce061a38db16119fa0b9851"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "Large performing-arts campus with a central plaza, the Revson fountain and the illuminated hall facades; you walk the plaza and around the buildings, halls only entered for ticketed performances so priced as an outdoor setting.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open performing-arts plaza with fountain and courtyards freely accessible from the surrounding streets; the plaza itself has no ticket or security line (any wait is inside individual halls at showtime, which is priced elsewhere).",
+    "anchors": null
   },
   {
     "name": "Metropolitan Opera House",
@@ -576,7 +615,29 @@
         "script_body_hash": "cb21d7b244b8de4d48ab59b0177f7bf696409e5969fb659ffb988e36f0430c1f"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": 4200,
+    "visit_basis": "The centerpiece of Lincoln Center's plaza, with arched glass front and Chagall murals visible from the fountain square; the auditorium and grand foyer are seen on a guided backstage tour lasting over an hour.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This opera house admits ticket-holders through bag check that concentrates in the pre-performance window; there is no standing daytime queue, so the line is short and event-timed.",
+    "anchors": null
   },
   {
     "name": "City Center",
@@ -674,7 +735,29 @@
         "script_body_hash": "51d5a6b2aae372c1e2f4eb6d5e3b9fd74d09134cfc6e9ae613689dc506fc0920"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 1500,
+    "visit_basis": "1923 Moorish-revival theater with a tiled dome and terracotta facade on a midtown side street; exterior seen quickly, ornate interior auditorium accessible mainly at performances.",
+    "typical_duration_min": 7,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This mid-size performance venue admits ticket-holders through a brief bag check just before curtain; there is no all-day line, so the wait is minor and pre-show only.",
+    "anchors": null
   },
   {
     "name": "Joyce Theater",
@@ -772,7 +855,29 @@
         "script_body_hash": "263caaaafefcd19c93fb0e273417bfb00fb66ed0ac857986db29e972cff60856"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Small restored Art Deco cinema now a dance house on Eighth Avenue; modest marquee and facade take a few minutes, intimate 470-seat interior seen only at shows.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This small dance theatre admits ticket-holders through a quick door check in the minutes before a performance; there is no daytime queue, so the line is short and event-driven.",
+    "anchors": null
   },
   {
     "name": "David H. Koch Theater",
@@ -864,7 +969,29 @@
         "script_body_hash": "71375dffa5593bf3e037fe84cac9630b3c51bb883ccef7a0cc1517c6dd1c3d33"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 1800,
+    "visit_basis": "Philip Johnson's 1964 theater on Lincoln Center plaza with a travertine facade and columned front; the four-tier gold-and-red interior and Nadelman marble sculptures are seen at ballet performances.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "square",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This ballet house admits ticket-holders through bag check that clusters before curtain; there is no continuous daytime line, so the wait is short and pre-show only.",
+    "anchors": null
   },
   {
     "name": "Apollo Theater",
@@ -961,7 +1088,29 @@
         "script_body_hash": "8de47360d2a40e4545d00fa2555a65bd2ece89b5a767749ee5b56ff5f373ff6f"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Landmark theater with its famous marquee and Walk of Fame outside to photograph, and a guided-tour or performance interior of the historic hall and stage running around an hour when accessible.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "18:00",
+        "21:00"
+      ]
+    ],
+    "queue_basis": "As a walking-tour finish the marquee is admired from the sidewalk with no wait, but on show nights a ticket-holder and bag-check line forms at the doors, keeping it a minor line at worst.",
+    "anchors": null
   },
   {
     "name": "Beacon Theatre",
@@ -1059,7 +1208,29 @@
         "script_body_hash": "debb3857e7e0805abae6016cbf6addc21019f8dbf1e134c4959504ad83150d2f"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Landmark 1929 movie-palace-turned-concert-hall on Broadway; marquee and facade take a few minutes, the lavish rococo interior is seen at a show or brief lobby view.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This theatre screens concertgoers with a bag and ticket check that forms only in the hour before showtime; there is no daytime tourist line, so the wait is short and event-driven.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Academy of Music",
@@ -1214,7 +1385,29 @@
         "script_body_hash": "6b67ad3f1b1efabec4cf6650fae278c01ac579b50318038a3f6f8efb25b22b30"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 1800,
+    "visit_basis": "Grand 1908 performing-arts building; the facade absorbs several minutes and the interior lobbies and Howard Gilman Opera House are only meaningfully seen via a performance or a lobby walk-through.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:00"
+      ]
+    ],
+    "queue_basis": "This performing-arts venue admits ticket-holders through bag check that backs up in the show-time window; there is no continuous daytime queue, so the line is short and pre-curtain only.",
+    "anchors": null
   },
   {
     "name": "Bargemusic",
@@ -1322,7 +1515,24 @@
         "script_body_hash": "37e826c328a610d6f6cc80a05b1f6d8f55818ac565dd0b7f983887d0cf027179"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "A small floating concert barge moored at Fulton Ferry Landing, flagged walk-by only; viewed from the pier with the bridge behind it, nothing to enter outside a concert.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Flagged as a walk-by at a ferry landing with no interior to enter for a tour, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Park Avenue Armory",
@@ -1425,7 +1635,29 @@
         "script_body_hash": "1f032d16af0ae7dbfccf9f803dd8e56083daf2b13a9a9eb248ea6605f2fbe707"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Vast 1881 brick-and-granite armory with a drill hall the size of a train shed and opulent period rooms; exterior takes several minutes, interior visited for large-scale art installations and the historic interiors.",
+    "typical_duration_min": 10,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "This exhibition and performance hall admits visitors through a single ticket desk and bag check that moves steadily; there is no substantial line, so the wait is short.",
+    "anchors": null
   },
   {
     "name": "Joe's Pub",
@@ -1522,6 +1754,28 @@
         "script_body_hash": "87d4c973ad099c21460541561c93728c82f71d6e0ae0938eee179d65ae17e567"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 1200,
+    "visit_basis": "A small cabaret room inside the landmark Public Theater building; from the street only the facade registers, and the intimate performance space is entered for a show.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "20:30"
+      ]
+    ],
+    "queue_basis": "This small cabaret room admits ticket-holders through a door check that forms briefly before a set; there is no daytime tourist queue, so the line is short and event-timed.",
+    "anchors": null
   }
 ]

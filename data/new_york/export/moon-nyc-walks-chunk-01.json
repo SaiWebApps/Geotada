@@ -21,7 +21,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A neighborhood (radius 400) of canyons and streets you move through, a contextual diffuse area.",
     "_poi_role_source": "Suited traders pouring onto the streets at 5pm in the financial canyons",
-    "typical_duration_min": 75,
+    "typical_duration_min": 35,
     "beats": [
       {
         "city_name": "new_york",
@@ -62,7 +62,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "downtown Manhattan neighborhood of narrow canyon streets, Wall Street, Federal Hall and Exchange facades; walking between the landmarks fills over half an hour, no single interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Manhattan neighborhood of public streets with no single entrance or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Chinatown",
@@ -86,7 +102,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A large neighborhood (radius 350) experienced as you move through its sensory streets, a contextual area.",
     "_poi_role_source": "the dense crowds on the streets, the awnings with Chinese characters",
-    "typical_duration_min": 75,
+    "typical_duration_min": 35,
     "beats": [
       {
         "city_name": "new_york",
@@ -128,7 +144,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "busy neighborhood of market stalls, shopfronts, restaurants and small temples; wandering the crowded streets absorbs over half an hour, an area rather than a single interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of public streets and shops with no gate or ticket; the whole value is walked through in the open.",
+    "anchors": null
   },
   {
     "name": "Lower East Side",
@@ -152,7 +184,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A large neighborhood (radius 400) walked along its immigrant-era streets, a contextual area.",
     "_poi_role_source": "Old-world fabric and luggage stores along Orchard Street",
-    "typical_duration_min": 45,
+    "typical_duration_min": 25,
     "beats": [
       {
         "city_name": "new_york",
@@ -198,7 +230,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "historic immigrant neighborhood of tenement streets, delis, bars and small galleries; walking the blocks absorbs around twenty-five minutes, a district rather than one interior.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood walked freely from the sidewalk with no entrance or admission line.",
+    "anchors": null
   },
   {
     "name": "Jane's Carousel",
@@ -224,7 +272,7 @@
     "parent_poi": "Brooklyn Bridge Park",
     "_poi_role_reasoning": "A discrete carousel in a pavilion, explicitly a named sub-feature at the north end of Brooklyn Bridge Park.",
     "_poi_role_source": "The star attraction of the north end of Brooklyn Bridge Park is a vintage carousel",
-    "typical_duration_min": 30,
+    "typical_duration_min": 12,
     "beats": [
       {
         "city_name": "new_york",
@@ -270,7 +318,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Restored 1922 carousel in a glass pavilion by the waterfront; viewing and a ride, roughly 15 minutes inside the pavilion.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "Ride tickets are sold at one small window and the pavilion seats a fixed number per turn, so a modest line forms on warm weekend afternoons but stays minor and vanishes at quiet hours.",
+    "anchors": null
   },
   {
     "name": "Staten Island Ferry",
@@ -294,7 +363,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "Geocoded to the Whitehall terminal you board at; a discrete embarkation point rather than an area you walk through.",
     "_poi_role_source": "The right side at the back of the ferry for the Manhattan skyline view",
-    "typical_duration_min": 90,
+    "typical_duration_min": 12,
     "beats": [
       {
         "city_name": "new_york",
@@ -340,7 +409,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Outside: the Whitehall terminal and waterfront waiting area; inside/aboard: the free round-trip ride with famous Statue of Liberty and harbor skyline views, roughly 25 minutes each way plus terminal wait, treated as the boarding experience.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "16:00",
+        "19:00"
+      ]
+    ],
+    "queue_basis": "The ferry is free with no ticket or security, but boarding is gated by the terminal doors opening per scheduled departure, so riders wait in the terminal for the next boat, longest at commuter rush.",
+    "anchors": null
   },
   {
     "name": "Castle Clinton",
@@ -364,7 +454,7 @@
     "parent_poi": "Battery Park",
     "_poi_role_reasoning": "A discrete circular fort building inside Battery Park; small radius and 'go inside' building cue make it a sub-feature stop.",
     "_poi_role_source": "The circular stone building you can go inside if it is open",
-    "typical_duration_min": 45,
+    "typical_duration_min": 20,
     "beats": [
       {
         "city_name": "new_york",
@@ -412,7 +502,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Circular sandstone fort within Battery Park whose walls and courtyard you walk around outside; the interior is a modest open enclosure with a small exhibit and ticket booths taking about 20 min.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "garden",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "The fort itself is free to walk into through open archways, but the ferry ticket booths housed inside draw a moderate morning line that visitors often stand in when passing through, kept short outside peak ferry departures.",
+    "anchors": null
   },
   {
     "name": "National Museum of the American Indian",
@@ -438,7 +549,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A single landmark building you stand before ('in front of you'); small radius.",
     "_poi_role_source": "The building in front of you, designed by Cass Gilbert",
-    "typical_duration_min": 45,
+    "typical_duration_min": 20,
     "beats": [
       {
         "city_name": "new_york",
@@ -486,7 +597,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Outside: the grand Beaux Arts Alexander Hamilton Custom House with Daniel Chester French sculptures and an ornate facade worth circling; inside: a free museum with Native American galleries plus the landmark rotunda, roughly 60-75 minutes.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "This free museum inside the landmark Custom House has a bag-check and security screening at the door but no ticketing, so the line is short and moves quickly.",
+    "anchors": null
   },
   {
     "name": "Federal Hall",
@@ -510,7 +642,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "Discrete Greek Revival landmark building you stand before.",
     "_poi_role_source": "Note the statue of George Washington: it was here... Greek Revival edifice",
-    "typical_duration_min": 30,
+    "typical_duration_min": 10,
     "beats": [
       {
         "city_name": "new_york",
@@ -558,7 +690,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Greek Revival landmark with the Washington statue on its steps; inside is a domed rotunda and free exhibits on the first inauguration, the Zenger trial and Bill of Rights, about 30-35 min plus a brief security check.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A free national memorial with a federal-style security bag check at the door that can form a brief line midday, but no ticket sale keeps it minor and it clears at open and late afternoon.",
+    "anchors": null
   },
   {
     "name": "Trinity Church",
@@ -582,7 +735,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A single church and its adjacent graveyard you stand at; small radius, object-focused cues.",
     "_poi_role_source": "The 280-foot Gothic spire",
-    "typical_duration_min": 45,
+    "typical_duration_min": 15,
     "beats": [
       {
         "city_name": "new_york",
@@ -628,7 +781,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Outside: a Gothic Revival church spire and historic graveyard including Alexander Hamilton's grave to walk among; inside: the neo-Gothic nave and small exhibits, about 20 minutes.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "church",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The church and its graveyard are free to enter through open doors with no ticketing or security line.",
+    "anchors": null
   },
   {
     "name": "St. Paul's Chapel",
@@ -652,7 +821,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A discrete church building you stand before and enter; small radius.",
     "_poi_role_source": "The Ionic columns and huge pediment of the facade",
-    "typical_duration_min": 30,
+    "typical_duration_min": 10,
     "beats": [
       {
         "city_name": "new_york",
@@ -700,7 +869,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Outside: a Georgian chapel with a surrounding colonial churchyard of headstones; inside: a single historic sanctuary with the Washington pew and 9/11 relief memorial displays, about 20 minutes.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "church",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This historic chapel has free open-door entry with no ticket or screening — visitors walk straight in.",
+    "anchors": null
   },
   {
     "name": "9/11 Memorial and Museum",
@@ -726,7 +911,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A discrete museum and memorial you enter and stand within, with interior exhibit cues.",
     "_poi_role_source": "visitors descend down, down, down into this underground museum",
-    "typical_duration_min": 90,
+    "typical_duration_min": 25,
     "beats": [
       {
         "city_name": "new_york",
@@ -772,7 +957,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Outside: two sunken reflecting pools in the original tower footprints with inscribed parapets, a plaza to walk between them; inside: large subterranean museum with historical exhibition, artifacts, and memorial hall that would absorb over two hours plus a security queue, capped at the 90-minute tour maximum.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "The outdoor memorial plaza is free and open, but the museum requires timed tickets and airport-style security screening at the entrance, which backs up midday even with timed entry; off-peak at opening the screening line is short.",
+    "anchors": null
   },
   {
     "name": "City Hall",
@@ -798,7 +1004,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A single government building with interior cues and tiny radius (10), a discrete destination.",
     "_poi_role_source": "the building's elegant coffered rotunda, the City Council chamber, and the Governor's Room",
-    "typical_duration_min": 45,
+    "typical_duration_min": 12,
     "beats": [
       {
         "city_name": "new_york",
@@ -844,7 +1050,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Federal-style 1812 seat of city government set in its park; the facade and surrounding grounds take over ten minutes, and the coffered rotunda and Governor's Room are seen only on twice-weekly tours.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "12:00"
+      ]
+    ],
+    "queue_basis": "Interior access is only via twice-weekly booked tours that gather at a security screening checkpoint before entering, so a modest check-in line forms at tour start but there is no all-day queue.",
+    "anchors": null
   },
   {
     "name": "Municipal Building",
@@ -866,7 +1093,7 @@
     "longitude": -74.00389,
     "trigger_radius": 75,
     "importance_tier": 3,
-    "typical_duration_min": 45,
+    "typical_duration_min": 20,
     "poi_role": null,
     "beats": [
       {
@@ -918,7 +1145,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Monumental 1909 civic skyscraper with a colonnade, arched passage and the gilded 'Civic Fame' statue overhead; viewed and circled from the surrounding plaza, with no public interior tour.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "09:00",
+        "11:00"
+      ]
+    ],
+    "queue_basis": "An active government office building where entry passes through lobby security screening that backs up during the morning arrival of city workers.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Bridge",
@@ -942,7 +1190,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "Large 120m radius and cues describe walking across/along the span rather than standing at one point.",
     "_poi_role_source": "Walking the span of the Brooklyn Bridge lets you see this marvel up close",
-    "typical_duration_min": 90,
+    "typical_duration_min": 35,
     "beats": [
       {
         "city_name": "new_york",
@@ -988,7 +1236,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "A long elevated pedestrian promenade with Gothic stone towers and cable views over the East River; the crossing itself with stops to look is the destination, and there is nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The bridge is an open pedestrian walkway with no door, no ticket, and no screening — you simply walk on from either end.",
+    "anchors": null
   },
   {
     "name": "Columbus Park",
@@ -1012,7 +1276,7 @@
     "parent_poi": "Chinatown",
     "_poi_role_reasoning": "A park where people gather across the space (mah-jongg, tai-chi), narrated as an area; a named green space within Chinatown.",
     "_poi_role_source": "this leafy oasis is core to NYC history",
-    "typical_duration_min": 45,
+    "typical_duration_min": 20,
     "beats": [
       {
         "city_name": "new_york",
@@ -1056,7 +1320,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Leafy Chinatown park with paths, a pavilion, and gatherings of mah-jongg and tai-chi players; you walk through and linger watching the scene for around 20 min, nothing to enter.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public park with no gate, ticket, or entry control, so nothing is waited in.",
+    "anchors": null
   },
   {
     "name": "Fraunces Tavern",
@@ -1080,7 +1360,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "Discrete tavern/museum building you stand before; classic stop signals.",
     "_poi_role_source": "in front of you will be Fraunces Tavern",
-    "typical_duration_min": 45,
+    "typical_duration_min": 8,
     "beats": [
       {
         "city_name": "new_york",
@@ -1127,7 +1407,28 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Restored 18th-century brick tavern; the museum upstairs has several period rooms including the Long Room of Washington's Farewell plus Revolution and Sons of Liberty exhibits, roughly 45 min plus a short ticket wait.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "A small museum with a single ticket desk that can back up briefly at midday lunch and tour hours, but there is no security screening and the desk clears quickly off-peak.",
+    "anchors": null
   },
   {
     "name": "Stone Street",
@@ -1151,7 +1452,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A historic cobbled streetscape experienced as you move along it rather than a single point.",
     "_poi_role_source": "This narrow, winding street was the first to be paved in New Amsterdam",
-    "typical_duration_min": 30,
+    "typical_duration_min": 12,
     "beats": [
       {
         "city_name": "new_york",
@@ -1195,7 +1496,23 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Short cobbled historic street of Greek Revival buildings rebuilt after the 1835 fire; you walk its length, take in the streetscape and terraces, with nothing specific to enter as a stop.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A cobbled open street walked through freely with no door or admission, so nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "The Tenement Museum",
@@ -1219,7 +1536,7 @@
     "parent_poi": null,
     "_poi_role_reasoning": "A discrete museum at a specific address you tour; small radius, facade/interior cues.",
     "_poi_role_source": "The brownstone tenement facade at 97 Orchard Street",
-    "typical_duration_min": 30,
+    "typical_duration_min": 6,
     "beats": [
       {
         "city_name": "new_york",
@@ -1263,6 +1580,27 @@
         },
         "fact_check_status": "unverified"
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Modest tenement facade on Orchard Street; interior is seen only on a guided tour through restored immigrant apartments, typically 60-75 min including check-in at the visitor center.",
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Access is only by timed guided tour checking in at the small 103 Orchard visitor center, where tour cohorts converge at set times and back up at the desk into a substantial line at busy hours.",
+    "anchors": null
   }
 ]

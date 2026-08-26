@@ -145,7 +145,29 @@
         "script_body_hash": "b2b0718f049e067664513fbe4e01780c13c9af007a450d751eb89610514cc192"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Vast zoo of hundreds of acres and many themed exhibits and animal houses, would easily absorb a full day; capped at the 90-minute tour maximum, entered through gated ticketing.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Ticket booths and bag check at the gates back up substantially on warm-weather weekends and holidays as families arrive in bulk, though timed and pre-purchased tickets shorten the wait off-peak.",
+    "anchors": null
   },
   {
     "name": "New York Botanical Garden",
@@ -240,7 +262,29 @@
         "script_body_hash": "a8ebe4387f92d1e304aab624138e8720fa8a46b8a86fe7e99d0a19764486a12b"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Enormous botanical garden with the huge Haupt Conservatory glasshouse, forest, and many collections, would absorb several hours; capped at the 90-minute maximum, entered by ticket.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Admissions gates and ticket scanning create a modest line during spring bloom and special exhibitions, but the wide multi-lane entry keeps it from becoming substantial most days.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Botanic Garden",
@@ -396,7 +440,29 @@
         "script_body_hash": "3e39813773a13cc40d9cdc9fbdbecb25f2f39e02d51a2173ea8d2279dba233d8"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Large garden with cherry esplanade, Japanese garden, rose garden and conservatory, would absorb two-plus hours in season; capped at the 90-minute maximum, entered by ticket.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "garden",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 20,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "The ticket gate is minor most of the year, but during peak cherry-blossom weekends in spring the timed-entry crowd pushes the line to its worst; priced here for that busy season.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Museum",
@@ -675,7 +741,29 @@
         "script_body_hash": "18648c9f9eacb6a21946225c29dceb07eddcf2c4012b0d1e9597a500f923e8ae"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Major encyclopedic art museum, five floors including a world-class Egyptian collection, would absorb three-plus hours; capped at the 90-minute tour maximum plus a short entry line; grand Beaux-Arts facade and plaza outside.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A large-lobby encyclopedic museum where the only wait is a ticket desk and bag check that moves steadily; the spacious entrance prevents a substantial backup.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Navy Yard",
@@ -878,7 +966,24 @@
         "script_body_hash": "697024fccccfa197b1ac8d8669d6b1a2644f81a0e212d31e1f0319c6146ee839"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Historic 300-acre industrial complex you move through on foot, with a free interpretive museum (BLDG 92) giving about 45-50 min inside plus grounds and dockside views taking real time outside.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The complex and its free Building 92 museum have open walk-in access with no ticket gate or screening line before entering.",
+    "anchors": null
   },
   {
     "name": "City Reliquary",
@@ -973,7 +1078,29 @@
         "script_body_hash": "1ae645f56979da13a4c4b789f2a483c371a2f5e21547ab213f6ebb3006dc7cb7"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Tiny single-room neighborhood museum of NYC curiosities, engaged browse around 25 min; storefront exterior with little to see.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 3,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A tiny storefront museum where the only possible wait is a couple of visitors at the small door and donation desk.",
+    "anchors": null
   },
   {
     "name": "Coney Island",
@@ -1234,7 +1361,24 @@
         "script_body_hash": "f15a5fea4bcd003685c941be72a82d7c9d518085ee420a6e1038c2c4cad4d31f"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Diffuse seaside amusement district with boardwalk, beach and rides; walking the boardwalk and taking in the scene absorbs well over half an hour outdoors, with no single interior to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The boardwalk, beach, and amusement district are open-access with no gate; individual rides sell their own tickets, but there is no line to enter the area itself.",
+    "anchors": null
   },
   {
     "name": "Green-Wood Cemetery",
@@ -1498,7 +1642,24 @@
         "script_body_hash": "8163f97aaac9f9ccd304097bdf581c174817b3849a75b625a7a8b3889ef4e944"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic 478-acre arboretum-cemetery of rolling paths, monuments and notable graves you explore entirely outdoors on foot; the Gothic gatehouse itself rewards a stop, but there is no single interior to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A historic cemetery-arboretum entered freely through open gates with no ticket or screening required to walk in.",
+    "anchors": null
   },
   {
     "name": "Industry City",
@@ -1643,7 +1804,24 @@
         "script_body_hash": "85dd02c489bb773e2c2b2a80cc2c7fbd1212e403678bfbec5bcc8c13ad0249f3"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Rehabbed warehouse complex of courtyards, shops, food halls and maker spaces, walkable outdoor grounds plus interior halls giving around 50 min browsing; no ticketed single attraction.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open retail and dining complex you walk into off the street with no admission gate or security line.",
+    "anchors": null
   },
   {
     "name": "New York Aquarium",
@@ -1794,7 +1972,29 @@
         "script_body_hash": "b40335a0a8fd6415ea1d1ee5296da954909b0c2aebe26ba76e25fff26565cc46"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Coney Island aquarium with the Ocean Wonders shark building and multiple marine exhibits, would absorb two-plus hours; capped at the 90-minute maximum, entered by ticket; boardwalk-side exterior.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 25,
+    "queue_minutes_offpeak": 8,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Ticket booths and bag check at the single entrance back up substantially on summer and holiday weekends as Coney Island crowds arrive, though pre-bought tickets ease the off-peak wait.",
+    "anchors": null
   },
   {
     "name": "New York Transit Museum",
@@ -1888,7 +2088,29 @@
         "script_body_hash": "f0bc1f93e24bd5e3e13abc795161e7ce2c6e8731cc9b689ca829961ea8035145"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Museum set in a decommissioned subway station, with signal and fare exhibits and a platform of vintage subway cars to board, engaged visit around 70 min plus a short entry line; entrance is a stairwell with no exterior to view.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 6,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "Housed in a former subway station, entry is via a single small admissions desk that only draws a short line at midday weekends.",
+    "anchors": null
   },
   {
     "name": "Isamu Noguchi Garden Museum",
@@ -2036,7 +2258,29 @@
         "script_body_hash": "e1b4b0d1af3cf79f96c8b8d420f1200653466bdb8411bb4ff968c1c6ded15c01"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Interior galleries plus an outdoor Zen sculpture garden; roughly ten gallery spaces and the garden to walk slowly through, typical engaged visit an hour.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small ticket desk at a modest single-artist museum admits visitors quickly; the only wait is a brief admission line at midday weekend peaks, never a substantial queue.",
+    "anchors": null
   },
   {
     "name": "Louis Armstrong House Museum",
@@ -2252,7 +2496,29 @@
         "script_body_hash": "97ed7bb7e79bf5a5c9b6efa8bf53e756fe90e06007b391d98af4946615945054"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 3300,
+    "visit_basis": "Preserved modest house shown by guided tour of the period rooms plus a small exhibit; the tour runs about 40 min plus a short wait.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry is by small guided-tour groups checking in at a house door, so the only wait is a short check-in line at the busiest tour times, not a substantial queue.",
+    "anchors": null
   },
   {
     "name": "Museum of the Moving Image",
@@ -2523,7 +2789,29 @@
         "script_body_hash": "123b14e979e749d2cba3922a18153d860d9558ea59cdc25d98bb2cf89194bbd9"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 4800,
+    "visit_basis": "Large three-floor museum of film, TV and video-game artifacts with many interactive exhibits and screening spaces; an engaged visit runs 75-90 min.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A ticket desk with a bag check moves a moderate crowd through; weekend afternoons build a few people at the desk but it stays minor, never a long queue.",
+    "anchors": null
   },
   {
     "name": "P.S. 1 Contemporary Art Center",
@@ -2673,7 +2961,29 @@
         "script_body_hash": "d88304a22e7aebb0aaf446c1acbc89460c47fd6e25438f5334b2500861aa8c04"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 4500,
+    "visit_basis": "Large former-schoolhouse contemporary art center with many rooms over several floors of installations; an engaged visit runs over an hour plus a short entry wait.",
+    "typical_duration_min": 7,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "This contemporary-art center (MoMA PS1) admits at a ticket desk that moves; a modest line forms at busy weekend afternoons but stays minor except during special events.",
+    "anchors": null
   },
   {
     "name": "Queens Museum",
@@ -2831,7 +3141,29 @@
         "script_body_hash": "a8933bf4c867fadc1976431e013daeb647c6a96e9bb13c91368b9c8c149c363a"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Mid-size museum whose centerpiece is the huge Panorama of New York City plus other galleries in the World's Fair building; an hour absorbs it comfortably.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A suggested-donation ticket desk in a large World's Fair building rarely backs up; the only wait is a brief admission line at midday peaks.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Children's Museum",
@@ -2925,7 +3257,29 @@
         "script_body_hash": "470295105f939f19df5bf100044ca579986e1e41a1d33b7b9f6301078f2065d1"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Multi-floor hands-on children's museum where engaged families move slowly through many interactive galleries; over an hour of real use.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "A ticket desk with stroller-heavy family groups checking in builds a short morning line at opening and weekends, but the desk moves and it stays minor.",
+    "anchors": null
   },
   {
     "name": "Children's Museum of Manhattan",
@@ -3022,7 +3376,29 @@
         "script_body_hash": "58ea621827351c20b32da1e846e5393b2cf376b4f282b297bde64f0598cc346e"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Several floors of hands-on exhibits for kids that reward extended play; an engaged family visit runs well over an hour.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "10:00",
+        "13:00"
+      ]
+    ],
+    "queue_basis": "This small hands-on kids museum caps entry at the ticket desk and family groups pile up at weekend openings, giving a real but bounded ticket-desk line.",
+    "anchors": null
   },
   {
     "name": "National Museum of Mathematics",
@@ -3117,7 +3493,29 @@
         "script_body_hash": "81bbcad8d5e049a5518ee2db3b97732b04af0552d8221e6fc853da94739b5c88"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Two floors of interactive math exhibits that invite lingering and experimentation; an engaged visit runs 60-75 min plus a short entry wait.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single ticket desk at this compact interactive museum builds a short line on busy weekend afternoons, but it moves and never becomes substantial.",
+    "anchors": null
   },
   {
     "name": "New York City Fire Museum",
@@ -3211,7 +3609,29 @@
         "script_body_hash": "9dfb1830af4a6be9d242b11b41c4c5b8c0280ecdf7888e8ebeb12b1cf062ee14"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Single restored firehouse with historic engines and firefighting memorabilia across two floors; an unhurried visit runs about 50 min.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small suggested-admission desk in a converted firehouse handles light traffic; the only wait is a brief line at the desk at midday peaks.",
+    "anchors": null
   },
   {
     "name": "New York Hall of Science",
@@ -3305,6 +3725,28 @@
         "script_body_hash": "c1cf1edc90eefaf0b9ad6ab984e6d07ebbe407311293a3fac3d522cd31dd0cec"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 4800,
+    "visit_basis": "Large hands-on science center with hundreds of exhibits and an outdoor science playground; an engaged visit fills 75-90 min.",
+    "typical_duration_min": 7,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "A ticket desk serving school groups and families builds a real line during weekday field-trip mornings and weekend afternoons, but it stays bounded at the desk.",
+    "anchors": null
   }
 ]

@@ -241,7 +241,24 @@
         "script_body_hash": "9f254313df6091152ed5fa97b2bb8a15431ed459f7202b968b065f1314867de2",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Network of small community gardens reclaimed from vacant lots; strolling through the greenery and plantings takes around 15 min, open-air with nothing to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "garden",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "Free community gardens entered through an open gate during volunteer hours, with no ticket desk or security to queue at.",
+    "anchors": null
   },
   {
     "name": "Astor Place",
@@ -461,7 +478,24 @@
         "script_body_hash": "df6496486b638f370c9c10e29124a922a67e85a5c08c3ff691b4831fb646709d",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Crossroads square anchored by the rotating Alamo Cube sculpture with historic Opera House and riot associations; you circle the cube and take in the intersection for around 15 min, nothing to enter.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "square",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open crossroads square with a public sculpture and no interior or entry control, so no line exists.",
+    "anchors": null
   },
   {
     "name": "East River Park",
@@ -571,7 +605,24 @@
         "script_body_hash": "05c1c8472bdf3df7eb4bef394ac0e8d1752a57ecb4b38abb9b3a0b0cae12783b",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Long waterfront park with paths, ballfields, an amphitheater and bridge views; walking the promenade and pausing at the water absorbs around 25 min, nothing to enter.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "bridge",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A waterfront public park with open paths and no gate or ticket, so nothing is waited in.",
+    "anchors": null
   },
   {
     "name": "Museum at Eldridge Street",
@@ -729,7 +780,29 @@
         "script_body_hash": "3483b3009951db735f421a7377d5c4f6864e80d8784ae872adc0764582168863",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Ornate 1887 synagogue facade on a Chinatown street; interior is a restored sanctuary with a famous stained-glass window seen on a guided tour of roughly 45-50 min.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "This small landmark synagogue admits visitors through one ticket desk and often via timed tours, so the wait is a brief desk check that rarely builds into a real line.",
+    "anchors": null
   },
   {
     "name": "New Museum of Contemporary Art",
@@ -952,7 +1025,29 @@
         "script_body_hash": "0687d51b3f022574e3b5025ec2ef81e6cfd009fea231fb0afef420da3bfc684c",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Striking stacked-box SANAA building viewed from the Bowery; inside, several stacked gallery floors of contemporary art plus ticket queue absorb around 70 min for an engaged visitor.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A single lobby ticket desk with bag check funnels visitors into a narrow entrance, producing a modest afternoon line that moves steadily and stays minor.",
+    "anchors": null
   },
   {
     "name": "St Marks Place",
@@ -1462,7 +1557,24 @@
         "script_body_hash": "5e2b90d15aab4b4be3058d3661c32c0f7fe383bb9298381e5fee67d837602c14",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Three-block East Village street dense with shops, bars and layered music and literary history; walking and reading the stretch takes about 20 min, nothing to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "square",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public street with no gate or ticket, so there is nothing to stand in line for.",
+    "anchors": null
   },
   {
     "name": "The Tenement Museum",
@@ -1739,7 +1851,29 @@
         "script_body_hash": "2ac9d890b64011b8b16ac4eb99fb31df09db3b17ecf05de6534ee3188871d615",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Modest tenement facade on Orchard Street; interior is seen only on a guided tour through restored immigrant apartments, typically 60-75 min including check-in at the visitor center.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "Access is only by timed guided tour checking in at the small 103 Orchard visitor center, where tour cohorts converge at set times and back up at the desk into a substantial line at busy hours.",
+    "anchors": null
   },
   {
     "name": "Tompkins Square Park",
@@ -1748,7 +1882,7 @@
     "kid_friendly": "yes",
     "latitude": 40.726486,
     "longitude": -73.981684,
-    "trigger_radius": 120,
+    "trigger_radius": 190,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1964,6 +2098,23 @@
         "script_body_hash": "35fa72df9bbcf148cae493ee95a71b9726bca74d1981534d4b20d2cbc5d4e9f2",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Neighborhood East Village park with tree-shaded paths, benches and gathering spaces; you stroll the loops and sit, nothing to enter.",
+    "typical_duration_min": 18,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood park entered through unmanned gates with no ticket or security, so there is no line to stand in.",
+    "anchors": null
   }
 ]

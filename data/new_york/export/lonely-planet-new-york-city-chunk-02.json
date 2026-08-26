@@ -96,7 +96,24 @@
         "script_body_hash": "d7474a1b5b6e292a1bf11a8f433669ff4e248e3812cb85fd6ad56b8f596090e8",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Alternative arts venue with rotating contemporary shows across video, performance and design; facade is a plain building front, interior galleries absorb around 20 min.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by-only stop with no interior visit priced here; as a free alternative art space it has no security or ticket line in any case.",
+    "anchors": null
   },
   {
     "name": "Broken Kilometer",
@@ -206,7 +223,24 @@
         "script_body_hash": "ab60a6c1abd9dbe4336171d331c2aa6ad5fa51ec90f810ca82649b42569f609c",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "A land-art installation in a ground-floor SoHo gallery, 500 polished brass rods in widening rows; nothing to see from the street, and the single room rewards several minutes of walking its length and taking in the perspective effect.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a free, walk-in art installation in a ground-floor gallery space with no ticket desk or screening, so visitors enter directly with no line to price.",
+    "anchors": null
   },
   {
     "name": "Chinatown",
@@ -571,7 +605,24 @@
         "script_body_hash": "5b17b6190118ba1eb7a1961df53996a72afbe382079e22e7a73d1516a47fad05",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "busy neighborhood of market stalls, shopfronts, restaurants and small temples; wandering the crowded streets absorbs over half an hour, an area rather than a single interior.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of public streets and shops with no gate or ticket; the whole value is walked through in the open.",
+    "anchors": null
   },
   {
     "name": "Columbus Park",
@@ -737,7 +788,24 @@
         "script_body_hash": "d8aab7aa275729ef2b8c308ffc68271c3c3346cea95320d97870d71324b09f87",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Leafy Chinatown park with paths, a pavilion, and gatherings of mah-jongg and tai-chi players; you walk through and linger watching the scene for around 20 min, nothing to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public park with no gate, ticket, or entry control, so nothing is waited in.",
+    "anchors": null
   },
   {
     "name": "Donald Judd Home Studio",
@@ -847,7 +915,29 @@
         "script_body_hash": "65fcfcd5e07ac952cad478352fa1a53741264648f094aaac3964ac5f4c0422cb",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 5400,
+    "visit_basis": "Prebooked 90-minute guided tour through a five-floor cast-iron house of Judd's furniture and installations; exterior is a single SoHo building front worth a few minutes, interior is a fixed 90-min tour.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry is by prebooked timed tour, so there is no open queue; only a brief check-in gathering at the door before each departure, never a substantial line.",
+    "anchors": null
   },
   {
     "name": "Drawing Center",
@@ -953,7 +1043,29 @@
         "script_body_hash": "881d7622f52bf6b9178375d8396d6c122419059bb99b6d25b31b39a01a5a07cd",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 2700,
+    "visit_basis": "Nonprofit gallery with rotating drawing exhibitions across a couple of rooms; facade is a modest SoHo storefront, interior takes 40-45 min to view the works closely.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small nonprofit gallery with a single ticket/admissions desk that processes a few people at a time; the desk can briefly back up on busy afternoons but never forms a long line.",
+    "anchors": null
   },
   {
     "name": "Eastern States Buddhist Temple",
@@ -1057,7 +1169,24 @@
         "script_body_hash": "cabefdaece07a62df0c09f9ac98d541efb30cb00345f3083633169ce215007c3",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 1000,
+    "visit_basis": "Small Mott St temple crowded with hundreds of Buddha statues; narrow storefront outside, interior is one dense room absorbing 15-20 min.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open storefront temple you enter freely without ticket or bag check, so there is no line to stand in before going inside.",
+    "anchors": null
   },
   {
     "name": "Leslie-Lohman Museum of Art",
@@ -1156,7 +1285,29 @@
         "script_body_hash": "2fcffddcf39f3182f1813994c3d5a4d48acdd518ba508603ab16ac1363870ca4",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Small SoHo gallery storefront; interior holds intimate rotating LGBTQ art exhibitions across a compact space, taking around 40 min to see fully.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A niche SoHo art museum with a small front desk and no screening, so the wait is at most a few people signing in on a busy afternoon.",
+    "anchors": null
   },
   {
     "name": "Little Italy",
@@ -1319,7 +1470,24 @@
         "script_body_hash": "5fe2b3b7587c9ba7c36ea9e10d29778a0ad5350e9086d85de2698f84f6865a91",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "short strip of Mulberry Street with Italian restaurants, cafes and festival banners; the walkable core is small, covered in about twenty minutes, nothing to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street neighborhood with no single entrance or admission, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Mahayana Temple",
@@ -1439,7 +1607,24 @@
         "script_body_hash": "8bbe98cb6842e8ce8f3364fdddd2f0fb8a73d671a43f74a26887dacd630ae08e",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 1200,
+    "visit_basis": "Chinatown temple with golden lions at the door and a 16-foot golden Buddha in a single main hall of offerings; exterior lions merit a few minutes, interior about 20 min to take in the hall and shrine.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A working Buddhist temple with an open door you walk straight through free of charge, with no security screening or ticket desk to wait at.",
+    "anchors": null
   },
   {
     "name": "Merchant's House Museum",
@@ -1626,7 +1811,29 @@
         "script_body_hash": "04835da9a8929a8ed7b75d25ca8de610ee5b555667faf2eda3e3affa3a8e967d",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Preserved 1832 rowhouse facade with iron railings; inside, an intact period home over several floors with original furnishings takes roughly 45-50 min to tour.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single narrow entrance to a preserved historic house with one admission desk produces only a brief wait, as visitor numbers are small.",
+    "anchors": null
   },
   {
     "name": "Mulberry Street",
@@ -1975,7 +2182,24 @@
         "script_body_hash": "766204b7c90177a0685f3d32a93d1263ec88dfa8c594a68ef27be0c718d2c936",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Little Italy's main street lined with restaurants, cafes and old shops over several blocks; the value is walking its length past storefronts, roughly 20-25 min, nothing single to enter.",
+    "typical_duration_min": 22,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public street lined with shops and restaurants, with no door or entry control to wait at.",
+    "anchors": null
   },
   {
     "name": "Museum of Chinese in America",
@@ -2084,7 +2308,29 @@
         "script_body_hash": "3adfd8fa1022b5d3a1d9c667f8cd35ca63d59cb881151a6e9c9c83bb15e3b434",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3300,
+    "visit_basis": "Understated Maya Lin-designed entrance on a Chinatown street; inside, core and rotating exhibitions on Chinese-American history across galleries absorb roughly 55 min.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Admission is through one ticket desk with a bag check, forming a short midday line at this mid-sized museum but never a substantial one.",
+    "anchors": null
   },
   {
     "name": "New York City Fire Museum",
@@ -2267,7 +2513,29 @@
         "script_body_hash": "c61ce0a48320d6f30fb7e4f7a05fdcdc062053276bedbfdbc064fd7e5d9f0bfa",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Single restored firehouse with historic engines and firefighting memorabilia across two floors; an unhurried visit runs about 50 min.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small suggested-admission desk in a converted firehouse handles light traffic; the only wait is a brief line at the desk at midday peaks.",
+    "anchors": null
   },
   {
     "name": "New York Earth Room",
@@ -2376,7 +2644,29 @@
         "script_body_hash": "5de0c9d8824953a6c6c88ac61e73c5ce20b8cbf93b37c3abdca7886012aa8333",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 900,
+    "visit_basis": "Single ground-floor gallery holding one room of earth viewed from a rail; nothing outside but a SoHo doorway, and the interior is one striking room absorbing 10-15 min including a short wait.",
+    "typical_duration_min": 3,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "gallery",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single small free ground-floor gallery admits only a few visitors at once, so a short wait can form at midday weekends; most hours you walk straight in.",
+    "anchors": null
   },
   {
     "name": "Nom Wah Tea Parlor",
@@ -2479,7 +2769,24 @@
         "script_body_hash": "613d8c5477857a016309930b5162c68b880680478c77cad9233a462124bb5e38",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic 1920s dim sum parlor on a Chinatown corner; as a walk-by the vintage facade and signage take a few minutes to appreciate, no touring interior.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by-only stop with no entry priced here; the restaurant has no security or ticket line, only optional dining waits which are not this queue.",
+    "anchors": null
   },
   {
     "name": "SoHo",
@@ -2649,6 +2956,23 @@
         "script_body_hash": "b174b9a47286c076210d1a4bbe5d292077a6497b4a987cf8c5e30b88ad62e748",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "district of cast-iron loft facades, cobbled streets and boutiques; walking the grid to take in the architecture and shopfronts fills about half an hour, an area to stroll.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open shopping district of public streets with no gate or ticket; nothing throttles entry.",
+    "anchors": null
   }
 ]

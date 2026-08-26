@@ -478,7 +478,24 @@
         "script_body_hash": "ea348a7e25cbd2bd70c8a5ff70515590015341b4b4a0cefcdd04319bfac9a3d0"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "Large iconic square with the Stanford White marble arch, central fountain, chess tables and performers; you walk between positions and linger, absorbing well over half an hour outdoors with nothing to enter.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "square",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public square with the marble arch entered freely from every side, so there is no gate or line despite heavy foot traffic.",
+    "anchors": null
   },
   {
     "name": "22 Washington Square North",
@@ -625,7 +642,24 @@
         "script_body_hash": "e36a362b967a1d884e9795fafca58c969b0a5b3025b2b8efb50ab88a57e64e2a"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Single townhouse of interest only for the Morse/telegraph plaque story; a few minutes at the facade, no public interior.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A plaque-level townhouse stop viewed from the sidewalk with no interior visit, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Washington Square North",
@@ -889,7 +923,24 @@
         "script_body_hash": "2e2c9a95994adabfce90bd317c553c73d05d31dce1ae6f3bfc9aa6e6def11b52"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "The longest unbroken run of Greek Revival row houses in the US; walking the block reading the facades and the Henry James associations takes about a quarter hour, all from the street.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A row of Greek Revival townhouses admired from the street as an architectural streetscape, with no door to enter and no line.",
+    "anchors": null
   },
   {
     "name": "29 Washington Place",
@@ -1090,7 +1141,24 @@
         "script_body_hash": "b8f2a0a1458dede5ffdb7214145741fb5064080c017fed286a80f94a3a8bd408"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "The Triangle fire building (now NYU); time to stand at the corner, read the memorial plaques and look up at the upper floors where the fire occurred, viewed from outside.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The Triangle fire site is now an NYU building viewed from the sidewalk for its plaque and history, with no public tour entry, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Judson Memorial Church",
@@ -1347,7 +1415,24 @@
         "script_body_hash": "ab67fdcebd049fda92db88c00eb2d0503f1dbd4a8693bda05e4ced0d255611a9"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Stanford White Romanesque church on the square; a few minutes at the facade and campanile, plus roughly 18 minutes inside for the sanctuary and La Farge stained glass when open.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A church you walk straight into through an open door with no security or ticket, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "New York University School of Law",
@@ -1495,7 +1580,24 @@
         "script_body_hash": "af97a11ab9c80cfcbb494fe2a4aad3510e50af3e98af1b58f393015b75e3ed86"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "Pass-by building where the narrative is the vanished John Reed boardinghouse and the street names; a brief pause on the sidewalk, not entered.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A walk-by-only pass with no public entry, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Provincetown Playhouse",
@@ -1699,7 +1801,24 @@
         "script_body_hash": "9db34a3e90cd33ad008a6662a7ef2be4af03115875f090bd1622dece8b0cf69b"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "Small historic theater frontage where 'only the name remains'; a few minutes at the facade for the O'Neill story, no interior visit as part of the tour.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A historic theater stop viewed from the street where 'only the name remains', with no ticketed tour entry, so there is no line.",
+    "anchors": null
   },
   {
     "name": "130 MacDougal Street",
@@ -1846,7 +1965,24 @@
         "script_body_hash": "0a1bd370b434d329f5647b2efbb18fe70002e7aa073fe2cf03fdc864528eefce"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Private Federal-era town house viewed from the street; you read the facade and the Alcott association, nothing to enter.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is a private town house viewed from the sidewalk with no public interior to enter, so there is no line to stand in.",
+    "anchors": null
   },
   {
     "name": "Caffe Reggio",
@@ -1948,7 +2084,29 @@
         "script_body_hash": "e3753ac334056dc81c8f8a78d9586656c6e66ef3edbdc0d263eacd497142ed09"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 2700,
+    "visit_basis": "Tiny 1927 coffeehouse; the facade is a quick look, but sitting for a cappuccino among the antique interior and film history fills about 45 min inside.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "This is a small cafe with one door where the only wait is for a table to open on a crowded afternoon, not a security or ticket line, so it stays brief.",
+    "anchors": null
   },
   {
     "name": "Minetta Tavern",
@@ -2160,7 +2318,29 @@
         "script_body_hash": "1a6813ef091f0762d1b781ee87b72aec1464b052bba5828d39de624e900d4499"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Historic narrow tavern-restaurant; facade and plaque take a few minutes outside, while a seated meal or drink at the bar with its history absorbs about an hour inside.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "18:00",
+        "21:00"
+      ]
+    ],
+    "queue_basis": "As a small restaurant with a single host desk, any wait is a walk-in queue for a table at dinner hours rather than a security or ticket line, and it stays minor outside reservation crunch.",
+    "anchors": null
   },
   {
     "name": "Minetta Street",
@@ -2426,7 +2606,24 @@
         "script_body_hash": "8eb1fbdd3100f430323efcb2d6aeafd3ce818e7ae94ae4df8ff61e799d7ecc9f"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Short crooked Village street over a buried stream; you walk its curve, read the layered 'Little Africa' and Draft Riots history, and take in the atmosphere, all outside.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open public street with no door and no ticket, so the whole experience stands in the open with nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Bleecker Street",
@@ -2636,7 +2833,24 @@
         "script_body_hash": "60446f7d328a8111a2049b45dc950fba311e8bb69bcdf3b88021776c1d8bc808"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "Long sensory food corridor lined with Italian shops like Murray's Cheese and Faicco's; walking the stretch, browsing storefronts and smelling the market takes half an hour outside.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open shopping street walked freely; individual shops may have their own counters but the corridor itself has no entrance line.",
+    "anchors": null
   },
   {
     "name": "One If by Land, Two If by Sea",
@@ -2783,7 +2997,29 @@
         "script_body_hash": "ef078e3a6848f1bf595d331fa93e9b92332e6ce42aa1d80ccb5da4c8c00ccce1"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "1767 carriage house viewed from the street in a few minutes; the candlelit dining room tied to Aaron Burr absorbs about an hour for a seated visit inside.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 5,
+    "queue_peak_hours": [
+      [
+        "18:00",
+        "20:30"
+      ]
+    ],
+    "queue_basis": "This is a reservation-based restaurant with one host stand, so the only wait before entering is a brief check-in at the door rather than a security or ticket queue.",
+    "anchors": null
   },
   {
     "name": "Stonewall Inn",
@@ -2985,6 +3221,28 @@
         "script_body_hash": "8c24f3fa8255b5ac03dba6d5115d36cb391afeaa3265292926ed6a5bdcf8fbbe"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": 2400,
+    "visit_basis": "National Monument bar and adjacent Christopher Park; the facade, plaques and memorial statues take about 15 min outside, and the small historic barroom absorbs roughly 40 min inside.",
+    "typical_duration_min": 15,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "19:00",
+        "23:00"
+      ]
+    ],
+    "queue_basis": "The monument's exterior and adjacent park are walked into freely, and entering the bar itself involves only a single-door ID check that can back up in the evening, so any wait is minor.",
+    "anchors": null
   }
 ]

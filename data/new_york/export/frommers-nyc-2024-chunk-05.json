@@ -218,7 +218,29 @@
         "script_body_hash": "77c073375370e4fb2270f64f5871f33955e9189b7f27538b6be4492df51a4208"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Carnegie mansion facade and garden gate take 6 min; inside, the design galleries over several floors with interactive pen exhibits absorb about an hour.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A converted Carnegie mansion with a single ticket desk and bag check; modest attendance keeps the wait to a few people at midday.",
+    "anchors": null
   },
   {
     "name": "Frick Collection",
@@ -451,7 +473,29 @@
         },
         "script_body_hash": "dcfbb81289cadb2cd80bb74712e1b263e7075929f56dbd2cefe769f94d7e077f"
       }
-    ]
+    ],
+    "visit_seconds_inside": 4500,
+    "visit_basis": "Elegant mansion exterior takes 6 min; inside, the intimate rooms with Vermeers, Bellini, El Greco and Holbein reward a slow 75 min viewing.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A mansion gallery with timed admission and a coat/bag check at one door; capped ticketing keeps the entry line to a handful of people.",
+    "anchors": null
   },
   {
     "name": "The Jewish Museum",
@@ -609,7 +653,29 @@
         "script_body_hash": "8a76427035a0cd244b08f4287b153b42a92b4ede5433e4f07e3be6c99c623beb"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": 4200,
+    "visit_basis": "Mansion exterior on Fifth Avenue is brief; inside, roughly 800 artifacts across permanent and rotating galleries spanning 4,000 years fill about 70 min for an engaged visitor.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A mansion museum with security screening at one entrance and a ticket desk; visitor numbers are moderate, so the line stays short.",
+    "anchors": null
   },
   {
     "name": "Metropolitan Museum of Art",
@@ -1092,7 +1158,29 @@
         "script_body_hash": "b071f630dc29ecd3dd2b68b4099b1088cadedd68aa921e249bd342277b826709"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The grand Fifth Avenue steps and facade absorb 12 min; the interior would genuinely take a full day across 3M works, capped at the 90-minute tour maximum.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single grand entrance funnels bag checks and ticket-desk transactions for a huge crowd; the line is substantial midday and short at opening or late afternoon.",
+    "anchors": null
   },
   {
     "name": "Museum of the City of New York",
@@ -1248,7 +1336,29 @@
         "script_body_hash": "8c5a063edafe20762ff0c15d485151583728319dd7e14178ad09e93030abc30f"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 3900,
+    "visit_basis": "Georgian-Colonial facade is brief; inside, the NYC history galleries and Future City Lab with a well-regarded intro film run about 65 min.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A single lobby ticket desk with a light bag check serves modest attendance, so only a few people wait at midday and none at opening.",
+    "anchors": null
   },
   {
     "name": "Neue Galerie New York",
@@ -1352,7 +1462,29 @@
         "script_body_hash": "b9d10bc99021f28dd8f45bf39bc8313bc3449ad6951aac6a749ae93f096805c6"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 3300,
+    "visit_basis": "Beaux Arts mansion exterior is brief; inside, a focused two-floor German/Austrian collection including Klimt plus the Viennese cafe absorb about 55 min.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "gallery",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small mansion gallery with a single ticket desk and mandatory coat/bag check; limited capacity produces only a brief line at midday.",
+    "anchors": null
   },
   {
     "name": "Solomon R. Guggenheim Museum",
@@ -1581,7 +1713,29 @@
         "script_body_hash": "0065bb7eb06ab618e9a6bc20a629789f3f259ead9c598c86483fb696700f2377"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": 4500,
+    "visit_basis": "The Frank Lloyd Wright spiral exterior is a landmark worth 8 min outside; inside, walking the full ramp with the modern-art collection takes about 75 min including a ticket queue.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 25,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "One narrow entrance with a bag check and single ticket lobby handles a steady tourist flow, so a real line forms midday despite timed tickets.",
+    "anchors": null
   },
   {
     "name": "American Folk Art Museum",
@@ -1674,7 +1828,29 @@
         "script_body_hash": "bc5450d211e33af1649ac2ff6336de8b5c4f22cccd1ca201769f734e76de4e97"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 2700,
+    "visit_basis": "Small museum near Lincoln Center with modest frontage; inside, its self-taught-artist galleries of quilts and sculpture take about 45 min to see well.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 3,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "13:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small free museum near Lincoln Center with a single greeting desk and no screening, so the only wait is a few visitors entering at once.",
+    "anchors": null
   },
   {
     "name": "American Museum of Natural History",
@@ -1835,6 +2011,28 @@
         "script_body_hash": "108cff1e16be515766f1b3f5171de998fc93a5a7406a102b96c04e44460c434d"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 5400,
+    "visit_basis": "The facade and Central Park West steps take 10 min; inside, the dinosaur halls, dioramas and new Gilder Center would absorb several hours, capped at the 90-minute tour maximum.",
+    "typical_duration_min": 10,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "long",
+    "queue_minutes_peak": 30,
+    "queue_minutes_offpeak": 10,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Bag check plus a busy ticket/admission desk gate a school-and-family crowd through limited entrances, so the line builds substantially midday and clears at opening.",
+    "anchors": null
   }
 ]

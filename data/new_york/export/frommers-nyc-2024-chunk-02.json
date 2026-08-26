@@ -153,7 +153,24 @@
         "script_body_hash": "c5dd34aadc39a8776f0c4cdcefe1d1c070bdffdb13d65a98039a974a8f9e876d"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "downtown Manhattan neighborhood of narrow canyon streets, Wall Street, Federal Hall and Exchange facades; walking between the landmarks fills over half an hour, no single interior.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Manhattan neighborhood of public streets with no single entrance or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Chinatown",
@@ -308,7 +325,24 @@
         "script_body_hash": "99f441669039e09459a7ee4b3ae7a7e51dfd22e9ce7aecf3dcafc81fe0ddc581"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "busy neighborhood of market stalls, shopfronts, restaurants and small temples; wandering the crowded streets absorbs over half an hour, an area rather than a single interior.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of public streets and shops with no gate or ticket; the whole value is walked through in the open.",
+    "anchors": null
   },
   {
     "name": "Little Italy",
@@ -404,7 +438,24 @@
         "script_body_hash": "28e95f7d8293aee1007bcd445062849c299539e2c18da8ba787d9546256f1f89"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "short strip of Mulberry Street with Italian restaurants, cafes and festival banners; the walkable core is small, covered in about twenty minutes, nothing to enter.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street neighborhood with no single entrance or admission, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "SoHo",
@@ -505,7 +556,24 @@
         "script_body_hash": "d425d0c5875e4c5b5069ae23b3aae0aba2aa6c6ab61f6add8b8b8dd98993fc9e"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "district of cast-iron loft facades, cobbled streets and boutiques; walking the grid to take in the architecture and shopfronts fills about half an hour, an area to stroll.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open shopping district of public streets with no gate or ticket; nothing throttles entry.",
+    "anchors": null
   },
   {
     "name": "Lower East Side",
@@ -657,7 +725,24 @@
         "script_body_hash": "ddecd872290fa621595c38b195eb327cbb9f978ecec26349199c1545a533a6f8"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "historic immigrant neighborhood of tenement streets, delis, bars and small galleries; walking the blocks absorbs around twenty-five minutes, a district rather than one interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood walked freely from the sidewalk with no entrance or admission line.",
+    "anchors": null
   },
   {
     "name": "Greenwich Village",
@@ -872,7 +957,24 @@
         "script_body_hash": "295ff818d40e2b9711acfd3aa3212135c494c7fed385061e41307fb6d9ce571c"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "Whole historic neighborhood of townhouse-lined streets, cafes and squares; wandering its blocks and taking in the atmosphere easily absorbs three quarters of an hour, all outdoors.",
+    "typical_duration_min": 45,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an open neighborhood explored on foot with no gate or ticket, so there is nothing to queue for to enter it.",
+    "anchors": null
   },
   {
     "name": "Meatpacking District",
@@ -960,7 +1062,24 @@
         "script_body_hash": "3944066ae6a54e581b26efcd8e3e3f27d014dd18daadb1c94cf2aa47339b3e38"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "compact area of cobbled streets, warehouse-turned-boutique buildings and the High Line entry; the small core is walked in about twenty minutes, an area to stroll.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open street district with no gate or ticket, so there is no queue to enter.",
+    "anchors": null
   },
   {
     "name": "Chelsea",
@@ -1052,7 +1171,24 @@
         "script_body_hash": "0801d35f8c1cc66f831d82a06dd71df1b5d0e12271c1747ad1e6b89b7c458f0b"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "neighborhood of art-gallery blocks, Chelsea Market and the High Line above; walking the streets and elevated park fills about half an hour, an area rather than one interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open Manhattan neighborhood of public streets with no single entrance or admission control.",
+    "anchors": null
   },
   {
     "name": "Flatiron District",
@@ -1214,7 +1350,24 @@
         "script_body_hash": "b15e69c54c0215fe0bc687beb42ab27b657cba6d8ff4fd97ce3137052873ce2e"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "district anchored by the wedge-shaped Flatiron Building and nearby Madison Square; viewing the building from several angles and walking the streets fills about twenty minutes.",
+    "typical_duration_min": 22,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood around a street intersection with no gate or ticket; nothing to stand in line for.",
+    "anchors": null
   },
   {
     "name": "Gramercy Park",
@@ -1323,7 +1476,24 @@
         "script_body_hash": "abab604baf51cc290402787c3297b9ccb71999e7e41e7df2a8dc1aadb65a3866"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "small locked private garden square viewed only through its railings, ringed by historic townhouses; a walk around the perimeter takes about ten minutes, no public entry.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private locked garden the public cannot enter and otherwise viewed from the open sidewalk, so there is no admission line to stand in.",
+    "anchors": null
   },
   {
     "name": "Hudson Yards",
@@ -1418,7 +1588,24 @@
         "script_body_hash": "e52b1ed3f4a6bea5d151196873251bf2dce33979ac850e14643e056318967caf"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Large modern development with plaza, shops and the Vessel sculpture to walk around outside; interior of the mall plus a timed Edge observation-deck visit with security and elevator queue absorbs about an hour.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "The development itself is an open-air public plaza and mall you walk into freely; its sub-attractions like The Edge have their own ticketed lines, but the setting as a whole has no door and no queue.",
+    "anchors": null
   },
   {
     "name": "Midtown West",
@@ -1510,7 +1697,24 @@
         "script_body_hash": "36ebea537de0d42df423c90e893c147203efb5ade93b90039f0067e840b6011b"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Large district of theatre blocks and busy avenues walked through between stops; a setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A district of open streets with no single entrance or admission point, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Midtown East",
@@ -1610,7 +1814,24 @@
         "script_body_hash": "2e7cc3463490b9324cfaa6bd480cb88269454fd79546c4fd21c56d558acfdb7e"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Business district of grand avenues and skyscraper lobbies walked through; a setting with no single interior to price.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A district of open streets with no gate or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Upper East Side",
@@ -1767,7 +1988,24 @@
         "script_body_hash": "a71c4b7a71f44df56cf166d27a8957c4c1b0fb2e289471008ce88b8bc6503e74"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Residential district of elegant townhouse streets and museum-lined avenue walked through; a setting, not a single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open residential neighborhood with no entrance to control access, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Upper West Side",
@@ -1858,7 +2096,24 @@
         "script_body_hash": "ef8ad99d92658d72dd5fae91f4067d67a2294e1b9c3cd603c2bc748e19b320c2"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Residential district of brownstone blocks bordering the park walked through; a setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of streets with no admission point, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "Harlem",
@@ -2009,7 +2264,24 @@
         "script_body_hash": "74204eb18141bc3d98b342bd98cd485958cf17c6d410c2c986b3ee173b8c356e"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic district of wide boulevards, brownstones and landmark churches walked through between stops; a setting rather than one interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A district of open public streets with no gate or ticket, so there is no queue to price.",
+    "anchors": null
   },
   {
     "name": "Brooklyn",
@@ -2099,7 +2371,24 @@
         "script_body_hash": "00af7bf88504948e557f8705b1e382c45b8275d6dfdb39f6b0dcf17a178c9c52"
       }
     ],
-    "importance_tier": 5
+    "importance_tier": 5,
+    "visit_seconds_inside": null,
+    "visit_basis": "Very large borough of distinct neighbourhoods and waterfront walked through; a broad setting with no single interior to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An entire borough of open streets with no single entrance, so no line applies.",
+    "anchors": null
   },
   {
     "name": "Brooklyn Heights",
@@ -2202,7 +2491,24 @@
         "script_body_hash": "316e278267e6ef75bdc3423f6daea837ce085f03c8d29b3749fa364a325130e4"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "historic district of brownstone streets plus the waterfront Promenade with harbor and skyline views; walking the streets and the length of the promenade absorbs well over half an hour, nothing to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A residential historic district and open promenade you walk into freely from the sidewalk; no door, no ticket, no line.",
+    "anchors": null
   },
   {
     "name": "Park Slope",
@@ -2294,7 +2600,24 @@
         "script_body_hash": "173f3cf0b667f983492d386912a9f67b65d0c295277ed8d494a6673a0ccaf291"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "Leafy residential neighbourhood of brownstone streets beside the park walked through; a setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open residential neighborhood with no admission point, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Williamsburg",
@@ -2403,7 +2726,24 @@
         "script_body_hash": "da3563ec8f7e0848dc54fd5e50323f42403b73fe5f4ebfa9b6e20a84778e252e"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Neighbourhood of warehouse-conversion streets, waterfront and shops walked through between stops; a setting, not one interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open neighborhood of streets with no gate or ticket, so no queue exists.",
+    "anchors": null
   },
   {
     "name": "Brighton Beach",
@@ -2496,7 +2836,24 @@
         "script_body_hash": "c5e3204f4d8b40be277fd8f1e636952bcedfd118634483307443e7b8c5a807c2"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "Seaside neighbourhood with boardwalk, beach and shopping street walked along; an outdoor setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open beachfront neighborhood with no entrance to control, so there is no line to enter.",
+    "anchors": null
   },
   {
     "name": "The Bronx",
@@ -2586,7 +2943,24 @@
         "script_body_hash": "4d2d35305b5f8a06268a62338d37d46345454e6d1bad577c01ba73f9226f4c48"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "Large borough of neighbourhoods, parks and grand avenues walked through; a broad setting with no single interior to enter.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A borough of open streets with no single admission point, so no queue applies.",
+    "anchors": null
   },
   {
     "name": "Queens",
@@ -2741,7 +3115,24 @@
         "script_body_hash": "afb092a2135152bb17225e9de2c54d641f508c1e8fef5ea86023c452da2f5a09"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast diverse borough of neighbourhoods walked through between stops; a setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A borough of open streets with no gate or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Staten Island",
@@ -2826,7 +3217,24 @@
         "script_body_hash": "96477a24ecb82f7e06f7b392b95b746bc2dc9831c226b0417c8890e08543c951"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "Borough approached by ferry with harbour views and low-rise streets; an outdoor setting with no single interior to price.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open borough with no entrance to control access, so no line exists.",
+    "anchors": null
   },
   {
     "name": "Manhattan",
@@ -2889,6 +3297,23 @@
     "importance_tier": 4,
     "trigger_radius": 2000,
     "latitude": 40.7831,
-    "longitude": -73.9712
+    "longitude": -73.9712,
+    "visit_seconds_inside": null,
+    "visit_basis": "The central island and borough itself, a setting rather than a single stop; walking its numbered grid and taking in streetscape and skyline absorbs a long stretch, with no single interior to enter.",
+    "typical_duration_min": 35,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "street",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "This is an entire borough and island of open streets with no door or gate to enter, so there is no line to price.",
+    "anchors": null
   }
 ]

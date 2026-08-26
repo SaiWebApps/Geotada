@@ -201,7 +201,24 @@
         "script_body_hash": "cdbfdf21f0fec38a1aebdd75b68a5580f491273c8079358ba3f5fb29ba1ad9cf"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": null,
+    "visit_basis": "Historic district of wide boulevards, brownstones and landmark churches walked through between stops; a setting rather than one interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A district of open public streets with no gate or ticket, so there is no queue to price.",
+    "anchors": null
   },
   {
     "name": "Mt. Olivet Baptist Church",
@@ -419,7 +436,24 @@
         "script_body_hash": "8edf983cfea7cd99002cbe342a9e54fe00057dc5d06186d1ec3313616b8c2fad"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 1100,
+    "visit_basis": "Landmarked 1906-07 Brunner building, a former synagogue now a Harlem church with a monumental classical facade and a large columned sanctuary interior, roughly 15-20 min when open to visitors.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "church",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An active Harlem church walked into through an open door without a ticket desk or screening, so a passing visit involves no queue.",
+    "anchors": null
   },
   {
     "name": "Hale House",
@@ -619,7 +653,24 @@
         "script_body_hash": "0d8509ee9cd7870e7d0ee58fbb4c63cb3cac9b93bb2c42a540ea4356dd8b852d"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "A working social-service institution founded by Clara 'Mother' Hale rather than a museum; you pause outside at the building and its marker to hear the history, with no visitor interior.",
+    "typical_duration_min": 5,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A social-service institution and low-foot-traffic landmark viewed from the street rather than a ticketed attraction, so there is no visitor line.",
+    "anchors": null
   },
   {
     "name": "4-16 W. 122nd St.",
@@ -714,7 +765,24 @@
         "script_body_hash": "5863a1a815e15c6f25e12ee654d10c877ad998a1dd417b506547f2709b5e8ede"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Residential brownstone row seen from the sidewalk; a few minutes to walk the line of facades and note the detailing, nothing to enter.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A residential brownstone row viewed from the sidewalk with no interior to enter, so there is no line to stand in.",
+    "anchors": null
   },
   {
     "name": "Marcus Garvey Park",
@@ -982,7 +1050,24 @@
         "script_body_hash": "dcd7024cd97bcc3f811ab08b45bd565520621bb72702f8a9dc0c1c5178ab51ac"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": null,
+    "visit_basis": "20-acre landmarked park with paths, a rocky hill, an amphitheater and the 1857 cast-iron fire watchtower to climb up to; walking between these features absorbs about half an hour outdoors, with no interior to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open public park with multiple street entrances and no gate or ticket, so visitors walk straight in without waiting.",
+    "anchors": null
   },
   {
     "name": "55 W. 125th St.",
@@ -1128,7 +1213,24 @@
         "script_body_hash": "fd88f5b6f15d77bd940fd990337cf0e03ecfae59fedd487aadec17546116cbdd"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Modern high-rise office building viewed from the street for its Clinton-office anecdote; a brief pause outside, no public interior of interest.",
+    "typical_duration_min": 4,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A private office high-rise viewed from the street with no public interior on the tour, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Langston Hughes House",
@@ -1224,7 +1326,29 @@
         "script_body_hash": "4fc389468c6e3caf63cfd292eeb3c1ecd713df88b6f97d7c52f8ab593a175452"
       }
     ],
-    "importance_tier": 2
+    "importance_tier": 2,
+    "visit_seconds_inside": 1500,
+    "visit_basis": "Single Italianate brownstone; a few minutes at the facade for the literary story, and if open as a house museum roughly 20-25 minutes to see the modest interior rooms.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "A small landmarked brownstone house museum with one door and limited capacity, so a modest line can form during midday visiting hours but never becomes substantial.",
+    "anchors": null
   },
   {
     "name": "Collyer Park",
@@ -1312,7 +1436,24 @@
         "script_body_hash": "e5c449736168ce47cdf1aa9b0f997337277dca0a11397b12f1d89a67cc2b9126"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Small pocket park on the razed hoarder-mansion site; a few minutes to stand, read the dark-history context and look around, nothing to enter.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A tiny open pocket park with no gate or admission, entered directly from the sidewalk with no wait.",
+    "anchors": null
   },
   {
     "name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
@@ -1539,7 +1680,24 @@
         "script_body_hash": "c5ba3c72937012b70239c2ff3e017d4fbd9a5df6b9f9af5101f5d40c8274b65d"
       }
     ],
-    "importance_tier": 3
+    "importance_tier": 3,
+    "visit_seconds_inside": null,
+    "visit_basis": "Major intersection holding the Powell statue, the former Hotel Theresa and the Malcolm X lecturing site; you cross and stand at several corners to take in each layer, all outdoors.",
+    "typical_duration_min": 20,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "monument",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An outdoor street intersection with a statue and building facades viewed in the open, so there is no door and no line.",
+    "anchors": null
   },
   {
     "name": "Blumstein's Department Store",
@@ -1701,7 +1859,24 @@
         "script_body_hash": "0bc5b4d58f38cec69e0154ff81fc1ee43c4cd227300e9fac6e52ee4e99e6074a"
       }
     ],
-    "importance_tier": 1
+    "importance_tier": 1,
+    "visit_seconds_inside": null,
+    "visit_basis": "Former department-store building viewed from the sidewalk for its boycott and King-stabbing history; time to take in the facade and the story, interior not a visitor destination.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A historic commercial building viewed from the street for its facade and history, with no ticketed tour interior, so there is no queue.",
+    "anchors": null
   },
   {
     "name": "Apollo Theater",
@@ -1849,6 +2024,28 @@
         "script_body_hash": "1da0c9d38fab4dff805b8d91ade81e140733504d37888dc7d08b021ba5d5dac6"
       }
     ],
-    "importance_tier": 4
+    "importance_tier": 4,
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Landmark theater with its famous marquee and Walk of Fame outside to photograph, and a guided-tour or performance interior of the historic hall and stage running around an hour when accessible.",
+    "typical_duration_min": 12,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "18:00",
+        "21:00"
+      ]
+    ],
+    "queue_basis": "As a walking-tour finish the marquee is admired from the sidewalk with no wait, but on show nights a ticket-holder and bag-check line forms at the doors, keeping it a minor line at worst.",
+    "anchors": null
   }
 ]

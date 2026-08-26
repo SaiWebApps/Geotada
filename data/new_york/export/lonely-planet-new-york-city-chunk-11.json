@@ -290,7 +290,24 @@
         "script_body_hash": "85d8446c7e5c2abe32c4daf594aabf35eb32a75dcb9e6e4d8b9af5ec4274ad4f",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast World's Fair park where reaching and circling the Unisphere, fountains and surrounding lawns involves long walks between landmarks; the open grounds themselves are the visit.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A vast open public park with multiple unrestricted entrances and no gate or screening to enter the grounds, so there is no line.",
+    "anchors": null
   },
   {
     "name": "Gantry Plaza State Park",
@@ -466,7 +483,24 @@
         "script_body_hash": "08b37503a62daedefb2dc5bc4b2f45c8dd39fd9937d663951be4927beaa9a36e",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Riverside park with piers, restored gantries, benches and uninterrupted Manhattan skyline views; you walk between viewpoints and the Pepsi sign, all outdoors with nothing to enter.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "An open riverside park with no gate, ticket, or screening—visitors walk straight in off the street, so there is no line to price.",
+    "anchors": null
   },
   {
     "name": "Isamu Noguchi Garden Museum",
@@ -581,7 +615,29 @@
         "script_body_hash": "c9a01deae7cf15f03c0d78f7eb1aa108fcfa48ef95dde56c99c9b91c09d25990",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Interior galleries plus an outdoor Zen sculpture garden; roughly ten gallery spaces and the garden to walk slowly through, typical engaged visit an hour.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A small ticket desk at a modest single-artist museum admits visitors quickly; the only wait is a brief admission line at midday weekend peaks, never a substantial queue.",
+    "anchors": null
   },
   {
     "name": "Louis Armstrong House Museum",
@@ -697,7 +753,29 @@
         "script_body_hash": "3de2363f4879a5fbaa17477e7dfa31cc94548539b064e876fbc44661ea94329e",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3300,
+    "visit_basis": "Preserved modest house shown by guided tour of the period rooms plus a small exhibit; the tour runs about 40 min plus a short wait.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "Entry is by small guided-tour groups checking in at a house door, so the only wait is a short check-in line at the busiest tour times, not a substantial queue.",
+    "anchors": null
   },
   {
     "name": "Museum of the Moving Image",
@@ -932,7 +1010,29 @@
         "script_body_hash": "892baddc53aefdbacaad44c325c03b7643175ebc30d58d9c8834ecc9184cf035",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 4800,
+    "visit_basis": "Large three-floor museum of film, TV and video-game artifacts with many interactive exhibits and screening spaces; an engaged visit runs 75-90 min.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A ticket desk with a bag check moves a moderate crowd through; weekend afternoons build a few people at the desk but it stays minor, never a long queue.",
+    "anchors": null
   },
   {
     "name": "New York Hall of Science",
@@ -1053,7 +1153,29 @@
         "script_body_hash": "6bda1f4b0501c7615c2c74642f72c1171cbbbf98ab8a769d0d1b4fc8e6f5101a",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 4800,
+    "visit_basis": "Large hands-on science center with hundreds of exhibits and an outdoor science playground; an engaged visit fills 75-90 min.",
+    "typical_duration_min": 7,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 15,
+    "queue_minutes_offpeak": 3,
+    "queue_peak_hours": [
+      [
+        "10:30",
+        "14:00"
+      ]
+    ],
+    "queue_basis": "A ticket desk serving school groups and families builds a real line during weekday field-trip mornings and weekend afternoons, but it stays bounded at the desk.",
+    "anchors": null
   },
   {
     "name": "P.S. 1 Contemporary Art Center",
@@ -1433,7 +1555,29 @@
         "script_body_hash": "e97b4936893f6f38c8980f358c3cbde0a0a5ccf243ed251915ea92e2596a896e",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 4500,
+    "visit_basis": "Large former-schoolhouse contemporary art center with many rooms over several floors of installations; an engaged visit runs over an hour plus a short entry wait.",
+    "typical_duration_min": 7,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 10,
+    "queue_minutes_offpeak": 2,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "16:00"
+      ]
+    ],
+    "queue_basis": "This contemporary-art center (MoMA PS1) admits at a ticket desk that moves; a modest line forms at busy weekend afternoons but stays minor except during special events.",
+    "anchors": null
   },
   {
     "name": "Queens",
@@ -1596,7 +1740,24 @@
         "script_body_hash": "63f855af3e4ea500b109b5ab5a296aa71a66179f12ab2430ac88cf73bbef10c9",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Vast diverse borough of neighbourhoods walked through between stops; a setting with no single interior.",
+    "typical_duration_min": 25,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A borough of open streets with no gate or ticket, so there is nothing to queue for.",
+    "anchors": null
   },
   {
     "name": "Queens County Farm Museum",
@@ -1699,7 +1860,29 @@
         "script_body_hash": "e5070cf914976da776f2e21f2067cfd13221c885f047d0f56bf85f5ce6408240",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3000,
+    "visit_basis": "Working farm with livestock, fields, historic farmhouse and barns; walking the grounds and seeing the animals absorbs roughly 45-60 min once inside the gate.",
+    "typical_duration_min": 10,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "11:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A working farm museum with free general admission through a single gate; the only wait is a short cluster at the entrance on busy event weekends, otherwise you walk in.",
+    "anchors": null
   },
   {
     "name": "Queens Museum",
@@ -1878,7 +2061,29 @@
         "script_body_hash": "cc2221a6fb97eb1e0e0a11ef3f3ae96bb293d5abf9132f663983f7cc3bcb9aec",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 3600,
+    "visit_basis": "Mid-size museum whose centerpiece is the huge Panorama of New York City plus other galleries in the World's Fair building; an hour absorbs it comfortably.",
+    "typical_duration_min": 8,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "museum",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "12:00",
+        "15:00"
+      ]
+    ],
+    "queue_basis": "A suggested-donation ticket desk in a large World's Fair building rarely backs up; the only wait is a brief admission line at midday peaks.",
+    "anchors": null
   },
   {
     "name": "Rockaway Beach",
@@ -2105,7 +2310,24 @@
         "script_body_hash": "89449ae668a838d95d5505b214b7efabe1bc00db310e0e1262ea52fe2cc6aafc",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Large ocean beach with boardwalk, surf breaks and wide sand; walking the shore and taking in the coastal setting easily fills half an hour or more, with nothing to enter.",
+    "typical_duration_min": 40,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A public urban beach with open boardwalk access and no ticket or gate, so visitors walk straight on without waiting.",
+    "anchors": null
   },
   {
     "name": "SculptureCenter",
@@ -2210,7 +2432,29 @@
         "script_body_hash": "ab126d0a7f77cbe9769c44ec37f410dd228edb5bcceff5c5729c15a89b05b8e2",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": 2400,
+    "visit_basis": "Modest converted trolley shop with industrial ground-floor galleries and an atmospheric underground level; the exterior is small but the interior of rotating shows absorbs 30-45 min.",
+    "typical_duration_min": 6,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "gallery",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "short",
+    "queue_minutes_peak": 5,
+    "queue_minutes_offpeak": 1,
+    "queue_peak_hours": [
+      [
+        "14:00",
+        "17:00"
+      ]
+    ],
+    "queue_basis": "A small contemporary gallery with a single admission desk; any wait is a few people at the desk during weekend afternoons, never a substantial line.",
+    "anchors": null
   },
   {
     "name": "Socrates Sculpture Park",
@@ -2317,6 +2561,23 @@
         "script_body_hash": "d469eabe8bdd6b9336bb75ff0fc44acf1fdeb4210bacc95fedd636841a5219e1",
         "related_beats": []
       }
-    ]
+    ],
+    "visit_seconds_inside": null,
+    "visit_basis": "Open-air sculpture park with rotating installations spread over several acres plus river views; you wander among the works, and it is an outdoor space with no interior.",
+    "typical_duration_min": 30,
+    "opening_hours": null,
+    "opening_hours_source": null,
+    "opening_hours_basis": null,
+    "place_category": "other",
+    "children_can_run": null,
+    "sit_and_talk": null,
+    "good_after_dark": null,
+    "judgement_basis": null,
+    "queue_class": "none",
+    "queue_minutes_peak": 0,
+    "queue_minutes_offpeak": 0,
+    "queue_peak_hours": [],
+    "queue_basis": "A free open-air sculpture park with an open entrance and no ticket or bag check, so entry is immediate and there is no queue.",
+    "anchors": null
   }
 ]
