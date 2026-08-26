@@ -316,3 +316,9 @@ data/certification/tour-batch-v*/**/attempt-*.json
 # code, carry their own licences, and 146 files would otherwise be swept in by
 # any `git add -A`.
 .agents/
+
+# /team and /spec-pm working folders are scratch: plan, land the change, delete the
+# folder (CLAUDE.md §7). Already-tracked reference specs stay tracked — this only
+# stops NEW ones being committed. A genuine permanent reference goes in with `git add -f`.
+specs/*/
+!specs/_templates/
