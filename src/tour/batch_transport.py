@@ -35,10 +35,10 @@ class BatchUnitResult:
     error_message: str | None = None
 
 
-def batch_client() -> Any:
+def batch_client(*, max_retries: int = 0) -> Any:
     import anthropic
 
-    return anthropic.Anthropic(max_retries=2)
+    return anthropic.Anthropic(max_retries=max_retries)
 
 
 def submit_batch(
@@ -69,7 +69,7 @@ def poll_batch(
     max_poll_s: float = 3600,
 ) -> Any:
     if client is None:
-        client = batch_client()
+        client = batch_client(max_retries=2)
     deadline = time.monotonic() + max_poll_s
     while True:
         batch = client.messages.batches.retrieve(batch_id)
@@ -89,7 +89,7 @@ def collect_results(
     client: object | None = None,
 ) -> dict[str, BatchUnitResult]:
     if client is None:
-        client = batch_client()
+        client = batch_client(max_retries=2)
     collected: dict[str, BatchUnitResult] = {}
     for individual in client.messages.batches.results(batch_id):
         outcome = individual.result
