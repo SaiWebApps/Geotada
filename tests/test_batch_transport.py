@@ -7,7 +7,13 @@ import json
 
 import pytest
 
-from src.tour.batch_transport import BatchUnitResult, build_batch_receipt, validate_receipt
+from src.tour.batch_transport import (
+    BatchUnitResult,
+    build_batch_receipt,
+    load_batch_submission,
+    persist_batch_submission,
+    validate_receipt,
+)
 from src.tour.certification_provider import PhysicalProviderResponse
 
 
@@ -104,3 +110,42 @@ def test_validate_receipt_rejects_unknown_schema() -> None:
 
     with pytest.raises(ValueError, match="schema_version"):
         validate_receipt(receipt)
+
+
+def test_persist_and_load_batch_submission(tmp_path) -> None:
+    path = tmp_path / "submission.json"
+    persist_batch_submission(
+        path,
+        batch_id="msgbatch_01",
+        custom_ids=["stop:0", "stop:1"],
+        plan_sha256="d" * 64,
+    )
+
+    loaded = load_batch_submission(path)
+
+    assert loaded is not None
+    assert loaded["schema_version"] == "ondoway-batch-submission-v1"
+    assert loaded["batch_id"] == "msgbatch_01"
+    assert loaded["custom_ids"] == ["stop:0", "stop:1"]
+    assert loaded["plan_sha256"] == "d" * 64
+    assert isinstance(loaded["submitted_at"], str)
+
+    with pytest.raises(FileExistsError):
+        persist_batch_submission(
+            path,
+            batch_id="msgbatch_02",
+            custom_ids=["stop:0"],
+            plan_sha256="d" * 64,
+        )
+
+
+def test_load_batch_submission_returns_none_for_missing(tmp_path) -> None:
+    assert load_batch_submission(tmp_path / "nonexistent.json") is None
+
+
+def test_load_batch_submission_rejects_wrong_schema(tmp_path) -> None:
+    path = tmp_path / "submission.json"
+    path.write_text(json.dumps({"schema_version": "wrong-version"}), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="schema_version"):
+        load_batch_submission(path)

@@ -11,11 +11,15 @@ Never edit tour_batch_candidate.py — its own SHA is sealed into plans.
 
 from __future__ import annotations
 
+import datetime
 import hashlib
 import json
+import os
+import secrets
 import time
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from .certification_provider import PhysicalProviderResponse, _response_text, _usage
@@ -192,11 +196,92 @@ def validate_receipt(receipt: dict[str, object]) -> None:
         raise ValueError("v2 receipt must not include latency_ms")
 
 
+def persist_batch_submission(
+    path: Path,
+    *,
+    batch_id: str,
+    custom_ids: list[str],
+    plan_sha256: str,
+) -> None:
+    if path.exists() or path.is_symlink():
+        raise FileExistsError(path)
+    core = {
+        "schema_version": "ondoway-batch-submission-v1",
+        "batch_id": batch_id,
+        "custom_ids": custom_ids,
+        "plan_sha256": plan_sha256,
+        "submitted_at": datetime.datetime.now(datetime.UTC).isoformat(),
+    }
+    data = _canonical_bytes(core)
+    temporary = path.with_name(f".{path.name}.{secrets.token_hex(16)}.tmp")
+    descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        view = memoryview(data)
+        while view:
+            written = os.write(descriptor, view)
+            if written <= 0:
+                raise OSError("submission write made no progress")
+            view = view[written:]
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    os.rename(temporary, path)
+
+
+def load_batch_submission(path: Path) -> dict[str, object] | None:
+    if not path.exists():
+        return None
+    submission = json.loads(path.read_text(encoding="utf-8"))
+    schema_version = submission.get("schema_version")
+    if schema_version != "ondoway-batch-submission-v1":
+        raise ValueError(f"unsupported submission schema_version: {schema_version!r}")
+    return submission
+
+
+def execute_batch_pipeline(
+    requests: list[tuple[str, Mapping[str, object]]],
+    *,
+    submission_path: Path,
+    plan_sha256: str,
+    client: object | None = None,
+    poll_interval_s: float = 10,
+    max_poll_s: float = 3600,
+    on_progress: Callable[[str], None] | None = None,
+) -> dict[str, BatchUnitResult]:
+    if client is None:
+        client = batch_client()
+    submission = load_batch_submission(submission_path)
+    if submission is not None:
+        batch_id = submission["batch_id"]
+        if on_progress is not None:
+            on_progress(f"resuming batch {batch_id}")
+    else:
+        if on_progress is not None:
+            on_progress(f"submitting {len(requests)} requests")
+        batch = submit_batch(requests, client=client)
+        persist_batch_submission(
+            submission_path,
+            batch_id=batch.id,
+            custom_ids=[custom_id for custom_id, _ in requests],
+            plan_sha256=plan_sha256,
+        )
+        batch_id = batch.id
+    if on_progress is not None:
+        on_progress("polling...")
+    poll_batch(batch_id, client=client, poll_interval_s=poll_interval_s, max_poll_s=max_poll_s)
+    if on_progress is not None:
+        on_progress("collecting results")
+    return collect_results(batch_id, client=client)
+
+
 __all__ = [
     "BatchUnitResult",
     "batch_client",
     "build_batch_receipt",
     "collect_results",
+    "execute_batch_pipeline",
+    "load_batch_submission",
+    "persist_batch_submission",
     "poll_batch",
     "submit_batch",
     "validate_receipt",
