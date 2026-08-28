@@ -17,6 +17,7 @@ backlog.conftest_test_isolation for context.
 
 from __future__ import annotations
 
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -159,6 +160,16 @@ def _money_guard_no_live_compose(request, monkeypatch):
         _verify_mod, "HaikuFaithfulnessChecker", _verify_mod.MockFaithfulnessChecker
     )
 
+    import src.tour.batch_transport as _batch_mod
+
+    def _guard_batch_client():
+        raise RuntimeError(
+            "batch_client() blocked by the hermetic money-guard; "
+            "use the explicit Makefile live target"
+        )
+
+    monkeypatch.setattr(_batch_mod, "batch_client", _guard_batch_client)
+
 
 # Ports the conftest is allowed to wipe. Update this if your local test
 # instance runs on a different port. Dev/production must NEVER be in here.
@@ -192,6 +203,22 @@ def _assert_test_port() -> None:
         )
 
 
+_XDIST_WORKER_DB = {
+    0: {"port": 7688, "password": "ondoway_test_2026"},
+    1: {"port": 7690, "password": "ondoway_test2_2026"},
+    2: {"port": 7691, "password": "ondoway_test3_2026"},
+}
+_DB_FIXTURES = frozenset({"driver", "clean_driver", "client", "live_neo4j"})
+
+
+def pytest_collection_modifyitems(config, items):
+    """Auto-tag tests that use a DB fixture so the Makefile can split them."""
+    needs_db = pytest.mark.needs_db
+    for item in items:
+        if _DB_FIXTURES & set(item.fixturenames):
+            item.add_marker(needs_db)
+
+
 def pytest_configure(config):
     """Refuse to run the whole suite against any non-test database.
 
@@ -202,6 +229,13 @@ def pytest_configure(config):
     store and must NEVER be wiped by tests—cloud connectivity is checked
     read-only by the definitive suite or ``make db-parity TARGET=cloud``.
     """
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER")
+    if worker_id is not None:
+        slot = int(worker_id.replace("gw", "")) % len(_XDIST_WORKER_DB)
+        db = _XDIST_WORKER_DB[slot]
+        os.environ["NEO4J_URI"] = f"bolt://localhost:{db['port']}"
+        os.environ["NEO4J_PASSWORD"] = db["password"]
+
     if _LIVE_PROVIDER_TESTS and (
         os.getenv("MAGIC_LINK_PROVIDER") != "resend" or not os.getenv("RESEND_API_KEY")
     ):
@@ -238,9 +272,36 @@ needs_neo4j = pytest.mark.skipif(
 )
 
 
+_lane_lock_file = None
+
+
+def _acquire_lane_lock() -> None:
+    """Prevent two pytest sessions from sharing the same test database.
+
+    fcntl.flock(LOCK_EX | LOCK_NB) fails immediately if another process holds
+    the lock, and the OS releases it on process death — no stale lockfiles.
+    """
+    global _lane_lock_file
+    uri = os.getenv("NEO4J_URI", "")
+    port = urlparse(uri).port or 0
+    lock_path = Path(__file__).resolve().parent.parent / f".pytest-lane-{port}.lock"
+    _lane_lock_file = lock_path.open("w")
+    try:
+        fcntl.flock(_lane_lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError as exc:
+        _lane_lock_file.close()
+        _lane_lock_file = None
+        raise RuntimeError(
+            f"Another test session is already using the test database on port {port}. "
+            f"Use LANE=2 or LANE=3 for concurrent runs, or wait for the other session "
+            f"to finish."
+        ) from exc
+
+
 @pytest.fixture(scope="session")
 def driver():
     """Session-scoped Neo4j driver. Wipes DB before and after all tests."""
+    _acquire_lane_lock()
     d = create_driver()
     _wipe(d)
     yield d
@@ -262,6 +323,7 @@ def _wipe(driver) -> None:
 @pytest.fixture(scope="module")
 def clean_driver():
     """Create a driver with a clean DB + schema constraints."""
+    _acquire_lane_lock()
     _assert_test_port()
     d = create_driver()
     with d.session(database=get_database()) as s:
