@@ -11,6 +11,8 @@ Never edit tour_batch_candidate.py — its own SHA is sealed into plans.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -123,10 +125,79 @@ def collect_results(
     return collected
 
 
+def _canonical_bytes(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+
+
+def build_batch_receipt(
+    *,
+    unit_result: BatchUnitResult,
+    request_id: str,
+    request_sha256: str,
+    response_sha256: str,
+    parsed_payload_sha256: str,
+    poi_name: str,
+    stop_index: int,
+    raw_response: str,
+) -> dict[str, object]:
+    response = unit_result.response
+    if response is None:
+        raise ValueError("batch receipt requires a physical provider response")
+    core = {
+        "schema_version": "ondoway-text-candidate-stop-v2",
+        "stop_index": stop_index,
+        "poi_name": poi_name,
+        "request_id": request_id,
+        "request_sha256": request_sha256,
+        "response_sha256": response_sha256,
+        "parsed_payload_sha256": parsed_payload_sha256,
+        "provider_request_id": response.provider_request_id,
+        "model": response.model,
+        "input_tokens": response.input_tokens,
+        "output_tokens": response.output_tokens,
+        "raw_response": raw_response,
+        "batch_id": unit_result.batch_id,
+        "result_type": unit_result.result_type,
+    }
+    return {**core, "receipt_sha256": hashlib.sha256(_canonical_bytes(core)).hexdigest()}
+
+
+def validate_receipt(receipt: dict[str, object]) -> None:
+    schema_version = receipt.get("schema_version")
+    if schema_version not in {
+        "ondoway-text-candidate-stop-v1",
+        "ondoway-text-candidate-stop-v2",
+    }:
+        raise ValueError(f"unsupported receipt schema_version: {schema_version!r}")
+    core = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    if receipt.get("receipt_sha256") != hashlib.sha256(_canonical_bytes(core)).hexdigest():
+        raise ValueError("receipt_sha256 does not match the canonical hash of its core fields")
+    if schema_version == "ondoway-text-candidate-stop-v1":
+        latency_ms = receipt.get("latency_ms")
+        if not isinstance(latency_ms, int) or latency_ms < 0:
+            raise ValueError("v1 receipt latency_ms must be a non-negative int")
+        return
+    batch_id = receipt.get("batch_id")
+    if not isinstance(batch_id, str) or not batch_id:
+        raise ValueError("v2 receipt batch_id must be a non-empty string")
+    if receipt.get("result_type") not in {"succeeded", "errored", "canceled", "expired"}:
+        raise ValueError("v2 receipt result_type must be one of the known batch outcomes")
+    if "latency_ms" in receipt:
+        raise ValueError("v2 receipt must not include latency_ms")
+
+
 __all__ = [
     "BatchUnitResult",
     "batch_client",
+    "build_batch_receipt",
     "collect_results",
     "poll_batch",
     "submit_batch",
+    "validate_receipt",
 ]
