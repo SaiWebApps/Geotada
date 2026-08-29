@@ -26,7 +26,7 @@ def test_narration_is_sent_to_tts_and_result_returned() -> None:
 
     narration = "Settle in. Welcome to the Marais. Walk on toward the square."
     with (
-        patch("src.audio.pipeline.get_provider", return_value=fake_provider),
+        patch("src.audio.pipeline.get_provider_with_fallback", return_value=fake_provider),
         patch("src.audio.pipeline.get_storage", return_value=fake_storage),
     ):
         result = generate_stop_audio(narration, stop_key="s1", poi_name="Le Marais")

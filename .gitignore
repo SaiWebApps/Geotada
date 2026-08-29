@@ -327,3 +327,6 @@ specs/*/
 # skill. graph.json and GRAPH_REPORT.md are read by tooling from the working
 # copy; nothing here belongs in history.
 graphify-out/
+
+# Local TTS model weights (fetched by preflight; never committed — 337MB)
+models/

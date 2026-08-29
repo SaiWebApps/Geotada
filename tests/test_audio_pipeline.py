@@ -80,6 +80,61 @@ class TestStorageConstructionSoftFails:
             generate_stop_audio("Some narration.", stop_key="stop-1", provider_name="mock")
 
 
+# ── A vendor outage costs a different voice, not silence ──
+
+
+class TestStopAudioFallsOverToTheUnderstudy:
+    """The per-stop path is THE tourist's audio, so it resolves the whole chain.
+
+    OpenAI answered an intermittent 500 on 2026-08-28 — their outage, their
+    words. ``generate_stop_audio`` therefore resolves through
+    ``get_provider_with_fallback``: an UNNAMED provider means the pin plus its
+    ``TTS_FALLBACK`` understudies, and the result records who actually spoke.
+
+    UNDO TEST: put ``get_provider`` back in pipeline.py -> RED (PipelineError).
+    """
+
+    def test_an_unnamed_provider_falls_over_and_records_the_real_voice(self, monkeypatch):
+        from src.audio.pipeline import generate_stop_audio
+        from src.audio.provider import _PROVIDERS, TTSError
+
+        class _Down:
+            @property
+            def name(self) -> str:
+                return "down"
+
+            def generate(self, text: str, *, voice_id: str | None = None) -> bytes:
+                raise TTSError("500 The server had an error while processing your request")
+
+        monkeypatch.setitem(_PROVIDERS, "down", _Down)
+        monkeypatch.setenv("TTS_PROVIDER", "down")
+        monkeypatch.setenv("TTS_FALLBACK", "mock")
+
+        result = generate_stop_audio("Some narration.", stop_key="stop-1")
+
+        assert result.provider == "mock", "the stop must record the voice that ACTUALLY spoke"
+        assert result.size_bytes > 0
+        assert result.duration_sec > 0
+
+    def test_a_named_provider_still_fails_rather_than_substituting_a_voice(self, monkeypatch):
+        from src.audio.pipeline import generate_stop_audio
+        from src.audio.provider import _PROVIDERS, TTSError
+
+        class _Down:
+            @property
+            def name(self) -> str:
+                return "down"
+
+            def generate(self, text: str, *, voice_id: str | None = None) -> bytes:
+                raise TTSError("500 The server had an error while processing your request")
+
+        monkeypatch.setitem(_PROVIDERS, "down", _Down)
+        monkeypatch.setenv("TTS_FALLBACK", "mock")
+
+        with pytest.raises(PipelineError, match="TTS failed for stop"):
+            generate_stop_audio("Some narration.", stop_key="stop-1", provider_name="down")
+
+
 # ── Phase 7 S7.8 — the MP3 duration is MEASURED from the frame table ──────────────
 
 

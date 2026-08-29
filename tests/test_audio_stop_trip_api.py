@@ -131,7 +131,7 @@ class TestGenerateTripStopAudio:
     ):
         _seed(clean_driver)
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             resp = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -188,7 +188,7 @@ class TestGenerateTripStopAudio:
 
     def test_second_call_skips_existing(self, client, clean_driver, _temp_audio_storage):
         _seed(clean_driver)
-        with patch("src.audio.pipeline.get_provider", return_value=_Recorder()):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=_Recorder()):
             first = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -230,7 +230,7 @@ class TestGenerateTripStopAudio:
         # ── Phase 1 — baseline: both narrated stops voiced, and hashed.
         _seed(clean_driver)
         recorder1 = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder1):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder1):
             first = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -251,7 +251,7 @@ class TestGenerateTripStopAudio:
                 n=edited,
             )
         recorder2 = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder2):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder2):
             second = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -276,7 +276,7 @@ class TestGenerateTripStopAudio:
         assert not artifact.exists()
 
         recorder3 = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder3):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder3):
             third = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -309,7 +309,7 @@ class TestStopAudioStatus:
         assert before.json()["has_audio"] is False
         assert before.json()["audio_url"] is None
 
-        with patch("src.audio.pipeline.get_provider", return_value=_Recorder()):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=_Recorder()):
             gen = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -338,7 +338,7 @@ class TestKeepExploringStopAudio:
         _seed(clean_driver)
         item1 = f"{TRIP_ID}-item1"
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             resp = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
             )
@@ -383,7 +383,7 @@ class TestKeepExploringStopAudio:
             def generate(self, text, *, voice_id=None):
                 raise TTSError("provider exploded")
 
-        with patch("src.audio.pipeline.get_provider", return_value=_Boom()):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=_Boom()):
             resp = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
             )
@@ -402,7 +402,7 @@ class TestKeepExploringStopAudio:
         _seed(clean_driver)
         item1 = f"{TRIP_ID}-item1"
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             first = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
             )
@@ -432,7 +432,7 @@ class TestKeepExploringStopAudio:
         _seed(clean_driver)
         item1 = f"{TRIP_ID}-item1"
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             first = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring",
                 json={"provider": "mock", "voice_id": "alice"},
@@ -457,7 +457,7 @@ class TestKeepExploringStopAudio:
         _seed(clean_driver)
         item1 = f"{TRIP_ID}-item1"
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             first = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
             )
@@ -480,7 +480,7 @@ class TestKeepExploringStopAudio:
         _seed(clean_driver)
         item1 = f"{TRIP_ID}-item1"
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             first = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
             )
@@ -519,7 +519,7 @@ class TestKeepExploringStopAudio:
                 new=huge,
             )
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             resp = client.post(
                 f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
             )
@@ -538,7 +538,7 @@ class TestUnknownProviderNever500:
     failure, never an uncaught ValueError → 500. Each per-stop route that
     catches only PipelineError is exercised with {"provider": "evil"} against the
     REAL get_provider (no patch) so the unknown-provider ValueError actually
-    fires at its true source (pipeline.get_provider).
+    fires at its true source (pipeline.get_provider_with_fallback).
 
     PHASE 7 D7.0 TOMBSTONE: the two per-BEAT rows — ``/audio/generate-trip`` and
     ``/audio/generate-batch`` (with ``_seed_beats``) — were DELETED, not adapted:
@@ -590,7 +590,7 @@ class TestPreVoicedSessionLines:
     ):
         _seed(clean_driver)
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             resp = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -617,7 +617,7 @@ class TestPreVoicedSessionLines:
 
         # Voiced once: the second run skips every line (the hash guard).
         recorder2 = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder2):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder2):
             resp2 = client.post(
                 f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
             )
@@ -762,7 +762,7 @@ class TestTheFinishSentinelIsARealStop:
 
         # The voicing pass now SEES the finish: its goodbye gets a file.
         recorder = _Recorder()
-        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+        with patch("src.audio.pipeline.get_provider_with_fallback", return_value=recorder):
             resp = client.post(
                 f"/api/v1/audio/generate-trip-stops/{self.TRIP2}", json={"provider": "mock"}
             )

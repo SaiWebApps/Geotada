@@ -19,7 +19,7 @@ import wave
 from dataclasses import dataclass
 from io import BytesIO
 
-from src.audio.provider import TTSError, get_provider
+from src.audio.provider import TTSError, get_provider_with_fallback
 from src.audio.storage import StorageError, get_storage
 
 
@@ -173,12 +173,18 @@ def generate_stop_audio(
     if not narration or not narration.strip():
         raise PipelineError(f"Stop '{stop_key}' has empty narration")
 
-    # get_provider() is inside the try so an unknown provider name (ValueError)
+    # Resolution is inside the try so an unknown provider name (ValueError)
     # becomes a PipelineError — callers turn that into a soft per-stop failure
     # (keep-exploring: 200 status='failed'; trip-stops: per-stop failed), never
     # an uncaught 500.
+    #
+    # ...with_fallback, not get_provider: this is the TOURIST's audio, so an
+    # unnamed provider resolves to the pin PLUS its TTS_FALLBACK understudies and
+    # a vendor outage costs a different narrator rather than silence. A caller
+    # that names a provider still gets exactly that one. ``result.provider``
+    # below is therefore who actually spoke, not who was asked.
     try:
-        provider = get_provider(provider_name)
+        provider = get_provider_with_fallback(provider_name)
     except ValueError as e:
         raise PipelineError(f"TTS failed for stop '{stop_key}': {e}") from e
     try:

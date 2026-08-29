@@ -34,7 +34,7 @@ from src.api.models.audio import (
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
 from src.audio.pipeline import PipelineError, generate_stop_audio
-from src.audio.provider import TTSError, get_provider, list_providers
+from src.audio.provider import KokoroTTSProvider, TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
 
 router = APIRouter(tags=["audio"])
@@ -257,11 +257,17 @@ def _enforce_compare_cache_bounds() -> None:
 def _provider_available(name: str) -> bool:
     """Report whether a provider is actually usable, not merely instantiable.
 
-    The real providers (openai/elevenlabs) have no ``__init__`` and defer their
-    API-key checks to ``generate()``, so instantiation never raises even when no
-    credentials are configured. Probe the required env vars per provider so a
-    client can distinguish a usable provider from one that will 502 on first
-    generate. Unknown providers fall back to instantiation success.
+    The real providers have no ``__init__`` and defer their readiness checks to
+    ``generate()``, so instantiation never raises even when nothing is
+    configured. Probe what each one actually needs so a client can distinguish a
+    usable provider from one that will 502 on first generate. Unknown providers
+    fall back to instantiation success.
+
+    The two vendors need credentials; ``kokoro`` needs its weights on disk, and
+    that is asked of the provider itself rather than guessed from an env var —
+    a bundle directory that exists but is missing ``model.onnx`` cannot voice
+    anything, and reporting it as available would be a quiet lie in the
+    workbench's dropdown.
     """
     try:
         get_provider(name)
@@ -271,6 +277,8 @@ def _provider_available(name: str) -> bool:
         return bool(os.getenv("OPENAI_API_KEY"))
     if name == "elevenlabs":
         return bool(os.getenv("ELEVENLABS_API_KEY")) and bool(os.getenv("ELEVENLABS_VOICE_ID"))
+    if name == "kokoro":
+        return not KokoroTTSProvider.missing_pieces()
     return True
 
 
@@ -775,14 +783,22 @@ def generate_stop_audio_for_trip(
         except PipelineError as e:
             results.append(StopAudioResultItem(stop_id=stop_id, status="failed", error=str(e)))
             continue
+        # audio_provider records WHO ACTUALLY SPOKE, which is not always who was
+        # asked: an unnamed provider resolves to the TTS_FALLBACK chain, so a
+        # vendor outage mid-pass leaves some stops in the understudy's voice.
+        # The hash is keyed on the REQUESTED provider (unchanged), so those stops
+        # are not re-billed when the primary recovers — they stay in the second
+        # voice until a force pass. Without this column nothing durable says
+        # which ones those are.
         session.run(
             "MATCH (item:ItineraryItem {id: $sid}) "
             "SET item.audio_url = $url, item.audio_duration_sec = $dur, "
-            "    item.audio_script_hash = $hash",
+            "    item.audio_script_hash = $hash, item.audio_provider = $provider",
             sid=stop_id,
             url=gen.audio_url,
             dur=gen.duration_sec,
             hash=narration_hash,
+            provider=gen.provider,
         )
         results.append(
             StopAudioResultItem(stop_id=stop_id, status="generated", audio_url=gen.audio_url)

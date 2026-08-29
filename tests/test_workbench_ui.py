@@ -753,6 +753,49 @@ def _class_declares_a_routable_upstream(class_name: str) -> bool:
     return False
 
 
+def _class_refuses_to_speak_with_nothing_configured(name: str) -> bool:
+    """Does this provider REFUSE to answer when nothing at all is configured?
+
+    The SECOND legitimate shape of a real voice, and the reason this pair of
+    checks exists rather than the single URL check that came before it. The rule
+    the owner set on 2026-07-31 is "no fake voice in front of a human", and the
+    defining trait of the silent double is that it ANSWERS FROM NOTHING: no key,
+    no endpoint, no model, and it still returns bytes.
+
+    "Names a routable upstream" was a faithful proxy for that while every real
+    provider was a vendor. It stopped being one when ``kokoro`` arrived —
+    genuinely synthesized speech from a model on this machine, which by design
+    names no host at all. So the guard now asks the question it always meant:
+    strip the environment bare and see whether the provider still speaks. The
+    local model raises (it has no weights to read); ``MockTTSProvider`` hands
+    back its silent WAV regardless and is still caught.
+
+    DELIBERATELY SHALLOW, exactly like its sibling above: this asks whether the
+    provider DEPENDS on something real, not whether its output came from one.
+
+    The environment is restored in ``finally`` — this runs in the pytest process,
+    while the browser talks to a separate uvicorn subprocess, so nothing the page
+    does can observe the gap.
+    """
+    from src.audio.provider import TTSError, get_provider
+
+    provider = get_provider(name)
+    saved = dict(os.environ)
+    os.environ.clear()
+    try:
+        provider.generate("A probe line for the audio registry guard.")
+    except TTSError:
+        return True
+    except Exception:
+        # Any other explosion is not a clean refusal; treat it as unproven.
+        return False
+    else:
+        return False
+    finally:
+        os.environ.clear()
+        os.environ.update(saved)
+
+
 def _served_provider_names() -> list[str]:
     """The provider names the LIVE workbench API offers, straight from the API.
 
@@ -2325,16 +2368,29 @@ class TestDetailViewAndEditing:
            DECLARES in source, which is what catches an import-time
            ``register_provider(...)`` putting a fake back into a running server
            while every source file still reads correctly; and
-        3. every declared entry names an upstream on a globally routable host —
-           so re-adding the silent double to the registry literal fails too.
+        3. every declared entry DEPENDS ON SOMETHING REAL — it either names an
+           upstream on a globally routable host, or it refuses to speak when
+           nothing is configured for it. Re-adding the silent double to the
+           registry literal fails both halves, because answering from nothing is
+           precisely what makes it a fake.
+
+        The second half of (3) is not a loophole, it is the rule stated properly.
+        Until 2026-08-28 this asked only for a routable upstream, which was a
+        faithful proxy while every real provider was a vendor. ``kokoro`` — a
+        Kokoro-82M model synthesizing on this machine — is real narration that
+        names no host, so the proxy would have banned a genuine voice while still
+        being satisfiable by any fake that hardcoded a URL it never called.
 
         It also pins the SELECTED value to what render.yaml pins for production,
         derived from the manifest rather than typed in here, so a workbench that
         drifts off the deployed voice fails.
 
         UNDO TEST: add ``"mock": MockTTSProvider`` back to ``_PROVIDERS`` -> RED
-        on (3). Call ``register_provider("mock", MockTTSProvider)`` at import in
-        any module the API loads -> RED on (2).
+        on (3): it names no upstream AND it answers with a silent WAV on a bare
+        environment. Make ``KokoroTTSProvider.generate`` return bytes instead of
+        raising when its weights are absent -> RED on (3) as well. Call
+        ``register_provider("mock", MockTTSProvider)`` at import in any module the
+        API loads -> RED on (2).
         """
         page, _seed_data, _reporter = browser_page
 
@@ -2366,14 +2422,17 @@ class TestDetailViewAndEditing:
             name
             for name, class_name in declared.items()
             if not _class_declares_a_routable_upstream(class_name)
+            and not _class_refuses_to_speak_with_nothing_configured(name)
         )
         assert not fakes, (
-            f"the workbench dropdown offers {fakes}, whose implementation names no "
-            f"upstream on a routable host — it cannot be speaking to a real voice "
-            f"service, whatever it is called. The workbench exists so the owner can "
-            f"judge what a TOURIST hears; one click on that option and every 'play' "
-            f"is canned. Remove it from the registry in src/audio/provider.py; a "
-            f"$0 test path belongs behind register_provider() in tests/conftest.py."
+            f"the workbench dropdown offers {fakes}, which names no upstream on a "
+            f"routable host AND still answers with nothing configured — it cannot be "
+            f"producing real speech, whatever it is called. The workbench exists so "
+            f"the owner can judge what a TOURIST hears; one click on that option and "
+            f"every 'play' is canned. Remove it from the registry in "
+            f"src/audio/provider.py; a $0 test path belongs behind "
+            f"register_provider() in tests/conftest.py. (A LOCAL model is legitimate "
+            f"here — it just has to refuse when its weights are absent.)"
         )
 
         production_pin = None

@@ -21,6 +21,40 @@ def _check(label: str, passed: bool, fix: str) -> bool:
     return passed
 
 
+def _check_local_voice() -> bool:
+    """The local Kokoro tier needs BOTH its packages and its weights on disk.
+
+    Checked separately from the credential loop above because it has no
+    credential: what it needs is an install and a download, and the remedy is a
+    different sentence. Asks the provider itself what is missing so this and
+    GET /audio/providers can never disagree about whether it can speak.
+    """
+    ok = True
+    try:
+        import lameenc  # noqa: F401
+        import sherpa_onnx  # noqa: F401
+
+        ok &= _check("local voice packages installed (sherpa-onnx, lameenc)", True, "")
+    except ImportError as exc:
+        ok &= _check(
+            "local voice packages installed (sherpa-onnx, lameenc)",
+            False,
+            f"Run `make sync-local-tts` ({exc.name} is not installed).",
+        )
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from src.audio.provider import KokoroTTSProvider
+
+    missing = KokoroTTSProvider.missing_pieces()
+    return ok & _check(
+        "local voice weights present",
+        not missing,
+        "; ".join(missing) + ". Run `make fetch-kokoro`, then set KOKORO_MODEL_DIR."
+        if missing
+        else "",
+    )
+
+
 def main() -> int:
     print("Audio Pipeline Prerequisites")
     print("=" * 40)
@@ -34,18 +68,41 @@ def main() -> int:
         "Configure OPENAI_API_KEY on Render, then run `make setup-audio`.",
     )
 
-    # 2. Optional: ELEVENLABS_API_KEY
-    el_key = os.getenv("ELEVENLABS_API_KEY", "")
-    if el_key:
-        el_voice = os.getenv("ELEVENLABS_VOICE_ID", "")
-        _check("ELEVENLABS_API_KEY is set", True, "")
-        _check(
-            "ELEVENLABS_VOICE_ID is set",
-            bool(el_voice),
-            "Configure ELEVENLABS_VOICE_ID on Render.",
-        )
+    # 2. The understudies named by TTS_FALLBACK must actually be able to speak.
+    #    A chain whose credentials are missing is decoration: it fails the moment
+    #    the primary does, which is precisely the outage it exists to survive. So
+    #    a NAMED fallback is a hard check, while an unnamed one stays optional.
+    credentials = {
+        "openai": ["OPENAI_API_KEY"],
+        "elevenlabs": ["ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID"],
+    }
+    fallbacks = [part.strip() for part in os.getenv("TTS_FALLBACK", "").split(",") if part.strip()]
+    if fallbacks:
+        for name in fallbacks:
+            for var in credentials.get(name, []):
+                all_ok &= _check(
+                    f"{var} is set (TTS_FALLBACK -> {name})",
+                    bool(os.getenv(var)),
+                    f"Configure {var} on Render, or drop {name} from TTS_FALLBACK. "
+                    "Without it the fallback fails the moment the primary voice does.",
+                )
+            if name == "kokoro":
+                all_ok &= _check_local_voice()
     else:
-        print("  - ELEVENLABS_API_KEY not set (optional — only needed for ElevenLabs provider)")
+        print("  - TTS_FALLBACK not set (no understudy: a provider outage means no audio)")
+        el_key = os.getenv("ELEVENLABS_API_KEY", "")
+        if el_key:
+            _check("ELEVENLABS_API_KEY is set", True, "")
+            _check(
+                "ELEVENLABS_VOICE_ID is set",
+                bool(os.getenv("ELEVENLABS_VOICE_ID")),
+                "Configure ELEVENLABS_VOICE_ID on Render.",
+            )
+        else:
+            print(
+                "  - ELEVENLABS_API_KEY not set "
+                "(optional — only needed for the ElevenLabs provider)"
+            )
 
     # 3. OpenAI API connectivity
     if openai_key and not openai_key.startswith("sk-REPLACE"):

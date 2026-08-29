@@ -32,6 +32,26 @@ aws = [
 dev = [
     "ruff>=0.4",
 ]
+# The local Kokoro voice — the fallback tier that needs no vendor at all. Kept
+# OUT of the base install because onnxruntime plus the model bundle is ~400 MB,
+# and a deploy that never serves tier 3 should not carry it. `make sync-local-tts`
+# installs it; `make fetch-kokoro` fetches the weights it reads.
+#
+# sherpa-onnx rather than kokoro-onnx: it compiles espeak-ng into its own core
+# and ships the phoneme data inside the model bundle, so there is no system
+# package on any machine. kokoro-onnx's bundled espeak is broken on macOS arm64
+# (it ignores the data path it is given and hard-exits the process).
+local-tts = [
+    "sherpa-onnx>=1.13",
+    # sherpa-onnx-core carries libonnxruntime. Observed 2026-08-28: `uv pip show
+    # sherpa-onnx` reports "Requires: sherpa-onnx-core", the lock contained no
+    # entry for it, and the install LOOKED fine until the first synthesis died on
+    # a missing .dylib. Naming it here puts it in the lock, which is what fixed
+    # it; why the transitive resolution dropped it was not established.
+    "sherpa-onnx-core>=1.13",
+    "lameenc>=1.8",
+    "numpy>=1.26",
+]
 
 # Pin the package index so resolution is identical on every machine, regardless
 # of any machine-level uv config (e.g. a corporate ~/.config/uv/uv.toml default).

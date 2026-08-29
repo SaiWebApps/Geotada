@@ -63,8 +63,22 @@ else
   # (Rate limiters used to be disabled here with five env vars. The limiters
   # themselves were DELETED from src/api/routes/{trips,audio}.py on 2026-07-31,
   # so there is nothing left to switch off.)
+  # TTS_FALLBACK: the SAME rule again. render.yaml gives production an understudy
+  # for the tourist's audio, so the workbench must resolve the same chain —
+  # otherwise an editor judging a tour during an OpenAI outage sees the stop
+  # simply fail while the app would have voiced it, and the two surfaces are no
+  # longer the same construction site. Only the unnamed path chains, so the
+  # page's own provider dropdown still previews exactly the voice it names.
+  # kokoro is listed here and NOT in render.yaml on purpose: it is real on a
+  # laptop today, while the deployed service is `plan: free` (512MB) and cannot
+  # hold the model — and a fallback pinned in the manifest that OOMs when it is
+  # finally needed is worse than no fallback, because it burns the outage
+  # discovering it cannot run. KOKORO_MODEL_DIR points at `make fetch-kokoro`'s
+  # bundle; with the weights absent the tier simply reports what is missing.
   WORKBENCH_API_ENABLED=true \
     TTS_PROVIDER=openai \
+    TTS_FALLBACK=elevenlabs,kokoro \
+    KOKORO_MODEL_DIR="${KOKORO_MODEL_DIR:-$ROOT/models/kokoro-multi-lang-v1_0}" \
     ONBOARD_PROVIDER=anthropic \
     NO_PROXY="$NP" no_proxy="$NP" ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS=1 \
     uv run uvicorn src.api.app:app --host 127.0.0.1 --port ${PORT} >/tmp/ondoway-workbench-api.log 2>&1 &

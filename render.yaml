@@ -55,6 +55,22 @@ services:
         sync: false
       - key: TTS_PROVIDER
         value: openai
+      # TTS_FALLBACK: the ordered understudies a TOURIST's audio falls back to
+      # when the pinned voice cannot speak. Measured 2026-08-28: this was first
+      # read as an OpenAI outage, and it was not — `tts-1-hd` answered 500 on
+      # three of four attempts at one PARTICULAR script (the Café de Flore
+      # Occupation beat) while another script voiced fine on the same key in the
+      # same minute. That specific failure is fixed by the model default in
+      # src/audio/provider.py, but the lesson generalizes: a vendor can refuse a
+      # legitimate script, and src/audio/_http.py's three retries over ~1.5s
+      # cannot help when every attempt hits the same wall. A DIFFERENT voice can.
+      # Only the unnamed path chains (mobile, the scheduled voicing pass); the
+      # operator tools that name a provider — /audio/compare, /audio/eval — still
+      # get exactly the one they asked for, or their comparison would be a lie.
+      # A name here that is not a registered provider raises at resolution time,
+      # while the primary is still healthy, rather than on the day it is needed.
+      - key: TTS_FALLBACK
+        value: elevenlabs
       # ONBOARD_PROVIDER: the beat drafter production would resolve. INERT here —
       # the onboard router mounts only under WORKBENCH_API_ENABLED, which this
       # service does not set, so nothing on Render ever calls a drafter. It is
@@ -72,6 +88,17 @@ services:
       # "TTS generation failed (openai)" on every synthesis. Set the value in
       # the Render dashboard (no-op for the already-running service).
       - key: OPENAI_API_KEY
+        sync: false
+      # The TTS_FALLBACK understudy's own credentials. Declared here so a
+      # blueprint-provisioned service is reproducible and the manifest guard in
+      # tests/test_render_manifest.py can see them; set the values in the Render
+      # dashboard. ElevenLabs needs BOTH — the key and the voice id — because a
+      # voice id belongs to one vendor and is never inherited from the primary.
+      # Until both are set the chain still resolves, and a fallback attempt just
+      # reports "ELEVENLABS_API_KEY not set" alongside OpenAI's own error.
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_VOICE_ID
         sync: false
       # Audio MUST NOT be written to the container filesystem on this service:
       # `plan: free` has no `disk:` block, so the filesystem is ephemeral and
