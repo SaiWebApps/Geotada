@@ -14,6 +14,17 @@
             "statusMessage": "Checking the /team ledger is approved…"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/ledger-guard.py",
+            "timeout": 20,
+            "statusMessage": "failures-ledger guard: checking recorded mistake classes"
+          }
+        ]
       }
     ],
     "PostToolUse": [

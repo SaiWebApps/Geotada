@@ -1,0 +1,194 @@
+#!/usr/bin/env python3
+"""Failures-ledger guard — enforcement at the action, not advice in context.
+
+Reads the machine-checkable half of the failures ledger
+(.claude/hooks/failure-patterns.json, beside this file) and blocks a Bash command
+that matches a recorded mistake class, quoting that class's own remedy.
+
+Project-scoped by design: the patterns cite this repo's paths and its own
+incidents, so the guard is wired in .claude/settings.json (which the repo tracks)
+rather than in the user's global settings. The prose half of the ledger lives in
+the user's memory directory, which is not version-controlled — this file is the
+half that can be reviewed in a diff.
+
+WHY THIS EXISTS, measured rather than assumed. Across this project's sessions the
+same mistake classes recurred while their rules sat written down and loaded:
+the stale-working-directory class was recorded on 2026-08-25 and repeated on
+2026-08-28; the never-pipe-test-output rule was in standing memory, was
+re-authored into the ledger mid-session, and was still broken twice within the
+hour. Over the same stretch the existing PreToolUse hooks blocked every in-scope
+violation, every time, and each block produced an immediate correction. Advice
+loses to enforcement, so a class that can be recognised from the pending command
+belongs here instead of only in prose.
+
+The rules live in JSON so /harvest-failures can add one without touching code.
+Two kinds need structure rather than a regex and are implemented below:
+``needs_abs_cd`` (does this command establish its own working directory?) and
+``git_foreign_staged`` (would this commit reset an index another session owns?).
+
+Wired as a PreToolUse hook on Bash. A command matching nothing exits instantly.
+Protocol (stdin JSON, deny-by-printed-JSON, always exit 0) copied from
+~/.claude/hooks/auditable-tests.py.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import shlex
+import subprocess
+import sys
+from pathlib import Path
+
+PATTERNS_PATH = Path(__file__).resolve().parent / "failure-patterns.json"
+
+
+def _load() -> dict:
+    try:
+        return json.loads(PATTERNS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        # A broken or absent sidecar must never block the owner's work.
+        return {}
+
+
+# ── kind: needs_abs_cd ───────────────────────────────────────────────────────
+
+
+def _establishes_cwd(command: str, repo_root: str) -> bool:
+    """Does the command set its own directory before the guarded program runs?
+
+    Accepted: a leading absolute `cd /path &&`, `make -C /path`, `git -C /path`,
+    or an absolute path to the program itself. A bare relative `cd` is NOT
+    accepted — it inherits whatever directory the previous call left behind,
+    which is the defect.
+    """
+    stripped = command.strip()
+    if re.match(r"^cd\s+(/|~|\"/|'/|\"~|'~)", stripped):
+        return True
+    if re.search(r"\b(make|git)\s+-C\s+(/|~)", stripped):
+        return True
+    if repo_root and re.search(rf"(^|[;&|]\s*){re.escape(repo_root)}/", stripped):
+        return True
+    return False
+
+
+# ── kind: git_foreign_staged ─────────────────────────────────────────────────
+
+
+def _pathspec(command: str) -> list[str]:
+    try:
+        tokens = shlex.split(command)
+    except ValueError:
+        tokens = command.split()
+    return tokens[tokens.index("--") + 1 :] if "--" in tokens else []
+
+
+def _foreign_staged(command: str, repo_root: str) -> list[str]:
+    """Staged paths this command does not name — another session's index entries."""
+    if not re.search(r"\bgit\s+commit\b", command):
+        return []
+    try:
+        out = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        ).stdout
+    except Exception:
+        return []
+    named = _pathspec(command)
+    foreign = []
+    for line in out.splitlines():
+        if len(line) < 4 or line[0] not in "MADRC":
+            continue  # unstaged or untracked — a pathspec commit cannot touch it
+        path = line[3:].split(" -> ")[-1].strip().strip('"')
+        if not any(path == n or path.startswith(n.rstrip("/") + "/") for n in named):
+            foreign.append(path)
+    return foreign
+
+
+# ── evaluation ───────────────────────────────────────────────────────────────
+
+
+def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
+    repo_root = config.get("repo_root", "")
+    for rule in config.get("rules", []):
+        kind = rule.get("kind", "regex")
+        hit = False
+        detail = ""
+
+        if kind == "regex":
+            hit = all(
+                re.search(p, command) for p in rule.get("require_all", []) or ["(?!)"]
+            ) and not any(re.search(p, command) for p in rule.get("forbid_any", []))
+
+        elif kind == "needs_abs_cd":
+            applies = rule.get("applies_to", "(?!)")
+            hit = bool(re.search(applies, command)) and not _establishes_cwd(
+                command, repo_root
+            )
+
+        elif kind == "git_foreign_staged":
+            foreign = _foreign_staged(command, repo_root)
+            hit = bool(foreign)
+            if hit:
+                shown = ", ".join(foreign[:6]) + ("…" if len(foreign) > 6 else "")
+                detail = f" Staged but unnamed: {shown}"
+
+        if hit:
+            return rule.get("class", 0), rule.get("name", "?"), rule.get("message", "") + detail
+    return None
+
+
+def _deny(reason: str) -> None:
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "deny",
+                    "permissionDecisionReason": reason,
+                },
+                "systemMessage": reason,
+            }
+        )
+    )
+    sys.exit(0)
+
+
+def main() -> None:
+    try:
+        payload = json.load(sys.stdin)
+    except Exception:
+        sys.exit(0)
+
+    if (payload.get("tool_name") or "") != "Bash":
+        sys.exit(0)
+
+    command = str((payload.get("tool_input") or {}).get("command") or "")
+    if not command:
+        sys.exit(0)
+
+    config = _load()
+    token = config.get("acknowledge_token", "")
+    if token and token in command:
+        sys.exit(0)  # deliberate, acknowledged, and visible in the transcript
+
+    found = _violation(command, config)
+    if found:
+        klass, name, message = found
+        _deny(
+            f"BLOCKED by the failures-ledger guard "
+            f"(.claude/hooks/ledger-guard.py, class {klass} — {name}): {message} "
+            f"The full class is in failures-ledger.md (memory); its pattern is in "
+            f".claude/hooks/failure-patterns.json. To proceed deliberately, append "
+            f"'{token}' to the command and say why in your report."
+        )
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

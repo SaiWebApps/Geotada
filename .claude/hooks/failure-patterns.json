@@ -1,0 +1,66 @@
+{
+  "_comment": [
+    "The MACHINE-CHECKABLE half of the failures ledger.",
+    "Prose half: ~/.claude/projects/-Users-sairambkrishnan-git-ondoway/memory/failures-ledger.md",
+    "Enforcement: .claude/hooks/ledger-guard.py, wired in .claude/settings.json.",
+    "",
+    "Built 2026-08-29 on a measured finding: across this project's sessions, WRITTEN rules",
+    "did not prevent repeats (the stale-cwd class was recorded 2026-08-25 and recurred; the",
+    "never-pipe rule was in memory AND freshly self-authored and was still broken twice",
+    "within the hour), while the PreToolUse hooks blocked every in-scope violation and each",
+    "block produced an immediate correction. Advice loses to enforcement, so every class",
+    "that can be recognised from the pending command lives here rather than in prose alone.",
+    "",
+    "Each rule is checked against the Bash command ABOUT TO RUN. Only classes that are",
+    "recognisable from the command text belong here; judgment classes (reading absence as",
+    "fact, reconstructing an identifier, claiming a result from the wrong run) stay prose —",
+    "forcing those into regexes produces false positives, and a noisy hook gets deleted.",
+    "",
+    "/harvest-failures appends rules here; no code edit is needed to add one.",
+    "kinds: regex | needs_abs_cd | git_foreign_staged"
+  ],
+  "repo_root": "/Users/sairambkrishnan/git/ondoway",
+  "acknowledge_token": "# ledger-checked",
+  "rules": [
+    {
+      "class": 1,
+      "name": "stale working directory",
+      "kind": "needs_abs_cd",
+      "applies_to": "(^|[;&|]\\s*)([A-Za-z_][A-Za-z0-9_]*=\\S*\\s+)*(make|pytest|uv\\s+run)\\b",
+      "message": "this runs `make`/`pytest`/`uv run` without first cd-ing to an absolute path. The shell's working directory PERSISTS between Bash calls, so a `cd` from an earlier command silently decides where this one runs — it has already produced 'No rule to make target' three times in this project (2026-08-25 twice, 2026-08-28). Prefix the command with `cd /Users/sairambkrishnan/git/ondoway &&`."
+    },
+    {
+      "class": 2,
+      "name": "Make variable holding multiple paths",
+      "kind": "regex",
+      "require_all": ["\\bFILE=(\"[^\"]*\\s[^\"]*\"|'[^']*\\s[^']*')"],
+      "message": "FILE= holds more than one path. The recipe passes $(FILE) through as ONE quoted argument, so pytest receives a single bogus path and collects zero tests. Use one path per FILE=, chaining separate `make test-file FILE=...` invocations with &&."
+    },
+    {
+      "class": 3,
+      "name": "a saved run log read through a filter",
+      "kind": "regex",
+      "require_all": [
+        "\\.output\\b",
+        "(\\|\\s*(tail|head|grep|egrep|fgrep|sed|awk|wc|cut|sort|uniq)\\b|(^|[;&|]\\s*)(tail|head|grep|egrep|fgrep|sed|awk|wc|cut)\\b)"
+      ],
+      "message": "a backgrounded run's saved .output log is being piped through a filter. The auditable-tests guard cannot see this (the command names a file, not a test target) and that gap was used 8 times in one session — one keyword filter omitted 'FAILED' and hid two real test failures for a stretch of that session. Read the whole file with the Read tool instead."
+    },
+    {
+      "class": 10,
+      "name": "project code run with the system interpreter",
+      "kind": "regex",
+      "require_all": [
+        "(^|[;&|]\\s*)python3\\b",
+        "(from|import)\\s+(src|scripts)[\\s.]"
+      ],
+      "message": "bare `python3` is importing project code. The system python has none of the project's dependencies, so this fails as `ModuleNotFoundError`, which reads exactly like a broken module rather than a wrong interpreter. Use `uv run python`. (`python3 scripts/preflight.py` is exempt by design — preflight is stdlib-only so it can report a missing uv.)"
+    },
+    {
+      "class": 12,
+      "name": "a commit that would unstage another session's work",
+      "kind": "git_foreign_staged",
+      "message": "the index holds staged entries this command does not name. `git commit -- <paths>` is content-safe but RESETS the index, so a parallel session's staged work is silently unstaged (its file contents survive in the worktree). Measured 2026-08-29 against the owner's own audio-hardening session. Either name them in the pathspec, or proceed deliberately and SAY SO in your report by appending the acknowledgement token to the command."
+    }
+  ]
+}
