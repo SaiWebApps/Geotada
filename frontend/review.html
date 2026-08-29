@@ -1192,9 +1192,16 @@
   detailBody.addEventListener('click', (e) => {
     if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
     if (e.target.closest('#tourWriteBtn')) { authorTourDay(); return; }
+    if (e.target.closest('#tourPhoneRunBtn')) { runTourAsPhone(); return; }
     if (e.target.closest('#tourClearBtn')) { clearTourPoints(); return; }
     if (e.target.closest('#tourFeedbackUp')) { submitTourFeedback('up'); return; }
     if (e.target.closest('#tourFeedbackDown')) { submitTourFeedback('down'); return; }
+    // The tourist's two audio doors, per stop: the scheduled narration the voicing
+    // pass wrote, and the on-demand deep dive behind "keep exploring here".
+    const hear = e.target.closest('.tts-play-btn[data-phone-stop]');
+    if (hear) { playPhoneStopAudio(parseInt(hear.dataset.phoneStop, 10)); return; }
+    const more = e.target.closest('.tts-play-btn[data-phone-keep-exploring]');
+    if (more) { playKeepExploring(parseInt(more.dataset.phoneKeepExploring, 10)); return; }
     const play = e.target.closest('.tts-play-btn[data-tour-stop]');
     if (play) { ttsPlayTourStop(parseInt(play.dataset.tourStop, 10)); return; }
   });
@@ -4228,8 +4235,20 @@
       stopsEl.appendChild(endEl);
     }
 
-    // ONE action. The pick is gone (§8.1): this day is the plan, and writing it
-    // is the only thing left to decide.
+    // TWO lanes out of this one planned day, and they are different questions.
+    //
+    // "Write the tour" is the editor's fast audition: the anonymous preview author
+    // (POST /trips/preview/author), one paid call per stop, nothing saved.
+    //
+    // "Run it like the phone" is the TOURIST's own path, end to end — the same
+    // endpoints the app calls, in the same order, with a real signed-in identity:
+    // generate the trip, compose it, voice every stop, then tap for more. CLAUDE.md
+    // rule 1 is why it exists rather than a workbench copy of the same steps: the
+    // full telling and the keep-exploring extras are written ONLY by /compose and
+    // voiced ONLY by /audio/stops/{id}/keep-exploring, so before this button no
+    // editor could hear a word of either, on any screen. It costs the same as the
+    // day a tourist would get, and it is not asked to confirm that — a tourist
+    // never is (owner ruling 2026-07-31, the deleted spend dialog).
     const row = document.createElement('div');
     row.className = 'tts-row';
     const writeBtn = document.createElement('button');
@@ -4238,6 +4257,12 @@
     writeBtn.title = 'Write and voice this day';
     writeBtn.textContent = 'Write the tour';
     row.appendChild(writeBtn);
+    const phoneBtn = document.createElement('button');
+    phoneBtn.className = 'btn btn-outline';
+    phoneBtn.id = 'tourPhoneRunBtn';
+    phoneBtn.title = 'Run the tourist path: generate, compose, voice, and tap for more';
+    phoneBtn.textContent = 'Run it like the phone';
+    row.appendChild(phoneBtn);
     stopsEl.appendChild(row);
   }
 
@@ -4277,6 +4302,374 @@
       // After a successful render the button is gone with the plan screen; this
       // restores it only on the error paths, where it is still on screen.
       if (writeBtn) { writeBtn.disabled = false; writeBtn.textContent = 'Write the tour'; }
+    }
+  }
+
+  // ── The tourist path, run from the workbench ──────────────────────────────
+  //
+  // CLAUDE.md rule 1. Two pieces of tourist-audible content are written and voiced
+  // ONLY on the phone path, so before this block no editor could preview either:
+  //
+  //   the FULL TELLING          plan_premium_full_telling / finalize_premium_full_telling,
+  //                             written by POST /trips/{id}/compose for every major stop
+  //   KEEP EXPLORING HERE       build_poi_extra_beats / build_poi_extra_narration,
+  //                             also written at compose, voiced by
+  //                             POST /audio/stops/{id}/keep-exploring
+  //
+  // The fix is not a workbench copy of those steps — a second door into one stage is
+  // the defect rule 1 names. The workbench CALLS THE PHONE ENDPOINTS, in the phone
+  // order, with the phone payloads (mobile/lib/services/trip_service.dart is the
+  // reference), holding a real signed-in identity:
+  //
+  //   POST /auth/workbench-session           the workbench signs in
+  //   POST /trips/generate                   plan and persist the day
+  //   POST /trips/{id}/compose               write it, including the full tellings
+  //   POST /audio/generate-trip-stops/{id}   voice every stop
+  //   GET  /trips/{id}/session               the living session, audio overlaid
+  //   GET  /audio/stop-status/{id}           per-stop audio, polled as the phone polls
+  //   POST /audio/stops/{id}/keep-exploring  the on-demand deep dive
+  //
+  // NO PROVIDER IS NAMED on either voicing call, deliberately, because the phone
+  // names none: an unnamed provider resolves through the failover chain
+  // (get_provider_with_fallback) and a named one resolves a single provider. Naming
+  // one here would rebuild the exact 2026-08-29 divergence the guard was written
+  // against — an editor watching a stop fail that the app would have voiced.
+
+  // The signed-in workbench session: minted on first use, re-minted on a 401.
+  let workbenchAuth = null;
+  // The composed day on screen, stop by stop, as the server wrote it.
+  let phoneStops = [];
+  let phoneTripId = null;
+
+  async function workbenchSession(force) {
+    if (workbenchAuth && !force) return workbenchAuth;
+    const resp = await fetch(`${API_BASE}/auth/workbench-session`, { method: 'POST' });
+    if (resp.status === 404) {
+      throw new Error('The workbench session route is switched off on this API. '
+        + 'Start it with WORKBENCH_API_ENABLED=true (make workbench sets this).');
+    }
+    if (!resp.ok) throw new Error(`Could not sign the workbench in (${resp.status}).`);
+    workbenchAuth = await resp.json();
+    return workbenchAuth;
+  }
+
+  // One retry with a freshly minted token on a 401, so a page left open past the
+  // access token lifetime keeps working without a reload.
+  async function phoneFetch(url, init, isRetry) {
+    const auth = await workbenchSession(!!isRetry);
+    const opts = Object.assign({}, init);
+    opts.headers = Object.assign(
+      { 'Content-Type': 'application/json' },
+      (init && init.headers) || {},
+      { Authorization: `Bearer ${auth.access_token}` },
+    );
+    const resp = await fetch(url, opts);
+    if (resp.status === 401 && !isRetry) return phoneFetch(url, init, true);
+    return resp;
+  }
+
+  // The tourist request, built from the SAME dials the plan on screen was built
+  // from, so the day the phone path writes is the day the editor is looking at.
+  // A trip record needs a calendar day whatever the dials say; a dateless plan is
+  // stored against today, the day the walk would happen. start_datetime rides
+  // through untouched when the dials set one, and generate_trip prefers it over
+  // the two halves, so the planned moment is identical either way.
+  function phoneGenerateBody(profileId) {
+    const dateVal = (document.getElementById('tourDate') || {}).value || '';
+    const timeVal = (document.getElementById('tourTime') || {}).value || '';
+    const day = dateVal || new Date().toISOString().slice(0, 10);
+    return Object.assign({}, lastTourPlanBody, {
+      profile_id: profileId,
+      start_date: day,
+      end_date: day,
+      start_time: timeVal || '09:00',
+      trip_name: `Workbench audition ${day}`,
+    });
+  }
+
+  // Say WHAT the tourist path refused, in the shapes these endpoints really send.
+  // A bare count ("1 untraceable") is not something an editor can act on, so the
+  // named blockers and the stop each landed on are printed in full.
+  async function showPhoneFailure(resp, what) {
+    let detail = null;
+    try { detail = (await resp.json()).detail; } catch (e) { /* keep null */ }
+    if (detail && typeof detail === 'object' && Array.isArray(detail.alternatives)) {
+      renderTourRefusal(detail);
+      return;
+    }
+    const stopsEl = document.getElementById('tourStops');
+    if (!stopsEl) return;
+    const lines = [];
+    if (detail && detail.reason === 'tour_quality_blocked') {
+      lines.push('The day was written and then REFUSED by the quality floor, so nothing was served.');
+      (detail.blockers || []).forEach((b) => {
+        const where = b.poi_name || (b.stop_idx != null ? `stop ${b.stop_idx + 1}` : '-');
+        lines.push(`BLOCKER ${b.check} · ${where} — ${b.message}`);
+      });
+    } else if (detail && detail.reason === 'compose_verification_failed') {
+      lines.push('The writer produced something the grounding check refused, so the day was not served.');
+      lines.push(`untraceable ${detail.untraceable || 0} · forbidden ${detail.forbidden || 0}`
+        + ` · provenance ${detail.provenance || 0} · faithfulness ${detail.faithfulness || 0}`);
+      lines.push('The offending sentences are logged server-side (/tmp/ondoway-workbench-api.log).');
+    } else if (detail && typeof detail === 'object' && detail.reason) {
+      lines.push(String(detail.reason));
+      if (detail.technical) lines.push(String(detail.technical));
+    } else {
+      lines.push(typeof detail === 'string' ? detail : `HTTP ${resp.status}`);
+    }
+    if (detail && detail.attempts) {
+      lines.push(`${detail.attempts} writing attempt(s) were paid for before it refused.`);
+    }
+    const box = document.createElement('div');
+    box.className = 'tour-refusal db-beat-card';
+    box.innerHTML = `<h4>⚠ Could not ${escHtml(what)}</h4>`
+      + lines.map((l) => `<div class="script-preview">${escHtml(l)}</div>`).join('');
+    stopsEl.appendChild(box);
+  }
+
+  // Overlay the live session stop onto the composed one, field by field, skipping
+  // nulls — the session GET carries the audio the voicing pass wrote, and a null
+  // there must never blank a value compose already produced.
+  function mergeLiveStop(base, over) {
+    const out = Object.assign({}, base);
+    Object.keys(over || {}).forEach((k) => { if (over[k] != null) out[k] = over[k]; });
+    return out;
+  }
+
+  async function runTourAsPhone() {
+    const stopsEl = document.getElementById('tourStops');
+    if (!stopsEl || !lastTourPlanBody) return;
+    const btn = document.getElementById('tourPhoneRunBtn');
+    const writeBtn = document.getElementById('tourWriteBtn');
+    const busy = (label) => {
+      if (btn) { btn.disabled = !!label; btn.textContent = label || 'Run it like the phone'; }
+      if (writeBtn) writeBtn.disabled = !!label;
+    };
+    // NO spend confirmation, ever — a tourist is never asked to approve spend, and
+    // the workbench reproduces the tourist experience (owner ruling 2026-07-31).
+    busy('⏳ Signing in…');
+    phoneStops = [];
+    phoneTripId = null;
+    try {
+      const auth = await workbenchSession();
+
+      busy('⏳ Planning and saving the trip…');
+      const genResp = await phoneFetch(`${API_BASE}/trips/generate`, {
+        method: 'POST',
+        body: JSON.stringify(phoneGenerateBody(auth.profile_id)),
+      });
+      if (!genResp.ok) { await showPhoneFailure(genResp, 'generate the trip'); return; }
+      const generated = await genResp.json();
+      phoneTripId = generated.trip_id;
+      const routeId = (generated.options && generated.options.length)
+        ? generated.options[0].route_id
+        : `${phoneTripId}-opt1`;
+
+      busy('⏳ Writing the day and its full tellings…');
+      const composeResp = await phoneFetch(`${API_BASE}/trips/${phoneTripId}/compose`, {
+        method: 'POST',
+        body: JSON.stringify({ route_id: routeId }),
+      });
+      if (!composeResp.ok) { await showPhoneFailure(composeResp, 'compose the day'); return; }
+      const composed = await composeResp.json();
+
+      busy('⏳ Recording every stop…');
+      // No body, exactly as trip_service.confirmTripStopAudio sends none, so the
+      // voice resolves through the failover chain rather than one named provider.
+      const voiceResp = await fetch(`${API_BASE}/audio/generate-trip-stops/${phoneTripId}`, {
+        method: 'POST',
+      });
+      let voiced = null;
+      if (voiceResp.ok) {
+        voiced = await voiceResp.json();
+      } else {
+        showError(`The day was written but not recorded (${voiceResp.status}). `
+          + 'The text below is real; the audio is not there yet.');
+      }
+
+      // The living session, read AFTER voicing: get_trip_session re-reads the audio
+      // fields off the live items, which is where the files the pass just wrote are.
+      let session = null;
+      const sessionResp = await phoneFetch(`${API_BASE}/trips/${phoneTripId}/session`, {
+        method: 'GET',
+      });
+      if (sessionResp.ok) session = await sessionResp.json();
+
+      const live = {};
+      ((session && session.stops) || []).forEach((s) => {
+        if (s.stop_id) live[s.stop_id] = s;
+      });
+      phoneStops = ((composed && composed.stops) || []).map(
+        (s) => mergeLiveStop(s, live[s.stop_id]));
+
+      // The per-stop audio poll the phone runs (audio_service.dart), for any stop the
+      // session did not already carry a file for, so the Hear button below is enabled
+      // off the same fact the app reads.
+      busy('⏳ Checking the recordings…');
+      for (const stop of phoneStops) {
+        if (stop.audio_url || !stop.stop_id) continue;
+        const stopId = stop.stop_id;
+        const statusResp = await fetch(`${API_BASE}/audio/stop-status/${stopId}`);
+        if (!statusResp.ok) continue;
+        const status = await statusResp.json();
+        if (status.has_audio) {
+          stop.audio_url = status.audio_url;
+          stop.audio_duration_sec = status.duration_sec;
+        }
+      }
+
+      renderPhoneDay(composed, voiced);
+    } catch (err) {
+      showError('Running it like the phone failed: ' + err.message);
+    } finally {
+      busy(null);
+    }
+  }
+
+  // Render the composed day EXACTLY as the server sent it — the narration, the full
+  // telling, the keep-exploring stitch — with the two audio doors a tourist has.
+  function renderPhoneDay(composed, voiced) {
+    const stopsEl = document.getElementById('tourStops');
+    if (!stopsEl) return;
+    tourStops = [];
+    tourDay = null;
+    stopsEl.innerHTML = '';
+
+    const fullTellings = phoneStops.filter((s) => s.full_narration).length;
+    const extras = phoneStops.filter((s) => s.extra_narration).length;
+    const head = document.createElement('div');
+    head.className = 'tour-day-head';
+    head.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
+    head.textContent = `What a tourist gets · ${phoneStops.length} stops · `
+      + `${fullTellings} with a full telling · ${extras} with keep-exploring extras`
+      + (composed && composed.attempts ? ` · ${composed.attempts} writing attempt(s)` : '')
+      + (voiced
+        ? ` · voiced ${voiced.generated}, already had audio ${voiced.skipped}, failed ${voiced.failed}`
+        : ' · not recorded');
+    stopsEl.appendChild(head);
+
+    const note = document.createElement('div');
+    note.className = 'tour-day-note';
+    note.style.cssText = 'color:var(--text-muted);font-size:0.8rem;margin:0 0 10px;';
+    note.textContent = 'This day was saved, written and recorded through the endpoints the '
+      + 'app calls. Trip ' + (phoneTripId || '-') + '.';
+    stopsEl.appendChild(note);
+
+    // Anything that quietly degraded while composing is shown here, above the stops
+    // (owner ruling 2026-07-31), through the same panel every other lane uses.
+    const degradePanel = buildDegradationPanel(composed);
+    if (degradePanel) stopsEl.appendChild(degradePanel);
+
+    if (voiced && voiced.failed > 0) {
+      const failedNote = document.createElement('div');
+      failedNote.className = 'tour-day-note';
+      failedNote.style.cssText = 'background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.55);'
+        + 'color:#f5b183;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 10px;';
+      failedNote.textContent = `${voiced.failed} stop(s) could not be recorded. `
+        + 'Those stops show their text with the Hear button disabled.';
+      stopsEl.appendChild(failedNote);
+    }
+
+    if (phoneStops.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'tour-options-empty db-beat-card';
+      empty.textContent = 'The day was composed with no stops.';
+      stopsEl.appendChild(empty);
+      return;
+    }
+
+    phoneStops.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'tour-stop db-beat-card';
+      // The tap for more plays the FULL TELLING where a major stop has one and the
+      // keep-exploring stitch otherwise — the same choice keep_exploring_stop_audio
+      // makes server-side, so the label names what will actually be voiced.
+      const deeper = s.full_narration || s.extra_narration || '';
+      const deeperLabel = s.full_narration ? 'Full telling' : 'Keep exploring here';
+      const tag = deeper
+        ? ` <span class="tour-deeper-dive-tag">${escHtml(deeperLabel)}</span>` : '';
+      const clock = s.start_time ? `${escHtml(s.start_time)} · ` : '';
+      const heard = s.audio_duration_sec
+        ? ` · ${Math.round(s.audio_duration_sec)}s recorded` : '';
+      el.innerHTML = `
+        <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name || '')}${tag}</h4>
+        <div class="meta">${clock}~${s.duration_min || 0} min here${heard}</div>
+        <div class="script-preview">${escHtml(s.narration || '')}</div>
+        <div class="tts-row">
+          <button class="tts-play-btn" data-phone-stop="${i}"
+                  title="Play the recording the voicing pass made for this stop"
+                  ${s.audio_url ? '' : 'disabled'}>&#9654; Hear the stop</button>
+          <audio class="tts-audio" data-phone-stop-audio="${i}" controls preload="none"></audio>
+        </div>`
+        + (deeper
+          ? `<div class="field-group" style="margin-top:0.75rem;">
+               <label>${escHtml(deeperLabel)}</label>
+               <div class="script-preview">${escHtml(deeper)}</div>
+             </div>
+             <div class="tts-row">
+               <button class="tts-play-btn" data-phone-keep-exploring="${i}"
+                       title="Voice it the way the tap for more does">&#9654; Tap for more</button>
+               <audio class="tts-audio" data-phone-keep-audio="${i}" controls preload="none"></audio>
+             </div>`
+          : '');
+      stopsEl.appendChild(el);
+    });
+  }
+
+  // A stored audio_url into something this page can play. Local storage returns an
+  // absolute API path (/api/v1/audio/files/...); a remote store returns a full URL,
+  // which the URL constructor leaves untouched.
+  function audioHref(url) {
+    try { return new URL(url, API_BASE).href; } catch (e) { return url; }
+  }
+
+  function playPhoneStopAudio(i) {
+    const s = phoneStops[i];
+    const audioEl = document.querySelector(`.tts-audio[data-phone-stop-audio="${i}"]`);
+    if (!s || !audioEl) return;
+    if (!s.audio_url) { showError('This stop has no recording yet.'); return; }
+    audioEl.src = audioHref(s.audio_url);
+    audioEl.classList.add('visible');
+    audioEl.play();
+  }
+
+  // THE tap for more, through the tourist door. The server answers 200 with
+  // status=failed on a flaky provider rather than a 500, so that case is shown as a
+  // retryable message — exactly how the phone treats it.
+  async function playKeepExploring(i) {
+    const s = phoneStops[i];
+    const btn = document.querySelector(`.tts-play-btn[data-phone-keep-exploring="${i}"]`);
+    const audioEl = document.querySelector(`.tts-audio[data-phone-keep-audio="${i}"]`);
+    if (!s || !btn || !audioEl || !s.stop_id) return;
+    const stopId = s.stop_id;
+    btn.disabled = true;
+    const origText = btn.innerHTML;
+    btn.textContent = '⏳ Recording…';
+    try {
+      // No body, exactly as trip_service.generateDeeperDiveAudio sends none, so the
+      // voice resolves through the failover chain rather than one named provider.
+      const resp = await fetch(`${API_BASE}/audio/stops/${stopId}/keep-exploring`, {
+        method: 'POST',
+      });
+      if (resp.status === 409) {
+        showError('There is nothing more to explore at this stop.');
+        return;
+      }
+      if (!resp.ok) { showError(`The tap for more failed (${resp.status}).`); return; }
+      const data = await resp.json();
+      if (data.status === 'failed' || !data.audio_url) {
+        showError('The tap for more could not be recorded: '
+          + (data.error || 'the voice provider refused'));
+        return;
+      }
+      audioEl.src = audioHref(data.audio_url);
+      audioEl.classList.add('visible');
+      audioEl.play();
+    } catch (err) {
+      showError('The tap for more failed: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = origText;
     }
   }
 

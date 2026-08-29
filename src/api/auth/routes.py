@@ -26,6 +26,7 @@ from src.api.auth.schemas import (
     RefreshRequest,
     TokenResponse,
     UserResponse,
+    WorkbenchSessionResponse,
 )
 from src.api.auth.tokens import (
     TokenError,
@@ -221,6 +222,101 @@ def _magic_link_ceiling(email: str) -> None:
 @router.get("/me", response_model=UserResponse)
 def me(current_user: dict = Depends(get_current_user)):
     return UserResponse(**current_user)
+
+
+# ── The workbench's own identity ─────────────────────────────────────────────
+#
+# CLAUDE.md rule 1: the workbench and the app run the EXACT SAME code for everything
+# they share. The full telling (`plan_premium_full_telling`) and the keep-exploring
+# extras (`build_poi_extra_beats` / `build_poi_extra_narration`) are written by
+# POST /trips/{id}/compose and voiced by POST /audio/stops/{id}/keep-exploring — the
+# tourist's own endpoints — so an editor can only ever preview that content by calling
+# THOSE endpoints. Both are ownership-scoped and authenticated, and that stays exactly
+# as it is: adding an auth-optional branch to the phone's routes would be a second door
+# into one stage AND a security regression on the tourist's surface. So the workbench
+# signs in like anybody else, and this is where it gets its identity — the move
+# `author_preview_tour`'s docstring has named since 2026-08-04 ("Phase 2 closes it by
+# giving the workbench a real identity and moving it onto the saved-trip pair").
+#
+# The workbench has no inbox and no Apple/Google account, so there is no link to send
+# and no token to verify; it mints its session directly. That makes it a real
+# credential-issuing route, so it is GATED by the same fail-closed flag that already
+# protects the workbench CRUD routers (src/api/app.py) and the audio spend surface
+# (src/api/routes/audio.py): production pins WORKBENCH_API_ENABLED="false"
+# (render.yaml), where this answers 404 — indistinguishable from a route that was never
+# mounted. The check runs per-REQUEST rather than at import for the reason audio.py
+# gives: this module is imported once but create_app() may run many times (tests) with
+# a different env, and a request-time gate can never be stale.
+
+#: One stable workbench operator. A fixed address so repeated sign-ins MERGE onto the
+#: same User and its trips accumulate under one profile instead of forking a new
+#: identity per click. `.local` is reserved and unroutable — nothing can ever be
+#: delivered to it, which is the point: this account is never emailed.
+WORKBENCH_USER_EMAIL = "workbench@ondoway.local"
+WORKBENCH_PROFILE_NAME = "Editorial Workbench"
+
+#: The profile half of the same MERGE the onboarding route does, minus the lenses.
+#: A lens-free profile is not a degraded one: `_resolve_lenses` falls back to None and
+#: the engine plans unbiased, which is what an editor auditioning the corpus wants —
+#: and the tour form still sends its own `lenses` when the editor names some.
+_MERGE_WORKBENCH_PROFILE = """
+MATCH (u:User {id: $user_id})
+MERGE (u)-[hp:HAS_PROFILE]->(p:Profile {display_name: $display_name})
+ON CREATE SET p.id = randomUUID(), p.created_at = datetime(),
+              hp.id = randomUUID(), hp.created_at = datetime()
+RETURN p.id AS profile_id
+"""
+
+
+def _workbench_api_enabled() -> bool:
+    """Fail-closed parse of the workbench gate (mirrors app._workbench_api_enabled).
+
+    ONLY an explicit truthy value opens the surface; unset, empty, or a typo
+    ("flase", "disbaled") keeps it CLOSED. Defined locally rather than imported from
+    src.api.app to avoid a circular import (app imports this module) — the same
+    reason src/api/routes/audio.py keeps its own copy of this parser.
+    """
+    return os.getenv("WORKBENCH_API_ENABLED", "").strip().lower() in (
+        "true",
+        "1",
+        "yes",
+        "on",
+    )
+
+
+def require_workbench() -> None:
+    """Dependency: 404 unless the workbench surface is explicitly enabled."""
+    if not _workbench_api_enabled():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+
+
+@router.post(
+    "/workbench-session",
+    response_model=WorkbenchSessionResponse,
+    dependencies=[Depends(require_workbench)],
+)
+def workbench_session(session: Session = Depends(get_session)):
+    """Mint the editorial workbench's access token and its profile id.
+
+    Idempotent: both halves are a MERGE, so calling it twice returns the same user and
+    the same profile with a fresh token. The page calls it before the tourist flow and
+    again after a 401, which is why no refresh token is issued — there is nothing to
+    rotate that asking again does not replace.
+    """
+    result = session.run(_MERGE_USER, email=WORKBENCH_USER_EMAIL).single()
+    user_node = result["u"]
+    user_id = user_node.get("id")
+    profile = session.run(
+        _MERGE_WORKBENCH_PROFILE,
+        user_id=user_id,
+        display_name=WORKBENCH_PROFILE_NAME,
+    ).single()
+    return WorkbenchSessionResponse(
+        access_token=create_access_token(user_id, WORKBENCH_USER_EMAIL),
+        user_id=user_id,
+        email=WORKBENCH_USER_EMAIL,
+        profile_id=profile["profile_id"],
+    )
 
 
 @router.post("/magic-link/request", status_code=200)

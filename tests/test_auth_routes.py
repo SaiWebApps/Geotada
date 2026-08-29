@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from unittest.mock import AsyncMock, patch
 
+import pytest
+
+from src.api.auth.routes import WORKBENCH_USER_EMAIL
 from src.api.auth.tokens import (
     create_access_token,
     create_magic_token,
@@ -359,6 +362,81 @@ class TestGoogleAuthEndpoint:
         )
         assert resp.status_code == 200
         assert resp.json()["email"] == "gme@gmail.com"
+
+
+@needs_neo4j
+class TestWorkbenchSession:
+    """The editorial workbench's own identity (CLAUDE.md rule 1).
+
+    The full telling and the keep-exploring extras are written by
+    POST /trips/{id}/compose and voiced by POST /audio/stops/{id}/keep-exploring —
+    both ownership-scoped and authenticated. The workbench reaches them by signing
+    in, not by anyone loosening those routes, so what matters here is that the
+    identity this mints is REAL (the trips router accepts it), that asking twice
+    does not fork a second operator, and that the route is fail-closed.
+    """
+
+    def test_it_mints_an_identity_that_works(self, client, clean_driver):
+        resp = client.post("/api/v1/auth/workbench-session")
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["email"] == WORKBENCH_USER_EMAIL
+        assert data["profile_id"]
+        assert data["token_type"] == "bearer"
+        assert verify_token(data["access_token"], "access")["sub"] == data["user_id"]
+
+        me = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {data['access_token']}"},
+        )
+        assert me.status_code == 200
+        assert me.json()["email"] == WORKBENCH_USER_EMAIL
+
+    def test_asking_twice_returns_the_same_operator(self, client, clean_driver):
+        first = client.post("/api/v1/auth/workbench-session").json()
+        second = client.post("/api/v1/auth/workbench-session").json()
+
+        assert first["user_id"] == second["user_id"]
+        assert first["profile_id"] == second["profile_id"]
+        assert _count_users(clean_driver, WORKBENCH_USER_EMAIL) == 1
+
+    def test_the_identity_opens_the_tourists_own_routes(self, client, clean_driver):
+        """The point of the whole endpoint: the trips router accepts this pair.
+
+        ``GET /trips`` is ownership-scoped exactly as ``/trips/generate`` and
+        ``/trips/{id}/compose`` are (``_owned_profile_id``), and needs no corpus or
+        routing to answer — so it proves the token and the profile really belong to
+        each other without paying for a tour.
+        """
+        session = client.post("/api/v1/auth/workbench-session").json()
+        headers = {"Authorization": f"Bearer {session['access_token']}"}
+
+        owned = client.get(f"/api/v1/trips?profile_id={session['profile_id']}", headers=headers)
+        assert owned.status_code == 200
+        assert owned.json() == []
+
+        # And ownership scoping is untouched: a profile this operator does not own
+        # is still a 404, never a 403 and never a read.
+        foreign = client.get("/api/v1/trips?profile_id=someone-elses-profile", headers=headers)
+        assert foreign.status_code == 404
+
+    @pytest.mark.parametrize("value", ["", "false", "0", "flase", "  "])
+    def test_it_is_fail_closed_without_an_explicit_yes(self, client, monkeypatch, value):
+        """Unset, off, or typo'd keeps the credential route CLOSED.
+
+        This is the security property: production pins WORKBENCH_API_ENABLED="false"
+        (render.yaml), and a route that mints access tokens must be a 404 there —
+        indistinguishable from one that was never mounted. Read per-request, so
+        setting the env is enough; no app rebuild.
+        """
+        monkeypatch.setenv("WORKBENCH_API_ENABLED", value)
+        resp = client.post("/api/v1/auth/workbench-session")
+        assert resp.status_code == 404
+
+    def test_it_opens_on_an_explicit_yes(self, client, monkeypatch):
+        monkeypatch.setenv("WORKBENCH_API_ENABLED", "TRUE")
+        assert client.post("/api/v1/auth/workbench-session").status_code == 200
 
 
 @needs_neo4j

@@ -47,3 +47,18 @@ class OnboardingResponse(BaseModel):
     profile_id: str
     display_name: str
     lens_count: int
+
+
+class WorkbenchSessionResponse(BaseModel):
+    """The editorial workbench's own identity: a real user, profile and access token.
+
+    No refresh token, deliberately: this is a local operator session that can be
+    re-minted by asking again, so there is nothing to rotate and nothing worth
+    leaving in flight for fourteen days.
+    """
+
+    access_token: str
+    token_type: str = "bearer"
+    user_id: str
+    email: str
+    profile_id: str

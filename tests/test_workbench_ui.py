@@ -5721,3 +5721,333 @@ class TestRealTourGeneration:
             f"the page issued {len(asked)} /audio/preview request(s) it already "
             f"knew would fail: {asked}"
         )
+
+
+# ── The workbench runs the TOURIST path ─────────────────────────────────────
+#
+# CLAUDE.md rule 1: the workbench and the app run the EXACT SAME code for
+# everything they share. Two pieces of tourist-audible content are written and
+# voiced ONLY on the phone path, so until the "Run it like the phone" action no
+# editor could preview either on any screen:
+#
+#   the FULL TELLING      plan_premium_full_telling / finalize_premium_full_telling,
+#                         written by POST /trips/{id}/compose for every major stop
+#   KEEP EXPLORING HERE   build_poi_extra_beats / build_poi_extra_narration, also
+#                         written at compose and voiced by
+#                         POST /audio/stops/{id}/keep-exploring
+#
+# tests/test_surfaces_share_one_engine.py proves by derivation that the workbench
+# now ENTERS those doors. This proves the button a human presses really walks
+# them, in the phone order, with the phone payloads.
+#
+# WHY THE ENDPOINTS ARE ANSWERED IN THE BROWSER, and what that does not weaken.
+# Composing a real day makes one paid Opus call per stop, and this shard runs with
+# a blanked ANTHROPIC_API_KEY (conftest), so a live compose here could only ever
+# fail to authenticate — it would prove nothing about the sequence. So the paid
+# half is stubbed and everything the WORKBENCH is responsible for is measured for
+# real: the click, the request order, every outbound payload, the auth header, the
+# render of the full telling and the extras, the tap for more, and a real audio
+# decode. That is the same bargain `_stubbed_audio_preview` documents, and the
+# stubs answer in the shapes the endpoints really return.
+
+
+class TestWorkbenchRunsThePhonePath:
+    """The workbench reaches the full telling and keep-exploring, through the
+    tourist's own endpoints and a real signed-in identity."""
+
+    #: What compose really hands back for a two-stop day: one MAJOR stop carrying
+    #: its second composed piece (`full_narration` + `full_close_text`), and one
+    #: ordinary stop carrying only the deterministic keep-exploring stitch.
+    FULL_TELLING = (
+        "The longer telling. Stand where the parvis opens out and the west front "
+        "fills the whole sky, and the masons who set these stones become people "
+        "with names."
+    )
+    EXTRAS = (
+        "Keep exploring here. The spire you are looking at is a nineteenth-century "
+        "reconstruction, and the argument about whether to build it lasted longer "
+        "than the building of it."
+    )
+
+    def _composed_stops(self):
+        return [
+            {
+                "sort_order": 1, "stop_id": "item-1", "poi_id": "poi-1",
+                "poi_name": "Notre-Dame", "lat": 48.8530, "lng": 2.3499,
+                "duration_min": 12, "importance_tier": 5, "start_time": "10:20",
+                "dwell_seconds": 720,
+                "narration": "The tight telling for the cathedral square.",
+                "extra_narration": None,
+                "full_narration": self.FULL_TELLING,
+                "full_close_text": "Carry that west front with you.",
+                "close_text": "Walk on when you are ready.",
+            },
+            {
+                "sort_order": 2, "stop_id": "item-2", "poi_id": "poi-2",
+                "poi_name": "Sainte-Chapelle", "lat": 48.8554, "lng": 2.3450,
+                "duration_min": 8, "importance_tier": 4, "start_time": "10:45",
+                "dwell_seconds": 480,
+                "narration": "The tight telling for the glass.",
+                "extra_narration": self.EXTRAS,
+                "full_narration": None,
+                "full_close_text": None,
+                "close_text": "That is the last of the glass.",
+            },
+        ]
+
+    def _install_phone_stubs(self, page, calls):
+        """Answer the tourist endpoints in the shapes the server really returns."""
+        from src.audio.provider import MockTTSProvider
+
+        stops = self._composed_stops()
+
+        def _record(route, body):
+            calls.append(
+                {
+                    "url": route.request.url,
+                    "method": route.request.method,
+                    "post_data": route.request.post_data,
+                    "auth": route.request.headers.get("authorization"),
+                }
+            )
+            route.fulfill(
+                status=200, content_type="application/json", body=json.dumps(body)
+            )
+
+        page.route(
+            "**/auth/workbench-session",
+            lambda route: _record(route, {
+                "access_token": "wb-access-token", "token_type": "bearer",
+                "user_id": "wb-user", "email": "workbench@ondoway.local",
+                "profile_id": "wb-profile",
+            }),
+        )
+        page.route(
+            "**/trips/generate",
+            lambda route: _record(route, {
+                "trip_id": "trip-1", "trip_name": "Workbench audition",
+                "profile_id": "wb-profile", "total_stops": 2,
+                "total_duration_min": 20, "anchor_count": 1, "flavour_count": 1,
+                "stops": [], "degradations": [],
+                "options": [_route_option(stops, route_id="trip-1-opt1")],
+            }),
+        )
+        page.route(
+            "**/trips/*/compose",
+            lambda route: _record(route, {
+                "trip_id": "trip-1", "route_id": "trip-1-opt1", "attempts": 1,
+                "plan_version": 1, "stops": stops, "degradations": [],
+            }),
+        )
+        page.route(
+            "**/audio/generate-trip-stops/*",
+            lambda route: _record(route, {
+                "trip_id": "trip-1", "generated": 1, "skipped": 0, "failed": 0,
+                "results": [{"stop_id": "item-1", "status": "generated",
+                             "audio_url": "/api/v1/audio/files/item-1.wav"}],
+            }),
+        )
+        # The session GET carries the file the voicing pass wrote onto stop 1 and
+        # nothing yet for stop 2 — so the per-stop poll below has real work to do,
+        # exactly as it does when one stop's voicing lands late.
+        page.route(
+            "**/trips/*/session",
+            lambda route: _record(route, {
+                "trip_id": "trip-1", "plan_version": 1,
+                "stops": [
+                    dict(stops[0], audio_url="/api/v1/audio/files/item-1.wav",
+                         audio_duration_sec=41.0),
+                    dict(stops[1]),
+                ],
+                "promises": [], "contingencies": [], "retime_tolerance_seconds": 300,
+                "walking_pace_kmh": 4.5, "day_start_hhmm": "10:00",
+                "planned_end_hhmm": "11:00", "party": None,
+                "finish_lat": None, "finish_lng": None, "finish_name": "your start",
+                "end_hardness": "firm", "placement": None,
+            }),
+        )
+        page.route(
+            "**/audio/stop-status/*",
+            lambda route: _record(route, {
+                "stop_id": "item-2", "has_audio": True,
+                "audio_url": "/api/v1/audio/files/item-2.wav", "duration_sec": 28.0,
+            }),
+        )
+        page.route(
+            "**/audio/stops/*/keep-exploring",
+            lambda route: _record(route, {
+                "stop_id": "item-2", "status": "generated",
+                "audio_url": "/api/v1/audio/files/item-2-keep-exploring.wav",
+                "duration_sec": 55.0,
+            }),
+        )
+        # Real decodable bytes for whatever file the page then plays, so the
+        # <audio> element genuinely reaches HAVE_CURRENT_DATA rather than a src
+        # string nobody proved was playable.
+        page.route(
+            "**/audio/files/**",
+            lambda route: route.fulfill(
+                status=200, content_type="audio/wav",
+                body=MockTTSProvider().generate("workbench phone-path audio"),
+            ),
+        )
+
+    def _unroute_phone_stubs(self, page):
+        for pattern in (
+            "**/auth/workbench-session", "**/trips/generate", "**/trips/*/compose",
+            "**/audio/generate-trip-stops/*", "**/trips/*/session",
+            "**/audio/stop-status/*", "**/audio/stops/*/keep-exploring",
+            "**/audio/files/**",
+        ):
+            page.unroute(pattern)
+
+    def test_run_it_like_the_phone_walks_the_tourists_own_endpoints(self, browser_page):
+        """One click runs generate -> compose -> voice -> session -> tap for more.
+
+        The assertions that matter, each of which a different shortcut breaks:
+
+        1. THE SEQUENCE IS THE PHONE'S. The page signs in, then calls
+           /trips/generate, /trips/{id}/compose, /audio/generate-trip-stops/{id}
+           and /trips/{id}/session — the same doors trip_service.dart knocks on.
+        2. IT DOES NOT INVENT A ROUTE. The compose body carries the route_id the
+           generate reply returned, so the day written is the day just saved.
+        3. THE REQUEST IS THE DIALS. generate carries the profile from the
+           workbench session and the same start/duration/city the plan used.
+        4. BOTH AUTHENTICATED CALLS CARRY THE TOKEN.
+        5. THE TOURIST-AUDIBLE CONTENT IS ON SCREEN — the full telling and the
+           keep-exploring stitch, the two things no editor could see before.
+        6. THE TAP FOR MORE NAMES NO PROVIDER. An unnamed provider resolves
+           through the failover chain (get_provider_with_fallback); a named one
+           resolves a single provider, which is the exact 2026-08-29 divergence
+           the one-engine guard was written against.
+
+        UNDO TEST: make playKeepExploring send {"provider": ttsProvider} -> RED on
+        (6). Point the compose call at a workbench-only endpoint -> RED on (1).
+        Delete the full-telling block from renderPhoneDay -> RED on (5).
+        """
+        page, _seed, _reporter = browser_page
+        page.goto(WORKBENCH_URL)
+        page.wait_for_load_state("networkidle")
+        page.wait_for_function(
+            "() => { const s = document.querySelector('#citySelect'); "
+            "return s && [...s.options].some(o => o.textContent.includes('Paris')); }",
+            timeout=15000,
+        )
+        page.locator(CITY_SELECT).select_option(index=1)
+        page.locator(CITY_SUBMIT).click()
+        page.locator(CITY_OVERLAY).wait_for(state="hidden", timeout=15000)
+        page.locator("#tourPreviewBtn").click()
+        page.wait_for_timeout(300)
+
+        calls: list[dict] = []
+        # The plan is stubbed only to put a day on screen — the phone action lives
+        # on the rendered day, and the plan body is what its request is built from.
+        _route_two_step(
+            page,
+            plan=_plan_payload([
+                {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 12},
+                {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 8},
+            ]),
+            compose=_authored_payload({"stops": [], "spine_area": "-", "total_audio_min": 0}),
+        )
+        self._install_phone_stubs(page, calls)
+        try:
+            _set_tour_inputs(page, start="48.8566,2.3522", duration=90)
+            assert _plan_the_day(page).status == 200
+
+            run_btn = page.locator("#tourPhoneRunBtn")
+            run_btn.wait_for(state="visible", timeout=10000)
+            with page.expect_response(lambda r: "/trips/" in r.url and "/session" in r.url,
+                                      timeout=30000):
+                run_btn.click()
+            page.wait_for_timeout(500)
+
+            # (1) The sequence is the phone's, in the phone's order.
+            paths = [c["url"].split("/api/v1")[-1].split("?")[0] for c in calls]
+            assert paths[:5] == [
+                "/auth/workbench-session",
+                "/trips/generate",
+                "/trips/trip-1/compose",
+                "/audio/generate-trip-stops/trip-1",
+                "/trips/trip-1/session",
+            ], f"the workbench did not walk the tourist path in order: {paths}"
+            assert "/audio/stop-status/item-2" in paths, (
+                f"the per-stop audio poll the phone runs never happened: {paths}"
+            )
+
+            by_path = {p: c for p, c in zip(paths, calls, strict=True)}
+
+            # (2) The compose call names the route generate returned.
+            compose_body = json.loads(by_path["/trips/trip-1/compose"]["post_data"] or "{}")
+            assert compose_body.get("route_id") == "trip-1-opt1", (
+                f"compose must carry the route_id generate returned: {compose_body}"
+            )
+
+            # (3) The generate request is built from the SAME dials the plan used.
+            gen_body = json.loads(by_path["/trips/generate"]["post_data"] or "{}")
+            assert gen_body.get("profile_id") == "wb-profile", gen_body
+            assert gen_body.get("center_lat") == 48.8566, gen_body
+            assert gen_body.get("center_lng") == 2.3522, gen_body
+            assert gen_body.get("duration_min") == 90, gen_body
+            assert gen_body.get("city_slug"), f"the city never travelled: {gen_body}"
+            # A trip record needs a calendar day whatever the dials say.
+            assert gen_body.get("start_date") and gen_body.get("end_date"), gen_body
+            assert gen_body.get("start_time"), gen_body
+
+            # (4) Both ownership-scoped calls carry the workbench token.
+            for path in ("/trips/generate", "/trips/trip-1/compose", "/trips/trip-1/session"):
+                assert by_path[path]["auth"] == "Bearer wb-access-token", (
+                    f"{path} was called without the workbench identity: {by_path[path]}"
+                )
+
+            # (5) The two pieces no editor could preview before are ON SCREEN.
+            panel = page.locator("#tourStops").inner_text()
+            assert self.FULL_TELLING in panel, (
+                f"the FULL TELLING did not render: {panel[:400]}"
+            )
+            assert self.EXTRAS in panel, (
+                f"the keep-exploring extras did not render: {panel[:400]}"
+            )
+            # Case-insensitively: both labels are styled text-transform:uppercase,
+            # and which case reaches the screen is a stylesheet decision, not a
+            # property of the feature.
+            labels = panel.lower()
+            assert "full telling" in labels and "keep exploring here" in labels, (
+                f"neither piece is labelled for the editor: {panel[:400]}"
+            )
+            assert "1 with a full telling" in panel and "1 with keep-exploring" in panel, (
+                f"the head does not count the two pieces: {panel[:400]}"
+            )
+            _take_screenshot(page, "phone-path-full-telling-rendered")
+
+            # The scheduled per-stop recording plays and really decodes.
+            page.locator('.tts-play-btn[data-phone-stop="0"]').click()
+            page.wait_for_function(
+                "sel => { const el = document.querySelector(sel);"
+                " return !!el && el.readyState >= 2; }",
+                arg='.tts-audio[data-phone-stop-audio="0"]',
+                timeout=15000,
+            )
+
+            # (6) The tap for more goes through the tourist door and NAMES NO PROVIDER.
+            with page.expect_response(lambda r: "/keep-exploring" in r.url, timeout=30000):
+                page.locator('.tts-play-btn[data-phone-keep-exploring="1"]').click()
+            page.wait_for_function(
+                "sel => { const el = document.querySelector(sel);"
+                " return !!el && el.readyState >= 2; }",
+                arg='.tts-audio[data-phone-keep-audio="1"]',
+                timeout=15000,
+            )
+            keep = next(
+                c for c in calls if "/audio/stops/item-2/keep-exploring" in c["url"]
+            )
+            body = json.loads(keep["post_data"] or "{}")
+            assert "provider" not in body and "voice_id" not in body, (
+                "the tap for more named a provider, so it resolved ONE voice instead "
+                "of the failover chain the phone gets — the exact divergence the "
+                f"one-engine guard exists for: {body}"
+            )
+            _take_screenshot(page, "phone-path-tap-for-more")
+        finally:
+            self._unroute_phone_stubs(page)
+            _unroute_two_step(page)
