@@ -17,7 +17,7 @@
     "forcing those into regexes produces false positives, and a noisy hook gets deleted.",
     "",
     "/harvest-failures appends rules here; no code edit is needed to add one.",
-    "kinds: regex | needs_abs_cd | git_foreign_staged | inplace_source_edit"
+    "kinds: regex | needs_abs_cd | git_foreign_staged | inplace_source_edit | git_source_excerpt"
   ],
   "repo_root": "/Users/sairambkrishnan/git/ondoway",
   "acknowledge_token": "# ledger-checked",
@@ -47,6 +47,12 @@
         "(\\|\\s*(tail|head|grep|egrep|fgrep|sed|awk|wc|cut|sort|uniq)\\b|(^|[;&|]\\s*)(tail|head|grep|egrep|fgrep|sed|awk|wc|cut)\\b)"
       ],
       "message": "a backgrounded run's saved .output log is being piped through a filter. The auditable-tests guard cannot see this (the command names a file, not a test target) and that gap was used 8 times in one session \u2014 one keyword filter omitted 'FAILED' and hid two real test failures for a stretch of that session. Read the whole file with the Read tool instead."
+    },
+    {
+      "class": 4,
+      "name": "source content reached through git instead of read",
+      "kind": "git_source_excerpt",
+      "message": "this quotes a tracked file's CONTENT through git, which walks around the global whole-source-file guard. Measured 2026-08-29: `grep -n RENDER_LOCAL_EXEC Makefile` was blocked by ~/.claude/hooks/no-grep.py in this session, and `git grep -n RENDER_LOCAL_EXEC Makefile | head -5` ran unchallenged minutes later — that guard looks at the program named `grep`, and `git` is a different program. An excerpt hides the context that changes the correct edit, whichever program prints it. Read the whole file with the Read tool. `git grep -l` (which files match) is allowed and is the way to find the file to read; so are `git log`, `git status`, `git diff`, and an unpiped `git show <rev>:<path>`."
     },
     {
       "class": 10,

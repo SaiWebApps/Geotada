@@ -34,7 +34,6 @@ Protocol (stdin JSON, deny-by-printed-JSON, always exit 0) copied from
 from __future__ import annotations
 
 import json
-import os
 import re
 import shlex
 import subprocess
@@ -55,21 +54,38 @@ def _load() -> dict:
 # ── kind: needs_abs_cd ───────────────────────────────────────────────────────
 
 
+def _names_its_own_root(token: str) -> bool:
+    """A path that names its own root, so no inherited directory can move it."""
+    return token.startswith("/") or token.startswith("~")
+
+
 def _establishes_cwd(command: str, repo_root: str) -> bool:
     """Does the command set its own directory before the guarded program runs?
 
-    Accepted: a leading absolute `cd /path &&`, `make -C /path`, `git -C /path`,
-    or an absolute path to the program itself. A bare relative `cd` is NOT
-    accepted — it inherits whatever directory the previous call left behind,
-    which is the defect.
+    Accepted: an absolute `cd /path`, `make -C /path`, `git -C /path`, or an
+    absolute path to the program itself. A bare relative `cd` is NOT accepted:
+    it inherits whatever directory the previous call left behind, which is the
+    defect this class exists for.
+
+    Structural, not a pattern (owner ruling 2026-08-29). The earlier version
+    hand-enumerated the quote spellings it expected around the path -- `"/`,
+    `'/`, `"~`, `'~` -- which is class 17's disease living inside the guard
+    itself: a hand-written list catches only what someone thought of, and it
+    fails silently. shlex strips quotes as part of lexing, so every spelling is
+    handled without anyone having to predict it.
     """
-    stripped = command.strip()
-    if re.match(r"^cd\s+(/|~|\"/|'/|\"~|'~)", stripped):
-        return True
-    if re.search(r"\b(make|git)\s+-C\s+(/|~)", stripped):
-        return True
-    if repo_root and re.search(rf"(^|[;&|]\s*){re.escape(repo_root)}/", stripped):
-        return True
+    for argv in _segments(command):
+        if not argv:
+            continue
+        program = Path(argv[0]).name
+        if program == "cd" and len(argv) > 1 and _names_its_own_root(argv[1]):
+            return True
+        if program in ("make", "git"):
+            for index, token in enumerate(argv[:-1]):
+                if token == "-C" and _names_its_own_root(argv[index + 1]):
+                    return True
+        if repo_root and argv[0].startswith(repo_root + "/"):
+            return True
     return False
 
 
@@ -242,6 +258,102 @@ def _inplace_targets(command: str, repo_root: str) -> list[str]:
     return hits
 
 
+# ── kind: git_source_excerpt ─────────────────────────────────────────────────
+#
+# Reaching a tracked file's CONTENT through git, which walks straight around the
+# global whole-source-file guard. Measured 2026-08-29: `grep -n RENDER_LOCAL_EXEC
+# Makefile` was blocked by ~/.claude/hooks/no-grep.py, while `git grep -n
+# RENDER_LOCAL_EXEC Makefile | head -5` ran unchallenged in the same session —
+# that guard looks at the program named `grep`, and `git` is a different program.
+# `git show <rev>:<path> | head` is the same door, and it is the one I would use
+# next, so it is closed here too.
+#
+# Structural, not a pattern (owner ruling 2026-08-29): the command is lexed into
+# segments, git's own subcommand is found by stepping over the global flags that
+# carry a value, and the arguments are checked against `git ls-files`.
+#
+# Deliberately NOT blocked, because each is either the remedy or ordinary work:
+# `git grep -l` (which files match — that locates a file to Read), `git log`,
+# `git status`, `git diff` (a diff is the legitimate artifact for reviewing a
+# change), and an unpiped `git show <rev>:<path>`, which prints the whole file
+# and is the one thing the Read tool genuinely cannot do.
+
+#: git-grep flags whose output is file NAMES or a count, never quoted lines.
+_GIT_NAMES_ONLY = {
+    "-l",
+    "--files-with-matches",
+    "-L",
+    "--files-without-match",
+    "--name-only",
+    "-c",
+    "--count",
+}
+
+#: git's own global flags that consume the NEXT token, so the subcommand scan
+#: must step over both. `-c` is global before the subcommand and git-grep's
+#: --count after it; position is what tells them apart, and position is what
+#: this scan reads.
+_GIT_VALUE_FLAGS = {"-C", "-c"}
+
+#: Programs that turn printed output into an excerpt.
+_FILTERS = {
+    "head",
+    "tail",
+    "sed",
+    "awk",
+    "gawk",
+    "grep",
+    "egrep",
+    "fgrep",
+    "cut",
+    "wc",
+    "sort",
+    "uniq",
+    "perl",
+}
+
+
+def _git_subcommand(argv: list[str]) -> tuple[str | None, list[str]]:
+    """git's subcommand and the arguments after it."""
+    index = 1
+    while index < len(argv):
+        token = argv[index]
+        if not token.startswith("-"):
+            return token, argv[index + 1 :]
+        index += 2 if token in _GIT_VALUE_FLAGS else 1
+    return None, []
+
+
+def _git_source_excerpts(command: str, repo_root: str) -> list[str]:
+    """Ways this command would quote tracked file content through git."""
+    if not repo_root:
+        return []
+    segments = _segments(command)
+    programs = {Path(argv[0]).name for argv in segments if argv}
+    tracked = None
+    hits: list[str] = []
+    for argv in segments:
+        if not argv or Path(argv[0]).name != "git":
+            continue
+        subcommand, rest = _git_subcommand(argv)
+        if subcommand == "grep":
+            if any(flag in _GIT_NAMES_ONLY for flag in rest):
+                continue  # listing which files match, not quoting their lines
+            hits.append("git grep")
+        elif subcommand == "show":
+            if not programs & _FILTERS:
+                continue  # a whole file at a revision is a whole-file read
+            if tracked is None:
+                tracked = _tracked_files(repo_root)
+            for arg in rest:
+                if arg.startswith("-") or ":" not in arg:
+                    continue
+                candidate = arg.rpartition(":")[2].lstrip("./")
+                if candidate in tracked:
+                    hits.append(f"git show …:{candidate}")
+    return hits
+
+
 # ── evaluation ───────────────────────────────────────────────────────────────
 
 
@@ -275,6 +387,12 @@ def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
             hit = bool(targets)
             if hit:
                 detail = f" Would rewrite in place: {', '.join(sorted(set(targets))[:6])}"
+
+        elif kind == "git_source_excerpt":
+            excerpts = _git_source_excerpts(command, repo_root)
+            hit = bool(excerpts)
+            if hit:
+                detail = f" The excerpting call: {', '.join(sorted(set(excerpts))[:4])}"
 
         if hit:
             return rule.get("class", 0), rule.get("name", "?"), rule.get("message", "") + detail

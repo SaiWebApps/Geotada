@@ -41,6 +41,7 @@ belongs to the verification-gate reviewer, which reads the request and the desig
 docs and tries to disprove the claim.
 """
 
+import contextlib
 import json
 import os
 import subprocess
@@ -65,8 +66,11 @@ CODE_SUFFIXES = {".py", ".dart", ".js", ".ts", ".tsx", ".html", ".sh", ".yaml", 
 PRODUCT_ROOTS = ("src/", "mobile/lib/")
 
 # Characters that surround a token in prose and markdown without being part of
-# it. Stripped from both ends until nothing more comes off.
-ADORNMENT = "()[]{}<>`'\"*_,;!?“”‘’—–…|"
+# it. Stripped from both ends until nothing more comes off. The curly quotes,
+# dashes and ellipsis are deliberate and load-bearing: a reply is prose, and a
+# path arrives wrapped in the punctuation a writer actually types. Ruff's
+# ambiguous-glyph rule is silenced because those glyphs ARE the target here.
+ADORNMENT = "()[]{}<>`'\"*_,;!?“”‘’—–…|"  # noqa: RUF001
 
 
 def allow():
@@ -86,10 +90,8 @@ def read_state():
 
 
 def write_state(state):
-    try:
+    with contextlib.suppress(OSError):
         STATE_PATH.write_text(json.dumps(state))
-    except OSError:
-        pass
 
 
 def transcript_records(transcript_path):
@@ -173,6 +175,23 @@ def tracked_files():
     for path in paths:
         by_basename.setdefault(Path(path).name, []).append(path)
     return paths, by_basename
+
+
+def outside_backticks(reply):
+    """The reply with every backtick-quoted run removed.
+
+    A path inside backticks is being QUOTED, not claimed: "`sed -i '' …
+    scripts/workbench.sh`" in a table of test fixtures says nothing about that
+    file's contents, while "workbench.sh pins the provider" does. Arm 2 asks
+    only about the second kind. Found 2026-08-29, when this guard blocked a
+    report whose only mention of two source files was inside a table of shell
+    commands used as hook payloads.
+
+    Splitting on the backtick is the parse — odd-indexed pieces are inside a
+    quote — the same technique quotes_around uses. No pattern involved.
+    """
+    pieces = reply.split("`")
+    return " ".join(piece for index, piece in enumerate(pieces) if index % 2 == 0)
 
 
 def tokens_of(reply):
@@ -311,6 +330,7 @@ def main():
     problems = []
     verified = 0
     named_product_code = set()
+    claimed_text = outside_backticks(reply)
 
     for token in tokens_of(reply):
         cited, line = split_citation(token)
@@ -349,7 +369,11 @@ def main():
                 continue
             verified += 1
         elif any(path.startswith(root) for root in PRODUCT_ROOTS):
-            named_product_code.add(path)
+            # Only a path named OUTSIDE backticks is a claim about the code; one
+            # that appears solely inside a quoted command is being shown, not
+            # asserted.
+            if cited in claimed_text or Path(path).name in claimed_text:
+                named_product_code.add(path)
 
     # ---- ARM 2: product code named, nothing cited anywhere ------------------
     if not problems and verified == 0 and named_product_code:
