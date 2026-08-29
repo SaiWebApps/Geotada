@@ -84,9 +84,33 @@ def _pathspec(command: str) -> list[str]:
     return tokens[tokens.index("--") + 1 :] if "--" in tokens else []
 
 
+def _is_pathspec_commit(command: str) -> bool:
+    """Is this a `git commit -- <paths>` — the ONLY form that resets the index?
+
+    `git commit -m ...` and `git commit -F file` commit whatever is staged and
+    cannot unstage anything, so they are outside this class entirely. Without
+    this distinction the guard fired on every no-pathspec commit — twice on
+    2026-08-29 — and the only way past was the acknowledgement token, which
+    trains the habit of waving guards through and costs them the cases they were
+    built for.
+
+    Token inspection over the operator-separated segments, not a pattern: `cd
+    /repo && git commit ...` is two segments and the second one is the commit.
+    """
+    for argv in _segments(command):
+        if len(argv) < 2:
+            continue
+        if Path(argv[0]).name != "git":
+            continue
+        verbs = [a for a in argv[1:] if not a.startswith("-")]
+        if verbs and verbs[0] == "commit":
+            return "--" in argv
+    return False
+
+
 def _foreign_staged(command: str, repo_root: str) -> list[str]:
     """Staged paths this command does not name — another session's index entries."""
-    if not re.search(r"\bgit\s+commit\b", command):
+    if not _is_pathspec_commit(command):
         return []
     try:
         out = subprocess.run(
@@ -107,6 +131,115 @@ def _foreign_staged(command: str, repo_root: str) -> list[str]:
         if not any(path == n or path.startswith(n.rstrip("/") + "/") for n in named):
             foreign.append(path)
     return foreign
+
+
+# ── kind: inplace_source_edit ────────────────────────────────────────────────
+#
+# Editing a TRACKED source file with sed/awk/perl in place. Measured 2026-08-29:
+# `sed -i '' 's/pipeline\.get_provider\b/.../g' tests/test_audio_stop_trip_api.py`
+# reported success and changed nothing, because macOS sed has no `\b`. Eleven
+# tests stayed broken, the failure surfaced only on the next full run, and the
+# whole suite had to be repeated. A stream editor reports success for a pattern
+# that matched nothing; the Edit tool fails loudly when its target text is absent.
+#
+# Structural, not a pattern (owner ruling 2026-08-29): the command is lexed into
+# segments, each segment's program is looked at by name, its flags are examined
+# for an in-place spelling, and its file arguments are checked against
+# `git ls-files`. A scratchpad or /tmp target passes; only tracked files are
+# guarded. Reading with sed/awk/perl is untouched — the no-grep guard owns that.
+
+_INPLACE_TOOLS = {"sed", "awk", "gawk", "perl"}
+_OPERATORS = {"&&", "||", ";", "|", "&", "(", ")"}
+
+
+def _segments(command: str) -> list[list[str]]:
+    """The command split into its operator-separated parts, each as argv."""
+    try:
+        lexer = shlex.shlex(command, posix=True, punctuation_chars=True)
+        lexer.whitespace_split = True
+        tokens = list(lexer)
+    except ValueError:
+        tokens = command.split()
+    segments: list[list[str]] = []
+    current: list[str] = []
+    for token in tokens:
+        if token in _OPERATORS:
+            if current:
+                segments.append(current)
+                current = []
+        else:
+            current.append(token)
+    if current:
+        segments.append(current)
+    return segments
+
+
+def _is_inplace_flag(tool: str, arg: str) -> bool:
+    """Does this argument put the tool into in-place mode?
+
+    Spellings observed in the wild and covered: `-i`, `-i.bak`, `--in-place`,
+    `--in-place=.bak`, gawk's `-i inplace`, and perl's single-dash clusters
+    (`-pi`, `-pie`, `-0pi`) where the letter i rides along with other switches.
+    """
+    if not arg.startswith("-") or arg == "-":
+        return False
+    if arg in ("-i", "--in-place"):
+        return True
+    if arg.startswith("--in-place="):
+        return True
+    if arg.startswith("--"):
+        return False
+    if arg.startswith("-i"):
+        return True  # -i.bak
+    if tool == "perl":
+        return "i" in arg[1:]  # cluster membership, not a pattern
+    return False
+
+
+def _tracked_files(repo_root: str) -> set[str]:
+    try:
+        out = subprocess.run(
+            ["git", "ls-files"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        ).stdout
+    except Exception:
+        return set()
+    return {line for line in out.splitlines() if line}
+
+
+def _inplace_targets(command: str, repo_root: str) -> list[str]:
+    """Tracked files this command would rewrite in place."""
+    if not repo_root:
+        return []
+    tracked = None
+    hits: list[str] = []
+    for argv in _segments(command):
+        if not argv:
+            continue
+        tool = Path(argv[0]).name
+        if tool not in _INPLACE_TOOLS:
+            continue
+        if not any(_is_inplace_flag(tool, a) for a in argv[1:]):
+            continue
+        if tracked is None:
+            tracked = _tracked_files(repo_root)
+        for arg in argv[1:]:
+            if arg.startswith("-"):
+                continue
+            candidate = arg.lstrip("./")
+            if candidate in tracked:
+                hits.append(candidate)
+            else:
+                try:
+                    resolved = str(Path(arg).resolve().relative_to(Path(repo_root)))
+                except (ValueError, OSError):
+                    continue
+                if resolved in tracked:
+                    hits.append(resolved)
+    return hits
 
 
 # ── evaluation ───────────────────────────────────────────────────────────────
@@ -136,6 +269,12 @@ def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
             if hit:
                 shown = ", ".join(foreign[:6]) + ("…" if len(foreign) > 6 else "")
                 detail = f" Staged but unnamed: {shown}"
+
+        elif kind == "inplace_source_edit":
+            targets = _inplace_targets(command, repo_root)
+            hit = bool(targets)
+            if hit:
+                detail = f" Would rewrite in place: {', '.join(sorted(set(targets))[:6])}"
 
         if hit:
             return rule.get("class", 0), rule.get("name", "?"), rule.get("message", "") + detail
