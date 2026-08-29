@@ -763,12 +763,13 @@ def _class_refuses_to_speak_with_nothing_configured(name: str) -> bool:
     no endpoint, no model, and it still returns bytes.
 
     "Names a routable upstream" was a faithful proxy for that while every real
-    provider was a vendor. It stopped being one when ``kokoro`` arrived —
-    genuinely synthesized speech from a model on this machine, which by design
-    names no host at all. So the guard now asks the question it always meant:
-    strip the environment bare and see whether the provider still speaks. The
-    local model raises (it has no weights to read); ``MockTTSProvider`` hands
-    back its silent WAV regardless and is still caught.
+    provider was a vendor. It stopped being one on 2026-08-29, when a local
+    model was briefly registered here — genuinely synthesized speech that by
+    design named no host at all. That model has since been removed (tier 3
+    moved to the surfaces' own OS voice), but the guard keeps the question it
+    always meant: strip the environment bare and see whether the provider still
+    speaks. ``MockTTSProvider`` hands back its silent WAV regardless and is
+    caught; anything that DEPENDS on real configuration refuses and passes.
 
     DELIBERATELY SHALLOW, exactly like its sibling above: this asks whether the
     provider DEPENDS on something real, not whether its output came from one.
@@ -2376,10 +2377,11 @@ class TestDetailViewAndEditing:
 
         The second half of (3) is not a loophole, it is the rule stated properly.
         Until 2026-08-28 this asked only for a routable upstream, which was a
-        faithful proxy while every real provider was a vendor. ``kokoro`` — a
-        Kokoro-82M model synthesizing on this machine — is real narration that
-        names no host, so the proxy would have banned a genuine voice while still
-        being satisfiable by any fake that hardcoded a URL it never called.
+        faithful proxy while every real provider was a vendor — and stopped being
+        one the day a local model was registered: real narration that names no
+        host, which the proxy would have banned while still being satisfiable by
+        any fake that hardcoded a URL it never called. The local model is gone
+        again, but the correctly-stated rule stays.
 
         It also pins the SELECTED value to what render.yaml pins for production,
         derived from the manifest rather than typed in here, so a workbench that
@@ -2387,8 +2389,8 @@ class TestDetailViewAndEditing:
 
         UNDO TEST: add ``"mock": MockTTSProvider`` back to ``_PROVIDERS`` -> RED
         on (3): it names no upstream AND it answers with a silent WAV on a bare
-        environment. Make ``KokoroTTSProvider.generate`` return bytes instead of
-        raising when its weights are absent -> RED on (3) as well. Call
+        environment. Register any provider that answers from nothing -> RED on
+        (3) the same way. Call
         ``register_provider("mock", MockTTSProvider)`` at import in any module the
         API loads -> RED on (2).
         """

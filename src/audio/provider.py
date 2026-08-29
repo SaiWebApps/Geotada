@@ -12,8 +12,7 @@ OWNER RULING, 2026-07-31 — NO FAKE PROVIDER IS EVER SERVED
 ``MockTTSProvider`` returns a silent WAV. It exists so the test suite can drive
 the whole audio pipeline for $0. It is therefore DEFINED here but deliberately
 NOT REGISTERED: ``_PROVIDERS`` holds only implementations that GENUINELY
-SYNTHESIZE SPEECH — the two vendors, and the local Kokoro model, which never
-leaves the machine and is real narration all the same.
+SYNTHESIZE SPEECH.
 
 That single fact is what makes the workbench honest. The editorial workbench
 builds its provider dropdown from ``GET /audio/providers`` -> ``list_providers()``
@@ -37,7 +36,6 @@ import os
 import re
 import wave
 from io import BytesIO
-from pathlib import Path
 from typing import Protocol, runtime_checkable
 
 import httpx
@@ -306,175 +304,6 @@ class ElevenLabsTTSProvider:
         return bytes(audio)
 
 
-# ── Kokoro, on our own machine ──
-
-
-class KokoroTTSProvider:
-    """Kokoro-82M speech, synthesized locally — the tier that needs no vendor.
-
-    THE LAST RESORT, and the only one that survives "every cloud is
-    unreachable". OpenAI and ElevenLabs are different companies but the same
-    bet: that we can reach someone else's machine. This one is our machine.
-
-    Runtime is ``sherpa-onnx``, not the ``kokoro-onnx`` package, and that choice
-    is load-bearing. ``kokoro-onnx`` phonemizes through ``espeakng-loader``,
-    whose bundled library is BROKEN on macOS arm64: proved by calling
-    ``espeak_Initialize`` directly with an explicit, existing data directory —
-    it ignores the argument, reports the build machine's path, and hard-exits
-    the process. Rescuing it needs a system-wide espeak-ng. ``sherpa-onnx``
-    compiles espeak into its own core and ships the data INSIDE the model
-    bundle, so there is no system package to install here or in the image.
-
-    Weights are never downloaded at generate time. A tier that exists for "the
-    internet is failing" cannot begin by reaching the internet, so the bundle
-    directory is named by ``KOKORO_MODEL_DIR`` and must already be on disk;
-    ``scripts/check_audio_setup.py`` says so plainly when it is not.
-
-    Measured on the owner's laptop (Apple silicon, 2 CPU threads): 9.4s of
-    narration in 3.6s — 2.6x faster than real time — 53 voices, 24 kHz.
-
-    Output is MP3 because every other provider returns MP3 and the whole
-    pipeline assumes it (``_build_stop_storage_key`` names ``.mp3``,
-    ``serve_audio_file`` types by suffix). Kokoro emits float32 PCM, so the
-    samples are concatenated FIRST and encoded ONCE — one clean stream, not
-    glued-together MP3s.
-    """
-
-    #: Directory holding model.onnx, voices.bin, tokens.txt and espeak-ng-data.
-    MODEL_DIR_ENV = "KOKORO_MODEL_DIR"
-    #: Which of the 53 built-in voices narrates. An integer, unlike the other
-    #: providers' names — sherpa-onnx selects a Kokoro voice by speaker id.
-    SPEAKER_ENV = "KOKORO_SPEAKER"
-    DEFAULT_SPEAKER = 0
-    #: Files the bundle must contain for the provider to be usable at all.
-    REQUIRED_FILES = ("model.onnx", "voices.bin", "tokens.txt", "espeak-ng-data")
-
-    MP3_BITRATE_KBPS = 64  # mono narration; ample for speech at 24 kHz
-
-    @property
-    def name(self) -> str:
-        return "kokoro"
-
-    @classmethod
-    def model_dir(cls) -> str:
-        """The configured bundle directory, or '' when unset."""
-        return os.getenv(cls.MODEL_DIR_ENV, "").strip()
-
-    @classmethod
-    def missing_pieces(cls) -> list[str]:
-        """What stops this provider speaking right now — empty when it can.
-
-        Used by ``/audio/providers`` so the workbench reports a REAL probe
-        rather than the presence of an env var: a directory that exists but
-        lacks the weights cannot voice anything, and saying otherwise is the
-        kind of quiet lie the fail-closed rules here exist to prevent.
-        """
-        directory = cls.model_dir()
-        if not directory:
-            return [f"{cls.MODEL_DIR_ENV} is not set"]
-        base = Path(directory)
-        if not base.is_dir():
-            return [f"{cls.MODEL_DIR_ENV}={directory} is not a directory"]
-        return [f"{directory}/{piece} is missing" for piece in cls.REQUIRED_FILES
-                if not (base / piece).exists()]
-
-    def _synthesize(self, text: str, speaker: int):
-        """Build the offline engine and return sherpa-onnx's generated audio."""
-        try:
-            import sherpa_onnx
-        except ImportError as exc:  # pragma: no cover - exercised by the doctor
-            # "Not installed" and "installed but its native library will not
-            # load" are different faults with different remedies, and saying
-            # `make sync-local-tts` to someone who just ran it sends them in a
-            # circle. A missing libonnxruntime means sherpa-onnx-core is absent
-            # — which happened here, because sherpa-onnx declares that
-            # dependency only in its wheel metadata and the lock dropped it.
-            detail = str(exc)
-            if "onnxruntime" in detail or "Library not loaded" in detail:
-                raise TTSError(
-                    "kokoro is installed but its native library is missing "
-                    f"(sherpa-onnx-core): {detail[:160]}"
-                ) from exc
-            raise TTSError(
-                "kokoro needs the local-tts extra: run `make sync-local-tts`"
-            ) from exc
-
-        directory = self.model_dir()
-        config = sherpa_onnx.OfflineTtsConfig(
-            model=sherpa_onnx.OfflineTtsModelConfig(
-                kokoro=sherpa_onnx.OfflineTtsKokoroModelConfig(
-                    model=f"{directory}/model.onnx",
-                    voices=f"{directory}/voices.bin",
-                    tokens=f"{directory}/tokens.txt",
-                    data_dir=f"{directory}/espeak-ng-data",
-                    dict_dir=f"{directory}/dict",
-                    lexicon=f"{directory}/lexicon-us-en.txt,{directory}/lexicon-zh.txt",
-                ),
-                provider="cpu",
-                num_threads=2,
-            ),
-            max_num_sentences=1,
-        )
-        return sherpa_onnx.OfflineTts(config).generate(text, sid=speaker, speed=1.0)
-
-    def generate(self, text: str, *, voice_id: str | None = None) -> bytes:
-        missing = self.missing_pieces()
-        if missing:
-            raise TTSError(
-                "Kokoro cannot speak — " + "; ".join(missing) + ". "
-                f"Point {self.MODEL_DIR_ENV} at an extracted sherpa-onnx Kokoro "
-                "bundle (`make fetch-kokoro`)."
-            )
-
-        raw_speaker = voice_id or os.getenv(self.SPEAKER_ENV) or self.DEFAULT_SPEAKER
-        try:
-            speaker = int(raw_speaker)
-        except (TypeError, ValueError) as exc:
-            raise TTSError(
-                f"Kokoro voices are speaker NUMBERS, not names; got {raw_speaker!r}. "
-                f"Set {self.SPEAKER_ENV} to an integer."
-            ) from exc
-
-        import numpy as np
-
-        sample_rate = 0
-        pieces: list[object] = []
-        for chunk in _split_for_tts(normalize_for_tts(text)):
-            out = self._synthesize(chunk, speaker)
-            sample_rate = int(out.sample_rate)
-            pieces.append(np.asarray(out.samples, dtype=np.float32))
-        if not pieces:
-            raise TTSError("Kokoro was handed no speakable text")
-
-        samples = np.concatenate(pieces) if len(pieces) > 1 else pieces[0]
-        return _pcm_to_mp3(samples, sample_rate, self.MP3_BITRATE_KBPS)
-
-
-def _pcm_to_mp3(samples, sample_rate: int, bitrate_kbps: int) -> bytes:
-    """Encode mono float32 samples in [-1, 1] to MP3 bytes.
-
-    LAME through ``lameenc`` rather than ffmpeg or libsndfile: it is a wheel, so
-    there is no system binary to install and no libsndfile version to depend on,
-    and the bitrate is set explicitly instead of inherited from a default.
-    """
-    import numpy as np
-
-    try:
-        import lameenc
-    except ImportError as exc:  # pragma: no cover - exercised by the doctor
-        raise TTSError(
-            "local TTS needs an MP3 encoder: run `make sync-local-tts`"
-        ) from exc
-
-    pcm16 = np.clip(np.asarray(samples, dtype=np.float32) * 32767.0, -32768, 32767)
-    encoder = lameenc.Encoder()
-    encoder.set_bit_rate(bitrate_kbps)
-    encoder.set_in_sample_rate(sample_rate)
-    encoder.set_channels(1)
-    encoder.set_quality(2)
-    return bytes(encoder.encode(pcm16.astype(np.int16).tobytes())) + bytes(encoder.flush())
-
-
 # ── Failover across speech services ──
 
 
@@ -536,15 +365,15 @@ class FailoverTTSProvider:
 # /audio/preview will honour, so a fake in here is a fake in front of a human.
 # MockTTSProvider is deliberately absent.
 #
-# "kokoro" belongs here even though it never leaves the machine — the rule being
-# protected is that nothing silently serves a human a non-voice, and a local
-# model produces real narration. The wording used to say "sends the text to a
-# real speech service", which was the same rule stated in terms of the two
-# vendors that happened to exist at the time.
+# There is deliberately NO local model here. A server-side local voice was built
+# and removed on 2026-08-29: the third tier belongs on the SURFACES, not on this
+# server. The failure it must survive is a phone with no signal, and no amount of
+# server-side capacity helps there — the phone and the workbench each speak the
+# stop's text through the OS voice they already have, driven by one shared rule
+# (a stop with narration but no audio file). See render.yaml's TTS_FALLBACK note.
 _PROVIDERS: dict[str, type] = {
     "openai": OpenAITTSProvider,
     "elevenlabs": ElevenLabsTTSProvider,
-    "kokoro": KokoroTTSProvider,
 }
 
 

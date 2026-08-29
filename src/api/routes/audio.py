@@ -34,7 +34,7 @@ from src.api.models.audio import (
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
 from src.audio.pipeline import PipelineError, generate_stop_audio
-from src.audio.provider import KokoroTTSProvider, TTSError, get_provider, list_providers
+from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
 
 router = APIRouter(tags=["audio"])
@@ -263,11 +263,9 @@ def _provider_available(name: str) -> bool:
     usable provider from one that will 502 on first generate. Unknown providers
     fall back to instantiation success.
 
-    The two vendors need credentials; ``kokoro`` needs its weights on disk, and
-    that is asked of the provider itself rather than guessed from an env var —
-    a bundle directory that exists but is missing ``model.onnx`` cannot voice
-    anything, and reporting it as available would be a quiet lie in the
-    workbench's dropdown.
+    Both registered providers are vendors and need credentials. The chain's
+    third tier is not a provider here — it is each surface's own OS voice, so
+    it has nothing for this probe to report.
     """
     try:
         get_provider(name)
@@ -277,8 +275,6 @@ def _provider_available(name: str) -> bool:
         return bool(os.getenv("OPENAI_API_KEY"))
     if name == "elevenlabs":
         return bool(os.getenv("ELEVENLABS_API_KEY")) and bool(os.getenv("ELEVENLABS_VOICE_ID"))
-    if name == "kokoro":
-        return not KokoroTTSProvider.missing_pieces()
     return True
 
 

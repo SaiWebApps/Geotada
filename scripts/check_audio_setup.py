@@ -21,40 +21,6 @@ def _check(label: str, passed: bool, fix: str) -> bool:
     return passed
 
 
-def _check_local_voice() -> bool:
-    """The local Kokoro tier needs BOTH its packages and its weights on disk.
-
-    Checked separately from the credential loop above because it has no
-    credential: what it needs is an install and a download, and the remedy is a
-    different sentence. Asks the provider itself what is missing so this and
-    GET /audio/providers can never disagree about whether it can speak.
-    """
-    ok = True
-    try:
-        import lameenc  # noqa: F401
-        import sherpa_onnx  # noqa: F401
-
-        ok &= _check("local voice packages installed (sherpa-onnx, lameenc)", True, "")
-    except ImportError as exc:
-        ok &= _check(
-            "local voice packages installed (sherpa-onnx, lameenc)",
-            False,
-            f"Run `make sync-local-tts` ({exc.name} is not installed).",
-        )
-
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from src.audio.provider import KokoroTTSProvider
-
-    missing = KokoroTTSProvider.missing_pieces()
-    return ok & _check(
-        "local voice weights present",
-        not missing,
-        "; ".join(missing) + ". Run `make fetch-kokoro`, then set KOKORO_MODEL_DIR."
-        if missing
-        else "",
-    )
-
-
 def main() -> int:
     print("Audio Pipeline Prerequisites")
     print("=" * 40)
@@ -86,8 +52,6 @@ def main() -> int:
                     f"Configure {var} on Render, or drop {name} from TTS_FALLBACK. "
                     "Without it the fallback fails the moment the primary voice does.",
                 )
-            if name == "kokoro":
-                all_ok &= _check_local_voice()
     else:
         print("  - TTS_FALLBACK not set (no understudy: a provider outage means no audio)")
         el_key = os.getenv("ELEVENLABS_API_KEY", "")

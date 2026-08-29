@@ -18,7 +18,6 @@ from src.audio.provider import (
     MAX_TTS_CHARS,
     ElevenLabsTTSProvider,
     FailoverTTSProvider,
-    KokoroTTSProvider,
     MockTTSProvider,
     OpenAITTSProvider,
     TTSError,
@@ -305,66 +304,6 @@ class TestOpenAIModelChoice:
         assert MAX_TTS_CHARS <= 4000
 
 
-class TestKokoroProvider:
-    """The local voice: real synthesis, no vendor, no network.
-
-    Its real generation is proved by running it (2.6x faster than real time on
-    the owner's laptop, 53 voices, 24 kHz) rather than in this hermetic file —
-    the model bundle is a 400MB optional extra. What IS pinned here is every way
-    it can REFUSE, because a last-resort tier that fails silently or confusingly
-    is worse than one that is absent.
-    """
-
-    def test_it_is_registered_as_a_real_voice(self):
-        assert "kokoro" in list_providers()
-        assert isinstance(get_provider("kokoro"), KokoroTTSProvider)
-        assert isinstance(get_provider("kokoro"), TTSProvider)
-
-    def test_name(self):
-        assert KokoroTTSProvider().name == "kokoro"
-
-    def test_an_unset_model_dir_is_named_as_the_missing_piece(self, monkeypatch):
-        monkeypatch.delenv("KOKORO_MODEL_DIR", raising=False)
-        assert KokoroTTSProvider.missing_pieces() == ["KOKORO_MODEL_DIR is not set"]
-        with pytest.raises(TTSError, match="KOKORO_MODEL_DIR is not set"):
-            KokoroTTSProvider().generate("Hello Paris.")
-
-    def test_a_directory_without_weights_is_not_available(self, monkeypatch, tmp_path):
-        """"Has a directory" is not "has the weights".
-
-        The same class of mistake as "has a url is not has audio" in the trip
-        voicing pass: a bundle dir that exists but is empty cannot speak, and
-        reporting it as ready would be a quiet lie in the workbench dropdown.
-        """
-        monkeypatch.setenv("KOKORO_MODEL_DIR", str(tmp_path))
-        missing = KokoroTTSProvider.missing_pieces()
-        assert len(missing) == len(KokoroTTSProvider.REQUIRED_FILES)
-        assert any("model.onnx" in m for m in missing)
-        with pytest.raises(TTSError, match=r"model\.onnx is missing"):
-            KokoroTTSProvider().generate("Hello Paris.")
-
-    def test_a_complete_bundle_reports_nothing_missing(self, monkeypatch, tmp_path):
-        for piece in KokoroTTSProvider.REQUIRED_FILES:
-            (tmp_path / piece).touch()
-        monkeypatch.setenv("KOKORO_MODEL_DIR", str(tmp_path))
-        assert KokoroTTSProvider.missing_pieces() == []
-
-    def test_a_voice_name_not_a_number_is_refused_with_the_reason(
-        self, monkeypatch, tmp_path
-    ):
-        """Kokoro voices are speaker NUMBERS; "nova" is OpenAI's word.
-
-        The failover chain never forwards a voice_id to an understudy for
-        exactly this reason, but a caller naming kokoro directly can still pass
-        one, and the error must say what to do instead of dying inside sherpa.
-        """
-        for piece in KokoroTTSProvider.REQUIRED_FILES:
-            (tmp_path / piece).touch()
-        monkeypatch.setenv("KOKORO_MODEL_DIR", str(tmp_path))
-        with pytest.raises(TTSError, match="speaker NUMBERS, not names"):
-            KokoroTTSProvider().generate("Hello Paris.", voice_id="nova")
-
-
 class TestFailoverChain:
     """A vendor's outage must cost a DIFFERENT VOICE, never silence.
 
@@ -493,26 +432,28 @@ class TestFailoverChain:
             get_provider_with_fallback().generate("Hello Paris.")
         assert len(primary_calls) == 1, "the primary is tried once, not once per mention"
 
-    def test_three_tiers_fall_through_in_order_to_the_local_voice(self, monkeypatch):
-        """The shipped shape: openai -> elevenlabs -> kokoro.
+    def test_a_chain_of_three_falls_through_in_order(self, monkeypatch):
+        """The chain is N-deep, not two-deep — proven with three.
 
-        Each tier covers a failure the one before it cannot. Slot 2 is a
-        different COMPANY (a different outage, and a different opinion about
-        what it will read). Slot 3 is our own MACHINE, so it survives every
-        cloud being unreachable at once.
+        Production ships two SERVER tiers (openai -> elevenlabs); the third tier
+        is each surface's own OS voice and never resolves through this registry
+        (a server-side local model was built and removed on 2026-08-29 — it
+        cannot help a phone with no signal, which is the failure tier 3 exists
+        for). The ordering logic still has to hold for any depth, so it is
+        exercised here at three with a generic last resort.
         """
         primary, primary_calls = self._fails("openai", "500 server had an error")
         second, second_calls = self._fails("elevenlabs", "503 unavailable")
-        third, third_calls = self._speaks("kokoro", b"local-audio")
+        third, third_calls = self._speaks("last-resort", b"local-audio")
         monkeypatch.setitem(_PROVIDERS, "openai", primary)
         monkeypatch.setitem(_PROVIDERS, "elevenlabs", second)
-        monkeypatch.setitem(_PROVIDERS, "kokoro", third)
+        monkeypatch.setitem(_PROVIDERS, "last-resort", third)
         monkeypatch.setenv("TTS_PROVIDER", "openai")
-        monkeypatch.setenv("TTS_FALLBACK", "elevenlabs,kokoro")
+        monkeypatch.setenv("TTS_FALLBACK", "elevenlabs,last-resort")
 
         provider = get_provider_with_fallback()
         assert provider.generate("Hello Paris.") == b"local-audio"
-        assert provider.name == "kokoro"
+        assert provider.name == "last-resort"
         assert len(primary_calls) == 1 and len(second_calls) == 1 and len(third_calls) == 1
 
     def test_the_voice_id_reaches_the_primary_only(self, monkeypatch):

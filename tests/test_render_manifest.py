@@ -96,12 +96,6 @@ def test_public_render_deploy_gates_workbench_crud_off():
 _TTS_PROVIDER_CREDENTIALS = {
     "openai": ["OPENAI_API_KEY"],
     "elevenlabs": ["ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID"],
-    # kokoro runs on our own machine, so it has no credential to declare. What
-    # it needs instead is ~400MB of weights in the image and the memory to load
-    # them, which is why it is NOT in this manifest's chain while the service is
-    # `plan: free` — see test_the_local_voice_is_not_promised_on_a_plan_that_
-    # cannot_hold_it below.
-    "kokoro": [],
     "mock": [],
 }
 
@@ -154,37 +148,6 @@ def test_every_tts_fallback_provider_credential_is_declared():
                 f"render.yaml falls back to {name!r} but never declares {key} (not even as "
                 "`sync: false`), so the understudy fails the moment the primary does"
             )
-
-
-def test_the_local_voice_is_not_promised_on_a_plan_that_cannot_hold_it():
-    """A fallback that OOMs when finally needed is worse than no fallback.
-
-    The local Kokoro voice is ~400MB of weights plus an ONNX runtime. The
-    ondoway-api service runs `plan: free` (512MB), which cannot hold it, and a
-    tier pinned in the manifest but unable to start would burn the outage it
-    exists to survive — discovering, mid-incident, that it cannot run. Same
-    philosophy as the credential guard above: the manifest may only promise what
-    the service can actually deliver.
-
-    So: naming kokoro in TTS_FALLBACK here requires a plan that is not free AND
-    the weights baked into the image. Lift both together, or neither.
-    """
-    service = _ondoway_api_service()
-    fallback = _ondoway_api_env().get("TTS_FALLBACK") or ""
-    if "kokoro" not in [part.strip() for part in fallback.split(",")]:
-        return  # not promised — nothing to hold to account
-
-    assert service.get("plan") not in (None, "free"), (
-        "render.yaml lists kokoro in TTS_FALLBACK, but ondoway-api is on the free "
-        "plan (512MB): the model cannot load there, so the tier would fail exactly "
-        "when the outage it exists for arrives. Upgrade the plan, or drop kokoro."
-    )
-    dockerfile = (_RENDER_YAML.parent / "Dockerfile").read_text()
-    assert "fetch-kokoro" in dockerfile or "kokoro" in dockerfile, (
-        "render.yaml promises the local voice but the Dockerfile never bakes its "
-        "weights in, so the container would try to reach the internet for them — "
-        "which is the one thing this tier exists to not need"
-    )
 
 
 def test_pinned_compose_provider_credential_is_declared():

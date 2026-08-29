@@ -202,27 +202,6 @@ sync: ## Install Python dependencies from public PyPI.
 	@$(PREFLIGHT) --label sync uv
 	uv sync --extra test --extra dev --extra aws
 
-KOKORO_BUNDLE := kokoro-multi-lang-v1_0
-KOKORO_URL := https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/$(KOKORO_BUNDLE).tar.bz2
-
-sync-local-tts: ## Install the local Kokoro voice (the no-vendor fallback tier).
-	@$(PREFLIGHT) --label sync-local-tts uv
-	uv sync --extra test --extra dev --extra aws --extra local-tts
-
-fetch-kokoro: ## Download the Kokoro model bundle the local voice reads (~400MB, once).
-	@$(PREFLIGHT) --label fetch-kokoro uv
-	@if [ -f "models/$(KOKORO_BUNDLE)/model.onnx" ]; then \
-		echo "Kokoro bundle already present: models/$(KOKORO_BUNDLE)"; \
-	else \
-		mkdir -p models && \
-		echo "Fetching $(KOKORO_BUNDLE) (~333MB)..." && \
-		curl -fL --retry 3 -o models/kokoro.tar.bz2 "$(KOKORO_URL)" && \
-		tar xf models/kokoro.tar.bz2 -C models && \
-		rm -f models/kokoro.tar.bz2 && \
-		echo "Done: models/$(KOKORO_BUNDLE)"; \
-	fi
-	@echo 'Point the provider at it:  export KOKORO_MODEL_DIR=$(PWD)/models/$(KOKORO_BUNDLE)'
-
 sync-apple: ## Install dependencies from Apple's mirror while preserving the public lockfile.
 	@$(PREFLIGHT) --label sync-apple uv
 	@curl -sI --max-time 5 https://pypi.apple.com/simple/ >/dev/null 2>&1 || \
@@ -234,6 +213,10 @@ sync-apple: ## Install dependencies from Apple's mirror while preserving the pub
 
 requirements: ## Regenerate requirements.txt from uv.lock.
 	@$(PREFLIGHT) --label requirements $(PRE_PY)
+	#: requirements.txt IS the deployed image's dependency list
+	# (Dockerfile pip-installs it), and the local voice is a production fallback
+	# tier, not a developer convenience. Omitting it here builds an image whose
+	# TTS_FALLBACK names a provider the container cannot import.
 	uv export --no-dev --no-editable --no-emit-project -o requirements.txt
 	@if grep -q "pypi.apple.com" requirements.txt; then \
 		rm -f requirements.txt; \
