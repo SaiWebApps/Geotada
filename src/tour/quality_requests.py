@@ -34,6 +34,18 @@ from .quality_certification import (
 FACT_MAX_OUTPUT_TOKENS = 64_000
 ENJOY_MAX_OUTPUT_TOKENS = 16_000
 MAX_REVIEW_INPUT_BYTES = 750_000
+
+#: Sonnet 5 tokenizes ~30% denser than Opus and its adaptive thinking spends more
+#: against the same ceiling: the first live Sonnet calibration burned the full 16K
+#: and truncated mid-JSON (stop_reason max_tokens, 2026-08-28) on the exact request
+#: Opus finished in 6,363 output tokens. Under zero retries a max_tokens stop is
+#: paid-and-lost, so dense models get double the ceiling — a worst-case bound,
+#: never expected spend (billing is actual tokens).
+_DENSE_OUTPUT_MODELS = ("claude-sonnet-5",)
+
+
+def _output_ceiling(model: str, base: int) -> int:
+    return base * 2 if model in _DENSE_OUTPUT_MODELS else base
 QUALITY_SCHEMA_TRANSFORMER_ID = "anthropic-python-transform-schema-0.97.0"
 _PINNED_ANTHROPIC_SDK_VERSION = "0.97.0"
 
@@ -399,7 +411,7 @@ def calibration_request_envelope(
     )
     return _request_envelope(
         model=model,
-        max_tokens=ENJOY_MAX_OUTPUT_TOKENS,
+        max_tokens=_output_ceiling(model, ENJOY_MAX_OUTPUT_TOKENS),
         system=SHARED_POLICY,
         schema=_provider_schema(ProviderCalibrationPayload),
         user=user,
@@ -424,9 +436,13 @@ def enjoyment_request_envelope(
     user = ENJOY_TASK + "\n\nREVIEW INPUT:\n" + json.dumps(
         payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True
     )
+    # Output scales with the CANDIDATE count: the blind meet-or-beat rides two
+    # opaque days (old + new) through one request, and each assessed item costs
+    # its own five axes of evidence. One candidate keeps the historical 16K
+    # envelope byte-identical.
     return _request_envelope(
         model=model,
-        max_tokens=ENJOY_MAX_OUTPUT_TOKENS,
+        max_tokens=_output_ceiling(model, ENJOY_MAX_OUTPUT_TOKENS * max(1, len(items))),
         system=SHARED_POLICY,
         schema=_provider_schema(ProviderEnjoyPayload),
         user=user,

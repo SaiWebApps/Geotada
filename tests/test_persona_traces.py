@@ -44,6 +44,14 @@ from tests.persona_traces import (
     walk_the_day,
 )
 
+#: The eleven days are built ONCE in a module fixture (~5:20 on an idle machine,
+#: slower when the DB shard's other workers share the CPU and Valhalla), and
+#: pytest-timeout charges that whole setup to the FIRST test of the module. The
+#: shard's 300 s hang-breaker therefore killed exactly this fixture on the first
+#: parallel run. This file carries its own ceiling instead: wide enough for the
+#: measured cost under contention, still finite against a genuine hang.
+pytestmark = pytest.mark.timeout(900)
+
 #: How many of the eleven days the product SERVES at $0 today. MEASURED on this
 #: tree, 2026-08-24 (phase8-ledger.md §S8.5, the before-picture): camille (5
 #: stops), greta (3) and rosemary (1). Seven are refused by S8.3's placement

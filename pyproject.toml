@@ -22,6 +22,8 @@ dependencies = [
 [project.optional-dependencies]
 test = [
     "pytest>=8.0",
+    "pytest-xdist>=3.5",
+    "pytest-timeout>=2.3",
     "playwright>=1.40",
 ]
 aws = [
@@ -84,4 +86,5 @@ markers = [
     "golden: compares live dev-graph tours with the human-curated targets; routed internally by `make test`.",
     "grade: scores live dev-graph golden tours against GRADE_BASELINE; routed internally by `make test`.",
     "invariants: generates live dev-graph tours and checks customer-facing regression invariants; routed internally by `make test`.",
+    "needs_db: auto-applied to tests using a Neo4j fixture; used by the Makefile to split DB and pure shards for parallel execution.",
 ]

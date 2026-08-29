@@ -20,7 +20,9 @@ from src.tour.routing import (
     governor_allowance_seconds,
     haversine_m,
     insertion_cost_seconds,
+    insertion_extra_at_index,
     pace_corrected_walk_seconds,
+    path_walk_seconds,
     planned_audio_seconds,
     planned_total_seconds,
     summarise_route,
@@ -316,6 +318,68 @@ def test_insertion_cost_empty_route_inserts_at_zero():
     )
     assert idx == 0
     assert extra > 0
+
+
+def test_insertion_extra_local_delta_equals_the_whole_path_splice_difference():
+    """The local three-leg delta IS the whole-path difference, leg for leg.
+
+    ``insertion_extra_at_index`` is computed as leg(prev→cand) + leg(cand→next)
+    minus leg(prev→next); every other leg is byte-identical between the base and
+    spliced paths, so the two spellings must agree exactly — including under an
+    ASYMMETRIC leg function (a routed leg is directed: stairs one way). The
+    whole-path spelling this replaced re-summed both paths per candidate index,
+    which the certification repair's candidate enumeration turned into 28.8M
+    haversine calls in 70 s on one 400-minute request (measured 2026-08-28).
+    """
+
+    def asymmetric_fn(lat1, lng1, lat2, lng2):
+        base = round(haversine_m(lat1, lng1, lat2, lng2))
+        return base + (7 if (lat1, lng1) < (lat2, lng2) else 3)
+
+    start = (48.860, 2.350)
+    ordered = [
+        _poi("A", 48.870, 2.350),
+        _poi("B", 48.850, 2.350),
+        _poi("C", 48.851, 2.380),
+    ]
+    cand = _poi("X", 48.858, 2.365)
+    ends = [
+        {"round_trip": False, "fixed_end": None},
+        {"round_trip": True, "fixed_end": None},
+        {"round_trip": False, "fixed_end": (48.853, 2.3499)},
+    ]
+    for fn in (None, asymmetric_fn):
+        for shape in ends:
+            for prefix_len in range(len(ordered) + 1):
+                stops = ordered[:prefix_len]
+                for idx in range(len(stops) + 1):
+                    base_coords = [start, *((p.lat, p.lng) for p in stops)]
+                    new_pois = [*stops[:idx], cand, *stops[idx:]]
+                    new_coords = [start, *((p.lat, p.lng) for p in new_pois)]
+                    if shape["fixed_end"] is not None:
+                        base_coords.append(shape["fixed_end"])
+                        new_coords.append(shape["fixed_end"])
+                    elif shape["round_trip"]:
+                        base_coords.append(start)
+                        new_coords.append(start)
+                    reference = path_walk_seconds(new_coords, fn) - path_walk_seconds(
+                        base_coords, fn
+                    )
+                    got = insertion_extra_at_index(
+                        cand,
+                        stops,
+                        idx,
+                        start_lat=start[0],
+                        start_lng=start[1],
+                        round_trip=shape["round_trip"],
+                        leg_seconds_fn=fn,
+                        fixed_end=shape["fixed_end"],
+                    )
+                    assert got == reference, (
+                        f"local delta {got} != whole-path difference {reference} "
+                        f"(stops={len(stops)}, idx={idx}, shape={shape}, "
+                        f"fn={'asymmetric' if fn else 'default'})"
+                    )
 
 
 # ---------------------------------------------------------------------------

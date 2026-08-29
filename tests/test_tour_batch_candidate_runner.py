@@ -181,6 +181,184 @@ def _receipt(item: dict[str, object], text: str) -> dict[str, object]:
     return {**core, "receipt_sha256": runner._sha256(runner._canonical_bytes(core))}
 
 
+class _StubBatchClient:
+    """A fake Anthropic client for the Batch API arm — real pipeline, $0.
+
+    Drives the REAL ``execute_batch_pipeline`` (submit → persist → poll →
+    collect) so the runner test exercises the actual transport rather than a
+    monkeypatched seam. ``fail_submit=True`` makes ``create`` fail the test —
+    the resume path must never re-submit.
+    """
+
+    def __init__(self, texts_by_custom_id: dict[str, str], *, fail_submit: bool = False,
+                 errored: frozenset[str] = frozenset()) -> None:
+        self._texts = texts_by_custom_id
+        self._errored = errored
+        self._fail_submit = fail_submit
+        outer = self
+
+        class _Batches:
+            def create(self, *, requests):
+                if outer._fail_submit:
+                    pytest.fail("resume re-submitted an already-submitted batch")
+                outer.submitted = [request["custom_id"] for request in requests]
+                return SimpleNamespace(id="msgbatch_stub_01")
+
+            def retrieve(self, batch_id):
+                assert batch_id == "msgbatch_stub_01"
+                return SimpleNamespace(processing_status="ended")
+
+            def results(self, batch_id):
+                assert batch_id == "msgbatch_stub_01"
+                for custom_id, text in outer._texts.items():
+                    if custom_id in outer._errored:
+                        yield SimpleNamespace(
+                            custom_id=custom_id,
+                            result=SimpleNamespace(
+                                type="errored",
+                                error=SimpleNamespace(
+                                    error=SimpleNamespace(
+                                        type="invalid_request_error", message="stub refusal"
+                                    )
+                                ),
+                            ),
+                        )
+                        continue
+                    payload = {
+                        "sentences": [
+                            {
+                                "text": text,
+                                "source_id": "GLUE_NAV",
+                                "source_type": "glue",
+                                "stop_idx": 0,
+                            }
+                        ]
+                    }
+                    raw = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+                    yield SimpleNamespace(
+                        custom_id=custom_id,
+                        result=SimpleNamespace(
+                            type="succeeded",
+                            message=SimpleNamespace(
+                                content=[SimpleNamespace(type="text", text=raw)],
+                                usage=SimpleNamespace(
+                                    input_tokens=10,
+                                    output_tokens=20,
+                                    cache_creation_input_tokens=0,
+                                    cache_read_input_tokens=0,
+                                ),
+                                model=COMPOSE_MODEL,
+                                id="msg-batch-one",
+                                stop_reason="end_turn",
+                            ),
+                        ),
+                    )
+
+        self.messages = SimpleNamespace(batches=_Batches())
+
+
+def test_batch_transport_arm_writes_v2_receipts_and_renders_exact_text(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Batch API arm runs the REAL pipeline end to end at $0: submission is
+    persisted before polling, the stop receipt is schema v2 (batch_id, no
+    latency_ms), and the rendered tour carries the provider's exact text."""
+    plan, runtime = _fixture_plan()
+    provider_text = "Batch provider text — exact."
+    client = _StubBatchClient({"paris-test-stop-0": provider_text})
+    monkeypatch.setattr(runner, "finalize_premium_composition", lambda *_args: None)
+
+    result = runner._execute_batch(
+        plan,
+        runtime,
+        output_root=tmp_path,
+        client_factory=lambda: client,
+        max_workers=1,
+        transport="batch",
+    )
+
+    assert result["state"] == "completed"
+    submission = json.loads((tmp_path / "batch-submission.json").read_text())
+    assert submission["batch_id"] == "msgbatch_stub_01"
+    assert submission["custom_ids"] == ["paris-test-stop-0"]
+    receipt = json.loads(
+        (tmp_path / "paris" / "paris-test" / "stop-0.json").read_text()
+    )
+    assert receipt["schema_version"] == "ondoway-text-candidate-stop-v2"
+    assert receipt["batch_id"] == "msgbatch_stub_01"
+    assert receipt["result_type"] == "succeeded"
+    assert "latency_ms" not in receipt
+    tour = json.loads((tmp_path / "paris" / "paris-test" / "tour.json").read_text())
+    assert tour["stops"][0]["sentences"] == [provider_text]
+    assert (tmp_path / "paris" / "paris-test" / "attempt-0.json").is_file()
+
+
+def test_batch_transport_arm_resumes_from_persisted_submission_without_resubmitting(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A crash after submission must resume by batch_id — never a second paid
+    submission, and never an 'indeterminate prior attempt' refusal, because the
+    persisted submission file IS the determinate record."""
+    plan, runtime = _fixture_plan()
+    provider_text = "Collected on resume."
+    monkeypatch.setattr(runner, "finalize_premium_composition", lambda *_args: None)
+    from src.tour.batch_transport import persist_batch_submission
+
+    (tmp_path / "paris" / "paris-test").mkdir(parents=True)
+    persist_batch_submission(
+        tmp_path / "batch-submission.json",
+        batch_id="msgbatch_stub_01",
+        custom_ids=["paris-test-stop-0"],
+        plan_sha256=plan["batch_plan_sha256"],
+    )
+    attempt_core = {"schema_version": "ondoway-tour-batch-attempt-v1"}
+    (tmp_path / "paris" / "paris-test" / "attempt-0.json").write_text(
+        json.dumps(attempt_core), encoding="utf-8"
+    )
+    client = _StubBatchClient({"paris-test-stop-0": provider_text}, fail_submit=True)
+
+    result = runner._execute_batch(
+        plan,
+        runtime,
+        output_root=tmp_path,
+        client_factory=lambda: client,
+        max_workers=1,
+        transport="batch",
+    )
+
+    assert result["state"] == "completed"
+    tour = json.loads((tmp_path / "paris" / "paris-test" / "tour.json").read_text())
+    assert tour["stops"][0]["sentences"] == [provider_text]
+
+
+def test_batch_transport_arm_marks_errored_units_and_substitutes_no_fallback(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    plan, runtime = _fixture_plan()
+    monkeypatch.setattr(runner, "finalize_premium_composition", lambda *_args: None)
+    client = _StubBatchClient(
+        {"paris-test-stop-0": "never used"}, errored=frozenset({"paris-test-stop-0"})
+    )
+
+    with pytest.raises(RuntimeError, match="no fallback"):
+        runner._execute_batch(
+            plan,
+            runtime,
+            output_root=tmp_path,
+            client_factory=lambda: client,
+            max_workers=1,
+            transport="batch",
+        )
+
+    output = tmp_path / "paris" / "paris-test"
+    assert not (output / "tour.json").exists()
+    failure = json.loads((output / "failure-0.json").read_text())
+    assert failure["schema_version"] == "ondoway-tour-batch-failure-v1"
+
+
 def test_batch_requests_preserve_adaptive_thinking_without_deadline() -> None:
     plan, runtime = _fixture_plan()
     sdk_request = runtime["paris-test"]["units"][0]["unit"]["sdk_request"]

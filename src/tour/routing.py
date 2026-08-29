@@ -573,25 +573,34 @@ def insertion_extra_at_index(
     recompute in selection.py (the one-way pull-clamp case, and the pinned
     A→selected→B chain) independently rebuilt this same splice-and-diff before
     this consolidation. This is now the one definition all three call.
-    """
-    base_coords: list[tuple[float, float]] = [
-        (start_lat, start_lng), *((p.lat, p.lng) for p in ordered)
-    ]
-    if fixed_end is not None:
-        base_coords.append(fixed_end)
-    elif round_trip:
-        base_coords.append((start_lat, start_lng))
-    base = path_walk_seconds(base_coords, leg_seconds_fn)
 
-    new_pois = [*ordered[:idx], candidate, *ordered[idx:]]
-    new_coords: list[tuple[float, float]] = [
-        (start_lat, start_lng), *((p.lat, p.lng) for p in new_pois)
-    ]
-    if fixed_end is not None:
-        new_coords.append(fixed_end)
+    Computed as the LOCAL splice delta — leg(prev→candidate) + leg(candidate→next)
+    minus leg(prev→next) — never by re-summing both whole paths. Every unspliced leg
+    is identical between the two paths (same coords, same fn, same per-leg
+    rounding), so the difference algebraically reduces to these three directed
+    legs. The whole-path spelling made the certification repair's candidate
+    enumeration cubic in stops: 28.8M haversine calls in 70 s on one 400-minute
+    request (profiled 2026-08-28), which is what turned two planner tests into
+    five-minute stragglers and, under a worker-killing timeout, into "hangs".
+    """
+    fn = leg_seconds_fn or default_leg_seconds
+    prev: tuple[float, float] = (
+        (start_lat, start_lng) if idx == 0 else (ordered[idx - 1].lat, ordered[idx - 1].lng)
+    )
+    nxt: tuple[float, float] | None
+    if idx < len(ordered):
+        nxt = (ordered[idx].lat, ordered[idx].lng)
+    elif fixed_end is not None:
+        nxt = fixed_end
     elif round_trip:
-        new_coords.append((start_lat, start_lng))
-    return path_walk_seconds(new_coords, leg_seconds_fn) - base
+        nxt = (start_lat, start_lng)
+    else:
+        nxt = None
+    extra = fn(prev[0], prev[1], candidate.lat, candidate.lng)
+    if nxt is not None:
+        extra += fn(candidate.lat, candidate.lng, nxt[0], nxt[1])
+        extra -= fn(prev[0], prev[1], nxt[0], nxt[1])
+    return extra
 
 
 def insertion_cost_seconds(

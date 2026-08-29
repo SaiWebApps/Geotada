@@ -1455,24 +1455,33 @@ _CERTIFIED_BATCH = (
     Path(__file__).resolve().parents[1] / "data" / "certification" / "tour-batch-v1"
 )
 
-#: MEASURED 2026-07-26 off the tracked artifacts at SPOKEN_WPM=150. Pinned as EVIDENCE,
-#: independent of any threshold: if a loader change moves these numbers, every
-#: calibration below is measuring something else and must be re-derived.
+#: MEASURED 2026-08-29 off the tracked artifacts at SPOKEN_WPM=150 — the Phase 8
+#: S8.9 re-seal: the control arm is now the batch authored by the redesigned
+#: engine (honest visit pricing, 180 s per-stop audio cap, the S8.3 placement
+#: floors and NEVER-STRENGTHEN in the writer's policy), so every day is SHORT
+#: against the v1 corpus's 5-31 minutes. Pinned as EVIDENCE, independent of any
+#: threshold: if a loader change moves these numbers, every calibration below is
+#: measuring something else and must be re-derived.
 _EXPECTED_AUDIO_MIN: dict[str, float] = {
-    "nyc-central-park-open-90": 22.4,
-    "nyc-grand-central-times-square-60": 17.2,
-    "nyc-lower-manhattan-90": 20.5,
-    "nyc-village-loop-60": 18.7,
-    "paris-ile-open-90": 30.9,
-    "paris-marais-loop-60": 16.6,
-    "paris-pont-neuf-notre-dame-60": 25.6,
-    "paris-west-axis-90": 5.0,
+    "nyc-central-park-open-90": 5.0,
+    "nyc-grand-central-times-square-60": 2.1,
+    "nyc-lower-manhattan-90": 5.2,
+    "nyc-village-loop-60": 4.8,
+    "paris-ile-open-90": 5.8,
+    "paris-marais-loop-60": 2.2,
+    "paris-pont-neuf-notre-dame-60": 6.5,
+    "paris-west-axis-90": 3.0,
 }
 
-#: The corpus's own negative pole: 2 stops and 5.0 min of speech for a 90-min request
-#: (ratio 0.056), produced by the real engine. A thinness floor that passes this is
-#: broken in the other direction.
-_STARVED_CASE = "paris-west-axis-90"
+#: The corpus's own negative poles, and they are the SAME two days the W8.8 blind
+#: enjoyment judging scored below the old batch (phase8-ledger, both iterations):
+#: west-axis at audio/walking 0.057 and grand-central at 0.081, against C3's 0.12
+#: floor — thin starts whose corpus holds one or two content stops, so most of the
+#: day is silent pavement. The rubric and the blind judge agree about which days
+#: are thin, which is the calibration working. A thinness floor that passes these
+#: is broken in the other direction. (The batch lane never runs score_tour — the
+#: serving gate would refuse these two days live, the Marcus persona-trace class.)
+_STARVED_CASES = frozenset({"paris-west-axis-90", "nyc-grand-central-times-square-60"})
 
 
 def _certified_cases() -> list[tuple[str, Script, Route]]:
@@ -1577,11 +1586,12 @@ def test_certification_corpus_reconstructs_as_scoreable_tours() -> None:
 def test_c8_clears_the_widest_stop_in_the_certification_corpus() -> None:
     """GUARDS: the gorge cap must not brand real accepted anchors as bloated.
 
-    MEASURED widest-stop population across the eight tracked tours:
-    661 / 662 / 664 / 673 / 679 / 757 / 761 / 808. At the old 750 cap, THREE accepted
-    tours were BLOCKED. UNDO: restore ``GORGE_MAX_WORDS_PER_STOP = 750`` and this goes
-    RED on paris-ile-open-90 (808), paris-marais-loop-60 (761) and
-    nyc-lower-manhattan-90 (757).
+    RE-MEASURED 2026-08-29 on the re-sealed (Phase 8) corpus: widest-stop
+    population 297-511 words — every stop sits under the cap with real margin,
+    because the redesigned engine's 180 s per-stop audio ceiling bounds a stop
+    near ~525 words with glue. The corpus therefore no longer discriminates 850
+    from the old 750 (the superseded v1 batch carried 757/761/808 stops and did);
+    the synthetic 1038-word case below is what keeps the cap's bite proven.
     """
     for case_id, script, route in _certified_cases():
         report = score_tour(script, route, {})
@@ -1622,8 +1632,8 @@ def test_c3_clears_the_certification_corpus_and_still_blocks_the_starved_tour() 
     for case_id, script, route in _certified_cases():
         report = score_tour(script, route, {})
         thin = [f for f in report.findings if f.check == "C3-thin"]
-        if case_id == _STARVED_CASE:
-            assert len(thin) == 1, f"{case_id} is starved (0.059) and MUST be blocked"
+        if case_id in _STARVED_CASES:
+            assert len(thin) == 1, f"{case_id} is starved and MUST be blocked"
             assert thin[0].severity is Severity.BLOCKER
         else:
             assert thin == [], f"{case_id}: {[f.message for f in thin]}"

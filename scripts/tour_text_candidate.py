@@ -375,9 +375,23 @@ def _load_completed_receipt(
     receipt = json.loads(path.read_text(encoding="utf-8"))
     core = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
     unit = item["unit"]
+    schema_version = receipt.get("schema_version")
+    if schema_version == "ondoway-text-candidate-stop-v2":
+        # A Batch API receipt: the batch id replaces the per-call latency, and a
+        # COMPLETED receipt may only record a success — every other outcome is a
+        # failure file, never a stop file.
+        batch_id = receipt.get("batch_id")
+        if (
+            not isinstance(batch_id, str)
+            or not batch_id
+            or receipt.get("result_type") != "succeeded"
+            or "latency_ms" in receipt
+        ):
+            raise ValueError("batch stop receipt is not a well-formed success")
+    elif schema_version != "ondoway-text-candidate-stop-v1":
+        raise ValueError("completed stop receipt differs from the frozen plan")
     if (
-        receipt.get("schema_version") != "ondoway-text-candidate-stop-v1"
-        or receipt.get("stop_index") != unit["stop_index"]
+        receipt.get("stop_index") != unit["stop_index"]
         or receipt.get("request_id") != unit["request_id"]
         or receipt.get("request_sha256") != unit["request_sha256"]
         or receipt.get("model") != COMPOSE_MODEL

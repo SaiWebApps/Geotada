@@ -15,6 +15,7 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import secrets
 import time
 from collections.abc import Callable, Mapping
@@ -36,9 +37,26 @@ class BatchUnitResult:
 
 
 def batch_client(*, max_retries: int = 0) -> Any:
-    import anthropic
+    """Every client here comes from the bounded factory, never built bare.
 
-    return anthropic.Anthropic(max_retries=max_retries)
+    max_retries=0 is a SUBMISSION client (a hidden SDK retry could double-submit
+    the batch = double-spend); any other value asks for the READ client, whose
+    idempotent polls keep bounded transient-failure retries.
+    """
+    from .anthropic_client import (
+        certification_batch_compose_client,
+        certification_batch_read_client,
+    )
+
+    if max_retries:
+        return certification_batch_read_client()
+    return certification_batch_compose_client()
+
+
+#: The Batch API's own custom_id contract. Enforced HERE so a bad id is a $0
+#: local ValueError, never a 400 after the requests are built — the first live
+#: submission was refused for a colon a stub client happily accepted.
+_CUSTOM_ID_PATTERN = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
 
 
 def submit_batch(
@@ -49,6 +67,12 @@ def submit_batch(
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
     from anthropic.types.messages.batch_create_params import Request
 
+    for custom_id, _sdk_request in requests:
+        if not _CUSTOM_ID_PATTERN.fullmatch(custom_id):
+            raise ValueError(
+                f"custom_id {custom_id!r} violates the Batch API pattern "
+                "^[a-zA-Z0-9_-]{1,64}$"
+            )
     if client is None:
         client = batch_client()
     batch_requests = [

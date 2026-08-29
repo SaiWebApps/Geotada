@@ -87,6 +87,18 @@ def _envelope(request: ComposeRequest) -> dict:
     return sdk_request
 
 
+def _system_text(envelope: dict) -> str:
+    """Extract the system prompt text from an SDK request's system field.
+
+    Handles both the plain-string form and the block-list form (used when
+    cache_control is present).
+    """
+    system = envelope["system"]
+    if isinstance(system, str):
+        return system
+    return "\n".join(block["text"] for block in system if block.get("type") == "text")
+
+
 # ---------------------------------------------------------------------------
 # S6.3 — POINT FIRST: ONE rule in the locked voice (the floor check is C13, in
 # tests/test_tour_quality_rubric.py).
@@ -107,14 +119,12 @@ def test_the_locked_voice_puts_the_point_first_and_saves_no_twist_for_the_end():
     last minute and 24-44 s of recap before the place was named. This test reads the
     envelope the provider actually receives. UNDO: restore the "comes LATE" rule -> RED.
     """
-    system = _envelope(_one_stop_request())["system"]
+    system = _system_text(_envelope(_one_stop_request()))
     assert "THE POINT FIRST" in system, "the rule must be in the locked voice"
     assert "first hundred words" in system, "the panel's measure (R1) names the window"
     assert "recap" in system.lower(), "the recap of an earlier stop is forbidden by name"
-    # The instruction that put the point last is gone, in every spelling it had.
     for held_back in ("comes LATE", "payoff near the end", "BUILD, DON'T FLATTEN"):
         assert held_back not in system, f"the locked voice still says {held_back!r}"
-    # The rule is the SYSTEM prompt, the one writer's — never a per-request addendum.
     from src.tour.authoring import _COMPOSE_SYSTEM
 
     assert system == _COMPOSE_SYSTEM
@@ -230,7 +240,7 @@ def test_the_locked_voice_has_the_close_rule():
     telling; names the place; a landing, not a summary (S5/P3) or a lesson (S10/P5);
     only facts the stop already voiced; no clock, no direction, never what was skipped,
     no thank-you, no "keep exploring". The rule ships in the one writer's system prompt."""
-    system = _envelope(_one_stop_request())["system"]
+    system = _system_text(_envelope(_one_stop_request()))
     assert "THE CLOSE" in system
     assert "GLUE_CLOSING" in system
     for forbidden in ("keep exploring", "what was left out", "thank"):
@@ -418,7 +428,7 @@ def test_the_locked_voice_forbids_forward_promises_and_recaps_and_asks_for_threa
     and pay it off at the NEXT one", 33 of 43 kept predecessors carried a forward
     reference, and the reflection recap re-told Henri IV's mistresses three times in one
     afternoon. UNDO: restore "pay it off at the NEXT one" -> RED."""
-    system = _envelope(_one_stop_request())["system"]
+    system = _system_text(_envelope(_one_stop_request()))
     assert "pay it off at the NEXT" not in system, "the cross-stop plant rule is gone"
     assert "BUILD MOMENTUM" not in system
     assert "NO FORWARD PROMISES" in system
@@ -879,7 +889,7 @@ def test_paulos_density_rules_bind_every_register_in_the_locked_voice():
     counted PDV-base at 1.3-9 names a sentence and ten idioms in 4.5 minutes. These
     live in the LOCKED VOICE (the system prompt), not in a register delta — the
     sealed policy hash moves and is declared. UNDO: drop the DENSITY rule -> RED."""
-    system = _envelope(_one_stop_request())["system"]
+    system = _system_text(_envelope(_one_stop_request()))
     assert "one proper name" in system.lower() or "one name a sentence" in system.lower()
     assert "Jesuit" in system, "the gloss rule names Paulo's own example"
     assert "idiom" in system.lower()

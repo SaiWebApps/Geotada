@@ -6,17 +6,18 @@ import argparse
 import hashlib
 import json
 import os
+from collections.abc import Callable, Mapping
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Literal, Mapping, TypedDict
+from typing import Literal, TypedDict
 
 from pydantic import BaseModel
 
 from scripts.tour_batch_candidate import DEFAULT_OUTPUT_ROOT, MANIFEST_PATH, _batch_plan
 from scripts.tour_text_candidate import _private_write_new
 from src.connection import create_driver
-from src.tour.authoring import COMPOSE_MODEL
+from src.tour.authoring import COMPOSE_MODEL, FACT_REVIEW_MODEL, _sentences_from_json
 from src.tour.batch_regression_manifest import load_frozen_tour_batch
 from src.tour.certification_provider import (
     AnthropicCertificationProvider,
@@ -327,9 +328,23 @@ def load_batch_review_inputs(
                 key: value for key, value in receipt.items() if key != "receipt_sha256"
             }
             raw_response = receipt.get("raw_response")
+            schema_version = receipt.get("schema_version")
+            if schema_version == "ondoway-text-candidate-stop-v2":
+                # A Batch API receipt (the v2 authoring transport): the batch id
+                # replaces the per-call latency, and only a recorded SUCCESS may
+                # sit in a stop file — every other outcome is a failure file.
+                batch_id = receipt.get("batch_id")
+                if (
+                    not isinstance(batch_id, str)
+                    or not batch_id
+                    or receipt.get("result_type") != "succeeded"
+                    or "latency_ms" in receipt
+                ):
+                    raise ValueError("batch stop receipt is not a well-formed success")
+            elif schema_version != "ondoway-text-candidate-stop-v1":
+                raise ValueError("provider receipt differs from its planned request")
             if (
-                receipt.get("schema_version") != "ondoway-text-candidate-stop-v1"
-                or receipt.get("stop_index") != stop_index
+                receipt.get("stop_index") != stop_index
                 or receipt.get("request_id") != unit.get("request_id")
                 or receipt.get("request_sha256") != unit.get("request_sha256")
                 or receipt.get("model") != tour_plan.get("model")
@@ -365,8 +380,11 @@ def load_batch_review_inputs(
             )
         )
 
-    if len(expected_receipt_keys) != 45 or set(stop_receipts) != expected_receipt_keys:
-        raise ValueError("review batch must contain exactly the 45 planned provider receipts")
+    # The receipt count is the PLAN's own unit count, never a literal: the v1
+    # batch's day shapes carried 45 stops, the redesigned engine's carry ~16,
+    # and the set equality against the plan is the check that cannot go stale.
+    if not expected_receipt_keys or set(stop_receipts) != expected_receipt_keys:
+        raise ValueError("review batch must contain exactly the planned provider receipts")
     return BatchReviewInputs(
         batch_plan_sha256=batch_plan["batch_plan_sha256"],
         tours=tuple(result),
@@ -401,7 +419,14 @@ def build_batch_review_material(
             raw_sentences = payload.get("sentences")
             if not isinstance(raw_sentences, list):
                 raise ValueError("provider receipt has no sentence list")
-            sentences = tuple(Sentence.model_validate(sentence) for sentence in raw_sentences)
+            # THE one parser (never a bare model_validate): the assembly judged
+            # the day through `_sentences_from_json`'s deterministic corrections
+            # (mangled beat ids, a glue line mistyped "beat"), so the review must
+            # read the SAME sentences — a raw re-parse choked on the mistyped
+            # GLUE_REFLECTION the parser had already corrected (v3, 2026-08-29).
+            sentences = _sentences_from_json(
+                raw_sentences, authoring_requests[(tour.case_id, stop_index)]
+            )
             if any(sentence.stop_idx != stop_index for sentence in sentences):
                 raise ValueError("provider sentence is assigned to the wrong stop")
             if tuple(sentence.text for sentence in sentences) != tuple(
@@ -478,12 +503,15 @@ def build_batch_review_runtime(
     *,
     material: BatchReviewMaterial,
     calibration_inputs: QualityCalibrationInputs,
+    archival_enjoyment: dict[str, EnjoymentItem] | None = None,
 ) -> dict[str, ReviewRuntimeUnit]:
-    """Build the exact prepared requests behind the sealed 17-unit plan."""
+    """Build the exact prepared requests behind the sealed 18-unit plan."""
 
     case_ids = sorted(material.fact_inputs)
     if len(case_ids) != 8 or set(material.enjoyment_items) != set(case_ids):
         raise ValueError("review runtime requires exactly eight complete tour inputs")
+    if archival_enjoyment is not None and set(archival_enjoyment) != set(case_ids):
+        raise ValueError("archival enjoyment items do not cover the review batch case ids")
     runtime: dict[str, ReviewRuntimeUnit] = {}
 
     envelope, sdk_request = calibration_request_envelope(
@@ -499,10 +527,23 @@ def build_batch_review_runtime(
         payload_type=ProviderCalibrationPayload,
         substantive_input=calibration_inputs,
     )
+    envelope, sdk_request = calibration_request_envelope(
+        calibration_inputs.fact_cases,
+        calibration_inputs.enjoyment_anchors,
+        model=FACT_REVIEW_MODEL,
+    )
+    runtime["calibration-fact"] = ReviewRuntimeUnit(
+        unit_id="calibration-fact",
+        purpose="calibration",
+        envelope=envelope,
+        sdk_request=sdk_request,
+        payload_type=ProviderCalibrationPayload,
+        substantive_input=calibration_inputs,
+    )
     for case_id in case_ids:
         envelope, sdk_request = batch_fact_request_envelope(
             material.fact_inputs[case_id],
-            model=COMPOSE_MODEL,
+            model=FACT_REVIEW_MODEL,
         )
         unit_id = f"fact:{case_id}"
         runtime[unit_id] = ReviewRuntimeUnit(
@@ -514,8 +555,13 @@ def build_batch_review_runtime(
             substantive_input=material.fact_inputs[case_id],
         )
     for case_id in case_ids:
+        if archival_enjoyment is not None:
+            enjoy_candidates = (archival_enjoyment[case_id], material.enjoyment_items[case_id])
+        else:
+            enjoy_candidates = (material.enjoyment_items[case_id],)
+
         envelope, sdk_request = enjoyment_request_envelope(
-            (material.enjoyment_items[case_id],),
+            enjoy_candidates,
             calibration_inputs.enjoyment_anchors,
             model=COMPOSE_MODEL,
         )
@@ -526,10 +572,10 @@ def build_batch_review_runtime(
             envelope=envelope,
             sdk_request=sdk_request,
             payload_type=ProviderEnjoyPayload,
-            substantive_input=material.enjoyment_items[case_id],
+            substantive_input=enjoy_candidates,
             enjoyment_anchors=tuple(calibration_inputs.enjoyment_anchors),
         )
-    if len(runtime) != 17 or any(
+    if len(runtime) != 18 or any(
         unit.sdk_request.get("thinking") != {"type": "adaptive"}
         for unit in runtime.values()
     ):
@@ -610,7 +656,11 @@ def _parse_review_response(unit: ReviewRuntimeUnit, receipt: dict[str, object]) 
         raise ValueError("Anthropic certification response was truncated")
     payload = unit.payload_type.model_validate_json(receipt["raw_response"])
     if unit.purpose == "calibration":
-        return validate_calibration(receipt, payload, unit.substantive_input)
+        model = str(unit.sdk_request.get("model", COMPOSE_MODEL))
+        return validate_calibration(
+            receipt, payload, unit.substantive_input,
+            model=model, fact_only=(unit.unit_id == "calibration-fact"),
+        )
     if unit.purpose == "fact_review":
         return validate_fact(receipt, payload, unit.substantive_input)
     return validate_enjoyment(
@@ -629,7 +679,7 @@ def seed_exact_calibration_receipt(
 ) -> bool:
     """Reuse only a cryptographically identical completed calibration call."""
 
-    if unit.unit_id != "calibration":
+    if unit.unit_id not in ("calibration", "calibration-fact"):
         raise ValueError("only calibration may be reused across review roots")
     if any(
         loader(unit.unit_id) is not None
@@ -702,33 +752,35 @@ def dispatch_batch_review(
 
     if list(runtime) != [
         "calibration",
+        "calibration-fact",
         *sorted(unit_id for unit_id in runtime if unit_id.startswith("fact:")),
         *sorted(unit_id for unit_id in runtime if unit_id.startswith("enjoy:")),
-    ] or len(runtime) != 17:
-        raise ValueError("review runtime is not the sealed deterministic 17-unit order")
+    ] or len(runtime) != 18:
+        raise ValueError("review runtime is not the sealed deterministic 18-unit order")
     if not 1 <= max_workers <= 16:
         raise ValueError("review worker count must be between one and sixteen")
 
     receipts: dict[str, dict[str, object]] = {}
     parsed: dict[str, object] = {}
     errors: dict[str, str] = {}
-    calibration_receipt, calibration_result, calibration_error = _run_review_unit(
-        unit=runtime["calibration"],
-        store=store,
-        invoke=invoke,
-    )
-    if calibration_receipt is not None:
-        receipts["calibration"] = calibration_receipt
-    if calibration_result is not None:
-        parsed["calibration"] = calibration_result
-    if calibration_error is not None:
-        errors["calibration"] = calibration_error
-        return BatchReviewDispatchResult(
-            evaluation_status="INFRA_ERROR",
-            response_receipts=receipts,
-            parsed_results=parsed,
-            infrastructure_errors=errors,
+    for cal_id in ("calibration", "calibration-fact"):
+        cal_receipt, cal_result, cal_error = _run_review_unit(
+            unit=runtime[cal_id],
+            store=store,
+            invoke=invoke,
         )
+        if cal_receipt is not None:
+            receipts[cal_id] = cal_receipt
+        if cal_result is not None:
+            parsed[cal_id] = cal_result
+        if cal_error is not None:
+            errors[cal_id] = cal_error
+            return BatchReviewDispatchResult(
+                evaluation_status="INFRA_ERROR",
+                response_receipts=receipts,
+                parsed_results=parsed,
+                infrastructure_errors=errors,
+            )
 
     canary = runtime[FACT_CANARY_UNIT_ID]
     canary_receipt, canary_result, canary_error = _run_review_unit(
@@ -789,8 +841,9 @@ def build_batch_review_plan(
     inputs: BatchReviewInputs,
     material: BatchReviewMaterial,
     calibration_inputs: QualityCalibrationInputs,
+    archival_enjoyment: dict[str, EnjoymentItem] | None = None,
 ) -> BatchReviewPlan:
-    """Build and seal the deterministic provider-free 17-unit review plan."""
+    """Build and seal the deterministic provider-free 18-unit review plan."""
 
     case_ids = sorted(tour.case_id for tour in inputs.tours)
     if set(material.fact_inputs) != set(case_ids) or set(material.enjoyment_items) != set(
@@ -801,12 +854,17 @@ def build_batch_review_plan(
     runtime = build_batch_review_runtime(
         material=material,
         calibration_inputs=calibration_inputs,
+        archival_enjoyment=archival_enjoyment,
     )
     units = [
         _review_plan_unit(
             unit_id=unit.unit_id,
             purpose=unit.purpose,
-            case_id=(None if unit.unit_id == "calibration" else unit.unit_id.split(":", 1)[1]),
+            case_id=(
+                None
+                if unit.unit_id.startswith("calibration")
+                else unit.unit_id.split(":", 1)[1]
+            ),
             envelope=unit.envelope,
             sdk_request=unit.sdk_request,
         )
@@ -838,7 +896,7 @@ def build_batch_review_plan(
             "fact": BATCH_FACT_PROMPT_SHA256,
             "enjoy": ENJOY_PROMPT_SHA256,
         },
-        "model": COMPOSE_MODEL,
+        "model": {"enjoy": COMPOSE_MODEL, "fact": FACT_REVIEW_MODEL},
         "thinking": {"type": "adaptive"},
         "sdk_max_retries": 0,
         "application_deadline_seconds": None,
@@ -889,9 +947,14 @@ def gate_batch_review_execution(
     units = review_plan.get("units")
     if (
         not isinstance(units, list)
-        or len(units) != 17
+        or len(units) != 18
         or [unit.get("purpose") for unit in units]
-        != ["calibration", *("fact_review" for _ in range(8)), *("enjoy_review" for _ in range(8))]
+        != [
+            "calibration",
+            "calibration",
+            *("fact_review" for _ in range(8)),
+            *("enjoy_review" for _ in range(8)),
+        ]
         or review_plan.get("thinking") != {"type": "adaptive"}
         or review_plan.get("sdk_max_retries") != 0
         or review_plan.get("application_deadline_seconds") is not None
@@ -936,10 +999,42 @@ def _load_authoring_documents(
     return tour_artifacts, stop_receipts
 
 
+def load_archival_enjoyment_items(batch_root: Path) -> dict[str, EnjoymentItem]:
+    stored_plan = json.loads((batch_root / "plan.json").read_text(encoding="utf-8"))
+    _, stop_receipts = _load_authoring_documents(
+        batch_root=batch_root,
+        batch_plan=stored_plan,
+    )
+    items: dict[str, EnjoymentItem] = {}
+    for tour_plan in stored_plan["tours"]:
+        case_id = tour_plan["case_id"]
+        sentences_by_stop: dict[int, tuple[Sentence, ...]] = {}
+        for unit in tour_plan["units"]:
+            stop_index = unit["stop_index"]
+            receipt = stop_receipts[(case_id, stop_index)]
+            raw_sentences = json.loads(receipt["raw_response"])["sentences"]
+            sentences_by_stop[stop_index] = tuple(
+                Sentence.model_validate(s) for s in raw_sentences
+            )
+        items[case_id] = build_enjoyment_item(
+            sentences_by_stop,
+            candidate_narration_sha256(sentences_by_stop),
+        )
+    return items
+
+
 def build_provider_free_review_context(
-    *, batch_root: Path = DEFAULT_OUTPUT_ROOT
+    *,
+    batch_root: Path = DEFAULT_OUTPUT_ROOT,
+    archival_root: Path | None = None,
 ) -> ProviderFreeReviewContext:
     """Validate all frozen inputs and expose the exact provider-free plan/runtime."""
+
+    if archival_root is not None and archival_root.resolve() == batch_root.resolve():
+        raise ValueError(
+            "archival-root and batch-root resolve to the same directory; "
+            "a blind comparison requires two distinct batches"
+        )
 
     stored_plan = json.loads((batch_root / "plan.json").read_text(encoding="utf-8"))
     manifest = load_frozen_tour_batch(MANIFEST_PATH)
@@ -970,19 +1065,25 @@ def build_provider_free_review_context(
         inputs=inputs,
         authoring_requests=authoring_requests,
     )
+    cert_fixtures = ROOT / "fixtures" / "tour-certification"
     calibration_inputs = load_quality_calibration_inputs(
         repo_root=ROOT,
-        calibration_manifest_path=ROOT / "fixtures" / "tour-certification" / "calibration-manifest.json",
-        reference_manifest_path=ROOT / "fixtures" / "tour-certification" / "investigation-reference-manifest.json",
+        calibration_manifest_path=cert_fixtures / "calibration-manifest.json",
+        reference_manifest_path=cert_fixtures / "investigation-reference-manifest.json",
     )
+    archival_enjoyment: dict[str, EnjoymentItem] | None = None
+    if archival_root is not None:
+        archival_enjoyment = load_archival_enjoyment_items(archival_root)
     review_plan = build_batch_review_plan(
         inputs=inputs,
         material=material,
         calibration_inputs=calibration_inputs,
+        archival_enjoyment=archival_enjoyment,
     )
     review_runtime = build_batch_review_runtime(
         material=material,
         calibration_inputs=calibration_inputs,
+        archival_enjoyment=archival_enjoyment,
     )
     return ProviderFreeReviewContext(
         inputs=inputs,
@@ -993,10 +1094,16 @@ def build_provider_free_review_context(
     )
 
 
-def build_provider_free_review_plan(*, batch_root: Path = DEFAULT_OUTPUT_ROOT) -> BatchReviewPlan:
+def build_provider_free_review_plan(
+    *,
+    batch_root: Path = DEFAULT_OUTPUT_ROOT,
+    archival_root: Path | None = None,
+) -> BatchReviewPlan:
     """Compatibility wrapper returning only the provider-free sealed plan."""
 
-    return build_provider_free_review_context(batch_root=batch_root).review_plan
+    return build_provider_free_review_context(
+        batch_root=batch_root, archival_root=archival_root
+    ).review_plan
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1007,8 +1114,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-workers", type=int, default=4)
     parser.add_argument("--review-root", type=Path, default=DEFAULT_REVIEW_ROOT)
     parser.add_argument("--calibration-reuse-root", type=Path, default=LEGACY_REVIEW_ROOT)
+    parser.add_argument("--archival-root", type=Path, default=None)
     args = parser.parse_args(argv)
-    context = build_provider_free_review_context(batch_root=args.batch_root)
+    context = build_provider_free_review_context(
+        batch_root=args.batch_root,
+        archival_root=args.archival_root,
+    )
     if not args.live:
         print(_canonical_bytes(context.review_plan).decode("utf-8"))
         return 0
@@ -1016,9 +1127,9 @@ def main(argv: list[str] | None = None) -> int:
     holder: dict[str, AnthropicCertificationProvider] = {}
 
     def client_factory() -> AnthropicCertificationProvider:
-        import anthropic
+        from src.tour.anthropic_client import certification_batch_compose_client
 
-        client = anthropic.Anthropic(timeout=None, max_retries=0)
+        client = certification_batch_compose_client()
         provider = AnthropicCertificationProvider(
             compose_client=client,
             judge_client=client,
@@ -1042,11 +1153,13 @@ def main(argv: list[str] | None = None) -> int:
     else:
         _private_write_new(plan_path, context.review_plan)
     if args.calibration_reuse_root.exists():
-        seed_exact_calibration_receipt(
-            unit=context.runtime["calibration"],
-            source=DirectoryReviewReceiptStore(args.calibration_reuse_root),
-            target=store,
-        )
+        reuse_source = DirectoryReviewReceiptStore(args.calibration_reuse_root)
+        for cal_id in ("calibration", "calibration-fact"):
+            seed_exact_calibration_receipt(
+                unit=context.runtime[cal_id],
+                source=reuse_source,
+                target=store,
+            )
     provider = holder["provider"]
     result = dispatch_batch_review(
         runtime=context.runtime,
@@ -1074,26 +1187,27 @@ def main(argv: list[str] | None = None) -> int:
 
 
 __all__ = [
+    "LIVE_REVIEW_APPROVAL_ENV",
+    "BatchReviewDispatchResult",
     "BatchReviewInputs",
     "BatchReviewMaterial",
-    "BatchReviewDispatchResult",
     "BatchReviewPlan",
     "BatchReviewPlanUnit",
     "BatchReviewTourInputs",
     "DirectoryReviewReceiptStore",
-    "LIVE_REVIEW_APPROVAL_ENV",
     "ProviderFreeReviewContext",
     "ReviewRuntimeUnit",
     "build_batch_review_material",
     "build_batch_review_plan",
     "build_batch_review_runtime",
-    "build_provider_free_review_plan",
     "build_provider_free_review_context",
+    "build_provider_free_review_plan",
     "dispatch_batch_review",
     "gate_batch_review_execution",
+    "load_archival_enjoyment_items",
     "load_batch_review_inputs",
-    "seed_exact_calibration_receipt",
     "main",
+    "seed_exact_calibration_receipt",
 ]
 
 

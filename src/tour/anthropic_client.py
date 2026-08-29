@@ -124,6 +124,19 @@ def certification_batch_compose_client() -> Any:
     return _build(None, CERTIFICATION_MAX_RETRIES)
 
 
+def certification_batch_read_client() -> Any:
+    """Bounded client for batch status polls and result collection.
+
+    Reads are idempotent — a hidden SDK retry cannot double-submit or
+    double-spend — so unlike submission they keep the judge's transient-failure
+    retries, and each read carries the judge's short timeout: a single hung
+    retrieve with no timeout would strand the poll loop past its own deadline,
+    which is only checked between calls.
+    """
+
+    return _build(JUDGE_TIMEOUT_S, JUDGE_MAX_RETRIES)
+
+
 __all__ = [
     "CERTIFICATION_MAX_RETRIES",
     "COMPOSE_ABSOLUTE_DEADLINE_S",
@@ -132,6 +145,7 @@ __all__ = [
     "JUDGE_MAX_RETRIES",
     "JUDGE_TIMEOUT_S",
     "certification_batch_compose_client",
+    "certification_batch_read_client",
     "certification_compose_client",
     "certification_judge_client",
     "compose_client",

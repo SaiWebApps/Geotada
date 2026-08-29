@@ -26,7 +26,9 @@ from scripts.tour_text_candidate import (
     _sha256,
 )
 from src.connection import create_driver
+from src.tour import batch_transport
 from src.tour.anthropic_client import certification_batch_compose_client
+from src.tour.artifact import sentences_payload_sha256
 from src.tour.authoring import COMPOSE_MODEL, _sentences_from_json
 from src.tour.batch_regression_manifest import (
     FrozenTourBatchManifest,
@@ -178,7 +180,9 @@ def _assemble_provider_tour(
                 body=receipt["raw_response"].encode("utf-8"),
                 input_tokens=receipt["input_tokens"],
                 output_tokens=receipt["output_tokens"],
-                latency_ms=receipt["latency_ms"],
+                # v2 (Batch API) receipts carry no latency: the batch has no
+                # per-call wall clock, and the replay below never reads it.
+                latency_ms=receipt.get("latency_ms", 0),
                 model=receipt["model"],
                 provider_request_id=receipt["provider_request_id"],
             )
@@ -250,9 +254,23 @@ def _execute_batch(
     output_root: Path,
     client_factory: Callable[[], object],
     max_workers: int,
+    transport: str = "sync",
 ) -> dict[str, object]:
-    """Execute every pending stop once after durable attempt marking."""
+    """Execute every pending stop once after durable attempt marking.
 
+    ``transport`` picks the physical lane, never the receipts' meaning:
+    - "sync": one bounded streaming call per stop (the original lane; v1
+      receipts with a latency).
+    - "batch": ONE Message Batches submission for every pending stop at the
+      Batch API's half price (v2 receipts carry the batch_id instead of a
+      latency). The submission's batch_id is persisted to disk the instant
+      ``batches.create`` returns, so a crash during the poll resumes by id —
+      an attempt marker beside a persisted submission is a determinate,
+      resumable state, not the indeterminate one the sync lane refuses.
+    """
+
+    if transport not in ("sync", "batch"):
+        raise ValueError("transport must be 'sync' or 'batch'")
     units_by_key: dict[tuple[str, int], dict[str, object]] = {}
     output_root.mkdir(mode=0o700, parents=True, exist_ok=True)
     plan_path = output_root / "plan.json"
@@ -261,6 +279,9 @@ def _execute_batch(
             raise ValueError("existing batch plan differs from this run")
     else:
         _private_write_new(plan_path, plan)
+
+    submission_path = output_root / "batch-submission.json"
+    resumable_submission = transport == "batch" and submission_path.exists()
 
     for tour_plan in plan["tours"]:
         case_id = tour_plan["case_id"]
@@ -276,7 +297,7 @@ def _execute_batch(
                 _load_completed_receipt(completed_path, item)
                 continue
             attempt_path = output_dir / f"attempt-{stop_index}.json"
-            if attempt_path.exists():
+            if attempt_path.exists() and not resumable_submission:
                 raise ValueError(f"{case_id} stop {stop_index} has an indeterminate prior attempt")
             units_by_key[(case_id, stop_index)] = item
 
@@ -286,6 +307,9 @@ def _execute_batch(
     for (case_id, stop_index), item in units_by_key.items():
         case = runtime[case_id]["case"]
         output_dir = output_root / case.tour_input.city_slug / case_id
+        attempt_path = output_dir / f"attempt-{stop_index}.json"
+        if attempt_path.exists():
+            continue
         unit = item["unit"]
         marker_core = {
             "schema_version": "ondoway-tour-batch-attempt-v1",
@@ -296,12 +320,62 @@ def _execute_batch(
             "batch_plan_sha256": plan["batch_plan_sha256"],
         }
         _private_write_new(
-            output_dir / f"attempt-{stop_index}.json",
+            attempt_path,
             {**marker_core, "marker_sha256": _sha256(_canonical_bytes(marker_core))},
         )
 
     failures: list[tuple[str, int, BaseException]] = []
-    if units_by_key:
+    if units_by_key and transport == "batch":
+        results = batch_transport.execute_batch_pipeline(
+            [
+                # "-stop-" not ":" — the Batch API's custom_id alphabet is
+                # [a-zA-Z0-9_-] and the ids are constructed, never parsed back.
+                (f"{case_id}-stop-{stop_index}", item["unit"]["sdk_request"])
+                for (case_id, stop_index), item in units_by_key.items()
+            ],
+            submission_path=submission_path,
+            plan_sha256=plan["batch_plan_sha256"],
+            client=client_factory(),
+            on_progress=print,
+        )
+        for (case_id, stop_index), item in units_by_key.items():
+            case = runtime[case_id]["case"]
+            output_dir = output_root / case.tour_input.city_slug / case_id
+            unit = item["unit"]
+            unit_result = results.get(f"{case_id}-stop-{stop_index}")
+            try:
+                if unit_result is None:
+                    raise RuntimeError("batch returned no result for this unit")
+                if unit_result.result_type != "succeeded" or unit_result.response is None:
+                    raise RuntimeError(
+                        unit_result.error_message or f"batch unit {unit_result.result_type}"
+                    )
+                body = unit_result.response.body
+                payload = json.loads(body)
+                sentences = _sentences_from_json(payload["sentences"], item["request"])
+                receipt = batch_transport.build_batch_receipt(
+                    unit_result=unit_result,
+                    request_id=unit["request_id"],
+                    request_sha256=unit["request_sha256"],
+                    response_sha256=_sha256(body),
+                    parsed_payload_sha256=sentences_payload_sha256(sentences),
+                    poi_name=unit["poi_name"],
+                    stop_index=stop_index,
+                    raw_response=body.decode("utf-8"),
+                )
+            except BaseException as exc:
+                failures.append((case_id, stop_index, exc))
+                failure = {
+                    "schema_version": "ondoway-tour-batch-failure-v1",
+                    "case_id": case_id,
+                    "stop_index": stop_index,
+                    "failure_type": type(exc).__name__,
+                    "failure_message_sha256": _sha256(str(exc).encode("utf-8")),
+                }
+                _private_write_new(output_dir / f"failure-{stop_index}.json", failure)
+            else:
+                _private_write_new(output_dir / f"stop-{stop_index}.json", receipt)
+    elif units_by_key:
         client = client_factory()
         with ThreadPoolExecutor(max_workers=min(max_workers, len(units_by_key))) as pool:
             key_by_future = {
@@ -414,6 +488,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-workers", type=int, default=4)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--case")
+    # "batch" routes the same sealed requests through the Message Batches API at
+    # half price; "sync" stays the original per-stop streaming lane. The sealed
+    # plan is transport-agnostic — the approve hash covers identical requests
+    # either way — so this flag changes the bill, never the comparison.
+    parser.add_argument("--transport", choices=("sync", "batch"), default="sync")
     args = parser.parse_args(argv)
     # Settled before the manifest, the graph or the router are touched, so a live run
     # aimed at the control arm dies without doing anything. Dry planning never reads
@@ -458,8 +537,15 @@ def main(argv: list[str] | None = None) -> int:
         plan,
         runtime,
         output_root=live_output_root,
-        client_factory=certification_batch_compose_client,
+        client_factory=(
+            # Read via the module attribute so the hermetic money-guard's patch
+            # of batch_transport.batch_client is the one every path sees.
+            batch_transport.batch_client
+            if args.transport == "batch"
+            else certification_batch_compose_client
+        ),
         max_workers=args.max_workers,
+        transport=args.transport,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

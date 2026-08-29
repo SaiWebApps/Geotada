@@ -20,6 +20,7 @@ from __future__ import annotations
 import fcntl
 import json
 import os
+import tempfile
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -280,11 +281,22 @@ def _acquire_lane_lock() -> None:
 
     fcntl.flock(LOCK_EX | LOCK_NB) fails immediately if another process holds
     the lock, and the OS releases it on process death — no stale lockfiles.
+
+    The lock lives in the system temp dir, keyed by bolt port: the databases
+    are machine-global resources, so a repo-relative path would let two
+    checkouts (or a worktree) wipe the same graph while each holds its own
+    "lock". It also keeps dead sessions from littering the repo root.
+
+    Idempotent per process: `driver` (session) and `clean_driver` (module) both
+    call this, and re-opening the file would silently drop the held flock when
+    the old file object is garbage-collected.
     """
     global _lane_lock_file
+    if _lane_lock_file is not None:
+        return
     uri = os.getenv("NEO4J_URI", "")
     port = urlparse(uri).port or 0
-    lock_path = Path(__file__).resolve().parent.parent / f".pytest-lane-{port}.lock"
+    lock_path = Path(tempfile.gettempdir()) / f"ondoway-pytest-lane-{port}.lock"
     _lane_lock_file = lock_path.open("w")
     try:
         fcntl.flock(_lane_lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)

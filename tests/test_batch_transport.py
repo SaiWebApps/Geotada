@@ -12,6 +12,7 @@ from src.tour.batch_transport import (
     build_batch_receipt,
     load_batch_submission,
     persist_batch_submission,
+    submit_batch,
     validate_receipt,
 )
 from src.tour.certification_provider import PhysicalProviderResponse
@@ -141,6 +142,16 @@ def test_persist_and_load_batch_submission(tmp_path) -> None:
 
 def test_load_batch_submission_returns_none_for_missing(tmp_path) -> None:
     assert load_batch_submission(tmp_path / "nonexistent.json") is None
+
+
+def test_submit_batch_refuses_custom_ids_the_api_would_reject() -> None:
+    """The Batch API's custom_id alphabet is [a-zA-Z0-9_-]{1,64}. The first live
+    submission was refused with a 400 for a colon a stub client had accepted, so
+    the contract is enforced locally: a bad id is a $0 ValueError before any
+    request is built or any client touched."""
+    for bad in ("case:0", "über-stop", "x" * 65, ""):
+        with pytest.raises(ValueError, match="custom_id"):
+            submit_batch([(bad, {})], client=object())
 
 
 def test_load_batch_submission_rejects_wrong_schema(tmp_path) -> None:

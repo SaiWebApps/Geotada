@@ -127,14 +127,25 @@ class CompletedCertificationComposeUnit(BaseModel):
 
 
 COMPOSE_MODEL = "claude-opus-4-8"
+# FACT review ran a cheaper-model experiment (claude-sonnet-5, §0.1.6) and the
+# frozen calibration REFUSED it, twice-measured 2026-08-28: with a ceiling that
+# let it finish (end_turn, 11,760 of 32,000), Sonnet still judged two
+# human-labeled PASS paraphrase cases FAIL (fact-policy-4, fact-policy-6) — it
+# polices licensed colour as factual defect, which would fail true tours at the
+# release gate. Accuracy outranks the saving (the owner's constraint verbatim:
+# "less money, without sacrificing accuracy"), so FACT stays on Opus. The
+# calibration-fact unit and model-aware pricing remain, so a future cheaper
+# model is one constant away from a measured audition.
+FACT_REVIEW_MODEL = COMPOSE_MODEL
 # Streaming ceiling: adaptive-thinking tokens count against max_tokens, and a
 # full tour's rewritten sentence list is large — 16K truncated a real 45-min
 # Paris compose mid-JSON (live gate, 2026-07-02). Stream + 64K per the SDK
 # guidance; a max_tokens stop is raised as a hard error, never parsed.
 COMPOSE_MAX_OUTPUT_TOKENS = 64000
-# Certification preserves the branch-proven adaptive-thinking allowance. The
-# frozen full-call-plan preflight—not a smaller hidden ceiling—controls spend.
-CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS = COMPOSE_MAX_OUTPUT_TOKENS
+# Per-stop ceiling tightened at Phase 8 to 2.7x the measured max (11,797
+# output tokens across 45 stops, thinking included). A max_tokens stop under
+# zero-retry is paid-and-lost, so the margin is deliberately wide.
+CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS = 32_000
 
 # The LOCKED narrator voice (specs/2026-06-14-compose-narrator/): ONE warm,
 # second-person narrator; the newcomer's curiosity captured as STRUCTURE;
@@ -332,6 +343,14 @@ GROUNDING (violations are rejected by an automated verifier):
   abbreviated.
 - A sentence with source_type "beat" keeps its source_id and may only restate
   what that beat's key claims support — never add names, dates, or facts.
+- NEVER STRENGTHEN A FACT. No rank or title the beat does not state (Desaix,
+  not "the general Desaix"); no "first/last/only/most" or any superlative the
+  beat does not carry, and never widen a scoped one by dropping its qualifier
+  ("finest exterior feature" never becomes "finest feature"). Keep the beat's
+  own hedges exactly — "attributed to", "perhaps", "probably", "said to",
+  "admired" — an attribution or a maybe is part of the fact, not padding to
+  trim. Strengthening reads better and is the single most common factual
+  defect in this material.
 - A glue sentence must keep a source_id supplied in this stop's STITCHED SCRIPT.
   A requested reflection must use the source_id supplied in its REFLECTION SLOT.
   Never invent a source identity. Glue may not introduce proper nouns or years
@@ -559,7 +578,13 @@ def candidate_compose_request_envelope(
         "model": model,
         "max_tokens": CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS,
         "thinking": {"type": "adaptive"},
-        "system": _COMPOSE_SYSTEM,
+        "system": [
+            {
+                "type": "text",
+                "text": _COMPOSE_SYSTEM,
+                "cache_control": {"type": "ephemeral"},
+            }
+        ],
         "output_config": {"format": {"type": "json_schema", "schema": _COMPOSE_OUTPUT_SCHEMA}},
         "messages": [{"role": "user", "content": user}],
     }
@@ -645,15 +670,28 @@ def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tupl
     Phase 8 S8.3e: a beat citation (``source_id`` or an ``also_cites`` entry) one
     character off exactly ONE id of this stop's stitch is corrected first
     (``_corrected_citation``) — the mechanical consequence of W8.2 R4: the
-    writer's typos stop killing days, and everything else still fails closed."""
+    writer's typos stop killing days, and everything else still fails closed.
+
+    The SAME doctrine covers the TYPE field (live 2026-08-29, v3 batch): a
+    sentence typed "beat" whose ``source_id`` is one of THIS request's
+    authorized derived (glue/reflection) ids is a mistyped label, not an
+    invention — the id is authoritative because ids are copied from the prompt
+    and no beat carries a glue id. Coerced to "glue"; a "beat"-typed sentence
+    with any OTHER unknown id still fails traceability, and the reflection id
+    is honoured only when the request actually asked for a slot."""
     beat_stop = {
         s.source_id: s.stop_idx for s in request.stitched.script if s.source_type == "beat"
     }
     known_ids = frozenset(beat_stop)
+    derived_ids = frozenset(
+        s.source_id for s in request.stitched.script if s.source_type != "beat"
+    ) | ({GLUE_REFLECTION} if request.slots else frozenset())
     out: list[Sentence] = []
     for s in sentences:
         stype = s["source_type"]
         sid = s["source_id"]
+        if stype == "beat" and sid in derived_ids and sid not in known_ids:
+            stype = "glue"
         if stype == "beat":
             sid = _corrected_citation(sid, known_ids)
         stop_idx = beat_stop.get(sid, s["stop_idx"]) if stype == "beat" else s["stop_idx"]
@@ -1243,6 +1281,7 @@ __all__ = [
     "CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS",
     "COMPOSE_MAX_OUTPUT_TOKENS",
     "COMPOSE_MODEL",
+    "FACT_REVIEW_MODEL",
     "CertificationComposition",
     "CompletedCertificationComposeUnit",
     "ComposeRequest",

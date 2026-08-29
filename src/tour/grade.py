@@ -24,11 +24,11 @@ W_BEAT_OVERLAP = 0.30
 W_SPINE_MATCH = 0.20
 W_VALIDATION = 0.10
 
-# A generated tour must grade at or above this to pass. Calibrated 2026-06-12
-# against the live corpus (measured, not estimated): Île one-way 90min grades
-# 0.86, PdV round-trip 60min grades 0.90 — baseline 0.65 leaves ~0.2 margin
-# while catching a real regression (lost POIs/spine/beats grade well below it).
-GRADE_BASELINE = 0.65
+# A generated tour must grade at or above this to pass. Re-calibrated at
+# Phase 8 to measure the SHIPPED path (build_poi_beat_plans_capped, 9 beats
+# on Île) rather than the raw uncapped path (23 beats). Measured 2026-08-27:
+# Île 0.506, PdV 0.743. D6 floor = 85% of the lower score = 0.43.
+GRADE_BASELINE = 0.43
 
 
 @dataclass(frozen=True)

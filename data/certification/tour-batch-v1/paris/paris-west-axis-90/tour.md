@@ -1,95 +1,49 @@
 # paris-west-axis-90 — Exact API-authored tour text
 
-Route: Les Invalides → Destination
+Route: Trocadero → Your finish point
 
-## 1. Les Invalides
+## 1. Trocadero
 
 Settle in.
 
-You're starting in the 7th Arrondissement.
+Step out of the Metro at Trocadéro and take in the view — across the south of Paris, and a clean sight line straight to the Eiffel Tower.
 
-When you're ready, head for Les Invalides — about a 55-minute walk from here.
+Look around this square, because it was the stage for Paris's great World Trade Fairs, held every eleven years from 1855 to 1937.
 
-It began with a king who couldn't stand what he saw.
+They were staged to prove one thing — that France had become a stable, hard-working, industrial nation — and the proof lay in grand displays of art, industry, and engineering.
 
-Louis XIV kept passing war cripples begging on the Pont-Neuf, men who'd given loyal service on the battlefield, and the Sun King decided he owed them a respectable roof.
+The last of them opened with the clouds of World War Two already gathering.
 
-So in 1670, with his minister Louvois, he founded the Hôtel des Invalides.
+And right here at the Jardins du Trocadéro, flanking the fountains you see now, stood two enormous, menacing pavilions — one for Germany, one for Russia — squared off against each other.
 
-He wasn't the first to try — Henri IV had sheltered veterans back in 1604 on what's now the rue Broca, and Louis XIII and Richelieu built the hospital of Bicêtre.
+Remnants of those fairs are scattered across the city, but none beats what went up for the 1889 exposition — the Eiffel Tower, a thousand feet over Paris, drawing thirty-two million visitors.
 
-But Louis XIV thought big, commissioning Libéral Bruant for something colossal yet oddly subdued in character.
+To cope with that flood, the city rebuilt itself from the ground up: new roads, the Metro, bridges, railways, hotels, restaurants, even cabarets.
 
-Look up as you come to it.
+The square's odd name goes all the way back to a fort near Cadiz, taken by the French in 1823.
 
-The façade runs 195 metres across, and the main courtyard, the Cour d'Honneur, measures 102 metres by 63.
+In the centre sits Marshal Foch on horseback, unveiled on the 11th of November 1951 — the thirty-third anniversary of the 1918 Armistice, and the centenary of the marshal's birth.
 
-Montesquieu called it 'the most respectable place on earth.'
+On the wall to your left is a huge sculpture called The Glory of the French Army, carved by Tandowski — the same man behind the colossal figure of Christ in Rio — and unveiled in 1956.
 
-Take a moment to take it in.
+Behind you, the two curving wings of the Palais de Chaillot were designed with a central terrace opening onto that panoramic viewing stage.
 
-Down in the crypt of Saint-Louis-des-Invalides lies Rouget de Lisle, a captain from Strasbourg.
+Built in 1937, it now holds the Musée de l'Homme, the museum of mankind, and the naval museum, the Musée de la Marine.
 
-In 1792 he composed 'Le Chant de guerre pour l'armée du Rhin', the song that became La Marseillaise, France's ferociously sanguinary national anthem.
+Before this Place du Trocadéro was laid out in 1937, the photographer Atget captured these sprawling gardens as they once were.
 
-His ashes were brought here on 14 July 1915, meant to move on to the Panthéon — a transfer that still hasn't happened.
+That's Trocadéro — the terrace where Paris once put itself on show.
 
-Then came Napoleon, determined to eclipse his predecessor and stamp the place as his own.
+## 2. Your finish point
 
-In 1797 he hauled the lion of the defeated Serenissima Republic to this stronghold of French military glory and set it atop a fountain in the middle of the Esplanade.
+Make your way straight ahead to your final stop.
 
-He even hoped to bring back the golden cross of the Kremlin as a trophy for the Dome — but history decided otherwise.
+Trocadéro's palace rose for a world fair; this hall began as a tennis court.
 
-The lion's Paris career was short; by 1815 it was back on its column in Piazza San Marco.
+Stand in front of the Galerie nationale du Jeu de Paume, and the name is a clue — it's a gallery now, but it began as a tennis court.
 
-Napoleon wanted to rest 'on the banks of the Seine, by the French people whom I have loved so much.'
+Napoleon III had it built in 1861 for the jeu de paume, the indoor game the building is named after, and it was enlarged in 1878.
 
-It took seven years of negotiating with the English, but his ashes left Saint Helena and reached Paris on 15 December 1840 — via Le Havre, up the Seine to Pont de Neuilly, then down the Champs-Élysées through a snowstorm.
+Three different lives, all under one roof.
 
-Victor Hugo was there when the sun broke through as the hearse appeared: 'The effect was prodigious indeed.'
-
-Some 850,000 Parisians came to pay homage in the days that followed.
-
-His body only reached its permanent tomb, designed by Visconti, on 2 April 1861.
-
-He lies inside six nested coffins.
-
-A silver vase holds his heart; a silver box, his stomach.
-
-The dome above you is Jules-Hardouin Mansart's masterpiece — the Royal Chapel, one of the outstanding monuments of 17th-century Paris.
-
-There was a time you saw it best from Avenue de Breteuil on a fine morning, when the deep purple dome looked almost palpably mellow and pulpy.
-
-Then Paris was groomed for the bicentenary of the Revolution, and the dome was daubed with shiny gold paint.
-
-The regilding was flawless, but it destroyed what only time can bestow.
-
-By night, though, shimmering against the dark sky above the floodlit walls, it's still enchanting.
-
-Remember Louvois, who helped found all this? He fancied the Invalides for his own sepulchre.
-
-Louis XIV wouldn't tolerate the impertinence and had his remains removed elsewhere.
-
-But Louvois found a subtler way to keep his name here.
-
-As you step into the Cour d'Honneur, look at the fifth garret to the right of the left-hand pavilion — its bull's-eye window is framed by a wolf, a 'loup', that gazes, 'voit', intently down on the courtyard.
-
-A far-fetched pun, and one that slipped right past the Sun King.
-
-One last thing, in the institution's original church — Saint-Louis-des-Invalides, also designed by Bruant and home to a magnificent 17th-century organ.
-
-Here, on 5 December 1837, Hector Berlioz's Requiem had its world premiere — 188 instrumentalists and 210 choristers, at a ceremony for General Damrémont, killed at the Siege of Constantine.
-
-## 2. Destination
-
-From here, make your way to your final destination.
-
-Picture a court where players once swatted a ball with their bare palms — the jeu de paume, the game that gave tennis its ancestry.
-
-That's exactly what Napoleon III raised here in 1861, an indoor court built for the sport, then enlarged in 1878.
-
-But the building you're looking at has worn three different lives since.
-
-And that brings our walk to a close.
-
-Thank you for coming along with me today. When you're ready, take your time to keep exploring on your own.
+That's the walk — a tennis court that grew into a gallery.

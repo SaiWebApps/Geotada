@@ -161,11 +161,10 @@ def _live_graded(fixture: dict):
     per-database UUID. ``grade_tour`` is left untouched: the harness translates both
     sides onto the slug before handing them over.
     """
-    from src.tour.beat_select import select_poi_beats
     from src.tour.contract import BeatSequence, TourInput
     from src.tour.generation import generate
     from src.tour.routing_client import RoutingClient
-    from src.tour.selection import select_route
+    from src.tour.selection import build_poi_beat_plans_capped, select_route
     from tests.test_tour_golden_consistency import generated_stable_beat_ids
 
     inp = fixture["input"]
@@ -176,8 +175,11 @@ def _live_graded(fixture: dict):
     snapshot = _SNAPSHOT
     with RoutingClient() as rc:
         route = select_route(tour_input, snapshot, routing_client=rc)
-    plans = [select_poi_beats(p, snapshot.beats_for(p.id)) for p in route.pois]
-    seq = BeatSequence(poi_beats=tuple(plans))
+    capped = build_poi_beat_plans_capped(
+        route, snapshot, lenses=None,
+        end_is_none=route.fixed_end_poi_id is None,
+    )
+    seq = BeatSequence(poi_beats=tuple(pb for pb, _ in capped))
     script = generate(seq, route, tour_input)
     gen_beats, untranslated = generated_stable_beat_ids(script, seq)
     assert not untranslated, (

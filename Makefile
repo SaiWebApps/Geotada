@@ -91,7 +91,8 @@ LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 	scripts/poi_opening_hours.py scripts/poi_place_category.py \
 	scripts/poi_body_places.py scripts/poi_place_judgements.py \
 	scripts/poi_queues.py scripts/poi_trigger_radius.py scripts/sync_poi_exports.py \
-	scripts/report_visit_durations.py scripts/tour_build.py scripts/dedup_review.py
+	scripts/report_visit_durations.py scripts/tour_build.py scripts/dedup_review.py \
+	scripts/tour_batch_review.py
 
 # Reports a missing credential or a wrong endpoint as a sentence. This was a bare
 # `assert` inside `python -c`, so the answer to "is my config right?" was a stack trace.
@@ -328,11 +329,21 @@ golden-diff: ## Diff one golden fixture. Usage: make golden-diff FIXTURE=pdv_rou
 	@$(PREFLIGHT) --label golden-diff $(PRE_TOUR)
 	@$(LOCAL_EXEC) uv run python scripts/tour_golden_diff.py "$(FIXTURE)"
 
+# The parallel shard's three DB workers map to 7688/7690/7691 (tests/conftest.py
+# _XDIST_WORKER_DB), so this target must preflight ALL THREE test graphs — with only
+# db-test declared, workers 1 and 2 ran against stopped containers and two thirds of
+# the DB shard errored at fixture setup. Timeouts are a HANG-BREAKER, not a perf
+# police: --timeout-method=signal fails the one slow test; `thread` killed the whole
+# xdist worker (`node down: Not properly terminated`) and failed every test after it.
 _test-python:
-	@$(PREFLIGHT) --label _test-python $(PRE_PYTEST)
+	@$(PREFLIGHT) --label _test-python $(PRE_PYTEST) db-test2 db-test3
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	@echo "── pure tests (no DB, full parallelism) ──"
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
-		uv run pytest tests/ -v $(PYTEST_ARGS)
+		uv run pytest tests/ -v -m "not needs_db" -n auto --dist loadfile --timeout=300 --timeout-method=signal --durations=15 $(PYTEST_ARGS)
+	@echo "── DB tests (3 workers, one DB each) ──"
+	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
+		uv run pytest tests/ -v -m "needs_db" -n 3 --dist loadfile --timeout=300 --timeout-method=signal --durations=15 $(PYTEST_ARGS)
 
 _test-golden:
 	@$(PREFLIGHT) --label _test-golden $(PRE_PYTEST)
@@ -380,6 +391,9 @@ sys.exit(f"ERROR: OUTPUT_ROOT {given!r} resolves to the frozen control arm {froz
 # scripts/tour_batch_candidate.py refuses the same root itself, which is the guard a
 # direct `python -m` call cannot walk around.
 #   make tour-batch-live PLAN_SHA256=... OUTPUT_ROOT=data/certification/tour-batch-v2
+# TRANSPORT defaults to the Message Batches API — the same sealed requests at half
+# price, with the batch_id persisted to disk before polling so a crash resumes by
+# id instead of paying twice. TRANSPORT=sync restores the per-stop streaming lane.
 tour-batch-live: ## Execute an approved Premium plan. PLAN_SHA256=... and OUTPUT_ROOT=... both required.
 	@test -n "$(PLAN_SHA256)" || { echo "ERROR: PLAN_SHA256 is required." >&2; exit 2; }
 	@test -n "$(OUTPUT_ROOT)" || { echo "ERROR: OUTPUT_ROOT is required; it must not be the frozen control arm data/certification/tour-batch-v1." >&2; exit 2; }
@@ -388,13 +402,14 @@ tour-batch-live: ## Execute an approved Premium plan. PLAN_SHA256=... and OUTPUT
 	@$(RENDER_LOCAL_EXEC) env ONDOWAY_TOUR_BATCH_APPROVED=1 \
 		uv run python -m scripts.tour_batch_candidate --live \
 		--approve-plan-sha256 "$(PLAN_SHA256)" --max-workers "$(or $(MAX_WORKERS),4)" \
-		--output-root "$(OUTPUT_ROOT)"
+		--output-root "$(OUTPUT_ROOT)" --transport "$(or $(TRANSPORT),batch)"
 
 tour-batch-review-plan: ## Rebuild a sealed semantic-review plan without provider calls.
 	@$(PREFLIGHT) --label tour-batch-review-plan $(PRE_TOUR)
 	@$(LOCAL_EXEC) uv run python -m scripts.tour_batch_review \
 		$(if $(BATCH_ROOT),--batch-root "$(BATCH_ROOT)",) \
-		$(if $(REVIEW_ROOT),--review-root "$(REVIEW_ROOT)",)
+		$(if $(REVIEW_ROOT),--review-root "$(REVIEW_ROOT)",) \
+		$(if $(ARCHIVAL_ROOT),--archival-root "$(ARCHIVAL_ROOT)",)
 
 tour-batch-review-live: ## Execute an approved semantic-review plan with fresh Render credentials.
 	@test -n "$(REVIEW_PLAN_SHA256)" || { echo "ERROR: REVIEW_PLAN_SHA256 is required." >&2; exit 2; }
@@ -405,7 +420,8 @@ tour-batch-review-live: ## Execute an approved semantic-review plan with fresh R
 		--max-workers "$(or $(MAX_WORKERS),4)" \
 		$(if $(BATCH_ROOT),--batch-root "$(BATCH_ROOT)",) \
 		$(if $(REVIEW_ROOT),--review-root "$(REVIEW_ROOT)",) \
-		$(if $(CALIBRATION_REUSE_ROOT),--calibration-reuse-root "$(CALIBRATION_REUSE_ROOT)",)
+		$(if $(CALIBRATION_REUSE_ROOT),--calibration-reuse-root "$(CALIBRATION_REUSE_ROOT)",) \
+		$(if $(ARCHIVAL_ROOT),--archival-root "$(ARCHIVAL_ROOT)",)
 
 # ════════════════════════════════════════════════════════════════════════════
 #  DATABASE

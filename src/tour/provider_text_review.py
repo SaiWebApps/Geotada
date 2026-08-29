@@ -34,8 +34,11 @@ from .quality_requests import (
     materialize_provider_enjoyment_assessments,
 )
 
-INPUT_USD_PER_MILLION_TOKENS = 5
-OUTPUT_USD_PER_MILLION_TOKENS = 25
+_MODEL_PRICING: dict[str, tuple[int, int]] = {
+    "claude-opus-4-8": (5, 25),
+    "claude-sonnet-5": (3, 15),
+}
+_DEFAULT_PRICING = (5, 25)
 
 
 def _sha256(value: bytes) -> str:
@@ -205,27 +208,33 @@ class _CalibrationReplay:
 def review_usage(receipt: dict[str, object]) -> ReviewUsage:
     input_tokens = int(receipt["input_tokens"])
     output_tokens = int(receipt["output_tokens"])
+    model = str(receipt.get("model", ""))
+    input_rate, output_rate = _MODEL_PRICING.get(model, _DEFAULT_PRICING)
     return ReviewUsage(
         calls=1,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
         estimated_cost_usd=(
-            input_tokens * INPUT_USD_PER_MILLION_TOKENS
-            + output_tokens * OUTPUT_USD_PER_MILLION_TOKENS
+            input_tokens * input_rate + output_tokens * output_rate
         )
         / 1_000_000,
     )
 
 
 def validate_calibration(
-    receipt: dict[str, object], payload: ProviderCalibrationPayload, inputs: object
+    receipt: dict[str, object],
+    payload: ProviderCalibrationPayload,
+    inputs: object,
+    *,
+    model: str = COMPOSE_MODEL,
+    fact_only: bool = False,
 ) -> object:
     normalized_enjoyment = materialize_provider_enjoyment_assessments(
         payload.enjoyment_assessments,
         items=tuple(anchor.item for anchor in inputs.enjoyment_anchors),
     )
     batch = QualityCalibrationBatch(
-        reviewer_model=COMPOSE_MODEL,
+        reviewer_model=model,
         policy_sha256=QUALITY_POLICY_SHA256,
         approved_fact_prompt_sha256=FACT_PROMPT_SHA256,
         approved_enjoy_prompt_sha256=ENJOY_PROMPT_SHA256,
@@ -244,11 +253,19 @@ def validate_calibration(
         usage=review_usage(receipt),
     )
     report = calibrate_quality(inputs=inputs, reviewer=_CalibrationReplay(batch))
-    if not report.passed:
-        raise ValueError(
-            f"review model did not pass frozen calibration: {report.error or report.state}"
-        )
-    return report
+    if report.passed:
+        return report
+    if report.error:
+        raise ValueError(f"review model calibration error: {report.error}")
+    if fact_only:
+        expected = {case.case_id: case.expected for case in inputs.fact_cases}
+        if all(
+            expected.get(v.case_id) == v.decision for v in payload.fact_verdicts
+        ):
+            return report
+    raise ValueError(
+        f"review model did not pass frozen calibration: {report.state}"
+    )
 
 
 def validate_fact(
@@ -320,12 +337,12 @@ def validate_fact(
 def validate_enjoyment(
     receipt: dict[str, object],
     payload: ProviderEnjoyPayload,
-    item: EnjoymentItem,
+    candidates: tuple[EnjoymentItem, ...],
     anchors: tuple,
 ) -> EnjoymentScoredReviewBatch:
     normalized_assessments = materialize_provider_enjoyment_assessments(
         payload.assessments,
-        items=(*tuple(anchor.item for anchor in anchors), item),
+        items=(*tuple(anchor.item for anchor in anchors), *candidates),
     )
     batch = EnjoymentScoredReviewBatch(
         review_slot="first",
@@ -337,7 +354,7 @@ def validate_enjoyment(
                 "items": [
                     value.model_dump(mode="json")
                     for value in sorted(
-                        (*tuple(anchor.item for anchor in anchors), item),
+                        (*tuple(anchor.item for anchor in anchors), *candidates),
                         key=lambda value: value.item_id,
                     )
                 ]
@@ -348,7 +365,7 @@ def validate_enjoyment(
         usage=review_usage(receipt),
     )
     error = _validate_scored_enjoyment_batch(
-        (item,), batch, anchors=anchors, expected_slot="first"
+        candidates, batch, anchors=anchors, expected_slot="first"
     )
     if error:
         raise ValueError(f"invalid ENJOY review payload: {error}")

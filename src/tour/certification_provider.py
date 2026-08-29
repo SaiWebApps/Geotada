@@ -35,6 +35,8 @@ class PhysicalProviderResponse:
     model: str
     provider_request_id: str | None = None
     stop_reason: str | None = None
+    cache_creation_input_tokens: int = 0
+    cache_read_input_tokens: int = 0
 
 
 class CloseableProviderStream(Protocol):
@@ -89,7 +91,7 @@ def _response_text(response: object) -> str:
     return text
 
 
-def _usage(response: object) -> tuple[int, int]:
+def _usage(response: object) -> tuple[int, int, int, int]:
     usage = getattr(response, "usage", None)
     if usage is None:
         raise ValueError("Anthropic response omitted provider usage")
@@ -99,7 +101,9 @@ def _usage(response: object) -> tuple[int, int]:
         raise ValueError("Anthropic response usage is not integral")
     if input_tokens < 0 or output_tokens < 0:
         raise ValueError("Anthropic response usage is negative")
-    return input_tokens, output_tokens
+    cache_creation = getattr(usage, "cache_creation_input_tokens", 0) or 0
+    cache_read = getattr(usage, "cache_read_input_tokens", 0) or 0
+    return input_tokens, output_tokens, cache_creation, cache_read
 
 
 class AnthropicCertificationProvider:
@@ -167,7 +171,7 @@ class AnthropicCertificationProvider:
                 response = stream.get_final_message()
         latency_ms = round((time.monotonic() - started) * 1000)
         text = _response_text(response)
-        input_tokens, output_tokens = _usage(response)
+        input_tokens, output_tokens, cache_creation, cache_read = _usage(response)
         requested_model = request.get("model")
         response_model = getattr(response, "model", None)
         if not isinstance(requested_model, str) or not requested_model:
@@ -187,6 +191,8 @@ class AnthropicCertificationProvider:
             model=response_model,
             provider_request_id=request_id,
             stop_reason=getattr(response, "stop_reason", None),
+            cache_creation_input_tokens=cache_creation,
+            cache_read_input_tokens=cache_read,
         )
 
 

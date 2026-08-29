@@ -786,6 +786,40 @@ def test_the_correction_never_guesses_between_two_close_ids():
     assert _corrected_citation("beat-xy", two_close) == "beat-xy"  # distance 2: untouched
 
 
+def test_a_glue_sentence_the_writer_mistyped_as_beat_is_coerced_not_refused():
+    """The R4 copy-error doctrine, extended to the TYPE field (live 2026-08-29,
+    v3 batch, nyc-lower-manhattan-90): the writer emitted its requested
+    reflection with ``source_id: GLUE_REFLECTION`` but ``source_type: "beat"``
+    — the id is authoritative (ids are copied from the prompt; no beat carries
+    a glue id), so the mistyped label is corrected deterministically and every
+    downstream gate still judges the sentence. A "beat"-typed sentence whose id
+    is NOT an authorized derived id stays refused — fail-closed is untouched.
+    UNDO: drop the coercion in ``_sentences_from_json`` -> the 1-untraceable
+    refusal returns -> RED."""
+    from src.tour.compose_gate import ComposeVerificationError
+
+    def mistype_close(sentence: dict, stop_index: int) -> dict:
+        if sentence["source_id"] == "GLUE_CLOSING" and stop_index == 1:
+            return {**sentence, "source_type": "beat"}
+        return sentence
+
+    composition = _finalized_with(mistype_close)
+    closes = [
+        s for s in composition.script.script
+        if s.stop_idx == 1 and s.source_id == "GLUE_CLOSING"
+    ]
+    assert closes and closes[0].source_type == "glue", closes
+
+    def invent_beat_id(sentence: dict, stop_index: int) -> dict:
+        if sentence["source_id"] == "story-beta":
+            return {**sentence, "source_id": "GLUE_INVENTED_KIND"}
+        return sentence
+
+    with pytest.raises(ComposeVerificationError) as excinfo:
+        _finalized_with(invent_beat_id)
+    assert excinfo.value.report.untraceable_sentences
+
+
 def test_a_fusion_across_playback_contexts_is_refused_by_name():
     """W8.1(f) mechanism (c), live on 2026-08-23 (trip 45819603, twice): the
     writer fused a stop STORY sentence with a walk-past VIGNETTE beat and the
