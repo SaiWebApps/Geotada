@@ -25,52 +25,37 @@ class LensService extends ChangeNotifier {
   List<Lens> get selectableLenses =>
       _allLenses.where((l) => !l.isParent).toList();
 
+  /// Loads the lens taxonomy from the public `GET /api/v1/lenses` endpoint.
+  ///
+  /// The endpoint already returns the hierarchy nested (a list of parent
+  /// lenses, each with its own `children`), so this is a single call — no
+  /// client-side join. Replaces the old `/nodes/Lens` + `/edges/IS_PARENT_OF`
+  /// pair, which is behind the workbench gate and 404s in prod
+  /// (project_mobile_prod_api_gap).
   Future<void> fetchLenses() async {
-    final lensResp = await _httpClient.get(
-      Uri.parse('$_baseUrl/nodes/Lens?limit=200'),
-    );
-    if (lensResp.statusCode != 200) {
-      throw LensServiceException('Failed to fetch lenses: ${lensResp.body}');
+    final resp = await _httpClient.get(Uri.parse('$_baseUrl/lenses'));
+    if (resp.statusCode != 200) {
+      throw LensServiceException('Failed to fetch lenses: ${resp.body}');
     }
 
-    final lensData = jsonDecode(lensResp.body) as Map<String, dynamic>;
-    final items = lensData['items'] as List<dynamic>;
-    _allLenses = items.map((j) => Lens.fromApiJson(j as Map<String, dynamic>)).toList();
+    final parents = jsonDecode(resp.body) as List<dynamic>;
+    final allLenses = <Lens>[];
+    final childrenByParent = <String, List<Lens>>{};
 
-    final edgeResp = await _httpClient.get(
-      Uri.parse('$_baseUrl/edges/IS_PARENT_OF?limit=200'),
-    );
-    if (edgeResp.statusCode != 200) {
-      throw LensServiceException('Failed to fetch lens hierarchy: ${edgeResp.body}');
+    for (final entry in parents) {
+      final parentJson = entry as Map<String, dynamic>;
+      final parent = Lens.fromApiJson(parentJson);
+      allLenses.add(parent);
+
+      final children = (parentJson['children'] as List<dynamic>? ?? const [])
+          .map((c) => Lens.fromApiJson(c as Map<String, dynamic>))
+          .toList();
+      childrenByParent[parent.displayLabel] = children;
+      allLenses.addAll(children);
     }
 
-    final edgeData = jsonDecode(edgeResp.body) as Map<String, dynamic>;
-    final edges = edgeData['items'] as List<dynamic>;
-
-    final parentById = <String, Lens>{};
-    final childById = <String, Lens>{};
-    for (final lens in _allLenses) {
-      if (lens.isParent) {
-        parentById[lens.id] = lens;
-      } else {
-        childById[lens.id] = lens;
-      }
-    }
-
-    _childrenByParent = {};
-    for (final edge in edges) {
-      final e = edge as Map<String, dynamic>;
-      final parentId = e['source_id'] as String;
-      final childId = e['target_id'] as String;
-      final parent = parentById[parentId];
-      final child = childById[childId];
-      if (parent != null && child != null) {
-        _childrenByParent
-            .putIfAbsent(parent.displayLabel, () => [])
-            .add(child);
-      }
-    }
-
+    _allLenses = allLenses;
+    _childrenByParent = childrenByParent;
     _isLoaded = true;
     notifyListeners();
   }

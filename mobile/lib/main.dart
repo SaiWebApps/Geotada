@@ -41,10 +41,7 @@ void main() async {
     try {
       await Future.wait([
         lensService.fetchLenses(),
-        profileService.fetchProfile(
-          authService.userId!,
-          authService.accessToken!,
-        ),
+        profileService.fetchProfile(authService.accessToken!),
       ]);
     } catch (_) {
       // Non-fatal: app still works, onboarding detection may default to first-time

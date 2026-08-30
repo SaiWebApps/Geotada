@@ -14,7 +14,7 @@ from neo4j.exceptions import ServiceUnavailable
 
 from src.api.auth.routes import router as auth_router
 from src.api.dependencies import close_driver, get_resume_coordinator, init_driver
-from src.api.routes import audio, edges, feedback, graph, nodes, onboard, schema, trips
+from src.api.routes import audio, edges, feedback, graph, nodes, onboard, product, schema, trips
 
 
 def _workbench_api_enabled() -> bool:
@@ -163,6 +163,11 @@ def create_app() -> FastAPI:
     app.include_router(audio.router, prefix="/api/v1")
     app.include_router(trips.router, prefix="/api/v1")
     app.include_router(feedback.router, prefix="/api/v1")
+    # Public read-only product surface (lens taxonomy, user profile): the
+    # mobile client's read path. Mounted here — outside the
+    # _workbench_api_enabled() gate below — because it must serve on the
+    # public deployment where that flag is "false".
+    app.include_router(product.router, prefix="/api/v1")
     # Editorial-workbench CRUD (create/update/delete graph nodes + edges, read the
     # schema/city catalogue). These are the LOCAL workbench's surface — an
     # UNAUTHENTICATED write surface — so they must NOT be exposed on the public

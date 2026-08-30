@@ -179,31 +179,25 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/nodes/Lens')) {
+        // The public GET /api/v1/lenses shape: parents each carrying children[].
+        if (request.url.path.endsWith('/lenses')) {
           return http.Response(
-            jsonEncode({
-              'items': [
-                {
-                  'id': 'lens1',
-                  'labels': ['Lens'],
-                  'properties': {
+            jsonEncode([
+              {
+                'id': 'parent1',
+                'name': 'history',
+                'display_label': 'History',
+                'is_parent': true,
+                'children': [
+                  {
                     'id': 'lens1',
                     'name': 'dark_history',
                     'display_label': 'Dark History',
                     'is_parent': false,
                   },
-                },
-              ],
-              'total': 1,
-              'skip': 0,
-              'limit': 200,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/edges/IS_PARENT_OF')) {
-          return http.Response(
-            jsonEncode({'items': [], 'total': 0, 'skip': 0, 'limit': 200}),
+                ],
+              },
+            ]),
             200,
           );
         }
@@ -268,34 +262,14 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+        // The public GET /api/v1/profile shape: one call, flat body.
+        if (request.url.path.endsWith('/profile')) {
           return http.Response(
             jsonEncode({
-              'items': [
-                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 10,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/nodes/Profile/')) {
-          return http.Response(
-            jsonEncode({
-              'id': 'profile-1',
-              'labels': ['Profile'],
-              'properties': {'display_name': 'Demo', 'theme_preference': 'dark'},
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/edges/PREFERS_LENS')) {
-          return http.Response(
-            jsonEncode({
-              'items': [
-                {'id': 'e-l1', 'type': 'PREFERS_LENS', 'source_id': 'profile-1', 'target_id': 'lens-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 200,
+              'profile_id': 'profile-1',
+              'display_name': 'Demo',
+              'theme_preference': 'dark',
+              'selected_lens_ids': ['lens-1'],
             }),
             200,
           );
@@ -310,7 +284,7 @@ void main() {
       await authService.verifyMagicLink('tok');
 
       final profileService = ProfileService(httpClient: mockClient);
-      await profileService.fetchProfile('user-1', 'tok');
+      await profileService.fetchProfile('tok');
 
       await tester.pumpWidget(
         _wrapProfilePage(
@@ -345,23 +319,15 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+        // The read is the public GET /api/v1/profile; the write still goes to
+        // the workbench node route, which is unchanged by the repoint.
+        if (request.url.path.endsWith('/profile')) {
           return http.Response(
             jsonEncode({
-              'items': [
-                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 10,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/nodes/Profile/') && request.method == 'GET') {
-          return http.Response(
-            jsonEncode({
-              'id': 'profile-1',
-              'labels': ['Profile'],
-              'properties': {'display_name': 'Demo', 'theme_preference': 'system'},
+              'profile_id': 'profile-1',
+              'display_name': 'Demo',
+              'theme_preference': 'system',
+              'selected_lens_ids': ['lens-1'],
             }),
             200,
           );
@@ -377,17 +343,6 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/PREFERS_LENS')) {
-          return http.Response(
-            jsonEncode({
-              'items': [
-                {'id': 'e-l1', 'type': 'PREFERS_LENS', 'source_id': 'profile-1', 'target_id': 'lens-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 200,
-            }),
-            200,
-          );
-        }
         return http.Response('', 404);
       });
 
@@ -398,7 +353,7 @@ void main() {
       await authService.verifyMagicLink('tok');
 
       final profileService = ProfileService(httpClient: mockClient);
-      await profileService.fetchProfile('user-1', 'tok');
+      await profileService.fetchProfile('tok');
 
       await tester.pumpWidget(
         _wrapProfilePage(
@@ -495,23 +450,15 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+        // The read is the public GET /api/v1/profile; the write still goes to
+        // the workbench node route, which is unchanged by the repoint.
+        if (request.url.path.endsWith('/profile')) {
           return http.Response(
             jsonEncode({
-              'items': [
-                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
-              ],
-              'total': 1, 'skip': 0, 'limit': 10,
-            }),
-            200,
-          );
-        }
-        if (request.url.path.contains('/nodes/Profile/') && request.method == 'GET') {
-          return http.Response(
-            jsonEncode({
-              'id': 'profile-1',
-              'labels': ['Profile'],
-              'properties': {'display_name': 'Demo User', 'theme_preference': 'system'},
+              'profile_id': 'profile-1',
+              'display_name': 'Demo User',
+              'theme_preference': 'system',
+              'selected_lens_ids': <String>[],
             }),
             200,
           );
@@ -527,15 +474,6 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/edges/PREFERS_LENS')) {
-          return http.Response(
-            jsonEncode({
-              'items': [],
-              'total': 0, 'skip': 0, 'limit': 200,
-            }),
-            200,
-          );
-        }
         return http.Response('', 404);
       });
 
@@ -546,7 +484,7 @@ void main() {
       await authService.verifyMagicLink('tok');
 
       final profileService = ProfileService(httpClient: mockClient);
-      await profileService.fetchProfile('user-1', 'tok');
+      await profileService.fetchProfile('tok');
 
       await tester.pumpWidget(
         _wrapProfilePage(
