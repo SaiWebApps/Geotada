@@ -1,0 +1,175 @@
+{
+  "acknowledge_token": "KEEP-THIS-ARTIFACT",
+  "max_listed": 12,
+
+  "_comment_keep": [
+    "Exact path prefixes that are product even though nothing in the codebase",
+    "names them in text. Matched with startswith on the repo-relative path — no",
+    "patterns, so nothing here can silently mis-fire.",
+    "",
+    "This list does NOT override .gitignore. Git's answer is asked first, so a",
+    "gitignored file under a kept tree is still caught: the copyrighted PDF under",
+    "Books/, the guard's own team-gate log under .claude/. Keep only decides for",
+    "paths git has no opinion about.",
+    "",
+    "Add to this list when the guard flags something a build or a review needs."
+  ],
+  "keep": [
+    { "prefix": "mobile/ios/",
+      "why": "The Xcode project, the AppIcon set and the launch image. Apple rejects a build without a complete icon set." },
+    { "prefix": "mobile/web/",
+      "why": "Flutter web build inputs — manifest icons and favicon." },
+    { "prefix": "mobile/assets/",
+      "why": "Declared under `assets:` in pubspec.yaml, so it is compiled into the IPA." },
+    { "prefix": "mobile/test/",
+      "why": "Flutter unit tests and their golden baselines. A golden PNG is the assertion, not a screenshot of one." },
+    { "_comment": [
+        "Flutter finds these five by convention and never by a mention: the",
+        "toolchain reads them because of where they sit and what they are named." ] },
+    { "prefix": "mobile/pubspec.lock",
+      "why": "Pins the resolved Dart dependency set, so a build is reproducible." },
+    { "prefix": "mobile/analysis_options.yaml",
+      "why": "The Dart analyzer's configuration; `flutter analyze` reads it by name." },
+    { "prefix": "mobile/.metadata",
+      "why": "Flutter's project marker; the tooling reads it on upgrade." },
+    { "prefix": "mobile/.gitignore",
+      "why": "Controls what the Flutter subtree contributes to history." },
+    { "prefix": "mobile/README.md",
+      "why": "The mobile subtree's front door." },
+
+    { "prefix": "tests/fixtures/",
+      "why": "Inputs the Python suite reads." },
+    { "prefix": "fixtures/",
+      "why": "Golden tour fixtures the suite reads." },
+    { "_comment": [
+        "The city pipeline corpora. The product reaches every file in them by a",
+        "path it BUILDS from a city name — data/{city}/wikipedia/{slug}.txt — so",
+        "no leaf is ever named in source, and each leaf name recurs once per",
+        "city. Listed city by city rather than as a blanket data/, so a new",
+        "corpus directory earns a line in a diff someone reads, and so the",
+        "certification batches below keep having to name themselves.",
+        "",
+        "This does not readmit what is junk INSIDE them. Git is asked first, and",
+        "data/*/tours/ and data/*/.* — the pipeline's own dot-prefixed run state",
+        "— are still caught underneath these prefixes." ] },
+    { "prefix": "data/london/",
+      "why": "London pipeline corpus: Wikipedia extracts, areas, beats, POIs, boundaries." },
+    { "prefix": "data/new_york/",
+      "why": "New York pipeline corpus." },
+    { "prefix": "data/paris/",
+      "why": "Paris pipeline corpus." },
+    { "prefix": "data/certification/tour-batch-v1/",
+      "why": "The checked regression corpus. Read by tests/test_tour_batch_candidate_runner.py and tests/test_tour_quality_rubric.py." },
+    { "prefix": "Books/",
+      "why": "Chunked plain-text extracts are the canonical pipeline input. The copyrighted source PDFs beside them are gitignored, so git's answer still catches those." },
+    { "prefix": ".claude/",
+      "why": "The guards, agents and slash commands are deliberately version-controlled." },
+    { "prefix": ".github/",
+      "why": "CI configuration." },
+
+    { "_comment": [
+        "Docs/ is listed subtree by subtree, on purpose. A blanket Docs/ keeps the",
+        "reference material AND the phase write-ups, handoffs and closed bug reports",
+        "sitting beside it — and those are the exact thing this guard exists to stop.",
+        "Naming the durable subtrees means a new folder under Docs/ has to earn a line",
+        "here, in a diff someone reads, rather than inheriting a pass." ] },
+    { "prefix": "Docs/Markdown Docs/",
+      "why": "API reference, test strategy, security practices, TTS pipeline — what a new engineer reads." },
+    { "prefix": "Docs/personas/",
+      "why": "The tourist personas the acceptance agent judges tours against." },
+    { "prefix": "Docs/Prompts/",
+      "why": "The pipeline's authored prompts." },
+    { "prefix": "Docs/MAKE_TARGETS.md",
+      "why": "What every make target does." },
+    { "prefix": "Docs/TESTFLIGHT-PREFLIGHT.md",
+      "why": "The release checklist." },
+    { "prefix": "Docs/tour-builder/design.md",
+      "why": "The tour builder's standing design, not a phase snapshot of it." },
+    { "prefix": "Docs/tour-builder/extraction-requirements.md",
+      "why": "The extraction contract." },
+    { "prefix": "Docs/tour-builder/source-study.md",
+      "why": "The source-material study the extractor is built from." },
+    { "prefix": "Docs/tour-builder/examples/",
+      "why": "Worked example tours used as authoring references." },
+
+    { "prefix": "Makefile", "why": "The build." },
+    { "prefix": "pyproject.toml", "why": "Package and lint configuration." },
+    { "prefix": "uv.lock", "why": "Reproducible dependency resolution." },
+    { "prefix": "requirements.txt", "why": "Generated by make requirements; read by the deploy." },
+    { "prefix": "Dockerfile", "why": "The image." },
+    { "prefix": "docker-compose.yml", "why": "Local service topology." },
+    { "prefix": ".dockerignore", "why": "Controls what enters the image." },
+    { "prefix": "render.yaml", "why": "Deploy configuration." },
+    { "prefix": "README.md", "why": "The repo's front door." },
+    { "prefix": "index.html", "why": "The deployed root page; it redirects to the product. The host serves it by position, so nothing names it." },
+    { "prefix": "CLAUDE.md", "why": "The project's coding rules." },
+    { "prefix": "LICENSE", "why": "Legal." },
+    { "prefix": ".gitignore", "why": "The declaration this guard enforces." },
+    { "prefix": ".env.example", "why": "The documented environment contract." },
+    { "prefix": ".env.test.example", "why": "The documented test environment contract." }
+  ],
+
+  "_comment_surface": [
+    "The product surface: the files a build, a test or the shipped app actually",
+    "reads. Their combined text is the reference index — a candidate survives if",
+    "anything here names it by path or by filename.",
+    "",
+    "Prose is deliberately absent. README.md and CLAUDE.md are not listed: being",
+    "mentioned in a document is not being used by the product, and counting it",
+    "would keep every artefact any write-up ever linked to."
+  ],
+  "surface_dirs": [
+    "src",
+    "tests",
+    "scripts",
+    "config",
+    "frontend",
+    "mobile/lib",
+    "mobile/test",
+    "mobile/integration_test",
+    ".claude/commands",
+    ".claude/workflows"
+  ],
+  "_comment_surface_exclude": [
+    "Files that sit inside a surface directory but must not COUNT as surface.",
+    "",
+    "Exactly one, and it is structural rather than a matter of taste: the guard's",
+    "own payload test names junk paths as its examples, and tests/ is surface, so",
+    "asserting 'this path is junk' was itself what made the path look referenced.",
+    "Nothing else belongs here — a file you would rather the guard ignored is a",
+    "file that should not be in a surface directory."
+  ],
+  "surface_exclude": [
+    "tests/test_production_junk_guard.py"
+  ],
+
+  "surface_files": [
+    "Makefile",
+    "pyproject.toml",
+    "docker-compose.yml",
+    "Dockerfile",
+    "render.yaml",
+    ".dockerignore",
+    "mobile/pubspec.yaml"
+  ],
+  "surface_suffixes": [
+    ".py", ".dart", ".js", ".ts", ".jsx", ".tsx", ".sh", ".yaml", ".yml",
+    ".toml", ".json", ".html", ".css", ".md", ".txt", ".cfg", ".ini", ".swift"
+  ],
+
+  "_comment_reasons": [
+    "Explanation text for the two verdicts. Both verdicts are structural — git's",
+    "own ignore rules, and whether the product names the file — so there is no",
+    "spelling here that a misnamed file can slip past."
+  ],
+  "reasons": {
+    "declared_ignorable": {
+      "why": "The repo's own .gitignore already declares this junk, yet it is being put into git history anyway. That is exactly how 427 files and 207 MB got tracked here: each rule was written after its files, and nothing went back to remove them.",
+      "instead": "Delete the file. If it is genuinely product, then the .gitignore rule covering it is too broad and should be narrowed — an unanchored `models/` once excluded src/api/models/ this way."
+    },
+    "unreferenced": {
+      "why": "Nothing that builds, tests or ships names this file — not the app, not the suite, not the Makefile, not a script. It cannot affect the product, so a launch does not need it and a reviewer cannot use it.",
+      "instead": "Delete it. If it is a durable decision record, move it under Docs/ with a topic name and link it from README.md."
+    }
+  }
+}

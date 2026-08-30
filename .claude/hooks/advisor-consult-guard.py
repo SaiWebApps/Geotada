@@ -1,29 +1,48 @@
 #!/usr/bin/env python3
-"""No reply without a consult. (Owner ruling, 2026-08-29.)
+"""Nothing happens in a turn before the advisor is consulted and its plan printed.
 
-A Stop hook. It refuses to let the turn end unless the `advisor` tool was
-actually called during it.
+TWO ARMS.
 
-WHY: the owner asked, repeatedly, for the Fable 5 advisor to be consulted before
-every response. The instruction was given at least five times in one session and
-broken after each one — including replies that opened with the words "consulting
-the advisor now" and then did not. An instruction that is agreed to and skipped
-is not a rule; it is a habit of saying yes.
+  PreToolUse  No tool runs until this turn contains an advisor consult AND a
+              printed step-by-step plan following it. This is the arm that
+              matters, because it gates ACTIONS. Every destructive action gets
+              its own fresh consult on top of that.
+  Stop        No reply ends the turn without a consult in it.
 
-MECHANICAL, NOT SEMANTIC. This does not judge whether the consult was thoughtful.
-It reads the transcript for a `tool_use` record whose name is `advisor`, inside
-this turn — that is, after the last human message. Either the call happened or it
-did not, and the transcript is the record. No pattern matching (owner ruling
-2026-08-29): the JSONL records are walked and their fields compared.
+WHY THE PRE-TOOL ARM EXISTS. The Stop arm alone gates only what is SAID. A turn
+could consult once, then delete five hundred files, and the Stop arm would be
+satisfied. That is not a hypothetical: a turn that consulted once at the start
+went on to sweep 544 files out of the repository, and one of them was a file the
+test suite reads — lost to a case-sensitivity bug in the delete rule that a
+consult immediately before the sweep would have caught. Consulting about a plan
+is not consulting about the act.
 
-SCOPE, so it stays a gate and not a tax:
-  * Only replies to a HUMAN turn. A background task finishing, or a hook feeding
-    a verdict back, must not force a consult about nothing.
-  * MAX_BLOCKS, like its siblings: if the advisor itself is failing, the session
-    must still be able to end. A guard that can wedge the session shut gets
-    deleted, and then it guards nothing.
+WHY THE PLAN MUST BE PRINTED. A consult whose answer is never written down is
+indistinguishable from a consult that was ignored. Printing the numbered plan
+before acting makes the advice visible to the person who has to live with the
+result, and makes a silent deviation from it obvious.
+
+WHY THERE IS NO ESCAPE HATCH. No token, no environment variable, no ceiling that
+disarms after N refusals. Every other guard here carries one so that a broken
+dependency cannot wedge the session, and that reasoning does not apply: the
+single action that satisfies this guard — calling `advisor` — is never blocked by
+it, so a refusal always has an immediate, available remedy. A ceiling would only
+ever grant permission to skip the rule, which is the exact failure the guard
+exists to remove. If the advisor is genuinely unreachable, the correct move is to
+say so and stop, not to proceed unadvised.
+
+MECHANICAL, NOT SEMANTIC. Nothing here judges whether a consult was thoughtful or
+whether the printed plan is a good one. It asks three yes-or-no questions of the
+transcript: did an advisor record appear in this turn, did assistant text of real
+length follow it, and — for a destructive command — did a consult follow the
+previous destructive command. The transcript is the record; agreeing to a rule
+and skipping it are identical in every place except there.
+
+NO PATTERN MATCHING on records: the JSONL entries are walked and their fields
+compared, because a pattern catches only the spellings someone thought of.
 """
 
+import contextlib
 import json
 import os
 import sys
@@ -31,14 +50,44 @@ import time
 from pathlib import Path
 
 STATE_PATH = Path("/tmp/ondoway-advisor-consult-state.json")
-#: Raised from 2 on 2026-08-29. Every human message resets the turn and demands a
-#: fresh consult, and this owner interjects often — 36 human records in one
-#: session's transcript tail. At 2, two rapid interjections while mid-toolwork
-#: burned both blocks and the guard silently disarmed itself, which is the
-#: starved-rule class it exists to prevent. A successful consult resets the count
-#: to 0 (see main), so this ceiling is only ever reached by genuine repeated
-#: failure to consult.
+#: The Stop arm's ceiling, and ONLY the Stop arm's. Every human message resets the
+#: turn and demands a fresh consult, and this owner interjects often — 36 human
+#: records in one measured session's transcript tail. At a ceiling of 2, two rapid
+#: interjections during tool work burned both blocks and the guard silently
+#: disarmed itself, which is the starved-rule failure it exists to prevent. A
+#: successful consult resets the count to 0, so this is only ever reached by
+#: genuine repeated failure.
+#:
+#: The PreToolUse arm has no equivalent and must never grow one. Blocking a reply
+#: forever would leave the owner with silence; blocking a TOOL leaves the one
+#: remedy — call the advisor — fully available, so there is nothing to rescue.
 MAX_BLOCKS = 5
+
+#: The shortest assistant message that can plausibly BE a step-by-step plan.
+#: Measured against a real printed plan of nine numbered steps: 700 characters.
+#: A bare acknowledgement ("consulting now", "will do") runs under 100. 250 sits
+#: between them with room on both sides. Length is used rather than wording on
+#: purpose: a rule that reads my words is a rule I can satisfy by choosing
+#: different words, and the only way past a length floor is to actually write
+#: something.
+MIN_PLAN_CHARS = 250
+
+#: Commands that change the world in a way an apology cannot undo. Each one needs
+#: a consult of its own, not merely a consult somewhere earlier in the turn.
+#: Plain substrings, compared against the command with surrounding spaces
+#: normalised — deliberately a SHORT list, because a guard that fires on ordinary
+#: work is a guard that gets deleted, and then it guards nothing.
+DESTRUCTIVE_MARKERS = (
+    "rm -r", "rm -f", "rmtree", "git rm", "git commit", "git push", "git reset",
+    "git checkout", "git clean", "git branch -d", "docker compose down",
+    "docker rm", "docker stop", "docker kill", "drop database", "truncate",
+    "--apply", "--force", "-delete",
+)
+
+#: Tools the PreToolUse arm never blocks. `advisor` is the remedy this guard
+#: demands, so blocking it would make the guard unsatisfiable. The rest are the
+#: tools that produce the reply itself.
+EXEMPT_TOOLS = ("advisor", "AskUserQuestion", "ExitPlanMode", "TodoWrite")
 TRANSCRIPT_TAIL_BYTES = 8 * 1024 * 1024
 
 HEADLINE = "NO CONSULT, NO REPLY."
@@ -61,10 +110,8 @@ def read_state():
 
 
 def write_state(state):
-    try:
+    with contextlib.suppress(OSError):
         STATE_PATH.write_text(json.dumps(state))
-    except OSError:
-        pass
 
 
 def records(transcript_path):
@@ -191,6 +238,189 @@ def consulted(turn):
     return False
 
 
+def deny_tool(reason):
+    """Refuse the tool call. Always exit 0: a guard that crashes is a guard that
+    is switched off, and the decision travels in the printed JSON, not the code."""
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "deny",
+                    "permissionDecisionReason": reason,
+                },
+                "systemMessage": reason,
+            }
+        )
+    )
+    sys.exit(0)
+
+
+def _assistant_blocks(entry):
+    """The content blocks of an assistant record, or an empty list."""
+    if entry.get("type") != "assistant":
+        return []
+    content = (entry.get("message") or {}).get("content")
+    return [block for block in content or [] if isinstance(block, dict)]
+
+
+def consult_index(turn):
+    """Position in `turn` of the LAST advisor record, or -1 if there is none.
+
+    The last rather than the first, because a turn may consult several times and
+    what matters is whether the most recent advice precedes what happens next.
+    """
+    found = -1
+    for index, entry in enumerate(turn):
+        for block in _assistant_blocks(entry):
+            kind = block.get("type")
+            called = kind in ADVISOR_CALL_TYPES and block.get("name") == "advisor"
+            if called or kind == ADVISOR_RESULT_TYPE:
+                found = index
+    return found
+
+
+def plan_printed_after(turn, index):
+    """Did assistant text of real length follow the consult at `index`?
+
+    Text and tool calls arrive as SEPARATE assistant records, and the text record
+    is written first — measured directly on this project's transcript, where one
+    assistant turn appears as three consecutive records: a thinking record, a
+    text record of 282 characters, and a tool_use record. So by the time a tool
+    call reaches this hook, any text printed before it is already on disk and can
+    be counted. If that ordering ever changed, this arm would refuse every tool
+    call in a turn, loudly and immediately, rather than passing silently.
+
+    The lengths are SUMMED across every text block after the consult, not checked
+    one at a time. Because text arrives as separate records, a plan written as an
+    opening line, then a numbered list, then a closing line is three short blocks
+    and no single one of them clears the floor — a per-block test would refuse
+    every tool call for the rest of that turn, with the plan sitting in plain
+    view above it. The question is whether the plan was written, not whether it
+    was written in one breath.
+    """
+    printed = 0
+    for entry in turn[index + 1:]:
+        for block in _assistant_blocks(entry):
+            if block.get("type") == "text":
+                printed += len(block.get("text") or "")
+    return printed >= MIN_PLAN_CHARS
+
+
+def _overwrites_existing_file(payload):
+    """A Write whose target already exists — destruction with no command to scan.
+
+    The marker list reads shell commands, and a Write carries none: it names a
+    path and a body, and if something is already at that path the previous
+    contents are gone. That is the same irreversible act as `rm` followed by a
+    new file, reached through a different tool, so it earns the same fresh
+    consult. A Write to a path that does not exist yet creates something and
+    destroys nothing, and is left alone.
+
+    Edit is deliberately NOT here. An Edit must match existing text to apply, so
+    it cannot silently erase a file, and gating every Edit behind its own consult
+    would make ordinary work impossible — which is how a guard gets deleted.
+    """
+    if (payload.get("tool_name") or "") != "Write":
+        return False
+    target = (payload.get("tool_input") or {}).get("file_path")
+    return isinstance(target, str) and bool(target) and Path(target).exists()
+
+
+def _command_of(payload):
+    """The shell command a Bash call would run, lowercased and space-normalised.
+
+    Normalising runs of whitespace to single spaces means `git   rm` and a command
+    split across lines are compared as the same thing, so the marker list does not
+    have to carry every spacing a command can be written with.
+    """
+    tool_input = payload.get("tool_input") or {}
+    raw = tool_input.get("command")
+    if not isinstance(raw, str):
+        return ""
+    return " ".join(raw.lower().split())
+
+
+def is_destructive(command):
+    return any(marker in command for marker in DESTRUCTIVE_MARKERS)
+
+
+def destructive_calls_in(turn):
+    """Positions in `turn` of acts that changed the world.
+
+    Two kinds. A Bash call whose command carries a destructive marker, and ANY
+    Write — because by the time this runs the written file exists either way, so
+    whether that Write created or overwrote is no longer answerable from the
+    transcript. Counting every Write costs an extra consult after writing a new
+    file; not counting them would let an overwrite go unnoticed. The cheap
+    mistake is the one to make.
+    """
+    out = []
+    for index, entry in enumerate(turn):
+        for block in _assistant_blocks(entry):
+            if block.get("type") != "tool_use":
+                continue
+            name = block.get("name")
+            if name == "Write":
+                out.append(index)
+                continue
+            if name != "Bash":
+                continue
+            raw = (block.get("input") or {}).get("command")
+            if isinstance(raw, str) and is_destructive(" ".join(raw.lower().split())):
+                out.append(index)
+    return out
+
+
+def handle_pre_tool_use(payload, turn):
+    """Gate the action itself. Three questions, each answered by the transcript."""
+    tool = payload.get("tool_name") or ""
+    if tool in EXEMPT_TOOLS:
+        allow()
+
+    index = consult_index(turn)
+    if index < 0:
+        deny_tool(
+            "NO CONSULT, NO ACTION.\n\n"
+            f"This turn has not called the advisor, and `{tool}` would act on it "
+            "anyway. Consulting after the fact is not consulting.\n\n"
+            "Call `advisor()` now. It takes no arguments and forwards this whole "
+            "conversation. Then PRINT the step-by-step plan it gives you, in "
+            "numbered steps, and follow that plan."
+        )
+
+    if not plan_printed_after(turn, index):
+        deny_tool(
+            "THE PLAN WAS NOT PRINTED.\n\n"
+            "The advisor was consulted in this turn, but nothing of substance was "
+            "written down afterwards, so the advice it gave is invisible to the "
+            "person who has to live with the result — and a silent deviation from "
+            "it would be invisible too.\n\n"
+            "Print the advisor's step-by-step plan as numbered steps "
+            f"(at least {MIN_PLAN_CHARS} characters), then act on it."
+        )
+
+    # A destructive act with another one already run since the last consult would
+    # be the second in a row on a single piece of advice.
+    command = _command_of(payload)
+    destroys = (command and is_destructive(command)) or _overwrites_existing_file(payload)
+    unadvised = destroys and any(
+        position > index for position in destructive_calls_in(turn)
+    )
+    if unadvised:
+        deny_tool(
+            "A DESTRUCTIVE ACTION NEEDS ITS OWN CONSULT.\n\n"
+            "This command changes the world in a way an apology cannot undo, and "
+            "another destructive command has already run in this turn since the "
+            "last consult. One consult does not cover a sequence of them: a turn "
+            "that consulted once and then swept 544 files deleted a file the test "
+            "suite reads, and did not find out until afterwards.\n\n"
+            "Call `advisor()` again, print what it says, then run this command."
+        )
+
+    allow()
+
+
 def main():
     if os.environ.get("CLAUDE_NO_EXCUSES_JUDGE"):
         allow()
@@ -202,6 +432,15 @@ def main():
 
     transcript = payload.get("transcript_path")
     if not transcript:
+        allow()
+
+    event = payload.get("hook_event_name") or ""
+    if event == "PreToolUse":
+        entries = records(transcript)
+        turn = turn_slice(entries)
+        if turn is None:
+            allow()  # no human turn in view; nothing has been asked yet
+        handle_pre_tool_use(payload, turn)
         allow()
 
     session = payload.get("session_id") or "unknown"

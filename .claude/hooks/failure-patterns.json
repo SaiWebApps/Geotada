@@ -27,7 +27,7 @@
       "name": "stale working directory",
       "kind": "needs_abs_cd",
       "applies_to": "(^|[;&|]\\s*)([A-Za-z_][A-Za-z0-9_]*=\\S*\\s+)*(make|pytest|uv\\s+run)\\b",
-      "message": "this runs `make`/`pytest`/`uv run` without first cd-ing to an absolute path. The shell's working directory PERSISTS between Bash calls, so a `cd` from an earlier command silently decides where this one runs \u2014 it has already produced 'No rule to make target' three times in this project (2026-08-25 twice, 2026-08-28). Prefix the command with `cd /Users/sairambkrishnan/git/ondoway &&`."
+      "message": "this runs `make`/`pytest`/`uv run` without establishing its own working directory. The shell's cwd PERSISTS between Bash calls, so a `cd` from an earlier command silently decides where this one runs \u2014 it has already produced 'No rule to make target' three times in this project (2026-08-25 twice, 2026-08-28). USE ONE OF THESE, and NOT a leading `cd`: `make -C /Users/sairambkrishnan/git/ondoway <target>`, or an absolute path to the program itself (`/Users/sairambkrishnan/git/ondoway/.venv/bin/python -m pytest /Users/sairambkrishnan/git/ondoway/tests/test_x.py`), or `git -C /Users/sairambkrishnan/git/ondoway ...`. A LEADING `cd /abs &&` CANNOT SATISFY THIS GUARD: measured 2026-08-29, the harness strips a leading `cd` before the command reaches the hook, so eight consecutive attempts to prefix one arrived here as the bare command and were blocked again. Do not retry the `cd` form \u2014 it will never pass."
     },
     {
       "class": 2,
