@@ -1,0 +1,42 @@
+{
+  "trip_id": "fixture-paris-001",
+  "trip_name": "Île de la Cité — a first walk",
+  "profile_id": "fixture-profile",
+  "total_stops": 3,
+  "total_duration_min": 45,
+  "anchor_count": 3,
+  "flavour_count": 0,
+  "stops": [
+    {
+      "sort_order": 0, "stop_id": "s0", "poi_id": "louvre", "poi_name": "The Louvre",
+      "lat": 48.8606, "lng": 2.3376, "beat_id": "b0",
+      "lens_name": "art_history", "lens_display": "Art & History",
+      "duration_min": 15, "importance_tier": 1, "start_time": "10:00",
+      "script_body": "Stand before the glass pyramid...",
+      "audio_url": "https://cdn.example/louvre.mp3", "audio_duration_sec": 92.0,
+      "transit_polyline": null, "extra_beat_ids": [], "extra_narration": null,
+      "trigger": {"kind": "circle", "radius_m": 140.0, "queue_seconds": 0, "door": false, "outside_seconds": 0}
+    },
+    {
+      "sort_order": 1, "stop_id": "s1", "poi_id": "pontneuf", "poi_name": "Pont Neuf",
+      "lat": 48.8570, "lng": 2.3410, "beat_id": "b1",
+      "lens_name": "architecture", "lens_display": "Architecture",
+      "duration_min": 10, "importance_tier": 2, "start_time": "10:20",
+      "script_body": "The oldest standing bridge...",
+      "audio_url": "https://cdn.example/pontneuf.mp3", "audio_duration_sec": 78.0,
+      "transit_polyline": null, "extra_beat_ids": [], "extra_narration": null,
+      "trigger": {"kind": "circle", "radius_m": 60.0, "queue_seconds": 0, "door": false, "outside_seconds": 0}
+    },
+    {
+      "sort_order": 2, "stop_id": "s2", "poi_id": "notredame", "poi_name": "Notre-Dame",
+      "lat": 48.8530, "lng": 2.3499, "beat_id": "b2",
+      "lens_name": "art_history", "lens_display": "Art & History",
+      "duration_min": 20, "importance_tier": 1, "start_time": "10:35",
+      "script_body": "The cathedral rises...",
+      "audio_url": "https://cdn.example/notredame.mp3", "audio_duration_sec": 110.0,
+      "transit_polyline": null, "extra_beat_ids": [], "extra_narration": null,
+      "trigger": {"kind": "circle", "radius_m": 80.0, "queue_seconds": 0, "door": false, "outside_seconds": 0}
+    }
+  ],
+  "options": []
+}

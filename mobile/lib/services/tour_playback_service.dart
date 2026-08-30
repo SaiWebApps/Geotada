@@ -855,6 +855,13 @@ class TourPlaybackService extends ChangeNotifier {
     _locationListener = () => _onPositionUpdate();
     _locationService.addListener(_locationListener!);
 
+    // Activate the iOS audio session while we are still in the foreground.
+    // iOS refuses activation from a background callback, and the tour's first
+    // piece may well be triggered by a geofence with the screen already locked,
+    // so the door has to be opened here — at the start, on screen — or the
+    // native player has no active session to be audible on.
+    await _audioService.prepareSession();
+
     // Listen to audio completion
     _audioListener = () => _onAudioStateChanged();
     _audioService.addListener(_audioListener!);
@@ -884,6 +891,10 @@ class TourPlaybackService extends ChangeNotifier {
     }
     _locationService.stopTracking();
     _audioService.stop();
+    // Give the audio session back. Without this the `.duckOthers` category
+    // keeps the tourist's own music or podcast quiet for the rest of the app's
+    // life, long after the walk is over.
+    _audioService.releaseSession();
     _sentenceEndTimer?.cancel();
     _sentenceEndTimer = null;
     _closePending = null;
@@ -1749,6 +1760,10 @@ class TourPlaybackService extends ChangeNotifier {
       _currentStopIndex++;
     } else {
       _state = TourState.completed;
+      // The walk is over on its own, without anyone pressing stop. Release the
+      // session here too, or a tour that simply finished leaves other audio
+      // ducked until the app dies.
+      _audioService.releaseSession();
     }
     notifyListeners();
   }

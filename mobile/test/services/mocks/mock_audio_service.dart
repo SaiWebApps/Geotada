@@ -119,6 +119,19 @@ class MockAudioService extends AudioProvider {
     lastSeek = position;
   }
 
+  /// Every session door the tour opened or closed, in order: 'prepare' when
+  /// the walk asked for the audio session, 'release' when it gave it back.
+  /// The iOS session must be ACTIVATED from the foreground — iOS refuses it
+  /// from a background callback — so which of these the tour calls, and when,
+  /// is the difference between narration a locked phone plays and silence.
+  final List<String> sessionCalls = [];
+
+  @override
+  Future<void> prepareSession() async => sessionCalls.add('prepare');
+
+  @override
+  Future<void> releaseSession() async => sessionCalls.add('release');
+
   /// Simulate audio completing playback — the piece reached its END on its own
   /// (a pause is NOT this: it leaves [isCompleted] false).
   void simulateComplete() {

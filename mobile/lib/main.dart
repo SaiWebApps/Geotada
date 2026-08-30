@@ -75,7 +75,10 @@ void main() async {
         ChangeNotifierProvider.value(value: tripService),
         ChangeNotifierProvider.value(value: feedbackService),
         ChangeNotifierProvider.value(value: locationService),
-        ChangeNotifierProvider.value(value: audioService),
+        // Typed, not a second untyped copy of the line above: TourWalkPage
+        // watches AudioProvider, and without this registration that lookup
+        // throws ProviderNotFoundException at runtime.
+        ChangeNotifierProvider<AudioProvider>.value(value: audioService),
         ChangeNotifierProvider.value(value: tourPlaybackService),
       ],
       child: OndowayApp(router: router),
