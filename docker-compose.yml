@@ -16,10 +16,23 @@ x-neo4j: &neo4j
 x-neo4j-env: &neo4j-env
   NEO4J_PLUGINS: '["apoc"]'
 
+# The probe must not become the load. `cypher-shell` is a JVM, and on a busy
+# machine it is SLOW: measured 21.5 s on 2026-08-29 while the bolt endpoint the
+# suite actually uses answered the same `RETURN 1` in 0.25 s. Against the old
+# 5 s timeout it could never finish, so every container respawned it every 5 s
+# forever — nine JVM launches a second between them, 200% CPU per container with
+# nothing querying, and each new JVM made the next one slower. Docker called
+# every graph unhealthy and preflight refused to run, while all nine databases
+# were answering queries the whole time.
+#
+# 30 s of headroom is roughly ten times the idle cost of the probe, and one JVM
+# per 30 s is noise. start_period covers the ~20 s Neo4j spends starting, so a
+# cold container is not marked unhealthy for booting.
 x-neo4j-health: &neo4j-health
-  interval: 5s
-  timeout: 5s
-  retries: 30
+  interval: 30s
+  timeout: 30s
+  retries: 20
+  start_period: 40s
 
 # A graph holding a full city corpus (the parallel-lane pytest and dev graphs).
 # Capped because these run alongside the uncapped canonical pair: an uncapped
