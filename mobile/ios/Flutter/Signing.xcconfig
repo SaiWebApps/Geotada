@@ -1,0 +1,20 @@
+// iOS code-signing baseline (committed).
+//
+// The committed defaults are Sai's team + the production bundle ID — the baseline
+// for CI, release/TestFlight builds, and any checkout without a personal override.
+//
+// Per-developer overrides live in the GITIGNORED `DevSigning.xcconfig` in this
+// folder, which is `#include?`d LAST below so it wins when present. Each dev drops
+// their own team + bundle ID there once; the committed pbxproj references
+// $(ONDOWAY_DEV_TEAM)/$(ONDOWAY_BUNDLE_ID) and therefore never churns between
+// developers.
+//
+// Do NOT set a team/bundle in the Xcode "Signing & Capabilities" tab — that
+// rewrites the pbxproj to a literal and reintroduces the churn this file removes.
+// Edit `DevSigning.xcconfig` instead. See specs/2026-08-04-mobile-roadmap/roadmap.md
+// §7.3 and memory `project_ios_per_dev_signing`.
+
+ONDOWAY_DEV_TEAM = BC7F6Q48GB
+ONDOWAY_BUNDLE_ID = com.ondoway.app
+
+#include? "DevSigning.xcconfig"
