@@ -145,8 +145,16 @@ Stated here so no future version quietly inflates the claim.
   stream editor rewriting a tracked source file. `shlex` segments the command,
   flags are inspected for in-place spellings, targets are checked against
   `git ls-files`. 10/10 payload tests.
+- **`.claude/hooks/production-junk-guard.py`** (PreToolUse on Bash, and Stop).
+  Nothing enters history that a launch does not need. Two verdicts, both
+  answered by a tool rather than a name pattern: `git check-ignore` for what the
+  repo already declared junk, and containment in the product surface for what
+  nothing reads. Written 2026-08-28 and left unwired, so it decided nothing
+  until 2026-08-29. 18/18 payload tests in
+  `tests/test_production_junk_guard.py`; §7's class showed up twice on the way
+  in, and both are named there.
 
-## 7. Three guards that ate themselves, and the class they share
+## 7. Four guards that ate themselves, and the class they share
 
 Every one of these passed its own tests before it was found broken. The class:
 **the enforcement layer's own artifacts must be classified and payload-tested
@@ -170,3 +178,17 @@ only that the two agree with each other.**
    payload tests all passed because they were built from the same assumed shape.
    Fix: read the real records out of the live transcript, and test the guard
    against that transcript rather than against a fixture.
+4. **The guard that never fired, and then fought its own cleanup.**
+   `production-junk-guard.py` was complete, documented, and named by nothing in
+   `settings.json` — a day of enforcement that enforced nothing, which no test
+   could have caught because the code itself was correct. **A hook is not built
+   until the wiring is proven by a payload.** Wiring it surfaced two more, both
+   of the class above. A bare filename was accepted as proof the product reads a
+   file: true for `density.py`, false for `tour.json`, a name 24 files carry — so
+   judging a 40-file throwaway batch it passed 32 on that collision and caught 8
+   only because *their* leaf name was spelled differently. And a staged DELETION
+   was judged like an addition, so the `git rm -r --cached` that acts on the
+   guard's own findings was refused by the guard that found them. Fix: a bare
+   name counts only when it is unique in the tree; deletions are dropped from
+   both the staged diff and the worktree sweep, and `commit -a` is read from the
+   flag rather than inferred from an empty staged list.
