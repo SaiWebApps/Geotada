@@ -116,7 +116,14 @@
     "",
     "Prose is deliberately absent. README.md and CLAUDE.md are not listed: being",
     "mentioned in a document is not being used by the product, and counting it",
-    "would keep every artefact any write-up ever linked to."
+    "would keep every artefact any write-up ever linked to.",
+    "",
+    "index.html is listed and is not the exception to that. Its link is executed,",
+    "not read: a meta-refresh sends the browser to the target, so the page does",
+    "not work without it. The distinction is whether the mention DOES something.",
+    "It earned its line the hard way — index.html sits in `keep` as the deployed",
+    "root page, its redirect target was unreferenced by every other surface file,",
+    "and a sweep came within one judgement of deleting the page it points at."
   ],
   "surface_dirs": [
     "src",
@@ -150,7 +157,8 @@
     "Dockerfile",
     "render.yaml",
     ".dockerignore",
-    "mobile/pubspec.yaml"
+    "mobile/pubspec.yaml",
+    "index.html"
   ],
   "surface_suffixes": [
     ".py", ".dart", ".js", ".ts", ".jsx", ".tsx", ".sh", ".yaml", ".yml",

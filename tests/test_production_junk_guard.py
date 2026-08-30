@@ -216,6 +216,23 @@ def test_a_filename_only_one_file_carries_still_proves_it():
     assert not denied(decide("git add src/tour/density.py"))
 
 
+def test_the_root_page_keeps_the_page_it_redirects_to():
+    """A kept page must not be left pointing at nothing.
+
+    index.html is in `keep` as the deployed root page, and it exists only to
+    redirect to ondoway-journey-wireframes.html. Nothing else in the surface
+    named that target, so the guard called it unreferenced junk — and a sweep
+    of 513 files came within one judgement of deleting the page the kept root
+    points at three times. index.html is surface now: its meta-refresh is a
+    link the browser EXECUTES, not a write-up mentioning an artefact, which is
+    the line `_comment_surface` draws.
+    """
+    guard = _guard_module()
+    surface = guard._surface_text(str(REPO), CONFIG).lower()
+    assert "ondoway-journey-wireframes.html" in surface, "index.html is not being read"
+    assert not denied(decide("git add ondoway-journey-wireframes.html"))
+
+
 # ----------------------------------------------------------- the product is never touched
 
 
