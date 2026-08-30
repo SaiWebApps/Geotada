@@ -329,21 +329,50 @@ specs/*/
 !specs/_templates/
 
 # The spec folders below are NOT scratch: shipping code points at a file in each
-# one — two calibration sets the rubric loads, two pipeline state files, and the
-# design documents cited from src/tour/. They were tracked while the rule above
-# called them junk, which made every edit of them look like a violation.
-# Un-excluding the DIRECTORY is what re-admits its contents; a file-level
-# exception cannot reach inside an excluded directory.
+# one — calibration sets the rubric loads, pipeline state files, fixtures three
+# scripts read at runtime, and the design documents cited from src/tour/. They
+# were tracked while the rule above called them junk, which made every edit of
+# them look like a violation. Un-excluding the DIRECTORY is what re-admits its
+# contents; a file-level exception cannot reach inside an excluded directory.
+#
+# Five were added 2026-08-29 after a sweep of 543 staged deletions was checked
+# against the product surface before it was committed. Three of them held files
+# that code OPENS, and all three folders were already gone from disk:
+#
+#   2026-07-21-tour-certification    scripts/tour_text_candidate.py:51 defines
+#                                    SPEC as this folder and reads
+#                                    live-route-summary.json (:109) and
+#                                    live-tour-request.json (:111);
+#                                    scripts/tour_batch_review.py:61 points here too
+#   2026-07-22-tour-batch-regression scripts/tour_batch_candidate.py:49-50 reads
+#                                    requests.v1.json from it
+#   2026-07-02-dwell-audio-reconciliation
+#                                    src/tour/selection.py:515 and
+#                                    scripts/measure_planned_audio.py:4 cite its
+#                                    design documents for decisions they implement
+#   2026-06-14-compose-narrator      src/tour/authoring.py:150 cites it as the
+#                                    source of the LOCKED narrator voice
+#   2026-07-13-compose-correct-dont-reject
+#                                    src/tour/contract.py:1195 cites it
+#
+# That is the same defect as the unanchored `models/` above, a second time: a
+# rule that calls product-read files junk. production-junk-guard.py:255-260 says
+# it plainly — any block naming source is this defect showing itself again.
 #
 # This does not open the folders up. Nothing inside them is named by the keep
 # list or sits in a surface directory, so the junk guard's second arm still
 # refuses any new file here that the product does not read.
 !specs/2026-04-23-vallois-reextract/
 !specs/2026-06-13-tour-planner-canonical/
+!specs/2026-06-14-compose-narrator/
+!specs/2026-07-02-dwell-audio-reconciliation/
 !specs/2026-07-12-new-city-onboarding/
+!specs/2026-07-13-compose-correct-dont-reject/
 !specs/2026-07-16-tour-craft/
 !specs/2026-07-18-tour-qa-campaign/
 !specs/2026-07-19-tour-quality-standard/
+!specs/2026-07-21-tour-certification/
+!specs/2026-07-22-tour-batch-regression/
 !specs/2026-08-03-premium-tour-crash-never-silent/
 !specs/2026-08-07-tour-algorithm-redesign/
 !specs/2026-08-29-change-gates/
