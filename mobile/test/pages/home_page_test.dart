@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:ondoway/pages/explore_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
@@ -35,23 +34,13 @@ Widget _wrapProfilePage({
   );
 }
 
+// ExplorePage's own group used to live here, pumping the page in a bare
+// MaterialApp and asserting one word. The editorial ExplorePage reads the
+// OndowayColors extension AND two providers, so that harness cannot build it;
+// test/pages/explore_page_test.dart now covers the page with the providers and
+// router it needs, and asserts the hero, both calls to action and the resume
+// card instead of a single label.
 void main() {
-  group('ExplorePage', () {
-    testWidgets('shows Paris city card', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: const ExplorePage(),
-          theme: ThemeData(
-            colorSchemeSeed: const Color(0xFF3D5AFE),
-            useMaterial3: true,
-            brightness: Brightness.dark,
-          ),
-        ),
-      );
-      expect(find.text('Paris'), findsOneWidget);
-    });
-  });
-
   group('ProfilePage', () {
     testWidgets('shows email when authenticated', (tester) async {
       final mockClient = MockClient((request) async {
@@ -89,6 +78,12 @@ void main() {
     });
 
     testWidgets('has logout button', (tester) async {
+      // Profile gained a "Send feedback" tile when feedback left the nav bar,
+      // which pushes logout past the bottom of the default 800x600 surface —
+      // an unbuilt ListView child is not findable. Give it room.
+      await tester.binding.setSurfaceSize(const Size(800, 1600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
       final authService = AuthService(
         storage: FakeSecureStorage(),
         httpClient: MockClient((r) async => http.Response('', 200)),

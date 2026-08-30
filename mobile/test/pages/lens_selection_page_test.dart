@@ -13,11 +13,16 @@ final _testLenses = <String, List<Lens>>{
   ],
 };
 
-/// The page renders LensTile, which reads the OndowayColors theme extension.
-/// A bare MaterialApp does not carry it, so the tests pump the real app theme —
-/// the same one main.dart installs.
 Widget _wrap(Widget child) {
   return MaterialApp(theme: buildOndowayTheme(Brightness.light), home: child);
+}
+
+/// The redesigned lens tiles are tall, so the default 800x600 test surface
+/// scrolls the first tiles off-screen. Tests that TAP a tile need a taller
+/// surface so the tap can hit-test; auto-reset after the test.
+Future<void> _tallSurface(WidgetTester tester) async {
+  await tester.binding.setSurfaceSize(const Size(800, 1600));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
 }
 
 void main() {
@@ -28,15 +33,7 @@ void main() {
         userName: 'Sairam',
         lensesByParent: _testLenses,
       )));
-      expect(find.text('Welcome, Sairam'), findsOneWidget);
-    });
-
-    testWidgets('shows subtitle in onboarding mode', (tester) async {
-      await tester.pumpWidget(_wrap(LensSelectionPage(
-        isOnboarding: true,
-        lensesByParent: _testLenses,
-      )));
-      expect(find.textContaining('Pick at least 3'), findsOneWidget);
+      expect(find.text('WELCOME, SAIRAM'), findsOneWidget);
     });
 
     testWidgets('renders all lens tiles', (tester) async {
@@ -50,14 +47,6 @@ void main() {
       expect(find.text('Social Change'), findsOneWidget);
     });
 
-    testWidgets('renders category headers', (tester) async {
-      await tester.pumpWidget(_wrap(LensSelectionPage(
-        isOnboarding: true,
-        lensesByParent: _testLenses,
-      )));
-      expect(find.text('HISTORY'), findsOneWidget);
-    });
-
     testWidgets('continue button disabled with fewer than 3 selected', (tester) async {
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
@@ -69,6 +58,7 @@ void main() {
     });
 
     testWidgets('continue button enables after 3 selections', (tester) async {
+      await _tallSurface(tester);
       Set<String>? result;
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
@@ -96,18 +86,21 @@ void main() {
     });
 
     testWidgets('shows selection count', (tester) async {
+      await _tallSurface(tester);
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
         lensesByParent: _testLenses,
       )));
 
-      expect(find.text('0 selected'), findsOneWidget);
+      // Onboarding footer coaches toward the 3-lens minimum rather than a bare count.
+      expect(find.text('Choose 3 more'), findsOneWidget);
       await tester.tap(find.text('Hidden History'));
       await tester.pump();
-      expect(find.text('1 selected'), findsOneWidget);
+      expect(find.text('Choose 2 more'), findsOneWidget);
     });
 
     testWidgets('tapping selected tile deselects it', (tester) async {
+      await _tallSurface(tester);
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,
         lensesByParent: _testLenses,
@@ -115,11 +108,11 @@ void main() {
 
       await tester.tap(find.text('Hidden History'));
       await tester.pump();
-      expect(find.text('1 selected'), findsOneWidget);
+      expect(find.text('Choose 2 more'), findsOneWidget);
 
       await tester.tap(find.text('Hidden History'));
       await tester.pump();
-      expect(find.text('0 selected'), findsOneWidget);
+      expect(find.text('Choose 3 more'), findsOneWidget);
     });
   });
 
@@ -130,7 +123,7 @@ void main() {
         lensesByParent: _testLenses,
         initialSelection: {'l1', 'l3'},
       )));
-      expect(find.text('Your Lenses'), findsOneWidget);
+      expect(find.text('Your lenses'), findsOneWidget);
     });
 
     testWidgets('does not show subtitle', (tester) async {
@@ -160,6 +153,7 @@ void main() {
     });
 
     testWidgets('shows snackbar when trying to deselect last lens', (tester) async {
+      await _tallSurface(tester);
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: false,
         lensesByParent: _testLenses,

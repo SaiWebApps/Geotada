@@ -9,6 +9,7 @@ import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/pages/saved_trips_page.dart';
 import 'package:ondoway/pages/session_page.dart';
 import 'package:ondoway/pages/style_gallery_page.dart';
+import 'package:ondoway/pages/tour_now_page.dart';
 import 'package:ondoway/pages/trip_duration_page.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
@@ -17,7 +18,53 @@ import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
 
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+/// Builds the lens editor (edit mode) shown when a signed-in user edits their
+/// preferences from Profile. Pushed as a top-level route (not a tab) so it has
+/// a normal back stack and returns to Profile on save/back.
+Widget _buildLensEditor(BuildContext context) {
+  final ls = context.read<LensService>();
+  final ps = context.read<ProfileService>();
+  final as_ = context.read<AuthService>();
+  return LensSelectionPage(
+    isOnboarding: false,
+    lensesByParent: ls.childrenByParent,
+    initialSelection: ps.selectedLensIds.toSet(),
+    onSave: (selectedIds) async {
+      final current = ps.selectedLensIds.toSet();
+      final toAdd = selectedIds.difference(current);
+      final toRemove = current.difference(selectedIds);
+      try {
+        // For now, re-run onboarding endpoint to replace all preferences
+        if (toAdd.isNotEmpty || toRemove.isNotEmpty) {
+          await ps.completeOnboarding(
+            selectedIds.toList(),
+            as_.accessToken!,
+            refresh: () async =>
+                (await as_.refreshSession()) ? as_.accessToken : null,
+          );
+        }
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Lenses saved')),
+        );
+        // Return to Profile — saving is done, don't strand the user here.
+        if (context.canPop()) context.pop();
+      } on ProfileServiceException catch (e) {
+        if (!context.mounted) return;
+        if (e.statusCode == 401 || e.statusCode == 403) {
+          // Session is unrecoverable (refresh failed) — back to login.
+          await as_.logout();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Could not save — please try again.'),
+            ),
+          );
+        }
+      }
+    },
+  );
+}
 
 /// Pure decision function for the router's auth redirect.
 ///
@@ -106,16 +153,39 @@ GoRouter createRouter(
             userName: as_.userEmail?.split('@')[0],
             lensesByParent: ls.childrenByParent,
             onComplete: (selectedIds) async {
-              await ps.completeOnboarding(
-                selectedIds.toList(),
-                as_.accessToken!,
-              );
-              if (context.mounted) context.go('/explore');
+              try {
+                await ps.completeOnboarding(
+                  selectedIds.toList(),
+                  as_.accessToken!,
+                  refresh: () async =>
+                      (await as_.refreshSession()) ? as_.accessToken : null,
+                );
+                if (context.mounted) context.go('/explore');
+              } on ProfileServiceException catch (e) {
+                if (!context.mounted) return;
+                if (e.statusCode == 401 || e.statusCode == 403) {
+                  // Session is unrecoverable (refresh failed) — back to login.
+                  await as_.logout();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Could not save your lenses — please try again.'),
+                    ),
+                  );
+                }
+              }
             },
           );
         },
       ),
       // Full-screen trip planning routes (outside tab shell)
+      // Immediate: "Take a tour now" — one question (how long), builds from GPS.
+      GoRoute(
+        path: '/tour-now/:citySlug',
+        builder: (context, state) =>
+            TourNowPage(citySlug: state.pathParameters['citySlug'] ?? 'paris'),
+      ),
+      // Plan for later: dates, start-point picker, multi-day.
       GoRoute(
         path: '/plan-trip/:citySlug',
         builder: (context, state) {
@@ -139,6 +209,12 @@ GoRouter createRouter(
           return SessionPage(tripId: tripId);
         },
       ),
+      // Lens editor (edit mode) — a pushed full-screen route, so Profile's
+      // "Edit" gives a real back stack instead of stranding the user in a tab.
+      GoRoute(
+        path: '/lenses',
+        builder: (context, state) => _buildLensEditor(context),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AppShell(
@@ -153,41 +229,6 @@ GoRouter createRouter(
               GoRoute(
                 path: '/explore',
                 builder: (context, state) => const ExplorePage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorKey,
-            routes: [
-              GoRoute(
-                path: '/lenses',
-                builder: (context, state) {
-                  final ls = context.read<LensService>();
-                  final ps = context.read<ProfileService>();
-                  final as_ = context.read<AuthService>();
-                  return LensSelectionPage(
-                    isOnboarding: false,
-                    lensesByParent: ls.childrenByParent,
-                    initialSelection: ps.selectedLensIds.toSet(),
-                    onSave: (selectedIds) async {
-                      final current = ps.selectedLensIds.toSet();
-                      final toAdd = selectedIds.difference(current);
-                      final toRemove = current.difference(selectedIds);
-                      // For now, re-run onboarding endpoint to replace all preferences
-                      if (toAdd.isNotEmpty || toRemove.isNotEmpty) {
-                        await ps.completeOnboarding(
-                          selectedIds.toList(),
-                          as_.accessToken!,
-                        );
-                      }
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Lenses saved')),
-                        );
-                      }
-                    },
-                  );
-                },
               ),
             ],
           ),
