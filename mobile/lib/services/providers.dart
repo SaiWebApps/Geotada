@@ -109,6 +109,21 @@ abstract class AudioProvider extends ChangeNotifier {
   /// wiring a voice is one implementation behind this door.
   Future<void> speak(String sentence) => Future.value();
 
+  /// Activate the iOS audio session (.playback/.duckOthers) so playback is
+  /// audible through a locked screen. MUST be called from the foreground — iOS
+  /// refuses session activation from a background callback
+  /// (AVAudioSessionErrorCodeCannotInterruptOthers), which is why this is its
+  /// own door rather than something the first play() does lazily. No-op off
+  /// iOS. The default does nothing, so a double with no session need not
+  /// implement it.
+  Future<void> prepareSession() => Future.value();
+
+  /// Deactivate the iOS audio session so a ducked session is RELEASED — the
+  /// tourist's music or podcast returns to full volume. Called when the tour
+  /// ends, stopped or completed; otherwise `.duckOthers` keeps other audio
+  /// ducked for the whole session, even after playback finishes.
+  Future<void> releaseSession() => Future.value();
+
   /// Pre-fetch audio files to the device cache; returns how many are cached.
   /// Phase 5 (design §4.7): the session prefetches its alternates' audio through
   /// this same door. The default caches nothing, so a test double that never
