@@ -36,6 +36,19 @@ void main() {
       expect(find.text('WELCOME, SAIRAM'), findsOneWidget);
     });
 
+    testWidgets('carries no debug escape hatch', (tester) async {
+      // The fork's header had a headphones IconButton pushing
+      // /debug/tour-playback-proof — a route this app does not register, so it
+      // landed on the not-found page. kReleaseMode is false under the test
+      // harness, which is exactly the condition that rendered it, so this
+      // assertion fails against the version that shipped the button.
+      await tester.pumpWidget(_wrap(LensSelectionPage(
+        isOnboarding: true,
+        lensesByParent: _testLenses,
+      )));
+      expect(find.byIcon(Icons.headphones), findsNothing);
+    });
+
     testWidgets('renders all lens tiles', (tester) async {
       await tester.pumpWidget(_wrap(LensSelectionPage(
         isOnboarding: true,

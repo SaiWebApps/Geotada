@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ondoway/models/lens.dart';
 import 'package:ondoway/theme/dims.dart';
 import 'package:ondoway/theme/tokens.dart';
@@ -148,7 +146,14 @@ class _Header extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top bar: back (edit mode) + the debug escape hatch.
+          // Top bar: back, in edit mode only.
+          //
+          // The fork's version also carried a debug headphones button here,
+          // pushing the tour-playback proof screen. That screen is spike
+          // scaffolding this merge does not carry, so the button navigated to
+          // the not-found page in every non-release build — on the one screen
+          // every new user has to pass through. Removed, like the pair of
+          // debug buttons dropped from the sign-in screen for the same reason.
           SizedBox(
             height: 44,
             child: Row(
@@ -159,16 +164,6 @@ class _Header extends StatelessWidget {
                     icon: Icons.arrow_back,
                     tooltip: 'Back',
                     onTap: onBack!,
-                  ),
-                const Spacer(),
-                // Debug escape hatch (removed with the spike scaffolding): jumps
-                // to the auth-exempt tour-playback proof screen when a persisted
-                // session strands the tester here (prod lens API 404s).
-                if (!kReleaseMode)
-                  IconButton(
-                    tooltip: 'Debug: tour playback proof',
-                    icon: Icon(Icons.headphones, color: c.inkMute),
-                    onPressed: () => context.push('/debug/tour-playback-proof'),
                   ),
               ],
             ),
