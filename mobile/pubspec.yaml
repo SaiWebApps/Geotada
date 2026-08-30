@@ -44,3 +44,19 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/audio/
+  # The v10 design system's three faces, bundled rather than fetched so the app
+  # renders identically offline and on first launch. Fraunces is the display
+  # voice, Space Grotesk the body, Space Mono the numeric/monospace one.
+  fonts:
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces.ttf
+    - family: Space Grotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk.ttf
+    - family: Space Mono
+      fonts:
+        - asset: assets/fonts/SpaceMono-Regular.ttf
+        - asset: assets/fonts/SpaceMono-Bold.ttf
+          weight: 700

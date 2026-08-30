@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ondoway/pages/callback_page.dart';
@@ -7,6 +8,7 @@ import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/pages/saved_trips_page.dart';
 import 'package:ondoway/pages/session_page.dart';
+import 'package:ondoway/pages/style_gallery_page.dart';
 import 'package:ondoway/pages/trip_duration_page.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
@@ -17,6 +19,37 @@ import 'package:provider/provider.dart';
 
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
+/// Pure decision function for the router's auth redirect.
+///
+/// Reproduces the router's auth-gating logic outside of a go_router
+/// [GoRouter.redirect] closure so it is unit-testable without constructing
+/// real services. Auth routes (`/login`, `/auth`, `/auth/callback`) are
+/// always exempt from the "must be authenticated" guard; debug routes
+/// (`/debug/...`) are exempt only when [allowDebugRoutes] is true (debug and
+/// profile builds, never release), so production behavior is unchanged.
+String? computeAuthRedirect({
+  required bool isAuthenticated,
+  required bool profileLoaded,
+  required bool profileIsFirstTime,
+  required String path,
+  required bool allowDebugRoutes,
+}) {
+  final isAuthRoute =
+      path == '/login' || path == '/auth' || path == '/auth/callback';
+  final isExemptDebugRoute = allowDebugRoutes && path.startsWith('/debug/');
+
+  if (!isAuthenticated && !isAuthRoute && !isExemptDebugRoute) {
+    return '/login';
+  }
+
+  if (isAuthenticated && path == '/login') {
+    if (!profileLoaded) return null;
+    return profileIsFirstTime ? '/onboarding' : '/explore';
+  }
+
+  return null;
+}
+
 GoRouter createRouter(
   AuthService authService,
   ProfileService profileService,
@@ -26,23 +59,24 @@ GoRouter createRouter(
     initialLocation: '/login',
     refreshListenable: authService,
     redirect: (context, state) {
-      final isAuthenticated = authService.isAuthenticated;
-      final path = state.matchedLocation;
-      final isAuthRoute = path == '/login' ||
-          path == '/auth' ||
-          path == '/auth/callback';
-      if (!isAuthenticated && !isAuthRoute) {
-        return '/login';
-      }
-
-      if (isAuthenticated && path == '/login') {
-        if (!profileService.isLoaded) return null;
-        return profileService.isFirstTime ? '/onboarding' : '/explore';
-      }
-
-      return null;
+      return computeAuthRedirect(
+        isAuthenticated: authService.isAuthenticated,
+        profileLoaded: profileService.isLoaded,
+        profileIsFirstTime: profileService.isFirstTime,
+        path: state.matchedLocation,
+        // Debug affordances are reachable in debug AND profile builds —
+        // profile is what on-device iOS testing uses — but never in release.
+        allowDebugRoutes: !kReleaseMode,
+      );
     },
     routes: [
+      // The design system rendered in one page, for on-device visual checking.
+      // Never linked from product navigation; the /debug/ prefix above is what
+      // keeps it out of a release build.
+      GoRoute(
+        path: '/debug/style-gallery',
+        builder: (context, state) => const StyleGalleryPage(),
+      ),
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),

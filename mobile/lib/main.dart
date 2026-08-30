@@ -11,6 +11,7 @@ import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
+import 'package:ondoway/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -91,17 +92,8 @@ class OndowayApp extends StatelessWidget {
     final profile = context.watch<ProfileService>();
     return MaterialApp.router(
       title: 'Ondoway',
-      theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF3D5AFE),
-        useMaterial3: true,
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        colorSchemeSeed: const Color(0xFF3D5AFE),
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF121212),
-      ),
+      theme: buildOndowayTheme(Brightness.light),
+      darkTheme: buildOndowayTheme(Brightness.dark),
       themeMode: _resolveThemeMode(profile.themePreference),
       routerConfig: router,
       debugShowCheckedModeBanner: false,

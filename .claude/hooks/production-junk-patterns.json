@@ -36,6 +36,10 @@
       "why": "Controls what the Flutter subtree contributes to history." },
     { "prefix": "mobile/README.md",
       "why": "The mobile subtree's front door." },
+    { "prefix": "mobile/dart_test.yaml",
+      "why": "Declares the suite's test tags. `flutter test --tags` reads it by position, so no file names it — the same convention as analysis_options.yaml above." },
+    { "prefix": "mobile/design/",
+      "why": "The v10 design system's standing reference: the mockup mobile/lib/theme implements. A standing design, not a phase snapshot — the same rule that keeps Docs/tour-builder/design.md." },
 
     { "prefix": "tests/fixtures/",
       "why": "Inputs the Python suite reads." },

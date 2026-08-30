@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ondoway/models/lens.dart';
 import 'package:ondoway/pages/lens_selection_page.dart';
+import 'package:ondoway/theme/theme.dart';
 
 final _testLenses = <String, List<Lens>>{
   'History': [
@@ -12,8 +13,11 @@ final _testLenses = <String, List<Lens>>{
   ],
 };
 
+/// The page renders LensTile, which reads the OndowayColors theme extension.
+/// A bare MaterialApp does not carry it, so the tests pump the real app theme —
+/// the same one main.dart installs.
 Widget _wrap(Widget child) {
-  return MaterialApp(home: child);
+  return MaterialApp(theme: buildOndowayTheme(Brightness.light), home: child);
 }
 
 void main() {
