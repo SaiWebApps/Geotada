@@ -81,12 +81,67 @@ QUOTES = ("'", '"', "`")
 
 
 def _string_literals(text):
-    """Every quoted run, found by splitting rather than matching."""
+    """Every string literal, found by walking the text once.
+
+    A CHARACTER WALK, NOT A SPLIT. Splitting on a quote character treats every
+    APOSTROPHE IN PROSE as a delimiter, and a single stray one flips the parity
+    of every literal after it, so whole regions of a file become invisible while
+    the file still parses and every other guard still passes.
+
+    MEASURED 2026-08-29 on mobile/lib/services/trip_service.dart, whose comments
+    say "the phone's" and "the tourist's" — 212 apostrophes, an EVEN count, so
+    nothing looked wrong in aggregate. Two of the phone's real endpoints were
+    absent from the split's output while sitting verbatim in the file:
+
+        $baseUrl/audio/generate-trip-stops/$tripId
+        $baseUrl/trips/$tripId/session/replan
+
+    The second is the living session's replan, and dropping it removed four
+    doors into src/tour/contingency.py from the phone's derived surface. This
+    guard was therefore reporting agreement on a stage it was not looking at:
+    an under-counted surface can only ever produce a PASS, so the failure mode
+    is silent by construction. That is the worst shape a guard can have.
+
+    Comments are skipped for the same reason prose broke the split — prose is
+    where the stray apostrophes live. Dart and JavaScript share `//` and `/* */`,
+    and the workbench's HTML carries its script inline, so one walk reads both
+    surfaces. An apostrophe that never closes on its line is not a literal and
+    is stepped over; a backtick may legitimately span lines and is not.
+
+    Still no regex (owner ruling 2026-08-29): a character walk and ``str.find``
+    are parses, and the walk is exactly what a pattern could not do here — the
+    thing that broke the old version was context, not spelling.
+    """
     found = []
-    for quote in QUOTES:
-        for index, piece in enumerate(text.split(quote)):
-            if index % 2 == 1:
-                found.append(piece)
+    index, length = 0, len(text)
+    while index < length:
+        char = text[index]
+        if char == "/" and text[index + 1 : index + 2] == "/":
+            line_end = text.find("\n", index)
+            index = length if line_end == -1 else line_end + 1
+            continue
+        if char == "/" and text[index + 1 : index + 2] == "*":
+            block_end = text.find("*/", index + 2)
+            index = length if block_end == -1 else block_end + 2
+            continue
+        if char not in QUOTES:
+            index += 1
+            continue
+        cursor, piece = index + 1, []
+        while cursor < length and text[cursor] != char:
+            if text[cursor] == "\\" and cursor + 1 < length:
+                piece.append(text[cursor + 1])
+                cursor += 2
+                continue
+            if text[cursor] == "\n" and char != "`":
+                break  # an apostrophe in prose, not an opening quote
+            piece.append(text[cursor])
+            cursor += 1
+        if cursor < length and text[cursor] == char:
+            found.append("".join(piece))
+            index = cursor + 1
+            continue
+        index += 1
     return found
 
 
@@ -94,12 +149,19 @@ def _api_path(literal):
     """The API path a literal requests, interpolations blanked, or None.
 
     `$baseUrl/audio/stops/$stopId/keep-exploring` -> `/audio/stops/{}/keep-exploring`
+
+    The QUERY STRING is dropped, because a route decorator never carries one:
+    `$baseUrl/trips?profile_id=$profileId` addresses the handler registered at
+    `/trips`, and keeping the query made it match nothing — the phone's saved-trips
+    call was read as a request to a route that does not exist, so the surface it
+    reaches went uncounted. Same silent-PASS failure as the parity bug above.
     """
     if "/" not in literal:
         return None
     head, _, rest = literal.partition("/")
     if "$" not in head:  # not a request; a lens name, a CSS class, a message
         return None
+    rest = rest.partition("?")[0]
     segments = [
         "{}" if part.startswith("$") or part.startswith("{") else part
         for part in rest.split("/")
