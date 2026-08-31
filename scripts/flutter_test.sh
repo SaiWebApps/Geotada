@@ -348,9 +348,17 @@ while kill -0 "$vm_pid" 2>/dev/null; do
     echo "that wedges there can keep printing, so the silence detector would never see it." >&2
     echo "Killed rather than left to hold the lock. Read the output above; do not re-run" >&2
     echo "blind." >&2
-    kill -TERM -- "-$vm_pid" 2>/dev/null || kill -TERM "$vm_pid" 2>/dev/null
-    sleep 2
-    kill -KILL -- "-$vm_pid" 2>/dev/null || kill -KILL "$vm_pid" 2>/dev/null
+    # Sweep the TREE, in kill_run_tree's own idiom. Killing $vm_pid alone is not
+    # enough: a non-interactive shell has no job control, so the `( … ) &`
+    # subshell shares this script's process group — there is no group of its own
+    # to signal — and bash does not exec the workload in place. $vm_pid is the
+    # subshell; the flutter and dart processes are its CHILDREN, and killing the
+    # parent would orphan exactly the wedged run this deadline exists to end.
+    # Descendants must be listed BEFORE the root dies or they reparent away.
+    vm_pids="$(descendants "$vm_pid"; echo "$vm_pid")"
+    # shellcheck disable=SC2086  # word-splitting the PID list is intended
+    kill -9 $vm_pids 2>/dev/null
+    wait "$vm_pid" 2>/dev/null
     exit 1
   fi
 done
