@@ -91,6 +91,16 @@ LOCK_WAIT="${FLUTTER_TEST_LOCK_WAIT:-900}"  # max seconds to wait on another run
 # 48s of silence is four times the worst window this suite produces while it is working,
 # and a wedged run never recovers — the caught specimen sat unchanged for 14 minutes — so
 # waiting longer buys nothing but a slower failure.
+#
+# THOSE THREE NUMBERS ARE STALE, and 48 survives for a different reason than it was chosen.
+# Re-measured 2026-08-30, on a suite that has since grown to 46 files: a warm green run is
+# 104s, and the silent window is not 12s but 48s and over — the dartdevc compile prints
+# NOTHING while it works, and a cold one blew straight through this threshold on three
+# consecutive attempts. Raising the number was the wrong repair: it would trade false
+# stalls for slow ones and leave the two indistinguishable, which is the whole disease.
+# What changed instead is that silence stopped being sufficient evidence — see the CPU
+# check in run_once. 48s stays because, PAIRED WITH THAT CHECK, it ends a genuine
+# 0%-CPU deadlock fast without ever accusing a working compiler.
 STALL_SECONDS="${FLUTTER_TEST_STALL_SECONDS:-48}"
 # Attempts, and ONLY a stall gets a second one. Both hangs above are in Flutter's own
 # engine and launcher: this repo cannot fix either, and `flutter test` exposes no
@@ -107,18 +117,30 @@ STALL_SECONDS="${FLUTTER_TEST_STALL_SECONDS:-48}"
 # 1 in 730 runs failing spuriously, three leave 1 in 20,000, and a stalled attempt costs
 # about 61s, so three still land inside the deadline below with room for a green run.
 MAX_ATTEMPTS="${FLUTTER_TEST_MAX_ATTEMPTS:-3}"
-# A HARD ceiling on the whole runner, every attempt and all diagnosis included, sized from
-# the measurements above rather than picked round:
-#   three stalled attempts  3 x (13s startup + 48s silence)  = 183s
-#   diagnosis + teardown, three times                 + 20s  = 203s
-#   slack for a loaded machine                        + 57s  = 260s
-# So 260s — under four and a half minutes for the worst case the design admits, against a
-# target that could previously run forever. It has to cover THREE stalls, not two: sized for
-# two, the guard below would refuse the third attempt for lack of room and the extra attempt
-# would be dead weight. This is only the backstop; the stall detector is what should end a
-# wedged run. It exists for a run that dribbles one byte every 40 seconds and so never trips
-# the detector at all. Nothing here may outlive it, whatever else breaks.
-DEADLINE_SECONDS="${FLUTTER_TEST_DEADLINE_SECONDS:-260}"
+# A hard ceiling on the CHROME PHASE — its attempts and its diagnosis. Not on the whole
+# runner: the VM pass above carries its own budget (VM_DEADLINE_SECONDS), and the clock
+# below is restarted when the chrome phase begins. Two phases whose costs differ by an
+# order of magnitude cannot share one ceiling without it being useless for both, so the
+# runner's true worst case is the SUM of the two, and neither is unbounded.
+#
+# THIS WAS 260s AND IT WAS KILLING GREEN RUNS. That number was derived from the stalled
+# path alone — three attempts at (13s startup + 48s silence), plus diagnosis and slack —
+# and never from the cost of the suite actually PASSING. Measured 2026-08-30:
+#
+#   green, warm ............ 104s   (01:44, all 322)
+#   cold, still running .... >260s  (abandoned at +91 of 322, progressing normally,
+#                                    3:02 on its own clock, nothing wrong with it)
+#
+# The spread is the dartdevc compile: warm it is nearly free, cold it costs ~15s per suite
+# and there are 46 of them. A ceiling under the worst GREEN run does not bound a failure,
+# it manufactures one — the runner abandons a healthy suite and calls it "a new hang".
+#
+# 900s, the same budget the VM pass carries. Affordable now precisely because the stall
+# detector above was made exact: a genuine wedge sits at 0% CPU and is caught in 48s
+# whatever this number says, so the deadline no longer has to double as the fast path. It
+# is back to being only what its own comment always claimed — the backstop for a run that
+# dribbles one byte every 40 seconds and so never trips the detector at all.
+DEADLINE_SECONDS="${FLUTTER_TEST_DEADLINE_SECONDS:-900}"
 STARTED_AT=$(date +%s)
 elapsed_total() { echo $(( $(date +%s) - STARTED_AT )); }
 # Resolve a browser for `flutter test --platform chrome` PORTABLY. Precedence:
@@ -205,6 +227,26 @@ failed_log() { grep -qE "Some tests failed|Failed to load|did not complete" "$LO
 # would reject the whole argument, silently costing the diagnosis its process tree.
 run_pids_csv() {
   { descendants "$fpid"; echo "$fpid"; } | tr '\n' ',' | sed 's/,,*/,/g; s/^,//; s/,$//'
+}
+
+# Total CPU-seconds this run's process tree has consumed. The second half of the
+# stall test, and the half that tells a wedge from a slow compile.
+#
+# `ps -o time=` prints cumulative CPU time as [[dd-]hh:]mm:ss.ss, so the fields are
+# summed right-to-left with an increasing multiplier rather than parsed positionally
+# — the field COUNT varies with how long the process has lived, and a fixed parse
+# would silently misread the long-lived case.
+cpu_seconds() {
+  [ -n "${fpid:-}" ] || { echo 0; return; }
+  ps -o time= -p "$(run_pids_csv)" 2>/dev/null | awk -F: '
+    { seconds = 0; multiplier = 1
+      for (field = NF; field >= 1; field--) {
+        gsub(/^[ \t]+|[ \t]+$/, "", $field)
+        seconds += $field * multiplier
+        multiplier *= 60
+      }
+      total += seconds }
+    END { printf "%d", total + 0 }'
 }
 
 # How far the run got, in the reporter's own words: "<clock> +<passed>: <what>".
@@ -321,20 +363,51 @@ run_once() {
   # marker appeared, which saved about ten seconds and leaked one Chromium profile
   # directory into $TMPDIR per green run — the tool deletes those in the shutdown hooks a
   # SIGKILL skips.
-  local quiet=0 last=0 size
+  local quiet=0 last=0 size cpu_at_quiet_start cpu_now cpu_burned
+  cpu_at_quiet_start="$(cpu_seconds)"
   while kill -0 "$fpid" 2>/dev/null; do
     sleep 2
     size=$(wc -c < "$LOG" 2>/dev/null || echo 0)
     if [ "$size" -gt "$last" ]; then
       last="$size"
       quiet=0
+      cpu_at_quiet_start="$(cpu_seconds)"
     else
       quiet=$((quiet + 2))
     fi
     if [ "$quiet" -ge "$STALL_SECONDS" ]; then
-      stalled_for="$quiet"
-      outcome=STALL
-      return
+      # SILENCE IS NOT ENOUGH. A stall is silence AND no work, and this runner
+      # learned the difference the hard way twice: the old runner scored a slow
+      # run and a wedged one the same because it watched only a clock, and this
+      # one repeated the mistake one level down by watching only the log.
+      #
+      # Measured 2026-08-30: `make flutter-test` failed 3 of 3 attempts, all at
+      # "before the first test suite was even announced", and its OWN process-tree
+      # dump showed why — frontend_server_aot in state R, 47 CPU-seconds and
+      # climbing, compiling the web bundle. The dartdevc compile prints nothing
+      # while it works, so a cold or contended one outlives 48s of silence
+      # routinely. Meanwhile the genuine wedge documented at the top of this file
+      # was caught and interrogated live, and its whole tree sat at 0% CPU: a
+      # deadlock, not a spin. That difference is the signal, and it is free to read.
+      #
+      # So: a tree that burned real CPU through the silent window is WORKING. The
+      # threshold is a quarter of one core sustained — far above the idle drift a
+      # deadlocked Chrome and its renderers produce, far below the ~100% a compile
+      # holds. The clock is not weakened by this: DEADLINE_SECONDS still ends the
+      # phase whatever the CPU says, which is precisely the case it was written for
+      # — a run that never trips the detector at all.
+      cpu_now="$(cpu_seconds)"
+      cpu_burned=$(( cpu_now - cpu_at_quiet_start ))
+      if [ "$cpu_burned" -gt $(( quiet / 4 )) ]; then
+        echo ">> ${quiet}s without output, but this run burned ${cpu_burned}s of CPU in that" >&2
+        echo "   window — it is compiling, not wedged. Still waiting." >&2
+        quiet=0
+        cpu_at_quiet_start="$cpu_now"
+      else
+        stalled_for="$quiet"
+        outcome=STALL
+        return
+      fi
     fi
     if [ "$(elapsed_total)" -ge "$DEADLINE_SECONDS" ]; then
       outcome=DEADLINE
@@ -371,22 +444,27 @@ run_once() {
 # forever holding the lock, which is the disease this whole runner exists to
 # cure.
 #
-# THE BUDGET, MEASURED 2026-08-30 rather than guessed — and the first version of
-# this line WAS guessed, at 60s, from a warm number that did not survive contact:
+# THE BUDGET. The first version of this line was 60s, guessed from one warm number,
+# and it killed the target on the next cold run. The replacement was then written
+# from the two SLOWEST observations and asserted "warm is not faster" as a law —
+# which the very next run disproved at 51s. Both mistakes are the same mistake:
+# stating a range's endpoint as its norm. Six green runs measured 2026-08-30:
 #
-#   green, cold ........... 312s   (5:12 wall, including `flutter pub get`)
-#   green, warm ........... 342s   (5:41 wall — WARM IS NOT FASTER, see below)
+#   fastest .......... 4s reporter clock, inside a 50s whole-target run
+#   typical ................ 51-140s
+#   slowest .............. 312-342s   (5:12 and 5:41 wall, `flutter pub get` included)
 #
-# `--tags vm` does not select 18 tests and skip the rest cheaply. It LOADS all 46
-# files under mobile/test, compiles every one of them for the tester engine, and
-# only then filters by tag. That compile is the whole cost and it is not cached
-# between runs, which is why a second consecutive run is no faster than the first.
-# 18 tests take seconds; getting to them takes five and a half minutes.
+# The spread is real and it is the dartdevc compile. `--tags vm` does not select 18
+# tests cheaply: it LOADS all 46 files under mobile/test and compiles every one for
+# the tester engine before filtering by tag. When that compile is cached the pass is
+# under a minute; when `flutter pub get` re-resolves and invalidates it — which it
+# does whenever pubspec.yaml is newer than pubspec.lock — the same pass is five and
+# a half minutes. Neither end is the norm; the range is the fact.
 #
-# So: worst measured green 342s, doubled for a loaded machine, rounded up. 900s
-# is bounded, which is the only property that matters here — a wedged run ends in
-# fifteen minutes instead of never, and a healthy one has 2.6x its worst observed
-# cost in hand.
+# So 900s: worst observed green (342s) with 2.6x in hand for a loaded machine. The
+# number is generous on purpose, because the only property that matters here is
+# BOUNDED — a wedged pass ends in fifteen minutes instead of never — and a budget
+# sized tight against a range this wide buys nothing but false failures.
 VM_DEADLINE_SECONDS="${FLUTTER_VM_DEADLINE:-900}"
 
 echo ">> running VM-tagged tests (flutter test --platform tester --tags vm)" >&2
@@ -458,11 +536,15 @@ while :; do
   if [ "$outcome" = STALL ]; then
     diagnose_stall "$stalled_for" "$attempt"
     kill_run_tree
-    # Only start another attempt if a GREEN one could still finish inside the deadline —
-    # 38s for a cold run, plus slack. Gating on the stalled-attempt cost instead would
-    # refuse the last attempt precisely when it is most likely to be the one that passes.
+    # Only start another attempt if a GREEN one could still finish inside the deadline.
+    # Gating on the stalled-attempt cost instead would refuse the last attempt precisely
+    # when it is most likely to be the one that passes. The room required is the cost of a
+    # green run, and that cost was re-measured 2026-08-30 at 104s warm against a cold run
+    # still going at 260s — the old 70s here came from a 38s cold run that has not been
+    # true since the suite grew, and it would wave through an attempt this deadline was
+    # always going to cut off mid-suite, which proves nothing.
     if [ "$attempt" -lt "$MAX_ATTEMPTS" ] \
-       && [ $(( DEADLINE_SECONDS - $(elapsed_total) )) -gt 70 ]; then
+       && [ $(( DEADLINE_SECONDS - $(elapsed_total) )) -gt 300 ]; then
       echo "" >&2
       echo ">> RECOVERING: re-running the whole suite from scratch (attempt $((attempt + 1)) of $MAX_ATTEMPTS)." >&2
       echo "   This is not the blind retry this runner used to do. Only a STALL reaches this" >&2
