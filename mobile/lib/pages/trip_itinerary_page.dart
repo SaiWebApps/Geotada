@@ -494,7 +494,10 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
       );
       return;
     }
-    context.push('/session/${widget.trip.tripId}');
+    // The walk itself is the mapped screen: the stop pins, the now-playing
+    // card, the approaching nudge. The tour is already running on the session's
+    // stops by this point, and TourWalkPage will not restart it.
+    context.push('/trip/${widget.trip.tripId}/walk', extra: widget.trip);
   }
 
   Widget _buildFab(ColorScheme colorScheme) {

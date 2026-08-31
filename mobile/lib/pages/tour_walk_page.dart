@@ -26,6 +26,15 @@ class _TourWalkPageState extends State<TourWalkPage> {
   // Provider ancestor lookup on a possibly-deactivated element.
   TourPlaybackService? _engine;
 
+  /// Whether THIS page started the tour. The itinerary starts a walk itself —
+  /// from the SESSION's stops, which carry the placed trigger geometry and the
+  /// voiced files that `widget.trip.stops` does not — and then pushes here. So
+  /// the page must not restart what is already running, and must not end a walk
+  /// it did not begin: popping back to glance at the itinerary is not the end
+  /// of the walk. On a cold entry the engine is idle, the page starts the tour
+  /// and owns it, and disposal ends it — which is the fork's own behaviour.
+  bool _startedHere = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -37,13 +46,16 @@ class _TourWalkPageState extends State<TourWalkPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _engine?.startTour(widget.trip.stops);
+      final engine = _engine;
+      if (engine == null || engine.isActive) return;
+      _startedHere = true;
+      engine.startTour(widget.trip.stops);
     });
   }
 
   @override
   void dispose() {
-    _engine?.stopTour();
+    if (_startedHere) _engine?.stopTour();
     super.dispose();
   }
 
