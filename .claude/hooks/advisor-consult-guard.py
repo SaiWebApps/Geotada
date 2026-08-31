@@ -77,9 +77,12 @@ STATE_PATH = Path(
 #: successful consult resets the count to 0, so this is only ever reached by
 #: genuine repeated failure.
 #:
-#: The PreToolUse arm has no equivalent and must never grow one. Blocking a reply
-#: forever would leave the owner with silence; blocking a TOOL leaves the one
-#: remedy — call the advisor — fully available, so there is nothing to rescue.
+#: The PreToolUse arm has its own ceiling, PRE_TOOL_MAX_BLOCKS below, and this
+#: comment used to say it must never grow one — on the reasoning that blocking a
+#: TOOL leaves the remedy fully available, so there is nothing to rescue. That
+#: reasoning was measured wrong on 2026-08-31: the remedy can be performed and
+#: stay invisible, because this guard reads a transcript FILE that lags the live
+#: conversation. The module docstring carries the evidence and the reversal.
 MAX_BLOCKS = 5
 
 #: The PRE-TOOL arm's ceiling. Three consecutive refusals of acting tools inside a
