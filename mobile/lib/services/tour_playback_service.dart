@@ -88,11 +88,30 @@ class TourPlaybackService extends ChangeNotifier {
   ) =>
       haversineDistance(lat, lng, centerLat, centerLng) <= radiusM;
 
+  /// An OVERRIDE for every stop's placed radius, in metres. Null is the default
+  /// and the design this phone runs: each stop fires inside the footprint the
+  /// server placed on it, which is why a cathedral and a doorway do not share a
+  /// circle.
+  ///
+  /// The on-device proof pages set it, and that is the whole reason it exists.
+  /// Real GPS cross-track is around ten metres, so a walker crossing a bare 10m
+  /// circle can pass straight through without a single fix landing inside it.
+  /// A tester needs the stop to fire reliably or the proof proves nothing. One
+  /// override applied to every stop — never a second spelling of "within a
+  /// radius", which is what [_within] exists to prevent.
+  double? triggerRadiusMeters;
+
   /// THE one predicate: is (lat, lng) inside [stop]'s placed footprint?
-  static bool _atPlace(ItineraryStop stop, double lat, double lng) {
+  bool _atPlace(ItineraryStop stop, double lat, double lng) {
     final trigger = stop.trigger;
     if (trigger == null) return false;
-    return _within(lat, lng, stop.lat, stop.lng, trigger.radiusM);
+    return _within(
+      lat,
+      lng,
+      stop.lat,
+      stop.lng,
+      triggerRadiusMeters ?? trigger.radiusM,
+    );
   }
 
   /// The stop whose footprint has been touched and whose piece has not yet
@@ -673,13 +692,23 @@ class TourPlaybackService extends ChangeNotifier {
   /// record and for tests).
   List<String> get closesPlayed => List.unmodifiable(_closesPlayed);
 
+  /// [triggerRadiusMeters] sets the geofence radius at construction. It stays a
+  /// settable field as well, because the on-device proof pages widen it after
+  /// the fact — real GPS cross-track walks straight past a bare 10m circle. Both
+  /// doors reach the same field; this one exists so a test can build a service
+  /// at a known radius instead of mutating one it just made.
   TourPlaybackService({
     required LocationProvider locationService,
     required AudioProvider audioService,
     DateTime Function()? now,
+    double? triggerRadiusMeters,
   })  : _locationService = locationService,
         _audioService = audioService,
-        _now = now ?? DateTime.now;
+        _now = now ?? DateTime.now {
+    if (triggerRadiusMeters != null) {
+      this.triggerRadiusMeters = triggerRadiusMeters;
+    }
+  }
 
   // ---- S5.10 getters: the measured numbers -------------------------------
 
@@ -843,8 +872,27 @@ class TourPlaybackService extends ChangeNotifier {
     _voiceRestored = false;
     _screenOnlyAnnounced = false;
 
-    // Start GPS tracking
-    final started = await _locationService.startTracking();
+    // THE AUDIO SESSION IS OPENED FIRST, BEFORE TRACKING. iOS grants the
+    // .playback session only to a frontmost app and refuses activation from a
+    // background callback (AVAudioSessionErrorCodeCannotInterruptOthers). The
+    // tour's first piece is usually triggered by a geofence with the phone
+    // already locked in a pocket, so if the door is not opened here — at the
+    // start, on screen — the native player has no active session and the walk
+    // is silent.
+    //
+    // The ORDER is the fix, and it is load-bearing rather than cosmetic. This
+    // ran the other way round until 2026-08-31: tracking started, and only then
+    // was the session prepared. The moment background tracking begins the app
+    // may be backgrounded, so the activation that followed it was racing the
+    // lock screen for the one window in which iOS would have allowed it.
+    await _audioService.prepareSession();
+
+    // Start GPS tracking that SURVIVES the screen locking. The phone spends the
+    // walk in a pocket; foreground-only tracking stops the moment it locks, the
+    // next stop's footprint is never reached, and no piece ever fires — the walk
+    // just goes quiet. Asked for explicitly here because the default is false
+    // for the planning screens, which only need a fix while they are on screen.
+    final started = await _locationService.startTracking(background: true);
     if (!started) {
       _state = TourState.idle;
       notifyListeners();
@@ -854,13 +902,6 @@ class TourPlaybackService extends ChangeNotifier {
     // Listen to position updates
     _locationListener = () => _onPositionUpdate();
     _locationService.addListener(_locationListener!);
-
-    // Activate the iOS audio session while we are still in the foreground.
-    // iOS refuses activation from a background callback, and the tour's first
-    // piece may well be triggered by a geofence with the screen already locked,
-    // so the door has to be opened here — at the start, on screen — or the
-    // native player has no active session to be audible on.
-    await _audioService.prepareSession();
 
     // Listen to audio completion
     _audioListener = () => _onAudioStateChanged();

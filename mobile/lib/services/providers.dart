@@ -6,7 +6,18 @@ abstract class LocationProvider extends ChangeNotifier {
   dynamic get lastPosition;
   bool get isTracking;
   bool get lowAccuracy;
-  Future<bool> startTracking();
+
+  /// [background] asks for location updates that SURVIVE the screen locking.
+  /// A walk is the whole reason this exists: the phone goes in a pocket, and a
+  /// tour whose GPS stops there never reaches the next stop's footprint, so no
+  /// piece ever fires. The default is false because the planning screens only
+  /// want a fix while they are on screen; the tour asks for true.
+  ///
+  /// It is declared HERE, on the door, rather than only on the concrete
+  /// service. It was on the implementation alone until 2026-08-31 — so the
+  /// playback service, which holds this interface, could not ask for it and
+  /// silently started a walk on foreground-only tracking.
+  Future<bool> startTracking({bool background});
   void stopTracking();
 }
 

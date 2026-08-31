@@ -77,7 +77,9 @@ class MockAudioService extends AudioProvider {
     titles[beatId] = title;
     _currentBeatId = beatId;
     _isDeeperDive = isDeeperDive;
-    _isPlaying = true;
+    // The piece was accepted either way; whether it SOUNDS is what
+    // [playSucceeds] decides.
+    _isPlaying = playSucceeds;
     _isCompleted = false;
     _playCount++;
     notifyListeners();
@@ -126,11 +128,35 @@ class MockAudioService extends AudioProvider {
   /// is the difference between narration a locked phone plays and silence.
   final List<String> sessionCalls = [];
 
-  @override
-  Future<void> prepareSession() async => sessionCalls.add('prepare');
+  /// A log SHARED with the location double, so a test can assert the ORDER of
+  /// calls across both — `['prepare', 'track']`. Order is the whole assertion:
+  /// the session has to be activated while the app is still in the foreground,
+  /// before background tracking begins, or iOS refuses it later and the locked
+  /// phone plays nothing. Two separate per-double logs could not express that.
+  List<String>? callLog;
+
+  /// When false, [play] records the piece but never reaches playing — the
+  /// native player accepting the call and then failing to sound. The tour must
+  /// hold its position through that: no phantom advance to the next stop.
+  bool playSucceeds = true;
+
+  int get prepareSessionCount =>
+      sessionCalls.where((call) => call == 'prepare').length;
+
+  int get releaseSessionCount =>
+      sessionCalls.where((call) => call == 'release').length;
 
   @override
-  Future<void> releaseSession() async => sessionCalls.add('release');
+  Future<void> prepareSession() async {
+    sessionCalls.add('prepare');
+    callLog?.add('prepare');
+  }
+
+  @override
+  Future<void> releaseSession() async {
+    sessionCalls.add('release');
+    callLog?.add('release');
+  }
 
   /// Simulate audio completing playback — the piece reached its END on its own
   /// (a pause is NOT this: it leaves [isCompleted] false).
