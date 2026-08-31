@@ -1,4 +1,9 @@
 @TestOn('vm')
+// Tagged as well as TestOn'd. @TestOn keeps this OFF the chrome pass; the tag
+// is what puts it ON the VM pass. Without it the file matched neither
+// selector and ran in neither half of `make flutter-test` — green by never
+// executing, which is the one way a golden can lie.
+@Tags(['vm'])
 library;
 
 import 'package:flutter/material.dart';
@@ -10,8 +15,12 @@ import 'package:ondoway/theme/theme.dart';
 // KE8: visual proof of the "keep exploring here" button.
 //
 // PLATFORM: pixel goldens are captured on the flutter-tester (VM) engine, so
-// this file is tagged @TestOn('vm') — `flutter test --platform chrome` (the
-// `make flutter-test` bar) skips it, while a plain `flutter test` runs it.
+// this file cannot run under chrome. `make flutter-test` is TWO passes — chrome
+// with `--exclude-tags vm`, then the native engine with `--tags vm` — and BOTH
+// annotations above are load-bearing: @TestOn('vm') keeps this file off the
+// chrome pass, @Tags(['vm']) puts it on the VM pass. Remove either and the file
+// matches neither selector and runs in neither pass, which is how it sat green
+// without executing until 2026-08-30.
 //
 // Renders the real _StopCard (via the @visibleForTesting buildStopCardForTest
 // hook) and writes a PNG golden, so the rendered button is a committed artifact.

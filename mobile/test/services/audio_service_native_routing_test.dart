@@ -1,3 +1,13 @@
+@Tags(['vm'])
+library;
+
+// Native iOS audio routing: this exercises a MethodChannel and the platform
+// override, and local's AudioService configures an audio session on the way in.
+// Under `--platform chrome` there is no such platform and the session call
+// hangs, so this runs on flutter's native engine with the other vm-tagged
+// tests. The fork left it untagged because the fork's service had no session
+// code to hang on.
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,7 +22,10 @@ void main() {
   final calls = <MethodCall>[];
 
   // Injected cache resolver: beat-1 is "cached" at this path, nothing else is.
-  // Keeps the test off the real filesystem so it runs on the web test runner.
+  // Keeps the test off the real filesystem, so it needs no path_provider plugin
+  // and stays hermetic on the native engine. (The seam was written to make this
+  // runnable on the web runner; the file is vm-tagged now and never goes there,
+  // but a test that touches no real cache directory is worth keeping either way.)
   Future<String?> resolver(String beatId) async =>
       beatId == 'beat-1' ? '/cache/ondoway_audio/beat-1.mp3' : null;
 

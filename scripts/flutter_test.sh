@@ -8,8 +8,10 @@
 #   * The stack the old comment cited — _startTest.finalize, FlutterTesterTestDevice.kill,
 #     a PathNotFoundException on a temp listener — lives in flutter_platform.dart and
 #     flutter_tester_device.dart, which are the VM-platform sources. `--platform chrome`
-#     runs flutter_web_platform.dart and never executes any of it. The label described
-#     code this runner does not run.
+#     runs flutter_web_platform.dart and never executes any of it, so the label described
+#     code the CHROME pass does not run. The VM-tagged pass added at the bottom of this
+#     file DOES run those sources, which is why it carries a hard deadline of its own —
+#     see VM_DEADLINE_SECONDS. It is bounded; nothing here is unbounded.
 #   * "cannot be patched at the SDK level" was untrue. The SDK here is a writable git
 #     checkout at /opt/homebrew/share/flutter (the Caskroom path is a symlink to it), and
 #     a one-line timeout in it turns the hang into a bounded error. See the measured
@@ -263,9 +265,15 @@ acquire_lock
 # exit code of a run that finished, and $stalled_for to the silence that tripped a stall.
 run_once() {
   : > "$LOG"
+  # --exclude-tags vm: tests tagged @Tags(['vm']) use dart:io — a source guard
+  # that File().readAsStringSync()s a lib file, a fixture loaded off disk — and
+  # dart:io does not exist under the JS platform, so they throw Unsupported
+  # operation here. They are not skipped: the VM pass below runs them on the
+  # native engine, and both passes must be green. mobile/dart_test.yaml declares
+  # the tag and describes exactly this pair.
   ( cd "$MOBILE_DIR" \
       && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
-         flutter test --platform chrome >"$LOG" 2>&1 ) &
+         flutter test --platform chrome --exclude-tags vm >"$LOG" 2>&1 ) &
   fpid=$!
 
   # Let the run exit on its own. The runner this replaced killed the tree the instant the
@@ -307,6 +315,51 @@ run_once() {
 }
 
 [ -n "$CHROME" ] && export CHROME_EXECUTABLE="$CHROME"
+
+# The VM pass, first. Tests tagged @Tags(['vm']) cannot run under chrome — the
+# chrome pass above excludes them — so they run here on flutter's native engine.
+# `tester` is that engine's name; `vm` is a tag, not a --platform value. BOTH
+# passes must succeed for this target to succeed. It runs first so a source
+# guard that fails is the first thing on screen.
+#
+# It carries NO stall detector but it does carry a HARD DEADLINE, and the two are
+# not the same tool. The stall detector watches for silence, and a wedged tester
+# run is not necessarily silent — the finalize hang named at the top of this file
+# lives in exactly the VM-platform sources this pass executes. Silence-based
+# detection cannot see that; a deadline can. Without one this pass could hang
+# forever holding the lock, which is the disease this whole runner exists to
+# cure. The budget is generous: the pass runs in about four seconds.
+VM_DEADLINE_SECONDS="${FLUTTER_VM_DEADLINE:-60}"
+
+echo ">> running VM-tagged tests (flutter test --platform tester --tags vm)" >&2
+( cd "$MOBILE_DIR" \
+    && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
+       flutter test --platform tester --tags vm ) &
+vm_pid=$!
+vm_waited=0
+while kill -0 "$vm_pid" 2>/dev/null; do
+  sleep 1
+  vm_waited=$((vm_waited + 1))
+  if [ "$vm_waited" -ge "$VM_DEADLINE_SECONDS" ]; then
+    echo "" >&2
+    echo "FLUTTER VM-TAGGED TESTS HIT THEIR ${VM_DEADLINE_SECONDS}s DEADLINE." >&2
+    echo "This pass runs flutter_platform.dart / flutter_tester_device.dart — the sources" >&2
+    echo "the finalize hang documented at the top of this file actually lives in. A run" >&2
+    echo "that wedges there can keep printing, so the silence detector would never see it." >&2
+    echo "Killed rather than left to hold the lock. Read the output above; do not re-run" >&2
+    echo "blind." >&2
+    kill -TERM -- "-$vm_pid" 2>/dev/null || kill -TERM "$vm_pid" 2>/dev/null
+    sleep 2
+    kill -KILL -- "-$vm_pid" 2>/dev/null || kill -KILL "$vm_pid" 2>/dev/null
+    exit 1
+  fi
+done
+wait "$vm_pid"
+vm_rc=$?
+if [ "$vm_rc" -ne 0 ]; then
+  echo "FLUTTER VM-TAGGED TESTS FAILED (exit $vm_rc) — see output above." >&2
+  exit 1
+fi
 
 attempt=1
 while :; do
