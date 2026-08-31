@@ -164,8 +164,25 @@ class _TourWalkPageState extends State<TourWalkPage> {
               ),
               SafeArea(
                 child: engine.state == TourState.completed
-                    ? _CompletePanel(
-                        c: c, onDone: () => Navigator.of(context).maybePop())
+                    // A FINISHED WALK CAN STILL HAVE SOMETHING TO HEAR. The
+                    // completion panel used to be the whole screen, so a walker
+                    // standing inside the last stop — Notre-Dame, with its
+                    // indoor chapter unheard — was told "Tour complete" and
+                    // offered nothing, while the service was holding the offer
+                    // the whole time. The offers outlive the walk because they
+                    // are about WHERE THE PERSON IS STANDING, not about whether
+                    // the itinerary has any stops left.
+                    ? Stack(
+                        children: [
+                          _CompletePanel(
+                              c: c,
+                              onDone: () => Navigator.of(context).maybePop()),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: _Offers(c: c, engine: engine),
+                          ),
+                        ],
+                      )
                     : Stack(
                         children: [
                           // Always-available exit from the immersive walk.

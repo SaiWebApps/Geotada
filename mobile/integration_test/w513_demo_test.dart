@@ -2,7 +2,7 @@
 // Simulator. Both persona traces replayed as scripted position streams and a
 // scripted clock through the app's own doors (LocationProvider / AudioProvider
 // test doubles; the real TripService over the wire for the live replan), the
-// SessionPage rendering every moment, and a verbatim transcript printed as
+// walk screen rendering every moment, and a verbatim transcript printed as
 // "W513 " lines (the host writes it under evidence/phase5-session/demo/).
 // Screenshots: the host captures the simulator every 2 s; each moment pauses
 // six seconds after printing its marker so a frame lands on it.
@@ -58,10 +58,10 @@ const GeneratedTrip _walkSeed = GeneratedTrip(
 
 Widget _app(TourPlaybackService service, String tripId) {
   final router = GoRouter(
-    initialLocation: '/session/$tripId',
+    initialLocation: '/trip/$tripId/walk',
     routes: [
       GoRoute(
-        path: '/session/:tripId',
+        path: '/trip/:tripId/walk',
         builder: (context, state) =>
             const TourWalkPage(trip: _walkSeed),
       ),
