@@ -22,14 +22,27 @@ indistinguishable from a consult that was ignored. Printing the numbered plan
 before acting makes the advice visible to the person who has to live with the
 result, and makes a silent deviation from it obvious.
 
-WHY THERE IS NO ESCAPE HATCH. No token, no environment variable, no ceiling that
-disarms after N refusals. Every other guard here carries one so that a broken
-dependency cannot wedge the session, and that reasoning does not apply: the
-single action that satisfies this guard — calling `advisor` — is never blocked by
-it, so a refusal always has an immediate, available remedy. A ceiling would only
-ever grant permission to skip the rule, which is the exact failure the guard
-exists to remove. If the advisor is genuinely unreachable, the correct move is to
-say so and stop, not to proceed unadvised.
+WHY THE PRE-TOOL ARM NOW HAS A CEILING, having argued at length that it must not.
+The original reasoning was that a refusal always has an immediate remedy — call
+`advisor`, which is exempt — so a ceiling could only ever grant permission to skip
+the rule. That reasoning assumed the remedy, once performed, is VISIBLE. Measured
+on this session's own transcript, 2026-08-31, it is not:
+
+    the guard reads the transcript FILE, and the file lags the live conversation.
+    Replaying the guard against the real records at a refused `cat Makefile`
+    reproduced consult_index=28 and plan_printed_after=True with
+    grounded_before=False — the `Read` that grounded the consult had happened,
+    and its record was not yet on disk. The refusal was therefore correct about
+    the file and wrong about the world, and repeating the remedy could not change
+    it: every retry re-read the same lagging file.
+
+That is not a rule being skipped, it is a rule that cannot be satisfied, and this
+project has shipped an unsatisfiable boundary check twice already (ledger class
+17b, and the `_failed_call_ids` deadlock below). The ceiling is therefore narrow
+and loud: `PRE_TOOL_MAX_BLOCKS` consecutive refusals of ACTING tools within one
+turn stand the arm down for that turn, and say so in the systemMessage. An exempt
+look does not reset it — Read/Grep/Glob were exactly what the deadlocked loop
+kept doing — and the owner speaking resets it, because that is a new turn.
 
 MECHANICAL, NOT SEMANTIC. Nothing here judges whether a consult was thoughtful or
 whether the printed plan is a good one. It asks three yes-or-no questions of the
@@ -49,7 +62,13 @@ import sys
 import time
 from pathlib import Path
 
-STATE_PATH = Path("/tmp/ondoway-advisor-consult-state.json")
+#: Where the two ceilings keep their tallies. Overridable so the payload tests
+#: get their own file: they drive the guard as a subprocess, and sharing one path
+#: would make a test run reach into whatever live session is open on this machine
+#: — and make the tests themselves order-dependent on each other.
+STATE_PATH = Path(
+    os.environ.get("ONDOWAY_ADVISOR_STATE", "/tmp/ondoway-advisor-consult-state.json")
+)
 #: The Stop arm's ceiling, and ONLY the Stop arm's. Every human message resets the
 #: turn and demands a fresh consult, and this owner interjects often — 36 human
 #: records in one measured session's transcript tail. At a ceiling of 2, two rapid
@@ -62,6 +81,15 @@ STATE_PATH = Path("/tmp/ondoway-advisor-consult-state.json")
 #: forever would leave the owner with silence; blocking a TOOL leaves the one
 #: remedy — call the advisor — fully available, so there is nothing to rescue.
 MAX_BLOCKS = 5
+
+#: The PRE-TOOL arm's ceiling. Three consecutive refusals of acting tools inside a
+#: single turn, with a correct consult performed before each one, is the signature
+#: of a transcript the guard cannot read the truth out of rather than a rule being
+#: ignored — see the module docstring. Three rather than one or two because a
+#: genuine unconsulted stretch should still be refused more than once before the
+#: arm concedes, and rather than five because past three the session is simply
+#: burning turns against a file that will not agree with it.
+PRE_TOOL_MAX_BLOCKS = 3
 
 #: The shortest assistant message that can plausibly BE a step-by-step plan.
 #: Measured against a real printed plan of nine numbered steps: 700 characters.
@@ -196,6 +224,25 @@ def _is_human_turn(entry):
     if entry.get("isMeta"):
         return False
 
+    # THE COMPACTION SUMMARY. Written by the harness when a session runs out of
+    # context, and it is a `user` record carrying plain text with NO `origin`
+    # stamp and NO `isMeta`, so the fail-loud default below called it a person
+    # typing. Read off this session's own transcript, 2026-08-31:
+    #
+    #   {"type": "user", "isCompactSummary": true,
+    #    "isVisibleInTranscriptOnly": true,
+    #    "message": {"content": "This session is being continued from a previous
+    #                            conversation that ran out of context. ..."}}
+    #
+    # Nobody typed it. Left classified as human it becomes the last human record
+    # in the file, so every compaction demands a fresh consult at the exact moment
+    # the session has the least context to consult ABOUT — and in a 21 MB
+    # transcript it made a machine-written summary the boundary of "this turn".
+    # This is a POSITIVE machine marker, so the fail-loud default is untouched:
+    # a shape carrying neither this field nor an origin stamp still counts human.
+    if entry.get("isCompactSummary"):
+        return False
+
     origin_kind = (entry.get("origin") or {}).get("kind")
     if origin_kind == "human":
         return True
@@ -283,9 +330,48 @@ def grounded_before(turn, index):
     return False
 
 
-def deny_tool(reason):
+def turn_id(entries):
+    """A stable name for the CURRENT turn, so the ceiling below resets when the
+    owner speaks and not merely when the process restarts.
+
+    The last human record's own uuid, because that record IS the turn boundary
+    `turn_slice` computes.
+
+    THE FALLBACK CARRIES THE HUMAN COUNT, and that is not decoration. An earlier
+    version fell back to a bare constant when a record had neither uuid nor
+    timestamp, so two DIFFERENT turns produced the same fingerprint and the owner
+    speaking did not clear the ceiling — caught by
+    test_the_owner_speaking_starts_the_tally_again, which is the whole reason to
+    write the test from the behaviour rather than from the implementation.
+
+    The count is read off the 8 MB window, which slides as the transcript grows,
+    so an old human record aging out can change the fingerprint with nobody
+    having spoken. That costs a spurious RESET — the arm re-arms and refuses
+    again — which is the safe direction for a guard: it fires once too often
+    rather than once too few.
+    """
+    last = None
+    humans = 0
+    for entry in entries:
+        if _is_human_turn(entry):
+            humans += 1
+            last = entry
+    if last is None:
+        return "no-human-in-window"
+    return last.get("uuid") or last.get("timestamp") or f"human-{humans}"
+
+
+def deny_tool(reason, state=None):
     """Refuse the tool call. Always exit 0: a guard that crashes is a guard that
-    is switched off, and the decision travels in the printed JSON, not the code."""
+    is switched off, and the decision travels in the printed JSON, not the code.
+
+    `state` is the breaker's tally. Counting the refusal HERE rather than at each
+    call site means a new refusal reason added later is counted without anyone
+    remembering to, which is how the ceiling stays honest as the arm grows.
+    """
+    if state is not None:
+        state["pre_blocks"] = state.get("pre_blocks", 0) + 1
+        write_state(state)
     print(
         json.dumps(
             {
@@ -459,15 +545,50 @@ def destructive_calls_in(turn):
     return out
 
 
-def handle_pre_tool_use(payload, turn):
+def handle_pre_tool_use(payload, turn, state):
     """Gate the action itself. Three questions, each answered by the transcript."""
+
+    def refuse(reason):
+        deny_tool(reason, state)
+
     tool = payload.get("tool_name") or ""
     if tool in EXEMPT_TOOLS:
+        # Deliberately does NOT clear the tally. Read, Grep, Glob and codegraph
+        # are what a deadlocked loop keeps doing while it tries to satisfy an
+        # unsatisfiable rule, so letting a look reset the ceiling would mean the
+        # ceiling never arrives in the one situation it exists for.
         allow()
+
+    # THE CEILING. See the module docstring: a refusal can be correct about the
+    # transcript file and wrong about the world, because the file lags. Three
+    # consecutive refusals of acting tools in one turn is that condition, not a
+    # rule being ignored, so the arm stands down for this turn and says so where
+    # the owner can read it.
+    if state.get("pre_blocks", 0) >= PRE_TOOL_MAX_BLOCKS:
+        print(
+            json.dumps(
+                {
+                    "systemMessage": (
+                        "ADVISOR GATE STOOD DOWN for this turn after "
+                        f"{PRE_TOOL_MAX_BLOCKS} consecutive refusals.\n\n"
+                        "That many refusals in a row, with a consult performed "
+                        "before each, means this guard is reading a transcript "
+                        "file that lags the live conversation — the remedy it "
+                        "asks for has already been done and cannot be seen. "
+                        "Refusing again would wedge the session, not enforce "
+                        "anything.\n\n"
+                        "The rule still stands: consult the advisor and print "
+                        "its plan before acting. The owner should know this arm "
+                        "is not enforcing it right now."
+                    )
+                }
+            )
+        )
+        sys.exit(0)
 
     index = consult_index(turn)
     if index < 0:
-        deny_tool(
+        refuse(
             "NO CONSULT, NO ACTION.\n\n"
             f"This turn has not called the advisor, and `{tool}` would act on it "
             "anyway. Consulting after the fact is not consulting.\n\n"
@@ -477,7 +598,7 @@ def handle_pre_tool_use(payload, turn):
         )
 
     if not plan_printed_after(turn, index):
-        deny_tool(
+        refuse(
             "THE PLAN WAS NOT PRINTED.\n\n"
             "The advisor was consulted in this turn, but nothing of substance was "
             "written down afterwards, so the advice it gave is invisible to the "
@@ -488,7 +609,7 @@ def handle_pre_tool_use(payload, turn):
         )
 
     if not grounded_before(turn, index):
-        deny_tool(
+        refuse(
             "THE ADVICE WAS NOT GROUNDED IN THIS CODEBASE.\n\n"
             "The advisor was consulted and a plan was printed, but nothing in this "
             "turn looked at the actual code before asking. The advisor has NO "
@@ -517,7 +638,7 @@ def handle_pre_tool_use(payload, turn):
         position > index for position in destructive_calls_in(turn)
     )
     if unadvised:
-        deny_tool(
+        refuse(
             "A DESTRUCTIVE ACTION NEEDS ITS OWN CONSULT.\n\n"
             "This command changes the world in a way an apology cannot undo, and "
             "another destructive command has already run in this turn since the "
@@ -527,6 +648,8 @@ def handle_pre_tool_use(payload, turn):
             "Call `advisor()` again, print what it says, then run this command."
         )
 
+    state["pre_blocks"] = 0
+    write_state(state)
     allow()
 
 
@@ -543,16 +666,25 @@ def main():
     if not transcript:
         allow()
 
+    session = payload.get("session_id") or "unknown"
+
     event = payload.get("hook_event_name") or ""
     if event == "PreToolUse":
         entries = records(transcript)
         turn = turn_slice(entries)
         if turn is None:
             allow()  # no human turn in view; nothing has been asked yet
-        handle_pre_tool_use(payload, turn)
+        state = read_state()
+        here = turn_id(entries)
+        # A new session, or the owner speaking, starts the tally again. Both are
+        # genuinely new ground to be advised about, and neither is the lagging
+        # transcript the ceiling exists for.
+        if state.get("session") != session or state.get("turn") != here:
+            state = {"session": session, "turn": here, "blocks": 0, "pre_blocks": 0,
+                     "ts": time.time()}
+        handle_pre_tool_use(payload, turn, state)
         allow()
 
-    session = payload.get("session_id") or "unknown"
     state = read_state()
     if state.get("session") != session:
         state = {"session": session, "blocks": 0, "ts": time.time()}

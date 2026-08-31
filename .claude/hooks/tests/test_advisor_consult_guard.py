@@ -42,6 +42,7 @@ what makes "was the plan printed before this tool ran" answerable at all.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -124,8 +125,24 @@ def grounding_call(name="mcp__codegraph__codegraph_explore"):
 # ---------------------------------------------------------------------- harness
 
 
-def decide(tmp_path, records, *, tool="Bash", command="ls -la", event="PreToolUse"):
-    """Run the guard over `records` and return its decision ({} means allowed)."""
+def decide(
+    tmp_path,
+    records,
+    *,
+    tool="Bash",
+    command="ls -la",
+    event="PreToolUse",
+    session=None,
+):
+    """Run the guard over `records` and return its decision ({} means allowed).
+
+    Each tmp_path gets its own state file AND its own session id. The guard keeps
+    two running tallies on disk — the Stop arm's block count and the pre-tool
+    ceiling — so a shared path would make these tests order-dependent on one
+    another and let a test run reach into a live session open on this machine.
+    Pass `session` explicitly to make several calls share one tally on purpose,
+    which is the only way to exercise the ceiling at all.
+    """
     transcript = tmp_path / "session.jsonl"
     transcript.write_text("\n".join(json.dumps(r) for r in records) + "\n")
     payload = {
@@ -133,7 +150,7 @@ def decide(tmp_path, records, *, tool="Bash", command="ls -la", event="PreToolUs
         "tool_name": tool,
         "tool_input": {"command": command},
         "transcript_path": str(transcript),
-        "session_id": "test-session",
+        "session_id": session or f"test-{tmp_path.name}",
     }
     done = subprocess.run(
         [sys.executable, str(GUARD)],
@@ -141,6 +158,7 @@ def decide(tmp_path, records, *, tool="Bash", command="ls -la", event="PreToolUs
         capture_output=True,
         text=True,
         timeout=60,
+        env={**os.environ, "ONDOWAY_ADVISOR_STATE": str(tmp_path / "state.json")},
     )
     assert done.returncode == 0, done.stderr
     return json.loads(done.stdout) if done.stdout.strip() else {}
@@ -284,9 +302,17 @@ def test_the_grounding_tools_are_never_themselves_blocked(tmp_path):
 
 
 def test_acting_tools_are_still_gated_with_no_consult(tmp_path):
-    """The exemption is for LOOKING. Changing things still needs the full gate."""
+    """The exemption is for LOOKING. Changing things still needs the full gate.
+
+    Each tool gets its OWN session, because four refusals sharing one tally would
+    trip the ceiling on the fourth and this test would then be measuring the
+    ceiling instead of the gate. That is the ceiling behaving correctly — see
+    test_three_refusals_in_one_turn_stand_the_arm_down — and it belongs in the
+    test named for it.
+    """
     for name in ("Bash", "Write", "Edit", "Agent"):
-        assert denied(decide(tmp_path, [human()], tool=name)), f"{name} must stay gated"
+        decision = decide(tmp_path, [human()], tool=name, session=f"gated-{name}")
+        assert denied(decision), f"{name} must stay gated"
 
 
 # ------------------------------------------ arm: one consult per destructive act
@@ -443,3 +469,140 @@ def test_the_stop_arm_still_refuses_a_reply_with_no_consult(tmp_path):
 def test_the_stop_arm_is_satisfied_by_a_consult(tmp_path):
     records = [human(), advisor_call(), advisor_result()]
     assert decide(tmp_path, records, event="Stop") == {}
+
+
+# ------------------------------- the compaction summary is not a person typing
+#
+# READ OFF THIS SESSION'S OWN TRANSCRIPT, 2026-08-31. A 21 MB session ran out of
+# context; the harness wrote a summary record and the guard made it the boundary
+# of "this turn", so every consult that followed landed in a turn that had
+# already ended. The record carries plain text, no `origin` stamp and no
+# `isMeta`, so the fail-loud default called it human. Nobody typed it.
+
+
+def compaction_summary():
+    return {
+        "type": "user",
+        "isCompactSummary": True,
+        "isVisibleInTranscriptOnly": True,
+        "message": {
+            "content": (
+                "This session is being continued from a previous conversation "
+                "that ran out of context. The summary below covers the earlier "
+                "portion of the conversation."
+            )
+        },
+        "uuid": "9d0b2f6e-compact",
+        "timestamp": "2026-08-31T21:39:22.375Z",
+    }
+
+
+def test_a_compaction_summary_does_not_end_the_turn(tmp_path):
+    """The consult still counts on the other side of a compaction."""
+    records = [
+        human(),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+        compaction_summary(),
+    ]
+    assert not denied(decide(tmp_path, records))
+
+
+def test_a_real_message_after_a_compaction_summary_still_ends_the_turn(tmp_path):
+    """So the fix above cannot become a blanket exemption for `user` records."""
+    records = [
+        human("first ask"),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+        compaction_summary(),
+        human("second ask"),
+    ]
+    assert denied(decide(tmp_path, records))
+
+
+def test_an_unfamiliar_user_record_still_counts_as_human(tmp_path):
+    """The fail-loud default is untouched: the fix keys on a POSITIVE marker.
+
+    A shape carrying neither `isCompactSummary` nor an origin stamp is exactly
+    the case the default exists for — an unfamiliar record costs one extra
+    consult rather than silently disarming the guard.
+    """
+    records = [
+        human("first ask"),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+        {"type": "user", "message": {"content": "[Request interrupted by user]"}},
+    ]
+    assert denied(decide(tmp_path, records))
+
+
+# --------------------------------- the ceiling, for a transcript that lags
+#
+# MEASURED 2026-08-31, replaying this guard against the real records at a refused
+# `cat Makefile`: consult_index=28, plan_printed_after=True, grounded_before=False
+# — the `Read` that grounded the consult HAD happened and its record was not yet
+# on disk. The guard reads the transcript FILE, and the file lags the live
+# conversation, so a refusal can be correct about the file and wrong about the
+# world. Repeating the remedy could not clear it: every retry re-read the same
+# lagging file, and Bash, Write and Edit were all gated, including on this guard.
+#
+# That is not a rule being skipped. It is a rule that cannot be satisfied, which
+# is ledger class 17b, the same failure as the `_failed_call_ids` deadlock above.
+
+
+NO_CONSULT = [{"type": "user", "origin": {"kind": "human"}, "message": {"content": "go"}}]
+
+
+def test_three_refusals_in_one_turn_stand_the_arm_down(tmp_path):
+    for attempt in range(3):
+        assert denied(decide(tmp_path, NO_CONSULT, session="wedged")), attempt
+    decision = decide(tmp_path, NO_CONSULT, session="wedged")
+    assert not denied(decision)
+    assert "ADVISOR GATE STOOD DOWN" in decision.get("systemMessage", "")
+
+
+def test_looking_at_the_code_does_not_reset_the_ceiling(tmp_path):
+    """Read/Grep/Glob are what the deadlocked loop kept doing between refusals.
+
+    If an exempt look cleared the tally, the ceiling would never arrive in the
+    one situation it exists for.
+    """
+    for _ in range(3):
+        assert denied(decide(tmp_path, NO_CONSULT, session="wedged"))
+        assert not denied(decide(tmp_path, NO_CONSULT, tool="Read", session="wedged"))
+    assert not denied(decide(tmp_path, NO_CONSULT, session="wedged"))
+
+
+def test_an_acting_tool_getting_through_clears_the_tally(tmp_path):
+    """Ordinary work must never accumulate toward the ceiling."""
+    good = [
+        human(),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+    ]
+    assert denied(decide(tmp_path, NO_CONSULT, session="mixed"))
+    assert denied(decide(tmp_path, NO_CONSULT, session="mixed"))
+    assert not denied(decide(tmp_path, good, session="mixed"))
+    # Tally cleared: the next two refusals must not trip a ceiling of three.
+    assert denied(decide(tmp_path, NO_CONSULT, session="mixed"))
+    assert denied(decide(tmp_path, NO_CONSULT, session="mixed"))
+
+
+def test_the_owner_speaking_starts_the_tally_again(tmp_path):
+    """A new ask is new ground to be advised about, not a lagging transcript."""
+    for _ in range(3):
+        assert denied(decide(tmp_path, NO_CONSULT, session="spoken"))
+    spoke_again = NO_CONSULT + [
+        {"type": "user", "origin": {"kind": "human"}, "message": {"content": "now this"}}
+    ]
+    decision = decide(tmp_path, spoke_again, session="spoken")
+    assert denied(decision)
+    assert "NO CONSULT, NO ACTION." in reason(decision)
