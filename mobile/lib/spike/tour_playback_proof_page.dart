@@ -150,8 +150,9 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
 
     final ok = await tour.startTour(stops);
     _add(ok
-        ? 'Tour started (fires within 20m). Lock, pocket, walk $_selectedDir '
-            '~30m then ~55m.'
+        ? 'Tour started (fires within '
+            '${kProofRadiusMeters.toStringAsFixed(0)}m). Lock, pocket, walk '
+            '$_selectedDir ~30m then ~55m.'
         : 'startTour failed.');
   }
 
