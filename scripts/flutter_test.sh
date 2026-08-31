@@ -145,15 +145,57 @@ STARTED_AT=$(date +%s)
 elapsed_total() { echo $(( $(date +%s) - STARTED_AT )); }
 # Resolve a browser for `flutter test --platform chrome` PORTABLY. Precedence:
 #   1) a caller-set CHROME_EXECUTABLE (honored verbatim);
-#   2) a local Playwright "Chrome for Testing" (macOS or Linux, any version);
-#   3) empty -> let flutter auto-detect system Chrome (/Applications, PATH google-chrome).
+#   2) a local Playwright "Chrome for Testing" (macOS or Linux, any version) — the
+#      preferred one, and what a green run on this machine actually uses;
+#   3) a system Chromium-family browser, Brave included;
+#   4) nothing found -> SAY SO AND STOP.
 # Wildcards are unquoted (so they glob); the spaces in the bundle name stay quoted.
+#
+# STEP 4 REPLACES "let flutter auto-detect", which was a dead branch here. This
+# machine has no /Applications/Google Chrome.app and no google-chrome on PATH — it
+# has Brave — so falling through handed flutter a path that does not exist. What
+# that produces is not a clean error: flutter_tools throws inside
+# BrowserManager.start, and FlutterWebPlatform.load then holds its Pool(1) forever
+# waiting on a suite that will never connect, which surfaces as the very hang this
+# runner exists to diagnose. A missing browser is a setup problem with a one-line
+# remedy, and it should read as one instead of costing a stall diagnosis.
+#
+# Brave is listed because it IS a Chromium and the owner of this machine uses it.
+# Playwright still wins when both are present: it is a pinned Chrome for Testing
+# build, and pinning is what keeps a golden-image suite reproducible.
 CHROME="${CHROME_EXECUTABLE:-}"
 if [ -z "$CHROME" ]; then
   for _c in "$HOME/Library/Caches/ms-playwright/"chromium-[0-9]*"/chrome-mac"*"/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" \
-            "$HOME/.cache/ms-playwright/"chromium-[0-9]*"/chrome-linux/chrome"; do
+            "$HOME/.cache/ms-playwright/"chromium-[0-9]*"/chrome-linux/chrome" \
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+            "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
+            "/Applications/Chromium.app/Contents/MacOS/Chromium"; do
     [ -x "$_c" ] && { CHROME="$_c"; break; }
   done
+fi
+if [ -z "$CHROME" ]; then
+  for _c in google-chrome google-chrome-stable chromium chromium-browser brave-browser; do
+    _found="$(command -v "$_c" 2>/dev/null)" && [ -n "$_found" ] && { CHROME="$_found"; break; }
+  done
+fi
+if [ -z "$CHROME" ]; then
+  echo "FLUTTER TESTS CANNOT START — no Chromium-family browser found." >&2
+  echo "" >&2
+  echo "The chrome pass needs one and there is no useful default to fall back on:" >&2
+  echo "handing flutter a browser path that does not exist makes it hang inside" >&2
+  echo "FlutterWebPlatform.load rather than fail, so this stops here instead." >&2
+  echo "" >&2
+  echo "Looked for, in order:" >&2
+  echo "    \$CHROME_EXECUTABLE                            (unset or not executable)" >&2
+  echo "    Playwright Chrome for Testing                 ~/Library/Caches/ms-playwright, ~/.cache/ms-playwright" >&2
+  echo "    Google Chrome, Brave, Chromium                /Applications" >&2
+  echo "    google-chrome, chromium, brave-browser        on PATH" >&2
+  echo "" >&2
+  echo "Any ONE of these fixes it:" >&2
+  echo "    npx playwright install chromium               (preferred — pinned build)" >&2
+  echo "    CHROME_EXECUTABLE=/path/to/browser make flutter-test" >&2
+  echo "    install Brave or Chrome into /Applications" >&2
+  exit 1
 fi
 
 # Recursively list the descendant PIDs of $1, deepest first. Must run BEFORE the
