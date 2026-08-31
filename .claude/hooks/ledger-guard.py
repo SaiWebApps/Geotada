@@ -406,6 +406,52 @@ def _wrong_test_bar(command: str) -> bool:
     return any(argv and _is_bar_impersonator(argv) for argv in _segments(command))
 
 
+# ── kind: blanket_conflict_resolution ────────────────────────────────────────
+#
+# Settling a whole merge with one `git checkout --ours`. Measured 2026-08-31: a
+# merge produced 19 conflicts and all 19 were resolved in a single command. Not
+# one of them was read. The sweep happened to be right — this side was the
+# hand-port of the other's redesign — but nobody knew that when it ran, and the
+# owner's ruling on the one file where it was wrong was: "NO. No flinching. ONLY
+# keep the feature that ensures a richer product experience."
+#
+# A conflict is git saying two people answered the same question differently.
+# `--ours` across a list answers every one of them the same way without looking,
+# which is the same deferral as keeping both, wearing the opposite mask.
+#
+# ONE FILE IS STILL ALLOWED, and that limit is the whole design. Resolving a
+# single named path is a considered act: you can only type it after deciding
+# about that file. The threshold sits at four because a three-file resolution
+# still reads as three decisions typed together, while a sweep is what a sweep
+# looks like — and a directory or `.` argument is a sweep at any size.
+
+_SIDE_FLAGS = frozenset({"--ours", "--theirs"})
+_MAX_NAMED_PATHS = 3
+
+
+def _blanket_conflict_resolution(command: str) -> str:
+    """The path count when this settles many conflicts at once; "" otherwise."""
+    for argv in _segments(command):
+        if not argv or Path(argv[0]).name != "git":
+            continue
+        subcommand, rest = _git_subcommand(argv)
+        if subcommand != "checkout":
+            continue
+        if not any(token in _SIDE_FLAGS for token in rest):
+            continue
+        paths = [
+            token
+            for token in rest
+            if not token.startswith("-") and token != "--"
+        ]
+        for path in paths:
+            if path in (".", "..") or path.endswith("/"):
+                return f"a whole directory ({path})"
+        if len(paths) > _MAX_NAMED_PATHS:
+            return f"{len(paths)} files at once"
+    return ""
+
+
 # ── evaluation ───────────────────────────────────────────────────────────────
 
 
@@ -448,6 +494,12 @@ def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
 
         elif kind == "wrong_test_bar":
             hit = _wrong_test_bar(command)
+
+        elif kind == "blanket_conflict_resolution":
+            scope = _blanket_conflict_resolution(command)
+            hit = bool(scope)
+            if hit:
+                detail = f" This one settles {scope}."
 
         if hit:
             return rule.get("class", 0), rule.get("name", "?"), rule.get("message", "") + detail

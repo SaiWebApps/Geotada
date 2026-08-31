@@ -371,6 +371,58 @@ def result_text(turn, tool_use_id):
     return "\n".join(parts)
 
 
+def refused_call_ids(entries):
+    """Spawns whose result came back an ERROR — they never ran.
+
+    THIS EXISTS BECAUSE THE GATE WEDGED ITSELF SHUT, measured 2026-08-31.
+
+    A shadow spawn that a SIBLING guard refuses is still written to the
+    transcript as a `tool_use` block; only its RESULT tells the two apart, as a
+    `tool_result` carrying `is_error: true` with the refusal text. The unanswered
+    check below read the calls and not the results, so ONE spawn that the advisor
+    gate had refused counted as "started, no answer" — and the two foreground
+    shadows that came after it, which had answered `VERDICT: REJECTED` and
+    `VERDICT: CONFIRMED`, were both blocked behind a spawn that never ran.
+
+    One is enough, and the counting matters: the loop blocks on the first
+    unanswered id it finds. The session held three errored spawns in all — one
+    refused by the code-grounding gate, one interrupted by the owner, one by the
+    advisor gate — but only the last sat inside the turn `turn_slice` measures,
+    so only the last ever wedged anything. A first draft of this note said three,
+    and the shadow that read the transcript rejected it.
+
+    A refusal cannot be gone back and un-written, and this file carries no
+    ceiling and no environment bypass on purpose, so the only remedy its
+    docstring offers — run the shadow — could not work. That is the same
+    starved-rule failure the `governing` narrowing already repaired once, reached
+    by a different route, and it is class 17b of the failures ledger exactly: a
+    boundary check counting its own output as input. The sibling advisor guard
+    fixed this for itself in `_failed_call_ids`; this one had not.
+
+    THE TRADE-OFF, stated rather than hidden: a spawn that genuinely RAN and then
+    errored is skipped here too, so a half-completed verification goes unnoticed.
+    That direction costs one missed check. The other direction costs the turn,
+    with no available remedy, which is not a trade — it is the gate breaking.
+
+    A spawn with NO result at all is untouched by this: that is a run still in
+    flight, the one TRANSIENT complaint here, and it still blocks.
+    """
+    refused = set()
+    for entry in entries:
+        # Same reasoning as `result_text`: a tool result is delivered in a `user`
+        # record, so reading any entry type would let a forged error suppress a
+        # real run's verdict.
+        if entry.get("type") != "user":
+            continue
+        for block in _blocks(entry):
+            if block.get("type") != "tool_result" or not block.get("is_error"):
+                continue
+            call_id = block.get("tool_use_id")
+            if call_id:
+                refused.add(call_id)
+    return refused
+
+
 HOW_TO_RUN = (
     "Run it now, in the FOREGROUND. Only subagent_type \"shadow\" is accepted:\n"
     "any other type is ordinary work, and work cannot certify itself.\n\n"
@@ -424,7 +476,12 @@ def main():
     # shadow sailed through. Whether a shadow answered does not depend on
     # knowing where the turn began.
     scope = entries if turn is None else turn
-    all_runs = shadow_runs(scope)
+    # A REFUSED spawn never ran, so it answers for nothing and waits for nothing.
+    # Dropping it here rather than inside each check keeps one rule in one place:
+    # a run that did not happen is not a run. See `refused_call_ids`.
+    refused = refused_call_ids(scope)
+    all_runs = [(position, call_id) for position, call_id in shadow_runs(scope)
+                if call_id not in refused]
 
     # AN UNANSWERED RUN IS CHECKED WHEREVER IT SITS, because "no answer yet" is
     # the one TRANSIENT complaint in this file: the result arrives and it goes

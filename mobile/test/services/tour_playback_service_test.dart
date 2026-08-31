@@ -490,15 +490,14 @@ void main() {
       expect(audioService.currentBeatId, 'beat-1');
     });
 
-    test('geofence radius is configurable — fires at the wider proof radius',
-        () async {
-      final wideService = TourPlaybackService(
-        locationService: locationService,
-        audioService: audioService,
-        triggerRadiusMeters: 20.0,
-      );
-      addTearDown(wideService.dispose);
-
+    test('the radius rides the STOP, so a wide stop fires where a narrow one '
+        'does not', () async {
+      // Was "geofence radius is configurable" against a service-wide override.
+      // That override was deleted on 2026-08-31: one number for every stop
+      // cannot say that a 140 m courtyard and a doorway are different places,
+      // and the phone reads each stop's server-placed footprint instead. The
+      // requirement the test protects is unchanged — a wider circle must fire
+      // further out — so it is asserted where the width actually lives.
       final stops = [
         _makeStop(
           sortOrder: 1,
@@ -506,14 +505,35 @@ void main() {
           lat: 48.8584,
           lng: 2.2945,
           audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+          radiusM: 20,
         ),
       ];
-      await wideService.startTour(stops);
+      await service.startTour(stops);
 
-      // ~15.5m north of the stop: OUTSIDE the default 10m, INSIDE the 20m radius.
+      // ~15.5 m north of the stop: outside a 10 m footprint, inside this 20 m one.
       locationService.simulatePosition(48.8584 + 0.00014, 2.2945);
       expect(audioService.isPlaying, true);
       expect(audioService.currentBeatId, 'beat-1');
+    });
+
+    test('a narrow stop stays silent at the same distance', () async {
+      // The other half of the pair: without it, the test above would pass on a
+      // service that ignored the radius entirely and fired on any fix.
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+          radiusM: 10,
+        ),
+      ];
+      await service.startTour(stops);
+
+      locationService.simulatePosition(48.8584 + 0.00014, 2.2945);
+      expect(audioService.isPlaying, false);
+      expect(audioService.currentBeatId, isNull);
     });
 
     test('does not auto-play if audio already playing', () async {

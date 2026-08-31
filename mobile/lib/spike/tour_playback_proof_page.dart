@@ -151,11 +151,6 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     await _cacheClip('proof-1');
     await _cacheClip('proof-2');
 
-    // Wider trigger than production's 10m: real GPS cross-track (~10m observed)
-    // walks straight past a 10m radius. 20m reliably trips while still requiring
-    // the tester to START outside it (stops are 30m/55m out) and walk in locked.
-    tour.triggerRadiusMeters = 20.0;
-
     final bearing = _directions[_selectedDir]!;
     final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 30.0, bearing);
     final s2 = _offsetAlongBearing(pos.latitude, pos.longitude, 55.0, bearing);
@@ -177,7 +172,6 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
   /// the real screen. TourWalkPage calls startTour() itself, so we don't here.
   Future<void> _startOnRealScreen() async {
     final location = context.read<LocationService>();
-    final tour = context.read<TourPlaybackService>();
 
     final started = await location.startTracking(background: true);
     if (!started) {
@@ -194,7 +188,6 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
 
     await _cacheClip('katy-1');
     await _cacheClip('katy-2');
-    tour.triggerRadiusMeters = 20.0;
 
     final bearing = _directions[_selectedDir]!;
     final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 30.0, bearing);
@@ -219,6 +212,12 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     context.push('/trip/${trip.tripId}/walk', extra: trip);
   }
 
+  /// Wider than a real doorway on purpose: measured GPS cross-track is about ten
+  /// metres, so a walker can cross a bare 10 m circle without a single fix
+  /// landing inside it. 20 m trips reliably while still requiring the tester to
+  /// START outside it — the stops are placed 30 m and 55 m out.
+  static const double _proofRadiusMeters = 20.0;
+
   ItineraryStop _proofStop(int order, String beatId, double lat, double lng) =>
       ItineraryStop(
         sortOrder: order,
@@ -234,6 +233,8 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
         importanceTier: 3,
         startTime: '09:0$order',
         audioUrl: 'cached://$beatId', // unused: cache hit wins in AudioService
+        // The footprint rides the STOP, exactly as a server-placed one does.
+        trigger: const StopTrigger(radiusM: _proofRadiusMeters),
       );
 
   @override

@@ -88,30 +88,18 @@ class TourPlaybackService extends ChangeNotifier {
   ) =>
       haversineDistance(lat, lng, centerLat, centerLng) <= radiusM;
 
-  /// An OVERRIDE for every stop's placed radius, in metres. Null is the default
-  /// and the design this phone runs: each stop fires inside the footprint the
-  /// server placed on it, which is why a cathedral and a doorway do not share a
-  /// circle.
-  ///
-  /// The on-device proof pages set it, and that is the whole reason it exists.
-  /// Real GPS cross-track is around ten metres, so a walker crossing a bare 10m
-  /// circle can pass straight through without a single fix landing inside it.
-  /// A tester needs the stop to fire reliably or the proof proves nothing. One
-  /// override applied to every stop — never a second spelling of "within a
-  /// radius", which is what [_within] exists to prevent.
-  double? triggerRadiusMeters;
-
   /// THE one predicate: is (lat, lng) inside [stop]'s placed footprint?
-  bool _atPlace(ItineraryStop stop, double lat, double lng) {
+  ///
+  /// The radius is the stop's OWN, placed by the server's one rule — which is
+  /// why a 140 m courtyard and a doorway do not share a circle. A service-wide
+  /// radius briefly lived here as an override and was deleted on 2026-08-31:
+  /// it could not express that difference, and it was dead code besides, since
+  /// this method returns on a null trigger before ever reading it. A caller
+  /// that wants a wider circle gives its stop a wider [StopTrigger].
+  static bool _atPlace(ItineraryStop stop, double lat, double lng) {
     final trigger = stop.trigger;
     if (trigger == null) return false;
-    return _within(
-      lat,
-      lng,
-      stop.lat,
-      stop.lng,
-      triggerRadiusMeters ?? trigger.radiusM,
-    );
+    return _within(lat, lng, stop.lat, stop.lng, trigger.radiusM);
   }
 
   /// The stop whose footprint has been touched and whose piece has not yet
@@ -692,23 +680,13 @@ class TourPlaybackService extends ChangeNotifier {
   /// record and for tests).
   List<String> get closesPlayed => List.unmodifiable(_closesPlayed);
 
-  /// [triggerRadiusMeters] sets the geofence radius at construction. It stays a
-  /// settable field as well, because the on-device proof pages widen it after
-  /// the fact — real GPS cross-track walks straight past a bare 10m circle. Both
-  /// doors reach the same field; this one exists so a test can build a service
-  /// at a known radius instead of mutating one it just made.
   TourPlaybackService({
     required LocationProvider locationService,
     required AudioProvider audioService,
     DateTime Function()? now,
-    double? triggerRadiusMeters,
   })  : _locationService = locationService,
         _audioService = audioService,
-        _now = now ?? DateTime.now {
-    if (triggerRadiusMeters != null) {
-      this.triggerRadiusMeters = triggerRadiusMeters;
-    }
-  }
+        _now = now ?? DateTime.now;
 
   // ---- S5.10 getters: the measured numbers -------------------------------
 

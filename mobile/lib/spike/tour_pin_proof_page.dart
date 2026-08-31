@@ -120,7 +120,6 @@ class _TourPinProofPageState extends State<TourPinProofPage> {
       stops.add(_pinStop(i + 1, beatId, _pins[i]));
     }
 
-    tour.triggerRadiusMeters = _triggerRadiusMeters;
     final ok = await tour.startTour(stops);
     _add(ok
         ? 'Tour started with ${stops.length} stop(s), fires within '
@@ -142,6 +141,12 @@ class _TourPinProofPageState extends State<TourPinProofPage> {
         importanceTier: 3,
         startTime: '09:0$order',
         audioUrl: 'cached://$beatId', // unused: cache hit wins in AudioService
+        // The footprint rides the STOP, exactly as a server-placed one does —
+        // there is no service-wide radius to set. Wider than a real doorway on
+        // purpose: measured GPS cross-track is about ten metres, so a walker can
+        // cross a bare 10 m circle without one fix landing inside it, and the
+        // proof would prove nothing.
+        trigger: const StopTrigger(radiusM: _triggerRadiusMeters),
       );
 
   void _onLocTick() {

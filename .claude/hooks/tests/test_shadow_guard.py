@@ -720,6 +720,105 @@ def test_the_governing_run_still_has_to_open_with_its_verdict(tmp_path):
     assert "THE SHADOW GAVE NO VERDICT." in reason(decision)
 
 
+def errored_result(call_id, text):
+    """What a REFUSED spawn leaves behind: a tool_result carrying is_error."""
+    return {
+        "type": "user",
+        "message": {
+            "content": [
+                {
+                    "type": "tool_result",
+                    "tool_use_id": call_id,
+                    "is_error": True,
+                    "content": [{"type": "text", "text": text}],
+                }
+            ]
+        },
+    }
+
+
+REFUSAL = (
+    "NO CONSULT, NO ACTION.\n\nThis turn has not called the advisor, and `Agent` "
+    "would act on it anyway."
+)
+
+
+def test_a_spawn_refused_by_a_sibling_guard_is_not_an_unanswered_run(tmp_path):
+    """THE GATE MADE ITSELF UNSATISFIABLE AGAIN, measured 2026-08-31 on this session.
+
+    A shadow spawn that a SIBLING guard refuses never runs. The refusal is still
+    written to the transcript as a `tool_use` block, and only its RESULT tells
+    the two apart — an `is_error` tool_result carrying the refusal text. The
+    unanswered check read the calls and not the results, so ONE spawn that the
+    advisor gate had refused counted as "started, no answer", and the two
+    foreground shadows after it — which had answered `VERDICT: REJECTED` and
+    `VERDICT: CONFIRMED` — were both blocked behind a spawn that never ran. Three
+    spawns errored across the session (code-grounding refusal, owner interrupt,
+    advisor refusal), but only the last was inside the turn the gate measures.
+
+    A refused spawn cannot be un-refused, and this file has no ceiling and no
+    environment bypass, so the only remedy the docstring offers ("run the
+    shadow") could not work. That is the same starved-rule failure the
+    superseded-run tests above already record, reached by a different route, and
+    it is class 17b of the failures ledger exactly: a boundary check counting its
+    own output as input. The sibling advisor guard fixed this for itself in
+    `_failed_call_ids`; this one had not.
+
+    The trade-off, stated rather than hidden: a spawn that genuinely RAN and then
+    errored is also skipped here. That direction costs one missed verification on
+    a half-completed run. The other direction costs the turn, with no available
+    remedy, which is not a trade — it is the gate breaking.
+
+    UNDO TEST: stop filtering refused spawns -> RED here, because the refusal
+    record can never be gone back and removed.
+    """
+    records = [
+        human(),
+        tool_call(command=DESTRUCTIVE),
+        shadow_call(call_id="toolu_refused"),
+        errored_result("toolu_refused", REFUSAL),
+        shadow_call(call_id="toolu_real"),
+        confirmed("toolu_real"),
+    ]
+    assert decide(tmp_path, records) == {}
+
+
+def test_a_genuinely_pending_run_still_blocks_after_the_refusal_fix(tmp_path):
+    """The other half: the narrowing must not swallow a run that is still in flight.
+
+    A refused spawn has a result and it is an error. A pending spawn has NO
+    result at all. Only the first is skipped.
+    """
+    records = [
+        human(),
+        tool_call(command=DESTRUCTIVE),
+        shadow_call(call_id="toolu_refused"),
+        errored_result("toolu_refused", REFUSAL),
+        shadow_call(call_id="toolu_pending"),
+    ]
+    decision = decide(tmp_path, records)
+    assert blocked(decision)
+    assert "A SHADOW RUN HAS NOT ANSWERED." in reason(decision)
+
+
+def test_a_refused_spawn_alone_leaves_the_work_unverified(tmp_path):
+    """Skipping a refused spawn must not read as "nothing needed verifying".
+
+    The turn still did destructive work and nothing checked it, so the refusal
+    must fall through to the ordinary NOT VERIFIED complaint — which a new
+    shadow run CAN clear.
+    """
+    records = [
+        human(),
+        tool_call(command=DESTRUCTIVE),
+        shadow_call(call_id="toolu_refused"),
+        errored_result("toolu_refused", REFUSAL),
+    ]
+    decision = decide(tmp_path, records)
+    assert blocked(decision)
+    assert "NOT VERIFIED." in reason(decision)
+
+
 def test_a_superseded_backgrounded_run_does_not_wedge_the_turn_shut(tmp_path):
     """Same class, other permanent shape: launch metadata cannot be un-written.
 

@@ -38,6 +38,7 @@ TRIPPING_COMMAND = {
     "git_source_excerpt": "git grep -n include_router src/api/app.py",
     "inplace_source_edit": "sed -i '' 's/a/b/' src/api/app.py",
     "wrong_test_bar": "flutter test",
+    "blanket_conflict_resolution": "git checkout --ours -- a.dart b.dart c.dart d.dart",
     # git_foreign_staged fires on the CURRENT index, so no fixed command can trip
     # it on a clean tree. Its branch is exercised by the other kinds' dispatch.
     "git_foreign_staged": None,
@@ -120,6 +121,71 @@ def test_a_named_file_without_a_platform_is_still_refused():
 def test_the_acknowledgement_token_lets_a_deliberate_run_through():
     """Every class stays escapable, deliberately and visibly in the transcript."""
     assert not _denied("flutter test  # ledger-checked")
+
+
+# ── class 23: a whole merge settled without reading a single conflict ──
+
+
+def test_the_real_19_file_sweep_is_refused():
+    """The exact command that settled this repository's merge, unread.
+
+    All 19 conflicts went to one side in one call. It happened to be the right
+    side — but nobody knew that when it ran, and on the one file where the two
+    versions genuinely differed the owner rejected the result outright.
+    """
+    command = (
+        "git checkout --ours -- mobile/ios/Podfile.lock "
+        "mobile/ios/Runner.xcodeproj/project.pbxproj mobile/lib/main.dart "
+        "mobile/lib/pages/lens_selection_page.dart mobile/lib/pages/login_page.dart "
+        "mobile/lib/pages/tour_walk_page.dart mobile/lib/pages/trip_itinerary_page.dart "
+        "mobile/lib/router.dart mobile/lib/services/audio_service.dart "
+        "mobile/lib/services/providers.dart "
+        "mobile/lib/services/tour_playback_service.dart mobile/pubspec.yaml "
+        "mobile/test/fixtures/paris_golden_trip.json "
+        "mobile/test/pages/home_page_test.dart "
+        "mobile/test/pages/lens_selection_page_test.dart "
+        "mobile/test/pages/trip_itinerary_page_test.dart "
+        "mobile/test/services/audio_service_native_routing_test.dart "
+        "mobile/test/services/mocks/mock_audio_service.dart scripts/flutter_test.sh"
+    )
+    out = _decision(command)
+    assert out, "the 19-file sweep must not pass"
+    reason = json.loads(out)["hookSpecificOutput"]["permissionDecisionReason"]
+    assert "class 23" in reason
+    assert "19 files at once" in reason
+
+
+def test_a_directory_sweep_is_refused_at_any_size():
+    """One argument, every conflict under it — a sweep however few words it takes."""
+    assert _denied("git checkout --theirs -- mobile/lib/")
+    assert _denied("git checkout --ours -- .")
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        # One file is a decision you can only type after making it.
+        "git checkout --ours -- mobile/lib/main.dart",
+        "git checkout --theirs -- mobile/lib/router.dart",
+        # Up to three still reads as three decisions typed together.
+        "git checkout --ours -- a.dart b.dart c.dart",
+    ],
+)
+def test_resolving_a_few_named_files_is_a_considered_act(command):
+    assert not _denied(command), f"wrongly blocked: {command}"
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        # No side flag: this is restoring files, not settling a conflict.
+        "git checkout -- a.dart b.dart c.dart d.dart e.dart",
+        "git checkout main -- mobile/lib/",
+        "git checkout -b some-branch",
+    ],
+)
+def test_an_ordinary_checkout_is_untouched(command):
+    assert not _denied(command), f"wrongly blocked: {command}"
 
 
 # ── the file as a whole ──

@@ -92,6 +92,12 @@
       "name": "a green bar claimed from a command that is not the bar",
       "kind": "wrong_test_bar",
       "message": "this runs the flutter/dart suite directly, and that is NOT this repository's bar. The bar is `make -C /Users/sairambkrishnan/git/ondoway flutter-test`, which runs scripts/flutter_test.sh: a VM pass (--platform tester --tags vm) AND a chrome pass (--platform chrome --exclude-tags vm), both of which must be green. Measured 2026-08-30: a session used bare `flutter test` as its green bar for about ten commits and reported 340 passing while 15 tests were RED under the real bar, every one of them in files that same session had just added. NO VERIFIER CAN CATCH THIS \u2014 the claim 'flutter test: 340 passed' is TRUE, so re-deriving it confirms it, and ~/.claude/hooks/auditable-tests.py never fires because the command names neither pytest nor make. Only the command text reveals the wrong bar. Iterating on ONE test is exempt and needs no acknowledgement: name a *_test.dart path AND a --platform, e.g. `flutter test --platform chrome test/pages/foo_test.dart`."
+    },
+    {
+      "class": 23,
+      "name": "a whole merge settled without reading a single conflict",
+      "kind": "blanket_conflict_resolution",
+      "message": "this resolves MANY merge conflicts with one command. A conflict is git saying two people answered the same question differently, and `--ours`/`--theirs` across a list answers every one of them the same way without reading any of them. Measured 2026-08-31: a merge produced 19 conflicts and all 19 were swept to one side in a single command. Nobody read them. The sweep happened to be right \u2014 this side was the hand-port of the other's redesign \u2014 but that was not known when it ran, and on the one file where the sides genuinely differed the owner's ruling was: 'NO. No flinching. ONLY keep the feature that ensures a richer product experience.' Resolve them ONE FILE AT A TIME, deciding for each which version leaves the person using this product better off \u2014 up to three named paths per command is still a considered act and passes. If a sweep is genuinely right, append the acknowledgement token AND state in your report which files you read to know that."
     }
   ]
 }
