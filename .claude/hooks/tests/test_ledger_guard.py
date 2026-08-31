@@ -217,3 +217,40 @@ def test_every_shipped_kind_is_implemented():
 def test_an_ordinary_command_is_untouched():
     """A guard that fires on ordinary work is a guard that gets deleted."""
     assert not _denied("git -C /Users/sairambkrishnan/git/ondoway status --porcelain")
+
+
+# ── the hole: a heredoc or a bare newline hid what _inplace_targets should see ──
+
+
+def test_a_sed_dash_i_inside_a_heredoc_body_is_not_a_real_inplace_edit():
+    """DATA that mentions `sed -i` is still data, never a command to guard.
+
+    Before this fix, _segments never ended a segment at a bare newline, so
+    the heredoc opener and its body merged into one blob split only at the
+    `;` already sitting in the body text — which put `sed` at the START of
+    its own spurious segment. A commit whose message documents a cleanup step
+    would have been denied for an edit it never made.
+    """
+    command = (
+        "git -C /Users/sairambkrishnan/git/ondoway commit -q -F - <<'MSG'\n"
+        "docs: mention cleanup; sed -i '' 's/a/b/' src/api/app.py\n"
+        "MSG\n"
+    )
+    assert not _denied(command)
+
+
+def test_a_real_sed_dash_i_on_its_own_line_after_another_command_is_still_caught():
+    """A bare newline must not hide a real in-place edit the way it used to.
+
+    Before this fix, this two-line command read as ONE segment with `git` at
+    argv[0] — `_inplace_targets` only ever looks at a segment's argv[0], so
+    `sed` was never examined at all.
+    """
+    command = (
+        "git -C /Users/sairambkrishnan/git/ondoway add mobile/lib/main.dart\n"
+        "sed -i '' 's/a/b/' src/api/app.py\n"
+    )
+    out = _decision(command)
+    assert out, "a real in-place edit on a tracked file must still be caught"
+    reason = json.loads(out)["hookSpecificOutput"]["permissionDecisionReason"]
+    assert "class 14" in reason

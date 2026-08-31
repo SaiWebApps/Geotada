@@ -168,25 +168,206 @@ _INPLACE_TOOLS = {"sed", "awk", "gawk", "perl"}
 _OPERATORS = {"&&", "||", ";", "|", "&", "(", ")"}
 
 
-def _segments(command: str) -> list[list[str]]:
-    """The command split into its operator-separated parts, each as argv."""
+def _unquote(token: str) -> str:
+    """Strip one matched pair of surrounding quotes, if any are left to strip.
+
+    shlex already removes quotes from an ordinary token (posix=True); this is
+    only for a spec pulled out of a punctuation-run token by hand (the `<<`
+    itself, or its terminator's own leading `-`), which was never a token
+    boundary shlex chose on its own and so was never quote-stripped by it.
+    """
+    if len(token) >= 2 and token[0] == token[-1] and token[0] in ("'", '"'):
+        return token[1:-1]
+    return token
+
+
+def _heredoc_terminator(tokens: list[str]) -> str | None:
+    """The terminator this line's heredoc redirect names, or None.
+
+    A heredoc token is any token starting with `<<` that is not a here-string
+    (`<<<`, which supplies one value, never a multi-line body — shlex groups
+    all three characters into one punctuation-run token, so a plain
+    `.startswith` check tells them apart). `<<-` never appears as its own
+    token: `-` is a shlex wordchar, not punctuation, so it rides on the
+    FOLLOWING token instead (`<<-MSG` tokenizes to `['<<', '-MSG']`), and both
+    spellings are handled by looking at whatever comes after `<<` and peeling
+    one leading `-`.
+
+    The result must be a plain identifier — the same shape a real shell
+    requires of a heredoc terminator. Without that check, `$((1<<2))`, a bit
+    shift, tokenizes with a `2` sitting right after a `<<` token, and would be
+    read as an opener whose terminator is "2" — hunting forever for a
+    following line that strips to that.
+
+    Token-based on purpose, matching production-junk-guard.py's identical
+    helper rather than a regex: that file's own guard hooks refuse `import
+    re`, and this `_segments` is a deliberate parallel of that one, not an
+    independent implementation — letting the two drift on how they parse the
+    same heredoc syntax is the kind of defect this project's own failures
+    ledger exists to catch.
+    """
+    for index, token in enumerate(tokens):
+        if not token.startswith("<<") or token.startswith("<<<"):
+            continue
+        spec = token[2:]
+        if not spec and index + 1 < len(tokens):
+            spec = tokens[index + 1]
+        if spec.startswith("-"):
+            spec = spec[1:]
+        spec = _unquote(spec)
+        if spec.isidentifier():
+            return spec
+        # not identifier-shaped: not a real heredoc terminator, keep scanning
+    return None
+
+
+def _line_tokens(line: str) -> list[str]:
+    """One line, tokenized shell-style. Shared by heredoc detection and _segments."""
     try:
-        lexer = shlex.shlex(command, posix=True, punctuation_chars=True)
+        lexer = shlex.shlex(line, posix=True, punctuation_chars=True)
         lexer.whitespace_split = True
-        tokens = list(lexer)
+        return list(lexer)
     except ValueError:
-        tokens = command.split()
+        return line.split()
+
+
+def _strip_heredoc_bodies(command: str) -> str:
+    """Drop heredoc BODIES before anything reads the command as argv.
+
+    `<<'MSG' … MSG` hands everything between the opener and the terminator to
+    a program as DATA — a commit message, a config file, a prompt — never a
+    command and never a file this guard should judge. This file's _segments
+    is a deliberate parallel of production-junk-guard.py's, and shared its
+    defect: tokenizing a heredoc body let its words land in argv exactly like
+    a real command's. Measured 2026-08-31 in that file: a 3-file `git add`
+    followed by `git commit -F - <<'MSG'` made _would_enter_history read the
+    commit message as 3481 pathspecs instead of 3. Nothing here reads a
+    pathspec the way that function does, but the same merge — heredoc body
+    plus the command that follows it, all one segment — could as easily hand
+    _inplace_targets a `sed -i` that was only ever quoted text (see
+    test_a_sed_dash_i_inside_a_heredoc_body_is_not_a_real_inplace_edit).
+
+    The opener line itself is KEPT — `git commit -F - <<'MSG'` is a real
+    command line, only what follows it up to the terminator is data.
+
+    This is parsing the shell's OWN heredoc syntax to know what counts as a
+    command, the same job `shlex` already does for quoting and operators in
+    this file's structural checks — it is not a regex judging file or command
+    content by name. It reads shlex TOKENS rather than a pattern over the raw
+    text for the same reason production-junk-guard.py does: that file's guard
+    hooks refuse `import re`, and keeping the identical mechanism here is
+    what keeps the two copies of _segments from drifting apart.
+    """
+    lines = command.split("\n")
+    kept: list[str] = []
+    terminator: str | None = None
+    for line in lines:
+        if terminator is not None:
+            if line.strip() == terminator:
+                terminator = None
+            continue
+        kept.append(line)
+        found = _heredoc_terminator(_line_tokens(line))
+        if found:
+            terminator = found
+    return "\n".join(kept)
+
+
+def _bare_newline_positions(text: str) -> list[int]:
+    """Indices of newlines that end a command, as opposed to sitting inside one.
+
+    A newline inside '...'/"..." is DATA — part of a quoted multi-line
+    argument — not a separator, exactly as a `;` inside those same quotes is
+    not an operator; shlex already gets the `;` case right because its quote
+    state never consults punctuation_chars. This walks the same quoting rules
+    (plus a `#` comment, which also runs to end of line) so a newline counts
+    as a boundary only where a shell would actually start a new command,
+    never one that a quoted argument or a trailing comment merely happens to
+    contain.
+    """
+    positions: list[int] = []
+    quote: str | None = None
+    escaped = False
+    in_comment = False
+    for index, char in enumerate(text):
+        if char == "\n":
+            if not escaped and quote is None:
+                positions.append(index)
+            escaped = False
+            in_comment = False
+            continue
+        if escaped:
+            escaped = False
+            continue
+        if in_comment:
+            continue
+        if char == "\\" and quote != "'":
+            escaped = True
+        elif quote is None and char in ("'", '"'):
+            quote = char
+        elif quote is not None and char == quote:
+            quote = None
+        elif quote is None and char == "#":
+            in_comment = True
+    return positions
+
+
+def _split_on_bare_newlines(text: str) -> list[str]:
+    """`text`, cut at every boundary _bare_newline_positions finds."""
+    positions = _bare_newline_positions(text)
+    if not positions:
+        return [text]
+    pieces = []
+    start = 0
+    for pos in positions:
+        pieces.append(text[start:pos])
+        start = pos + 1
+    pieces.append(text[start:])
+    return pieces
+
+
+def _segments(command: str) -> list[list[str]]:
+    """The command split into its operator-separated parts, each as argv.
+
+    Two steps run before the operator split that always lived here. First,
+    heredoc bodies are stripped (_strip_heredoc_bodies) — they are DATA,
+    never a command. Second, the (heredoc-stripped) command is cut at every
+    BARE newline (_split_on_bare_newlines) and each piece is tokenized on its
+    own, because a newline ends a command exactly like `;` does, and shlex —
+    configured with `whitespace_split = True` — otherwise treats a bare
+    newline as insignificant space between two words on the SAME command. A
+    two-line `git add …` then `sed -i … tracked_file` used to read as ONE
+    segment with `git` at argv[0], so _inplace_targets never looked at `sed`
+    at all — a real class-14 in-place edit hidden simply by following another
+    command on the line before it.
+
+    Adding '\\n' to shlex's own punctuation_chars was tried and rejected: an
+    operator glued directly to a newline with no space (`foo &&\\nbar` — valid
+    bash, since `&&` alone at end of line continues onto the next) merges
+    into a single token, `'&&\\n'`, that matches no entry in _OPERATORS and
+    would have been kept as a literal word instead of splitting anything.
+    Splitting the TEXT first, before either tokenizer runs, avoids that merge
+    entirely.
+
+    Measured 2026-08-31 (production-junk-guard.py, which this function
+    mirrors verbatim): the identical defect returned 3481 pathspecs from a
+    3-file commit instead of 3, because a heredoc'd commit message merged
+    with the commands around it into one segment.
+    """
+    stripped = _strip_heredoc_bodies(command)
     segments: list[list[str]] = []
     current: list[str] = []
-    for token in tokens:
-        if token in _OPERATORS:
-            if current:
-                segments.append(current)
-                current = []
-        else:
-            current.append(token)
-    if current:
-        segments.append(current)
+    for line in _split_on_bare_newlines(stripped):
+        for token in _line_tokens(line):
+            if token in _OPERATORS:
+                if current:
+                    segments.append(current)
+                    current = []
+            else:
+                current.append(token)
+        if current:
+            segments.append(current)
+            current = []
     return segments
 
 

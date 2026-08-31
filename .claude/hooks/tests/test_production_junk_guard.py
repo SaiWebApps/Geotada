@@ -349,3 +349,65 @@ def test_a_stop_already_blocked_once_does_not_block_again(tmp_path):
     )
     assert done.returncode == 0
     assert not done.stdout.strip()
+
+
+# ------------------------- the hole: a heredoc'd message became pathspecs
+
+
+_REAL_MULTILINE_ADD_AND_COMMIT = (
+    "git -C /Users/sairambkrishnan/git/ondoway add "
+    "mobile/lib/pages/tour_walk_page.dart "
+    "mobile/test/pages/tour_walk_page_test.dart "
+    "mobile/integration_test/w513_demo_test.dart\n"
+    "git -C /Users/sairambkrishnan/git/ondoway commit -q -F - <<'MSG'\n"
+    "fix(mobile): a finished walk was hiding a chapter\n"
+    "\n"
+    "Deleting SessionPage took its four tests with it. specs are not touched.\n"
+    "`session-arm-keep`, `session-question`, 9164e834, absorption, flutter-test`.\n"
+    "MSG\n"
+    "git -C /Users/sairambkrishnan/git/ondoway log -1 --format='%h %s'\n"
+)
+
+
+def test_a_multiline_add_and_heredoc_commit_yields_only_the_staged_paths(tmp_path):
+    """The exact command that returned 3481 paths for a 3-file commit.
+
+    `_segments` swallowed the two-line `add` then `commit -F - <<'MSG'` into
+    ONE segment, because neither the newline between them nor the heredoc
+    body ever ended it. The `add` branch then read every word of the commit
+    message as a pathspec: a hex id, a couple of proper nouns, and "specs are
+    not touched" — and `specs` names a real directory in this repo, which
+    _expand() turned into every file underneath. Measured 2026-08-31:
+    _would_enter_history returned 3481 paths for a commit that only staged 3.
+
+    Run against a scratch repo, not the real one: the `commit` branch reads
+    `git diff --cached` from whatever `root` names, and the real repo's own
+    index — whatever it holds on any given day — is not this test's to
+    depend on.
+    """
+    guard = _guard_module()
+    repo = scratch_repo(tmp_path)
+    paths = guard._would_enter_history(_REAL_MULTILINE_ADD_AND_COMMIT, str(repo))
+    assert paths == [
+        "mobile/lib/pages/tour_walk_page.dart",
+        "mobile/test/pages/tour_walk_page_test.dart",
+        "mobile/integration_test/w513_demo_test.dart",
+    ]
+
+
+def test_a_heredoc_body_containing_a_git_add_contributes_nothing(tmp_path):
+    """A heredoc body is DATA. A command it happens to spell out is still data."""
+    guard = _guard_module()
+    repo = scratch_repo(tmp_path)
+    command = (
+        "git -C /Users/sairambkrishnan/git/ondoway commit -F - <<'MSG'\n"
+        "git add somefile\n"
+        "MSG\n"
+    )
+    assert guard._would_enter_history(command, str(repo)) == []
+
+
+def test_x_and_git_add_y_on_one_line_still_splits():
+    """The behaviour that already worked before this fix must keep working."""
+    guard = _guard_module()
+    assert guard._segments("x && git add y") == [["x"], ["git", "add", "y"]]
