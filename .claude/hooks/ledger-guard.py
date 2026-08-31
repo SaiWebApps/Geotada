@@ -354,6 +354,58 @@ def _git_source_excerpts(command: str, repo_root: str) -> list[str]:
     return hits
 
 
+# ── kind: wrong_test_bar ─────────────────────────────────────────────────────
+#
+# Claiming a green bar from a command that is NOT this repository's bar. Measured
+# 2026-08-30: a session used bare `flutter test` as its green bar for about ten
+# commits. It reported 340 passing while `make flutter-test` — the real target,
+# which runs scripts/flutter_test.sh — had 15 RED, every failure in a file that
+# same session had just added.
+#
+# This class is why the guard exists rather than another verifier. The claim
+# "flutter test: 340 passed" was TRUE, so re-deriving it confirms it: no
+# after-the-fact checker of claims can see the error, because nothing false was
+# ever said. The wrongness is in the command, and the command is visible only
+# here. ~/.claude/hooks/auditable-tests.py does not reach it either — that guard
+# recognises `pytest` and `make <target>`, and a bare `flutter test` is neither,
+# so the right command is guarded and the wrong one runs unchallenged.
+#
+# Structural, not a pattern (owner ruling 2026-08-29): the command is lexed into
+# segments and each segment's program is looked at by name, so `cd mobile &&
+# flutter test` is caught by the second segment without anyone predicting the
+# spelling of the first.
+#
+# THE EXEMPTION IS THE DESIGN. CLAUDE.md rule 7 mandates iterating on a single
+# targeted test, and mobile/ has no `make test-file` equivalent, so a predicate
+# that fired on every direct `flutter test` would spend the acknowledgement token
+# on every iteration loop — the habituation failure that class 12's narrowing was
+# written to stop, since a guard that is wrong is not harmless: it spends the
+# escape hatch the real cases need. A run that names a *_test.dart file AND a
+# --platform is that legitimate iteration and passes clean. A whole-suite or
+# platform-defaulted run is the bar impersonator and is refused.
+
+_TEST_RUNNERS = {"flutter", "dart"}
+
+
+def _is_bar_impersonator(argv: list[str]) -> bool:
+    """Is this segment a whole-suite `flutter test`, standing in for the bar?"""
+    if Path(argv[0]).name not in _TEST_RUNNERS:
+        return False
+    verbs = [a for a in argv[1:] if not a.startswith("-")]
+    if not verbs or verbs[0] != "test":
+        return False
+    names_a_file = any(a.endswith("_test.dart") for a in argv[1:])
+    names_platform = any(
+        a == "--platform" or a.startswith("--platform=") for a in argv[1:]
+    )
+    return not (names_a_file and names_platform)
+
+
+def _wrong_test_bar(command: str) -> bool:
+    """Does any segment run the flutter/dart suite in place of the real target?"""
+    return any(argv and _is_bar_impersonator(argv) for argv in _segments(command))
+
+
 # ── evaluation ───────────────────────────────────────────────────────────────
 
 
@@ -393,6 +445,9 @@ def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
             hit = bool(excerpts)
             if hit:
                 detail = f" The excerpting call: {', '.join(sorted(set(excerpts))[:4])}"
+
+        elif kind == "wrong_test_bar":
+            hit = _wrong_test_bar(command)
 
         if hit:
             return rule.get("class", 0), rule.get("name", "?"), rule.get("message", "") + detail

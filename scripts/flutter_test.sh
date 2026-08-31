@@ -59,7 +59,11 @@
 # without recovering would be the opposite failure: a green suite lost to a Flutter engine
 # bug this repo cannot fix. So: bounded, diagnosed in full FIRST, then recovered — and never
 # recovered for a real test failure or a crash. Every outcome below exits with a named
-# verdict, and none of them can outlive DEADLINE_SECONDS.
+# verdict, and none of them is unbounded. The two phases carry SEPARATE budgets, because
+# they cost wildly different amounts and one ceiling sized for both would be useless for
+# either: the VM pass is bounded by VM_DEADLINE_SECONDS and the chrome phase by
+# DEADLINE_SECONDS, whose clock restarts when that phase begins. The runner's true ceiling
+# is their sum.
 #
 # CONCURRENCY (2026-06-12): two simultaneous runs used to corrupt each other — a shared log
 # path crossed verdicts between runs, and a machine-wide pkill cleanup killed the OTHER
@@ -259,6 +263,43 @@ diagnose_stall() {
   cat "$LOG" >&2
 }
 
+# EVERY TEST FILE MUST BE EXECUTED BY ONE OF THE TWO PASSES.
+#
+# The two selectors below are complements: the chrome pass takes everything
+# without the vm tag, the VM pass takes exactly the tagged ones. So the ONLY way
+# a file can run in NEITHER is for chrome to refuse it on a @TestOn annotation
+# while it carries no vm tag to make the VM pass select it.
+#
+# Measured 2026-08-30: mobile/test/pages/keep_exploring_golden_test.dart carried
+# @TestOn('vm') and no @Tags(['vm']). The chrome pass skipped it, the VM pass did
+# not select it, and it had been green by never executing for months — the one
+# way a golden test can lie. Nothing false was ever said about it, so no reviewer
+# of claims was ever going to find it; only a count of what runs can.
+#
+# Read from the annotations rather than from either pass's output, because a file
+# that runs nowhere prints nothing to parse. This costs milliseconds and runs
+# before the lock, so a mis-tagged file fails immediately instead of after a
+# minute of waiting on another run.
+orphan_tests=""
+while IFS= read -r rel; do
+  [ -n "$rel" ] && [ -f "$REPO_DIR/$rel" ] || continue
+  grep -q '@TestOn' "$REPO_DIR/$rel" || continue
+  grep -qE "@Tags\(.*'vm'" "$REPO_DIR/$rel" || orphan_tests="$orphan_tests $rel"
+done <<EOF
+$(git -C "$REPO_DIR" ls-files 'mobile/test/*_test.dart')
+EOF
+if [ -n "$orphan_tests" ]; then
+  echo "FLUTTER TESTS REFUSED — these files would run in NEITHER pass:" >&2
+  for _t in $orphan_tests; do echo "    $_t" >&2; done
+  echo "" >&2
+  echo "Each declares @TestOn, so the chrome pass (--exclude-tags vm) skips it, and" >&2
+  echo "carries no @Tags(['vm']), so the VM pass (--tags vm) does not select it. A test" >&2
+  echo "that runs in neither pass is not a passing test; it is a test that never ran," >&2
+  echo "and it reports green forever. Add @Tags(['vm']) beside the @TestOn — both" >&2
+  echo "annotations are load-bearing — or remove the @TestOn." >&2
+  exit 1
+fi
+
 acquire_lock
 
 # One whole run of the suite. Sets $outcome to PASS | FAIL | STALL | NOVERDICT, $ec to the
@@ -328,8 +369,25 @@ run_once() {
 # lives in exactly the VM-platform sources this pass executes. Silence-based
 # detection cannot see that; a deadline can. Without one this pass could hang
 # forever holding the lock, which is the disease this whole runner exists to
-# cure. The budget is generous: the pass runs in about four seconds.
-VM_DEADLINE_SECONDS="${FLUTTER_VM_DEADLINE:-60}"
+# cure.
+#
+# THE BUDGET, MEASURED 2026-08-30 rather than guessed — and the first version of
+# this line WAS guessed, at 60s, from a warm number that did not survive contact:
+#
+#   green, cold ........... 312s   (5:12 wall, including `flutter pub get`)
+#   green, warm ........... 342s   (5:41 wall — WARM IS NOT FASTER, see below)
+#
+# `--tags vm` does not select 18 tests and skip the rest cheaply. It LOADS all 46
+# files under mobile/test, compiles every one of them for the tester engine, and
+# only then filters by tag. That compile is the whole cost and it is not cached
+# between runs, which is why a second consecutive run is no faster than the first.
+# 18 tests take seconds; getting to them takes five and a half minutes.
+#
+# So: worst measured green 342s, doubled for a loaded machine, rounded up. 900s
+# is bounded, which is the only property that matters here — a wedged run ends in
+# fifteen minutes instead of never, and a healthy one has 2.6x its worst observed
+# cost in hand.
+VM_DEADLINE_SECONDS="${FLUTTER_VM_DEADLINE:-900}"
 
 echo ">> running VM-tagged tests (flutter test --platform tester --tags vm)" >&2
 ( cd "$MOBILE_DIR" \
@@ -368,6 +426,15 @@ if [ "$vm_rc" -ne 0 ]; then
   echo "FLUTTER VM-TAGGED TESTS FAILED (exit $vm_rc) — see output above." >&2
   exit 1
 fi
+
+# Restart the clock for the chrome phase. DEADLINE_SECONDS is sized above from
+# chrome's own numbers alone — three stalled attempts plus a green run — and
+# elapsed_total() counts from script start, so without this reset a legitimate
+# five-minute VM pass would leave the chrome pass already over budget and it
+# would abandon itself on its first poll, blaming a deadline it never used a
+# second of. The two phases are bounded separately and deliberately: VM by
+# VM_DEADLINE_SECONDS, chrome by DEADLINE_SECONDS from here.
+STARTED_AT=$(date +%s)
 
 attempt=1
 while :; do

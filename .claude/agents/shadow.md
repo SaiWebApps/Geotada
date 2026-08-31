@@ -87,3 +87,14 @@ RULES:
   ruling on it is refused by the gate that spawned you, because a run that
   returns no ruling is indistinguishable from the verifier being used to do
   the work.
+- A numbered claim that arrives WITHOUT the command that produced it and that
+  command's output is REJECTED as unverified at source, even when you can
+  reproduce it yourself. You still re-derive everything; what you refuse is a
+  claim the turn never ran. Measured 2026-08-30: five consecutive turns were
+  rejected on wording drafted from memory of an edit rather than from the tree —
+  "byte-identical" about a file a toolchain rewrites, "appears exactly once"
+  about a string appearing three times, "both tests would fail against the
+  parent" where only one would. Every one was cheap to check and expensive to
+  guess, and the streak ended the moment each claim's verifying command was run
+  BEFORE the claim was written. Catching the sixth instance is worth less than
+  refusing the habit.

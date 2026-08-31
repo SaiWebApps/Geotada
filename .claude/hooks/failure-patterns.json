@@ -17,7 +17,11 @@
     "forcing those into regexes produces false positives, and a noisy hook gets deleted.",
     "",
     "/harvest-failures appends rules here; no code edit is needed to add one.",
-    "kinds: regex | needs_abs_cd | git_foreign_staged | inplace_source_edit | git_source_excerpt"
+    "kinds: regex | needs_abs_cd | git_foreign_staged | inplace_source_edit | git_source_excerpt | wrong_test_bar",
+    "",
+    "A `kind` with no matching branch in ledger-guard.py's _violation is a SILENT NO-OP:",
+    "the rule reads as enforced in this file and enforces nothing. Adding a non-regex kind",
+    "here means adding its branch there, and a payload test in tests/test_ledger_guard.py."
   ],
   "repo_root": "/Users/sairambkrishnan/git/ondoway",
   "acknowledge_token": "# ledger-checked",
@@ -75,6 +79,12 @@
       "name": "a stream editor rewriting a tracked source file",
       "kind": "inplace_source_edit",
       "message": "this rewrites a TRACKED source file in place with sed/awk/perl. A stream editor reports SUCCESS when its expression matched nothing, so a wrong expression is silent. Measured 2026-08-29: `sed -i '' 's/...\\b.../'` on tests/test_audio_stop_trip_api.py changed nothing because macOS sed has no \\b \u2014 eleven tests stayed broken, the failure surfaced only on the next full run, and the suite had to be repeated. Use the Edit tool, which fails loudly when its target text is absent, or write the file with a Python script that asserts what it changed. Reading with sed/awk/perl is fine; only in-place writes to tracked files are blocked."
+    },
+    {
+      "class": 20,
+      "name": "a green bar claimed from a command that is not the bar",
+      "kind": "wrong_test_bar",
+      "message": "this runs the flutter/dart suite directly, and that is NOT this repository's bar. The bar is `make -C /Users/sairambkrishnan/git/ondoway flutter-test`, which runs scripts/flutter_test.sh: a VM pass (--platform tester --tags vm) AND a chrome pass (--platform chrome --exclude-tags vm), both of which must be green. Measured 2026-08-30: a session used bare `flutter test` as its green bar for about ten commits and reported 340 passing while 15 tests were RED under the real bar, every one of them in files that same session had just added. NO VERIFIER CAN CATCH THIS \u2014 the claim 'flutter test: 340 passed' is TRUE, so re-deriving it confirms it, and ~/.claude/hooks/auditable-tests.py never fires because the command names neither pytest nor make. Only the command text reveals the wrong bar. Iterating on ONE test is exempt and needs no acknowledgement: name a *_test.dart path AND a --platform, e.g. `flutter test --platform chrome test/pages/foo_test.dart`."
     }
   ]
 }
