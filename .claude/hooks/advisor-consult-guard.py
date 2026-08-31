@@ -390,8 +390,45 @@ def is_destructive(command):
     return any(marker in command for marker in DESTRUCTIVE_MARKERS)
 
 
+def _failed_call_ids(turn):
+    """Tool calls whose result came back an ERROR — including this guard's own denials.
+
+    THIS EXISTS BECAUSE THE GUARD DEADLOCKED ITSELF, measured 2026-08-31.
+
+    A refused tool call is still written to the transcript as a `tool_use` block;
+    only its RESULT distinguishes it, as a `tool_result` carrying
+    `is_error: true` with the refusal text. The destructive scan below read the
+    calls and not the results, so a `git commit` this very guard had just
+    REFUSED was counted as "a destructive command that already ran". Refusing it
+    therefore created the condition for refusing it again — three times, with the
+    remedy (consult, print the plan) performed correctly before each one and
+    making no difference, because the offending record was the previous refusal.
+    That is class 17b of the failures ledger exactly: a boundary check counting
+    its own output as input. There was no way out except editing the guard.
+
+    The tradeoff, stated rather than hidden: a command that genuinely RAN and
+    then errored is also skipped here, and a destructive command can fail partway
+    through having already changed something. That direction costs one missed
+    consult on a half-completed command. The other direction costs the session,
+    with no available remedy, which is not a trade — it is the guard breaking.
+    """
+    failed = set()
+    for entry in turn:
+        content = (entry.get("message") or {}).get("content")
+        if not isinstance(content, list):
+            continue
+        for block in content:
+            if not isinstance(block, dict) or block.get("type") != "tool_result":
+                continue
+            if block.get("is_error"):
+                call_id = block.get("tool_use_id")
+                if call_id:
+                    failed.add(call_id)
+    return failed
+
+
 def destructive_calls_in(turn):
-    """Positions in `turn` of acts that changed the world.
+    """Positions in `turn` of acts that ACTUALLY changed the world.
 
     Two kinds. A Bash call whose command carries a destructive marker, and ANY
     Write — because by the time this runs the written file exists either way, so
@@ -399,12 +436,17 @@ def destructive_calls_in(turn):
     transcript. Counting every Write costs an extra consult after writing a new
     file; not counting them would let an overwrite go unnoticed. The cheap
     mistake is the one to make.
+
+    Calls that never ran are excluded — see _failed_call_ids.
     """
+    failed = _failed_call_ids(turn)
     out = []
     for index, entry in enumerate(turn):
         for block in _assistant_blocks(entry):
             if block.get("type") != "tool_use":
                 continue
+            if block.get("id") in failed:
+                continue  # refused or errored: it changed nothing
             name = block.get("name")
             if name == "Write":
                 out.append(index)

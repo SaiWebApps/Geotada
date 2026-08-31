@@ -347,6 +347,90 @@ def test_a_harmless_command_after_a_destructive_one_is_not_taxed(tmp_path):
     assert not denied(decide(tmp_path, records, command="git status --porcelain"))
 
 
+# ------------------------------- the arm must not count its OWN refusals as acts
+
+
+def tool_result_error(call_id, text="A DESTRUCTIVE ACTION NEEDS ITS OWN CONSULT."):
+    """How a REFUSED tool call comes back — read off a real transcript.
+
+        {"type": "user", "message": {"content": [
+            {"type": "tool_result", "tool_use_id": "toolu_x",
+             "is_error": true, "content": "<the refusal text>"}]}}
+
+    The `tool_use` block for a refused call is written to the transcript exactly
+    like one that ran. Only this result tells them apart.
+    """
+    return {
+        "type": "user",
+        "message": {
+            "content": [
+                {
+                    "type": "tool_result",
+                    "tool_use_id": call_id,
+                    "is_error": True,
+                    "content": text,
+                }
+            ]
+        },
+    }
+
+
+def bash_call_with_id(command, call_id):
+    return {
+        "type": "assistant",
+        "message": {
+            "content": [
+                {
+                    "type": "tool_use",
+                    "id": call_id,
+                    "name": "Bash",
+                    "input": {"command": command},
+                }
+            ]
+        },
+    }
+
+
+def test_a_refused_destructive_command_does_not_count_as_one(tmp_path):
+    """The deadlock this guard walked into on 2026-08-31.
+
+    A refused `git commit` is still a `tool_use` record. Counting it made the
+    refusal itself the reason for the next refusal: three consecutive attempts,
+    each preceded by a correct fresh consult and a printed plan, each blocked by
+    the previous block. There was no way out except editing the guard — which is
+    class 17b of the ledger, a boundary check reading its own output as input.
+    """
+    records = [
+        human(),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+        bash_call_with_id("git commit --no-edit", "toolu_refused"),
+        tool_result_error("toolu_refused"),
+    ]
+    assert not denied(decide(tmp_path, records, command="git commit --no-edit")), (
+        "a command this guard REFUSED never ran, so it cannot be the destructive "
+        "act that forces the next consult"
+    )
+
+
+def test_a_destructive_command_that_actually_RAN_still_counts(tmp_path):
+    """The other direction, so the fix above cannot become a blanket exemption."""
+    records = [
+        human(),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+        bash_call_with_id("git rm -r --cached tests/reports", "toolu_ran"),
+        # no error result: the command ran
+    ]
+    decision = decide(tmp_path, records, command="rm -rf specs/old")
+    assert denied(decision)
+    assert "A DESTRUCTIVE ACTION NEEDS ITS OWN CONSULT." in reason(decision)
+
+
 # ------------------------------------------------------------- the Stop arm holds
 
 
