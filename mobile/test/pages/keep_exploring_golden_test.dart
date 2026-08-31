@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
+import 'package:ondoway/theme/theme.dart';
 
 // KE8: visual proof of the "keep exploring here" button.
 //
@@ -50,11 +51,7 @@ ItineraryStop _stop({
 // The app theme matches the one the widget tests use (Material 3, dark).
 Widget _harness(ItineraryStop stop) {
   return MaterialApp(
-    theme: ThemeData(
-      colorSchemeSeed: const Color(0xFF3D5AFE),
-      useMaterial3: true,
-      brightness: Brightness.dark,
-    ),
+    theme: buildOndowayTheme(Brightness.dark),
     home: Scaffold(
       body: Center(
         child: SizedBox(
