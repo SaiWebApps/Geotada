@@ -21,7 +21,14 @@
     "",
     "A `kind` with no matching branch in ledger-guard.py's _violation is a SILENT NO-OP:",
     "the rule reads as enforced in this file and enforces nothing. Adding a non-regex kind",
-    "here means adding its branch there, and a payload test in tests/test_ledger_guard.py."
+    "here means adding its branch there, and a payload test in",
+    ".claude/hooks/tests/test_ledger_guard.py.",
+    "",
+    "Those payload tests live UNDER .claude/, not in tests/, and that is deliberate: their",
+    "subject is agent supervision, not Ondoway, so they must never run inside `make test` —",
+    "the bar that answers whether the PRODUCT works. Owner ruling 2026-08-31, after five",
+    "such files had accumulated in the product's suite. Enforced globally by",
+    "~/.claude/hooks/no-scaffolding-in-product.py."
   ],
   "repo_root": "/Users/sairambkrishnan/git/ondoway",
   "acknowledge_token": "# ledger-checked",

@@ -145,13 +145,20 @@
     "Files that sit inside a surface directory but must not COUNT as surface.",
     "",
     "Exactly one, and it is structural rather than a matter of taste: the guard's",
-    "own payload test names junk paths as its examples, and tests/ is surface, so",
-    "asserting 'this path is junk' was itself what made the path look referenced.",
-    "Nothing else belongs here — a file you would rather the guard ignored is a",
-    "file that should not be in a surface directory."
+    "own payload test names junk paths as its examples, so asserting 'this path is",
+    "junk' was itself what made the path look referenced. Nothing else belongs",
+    "here — a file you would rather the guard ignored is a file that should not be",
+    "in a surface directory.",
+    "",
+    "That test moved on 2026-08-31, from tests/ to .claude/hooks/tests/, with the",
+    "four other guard payload tests. Its subject is agent supervision, not Ondoway,",
+    "so it has no business in the suite that answers whether the PRODUCT works.",
+    "The entry is kept at its new path rather than deleted: .claude/hooks/ is not a",
+    "surface directory today, so the exclusion is currently redundant — and the day",
+    "someone adds it to surface_dirs, this collision comes straight back."
   ],
   "surface_exclude": [
-    "tests/test_production_junk_guard.py"
+    ".claude/hooks/tests/test_production_junk_guard.py"
   ],
 
   "surface_files": [

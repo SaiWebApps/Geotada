@@ -46,7 +46,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[1]
+# Beside the hook it tests, not in the product's tests/ tree — the subject is
+# agent supervision, not Ondoway, so it must never run inside `make test`.
+REPO = Path(__file__).resolve().parents[3]
 GUARD = REPO / ".claude" / "hooks" / "advisor-consult-guard.py"
 
 #: Long enough to clear the guard's own floor for a printed plan. The guard asks
@@ -101,6 +103,21 @@ def bash_call(command):
         "message": {
             "content": [{"type": "tool_use", "name": "Bash", "input": {"command": command}}]
         },
+    }
+
+
+def grounding_call(name="mcp__codegraph__codegraph_explore"):
+    """A look at the real code — what the advisor must be able to see.
+
+    The advisor has no tools: it forwards this conversation and reads nothing
+    else, so a consult with none of these before it produces advice about
+    software in general. Every fixture below whose subject is a DIFFERENT arm
+    carries one of these, so those tests keep measuring the arm they are named
+    for instead of failing on this one.
+    """
+    return {
+        "type": "assistant",
+        "message": {"content": [{"type": "tool_use", "name": name, "input": {"query": "x"}}]},
     }
 
 
@@ -164,7 +181,13 @@ def test_a_consult_in_an_earlier_turn_does_not_pay_for_this_one(tmp_path):
 
 
 def test_a_consult_with_the_plan_printed_lets_the_tool_run(tmp_path):
-    records = [human(), advisor_call(), advisor_result(), assistant_text(A_PRINTED_PLAN)]
+    records = [
+        human(),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+    ]
     assert not denied(decide(tmp_path, records))
 
 
@@ -202,6 +225,70 @@ def test_text_printed_before_the_consult_does_not_count(tmp_path):
     assert denied(decide(tmp_path, records))
 
 
+# --------------------------------------- arm: the advice was grounded in the code
+#
+# The advisor has NO TOOLS. It forwards this conversation and reads nothing else,
+# so a consult with no look at the code before it produces advice about software
+# in general. Measured 2026-08-31: asked to prove with screenshots that a browser
+# had run the suite, it designed a DevTools-attach scheme from scratch while
+# tests/test_workbench_ui.py sat in the repo doing exactly that job through
+# Playwright, with 36 call sites. The owner's verdict on the result: "means
+# nothing". The advisor could not have known — that file had never been named in
+# the conversation.
+
+
+def test_a_consult_with_no_look_at_the_code_cannot_be_acted_on(tmp_path):
+    records = [human(), advisor_call(), advisor_result(), assistant_text(A_PRINTED_PLAN)]
+    decision = decide(tmp_path, records)
+    assert denied(decision)
+    assert "THE ADVICE WAS NOT GROUNDED IN THIS CODEBASE." in reason(decision)
+
+
+def test_grounding_after_the_consult_is_too_late(tmp_path):
+    """The advisor saw the conversation as it stood when it was called.
+
+    A file read afterwards is a file it never saw: that grounding informs the
+    implementer and leaves the advice exactly as uninformed as it was.
+    """
+    records = [
+        human(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+        grounding_call(name="Read"),
+    ]
+    assert denied(decide(tmp_path, records))
+
+
+def test_any_of_the_grounding_tools_satisfies_it(tmp_path):
+    for name in ("Read", "Grep", "Glob", "mcp__codegraph__codegraph_explore"):
+        records = [
+            human(),
+            grounding_call(name=name),
+            advisor_call(),
+            advisor_result(),
+            assistant_text(A_PRINTED_PLAN),
+        ]
+        assert not denied(decide(tmp_path, records)), f"{name} should count as grounding"
+
+
+def test_the_grounding_tools_are_never_themselves_blocked(tmp_path):
+    """Otherwise the rule would be unsatisfiable by the remedy it prints.
+
+    A guard that cannot be satisfied by its own instructions is the class-17
+    failure this project has already shipped twice: the only way past becomes the
+    escape token, which trains the habit of waving guards through.
+    """
+    for name in ("Read", "Grep", "Glob", "mcp__codegraph__codegraph_explore"):
+        assert not denied(decide(tmp_path, [human()], tool=name)), f"{name} must stay exempt"
+
+
+def test_acting_tools_are_still_gated_with_no_consult(tmp_path):
+    """The exemption is for LOOKING. Changing things still needs the full gate."""
+    for name in ("Bash", "Write", "Edit", "Agent"):
+        assert denied(decide(tmp_path, [human()], tool=name)), f"{name} must stay gated"
+
+
 # ------------------------------------------ arm: one consult per destructive act
 
 
@@ -209,6 +296,7 @@ def test_a_second_destructive_command_on_one_consult_is_refused(tmp_path):
     """The exact shape of the sweep that deleted a file the suite reads."""
     records = [
         human(),
+        grounding_call(),
         advisor_call(),
         advisor_result(),
         assistant_text(A_PRINTED_PLAN),
@@ -220,7 +308,13 @@ def test_a_second_destructive_command_on_one_consult_is_refused(tmp_path):
 
 
 def test_the_first_destructive_command_after_a_consult_is_allowed(tmp_path):
-    records = [human(), advisor_call(), advisor_result(), assistant_text(A_PRINTED_PLAN)]
+    records = [
+        human(),
+        grounding_call(),
+        advisor_call(),
+        advisor_result(),
+        assistant_text(A_PRINTED_PLAN),
+    ]
     assert not denied(decide(tmp_path, records, command="git rm -r --cached tests/reports"))
 
 
@@ -228,6 +322,7 @@ def test_a_fresh_consult_re_arms_the_next_destructive_command(tmp_path):
     """Consult, delete, consult again, delete again — that sequence is the point."""
     records = [
         human(),
+        grounding_call(),
         advisor_call(),
         advisor_result(),
         assistant_text(A_PRINTED_PLAN),
@@ -243,6 +338,7 @@ def test_a_harmless_command_after_a_destructive_one_is_not_taxed(tmp_path):
     """A guard that fires on ordinary work gets deleted, and then guards nothing."""
     records = [
         human(),
+        grounding_call(),
         advisor_call(),
         advisor_result(),
         assistant_text(A_PRINTED_PLAN),

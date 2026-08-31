@@ -49,7 +49,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[1]
+# Beside the hook it tests, not in the product's tests/ tree — the subject is
+# agent supervision, not Ondoway, so it must never run inside `make test`.
+REPO = Path(__file__).resolve().parents[3]
 GUARD = REPO / ".claude" / "hooks" / "shadow-guard.py"
 
 ASYNC_METADATA = (

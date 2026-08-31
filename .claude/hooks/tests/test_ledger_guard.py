@@ -23,7 +23,9 @@ from pathlib import Path
 
 import pytest
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+# Beside the hook it tests, not in the product's tests/ tree — the subject is
+# agent supervision, not Ondoway, so it must never run inside `make test`.
+REPO_ROOT = Path(__file__).resolve().parents[3]
 GUARD = REPO_ROOT / ".claude" / "hooks" / "ledger-guard.py"
 PATTERNS = REPO_ROOT / ".claude" / "hooks" / "failure-patterns.json"
 

@@ -24,7 +24,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[1]
+# These tests live BESIDE the hook they test, not in the product's tests/ tree.
+# The subject here is agent supervision, not Ondoway: it must never run inside
+# `make test`, which is the bar that answers "does the product work". Same
+# precedent as .claude/team-engine.test.js. Three levels up from
+# .claude/hooks/tests/ is the repository root.
+REPO = Path(__file__).resolve().parents[3]
 GUARD = REPO / ".claude" / "hooks" / "citation-guard.py"
 
 # A real tracked product file with a real symbol in it, used as the thing a reply

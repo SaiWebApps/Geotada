@@ -86,8 +86,33 @@ DESTRUCTIVE_MARKERS = (
 
 #: Tools the PreToolUse arm never blocks. `advisor` is the remedy this guard
 #: demands, so blocking it would make the guard unsatisfiable. The rest are the
-#: tools that produce the reply itself.
-EXEMPT_TOOLS = ("advisor", "AskUserQuestion", "ExitPlanMode", "TodoWrite")
+#: tools that produce the reply itself, plus the read-only tools that LOOK at the
+#: codebase.
+#:
+#: Reading is not acting, and the exemption is load-bearing rather than lenient:
+#: the grounding rule below requires a look at the real code BEFORE the consult,
+#: and without these four exempt that rule would be unsatisfiable — every way of
+#: grounding would itself be blocked for want of a consult. A guard that cannot
+#: be satisfied by the remedy it prints is the class-17 failure this project has
+#: already shipped twice, so the escape is designed in rather than discovered.
+#: Bash, Write, Edit and Agent stay gated: those change things or spend money.
+EXEMPT_TOOLS = (
+    "advisor", "AskUserQuestion", "ExitPlanMode", "TodoWrite",
+    "Read", "Grep", "Glob", "mcp__codegraph__codegraph_explore",
+)
+
+#: Looking at the actual code. The advisor has NO TOOLS — it forwards this
+#: conversation and reads nothing else — so anything not already in the
+#: transcript is invisible to it, and advice given before one of these ran is
+#: advice about software in general.
+#:
+#: Measured 2026-08-31. Asked for screenshot proof that a browser ran the test
+#: suite, the advisor designed a DevTools-attach scheme from scratch; the
+#: repository already had tests/test_workbench_ui.py, with a _take_screenshot
+#: helper and 36 call sites driving the real product through Playwright. The
+#: advisor could not have known — that file had never been named in the
+#: conversation. The owner's verdict on the delivered result: "means nothing".
+GROUNDING_TOOLS = ("Read", "Grep", "Glob", "mcp__codegraph__codegraph_explore")
 TRANSCRIPT_TAIL_BYTES = 8 * 1024 * 1024
 
 HEADLINE = "NO CONSULT, NO REPLY."
@@ -234,6 +259,26 @@ def consulted(turn):
             if kind in ADVISOR_CALL_TYPES and chunk.get("name") == "advisor":
                 return True
             if kind == ADVISOR_RESULT_TYPE:
+                return True
+    return False
+
+
+def grounded_before(turn, index):
+    """Did anyone LOOK at the real code before the consult at `index`?
+
+    Walks tool_use blocks structurally and compares tool names — no text is read,
+    so this cannot be satisfied by describing a codebase instead of opening it.
+
+    Before, not after, and that ordering is the whole point. The advisor sees the
+    conversation as it stands when it is called; a file read afterwards is a file
+    it never saw. Grounding that arrives late informs the implementer and leaves
+    the advice exactly as uninformed as it was.
+    """
+    for entry in turn[:index]:
+        for block in _assistant_blocks(entry):
+            if block.get("type") != "tool_use":
+                continue
+            if block.get("name") in GROUNDING_TOOLS:
                 return True
     return False
 
@@ -398,6 +443,28 @@ def handle_pre_tool_use(payload, turn):
             "it would be invisible too.\n\n"
             "Print the advisor's step-by-step plan as numbered steps "
             f"(at least {MIN_PLAN_CHARS} characters), then act on it."
+        )
+
+    if not grounded_before(turn, index):
+        deny_tool(
+            "THE ADVICE WAS NOT GROUNDED IN THIS CODEBASE.\n\n"
+            "The advisor was consulted and a plan was printed, but nothing in this "
+            "turn looked at the actual code before asking. The advisor has NO "
+            "TOOLS — it forwards this conversation and reads nothing else — so "
+            "anything not already written here is invisible to it, and what comes "
+            "back is advice about software in general.\n\n"
+            "Measured 2026-08-31: asked to prove with screenshots that a browser "
+            "ran the test suite, it designed a DevTools-attach scheme from "
+            "scratch. tests/test_workbench_ui.py was already in the repository, "
+            "with a _take_screenshot helper and 36 call sites driving the real "
+            "product through Playwright. The plan was followed, and the owner's "
+            "verdict on the result was \"means nothing\".\n\n"
+            "Three steps, and the first two are never blocked:\n"
+            "  1. LOOK: `mcp__codegraph__codegraph_explore` on the symbols in "
+            "question, or `Read` the files. Read/Grep/Glob/codegraph are exempt "
+            "from this guard precisely so this step is always available.\n"
+            "  2. CONSULT again, so the advisor sees what you just read.\n"
+            "  3. Print the plan, then act."
         )
 
     # A destructive act with another one already run since the last consult would
