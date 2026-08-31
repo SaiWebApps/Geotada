@@ -52,12 +52,34 @@ class _LoginPageState extends State<LoginPage> {
     final authService = context.watch<AuthService>();
     final c = Theme.of(context).extension<OndowayColors>()!;
 
-    // Remote's version carries two debug FloatingActionButtons here, pushing
-    // /debug/location-spike and /debug/tour-playback-proof. Those spike pages
-    // are not part of this merge, so the buttons would have thrown on tap.
-    // Dropped rather than shipped broken; the /debug/style-gallery route is
-    // reachable by address.
     return Scaffold(
+      // The way in to the on-device proof harnesses, debug builds only. They are
+      // how the locked-phone-in-a-pocket walk gets done, and a route you can
+      // only reach by typing an address is a route nobody walks with. The
+      // location-spike button main also carried is gone with its page: the
+      // finding that spike produced is now permanent in native_audio_backend
+      // and the AppDelegate, so the harness had nothing left to prove.
+      floatingActionButton: !kReleaseMode
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'debug-tour-pin-proof',
+                  onPressed: () => context.push('/debug/tour-pin-proof'),
+                  icon: const Icon(Icons.place_outlined),
+                  label: const Text('Pin Proof'),
+                ),
+                const SizedBox(height: Dims.spaceSm),
+                FloatingActionButton.extended(
+                  heroTag: 'debug-tour-playback-proof',
+                  onPressed: () => context.push('/debug/tour-playback-proof'),
+                  icon: const Icon(Icons.headphones),
+                  label: const Text('Tour Proof'),
+                ),
+              ],
+            )
+          : null,
       body: Stack(
         children: [
           // Full-bleed photographic ground.

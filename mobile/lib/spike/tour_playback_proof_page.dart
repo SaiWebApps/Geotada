@@ -1,14 +1,12 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
+import 'package:ondoway/spike/proof_stops.dart';
 
 /// Debug-only harness proving the PRODUCTION tour-playback path plays audio
 /// through a locked screen. Two stops are placed ~15m and ~30m ahead of the
@@ -109,17 +107,8 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     return (lat + dLat, lng + dLng);
   }
 
-  // Mirrors AudioService's cache convention (temp/ondoway_audio/<beatId>.mp3) so
-  // startTour plays a LOCAL file, not a cold URL stream. We reuse the spike's
-  // bundled WAV written under a .mp3 name: iOS AVFoundation content-sniffs the
-  // header, so the extension is only a hint and playback works. Debug only.
-  Future<void> _cacheClip(String beatId) async {
-    final bytes = await rootBundle.load('assets/audio/arrived.wav');
-    final dir = Directory('${(await getTemporaryDirectory()).path}/ondoway_audio');
-    if (!await dir.exists()) await dir.create(recursive: true);
-    await File('${dir.path}/$beatId.mp3')
-        .writeAsBytes(bytes.buffer.asUint8List());
-  }
+  // Caching and stop-building live in spike/proof_stops.dart — one copy,
+  // shared with the pin proof page, which carried the same twenty lines.
 
   Future<void> _startProof() async {
     final location = context.read<LocationService>();
@@ -148,8 +137,8 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     }
     location.stopTracking(); // startTour restarts it in background.
 
-    await _cacheClip('proof-1');
-    await _cacheClip('proof-2');
+    await cacheProofClip('proof-1');
+    await cacheProofClip('proof-2');
 
     final bearing = _directions[_selectedDir]!;
     final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 30.0, bearing);
@@ -186,8 +175,8 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     }
     location.stopTracking(); // TourWalkPage's startTour restarts it in background.
 
-    await _cacheClip('katy-1');
-    await _cacheClip('katy-2');
+    await cacheProofClip('katy-1');
+    await cacheProofClip('katy-2');
 
     final bearing = _directions[_selectedDir]!;
     final s1 = _offsetAlongBearing(pos.latitude, pos.longitude, 30.0, bearing);
@@ -212,29 +201,13 @@ class _TourPlaybackProofPageState extends State<TourPlaybackProofPage>
     context.push('/trip/${trip.tripId}/walk', extra: trip);
   }
 
-  /// Wider than a real doorway on purpose: measured GPS cross-track is about ten
-  /// metres, so a walker can cross a bare 10 m circle without a single fix
-  /// landing inside it. 20 m trips reliably while still requiring the tester to
-  /// START outside it — the stops are placed 30 m and 55 m out.
-  static const double _proofRadiusMeters = 20.0;
-
   ItineraryStop _proofStop(int order, String beatId, double lat, double lng) =>
-      ItineraryStop(
-        sortOrder: order,
-        stopId: beatId,
-        poiId: 'proof-poi-$order',
-        poiName: 'Proof Stop $order',
+      proofStop(
+        order: order,
+        beatId: beatId,
+        name: 'Proof Stop $order',
         lat: lat,
         lng: lng,
-        beatId: beatId,
-        lensName: 'history',
-        lensDisplay: 'History',
-        durationMin: 1,
-        importanceTier: 3,
-        startTime: '09:0$order',
-        audioUrl: 'cached://$beatId', // unused: cache hit wins in AudioService
-        // The footprint rides the STOP, exactly as a server-placed one does.
-        trigger: const StopTrigger(radiusM: _proofRadiusMeters),
       );
 
   @override

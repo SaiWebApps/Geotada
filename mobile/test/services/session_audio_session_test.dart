@@ -42,13 +42,13 @@ void main() {
 
   test('starting a tour asks for the audio session, in the foreground', () async {
     await engine.startTour([_stop(0, 's1'), _stop(1, 's2')]);
-    expect(audio.sessionCalls, ['prepare']);
+    expect(audio.callLog, ['prepare']);
   });
 
   test('stopping a tour gives the session back', () async {
     await engine.startTour([_stop(0, 's1'), _stop(1, 's2')]);
     engine.stopTour();
-    expect(audio.sessionCalls, ['prepare', 'release']);
+    expect(audio.callLog, ['prepare', 'release']);
   });
 
   test('a tour that finishes on its own gives the session back too', () async {
@@ -61,6 +61,6 @@ void main() {
     audio.simulateComplete();
 
     expect(engine.state, TourState.completed);
-    expect(audio.sessionCalls, ['prepare', 'release']);
+    expect(audio.callLog, ['prepare', 'release']);
   });
 }

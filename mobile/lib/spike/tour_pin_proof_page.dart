@@ -1,13 +1,11 @@
-import 'dart:io';
 import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
+import 'package:ondoway/spike/proof_stops.dart';
 
 /// Debug-only proof harness that lets you DROP YOUR OWN STOPS on a map instead
 /// of walking a guessed bearing. Tap the map to place numbered pins wherever you
@@ -31,10 +29,6 @@ class _TourPinProofPageState extends State<TourPinProofPage> {
   AudioService? _audio;
   TourPlaybackService? _tour;
   bool _wiredListeners = false;
-
-  // Wider than production's 10m: real GPS cross-track walks straight past a bare
-  // 10m radius. 20m trips reliably while still requiring the walker to approach.
-  static const double _triggerRadiusMeters = 20.0;
 
   @override
   void initState() {
@@ -86,15 +80,8 @@ class _TourPinProofPageState extends State<TourPinProofPage> {
     _add('$_ts  Cleared stops');
   }
 
-  // Mirrors AudioService's cache convention (temp/ondoway_audio/<beatId>.mp3) so
-  // the tour plays a LOCAL file. Reuses the bundled proof clip. Debug only.
-  Future<void> _cacheClip(String beatId) async {
-    final bytes = await rootBundle.load('assets/audio/arrived.wav');
-    final dir = Directory('${(await getTemporaryDirectory()).path}/ondoway_audio');
-    if (!await dir.exists()) await dir.create(recursive: true);
-    await File('${dir.path}/$beatId.mp3')
-        .writeAsBytes(bytes.buffer.asUint8List());
-  }
+  // Caching and stop-building live in spike/proof_stops.dart — one copy, shared
+  // with the linear proof page, which carried its own identical twenty lines.
 
   Future<void> _startTour() async {
     if (_pins.isEmpty) {
@@ -116,37 +103,23 @@ class _TourPinProofPageState extends State<TourPinProofPage> {
     final stops = <ItineraryStop>[];
     for (var i = 0; i < _pins.length; i++) {
       final beatId = 'pin-${i + 1}';
-      await _cacheClip(beatId);
+      await cacheProofClip(beatId);
       stops.add(_pinStop(i + 1, beatId, _pins[i]));
     }
 
     final ok = await tour.startTour(stops);
     _add(ok
         ? 'Tour started with ${stops.length} stop(s), fires within '
-            '${_triggerRadiusMeters.toStringAsFixed(0)}m. Lock, pocket, walk to each pin.'
+            '${kProofRadiusMeters.toStringAsFixed(0)}m. Lock, pocket, walk to each pin.'
         : 'startTour failed.');
   }
 
-  ItineraryStop _pinStop(int order, String beatId, LatLng at) => ItineraryStop(
-        sortOrder: order,
-        stopId: beatId,
-        poiId: 'pin-poi-$order',
-        poiName: 'Pin Stop $order',
+  ItineraryStop _pinStop(int order, String beatId, LatLng at) => proofStop(
+        order: order,
+        beatId: beatId,
+        name: 'Pin Stop $order',
         lat: at.latitude,
         lng: at.longitude,
-        beatId: beatId,
-        lensName: 'history',
-        lensDisplay: 'History',
-        durationMin: 1,
-        importanceTier: 3,
-        startTime: '09:0$order',
-        audioUrl: 'cached://$beatId', // unused: cache hit wins in AudioService
-        // The footprint rides the STOP, exactly as a server-placed one does —
-        // there is no service-wide radius to set. Wider than a real doorway on
-        // purpose: measured GPS cross-track is about ten metres, so a walker can
-        // cross a bare 10 m circle without one fix landing inside it, and the
-        // proof would prove nothing.
-        trigger: const StopTrigger(radiusM: _triggerRadiusMeters),
       );
 
   void _onLocTick() {

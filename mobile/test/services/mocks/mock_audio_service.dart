@@ -121,19 +121,19 @@ class MockAudioService extends AudioProvider {
     lastSeek = position;
   }
 
-  /// Every session door the tour opened or closed, in order: 'prepare' when
-  /// the walk asked for the audio session, 'release' when it gave it back.
-  /// The iOS session must be ACTIVATED from the foreground — iOS refuses it
-  /// from a background callback — so which of these the tour calls, and when,
-  /// is the difference between narration a locked phone plays and silence.
-  final List<String> sessionCalls = [];
-
-  /// A log SHARED with the location double, so a test can assert the ORDER of
-  /// calls across both — `['prepare', 'track']`. Order is the whole assertion:
-  /// the session has to be activated while the app is still in the foreground,
-  /// before background tracking begins, or iOS refuses it later and the locked
-  /// phone plays nothing. Two separate per-double logs could not express that.
-  List<String>? callLog;
+  /// Every session door the tour opened or closed, in order: 'prepare' when the
+  /// walk asked for the audio session, 'release' when it gave it back. The iOS
+  /// session must be ACTIVATED from the foreground — iOS refuses it from a
+  /// background callback — so which of these the tour calls, and WHEN, is the
+  /// difference between narration a locked phone plays and silence.
+  ///
+  /// Reassign it to a list the location double also holds, and it becomes a log
+  /// of BOTH doubles in one order — which is the only way to assert
+  /// `['prepare', 'track']`, the requirement that the session is opened before
+  /// background tracking starts. That is why there is one list and not two: a
+  /// second per-double log recorded the same events and could not express the
+  /// only question worth asking about them.
+  List<String> callLog = [];
 
   /// When false, [play] records the piece but never reaches playing — the
   /// native player accepting the call and then failing to sound. The tour must
@@ -141,22 +141,16 @@ class MockAudioService extends AudioProvider {
   bool playSucceeds = true;
 
   int get prepareSessionCount =>
-      sessionCalls.where((call) => call == 'prepare').length;
+      callLog.where((call) => call == 'prepare').length;
 
   int get releaseSessionCount =>
-      sessionCalls.where((call) => call == 'release').length;
+      callLog.where((call) => call == 'release').length;
 
   @override
-  Future<void> prepareSession() async {
-    sessionCalls.add('prepare');
-    callLog?.add('prepare');
-  }
+  Future<void> prepareSession() async => callLog.add('prepare');
 
   @override
-  Future<void> releaseSession() async {
-    sessionCalls.add('release');
-    callLog?.add('release');
-  }
+  Future<void> releaseSession() async => callLog.add('release');
 
   /// Simulate audio completing playback — the piece reached its END on its own
   /// (a pause is NOT this: it leaves [isCompleted] false).

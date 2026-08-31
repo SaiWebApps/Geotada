@@ -17,6 +17,8 @@ import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/spike/tour_pin_proof_page.dart';
+import 'package:ondoway/spike/tour_playback_proof_page.dart';
 import 'package:ondoway/theme/dims.dart';
 import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
@@ -126,6 +128,25 @@ GoRouter createRouter(
       GoRoute(
         path: '/debug/style-gallery',
         builder: (context, state) => const StyleGalleryPage(),
+      ),
+      // The two on-device proof harnesses, debug builds only. They exist because
+      // a green suite is not evidence for background audio: the simulator and a
+      // real iPhone disagreed about it once already, and the only proof that
+      // counts is a locked phone in a pocket on a pavement. Both drive the
+      // PRODUCTION path — the real TourPlaybackService, the real LocationService,
+      // the real cache convention — so what they prove is the product, not a
+      // rehearsal of it.
+      //
+      // The pin harness is the one to reach for: drop your own stops on a map,
+      // spaced as far apart as you like, then walk to each. The linear one
+      // places two stops along a chosen bearing when there is no map to tap.
+      GoRoute(
+        path: '/debug/tour-playback-proof',
+        builder: (context, state) => const TourPlaybackProofPage(),
+      ),
+      GoRoute(
+        path: '/debug/tour-pin-proof',
+        builder: (context, state) => const TourPinProofPage(),
       ),
       GoRoute(
         path: '/login',

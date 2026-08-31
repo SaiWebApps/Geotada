@@ -6,9 +6,6 @@ import UIKit
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate,
   AVAudioPlayerDelegate
 {
-  // Held strongly so the player is not deallocated before/while it plays.
-  private var bgAudioPlayer: AVAudioPlayer?
-
   // The production tour-playback file player (com.ondoway/native_audio) and the
   // channel it reports completion back over. Both are held strongly: the player
   // so it survives the play call, the channel so the delegate can invoke
@@ -45,61 +42,23 @@ import UIKit
     // failed with MissingPluginException (this also left GeocodingChannel dead).
     let messenger = engineBridge.applicationRegistrar.messenger()
     GeocodingChannel.register(with: messenger)
-    registerBackgroundAudioChannel(messenger)
     registerAudioSessionChannel(messenger)
     registerNativeAudioChannel(messenger)
   }
 
-  /// Native background-audio bridge with two calls:
+  /// Foreground-only audio-session activation for the tour-playback path.
+  /// `prepare` activates the .playback/.duckOthers session while the app is
+  /// frontmost; it then survives lock, so a background geofence fire plays
+  /// without re-activating — which returns CannotInterruptOthers (560557684),
+  /// and is exactly what made the walk silent before this existed.
   ///
-  /// - `prepare`: called ONCE from the foreground at tour start. Activates the
-  ///   .playback/.duckOthers session while the app is frontmost — the only state
-  ///   in which iOS lets an app take the audio session. The session then stays
-  ///   active as the app backgrounds and the screen locks.
-  /// - `play`: called from the (possibly background, screen-locked) geofence
-  ///   callback. It does NOT touch the session — it is already active — it only
-  ///   builds a player and plays. This is what previously failed: activating from
-  ///   the background returned CannotInterruptOthers (560557684). Activation was
-  ///   moved to `prepare`; the background path now only plays.
-  private func registerBackgroundAudioChannel(_ messenger: FlutterBinaryMessenger) {
-    let channel = FlutterMethodChannel(
-      name: "com.ondoway/bg_audio", binaryMessenger: messenger)
-    channel.setMethodCallHandler { [weak self] call, result in
-      let session = AVAudioSession.sharedInstance()
-      switch call.method {
-      case "prepare":
-        do {
-          try session.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
-          try session.setActive(true)
-          result(nil)
-        } catch {
-          result(FlutterError(code: "bg_audio_prepare", message: "\(error)", details: nil))
-        }
-      case "play":
-        guard let data = (call.arguments as? FlutterStandardTypedData)?.data else {
-          result(FlutterError(code: "bg_audio_play", message: "no clip bytes", details: nil))
-          return
-        }
-        do {
-          self?.bgAudioPlayer = try AVAudioPlayer(data: data)
-          self?.bgAudioPlayer?.prepareToPlay()
-          self?.bgAudioPlayer?.play()
-          result(nil)
-        } catch {
-          result(FlutterError(code: "bg_audio_play", message: "\(error)", details: nil))
-        }
-      default:
-        result(FlutterMethodNotImplemented)
-      }
-    }
-  }
-
-  /// Foreground-only audio-session activation for the PRODUCTION tour-playback
-  /// path (just_audio owns actual playback here — no raw bytes). `prepare`
-  /// activates the .playback/.duckOthers session while the app is frontmost; it
-  /// then survives lock, so a background geofence fire plays without
-  /// re-activating (which returns CannotInterruptOthers). Same mechanism proven
-  /// in the Slice 0.3 spike, minus the raw-bytes `play`.
+  /// A third channel, `com.ondoway/bg_audio`, stood beside this one until
+  /// 2026-08-31. It was the Slice 0.3 spike's ancestor of these two: the same
+  /// session activation, plus a `play` that took RAW CLIP BYTES from Dart. Its
+  /// job was to find out whether anything could be heard through a locked
+  /// screen. The answer it produced is now permanent — activation lives here,
+  /// file playback lives in the native_audio channel below — so the channel was
+  /// a third way to do what these two already do, and it is gone.
   private func registerAudioSessionChannel(_ messenger: FlutterBinaryMessenger) {
     let channel = FlutterMethodChannel(
       name: "com.ondoway/audio_session", binaryMessenger: messenger)
