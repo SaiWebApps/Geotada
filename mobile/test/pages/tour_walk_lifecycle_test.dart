@@ -38,6 +38,11 @@ Widget _harness({
   );
 }
 
+// The walk screen carries a one-second HEARTBEAT: standing still is measured by
+// time passing, because the geolocator sends no fix while nobody moves. A
+// repeating timer means this tree never "settles" — pumpAndSettle advances the
+// fake clock and the ticker fires again, forever — so these tests pump explicit
+// frames instead. That is a property of the screen, not a workaround.
 void main() {
   testWidgets('a tour already running is not restarted, and survives leaving the page',
       (tester) async {
@@ -55,7 +60,7 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     // Mount did not reset the walk back to its first stop.
     expect(engine.currentStopIndex, 1);
@@ -64,7 +69,7 @@ void main() {
 
     // Leaving the page is not ending the walk.
     await tester.pumpWidget(const MaterialApp(home: SizedBox()));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     expect(engine.isActive, true);
   });
 
@@ -79,12 +84,12 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(engine.isActive, true);
 
     await tester.pumpWidget(const MaterialApp(home: SizedBox()));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     expect(engine.isActive, false);
   });
 }

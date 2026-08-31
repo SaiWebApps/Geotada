@@ -28,6 +28,11 @@ Widget _harness({
   );
 }
 
+// The walk screen carries a one-second HEARTBEAT: standing still is measured by
+// time passing, because the geolocator sends no fix while nobody moves. A
+// repeating timer means this tree never "settles" — pumpAndSettle advances the
+// fake clock and the ticker fires again, forever — so these tests pump explicit
+// frames instead. That is a property of the screen, not a workaround.
 void main() {
   testWidgets('walking state shows the next-stop banner; arriving plays audio and shows the story card',
       (tester) async {
@@ -40,7 +45,7 @@ void main() {
       loc: loc, audio: audio, engine: engine,
       child: TourWalkPage(trip: trip),
     ));
-    await tester.pumpAndSettle(); // let startTour() settle
+    await tester.pump(const Duration(milliseconds: 350)); // let startTour() settle
 
     // Walking: heading to the first stop, no audio yet -> the walking bar shows.
     expect(find.byKey(const Key('tour-walking-skip')), findsOneWidget);
@@ -48,7 +53,7 @@ void main() {
 
     // Walk into the first stop's geofence.
     loc.simulatePosition(48.8606, 2.3376);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(audio.playCount, 1); // engine auto-played the stop
     // Story: the now-playing player shows the stop title + transport controls.
@@ -64,15 +69,15 @@ void main() {
 
     await tester.pumpWidget(_harness(
       loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     // Arrive at stop 0 so the audio card (with Skip) is showing.
     loc.simulatePosition(48.8606, 2.3376);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     expect(engine.currentStopIndex, 0);
 
     await tester.tap(find.byKey(const Key('tour-skip')));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     expect(engine.currentStopIndex, 1);
   });
 
@@ -85,19 +90,19 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     loc.simulatePosition(48.8606, 2.3376); // arrive stop 0 -> audio plays
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     // Walk into stop 1's radius while stop 0 audio still "plays".
     loc.simulatePosition(48.8570, 2.3410);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(engine.hasPendingStop, true);
     expect(find.byKey(const Key('tour-nudge-accept')), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('tour-nudge-accept')));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     expect(engine.currentStopIndex, 1);
   });
 
@@ -109,13 +114,13 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     // Jump to the final stop, play it, then complete -> engine goes `completed`.
     engine.skipToStop(2);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     audio.simulateComplete();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(engine.state, TourState.completed);
     expect(find.textContaining('Tour complete'), findsOneWidget);
@@ -130,14 +135,14 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     // Still walking: no GPS fix yet, no audio playing.
     expect(engine.currentStopIndex, 0);
     expect(audio.isPlaying, false);
 
     await tester.tap(find.byKey(const Key('tour-walking-skip')));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(engine.currentStopIndex, 1);
   });
@@ -174,7 +179,7 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(find.textContaining('No audio here'), findsOneWidget);
     expect(find.byKey(const Key('tour-walking-skip')), findsOneWidget);
@@ -189,18 +194,18 @@ void main() {
 
     await tester.pumpWidget(_harness(
         loc: loc, audio: audio, engine: engine, child: TourWalkPage(trip: trip)));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     loc.simulatePosition(48.8606, 2.3376); // arrive stop 0 -> audio plays
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
     // Walk into stop 1's radius while stop 0 audio still "plays".
     loc.simulatePosition(48.8570, 2.3410);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(engine.hasPendingStop, true);
 
     await tester.tap(find.text('Keep listening'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 350));
 
     expect(engine.hasPendingStop, false);
     expect(find.byKey(const Key('tour-nudge-accept')), findsNothing);

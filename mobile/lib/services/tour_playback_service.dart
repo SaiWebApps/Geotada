@@ -603,6 +603,16 @@ class TourPlaybackService extends ChangeNotifier {
       _currentStopIndex >= 0 && _currentStopIndex < _stops.length
           ? _stops[_currentStopIndex]
           : null;
+  /// The stops this walk is actually made of, in order — THE screen's source
+  /// for what to draw.
+  ///
+  /// A page is handed a trip in order to START a walk; once one is running this
+  /// list is the truth. A session composed on the server carries placed trigger
+  /// geometry and voiced files the pushed trip does not, and a contingency can
+  /// reorder or drop stops mid-walk. Drawing from the page's copy would leave a
+  /// pin on the map for a stop the day no longer visits.
+  List<ItineraryStop> get plannedStops => List.unmodifiable(_stops);
+
   ItineraryStop? get nextStop => _currentStopIndex + 1 < _stops.length
       ? _stops[_currentStopIndex + 1]
       : null;

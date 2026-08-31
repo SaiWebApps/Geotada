@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
-import 'package:ondoway/pages/session_page.dart';
+import 'package:ondoway/pages/tour_walk_page.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 
@@ -40,6 +40,17 @@ class _Clock {
   _Clock(this.now);
 }
 
+const GeneratedTrip _walkSeed = GeneratedTrip(
+  tripId: 'trace',
+  tripName: 'trace',
+  profileId: 'trace',
+  totalStops: 0,
+  totalDurationMin: 0,
+  anchorCount: 0,
+  flavourCount: 0,
+  stops: [],
+);
+
 Widget _app(TourPlaybackService service, String tripId) {
   final router = GoRouter(
     initialLocation: '/session/$tripId',
@@ -47,7 +58,7 @@ Widget _app(TourPlaybackService service, String tripId) {
       GoRoute(
         path: '/session/:tripId',
         builder: (context, state) =>
-            SessionPage(tripId: state.pathParameters['tripId']!),
+            const TourWalkPage(trip: _walkSeed),
       ),
       GoRoute(
         path: '/saved-trips',
