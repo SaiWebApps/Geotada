@@ -232,20 +232,38 @@ run_pids_csv() {
 # Total CPU-seconds this run's process tree has consumed. The second half of the
 # stall test, and the half that tells a wedge from a slow compile.
 #
-# `ps -o time=` prints cumulative CPU time as [[dd-]hh:]mm:ss.ss, so the fields are
-# summed right-to-left with an increasing multiplier rather than parsed positionally
-# — the field COUNT varies with how long the process has lived, and a fixed parse
-# would silently misread the long-lived case.
+# `ps -o time=` prints cumulative CPU time as [[dd-]hh:]mm:ss.ss. The colon-separated
+# fields are summed right-to-left with an increasing multiplier rather than parsed
+# positionally, because the field COUNT varies with how long the process has lived
+# and a fixed parse silently misreads the long-lived case.
+#
+# The day field is split off FIRST and multiplied separately. It is delimited by a
+# hyphen, not a colon, and a day is 86400 seconds where the right-to-left chain would
+# have reached 60^3 = 216000 — so folding it into that chain is wrong twice over. A
+# verifier caught this: the earlier version read `2-03:04:05` as 7445 seconds instead
+# of 183845, because splitting on colons alone makes the first field the string
+# "2-03", which numifies to 2. Unreachable under a 900s deadline, and fixed anyway,
+# because a helper whose comment claims a format it cannot parse is the defect this
+# repo's verifier exists to catch — and the next caller will not know the difference.
 cpu_seconds() {
   [ -n "${fpid:-}" ] || { echo 0; return; }
-  ps -o time= -p "$(run_pids_csv)" 2>/dev/null | awk -F: '
-    { seconds = 0; multiplier = 1
-      for (field = NF; field >= 1; field--) {
-        gsub(/^[ \t]+|[ \t]+$/, "", $field)
-        seconds += $field * multiplier
+  ps -o time= -p "$(run_pids_csv)" 2>/dev/null | awk '
+    { entry = $0
+      gsub(/^[ \t]+|[ \t]+$/, "", entry)
+      if (entry == "") next
+      days = 0
+      if (index(entry, "-") > 0) {
+        split(entry, halves, "-")
+        days = halves[1] + 0
+        entry = halves[2]
+      }
+      count = split(entry, fields, ":")
+      seconds = 0; multiplier = 1
+      for (field = count; field >= 1; field--) {
+        seconds += fields[field] * multiplier
         multiplier *= 60
       }
-      total += seconds }
+      total += seconds + days * 86400 }
     END { printf "%d", total + 0 }'
 }
 
@@ -398,7 +416,18 @@ run_once() {
       # — a run that never trips the detector at all.
       cpu_now="$(cpu_seconds)"
       cpu_burned=$(( cpu_now - cpu_at_quiet_start ))
-      if [ "$cpu_burned" -gt $(( quiet / 4 )) ]; then
+      if [ "$cpu_burned" -lt 0 ]; then
+        # The total went DOWN, which no single process can do — the sum is over
+        # PIDs alive right now, so a child that exited took its CPU time out of it.
+        # A tree whose membership is changing is a tree doing work, and it is the
+        # opposite of the 0%-CPU deadlock this branch is looking for. Named because
+        # it is not obvious: left unhandled the subtraction goes negative, fails the
+        # threshold below, and reports a STALL for a run that was making progress.
+        echo ">> ${quiet}s without output, and a process in this run's tree exited" >&2
+        echo "   during that window — the run is advancing, not wedged. Still waiting." >&2
+        quiet=0
+        cpu_at_quiet_start="$cpu_now"
+      elif [ "$cpu_burned" -gt $(( quiet / 4 )) ]; then
         echo ">> ${quiet}s without output, but this run burned ${cpu_burned}s of CPU in that" >&2
         echo "   window — it is compiling, not wedged. Still waiting." >&2
         quiet=0
