@@ -42,6 +42,11 @@
 	<string>Ondoway uses your location to trigger audio stories as you walk past points of interest.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Ondoway uses your location in the background to trigger audio stories as you walk past points of interest.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>audio</string>
+	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Ondoway uses the microphone to capture voice feedback about your experience.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

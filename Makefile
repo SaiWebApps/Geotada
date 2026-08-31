@@ -543,7 +543,7 @@ print(next(iter(b or i or [""])))' 2>/dev/null
 SIM_TARGET = $(if $(filter command line,$(origin SIM)),$(SIM),$(shell $(SIM_PICK)))
 
 flutter-ios: ## Run the Flutter app in an iOS simulator with a local API.
-	@$(PREFLIGHT) --label flutter-ios $(PRE_TOUR) render-key port-8000 $(PRE_FLUTTER) xcode
+	@$(PREFLIGHT) --label flutter-ios $(PRE_TOUR) render-key port-8000 $(PRE_FLUTTER) xcode cocoapods
 	@test -n "$(SIM_TARGET)" || { \
 		echo "ERROR: no iOS simulator found on this machine." >&2; \
 		echo "       Open Xcode > Settings > Components and install a simulator runtime," >&2; \
@@ -562,8 +562,12 @@ flutter-ios: ## Run the Flutter app in an iOS simulator with a local API.
 	cd mobile && flutter run -d "$(SIM_TARGET)"
 
 flutter-device: ## Run the Flutter app on a physical device against production.
-	@$(PREFLIGHT) --label flutter-device $(PRE_FLUTTER)
+	@$(PREFLIGHT) --label flutter-device $(PRE_FLUTTER) xcode cocoapods
 	cd mobile && flutter run --dart-define=API_BASE_URL=https://ondoway.com/api/v1
+
+flutter-device-profile: ## Run on a physical device in PROFILE mode (AOT, no JIT -- stable on iOS 26 where the debug JIT crashes; debug affordances stay visible via !kReleaseMode).
+	@$(PREFLIGHT) --label flutter-device-profile $(PRE_FLUTTER) xcode cocoapods
+	cd mobile && flutter run --profile --dart-define=API_BASE_URL=https://ondoway.com/api/v1
 
 flutter-pub-get: ## Resolve Flutter dependencies.
 	@$(PREFLIGHT) --label flutter-pub-get flutter
@@ -770,11 +774,11 @@ onboard-city: ## Onboard a fixture-backed city. Usage: make onboard-city CITY=x 
 ##@ DEPLOYMENT AND DIAGNOSTICS
 
 flutter-ipa: ## Build an IPA against the production API.
-	@$(PREFLIGHT) --label flutter-ipa $(PRE_FLUTTER) xcode
+	@$(PREFLIGHT) --label flutter-ipa $(PRE_FLUTTER) xcode cocoapods
 	cd mobile && flutter build ipa --dart-define=API_BASE_URL=https://ondoway.com/api/v1
 
 testflight: ## Bump the build number, build the new IPA, then upload it.
-	@$(PREFLIGHT) --label testflight $(PRE_PY) render-key $(PRE_FLUTTER) xcode
+	@$(PREFLIGHT) --label testflight $(PRE_PY) render-key $(PRE_FLUTTER) xcode cocoapods
 	@$(RENDER_LOCAL_EXEC) bash -ceu '\
 		test -n "$${APP_STORE_API_KEY_ID:-}" || { echo "ERROR: APP_STORE_API_KEY_ID missing." >&2; exit 2; }; \
 		test -n "$${APP_STORE_ISSUER_ID:-}" || { echo "ERROR: APP_STORE_ISSUER_ID missing." >&2; exit 2; }; \

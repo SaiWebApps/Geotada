@@ -5,6 +5,11 @@ import 'package:http/testing.dart';
 import 'package:ondoway/services/audio_service.dart';
 
 void main() {
+  // AudioService now owns a native MethodChannel (com.ondoway/native_audio),
+  // and registering its handler needs an initialized binding — even for these
+  // HTTP-only tests that construct the service but never play.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('AudioService', () {
     // PHASE 7 D7.0 TOMBSTONE (design §8.5; plan S7.10; phase7-ledger.md §D7.0):
     // the three `checkAudioStatus` tests pinned the phone's PER-BEAT status
