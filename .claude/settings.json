@@ -47,6 +47,16 @@
             "statusMessage": "advisor gate: no action before a consult and a printed plan"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/parallel-gate.py",
+            "timeout": 15,
+            "statusMessage": "parallel gate: batch independent background spawns"
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -90,6 +100,16 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/freshness-gate.py",
+            "timeout": 20,
+            "statusMessage": "freshness gate: every number said today is proven today"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/advisor-consult-guard.py",
             "timeout": 20,
             "statusMessage": "advisor guard: no reply without a consult"
@@ -113,6 +133,16 @@
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/shadow-guard.py",
             "timeout": 20,
             "statusMessage": "shadow gate: nothing is reported until it is re-derived"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/truth-gate.py",
+            "timeout": 300,
+            "statusMessage": "truth gate: advisor and verifier must both call it true"
           }
         ]
       }
