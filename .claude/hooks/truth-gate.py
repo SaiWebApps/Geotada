@@ -111,8 +111,13 @@ observe, and the honest limit is stated rather than pretended away.
 A JUDGE MUST NOT RE-RUN WHAT IT IS AUDITING, discovered the expensive way,
 2026-08-31. Both rubrics originally told a judge to "re-run the commands the
 reply claims to have run" with no limit, and a reply that quotes this
-project's own test suite invites exactly that: three consecutive runs this
-same session measured 116.72s, 210.97s and 310.79s. MEASURED, not inferred:
+project's own test suite invites exactly that: runs of this very suite were
+measured at 210.97s and 300.92s in the main session's own transcript, and the
+agent that wrote this fix reported three of its own at 116.72s, 210.97s and
+310.79s. Two of those three are visible only in that agent's transcript, not
+the main one — scoped here rather than restated flatly, because a number this
+file cannot source is precisely what this file exists to refuse, and a shadow
+caught it here after the first commit landed. MEASURED, not inferred:
 handed one synthetic statement quoting the 210.97s run, inside the real
 production VERIFIER_RUBRIC text, the verifier judge was still running with
 zero output after a 110-second bound and had to be killed (`claude -p` exit
