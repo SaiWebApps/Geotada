@@ -357,6 +357,26 @@ def test_the_infra_ceiling_stands_down_after_three_failures(tmp_path):
     assert "TRUTH GATE STOOD DOWN" in decision.get("systemMessage", "")
 
 
+def test_the_ceiling_stands_down_on_repeated_real_timeouts(tmp_path):
+    """The coordinator's exact concern, on the TIMEOUT path specifically, not
+    just the generic scripted-failure path above: does the gate DEGRADE
+    rather than wedge open when both judges genuinely time out, repeatedly,
+    the way they did in real use (both judges hitting the full 240s on a
+    reply that told them to re-run a multi-minute test suite)?"""
+    records = [human(), assistant_text("Anything at all.")]
+    env = {
+        **judge_env(ADVISOR_TAG, mode="hang", hang_seconds=3),
+        **judge_env(VERIFIER_TAG, mode="hang", hang_seconds=3),
+    }
+    for attempt in range(3):
+        decision = decide(tmp_path, records, session="timeout-wedge", extra_env=env, judge_timeout="1")
+        assert blocked(decision), attempt
+        assert "timed out" in reason(decision)
+    decision = decide(tmp_path, records, session="timeout-wedge", extra_env=env, judge_timeout="1")
+    assert not blocked(decision), "three real timeouts in a row must stand the arm down, not wedge it"
+    assert "TRUTH GATE STOOD DOWN" in decision.get("systemMessage", "")
+
+
 def test_a_clean_run_after_infra_failures_clears_the_ceiling(tmp_path):
     records = [human(), assistant_text("Anything at all.")]
     failing = judge_env(ADVISOR_TAG, mode="fail")
