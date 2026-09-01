@@ -183,9 +183,25 @@ def reason(decision):
 
 
 # ============================================================================
-# THE EIGHT — replayed from the real session, 2026-08-31. See the table this
-# suite proves in the final report: three caught cleanly, one caught only in
-# the shape that omits a same-turn commit message, four structurally missed.
+# THE EIGHT — replayed from the real session, 2026-08-31. Eight distinct false
+# statements, nine test functions: statement 3 is driven twice, once in the
+# shape this gate catches (3a) and once in the shape that launders past it
+# (3b).
+#
+# The honest split, statement by statement:
+#     1, 2      caught outright
+#     3         caught ACROSS TURNS, defeated when the same digits also sit in
+#               a `git commit -m` this turn wrote — 3a and 3b, one statement
+#     4, 5, 6, 7  structurally out of reach: spelled-out numbers, and claims
+#               carrying no number for a number-gate to check
+#     8         not this gate's — citation-guard already refuses a path:NN for
+#               a file never opened, and a test here proves this gate does not
+#               interfere with that
+#
+# This header used to read "three caught cleanly ... four structurally
+# missed", which reaches eight only by counting statement 3 twice and dropping
+# statement 8 altogether. A shadow re-deriving the suite found it. A miscount
+# inside the suite that proves a miscount-catcher is the joke writing itself.
 # ============================================================================
 
 
