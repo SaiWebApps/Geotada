@@ -117,6 +117,16 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/delivery-guard.py",
+            "timeout": 30,
+            "statusMessage": "delivery guard: stop polishing the reply, go do the work"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/citation-guard.py",
             "timeout": 20,
             "statusMessage": "citation guard: proving every claim about this repo"

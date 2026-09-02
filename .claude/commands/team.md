@@ -287,9 +287,23 @@ Only after the human says go, in this order:
    approved and when; the engine's pre-fan-out gate reads that row. You are transcribing a decision the human just made
    in chat — you are NOT making it. Never record an approval without an explicit
    go-ahead in the conversation.
-3. Tell the human they can watch it: **`track serve`** is the live dashboard —
-   the feature, one state machine per story, the active story's detail, the event
-   log. It only reads; no agent ever writes to it.
+3. **START THE DASHBOARD. Do not mention it — run it.** In the background:
+
+   ```
+   python3 .claude/ledger/track.py serve --port 8010
+   ```
+
+   It prints the URL it bound as JSON on its first line. Paste that URL as the
+   FIRST LINE of your next reply, every time, before anything else you have to
+   say. It only reads; no agent can write to it.
+
+   This used to read "Tell the human they can watch it", and on 2026-09-02 the
+   owner's words were: "You have not updated any dashboard or any artifacts" and
+   "I want /team to force you to always show me the dashboard with the agents and
+   the tasks." The command had never once been started in that session. A line
+   telling you to mention a dashboard produces a mention; only starting it
+   produces a dashboard. Start it at Step 4 as well, when you present the plan —
+   the owner should be able to watch the run from before it begins, not after.
 4. Run the execution engine:
 
    ```
