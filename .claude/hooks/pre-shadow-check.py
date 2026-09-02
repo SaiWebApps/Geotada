@@ -18,12 +18,46 @@ by opening a file:
      coding rules" when the file has seven.
   3. "The engine is green" when its guard was never re-run after the edit.
 
+A FOURTH CLASS, measured 2026-09-02 in this guard's own session. Three shadow
+runs of roughly 400 seconds each, and all three rejected on one shape: a COMMIT
+ID written into the shadow's prompt that no command in that turn had produced.
+"HEAD is c0f77e1a" was stated while HEAD had already moved two commits on,
+because a parallel session was committing into the same worktree. Restating a
+hash from memory is the same failure as restating a count from memory, and the
+freshness gate already named it — but the freshness gate is a Stop hook. It
+reads what is said to the OWNER. It never sees an Agent prompt, so the shadow
+was handed all three and spent its whole run discovering them.
+
+Check 2 cannot see these either, and that is by construction rather than
+oversight: `_quantity_of` requires a token to START with a digit and to carry
+no letters between digit runs, so `c0f77e1a` (leading letter) and `7a5b01c8`
+(letters between digits) are both classified as identifiers before any
+freshness question is asked. That rule is what keeps a uuid out of the number
+check, and it must not be loosened. So commit ids get their own check.
+
+NOT BUILT TWICE. `_looks_like_git_sha` and `_sha_fresh` are IMPORTED from
+freshness-gate.py rather than copied. The turn-boundary helpers in this file
+are copied from citation-guard.py and that is fine — they are boring and have
+not drifted — but the freshness of a hash carries judgment (how short an
+abbreviation still counts, what characters bound a match), and two copies of a
+judgment diverge the first time either is tuned. If the import fails the check
+is SKIPPED and says so out loud; a guard that dies takes the session with it.
+
 None of those needs a language model. They need a file opened, a set looked up,
 and a subprocess run. So they happen here, before the expensive agent starts,
-and the refusal names exactly which citation, which number, which guard.
+and the refusal names exactly which citation, which number, which id, which
+guard.
+
+WHAT THIS DOES NOT CATCH, stated so nobody mistakes silence for safety. The
+third stale claim of 2026-09-02 was ` M .claude/settings.json` — a git status
+line asserting the file was still uncommitted when it had just been committed.
+It carries no digits and no hex, so there is nothing here for either check to
+test. That is the freshness gate's own documented limit ("a false claim that
+states NO number carries nothing for a NUMBER gate to check"), and it is
+repeated here rather than quietly inherited.
 
 MECHANICAL, NOT SEMANTIC. Nothing here judges whether the shadow's prompt is a
-good one or whether the work is right. It asks three yes-or-no questions of the
+good one or whether the work is right. It asks four yes-or-no questions of the
 files and the transcript. The shadow still does the thinking; it just stops
 doing the typo-hunting.
 
@@ -46,11 +80,60 @@ the ones whose result came back CLEAN, so a Write this or any other hook denied
 is not a file this guard then goes looking for.
 """
 
+import importlib.util
 import json
 import os
 import subprocess
 import sys
 from pathlib import Path
+
+
+def _borrow_sha_checks():
+    """freshness-gate.py's own hash-freshness pair, or (None, None).
+
+    Imported by path because the filename carries a hyphen. Wrapped because a
+    guard that raises on import is a guard that takes the session with it: on
+    any failure the commit-id check stands down and main() says so in an
+    allowed message, which is the same direction every ceiling in this project
+    resolves to.
+    """
+    source = Path(__file__).resolve().parent / "freshness-gate.py"
+    try:
+        spec = importlib.util.spec_from_file_location("ondoway_freshness_gate", source)
+        if spec is None or spec.loader is None:
+            return None, None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module._looks_like_git_sha, module._sha_fresh
+    except BaseException:
+        # BaseException, not Exception, and the difference is the whole point.
+        # Importing a module RUNS its top level, so a sibling guard that ever
+        # calls sys.exit() there raises SystemExit — which `except Exception`
+        # lets straight through, killing this hook with a non-zero exit and no
+        # JSON on stdout. Found by a verifier on 2026-09-02, which drove the
+        # case rather than reading it.
+        #
+        # Not reachable from the file imported today, and the point of a
+        # guard's failure path is that it holds for the file someone writes
+        # NEXT. Counted by parsing the module rather than recalling it:
+        # freshness-gate.py's body is six imports, twenty-five defs, ten
+        # assignments and one `if __name__` block. FOUR of the ten execute a
+        # call — os.environ.get and Path in STATE_PATH, then set() in
+        # HEX_CHARS, NUMBER_BOUNDARY (twice) and SHA_BOUNDARY — and none of
+        # them can raise SystemExit.
+        #
+        # Two earlier drafts of this comment were wrong, in the exact way this
+        # whole check exists to refuse. The first said the body was "only
+        # imports, defs and an `if __name__` block", written from memory of a
+        # file read two hundred records earlier, omitting all ten assignments.
+        # The second corrected that and said three assignments call, having
+        # counted only the ones whose value node IS a call and missed the two
+        # set() calls inside NUMBER_BOUNDARY's expression. A verifier parsed
+        # the module both times.
+        return None, None
+
+
+LOOKS_LIKE_SHA, SHA_IS_FRESH = _borrow_sha_checks()
 
 #: Where the per-turn refusal tally lives. Keyed by session AND by turn, so a
 #: parallel session cannot reset this one's count — the bug that made the
@@ -270,8 +353,19 @@ def _files_written_in(turn):
 
 
 def _tool_result_text(turn):
-    """Every tool result's text in this turn, joined. The evidence a number in
-    the report is allowed to rest on."""
+    """Every CLEAN tool result's text in this turn, joined. The evidence a
+    number or a commit id in the prompt is allowed to rest on.
+
+    ERRORED RESULTS ARE EXCLUDED, and that is load-bearing rather than tidy.
+    This guard's own refusal quotes the offending id back — "UNSOURCED COMMIT
+    IDS (1): c0f77e1a" — and that refusal lands in the transcript as a
+    tool_result carrying `is_error`. Counted as evidence, it would source the
+    very claim it just refused, and the second attempt would sail through on
+    the strength of the first denial. That is class 17b of the failures
+    ledger, the self-deadlock's mirror image: a boundary check reading its own
+    output as input. `_files_written_in` already refuses to make that mistake
+    with writes; this makes the same rule hold for text.
+    """
     chunks = []
     for entry in turn:
         content = (entry.get("message") or {}).get("content")
@@ -279,6 +373,8 @@ def _tool_result_text(turn):
             continue
         for block in content:
             if not isinstance(block, dict) or block.get("type") != "tool_result":
+                continue
+            if block.get("is_error"):
                 continue
             body = block.get("content")
             if isinstance(body, str):
@@ -460,6 +556,43 @@ def unsourced_numbers(prompt, evidence):
     return out
 
 
+# --------------------------------------------------------------- commit ids
+#
+# The recogniser and the freshness rule both come from freshness-gate.py — see
+# the module docstring for why they are imported rather than copied. All this
+# adds is the walk over the prompt, which uses THIS file's own TRIM so the two
+# guards keep their own peeling rules rather than growing a shared one nobody
+# owns.
+
+
+def unsourced_shas(prompt, evidence):
+    """Commit ids in `prompt` that no clean tool result in this turn produced.
+
+    Ordered, deduplicated. Empty when the borrowed checks are unavailable, so
+    an import failure disarms this arm rather than refusing everything.
+
+    A hex-looking English word — `facade`, `decade` — is under seven
+    characters and falls out on length. `deadbeef` does not, and is treated as
+    an id; the cost of that is one command to source it, and the alternative
+    is a word list, which is the spelling-dependent failure this project's
+    guards keep documenting.
+    """
+    if LOOKS_LIKE_SHA is None or SHA_IS_FRESH is None:
+        return []
+    out = []
+    seen = set()
+    for token in prompt.split():
+        bare = token.strip(TRIM)
+        if not bare or bare in seen:
+            continue
+        if not LOOKS_LIKE_SHA(bare):
+            continue
+        seen.add(bare)
+        if not SHA_IS_FRESH(bare, evidence):
+            out.append(bare)
+    return out
+
+
 # ----------------------------------------------------------------- citations
 #
 # A citation is `some/path.py:214`. It is found by splitting the line on
@@ -631,13 +764,24 @@ def project_root(payload):
     return Path(".")
 
 
-def build_reason(broken, unsourced, engine_output):
+def build_reason(broken, unsourced, engine_output, stale_ids=()):
     parts = ["THE TURN IS NOT CLEAN ENOUGH TO VERIFY."]
     parts.append(
         "The shadow ran 21 times on 2026-09-01, mean 386 seconds, and 61% of that "
         "time went to re-verifying careless errors like the ones below. They are "
         "answerable by opening a file. Fix them, then spawn the shadow."
     )
+    if stale_ids:
+        listed = "\n".join("  - " + item for item in stale_ids)
+        parts.append(
+            f"UNSOURCED COMMIT IDS ({len(stale_ids)}) — stated in the shadow's prompt, "
+            f"produced by no command in this turn:\n{listed}\n"
+            "  A hash restated from memory is the failure this check exists for: on "
+            "2026-09-02 three shadow runs of about 400 seconds each were spent "
+            "discovering exactly this, while a parallel session moved HEAD twice "
+            "underneath. Re-run `git rev-parse`, `git log` or `git status` in THIS "
+            "turn, or delete the claim."
+        )
     if broken:
         parts.append(
             "BROKEN CITATIONS (%d) — your own edit moved the line:\n%s"
@@ -698,7 +842,9 @@ def main():
     broken = broken_citations(md_written, root)
 
     prompt = tool_input.get("prompt")
-    unsourced = unsourced_numbers(prompt, _tool_result_text(turn)) if isinstance(prompt, str) else []
+    evidence = _tool_result_text(turn)
+    unsourced = unsourced_numbers(prompt, evidence) if isinstance(prompt, str) else []
+    stale_ids = unsourced_shas(prompt, evidence) if isinstance(prompt, str) else []
 
     engine_output = None
     if any(path.endswith(ENGINE) or path == ENGINE for path in written):
@@ -706,11 +852,17 @@ def main():
         if not ok:
             engine_output = output
 
-    if not broken and not unsourced and engine_output is None:
+    if not broken and not unsourced and not stale_ids and engine_output is None:
+        if LOOKS_LIKE_SHA is None:
+            allow(
+                "PRE-SHADOW CHECK: the commit-id arm is OFF. freshness-gate.py could "
+                "not be imported, so hashes in this prompt were not checked against "
+                "this turn's evidence. The other three checks ran."
+            )
         allow()
 
     record_refusal(session_id, key, already + 1)
-    deny(build_reason(broken, unsourced, engine_output))
+    deny(build_reason(broken, unsourced, engine_output, stale_ids))
 
 
 if __name__ == "__main__":

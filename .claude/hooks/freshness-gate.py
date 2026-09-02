@@ -509,18 +509,48 @@ def _found_in(blob, value, boundary_chars):
         start = index + 1
 
 
-def _sha_fresh(value, blob):
-    """A full SHA counts as seen if any git-legal ABBREVIATION of it does.
+def _starts_a_hex_run_in(blob, value):
+    """True when `value` begins a hex run in `blob` — an exact match, or the
+    ABBREVIATION of a longer hash the evidence printed in full.
 
-    git itself prints short hashes; an agent that expands what it saw into
-    the full form should not be flagged for writing more digits than git
-    echoed. A FABRICATED hash's prefix will not match real evidence either, so
-    this only removes noise, never a real catch — see the module docstring.
+    The left boundary is still enforced, so a hash found in the MIDDLE of a
+    longer run does not count: `0f77e1a4` inside `c0f77e1a40b…` is a different
+    hash that happens to overlap, and overlap is not evidence.
     """
-    if _found_in(blob, value, SHA_BOUNDARY):
+    start = 0
+    while True:
+        index = blob.find(value, start)
+        if index == -1:
+            return False
+        if index == 0 or blob[index - 1] not in SHA_BOUNDARY:
+            return True
+        start = index + 1
+
+
+def _sha_fresh(value, blob):
+    """A SHA counts as seen when the evidence shows the same hash at ANY git
+    length, longer or shorter than the claim.
+
+    BOTH DIRECTIONS, and the second was missing until 2026-09-02, found by
+    pre-shadow-check.py's own first test of this function:
+
+      - Evidence longer than the claim. `git log --format=%H` prints all forty
+        characters and a report abbreviates to eight. The old code demanded a
+        clean boundary on BOTH sides of the match, so the nine characters still
+        to come made `c0f77e1a` look absent from `c0f77e1a40b17ef…`. That is
+        the most ordinary shape git output takes, and it was a false positive
+        every time.
+      - Claim longer than the evidence. git itself prints short hashes, so an
+        agent expanding what it saw into the full form should not be flagged
+        for writing more characters than git echoed.
+
+    A FABRICATED hash matches in neither direction: it shares no prefix with
+    anything real, so `find` never locates it. This only removes noise.
+    """
+    if _starts_a_hex_run_in(blob, value):
         return True
     for length in range(len(value) - 1, MIN_SHA_PREFIX - 1, -1):
-        if _found_in(blob, value[:length], SHA_BOUNDARY):
+        if _starts_a_hex_run_in(blob, value[:length]):
             return True
     return False
 

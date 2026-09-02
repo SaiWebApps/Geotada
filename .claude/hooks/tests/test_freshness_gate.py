@@ -619,6 +619,40 @@ def test_a_fabricated_sha_sharing_no_real_prefix_is_still_blocked(tmp_path):
     assert denied(decide(tmp_path, records))
 
 
+def test_an_abbreviated_sha_is_fresh_when_git_printed_the_full_one(tmp_path):
+    """THE OTHER DIRECTION, and it was broken until 2026-09-02 — found by
+    pre-shadow-check.py's first test of the borrowed `_sha_fresh`.
+
+    `git log --format=%H` prints all forty characters and a report abbreviates
+    to eight. The old code demanded a clean boundary on BOTH sides of the
+    match, so the thirty-two characters still to come made `9164e834` look
+    absent from the very output that had just printed it. That is the most
+    ordinary shape git output takes, so the gate was refusing correct work
+    every time it saw one.
+    """
+    records = [
+        human("what is HEAD?"),
+        bash_call("git rev-parse HEAD", call_id="c1"),
+        tool_result("9164e834181a4316a4ec0ed61a9acf5f0f7497ba", call_id="c1"),
+        assistant_text("HEAD is 9164e834."),
+    ]
+    assert not denied(decide(tmp_path, records))
+
+
+def test_a_sha_found_only_inside_another_hash_is_still_blocked(tmp_path):
+    """Control for the leniency above: only the START of a hex run counts. A
+    hash sitting in the MIDDLE of a longer one is a different hash that happens
+    to overlap, and overlap is not evidence.
+    """
+    records = [
+        human("what is HEAD?"),
+        bash_call("git rev-parse HEAD", call_id="c1"),
+        tool_result("c0f77e1a40b17ef329e0dc85b9f3cdf419c0a1a0", call_id="c1"),
+        assistant_text("HEAD is 0f77e1a4."),
+    ]
+    assert denied(decide(tmp_path, records))
+
+
 # ============================================================================
 # A documented, accepted noise case (not a bug) — see the hook's own
 # docstring, "WHAT THIS STILL CANNOT DO".

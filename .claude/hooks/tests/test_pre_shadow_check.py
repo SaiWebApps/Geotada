@@ -1,10 +1,29 @@
 """Payload tests for .claude/hooks/pre-shadow-check.py.
 
 The guard is a PreToolUse hook on `Agent`, awake only when the spawn names the
-shadow. It asks three questions of the turn's own work before the expensive
-verifier starts: do this turn's `path:NN` citations still resolve, is every
-number in the shadow's prompt present in a tool result from this turn, and — if
-the engine was edited — is its guard still green.
+shadow. It asks four questions of the turn's own work before the expensive
+verifier starts, numbered here as the sections below number them: do this
+turn's `path:NN` citations still resolve (1), is every number in the shadow's
+prompt present in a tool result from this turn (2), if the engine was edited is
+its guard still green (3), and is every COMMIT ID in that prompt present in a
+CLEAN tool result from this turn (4).
+
+Check 4 arrived 2026-09-02 and its section is at the foot of this file. Check 2
+cannot stand in for it. `_quantity_of` reads a token as a quantity only when it
+begins with a digit AND every letter in it sits after the last digit, so the
+ordinary hash shapes are invisible to it. Driven, not reasoned about:
+
+    c0f77e1a    check 2 sees nothing        check 4 catches it
+    7a5b01c8    check 2 sees nothing        check 4 catches it
+    deadbeef    check 2 sees nothing        check 4 catches it
+    1234567a    check 2 reads 1234567       check 4 catches it too
+    12345678    check 2 reads 12345678      check 4 ignores it
+
+Two shapes are therefore NOT covered by check 4 alone, and neither costs
+anything: a digits-then-letters hash is seen by both arms, and an all-digit
+hash is just a large integer, which is what check 2 is for. An earlier draft of
+this paragraph claimed the all-digit case was the only exception; a verifier
+drove `1234567a` and disproved it.
 
 EVERY RECORD SHAPE HERE WAS COPIED FROM test_advisor_consult_guard.py, which
 measured them off this project's real transcripts (session 710b5e6a on
@@ -439,3 +458,151 @@ def test_a_figure_with_a_unit_or_a_prefix_is_still_a_claim():
         ("512/600 files", ["512", "600"]),
     ):
         assert check.unsourced_numbers(text, "") == want, text
+
+
+# ------------------------------------------------ check 4: commit ids are sourced
+#
+# The failure it removes, measured 2026-09-02 in this guard's own session. Three
+# shadow runs were spent, ~400 seconds each, and every one rejected on the same
+# shape: a commit id written into the shadow's prompt that no command in that turn
+# had produced. `HEAD is c0f77e1a` was stated while HEAD was already two commits
+# further on, because a parallel session was committing into the same worktree.
+#
+# Check 2 cannot see these. `_quantity_of` requires the token to START with a
+# digit and carry no letters between digit runs, so `c0f77e1a` (leading letter)
+# and `7a5b01c8` (letters between digits) are both rejected as identifiers before
+# any freshness question is asked.
+
+
+def test_a_commit_id_in_no_tool_result_is_refused(tmp_path):
+    """The exact rejection of 2026-09-02: HEAD restated from memory."""
+    root = make_root(tmp_path)
+    records = [human(), tool_result("toolu_run", "nothing to report")]
+    decision = decide(tmp_path, records, prompt="Verify HEAD is c0f77e1a.", root=root)
+    assert denied(decision)
+    assert "UNSOURCED COMMIT IDS" in reason(decision)
+    assert "c0f77e1a" in reason(decision)
+
+
+def test_a_commit_id_a_command_produced_this_turn_is_allowed(tmp_path):
+    root = make_root(tmp_path)
+    records = [human(), tool_result("toolu_run", "c0f77e1a40b17ef chore: sweep")]
+    assert not denied(
+        decide(tmp_path, records, prompt="Verify HEAD is c0f77e1a.", root=root)
+    )
+
+
+def test_a_full_id_the_evidence_only_abbreviated_is_allowed(tmp_path):
+    """git prints short hashes. Expanding what was seen is not a stale claim."""
+    root = make_root(tmp_path)
+    records = [human(), tool_result("toolu_run", "On 7a5b01c8 feat(guards): three fixes")]
+    prompt = "Verify origin/main is 7a5b01c8a4bb9eabd4ec0d9ef5f8f64f218c8fa2."
+    assert not denied(decide(tmp_path, records, prompt=prompt, root=root))
+
+
+def test_an_id_only_in_a_refused_calls_output_is_still_unsourced(tmp_path):
+    """Class 17b of the failures ledger — a boundary check reading its own
+    output as input. This guard's own denial quotes the id back, and that
+    denial lands as an errored tool_result. Counting it would make the second
+    attempt pass on the strength of the first refusal."""
+    root = make_root(tmp_path)
+    records = [
+        human(),
+        tool_result("toolu_denied", "UNSOURCED COMMIT IDS (1): c0f77e1a", is_error=True),
+    ]
+    decision = decide(tmp_path, records, prompt="Verify HEAD is c0f77e1a.", root=root)
+    assert denied(decision)
+    assert "c0f77e1a" in reason(decision)
+
+
+def test_an_agent_id_the_shadow_itself_returned_is_sourced(tmp_path):
+    """A real shadow result ends with `agentId: a27ba936ffef8287a`, which is
+    17 hex characters and reads exactly like a short commit id. Quoting it back
+    in the next prompt must not be refused — it came from a tool result."""
+    root = make_root(tmp_path)
+    evidence = "VERDICT: CONFIRMED\nagentId: a27ba936ffef8287a"
+    records = [human(), tool_result("toolu_shadow", evidence)]
+    prompt = "Continue from agent a27ba936ffef8287a."
+    assert not denied(decide(tmp_path, records, prompt=prompt, root=root))
+
+
+def test_the_session_transcript_uuid_is_not_a_commit_id(tmp_path):
+    """Every shadow prompt must carry the transcript path, and that path holds
+    a uuid. Its hyphens keep it out of hex, so it is never extracted — the same
+    unsatisfiable-boundary trap check 2 fell into on this guard's first firing."""
+    root = make_root(tmp_path)
+    records = [human(), tool_result("toolu_run", "ok")]
+    prompt = (
+        "SESSION TRANSCRIPT: /Users/x/.claude/projects/-Users-x-git-ondoway/"
+        "3a897d67-31dc-4c44-b1c8-cff25af0f76d.jsonl\nVerify the fix."
+    )
+    assert not denied(decide(tmp_path, records, prompt=prompt, root=root))
+
+
+def test_an_ordinary_word_is_not_a_commit_id():
+    """Seven-plus letters that all happen to be hex: `deadbeef`, `decade`,
+    `facade`. The first is a real hex word and IS treated as an id; the guard
+    accepts that cost because the remedy is to run a command. What must not
+    happen is a normal English word being read as one."""
+    for text in ("the facade of it", "a decade later", "added and deleted"):
+        assert check.unsourced_shas(text, "") == [], text
+
+
+def test_a_commit_id_is_reported_once_however_often_it_is_repeated():
+    prompt = "c0f77e1a landed, then c0f77e1a was pushed, and c0f77e1a is HEAD."
+    assert check.unsourced_shas(prompt, "") == ["c0f77e1a"]
+
+
+def test_punctuation_around_an_id_is_not_part_of_it():
+    """`(c0f77e1a)` and `c0f77e1a.` are the same id as `c0f77e1a`."""
+    for text in ("HEAD is (c0f77e1a)", "HEAD is c0f77e1a.", "HEAD is `c0f77e1a`"):
+        assert check.unsourced_shas(text, "") == ["c0f77e1a"], text
+
+
+def test_a_sibling_guard_that_exits_on_import_does_not_kill_this_one(tmp_path):
+    """Found by a verifier on 2026-09-02, which DROVE the case instead of
+    reading it: importing a module runs its top level, so a sibling guard
+    calling sys.exit() there raises SystemExit — and `except Exception` lets
+    that straight through, killing this hook with a non-zero exit and no JSON
+    on stdout. The borrow must survive it and disarm its own arm instead.
+
+    Driven against a COPY of the hooks directory so the real freshness-gate.py
+    is untouched.
+    """
+    fake = tmp_path / "hooks"
+    fake.mkdir()
+    (fake / "freshness-gate.py").write_text("import sys\nsys.exit(3)\n")
+    (fake / "pre-shadow-check.py").write_text(GUARD.read_text(encoding="utf-8"))
+
+    root = make_root(tmp_path)
+    transcript = tmp_path / "session.jsonl"
+    records = [human(), tool_result("toolu_run", "nothing to report")]
+    transcript.write_text("\n".join(json.dumps(r) for r in records) + "\n")
+    payload = {
+        "hook_event_name": "PreToolUse",
+        "tool_name": "Agent",
+        "tool_input": {
+            "subagent_type": "shadow",
+            "prompt": "Verify HEAD is c0f77e1a.",
+            "description": "verify",
+        },
+        "transcript_path": str(transcript),
+        "session_id": "exiting-sibling",
+        "tool_use_id": "toolu_gated",
+    }
+    done = subprocess.run(
+        [sys.executable, str(fake / "pre-shadow-check.py")],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        timeout=180,
+        env={
+            **os.environ,
+            "ONDOWAY_SHADOW_STATE_DIR": str(tmp_path / "state"),
+            "CLAUDE_PROJECT_DIR": str(root),
+        },
+    )
+    assert done.returncode == 0, (done.returncode, done.stderr)
+    decision = json.loads(done.stdout) if done.stdout.strip() else {}
+    assert not denied(decision)
+    assert "commit-id arm is OFF" in reason(decision)
