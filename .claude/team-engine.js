@@ -1,13 +1,13 @@
 export const meta = {
   name: 'team-engine',
-  description: 'INTERNAL execution engine for /team — not a command you type. /team invokes it after you approve its plan in chat. Executes an approved specs/{date}-{slug}/state.json step ledger: per step Build -> Gate -> tier-sized skeptic panel -> Judge -> persist. Hard-capped, so it always terminates and reports. Does NOT commit.',
-  whenToUse: 'Do NOT invoke this directly — use `/team <task>` and say "go"; it calls this for you. Direct invocation is for resuming a partially-run ledger only. Requires a state.json with approved_by_human:true (it refuses to fan out otherwise). args: {spec: "specs/2026-07-25-slug" (required), now: ISO-8601 (required — Date.now() is forbidden in workflow scripts), estimateOnly?: bool, maxSteps?: int, maxAttempts?: int (default 2), stepsPerPhase?: int (default 3), retryBlocked?: bool}.',
+  description: 'INTERNAL execution engine for /team — not a command you type. /team invokes it after you approve its plan in chat. Executes an approved feature from the tracker database: per step Build -> Gate -> tier-sized skeptic panel -> Judge -> persist through `track`. Hard-capped, so it always terminates and reports. Does NOT commit.',
+  whenToUse: 'Do NOT invoke this directly — use `/team <task>` and say "go"; it calls this for you. Direct invocation is for resuming a partially-run ledger only. Requires a row in the tracker\'s `approvals` table (it refuses to fan out otherwise). args: {spec: "specs/2026-07-25-slug" (required), now: ISO-8601 (required — Date.now() is forbidden in workflow scripts), estimateOnly?: bool, maxSteps?: int, maxAttempts?: int (default 2), stepsPerPhase?: int (default 3), retryBlocked?: bool}.',
   phases: [
     { title: 'Preflight', detail: 'load ledger, check approval, validate every command against the LIVE Makefile, probe infra, self-test the engine, print the size of the fan-out' },
     { title: 'Build', detail: 'one developer per step, red-first, minimal diff' },
     { title: 'Gate', detail: 'seconds, not minutes: derived lint + the step node-id test + the undo/mutation test (NOTE: starts/uses the SHARED local containers)' },
     { title: 'Challenge', detail: 'tier-sized hostile panel on different models; only a VERIFIED repro can block' },
-    { title: 'Rule', detail: 'judge PROCEED / PROVE-FIRST / STOP, then the scribe rewrites state.json' },
+    { title: 'Rule', detail: 'judge PROCEED / PROVE-FIRST / STOP, then a courier records the outcome through `track`' },
     { title: 'PhaseGate', detail: 'the fast shards, serialized (they share the 7688 DB, dev data and Valhalla)' },
     { title: 'Close', detail: '`make audit` exactly ONCE, acceptance for tier >= 2, final report' },
   ],
@@ -82,6 +82,119 @@ const ALLOWED_REPRO = /^make (lint|flutter-analyze|golden-probe|test-workbench|_
 // scoped kill + lock). Excluding it costs nothing; it routes to the serial verifier.
 const PARALLEL_SAFE_REPRO = /^make lint\s*$/
 
+// ── PURE VALIDATORS ──────────────────────────────────────────────────────────
+// WHY THIS IS CODE AND NOT PROMPT TEXT. Until 2026-09-01 `command_valid` was decided by
+// the preflight AGENT, from prose rules in its prompt, and the engine merely refused on
+// the boolean it came back with (see the `badCmd` gate below). Two things were wrong
+// with that. It made string checking an LLM judgement — the same class of work the
+// scribe does, and the same money. And `team-engine.test.js` STUBS the preflight agent,
+// so no check in the guard could ever reach the rule: it was unguarded by construction,
+// which is the exact failure the guard's own header exists to prevent.
+//
+// The one check that CANNOT move here is "does this Make target exist in the live
+// Makefile" — that needs a filesystem, and the workflow runtime has none. It stays with
+// the agent, and it is the only validation left in the prompt.
+//
+// These two functions touch nothing outside their arguments on purpose: the guard lifts
+// this whole block out between the marker comments and calls them with no engine
+// running. Keep them self-contained, or `validator:extractable` goes red.
+//
+// String operations, not patterns: a spelling the regex did not think of is how the
+// sibling flake rule starved (failures ledger), and every rule below is an exact shape.
+
+// One step, one kind. A step touching product code AND agent tooling has no unambiguous
+// gate — `make lint` cannot prove the engine, and the engine's guard cannot prove src/ —
+// so it is refused and split rather than guessed at.
+const stepKind = (files) => {
+  const list = (files || []).map((f) => String(f))
+  if (!list.length) return 'none'
+  const tooling = list.filter((f) => f.startsWith('.claude/')).length
+  if (tooling === list.length) return 'supervision'
+  if (tooling === 0) return 'product'
+  return 'mixed'
+}
+
+const ENGINE_GUARD_CMD = 'node .claude/team-engine.test.js'
+const HOOKS_TEST_PREFIX = 'uv run pytest .claude/hooks/tests/'
+const HOOKS_TEST_SUFFIX = ' -o addopts= -v'
+const PRODUCT_TEST_PREFIX = 'make test-file FILE="'
+
+// Agent tooling is proved by running it, not by a pytest node id inside `make test-file`.
+// `make test-file` pulls in _ensure-test-db, _ensure-dev-data and valhalla-up, none of
+// which a `.claude/` change needs or should start; and pyproject sets testpaths=["tests"],
+// so a test under .claude/hooks/tests/ is outside the product suite by construction.
+const isSupervisionProof = (cmd) =>
+  cmd === ENGINE_GUARD_CMD ||
+  (cmd.startsWith(HOOKS_TEST_PREFIX) && cmd.endsWith(HOOKS_TEST_SUFFIX) &&
+   cmd.slice(HOOKS_TEST_PREFIX.length, -HOOKS_TEST_SUFFIX.length).endsWith('.py'))
+
+const validateCommand = (step) => {
+  const cmd = String((step && step.test_command) || '').trim()
+  const kind = stepKind(step && step.files)
+
+  if (kind === 'none') {
+    return { command_valid: false, command_problem: 'step lists no files, so no gate can be derived for it' }
+  }
+  if (kind === 'mixed') {
+    return {
+      command_valid: false,
+      command_problem: 'step mixes product files with .claude/ tooling; split it — one step, one kind',
+    }
+  }
+  if (kind === 'supervision') {
+    if (isSupervisionProof(cmd)) return { command_valid: true, command_problem: '' }
+    return {
+      command_valid: false,
+      command_problem: `a .claude/ step is proved by \`${ENGINE_GUARD_CMD}\` or by ` +
+        `\`${HOOKS_TEST_PREFIX}<file>.py${HOOKS_TEST_SUFFIX}\`, not by ${cmd || '(nothing)'}`,
+    }
+  }
+
+  // Product. A bare -k is consumed by make as --keep-going and the selector becomes a
+  // make goal ("No rule to make target") — measured, not theory. LIVE=1 routes to
+  // test-live, which sets ONDOWAY_LIVE_TESTS=1 and serialises the run behind that shard.
+  if (cmd.includes(' -k ') || cmd.endsWith(' -k')) {
+    return { command_valid: false, command_problem: 'bare -k: make reads it as --keep-going and the selector becomes a make goal' }
+  }
+  if (cmd.includes('LIVE=1')) {
+    return { command_valid: false, command_problem: 'LIVE=1 routes to test-live (ONDOWAY_LIVE_TESTS=1) and serialises the run' }
+  }
+  if (!cmd.startsWith(PRODUCT_TEST_PREFIX) || !cmd.endsWith('"')) {
+    return { command_valid: false, command_problem: `a product step must be exactly ${PRODUCT_TEST_PREFIX}<path>::<pytest node id>"` }
+  }
+  const inside = cmd.slice(PRODUCT_TEST_PREFIX.length, -1)
+  if (!inside.includes('::')) {
+    return { command_valid: false, command_problem: 'FILE must carry a pytest node id (path::Class::test), not a whole file' }
+  }
+  return { command_valid: true, command_problem: '' }
+}
+
+// What must go green alongside the step's own proof. A supervision step is gated by the
+// thing that proves it; an engine edit ALSO re-runs the engine guard, because the close
+// gate never does and a broken cap would otherwise ship inside the same run.
+const deriveGates = (step) => {
+  const files = ((step && step.files) || []).map((f) => String(f))
+  const touches = (prefix) => files.some((f) => f.startsWith(prefix))
+  const gates = []
+  const add = (g) => { if (g && !gates.includes(g)) gates.push(g) }
+
+  if (stepKind(files) === 'supervision') {
+    add(String((step && step.test_command) || '').trim())
+    if (touches('.claude/team-engine.js')) add(ENGINE_GUARD_CMD)
+    return gates
+  }
+
+  // `make lint` is ruff and covers ONLY src/, tests/ and scripts/. `make flutter-analyze`
+  // is in NEITHER `make lint` NOR `make test`, so without it a Dart error survives the
+  // whole ladder. Never a minutes-long target: those are the close gate's job.
+  if (touches('src/') || touches('tests/') || touches('scripts/')) add('make lint')
+  if (touches('mobile/')) add('make flutter-analyze')
+  if (touches('frontend/')) add('make test-file FILE="tests/test_workbench_ui.py::TestWorkbenchUI::test_review_page_loads"')
+  if (!gates.length) add('make lint')
+  return gates
+}
+// ── END PURE VALIDATORS ──────────────────────────────────────────────────────
+
 // ── Schemas ──────────────────────────────────────────────────────────────────
 const STEP_FIELDS = {
   id: { type: 'string' }, name: { type: 'string' },
@@ -93,6 +206,10 @@ const STEP_FIELDS = {
   depends_on: { type: 'array', items: { type: 'string' } },
   complexity: { type: 'string', enum: ['low', 'normal', 'high'] },
   maxAttempts: { type: 'integer' }, attempts: { type: 'integer' },
+  // Placeholders. The preflight agent transcribes the step; the ENGINE overwrites both
+  // of these from validateCommand() before the badCmd gate reads them, so whatever the
+  // agent reports here never survives. Kept in the schema because the agent must return
+  // a shape the engine can fill in, not because its value is trusted.
   command_valid: { type: 'boolean' }, command_problem: { type: 'string' },
 }
 
@@ -179,6 +296,21 @@ const PANEL = {
   },
 }
 
+// What `track health` prints. Every field is arithmetic over the event log; none
+// of it is anybody's opinion, which is why the courier is told not to interpret it.
+const HEALTH = {
+  type: 'object', additionalProperties: false,
+  required: ['progress', 'replan_required'],
+  properties: {
+    progress: { type: 'integer' },
+    issues_total: { type: 'integer' },
+    issues_completed: { type: 'integer' },
+    replan_required: { type: 'boolean' },
+    reason: { type: ['string', 'null'] },
+    story: { type: ['string', 'null'] },
+  },
+}
+
 const VERDICT = {
   type: 'object', additionalProperties: false,
   required: ['ruling', 'evidence_checked', 'missing', 'most_likely_failure', 'proof_line'],
@@ -204,9 +336,19 @@ const ACCEPTANCE = {
   },
 }
 
-const LEDGER_WRITE = {
-  type: 'object', additionalProperties: false, required: ['ok', 'step_id', 'status'],
-  properties: { ok: { type: 'boolean' }, step_id: { type: 'string' }, status: { type: 'string' }, path: { type: 'string' }, error: { type: 'string' } },
+// What a `track` courier hands back: the database's own answer, not a report of it.
+// `issues` is the FULL status set — track prints it on every write, including a
+// refused one, so the engine never keeps a copy and a caller that loses learns as
+// much as one that wins. `refused` carries track's verbatim reason when it declined
+// to record a pass, which happens when it ran the step's command and saw non-zero.
+const TRACK_WRITE = {
+  type: 'object', additionalProperties: false, required: ['ok', 'issues'],
+  properties: {
+    ok: { type: 'boolean' },
+    refused: { type: 'string' },
+    issues: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['id', 'status'], properties: { id: { type: 'string' }, status: { type: 'string' } } } },
+    stories: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['id', 'state'], properties: { id: { type: 'string' }, state: { type: 'string' }, sent_back: { type: 'integer' } } } },
+  },
 }
 
 // ── Every agent() goes through call(), so the count is complete by construction ─
@@ -243,24 +385,32 @@ const STEPS_PER_PHASE = A.stepsPerPhase ?? 3
 // ── Preflight ────────────────────────────────────────────────────────────────
 phase('Preflight')
 const L = await call('sonnet', { label: 'preflight', phase: 'Preflight', schema: LEDGER, agentType: 'general-purpose', effort: 'medium' },
-  `Repo: ${REPO}. Read ${SPEC}/state.json (contract: specs/_templates/team-state.schema.json). Do NOT modify any file except as instructed at the end.
+  `Repo: ${REPO}. Read the plan with \`python3 .claude/ledger/track.py show --json\` (the SQLite schema in that file IS the contract; there is no schema template any more). Do NOT modify any file except as instructed at the end.
 
 1. Report approved_by_human EXACTLY as it appears. Do not infer it, do not set it.
-2. For EACH step, validate test_command and set command_valid:
-   - It MUST be exactly \`make test-file FILE="<path>::<pytest node id>"\`.
-   - REJECT any command containing a bare \`-k\`: Makefile:139-149 is \`$(TEST_EXEC) uv run pytest "$(FILE)" -o addopts= -v\` with NO $(PYTEST_ARGS) passthrough, so make consumes -k as --keep-going and the selector becomes a make goal ("No rule to make target"). Verified behaviour, not theory.
-   - REJECT LIVE=1 (routes to test-live -> ONDOWAY_LIVE_TESTS=1, and serializes the run behind the live shard).
-   - REJECT any Make target absent from the LIVE ${REPO}/Makefile. \`make test-local\` and \`make test-collect\` are cited in older ledgers and NO LONGER EXIST.
-   Put the reason in command_problem.
-3. Derive gate_commands from each step's files[]: \`make lint\` for src/|tests/|scripts/ (it covers ONLY those — Makefile:103-106); \`make flutter-analyze\` for mobile/ (it is in NEITHER make lint NOR make test, so without this a Dart error survives the whole ladder); a targeted \`make test-file FILE="tests/test_workbench_ui.py::..."\` for frontend/. Never put \`make test\`, \`make audit\`, \`make test-live\` or \`make test-workbench\` (minutes-long) in a per-step gate.
+2. TRANSCRIBE each step's test_command and files[] EXACTLY as written. Do NOT judge whether a command is valid: the engine overwrites command_valid and command_problem with its own \`validateCommand\` before anything reads them, so an opinion here is discarded. The schema requires command_valid, so return it as true — a placeholder, not a verdict; writing false there changes nothing. command_problem is optional; leave it off.
+   ONE check is still yours, because it needs a filesystem this engine does not have: if a step's command names a Make target, confirm that target EXISTS in the LIVE ${REPO}/Makefile. \`make test-local\` and \`make test-collect\` are cited in older ledgers and NO LONGER EXIST. Report a missing target in infra.notes — do not silently fix the step.
+3. Do NOT derive gate_commands. The engine derives them from files[] itself (\`deriveGates\`). Leave the field off, or empty.
 4. criteria_uncovered: acceptance_criteria ids that NO step lists in criterion_ids.
 5. Probe infra read-only and cheaply: \`docker ps\`, \`make lint\`, and confirm the 7688 test DB / dev data / Valhalla are reachable. Set the infra booleans honestly; a service whose status answers is not necessarily a service that routes.
-6. Run \`node .claude/team-engine.test.js\` and set infra.engine_guard to (exit code == 0). That is THIS engine's own guard: 17 stubbed pathological runs, hermetic, ~50ms, no DB/container/provider. It is the only thing verifying that the termination caps, the paid-bar one-shot and the pre-fan-out gate order still hold — nothing else runs it, so if it is red the caps below are unverified and the run must not fan out. On failure put the NAMED failing checks verbatim into infra.notes. Never edit the engine or the guard to make it pass.
-7. Write ${SPEC}/run-context.md (overwrite): tier, decisions, the FULL acceptance-criteria list verbatim, baseline, and the pinned gate commands. Create ${SPEC}/findings/ if absent. Every later agent reads that file BY PATH instead of having it pasted into its prompt.
+6. Run \`node .claude/team-engine.test.js\` and set infra.engine_guard to (exit code == 0). That is THIS engine's own guard: a set of stubbed pathological runs plus direct checks on the validators, hermetic, no DB/container/provider. It prints how many shapes it ran — do not assume a count. It is the only thing verifying that the termination caps, the paid-bar one-shot and the pre-fan-out gate order still hold — nothing else runs it, so if it is red the caps below are unverified and the run must not fan out. On failure put the NAMED failing checks verbatim into infra.notes. Never edit the engine or the guard to make it pass.
+7. Write ${SPEC}/run-context.md (overwrite): tier, decisions, and the FULL acceptance-criteria list verbatim. Do NOT write gate commands into it — the engine derives those, and a stale copy in a file agents read by path is a second answer to a settled question. Create ${SPEC}/findings/ if absent. Every later agent reads that file BY PATH instead of having it pasted into its prompt.
 
 Return the normalized ledger. dir="${SPEC}", context_path="${SPEC}/run-context.md", findings_dir="${SPEC}/findings".`)
 
 if (!L) return { aborted: 'preflight_failed', detail: 'The preflight agent returned nothing.' }
+
+// THE ENGINE DECIDES VALIDITY, NOT THE AGENT. Whatever command_valid and gate_commands
+// the preflight agent reported are overwritten here by the pure validators above. The
+// agent still reports the step's test_command and files verbatim — that is transcription,
+// which it cannot get wrong in a way this cannot see — but the judgement is code, so the
+// guard can exercise it and no prompt rewording can change the answer.
+for (const s of L.steps || []) {
+  const v = validateCommand(s)
+  s.command_valid = v.command_valid
+  s.command_problem = v.command_problem
+  s.gate_commands = deriveGates(s)
+}
 
 const P = PANEL_MODELS[L.tier] ?? []
 // 'skipped' is re-admitted under retryBlocked too. The engine assigns that status
@@ -312,18 +462,18 @@ if (A.estimateOnly) return {
 // THE GATE. A Workflow cannot pause for approval, so this refusal is the mechanism.
 if (L.approved_by_human !== true) {
   return { aborted: 'not_approved', spec: SPEC, estimate: est,
-    detail: 'state.json has approved_by_human != true. The engine never fans out on an unapproved ledger.',
-    next_step: `Human: review ${SPEC}/state.json, then set approved_by_human:true and approved_at, then re-run.` }
+    detail: 'No row in the approvals table for this feature. The engine never fans out on an unapproved plan.',
+    next_step: `Human: review the plan with python3 .claude/ledger/track.py show, then record your go-ahead with python3 .claude/ledger/track.py approve --feature <slug> --by <you>, then re-run. That command is the only way a row lands in approvals, and it records who and when.` }
 }
 
 if (badCmd.length) {
   return { aborted: 'invalid_commands', spec: SPEC,
     bad: badCmd.map((s) => ({ id: s.id, test_command: s.test_command, problem: s.command_problem })),
-    next_step: 'Fix these test_commands in state.json (pytest node id inside FILE, no -k, no LIVE=1, target must exist in the live Makefile), then re-run.' }
+    next_step: 'Fix these test_commands, then re-run. A PRODUCT step needs a pytest node id inside FILE, no bare -k, no LIVE=1. A step touching only .claude/ needs `node .claude/team-engine.test.js` or `uv run pytest .claude/hooks/tests/<file>.py -o addopts= -v`. A step mixing the two must be split. (A missing Make target is NOT one of these reasons — validateCommand never reads the Makefile; the preflight agent reports that in infra.notes.)' }
 }
 if (L.criteria_uncovered?.length) {
   return { aborted: 'criteria_uncovered', spec: SPEC, criteria_uncovered: L.criteria_uncovered,
-    next_step: 'Every acceptance criterion needs a covering step, or must be moved out of scope explicitly in state.json. Re-run /team to amend the ledger.' }
+    next_step: 'Every acceptance criterion needs a covering step, or must be moved out of scope explicitly. Re-run /team to amend the plan.' }
 }
 if (!todo.length) return { spec: SPEC, ran: false, stopped_because: 'no runnable steps — all completed/skipped', steps: L.steps.map((s) => ({ id: s.id, status: s.status })) }
 
@@ -356,23 +506,48 @@ if (!L.infra.test_db || !L.infra.dev_data || !L.infra.valhalla) {
 const CTX = `Read ${L.context_path} FIRST — it holds the tier, decisions, the full acceptance criteria, and the pinned gate commands. Do not re-derive that context.`
 const norm = (t) => (t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 60)
 const dkey = (f) => `${f.file}:${norm(f.title)}` // line-free: lines shift after a fix
-const statusOf = (id) => (L.steps.find((s) => String(s.id) === String(id)) || {}).status
+// THE ONE PLACE STATUS LIVES IN THIS PROCESS: the answer the database gave last.
+// Seeded once from preflight (which reads the database) and refreshed from every
+// `track` response after that. It is not a mirror the engine maintains — nothing
+// here ever assigns a status it invented, so there is nothing to go stale.
+//
+// The predecessor WAS a mirror: `scribe` wrote `live.status = status` into
+// L.steps and separately asked a haiku agent to edit state.json. The two drifted.
+// Measured 2026-07-26: S1 and S3 completed, yet S2 (depends_on S1) and S4
+// (depends_on S3) were both skipped 'dependency not completed', stranding 8 of 10
+// steps, because `statusOf` read a snapshot the scribe never touched.
+const liveStatus = new Map((L.steps || []).map((s) => [String(s.id), s.status]))
+const statusOf = (id) => liveStatus.get(String(id))
 
-// Mirror the status onto the in-memory ledger BEFORE handing the write to the
-// scribe agent. `statusOf` (and therefore every depends_on check) reads L.steps,
-// but the scribe only ever wrote the FILE and state.json is never re-read — so a
-// dependency satisfied DURING the run still looked 'pending' and its dependents
-// were unconditionally skipped. Measured 2026-07-26: S1 and S3 completed, yet S2
-// (depends_on S1) and S4 (depends_on S3) were both skipped 'dependency not
-// completed', stranding 8 of 10 steps. The harness never caught it because
-// STEPS(n) built no depends_on at all — see the 'dep-chain' mode.
-const scribe = (step, status, patch) => {
-  const live = L.steps.find((s) => String(s.id) === String(step.id))
-  if (live) live.status = status
-  return call('haiku',
-  { label: `scribe:${step.id}:${status}`, phase: 'Rule', schema: LEDGER_WRITE, agentType: 'general-purpose', effort: 'low' },
-  `In ${SPEC}/state.json update ONLY the step whose id == "${step.id}": set status="${status}"${patch ? `, and merge these fields: ${JSON.stringify(patch)}` : ''}.
-Preserve every other key and the file's shape byte-for-byte otherwise. Step ids may be non-integer (an existing ledger has id 6.5) — do NOT renumber, reorder, or reformat. commit stays "pending": this workflow never commits. Use a small python/jq edit, never a rewrite from memory. Return {ok, step_id, status, path}.`)
+// Every `track` write prints the full status set, so a caller never keeps a copy.
+const absorb = (reply) => {
+  for (const issue of (reply && reply.issues) || []) {
+    if (issue && issue.id !== undefined) liveStatus.set(String(issue.id), issue.status)
+  }
+  return reply
+}
+
+// A COURIER, NOT A SCRIBE. The old one was handed prose — "update ONLY the step
+// whose id ==…, preserve every other key byte-for-byte" — and an agent obeying
+// prose is an agent that can get it wrong, or say it did it when it did not. This
+// one is handed a command line. It runs it and hands back what the command
+// printed. There is nothing in the instruction for it to interpret, and `track`
+// re-derives a pass claim by running the test itself, so the courier cannot
+// promote a step by asserting anything.
+const writeStatus = async (step, status, patch) => {
+  const flags = [
+    `--id ${JSON.stringify(String(step.id))}`,
+    `--status ${JSON.stringify(status)}`,
+    `--who ${JSON.stringify('engine')}`,
+  ].join(' ')
+  const reply = await call('haiku',
+    { label: `track:${step.id}:${status}`, phase: 'Rule', schema: TRACK_WRITE, agentType: 'general-purpose', effort: 'low' },
+    `Run EXACTLY this command in ${REPO}, once, and nothing else:
+
+    python3 .claude/ledger/track.py step-status ${flags}
+
+Then return what it printed on stdout, parsed: {ok, refused, issues, stories}. Set ok=false and copy the "refused" string verbatim if the command exited non-zero — a refusal is the command telling you the step is NOT done, and it is information, not a problem to work around. Do NOT edit any file, do NOT retry with different flags, and do NOT run anything else.${patch ? `\n\nContext for the log, not a flag to pass: ${JSON.stringify(patch)}` : ''}`)
+  return absorb(reply)
 }
 
 const failureBrief = (qa) => `GATE RED. ${(qa.checks || []).filter((c) => c.exit_code !== 0).map((c) => `\`${c.command}\` exit ${c.exit_code}: ${c.summary}`).join(' | ')}${(qa.unverified || []).length ? ` UNVERIFIED: ${qa.unverified.join('; ')}` : ''}`
@@ -427,7 +602,7 @@ for (const step of todo) {
   if (stopped) break
   if (stepsRun >= (A.maxSteps ?? todo.length)) { stopped = 'maxSteps'; break }
   if ((step.depends_on || []).some((id) => statusOf(id) !== 'completed')) {
-    await scribe(step, 'skipped', { proof: 'dependency not completed' })
+    await writeStatus(step, 'skipped', { proof: 'dependency not completed' })
     report.push({ id: step.id, name: step.name, status: 'skipped', why: 'dependency not completed' })
     continue
   }
@@ -439,7 +614,7 @@ for (const step of todo) {
   let outcome = null
   let lastQa = null
 
-  await scribe(step, 'in_progress', null)
+  await writeStatus(step, 'in_progress', null)
 
   for (let a = (step.attempts || 0) + 1; a <= cap && !outcome; a++) {
     // ── Build ────────────────────────────────────────────────────────────────
@@ -577,7 +752,7 @@ If PROCEED, return proof_line: ONE dense line in the house style used by existin
   }
 
   outcome ||= { status: 'blocked', why: 'attempts exhausted' }
-  await scribe(step, outcome.status, {
+  await writeStatus(step, outcome.status, {
     attempts: outcome.attempts ?? cap,
     proof: outcome.proof || outcome.why, commit: 'pending',
   })
@@ -597,6 +772,31 @@ If PROCEED, return proof_line: ONE dense line in the house style used by existin
 Do NOT run \`make test\`, \`make test-live\`, \`make _test-cloud\` or \`make audit\` — those are the close gate's job and hold the shared containers for minutes.
 Report each exit code with a verbatim excerpt. Stop at the first failure and paste the full failing test name and traceback. Fix NOTHING. Set mutation.verdict="NOT_RUN".`)
     phaseGateLog.push({ after_steps: stepsRun, passed: !!g?.passed, checks: g?.checks })
+
+    // ── The manager ──────────────────────────────────────────────────────────
+    // Progress is COMPUTED, never reported. `track health` reads the event log and
+    // the recorded exit codes and answers three arithmetic questions: was a story
+    // sent back twice without moving, did something already proved go green then
+    // red, is one issue piling up attempts with nothing changing. The courier here
+    // runs the command and hands back what it printed — it does not judge, and
+    // there is no prompt wording that could make it judge.
+    //
+    // The REPLAN is an agent. The DECISION to replan is never an agent. That
+    // separation is the whole reason this exists: a manager that could be talked
+    // round is the same manager that let a run spin for an afternoon.
+    const h = await call('haiku', { label: `health:${stepsRun}`, phase: 'PhaseGate', schema: HEALTH, agentType: 'general-purpose', effort: 'low' },
+      `Run EXACTLY this in ${REPO}, once, and nothing else:
+
+    python3 .claude/ledger/track.py health
+
+Return what it printed, parsed. Do not interpret it, do not decide whether the run should continue, and do not run anything else.`)
+    if (h && h.replan_required) {
+      stopped = 'replan_required'
+      report.push({ id: `manager:${stepsRun}`, name: 'manager called a replan',
+        status: 'blocked', why: `${h.story ? `story ${h.story}: ` : ''}${h.reason || 'progress went backwards'}` })
+      log(`Manager: replan required — ${h.reason}. The plan is wrong; the run stops here.`)
+      break
+    }
 
     if (g && !g.passed) {
       if (phaseRepairs >= 1) { stopped = 'phase_gate_red'; break }
@@ -643,10 +843,13 @@ If you cannot produce the artifact, return UNVERIFIED — do not vouch for an ex
 Write your write-up to ${L.findings_dir}/acceptance.md.`)
 }
 
-await call('haiku', { label: 'scribe:run', phase: 'Close', schema: LEDGER_WRITE, agentType: 'general-purpose', effort: 'low' },
-  `In ${SPEC}/state.json merge this into the top-level "run" object (create it if absent), preserving everything else byte-for-byte:
-${JSON.stringify({ last_run: A.now, agents: agentCount, stopped_because: stopped ?? 'all steps processed', close_bar_runs: closeBarRun ? 1 : 0, panel_findings_unverified_infra: infraBlindTotal, phase_gates: phaseGateLog, close_gate: close ? { passed: close.passed, checks: close.checks } : null, acceptance: accept ? accept.verdict : null })}
-Return {ok, step_id:"run", status:"recorded"}.`)
+// THE RUN SUMMARY IS NOT WRITTEN BY AN AGENT ANY MORE. It used to be: a haiku
+// agent was handed a JSON blob and asked to merge it into state.json's "run" key.
+// That store is gone, and with it the reason for the call. Everything the summary
+// held is already recorded by something that observed it — every status change is
+// an `events` row written by `track`, every command's real exit code is a
+// `test_runs` row — and the rest is returned below, where /team reports it. One
+// fewer agent per run, and a summary nobody had to be trusted to transcribe.
 
 return {
   spec: SPEC,
@@ -666,5 +869,5 @@ return {
     ? `${infraBlindTotal} panel finding(s) went UNJUDGED because infra was unavailable — do NOT read this run as an adversarial all-clear.`
     : null,
   estimate_was: est,
-  next_step: 'Human: read `git diff`, confirm every change is intentional, then commit. The engine never commits — same contract as proactive-audit. Anything blocked is recorded in state.json with its reason; re-run with {retryBlocked:true} after addressing it.',
+  next_step: 'Human: read `git diff`, confirm every change is intentional, then commit. The engine never commits — same contract as proactive-audit. Anything blocked is recorded in the tracker with its reason; re-run with {retryBlocked:true} after addressing it.',
 }

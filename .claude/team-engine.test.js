@@ -37,6 +37,9 @@
 //   infra circuit breaker       `infraStrikes >= 2` -> `false`                => infra-breaker-named
 //   one phase-repair per run    `phaseRepairs >= 1` -> `false`                => phase-repairs-capped-at-one
 //   depends_on live status      delete the `live.status = status` lines       => dependency-unblocks-dependents
+//   .claude/ steps are runnable  drop the supervision branch in validateCommand => supervision-step-not-refused
+//   validation is the ENGINE's   trust the agent's command_valid instead       => validator:*
+//   the manager stops the run    ignore replan_required from `track health`    => manager-stops-the-run
 //   estimate above every gate   move `if (A.estimateOnly)` below the gate     => estimate-answers-unapproved
 //   approval gate still refuses delete the `approved_by_human !== true` gate  => unapproved-run-refused
 //   engine self-test at preflight  delete the `engine_guard !== true` gate    => engine-guard-red-stops-the-run
@@ -66,23 +69,34 @@ const makeRunner = () => new Function('agent', 'parallel', 'phase', 'log', 'args
 // bug shipped: `statusOf` read the preflight ledger, the scribe only wrote the
 // FILE, and a dependency satisfied mid-run still read 'pending', so every
 // dependent was skipped. A real run stranded 8 of 10 steps that way.
-const STEPS = (n, chained) => Array.from({ length: n }, (_, i) => ({
+// `supervision` emits steps that touch ONLY .claude/ — agent tooling, proved by the
+// engine's own guard rather than by a pytest node id. Until 2026-09-01 the engine had
+// no such shape: `test_command` had to be exactly `make test-file FILE="…::…"`, so a
+// step editing this very file was refused at preflight and the tracker could not be
+// built by the tool it extends. The steps carry command_valid:false deliberately —
+// the preflight AGENT no longer decides that, the engine's own validateCommand does,
+// so a mode that pre-set it true would prove nothing about who is deciding.
+const STEPS = (n, chained, supervision) => Array.from({ length: n }, (_, i) => ({
   id: String(i + 1), name: `step ${i + 1}`, status: 'pending',
-  test_command: `make test-file FILE="tests/test_fx${i + 1}.py::T::t"`,
-  criterion_ids: [`AC-${i + 1}`], files: [`src/fx${i + 1}.py`],
-  maxAttempts: 2, attempts: 0, command_valid: true,
-  gate_commands: ['make lint'],
+  test_command: supervision
+    ? 'node .claude/team-engine.test.js'
+    : `make test-file FILE="tests/test_fx${i + 1}.py::T::t"`,
+  criterion_ids: [`AC-${i + 1}`],
+  files: supervision ? ['.claude/team-engine.js'] : [`src/fx${i + 1}.py`],
+  maxAttempts: 2, attempts: 0,
+  command_valid: !supervision,
+  gate_commands: supervision ? [] : ['make lint'],
   ...(chained && i > 0 ? { depends_on: [String(i)] } : {}),
 }))
 
-const LEDGER = (n, tier, approved, chained, guard) => ({
+const LEDGER = (n, tier, approved, chained, guard, supervision) => ({
   topic: 'termination-harness', dir: 'specs/9999-01-01-harness', tier,
   approved_by_human: approved,
   context_path: 'specs/9999-01-01-harness/run-context.md',
   findings_dir: 'specs/9999-01-01-harness/findings',
   criteria_uncovered: [],
   infra: { test_db: true, dev_data: true, valhalla: true, lint_clean: true, engine_guard: guard },
-  steps: STEPS(n, chained),
+  steps: STEPS(n, chained, supervision),
 })
 
 // Each mode is a pathological shape that could plausibly make the loop spin.
@@ -104,6 +118,8 @@ const MODES = [
   'unapproved-run',       // a real run on that same ledger must still refuse to fan out
   'dep-chain',            // every step depends on the previous one and all go green
   'engine-guard-red',     // this very file failed at preflight — the run must not start
+  'supervision-step',     // a step that edits .claude/ tooling must RUN, not be refused
+  'replan-required',      // the manager's arithmetic says the plan is wrong; the run stops
 ]
 
 // Asserted against MODES below so that deleting a pathological shape fails loudly
@@ -112,7 +128,7 @@ const REQUIRED_MODES = [
   'happy', 'always-red', 'ping-pong', 'phantom-repro', 'smuggle-paid', 'fake-test',
   'empty-diff', 'prove-first-forever', 'phase-red', 'infra-down', 'serial-repro',
   'serial-flake', 'phase-red-twice', 'estimate-only', 'unapproved-run', 'dep-chain',
-  'engine-guard-red',
+  'engine-guard-red', 'supervision-step', 'replan-required',
 ]
 
 // Shapes where no step may legitimately reach "completed": the run must refuse to ship
@@ -144,6 +160,13 @@ const MODE_CHAINED = new Set(['dep-chain'])
 // agent reporting engine_guard:false and assert the run stops dead.
 const MODE_GUARD_RED = new Set(['engine-guard-red'])
 
+// Steps that touch ONLY .claude/ — the engine, the hooks, the tracker. They are proved
+// by `node .claude/team-engine.test.js` rather than by a pytest node id, and they arrive
+// with command_valid:false, because the preflight agent no longer decides validity. If
+// the engine still trusted that flag this mode would abort 'invalid_commands' and ship
+// nothing; a correct engine re-derives validity itself and runs all three.
+const MODE_SUPERVISION = new Set(['supervision-step'])
+
 function makeAgent(mode, tally) {
   return async (prompt, opts) => {
     const label = (opts && opts.label) || ''
@@ -151,8 +174,16 @@ function makeAgent(mode, tally) {
     // Backstop: if a cap is removed, fail loudly here rather than hanging to the timeout.
     if (tally.calls.length > 5000) throw new Error('RUNAWAY: >5000 agent calls — a cap is missing')
 
-    if (label === 'preflight') return LEDGER(tally.steps, tally.tier, tally.approved, tally.chained, tally.guard)
-    if (label.startsWith('scribe')) return { ok: true, step_id: 'x', status: 'ok' }
+    if (label === 'preflight') return LEDGER(tally.steps, tally.tier, tally.approved, tally.chained, tally.guard, tally.supervision)
+    // The courier that runs `track`. It hands back the DATABASE's full status set,
+    // which is the only thing `statusOf` reads — there is no in-memory mirror left to
+    // go stale. The fake below IS the database for the run: it applies the write, then
+    // returns every issue's status, exactly as `track` prints it.
+    if (label.startsWith('track:')) {
+      const [, id, status] = label.split(':')
+      tally.db.set(id, status)
+      return { ok: true, issues: [...tally.db].map(([k, v]) => ({ id: k, status: v })) }
+    }
 
     if (label.startsWith('build')) {
       if (mode === 'empty-diff') {
@@ -217,6 +248,17 @@ function makeAgent(mode, tally) {
       tally.paidRuns += 1 // `make audit` — the definitive bar; belongs at close, once
       return { passed: true, checks: [{ command: 'make audit', exit_code: 0, summary: 'all green' }], mutation: { verdict: 'NOT_RUN' }, unverified: [] }
     }
+    if (label.startsWith('health:')) {
+      // `track health` is arithmetic over the event log, so the stub is a fixed
+      // answer rather than anything derived from this harness's fake database:
+      // what is under test is whether the ENGINE acts on the answer, not whether
+      // the arithmetic is right — `test_track.py` owns that.
+      if (mode === 'replan-required') {
+        return { progress: 33, replan_required: true,
+                 reason: 'it was sent back 2 times without moving', story: 'S-1' }
+      }
+      return { progress: 100, replan_required: false, reason: null, story: null }
+    }
     if (label === 'acceptance') return { verdict: 'SHIP', artifact_produced: true, evidence: ['read it'], top_improvement: 'none' }
     return {}
   }
@@ -229,6 +271,14 @@ async function runMode(mode) {
     calls: [], paidRuns: 0, serialVerifies: 0, phaseRepairs: 0,
     steps: MODE_STEPS[mode] || 3, tier: 3, approved: !MODE_UNAPPROVED.has(mode),
     chained: MODE_CHAINED.has(mode), guard: !MODE_GUARD_RED.has(mode),
+    supervision: MODE_SUPERVISION.has(mode),
+    // Stands in for tracker.db. Seeded from the same steps preflight returns, then
+    // mutated only by a `track:` courier call — so a mode that never writes sees
+    // 'pending' and one that completes a step sees it, without the engine holding a
+    // copy of its own. `dependency-unblocks-dependents` is the check that would go red
+    // if the engine started keeping one again.
+    db: new Map(STEPS(MODE_STEPS[mode] || 3, MODE_CHAINED.has(mode),
+                      MODE_SUPERVISION.has(mode)).map((s) => [s.id, s.status])),
   }
   const args = { spec: 'specs/9999-01-01-harness', now: '2026-01-01T00:00:00Z', ...(MODE_ARGS[mode] || {}) }
   let out = null
@@ -409,12 +459,130 @@ function runChecks(results) {
     `snapshot, so a dependency satisfied mid-run does not unblock its dependents (skips: ${JSON.stringify(dep.step_whys)}).`)
   check('no-phantom-dependency-skip', !dep.step_whys.some((w) => w.includes('dependency')),
     `a step was skipped for an unmet dependency even though every step went green: ${JSON.stringify(dep.step_whys)}.`)
+
+  // A step that edits .claude/ tooling is proved by a direct command, not by a pytest
+  // node id. Before 2026-09-01 the engine had no such shape and refused the run, which
+  // meant /team could not be used to build or fix /team. Its steps arrive with
+  // command_valid:false on purpose: a correct engine ignores that and re-derives.
+  // The manager's whole job: when the arithmetic says the plan is wrong, the run
+  // stops rather than grinding on. Without this the engine would read the answer
+  // and carry on, which is exactly the afternoon-long spin it exists to end.
+  const replan = M('replan-required')
+  check('manager-stops-the-run', replan.stopped_because === 'replan_required',
+    `the manager reported replan_required and the run answered '${replan.stopped_because}'. ` +
+    'A manager whose verdict the run ignores is not a manager.')
+  check('manager-does-not-pay-the-close-bar', replan.paid_runs === 0,
+    'the run spent the definitive bar after the manager called the plan wrong.')
+  check('manager-names-the-story', replan.step_whys.some((w) => w.includes('S-1')),
+    `the stop did not name the story it is about; reasons were ${JSON.stringify(replan.step_whys)}.`)
+
+  const sup = M('supervision-step')
+  check('supervision-step-not-refused', sup.stopped_because !== 'invalid_commands',
+    `a run whose steps touch only .claude/ aborted as '${sup.stopped_because}'. Supervision work ` +
+    'cannot be planned through /team at all while that is true — including the work that fixes it.')
+  check('supervision-step-ships', sup.completed === 3,
+    `only ${sup.completed} of 3 supervision steps completed (reasons: ${JSON.stringify(sup.step_whys)}).`)
+}
+
+// ── The pure validators, run directly ────────────────────────────────────────
+// These live in team-engine.js between two marker lines and touch nothing outside their
+// arguments, so the guard can lift them out and call them without running an engine.
+// That matters: `command_valid` used to be set by the preflight AGENT from prose rules
+// in its prompt, and this harness STUBS that agent — so no check could ever reach the
+// rule. Moving validation into the engine is what makes it testable at all.
+const MARK_OPEN = '// ── PURE VALIDATORS'
+const MARK_CLOSE = '// ── END PURE VALIDATORS'
+
+function loadValidators() {
+  const afterOpen = SRC.split(MARK_OPEN)[1]
+  if (afterOpen === undefined) return null
+  // Drop the REST OF THE MARKER LINE, not just the marker: both markers end in a box-rule
+  // of ─ characters, and those are only a comment while the `//` is still in front of
+  // them. Splitting on the marker alone left `──────…` as the first token of the block
+  // and every extraction failed with "Invalid or unexpected token".
+  const firstBreak = afterOpen.indexOf('\n')
+  if (firstBreak < 0) return null
+  const body = afterOpen.slice(firstBreak + 1).split(MARK_CLOSE)[0]
+  if (body === afterOpen.slice(firstBreak + 1)) return null
+  try {
+    return new Function(`${body}\nreturn { validateCommand, deriveGates }`)()
+  } catch (e) {
+    return { loadError: e.message }
+  }
+}
+
+function runValidatorChecks() {
+  const V = loadValidators()
+  check('validator:extractable', !!V && !V.loadError,
+    V && V.loadError
+      ? `the marked block in team-engine.js did not evaluate: ${V.loadError}`
+      : `team-engine.js has no block between "${MARK_OPEN}" and "${MARK_CLOSE}". Command validation ` +
+        'has moved back into the preflight prompt, where this harness stubs the agent and can ' +
+        'never reach it.')
+  if (!V || V.loadError) return
+
+  const { validateCommand, deriveGates } = V
+  const ok = (files, cmd) => validateCommand({ files, test_command: cmd }).command_valid
+
+  check('validator:accepts-engine-guard',
+    ok(['.claude/team-engine.js'], 'node .claude/team-engine.test.js'),
+    'a step editing the engine, proved by the engine guard, was rejected — the tool cannot fix itself.')
+  check('validator:accepts-hooks-pytest',
+    ok(['.claude/ledger/track.py'], 'uv run pytest .claude/hooks/tests/test_track.py -o addopts= -v'),
+    'a supervision step proved by its own test file under .claude/hooks/tests/ was rejected.')
+  check('validator:accepts-product-node-id',
+    ok(['src/fx.py'], 'make test-file FILE="tests/test_fx.py::T::t"'),
+    'the ordinary product shape stopped validating; every existing ledger just broke.')
+  check('validator:rejects-bare-k',
+    !ok(['src/fx.py'], 'make test-file FILE="tests/test_fx.py" -k t'),
+    'a bare -k was accepted. Make consumes it as --keep-going and the selector becomes a make goal.')
+  check('validator:rejects-live',
+    !ok(['src/fx.py'], 'make test-file FILE="tests/test_fx.py::T::t" LIVE=1'),
+    'LIVE=1 was accepted; it routes to test-live and serialises the run behind the live shard.')
+  check('validator:rejects-missing-node-id',
+    !ok(['src/fx.py'], 'make test-file FILE="tests/test_fx.py"'),
+    'a whole test FILE was accepted where a node id is required; the step is no longer atomic.')
+  check('validator:rejects-supervision-command-on-product-step',
+    !ok(['src/fx.py'], 'node .claude/team-engine.test.js'),
+    'a product step claimed the engine guard as its proof. The guard cannot test src/.')
+  check('validator:rejects-product-command-on-supervision-step',
+    !ok(['.claude/team-engine.js'], 'make test-file FILE="tests/test_fx.py::T::t"'),
+    'a step editing agent tooling claimed a product pytest as its proof.')
+  check('validator:rejects-mixed-step',
+    !ok(['src/fx.py', '.claude/team-engine.js'], 'node .claude/team-engine.test.js'),
+    'a step touching product AND tooling was accepted. One step, one kind, or the gate is ambiguous.')
+  check('validator:rejects-fileless-step',
+    !ok([], 'node .claude/team-engine.test.js'),
+    'a step listing no files was accepted; nothing decides which gate it needs.')
+
+  const engineGates = deriveGates({ files: ['.claude/team-engine.js'], test_command: 'node .claude/team-engine.test.js' })
+  check('gates:engine-edit-runs-the-engine-guard',
+    engineGates.includes('node .claude/team-engine.test.js'),
+    `editing the engine derived gates ${JSON.stringify(engineGates)} — the guard that proves its ` +
+    'termination caps is not among them, and the close gate never re-runs it.')
+
+  const trackGates = deriveGates({
+    files: ['.claude/ledger/track.py'],
+    test_command: 'uv run pytest .claude/hooks/tests/test_track.py -o addopts= -v',
+  })
+  check('gates:supervision-step-gated-by-its-own-test',
+    trackGates.includes('uv run pytest .claude/hooks/tests/test_track.py -o addopts= -v'),
+    `a supervision step derived gates ${JSON.stringify(trackGates)}, none of which prove it.`)
+
+  const productGates = deriveGates({ files: ['src/fx.py'], test_command: 'make test-file FILE="tests/test_fx.py::T::t"' })
+  check('gates:product-step-still-lints',
+    productGates.includes('make lint'),
+    `a src/ step derived gates ${JSON.stringify(productGates)} without make lint.`)
+  check('gates:no-minutes-long-target-in-a-per-step-gate',
+    !productGates.some((g) => ['make test', 'make audit', 'make test-live', 'make test-workbench'].includes(g)),
+    `a per-step gate derived ${JSON.stringify(productGates)} — those hold the shared containers for minutes.`)
 }
 
 ;(async () => {
   const results = []
   for (const mode of MODES) results.push(await runMode(mode))
   runChecks(results)
+  runValidatorChecks()
 
   if (process.argv.includes('--json')) {
     process.stdout.write(JSON.stringify({ target: TARGET, timeout_ms: TIMEOUT_MS, checks_run: checksRun, failures, results }, null, 2))

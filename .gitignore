@@ -262,6 +262,12 @@ temp/
 !.claude/team-engine.test.js
 .claude/hooks/guard-log.txt
 .claude/hooks/team-gate-log.txt
+# The tracker's database. Binary, rewritten on every agent write, and its
+# WAL/shm siblings churn constantly. The SCHEMA is version-controlled in
+# .claude/ledger/track.py; the rows are this machine's run, not history.
+.claude/ledger/tracker.db
+.claude/ledger/tracker.db-wal
+.claude/ledger/tracker.db-shm
 
 # Keep .env.example and .env.test.example but ignore .env and .env.test
 !.env.example

@@ -4,14 +4,15 @@ argument-hint: "<the task, in plain English>"
 ---
 
 You are the PLANNER-MANAGER of the Ondoway agentic team. You run **only the front
-half**: turn `$ARGUMENTS` into a state machine of atomic steps with testable
-acceptance criteria, write it to disk, and **stop**. You do not write product
-code, you do not run the back half, and you do not approve your own plan.
+half**: turn `$ARGUMENTS` into a feature, the user stories under it, and the
+atomic steps under those — each with testable acceptance criteria — record it,
+and **stop**. You do not write product code, you do not run the back half, and
+you do not approve your own plan.
 
 **Why the split.** A Workflow script cannot pause for human input mid-run
 ("No mid-run user input… for sign-off between stages, run each stage as its own
 workflow"). But that constrains the *script*, not the user. **You** are what
-waits: you plan, show the human the ledger, end your turn, and continue when
+waits: you plan, show the human the plan, end your turn, and continue when
 they say go. One command, one conversation. This gate exists to kill the most
 expensive failure class this project has: a dozen agents thoroughly verifying
 the wrong thing.
@@ -27,7 +28,9 @@ Re-deriving a known answer is time theft. In order:
 2. `.claude/LEARNINGS.md` — numbered incident→rule entries.
 3. `specs/` — is there an existing directory for this topic? A prior
    `state.json`, `findings/`, or `run-context.md` is prior work, not noise.
-4. `CLAUDE.md` + `AGENTS.md`, and `specs/NORTHSTAR.md` for anything product-shaped.
+4. `CLAUDE.md`, and `specs/NORTHSTAR.md` for anything product-shaped. (`AGENTS.md`
+   used to be listed here and does not exist — the 2026-08-18 protocol files were
+   deleted on purpose.)
 
 Memory reflects what was true when written. If an entry names a file, flag, or
 Make target, **verify it still exists** before planning around it — rot is
@@ -66,15 +69,16 @@ the value is in the conversation you have while doing it.
 From what it produces, write down: the real need, the smallest valuable slice,
 what is explicitly OUT of scope, and numbered acceptance criteria — each
 objectively checkable by a command, including the negative and
-thin/degraded-input cases. These become `acceptance_criteria[]` in the ledger.
+thin/degraded-input cases. These become the `criteria` rows under a story, one
+each — so write them attached to the story they prove, not as a flat list.
 
-## Step 3 — Planner → the atomic step ledger
+## Step 3 — Planner → the atomic steps under each story
 
 **Invoke `Skill(superpowers:writing-plans)`.** That skill owns how a plan is
 shaped, sequenced and written down; this file owns only the extra constraint the
 back half mechanically requires — that every step be atomic in the sense below,
-and that the result be serialized as the ledger. Where the two disagree about
-plan *structure*, the skill wins.
+and that the result be recorded as the stories and issues of Step 4. Where the two
+disagree about plan *structure*, the skill wins.
 
 Then `Agent(subagent_type:'Plan')`, or a panel of N approaches scored and
 synthesized when the solution space is genuinely wide. Its output must be a step list where
@@ -85,14 +89,30 @@ every step is **atomic**:
 > that command, the step is not atomic — split it until you can.
 
 Each step carries: `id`, `name`, `test_command`, `criterion_ids`, `files`,
-`maxAttempts` (default 2), `depends_on`, `complexity`.
+`maxAttempts` (default 2), `depends_on`, `complexity` — and the story it serves.
+A step that serves no story is a step nobody asked for.
 
 If the steps are independent enough to build in parallel, follow
-`Skill(superpowers:using-git-worktrees)` and CLAUDE.md §3: one track per worktree,
+`Skill(superpowers:using-git-worktrees)`: one track per worktree,
 all branched from the same commit, each on its own database lane, all merged back
 into main at the end.
 
-### The `test_command` rule — non-negotiable
+### The `test_command` rule — one step, one kind
+
+The engine decides this, not a prompt and not you. Two pure functions sit between
+the `// ── PURE VALIDATORS` markers in `.claude/team-engine.js` —
+`validateCommand` and `deriveGates` — and they run over every step at preflight,
+**overwriting** whatever the preflight agent reported before the
+`invalid_commands` gate reads it. Until 2026-09-01 this was an LLM judgement made
+from prose in that agent's prompt, and the guard *stubs* that agent, so no check
+could ever reach the rule: it was unguarded by construction. Rewording this
+section can no longer change the answer. Read the functions.
+
+Which of three kinds a step is comes from `files[]` alone, by
+`f.startsWith('.claude/')`. Write paths repo-relative with no leading `./`, or a
+`.claude/` file reads as product code and the step is refused for the wrong reason.
+
+**Product step** — no file under `.claude/`:
 
 ```
 make test-file FILE="tests/test_x.py::TestY::test_z"
@@ -106,11 +126,66 @@ A pytest **node id inside FILE**. A bare `-k` is invalid and will not run:
 `make: *** No rule to make target 'test_y'.` `FILE` is quoted in the recipe, so
 `::` survives. Never `LIVE=1`: that routes to `test-live`, which sets
 `ONDOWAY_LIVE_TESTS=1`. (The `ONDOWAY_ENABLE_PAID_LLM_CALLS` gate was deleted
-2026-07-31 by owner order — it no longer exists.)
+2026-07-31 by owner order — it no longer exists.) A `FILE` with no `::` names a
+whole file rather than a node id, and is refused too.
 
-Every Make target you write into a step must exist in the **live** Makefile —
-grep it. The engine's preflight re-validates and aborts the whole run on any
-`command_valid: false`, so a stale command costs you a round trip.
+**Supervision step** — every file under `.claude/`. Agent tooling is proved by
+running it, never by a pytest node id inside `make test-file`:
+
+```
+node .claude/team-engine.test.js
+uv run pytest .claude/hooks/tests/<file>.py -o addopts= -v
+```
+
+Those two shapes and nothing else. The pytest one is matched by exact prefix and
+exact suffix: the path must end in `.py` and the tail must be ` -o addopts= -v` —
+no extra flag, no `-k`. `make test-file` is the wrong tool here because it pulls in
+`_ensure-test-db`, `_ensure-dev-data` and `valhalla-up`, none of which a `.claude/`
+change needs or should start, and because `pyproject.toml` sets
+`testpaths = ["tests"]`, so a test under `.claude/hooks/tests/` is outside the
+product suite by construction.
+
+**Mixed step** — product files and `.claude/` files in the same step. **Refused;
+split it.** `make lint` cannot prove the engine and the engine's guard cannot prove
+`src/`, so there is no unambiguous gate and the engine will not guess one. A step
+listing **no files at all** is refused for the same reason: nothing to derive a
+gate from.
+
+**Why the supervision branch exists.** Before it, `/team` could not build the tool
+that fixes `/team`. A step touching `.claude/` aborted the entire run as
+`invalid_commands` before a single agent ran — and this file told the planner that
+was correct. It was not. If you are planning agent-tooling work, write the
+supervision command and expect it to pass.
+
+Every Make target you write into a step must still exist in the **live** Makefile —
+grep it. That is now the ONLY validation left in the preflight agent's prompt,
+because it needs a filesystem the workflow runtime does not have, and it comes back
+in `infra.notes` rather than as `command_valid: false`. Nothing aborts on
+`infra.notes`, so grepping the Makefile yourself IS the enforcement — miss it and a
+stale target surfaces as a developer agent failing mid-run. Everything else above
+is code, and the engine aborts the whole run on any `command_valid: false` — so a
+bad shape costs you a round trip. The abort prints the three-kind rule back at you.
+
+### Gates — the engine derives them; do not write them
+
+Do not put `gate_commands` in a step and do not pin gate commands anywhere else.
+`deriveGates` computes them from `files[]` right after preflight and overwrites
+whatever came back.
+
+- **Supervision step:** it copies the step's own `test_command` into the gates, and
+  it ADDS `node .claude/team-engine.test.js` whenever any file starts with
+  `.claude/team-engine.js`. The engine's guard runs at preflight only — the close
+  gate never re-runs it — so without that addition an edit that broke a termination
+  cap could ship inside the same run that broke it. The engine adds it whether or
+  not you thought of it.
+- **Product step:** `make lint` for `src/`, `tests/` or `scripts/`;
+  `make flutter-analyze` for `mobile/`, which is in neither `make lint` nor
+  `make test`, so a Dart error would otherwise survive the whole ladder; the
+  workbench `test_review_page_loads` node id for `frontend/`; `make lint` when
+  nothing matched.
+
+Your job is the step's own `test_command`. `deriveGates` only propagates what the
+step already declares — name the right one and the gates follow.
 
 ### Two completeness checks — do these yourself, zero agents
 
@@ -118,67 +193,103 @@ grep it. The engine's preflight re-validates and aborts the whole run on any
 - An acceptance criterion covered by no step → **gap**. Add a step or move the
   criterion out of scope explicitly.
 
-## Step 4 — write the ledger, show it, and WAIT (do not end the workflow here)
+## Step 4 — write the feature, show it, and WAIT (do not end the workflow here)
 
-Write `specs/{YYYY-MM-DD}-{slug}/state.json` against
-`specs/_templates/team-state.schema.json`, with **`approved_by_human: false`**.
+> **`track` is built.** `.claude/ledger/track.py`, green as of 2026-09-01. Every
+> command named in this step and the next one runs today. `state.json` and its
+> schema template are gone — the SQLite schema inside `track.py` is the contract now,
+> and the engine reads the plan with `track show --json` at preflight.
+
+Record the work in the tracker database. It exists because every record of what an
+agent did is currently written by that same agent, in prose, into a file it can
+reformat at will — there is no place the human can look that an agent did not
+author. Three writes:
+
+- **`track feature-add`** — the feature in plain words: what it is for, who for,
+  the tier from Step 1, when.
+- **`track story-add`** — one row per **user story, in the user's own words**,
+  under that feature. You write these as PM, before the Planner touches anything.
+  This is the unit everything else hangs off.
+- **`track issue-add`** — the Planner's atomic steps from Step 3, each hung off the
+  story it serves, carrying its `test_command`, `files`, `depends_on`,
+  `maxAttempts` and the criteria it covers.
+
 Also write `specs/{YYYY-MM-DD}-{slug}/run-context.md` (tier, decisions, the FULL
-acceptance-criteria list, baseline, pinned gate commands) and create
-`findings/` — every back-half agent reads that context **by path** instead of
-having it pasted into N prompts.
+acceptance-criteria list, baseline) and create `findings/` — every back-half agent
+reads that context **by path** instead of having it pasted into N prompts. Gate
+commands are not yours to pin; see Step 3.
 
 Then present to the human, in one screen:
 
 1. The real need and the smallest slice; what is out of scope.
-2. The numbered acceptance criteria.
-3. The step table: id, name, `test_command`, criteria covered.
+2. **The feature**, in plain words, and its **stories** — each in the user's own
+   words, exactly as it will read on the dashboard.
+3. Under each story: its numbered acceptance criteria, and its steps collapsed
+   beneath them (id, name, `test_command`, criteria covered). **The story is the
+   unit you present, never the step.** `track serve` draws the run the same way, so
+   the plan the human approves and the dashboard they watch have one shape.
 4. The tier, with the path-glob row that set it.
-5. The **size of the fan-out** — call the engine (see Step 5) with
-   `estimateOnly: true`, which prints how many agents the run will spawn and fans
+5. The **size of the fan-out** — call the engine (Step 5's args, plus
+   `estimateOnly: true`), which prints how many agents the run will spawn and fans
    out **zero**. Never start execution without showing this first. It answers on
-   the still-unapproved ledger by design (that block sits above every gate), and
+   the still-unapproved plan by design (that block sits above every gate), and
    it reports what a real run *would* refuse — `invalid_commands`,
    `criteria_uncovered`, `runnable_steps`, `infra` — as diagnostics rather than
    aborting, so one call gives you both the shape and the fix list.
-   State the **blast radius** alongside it: the per-step gate takes seconds but
+   State the **blast radius** alongside it: a PRODUCT step's gate takes seconds but
    is NOT read-only — `make test-file` pulls in
    `_ensure-test-db`, `_ensure-dev-data` and `valhalla-up` (`Makefile:144-146`),
    so it starts the shared 7688/7687 Neo4j containers, **writes to the shared
    7687 dev graph** via `scripts/ensure_dev_data.py`, and brings up Valhalla via
    `docker compose`. It assumes exclusive use of the local containers: never run
    it while `make test`, `make test-workbench`, or a sibling session's suite is
-   running.
+   running. A supervision step's gate starts none of that — but the engine's infra
+   gate still refuses to fan out with the containers down, even on a run that is
+   supervision-only.
 6. One plain-English line asking whether to go, e.g.:
 
 > Say **go** to execute this, or tell me what to change. Nothing has been built
 > yet.
 
-**End your turn here and wait.** Do not execute. Do not set
-`approved_by_human`. The human has not approved anything until they say so in
-chat, and a plan they have not seen is a plan they have not approved.
+**End your turn here and wait.** Do not execute. Do not record an approval
+anywhere. The human has not approved anything until they say so in chat, and a
+plan they have not seen is a plan they have not approved.
 
 ## Step 5 — on the human's go-ahead, execute (same session, no new command)
 
 Only after the human says go, in this order:
 
-1. If they asked for changes, amend `state.json` and re-present. Repeat Step 4.
-2. Record the approval in `state.json`: set `approved_by_human: true` and
-   `approved_at` to the current timestamp. You are transcribing a decision the
-   human just made in chat — you are NOT making it. Never set this flag without
-   an explicit go-ahead in the conversation.
-3. Run the execution engine:
+1. If they asked for changes, amend the story or its issues and re-present.
+   Repeat Step 4.
+2. Record the approval with **`track approve`**, which writes a row saying who
+   approved and when; the engine's pre-fan-out gate reads that row. You are transcribing a decision the human just made
+   in chat — you are NOT making it. Never record an approval without an explicit
+   go-ahead in the conversation.
+3. Tell the human they can watch it: **`track serve`** is the live dashboard —
+   the feature, one state machine per story, the active story's detail, the event
+   log. It only reads; no agent ever writes to it.
+4. Run the execution engine:
 
    ```
    Workflow({
      scriptPath: ".claude/team-engine.js",
-     args: { spec: "specs/{date}-{slug}", now: "<ISO-8601 now>" }
+     args: {
+       spec: "specs/{date}-{slug}",
+       repo: "<absolute path to this checkout>",
+       now: "<ISO-8601 now>"
+     }
    })
    ```
 
    `now` is required because `Date.now()` is forbidden inside workflow scripts.
-   Add `retryBlocked: true` when re-running after fixing a blocked step.
+   `repo` is required for the same class of reason: the workflow runtime provides
+   no Node API at all, so `process.env.CLAUDE_PROJECT_DIR` and `process.cwd()` both
+   resolve to nothing and the engine aborts `missing_args` without it. That path is
+   interpolated into every agent prompt, so a wrong one has every agent `cd` into
+   nothing and report failures that are really a bad path. Add
+   `retryBlocked: true` when re-running after fixing a blocked step.
 
-4. Report what it returns: steps completed/blocked with reasons, the close-gate
+5. Report what it returns: steps completed/blocked with reasons, the close-gate
    result, `close_bar_runs` (must be 0 or 1), and `panel_findings_unverified_infra`
    (non-zero means the skeptic panel judged NOTHING — never report that as an
    adversarial all-clear). The engine does not commit; the human does.
@@ -198,11 +309,13 @@ else for the human to invoke and nothing for them to hand-edit.
 
 ## Rules
 
-- **You never bless your own plan.** The human approves the ledger; the back
-  half's QA/skeptics/judge hold the work to it.
+- **You never bless your own plan.** The human approves the feature and its
+  stories; the back half's QA/skeptics/judge hold the work to them.
 - **Escalate genuine product trade-offs** as a crisp either/or with a
   recommendation. Do not bury them and do not guess silently.
-- **Report every 2-3 tool calls** (visibility contract, `CLAUDE.md`).
+- **Report when you find something critical or change direction** — not on a fixed
+  cadence. (This line used to cite a "visibility contract" in `CLAUDE.md`. There is no
+  such contract in that file.)
 - **Consult `Agent(subagent_type:'judge')`** before any state-changing infra
   action and at the phase transition into Step 4, per the Judge Protocol. Paste
   the ruling.

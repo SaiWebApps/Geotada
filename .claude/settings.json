@@ -145,6 +145,16 @@
             "statusMessage": "truth gate: advisor and verifier must both call it true"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/proceed-guard.py",
+            "timeout": 20,
+            "statusMessage": "proceed guard: keep going, stop only by asking a real question"
+          }
+        ]
       }
     ]
   }

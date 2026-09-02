@@ -4,10 +4,13 @@
 TWO ARMS.
 
   PreToolUse  No tool runs until this turn contains an advisor consult AND a
-              printed step-by-step plan following it. This is the arm that
-              matters, because it gates ACTIONS. Every destructive action gets
-              its own fresh consult on top of that.
-  Stop        No reply ends the turn without a consult in it.
+              visible plan following it. This is the arm that matters, because
+              it gates ACTIONS. Every destructive action gets its own fresh
+              consult on top of that.
+  Stop        No reply ends the turn without a consult in it. On any model
+              that is not Fable, the turn's LAST consult must also come after
+              its last action, with a written report in between, so the
+              advisor has seen the finished work before the owner does.
 
 WHY THE PRE-TOOL ARM EXISTS. The Stop arm alone gates only what is SAID. A turn
 could consult once, then delete five hundred files, and the Stop arm would be
@@ -22,86 +25,116 @@ indistinguishable from a consult that was ignored. Printing the numbered plan
 before acting makes the advice visible to the person who has to live with the
 result, and makes a silent deviation from it obvious.
 
-WHY THE PRE-TOOL ARM NOW HAS A CEILING, having argued at length that it must not.
-The original reasoning was that a refusal always has an immediate remedy — call
-`advisor`, which is exempt — so a ceiling could only ever grant permission to skip
-the rule. That reasoning assumed the remedy, once performed, is VISIBLE. Measured
-on this session's own transcript, 2026-08-31, it is not:
+WHY THE CLOSING CONSULT EXISTS. Owner ruling, 2026-09-01, for Opus or anything
+that is not Fable: "FORCE the model to ALWAYS check in with the advisor and
+then show the advisor that it listened. It should be blocked and should choke
+on itself until the advisor is happy." The advisor forwards the live
+conversation, so a consult placed AFTER the last action is the advisor seeing
+what was actually done against what it advised; a reply whose last consult
+predates its last action has shown the advisor a plan and hidden the result.
+The advisor's own answer is stored encrypted — of the 233 advisor results
+across this project's transcripts, surveyed 2026-09-01, 228 are
+{"type": "advisor_redacted_result", "encrypted_content": ...} blocks and the
+other five are errors; none is readable — so its verdict cannot be read by a
+hook. What CAN be enforced is that it was asked
+after the work, with a report of the work in front of it, and that its answer
+was acted on: an action taken after the closing consult reopens the
+requirement, so "fix this" from the advisor forces another closing consult
+once the fix is in.
 
-    the guard reads the transcript FILE, and the file lags the live conversation.
-    Replaying the guard against the real records at a refused `cat Makefile`
-    reproduced consult_index=28 and plan_printed_after=True with
-    grounded_before=False — the `Read` that grounded the consult had happened,
-    and its record was not yet on disk. The refusal was therefore correct about
-    the file and wrong about the world, and repeating the remedy could not change
-    it: every retry re-read the same lagging file.
+NO CEILINGS, and this is a reversal. An earlier version stood the pre-tool arm
+down after three consecutive refusals, and the Stop arm after five, on the
+theory that the transcript file lagged the live conversation so the remedy
+could not be seen. Owner ruling, 2026-09-01: "You must consult the advisor.
+Always. No lags. Fix the lags." Both ceilings are gone, along with the state
+file that kept their tallies — a file that turned out to be shared by every
+session on the machine, so a parallel session reset the count every few
+minutes and the ceiling was never even deterministic. The three things the
+ceilings were papering over are fixed where they actually live:
 
-That is not a rule being skipped, it is a rule that cannot be satisfied, and this
-project has shipped an unsatisfiable boundary check twice already (ledger class
-17b, and the `_failed_call_ids` deadlock below). The ceiling is therefore narrow
-and loud: `PRE_TOOL_MAX_BLOCKS` consecutive refusals of ACTING tools within one
-turn stand the arm down for that turn, and say so in the systemMessage. An exempt
-look does not reset it — Read/Grep/Glob were exactly what the deadlocked loop
-kept doing — and the owner speaking resets it, because that is a new turn.
+  1. THE FILE LAGS THE CALL — measured. Claude Code appends every block of an
+     assistant message in one batch after the message completes, and the
+     PreToolUse hook can run before that batch lands. Session a798c91b,
+     2026-09-01: a Bash call's own record is stamped 22:13:21.918Z, the hook
+     ran at 22:13:21.95Z, and it saw a file with no consult in it — the
+     consult, its result and the plan were all in the same unlanded batch.
+     Later in that session the file held 392 records from 22:26:41Z until
+     past 22:31Z while tool calls kept coming. So this guard now WAITS for
+     the record of the very call it is gating — the payload's `tool_use_id`,
+     present on every payload measured — before it reads anything, up to
+     LAG_WAIT_SECONDS. The file is append-only, so once that record is there
+     everything before it is too. If it does not land in time, the refusal
+     says so and the next attempt waits again. No count, no stand-down.
+
+  2. THE PLAN WAS NEVER A TEXT BLOCK — measured. On Claude Fable 5.1 through
+     claude-desktop (Claude Code 2.1.255), every visible line after a turn's
+     first one is stored not as {"type": "text"} but as a {"type": "thinking"}
+     block whose server signature names the kind "narration", holding a
+     one-paragraph rendering of what was said: ten of them in one session ran
+     184 to 617 characters, median 278, and the shortest stood in for a
+     printed plan of about 1,500. Opus 5 sessions in the same survey store
+     hundreds of mid-turn text blocks, Sonnet 5 sessions a handful, and
+     neither stores narration at all. A check that counted only text blocks
+     was unsatisfiable on Fable for the whole turn, and the ceiling was
+     invented to escape it. Visible prose is now text blocks PLUS narration
+     blocks, and the floor is set from the measured narration length rather
+     than a text block's.
+
+  3. A SPAWNED AGENT CANNOT CONSULT. The advisor is a server tool of the main
+     session, so a subagent's actions can never satisfy this arm, and the
+     ceiling was what let qa, judge, shadow and the rest through — silently,
+     after three refusals apiece. Measured 2026-09-01: a subagent's hook
+     payload carries `agent_id` and `agent_type`, and its `transcript_path`
+     is the MAIN session's file. The Agent call that spawned it was itself
+     gated, and the prompt it was given is the plan it follows, so its calls
+     are let through on that structural stamp. What a subagent may do is
+     bounded by its prompt and its agent definition, not by this file — said
+     here rather than implied.
 
 MECHANICAL, NOT SEMANTIC. Nothing here judges whether a consult was thoughtful or
-whether the printed plan is a good one. It asks three yes-or-no questions of the
-transcript: did an advisor record appear in this turn, did assistant text of real
-length follow it, and — for a destructive command — did a consult follow the
-previous destructive command. The transcript is the record; agreeing to a rule
-and skipping it are identical in every place except there.
+whether the printed plan is a good one. It asks yes-or-no questions of the
+transcript: did an advisor record appear in this turn, did visible prose of real
+length follow it, did a look at the code precede it, did a consult follow the
+previous destructive command, and — off Fable — did the last consult follow the
+last action. The transcript is the record; agreeing to a rule and skipping it
+are identical in every place except there.
 
 NO PATTERN MATCHING on records: the JSONL entries are walked and their fields
 compared, because a pattern catches only the spellings someone thought of.
 """
 
-import contextlib
+import base64
 import json
 import os
 import sys
 import time
 from pathlib import Path
 
-#: Where the two ceilings keep their tallies. Overridable so the payload tests
-#: get their own file: they drive the guard as a subprocess, and sharing one path
-#: would make a test run reach into whatever live session is open on this machine
-#: — and make the tests themselves order-dependent on each other.
-STATE_PATH = Path(
-    os.environ.get("ONDOWAY_ADVISOR_STATE", "/tmp/ondoway-advisor-consult-state.json")
-)
-#: The Stop arm's ceiling, and ONLY the Stop arm's. Every human message resets the
-#: turn and demands a fresh consult, and this owner interjects often — 36 human
-#: records in one measured session's transcript tail. At a ceiling of 2, two rapid
-#: interjections during tool work burned both blocks and the guard silently
-#: disarmed itself, which is the starved-rule failure it exists to prevent. A
-#: successful consult resets the count to 0, so this is only ever reached by
-#: genuine repeated failure.
-#:
-#: The PreToolUse arm has its own ceiling, PRE_TOOL_MAX_BLOCKS below, and this
-#: comment used to say it must never grow one — on the reasoning that blocking a
-#: TOOL leaves the remedy fully available, so there is nothing to rescue. That
-#: reasoning was measured wrong on 2026-08-31: the remedy can be performed and
-#: stay invisible, because this guard reads a transcript FILE that lags the live
-#: conversation. The module docstring carries the evidence and the reversal.
-MAX_BLOCKS = 5
+#: The shortest visible message that can plausibly BE a plan or a report.
+#: Measured 2026-09-01 on this project's own transcript: a narration block —
+#: the harness's rendering of a printed plan on Fable 5.1 — ran 184 to 617
+#: characters across ten of them, however long the plan behind it was; a bare
+#: acknowledgement ("consulting now", "will do") runs under 100. 150 sits
+#: between them. A text plan used to need 250; the floor is now 150 for text
+#: and narration alike, deliberately, so both channels are held to one rule.
+#: Length is used rather than wording on purpose: a rule that reads my words is
+#: a rule I can satisfy by choosing different words, and the only way past a
+#: length floor is to actually write something.
+MIN_PLAN_CHARS = 150
 
-#: The PRE-TOOL arm's ceiling. Three consecutive refusals of acting tools inside a
-#: single turn, with a correct consult performed before each one, is the signature
-#: of a transcript the guard cannot read the truth out of rather than a rule being
-#: ignored — see the module docstring. Three rather than one or two because a
-#: genuine unconsulted stretch should still be refused more than once before the
-#: arm concedes, and rather than five because past three the session is simply
-#: burning turns against a file that will not agree with it.
-PRE_TOOL_MAX_BLOCKS = 3
-
-#: The shortest assistant message that can plausibly BE a step-by-step plan.
-#: Measured against a real printed plan of nine numbered steps: 700 characters.
-#: A bare acknowledgement ("consulting now", "will do") runs under 100. 250 sits
-#: between them with room on both sides. Length is used rather than wording on
-#: purpose: a rule that reads my words is a rule I can satisfy by choosing
-#: different words, and the only way past a length floor is to actually write
-#: something.
-MIN_PLAN_CHARS = 250
+#: How long the pre-tool arm waits for the gated call's own record to land
+#: before judging the file — see the module docstring. Ten seconds against the
+#: twenty-second hook timeout in settings.json. Overridable so the payload
+#: tests can run the never-lands case in a fraction of a second; a malformed
+#: override falls back to the default rather than crashing the hook at import.
+try:
+    LAG_WAIT_SECONDS = float(os.environ.get("ONDOWAY_ADVISOR_LAG_WAIT", "10"))
+except ValueError:
+    LAG_WAIT_SECONDS = 10.0
+LAG_POLL_SECONDS = 0.05
+#: The gated call is always among the newest records in the file, so its id is
+#: looked for in the last megabyte rather than the whole file on every poll.
+LAG_TAIL_BYTES = 1024 * 1024
 
 #: Commands that change the world in a way an apology cannot undo. Each one needs
 #: a consult of its own, not merely a consult somewhere earlier in the turn.
@@ -158,16 +191,23 @@ def block(reason):
     sys.exit(0)
 
 
-def read_state():
-    try:
-        return json.loads(STATE_PATH.read_text())
-    except (OSError, ValueError):
-        return {}
-
-
-def write_state(state):
-    with contextlib.suppress(OSError):
-        STATE_PATH.write_text(json.dumps(state))
+def deny_tool(reason):
+    """Refuse the tool call. Always exit 0: a guard that crashes is a guard that
+    is switched off, and the decision travels in the printed JSON, not the code.
+    """
+    print(
+        json.dumps(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "deny",
+                    "permissionDecisionReason": reason,
+                },
+                "systemMessage": reason,
+            }
+        )
+    )
+    sys.exit(0)
 
 
 def records(transcript_path):
@@ -192,6 +232,69 @@ def records(transcript_path):
         except ValueError:
             continue
     return out
+
+
+def _tail_text(transcript_path):
+    """The newest LAG_TAIL_BYTES of the file as text, or nothing if it cannot be read."""
+    try:
+        with open(transcript_path, "rb") as handle:
+            handle.seek(0, os.SEEK_END)
+            end = handle.tell()
+            handle.seek(max(0, end - LAG_TAIL_BYTES))
+            return handle.read().decode("utf-8", "replace")
+    except OSError:
+        return ""
+
+
+def wait_for_call_record(transcript_path, tool_use_id, wait_seconds=None):
+    """Block until the record of the call being gated is on disk, or time runs out.
+
+    Returns True when it landed. The file is append-only, so the presence of
+    this call's id — first written in its own `tool_use` record — means every
+    record before it is there too, and the judgement below is about the
+    conversation rather than about a file that is behind it. Without an id
+    there is nothing to wait for and the file is judged as it stands; every
+    payload measured on 2026-09-01 carried one, so that branch is an
+    older-harness fallback, not the norm.
+    """
+    if not isinstance(tool_use_id, str) or not tool_use_id:
+        return False
+    if wait_seconds is None:
+        wait_seconds = LAG_WAIT_SECONDS
+    deadline = time.monotonic() + wait_seconds
+    while True:
+        if tool_use_id in _tail_text(transcript_path):
+            return True
+        if time.monotonic() >= deadline:
+            return False
+        time.sleep(LAG_POLL_SECONDS)
+
+
+def _late_note(caught_up):
+    """Appended to a refusal issued over a file that had not caught up, so the
+    session retries the call rather than performing a remedy it has already
+    performed. Nothing here says the verdict was wrong; it says what it was
+    about."""
+    if caught_up:
+        return ""
+    return (
+        "\n\nTHE TRANSCRIPT FILE HAD NOT CAUGHT UP: this very call had still not been "
+        f"recorded after {LAG_WAIT_SECONDS:g} seconds, so the verdict above is about "
+        "the file as it stood, which may be behind the conversation. If the remedy "
+        "has already been done, try the call again — the guard waits for the file on "
+        "every attempt."
+    )
+
+
+def _is_subagent_call(payload):
+    """A tool call made by a spawned agent rather than by the session itself.
+
+    Read off a real payload, 2026-09-01: a subagent's PreToolUse payload carries
+    `"agent_id": "a7a21be1cd7843808", "agent_type": "claude"`, and the main
+    session's own payloads carry neither. See the module docstring for why a
+    spawned agent is not held to a consult it cannot perform.
+    """
+    return bool(payload.get("agent_id") or payload.get("agent_type"))
 
 
 def _is_human_turn(entry):
@@ -270,13 +373,18 @@ def _is_human_turn(entry):
 
 
 def turn_slice(entries):
-    """Everything after the last human message — this turn."""
+    """Everything after the last human message — this turn.
+
+    When no human record is in view the whole window IS the turn. That happens
+    for a turn that has outgrown the window and for a file that has nothing in
+    it yet, and both are judged rather than waved through: a consult must then
+    appear somewhere in what can be seen, which fires once too often rather
+    than once too few.
+    """
     last_human = -1
     for index, entry in enumerate(entries):
         if _is_human_turn(entry):
             last_human = index
-    if last_human < 0:
-        return None
     return entries[last_human + 1:]
 
 
@@ -297,20 +405,33 @@ ADVISOR_CALL_TYPES = ("server_tool_use", "tool_use")
 ADVISOR_RESULT_TYPE = "advisor_tool_result"
 
 
+def _assistant_blocks(entry):
+    """The content blocks of an assistant record, or an empty list."""
+    if entry.get("type") != "assistant":
+        return []
+    content = (entry.get("message") or {}).get("content")
+    return [block for block in content or [] if isinstance(block, dict)]
+
+
 def consulted(turn):
     """Did an advisor call happen in this turn? Either the call or its result."""
-    for entry in turn:
-        if entry.get("type") != "assistant":
-            continue
-        for chunk in (entry.get("message") or {}).get("content") or []:
-            if not isinstance(chunk, dict):
-                continue
-            kind = chunk.get("type")
-            if kind in ADVISOR_CALL_TYPES and chunk.get("name") == "advisor":
-                return True
-            if kind == ADVISOR_RESULT_TYPE:
-                return True
-    return False
+    return consult_index(turn) >= 0
+
+
+def consult_index(turn):
+    """Position in `turn` of the LAST advisor record, or -1 if there is none.
+
+    The last rather than the first, because a turn may consult several times and
+    what matters is whether the most recent advice precedes what happens next.
+    """
+    found = -1
+    for index, entry in enumerate(turn):
+        for block in _assistant_blocks(entry):
+            kind = block.get("type")
+            called = kind in ADVISOR_CALL_TYPES and block.get("name") == "advisor"
+            if called or kind == ADVISOR_RESULT_TYPE:
+                found = index
+    return found
 
 
 def grounded_before(turn, index):
@@ -333,112 +454,55 @@ def grounded_before(turn, index):
     return False
 
 
-def turn_id(entries):
-    """A stable name for the CURRENT turn, so the ceiling below resets when the
-    owner speaks and not merely when the process restarts.
+def _is_narration(block):
+    """A visible line the harness stored as a signed thinking block.
 
-    The last human record's own uuid, because that record IS the turn boundary
-    `turn_slice` computes.
-
-    THE FALLBACK CARRIES THE HUMAN COUNT, and that is not decoration. An earlier
-    version fell back to a bare constant when a record had neither uuid nor
-    timestamp, so two DIFFERENT turns produced the same fingerprint and the owner
-    speaking did not clear the ceiling — caught by
-    test_the_owner_speaking_starts_the_tally_again, which is the whole reason to
-    write the test from the behaviour rather than from the implementation.
-
-    The count is read off the 8 MB window, which slides as the transcript grows,
-    so an old human record aging out can change the fingerprint with nobody
-    having spoken. That costs a spurious RESET — the arm re-arms and refuses
-    again — which is the safe direction for a guard: it fires once too often
-    rather than once too few.
+    Measured on this project's own transcript, 2026-09-01 (session a798c91b):
+    on Claude Fable 5.1 through claude-desktop, every visible line after a
+    turn's first one arrives as {"type": "thinking", "thinking": "<one
+    paragraph>", "signature": "CAQSjRQKEQgRGAI4AUIJbmFycmF0aW9u..."} rather
+    than as a text block. The kind is not a field of the record; it sits inside
+    the server signature, whose first bytes spell "narration" (or "thinking",
+    for the private kind) once the base64 is decoded. That prefix is the only
+    structural handle there is. A block whose signature cannot be decoded, or
+    names no such kind — every Opus 5 and Sonnet 5 thinking block in the same
+    survey — is treated as private thinking and not counted: the direction
+    that refuses, never the one that waves through.
     """
-    last = None
-    humans = 0
-    for entry in entries:
-        if _is_human_turn(entry):
-            humans += 1
-            last = entry
-    if last is None:
-        return "no-human-in-window"
-    return last.get("uuid") or last.get("timestamp") or f"human-{humans}"
+    if block.get("type") != "thinking":
+        return False
+    signature = block.get("signature")
+    if not isinstance(signature, str) or not signature:
+        return False
+    head = signature[:96]
+    try:
+        raw = base64.b64decode(head + "=" * (-len(head) % 4))
+    except (TypeError, ValueError):
+        return False
+    return b"narration" in raw
 
 
-def deny_tool(reason, state=None):
-    """Refuse the tool call. Always exit 0: a guard that crashes is a guard that
-    is switched off, and the decision travels in the printed JSON, not the code.
-
-    `state` is the breaker's tally. Counting the refusal HERE rather than at each
-    call site means a new refusal reason added later is counted without anyone
-    remembering to, which is how the ceiling stays honest as the arm grows.
-    """
-    if state is not None:
-        state["pre_blocks"] = state.get("pre_blocks", 0) + 1
-        write_state(state)
-    print(
-        json.dumps(
-            {
-                "hookSpecificOutput": {
-                    "hookEventName": "PreToolUse",
-                    "permissionDecision": "deny",
-                    "permissionDecisionReason": reason,
-                },
-                "systemMessage": reason,
-            }
-        )
-    )
-    sys.exit(0)
-
-
-def _assistant_blocks(entry):
-    """The content blocks of an assistant record, or an empty list."""
-    if entry.get("type") != "assistant":
-        return []
-    content = (entry.get("message") or {}).get("content")
-    return [block for block in content or [] if isinstance(block, dict)]
-
-
-def consult_index(turn):
-    """Position in `turn` of the LAST advisor record, or -1 if there is none.
-
-    The last rather than the first, because a turn may consult several times and
-    what matters is whether the most recent advice precedes what happens next.
-    """
-    found = -1
-    for index, entry in enumerate(turn):
-        for block in _assistant_blocks(entry):
-            kind = block.get("type")
-            called = kind in ADVISOR_CALL_TYPES and block.get("name") == "advisor"
-            if called or kind == ADVISOR_RESULT_TYPE:
-                found = index
-    return found
-
-
-def plan_printed_after(turn, index):
-    """Did assistant text of real length follow the consult at `index`?
-
-    Text and tool calls arrive as SEPARATE assistant records, and the text record
-    is written first — measured directly on this project's transcript, where one
-    assistant turn appears as three consecutive records: a thinking record, a
-    text record of 282 characters, and a tool_use record. So by the time a tool
-    call reaches this hook, any text printed before it is already on disk and can
-    be counted. If that ordering ever changed, this arm would refuse every tool
-    call in a turn, loudly and immediately, rather than passing silently.
-
-    The lengths are SUMMED across every text block after the consult, not checked
-    one at a time. Because text arrives as separate records, a plan written as an
-    opening line, then a numbered list, then a closing line is three short blocks
-    and no single one of them clears the floor — a per-block test would refuse
-    every tool call for the rest of that turn, with the plan sitting in plain
-    view above it. The question is whether the plan was written, not whether it
+def visible_chars(turn, start, stop=None):
+    """Characters of owner-visible prose in turn[start:stop]: text blocks plus
+    narration blocks, summed. Summed rather than checked one block at a time,
+    because a plan written as an opening line, then a numbered list, then a
+    closing line arrives as three records and no single one need clear the
+    floor on its own. The question is whether it was written, not whether it
     was written in one breath.
     """
     printed = 0
-    for entry in turn[index + 1:]:
+    for entry in turn[start:stop]:
         for block in _assistant_blocks(entry):
             if block.get("type") == "text":
                 printed += len(block.get("text") or "")
-    return printed >= MIN_PLAN_CHARS
+            elif _is_narration(block):
+                printed += len(block.get("thinking") or "")
+    return printed
+
+
+def plan_printed_after(turn, index):
+    """Did visible prose of real length follow the consult at `index`?"""
+    return visible_chars(turn, index + 1) >= MIN_PLAN_CHARS
 
 
 def _overwrites_existing_file(payload):
@@ -479,29 +543,16 @@ def is_destructive(command):
     return any(marker in command for marker in DESTRUCTIVE_MARKERS)
 
 
-def _failed_call_ids(turn):
-    """Tool calls whose result came back an ERROR — including this guard's own denials.
+def _call_results(turn):
+    """Every tool call's outcome in the turn, keyed by call id: True when its
+    result came back clean, False when it came back an error.
 
-    THIS EXISTS BECAUSE THE GUARD DEADLOCKED ITSELF, measured 2026-08-31.
-
-    A refused tool call is still written to the transcript as a `tool_use` block;
-    only its RESULT distinguishes it, as a `tool_result` carrying
-    `is_error: true` with the refusal text. The destructive scan below read the
-    calls and not the results, so a `git commit` this very guard had just
-    REFUSED was counted as "a destructive command that already ran". Refusing it
-    therefore created the condition for refusing it again — three times, with the
-    remedy (consult, print the plan) performed correctly before each one and
-    making no difference, because the offending record was the previous refusal.
-    That is class 17b of the failures ledger exactly: a boundary check counting
-    its own output as input. There was no way out except editing the guard.
-
-    The tradeoff, stated rather than hidden: a command that genuinely RAN and
-    then errored is also skipped here, and a destructive command can fail partway
-    through having already changed something. That direction costs one missed
-    consult on a half-completed command. The other direction costs the session,
-    with no available remedy, which is not a trade — it is the guard breaking.
+    Read off a real transcript: a call's result is a `tool_result` block in a
+    later user record, `is_error: true` when it was refused or failed. A call
+    with no result at all has not run — it is the call being gated right now,
+    or a sibling issued in the same message and still queued behind it.
     """
-    failed = set()
+    results = {}
     for entry in turn:
         content = (entry.get("message") or {}).get("content")
         if not isinstance(content, list):
@@ -509,11 +560,26 @@ def _failed_call_ids(turn):
         for block in content:
             if not isinstance(block, dict) or block.get("type") != "tool_result":
                 continue
-            if block.get("is_error"):
-                call_id = block.get("tool_use_id")
-                if call_id:
-                    failed.add(call_id)
-    return failed
+            call_id = block.get("tool_use_id")
+            if call_id:
+                results[call_id] = not block.get("is_error")
+    return results
+
+
+def _failed_call_ids(turn):
+    """Tool calls whose result came back an ERROR — including this guard's own denials.
+
+    A refused tool call is still written to the transcript as a `tool_use` block;
+    only its RESULT distinguishes it. Measured 2026-08-31, when the destructive
+    scan read the calls and not the results and counted a `git commit` this very
+    guard had just refused as an act that ran: refusing it created the condition
+    for refusing it again, three times, with the remedy performed correctly
+    before each. Class 17b of the failures ledger — a boundary check counting
+    its own output as input. The destructive scan now keys on completion (see
+    destructive_calls_in); this set keeps a refused call out of the closing
+    consult arm's idea of "the last action".
+    """
+    return {call_id for call_id, ran in _call_results(turn).items() if not ran}
 
 
 def destructive_calls_in(turn):
@@ -526,16 +592,27 @@ def destructive_calls_in(turn):
     file; not counting them would let an overwrite go unnoticed. The cheap
     mistake is the one to make.
 
-    Calls that never ran are excluded — see _failed_call_ids.
+    ONLY CALLS THAT RAN COUNT: a call with a clean result in the turn. A refused
+    call changed nothing (the 2026-08-31 self-deadlock, class 17b). A call with
+    no result yet has not happened — and because the guard waits for the whole
+    batch to land before judging, such calls ARE in the turn: the call being
+    gated, and any sibling issued in the same message. Counting those would make
+    every pair of destructive calls in one message refuse each other, and every
+    destructive call refuse itself.
+
+    The tradeoff, stated rather than hidden: a destructive command that ran and
+    then errored is skipped too, though it may have changed something before it
+    failed. That direction costs one missed consult on a half-completed command.
+    The other direction costs the session, with no remedy — the guard breaking.
     """
-    failed = _failed_call_ids(turn)
+    ran = {call_id for call_id, ok in _call_results(turn).items() if ok}
     out = []
     for index, entry in enumerate(turn):
         for block in _assistant_blocks(entry):
             if block.get("type") != "tool_use":
                 continue
-            if block.get("id") in failed:
-                continue  # refused or errored: it changed nothing
+            if block.get("id") not in ran:
+                continue  # refused, errored, or not yet run: it changed nothing
             name = block.get("name")
             if name == "Write":
                 out.append(index)
@@ -548,71 +625,78 @@ def destructive_calls_in(turn):
     return out
 
 
-def handle_pre_tool_use(payload, turn, state):
-    """Gate the action itself. Three questions, each answered by the transcript."""
+def last_acting_call_index(turn):
+    """Position in `turn` of the last tool call that ACTED — not exempt, not
+    refused — or -1 if the turn only looked and consulted."""
+    failed = _failed_call_ids(turn)
+    found = -1
+    for index, entry in enumerate(turn):
+        for block in _assistant_blocks(entry):
+            if block.get("type") != "tool_use":
+                continue
+            if block.get("name") in EXEMPT_TOOLS:
+                continue
+            if block.get("id") in failed:
+                continue
+            found = index
+    return found
 
-    def refuse(reason):
-        deny_tool(reason, state)
 
+def session_model(entries):
+    """The model of the newest assistant record in view, or "" if none names one.
+
+    Read off every assistant record in this project's transcripts, 2026-09-01:
+    `message.model` is "claude-fable-5-1", "claude-opus-5", "claude-sonnet-5"
+    and so on — and "<synthetic>" on the stub the harness writes in place of an
+    answer when the API errors, which names no model and is walked past. The
+    newest real record rather than the first, so a session switched mid-way is
+    judged by what is answering now.
+    """
+    for entry in reversed(entries):
+        if entry.get("type") != "assistant":
+            continue
+        model = (entry.get("message") or {}).get("model")
+        if isinstance(model, str) and model and not model.startswith("<"):
+            return model
+    return ""
+
+
+def is_fable(model):
+    """Fable is the model the owner scoped the closing consult AWAY from. A
+    session whose model cannot be read is held to the stricter rule."""
+    return "fable" in model.lower()
+
+
+def handle_pre_tool_use(payload, turn, caught_up):
+    """Gate the action itself. Four questions, each answered by the transcript."""
     tool = payload.get("tool_name") or ""
-    if tool in EXEMPT_TOOLS:
-        # Deliberately does NOT clear the tally. Read, Grep, Glob and codegraph
-        # are what a deadlocked loop keeps doing while it tries to satisfy an
-        # unsatisfiable rule, so letting a look reset the ceiling would mean the
-        # ceiling never arrives in the one situation it exists for.
-        allow()
-
-    # THE CEILING. See the module docstring: a refusal can be correct about the
-    # transcript file and wrong about the world, because the file lags. Three
-    # consecutive refusals of acting tools in one turn is that condition, not a
-    # rule being ignored, so the arm stands down for this turn and says so where
-    # the owner can read it.
-    if state.get("pre_blocks", 0) >= PRE_TOOL_MAX_BLOCKS:
-        print(
-            json.dumps(
-                {
-                    "systemMessage": (
-                        "ADVISOR GATE STOOD DOWN for this turn after "
-                        f"{PRE_TOOL_MAX_BLOCKS} consecutive refusals.\n\n"
-                        "That many refusals in a row, with a consult performed "
-                        "before each, means this guard is reading a transcript "
-                        "file that lags the live conversation — the remedy it "
-                        "asks for has already been done and cannot be seen. "
-                        "Refusing again would wedge the session, not enforce "
-                        "anything.\n\n"
-                        "The rule still stands: consult the advisor and print "
-                        "its plan before acting. The owner should know this arm "
-                        "is not enforcing it right now."
-                    )
-                }
-            )
-        )
-        sys.exit(0)
+    late = _late_note(caught_up)
 
     index = consult_index(turn)
     if index < 0:
-        refuse(
+        deny_tool(
             "NO CONSULT, NO ACTION.\n\n"
             f"This turn has not called the advisor, and `{tool}` would act on it "
             "anyway. Consulting after the fact is not consulting.\n\n"
             "Call `advisor()` now. It takes no arguments and forwards this whole "
             "conversation. Then PRINT the step-by-step plan it gives you, in "
-            "numbered steps, and follow that plan."
+            "numbered steps, and follow that plan." + late
         )
 
     if not plan_printed_after(turn, index):
-        refuse(
+        deny_tool(
             "THE PLAN WAS NOT PRINTED.\n\n"
             "The advisor was consulted in this turn, but nothing of substance was "
             "written down afterwards, so the advice it gave is invisible to the "
             "person who has to live with the result — and a silent deviation from "
             "it would be invisible too.\n\n"
             "Print the advisor's step-by-step plan as numbered steps "
-            f"(at least {MIN_PLAN_CHARS} characters), then act on it."
+            f"(at least {MIN_PLAN_CHARS} characters of visible text), then act on it."
+            + late
         )
 
     if not grounded_before(turn, index):
-        refuse(
+        deny_tool(
             "THE ADVICE WAS NOT GROUNDED IN THIS CODEBASE.\n\n"
             "The advisor was consulted and a plan was printed, but nothing in this "
             "turn looked at the actual code before asking. The advisor has NO "
@@ -630,29 +714,76 @@ def handle_pre_tool_use(payload, turn, state):
             "question, or `Read` the files. Read/Grep/Glob/codegraph are exempt "
             "from this guard precisely so this step is always available.\n"
             "  2. CONSULT again, so the advisor sees what you just read.\n"
-            "  3. Print the plan, then act."
+            "  3. Print the plan, then act." + late
         )
 
     # A destructive act with another one already run since the last consult would
     # be the second in a row on a single piece of advice.
     command = _command_of(payload)
     destroys = (command and is_destructive(command)) or _overwrites_existing_file(payload)
-    unadvised = destroys and any(
-        position > index for position in destructive_calls_in(turn)
-    )
-    if unadvised:
-        refuse(
+    if destroys and any(position > index for position in destructive_calls_in(turn)):
+        deny_tool(
             "A DESTRUCTIVE ACTION NEEDS ITS OWN CONSULT.\n\n"
             "This command changes the world in a way an apology cannot undo, and "
             "another destructive command has already run in this turn since the "
             "last consult. One consult does not cover a sequence of them: a turn "
             "that consulted once and then swept 544 files deleted a file the test "
             "suite reads, and did not find out until afterwards.\n\n"
-            "Call `advisor()` again, print what it says, then run this command."
+            "Call `advisor()` again, print what it says, then run this command." + late
         )
 
-    state["pre_blocks"] = 0
-    write_state(state)
+    allow()
+
+
+def handle_stop(turn, entries):
+    """Gate the reply. A consult in the turn for every model; a closing consult
+    after the last action, with a report in front of it, off Fable."""
+    if not consulted(turn):
+        block(
+            HEADLINE + "\n\n"
+            "You are about to answer without having called the advisor in this turn.\n\n"
+            "The owner asked for this at least five times in one session, and it was "
+            "broken after every one — including replies that opened with the words "
+            "\"consulting the advisor now\" and then did not call it. Saying yes is "
+            "not doing it, and this hook exists because the difference was invisible "
+            "to everyone except the transcript.\n\n"
+            "Call `advisor()` now — it takes no arguments and forwards this whole "
+            "conversation — read what it says, then reply."
+        )
+
+    if is_fable(session_model(entries)):
+        allow()
+
+    last_act = last_acting_call_index(turn)
+    if last_act < 0:
+        allow()  # the turn only looked and consulted; there is no work to show
+
+    index = consult_index(turn)
+    if index < last_act:
+        block(
+            "SHOW THE ADVISOR WHAT YOU DID.\n\n"
+            "This session is not on Fable, and the owner's ruling for that case is "
+            "that the advisor sees the finished work before the owner does. The last "
+            "consult in this turn came BEFORE the last action, so the advisor has "
+            "seen a plan and not the result.\n\n"
+            "Write a short report of what was done against the plan — what the "
+            "advisor said, what actually ran, what the evidence shows — then call "
+            "`advisor()` again, then reply. Anything the advisor asks to fix is an "
+            "action, and an action after the closing consult reopens this "
+            "requirement."
+        )
+
+    if visible_chars(turn, last_act + 1, index) < MIN_PLAN_CHARS:
+        block(
+            "THE ADVISOR WAS NOT SHOWN A REPORT.\n\n"
+            "The closing consult came after the last action, but nothing of "
+            "substance was written between the two, so the advisor was asked to "
+            "judge work it had to reconstruct from tool output alone.\n\n"
+            f"Write the report first (at least {MIN_PLAN_CHARS} characters of visible "
+            "text: what the plan said, what was done, what the evidence shows), then "
+            "call `advisor()`, then reply."
+        )
+
     allow()
 
 
@@ -664,59 +795,27 @@ def main():
         payload = json.load(sys.stdin)
     except Exception:
         allow()
+    if not isinstance(payload, dict):
+        allow()
 
     transcript = payload.get("transcript_path")
     if not transcript:
         allow()
 
-    session = payload.get("session_id") or "unknown"
-
     event = payload.get("hook_event_name") or ""
     if event == "PreToolUse":
-        entries = records(transcript)
-        turn = turn_slice(entries)
-        if turn is None:
-            allow()  # no human turn in view; nothing has been asked yet
-        state = read_state()
-        here = turn_id(entries)
-        # A new session, or the owner speaking, starts the tally again. Both are
-        # genuinely new ground to be advised about, and neither is the lagging
-        # transcript the ceiling exists for.
-        if state.get("session") != session or state.get("turn") != here:
-            state = {"session": session, "turn": here, "blocks": 0, "pre_blocks": 0,
-                     "ts": time.time()}
-        handle_pre_tool_use(payload, turn, state)
+        if (payload.get("tool_name") or "") in EXEMPT_TOOLS:
+            allow()
+        if _is_subagent_call(payload):
+            allow()
+        caught_up = wait_for_call_record(transcript, payload.get("tool_use_id"))
+        turn = turn_slice(records(transcript))
+        handle_pre_tool_use(payload, turn, caught_up)
         allow()
-
-    state = read_state()
-    if state.get("session") != session:
-        state = {"session": session, "blocks": 0, "ts": time.time()}
-    if state.get("blocks", 0) >= MAX_BLOCKS:
-        allow()  # the advisor itself may be down; never wedge the session shut
 
     entries = records(transcript)
-    turn = turn_slice(entries)
-    if turn is None:
-        allow()  # no human turn in view; nothing was asked
-
-    if consulted(turn):
-        state["blocks"] = 0
-        write_state(state)
-        allow()
-
-    state["blocks"] = state.get("blocks", 0) + 1
-    write_state(state)
-    block(
-        HEADLINE + "\n\n"
-        "You are about to answer without having called the advisor in this turn.\n\n"
-        "The owner asked for this at least five times in one session, and it was "
-        "broken after every one — including replies that opened with the words "
-        "\"consulting the advisor now\" and then did not call it. Saying yes is "
-        "not doing it, and this hook exists because the difference was invisible "
-        "to everyone except the transcript.\n\n"
-        "Call `advisor()` now — it takes no arguments and forwards this whole "
-        "conversation — read what it says, then reply."
-    )
+    handle_stop(turn_slice(entries), entries)
+    allow()
 
 
 if __name__ == "__main__":
