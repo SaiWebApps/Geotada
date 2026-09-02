@@ -19,23 +19,40 @@ the wrong thing.
 
 ---
 
-## Step 0 — read before researching (do this yourself, do NOT delegate)
+## Step 0 — ground yourself in the code (do this yourself, do NOT delegate)
 
-Re-deriving a known answer is time theft. In order:
+**Never plan from memory, and never plan from a previous plan.** Owner ruling,
+2026-09-02: "Anything from memory is a lie." A recalled fact has no line number,
+so it cannot be wrong in a way anyone can see. Every claim you make about this
+repository points at a file, a line, a commit hash, or a persistent asset the
+owner can open. This is not a preference about tone; it is the difference between
+a plan about this codebase and a plan about software in general.
 
-1. `~/.claude/projects/*/memory/MEMORY.md` — the index of prior findings. Read any
-   entry whose one-line hook touches this task, then that entry's file.
-2. `.claude/LEARNINGS.md` — numbered incident→rule entries.
-3. `specs/` — is there an existing directory for this topic? A prior
-   `state.json`, `findings/`, or `run-context.md` is prior work, not noise.
-4. `CLAUDE.md`, and `specs/NORTHSTAR.md` for anything product-shaped. (`AGENTS.md`
-   used to be listed here and does not exist — the 2026-08-18 protocol files were
-   deleted on purpose.)
+That rules out three sources this file used to send you to, and each was deleted
+for the same reason:
 
-Memory reflects what was true when written. If an entry names a file, flag, or
-Make target, **verify it still exists** before planning around it — rot is
-proven here: `specs/2026-07-12-new-city-onboarding/state.json` cites
-`make test-local` and `make test-collect` as proof and neither target exists any more.
+- **The memory directory.** Forbidden outright. Do not read it, quote it, or
+  "verify" a line of it.
+- **`specs/`.** Deleted 2026-09-02 — plans and specs are the agent's own scratch,
+  never product. `.claude/hooks/production-junk-patterns.json` lists the path as
+  `forbidden`, checked before the acknowledge token, so it cannot come back.
+- **A prior run's write-up.** Rot is proven: the deleted
+  `2026-07-12-new-city-onboarding` state file cited `make test-local` and
+  `make test-collect` as its proof, and neither target has existed for months.
+
+Ground yourself in these instead, in order:
+
+1. **The code.** `mcp__codegraph__codegraph_explore` first — it returns verbatim
+   line-numbered source plus the call paths, in one call. Then fan out
+   `Agent(subagent_type:'Explore')`, one per surface (`src/`, `mobile/lib/`,
+   `frontend/`, `scripts/`, `tests/`, `.claude/`), in a SINGLE message so they run
+   concurrently. Ask each what exists, what is half-built, and what has no test.
+2. **`.claude/LEARNINGS.md`** — numbered incident→rule entries.
+3. **`CLAUDE.md`** — the project's coding rules.
+4. **The tracker** — `python3 .claude/ledger/track.py show --json` is what the
+   last run actually recorded, written by a command that re-ran the tests itself.
+5. **The published progress artifact**, if the owner has one. It is a persistent
+   asset they can read, which a memory entry is not.
 
 Then confirm the baseline is green (`make lint`) and record it in `baseline`.
 
@@ -214,10 +231,15 @@ author. Three writes:
   story it serves, carrying its `test_command`, `files`, `depends_on`,
   `maxAttempts` and the criteria it covers.
 
-Also write `specs/{YYYY-MM-DD}-{slug}/run-context.md` (tier, decisions, the FULL
-acceptance-criteria list, baseline) and create `findings/` — every back-half agent
-reads that context **by path** instead of having it pasted into N prompts. Gate
-commands are not yours to pin; see Step 3.
+Also write `.claude/runs/{YYYY-MM-DD}-{slug}/run-context.md` (tier, decisions, the
+FULL acceptance-criteria list, baseline) and create `findings/` beside it — every
+back-half agent reads that context **by path** instead of having it pasted into N
+prompts. Gate commands are not yours to pin; see Step 3.
+
+`.claude/runs/` and not `specs/`: a run folder is this machine's scratch for one
+run, and `.gitignore` excludes it under the `.claude/*` rule, so it can never be
+committed. `specs/` was where these went until 2026-09-02 and is now a `forbidden`
+prefix in the junk guard — a step that writes there will be refused.
 
 Then present to the human, in one screen:
 
@@ -274,7 +296,7 @@ Only after the human says go, in this order:
    Workflow({
      scriptPath: ".claude/team-engine.js",
      args: {
-       spec: "specs/{date}-{slug}",
+       spec: ".claude/runs/{date}-{slug}",
        repo: "<absolute path to this checkout>",
        now: "<ISO-8601 now>"
      }

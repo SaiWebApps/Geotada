@@ -280,6 +280,84 @@ def test_the_acknowledge_token_lets_a_deliberate_keep_through():
     assert not denied(decide(f"git add tests/reports  # {TOKEN} — the owner asked"))
 
 
+# ------------------------------------- the hole: one appended word undid every rule
+
+
+def test_a_forbidden_tree_is_refused_even_with_the_acknowledge_token(tmp_path):
+    """`specs/` came back, twice, because every refusal was one word from undone.
+
+    Every other verdict here ends "append KEEP-THIS-ARTIFACT and it goes in",
+    and `main` honoured that token before it judged anything at all. That is the
+    right shape for a judgement about one file and the wrong shape for a standing
+    decision about a whole tree: the next session sees a command that worked, not
+    a ruling that was overridden. The forbidden list is read FIRST for exactly
+    that reason, and this is the assertion that keeps it first.
+    """
+    repo = scratch_repo(tmp_path)
+    (repo / ".gitignore").write_text("specs/\n")
+    (repo / "specs").mkdir()
+    (repo / "specs" / "plan.md").write_text("# a plan\n")
+
+    forced = decide_in(repo, "git add -f specs/plan.md")
+    assert denied(forced)
+    assert "banned" in reason(forced)
+
+    bought = decide_in(repo, f"git add -f specs/plan.md  # {TOKEN} — I really mean it")
+    assert denied(bought), "the token must not reach a forbidden tree"
+    assert "does NOT lift this one" in reason(bought)
+
+
+def test_the_forbidden_tree_is_refused_by_its_bare_directory_name(tmp_path):
+    """`git add specs` and `git add specs/plan.md` are the same intention."""
+    repo = scratch_repo(tmp_path)
+    (repo / "specs").mkdir()
+    (repo / "specs" / "plan.md").write_text("# a plan\n")
+    assert denied(decide_in(repo, "git add -f specs"))
+
+
+def test_every_spelling_of_the_same_path_is_the_same_path(tmp_path):
+    """`./specs/x` and `/abs/repo/specs/x` are the file `specs/x`, and git agrees.
+
+    Measured 2026-09-02: the forbidden arm refused `git add -f specs/plan.md`
+    and ALLOWED `git add -f ./specs/plan.md`, which staged it with exit 0. Every
+    rule in the guard compares strings, so three spellings were three files and
+    only one was judged. The absolute form is the likely one, not a corner case —
+    `ledger-guard.py` refuses a bare `make`/`pytest` command and demands an
+    absolute path, so this repo trains sessions to write them.
+    """
+    repo = scratch_repo(tmp_path)
+    (repo / "specs").mkdir()
+    (repo / "specs" / "plan.md").write_text("# a plan\n")
+
+    for spelling in ["specs/plan.md", "./specs/plan.md", str(repo / "specs" / "plan.md")]:
+        assert denied(decide_in(repo, f"git add -f {spelling}")), spelling
+        with_token = decide_in(repo, f"git add -f {spelling}  # {TOKEN}")
+        assert denied(with_token), f"{spelling} bought past with the token"
+
+
+def test_normalizing_a_path_does_not_reach_outside_the_repo(tmp_path):
+    """A pathspec git would not stage is returned untouched, never guessed at."""
+    guard = _guard_module()
+    repo = scratch_repo(tmp_path)
+    outside = "/etc/hosts"
+    assert guard._repo_relative(str(repo), outside) == outside
+    assert guard._repo_relative(str(repo), "./specs/plan.md") == "specs/plan.md"
+
+
+def test_the_forbidden_list_names_specs_and_points_somewhere_else(tmp_path):
+    """A ban with no alternative is a ban someone routes around."""
+    prefixes = [rule["prefix"] for rule in CONFIG.get("forbidden", [])]
+    assert "specs/" in prefixes
+    why = next(r["why"] for r in CONFIG["forbidden"] if r["prefix"] == "specs/")
+    assert ".claude/runs/" in why, "say where a run folder goes instead"
+
+
+def test_the_forbidden_check_leaves_ordinary_product_files_alone(tmp_path):
+    """The new arm must not widen. Only what the list names is refused."""
+    assert not denied(decide("git add src/tour/density.py"))
+    assert not denied(decide("git add mobile/lib/main.dart"))
+
+
 # ---------------------------------------------- the hole: the guard blocked its own cleanup
 
 

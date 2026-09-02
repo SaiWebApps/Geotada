@@ -58,7 +58,6 @@ from src.tour.routing_client import RoutingClient
 LIVE_REVIEW_APPROVAL_ENV = "ONDOWAY_TOUR_BATCH_REVIEW_APPROVED"
 FACT_CANARY_UNIT_ID = "fact:paris-west-axis-90"
 ROOT = Path(__file__).resolve().parents[1]
-QUALITY_SPEC = ROOT / "specs" / "2026-07-21-tour-certification"
 DEFAULT_REVIEW_ROOT = ROOT / "data" / "certification" / "tour-batch-review-v2"
 LEGACY_REVIEW_ROOT = ROOT / "data" / "certification" / "tour-batch-review-v1"
 

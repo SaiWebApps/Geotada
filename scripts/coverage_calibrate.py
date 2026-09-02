@@ -1,5 +1,5 @@
 """Coverage-judge PROMPT BAKE-OFF: score candidate coverage-judge prompts against the
-labeled calibration set (specs/2026-07-16-tour-craft/coverage_calibration_set.json) so the
+labeled calibration set (fixtures/tour-craft/coverage_calibration_set.json) so the
 winner is picked by ACCURACY on real paraphrase-vs-drop cases, not by guessing.
 
 Each candidate is a {system, user} template with {fact} and {narration} placeholders; the
@@ -27,7 +27,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-_SET = Path(__file__).resolve().parents[1] / "specs" / "2026-07-16-tour-craft" / "coverage_calibration_set.json"
+#: The labeled set this bake-off scores against. A fixture the code OPENS, so it
+#: lives under `fixtures/` — `specs/` was deleted 2026-09-02 and is refused by
+#: the junk guard.
+_SET = Path(__file__).resolve().parents[1] / "fixtures" / "tour-craft" / "coverage_calibration_set.json"
 
 # Baseline: the CURRENT strict faithfulness entailment prompt used for coverage today
 # (the one that false-negatives on paraphrase). Included so the bake-off shows the gap.

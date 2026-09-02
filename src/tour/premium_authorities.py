@@ -1,9 +1,13 @@
 """Packaged hashes for the frozen Premium authoring authorities.
 
-The source documents remain reviewable under ``specs/``.  Runtime code imports
-only these pins because production images deliberately exclude the specs tree.
-The packaged copy here is what runs; the specs copy is a document. (The test that
-pinned the two together was retired 2026-08-18 with the other spec-artefact pins.)
+The two manifests these last two hashes are taken from live under
+``fixtures/tour-certification/``, and the reference documents they name live
+under ``fixtures/certification-references/``. Both moved out of a ``specs/``
+tree that was deleted 2026-09-02 by owner ruling; this docstring named that tree
+until the same day. Runtime code imports only the pins below, so a manifest that
+moves does not change what runs — but a pin that no longer matches its manifest
+would go unnoticed, because the test that held the two together was retired
+2026-08-18 with the other frozen-artefact pins.
 """
 
 from __future__ import annotations

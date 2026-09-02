@@ -81,7 +81,10 @@ from src.tour.narration_quality import score_narration
 from src.tour.quality_rubric import Severity, score_tour
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-STANDARD = REPO_ROOT / "specs" / "2026-07-19-tour-quality-standard" / "01-standard.md"
+#: The owner's own gold passage. This script READS it, so it is a fixture and
+#: lives under `fixtures/` — `specs/` was deleted 2026-09-02 and is refused by
+#: the junk guard.
+STANDARD = REPO_ROOT / "fixtures" / "tour-quality-standard" / "01-standard.md"
 GOLD_HEADING = "## 1. The North Star"
 
 #: c987848 fixed the audio clock; tours before it carry a meaningless audio number.

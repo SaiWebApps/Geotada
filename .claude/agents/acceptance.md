@@ -59,7 +59,11 @@ Generate or obtain the REAL output and experience it as the user would:
   description of it. If you could not produce it, say the experience is
   UNVERIFIED — do not vouch for it.
 - Ground every "this is wrong/thin/boring" in what the user would perceive, and
-  in the corpus/spec where relevant (`specs/NORTHSTAR.md`, the tour goldens).
+  in the corpus where relevant — the tour goldens under `fixtures/tour_golden/`,
+  the human reference tours under `fixtures/reference-tours/`, and the owner's
+  own gold passage at `fixtures/tour-quality-standard/01-standard.md`. (This
+  line cited `specs/NORTHSTAR.md` until 2026-09-02; `specs/` was deleted that
+  day and is refused by the junk guard.)
 - You are the last gate before "done" is claimed to the human. Be the harshest
   honest tourist they will ever have.
 

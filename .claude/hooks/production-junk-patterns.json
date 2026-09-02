@@ -2,6 +2,27 @@
   "acknowledge_token": "KEEP-THIS-ARTIFACT",
   "max_listed": 12,
 
+  "_comment_forbidden": [
+    "Trees this repository has banned outright. Checked BEFORE the acknowledge",
+    "token, so no command can buy its way past one — that ordering is the whole",
+    "difference between this list and `keep` or the two verdicts below.",
+    "",
+    "Why it had to exist. Every other refusal in this guard ends the same way:",
+    "append KEEP-THIS-ARTIFACT and the file goes in. That is right for a judgement",
+    "call about one file. It is wrong for a standing decision about a whole tree,",
+    "because the decision is then only ever one word from being undone, and the",
+    "next session does not know it was ever made.",
+    "",
+    "Owner ruling, 2026-09-02: plans and specs are the agent's own working scratch",
+    "and are not part of a production launch. specs/ was deleted and must never",
+    "be committed again. Run folders live under .claude/runs/, which .gitignore",
+    "already excludes, so nothing legitimate needs this path."
+  ],
+  "forbidden": [
+    { "prefix": "specs/",
+      "why": "Plans and specs are the agent's scratch, never product. Deleted 2026-09-02 by owner ruling; a /team run writes its context to .claude/runs/{date}-{slug} instead, which is gitignored." }
+  ],
+
   "_comment_keep": [
     "Exact path prefixes that are product even though nothing in the codebase",
     "names them in text. Matched with startswith on the repo-relative path — no",

@@ -302,6 +302,44 @@ def _render(findings: list[tuple[str, str]], config: dict) -> str:
     return "\n\n".join(blocks)
 
 
+# ── the one list a token cannot buy past ─────────────────────────────────────
+
+
+def _forbidden_hits(paths: list[str], config: dict) -> list[tuple[str, str]]:
+    """Paths under a tree this repository has banned outright, with the reason.
+
+    A different question from the two verdicts above, which ask whether a launch
+    needs THIS file. This one carries a standing decision about a whole tree, so
+    it does not re-litigate the file: being under the prefix is the finding.
+
+    It is checked before the acknowledge token, and that ordering is the entire
+    point. Every other refusal here ends `append KEEP-THIS-ARTIFACT and it goes
+    in`, which is right for a judgement about one file and wrong for a decision
+    meant to outlive the session that made it — a rule one word from being undone
+    is a rule the next session never learns was made. `specs/` was re-created and
+    re-committed across sessions exactly that way.
+
+    Prefix comparison on the repo-relative path, matching `_kept` above: no
+    patterns, so there is no spelling here to misspell. That claim only holds
+    because `_would_enter_history` normalizes every path through
+    `_repo_relative` first — without it `./specs/x` and `/abs/repo/specs/x` were
+    three different strings and only the bare one was judged. The bare directory
+    name is matched too, so `git add specs` is refused alongside
+    `git add specs/plan.md`.
+    """
+    rules = [rule for rule in config.get("forbidden", []) if rule.get("prefix")]
+    if not rules:
+        return []
+    out: list[tuple[str, str]] = []
+    for path in dict.fromkeys(paths):
+        for rule in rules:
+            prefix = rule["prefix"]
+            if path == prefix.rstrip("/") or path.startswith(prefix):
+                out.append((path, rule.get("why", "")))
+                break
+    return out
+
+
 # ── what a command would put in the index ────────────────────────────────────
 
 
@@ -545,6 +583,36 @@ def _segments(command: str) -> list[list[str]]:
     return [s for s in segments if s]
 
 
+def _repo_relative(root: str, path: str) -> str:
+    """The path as git names it in the index: repo-relative, no `./`, not absolute.
+
+    A pathspec on a command line is whatever the typist wrote. Git resolves
+    `specs/x`, `./specs/x` and `/Users/…/ondoway/specs/x` to ONE entry in the
+    index; every rule in this file compares strings, so without this they are
+    three different files and only the first is ever judged.
+
+    Measured 2026-09-02, against the forbidden arm: `git add -f specs/plan.md`
+    was refused and `git add -f ./specs/plan.md` was allowed — and really staged
+    it, exit 0. The absolute spelling is the likelier one here, not a corner
+    case: `.claude/hooks/ledger-guard.py` refuses a bare `make`/`pytest`/`uv`
+    command and demands an absolute path, so this repo actively trains every
+    session toward writing them.
+
+    Normalizing HERE rather than in each comparator is the point — `_kept`,
+    `_findings` and `_forbidden_hits` all read this function's output, so one
+    fix covers three rules instead of racing them. A path outside the repo, or
+    one that will not resolve, is returned untouched: git would not stage it
+    either, and guessing is worse than passing it through.
+    """
+    try:
+        candidate = Path(path)
+        if not candidate.is_absolute():
+            candidate = Path(root) / path
+        return str(candidate.resolve().relative_to(Path(root).resolve()))
+    except Exception:
+        return path
+
+
 def _would_enter_history(command: str, root: str) -> list[str]:
     """Paths this command line would add to, or commit from, the index."""
     paths: list[str] = []
@@ -577,7 +645,8 @@ def _would_enter_history(command: str, root: str) -> list[str]:
             else:
                 for spec in specs:
                     paths.extend(_expand(root, spec.rstrip("/")))
-    return paths
+    # ONE normalization point for all three rules below. See _repo_relative.
+    return [_repo_relative(root, p) for p in paths]
 
 
 # ── decisions ────────────────────────────────────────────────────────────────
@@ -602,6 +671,40 @@ def _deny_tool(reason: str) -> None:
 def _block_stop(reason: str) -> None:
     print(json.dumps({"decision": "block", "reason": reason}))
     sys.exit(0)
+
+
+def _handle_forbidden(payload: dict, config: dict) -> None:
+    """Refuse a banned tree outright. Runs BEFORE the acknowledge token is read."""
+    if (payload.get("tool_name") or "") != "Bash":
+        return
+    command = str((payload.get("tool_input") or {}).get("command") or "")
+    if not command:
+        return
+
+    hits = _forbidden_hits(_would_enter_history(command, _repo_root()), config)
+    if not hits:
+        return
+
+    limit = int(config.get("max_listed", 12))
+    paths = sorted(path for path, _why in hits)
+    shown = "\n".join(f"    {path}" for path in paths[:limit])
+    if len(paths) > limit:
+        shown += f"\n    …and {len(paths) - limit} more"
+    whys = sorted({why for _path, why in hits if why})
+
+    _deny_tool(
+        "BLOCKED by the production-junk guard "
+        "(.claude/hooks/production-junk-guard.py). This command would commit "
+        f"{len(hits)} file(s) under a tree this repository has banned "
+        "outright:\n\n"
+        + shown
+        + "\n\n"
+        + "\n".join(f"  {why}" for why in whys)
+        + "\n\n  → Do not commit it. The acknowledge token does NOT lift this "
+        "one — it is checked first, on purpose, so a standing decision cannot "
+        "be undone by one word appended to a command. Put the file where the "
+        "reason above says it belongs."
+    )
 
 
 def _handle_pre_tool_use(payload: dict, config: dict) -> None:
@@ -661,6 +764,11 @@ def main() -> None:
     config = _load()
     if not config:
         sys.exit(0)
+
+    # ABOVE THE TOKEN, DELIBERATELY. A banned tree is a standing decision, and a
+    # decision that any command can append one word to undo is not standing.
+    if (payload.get("hook_event_name") or "") != "Stop":
+        _handle_forbidden(payload, config)
 
     token = config.get("acknowledge_token", "")
     command = str((payload.get("tool_input") or {}).get("command") or "")

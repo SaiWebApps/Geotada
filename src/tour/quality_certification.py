@@ -2760,6 +2760,46 @@ def certify_quality(
     )
 
 
+#: Where a reference document the frozen manifests name actually lives today.
+#:
+#: The manifests are SEALED BY HASH. `reference_manifest_sha256` is derived from
+#: their exact bytes and is bound into every candidate identity in the frozen
+#: batch under `data/certification/tour-batch-v1`, which is the control arm a
+#: regeneration is compared against. Editing a path inside a manifest would
+#: change that hash and silently invalidate the comparison. So a manifest keeps
+#: saying where a document WAS, and this table says where it IS.
+#:
+#: The move: `specs/` was deleted 2026-09-02 by owner ruling — plans and specs
+#: are scratch, not product — and three reference documents were living inside
+#: it. They are inputs this module OPENS at runtime, which makes them fixtures,
+#: so they went to `fixtures/` with the rest. Nothing was lost in the move: the
+#: loader below verifies each document's bytes against the manifest's own
+#: sha256, so a wrong file at the new path fails exactly as loudly as a missing
+#: one.
+#:
+#: This was found the expensive way. A path living in JSON DATA rather than in
+#: source is invisible to every search over the code, so two independent sweeps
+#: for "what reads a file under specs/" reported all-clear, and the full suite
+#: went red on 33 tests in this module. Any future move of these documents needs
+#: a line here, not a search.
+REFERENCE_DOCUMENT_MOVES: tuple[tuple[str, str], ...] = (
+    ("specs/", "fixtures/certification-references/"),
+)
+
+
+def reference_document_path(repo_root: Path, manifest_path: str) -> Path:
+    """The on-disk path for a document the frozen manifest names.
+
+    A prefix swap and nothing cleverer: the rest of the manifest's path is kept
+    exactly, so two documents can never collide and the mapping stays readable
+    beside the manifest that motivated it.
+    """
+    for was, now in REFERENCE_DOCUMENT_MOVES:
+        if manifest_path.startswith(was):
+            return repo_root / (now + manifest_path[len(was):])
+    return repo_root / manifest_path
+
+
 def load_enjoyment_anchors(
     *,
     repo_root: Path,
@@ -2777,7 +2817,7 @@ def load_enjoyment_anchors(
         if expected not in {"PASS", "FAIL"}:
             continue
         document = docs[anchor["reference_document_id"]]
-        path = repo_root / document["path"]
+        path = reference_document_path(repo_root, document["path"])
         raw = path.read_bytes()
         if _sha256_bytes(raw) != document["sha256"]:
             raise ValueError(f"reference document hash mismatch: {document['id']}")

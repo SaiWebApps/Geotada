@@ -48,7 +48,11 @@ from src.tour.routing_client import RoutingClient
 from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = ROOT / "specs" / "2026-07-21-tour-certification"
+#: The frozen route this lane replays. Under `fixtures/`, beside the two
+#: certification manifests, because these are inputs the code OPENS — not a
+#: planning document. `specs/` was deleted 2026-09-02 and is refused by the junk
+#: guard; a fixture that lived there was one `rm -rf` from breaking this script.
+SPEC = ROOT / "fixtures" / "tour-certification"
 LIVE_APPROVAL_ENV = "ONDOWAY_TEXT_CANDIDATE_APPROVED"
 INPUT_USD_PER_MILLION_TOKENS = 5
 OUTPUT_USD_PER_MILLION_TOKENS = 25

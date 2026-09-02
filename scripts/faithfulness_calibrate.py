@@ -1,5 +1,5 @@
 """Faithfulness-judge PROMPT BAKE-OFF: score candidate faithfulness-judge prompts against
-the labeled set (specs/2026-07-16-tour-craft/faithfulness_calibration_set.json) so the
+the labeled set (fixtures/tour-craft/faithfulness_calibration_set.json) so the
 winner is picked by ACCURACY on real grounded-recombination-vs-invention cases, not guessed.
 
 Each item is {facts: [...], claim, supported}. A candidate is a {system, user} template with
@@ -30,7 +30,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-_SET = Path(__file__).resolve().parents[1] / "specs" / "2026-07-16-tour-craft" / "faithfulness_calibration_set.json"
+#: The labeled set this bake-off scores against. A fixture the code OPENS, so it
+#: lives under `fixtures/` — `specs/` was deleted 2026-09-02 and is refused by
+#: the junk guard.
+_SET = Path(__file__).resolve().parents[1] / "fixtures" / "tour-craft" / "faithfulness_calibration_set.json"
 
 # Baseline: the CURRENT strict entailment prompt used for the faithfulness direction today
 # (src/tour/verify.py _ENTAILMENT_PROMPT). Included so the bake-off shows its FN gap on

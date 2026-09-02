@@ -1,7 +1,7 @@
 export const meta = {
   name: 'team-engine',
   description: 'INTERNAL execution engine for /team — not a command you type. /team invokes it after you approve its plan in chat. Executes an approved feature from the tracker database: per step Build -> Gate -> tier-sized skeptic panel -> Judge -> persist through `track`. Hard-capped, so it always terminates and reports. Does NOT commit.',
-  whenToUse: 'Do NOT invoke this directly — use `/team <task>` and say "go"; it calls this for you. Direct invocation is for resuming a partially-run ledger only. Requires a row in the tracker\'s `approvals` table (it refuses to fan out otherwise). args: {spec: "specs/2026-07-25-slug" (required), now: ISO-8601 (required — Date.now() is forbidden in workflow scripts), estimateOnly?: bool, maxSteps?: int, maxAttempts?: int (default 2), stepsPerPhase?: int (default 3), retryBlocked?: bool}.',
+  whenToUse: 'Do NOT invoke this directly — use `/team <task>` and say "go"; it calls this for you. Direct invocation is for resuming a partially-run ledger only. Requires a row in the tracker\'s `approvals` table (it refuses to fan out otherwise). args: {spec: ".claude/runs/2026-09-02-slug" (required — a gitignored run folder; `specs/` was deleted 2026-09-02 and is refused by the junk guard), now: ISO-8601 (required — Date.now() is forbidden in workflow scripts), estimateOnly?: bool, maxSteps?: int, maxAttempts?: int (default 2), stepsPerPhase?: int (default 3), retryBlocked?: bool}.',
   phases: [
     { title: 'Preflight', detail: 'load ledger, check approval, validate every command against the LIVE Makefile, probe infra, self-test the engine, print the size of the fan-out' },
     { title: 'Build', detail: 'one developer per step, red-first, minimal diff' },
@@ -31,8 +31,9 @@ const REPO_FROM_NODE =
 
 // ── BLAST RADIUS — read before changing the gate ladder ──────────────────────
 // A cheap rung here is cheap in TIME. It is never read-only.
-// `make test-file` depends on _ensure-test-db + _ensure-dev-data + valhalla-up
-// (Makefile:144-146), so a per-step gate will START the shared 7688/7687 Neo4j
+// `make test-file` (Makefile:276-284) preflights $(PRE_PYTEST) at Makefile:281,
+// which Makefile:79 defines as `uv python-deps db-test db-dev dev-data valhalla`,
+// so a per-step gate will START the shared 7688/7687 Neo4j
 // containers, RUN scripts/ensure_dev_data.py which WRITES to the shared 7687 dev
 // graph, and `docker compose up -d valhalla` from the git common dir. That last
 // shape is the same one that killed a live Valhalla container in a logged

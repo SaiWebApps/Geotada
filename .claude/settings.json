@@ -2,6 +2,7 @@
   "worktree": {
     "baseRef": "head"
   },
+  "advisorModel": "claude-fable-5-1",
   "hooks": {
     "PreToolUse": [
       {
@@ -116,6 +117,16 @@
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/citation-guard.py",
             "timeout": 20,
             "statusMessage": "citation guard: proving every claim about this repo"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/plain-words-guard.py",
+            "timeout": 20,
+            "statusMessage": "plain-words gate: replies the owner can read"
           }
         ]
       },

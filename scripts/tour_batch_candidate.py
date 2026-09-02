@@ -46,7 +46,9 @@ from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus
 
 ROOT = Path(__file__).resolve().parents[1]
-BATCH_SPEC = ROOT / "specs" / "2026-07-22-tour-batch-regression"
+#: The frozen request manifest. A fixture the code OPENS, so it lives under
+#: `fixtures/` — `specs/` was deleted 2026-09-02 and is refused by the junk guard.
+BATCH_SPEC = ROOT / "fixtures" / "tour-batch-regression"
 MANIFEST_PATH = BATCH_SPEC / "requests.v1.json"
 DEFAULT_OUTPUT_ROOT = ROOT / "data" / "certification" / "tour-batch-v1"
 LIVE_APPROVAL_ENV = "ONDOWAY_TOUR_BATCH_APPROVED"
