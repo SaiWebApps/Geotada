@@ -18,6 +18,12 @@
             "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/code-grounding-guard.py",
             "timeout": 20,
             "statusMessage": "verifier gate: the shadow must be able to read the plan"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-shadow-check.py",
+            "timeout": 150,
+            "statusMessage": "pre-shadow check: citations, numbers and the engine guard"
           }
         ]
       },
@@ -81,6 +87,23 @@
             "asyncRewake": true,
             "timeout": 1080,
             "statusMessage": "Watching Render deploy after git push\u2026"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-recorder.py",
+            "timeout": 15,
+            "statusMessage": "run recorder: writing down what the command actually returned"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-recorder.py",
+            "timeout": 15,
+            "statusMessage": "run recorder: stamping the file and when it changed"
           }
         ]
       }

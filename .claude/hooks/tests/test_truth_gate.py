@@ -13,11 +13,12 @@ guarding nothing" failure (advisor-consult-guard.py's `server_tool_use`
 postmortem).
 
 THE FAKE BINARY BRANCHES ON --model, because the real hook always calls TWO
-different models (`fable` for the advisor, `claude-sonnet-5` for the
-verifier) with the SAME `ONDOWAY_TRUTH_GATE_CLAUDE` binary. It reads
+different models (`claude-fable-5-1` for the advisor, `claude-sonnet-5` for
+the verifier) with the SAME `ONDOWAY_TRUTH_GATE_CLAUDE` binary. It reads
 `FAKE_CLAUDE_<TAG>_RESPONSE` / `_MODE` / `_HANG_SECONDS` / `_LIE_IF_CONTAINS`
-env vars, where `<TAG>` is the model name upper-cased with `-`/`.` turned to
-`_` — `FABLE` for the advisor, `CLAUDE_SONNET_5` for the verifier. This
+/ `_PROMPT_DUMP` env vars, where `<TAG>` is the model name upper-cased with
+`-`/`.` turned to `_` — `CLAUDE_FABLE_5_1` for the advisor,
+`CLAUDE_SONNET_5` for the verifier. This
 assumes the real CLI always receives `-p <prompt>` and `--model <name>` as
 separate argv tokens, which is what no-flinch.py's own subprocess call does;
 if a future CLI version ever required the prompt positionally instead, this
@@ -61,7 +62,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 GUARD = REPO / ".claude" / "hooks" / "truth-gate.py"
 
-ADVISOR_TAG = "FABLE"
+ADVISOR_TAG = "CLAUDE_FABLE_5_1"
 VERIFIER_TAG = "CLAUDE_SONNET_5"
 
 REAL_COMMIT = "10957632"
@@ -88,6 +89,13 @@ def tag(m):
 
 def getenv(suffix, default=None):
     return os.environ.get("FAKE_CLAUDE_" + tag(model) + "_" + suffix, default)
+
+# The whole prompt this judge was handed, for a test that asks what the hook
+# actually put in front of it — the evidence block included.
+dump = getenv("PROMPT_DUMP")
+if dump and prompt is not None:
+    with open(dump, "w") as fh:
+        fh.write(prompt)
 
 mode = getenv("MODE", "")
 if mode == "fail":
@@ -134,7 +142,8 @@ def fake_claude(tmp_path):
     return path
 
 
-def judge_env(tag, *, response=None, mode=None, hang_seconds=None, lie_if_contains=None):
+def judge_env(tag, *, response=None, mode=None, hang_seconds=None, lie_if_contains=None,
+              prompt_dump=None):
     prefix = f"FAKE_CLAUDE_{tag}_"
     out = {}
     if response is not None:
@@ -145,6 +154,8 @@ def judge_env(tag, *, response=None, mode=None, hang_seconds=None, lie_if_contai
         out[prefix + "HANG_SECONDS"] = str(hang_seconds)
     if lie_if_contains is not None:
         out[prefix + "LIE_IF_CONTAINS"] = lie_if_contains
+    if prompt_dump is not None:
+        out[prefix + "PROMPT_DUMP"] = str(prompt_dump)
     return out
 
 
@@ -654,3 +665,80 @@ def test_the_two_judges_run_in_parallel_not_sequentially(tmp_path):
     # A crash guard, not a performance bar: 10s is the judge timeout itself, so
     # only a genuine hang reaches it.
     assert elapsed < 10, f"the hook took {elapsed:.2f}s, which is a hang"
+
+
+# ------------------------------------------------------------- the evidence block
+
+
+def test_a_named_claude_file_reaches_the_judge_verbatim(tmp_path):
+    """The bug this block exists for, 2026-09-01: the judge subprocess gets
+    EPERM on everything under `.claude/`, so it reasoned from the last commit
+    and called TRUE statements lies. The hook can read the working tree, so it
+    now hands the judge the contents of every `.claude/` file the reply names.
+    """
+    dump = tmp_path / "advisor-prompt.txt"
+    source = REPO / ".claude" / "hooks" / "truth-gate.py"
+    records = [human(), assistant_text("I changed `.claude/hooks/truth-gate.py:365-366` today.")]
+
+    decision = decide(tmp_path, records, extra_env=judge_env(ADVISOR_TAG, prompt_dump=dump))
+    assert decision == {}, decision
+
+    prompt = dump.read_text()
+    assert "EVIDENCE BLOCK" in prompt
+    assert f"VERBATIM CONTENTS OF {source}" in prompt
+    assert "No reply reaches the owner until an advisor and a verifier both call it true." in prompt
+    if len(source.read_text()) > 20_000:
+        assert "TRUNCATED at 20000 characters" in prompt
+
+
+def test_the_evidence_block_carries_the_working_trees_own_facts(tmp_path):
+    """status, both diffstats, recent history, the wall clock and the mtime of
+    every changed path — the things `git show HEAD:` cannot tell a blind
+    judge, because they describe the working tree rather than the commit."""
+    dump = tmp_path / "verifier-prompt.txt"
+    records = [human(), assistant_text("Nothing in particular.")]
+
+    assert decide(tmp_path, records, extra_env=judge_env(VERIFIER_TAG, prompt_dump=dump)) == {}
+
+    prompt = dump.read_text()
+    for label in (
+        "$ git status --porcelain --untracked-files=all",
+        "$ git diff --stat",
+        "$ git diff --cached --stat",
+        "$ git log -5 --format='%h %ci %s'",
+        "$ date -u",
+        "MTIME OF EVERY CHANGED PATH (UTC):",
+    ):
+        assert label in prompt, label
+    # The rubric still arrives intact behind the block, with its fields filled.
+    assert "THE REPLY TO AUDIT:" in prompt
+    assert "Nothing in particular." in prompt
+    assert "{reply}" not in prompt and "{history_note}" not in prompt
+
+
+def test_a_named_json_file_does_not_break_prompt_building(tmp_path):
+    """The evidence block is prepended BEFORE `.format()` runs, so a brace
+    inside a quoted file would be read as a format field. Braces are doubled
+    for exactly this: a settings.json in the reply must not turn into
+    "could not build its own prompt"."""
+    dump = tmp_path / "brace-prompt.txt"
+    settings = REPO / ".claude" / "settings.json"
+    assert settings.is_file(), "fixture assumes this repo's own settings.json"
+    records = [human(), assistant_text("I read .claude/settings.json and changed nothing.")]
+
+    decision = decide(tmp_path, records, extra_env=judge_env(ADVISOR_TAG, prompt_dump=dump))
+    assert decision == {}, decision
+
+    prompt = dump.read_text()
+    assert f"VERBATIM CONTENTS OF {settings}" in prompt
+    assert "{" in prompt.split("VERBATIM CONTENTS OF")[1]
+
+
+def test_an_unnamed_claude_file_is_not_pasted_in(tmp_path):
+    """Only what the reply actually names — the block is evidence for the
+    statements at hand, not the whole directory."""
+    dump = tmp_path / "quiet-prompt.txt"
+    records = [human(), assistant_text("The tests pass.")]
+
+    assert decide(tmp_path, records, extra_env=judge_env(ADVISOR_TAG, prompt_dump=dump)) == {}
+    assert "VERBATIM CONTENTS OF" not in dump.read_text()
