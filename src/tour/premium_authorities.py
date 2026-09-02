@@ -5,12 +5,14 @@ The two manifests these last two hashes are taken from live under
 deleted 2026-09-02 by owner ruling; this docstring named that tree until the
 same day.
 
-The reference manifest lists 28 documents. Only the THREE its calibration
-anchors point at are ever opened, and those three live under
-``fixtures/certification-references/``. The other 25 resolve to nothing and
-always have — 11 were already dead at the time of the move. The manifest is a
-sealed provenance record, not a promise that every file it names still exists,
-and saying otherwise here would be a claim this file cannot keep.
+The reference manifest lists 28 documents. Only the THREE that the CALIBRATION
+manifest's ``anchors`` point at are ever opened, and those three live under
+``fixtures/certification-references/``. (The reference manifest separately
+classifies four entries as ``calibration_anchor``; that field is not what the
+loader reads.) The other 25 resolve to nothing: 11 were already dead before
+2026-09-02, and 14 were deleted that day along with the tree they sat in. The
+manifest is a sealed provenance record, not a promise that every file it names
+still exists, and saying otherwise here would be a claim this file cannot keep.
 
 Runtime code imports only the pins below, so a manifest that moves does not
 change what runs — but a pin that no longer matches its manifest would go
