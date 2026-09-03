@@ -415,10 +415,20 @@ def generate(
     # pool (or a transit beat shared by adjacent POIs) re-appeared in
     # `_build_anchor_block` after the transit stage.
     consumed_beat_ids: set[str] = set()
+    # A clock-closed stop says so, once, FIRST — before any of its story.
+    closure_lines = _closure_opening_lines(route)
     if poi_beats:
         cold_open_sents, consumed_in_cold_open = _build_cold_open(
             beat_sequence, route, client, tour_input=tour_input, stop_idx=0
         )
+        opening = closure_lines.get(0)
+        if opening is not None:
+            # After the "Settle in." breath, before anything about the place.
+            cold_open_sents = (
+                [cold_open_sents[0], opening, *cold_open_sents[1:]]
+                if cold_open_sents
+                else [opening]
+            )
         sentences.extend(cold_open_sents)
         consumed_beat_ids |= consumed_in_cold_open
 
@@ -438,6 +448,10 @@ def generate(
             for s in transit_sents:
                 if s.source_type == "beat":
                     consumed_beat_ids.add(s.source_id)
+            opening = closure_lines.get(stop_idx)
+            if opening is not None:
+                # The stop's first STATIONARY sentence (transit plays walking).
+                sentences.append(opening)
         anchor_sents = _build_anchor_block(current, stop_idx, skip_beat_ids=consumed_beat_ids)
         sentences.extend(anchor_sents)
         for s in anchor_sents:
@@ -1244,6 +1258,38 @@ def _build_stop_close(
         next_name=next_plan.poi_name if next_plan is not None else None,
     )
     return Sentence(text=text, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx)
+
+
+#: The one spoken acknowledgment at a clock-closed stop. No weekday, no clock
+#: time — the glue invention scan licenses neither, and the schedule detail
+#: stays on the day's notes channel; the voice states the state.
+CLOSED_STOP_LINE_TEMPLATE: str = (
+    "{name} is closed at the moment, so we'll take it in from out here."
+)
+
+
+def _closure_opening_lines(route: Route) -> dict[int, Sentence]:
+    """stop_idx → the closure acknowledgment, for every on-route stop whose
+    door the CLOCK voided (``ClockExclusion.kept_outside`` — never the no-time
+    or dusk notes, which describe places that are not closed and stay on the
+    screen channel). Owner ruling: interior description at a closed stop is
+    welcome — a gift to the visitor who will come back — once the closure is
+    said, once, FIRST. The caller places this as the stop's first stationary
+    sentence; the premium writer receives it in the stitch and may rewrite it
+    (its DOOR block already licenses "closed today")."""
+    closed_ids = {e.poi_id for e in route.clock_exclusions if e.kept_outside}
+    if not closed_ids:
+        return {}
+    return {
+        idx: Sentence(
+            text=CLOSED_STOP_LINE_TEMPLATE.format(name=poi.name),
+            source_id=GLUE_STAGING,
+            source_type="glue",
+            stop_idx=idx,
+        )
+        for idx, poi in enumerate(route.pois)
+        if poi.id in closed_ids
+    }
 
 
 def _drop_door_lines_at_doorless_stops(

@@ -1876,6 +1876,108 @@ def test_a_dateless_route_with_no_door_map_filters_nothing():
     assert any("Step inside" in s.text for s in script.script)
 
 
+def _closed_route(pois, closed_ids):
+    from src.tour.contract import ClockExclusion
+
+    route = _route(pois)
+    return route.model_copy(
+        update={
+            "visit_goes_inside": {p.id: (p.id not in closed_ids) for p in pois},
+            "clock_exclusions": tuple(
+                ClockExclusion(
+                    poi_id=pid, name=pid, reason="closed all day Monday", kept_outside=True
+                )
+                for pid in closed_ids
+            ),
+        }
+    )
+
+
+def test_a_closed_stop_says_so_before_any_of_its_story():
+    """Owner ruling: interior description at a closed stop is fine — a gift to
+    Camille — as long as the closure is acknowledged ONCE, and first, so Aiko
+    is never invited into a shut rotunda and Paulo hears orientation before
+    description. The acknowledgment is the stop's FIRST stationary sentence.
+    UNDO: drop the closure-line emission -> the stop opens on room-13-style
+    content with the word never spoken -> RED."""
+    p1 = _poi("p1", "Pantheon")
+    p2 = _poi("p2", "Musee de Cluny")
+    p1_orient = _beat("p1-orient", "p1", body="Find the dome.", nf="stop_orientation")
+    p1_body = _beat("p1-body", "p1", body="Soufflot designed it.", nf="establishing")
+    p2_body = _beat(
+        "p2-body", "p2", body="The tapestries are in room 13 on the first floor.",
+        nf="establishing",
+    )
+    seq = BeatSequence(poi_beats=(_poi_beats(p1, (p1_orient, p1_body)),
+                                  _poi_beats(p2, (p2_body,))))
+    route = _closed_route((p1, p2), closed_ids={"p2"})
+    script = generate(seq, route, _input(), glue_client=MockGlueClient())
+
+    from src.tour.generation import GLUE_STAGING, is_walk_concurrent
+
+    stop2_stationary = [
+        s for s in script.script if s.stop_idx == 1 and not is_walk_concurrent(s)
+    ]
+    first = stop2_stationary[0]
+    assert first.text == (
+        "Musee de Cluny is closed at the moment, so we'll take it in from out here."
+    ), [s.text for s in stop2_stationary][:3]
+    assert first.source_id == GLUE_STAGING and first.source_type == "glue"
+    # Said ONCE — and Camille keeps her tapestries.
+    said = [s for s in script.script if "closed at the moment" in s.text]
+    assert len(said) == 1
+    assert any("room 13" in s.text for s in script.script)
+    # The line is legal glue: the whole script still validates.
+    assert script.validation.passed is True
+
+
+def test_a_closed_first_stop_says_so_right_after_settle_in():
+    """Stop 0's acknowledgment lands after the 'Settle in.' pacing breath and
+    before any orientation or story content — first thing said ABOUT the place."""
+    poi = _poi("p1", "Pantheon")
+    orient = _beat("o", poi.id, body="Find the dome.", nf="stop_orientation")
+    seq = BeatSequence(poi_beats=(_poi_beats(poi, (orient,)),))
+    route = _closed_route((poi,), closed_ids={poi.id})
+    script = generate(seq, route, _input(), glue_client=MockGlueClient())
+
+    texts = [s.text for s in script.script if s.stop_idx == 0]
+    assert texts[0] == "Settle in."
+    assert texts[1] == (
+        "Pantheon is closed at the moment, so we'll take it in from out here."
+    ), texts[:3]
+
+
+def test_an_open_day_and_screen_only_notes_speak_no_closure_line():
+    """Identity pins: no exclusions → no line, byte-identical; and an exclusion
+    with kept_outside=False (a no-time step-outside, a dusk note, a not-on-route
+    removal) is a SCREEN note, never a spoken one — the place is not closed and
+    saying so would be the checkable lie."""
+    from src.tour.contract import ClockExclusion
+
+    poi = _poi("p1", "Pantheon")
+    body = _beat("b", poi.id, body="Soufflot designed it.", nf="establishing")
+    seq = BeatSequence(poi_beats=(_poi_beats(poi, (body,)),))
+
+    plain_script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+    assert not any("closed at the moment" in s.text for s in plain_script.script)
+
+    no_time = _route((poi,)).model_copy(
+        update={
+            "visit_goes_inside": {poi.id: False},
+            "clock_exclusions": (
+                ClockExclusion(
+                    poi_id=poi.id, name=poi.name,
+                    reason="its interior does not fit the 60 minutes you asked for, "
+                           "so we will see it from the outside",
+                    kept_outside=False,
+                ),
+            ),
+        }
+    )
+    no_time_script = generate(seq, no_time, _input(), glue_client=MockGlueClient())
+    assert not any("closed at the moment" in s.text for s in no_time_script.script)
+
+
 def test_a_dropped_only_invitation_beat_is_not_reported_as_voiced():
     """A beat that was ONLY an invitation at a shut door emits nothing — and
     the voiced roster must say so (the same truth-from-emissions rule the
