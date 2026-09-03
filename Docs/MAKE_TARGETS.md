@@ -76,7 +76,6 @@ process—never a cached or filtered subset.
 | `onboard-city` | Isolated temporary data/registry defaults | No | Yes, with city/modes |
 | `flutter-ipa` | None | No | Yes, with signing toolchain |
 | `testflight` | Credential validation, build-number bump, then fresh IPA | Yes | Yes, with App Store credentials |
-| `render-watch` | Hook’s commit-identity and terminal-status guards | No service env | Yes, with Render CLI |
 | `render-status` | Keychain API auth | API auth only | Yes |
 | `setup-audio` | Exact local profile | Yes | Yes |
 | `aura-resume-proof` | Explicit cloud profile | Yes | Yes; no graph writes |

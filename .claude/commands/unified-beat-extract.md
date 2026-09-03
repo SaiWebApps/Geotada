@@ -3,7 +3,7 @@ You are a content extraction specialist for the Ondoway audio tour platform. You
 Your task: extract and classify narrative beats from a book chunk for the city of **$ARGUMENTS** (default: "paris").
 
 The user will provide either:
-- A file path to a chunk prepared by `book-prep` (e.g., `Books/paris/around-and-about-paris/chunk-02-1st-arrondissement.txt`)
+- A file path to a chunk prepared by `book-prep` (e.g., `Books/paris/around-and-about-paris/chunk-02-1st-arr-chatelet-to-vert-galant.txt`)
 - Pasted text (only for small test chunks)
 
 If the provided content is too large to process thoroughly in a single pass, tell the user and ask them to either run `book-prep` to create smaller chunks, or specify which section/pages to focus on. Do NOT silently skip content or reduce extraction quality to fit within context limits.
@@ -108,7 +108,7 @@ A single source sentence (or tightly-coupled passage block) cannot produce multi
 
 **Source-passage exclusivity.** `source_passage` carries the **minimum** sentence span that grounds the beat's claims — not the whole surrounding paragraph. Two beats MAY come from adjacent sentences in the same paragraph, but each sentence is the primary derivation point for at most one beat. If two beats end up citing the same load-bearing sentence in their source_passage, one of them is redundant — merge, reclass, or cut.
 
-Failure mode to avoid (observed, 2026-04-23 Pariswalks Walk 4 run): emitting both a `transit` beat about the walking entry ("Walk up rue de Birague and continue into the place") AND a `stop_orientation` beat about the sit-in-the-garden staging, with both citing the full opening paragraph as source_passage. The source paragraph contains BOTH a navigation sentence AND a staging sentence — they are distinct claims, each grounding one beat. But source_passage on each must be scoped to its own sentence, not include both.
+Failure mode to avoid: emitting both a `transit` beat about the walking entry ("Walk up rue de Birague and continue into the place") AND a `stop_orientation` beat about the sit-in-the-garden staging, with both citing the full opening paragraph as source_passage. The source paragraph contains BOTH a navigation sentence AND a staging sentence — they are distinct claims, each grounding one beat. But source_passage on each must be scoped to its own sentence, not include both.
 
 ### Exhaustive lens scan per POI
 
@@ -143,7 +143,7 @@ Count the contiguous source-text sentences your beat derives from at this stop. 
 
 This gate exists because narrative-history sources (Robb's *Parisians*-type prose) often handle a stop in one or two sentences. The pre-gate prompt's `mid` budget (80–200w) drove fabrication on those stops — extractors filled space with imported facts to hit length. The fix: recognize that one source sentence = a `seasoning` beat at most, not a `mid` beat. Five clean `seasoning` beats beat five fabricated `mid`s every time.
 
-Failure mode this prevents (observed, 2026-05-01 Parisians chunk-13 run): a one-sentence Place Vendôme passage (*"the Place Vendôme … still proclaimed the undying glory of the Emperor"*) inflated into a 90-word `mid` beat that imported the Communard column-pulldown, a brass-band Marseillaise, and the Austrian-and-Russian-cannon bronze detail — none of which Robb wrote. The honest output is a ≤25-word `seasoning` beat that says only what Robb said.
+Failure mode this prevents: a one-sentence Place Vendôme passage (*"the Place Vendôme … still proclaimed the undying glory of the Emperor"*) inflated into a 90-word `mid` beat that imported the Communard column-pulldown, a brass-band Marseillaise, and the Austrian-and-Russian-cannon bronze detail — none of which Robb wrote. The honest output is a ≤25-word `seasoning` beat that says only what Robb said.
 
 Pick the class first based on the source-span gate AND the source role, then write to that length. If word count falls outside the class's range:
 - **Over-length in any class** → re-class up. An 85-word beat tagged `seasoning` is actually `mid`. Don't truncate the prose; the extractor mis-identified the source's scope.
@@ -175,7 +175,7 @@ Every beat carries an `extractor_state` field inside its `fact_check` block, pop
 
 The legacy emission pattern (`status: "unverified"` + `flagged_claims: []` + no `extractor_state`) is now treated as a violation by omission: it leaves fabrication un-audited. Always emit `extractor_state` explicitly.
 
-Failure mode this prevents (observed, 2026-05-01 Parisians chunk-13 run): 9 of 30 emitted beats carried unsourced concrete claims (Mangin "1957 replacement", Reichstadt "December centenary", Hôtel de Ville "burned by Communards in 1871", Institut "during the Revolution", Vendôme "Communard pulldown") — every one shipped with `flagged_claims: []` and no extractor self-flag. Under the new rule, each of those becomes an `extractor_state: "imported_context"` beat with the unsourced claims listed, which `/fact-check` can then resolve.
+Failure mode this prevents: 9 of 30 emitted beats carried unsourced concrete claims (Mangin "1957 replacement", Reichstadt "December centenary", Hôtel de Ville "burned by Communards in 1871", Institut "during the Revolution", Vendôme "Communard pulldown") — every one shipped with `flagged_claims: []` and no extractor self-flag. Under the new rule, each of those becomes an `extractor_state: "imported_context"` beat with the unsourced claims listed, which `/fact-check` can then resolve.
 
 **Preserve-don't-paraphrase on inline foreign phrases (B3):**
 

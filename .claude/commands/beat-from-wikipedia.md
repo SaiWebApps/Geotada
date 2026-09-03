@@ -45,7 +45,7 @@ Before any extraction:
    - `"not_found"` → the title does not resolve; ask the user to confirm the article title.
    - `"ok"` → proceed. Use its fields downstream: `resolved_title`, `revid`, `source_chunk_slug`, `oldid_url`, `retrieved_at`, `saved_path`.
 
-3. **Dedup decision (HARD REFUSE) from the fetch output.** The fetch already scanned EVERY `book_title: "Wikipedia"` log entry (not just the first — a live test on 2026-05-28 produced duplicate Wikipedia entries, so a first-entry-only check would miss a logged chunk). Read its `already_processed` and `prior_revisions` fields:
+3. **Dedup decision (HARD REFUSE) from the fetch output.** The fetch already scanned EVERY `book_title: "Wikipedia"` log entry (not just the first — the log can hold duplicate Wikipedia entries, so a first-entry-only check would miss a logged chunk). Read its `already_processed` and `prior_revisions` fields:
    - `already_processed: true` → the current revision was already extracted. HARD REFUSE verbatim (read the matching log entry for `<processed_at>` and `<n>`):
 
      `Refused: Wikipedia "<title>" <poi_slug>-rev-<revid> was processed on <processed_at> (<n> beats extracted). The article has not changed since. Run /beat-wipe <city_slug>/wikipedia --chunk <poi_slug>-rev-<revid> --apply to re-extract, or wait for a newer revision.`

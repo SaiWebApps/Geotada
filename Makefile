@@ -92,7 +92,7 @@ LINT_PATHS := src/ tests/ scripts/dev_env.py scripts/ensure_dev_data.py \
 	scripts/poi_body_places.py scripts/poi_place_judgements.py \
 	scripts/poi_queues.py scripts/poi_trigger_radius.py scripts/sync_poi_exports.py \
 	scripts/report_visit_durations.py scripts/tour_build.py scripts/dedup_review.py \
-	scripts/tour_batch_review.py
+	scripts/tour_batch_review.py scripts/lint_process_files.py
 
 # Reports a missing credential or a wrong endpoint as a sentence. This was a bare
 # `assert` inside `python -c`, so the answer to "is my config right?" was a stack trace.
@@ -132,7 +132,7 @@ check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
 	poi-place-category poi-visit-report poi-body-places poi-place-judgements \
 	poi-queues poi-trigger-radius sync-poi-exports tour-build \
 	measure-planned-audio measure-governor \
-	onboard-city flutter-ipa testflight render-watch render-status setup-audio \
+	onboard-city flutter-ipa testflight render-status setup-audio \
 	aura-resume-proof flutter-test clean \
 	_test-python _test-golden _test-grade _test-invariants _test-cloud
 
@@ -174,10 +174,9 @@ bootstrap: ## Provision a complete local development environment from a fresh cl
 	@echo "  routing (test, api, workbench, tour-build) starts it and waits."
 	@echo "  To get it building now, in the background:  make valhalla-up"
 	@echo ""
-	@echo "  Two toolchains are NOT installed here, because they are large and only"
-	@echo "  some workflows need them:"
+	@echo "  One toolchain is NOT installed here, because it is large and only"
+	@echo "  some workflows need it:"
 	@echo "    iOS builds (flutter-ios, flutter-ipa, testflight):  make preflight-list"
-	@echo "    deploy watching (render-watch):                     brew install render && render login"
 
 # ════════════════════════════════════════════════════════════════════════════
 #  CONFIGURATION
@@ -230,9 +229,10 @@ requirements: ## Regenerate requirements.txt from uv.lock.
 # ════════════════════════════════════════════════════════════════════════════
 ##@ CODE QUALITY
 
-lint: ## Run the Python linter.
+lint: ## Run the Python linter and the process-file lint.
 	@$(PREFLIGHT) --label lint $(PRE_PY)
 	uv run ruff check $(LINT_PATHS)
+	uv run python scripts/lint_process_files.py
 
 dedup-review: ## Find one question this codebase answers in two places.
 	@$(PREFLIGHT) --label dedup-review $(PRE_PY) render-key
@@ -786,14 +786,6 @@ testflight: ## Bump the build number, build the new IPA, then upload it.
 		$(MAKE) --no-print-directory flutter-ipa; \
 		xcrun altool --upload-app --file mobile/build/ios/ipa/*.ipa --type ios \
 			--apiKey "$$APP_STORE_API_KEY_ID" --apiIssuer "$$APP_STORE_ISSUER_ID"'
-
-# The deploy watcher is the ONLY thing in this repo that uses the Render CLI, and
-# the CLI carries its own browser sign-in, separate from the Keychain API key that
-# every other Render-backed target uses. Declaring both is what turns "render CLI
-# not installed — deploy NOT monitored" into an installable, signed-in CLI.
-render-watch: ## Watch the latest Render deployment to a terminal state.
-	@$(PREFLIGHT) --label render-watch render-cli render-cli-auth
-	@RENDER_WATCH_FORCE=1 bash .claude/hooks/render-deploy-watch.sh </dev/null
 
 render-status: ## Show the latest Render deploy using the Keychain API credential.
 	@$(PREFLIGHT) --label render-status $(PRE_PY) render-key
