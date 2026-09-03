@@ -22,6 +22,11 @@ column to the POI table" but "The tour should factor in opening and closing
 hours of places." Every milestone in the plan must trace back to this line; a
 step that doesn't serve it gets cut.
 
+Then name the artifact the end user actually receives (the narration heard,
+the screen read) and make Phase 2's walk reach that surface. A goal met in
+the engine's data but absent from what the person sees or hears is not met —
+acceptance judges the artifact, so the plan must cover it from the start.
+
 If the human handed you a plan rather than a request, extract the goal from it
 first, then treat their plan as a *draft* subject to the same walk as anything
 else. You verify it against the code; you never execute it on trust.
@@ -56,7 +61,11 @@ Then walk:
    branches are the part an excerpt never shows and the part that breaks
    plans. Source is read with `Read` or codegraph's verbatim output — never
    summarized from `grep`/`head`/`sed`/`tail` fragments; those tools are for
-   logs and data.
+   logs and data. When a milestone CHANGES a function's signature or calling
+   contract, enumerate that symbol's callers across the WHOLE repo
+   (`codegraph callers`, plus a grep over `src/`, `scripts/` and `tests/`) —
+   never just the file you walked; the caller you didn't list is the
+   mid-implementation surprise.
 
 4. **Simulate inputs through the path.** Pick 2–3 concrete inputs (a real
    POI, a real tour request, a thin/degraded case) and trace each one
