@@ -20,7 +20,7 @@ from src.tour.contract import BeatSequence, TourInput
 from src.tour.generation import generate
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
-from tests.live_graph import open_dev_driver
+from tests.live_graph import assert_walk_was_routed, open_dev_driver
 from tests.test_tour_golden_consistency import generated_stable_beat_ids
 
 # Quality-comparison gate against a human-curated ideal tour; excluded from the
@@ -125,10 +125,12 @@ def _generated_beat_ids(snapshot, fixture):
         theme_hint=inp.get("theme_hint"),
         start_label=inp.get("start_label"),
     )
-    # M3: routed leg costs when the local Valhalla is up (make valhalla-up);
-    # identical to the haversine path when it isn't (total fallback).
+    # The walk must be ROUTED: the overlap baseline was measured on routed legs,
+    # and a haversine fallback (Valhalla late, down, or under contention) fails
+    # here by name instead of surfacing as a mystery overlap dip.
     with RoutingClient() as routing_client:
         route = select_route(tour_input, snapshot, routing_client=routing_client)
+    assert_walk_was_routed(route, golden="PdV")
     # C9b golden-harness fidelity: route through the shipped build path so the
     # goldens merge co-located demoted_beats like production (diagnostic R2).
     seq = BeatSequence(

@@ -23,6 +23,31 @@ def dev_graph_environment() -> dict[str, str]:
     }
 
 
+def assert_walk_was_routed(route, *, golden: str) -> None:
+    """Fail LOUDLY when a golden walk was priced by the haversine fallback.
+
+    A golden's overlap baseline was measured on the ROUTED walk, and
+    ``RoutingClient`` degrades stickily to straight-line estimates the moment
+    Valhalla answers late or not at all — so under the bar (where preflight
+    guarantees Valhalla is up) a fallback leg means Valhalla stopped answering
+    mid-run, and the overlap number is about to measure a different walk. That
+    must read as what it is, never as a mystery overlap dip.
+    """
+    fallen = [
+        f"{t.from_poi_id or 'start'}→{t.to_poi_id or 'end'}"
+        for t in route.transits
+        if t.source != "valhalla"
+    ]
+    assert not fallen, (
+        f"this {golden} golden walk was NOT routed: {len(fallen)} of "
+        f"{len(route.transits)} legs fell back to haversine ({fallen[:4]}) — "
+        f"Valhalla answered late or not at all, so the overlap baseline would "
+        f"measure a different walk than the one it was calibrated on. Check "
+        f"`make valhalla-status` and the machine's load; this is a routing "
+        f"outage or contention, not a tour regression."
+    )
+
+
 def open_dev_driver():
     """Return a verified localhost:7687 driver, or ``None`` when unavailable."""
     env = dev_graph_environment()
