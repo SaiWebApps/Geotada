@@ -614,7 +614,7 @@ def render(payload: dict) -> str:
 
     log = "".join(
         f'<tr><td class="t">{esc(e["at"][11:16])}</td>'
-        f'<td class="sref">{esc(e["story"] or "&mdash;")}</td>'
+        f'<td class="sref">{esc(e["story"]) if e["story"] else "&mdash;"}</td>'
         f'<td>{esc(e["kind"])}</td><td class="mono">{esc(e["detail"])}</td></tr>'
         for e in payload["events"])
 

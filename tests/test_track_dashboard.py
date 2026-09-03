@@ -141,6 +141,19 @@ class TestSprintNotes:
         assert "missed caller" in html
         assert "sprint-leader" in html
 
+    def test_a_storyless_event_renders_a_real_dash_not_escaped_entity_text(self, db):
+        """The log's no-story placeholder is markup, not data: passing it
+        through the escaper printed the literal text "&mdash;" on the page
+        (the owner saw it). The entity must survive escaping."""
+        _feature(db, "f", _now())
+        args = argparse.Namespace(
+            story=None, text="a note with no story", who="sprint-leader",
+            db=None, json=False,
+        )
+        track.cmd_note(db, args)
+        html = track.render_active(db)
+        assert "&amp;mdash;" not in html
+
     def test_a_note_moves_no_box_and_no_percentage(self, db):
         _feature(db, "f", _now())
         _story(db, "S1", "f")
