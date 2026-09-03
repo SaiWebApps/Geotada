@@ -236,7 +236,13 @@ Then for each milestone, in dependency order:
    output (screenshot, transcript, or the command itself to click). Every
    milestone shows the feature further along — that's what the dashboard and
    the demo are for.
-6. Commit — the message written in Phase 3. `step-status --status completed`.
+6. Commit — the message written in Phase 3. `step-status --status completed`
+   (the tracker re-runs the step's test itself and refuses a false claim).
+7. Post a sprint note — `track note --story {id} --text "…" --who
+   sprint-leader` — one plain sentence of what just happened. Also post one
+   at every divergence and every verdict (QA, acceptance). Notes are the
+   dashboard's narrative channel: attributed commentary beside the facts,
+   structurally unable to move a box or the percentage.
 
 **If reality diverges from the plan — stop.** A wrong signature, a test that
 was supposed to be red but is green, a function that doesn't behave as the

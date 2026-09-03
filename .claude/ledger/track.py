@@ -175,14 +175,39 @@ def record(conn: sqlite3.Connection, kind: str, *, who: str,
 # --------------------------------------------------------------- reading out
 
 
+def derived_story_state(conn: sqlite3.Connection, story_id: str, persisted: str) -> str:
+    """The box is ARITHMETIC over the step rows — never a hand-set label
+    (owner ruling, option B, 2026-09-03). The rows themselves are already
+    machine-verified: a step is `completed` only because this command re-ran
+    its test and saw the exit code, so no agent's word is anywhere in the
+    chain from a passing test to a moved box. The one exception is "Done",
+    which only the owner means — it is kept from the persisted state, and
+    `cmd_story_state` already refuses it while any step is unproved."""
+    if persisted == "Done":
+        return "Done"
+    statuses = [r["status"] for r in conn.execute(
+        "SELECT status FROM issues WHERE story=?", (story_id,))]
+    if not statuses:
+        return "PM"
+    if all(s == PROVEN for s in statuses):
+        return "Verifier"
+    if all(s == "pending" for s in statuses):
+        return "Planner"
+    return "Implementer"
+
+
 def state_of(conn: sqlite3.Connection) -> dict:
     """The full current picture. Printed by EVERY write, so no caller ever needs
     to keep its own copy — the engine's in-memory mirror went stale against the
-    file and stranded 8 of 10 steps on a real run."""
+    file and stranded 8 of 10 steps on a real run. Story states are DERIVED
+    (see `derived_story_state`), so every reader of this payload — the JSON api
+    and the page alike — sees the arithmetic, never a stale hand label."""
     features = [dict(r) for r in conn.execute(
         "SELECT slug, title, for_whom, tier, created FROM features ORDER BY created")]
     stories = [dict(r) for r in conn.execute(
         "SELECT id, feature, text, who, state, sent_back FROM stories ORDER BY id")]
+    for story in stories:
+        story["state"] = derived_story_state(conn, story["id"], story["state"])
     issues = [dict(r) for r in conn.execute(
         "SELECT id, story, name, status, test_command, files, depends_on, attempts "
         "FROM issues ORDER BY id")]
@@ -344,6 +369,21 @@ def cmd_story_state(conn: sqlite3.Connection, args: argparse.Namespace) -> None:
     emit(conn)
 
 
+def cmd_note(conn: sqlite3.Connection, args: argparse.Namespace) -> None:
+    """A sprint note: attributed commentary beside the facts (option B, owner
+    ruling 2026-09-03). It lands in the append-only event log and renders in
+    the page's notes strip. By construction it can move nothing: the boxes are
+    arithmetic over step rows and the percentage over issue counts, and this
+    writes to neither table."""
+    if args.story and not conn.execute(
+        "SELECT 1 FROM stories WHERE id=?", (args.story,)
+    ).fetchone():
+        raise Refused(f"no story {args.story!r} to note on")
+    record(conn, "sprint_note", who=args.who, story=args.story or None,
+           detail=args.text)
+    print(json.dumps({"noted": args.text, "who": args.who}))
+
+
 def cmd_approve(conn: sqlite3.Connection, args: argparse.Namespace) -> None:
     if not conn.execute("SELECT 1 FROM features WHERE slug=?", (args.feature,)).fetchone():
         raise Refused(f"no feature {args.feature!r}")
@@ -359,24 +399,39 @@ def cmd_show(conn: sqlite3.Connection, args: argparse.Namespace) -> None:
     emit(conn)
 
 
-def health_of(conn: sqlite3.Connection) -> dict:
+def health_of(conn: sqlite3.Connection, feature: str | None = None) -> dict:
     """Progress and the replan decision, computed from the log. Never reported.
 
     All three triggers are arithmetic. The REPLAN is an agent; the DECISION to
     replan never is — that separation is the whole point of the manager. Shared
     with the dashboard so the page and the engine can never disagree about whether
     a run is in trouble.
+
+    ``feature`` scopes everything to one feature's stories. The page passes the
+    NEWEST feature, so a dead run's unproved steps stop diluting the number —
+    the owner read "50% proved" over a feature that was 4-for-4 (2026-09-03).
+    None keeps the global view for the JSON api.
     """
-    total = conn.execute("SELECT COUNT(*) FROM issues").fetchone()[0]
-    done = conn.execute("SELECT COUNT(*) FROM issues WHERE status=?", (PROVEN,)).fetchone()[0]
+    scope_sql = (
+        " AND story IN (SELECT id FROM stories WHERE feature=?)" if feature else ""
+    )
+    scope_args: tuple = (feature,) if feature else ()
+    total = conn.execute(
+        "SELECT COUNT(*) FROM issues WHERE 1=1" + scope_sql, scope_args
+    ).fetchone()[0]
+    done = conn.execute(
+        "SELECT COUNT(*) FROM issues WHERE status=?" + scope_sql,
+        (PROVEN, *scope_args)).fetchone()[0]
     progress = round(100 * done / total) if total else 0
 
     reason = None
     story = None
+    story_scope_sql = " AND feature=?" if feature else ""
 
     # 1. A story bounced back twice without moving.
     row = conn.execute(
-        "SELECT id, sent_back FROM stories WHERE sent_back >= 2 ORDER BY sent_back DESC"
+        "SELECT id, sent_back FROM stories WHERE sent_back >= 2" + story_scope_sql +
+        " ORDER BY sent_back DESC", scope_args
     ).fetchone()
     if row:
         reason = f"it was sent back {row['sent_back']} times without moving"
@@ -384,7 +439,9 @@ def health_of(conn: sqlite3.Connection) -> dict:
 
     # 2. Something already proved has broken: an issue whose runs went 0 then non-0.
     if not reason:
-        for issue in conn.execute("SELECT id, story FROM issues"):
+        for issue in conn.execute(
+            "SELECT id, story FROM issues WHERE 1=1" + scope_sql, scope_args
+        ):
             codes = [r["exit_code"] for r in conn.execute(
                 "SELECT exit_code FROM test_runs WHERE issue=? ORDER BY id", (issue["id"],))]
             if any(codes[i] == 0 and codes[i + 1] != 0 for i in range(len(codes) - 1)):
@@ -395,8 +452,8 @@ def health_of(conn: sqlite3.Connection) -> dict:
     # 3. Attempts piling up on one issue with nothing changing.
     if not reason:
         row = conn.execute(
-            "SELECT id, story, attempts FROM issues WHERE attempts >= 3 "
-            "ORDER BY attempts DESC").fetchone()
+            "SELECT id, story, attempts FROM issues WHERE attempts >= 3" + scope_sql +
+            " ORDER BY attempts DESC", scope_args).fetchone()
         if row:
             reason = f"issue {row['id']} has {row['attempts']} attempts and no state change"
             story = row["story"]
@@ -448,15 +505,39 @@ def esc(text: object) -> str:
             .replace(">", "&gt;").replace('"', "&quot;"))
 
 
+def active_payload(conn: sqlite3.Connection) -> dict:
+    """The page's picture: everything scoped to the NEWEST feature — the one
+    being built — so dead runs neither clutter the stories nor dilute the
+    percentage. Sprint notes ride beside the facts, attributed."""
+    payload = state_of(conn)
+    active = payload["features"][-1] if payload["features"] else None
+    payload["active_feature"] = active
+    if active is not None:
+        payload["stories"] = [
+            s for s in payload["stories"] if s["feature"] == active["slug"]
+        ]
+        story_ids = {s["id"] for s in payload["stories"]}
+        payload["issues"] = [i for i in payload["issues"] if i["story"] in story_ids]
+    payload["events"] = [dict(r) for r in conn.execute(
+        "SELECT id, at, kind, story, issue, who, detail FROM events "
+        "ORDER BY id DESC LIMIT 50")]
+    payload["notes"] = [dict(r) for r in conn.execute(
+        "SELECT at, who, story, detail FROM events WHERE kind='sprint_note' "
+        "ORDER BY id DESC LIMIT 5")]
+    payload["health"] = health_of(
+        conn, feature=active["slug"] if active is not None else None
+    )
+    return payload
+
+
+def render_active(conn: sqlite3.Connection) -> str:
+    return render(active_payload(conn))
+
+
 def dashboard_state(path: Path) -> dict:
     conn = read_only(path)
     try:
-        payload = state_of(conn)
-        payload["events"] = [dict(r) for r in conn.execute(
-            "SELECT id, at, kind, story, issue, who, detail FROM events "
-            "ORDER BY id DESC LIMIT 50")]
-        payload["health"] = health_of(conn)
-        return payload
+        return active_payload(conn)
     finally:
         conn.close()
 
@@ -501,7 +582,9 @@ def render(payload: dict) -> str:
     if not features:
         body = "<p class=\"empty\">Nothing planned yet. The PM has not written a story.</p>"
     else:
-        feature = features[0]
+        # The NEWEST feature — the one being built. Older features stay in the
+        # database and the JSON api; the page shows the work in front of you.
+        feature = payload.get("active_feature") or features[-1]
         chips, cards = [], []
         for story in payload["stories"]:
             issues = [i for i in payload["issues"] if i["story"] == story["id"]]
@@ -534,6 +617,20 @@ def render(payload: dict) -> str:
         f'<td class="sref">{esc(e["story"] or "&mdash;")}</td>'
         f'<td>{esc(e["kind"])}</td><td class="mono">{esc(e["detail"])}</td></tr>'
         for e in payload["events"])
+
+    notes = payload.get("notes") or []
+    notes_html = ""
+    if notes:
+        rows = "".join(
+            f'<div class="note"><span class="t">{esc(n["at"][11:16])}</span> '
+            f'<b>{esc(n["who"])}</b>'
+            + (f' <span class="sref">on {esc(n["story"])}</span>' if n["story"] else "")
+            + f' &mdash; {esc(n["detail"])}</div>'
+            for n in notes)
+        notes_html = (
+            '<div class="eyebrow">Sprint notes &mdash; an agent\'s commentary, '
+            "never the facts (notes cannot move a box or the percentage)</div>"
+            f'<div class="card">{rows}</div>')
 
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -584,6 +681,8 @@ td{{padding:7px 10px 7px 0;border-bottom:1px solid var(--grid);vertical-align:to
 .t{{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}}
 .sref{{color:var(--ink-2)}}
 .empty{{color:var(--muted);padding:40px 0;text-align:center}}
+.note{{font-size:13px;padding:5px 0;border-bottom:1px solid var(--grid)}}
+.note:last-child{{border-bottom:none}}
 svg{{display:block;max-width:100%}}
 .m-node{{fill:var(--plane);stroke:var(--axis);stroke-width:1.5}}
 .m-node.done{{fill:var(--surface);stroke:var(--good);stroke-width:2}}
@@ -600,8 +699,9 @@ footer{{margin-top:24px;font-size:12.5px;color:var(--ink-2);
 </style></head><body><div class="wrap">
 <header class="top"><h1>Agent tracker</h1>
 <div class="sub">what the team is building right now</div>
-<div class="pct"><b>{health["progress"]}%</b> of the work proved</div></header>
+<div class="pct"><b>{health["progress"]}%</b> of this feature proved</div></header>
 {body}
+{notes_html}
 <div class="eyebrow">Every change, and who proved it</div>
 <div class="card"><table><thead><tr><th>Time</th><th>Story</th><th>What happened</th>
 <th>What track saw itself</th></tr></thead><tbody>{log}</tbody></table></div>
@@ -666,6 +766,7 @@ HANDLERS = {
     "step-status": cmd_step_status,
     "story-state": cmd_story_state,
     "approve": cmd_approve,
+    "note": cmd_note,
     "show": cmd_show,
     "health": cmd_health,
     "serve": cmd_serve,
@@ -731,6 +832,11 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("approve", parents=[common])
     p.add_argument("--feature", required=True)
     p.add_argument("--by", required=True)
+
+    p = sub.add_parser("note", parents=[common])
+    p.add_argument("--text", required=True,
+                   help="one short sentence of commentary; shown attributed on the page")
+    p.add_argument("--story", default=None)
 
     sub.add_parser("show", parents=[common])
     sub.add_parser("health", parents=[common])
