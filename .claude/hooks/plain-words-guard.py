@@ -98,6 +98,8 @@ import sys
 import time
 from pathlib import Path
 
+from textkind import drop_link_targets, is_web_address
+
 #: Own state file, isolated from the other Stop-hook ceilings so none of them
 #: reads another's tally. Overridable so the test suite gets a private path.
 STATE_PATH = Path(
@@ -300,22 +302,6 @@ def strip_fenced_blocks(reply):
     return "\n".join(kept)
 
 
-def drop_link_targets(reply):
-    """`[text](address)` with the address blanked. The address is shown, not said."""
-    out = []
-    index, length = 0, len(reply)
-    while index < length:
-        if reply[index] == "]" and index + 1 < length and reply[index + 1] == "(":
-            close = reply.find(")", index + 2)
-            if close != -1:
-                out.append("]")
-                index = close + 1
-                continue
-        out.append(reply[index])
-        index += 1
-    return "".join(out)
-
-
 def split_on_backticks(text):
     """(text outside backticks, list of backticked spans).
 
@@ -365,6 +351,13 @@ def is_code_shaped(token):
     if not token:
         return False
     if token.lower().strip("./-") in BRAND_WORDS:
+        return False
+
+    # AN ADDRESS IS NOT A NAME FROM THE CODE. Asked of the URL parser, never of
+    # the token's shape — see textkind.py. The path test below fires on a slash
+    # and a dot, which every web address has, and on 2026-09-02 that refused the
+    # dashboard link the owner had just demanded at the top of every reply.
+    if is_web_address(token):
         return False
 
     # A command-line flag: --something, or -f

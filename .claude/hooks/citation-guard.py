@@ -76,6 +76,8 @@ import sys
 import time
 from pathlib import Path
 
+from textkind import is_web_address, split_markdown_links
+
 STATE_PATH = Path("/tmp/ondoway-citation-guard-state.json")
 MAX_BLOCKS = 3
 TRANSCRIPT_TAIL_BYTES = 4 * 1024 * 1024  # tool calls span the whole turn, not just its tail
@@ -363,9 +365,14 @@ def tokens_of(reply):
     both ends until the token stops changing. `(src/audio/provider.py:222),`
     becomes `src/audio/provider.py:222` without anyone having to anticipate the
     parenthesis or the comma.
+
+    A markdown link is separated at its own delimiter FIRST, so
+    `[Dashboard](http://127.0.0.1:8010)` arrives as two words rather than one
+    unparseable one. See `textkind.split_markdown_links`, and the 2026-09-02
+    entries in `.claude/hooks/tests/breaking_cases.py` for what it cost.
     """
     out = []
-    for raw in reply.split():
+    for raw in split_markdown_links(reply).split():
         token = raw
         while True:
             trimmed = token.strip(ADORNMENT)
@@ -393,7 +400,7 @@ def symbol_tokens(reply):
     """
     adornment = ADORNMENT.replace("_", "")
     out = []
-    for raw in reply.split():
+    for raw in split_markdown_links(reply).split():
         token = raw
         while True:
             trimmed = token.strip(adornment).rstrip(".")
@@ -411,6 +418,8 @@ def split_citation(token):
     int() is the parser. A tail that is not a number is simply not a line
     number, which is a fact the language can answer without a pattern.
     """
+    if is_web_address(token):
+        return token, None  # an address, never a file at a line — see is_web_address
     if ":" not in token:
         return token, None
     head, _, tail = token.rpartition(":")

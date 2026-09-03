@@ -19,6 +19,35 @@ the wrong thing.
 
 ---
 
+## The enforcement contract (read this once; the hooks hold you to it)
+
+The hooks under `.claude/hooks/` are state machines, not word lists. The path
+of least resistance IS the intended path, in this order:
+
+1. **Look.** `Read`, `Grep`, `Glob`, `codegraph_explore` and read-only shell
+   commands (`ls`, `cat`, `git status`, `git log`, …) are never gated.
+2. **Consult.** Call `advisor()` once you have looked. Every act in the turn
+   (Edit, Write, Agent, a shell command that runs or changes anything) is
+   refused until an advisor record exists in this turn. The advisor's model is
+   chosen by `.claude/hooks/advisor-router.py` — Fable when it can, Opus when a
+   Fable consult has failed — never by you.
+3. **Print the plan** the advisor gave you, numbered, before the first act.
+4. **Read before you modify.** Edit/Write on an existing file, or a shell
+   redirection into one, is refused unless that file was opened in full with
+   `Read` earlier in the session.
+5. **Consult again before a second destructive command** on one piece of advice.
+6. **Verify and report.** Off Fable, the last consult must follow the last act
+   with a written report between them; a foreground `shadow` must confirm the
+   turn; every number in the reply must come from a tool result in this turn.
+
+If a hook refuses you three times in one turn, the ONLY accepted next call is
+the remedy it names. Inventing another spelling of the refused capability
+(a hand-rolled search, a heredoc that rewrites an unread file, a helper script)
+is a bypass, and the gates classify by capability, not by command name.
+
+If the hooks themselves misbehave on a machine, read `.claude/state/doctor.json`
+— `.claude/hooks/doctor.py` writes it at session start and every guard reads it.
+
 ## Step 0 — ground yourself in the code (do this yourself, do NOT delegate)
 
 **Never plan from memory, and never plan from a previous plan.** Owner ruling,

@@ -24,6 +24,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from breaking_cases import story_of, texts_of
+
 # These tests live BESIDE the hook they test, not in the product's tests/ tree.
 # The subject here is agent supervision, not Ondoway: it must never run inside
 # `make test`, which is the bar that answers "does the product work". Same
@@ -306,3 +308,72 @@ def test_a_test_file_named_without_a_line_is_allowed(tmp_path):
         assistant("tests/test_surfaces_share_one_engine.py is the one that walks both."),
     ]
     assert not blocked(decide(tmp_path, records, "clean-tests"))
+
+
+# ------------------------------------------------------- the recorded breaking cases
+
+
+def test_every_recorded_web_address_reaches_the_owner(tmp_path):
+    """The corpus, fed one entry at a time. See breaking_cases.py for why.
+
+    This test is not a list of shapes somebody imagined. Every string in it was
+    blocked in a real session while being correct, and the owner's ruling was
+    that banning them one at a time is the wrong shape of fix. So the fix is
+    checked against all of them at once, and the list grows on incident.
+    """
+    for index, address in enumerate(texts_of("web address")):
+        records = [
+            human("start the dashboard"),
+            assistant(f"The dashboard is up. Open it at {address} to watch the run."),
+        ]
+        decision = decide(tmp_path, records, f"corpus-address-{index}")
+        assert not blocked(decision), (
+            f"{address!r} was refused.\n{story_of(address)}\n"
+            f"guard said: {decision.get('reason', '')}"
+        )
+
+
+def test_a_citation_inside_a_markdown_link_is_still_judged(tmp_path):
+    """The other direction, and the one that matters more.
+
+    Separating a link's two halves must not turn into DISCARDING the target. A
+    guard that stopped seeing citations inside links would go quiet and look
+    satisfied — the exact failure mode this file's docstring opens with. So the
+    link form is fed a citation into a file the session never opened, and the
+    guard must still refuse it.
+    """
+    records = [
+        human("where is it?"),
+        assistant("It happens in [the options module](src/tour/options.py:1)."),
+    ]
+    decision = decide(tmp_path, records, "link-citation-unread")
+    assert blocked(decision), "a citation wearing a markdown link escaped arm 1"
+    assert "never opened" in decision["reason"]
+
+
+def test_a_citation_inside_a_markdown_link_passes_when_it_is_true(tmp_path):
+    """The matched half — the form the harness tells replies to use for files."""
+    records = [
+        human("where is the full telling?"),
+        tool_call("Read", {"file_path": str(REPO / PRODUCT_FILE)}),
+        tool_result(),
+        assistant(
+            f"The walk reaches `{PRODUCT_SYMBOL}`, defined at "
+            f"[{Path(PRODUCT_FILE).name}:{PRODUCT_LINE}]({PRODUCT_FILE}:{PRODUCT_LINE})."
+        ),
+    ]
+    assert not blocked(decide(tmp_path, records, "link-citation-true"))
+
+
+def test_the_dashboard_reply_the_owner_demanded_is_allowed(tmp_path):
+    """The whole reply, in the shape the owner asked for: link first, then work.
+
+    Feeding the parts separately is not the same test as feeding the reply. On
+    2026-09-02 the parts were never fed at all, and the reply was refused.
+    """
+    reply = (
+        "Dashboard: [http://127.0.0.1:8010](http://127.0.0.1:8010)\n\n"
+        "The run is live. Nothing needed from you."
+    )
+    decision = decide(tmp_path, [human("start it"), assistant(reply)], "owner-dashboard")
+    assert not blocked(decision), decision.get("reason", "")

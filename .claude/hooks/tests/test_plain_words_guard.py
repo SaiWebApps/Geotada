@@ -25,6 +25,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from breaking_cases import story_of, texts_of
+
 REPO = Path(__file__).resolve().parents[3]
 GUARD = REPO / ".claude" / "hooks" / "plain-words-guard.py"
 
@@ -288,6 +290,32 @@ def test_a_table_row_carries_no_sentence(tmp_path):
 
 
 # ── it must never break the session ──────────────────────────────────────────
+
+
+def test_every_recorded_web_address_reaches_the_owner(tmp_path):
+    """The corpus, fed one entry at a time. See breaking_cases.py for why.
+
+    On 2026-09-02 this gate called `http://127.0.0.1:8010` a filename dropped
+    into prose, because the path check below it fires on a slash and a dot and
+    every web address has both. The owner's ruling was that banning the one
+    shape is the wrong fix, so the whole recorded list is checked here.
+    """
+    for address in texts_of("web address"):
+        decision = decide(tmp_path, f"The dashboard is up. Open it at {address} to watch.")
+        assert not blocked(decision), (
+            f"{address!r} was refused.\n{story_of(address)}\n"
+            f"gate said: {why(decision)}"
+        )
+
+
+def test_a_bare_file_path_in_prose_is_still_refused(tmp_path):
+    """The matched half. Exempting addresses must not exempt paths.
+
+    A fix that let through anything with a slash and a dot would pass every
+    address AND every bare path, and this gate's first check would be dead
+    while still reporting success.
+    """
+    assert blocked(decide(tmp_path, "I changed src/tour/validation.py and it works now."))
 
 
 def test_a_malformed_payload_never_blocks(tmp_path):

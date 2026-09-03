@@ -208,14 +208,31 @@ def write_transcript(path, records):
     path.write_text("\n".join(json.dumps(r) for r in records) + "\n")
 
 
-def run_guard(payload, wait="0.3"):
+#: An ACT, not a look. Since the 2026-09-02 redesign a read-only shell command
+#: (`ls -la`, `git status`) is never gated, so the default gated command has to
+#: be something that runs code.
+AN_ACT = "uv run pytest tests/test_x.py"
+
+
+def run_guard(payload, wait="0.3", tmp_path=None, doctor=None):
+    env = {**os.environ, "ONDOWAY_ADVISOR_LAG_WAIT": wait}
+    if tmp_path is not None:
+        # Private state and doctor report per test, never the live session's.
+        env["ONDOWAY_STATE_DIR"] = str(tmp_path / "state")
+        env["ONDOWAY_LOCAL_SETTINGS"] = str(tmp_path / "state" / "settings.local.json")
+        doctor_path = tmp_path / "state" / "doctor.json"
+        doctor_path.parent.mkdir(parents=True, exist_ok=True)
+        if doctor is not None:
+            doctor_path.write_text(json.dumps(doctor))
+        elif not doctor_path.exists():
+            doctor_path.write_text(json.dumps({"advisor": {"supported": "yes"}}))
     done = subprocess.run(
         [sys.executable, str(GUARD)],
         input=json.dumps(payload),
         capture_output=True,
         text=True,
         timeout=60,
-        env={**os.environ, "ONDOWAY_ADVISOR_LAG_WAIT": wait},
+        env=env,
     )
     assert done.returncode == 0, done.stderr
     return json.loads(done.stdout) if done.stdout.strip() else {}
@@ -226,12 +243,14 @@ def decide(
     records,
     *,
     tool="Bash",
-    command="ls -la",
+    command=AN_ACT,
     event="PreToolUse",
     tool_use_id="toolu_gated",
     landed=True,
     wait="0.3",
     payload_extra=None,
+    tool_input=None,
+    doctor=None,
 ):
     """Run the guard over `records` and return its decision ({} means allowed).
 
@@ -242,20 +261,21 @@ def decide(
     """
     transcript = tmp_path / "session.jsonl"
     rows = list(records)
+    tool_input = tool_input if tool_input is not None else {"command": command}
     if event == "PreToolUse" and landed:
-        rows.append(gated_call(tool, command, tool_use_id))
+        rows.append(tool_call(tool, tool_input, tool_use_id))
     write_transcript(transcript, rows)
     payload = {
         "hook_event_name": event,
         "tool_name": tool,
-        "tool_input": {"command": command},
+        "tool_input": tool_input,
         "transcript_path": str(transcript),
         "session_id": f"test-{tmp_path.name}",
     }
     if tool_use_id is not None:
         payload["tool_use_id"] = tool_use_id
     payload.update(payload_extra or {})
-    return run_guard(payload, wait)
+    return run_guard(payload, wait, tmp_path=tmp_path, doctor=doctor)
 
 
 def denied(decision):
@@ -395,7 +415,12 @@ def test_a_thinking_block_with_no_signature_is_not_a_printed_plan(tmp_path):
     assert denied(decide(tmp_path, records))
 
 
-def test_a_one_line_narration_is_not_a_printed_plan(tmp_path):
+def test_a_one_line_narration_IS_a_printed_plan(tmp_path):
+    """MEASURED 2026-09-02 on this project's own transcript: a seven-step
+    numbered plan of about a thousand characters was stored by the harness as a
+    narration block of 147 characters, and the old floor of 150 refused it as
+    "not printed". The narration's length belongs to the harness, not to the
+    session, so its PRESENCE is the check now. Text blocks keep the floor."""
     records = [
         human(),
         grounding_call(),
@@ -403,44 +428,170 @@ def test_a_one_line_narration_is_not_a_printed_plan(tmp_path):
         advisor_result(),
         narration("Consulting the advisor now."),
     ]
-    decision = decide(tmp_path, records)
-    assert denied(decision)
-    assert "THE PLAN WAS NOT PRINTED." in reason(decision)
+    assert not denied(decide(tmp_path, records))
 
 
-# --------------------------------------- arm: the advice was grounded in the code
+# ------------------------------------------- arm: a look is never an act
 #
-# The advisor has NO TOOLS. It forwards this conversation and reads nothing else,
-# so a consult with no look at the code before it produces advice about software
-# in general. Measured 2026-08-31: asked to prove with screenshots that a browser
-# had run the suite, it designed a DevTools-attach scheme from scratch while
-# tests/test_workbench_ui.py sat in the repo doing exactly that job through
-# Playwright, with 36 call sites. The owner's verdict on the result: "means
-# nothing". The advisor could not have known — that file had never been named in
-# the conversation.
+# REDESIGNED 2026-09-02. The first refusal of a compliant turn was `ls -la` as
+# "NO CONSULT, NO ACTION". Gating the Bash TOOL gated every look made through
+# it, and a session that cannot look is pushed toward looking some other way.
+# bashclass.py now classifies the COMMAND: read-only programs with read-only
+# arguments and no redirection pass; everything else is an act.
 
 
-def test_a_consult_with_no_look_at_the_code_cannot_be_acted_on(tmp_path):
-    records = [human(), advisor_call(), advisor_result(), assistant_text(A_PRINTED_PLAN)]
-    decision = decide(tmp_path, records)
+def test_a_read_only_shell_command_needs_no_consult(tmp_path):
+    for command in (
+        "ls -la",
+        "git status --porcelain",
+        "git -C /tmp log --oneline -5 | head",
+        "grep -n foo src/x.py",
+        "cat a.txt 2>&1 | tail -3",
+        "for f in a b; do wc -l $f; done",
+        "find . -name '*.py' | sort",
+        "python3 --version",
+        "make -n lint",
+    ):
+        assert not denied(decide(tmp_path, [human()], command=command)), command
+
+
+def test_a_shell_command_that_acts_is_gated(tmp_path):
+    for command in (
+        "python3 -c 'open(\"x\",\"w\").write(\"1\")'",
+        "python3 scripts/thing.py",
+        "uv run pytest tests/test_x.py",
+        "make lint",
+        "echo hi > out.txt",
+        "cat in.txt | tee out.txt",
+        "find . -name '*.pyc' -delete",
+        "ls && rm -rf build",
+        "sed -i '' s/a/b/ file.py",
+        "curl https://example.com",
+        "xargs rm < list.txt",
+    ):
+        decision = decide(tmp_path, [human()], command=command)
+        assert denied(decision), command
+        assert "NO CONSULT, NO ACTION." in reason(decision), command
+
+
+# ------------------------------------------- arm: read it before you change it
+#
+# CLAUDE.md rule 5 as a STATE TRANSITION rather than a tool spelling: a file
+# that exists may be modified only after it was opened in full with Read,
+# whether the modification comes through Edit, Write, or a shell redirection.
+# This replaces the old "grounded BEFORE the consult" arm, which fought the
+# prompt-submit context (look first, then consult) and refused a Read that
+# came one call late.
+
+
+def read_call(path, call_id="toolu_read", limit=None, offset=None):
+    data = {"file_path": str(path)}
+    if limit is not None:
+        data["limit"] = limit
+    if offset is not None:
+        data["offset"] = offset
+    return tool_call("Read", data, call_id)
+
+
+def existing_file(tmp_path, lines=40):
+    target = tmp_path / "existing.py"
+    target.write_text("\n".join(f"line {n}" for n in range(1, lines + 1)) + "\n")
+    return target
+
+
+def test_editing_a_file_never_read_is_refused(tmp_path):
+    target = existing_file(tmp_path)
+    decision = decide(
+        tmp_path, consulted_turn(), tool="Edit",
+        tool_input={"file_path": str(target), "old_string": "line 1", "new_string": "x"},
+    )
     assert denied(decision)
-    assert "THE ADVICE WAS NOT GROUNDED IN THIS CODEBASE." in reason(decision)
+    assert "READ IT BEFORE YOU CHANGE IT." in reason(decision)
 
 
-def test_grounding_after_the_consult_is_too_late(tmp_path):
-    """The advisor saw the conversation as it stood when it was called.
+def test_editing_a_file_read_in_full_is_allowed(tmp_path):
+    target = existing_file(tmp_path)
+    records = [*consulted_turn(), read_call(target)]
+    decision = decide(
+        tmp_path, records, tool="Edit",
+        tool_input={"file_path": str(target), "old_string": "line 1", "new_string": "x"},
+    )
+    assert not denied(decision)
 
-    A file read afterwards is a file it never saw: that grounding informs the
-    implementer and leaves the advice exactly as uninformed as it was.
-    """
-    records = [
-        human(),
-        advisor_call(),
-        advisor_result(),
-        assistant_text(A_PRINTED_PLAN),
-        grounding_call(name="Read"),
-    ]
-    assert denied(decide(tmp_path, records))
+
+def test_a_read_from_an_earlier_turn_still_counts(tmp_path):
+    """The rule is about the SESSION having opened the file, not this turn."""
+    target = existing_file(tmp_path)
+    records = [human("first"), read_call(target), *consulted_turn()]
+    decision = decide(
+        tmp_path, records, tool="Write",
+        tool_input={"file_path": str(target), "content": "new"},
+    )
+    assert not denied(decision)
+
+
+def test_an_excerpt_read_does_not_count(tmp_path):
+    """`limit` that stops short of the end is an excerpt, which is the exact
+    thing rule 5 exists to stop."""
+    target = existing_file(tmp_path, lines=400)
+    records = [*consulted_turn(), read_call(target, limit=100)]
+    decision = decide(
+        tmp_path, records, tool="Write",
+        tool_input={"file_path": str(target), "content": "new"},
+    )
+    assert denied(decision)
+    assert "READ IT BEFORE YOU CHANGE IT." in reason(decision)
+
+
+def test_a_limited_read_that_reaches_the_end_counts(tmp_path):
+    target = existing_file(tmp_path, lines=40)
+    records = [*consulted_turn(), read_call(target, limit=30, offset=10)]
+    decision = decide(
+        tmp_path, records, tool="Write",
+        tool_input={"file_path": str(target), "content": "new"},
+    )
+    assert not denied(decision)
+
+
+def test_writing_a_new_file_needs_no_read(tmp_path):
+    decision = decide(
+        tmp_path, consulted_turn(), tool="Write",
+        tool_input={"file_path": str(tmp_path / "brand-new.py"), "content": "x"},
+    )
+    assert not denied(decision)
+
+
+def test_a_heredoc_over_an_unread_file_is_refused(tmp_path):
+    """`cat > file <<EOF` was the shell's way around the Edit tool's own
+    read-first check. It is held to the same rule."""
+    target = existing_file(tmp_path)
+    decision = decide(
+        tmp_path, consulted_turn(), command=f"cat > {target} <<'EOF'\nnew\nEOF",
+    )
+    assert denied(decision)
+    assert "READ IT BEFORE YOU CHANGE IT." in reason(decision)
+
+
+def test_a_redirect_into_a_new_file_is_allowed(tmp_path):
+    decision = decide(
+        tmp_path, consulted_turn(), command=f"echo hi > {tmp_path / 'fresh.txt'}",
+    )
+    assert not denied(decision)
+
+
+def test_tee_over_an_unread_file_is_refused(tmp_path):
+    target = existing_file(tmp_path)
+    decision = decide(tmp_path, consulted_turn(), command=f"echo hi | tee {target}")
+    assert denied(decision)
+    assert "READ IT BEFORE YOU CHANGE IT." in reason(decision)
+
+
+def test_the_rule_holds_even_before_a_consult_is_checked_for_looks(tmp_path):
+    """A read-only command that ALSO redirects into an existing file is not a
+    look: the redirect makes it an act, and the act needs the read."""
+    target = existing_file(tmp_path)
+    decision = decide(tmp_path, [human()], command=f"ls > {target}")
+    assert denied(decision)
 
 
 def test_any_of_the_grounding_tools_satisfies_it(tmp_path):
@@ -621,12 +772,94 @@ def test_a_refusal_carries_no_caught_up_note_when_the_file_is_current(tmp_path):
     assert "THE TRANSCRIPT FILE HAD NOT CAUGHT UP" not in reason(decision)
 
 
-def test_refusals_never_stand_down(tmp_path):
-    """Owner ruling, 2026-09-01: "You must consult the advisor. Always." An
-    earlier version stood the arm down after three refusals in a turn."""
-    for attempt in range(5):
+def test_refusals_never_stand_down_when_the_advisor_exists(tmp_path):
+    """Owner ruling, 2026-09-01: "You must consult the advisor. Always." On a
+    machine whose doctor report says the advisor tool exists, no number of
+    refusals releases the gate."""
+    for attempt in range(8):
         assert denied(decide(tmp_path, [human()], landed=False)), attempt
         assert denied(decide(tmp_path, [human()])), attempt
+
+
+def test_a_consulting_session_is_never_released_even_when_the_doctor_cannot_tell(tmp_path):
+    """One advisor record anywhere in the window proves the tool exists."""
+    unknown = {"advisor": {"supported": "unknown"}}
+    records = [human("earlier"), advisor_call(), advisor_result(), human("now")]
+    for attempt in range(12):
+        assert denied(decide(tmp_path, records, doctor=unknown)), attempt
+
+
+def test_a_never_consulting_session_on_an_unknown_machine_is_released_late_and_loudly(tmp_path):
+    """The co-founder case: a harness with no advisor tool, no CLI for the
+    doctor to ask, and a gate whose only remedy is impossible. After
+    RELEASE_AFTER_DENIALS refusals in one turn the gate lets the turn through
+    with a diagnosis, and the next release costs twice as many."""
+    unknown = {"advisor": {"supported": "unknown"}}
+    first = [{**human(), "uuid": "turn-one"}]
+    denials = 0
+    released_at = None
+    for attempt in range(1, 8):
+        decision = decide(tmp_path, first, doctor=unknown)
+        if denied(decision):
+            denials += 1
+        else:
+            released_at = attempt
+            assert "ADVISOR GATE RELEASED" in decision.get("systemMessage", "")
+            break
+    assert released_at == 6, (denials, released_at)
+    # The re-arm: a new human message (its own uuid) resets the count, and the
+    # threshold has doubled, so ten refusals in a row are all still refusals.
+    again = [{**human("second ask"), "uuid": "turn-two"}]
+    for attempt in range(10):
+        assert denied(decide(tmp_path, again, doctor=unknown)), attempt
+
+
+def test_a_machine_whose_harness_provably_lacks_the_advisor_is_disarmed_loudly(tmp_path):
+    no = {"advisor": {"supported": "no", "why": "the harness does not know `claude-fable-5-1`"}}
+    decision = decide(tmp_path, [human()], doctor=no)
+    assert not denied(decision)
+    assert "ADVISOR GATE DISARMED ON THIS MACHINE" in decision.get("systemMessage", "")
+
+
+def advisor_error(model=FABLE):
+    """A consult that came back as an error — the harness's own block type,
+    read off the 2.1.259 binary's strings on 2026-09-02."""
+    return assistant(
+        [{"type": "advisor_tool_result_error", "tool_use_id": "srvtoolu_x",
+          "content": {"error": "rate_limit_error", "message": "Fable quota exhausted"}}],
+        model,
+    )
+
+
+def test_a_failed_consult_still_counts_and_routes_to_opus(tmp_path):
+    """An error is the session having asked; it is not punished. The router
+    flips the local advisorModel to opus and the guard says so."""
+    records = [human(), grounding_call(), advisor_call(), advisor_error(),
+               assistant_text(A_PRINTED_PLAN)]
+    # As SessionStart leaves it: the router has decided fable and written it.
+    state = tmp_path / "state"
+    state.mkdir(parents=True, exist_ok=True)
+    (state / "advisor-router.json").write_text(json.dumps({"model": "fable"}))
+    (state / "settings.local.json").write_text(json.dumps({"advisorModel": "fable"}))
+    decision = decide(tmp_path, records)
+    assert not denied(decision)
+    assert "routed to `opus`" in decision.get("systemMessage", "")
+    local = json.loads((tmp_path / "state" / "settings.local.json").read_text())
+    assert local["advisorModel"] == "opus"
+
+
+def test_a_session_that_rewrites_its_own_advisor_model_is_overruled(tmp_path):
+    """The working agent does not choose the advisor. A hand edit of
+    settings.local.json is reset to the router's decision on the next act."""
+    state = tmp_path / "state"
+    state.mkdir(parents=True, exist_ok=True)
+    (state / "advisor-router.json").write_text(json.dumps({"model": "fable"}))
+    (state / "settings.local.json").write_text(json.dumps({"advisorModel": "sonnet"}))
+    decision = decide(tmp_path, consulted_turn())
+    assert not denied(decision)
+    assert "ADVISOR MODEL RESET to `fable`" in decision.get("systemMessage", "")
+    local = json.loads((state / "settings.local.json").read_text())
+    assert local["advisorModel"] == "fable"
 
 
 def test_an_empty_file_that_never_catches_up_is_refused_not_waved_through(tmp_path):

@@ -279,6 +279,41 @@ def commit_landed_since(stamp):
     return latest > since
 
 
+def worktree_changed_since(stamp):
+    """Did any file in the working tree change after `stamp`?
+
+    Added 2026-09-02. The two facts above — a commit, a tracker row — are the
+    right ones for a /team run, but `/team` itself says "The engine does not
+    commit; the human does", and most owner-directed work lands as uncommitted
+    edits. Counting only commits meant a turn that had rewritten six hook files
+    was still ruled "nothing delivered" the moment two Stop guards disagreed
+    with its wording. Modified paths are asked of `git status`; their mtimes
+    are asked of the filesystem. Unknown answers count as DELIVERED, as above.
+    """
+    since = _parse(stamp)
+    if since is None:
+        return True
+    root = _repo_root()
+    try:
+        done = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            cwd=str(root), capture_output=True, text=True, timeout=15,
+        )
+    except Exception:
+        return True
+    threshold = since.timestamp()
+    for line in done.stdout.splitlines():
+        if len(line) < 4:
+            continue
+        path = line[3:].split(" -> ")[-1].strip().strip('"')
+        try:
+            if (root / path).stat().st_mtime > threshold:
+                return True
+        except OSError:
+            continue
+    return False
+
+
 def tracker_moved_since(stamp):
     """Did any row land in the tracker's append-only event log after `stamp`?
 
@@ -398,7 +433,7 @@ def main():
     if blocks < BLOCKS_THAT_MEAN_A_LOOP:
         allow()  # one guard catching one mistake is not a loop
 
-    if commit_landed_since(stamp) or tracker_moved_since(stamp):
+    if commit_landed_since(stamp) or tracker_moved_since(stamp) or worktree_changed_since(stamp):
         allow()  # the work moved; the report is the other guards' business
 
     session = payload.get("session_id") or "unknown"

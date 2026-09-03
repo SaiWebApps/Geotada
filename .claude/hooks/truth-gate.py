@@ -235,6 +235,9 @@ import threading
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hookenv  # noqa: E402
+
 REPO = Path(__file__).resolve().parents[2]
 
 #: Overridable so payload tests get their own file — same reasoning as every
@@ -267,10 +270,28 @@ except ValueError:
 #: never to act.
 JUDGE_TOOLS = "Bash,Read,Grep,Glob"
 
-#: The owner pinned Fable 5.1 on 2026-09-01. That pin reached the session's own
-#: advisor tool but never this spawned judge, which was still asking for the
-#: floating alias `fable`.
-ADVISOR_MODEL = "claude-fable-5-1"
+#: THE ADVISOR JUDGE FOLLOWS THE ROUTER. advisor-router.py decides, per machine
+#: and per failure, whether the advisor is `fable` or `opus`; this judge asks
+#: for the same model, so a machine that cannot reach Fable does not burn three
+#: 240-second timeouts per Stop finding that out. Public aliases, because the
+#: harness resolves those on every version (read off its own error text,
+#: 2026-09-02); a pinned id needs a flag an older harness may not honour.
+#: The router speaks in aliases; `claude -p --model` is given the pinned id so
+#: the judge is the same model the owner pinned on 2026-09-01 and so the test
+#: suite's fake judge, which keys on the id, still recognises its role.
+ALIAS_TO_ID = {"fable": "claude-fable-5-1", "opus": "claude-opus-5", "sonnet": "claude-sonnet-5"}
+
+
+def _routed_advisor_model():
+    chosen = (
+        hookenv.router_state().get("model")
+        or hookenv.effective_advisor_model()
+        or "fable"
+    )
+    return ALIAS_TO_ID.get(chosen, chosen)
+
+
+ADVISOR_MODEL = _routed_advisor_model()
 VERIFIER_MODEL = "claude-sonnet-5"
 
 #: Only these three, and only git subcommands that can surface a commit's own
@@ -720,7 +741,7 @@ def _run_for_evidence(argv):
     try:
         proc = subprocess.run(
             argv, capture_output=True, text=True,
-            timeout=EVIDENCE_COMMAND_TIMEOUT, cwd=str(REPO),
+            timeout=EVIDENCE_COMMAND_TIMEOUT, cwd=str(REPO), stdin=subprocess.DEVNULL,
         )
     except (OSError, subprocess.SubprocessError) as exc:
         return f"<could not run: {exc}>"
@@ -916,6 +937,12 @@ def _run_judge(binary, model, rubric, reply, history_note, timeout, out, key):
             timeout=timeout,
             cwd=str(REPO),
             env={**os.environ, "CLAUDE_NO_EXCUSES_JUDGE": "1"},
+            # /dev/null, not the hook's own stdin: a child `claude -p` that
+            # inherits the payload pipe waits for an EOF that never comes.
+            # Measured 2026-09-02 in doctor.py's catalog probe, which timed
+            # out at 20s while the same command took one second at a shell —
+            # the shape of this gate's own "both judges at the full 240s".
+            stdin=subprocess.DEVNULL,
         )
     except subprocess.TimeoutExpired:
         out[key] = {"ok": False, "problem": f"{key} timed out after {timeout}s"}
@@ -1106,10 +1133,29 @@ def main():
     if not reply:
         allow()  # nothing said yet for either judge to check
 
+    # THE JUDGES NEED A CLI THAT EXISTS. doctor.py records whether one does;
+    # without it every Stop would pay an infrastructure failure to learn the
+    # same fact. Only consulted for the real binary — tests point at a fake.
+    if JUDGE_BINARY == "claude":
+        cli = hookenv.doctor_report().get("claude_cli") or {}
+        if cli and not cli.get("ok"):
+            print(json.dumps({"systemMessage": (
+                "TRUTH GATE OFF ON THIS MACHINE: the doctor found no working `claude` "
+                "CLI on the hook's PATH, so neither judge can run. Install or link the "
+                "CLI, then start a new session. See .claude/state/doctor.json."
+            )}))
+            sys.exit(0)
+
     state = read_state()
     here = turn_id(entries)
-    if state.get("session") != session or state.get("turn") != here:
-        state = {"session": session, "turn": here, "infra_blocks": 0}
+    # SESSION-scoped, not turn-scoped. Per turn, a machine whose judges cannot
+    # run paid up to three timeouts on EVERY reply for the whole session —
+    # twelve minutes of blocked Stop per turn on the co-founder's machine.
+    # Infrastructure that failed three times this session is not going to
+    # start working on the next turn; a real LIE still has no ceiling at all.
+    if state.get("session") != session:
+        state = {"session": session, "infra_blocks": 0}
+    state["turn"] = here
 
     if state.get("infra_blocks", 0) >= INFRA_MAX_BLOCKS:
         print(json.dumps({"systemMessage": STANDDOWN_MESSAGE}))

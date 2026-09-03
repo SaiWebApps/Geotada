@@ -13,19 +13,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/team-gate.sh",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); bash \"$ROOT/.claude/hooks/team-gate.sh\"",
             "timeout": 10,
-            "statusMessage": "Checking the /team ledger is approved\u2026"
+            "statusMessage": "Checking the /team ledger is approved…"
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/code-grounding-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" code-grounding-guard.py",
             "timeout": 20,
             "statusMessage": "verifier gate: the shadow must be able to read the plan"
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-shadow-check.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" pre-shadow-check.py",
             "timeout": 150,
             "statusMessage": "pre-shadow check: citations, numbers and the engine guard"
           }
@@ -36,13 +36,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/ledger-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" ledger-guard.py",
             "timeout": 20,
             "statusMessage": "failures-ledger guard: checking recorded mistake classes"
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/production-junk-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" production-junk-guard.py",
             "timeout": 30,
             "statusMessage": "production-junk guard: keeping test artefacts out of history"
           }
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/advisor-consult-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" advisor-consult-guard.py",
             "timeout": 20,
             "statusMessage": "advisor gate: no action before a consult and a printed plan"
           }
@@ -62,9 +62,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/parallel-gate.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" parallel-gate.py",
             "timeout": 15,
             "statusMessage": "parallel gate: batch independent background spawns"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" doctor.py",
+            "timeout": 30,
+            "statusMessage": "hook doctor: can this machine satisfy the guards?"
+          },
+          {
+            "type": "command",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" advisor-router.py",
+            "timeout": 30,
+            "statusMessage": "advisor router: fable if it can, opus if it cannot"
           }
         ]
       }
@@ -74,7 +92,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/code-grounding-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" code-grounding-guard.py",
             "timeout": 90,
             "statusMessage": "codegraph sync: the index every agent reads from"
           }
@@ -87,14 +105,14 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/render-deploy-watch.sh",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); bash \"$ROOT/.claude/hooks/render-deploy-watch.sh\"",
             "asyncRewake": true,
             "timeout": 1080,
-            "statusMessage": "Watching Render deploy after git push\u2026"
+            "statusMessage": "Watching Render deploy after git push…"
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-recorder.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" run-recorder.py",
             "timeout": 15,
             "statusMessage": "run recorder: writing down what the command actually returned"
           }
@@ -105,7 +123,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-recorder.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" run-recorder.py",
             "timeout": 15,
             "statusMessage": "run recorder: stamping the file and when it changed"
           }
@@ -117,7 +135,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/delivery-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" delivery-guard.py",
             "timeout": 30,
             "statusMessage": "delivery guard: stop polishing the reply, go do the work"
           }
@@ -127,7 +145,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/citation-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" citation-guard.py",
             "timeout": 20,
             "statusMessage": "citation guard: proving every claim about this repo"
           }
@@ -137,7 +155,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/plain-words-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" plain-words-guard.py",
             "timeout": 20,
             "statusMessage": "plain-words gate: replies the owner can read"
           }
@@ -147,7 +165,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/freshness-gate.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" freshness-gate.py",
             "timeout": 20,
             "statusMessage": "freshness gate: every number said today is proven today"
           }
@@ -157,7 +175,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/advisor-consult-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" advisor-consult-guard.py",
             "timeout": 20,
             "statusMessage": "advisor guard: no reply without a consult"
           }
@@ -167,7 +185,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/production-junk-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" production-junk-guard.py",
             "timeout": 30,
             "statusMessage": "production-junk guard: keeping test artefacts out of history"
           }
@@ -177,7 +195,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/shadow-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" shadow-guard.py",
             "timeout": 20,
             "statusMessage": "shadow gate: nothing is reported until it is re-derived"
           }
@@ -187,7 +205,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/truth-gate.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" truth-gate.py",
             "timeout": 300,
             "statusMessage": "truth gate: advisor and verifier must both call it true"
           }
@@ -197,7 +215,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/proceed-guard.py",
+            "command": "ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo \"${CLAUDE_PROJECT_DIR:-.}\"); sh \"$ROOT/.claude/hooks/run.sh\" proceed-guard.py",
             "timeout": 20,
             "statusMessage": "proceed guard: keep going, stop only by asking a real question"
           }

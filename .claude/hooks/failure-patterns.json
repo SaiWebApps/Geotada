@@ -30,7 +30,7 @@
     "such files had accumulated in the product's suite. Enforced globally by",
     "~/.claude/hooks/no-scaffolding-in-product.py."
   ],
-  "repo_root": "/Users/sairambkrishnan/git/ondoway",
+  "_root_note": "There is deliberately NO repo_root here. ledger-guard.py derives the checkout from its own location, and `{root}` in any message below is replaced with it at runtime, so the same file works on every machine.",
   "acknowledge_token": "# ledger-checked",
   "rules": [
     {
@@ -38,7 +38,7 @@
       "name": "stale working directory",
       "kind": "needs_abs_cd",
       "applies_to": "(^|[;&|]\\s*)([A-Za-z_][A-Za-z0-9_]*=\\S*\\s+)*(make|pytest|uv\\s+run)\\b",
-      "message": "this runs `make`/`pytest`/`uv run` without establishing its own working directory. The shell's cwd PERSISTS between Bash calls, so a `cd` from an earlier command silently decides where this one runs \u2014 it has already produced 'No rule to make target' three times in this project (2026-08-25 twice, 2026-08-28). USE ONE OF THESE, and NOT a leading `cd`: `make -C /Users/sairambkrishnan/git/ondoway <target>`, or an absolute path to the program itself (`/Users/sairambkrishnan/git/ondoway/.venv/bin/python -m pytest /Users/sairambkrishnan/git/ondoway/tests/test_x.py`), or `git -C /Users/sairambkrishnan/git/ondoway ...`. A LEADING `cd /abs &&` CANNOT SATISFY THIS GUARD: measured 2026-08-29, the harness strips a leading `cd` before the command reaches the hook, so eight consecutive attempts to prefix one arrived here as the bare command and were blocked again. Do not retry the `cd` form \u2014 it will never pass."
+      "message": "this runs `make`/`pytest`/`uv run` without establishing its own working directory. The shell's cwd PERSISTS between Bash calls, so a `cd` from an earlier command silently decides where this one runs \u2014 it has already produced 'No rule to make target' three times in this project (2026-08-25 twice, 2026-08-28). USE ONE OF THESE, and NOT a leading `cd`: `make -C {root} <target>`, or an absolute path to the program itself (`{root}/.venv/bin/python -m pytest {root}/tests/test_x.py`), or `git -C {root} ...`. A LEADING `cd /abs &&` CANNOT SATISFY THIS GUARD: measured 2026-08-29, the harness strips a leading `cd` before the command reaches the hook, so eight consecutive attempts to prefix one arrived here as the bare command and were blocked again. Do not retry the `cd` form \u2014 it will never pass."
     },
     {
       "class": 2,
@@ -91,7 +91,7 @@
       "class": 20,
       "name": "a green bar claimed from a command that is not the bar",
       "kind": "wrong_test_bar",
-      "message": "this runs the flutter/dart suite directly, and that is NOT this repository's bar. The bar is `make -C /Users/sairambkrishnan/git/ondoway flutter-test`, which runs scripts/flutter_test.sh: a VM pass (--platform tester --tags vm) AND a chrome pass (--platform chrome --exclude-tags vm), both of which must be green. Measured 2026-08-30: a session used bare `flutter test` as its green bar for about ten commits and reported 340 passing while 15 tests were RED under the real bar, every one of them in files that same session had just added. NO VERIFIER CAN CATCH THIS \u2014 the claim 'flutter test: 340 passed' is TRUE, so re-deriving it confirms it, and ~/.claude/hooks/auditable-tests.py never fires because the command names neither pytest nor make. Only the command text reveals the wrong bar. Iterating on ONE test is exempt and needs no acknowledgement: name a *_test.dart path AND a --platform, e.g. `flutter test --platform chrome test/pages/foo_test.dart`."
+      "message": "this runs the flutter/dart suite directly, and that is NOT this repository's bar. The bar is `make -C {root} flutter-test`, which runs scripts/flutter_test.sh: a VM pass (--platform tester --tags vm) AND a chrome pass (--platform chrome --exclude-tags vm), both of which must be green. Measured 2026-08-30: a session used bare `flutter test` as its green bar for about ten commits and reported 340 passing while 15 tests were RED under the real bar, every one of them in files that same session had just added. NO VERIFIER CAN CATCH THIS \u2014 the claim 'flutter test: 340 passed' is TRUE, so re-deriving it confirms it, and ~/.claude/hooks/auditable-tests.py never fires because the command names neither pytest nor make. Only the command text reveals the wrong bar. Iterating on ONE test is exempt and needs no acknowledgement: name a *_test.dart path AND a --platform, e.g. `flutter test --platform chrome test/pages/foo_test.dart`."
     },
     {
       "class": 23,

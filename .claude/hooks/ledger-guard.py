@@ -636,8 +636,18 @@ def _blanket_conflict_resolution(command: str) -> str:
 # ── evaluation ───────────────────────────────────────────────────────────────
 
 
+#: The checkout this guard belongs to, derived from THIS FILE'S location and
+#: never from the sidecar. failure-patterns.json used to carry
+#: `"repo_root": "/Users/sairambkrishnan/git/ondoway"`; on any other machine
+#: that directory does not exist, every `git` call here raised into an empty
+#: answer (classes 4, 12 and 14 fail open, silently), and the class-1 refusal
+#: told the reader to run `make -C /Users/sairambkrishnan/...`. Measured
+#: 2026-09-02. `{root}` in a rule's message is replaced with the real root.
+REPO_ROOT = str(Path(__file__).resolve().parents[2])
+
+
 def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
-    repo_root = config.get("repo_root", "")
+    repo_root = REPO_ROOT
     for rule in config.get("rules", []):
         kind = rule.get("kind", "regex")
         hit = False
@@ -683,7 +693,8 @@ def _violation(command: str, config: dict) -> tuple[int, str, str] | None:
                 detail = f" This one settles {scope}."
 
         if hit:
-            return rule.get("class", 0), rule.get("name", "?"), rule.get("message", "") + detail
+            message = (rule.get("message", "") + detail).replace("{root}", repo_root)
+            return rule.get("class", 0), rule.get("name", "?"), message
     return None
 
 
