@@ -179,3 +179,11 @@ Five commands. Ten seconds. Non-negotiable.
 **Incident:** `make flutter-test` was run with `run_in_background`. Flutter buffers stdout completely, so the output file stayed at 0 bytes for over 3 minutes. Claude polled it with `sleep 5` loops — over 20 polling attempts, all showing empty output — wasting the user's time. The CLAUDE.md Rule 8 and prevent-laziness hook now mechanically block this.
 
 **Rule:** Always run `make flutter-test` and `make test` in the foreground. Never use `run_in_background` for Flutter commands. If a foreground command is taking long, tell the user what you're waiting for — don't go silent.
+
+---
+
+## 22. A milestone's test command is the narrowest thing that proves it
+
+**Incident:** Two tracker rows in one run could not be flipped for reasons that had nothing to do with whether the work was done. One carried `make test` as its verification command: the tracker re-runs that command to verify a completion claim, so the box sat unflippable for hours while a cloud database — infrastructure that milestone never touched — refused the full bar. The other named a test that had only ever been *planned*: the name went into the row at planning time and was never written into the repo, so no run could ever satisfy it, and the row stayed `pending` long after the feature that satisfied it had shipped under different test names. In both cases the board lied about work that was finished and committed.
+
+**Rule:** An `issue-add --test-command` names the NARROWEST command that proves that milestone and that already runs — one test file, or one pytest node id. Never `make test` / `make audit`: the full bar answers "is the repo green", which is a different question from "is this milestone done", and it drags unrelated infrastructure into a completion claim. If the milestone's test lands under a different name than the plan guessed, re-point the row with `issue-set --id M{n} --test-command "…"` before claiming the step.

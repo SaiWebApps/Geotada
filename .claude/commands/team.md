@@ -179,6 +179,18 @@ python3 .claude/ledger/track.py issue-add --story S1 --id M1 --name "…" --test
 One `story-add` per user story in the human's own words; one `issue-add` per
 milestone, carrying its demo/test command and files.
 
+**A milestone's `--test-command` is the NARROWEST command that proves THAT
+milestone, and it names something that already runs** — one test file, or one
+pytest node id. Never `make test` or `make audit`: the tracker RE-RUNS this
+command to verify a completion claim, so a whole-bar command makes the box lag
+the finished work by minutes and lets infrastructure the milestone never
+touched refuse it. Never a test that is not written yet either — a planned name
+can never flip a box. When the milestone's test lands under a different name
+than the plan guessed, re-point the row with `issue-set --id M{n}
+--test-command "…"` before claiming the step. "Is the bar green" and "is this
+milestone done" are different questions; the full bar answers the first, once,
+at the end of the run (Phase 5).
+
 Tier is one line, by the paths touched (highest wins): **1** = `src/`,
 `tests/`, `scripts/`; **2** = tour content, `mobile/`, `src/api/routes/`,
 `frontend/`; **3** = `Makefile`, `.claude/`, deploy/infra, DB/data.
