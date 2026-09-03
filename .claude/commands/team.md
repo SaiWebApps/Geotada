@@ -22,10 +22,11 @@ column to the POI table" but "The tour should factor in opening and closing
 hours of places." Every milestone in the plan must trace back to this line; a
 step that doesn't serve it gets cut.
 
-Then name the artifact the end user actually receives (the narration heard,
-the screen read) and make Phase 2's walk reach that surface. A goal met in
-the engine's data but absent from what the person sees or hears is not met —
-acceptance judges the artifact, so the plan must cover it from the start.
+The goal is met or failed at the surface the end user touches — the
+narration heard, the screen read — never in the engine's data. The existing
+code's abstractions (a flag, a regex, a map) are how the code models the
+goal; they are never allowed to *define* it. Extend-don't-duplicate binds
+the implementation, not the meaning of the story.
 
 If the human handed you a plan rather than a request, extract the goal from it
 first, then treat their plan as a *draft* subject to the same walk as anything
@@ -67,11 +68,15 @@ Then walk:
    never just the file you walked; the caller you didn't list is the
    mid-implementation surprise.
 
-4. **Simulate inputs through the path.** Pick 2–3 concrete inputs (a real
-   POI, a real tour request, a thin/degraded case) and trace each one
-   function by function using the contracts you just recorded: what comes in,
-   what happens to it today, what comes out. The gap between today's output
-   and the goal's output IS the feature.
+4. **Simulate inputs through the path — all the way to the user's surface.**
+   Pick 2–3 concrete inputs (a real POI, a real tour request, a
+   thin/degraded case) and trace each one function by function using the
+   contracts you just recorded: what comes in, what happens to it today,
+   what comes out. Every trace ENDS at the artifact the end user receives,
+   **quoted** — the actual narration lines heard, the actual screen text —
+   never at a field or a flag. The gap between today's quoted artifact and
+   the goal's IS the feature, and a gap you cannot see in the quotes is a
+   gap the feature does not close.
 
 5. **Find the extension point.** For everything missing, find the existing
    function/module that should grow to cover it (CLAUDE.md invariant 1: never
@@ -104,7 +109,12 @@ something real that works. Each milestone becomes exactly one commit.
 
 Every milestone section must contain, in this order:
 
-1. **What the human will see** when this milestone is demoed, in one sentence.
+1. **The user's artifact, quoted, before and after.** Not a description
+   ("the stop flips to outside-only" is engine language) — the predicted
+   lines the end user actually hears or reads once this milestone lands,
+   next to what they get today. The demo then reproduces the prediction. If
+   the predicted "after" still contains the failure — an indoor scene at a
+   shut door — the plan shows it before anything is built.
 2. **Code path table** — every function this milestone touches or extends:
    `function — file:line-range — contract as read` (from Phase 2 step 3; a
    row you cannot fill from your own reading is a row you cannot plan on).
@@ -139,9 +149,12 @@ Two completeness checks, done yourself:
 
 # Phase 4 — alignment check, record, present, and WAIT
 
-First re-read the goal line, then the milestone list: does executing exactly
-these milestones produce exactly what the goal says — nothing less, nothing
-extra? Fix mismatches before showing anything.
+First re-read the goal line against the **quoted predicted artifacts** — the
+after-state lines the user will hear or read once the last milestone lands.
+The check is never "do the milestone names cover the goal" (prose agrees
+with prose for free); it is "do these exact quoted lines deliver the goal's
+sentence?" A predicted after-state that still shows the failure means the
+plan is not finished. Fix mismatches before showing anything.
 
 Then record the plan in the tracker (it is the one record no agent can
 reformat, and it feeds the dashboard):
@@ -174,9 +187,12 @@ Present, in one screen:
 1. The goal (one line) and what is explicitly out of scope.
 2. **What the walk found** — the discoveries, briefly.
 3. The stories, each in the human's own words.
-4. The milestones: name, what the demo shows, the test command. (Full traces
+4. **The user's before and after, quoted** — what they get today and the
+   predicted lines after the last milestone. The human approves an
+   experience, never a list of milestone names.
+5. The milestones: name, what the demo shows, the test command. (Full traces
    stay in `plan.md` — link it, don't paste it.)
-5. One plain question:
+6. One plain question:
 
 > Say **go** to build this, or tell me what to change. Nothing has been built
 > yet.
