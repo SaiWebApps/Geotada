@@ -1818,3 +1818,79 @@ def test_sensory_invitation_is_not_said_twice_at_the_first_stop():
     assert said <= 1, f"the sensory invitation was said {said} times: {texts}"
     # And the view cue itself must still be staged — the guard must not swallow step 4.
     assert any("Seine quais" in t for t in texts), texts
+
+
+# ---------------------------------------------------------------------------
+# The shut-door filter — the stitched lane never invites the listener through
+# a door the plan already priced shut. The premium lane's placement floor
+# (validation.door_line_without_door) refuses such a line and a writer
+# rewrites it; the stitched lane ships corpus text with no writer, so the
+# invitation is dropped at the stitch. Keyed on EXPLICIT False in
+# Route.visit_goes_inside: an empty map (dateless or legacy route) licenses
+# everything, byte-identical.
+# ---------------------------------------------------------------------------
+
+
+_DOOR_BEAT_BODY = "Step inside the nave. The rose window glass is world famous."
+
+
+def _one_stop_door_fixture():
+    poi = _poi("p1", "Sainte-Chapelle")
+    beat = _beat("door-beat", poi.id, body=_DOOR_BEAT_BODY, nf="establishing")
+    seq = BeatSequence(poi_beats=(_poi_beats(poi, (beat,)),))
+    return poi, seq
+
+
+def test_a_doorless_stop_drops_its_door_line_and_keeps_the_story():
+    """A stop the plan prices outside-only voices no through-the-door line —
+    the invitation drops, the facts stay. UNDO: remove the shut-door filter in
+    generate() -> "Step inside the nave." plays at a shut door -> RED."""
+    poi, seq = _one_stop_door_fixture()
+    route = _route((poi,)).model_copy(update={"visit_goes_inside": {poi.id: False}})
+    script = generate(seq, route, _input(), glue_client=MockGlueClient())
+
+    texts = [s.text for s in script.script]
+    assert not any("Step inside" in t for t in texts), texts
+    assert any("rose window glass" in t for t in texts), (
+        "only the invitation may drop — never the stop's facts"
+    )
+
+
+def test_a_stop_with_an_open_door_keeps_its_door_line():
+    """goes_inside True licenses the invitation — the filter may only ever act
+    where the plan says the visit stays outside."""
+    poi, seq = _one_stop_door_fixture()
+    route = _route((poi,)).model_copy(update={"visit_goes_inside": {poi.id: True}})
+    script = generate(seq, route, _input(), glue_client=MockGlueClient())
+
+    assert any("Step inside" in s.text for s in script.script)
+
+
+def test_a_dateless_route_with_no_door_map_filters_nothing():
+    """The identity default: an EMPTY visit_goes_inside map (a dateless or
+    legacy route) means nobody priced a door, and the stitch ships byte-
+    identical — missing is never treated as False."""
+    poi, seq = _one_stop_door_fixture()
+    script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+
+    assert any("Step inside" in s.text for s in script.script)
+
+
+def test_a_dropped_only_invitation_beat_is_not_reported_as_voiced():
+    """A beat that was ONLY an invitation at a shut door emits nothing — and
+    the voiced roster must say so (the same truth-from-emissions rule the
+    transit-drop case pins): its id leaves beat_ids, so keep-exploring can
+    reclassify it rather than treating it as already heard."""
+    poi = _poi("p1", "Sainte-Chapelle")
+    invitation_only = _beat("inv", poi.id, body="Step inside.", nf="establishing")
+    story = _beat("story", poi.id, body="Louis IX built it for the relics.", nf="establishing")
+    seq = BeatSequence(poi_beats=(_poi_beats(poi, (invitation_only, story)),))
+    route = _route((poi,)).model_copy(update={"visit_goes_inside": {poi.id: False}})
+    script = generate(seq, route, _input(), glue_client=MockGlueClient())
+
+    sp = script.selected_pois[0]
+    assert "story" in sp.beat_ids
+    assert "inv" not in sp.beat_ids, (
+        "a beat whose every sentence dropped at the shut door must not be "
+        "reported as voiced"
+    )

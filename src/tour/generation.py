@@ -464,6 +464,18 @@ def generate(
     # Then drop byte-identical restatements the claim pass leaves behind (two beats
     # at one stop sharing an exact sentence): pure repetition, zero content loss.
     sentences = suppress_exact_repeats(sentences, beat_sequence)
+    # THE SHUT-DOOR FILTER: a stop the plan prices outside-only never voices a
+    # through-the-door line. The premium lane's placement floor refuses such a
+    # line and its writer rewrites the stop; the stitched lane ships corpus
+    # text with no writer, so the invitation is dropped here — at the one place
+    # the stitch still holds the Route — and the story around it is kept.
+    sentences = _drop_door_lines_at_doorless_stops(
+        sentences,
+        route,
+        vignette_beat_ids=frozenset(
+            beat.id for beats in beat_sequence.vignette_beats.values() for beat in beats
+        ),
+    )
     # NOTE: same-beat NEAR-verbatim de-dup (suppress_same_beat_near_duplicates) is
     # deliberately NOT run here. It is token-similarity only (not claim-aware), and
     # rapidfuzz.token_set_ratio scores a SUPERSET sentence >= 90 against its subset —
@@ -1232,6 +1244,49 @@ def _build_stop_close(
         next_name=next_plan.poi_name if next_plan is not None else None,
     )
     return Sentence(text=text, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx)
+
+
+def _drop_door_lines_at_doorless_stops(
+    sentences: list[Sentence],
+    route: Route,
+    *,
+    vignette_beat_ids: frozenset[str] = frozenset(),
+) -> list[Sentence]:
+    """Remove through-the-door units at stops whose visit stays OUTSIDE.
+
+    The door vocabulary is validation's ``_DOOR_LINE_RE`` — THE one definition
+    the placement floor refuses these lines by — so the stitch drops exactly
+    what the floor would flag. Keyed on EXPLICIT ``False`` in
+    ``Route.visit_goes_inside``: an empty map (a dateless or legacy route)
+    means nobody priced a door, and nothing is touched — the identity default.
+    Walk-concurrent sentences (nav, reflections, vignette one-liners) play on
+    a leg, not at the stop, and are exempt exactly as the floor exempts them.
+    A sentence that was ONLY the invitation drops whole; a mixed one keeps its
+    other units, so a fact is never lost to the filter.
+    """
+    from .validation import _DOOR_LINE_RE  # import here: validation imports this module
+
+    doorless = {
+        idx
+        for idx, poi in enumerate(route.pois)
+        if route.visit_goes_inside.get(poi.id) is False
+    }
+    if not doorless:
+        return sentences
+    out: list[Sentence] = []
+    for sentence in sentences:
+        if sentence.stop_idx not in doorless or is_walk_concurrent(
+            sentence, vignette_beat_ids
+        ):
+            out.append(sentence)
+            continue
+        units = split_sentences(sentence.text) or [sentence.text]
+        kept = [unit for unit in units if not _DOOR_LINE_RE.search(unit)]
+        if len(kept) == len(units):
+            out.append(sentence)
+        elif kept:
+            out.append(sentence.model_copy(update={"text": " ".join(kept)}))
+    return out
 
 
 # ---------------------------------------------------------------------------
