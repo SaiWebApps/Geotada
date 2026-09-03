@@ -106,7 +106,14 @@ def test_database_reset_cannot_address_cloud_or_all_compose_volumes() -> None:
 
 def test_testflight_bumps_before_building_the_uploaded_ipa() -> None:
     source = (REPO / "Makefile").read_text(encoding="utf-8")
-    target = source.split("\ntestflight:", 1)[1].split("\n\nrender-watch:", 1)[0]
+    # The slice is anchored on the NEXT target. `str.split` on a missing
+    # needle silently returns the whole remainder — the test then scans far
+    # more Makefile than it claims to — so the anchor's existence is asserted
+    # loudly first: if `render-status:` is ever removed, re-anchor this to
+    # whatever target follows testflight, don't let the slice widen.
+    anchor = "\nrender-status:"
+    assert anchor in source, "re-anchor this slice to the target after testflight"
+    target = source.split("\ntestflight:", 1)[1].split(anchor, 1)[0]
 
     assert "testflight: flutter-ipa" not in source
     assert target.index("agvtool next-version") < target.index("flutter-ipa")

@@ -83,10 +83,6 @@ Targets that need it: `api`, `workbench`, `test`, `audit`, `flutter-ios`,
 that do not: `lint`, `dashboard`, `tour-build`, the scoring targets, and the
 local test shards.
 
-Separately, `make render-watch` — which follows a deploy to its end state — uses
-the Render **CLI**, which has its own browser sign-in. Setup installs the CLI and
-runs `render login` for you to approve.
-
 If any step fails, see [Troubleshooting](Docs/Markdown%20Docs/TROUBLESHOOTING.md).
 
 ### 3. Start the app
