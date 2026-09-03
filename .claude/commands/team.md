@@ -28,6 +28,14 @@ code's abstractions (a flag, a regex, a map) are how the code models the
 goal; they are never allowed to *define* it. Extend-don't-duplicate binds
 the implementation, not the meaning of the story.
 
+**Name the personas this goal serves and read their files**
+(`docs/personas/` — the eleven people this product is built for). They are
+the project's definition of "good for the user": the same change can be a
+gift to one of them and noise to another, and a plan that never asks which
+is guessing. Every user-experience judgment below — the traces, the
+before/after, acceptance — is made through the named personas, not through
+a generic "the user".
+
 If the human handed you a plan rather than a request, extract the goal from it
 first, then treat their plan as a *draft* subject to the same walk as anything
 else. You verify it against the code; you never execute it on trust.
@@ -74,9 +82,12 @@ Then walk:
    contracts you just recorded: what comes in, what happens to it today,
    what comes out. Every trace ENDS at the artifact the end user receives,
    **quoted** — the actual narration lines heard, the actual screen text —
-   never at a field or a flag. The gap between today's quoted artifact and
-   the goal's IS the feature, and a gap you cannot see in the quotes is a
-   gap the feature does not close.
+   never at a field or a flag, and it is read AS one of the named personas
+   standing there (Camille hearing an interior described at a closed door is
+   enriched; Marcus with a train to catch is delayed — the same quote, two
+   verdicts). The gap between today's quoted artifact and the goal's IS the
+   feature, and a gap you cannot see in the quotes is a gap the feature does
+   not close.
 
 5. **Find the extension point.** For everything missing, find the existing
    function/module that should grow to cover it (CLAUDE.md invariant 1: never
@@ -187,9 +198,10 @@ Present, in one screen:
 1. The goal (one line) and what is explicitly out of scope.
 2. **What the walk found** — the discoveries, briefly.
 3. The stories, each in the human's own words.
-4. **The user's before and after, quoted** — what they get today and the
-   predicted lines after the last milestone. The human approves an
-   experience, never a list of milestone names.
+4. **The user's before and after, quoted, judged as the named personas** —
+   what they get today and the predicted lines after the last milestone,
+   with a sentence on how each named persona receives the change. The human
+   approves an experience, never a list of milestone names.
 5. The milestones: name, what the demo shows, the test command. (Full traces
    stay in `plan.md` — link it, don't paste it.)
 6. One plain question:
@@ -242,7 +254,9 @@ steps.
 Run the whole feature the way the human would use it — the real tour, the
 real screen, the real workbench page — and show them. Not "tests pass": *it
 works*, visibly. For tier 2+ work, also run
-`Agent(subagent_type:'acceptance')` on the produced artifact and
+`Agent(subagent_type:'acceptance')` on the produced artifact — told which
+personas the goal serves, so it judges as those people and not as a generic
+critic — and
 `Agent(subagent_type:'qa')` for the undo test on the new tests, and paste
 their verdicts. The human, not you, decides it's done.
 
